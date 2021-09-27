@@ -71,6 +71,7 @@ public final class MainPanel extends JPanel {
 
 class TranslucentScrollPaneLayout extends ScrollPaneLayout {
   private static final int BAR_SIZE = 12;
+
   @Override public void layoutContainer(Container parent) {
     if (parent instanceof JScrollPane) {
       JScrollPane scrollPane = (JScrollPane) parent;
