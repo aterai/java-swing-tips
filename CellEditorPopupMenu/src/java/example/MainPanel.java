@@ -102,11 +102,10 @@ class TextComponentPopupMenu extends JPopupMenu {
     tc.getActionMap().put("undo", undoAction);
     tc.getActionMap().put("redo", redoAction);
     InputMap im = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "undo");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
-    // Java 10:
-    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "undo");
-    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "redo");
+    int mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, mask), "undo");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, mask), "redo");
 
     addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuCanceled(PopupMenuEvent e) {
