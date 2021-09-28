@@ -138,10 +138,13 @@ class DesktopLayerUI extends LayerUI<JDesktopPane> {
     if (SwingUtilities.isRightMouseButton(e) && e.getClickCount() >= 2) {
       Component c = e.getComponent();
       Container p = SwingUtilities.getAncestorOfClass(BasicInternalFrameTitlePane.class, c);
+      boolean i1 = c instanceof BasicInternalFrameTitlePane;
+      boolean i2 = p instanceof BasicInternalFrameTitlePane;
+      boolean i3 = c instanceof JInternalFrame.JDesktopIcon;
       int id = e.getID();
-      boolean b1 = c instanceof BasicInternalFrameTitlePane || p instanceof BasicInternalFrameTitlePane;
-      boolean b2 = c instanceof JInternalFrame.JDesktopIcon && id == MouseEvent.MOUSE_PRESSED;
-      if ((b1 && id == MouseEvent.MOUSE_CLICKED) || b2) {
+      boolean b1 = id == MouseEvent.MOUSE_CLICKED && (i1 || i2);
+      boolean b2 = id == MouseEvent.MOUSE_PRESSED && i3;
+      if (b1 || b2) {
         e.consume();
       }
     }
