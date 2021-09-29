@@ -14,7 +14,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -22,10 +27,31 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super();
-    di = new DraggableImageMouseListener(new ImageIcon(getClass().getResource("test.png")));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
+    di = new DraggableImageMouseListener(new ImageIcon(img));
     addMouseListener(di);
     addMouseMotionListener(di);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -148,11 +174,11 @@ class DraggableImageMouseListener extends MouseAdapter {
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
+    if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getPoint())) {
       rotatorHover = true;
       startRadian = radian - Math.atan2(e.getY() - centerPt.getY(), e.getX() - centerPt.getX());
       e.getComponent().repaint();
-    } else if (inner.contains(e.getX(), e.getY())) {
+    } else if (inner.contains(e.getPoint())) {
       moverHover = true;
       startPt.setLocation(e.getPoint());
       e.getComponent().repaint();
@@ -161,13 +187,46 @@ class DraggableImageMouseListener extends MouseAdapter {
 
   @Override public void mouseDragged(MouseEvent e) {
     if (rotatorHover) {
-      radian = startRadian + Math.atan2(e.getY() - centerPt.getY(), e.getX() - centerPt.getX());
+      double y = e.getY() - centerPt.getY();
+      double x = e.getX() - centerPt.getX();
+      radian = startRadian + Math.atan2(y, x);
       e.getComponent().repaint();
     } else if (moverHover) {
-      centerPt.setLocation(centerPt.getX() + e.getX() - startPt.getX(), centerPt.getY() + e.getY() - startPt.getY());
+      double x = centerPt.getX() + e.getX() - startPt.getX();
+      double y = centerPt.getY() + e.getY() - startPt.getY();
+      centerPt.setLocation(x, y);
       setCirclesLocation(centerPt);
       startPt.setLocation(e.getPoint());
       e.getComponent().repaint();
     }
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 320;
+  }
+
+  @Override public int getIconHeight() {
+    return 240;
   }
 }
