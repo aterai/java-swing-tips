@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
 
 class FontRotateAnimation extends JComponent {
   private int rotate;
-  private Shape shape;
+  private transient Shape shape;
   private final Timer animator = new Timer(10, null);
 
   protected FontRotateAnimation(String str) {
@@ -59,9 +59,11 @@ class FontRotateAnimation extends JComponent {
     animator.addActionListener(e -> {
       repaint(shape.getBounds()); // clear prev
       Rectangle2D b = outline.getBounds2D();
-      AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), b.getCenterX(), b.getCenterY());
-      double cx = getWidth() / 2d - b.getCenterX();
-      double cy = getHeight() / 2d - b.getCenterY();
+      double ax = b.getCenterX();
+      double ay = b.getCenterY();
+      AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), ax, ay);
+      double cx = getWidth() / 2d - ax;
+      double cy = getHeight() / 2d - ay;
       AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
 
       Shape s1 = at.createTransformedShape(outline);
