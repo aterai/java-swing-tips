@@ -84,8 +84,8 @@ public final class MainPanel extends JPanel {
       //   throw new RuntimeException(ex); // should never happen
       // }
       // // <<<< ElementCount
-
-      JOptionPane.showMessageDialog(scroll, "commented lines: " + count, "title", JOptionPane.INFORMATION_MESSAGE);
+      String msg = "commented lines: " + count;
+      JOptionPane.showMessageDialog(scroll, msg, "title", JOptionPane.INFORMATION_MESSAGE);
     });
     // frame.getRootPane().setDefaultButton(button);
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));

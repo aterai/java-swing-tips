@@ -108,7 +108,8 @@ public final class MainPanel extends JPanel {
           .collect(Collectors.toSet()));
     } catch (NumberFormatException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
-      JOptionPane.showMessageDialog(field, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      String msg = "invalid value.\n" + ex.getMessage();
+      JOptionPane.showMessageDialog(field, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
 

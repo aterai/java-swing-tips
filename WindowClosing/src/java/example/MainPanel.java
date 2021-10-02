@@ -129,12 +129,11 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
       return;
     }
     Toolkit.getDefaultToolkit().beep();
-    // String[] obj = {"unsaved documents", "Do you really want to exit?"};
-    // int retValue = JOptionPane.showConfirmDialog(frame, obj, "Select an Option", JOptionPane.YES_NO_CANCEL_OPTION);
     Object[] options = {"Save", "Discard", "Cancel"};
     int retValue = JOptionPane.showOptionDialog(
         frame, "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue</html>",
-        "Exit Options", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        "Exit Options", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE,
+        null, options, options[0]);
     if (retValue == JOptionPane.YES_OPTION) {
       System.out.println("exit");
       // boolean ret = dummyDocumentSaveMethod();

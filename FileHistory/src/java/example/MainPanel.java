@@ -102,7 +102,8 @@ public final class MainPanel extends JPanel {
         " and move the file to the beginning of the history."
       };
       JComponent c = (JComponent) e.getSource();
-      JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+      JOptionPane.showMessageDialog(
+          c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
       updateHistory(path);
     }
   }
@@ -134,7 +135,8 @@ public final class MainPanel extends JPanel {
         " and pretend to generate an appropriate file name and open it."
       };
       JComponent c = (JComponent) e.getSource();
-      JOptionPane.showMessageDialog(c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+      JOptionPane.showMessageDialog(
+          c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
       String fileName = "C:/tmp/dummy.jpg." + counter + "~";
       updateHistory(Paths.get(fileName));
       counter++;

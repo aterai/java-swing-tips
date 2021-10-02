@@ -54,7 +54,8 @@ public final class MainPanel extends JPanel {
       add("path").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
         Optional.ofNullable(tree.getSelectionPath()).ifPresent(MainPanel.this::updateLabel);
-        JOptionPane.showMessageDialog(tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(
+            tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
       });
       add("add").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();

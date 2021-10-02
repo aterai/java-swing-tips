@@ -90,7 +90,8 @@ public final class MainPanel extends JPanel {
       ).limit(length).collect(Collectors.toList());
     } catch (NumberFormatException ex) {
       Toolkit.getDefaultToolkit().beep();
-      JOptionPane.showMessageDialog(null, "invalid value.\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+      String msg = "invalid value.\n" + ex.getMessage();
+      JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
       return Stream.generate(() -> 1).limit(length).collect(Collectors.toList());
     }
   }
