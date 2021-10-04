@@ -1,0 +1,132 @@
+// -*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+// @homepage@
+
+package example;
+
+import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
+public final class MainPanel extends JPanel {
+  private MainPanel() {
+    super(new BorderLayout());
+    JPopupMenu popup = new JPopupMenu();
+    popup.setLayout(new BorderLayout());
+    popup.addMouseWheelListener(InputEvent::consume);
+
+    UIManager.put("Slider.paintValue", Boolean.TRUE);
+    UIManager.put("Slider.focus", UIManager.get("Slider.background"));
+    JSlider slider = new JSlider(SwingConstants.VERTICAL, 0, 100, 80) {
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.height = 120;
+        return d;
+      }
+    };
+    slider.addMouseWheelListener(e -> {
+      JSlider s = (JSlider) e.getComponent();
+      if (s.isEnabled()) {
+        BoundedRangeModel m = s.getModel();
+        m.setValue(m.getValue() - e.getWheelRotation() * 2);
+      }
+      e.consume();
+    });
+    popup.add(slider);
+
+    JToggleButton button = new JToggleButton("🔊") {
+      @Override public JToolTip createToolTip() {
+        JToolTip tip = super.createToolTip();
+        tip.addHierarchyListener(e -> {
+          long flg = e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED;
+          if (flg != 0 && e.getComponent().isShowing()) {
+            Dimension d = popup.getPreferredSize();
+            popup.show(this, (getWidth() - d.width) / 2, -d.height);
+          }
+        });
+        return tip;
+      }
+
+      @Override public Point getToolTipLocation(MouseEvent e) {
+        // Dimension d = popup.getPreferredSize();
+        return new Point(getWidth() / 2, -getHeight());
+      }
+
+      @Override public void setEnabled(boolean b) {
+        super.setEnabled(b);
+        setText(b ? "🔊" : "🔇");
+      }
+    };
+    button.setToolTipText("");
+    // button.addActionListener(e -> {
+    // Component b = (Component) e.getSource();
+    // Dimension d = popup.getPreferredSize();
+    // popup.show(b, (b.getWidth() - d.width) / 2, -d.height);
+    // });
+    button.addMouseListener(new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        if (!button.isEnabled()) {
+          slider.setValue(80);
+          button.setEnabled(true);
+        }
+        Component b = (Component) e.getSource();
+        Dimension d = popup.getPreferredSize();
+        popup.show(b, (b.getWidth() - d.width) / 2, -d.height);
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        ToolTipManager.sharedInstance().setEnabled(true);
+      }
+    });
+    popup.addPopupMenuListener(new PopupMenuListener() {
+      @Override public void popupMenuCanceled(PopupMenuEvent e) {
+        /* not needed */
+      }
+
+      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        EventQueue.invokeLater(() -> ToolTipManager.sharedInstance().setEnabled(false));
+      }
+
+      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        button.setSelected(false);
+      }
+    });
+
+    slider.getModel().addChangeListener(e -> {
+      BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+      button.setEnabled(m.getValue() > m.getMinimum());
+      button.repaint();
+    });
+
+    Box box = Box.createHorizontalBox();
+    box.add(button);
+    add(box, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 10));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
