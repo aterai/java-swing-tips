@@ -5,7 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.synth.Region;
 import javax.swing.plaf.synth.SynthConstants;
@@ -14,9 +18,34 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 import javax.swing.plaf.synth.SynthStyle;
 
 public final class MainPanel extends JPanel {
-  private static void addTab(JTabbedPane tabbedPane, String title, Icon icon, Component c) {
+  private MainPanel() {
+    super(new BorderLayout());
+    JTabbedPane tabs = new ClippedTitleTabbedPane();
+    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
+    addTab(tabs, "JTree", "example/wi0009-32.png", new JScrollPane(new JTree()));
+    addTab(tabs, "JTextArea", "example/wi0054-32.png", new JScrollPane(new JTextArea()));
+    addTab(tabs, "Preference", "example/wi0062-32.png", new JScrollPane(new JTree()));
+    addTab(tabs, "Help", "example/wi0063-32.png", new JScrollPane(new JTextArea()));
+
+    // tabs.addTab(makeTitle("Title", "wi0009-32.png"), new JLabel("a"));
+    // tabs.addTab(makeTitle("Help", "wi0054-32.png"), new JLabel("b"));
+
+    add(tabs);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void addTab(JTabbedPane tabbedPane, String title, String iconPath, Component c) {
     tabbedPane.addTab(title, c);
-    JLabel label = new JLabel(title, icon, SwingConstants.CENTER);
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage bi = Optional.ofNullable(cl.getResource(iconPath)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    JLabel label = new JLabel(title, new ImageIcon(bi), SwingConstants.CENTER);
     label.setVerticalTextPosition(SwingConstants.BOTTOM);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
     // label.setVerticalAlignment(SwingConstants.CENTER);
@@ -24,22 +53,17 @@ public final class MainPanel extends JPanel {
     tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
   }
 
-  private MainPanel() {
-    super(new BorderLayout());
-    JTabbedPane t = new ClippedTitleTabbedPane();
-    t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    addTab(t, "JTree", new ImageIcon(getClass().getResource("wi0009-32.png")), new JScrollPane(new JTree()));
-    addTab(t, "JTextArea", new ImageIcon(getClass().getResource("wi0054-32.png")), new JScrollPane(new JTextArea()));
-    addTab(t, "Preference", new ImageIcon(getClass().getResource("wi0062-32.png")), new JScrollPane(new JTree()));
-    addTab(t, "Help", new ImageIcon(getClass().getResource("wi0063-32.png")), new JScrollPane(new JTextArea()));
-
-    // t.addTab(makeTitle("Title", "wi0009-32.png"), new JLabel("a"));
-    // t.addTab(makeTitle("Help", "wi0054-32.png"), new JLabel("b"));
-
-    add(t);
-    setPreferredSize(new Dimension(320, 240));
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
+
   // private String makeTitle(String t, String p) {
   //   return "<html><center><img src='" + getClass().getResource(p) + "'/><br/>" + t;
   // }
@@ -69,9 +93,9 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super();
   }
 
-  protected ClippedTitleTabbedPane(int tabPlacement) {
-    super(tabPlacement);
-  }
+  // protected ClippedTitleTabbedPane(int tabPlacement) {
+  //   super(tabPlacement);
+  // }
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
