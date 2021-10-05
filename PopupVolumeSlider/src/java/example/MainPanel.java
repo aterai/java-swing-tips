@@ -53,7 +53,6 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public Point getToolTipLocation(MouseEvent e) {
-        // Dimension d = popup.getPreferredSize();
         return new Point(getWidth() / 2, -getHeight());
       }
 
@@ -63,11 +62,6 @@ public final class MainPanel extends JPanel {
       }
     };
     button.setToolTipText("");
-    // button.addActionListener(e -> {
-    // Component b = (Component) e.getSource();
-    // Dimension d = popup.getPreferredSize();
-    // popup.show(b, (b.getWidth() - d.width) / 2, -d.height);
-    // });
     button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         if (!button.isEnabled()) {
@@ -79,8 +73,16 @@ public final class MainPanel extends JPanel {
         popup.show(b, (b.getWidth() - d.width) / 2, -d.height);
       }
 
+      @Override public void mouseEntered(MouseEvent e) {
+        if (!popup.isVisible()) {
+          ToolTipManager.sharedInstance().setEnabled(true);
+        }
+      }
+
       @Override public void mouseExited(MouseEvent e) {
-        ToolTipManager.sharedInstance().setEnabled(true);
+        if (!popup.isVisible()) {
+          ToolTipManager.sharedInstance().setEnabled(true);
+        }
       }
     });
     popup.addPopupMenuListener(new PopupMenuListener() {
@@ -116,7 +118,6 @@ public final class MainPanel extends JPanel {
 
   private static void createAndShowGui() {
     try {
-      // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
