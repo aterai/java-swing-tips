@@ -227,7 +227,7 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
       if (i < progress.getMaximum()) {
         renderer.add(progress, BorderLayout.SOUTH);
       }
-      // renderer.add(i < progress.getMaximum() ? progress : Box.createVerticalStrut(BAR_HEIGHT), BorderLayout.SOUTH);
+      // renderer.add(i < max ? progress : Box.createVerticalStrut(BAR_HEIGHT), BorderLayout.SOUTH);
       c = renderer;
     }
     return c;

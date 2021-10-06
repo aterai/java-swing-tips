@@ -113,7 +113,7 @@ class LabelTransferHandler extends TransferHandler {
   protected LabelTransferHandler() {
     super("Text");
     // System.out.println("LabelTransferHandler");
-    // localObjectFlavor = new ActivationDataFlavor(DragPanel.class, DataFlavor.javaJVMLocalObjectMimeType, "JLabel");
+    // flavor = new ActivationDataFlavor(DragPanel.class, DataFlavor.javaJVMLocalObjectMimeType, "JLabel");
     window.add(label);
     // AccessControlException: access denied ("java.awt.AWTPermission" "setWindowAlwaysOnTop")
     // window.setAlwaysOnTop(true);

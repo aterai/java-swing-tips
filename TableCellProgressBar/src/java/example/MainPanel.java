@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
     column.setResizable(false);
 
     // addHierarchyListener(e -> {
-    //   if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+    //   if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0
+    //       && !e.getComponent().isDisplayable()) {
     //     executor.shutdownNow();
     //   }
     // });

@@ -129,7 +129,8 @@ public final class MainPanel extends JPanel {
 }
 
 abstract class AbstractExpansionPanel extends JPanel {
-  // OvershadowingSubclassFields: JComponent: private final EventListenerList listenerList = new EventListenerList();
+  // OvershadowingSubclassFields:
+  // JComponent: private final EventListenerList listenerList = new EventListenerList();
   private ExpansionEvent expansionEvent;
   private final JScrollPane scroll;
   private boolean openFlag;

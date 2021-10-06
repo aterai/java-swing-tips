@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("output.xml"))))) {
+      // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("out.xml"))))) {
       byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
       try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
         DefaultTreeModel m = (DefaultTreeModel) xd.readObject();

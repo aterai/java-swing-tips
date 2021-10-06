@@ -116,7 +116,13 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
     this(border, title, justification, pos, null, null, c);
   }
 
-  // protected EditableTitledBorder(Border border, String title, int justification, int pos, Font font, Component c) {
+  // protected EditableTitledBorder(
+  //     Border border,
+  //     String title,
+  //     int justification,
+  //     int pos,
+  //     Font font,
+  //     Component c) {
   //   this(border, title, justification, pos, font, null, c);
   // }
 

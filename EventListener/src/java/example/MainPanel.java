@@ -15,7 +15,8 @@ public final class MainPanel extends JPanel {
   private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
 
   // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/EventListenerList.html
-  // OvershadowingSubclassFields: JComponent: private final EventListenerList listenerList = new EventListenerList();
+  // OvershadowingSubclassFields:
+  // JComponent: private final EventListenerList listenerList = new EventListenerList();
   // FontChangeEvent fontChangeEvent = null;
   public void addFontChangeListener(FontChangeListener l) {
     listenerList.add(FontChangeListener.class, l);
