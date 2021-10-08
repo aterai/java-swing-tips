@@ -53,14 +53,16 @@ public final class MainPanel extends JPanel {
         File file = File.createTempFile("output", ".xml");
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
         try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
-          PersistenceDelegate d = new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"});
-          xe.setPersistenceDelegate(RowSorter.SortKey.class, d);
+          PersistenceDelegate d1 = new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"});
+          xe.setPersistenceDelegate(RowSorter.SortKey.class, d1);
           xe.writeObject(table.getRowSorter().getSortKeys());
 
-          xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+          PersistenceDelegate d2 = new DefaultTableModelPersistenceDelegate();
+          xe.setPersistenceDelegate(DefaultTableModel.class, d2);
           xe.writeObject(table.getModel());
 
-          xe.setPersistenceDelegate(DefaultTableColumnModel.class, new DefaultTableColumnModelPersistenceDelegate());
+          PersistenceDelegate d3 = new DefaultTableColumnModelPersistenceDelegate();
+          xe.setPersistenceDelegate(DefaultTableColumnModel.class, d3);
           xe.writeObject(table.getColumnModel());
         }
         try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
