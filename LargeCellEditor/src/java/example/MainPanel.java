@@ -89,8 +89,8 @@ class IconItem {
   public final ImageIcon small;
 
   protected IconItem(String str) {
-    large = new ImageIcon(getClass().getResource(str + "-48.png"));
-    small = new ImageIcon(getClass().getResource(str + "-24.png"));
+    large = new ImageIcon(Objects.requireNonNull(getClass().getResource(str + "-48.png")));
+    small = new ImageIcon(Objects.requireNonNull(getClass().getResource(str + "-24.png")));
   }
 }
 
@@ -141,7 +141,8 @@ class IconTable extends JTable {
     });
 
     editor = new EditorFromList<>(list);
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+    KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+    editor.getInputMap(JComponent.WHEN_FOCUSED).put(key, "cancel-editing");
     editor.getActionMap().put("cancel-editing", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         cancelEditing();
