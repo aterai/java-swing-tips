@@ -50,21 +50,22 @@ public final class MainPanel extends JPanel {
         removeMouseWheelListener(handler);
         super.updateUI();
         handler = e -> {
-          JTabbedPane source = (JTabbedPane) e.getComponent();
-          if (!getTabAreaBounds(source).contains(e.getPoint())) {
+          JTabbedPane src = (JTabbedPane) e.getComponent();
+          if (!getTabAreaBounds(src).contains(e.getPoint())) {
             return;
           }
           double dir = (e.isControlDown() ? -1 : 1) * e.getPreciseWheelRotation();
-          String key = dir > 0 ? "navigateNext" : "navigatePrevious";
-          ActionEvent ae = new ActionEvent(source, ActionEvent.ACTION_PERFORMED, "", e.getWhen(), e.getModifiersEx());
-          source.getActionMap().get(key).actionPerformed(ae);
-          // int idx = source.getSelectedIndex() + (int) dir;
+          int id = ActionEvent.ACTION_PERFORMED;
+          String cmd = dir > 0 ? "navigateNext" : "navigatePrevious";
+          ActionEvent event = new ActionEvent(src, id, cmd, e.getWhen(), e.getModifiersEx());
+          src.getActionMap().get(cmd).actionPerformed(event);
+          // int idx = src.getSelectedIndex() + (int) dir;
           // if (idx < 0) {
-          //   idx = source.getTabCount() - 1;
-          // } else if (idx >= source.getTabCount()) {
+          //   idx = src.getTabCount() - 1;
+          // } else if (idx >= src.getTabCount()) {
           //   idx = 0;
           // }
-          // source.setSelectedIndex(idx);
+          // src.setSelectedIndex(idx);
         };
         addMouseWheelListener(handler);
       }
