@@ -1,0 +1,6 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion '9.0.1'
+    configFile file("$rootDir/checks.xml")
+}

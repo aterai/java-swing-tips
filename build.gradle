@@ -4,30 +4,16 @@ allprojects {
   apply {
     plugin 'java'
     plugin 'application'
-    plugin 'pmd'
-    plugin 'checkstyle'
   }
+  apply from: "$rootDir/checkstyle.gradle"
+  apply from: "$rootDir/pmd.gradle"
 
   repositories {
     mavenCentral()
-    jcenter()
   }
 
   def defaultEncoding = 'UTF-8'
   [compileJava, compileTestJava]*.options*.encoding = defaultEncoding
-
-  pmd {
-    consoleOutput = true
-    ignoreFailures = true
-    incrementalAnalysis = true
-    ruleSetFiles = files("${rootProject.projectDir}/ruleset.xml")
-    ruleSets = []
-  }
-
-  checkstyle {
-    ignoreFailures = true
-    configFile = file("${rootProject.projectDir}/checks.xml")
-  }
 }
 
 subprojects {
