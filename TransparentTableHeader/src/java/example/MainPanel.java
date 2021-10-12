@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     scroll.getColumnHeader().setBackground(alphaZero);
 
     JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
-    check.addActionListener(e -> table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero));
+    check.addActionListener(e -> table.setBackground(check.isSelected() ? color : alphaZero));
 
     add(check, BorderLayout.NORTH);
     add(scroll);
@@ -184,9 +184,11 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
 
 class TranslucentObjectRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    // c.setOpaque(true);
-    c.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JComponent) {
+      // ((JComponent) c).setOpaque(true);
+      ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    }
     return c;
   }
 }
