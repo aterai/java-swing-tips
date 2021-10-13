@@ -39,7 +39,10 @@ public final class MainPanel extends JPanel {
 
   private static Component makeToolPanel() {
     JRadioButton radio = new JRadioButton("on", true);
-    radio.addItemListener(e -> ToolTipManager.sharedInstance().setEnabled(e.getStateChange() == ItemEvent.SELECTED));
+    radio.addItemListener(e -> {
+      boolean b = e.getStateChange() == ItemEvent.SELECTED;
+      ToolTipManager.sharedInstance().setEnabled(b);
+    });
 
     JPanel panel = new JPanel();
     panel.setBorder(BorderFactory.createTitledBorder("ToolTipManager"));
