@@ -151,7 +151,8 @@ class ListItemTransferHandler extends TransferHandler {
     Graphics2D g2 = bi.createGraphics();
     ListCellRenderer<? super E> renderer = source.getCellRenderer();
     for (int i : source.getSelectedIndices()) {
-      Component c = renderer.getListCellRendererComponent(source, source.getModel().getElementAt(i), i, false, false);
+      E value = source.getModel().getElementAt(i);
+      Component c = renderer.getListCellRendererComponent(source, value, i, false, false);
       SwingUtilities.paintComponent(g2, c, source, source.getCellBounds(i, i));
     }
     g2.dispose();
