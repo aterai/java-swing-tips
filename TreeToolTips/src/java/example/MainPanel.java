@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     JTree tree1 = new JTree() {
       @Override public String getToolTipText(MouseEvent e) {
         TreePath path = getPathForLocation(e.getX(), e.getY());
-        return Objects.nonNull(path) ? "getToolTipText: " + path.getLastPathComponent().toString() : null;
+        return Objects.nonNull(path) ? "getToolTipText: " + path.getLastPathComponent() : null;
       }
     };
     ToolTipManager.sharedInstance().registerComponent(tree1);
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
           Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
-            ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value.toString() : null);
+            ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value : null);
           }
           return c;
         });
@@ -49,13 +49,13 @@ public final class MainPanel extends JPanel {
       //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
       //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
       //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
-      //   Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
-      //   if (margins != null) {
-      //     setBorder(BorderFactory.createEmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
+      //   Insets i = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
+      //   if (i != null) {
+      //     setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right));
       //   }
       // }
     };
-    // tree2.setToolTipText("dummy");
+    // tree2.setToolTipText(" ");
     ToolTipManager.sharedInstance().registerComponent(tree2);
 
     add(makeTitledPanel("Override getToolTipText", new JScrollPane(tree1)));
