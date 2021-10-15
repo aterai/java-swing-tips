@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
-class BasicTransferable implements Transferable {
+public class BasicTransferable implements Transferable {
   protected String plainData;
   protected String htmlData;
   private static DataFlavor[] htmlFlavors;
@@ -46,7 +46,7 @@ class BasicTransferable implements Transferable {
     }
   }
 
-  protected BasicTransferable(String plainData, String htmlData) {
+  public BasicTransferable(String plainData, String htmlData) {
     this.plainData = plainData;
     this.htmlData = htmlData;
   }
@@ -140,7 +140,8 @@ class BasicTransferable implements Transferable {
   }
 
   private InputStream createInputStream(DataFlavor flavor, String data) throws IOException, UnsupportedFlavorException {
-    String cs = Optional.ofNullable(getTextCharset(flavor)).orElseThrow(() -> new UnsupportedFlavorException(flavor));
+    String s = getTextCharset(flavor);
+    String cs = Optional.ofNullable(s).orElseThrow(() -> new UnsupportedFlavorException(flavor));
     return new ByteArrayInputStream(data.getBytes(cs));
   }
 
@@ -271,14 +272,14 @@ class BasicTransferable implements Transferable {
     throw new UnsupportedFlavorException(flavor);
   }
 
-  // --- string flavorss --------------------------------------------------------
+  // --- string flavors --------------------------------------------------------
 
   /**
-   * Returns whether or not the specified data flavor is a String flavor that
+   * Returns whether the specified data flavor is a String flavor that
    * is supported.
    *
    * @param flavor  the requested flavor for the data
-   * @return boolean indicating whether or not the data flavor is supported
+   * @return boolean indicating whether the data flavor is supported
    */
   protected boolean isStringFlavor(DataFlavor flavor) {
     // DataFlavor[] flavors = stringFlavors;
