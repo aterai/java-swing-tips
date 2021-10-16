@@ -285,17 +285,19 @@ class DnDTabbedPane extends JTabbedPane {
     final Icon icon = getIconAt(dragIndex);
     final String toolTipText = getToolTipTextAt(dragIndex);
     final boolean isEnabled = isEnabledAt(dragIndex);
-    final JComponent tab = Optional.ofNullable(getTabComponentAt(dragIndex))
-        .filter(ButtonTabComponent.class::isInstance)
-        .map(ButtonTabComponent.class::cast)
-        .orElseGet(() -> new ButtonTabComponent(target));
+    Component tab = getTabComponentAt(dragIndex);
+    if (tab instanceof ButtonTabComponent) {
+      tab = new ButtonTabComponent(target);
+    }
 
     remove(dragIndex);
     target.insertTab(title, icon, cmp, toolTipText, targetIndex);
     target.setEnabledAt(targetIndex, isEnabled);
     target.setTabComponentAt(targetIndex, tab);
     target.setSelectedIndex(targetIndex);
-    tab.scrollRectToVisible(tab.getBounds());
+    if (tab instanceof JComponent) {
+      ((JComponent) tab).scrollRectToVisible(tab.getBounds());
+    }
   }
 
   public void convertTab(int prev, int next) {
