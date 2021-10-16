@@ -270,7 +270,7 @@ class DnDTabbedPane extends JTabbedPane {
     final Component cmp = getComponentAt(dragIndex);
     final String title = getTitleAt(dragIndex);
     final Icon icon = getIconAt(dragIndex);
-    final String tip = getToolTipTextAt(dragIndex);
+    final String toolTipText = getToolTipTextAt(dragIndex);
     final boolean isEnabled = isEnabledAt(dragIndex);
     final Component tab = getTabComponentAt(dragIndex);
     // // ButtonTabComponent
@@ -279,7 +279,7 @@ class DnDTabbedPane extends JTabbedPane {
     // }
 
     remove(dragIndex);
-    target.insertTab(title, icon, cmp, tip, targetIndex);
+    target.insertTab(title, icon, cmp, toolTipText, targetIndex);
     target.setEnabledAt(targetIndex, isEnabled);
     target.setTabComponentAt(targetIndex, tab);
     target.setSelectedIndex(targetIndex);
@@ -308,7 +308,8 @@ class DnDTabbedPane extends JTabbedPane {
     if (isEnabled) {
       setSelectedIndex(tgtIndex);
     }
-    // I have a component in all tabs (JLabel with an X to close the tab) and when I move a tab the component disappear.
+    // I have a component in all tabs (JLabel with an X to close the tab)
+    // and when I move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
     setTabComponentAt(tgtIndex, tab);
   }
@@ -582,11 +583,11 @@ class TabTransferHandler extends TransferHandler {
   //   }
   // }
 
-  private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
-    Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
-    BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
-    Graphics g = image.createGraphics();
-    tabbedPane.paint(g);
+  private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
+    Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
+    BufferedImage img = new BufferedImage(tabs.getWidth(), tabs.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    Graphics g = img.createGraphics();
+    tabs.paint(g);
     g.dispose();
     if (rect.x < 0) {
       rect.translate(-rect.x, 0);
@@ -594,13 +595,13 @@ class TabTransferHandler extends TransferHandler {
     if (rect.y < 0) {
       rect.translate(0, -rect.y);
     }
-    if (rect.x + rect.width > image.getWidth()) {
-      rect.width = image.getWidth() - rect.x;
+    if (rect.x + rect.width > img.getWidth()) {
+      rect.width = img.getWidth() - rect.x;
     }
-    if (rect.y + rect.height > image.getHeight()) {
-      rect.height = image.getHeight() - rect.y;
+    if (rect.y + rect.height > img.getHeight()) {
+      rect.height = img.getHeight() - rect.y;
     }
-    return image.getSubimage(rect.x, rect.y, rect.width, rect.height);
+    return img.getSubimage(rect.x, rect.y, rect.width, rect.height);
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -690,6 +691,7 @@ class ButtonTabComponent extends JPanel {
         }
         return null;
       }
+
       @Override public Icon getIcon() {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {

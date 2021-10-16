@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("JLabel 01", new JLabel("Test"));
     tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));
     tabbedPane.addTab("JTextArea 03", new JScrollPane(new JTextArea("JTextArea 03")));
-    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111111111<br>13412341234123446745"));
+    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111<br>13412341234123446745"));
     tabbedPane.addTab("null 05", null);
     tabbedPane.addTab("JTabbedPane 06", sub);
     tabbedPane.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
@@ -187,9 +187,7 @@ class DnDTabbedPane extends JTabbedPane {
       }
     }
     JButton button = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
-    Optional.ofNullable(button)
-        .filter(JButton::isEnabled)
-        .ifPresent(JButton::doClick);
+    Optional.ofNullable(button).filter(JButton::isEnabled).ifPresent(JButton::doClick);
 
     // // ArrayIndexOutOfBoundsException
     // Optional.ofNullable(getActionMap())
@@ -268,7 +266,8 @@ class DnDTabbedPane extends JTabbedPane {
     return dropLocation;
   }
 
-  public Object updateTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
+  // public Object updateTabDropLocation(DnDTabbedPane.DropLocation location, Object state, boolean forDrop) {
+  public void updateTabDropLocation(DnDTabbedPane.DropLocation location, boolean forDrop) {
     DnDTabbedPane.DropLocation old = dropLocation;
     if (Objects.isNull(location) || !forDrop) {
       dropLocation = new DnDTabbedPane.DropLocation(new Point(), -1);
@@ -276,7 +275,7 @@ class DnDTabbedPane extends JTabbedPane {
       dropLocation = location;
     }
     firePropertyChange("dropLocation", old, dropLocation);
-    return state;
+    // return state;
   }
 
   public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
@@ -284,21 +283,19 @@ class DnDTabbedPane extends JTabbedPane {
     final Component cmp = getComponentAt(dragIndex);
     final String title = getTitleAt(dragIndex);
     final Icon icon = getIconAt(dragIndex);
-    final String tip = getToolTipTextAt(dragIndex);
+    final String toolTipText = getToolTipTextAt(dragIndex);
     final boolean isEnabled = isEnabledAt(dragIndex);
-    Component tab = getTabComponentAt(dragIndex);
-    if (tab instanceof ButtonTabComponent) {
-      tab = new ButtonTabComponent(target);
-    }
+    final JComponent tab = Optional.ofNullable(getTabComponentAt(dragIndex))
+        .filter(ButtonTabComponent.class::isInstance)
+        .map(ButtonTabComponent.class::cast)
+        .orElseGet(() -> new ButtonTabComponent(target));
 
     remove(dragIndex);
-    target.insertTab(title, icon, cmp, tip, targetIndex);
+    target.insertTab(title, icon, cmp, toolTipText, targetIndex);
     target.setEnabledAt(targetIndex, isEnabled);
     target.setTabComponentAt(targetIndex, tab);
     target.setSelectedIndex(targetIndex);
-    if (tab instanceof JComponent) {
-      ((JComponent) tab).scrollRectToVisible(tab.getBounds());
-    }
+    tab.scrollRectToVisible(tab.getBounds());
   }
 
   public void convertTab(int prev, int next) {
@@ -321,7 +318,8 @@ class DnDTabbedPane extends JTabbedPane {
     if (isEnabled) {
       setSelectedIndex(tgtIndex);
     }
-    // I have a component in all tabs (JLabel with an X to close the tab) and when I move a tab the component disappear.
+    // I have a component in all tabs (JLabel with an X to close the tab)
+    // and when I move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
     setTabComponentAt(tgtIndex, tab);
   }
@@ -405,7 +403,6 @@ class DnDTabbedPane extends JTabbedPane {
       }
       Point tabPt = e.getPoint(); // e.getDragOrigin();
       int idx = src.indexAtLocation(tabPt.x, tabPt.y);
-
       // disabled tab, null component problem.
       // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
       boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
@@ -440,33 +437,33 @@ class TabDropTargetAdapter extends DropTargetAdapter {
   private void clearDropLocationPaint(Component c) {
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane t = (DnDTabbedPane) c;
-      t.updateTabDropLocation(null, null, false);
+      t.updateTabDropLocation(null, false);
       t.setCursor(Cursor.getDefaultCursor());
     }
   }
 
-  @Override public void drop(DropTargetDropEvent dtde) {
-    Component c = dtde.getDropTargetContext().getComponent();
+  @Override public void drop(DropTargetDropEvent e) {
+    Component c = e.getDropTargetContext().getComponent();
     System.out.println("DropTargetListener#drop: " + c.getName());
     clearDropLocationPaint(c);
   }
 
-  @Override public void dragExit(DropTargetEvent dte) {
-    Component c = dte.getDropTargetContext().getComponent();
+  @Override public void dragExit(DropTargetEvent e) {
+    Component c = e.getDropTargetContext().getComponent();
     System.out.println("DropTargetListener#dragExit: " + c.getName());
     clearDropLocationPaint(c);
   }
 
-  @Override public void dragEnter(DropTargetDragEvent dtde) {
-    Component c = dtde.getDropTargetContext().getComponent();
+  @Override public void dragEnter(DropTargetDragEvent e) {
+    Component c = e.getDropTargetContext().getComponent();
     System.out.println("DropTargetListener#dragEnter: " + c.getName());
   }
 
-  // @Override public void dragOver(DropTargetDragEvent dtde) {
+  // @Override public void dragOver(DropTargetDragEvent e) {
   //   // System.out.println("dragOver");
   // }
 
-  // @Override public void dropActionChanged(DropTargetDragEvent dtde) {
+  // @Override public void dropActionChanged(DropTargetDragEvent e) {
   //   System.out.println("dropActionChanged");
   // }
 }
@@ -545,7 +542,7 @@ class TabTransferHandler extends TransferHandler {
       return false;
     }
     support.setDropAction(TransferHandler.MOVE);
-    DropLocation tdl = support.getDropLocation();
+    TransferHandler.DropLocation tdl = support.getDropLocation();
     Point pt = tdl.getDropPoint();
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     target.autoScrollTest(pt);
@@ -567,7 +564,7 @@ class TabTransferHandler extends TransferHandler {
       // System.out.println("target == source");
       canDrop = isAreaContains && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
     } else {
-      // System.out.format("target!=source%n target: %s%n  source: %s", target.getName(), source.getName());
+      // System.out.format("target!=source%n target: %s%n source: %s", target.getName(), source.getName());
       canDrop = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && isAreaContains;
     }
 
@@ -577,9 +574,10 @@ class TabTransferHandler extends TransferHandler {
 
     support.setShowDropLocation(canDrop);
     // dl.canDrop = canDrop;
-    target.updateTabDropLocation(dl, null, canDrop);
+    target.updateTabDropLocation(dl, canDrop);
     return canDrop;
   }
+
   // private static boolean isWebStart() {
   //   try {
   //     ServiceManager.lookup("javax.jnlp.BasicService");
@@ -589,11 +587,11 @@ class TabTransferHandler extends TransferHandler {
   //   }
   // }
 
-  private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
-    Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
-    BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
-    Graphics g = image.createGraphics();
-    tabbedPane.paint(g);
+  private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
+    Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
+    BufferedImage img = new BufferedImage(tabs.getWidth(), tabs.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    Graphics g = img.createGraphics();
+    tabs.paint(g);
     g.dispose();
     if (rect.x < 0) {
       rect.translate(-rect.x, 0);
@@ -601,13 +599,13 @@ class TabTransferHandler extends TransferHandler {
     if (rect.y < 0) {
       rect.translate(0, -rect.y);
     }
-    if (rect.x + rect.width > image.getWidth()) {
-      rect.width = image.getWidth() - rect.x;
+    if (rect.x + rect.width > img.getWidth()) {
+      rect.width = img.getWidth() - rect.x;
     }
-    if (rect.y + rect.height > image.getHeight()) {
-      rect.height = image.getHeight() - rect.y;
+    if (rect.y + rect.height > img.getHeight()) {
+      rect.height = img.getHeight() - rect.y;
     }
-    return image.getSubimage(rect.x, rect.y, rect.width, rect.height);
+    return img.getSubimage(rect.x, rect.y, rect.width, rect.height);
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -651,7 +649,7 @@ class TabTransferHandler extends TransferHandler {
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     System.out.println("exportDone");
     DnDTabbedPane src = (DnDTabbedPane) c;
-    src.updateTabDropLocation(null, null, false);
+    src.updateTabDropLocation(null, false);
     src.repaint();
     if (mode == DragImageMode.HEAVYWEIGHT) {
       dialog.setVisible(false);
