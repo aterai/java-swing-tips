@@ -168,10 +168,12 @@ class RowSelectionTree extends JTree {
     UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
     TreeCellRenderer r = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-      JLabel l = (JLabel) r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      l.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
-      l.setOpaque(true);
-      return l;
+      Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
+      if (c instanceof JComponent) {
+        ((JComponent) c).setOpaque(true);
+      }
+      return c;
     });
     setOpaque(false);
     setRootVisible(false);
