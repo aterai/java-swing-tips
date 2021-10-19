@@ -64,13 +64,13 @@ public final class MainPanel extends JPanel {
     button.setToolTipText("");
     button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        if (!button.isEnabled()) {
+        Component btn = e.getComponent();
+        if (!btn.isEnabled()) {
           slider.setValue(80);
-          button.setEnabled(true);
+          btn.setEnabled(true);
         }
-        Component b = (Component) e.getSource();
         Dimension d = popup.getPreferredSize();
-        popup.show(b, (b.getWidth() - d.width) / 2, -d.height);
+        popup.show(btn, (btn.getWidth() - d.width) / 2, -d.height);
       }
 
       @Override public void mouseEntered(MouseEvent e) {
