@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -82,16 +82,17 @@ class RowSelectionTree extends JTree {
 
   @Override public void updateUI() {
     // removeFocusListener(handler);
+    setCellRenderer(null);
     super.updateUI();
     setUI(new BasicTreeUI() {
       @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
         if (Objects.nonNull(tree) && Objects.nonNull(treeState)) {
-          return getPathBounds(path, tree.getInsets(), new Rectangle());
+          return getPathBounds2(path, tree.getInsets(), new Rectangle());
         }
         return null;
       }
 
-      private Rectangle getPathBounds(TreePath path, Insets insets, Rectangle bounds) {
+      private Rectangle getPathBounds2(TreePath path, Insets insets, Rectangle bounds) {
         Rectangle rect = treeState.getBounds(path, bounds);
         if (Objects.nonNull(rect)) {
           rect.width = tree.getWidth();
@@ -103,29 +104,41 @@ class RowSelectionTree extends JTree {
     UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
     // handler = new Handler();
     // addFocusListener(handler);
-    setCellRenderer(new Handler());
+    TreeCellRenderer r = getCellRenderer();
+    setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+      Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
+      if (c instanceof JComponent) {
+        ((JComponent) c).setOpaque(true);
+      }
+      return c;
+    });
     setOpaque(false);
   }
 
-  private static class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
-    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-      JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      l.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
-      l.setOpaque(true);
-      return l;
-    }
-    // @Override public void focusGained(FocusEvent e) {
-    //   e.getComponent().repaint();
-    // }
-    // @Override public void focusLost(FocusEvent e) {
-    //   e.getComponent().repaint();
-    //   // TEST:
-    //   // if (Objects.nonNull(tree.getLeadSelectionPath())) {
-    //   //   Rectangle r = tree.getRowBounds(tree.getRowForPath(tree.getLeadSelectionPath()));
-    //   //   r.width += r.x;
-    //   //   r.x = 0;
-    //   //   tree.repaint(r);
-    //   // }
-    // }
-  }
+  // private static class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
+  //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+  //     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+  //     c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
+  //     if (c instanceof JComponent) {
+  //       ((JComponent) c).setOpaque(true);
+  //     }
+  //     return c;
+  //   }
+  //
+  //   // @Override public void focusGained(FocusEvent e) {
+  //   //   e.getComponent().repaint();
+  //   // }
+  //
+  //   // @Override public void focusLost(FocusEvent e) {
+  //   //   e.getComponent().repaint();
+  //   //   // TEST:
+  //   //   // if (Objects.nonNull(tree.getLeadSelectionPath())) {
+  //   //   //   Rectangle r = tree.getRowBounds(tree.getRowForPath(tree.getLeadSelectionPath()));
+  //   //   //   r.width += r.x;
+  //   //   //   r.x = 0;
+  //   //   //   tree.repaint(r);
+  //   //   // }
+  //   // }
+  // }
 }
