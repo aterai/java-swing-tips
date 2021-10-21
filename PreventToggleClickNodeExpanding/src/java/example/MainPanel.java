@@ -134,25 +134,23 @@ class FileExpandVetoListener implements TreeWillExpandListener {
 
 class FileTreeCellRenderer extends DefaultTreeCellRenderer {
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    JLabel c = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     if (selected) {
-      c.setOpaque(false);
       c.setForeground(getTextSelectionColor());
     } else {
-      c.setOpaque(true);
       c.setForeground(getTextNonSelectionColor());
       c.setBackground(getBackgroundNonSelectionColor());
     }
-    if (value instanceof DefaultMutableTreeNode) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-      Object o = node.getUserObject();
+    if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+      Object o = ((DefaultMutableTreeNode) value).getUserObject();
       if (o instanceof File) {
+        String txt;
         try {
-          File file = ((File) o).getCanonicalFile();
-          c.setText(file.getName());
+          txt = ((File) o).getCanonicalFile().getName();
         } catch (IOException ex) {
-          c.setText(ex.getMessage());
+          txt = ex.getMessage();
         }
+        ((JLabel) c).setText(txt);
       }
     }
     return c;

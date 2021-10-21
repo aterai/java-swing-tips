@@ -140,27 +140,27 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    // String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
-    // setText(stringValue);
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    // setEnabled(tree.isEnabled());
-    Color bgColor;
-    Color fgColor;
+    text.setFont(tree.getFont());
+    // text.setEnabled(tree.isEnabled());
+    Color bgc;
+    Color fgc;
     if (selected) {
-      bgColor = renderer.getBackgroundSelectionColor();
-      fgColor = renderer.getTextSelectionColor();
+      bgc = renderer.getBackgroundSelectionColor();
+      fgc = renderer.getTextSelectionColor();
     } else {
-      bgColor = Optional.ofNullable(renderer.getBackgroundNonSelectionColor()).orElse(renderer.getBackground());
-      fgColor = Optional.ofNullable(renderer.getTextNonSelectionColor()).orElse(renderer.getForeground());
+      bgc = Optional.ofNullable(renderer.getBackgroundNonSelectionColor()).orElse(renderer.getBackground());
+      fgc = Optional.ofNullable(renderer.getTextNonSelectionColor()).orElse(renderer.getForeground());
     }
-    text.setFont(l.getFont());
-    text.setText(l.getText());
-    text.setForeground(fgColor);
-    text.setBackground(bgColor);
-    // text.setBorder(hasFocus ? renderer.getBorder() : emptyBorder);
+    text.setForeground(fgc);
+    text.setBackground(bgc);
+    icon.setBackground(bgc);
 
-    icon.setIcon(l.getIcon());
-    icon.setBackground(bgColor);
+    Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      text.setText(l.getText());
+      icon.setIcon(l.getIcon());
+    }
     return this;
   }
 

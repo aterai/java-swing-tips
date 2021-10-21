@@ -94,22 +94,25 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Color bgColor;
-    Color fgColor;
+    Color bgc;
+    Color fgc;
     if (selected) {
-      bgColor = getBackgroundSelectionColor();
-      fgColor = getTextSelectionColor();
+      bgc = getBackgroundSelectionColor();
+      fgc = getTextSelectionColor();
     } else {
-      bgColor = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
-      fgColor = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
+      bgc = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
+      fgc = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
     }
-    text.setForeground(fgColor);
-    text.setBackground(bgColor);
+    text.setForeground(fgc);
+    text.setBackground(bgc);
     text.setBorder(hasFocus ? focusBorder : emptyBorder);
 
-    JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    text.setText(l.getText());
-    icon.setIcon(l.getIcon());
+    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      text.setText(l.getText());
+      icon.setIcon(l.getIcon());
+    }
 
     return renderer;
   }

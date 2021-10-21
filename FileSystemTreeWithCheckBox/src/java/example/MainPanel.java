@@ -211,9 +211,9 @@ class FileTreeCellRenderer implements TreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    l.setFont(tree.getFont());
-    if (value instanceof DefaultMutableTreeNode) {
+    Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    c.setFont(tree.getFont());
+    if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
       checkBox.setEnabled(tree.isEnabled());
       checkBox.setFont(tree.getFont());
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -225,15 +225,16 @@ class FileTreeCellRenderer implements TreeCellRenderer {
           checkBox.setIcon(null);
         }
         File file = node.getFile();
+        JLabel l = (JLabel) c;
         l.setIcon(fileSystemView.getSystemIcon(file));
         l.setText(fileSystemView.getSystemDisplayName(file));
         l.setToolTipText(file.getPath());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
       }
-      panel.add(l);
+      panel.add(c);
       return panel;
     }
-    return l;
+    return c;
   }
 }
 
@@ -257,9 +258,9 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
-    l.setFont(tree.getFont());
-    if (value instanceof DefaultMutableTreeNode) {
+    Component c = renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+    c.setFont(tree.getFont());
+    if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
       checkBox.setEnabled(tree.isEnabled());
       checkBox.setFont(tree.getFont());
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -271,14 +272,15 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
           checkBox.setIcon(null);
         }
         file = node.getFile();
+        JLabel l = (JLabel) c;
         l.setIcon(fileSystemView.getSystemIcon(file));
         l.setText(fileSystemView.getSystemDisplayName(file));
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
       }
-      panel.add(l);
+      panel.add(c);
       return panel;
     }
-    return l;
+    return c;
   }
 
   @Override public Object getCellEditorValue() {
@@ -332,11 +334,11 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    DefaultMutableTreeNode pnode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    if (!pnode.isLeaf()) {
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+    if (!node.isLeaf()) {
       return;
     }
-    CheckBoxNode check = (CheckBoxNode) pnode.getUserObject();
+    CheckBoxNode check = (CheckBoxNode) node.getUserObject();
     if (Objects.isNull(check)) {
       return;
     }
@@ -358,7 +360,7 @@ class FolderSelectionListener implements TreeSelectionListener {
         //   return;
         // }
         chunks.stream().map(file -> new CheckBoxNode(file, parentStatus)).map(DefaultMutableTreeNode::new)
-            .forEach(child -> model.insertNodeInto(child, pnode, pnode.getChildCount()));
+            .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
         // model.reload(parent); // = model.nodeStructureChanged(parent);
       }
     };

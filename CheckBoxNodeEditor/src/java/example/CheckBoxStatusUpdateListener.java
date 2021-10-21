@@ -196,9 +196,9 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   private String str;
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
-    l.setFont(tree.getFont());
-    if (value instanceof DefaultMutableTreeNode) {
+    Component c = renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+    c.setFont(tree.getFont());
+    if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
       panel.setFocusable(false);
       panel.setRequestFocusEnabled(false);
       panel.setOpaque(false);
@@ -214,15 +214,15 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         } else {
           checkBox.setIcon(null);
         }
-        l.setText(node.getLabel());
+        ((JLabel) c).setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
         str = node.getLabel();
       }
       panel.add(checkBox, BorderLayout.WEST);
-      panel.add(l);
+      panel.add(c);
       return panel;
     }
-    return l;
+    return c;
   }
 
   @Override public Object getCellEditorValue() {

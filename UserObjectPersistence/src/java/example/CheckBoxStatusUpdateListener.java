@@ -119,8 +119,8 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-    l.setFont(tree.getFont());
+    Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    c.setFont(tree.getFont());
     if (value instanceof DefaultMutableTreeNode) {
       panel.setFocusable(false);
       panel.setRequestFocusEnabled(false);
@@ -130,21 +130,21 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       checkBox.setFocusable(false);
       checkBox.setOpaque(false);
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-      if (userObject instanceof CheckBoxNode) {
+      if (userObject instanceof CheckBoxNode && c instanceof JLabel) {
         CheckBoxNode node = (CheckBoxNode) userObject;
         if (node.getStatus() == Status.INDETERMINATE) {
           checkBox.setIcon(new IndeterminateIcon());
         } else {
           checkBox.setIcon(null);
         }
-        l.setText(node.getLabel());
+        ((JLabel) c).setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
       }
       panel.add(checkBox, BorderLayout.WEST);
-      panel.add(l);
+      panel.add(c);
       return panel;
     }
-    return l;
+    return c;
   }
 }
 
@@ -165,8 +165,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   private String str;
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-    JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
-    l.setFont(tree.getFont());
+    Component c = renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+    c.setFont(tree.getFont());
     if (value instanceof DefaultMutableTreeNode) {
       panel.setFocusable(false);
       panel.setRequestFocusEnabled(false);
@@ -176,22 +176,22 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
       // checkBox.setFocusable(false);
       // checkBox.setOpaque(false);
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-      if (userObject instanceof CheckBoxNode) {
+      if (userObject instanceof CheckBoxNode && c instanceof JLabel) {
         CheckBoxNode node = (CheckBoxNode) userObject;
         if (node.getStatus() == Status.INDETERMINATE) {
           checkBox.setIcon(new IndeterminateIcon());
         } else {
           checkBox.setIcon(null);
         }
-        l.setText(node.getLabel());
+        ((JLabel) c).setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
         str = node.getLabel();
       }
       panel.add(checkBox, BorderLayout.WEST);
-      panel.add(l);
+      panel.add(c);
       return panel;
     }
-    return l;
+    return c;
   }
 
   @Override public Object getCellEditorValue() {
@@ -208,7 +208,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         return r.contains(p);
       }).orElse(false);
       // MouseEvent me = (MouseEvent) e;
-      // JTree tree = (JTree) e.getSource();
+      // JTree tree = (JTree) me.getComponent();
       // TreePath path = tree.getPathForLocation(me.getX(), me.getY());
       // Rectangle r = tree.getPathBounds(path);
       // if (Objects.isNull(r)) {
@@ -222,14 +222,17 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     }
     return false;
   }
+
   // // AbstractCellEditor
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
+
   // @Override public boolean stopCellEditing() {
   //   fireEditingStopped();
   //   return true;
   // }
+
   // @Override public void cancelCellEditing() {
   //   fireEditingCanceled();
   // }

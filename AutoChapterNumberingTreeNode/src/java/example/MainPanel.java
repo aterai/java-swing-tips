@@ -27,16 +27,16 @@ public final class MainPanel extends JPanel {
         // setCellRenderer(new ChapterNumberingTreeCellRenderer());
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          JLabel l = (JLabel) r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-          if (value instanceof DefaultMutableTreeNode) {
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
             TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
             String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
                 .map(i -> 1 + tn[i - 1].getIndex(tn[i]))
                 .mapToObj(Objects::toString)
                 .collect(Collectors.joining("."));
-            l.setText(String.format("%s%s %s", MARK, s, value));
+            ((JLabel) c).setText(String.format("%s%s %s", MARK, s, value));
           }
-          return l;
+          return c;
         });
         setRootVisible(false);
       }

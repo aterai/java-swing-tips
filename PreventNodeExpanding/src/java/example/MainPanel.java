@@ -42,25 +42,24 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         DefaultTreeCellRenderer r = new DefaultTreeCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          JLabel c = (JLabel) r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
           if (selected) {
-            c.setOpaque(false);
             c.setForeground(r.getTextSelectionColor());
-            // c.setBackground(Color.BLUE); // r.getBackgroundSelectionColor());
           } else {
-            c.setOpaque(true);
             c.setForeground(r.getTextNonSelectionColor());
             c.setBackground(r.getBackgroundNonSelectionColor());
           }
-          if (value instanceof DefaultMutableTreeNode) {
+          if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             Object o = node.getUserObject();
             if (o instanceof File) {
               File file = (File) o;
-              c.setIcon(fileSystemView.getSystemIcon(file));
-              c.setText(fileSystemView.getSystemDisplayName(file));
-              c.setToolTipText(file.getPath());
               c.setEnabled(!file.getName().startsWith("."));
+              JLabel l = (JLabel) c;
+              l.setOpaque(!selected);
+              l.setIcon(fileSystemView.getSystemIcon(file));
+              l.setText(fileSystemView.getSystemDisplayName(file));
+              l.setToolTipText(file.getPath());
               // StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
               // String name = file.getName();
               // c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');

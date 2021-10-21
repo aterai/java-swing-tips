@@ -17,7 +17,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("ABC DEF GHI JKL MNO PQR STU VWX YZ");
     model.addElement("111");
@@ -87,21 +86,23 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     // Insets i = l.getInsets();
     // Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
     // Rectangle rect = c.getBounds();
-    Class<JViewport> clz = JViewport.class;
-    Rectangle rect = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, list))
-        .filter(clz::isInstance).map(clz::cast)
-        // .map(JViewport::getBounds)
-        .map(v -> SwingUtilities.calculateInnerArea(v, null))
-        .orElseGet(Rectangle::new);
-    // rect.width -= i.left + i.right;
-    FontMetrics fm = l.getFontMetrics(l.getFont());
-    String str = Objects.toString(value, "");
-    l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
-    return l;
+    if (c instanceof JComponent) {
+      Class<JViewport> clz = JViewport.class;
+      Rectangle rect = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, list))
+          .filter(clz::isInstance).map(clz::cast)
+          // .map(JViewport::getBounds)
+          .map(v -> SwingUtilities.calculateInnerArea(v, null))
+          .orElseGet(Rectangle::new);
+      // rect.width -= i.left + i.right;
+      FontMetrics fm = c.getFontMetrics(c.getFont());
+      String str = Objects.toString(value, "");
+      ((JComponent) c).setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
+    }
+    return c;
   }
 }
 
