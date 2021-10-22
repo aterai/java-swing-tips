@@ -88,10 +88,17 @@ public final class MainPanel extends JPanel {
     } else if (rightRadio.isSelected()) {
       l.setHorizontalAlignment(SwingConstants.RIGHT);
     } else if (customRadio.isSelected()) {
-      l.setHorizontalAlignment(
-            row % 3 == 0 ? SwingConstants.LEFT
-          : row % 3 == 1 ? SwingConstants.CENTER
-                         : SwingConstants.RIGHT);
+      switch (row % 3) {
+        case 2:
+          l.setHorizontalAlignment(SwingConstants.RIGHT);
+          break;
+        case 1:
+          l.setHorizontalAlignment(SwingConstants.CENTER);
+          break;
+        default:
+          l.setHorizontalAlignment(SwingConstants.LEFT);
+          break;
+      }
     }
   }
 
@@ -120,9 +127,11 @@ class HeaderRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer hr = table.getTableHeader().getDefaultRenderer();
-    JLabel l = (JLabel) hr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    l.setHorizontalAlignment(SwingConstants.CENTER);
-    l.setFont(FONT);
-    return l;
+    Component c = hr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    c.setFont(FONT);
+    if (c instanceof JLabel) {
+      ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return c;
   }
 }
