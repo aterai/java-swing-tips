@@ -67,9 +67,9 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
         viewRect, iconRect, textRect,
         Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
-    View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-    if (Objects.nonNull(v)) {
-      v.paint(g, textRect);
+    Object o = c.getClientProperty(BasicHTML.propertyKey);
+    if (o instanceof View) {
+      ((View) o).paint(g, textRect);
     } else {
       textRect.x += 4;
       paintText(g, b, textRect, text);

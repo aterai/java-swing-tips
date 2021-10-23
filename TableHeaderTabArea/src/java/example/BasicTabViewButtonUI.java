@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
@@ -102,9 +101,9 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
       g.setColor(color);
       g.drawLine(viewRect.x + 0, viewRect.y + 2, viewRect.x + viewRect.width - 0, viewRect.y + 2);
     }
-    View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-    if (Objects.nonNull(v)) {
-      v.paint(g, textRect);
+    Object o = c.getClientProperty(BasicHTML.propertyKey);
+    if (o instanceof View) {
+      ((View) o).paint(g, textRect);
     } else {
       if (model.isSelected()) {
         textRect.y -= 2;

@@ -209,9 +209,9 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
       g.setColor(Color.BLUE);
       g.drawLine(viewRect.x, viewRect.y + viewRect.height, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
     }
-    View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-    if (Objects.nonNull(v)) {
-      v.paint(g, textRect);
+    Object o = c.getClientProperty(BasicHTML.propertyKey);
+    if (o instanceof View) {
+      ((View) o).paint(g, textRect);
     } else {
       paintText(g, b, textRect, text);
     }

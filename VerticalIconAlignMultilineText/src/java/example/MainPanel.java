@@ -92,8 +92,9 @@ final class HtmlViewUtil {
   public static int getFirstLineCenterY(String text, AbstractButton c, Rectangle iconRect) {
     int y = 0;
     if (Objects.nonNull(text) && c.getVerticalTextPosition() == SwingConstants.TOP) {
-      View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-      if (Objects.nonNull(v)) {
+      Object o = c.getClientProperty(BasicHTML.propertyKey);
+      if (o instanceof View) {
+        View v = (View) o;
         try {
           Element e = v.getElement().getElement(0);
           Shape s = new Rectangle();
@@ -152,9 +153,9 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
 
     // Draw the Text
     if (Objects.nonNull(text)) {
-      View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-      if (Objects.nonNull(v)) {
-        v.paint(g, textRect);
+      Object o = c.getClientProperty(BasicHTML.propertyKey);
+      if (o instanceof View) {
+        ((View) o).paint(g, textRect);
       } else {
         paintText(g, b, textRect, text);
       }
@@ -210,9 +211,9 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
 
     // Draw the Text
     if (Objects.nonNull(text)) {
-      View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-      if (Objects.nonNull(v)) {
-        v.paint(g, textRect);
+      Object o = c.getClientProperty(BasicHTML.propertyKey);
+      if (o instanceof View) {
+        ((View) o).paint(g, textRect);
       } else {
         paintText(g, b, textRect, text);
       }

@@ -242,9 +242,9 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
       int vy = VIEW_RECT.y + VIEW_RECT.height;
       g.drawLine(VIEW_RECT.x, vy, VIEW_RECT.x + VIEW_RECT.width, vy);
     }
-    View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-    if (Objects.nonNull(v)) {
-      v.paint(g, TEXT_RECT);
+    Object o = c.getClientProperty(BasicHTML.propertyKey);
+    if (o instanceof View) {
+      ((View) o).paint(g, TEXT_RECT);
     } else {
       paintText(g, c, TEXT_RECT, text);
     }

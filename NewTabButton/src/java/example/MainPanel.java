@@ -59,19 +59,20 @@ class CardLayoutTabbedPane extends JPanel {
   protected final JPanel contentsPanel = new JPanel(cardLayout);
   protected final ButtonGroup bg = new ButtonGroup();
   private final JButton button = new JButton(new PlusIcon());
-
+  private final Random rnd = new Random();
+  private final transient ClassLoader cl = Thread.currentThread().getContextClassLoader();
   // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
   private final List<ImageIcon> icons = Arrays.asList(
-      new ImageIcon(getClass().getResource("wi0009-16.png")),
-      new ImageIcon(getClass().getResource("wi0054-16.png")),
-      new ImageIcon(getClass().getResource("wi0062-16.png")),
-      new ImageIcon(getClass().getResource("wi0063-16.png")),
-      new ImageIcon(getClass().getResource("wi0064-16.png")),
-      new ImageIcon(getClass().getResource("wi0096-16.png")),
-      new ImageIcon(getClass().getResource("wi0111-16.png")),
-      new ImageIcon(getClass().getResource("wi0122-16.png")),
-      new ImageIcon(getClass().getResource("wi0124-16.png")),
-      new ImageIcon(getClass().getResource("wi0126-16.png"))
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0009-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0054-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0062-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0063-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0064-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0096-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0111-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0122-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0124-16.png"))),
+      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0126-16.png")))
   );
 
   protected CardLayoutTabbedPane() {
@@ -120,7 +121,7 @@ class CardLayoutTabbedPane extends JPanel {
         cardLayout.show(contentsPanel, title);
       }
     });
-    tab.setIcon(icons.get(new Random().nextInt(icons.size())));
+    tab.setIcon(icons.get(rnd.nextInt(icons.size())));
     tab.setLayout(new BorderLayout());
     JButton close = new JButton(new CloseTabIcon(Color.GRAY)) {
       @Override public Dimension getPreferredSize() {

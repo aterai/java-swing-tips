@@ -9,7 +9,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -189,9 +188,9 @@ class LinkViewButtonUI extends BasicButtonUI {
       g.setColor(Color.BLUE);
       g.drawLine(viewRect.x, viewRect.y + viewRect.height, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
     }
-    View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-    if (Objects.nonNull(v)) {
-      v.paint(g, textRect);
+    Object o = c.getClientProperty(BasicHTML.propertyKey);
+    if (o instanceof View) {
+      ((View) o).paint(g, textRect);
     } else {
       paintText(g, b, textRect, text);
     }
