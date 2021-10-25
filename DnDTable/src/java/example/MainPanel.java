@@ -116,9 +116,9 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
 
   protected DnDTable(TableModel model) {
     super(model);
-    // DropTarget dropTarget =
     new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
-    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, this);
+    DragSource ds = DragSource.getDefaultDragSource();
+    ds.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, this);
   }
 
   @Override protected void paintComponent(Graphics g) {

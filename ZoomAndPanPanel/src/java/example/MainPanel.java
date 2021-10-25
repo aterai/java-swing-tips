@@ -122,29 +122,29 @@ class ZoomAndPanePanel extends JPanel {
 
   protected class ZoomHandler extends MouseAdapter {
     private static final double ZOOM_FACTOR = 1.2;
-    private static final int MIN_ZOOM = -10;
-    private static final int MAX_ZOOM = 10;
+    private static final int MIN = -10;
+    private static final int MAX = 10;
     private static final int EXTENT = 1;
-    private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
+    private final BoundedRangeModel range = new DefaultBoundedRangeModel(0, EXTENT, MIN, MAX + EXTENT);
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
       double dir = e.getPreciseWheelRotation();
-      int z = zoomRange.getValue();
-      zoomRange.setValue(z + EXTENT * (dir > 0 ? -1 : 1));
-      if (z != zoomRange.getValue()) {
+      int z = range.getValue();
+      range.setValue(z + EXTENT * (dir > 0 ? -1 : 1));
+      if (z != range.getValue()) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getAncestorOfClass(JViewport.class, c);
         if (p instanceof JViewport) {
-          JViewport vport = (JViewport) p;
-          Rectangle ovr = vport.getViewRect();
+          JViewport viewport = (JViewport) p;
+          Rectangle ovr = viewport.getViewRect();
           double s = dir > 0 ? 1d / ZOOM_FACTOR : ZOOM_FACTOR;
           zoomTransform.scale(s, s);
-          // double s = 1d + zoomRange.getValue() * .1;
+          // double s = 1d + range.getValue() * .1;
           // zoomTransform.setToScale(s, s);
           Rectangle nvr = AffineTransform.getScaleInstance(s, s).createTransformedShape(ovr).getBounds();
           Point vp = nvr.getLocation();
           vp.translate((nvr.width - ovr.width) / 2, (nvr.height - ovr.height) / 2);
-          vport.setViewPosition(vp);
+          viewport.setViewPosition(vp);
           c.revalidate();
           c.repaint();
         }

@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
         setCellRenderer(null);
         super.updateUI();
         Color selectionBgc = new Color(0x39_69_8A);
-        TreeCellRenderer renderer = getCellRenderer();
+        TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, isLeaf, row, focused) -> {
-          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, isLeaf, row, focused);
           if (selected) {
             c.setBackground(selectionBgc);
           }

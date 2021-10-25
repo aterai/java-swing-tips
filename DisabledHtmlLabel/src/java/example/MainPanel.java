@@ -12,7 +12,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String HTML_TEXT = "<html>Html <font color='red'>label</font><br/> Test";
+  private static final String HTML = "<html>Html <font color='red'>label</font><br/> Test";
 
   private MainPanel() {
     super(new BorderLayout());
@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
     JLabel label0 = new JLabel("Default JLabel");
     p.add(initTitledBorder("JLabel", label0));
 
-    JLabel label1 = new JLabel(HTML_TEXT);
+    JLabel label1 = new JLabel(HTML);
     p.add(initTitledBorder("JLabel+Html", label1));
 
-    JLabel label2 = new JLabel(HTML_TEXT) {
+    JLabel label2 = new JLabel(HTML) {
       // JLabel with html tag can not be disabled or setForeground?!
       // https://community.oracle.com/thread/1377943
       @Override public void setEnabled(boolean enabled) {
@@ -35,15 +35,15 @@ public final class MainPanel extends JPanel {
     };
     p.add(initTitledBorder("JLabel+Html+", label2));
 
-    JLabel label3 = new DisabledHtmlLabel(HTML_TEXT);
+    JLabel label3 = new DisabledHtmlLabel(HTML);
     p.add(initTitledBorder("JLabel+Html++", label3));
 
-    JEditorPane editor1 = new JEditorPane("text/html", HTML_TEXT);
+    JEditorPane editor1 = new JEditorPane("text/html", HTML);
     editor1.setOpaque(false);
     editor1.setEditable(false);
     p.add(initTitledBorder("JEditorPane", editor1));
 
-    JEditorPane editor2 = new JEditorPane("text/html", HTML_TEXT);
+    JEditorPane editor2 = new JEditorPane("text/html", HTML);
     editor2.setOpaque(false);
     editor2.setEditable(false);
     editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -89,7 +89,8 @@ public final class MainPanel extends JPanel {
 }
 
 class DisabledHtmlLabel extends JLabel {
-  private static final ColorConvertOp GRAY_CCO = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+  private static final ColorSpace CS = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+  private static final ColorConvertOp GRAY_CCO = new ColorConvertOp(CS, null);
   private transient BufferedImage shadow;
 
   protected DisabledHtmlLabel(String text) {
@@ -101,10 +102,12 @@ class DisabledHtmlLabel extends JLabel {
       setForeground(UIManager.getColor("Label.foreground"));
     } else {
       setForeground(UIManager.getColor("Label.disabledForeground"));
-      BufferedImage source = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+      int w = getWidth();
+      int h = getHeight();
+      BufferedImage source = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = source.createGraphics();
       g2.setPaint(new Color(0x0, true));
-      g2.fillRect(0, 0, getWidth(), getHeight());
+      g2.fillRect(0, 0, w, h);
       // print(g2);
       paint(g2);
       g2.dispose();
