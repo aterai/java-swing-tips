@@ -65,14 +65,17 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        ListCellRenderer<? super DayOfWeek> renderer = getCellRenderer();
+        ListCellRenderer<? super DayOfWeek> r = getCellRenderer();
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, false, false);
-          c.setHorizontalAlignment(SwingConstants.CENTER);
-          // String s = value.getDisplayName(TextStyle.SHORT_STANDALONE, l);
-          // c.setText(s.substring(0, Math.min(2, s.length())));
-          c.setText(value.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
+          Component c = r.getListCellRendererComponent(list, value, index, false, false);
           c.setBackground(new Color(0xDC_DC_DC));
+          if (c instanceof JLabel) {
+            JLabel l = (JLabel) c;
+            l.setHorizontalAlignment(SwingConstants.CENTER);
+            // String s = value.getDisplayName(TextStyle.SHORT_STANDALONE, locale);
+            // l.setText(s.substring(0, Math.min(2, s.length())));
+            l.setText(value.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
+          }
           return c;
         });
         getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -184,11 +187,14 @@ public final class MainPanel extends JPanel {
     private final ListCellRenderer<? super LocalDate> renderer = new DefaultListCellRenderer();
 
     @Override public Component getListCellRendererComponent(JList<? extends LocalDate> list, LocalDate value, int index, boolean isSelected, boolean cellHasFocus) {
-      JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-      l.setOpaque(true);
-      l.setHorizontalAlignment(SwingConstants.CENTER);
-      l.setText(Objects.toString(value.getDayOfMonth()));
-      Color fgc = l.getForeground();
+      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      if (c instanceof JLabel) {
+        JLabel l = (JLabel) c;
+        l.setOpaque(true);
+        l.setHorizontalAlignment(SwingConstants.CENTER);
+        l.setText(Objects.toString(value.getDayOfMonth()));
+      }
+      Color fgc = c.getForeground();
       if (YearMonth.from(value).equals(YearMonth.from(getCurrentLocalDate()))) {
         DayOfWeek dow = value.getDayOfWeek();
         if (value.isEqual(realLocalDate)) {
@@ -201,8 +207,8 @@ public final class MainPanel extends JPanel {
       } else {
         fgc = Color.GRAY;
       }
-      l.setForeground(isSelected ? l.getForeground() : fgc);
-      return l;
+      c.setForeground(isSelected ? c.getForeground() : fgc);
+      return c;
     }
   }
 

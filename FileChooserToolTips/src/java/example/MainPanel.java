@@ -45,8 +45,10 @@ public final class MainPanel extends JPanel {
     button3.addActionListener(e -> {
       String key = "viewTypeDetails";
       JFileChooser chooser = new JFileChooser();
-      Optional.ofNullable(chooser.getActionMap().get(key))
-          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key)));
+      Optional.ofNullable(chooser.getActionMap().get(key)).ifPresent(a -> {
+        ActionEvent ae = new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key);
+        a.actionPerformed(ae);
+      });
       descendants(chooser)
           .filter(JTable.class::isInstance)
           .map(JTable.class::cast)
@@ -107,16 +109,20 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    // Insets i = l.getInsets();
-    // Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
-    // Rectangle rect = c.getBounds();
-    // rect.width -= i.left + i.right;
-    // FontMetrics fm = l.getFontMetrics(l.getFont());
-    // String str = Objects.toString(value, "");
-    // l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
-    l.setToolTipText(Objects.toString(value, null));
-    return l;
+    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    c.setFont(list.getFont());
+    // Container v = SwingUtilities.getAncestorOfClass(JViewport.class, list);
+    // if (c instanceof JComponent && v instanceof JViewport) {
+    //   JComponent l = (JComponent) c;
+    //   Rectangle rect = ((JViewport) v).getViewRect();
+    //   FontMetrics fm = c.getFontMetrics(c.getFont());
+    //   String str = Objects.toString(value, "");
+    //   l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
+    // }
+    if (c instanceof JComponent) {
+      ((JComponent) c).setToolTipText(Objects.toString(value, null));
+    }
+    return c;
   }
 }
 
@@ -125,15 +131,18 @@ class TooltipTableCellRenderer implements TableCellRenderer {
   private final TableCellRenderer renderer = new DefaultTableCellRenderer();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    Insets i = l.getInsets();
-    Rectangle rect = table.getCellRect(row, column, false);
-    rect.width -= i.left + i.right;
-    Optional.ofNullable(l.getIcon())
-        .ifPresent(icon -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
-    FontMetrics fm = l.getFontMetrics(l.getFont());
-    String str = Objects.toString(value, "");
-    l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
-    return l;
+    Component c = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    c.setFont(table.getFont());
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      Insets i = l.getInsets();
+      Rectangle cr = table.getCellRect(row, column, false);
+      cr.width -= i.left + i.right;
+      Optional.ofNullable(l.getIcon()).ifPresent(ic -> cr.width -= ic.getIconWidth() + l.getIconTextGap());
+      FontMetrics fm = c.getFontMetrics(c.getFont());
+      String str = Objects.toString(value, "");
+      l.setToolTipText(fm.stringWidth(str) > cr.width ? str : null);
+    }
+    return c;
   }
 }

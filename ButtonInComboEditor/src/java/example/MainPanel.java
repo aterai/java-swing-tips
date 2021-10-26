@@ -85,10 +85,12 @@ public final class MainPanel extends JPanel {
 
   private static void initComboBox(JComboBox<SiteItem> combo) {
     combo.setEditable(true);
-    ListCellRenderer<? super SiteItem> renderer = combo.getRenderer();
+    ListCellRenderer<? super SiteItem> r = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      JLabel c = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-      c.setIcon(value.favicon);
+      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      if (c instanceof JLabel) {
+        ((JLabel) c).setIcon(value.favicon);
+      }
       return c;
     });
   }
