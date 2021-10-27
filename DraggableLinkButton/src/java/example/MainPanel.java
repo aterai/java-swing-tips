@@ -183,10 +183,11 @@ class LinkViewButtonUI extends BasicButtonUI {
       g.fillRect(0, 0, c.getWidth(), c.getHeight());
     }
 
-    ButtonModel model = b.getModel();
-    if (!model.isSelected() && !model.isPressed() && !model.isArmed() && b.isRolloverEnabled() && model.isRollover()) {
+    ButtonModel m = b.getModel();
+    if (!m.isSelected() && !m.isPressed() && !m.isArmed() && b.isRolloverEnabled() && m.isRollover()) {
       g.setColor(Color.BLUE);
-      g.drawLine(viewRect.x, viewRect.y + viewRect.height, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
+      int yh = viewRect.y + viewRect.height;
+      g.drawLine(viewRect.x, yh, viewRect.x + viewRect.width, yh);
     }
     Object o = c.getClientProperty(BasicHTML.propertyKey);
     if (o instanceof View) {
