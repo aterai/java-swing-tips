@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -16,7 +15,9 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon icon = new ImageIcon(getClass().getResource("restore_to_background_color.gif"));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    String p = "example/restore_to_background_color.gif";
+    ImageIcon icon = new ImageIcon(Objects.requireNonNull(cl.getResource(p)));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(new NodeObject("default", icon));
@@ -29,19 +30,20 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          JLabel l = (JLabel) r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-          Object v = Optional.ofNullable(value)
-              .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
-              .map(DefaultMutableTreeNode::getUserObject).orElse(null);
-          if (v instanceof NodeObject) {
-            NodeObject uo = (NodeObject) v;
-            l.setText(Objects.toString(uo.title, ""));
-            l.setIcon(uo.icon);
-          } else {
-            l.setText(Objects.toString(value, ""));
-            l.setIcon(null);
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+            JLabel l = (JLabel) c;
+            Object v = ((DefaultMutableTreeNode) value).getUserObject();
+            if (v instanceof NodeObject) {
+              NodeObject uo = (NodeObject) v;
+              l.setText(Objects.toString(uo.title, ""));
+              l.setIcon(uo.icon);
+            } else {
+              l.setText(Objects.toString(value, ""));
+              l.setIcon(null);
+            }
           }
-          return l;
+          return c;
         });
       }
     };
