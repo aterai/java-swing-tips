@@ -99,13 +99,14 @@ public final class MainPanel extends JPanel {
 
 class ColorRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (value instanceof Color) {
+    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (value instanceof Color && c instanceof JLabel) {
       Color color = (Color) value;
+      JLabel l = (JLabel) c;
       l.setIcon(new ColorIcon(color));
       l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
     }
-    return l;
+    return c;
   }
 }
 

@@ -173,10 +173,12 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
   @Override public Object getCellEditorValue() {
     return spinner.getValue();
   }
+
   // // AbstractCellEditor
   // @Override public boolean isCellEditable(EventObject e) {
   //   return true;
   // }
+  //
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }
@@ -195,6 +197,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
     // fireEditingStopped();
     // return true;
   }
+
   // @Override public void cancelCellEditing() {
   //   fireEditingCanceled();
   // }
@@ -202,13 +205,14 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 
 class ColorRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (value instanceof Color) {
+    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (value instanceof Color && c instanceof JLabel) {
       Color color = (Color) value;
+      JLabel l = (JLabel) c;
       l.setIcon(new ColorIcon(color));
       l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
     }
-    return l;
+    return c;
   }
 }
 

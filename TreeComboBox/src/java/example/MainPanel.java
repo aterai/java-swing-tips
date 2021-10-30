@@ -134,18 +134,21 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     super.updateUI();
     ListCellRenderer<? super E> renderer = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-      l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-      if (index >= 0 && value instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-        int indent = Math.max(0, node.getLevel() - 1) * 16;
-        l.setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
-        if (!value.isLeaf()) {
-          l.setForeground(Color.WHITE);
-          l.setBackground(Color.GRAY.darker());
+      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      if (c instanceof JComponent) {
+        JComponent l = (JComponent) c;
+        l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        if (index >= 0 && value instanceof DefaultMutableTreeNode) {
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+          int indent = Math.max(0, node.getLevel() - 1) * 16;
+          l.setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
+          if (!value.isLeaf()) {
+            l.setForeground(Color.WHITE);
+            l.setBackground(Color.GRAY.darker());
+          }
         }
       }
-      return l;
+      return c;
     });
     EventQueue.invokeLater(() -> {
       String selectPrevKey = "selectPrevious3";

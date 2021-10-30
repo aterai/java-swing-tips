@@ -193,10 +193,13 @@ class IndexedColorListRenderer implements ListCellRenderer<IndexedColor> {
   private final ListCellRenderer<? super IndexedColor> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends IndexedColor> list, IndexedColor value, int index, boolean isSelected, boolean cellHasFocus) {
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    l.setIcon(new ColorIcon(value.color));
-    l.setToolTipText("index: " + value.index);
-    l.setBorder(BorderFactory.createLineBorder(value.isTransparent ? Color.RED : Color.WHITE));
-    return l;
+    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setIcon(new ColorIcon(value.color));
+      l.setToolTipText("index: " + value.index);
+      l.setBorder(BorderFactory.createLineBorder(value.isTransparent ? Color.RED : Color.WHITE));
+    }
+    return c;
   }
 }

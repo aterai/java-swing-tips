@@ -123,11 +123,14 @@ class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
     if (index < 0) {
       list.setSelectionBackground(color);
     }
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    // l.setText("<html><font color=" + hex(item.color) + ">" + item.description);
-    l.setText(String.format("<html><font color='#%06X'>%s", value.color.getRGB() & 0xFF_FF_FF, value.description));
-    l.setBackground(isSelected ? color : list.getBackground());
-    return l;
+    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    c.setBackground(isSelected ? color : list.getBackground());
+    if (c instanceof JLabel) {
+      int rgb = value.color.getRGB() & 0xFF_FF_FF;
+      ((JLabel) c).setText(String.format("<html><font color='#%06X'>%s", rgb, value.description));
+      // ((JLabel) c).setText("<html><font color=" + hex(item.color) + ">" + item.description);
+    }
+    return c;
   }
 
   // private static String hex(Color c) {
