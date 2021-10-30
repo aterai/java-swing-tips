@@ -247,12 +247,13 @@ class SearchEngineListCellRenderer<E extends SearchEngine> implements ListCellRe
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    if (Objects.nonNull(value)) {
+    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    if (Objects.nonNull(value) && c instanceof JLabel) {
+      JLabel l = (JLabel) c;
       l.setIcon(value.favicon);
       l.setToolTipText(value.url);
     }
-    return l;
+    return c;
   }
 }
 
@@ -278,18 +279,15 @@ class SearchBarLayout implements LayoutManager {
       return;
     }
     JComboBox<?> cb = (JComboBox<?>) parent;
-    int width = cb.getWidth();
-    int height = cb.getHeight();
-    Insets insets = cb.getInsets();
-    int buttonHeight = height - insets.top - insets.bottom;
-    int buttonWidth = buttonHeight;
-    int loupeWidth = buttonHeight;
+    Rectangle r = SwingUtilities.calculateInnerArea(cb, null);
 
+    int arrowSize = 0;
     JButton arrowButton = (JButton) cb.getComponent(0);
     if (Objects.nonNull(arrowButton)) {
       Insets arrowInsets = arrowButton.getInsets();
-      buttonWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-      arrowButton.setBounds(insets.left, insets.top, buttonWidth, buttonHeight);
+      int bw = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+      arrowButton.setBounds(r.x, r.y, bw, r.height);
+      arrowSize = bw;
     }
     JButton loupeButton = null;
     for (Component c : cb.getComponents()) {
@@ -298,18 +296,14 @@ class SearchBarLayout implements LayoutManager {
         break;
       }
     }
-    // = (JButton) cb.getComponent(3);
+    int loupeSize = 0;
     if (Objects.nonNull(loupeButton)) {
-      // Insets loupeInsets = loupeButton.getInsets();
-      // loupeWidth = loupeButton.getPreferredSize().width + loupeInsets.left + loupeInsets.right;
-      loupeButton.setBounds(width - insets.right - loupeWidth, insets.top, loupeWidth, buttonHeight);
+      loupeSize = r.height;
+      loupeButton.setBounds(r.x + r.width - loupeSize, r.y, loupeSize, r.height);
     }
     JTextField editor = (JTextField) cb.getEditor().getEditorComponent();
-    // JTextField editor = (JTextField) cb.getComponent(1);
     if (Objects.nonNull(editor)) {
-      editor.setBounds(insets.left + buttonWidth, insets.top,
-               width - insets.left - insets.right - buttonWidth - loupeWidth,
-               height - insets.top - insets.bottom);
+      editor.setBounds(r.x + arrowSize, r.y, r.width - arrowSize - loupeSize, r.height);
     }
   }
 }
