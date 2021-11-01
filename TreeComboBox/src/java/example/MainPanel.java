@@ -132,21 +132,20 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
 
   @Override public void updateUI() {
     super.updateUI();
-    ListCellRenderer<? super E> renderer = getRenderer();
+    ListCellRenderer<? super E> r = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      if (!value.isLeaf()) {
+        c.setForeground(Color.WHITE);
+        c.setBackground(Color.GRAY.darker());
+      }
+      int indent = 0;
+      if (index >= 0 && value instanceof DefaultMutableTreeNode) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        indent = Math.max(0, node.getLevel() - 1) * 16;
+      }
       if (c instanceof JComponent) {
-        JComponent l = (JComponent) c;
-        l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        if (index >= 0 && value instanceof DefaultMutableTreeNode) {
-          DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-          int indent = Math.max(0, node.getLevel() - 1) * 16;
-          l.setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
-          if (!value.isLeaf()) {
-            l.setForeground(Color.WHITE);
-            l.setBackground(Color.GRAY.darker());
-          }
-        }
+        ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
       }
       return c;
     });
