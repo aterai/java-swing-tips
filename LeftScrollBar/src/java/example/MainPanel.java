@@ -42,8 +42,9 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(label);
     scroll.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
+    int w = scroll.getVerticalScrollBar().getPreferredSize().width;
     JPanel panel = new JPanel(new BorderLayout());
-    panel.add(Box.createHorizontalStrut(scroll.getVerticalScrollBar().getPreferredSize().width), BorderLayout.WEST);
+    panel.add(Box.createHorizontalStrut(w), BorderLayout.WEST);
     panel.add(scroll.getHorizontalScrollBar());
 
     add(panel, BorderLayout.NORTH);

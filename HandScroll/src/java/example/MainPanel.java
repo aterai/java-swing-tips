@@ -118,14 +118,16 @@ class HandScrollListener extends MouseAdapter {
   protected boolean withinRangeMode = true;
 
   @Override public void mouseDragged(MouseEvent e) {
-    JViewport vport = (JViewport) e.getComponent();
+    JViewport viewport = (JViewport) e.getComponent();
     Point cp = e.getPoint();
-    Point vp = vport.getViewPosition(); // = SwingUtilities.convertPoint(vport, 0, 0, label);
+    // Point vp = SwingUtilities.convertPoint(viewport, 0, 0, label);
+    Point vp = viewport.getViewPosition();
     vp.translate(pp.x - cp.x, pp.y - cp.y);
-    if (withinRangeMode) {
-      ((JComponent) SwingUtilities.getUnwrappedView(vport)).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+    Component c = SwingUtilities.getUnwrappedView(viewport);
+    if (withinRangeMode && c instanceof JComponent) {
+      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
     } else {
-      vport.setViewPosition(vp);
+      viewport.setViewPosition(vp);
     }
     pp.setLocation(cp);
   }
@@ -157,6 +159,7 @@ class HandScrollListener extends MouseAdapter {
 //       pp.setLocation(cp);
 //     }
 //   }
+//
 //   @Override public void mousePressed(MouseEvent e) {
 //     Component c = e.getComponent();
 //     c.setCursor(hndCursor);
@@ -167,6 +170,7 @@ class HandScrollListener extends MouseAdapter {
 //       pp.setLocation(cp);
 //     }
 //   }
+//
 //   @Override public void mouseReleased(MouseEvent e) {
 //     e.getComponent().setCursor(defCursor);
 //   }

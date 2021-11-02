@@ -31,7 +31,8 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode();
     DefaultTreeModel treeModel = new DefaultTreeModel(root);
     Stream.of(fileSystemView.getRoots()).forEach(fileSystemRoot -> {
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode(new CheckBoxNode(fileSystemRoot, Status.DESELECTED));
+      CheckBoxNode check = new CheckBoxNode(fileSystemRoot, Status.DESELECTED);
+      DefaultMutableTreeNode node = new DefaultMutableTreeNode(check);
       root.add(node);
       Stream.of(fileSystemView.getFiles(fileSystemRoot, true))
           .filter(File::isDirectory)

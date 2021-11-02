@@ -13,7 +13,6 @@ import javax.swing.tree.TreeCellRenderer;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-
     int ow = UIManager.getIcon("Tree.openIcon").getIconWidth();
     int iw = 32;
     int ih = 24;
@@ -24,9 +23,9 @@ public final class MainPanel extends JPanel {
         setCellRenderer(null);
         super.updateUI();
         setRowHeight(0);
-        TreeCellRenderer renderer = getCellRenderer();
+        TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JLabel && Objects.equals(value, tree.getModel().getRoot())) {
             ((JLabel) c).setIcon(icon0);
           }
@@ -43,9 +42,9 @@ public final class MainPanel extends JPanel {
         setCellRenderer(null);
         super.updateUI();
         setRowHeight(0);
-        TreeCellRenderer renderer = getCellRenderer();
+        TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JLabel && Objects.equals(value, tree.getModel().getRoot())) {
             JLabel label = (JLabel) c;
             label.setIcon(icon1);

@@ -22,9 +22,9 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        TreeCellRenderer renderer = getCellRenderer();
+        TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
             ((JComponent) c).setToolTipText(value == null ? null : value.toString());
           }
@@ -161,7 +161,8 @@ class TooltipTree extends JTree {
       boolean hasFocus = hasFocus() && tsm.getLeadSelectionRow() == i;
       boolean isLeaf = getModel().isLeaf(node);
       TreeCellRenderer r = getCellRenderer();
-      Component tcr = r.getTreeCellRendererComponent(this, node, isRowSelected(i), isExpanded(i), isLeaf, i, hasFocus);
+      Component tcr = r.getTreeCellRendererComponent(
+          this, node, isRowSelected(i), isExpanded(i), isLeaf, i, hasFocus);
       if (tcr instanceof JComponent && Objects.nonNull(((JComponent) tcr).getToolTipText())) {
         // System.out.println(((JComponent) tcr).getToolTipText());
         Point pt = cellBounds.getLocation();
@@ -201,7 +202,8 @@ class TooltipTree extends JTree {
 //   private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
 //
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
 //     l.setToolTipText(value == null ? null : value.toString());
 //     // Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
 //     // if (c instanceof JScrollPane) {

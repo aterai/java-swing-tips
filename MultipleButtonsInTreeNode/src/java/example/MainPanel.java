@@ -113,7 +113,8 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-    Component c = panel.renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+    TreeCellRenderer r = panel.renderer;
+    Component c = r.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
     return panel.remakePanel(c);
   }
 
@@ -133,22 +134,22 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
     if (Objects.isNull(path)) {
       return false;
     }
-    Rectangle r = tree.getPathBounds(path);
-    if (Objects.isNull(r)) {
+    Rectangle rect = tree.getPathBounds(path);
+    if (Objects.isNull(rect)) {
       return false;
     }
-    // r.width = panel.getButtonAreaWidth();
-    // return r.contains(p);
-    if (r.contains(p)) {
+    // rect.width = panel.getButtonAreaWidth();
+    // return rect.contains(p);
+    if (rect.contains(p)) {
       TreeNode node = (TreeNode) path.getLastPathComponent();
       int row = tree.getRowForLocation(p.x, p.y);
-      TreeCellRenderer renderer = tree.getCellRenderer();
-      Component c = renderer.getTreeCellRendererComponent(tree, " ", true, true, node.isLeaf(), row, true);
-      c.setBounds(r);
+      TreeCellRenderer r = tree.getCellRenderer();
+      Component c = r.getTreeCellRendererComponent(tree, " ", true, true, node.isLeaf(), row, true);
+      c.setBounds(rect);
       c.setLocation(0, 0);
       // tree.doLayout();
       tree.revalidate();
-      p.translate(-r.x, -r.y);
+      p.translate(-rect.x, -rect.y);
       return SwingUtilities.getDeepestComponentAt(c, p.x, p.y) instanceof JButton;
     }
     return false;
