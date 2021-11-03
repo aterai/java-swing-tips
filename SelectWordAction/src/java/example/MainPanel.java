@@ -25,8 +25,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea(TEXT);
-    textArea.getActionMap().put(DefaultEditorKit.selectWordAction, new TextAction(DefaultEditorKit.selectWordAction) {
+    Action a = new TextAction(DefaultEditorKit.selectWordAction) {
       @Override public void actionPerformed(ActionEvent e) {
         JTextComponent target = getTextComponent(e);
         if (target != null) {
@@ -41,7 +40,9 @@ public final class MainPanel extends JPanel {
           }
         }
       }
-    });
+    };
+    JTextArea textArea = new JTextArea(TEXT);
+    textArea.getActionMap().put(DefaultEditorKit.selectWordAction, a);
     JSplitPane split = new JSplitPane();
     split.setResizeWeight(.5);
     split.setLeftComponent(makeTitledPanel("Default", new JTextArea(TEXT)));
@@ -153,7 +154,7 @@ class SegmentCache {
   /**
    * A global cache.
    */
-  private static SegmentCache sharedCache = new SegmentCache();
+  private static final SegmentCache SHARED_CACHE = new SegmentCache();
 
   /**
    * A list of the currently unused Segments.
@@ -164,7 +165,7 @@ class SegmentCache {
    * Returns the shared SegmentCache.
    */
   public static SegmentCache getSharedInstance() {
-    return sharedCache;
+    return SHARED_CACHE;
   }
 
   /**
