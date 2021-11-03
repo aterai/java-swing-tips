@@ -134,7 +134,7 @@ class MissingIcon implements Icon {
     g2.setColor(Color.RED);
     g2.setStroke(new BasicStroke(w / 8f));
     g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
-    g2.drawLine(x + gap, y + gap, x + w - gap, y + gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
 
     g2.dispose();
   }
