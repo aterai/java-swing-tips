@@ -118,34 +118,36 @@ class RowDataRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (c instanceof JLabel) {
-      JLabel label = (JLabel) c;
-      label.setHorizontalAlignment(SwingConstants.LEFT);
-      RowData data = (RowData) value;
-      switch (table.convertColumnIndexToModel(column)) {
-        case 0:
-          String str = data.getGroup();
-          if (row > 0) {
-            RowData prev = (RowData) table.getValueAt(row - 1, column);
-            if (Objects.equals(prev.getGroup(), str)) {
-              label.setText(" ");
-              break;
-            }
-          }
-          label.setText("+ " + str);
-          break;
-        case 1:
-          label.setText(data.getName());
-          break;
-        case 2:
-          label.setHorizontalAlignment(SwingConstants.RIGHT);
-          label.setText(Integer.toString(data.getCount()));
-          break;
-        default:
-          break;
-      }
+    if (value instanceof RowData && c instanceof JLabel) {
+      updateCellRenderer(table, (RowData) value, row, column, (JLabel) c);
     }
     return c;
+  }
+
+  private void updateCellRenderer(JTable table, RowData value, int row, int column, JLabel label) {
+    label.setHorizontalAlignment(SwingConstants.LEFT);
+    switch (table.convertColumnIndexToModel(column)) {
+      case 0:
+        String str = value.getGroup();
+        if (row > 0) {
+          RowData prev = (RowData) table.getValueAt(row - 1, column);
+          if (Objects.equals(prev.getGroup(), str)) {
+            label.setText(" ");
+            break;
+          }
+        }
+        label.setText("+ " + str);
+        break;
+      case 1:
+        label.setText(value.getName());
+        break;
+      case 2:
+        label.setHorizontalAlignment(SwingConstants.RIGHT);
+        label.setText(Integer.toString(value.getCount()));
+        break;
+      default:
+        break;
+    }
   }
 }
 
@@ -154,6 +156,7 @@ class RowDataRenderer implements TableCellRenderer {
 //   protected RowDataGroupComparator(int column) {
 //     this.column = column;
 //   }
+//
 //   @SuppressWarnings("unchecked")
 //   @Override public int compare(RowData a, RowData b) {
 //     if (a == null && b == null) {
