@@ -12,37 +12,38 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private static final int MW = 300;
   private static final int MH = 200;
-  private final JCheckBox checkbox = new JCheckBox("Fixed aspect ratio, Minimum size: " + MW + "*" + MH);
 
   private MainPanel() {
     super(new BorderLayout());
+    JCheckBox checkbox = new JCheckBox("Fixed aspect ratio, Minimum size: " + MW + "*" + MH);
+    checkbox.addActionListener(e -> {
+      Container c = getTopLevelAncestor();
+      if (c instanceof Window && checkbox.isSelected()) {
+        initWindowSize((Window) c);
+      }
+    });
+
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        JFrame frame = (JFrame) c;
-        frame.setMinimumSize(new Dimension(MW, MH)); // JDK 1.6.0
-        frame.addComponentListener(new ComponentAdapter() {
+      if (c instanceof Window) {
+        Window window = (Window) c;
+        window.setMinimumSize(new Dimension(MW, MH)); // JDK 1.6.0
+        window.addComponentListener(new ComponentAdapter() {
           @Override public void componentResized(ComponentEvent e) {
-            initFrameSize(frame);
+            if (checkbox.isSelected()) {
+              initWindowSize(window);
+            }
           }
         });
       }
     });
-
-    checkbox.addActionListener(e -> {
-      Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        initFrameSize((JFrame) c);
-      }
-    });
-    // checkbox.setSelected(true);
 
     JLabel label = new JLabel();
     label.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
         JLabel l = (JLabel) e.getComponent();
         Container c = getTopLevelAncestor();
-        if (c instanceof JFrame) {
+        if (c instanceof Window) {
           l.setText(c.getSize().toString());
         }
       }
@@ -50,8 +51,10 @@ public final class MainPanel extends JPanel {
 
     Toolkit.getDefaultToolkit().setDynamicLayout(false);
     JCheckBox check = new JCheckBox("Toolkit.getDefaultToolkit().setDynamicLayout: ");
-    check.addActionListener(e ->
-        Toolkit.getDefaultToolkit().setDynamicLayout(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      Toolkit.getDefaultToolkit().setDynamicLayout(c.isSelected());
+    });
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(checkbox);
@@ -61,13 +64,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void initFrameSize(JFrame frame) {
-    if (!checkbox.isSelected()) {
-      return;
-    }
-    int fw = frame.getSize().width;
+  public void initWindowSize(Window window) {
+    int fw = window.getSize().width;
     int fh = MH * fw / MW;
-    frame.setSize(Math.max(MW, fw), Math.max(MH, fh));
+    window.setSize(Math.max(MW, fw), Math.max(MH, fh));
   }
 
   public static void main(String[] args) {
