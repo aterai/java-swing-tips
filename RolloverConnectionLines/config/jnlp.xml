@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RolloverConnectionLines" />
+  <property name="jnlp.Name"     value="RolloverConnectionLines" />
+  <property name="jnlp.name"     value="rolloverconnectionlines" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rolloverconnectionlines" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RolloverConnectionLines.html" />
+</project>
