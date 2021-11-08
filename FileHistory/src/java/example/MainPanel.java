@@ -96,14 +96,14 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
+      Component c = ((JComponent) e.getSource()).getRootPane();
       Object[] obj = {
-        "Open the file.\n",
-        "This example do nothing\n",
-        " and move the file to the beginning of the history."
+          "Open the file.\n",
+          "This example do nothing\n",
+          " and move the file to the beginning of the history."
       };
-      JComponent c = (JComponent) e.getSource();
-      JOptionPane.showMessageDialog(
-          c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+      String title = VersionAction.APP_NAME;
+      JOptionPane.showMessageDialog(c, obj, title, JOptionPane.INFORMATION_MESSAGE);
       updateHistory(path);
     }
   }
@@ -114,10 +114,10 @@ public final class MainPanel extends JPanel {
 
   private Action[] getActions() {
     return new Action[] {
-      new NewAction(),
-      new ExitAction(),
-      new HelpAction(),
-      new VersionAction()
+        new NewAction(),
+        new ExitAction(),
+        new HelpAction(),
+        new VersionAction()
     };
   }
 
@@ -129,14 +129,14 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      Object[] obj = {
-        "Create a new file.\n",
-        "This example do nothing\n",
-        " and pretend to generate an appropriate file name and open it."
+      Component c = ((JComponent) e.getSource()).getRootPane();
+      Object[] msg = {
+          "Create a new file.\n",
+          "This example do nothing\n",
+          " and pretend to generate an appropriate file name and open it."
       };
-      JComponent c = (JComponent) e.getSource();
-      JOptionPane.showMessageDialog(
-          c.getRootPane(), obj, VersionAction.APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+      String title = VersionAction.APP_NAME;
+      JOptionPane.showMessageDialog(c, msg, title, JOptionPane.INFORMATION_MESSAGE);
       String fileName = "C:/tmp/dummy.jpg." + counter + "~";
       updateHistory(Paths.get(fileName));
       counter++;
@@ -222,8 +222,8 @@ class VersionAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    JComponent c = (JComponent) e.getSource();
-    Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
-    JOptionPane.showMessageDialog(c.getRootPane(), obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+    Component c = ((JComponent) e.getSource()).getRootPane();
+    Object[] msg = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
+    JOptionPane.showMessageDialog(c, msg, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
   }
 }

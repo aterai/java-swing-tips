@@ -12,7 +12,6 @@ import javax.swing.text.DefaultEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextField pf1 = new JTextField(25);
     ActionMap am = pf1.getActionMap();
     Action beep = new DefaultEditorKit.BeepAction();
@@ -34,10 +33,11 @@ public final class MainPanel extends JPanel {
     am = pf2.getActionMap();
     am.put(DefaultEditorKit.pasteAction, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
+        Component c = (Component) e.getSource();
         EventQueue.invokeLater(() -> {
-          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+          UIManager.getLookAndFeel().provideErrorFeedback(c);
           String msg = "paste is disabled";
-          JOptionPane.showMessageDialog(getRootPane(), msg, JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
         });
       }
     });
