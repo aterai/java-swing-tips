@@ -53,9 +53,11 @@ public final class MainPanel extends JPanel {
       super();
       add("path").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
-        Optional.ofNullable(tree.getSelectionPath()).ifPresent(MainPanel.this::updateLabel);
-        JOptionPane.showMessageDialog(
-            tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
+        TreePath path = tree.getSelectionPath();
+        if (path != null) {
+          updateLabel(path);
+          JOptionPane.showMessageDialog(tree, path, "path", JOptionPane.INFORMATION_MESSAGE);
+        }
       });
       add("add").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();
@@ -67,8 +69,8 @@ public final class MainPanel extends JPanel {
           self.add(child);
           model.reload(self);
         } else {
-          String message = String.format("ERROR: Maximum levels of %d exceeded.", MAX_NODE_LEVELS);
-          JOptionPane.showMessageDialog(tree, message, "add node", JOptionPane.ERROR_MESSAGE);
+          String msg = String.format("ERROR: Maximum levels of %d exceeded.", MAX_NODE_LEVELS);
+          JOptionPane.showMessageDialog(tree, msg, "add node", JOptionPane.ERROR_MESSAGE);
         }
       });
     }

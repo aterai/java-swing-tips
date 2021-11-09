@@ -48,7 +48,10 @@ class TreePopupMenu extends JPopupMenu {
     super();
     add("path").addActionListener(e -> {
       JTree tree = (JTree) getInvoker();
-      JOptionPane.showMessageDialog(tree, tree.getSelectionPaths(), "path", JOptionPane.INFORMATION_MESSAGE);
+      TreePath path = tree.getSelectionPath();
+      if (path != null) {
+        JOptionPane.showMessageDialog(tree, path, "path", JOptionPane.INFORMATION_MESSAGE);
+      }
     });
     add("dummy");
   }
