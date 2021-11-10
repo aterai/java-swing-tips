@@ -27,7 +27,8 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     int index = 0;
     // table.getRowSorter().toggleSortOrder(index); // SortOrder.ASCENDING
-    table.getRowSorter().setSortKeys(Collections.singletonList(new RowSorter.SortKey(index, SortOrder.DESCENDING)));
+    RowSorter.SortKey key = new RowSorter.SortKey(index, SortOrder.DESCENDING);
+    table.getRowSorter().setSortKeys(Collections.singletonList(key));
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));

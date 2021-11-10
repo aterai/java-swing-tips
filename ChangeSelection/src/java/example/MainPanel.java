@@ -79,9 +79,8 @@ public final class MainPanel extends JPanel {
     changeSelection.addActionListener(e -> {
       int row = rowField.getNumber().intValue();
       int col = colField.getNumber().intValue();
-
+      // col = table.convertColumnIndexToModel(col);
       table.changeSelection(row, col, toggle.isSelected(), extend.isSelected());
-      // table.changeSelection(row, table.convertColumnIndexToModel(col), toggle.isSelected(), extend.isSelected());
       table.requestFocusInWindow();
       table.repaint();
     });

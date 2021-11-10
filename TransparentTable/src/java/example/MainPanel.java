@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     scroll.getViewport().setBackground(alphaZero);
 
     JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
-    check.addActionListener(e -> table.setBackground(((JCheckBox) e.getSource()).isSelected() ? color : alphaZero));
+    check.addActionListener(e -> table.setBackground(check.isSelected() ? color : alphaZero));
 
     add(check, BorderLayout.NORTH);
     add(scroll);

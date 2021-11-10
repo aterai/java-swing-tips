@@ -79,8 +79,8 @@ class Arrow {
 
   public void draw(Graphics2D g2) {
     g2.drawLine(start.x, start.y, end.x, end.y);
-    // arrowHead.transform(AffineTransform.getRotateInstance(end.getX() - start.getX(), end.getY() - start.getY()));
-    // arrowHead.transform(AffineTransform.getTranslateInstance(end.getX(), end.getY()));
+    // arrowHead.transform(AffineTransform.getRotateInstance(end.x - start.x, end.y - start.y));
+    // arrowHead.transform(AffineTransform.getTranslateInstance(end.x, end.y));
     AffineTransform at = AffineTransform.getTranslateInstance(end.getX(), end.getY());
     at.rotate(end.getX() - start.getX(), end.getY() - start.getY());
     arrowHead.transform(at);

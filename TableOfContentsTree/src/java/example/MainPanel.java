@@ -171,8 +171,9 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   // @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-  //   JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-  //   if (value instanceof DefaultMutableTreeNode) {
+  //   Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+  //   if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+  //     JLabel l = (JLabel) c;
   //     DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
   //     Object o = n.getUserObject();
   //     if (o instanceof TableOfContents) {
@@ -197,7 +198,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
   //     }
   //   }
   //   pn = -1;
-  //   return l;
+  //   return c;
   // }
 }
 
@@ -233,8 +234,9 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //   }
 //
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-//     if (value instanceof DefaultMutableTreeNode) {
+//     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+//       JLabel l = (JLabel) c;
 //       DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
 //       Object o = n.getUserObject();
 //       if (o instanceof TableOfContents) {
@@ -257,7 +259,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 //       }
 //     }
 //     pn = null;
-//     return l;
+//     return c;
 //   }
 // }
 

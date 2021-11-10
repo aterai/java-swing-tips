@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     p.add(new JLabel(new ImageIcon(bi)), "rounded");
 
     JCheckBox check = new JCheckBox("transparency at the rounded windows corners");
-    check.addActionListener(e -> cardLayout.show(p, ((JCheckBox) e.getSource()).isSelected() ? "rounded" : "original"));
+    check.addActionListener(e -> cardLayout.show(p, check.isSelected() ? "rounded" : "original"));
 
     add(check, BorderLayout.NORTH);
     add(p);

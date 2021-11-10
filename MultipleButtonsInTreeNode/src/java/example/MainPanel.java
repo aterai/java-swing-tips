@@ -82,7 +82,8 @@ class ButtonCellRenderer implements TreeCellRenderer {
   private final ButtonPanel panel = new ButtonPanel();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = panel.renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    TreeCellRenderer r = panel.renderer;
+    Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
     return panel.remakePanel(c);
   }
 }

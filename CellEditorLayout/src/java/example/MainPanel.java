@@ -92,7 +92,6 @@ class CustomComponentCellEditor extends DefaultCellEditor {
   }
 
   // public Object getCellEditorValue() {
-  //   // System.out.println("  " + field.getText());
   //   return field.getText();
   // }
 
@@ -139,7 +138,7 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 
 class CustomComponent extends JPanel {
   // static class CustomTextField extends JTextField {
-  //   @Override protected boolean processKeyBinding (KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+  //   @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
   //     return super.processKeyBinding(ks, e, condition, pressed);
   //   }
   // }
@@ -157,7 +156,8 @@ class CustomComponent extends JPanel {
   @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
     if (!field.isFocusOwner() && !pressed) {
       field.requestFocusInWindow();
-      EventQueue.invokeLater(() -> KeyboardFocusManager.getCurrentKeyboardFocusManager().redispatchEvent(field, e));
+      KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+      EventQueue.invokeLater(() -> kfm.redispatchEvent(field, e));
     }
     return super.processKeyBinding(ks, e, condition, pressed);
     // field.requestFocusInWindow();

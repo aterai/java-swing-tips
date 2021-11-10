@@ -15,7 +15,7 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   private static final Dimension MIN = new Dimension(50, 50);
   private static final Dimension MAX = new Dimension(500, 500);
   private final Point startPos = new Point();
-  private final Rectangle startingBounds = new Rectangle();
+  private final Rectangle startRect = new Rectangle();
   private Cursor cursor;
 
   @Override public void mouseMoved(MouseEvent e) {
@@ -33,7 +33,7 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     ResizableBorder border = (ResizableBorder) c.getBorder();
     cursor = border.getResizeCursor(e);
     startPos.setLocation(SwingUtilities.convertPoint(c, e.getX(), e.getY(), null));
-    startingBounds.setBounds(c.getBounds());
+    startRect.setBounds(c.getBounds());
     Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
     if (parent instanceof JLayeredPane) {
       ((JLayeredPane) parent).moveToFront(c);
@@ -41,12 +41,12 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    startingBounds.setSize(0, 0);
+    startRect.setSize(0, 0);
   }
 
   // @see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
   @Override public void mouseDragged(MouseEvent e) {
-    if (startingBounds.isEmpty()) {
+    if (startRect.isEmpty()) {
       return;
     }
     Component c = e.getComponent();
@@ -57,14 +57,14 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
     Directions.getByCursorType(cursorType).ifPresent(dir -> {
       Point delta = getLimitedDelta(cursorType, parent.getBounds(), deltaX, deltaY);
-      c.setBounds(dir.getBounds(startingBounds, delta));
+      c.setBounds(dir.getBounds(startRect, delta));
     });
     parent.revalidate();
   }
 
   private int getDeltaX(int dx) {
-    int left = Math.min(MAX.width - startingBounds.width, startingBounds.x);
-    return Math.max(Math.min(dx, left), MIN.width - startingBounds.width);
+    int left = Math.min(MAX.width - startRect.width, startRect.x);
+    return Math.max(Math.min(dx, left), MIN.width - startRect.width);
     // int deltaX = dx;
     // if (deltaX < MIN.width - startingBounds.width) {
     //   deltaX = MIN.width - startingBounds.width;
@@ -78,8 +78,8 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   }
 
   private int getDeltaX(int dx, Rectangle pr) {
-    int right = Math.max(startingBounds.width - MAX.width, startingBounds.x + startingBounds.width - pr.width);
-    return Math.min(Math.max(dx, right), startingBounds.width - MIN.width);
+    int right = Math.max(startRect.width - MAX.width, startRect.x + startRect.width - pr.width);
+    return Math.min(Math.max(dx, right), startRect.width - MIN.width);
     // int deltaX = dx;
     // if (startingBounds.width - MIN.width < deltaX) {
     //   deltaX = startingBounds.width - MIN.width;
@@ -93,8 +93,8 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   }
 
   private int getDeltaY(int dy) {
-    int top = Math.min(MAX.height - startingBounds.height, startingBounds.y);
-    return Math.max(Math.min(dy, top), MIN.height - startingBounds.height);
+    int top = Math.min(MAX.height - startRect.height, startRect.y);
+    return Math.max(Math.min(dy, top), MIN.height - startRect.height);
     // int deltaY = dy;
     // if (deltaY < MIN.height - startingBounds.height) {
     //   deltaY = MIN.height - startingBounds.height;
@@ -108,8 +108,8 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   }
 
   private int getDeltaY(int dy, Rectangle pr) {
-    int bottom = Math.max(startingBounds.height - MAX.height, startingBounds.y + startingBounds.height - pr.height);
-    return Math.min(Math.max(dy, bottom), startingBounds.height - MIN.height);
+    int bottom = Math.max(startRect.height - MAX.height, startRect.y + startRect.height - pr.height);
+    return Math.min(Math.max(dy, bottom), startRect.height - MIN.height);
     // int deltaY = dy;
     // if (startingBounds.height - MIN.height < deltaY) {
     //   deltaY = startingBounds.height - MIN.height;

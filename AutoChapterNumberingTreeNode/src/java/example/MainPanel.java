@@ -94,8 +94,9 @@ public final class MainPanel extends JPanel {
 //   private static final String MARK = "\u00a7"; // "§";
 //
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     JLabel l = (JLabel) super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-//     if (value instanceof DefaultMutableTreeNode) {
+//     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+//       JLabel l = (JLabel) c;
 //       TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
 //       String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
 //           .map(i -> 1 + tn[i - 1].getIndex(tn[i]))
@@ -103,6 +104,6 @@ public final class MainPanel extends JPanel {
 //           .collect(Collectors.joining("."));
 //       l.setText(String.format("%s%s %s", MARK, s, value));
 //     }
-//     return l;
+//     return c;
 //   }
 // }
