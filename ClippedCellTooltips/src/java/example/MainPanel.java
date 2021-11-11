@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -82,28 +81,21 @@ class ToolTipHeaderRenderer implements TableCellRenderer {
   // private final Icon icon = UIManager.getIcon("Table.ascendingSortIcon");
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    TableCellRenderer renderer = table.getTableHeader().getDefaultRenderer();
-    JLabel l = (JLabel) renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    Insets i = l.getInsets();
-    Rectangle rect = table.getCellRect(row, column, false);
-    rect.width -= i.left + i.right;
-    // RowSorter<? extends TableModel> sorter = table.getRowSorter();
-    // if (sorter != null && !sorter.getSortKeys().isEmpty() && sorter.getSortKeys().get(0).getColumn() == column) {
-    //   rect.width -= icon.getIconWidth() + l.getIconTextGap();
-    // }
-
-    // Optional.ofNullable(table.getRowSorter())
-    //   .filter(sorter -> !sorter.getSortKeys().isEmpty() && sorter.getSortKeys().get(0).getColumn() == column)
-    //   .filter(sorter -> Objects.nonNull(l.getIcon()))
-    //   .ifPresent(sorter -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
-
-    Optional.ofNullable(l.getIcon())
-        .ifPresent(icon -> rect.width -= icon.getIconWidth() + l.getIconTextGap());
-
-    FontMetrics fm = l.getFontMetrics(l.getFont());
-    String str = Objects.toString(value, "");
-    int cellTextWidth = fm.stringWidth(str);
-    l.setToolTipText(cellTextWidth > rect.width ? str : null);
-    return l;
+    TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      Insets i = l.getInsets();
+      int w = table.getCellRect(row, column, false).width - i.left + i.right;
+      Icon icon = l.getIcon();
+      if (icon != null) {
+        w -= icon.getIconWidth() + l.getIconTextGap();
+      }
+      FontMetrics fm = l.getFontMetrics(l.getFont());
+      String str = Objects.toString(value, "");
+      int cellTextWidth = fm.stringWidth(str);
+      l.setToolTipText(cellTextWidth > w ? str : null);
+    }
+    return c;
   }
 }
