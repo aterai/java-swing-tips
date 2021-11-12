@@ -10,17 +10,17 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox checkbox = new JCheckBox("setResizable:", true);
     checkbox.addActionListener(e -> {
       Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        ((JFrame) c).setResizable(checkbox.isSelected());
+      if (c instanceof Frame) {
+        ((Frame) c).setResizable(checkbox.isSelected());
       }
     });
+
     JPanel p = new JPanel();
     p.add(checkbox);
-    p.setBorder(BorderFactory.createTitledBorder("JFrame#setResizable(boolean)"));
+    p.setBorder(BorderFactory.createTitledBorder("Frame#setResizable(boolean)"));
     add(p, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));

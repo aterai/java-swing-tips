@@ -51,13 +51,13 @@ public final class MainPanel extends JPanel {
 
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        initPopupMenu((JFrame) c);
+      if (c instanceof Frame) {
+        initPopupMenu((Frame) c);
       }
     });
   }
 
-  private void initPopupMenu(JFrame frame) {
+  private void initPopupMenu(Frame frame) {
     // This code is inspired from:
     // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
     // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
