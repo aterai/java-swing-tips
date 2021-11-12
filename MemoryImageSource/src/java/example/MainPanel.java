@@ -47,14 +47,16 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
   private final transient BufferedImage backImage;
   private static final Paint TEXTURE = createCheckerTexture(6, new Color(0x32_C8_96_64, true));
   private final Rectangle rect = new Rectangle(320, 240);
-  private final int[] pixels = new int[rect.width * rect.height];
-  private final transient ImageProducer src = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
+  private final int[] pixels;
+  private final transient ImageProducer src;
   private int penColor;
 
   protected PaintPanel() {
     super();
     addMouseMotionListener(this);
     addMouseListener(this);
+    pixels = new int[rect.width * rect.height];
+    src = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
     backImage = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = backImage.createGraphics();
     g2.setPaint(TEXTURE);
@@ -82,7 +84,6 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     Point2D pt = new Point2D.Double();
     for (int i = 0; i < delta; i++) {
       pt.setLocation(sx, sy);
-      // if (pt.x < 0 || pt.y < 0 || pt.x >= rect.width || pt.y >= rect.height) {
       if (!rect.contains(pt)) {
         break;
       }
