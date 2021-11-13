@@ -21,14 +21,14 @@ public final class MainPanel extends JPanel {
 
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        ((JFrame) c).addWindowStateListener(e -> {
+      if (c instanceof Window) {
+        ((Window) c).addWindowStateListener(e -> {
           if (check.isSelected() && e.getNewState() == Frame.ICONIFIED) {
             e.getWindow().dispose();
           }
         });
         // or
-        // ((JFrame) c).addWindowListener(new WindowAdapter() {
+        // ((Window) c).addWindowListener(new WindowAdapter() {
         //   @Override public void windowIconified(WindowEvent e) {
         //     if (check.isSelected()) {
         //       e.getWindow().dispose();

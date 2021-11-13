@@ -25,8 +25,9 @@ public final class MainPanel extends JPanel {
 
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        ((JFrame) c).addWindowStateListener(e -> {
+      if (c instanceof Window) {
+        Window window = (Window) c;
+        window.addWindowStateListener(e -> {
           String ws;
           switch (e.getNewState()) {
             case Frame.NORMAL:
@@ -51,7 +52,7 @@ public final class MainPanel extends JPanel {
           log.append(String.format("WindowStateListener: %s%n", ws));
         });
 
-        ((JFrame) c).addWindowListener(new WindowListener() {
+        window.addWindowListener(new WindowListener() {
           @Override public void windowOpened(WindowEvent e) {
             log.append("windowOpened\n");
           }

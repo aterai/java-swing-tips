@@ -51,8 +51,8 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> {
       // Component c = SwingUtilities.getRoot(getRootPane());
       Container c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        JFrame frame = (JFrame) c;
+      if (c instanceof Window) {
+        Window frame = (Window) c;
         frame.addWindowListener(handler);
         frame.addComponentListener(handler);
         handler.initFrameSizeAndLocation(frame);
@@ -90,7 +90,7 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
   public final Dimension dim = new Dimension(320, 240);
   public final Point pos = new Point();
 
-  public void initFrameSizeAndLocation(JFrame frame) {
+  public void initFrameSizeAndLocation(Window frame) {
     int wdim = prefs.getInt(PREFIX + "dimw", dim.width);
     int hdim = prefs.getInt(PREFIX + "dimh", dim.height);
     dim.setSize(wdim, hdim);
@@ -123,7 +123,7 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
   }
 
   @Override public void componentMoved(ComponentEvent e) {
-    JFrame frame = (JFrame) e.getComponent();
+    Frame frame = (Frame) e.getComponent();
     if (frame.getExtendedState() == Frame.NORMAL) {
       Point pt = frame.getLocationOnScreen();
       if (pt.x < 0 || pt.y < 0) {
