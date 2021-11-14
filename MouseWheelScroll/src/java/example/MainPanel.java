@@ -52,7 +52,8 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    Stream.of(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar).forEach(sb -> sb.setUnitIncrement(25));
+    Stream.of(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar)
+        .forEach(sb -> sb.setUnitIncrement(25));
 
     InputMap im = scroll.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     ActionMap am = scroll.getActionMap();
