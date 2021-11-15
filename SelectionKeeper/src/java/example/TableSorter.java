@@ -506,15 +506,7 @@ class SortableHeaderRenderer implements TableCellRenderer {
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) cellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    Optional.ofNullable(table.getModel())
-        .filter(TableSorter.class::isInstance).map(TableSorter.class::cast)
-        .ifPresent(m -> {
-          int modelColumn = table.convertColumnIndexToModel(column);
-          l.setIcon(m.getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
-          l.setHorizontalTextPosition(SwingConstants.LEFT);
-        });
-    return l;
+    Component c = cellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     // TableModel model = table.getModel();
     // if (c instanceof JLabel && model instanceof TableSorter) {
     //   JLabel l = (JLabel) c;
@@ -522,7 +514,18 @@ class SortableHeaderRenderer implements TableCellRenderer {
     //   l.setIcon(((TableSorter) model).getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
     //   l.setHorizontalTextPosition(SwingConstants.LEFT);
     // }
-    // return c;
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      Optional.ofNullable(table.getModel())
+          .filter(TableSorter.class::isInstance)
+          .map(TableSorter.class::cast)
+          .ifPresent(m -> {
+            int modelColumn = table.convertColumnIndexToModel(column);
+            l.setIcon(m.getHeaderRendererIcon(modelColumn, l.getFont().getSize()));
+            l.setHorizontalTextPosition(SwingConstants.LEFT);
+          });
+    }
+    return c;
   }
 }
 
