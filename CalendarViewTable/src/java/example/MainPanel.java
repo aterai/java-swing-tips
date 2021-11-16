@@ -72,13 +72,15 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(monthTable));
     add(dateLabel, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
   }
 
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
-    monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault())));
+    String ptn = "yyyy / MM";
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern(ptn).withLocale(Locale.getDefault());
+    monthLabel.setText(localDate.format(fmt));
     monthTable.setModel(new CalendarViewTableModel(localDate));
   }
 
@@ -150,7 +152,7 @@ class CalendarViewTableModel extends DefaultTableModel {
 
   @Override public String getColumnName(int column) {
     return weekFields.getFirstDayOfWeek().plus(column)
-      .getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault());
+        .getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault());
   }
 
   @Override public int getRowCount() {

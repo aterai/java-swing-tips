@@ -49,8 +49,8 @@ public final class MainPanel extends JPanel {
             .map(DefaultMutableTreeNode::getUserObject)
             .filter(PluginNode.class::isInstance)
             .map(PluginNode.class::cast)
-            .ifPresent(uo -> textArea.append(String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex()))));
-
+            .map(uo -> String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex())))
+            .ifPresent(textArea::append);
         // Object[] children = e.getChildren();
         // boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children)
         //   && children.length == 1 && children[0] instanceof DefaultMutableTreeNode;

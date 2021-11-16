@@ -90,7 +90,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static JInternalFrame makeInternalFrame(JDesktopPane desktop) {
-    JInternalFrame f = new JInternalFrame(String.format("Document #%s", ++openFrameCount), true, true, true, true);
+    String title = String.format("Document #%s", ++openFrameCount);
+    JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     desktop.add(f);
     row += 1;
     f.setSize(240, 120);

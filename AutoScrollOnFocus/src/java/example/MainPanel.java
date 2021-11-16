@@ -11,19 +11,17 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2, 5, 5));
-
     Box box = makeTestBox();
     box.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
       @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
         Component c = super.getComponentAfter(focusCycleRoot, cmp);
         // TEST1: box.scrollRectToVisible(c.getBounds());
         // TEST2:
-        // Optional.ofNullable(SwingUtilities.getAncestorOfClass(JViewport.class, focusCycleRoot)).ifPresent(v -> {
-        //   Component vc = SwingUtilities.getUnwrappedView((JViewport) v);
-        //   if (vc instanceof JComponent) {
-        //     ((JComponent) vc).scrollRectToVisible(c.getBounds());
-        //   }
-        // });
+        // Optional.ofNullable(SwingUtilities.getAncestorOfClass(JViewport.class, focusCycleRoot))
+        //     .filter(JViewport.class::isInstance).map(JViewport.class::cast)
+        //     .map(SwingUtilities::getUnwrappedView)
+        //     .filter(JComponent.class::isInstance).map(JComponent.class::cast)
+        //     .ifPresent(view -> view.scrollRectToVisible(c.getBounds()));
         if (focusCycleRoot instanceof JComponent) {
           ((JComponent) focusCycleRoot).scrollRectToVisible(c.getBounds());
         }

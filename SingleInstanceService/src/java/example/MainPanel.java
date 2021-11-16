@@ -31,7 +31,8 @@ public final class MainPanel extends JPanel {
     }
     JFrame frame = new JFrame("@title@");
     try {
-      SingleInstanceService sis = (SingleInstanceService) ServiceManager.lookup("javax.jnlp.SingleInstanceService");
+      String serviceName = "javax.jnlp.SingleInstanceService";
+      SingleInstanceService sis = (SingleInstanceService) ServiceManager.lookup(serviceName);
       sis.addSingleInstanceListener(new SingleInstanceListener() {
         private int count;
         @Override public void newActivation(String[] args) {
