@@ -28,7 +28,6 @@ public final class MainPanel extends JPanel {
     p.add(new JComboBox<>(makeModel()), c);
 
     JTextArea textArea = new JTextArea();
-    textArea.setText("dummy");
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
@@ -41,13 +40,13 @@ public final class MainPanel extends JPanel {
         removeMouseWheelListener(handler);
         super.updateUI();
         handler = e -> {
-          JComboBox<?> source = (JComboBox<?>) e.getComponent();
-          if (!source.hasFocus()) {
-            return;
-          }
-          int ni = source.getSelectedIndex() + e.getWheelRotation();
-          if (ni >= 0 && ni < source.getItemCount()) {
-            source.setSelectedIndex(ni);
+          Component c = e.getComponent();
+          if (c.hasFocus() && c instanceof JComboBox) {
+            JComboBox<?> combo = (JComboBox<?>) c;
+            int idx = combo.getSelectedIndex() + e.getWheelRotation();
+            if (idx >= 0 && idx < combo.getItemCount()) {
+              combo.setSelectedIndex(idx);
+            }
           }
         };
         addMouseWheelListener(handler);
