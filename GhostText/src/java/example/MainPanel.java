@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.JTextComponent;
@@ -100,23 +101,32 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    if (c instanceof JLayer) {
-      JLayer<?> jlayer = (JLayer<?>) c;
-      JTextComponent tc = (JTextComponent) jlayer.getView();
-      if (tc.getText().isEmpty() && !tc.hasFocus()) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(hint.getBackground());
-        Insets i = tc.getInsets();
-        Dimension d = hint.getPreferredSize();
-        SwingUtilities.paintComponent(g2, hint, tc, i.left, i.top, d.width, d.height);
-        // int baseline = tc.getBaseline(tc.getWidth(), tc.getHeight());
-        // Font font = tc.getFont();
-        // FontRenderContext frc = g2.getFontRenderContext();
-        // TextLayout tl = new TextLayout(hintMessage, font, frc);
-        // tl.draw(g2, i.left + 2, baseline);
-        g2.dispose();
-      }
-    }
+    Optional.ofNullable(c)
+        .filter(JLayer.class::isInstance).map(JLayer.class::cast)
+        .map(JLayer::getView)
+        .filter(JTextComponent.class::isInstance).map(JTextComponent.class::cast)
+        .filter(tc -> tc.getText().isEmpty() && !tc.hasFocus())
+        .ifPresent(tc -> paintHint(g, tc));
+    // if (c instanceof JLayer<?>) {
+    //   JTextComponent tc = (JTextComponent) ((JLayer<?>) c).getView();
+    //   if (tc.getText().isEmpty() && !tc.hasFocus()) {
+    //     paintHint(g, tc);
+    //   }
+    // }
+  }
+
+  private void paintHint(Graphics g, JTextComponent tc) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(hint.getBackground());
+    Insets i = tc.getInsets();
+    Dimension d = hint.getPreferredSize();
+    SwingUtilities.paintComponent(g2, hint, tc, i.left, i.top, d.width, d.height);
+    // int baseline = tc.getBaseline(tc.getWidth(), tc.getHeight());
+    // Font font = tc.getFont();
+    // FontRenderContext frc = g2.getFontRenderContext();
+    // TextLayout tl = new TextLayout(hintMessage, font, frc);
+    // tl.draw(g2, i.left + 2, baseline);
+    g2.dispose();
   }
 
   @Override public void installUI(JComponent c) {
