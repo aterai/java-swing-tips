@@ -29,8 +29,8 @@ public final class MainPanel extends JPanel {
         g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
 
         int fillBottom = fillTop + trackHeight;
-        int fillRight = getXPositionForValue(c, new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop));
-
+        Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
+        int fillRight = getXPositionForValue(c, r);
         g.setColor(Color.ORANGE);
         g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
 
@@ -39,23 +39,15 @@ public final class MainPanel extends JPanel {
       }
 
       // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
-      protected int getXPositionForValue(JSlider slider, Rectangle trackRect) {
-        int value = slider.getValue();
-        int min = slider.getMinimum();
-        int max = slider.getMaximum();
-        int trackLength = trackRect.width;
-        float valueRange = (float) max - (float) min;
-        float pixelsPerValue = (float) trackLength / valueRange;
+      private int getXPositionForValue(JSlider slider, Rectangle trackRect) {
+        float value = slider.getValue();
+        float min = slider.getMinimum();
+        float max = slider.getMaximum();
+        float pixelsPerValue = trackRect.width / (max - min);
         int trackLeft = trackRect.x;
         int trackRight = trackRect.x + trackRect.width - 1;
-
-        int xpos = trackLeft;
-        xpos += Math.round(pixelsPerValue * ((float) value - min));
-
-        xpos = Math.max(trackLeft, xpos);
-        xpos = Math.min(trackRight, xpos);
-
-        return xpos;
+        int pos = trackLeft + Math.round(pixelsPerValue * (value - min));
+        return Math.max(trackLeft, Math.min(trackRight, pos));
       }
     });
 
