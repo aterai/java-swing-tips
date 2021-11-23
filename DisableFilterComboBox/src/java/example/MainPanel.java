@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
           if (labelText.equals(label.getText())) {
             Component c = label.getLabelFor();
             label.setEnabled(f);
-            if (c instanceof JComboBox<?>) {
+            if (c instanceof JComboBox) {
               JComboBox<?> combo = (JComboBox<?>) c;
               combo.setEnabled(f);
               ((JComponent) combo.getRenderer()).setOpaque(f);

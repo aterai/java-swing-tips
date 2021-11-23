@@ -107,7 +107,7 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
         .filter(JTextComponent.class::isInstance).map(JTextComponent.class::cast)
         .filter(tc -> tc.getText().isEmpty() && !tc.hasFocus())
         .ifPresent(tc -> paintHint(g, tc));
-    // if (c instanceof JLayer<?>) {
+    // if (c instanceof JLayer) {
     //   JTextComponent tc = (JTextComponent) ((JLayer<?>) c).getView();
     //   if (tc.getText().isEmpty() && !tc.hasFocus()) {
     //     paintHint(g, tc);
