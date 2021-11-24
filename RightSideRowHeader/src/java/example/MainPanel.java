@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -206,9 +207,15 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       vpbInsets = new Insets(0, 0, 0, 0);
     }
 
-    Component view = Objects.nonNull(viewport) ? viewport.getView() : null;
-    Dimension viewPrefSize = Objects.nonNull(view) ? view.getPreferredSize() : new Dimension();
-    Dimension extentSize = Objects.nonNull(viewport) ? viewport.toViewCoordinates(availR.getSize()) : new Dimension();
+    Component view = Optional.ofNullable(viewport)
+        .map(JViewport::getView)
+        .orElse(null);
+    Dimension viewPrefSize = Optional.ofNullable(view)
+        .map(Component::getPreferredSize)
+        .orElseGet(Dimension::new);
+    Dimension extentSize = Optional.ofNullable(viewport)
+        .map(v -> v.toViewCoordinates(availR.getSize()))
+        .orElseGet(Dimension::new);
 
     boolean scrollableWidth = false;
     boolean scrollableHeight = false;
@@ -311,13 +318,9 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     colHeadR.width = availR.width + vpbInsets.left + vpbInsets.right;
     colHeadR.x = availR.x - vpbInsets.left;
 
-    if (Objects.nonNull(rowHead)) {
-      rowHead.setBounds(rowHeadR);
-    }
+    Optional.ofNullable(rowHead).ifPresent(rh -> rh.setBounds(rowHeadR));
 
-    if (Objects.nonNull(colHead)) {
-      colHead.setBounds(colHeadR);
-    }
+    Optional.ofNullable(colHead).ifPresent(ch -> ch.setBounds(colHeadR));
 
     if (Objects.nonNull(vsb)) {
       if (vsbNeeded) {
