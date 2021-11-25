@@ -25,8 +25,8 @@ public final class MainPanel extends JPanel {
 
     EventQueue.invokeLater(() -> {
       Component c = getTopLevelAncestor();
-      if (c instanceof JFrame) {
-        JFrame frame = (JFrame) c;
+      if (c instanceof Frame) {
+        Frame frame = (Frame) c;
         SaveHandler handler = new SaveHandler(frame);
         handler.addEnabledFlagComponent(saveButton);
         frame.addWindowListener(handler);
@@ -77,11 +77,11 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
   // public static final String ASTERISK_TITLE_BAR = "unsaved";
   public static final String CMD_SAVE = "save";
   public static final String CMD_EXIT = "exit";
-  private final JFrame frame;
+  private final Frame frame;
   private final String title;
   private final List<JComponent> list = new ArrayList<>();
 
-  protected SaveHandler(JFrame frame) {
+  protected SaveHandler(Frame frame) {
     super();
     this.frame = frame;
     this.title = frame.getTitle();

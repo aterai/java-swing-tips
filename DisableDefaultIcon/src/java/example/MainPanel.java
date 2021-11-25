@@ -60,8 +60,8 @@ public final class MainPanel extends JPanel {
 
   public void setIconImage(Image image) {
     Container c = getTopLevelAncestor();
-    if (c instanceof JFrame) {
-      ((JFrame) c).setIconImage(image);
+    if (c instanceof Frame) {
+      ((Frame) c).setIconImage(image);
     }
   }
 

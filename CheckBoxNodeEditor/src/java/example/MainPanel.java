@@ -29,12 +29,12 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
     Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
-      .filter(DefaultMutableTreeNode.class::isInstance)
-      .map(DefaultMutableTreeNode.class::cast)
-      .forEach(n -> {
-        String title = Objects.toString(n.getUserObject(), "");
-        n.setUserObject(new CheckBoxNode(title, Status.DESELECTED));
-      });
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(n -> {
+          String title = Objects.toString(n.getUserObject(), "");
+          n.setUserObject(new CheckBoxNode(title, Status.DESELECTED));
+        });
     model.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
     tree.setEditable(true);

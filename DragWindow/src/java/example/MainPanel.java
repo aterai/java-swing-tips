@@ -63,7 +63,7 @@ public final class MainPanel {
     JButton button = new JButton("Exit");
     button.addActionListener(e -> {
       JComponent c = (JComponent) e.getSource();
-      JFrame frame = (JFrame) c.getTopLevelAncestor();
+      Window frame = (Window) c.getTopLevelAncestor();
       // frame.dispose();
       // System.exit(0);
       // frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -92,7 +92,7 @@ public final class MainPanel {
     return bi;
   }
 
-  public static JWindow createSplashScreen(JFrame frame, ImageIcon img) {
+  public static JWindow createSplashScreen(Frame frame, ImageIcon img) {
     DragWindowListener dwl = new DragWindowListener();
 
     JLabel label = new JLabel(img);

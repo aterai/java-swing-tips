@@ -109,7 +109,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
       loadWindowState(service, codebase, windowState);
       return new WindowAdapter() {
         @Override public void windowClosing(WindowEvent e) {
-          JFrame f = (JFrame) e.getComponent();
+          Frame f = (Frame) e.getComponent();
           if (f.getExtendedState() == Frame.NORMAL) {
             windowState.setSize(f.getSize());
             // Point pt = f.getLocationOnScreen();
@@ -193,6 +193,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
 //   protected TestBufferedOutputStream(OutputStream out) {
 //     super(out);
 //   }
+//
 //   @Override public void close() throws IOException {
 //     System.out.println("BufferedOutputStream");
 //     super.close();
