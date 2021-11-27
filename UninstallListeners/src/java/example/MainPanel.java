@@ -34,20 +34,23 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         JSlider slider = this;
-        AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
-          try {
-            // https://community.oracle.com/thread/1360123
-            Class<BasicSliderUI> uiClass = BasicSliderUI.class;
-            Method uninstall = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
-            uninstall.setAccessible(true);
-            uninstall.invoke(getUI(), slider);
-            Method uninstallKbdActs = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
-            uninstallKbdActs.setAccessible(true);
-            uninstallKbdActs.invoke(getUI(), slider);
-          } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            throw new UnsupportedOperationException(ex);
+        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+          @SuppressWarnings("AvoidAccessibilityAlteration")
+          @Override public Void run() {
+            try {
+              // https://community.oracle.com/thread/1360123
+              Class<BasicSliderUI> uiClass = BasicSliderUI.class;
+              Method uninstall = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
+              uninstall.setAccessible(true);
+              uninstall.invoke(getUI(), slider);
+              Method uninstallKbdActs = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
+              uninstallKbdActs.setAccessible(true);
+              uninstallKbdActs.invoke(getUI(), slider);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+              throw new UnsupportedOperationException(ex);
+            }
+            return null;
           }
-          return null;
         });
       }
     };
