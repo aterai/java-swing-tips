@@ -10,14 +10,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JButton button = new JButton("show frame title");
     button.addActionListener(e -> {
+      // Container w = ((JComponent) e.getSource()).getTopLevelAncestor();
       Window w = SwingUtilities.getWindowAncestor((Component) e.getSource());
-      // Container c = ((JComponent) e.getSource()).getTopLevelAncestor();
-      // Frame f = JOptionPane.getFrameForComponent((Component) e.getSource());
-      if (w instanceof JFrame) {
-        JFrame frame = (JFrame) w;
+      // Frame frame = JOptionPane.getFrameForComponent((Component) e.getSource());
+      if (w instanceof Frame) {
+        Frame frame = (Frame) w;
         String msg = "parentFrame.getTitle(): " + frame.getTitle();
         JOptionPane.showMessageDialog(frame, msg, "title", JOptionPane.INFORMATION_MESSAGE);
       }
