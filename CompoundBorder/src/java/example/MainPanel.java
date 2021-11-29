@@ -12,8 +12,8 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-
-    TitledBorder b1 = BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "TitledBorder");
+    Border b0 = BorderFactory.createLineBorder(Color.GRAY);
+    TitledBorder b1 = BorderFactory.createTitledBorder(b0, "TitledBorder");
     b1.setTitleJustification(TitledBorder.CENTER);
 
     JPanel p1 = new JPanel();
