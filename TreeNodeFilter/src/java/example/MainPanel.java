@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
         /* not needed */
       }
     });
-    JPanel n = new JPanel(new BorderLayout());
-    n.add(field);
-    n.setBorder(BorderFactory.createTitledBorder("Tree filter"));
+    JPanel north = new JPanel(new BorderLayout());
+    north.add(field);
+    north.setBorder(BorderFactory.createTitledBorder("Tree filter"));
 
     tree.setRowHeight(-1);
     TreeModel model = tree.getModel();
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
-        .forEach(node -> node.setUserObject(new FilterableNode(Objects.toString(node.getUserObject(), ""))));
+        .forEach(n -> n.setUserObject(new FilterableNode(Objects.toString(n.getUserObject(), ""))));
 
     model.addTreeModelListener(new FilterableStatusUpdateListener());
 
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     fireDocumentChangeEvent();
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    add(n, BorderLayout.NORTH);
+    add(north, BorderLayout.NORTH);
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
   }

@@ -42,7 +42,8 @@ public final class MainPanel extends JPanel {
         .filter(TreeNode::isLeaf)
         .forEach(node -> {
           boolean isEven = node.getParent().getIndex(node) % 2 == 0;
-          node.setUserObject(new CheckBoxNode(Objects.toString(node.getUserObject(), ""), isEven));
+          String title = Objects.toString(node.getUserObject(), "");
+          node.setUserObject(new CheckBoxNode(title, isEven));
         });
 
     tree.setEditable(true);

@@ -43,10 +43,12 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
     Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
-      .filter(DefaultMutableTreeNode.class::isInstance)
-      .map(DefaultMutableTreeNode.class::cast)
-      .forEach(n -> n.setUserObject(new CheckBoxNode(Objects.toString(n.getUserObject(), ""), Status.DESELECTED)));
-
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(n -> {
+          String title = Objects.toString(n.getUserObject(), "");
+          n.setUserObject(new CheckBoxNode(title, Status.DESELECTED));
+        });
     model.addTreeModelListener(new CheckBoxStatusUpdateListener());
 
     tree.setEditable(true);
@@ -141,7 +143,7 @@ class TriStateCheckBox extends JCheckBox {
 class IndeterminateIcon implements Icon {
   private static final Color FOREGROUND = new Color(0xC8_32_14_FF, true);
   // TEST: private static final Color FOREGROUND = UIManager.getColor("CheckBox.foreground");
-  private static final int SIDE_MARGIN = 4;
+  private static final int MARGIN = 4;
   private static final int HEIGHT = 2;
   private final Icon icon = UIManager.getIcon("CheckBox.icon");
 
@@ -150,7 +152,7 @@ class IndeterminateIcon implements Icon {
     g2.translate(x, y);
     icon.paintIcon(c, g2, 0, 0);
     g2.setPaint(FOREGROUND);
-    g2.fillRect(SIDE_MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
+    g2.fillRect(MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - MARGIN - MARGIN, HEIGHT);
     g2.dispose();
   }
 
