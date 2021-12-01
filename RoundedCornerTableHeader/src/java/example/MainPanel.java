@@ -112,8 +112,8 @@ public final class MainPanel extends JPanel {
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
     Color color = monthThemeColor.get(localDate.getMonthValue() - 1);
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault());
-    monthLabel.setText(localDate.format(fmt));
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
+    monthLabel.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
     monthLabel.setForeground(color);
     monthTable.setModel(new CalendarViewTableModel(localDate));
     monthTable.getTableHeader().setBackground(color);

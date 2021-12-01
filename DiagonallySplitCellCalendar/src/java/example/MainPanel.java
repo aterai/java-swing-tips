@@ -82,7 +82,8 @@ public final class MainPanel extends JPanel {
 
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
-    monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM").withLocale(Locale.getDefault())));
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
+    monthLabel.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
     monthTable.setModel(new CalendarViewTableModel(localDate));
     // EventQueue.invokeLater(monthTable::doLayout);
   }

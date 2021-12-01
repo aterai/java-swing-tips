@@ -162,8 +162,8 @@ class CalendarViewTableModel extends DefaultTableModel {
   }
 
   @Override public String getColumnName(int column) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM").withLocale(Locale.getDefault());
-    return column == 0 ? currentMonth.format(formatter) : "";
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM");
+    return column == 0 ? currentMonth.format(fmt.withLocale(Locale.getDefault())) : "";
   }
 
   @Override public Object getValueAt(int row, int column) {
