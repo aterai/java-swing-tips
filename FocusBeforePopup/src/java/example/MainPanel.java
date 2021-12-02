@@ -159,7 +159,7 @@ class TextComponentPopupMenu extends JPopupMenu {
       JTextComponent tc = (JTextComponent) c;
       tc.requestFocusInWindow();
       boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
-      if (tc instanceof JTextField && !tc.isFocusOwner() && !hasSelectedText) {
+      if (tc instanceof JTextComponent && !tc.isFocusOwner() && !hasSelectedText) {
         tc.selectAll();
         hasSelectedText = true;
       }
