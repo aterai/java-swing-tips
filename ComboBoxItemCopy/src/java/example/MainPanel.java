@@ -44,8 +44,9 @@ public final class MainPanel extends JPanel {
     im.put(keyStroke, COPY_KEY);
     JPopupMenu popup = new JPopupMenu();
     popup.add(COPY_KEY).addActionListener(e -> {
+      Class<?> clz = JComboBox.class;
       Component o = popup.getInvoker();
-      Container c = o instanceof JComboBox ? (Container) o : SwingUtilities.getAncestorOfClass(JComboBox.class, o);
+      Component c = clz.isInstance(o) ? o : SwingUtilities.getAncestorOfClass(clz, o);
       if (c instanceof JComboBox) {
         JComboBox<?> combo = (JComboBox<?>) c;
         Action a = combo.getActionMap().get(COPY_KEY);
@@ -113,7 +114,7 @@ public final class MainPanel extends JPanel {
 class TextFieldPopupMenu extends JPopupMenu {
   private final Action cutAction = new DefaultEditorKit.CutAction();
   private final Action copyAction = new DefaultEditorKit.CopyAction();
-  private final Action pasteAction = new DefaultEditorKit.PasteAction();
+  // private final Action pasteAction = new DefaultEditorKit.PasteAction();
   private final Action deleteAction = new AbstractAction("delete") {
     @Override public void actionPerformed(ActionEvent e) {
       Component c = getInvoker();
@@ -127,7 +128,7 @@ class TextFieldPopupMenu extends JPopupMenu {
     super();
     add(cutAction);
     add(copyAction);
-    add(pasteAction);
+    add(new DefaultEditorKit.PasteAction());
     add(deleteAction);
   }
 
