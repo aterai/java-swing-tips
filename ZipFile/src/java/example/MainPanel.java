@@ -181,7 +181,8 @@ final class ZipUtil {
   }
 
   public static void zip(Path srcDir, Path zip) throws IOException {
-    // try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) { // noticeably poor performance in JDK 8
+    // noticeably poor performance in JDK 8
+    // try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) {
     try (Stream<Path> s = Files.walk(srcDir).filter(f -> f.toFile().isFile())) {
       List<Path> files = s.collect(Collectors.toList());
       try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zip))) {
@@ -270,14 +271,16 @@ class TextAreaHandler extends StreamHandler {
     }
   }
 
-  // [UnsynchronizedOverridesSynchronized] Unsynchronized method publish overrides synchronized method in StreamHandler
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method publish overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void publish(LogRecord logRecord) {
     super.publish(logRecord);
     flush();
   }
 
-  // [UnsynchronizedOverridesSynchronized] Unsynchronized method close overrides synchronized method in StreamHandler
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method close overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override public synchronized void close() {
     flush();
