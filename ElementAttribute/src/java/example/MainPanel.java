@@ -130,9 +130,11 @@ class CustomTooltipEditorPane extends JEditorPane {
           JOptionPane.showMessageDialog(editor, e.getURL());
         } else if (Objects.equals(e.getEventType(), HyperlinkEvent.EventType.ENTERED)) {
           tooltip = editor.getToolTipText();
-          Optional.ofNullable(e.getSourceElement())
+          Object o = Optional.ofNullable(e.getSourceElement())
               .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
-              .ifPresent(attr -> editor.setToolTipText(Objects.toString(attr.getAttribute(HTML.Attribute.TITLE))));
+              .map(attr -> attr.getAttribute(HTML.Attribute.TITLE))
+              .orElse(null);
+          editor.setToolTipText((String) o);
           // Element elem = e.getSourceElement();
           // if (Objects.nonNull(elem)) {
           //   AttributeSet attr = elem.getAttributes();
@@ -191,11 +193,8 @@ class TooltipEditorKit extends HTMLEditorKit {
           if (kind == HTML.Tag.DIV) {
             return new BlockView(elem, View.Y_AXIS) {
               @Override public String getToolTipText(float x, float y, Shape allocation) {
-                String s = super.getToolTipText(x, y, allocation);
-                if (Objects.isNull(s)) {
-                  s = Objects.toString(getElement().getAttributes().getAttribute(HTML.Attribute.TITLE));
-                }
-                return s;
+                Object o = getElement().getAttributes().getAttribute(HTML.Attribute.TITLE);
+                return o == null ? super.getToolTipText(x, y, allocation) : Objects.toString(o);
               }
             };
           }
