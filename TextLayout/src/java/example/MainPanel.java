@@ -43,7 +43,8 @@ public final class MainPanel extends JPanel {
 class TextLayoutPanel extends JComponent {
   private static final String TEXT = "abcdefghijklmnopqrstuvwxyz";
   private static final Font FONT = new Font(Font.SERIF, Font.ITALIC, 64);
-  private static final TextLayout TEXT_LAYOUT = new TextLayout(TEXT, FONT, new FontRenderContext(null, true, true));
+  private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
+  private static final TextLayout TEXT_LAYOUT = new TextLayout(TEXT, FONT, FRC);
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();

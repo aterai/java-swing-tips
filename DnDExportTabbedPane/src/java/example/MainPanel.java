@@ -532,7 +532,8 @@ class TabTransferHandler extends TransferHandler {
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
     // System.out.println("canImport");
     if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
-      System.out.println("canImport:" + support.isDrop() + " " + support.isDataFlavorSupported(localObjectFlavor));
+      boolean b = support.isDataFlavorSupported(localObjectFlavor);
+      System.out.println("canImport:" + support.isDrop() + " " + b);
       return false;
     }
     support.setDropAction(TransferHandler.MOVE);

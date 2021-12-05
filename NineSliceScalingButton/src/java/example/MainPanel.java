@@ -217,18 +217,36 @@ class NineSliceScalingIcon implements Icon {
     int iw = image.getWidth(c);
     int ih = image.getHeight(c);
 
-    g2.drawImage(image.getSubimage(lw, th, iw - lw - rw, ih - th - bh), lw, th, width - lw - rw, height - th - bh, c);
+    g2.drawImage(
+        image.getSubimage(lw, th, iw - lw - rw, ih - th - bh),
+        lw, th, width - lw - rw, height - th - bh, c);
 
     if (lw > 0 && rw > 0 && th > 0 && bh > 0) {
-      g2.drawImage(image.getSubimage(lw, 0, iw - lw - rw, th), lw, 0, width - lw - rw, th, c);
-      g2.drawImage(image.getSubimage(lw, ih - bh, iw - lw - rw, bh), lw, height - bh, width - lw - rw, bh, c);
-      g2.drawImage(image.getSubimage(0, th, lw, ih - th - bh), 0, th, lw, height - th - bh, c);
-      g2.drawImage(image.getSubimage(iw - rw, th, rw, ih - th - bh), width - rw, th, rw, height - th - bh, c);
+      g2.drawImage(
+          image.getSubimage(lw, 0, iw - lw - rw, th),
+          lw, 0, width - lw - rw, th, c);
+      g2.drawImage(
+          image.getSubimage(lw, ih - bh, iw - lw - rw, bh),
+          lw, height - bh, width - lw - rw, bh, c);
+      g2.drawImage(
+          image.getSubimage(0, th, lw, ih - th - bh),
+          0, th, lw, height - th - bh, c);
+      g2.drawImage(
+          image.getSubimage(iw - rw, th, rw, ih - th - bh),
+          width - rw, th, rw, height - th - bh, c);
 
-      g2.drawImage(image.getSubimage(0, 0, lw, th), 0, 0, c);
-      g2.drawImage(image.getSubimage(iw - rw, 0, rw, th), width - rw, 0, c);
-      g2.drawImage(image.getSubimage(0, ih - bh, lw, bh), 0, height - bh, c);
-      g2.drawImage(image.getSubimage(iw - rw, ih - bh, rw, bh), width - rw, height - bh, c);
+      g2.drawImage(
+          image.getSubimage(0, 0, lw, th),
+          0, 0, c);
+      g2.drawImage(
+          image.getSubimage(iw - rw, 0, rw, th),
+          width - rw, 0, c);
+      g2.drawImage(
+          image.getSubimage(0, ih - bh, lw, bh),
+          0, height - bh, c);
+      g2.drawImage(
+          image.getSubimage(iw - rw, ih - bh, rw, bh),
+          width - rw, height - bh, c);
     }
 
     g2.dispose();

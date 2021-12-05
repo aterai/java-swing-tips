@@ -53,20 +53,24 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeCheckBoxPanel(DnDTabbedPane tab) {
+  private static Component makeCheckBoxPanel(DnDTabbedPane tabs) {
     JCheckBox check1 = new JCheckBox("Tab Ghost", true);
-    check1.addActionListener(e -> tab.hasGhost = check1.isSelected());
+    check1.addActionListener(e -> tabs.hasGhost = check1.isSelected());
 
     JCheckBox check2 = new JCheckBox("Top", true);
-    check2.addActionListener(e ->
-        tab.setTabPlacement(check2.isSelected() ? SwingConstants.TOP : SwingConstants.RIGHT));
+    check2.addActionListener(e -> {
+      boolean f = ((JCheckBox) e.getSource()).isSelected();
+      tabs.setTabPlacement(f ? SwingConstants.TOP : SwingConstants.RIGHT);
+    });
 
     JCheckBox check3 = new JCheckBox("SCROLL_TAB_LAYOUT", true);
-    check3.addActionListener(e ->
-        tab.setTabLayoutPolicy(check3.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT));
+    check3.addActionListener(e -> {
+      boolean f = ((JCheckBox) e.getSource()).isSelected();
+      tabs.setTabLayoutPolicy(f ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
+    });
 
     JCheckBox check4 = new JCheckBox("Debug Paint", true);
-    check4.addActionListener(e -> tab.isPaintScrollArea = check4.isSelected());
+    check4.addActionListener(e -> tabs.isPaintScrollArea = check4.isSelected());
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p1.add(check1);

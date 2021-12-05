@@ -36,13 +36,13 @@ public final class MainPanel extends JPanel {
     tree.setVisibleRowCount(3);
 
     Box box = Box.createVerticalBox();
-    box.add(new JLabel("aaaaaaaaaaaaaaaaaaaaaa"));
+    box.add(new JLabel("1111111111111111111111"));
     box.add(Box.createVerticalStrut(5));
-    box.add(new JCheckBox("bbbbbbbbbbbb"));
+    box.add(new JCheckBox("22222222222"));
     box.add(Box.createVerticalStrut(5));
     box.add(new JScrollPane(tree));
     box.add(Box.createVerticalStrut(5));
-    box.add(new JButton("ccccc"));
+    box.add(new JButton("333333"));
     box.add(Box.createVerticalGlue());
     box.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
@@ -106,7 +106,8 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     Component c = e.getComponent();
     if (isDraggableComponent(splitPane, c) && e.getID() == MouseEvent.MOUSE_DRAGGED) {
       Point pt = SwingUtilities.convertPoint(c, e.getPoint(), splitPane);
-      int delta = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? pt.x - startPt.x : pt.y - startPt.y;
+      boolean isHorizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
+      int delta = isHorizontal ? pt.x - startPt.x : pt.y - startPt.y;
       splitPane.setDividerLocation(Math.max(0, dividerLocation + delta));
     }
   }

@@ -40,7 +40,8 @@ public final class MainPanel extends JPanel {
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         if (convertColumnIndexToModel(column) != targetColIdx) {
-          return renderer.getTableCellRendererComponent(this, getValueAt(row, column), false, false, row, column);
+          Object value = getValueAt(row, column);
+          return renderer.getTableCellRendererComponent(this, value, false, false, row, column);
         }
         return super.prepareRenderer(renderer, row, column);
       }

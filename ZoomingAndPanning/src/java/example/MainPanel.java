@@ -89,10 +89,10 @@ public final class MainPanel extends JPanel {
 
 class ZoomAndPanHandler extends MouseAdapter {
   private static final double ZOOM_FACTOR = 1.2;
-  private static final int MIN_ZOOM = -10;
-  private static final int MAX_ZOOM = 10;
+  private static final int MIN = -10;
+  private static final int MAX = 10;
   private static final int EXTENT = 1;
-  private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
+  private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXTENT, MIN, MAX + EXTENT);
   private final AffineTransform coordAndZoomAtf = new AffineTransform();
   private final Point2D dragStartPoint = new Point();
 
