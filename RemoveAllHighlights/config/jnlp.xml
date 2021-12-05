@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RemoveAllHighlights" />
+  <property name="jnlp.Name"     value="RemoveAllHighlights" />
+  <property name="jnlp.name"     value="removeallhighlights" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/removeallhighlights/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RemoveAllHighlights.html" />
+</project>
