@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     JButton detailsView = new JButton("Details View");
     detailsView.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      // sun.swing.FilePane filePane = (sun.swing.FilePane) findChildComponent(chooser, sun.swing.FilePane.class);
+      // sun.swing.FilePane filePane = findChildComponent(chooser, sun.swing.FilePane.class);
       // filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
 
       // if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {

@@ -299,7 +299,8 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //     super();
 //     setEditable(true);
 //     // setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
-//     setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), getBorder()));
+//     setBorder(BorderFactory.createCompoundBorder(
+//         BorderFactory.createEmptyBorder(8, 10, 8, 10), getBorder()));
 //     JComponent editor = (JComponent) getEditor().getEditorComponent();
 //     editor.setBorder(BorderFactory.createEmptyBorder());
 //     editor.setOpaque(true);

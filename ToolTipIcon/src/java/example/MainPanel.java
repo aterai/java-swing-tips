@@ -12,7 +12,6 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     URL url = getClass().getResource("wi0124-48.png");
     ImageIcon icon = new ImageIcon(url);
@@ -20,7 +19,6 @@ public final class MainPanel extends JPanel {
       @Override public JToolTip createToolTip() {
         JLabel iconlabel = new JLabel(icon);
         iconlabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        // LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
         JToolTip tip = new JToolTip() {
           @Override public Dimension getPreferredSize() {
             // if (getLayout() == null) {

@@ -139,7 +139,8 @@ class CalendarViewTableModel extends DefaultTableModel {
 
   protected CalendarViewTableModel(LocalDate date) {
     super();
-    LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1); // date.with(TemporalAdjusters.firstDayOfMonth());
+    // LocalDate firstDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
+    LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
     // int v = firstDayOfMonth.get(WeekFields.SUNDAY_START.dayOfWeek()) - 1;
     int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
     startDate = firstDayOfMonth.minusDays(v);

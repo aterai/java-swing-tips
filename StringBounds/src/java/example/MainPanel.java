@@ -61,7 +61,8 @@ public final class MainPanel extends JPanel {
     append("TextLayout#getBounds()", layout.getBounds());
 
     GlyphVector gv = font.createGlyphVector(frc, txt);
-    // GlyphVector gv = font.layoutGlyphVector(frc, txt.toCharArray(), 0, txt.length(), Font.LAYOUT_LEFT_TO_RIGHT);
+    // GlyphVector gv = font.layoutGlyphVector(
+    //     frc, txt.toCharArray(), 0, txt.length(), Font.LAYOUT_LEFT_TO_RIGHT);
     append("GlyphVector#getPixelBounds(...)", gv.getPixelBounds(frc, 0, 0));
     append("GlyphVector#getLogicalBounds()", gv.getLogicalBounds());
     append("GlyphVector#getVisualBounds()", gv.getVisualBounds());

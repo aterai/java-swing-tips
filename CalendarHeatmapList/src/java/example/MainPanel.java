@@ -151,17 +151,20 @@ public final class MainPanel extends JPanel {
   }
 
   // private class ContributionListRenderer implements ListCellRenderer<Contribution> {
-  //   private final ListCellRenderer<? super Contribution> renderer = new DefaultListCellRenderer();
+  //   private final ListCellRenderer<? super Contribution> r = new DefaultListCellRenderer();
   //
   //   @Override public Component getListCellRendererComponent(JList<? extends Contribution> list, Contribution value, int index, boolean isSelected, boolean cellHasFocus) {
   //     // Contribution v = Optional.ofNullable(value).orElseGet(list::getPrototypeCellValue);
-  //     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-  //     if (value.date.isAfter(currentLocalDate)) {
-  //       l.setIcon(new ContributionIcon(Color.WHITE));
-  //     } else {
-  //       l.setIcon(activityIcons.get(value.activity));
+  //     Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+  //     if (c instanceof JLabel) {
+  //       JLabel l = (JLabel) c;
+  //       if (value.date.isAfter(currentLocalDate)) {
+  //         l.setIcon(new ContributionIcon(Color.WHITE));
+  //       } else {
+  //         l.setIcon(activityIcons.get(value.activity));
+  //       }
   //     }
-  //     return l;
+  //     return c;
   //   }
   // }
 

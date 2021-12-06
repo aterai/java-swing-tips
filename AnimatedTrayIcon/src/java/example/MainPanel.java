@@ -31,7 +31,9 @@ public final class MainPanel extends JPanel {
     dialog.setLocationRelativeTo(null);
     dialog.setTitle("TEST: JDialog");
 
-    // TEST: icon = new TrayIcon(new ImageIcon(getClass().getResource("animated.gif")).getImage(), "TRAY", popup);
+    // TEST:
+    // Image img = new ImageIcon(getClass().getResource("animated.gif")).getImage();
+    // TrayIcon icon = new TrayIcon(img, "TRAY", popup);
     TrayIcon icon = makeTrayIcon();
     try {
       SystemTray.getSystemTray().add(icon);

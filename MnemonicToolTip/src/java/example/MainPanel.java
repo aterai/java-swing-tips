@@ -87,7 +87,7 @@ class MnemonicToolTip extends JToolTip {
   protected MnemonicToolTip() {
     super();
     setLayout(new BorderLayout());
-    // LookAndFeel.installColorsAndFont(mnemonicLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    // LookAndFeel.installColorsAndFont(label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
     mnemonicLabel.setForeground(Color.GRAY);
     mnemonicLabel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
     add(mnemonicLabel, BorderLayout.EAST);
