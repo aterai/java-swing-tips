@@ -44,7 +44,8 @@ public final class MainPanel extends JPanel {
 
     String dateFormat = "yyyy/MM/dd";
 
-    JSpinner spinner0 = new JSpinner(new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH));
+    SpinnerDateModel m0 = new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH);
+    JSpinner spinner0 = new JSpinner(m0);
     spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
 
     LocalDateTime d = LocalDateTime.now(ZoneId.systemDefault());
@@ -55,14 +56,16 @@ public final class MainPanel extends JPanel {
     System.out.println(s);
     System.out.println(e);
 
-    JSpinner spinner1 = new JSpinner(new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH));
+    SpinnerDateModel m1 = new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH);
+    JSpinner spinner1 = new JSpinner(m1);
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
 
     JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS));
     spinner2.setEditor(new LocalDateTimeEditor(spinner2, dateFormat));
 
     // JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner2.getEditor();
-    // DefaultFormatter formatter = new InternationalFormatter(DateTimeFormatter.ofPattern(dateFormat).toFormat());
+    // Format format = DateTimeFormatter.ofPattern(dateFormat).toFormat();
+    // DefaultFormatter formatter = new InternationalFormatter(format);
     // DefaultFormatterFactory factory = new DefaultFormatterFactory(formatter);
     // JFormattedTextField ftf = editor.getTextField();
     // ftf.setHorizontalAlignment(SwingConstants.LEFT);
@@ -114,15 +117,16 @@ public final class MainPanel extends JPanel {
 }
 
 class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
-  private Comparable<ChronoLocalDateTime<?>> start;
-  private Comparable<ChronoLocalDateTime<?>> end;
-  private ChronoLocalDateTime<?> value;
-  private TemporalUnit temporalUnit;
+  private transient Comparable<ChronoLocalDateTime<?>> start;
+  private transient Comparable<ChronoLocalDateTime<?>> end;
+  private transient ChronoLocalDateTime<?> value;
+  private transient TemporalUnit temporalUnit;
 
-  protected SpinnerLocalDateTimeModel(ChronoLocalDateTime<?> value,
-                                      Comparable<ChronoLocalDateTime<?>> start,
-                                      Comparable<ChronoLocalDateTime<?>> end,
-                                      TemporalUnit temporalUnit) {
+  protected SpinnerLocalDateTimeModel(
+      ChronoLocalDateTime<?> value,
+      Comparable<ChronoLocalDateTime<?>> start,
+      Comparable<ChronoLocalDateTime<?>> end,
+      TemporalUnit temporalUnit) {
     super();
     // if (Objects.nonNull(start) && start.compareTo(value) >= 0 ||
     //     Objects.nonNull(end) && end.compareTo(value) <= 0) {
