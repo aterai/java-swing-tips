@@ -5,6 +5,10 @@
 package example;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
@@ -50,18 +54,15 @@ public final class MainPanel extends JPanel {
           }
 
           @Override protected void paintContentBorderRightEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            g.setColor(SELECTED_BG);
-            g.fillRect(x, y, w, h);
+            paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
           }
 
           @Override protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            g.setColor(SELECTED_BG);
-            g.fillRect(x, y, w, h);
+            paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
           }
 
           @Override protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            g.setColor(SELECTED_BG);
-            g.fillRect(x, y, w, h);
+            paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
           }
         });
         setOpaque(true);
@@ -73,13 +74,28 @@ public final class MainPanel extends JPanel {
     };
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    tabs.addTab("A", new ImageIcon(getClass().getResource("wi0009-32.png")), new JScrollPane(new JTree()));
-    tabs.addTab("B", new ImageIcon(getClass().getResource("wi0054-32.png")), new JScrollPane(new JTextArea()));
-    tabs.addTab("C", new ImageIcon(getClass().getResource("wi0062-32.png")), new JScrollPane(new JTree()));
-    tabs.addTab("D", new ImageIcon(getClass().getResource("wi0063-32.png")), new JScrollPane(new JTextArea()));
+    tabs.addTab("A", makeIcon("example/wi0009-32.png"), new JScrollPane(new JTree()));
+    tabs.addTab("B", makeIcon("example/wi0054-32.png"), new JScrollPane(new JTextArea()));
+    tabs.addTab("C", makeIcon("example/wi0062-32.png"), new JScrollPane(new JTree()));
+    tabs.addTab("D", makeIcon("example/wi0063-32.png"), new JScrollPane(new JTextArea()));
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Icon makeIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return makeMissingIcon();
+      }
+    }).orElseGet(MainPanel::makeMissingIcon);
+  }
+
+  private static Icon makeMissingIcon() {
+    return UIManager.getIcon("OptionPane.errorIcon");
   }
 
   public static void main(String[] args) {
