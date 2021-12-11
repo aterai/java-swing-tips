@@ -8,11 +8,16 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
@@ -123,9 +128,10 @@ class FileNameRenderer implements TableCellRenderer {
     renderer.setOpaque(false);
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    icon = new ImageIcon(getClass().getResource("wi0063-16.png"));
+    Image img = makeImage("example/wi0063-16.png");
+    icon = new ImageIcon(img);
 
-    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    ImageProducer ip = new FilteredImageSource(img.getSource(), new SelectedImageFilter());
     selectedIcon = new ImageIcon(p.createImage(ip));
 
     iconLabel = new JLabel(icon);
@@ -138,6 +144,28 @@ class FileNameRenderer implements TableCellRenderer {
     Dimension d = iconLabel.getPreferredSize();
     dim.setSize(d);
     table.setRowHeight(d.height);
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(FileNameRenderer::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
