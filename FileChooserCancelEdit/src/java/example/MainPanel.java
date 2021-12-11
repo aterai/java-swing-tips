@@ -55,8 +55,9 @@ public final class MainPanel extends JPanel {
   }
 
   private static void setViewTypeDetails(JFileChooser fc) {
-    Optional.ofNullable(fc.getActionMap().get("viewTypeDetails"))
-        .ifPresent(a -> a.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, "viewTypeDetails")));
+    String cmd = "viewTypeDetails";
+    Optional.ofNullable(fc.getActionMap().get(cmd))
+        .ifPresent(a -> a.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, cmd)));
   }
 
   private static void append(JTextArea log, String str) {
