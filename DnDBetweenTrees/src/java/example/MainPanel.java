@@ -153,7 +153,7 @@ class TreeTransferHandler extends TransferHandler {
     return false;
   }
 
-  private static DefaultMutableTreeNode deepCopyTreeNode(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
+  private static DefaultMutableTreeNode deepCopyTreeNode(MutableTreeNode src, DefaultMutableTreeNode tgt) {
     // Java 9: Collections.list(src.children()).stream()
     Collections.list((Enumeration<?>) src.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
