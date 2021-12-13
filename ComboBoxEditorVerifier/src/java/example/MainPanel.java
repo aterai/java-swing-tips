@@ -65,12 +65,15 @@ public final class MainPanel extends JPanel {
 
       @Override public Component getEditorComponent() {
         // if (Objects.isNull(editorComponent)) {
-        //   JTextComponent tc = (JTextComponent) super.getEditorComponent();
-        //   editorComponent = new JLayer<>(tc, new ValidationLayerUI<>());
+        //   editorComponent = makeLayer();
         // }
-        editorComponent = Optional.ofNullable(editorComponent)
-          .orElseGet(() -> new JLayer<>((JTextComponent) super.getEditorComponent(), new ValidationLayerUI<>()));
+        editorComponent = Optional.ofNullable(editorComponent).orElseGet(this::makeLayer);
         return editorComponent;
+      }
+
+      private JLayer<JTextComponent> makeLayer() {
+        JTextComponent c = (JTextComponent) super.getEditorComponent();
+        return new JLayer<>(c, new ValidationLayerUI<>());
       }
     });
     comboBox.addPopupMenuListener(new SelectItemMenuListener());
