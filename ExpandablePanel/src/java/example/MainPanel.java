@@ -99,7 +99,11 @@ public final class MainPanel extends JPanel {
           Box p = Box.createVerticalBox();
           p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
           ButtonGroup bg = new ButtonGroup();
-          Stream.of(new JRadioButton("aa"), new JRadioButton("bb"), new JRadioButton("cc", true)).forEach(b -> {
+          Stream.of(
+            new JRadioButton("aa"),
+            new JRadioButton("bb"),
+            new JRadioButton("cc", true)
+          ).forEach(b -> {
             p.add(b);
             bg.add(b);
           });
@@ -132,18 +136,23 @@ abstract class AbstractExpansionPanel extends JPanel {
   // OvershadowingSubclassFields:
   // JComponent: private final EventListenerList listenerList = new EventListenerList();
   private ExpansionEvent expansionEvent;
-  private final JScrollPane scroll;
   private boolean openFlag;
+  private final JScrollPane scroll = new JScrollPane();
+  private final JButton button;
 
   protected AbstractExpansionPanel(String title) {
     super(new BorderLayout());
-    JButton button = new JButton(title);
+    button = new JButton(title);
+    init();
+  }
+
+  private void init() {
+    scroll.setViewportView(makePanel());
+    scroll.getVerticalScrollBar().setUnitIncrement(25);
     button.addActionListener(e -> {
       setExpanded(!isExpanded());
       fireExpansionEvent();
     });
-    scroll = new JScrollPane(makePanel());
-    scroll.getVerticalScrollBar().setUnitIncrement(25);
     add(button, BorderLayout.NORTH);
   }
 
@@ -170,7 +179,7 @@ abstract class AbstractExpansionPanel extends JPanel {
   //   listenerList.remove(ExpansionListener.class, l);
   // }
 
-  // Notify all listeners that have registered interest for
+  // Notify all listeners that have registered interest in
   // notification on this event type.The event instance
   // is lazily created using the parameters passed into
   // the fire method.
