@@ -11,15 +11,19 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
@@ -30,16 +34,16 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    model.addElement(new ListItem("wi0009", "wi0009-32.png"));
-    model.addElement(new ListItem("12345", "wi0054-32.png"));
-    model.addElement(new ListItem("wi0062-32", "wi0062-32.png"));
-    model.addElement(new ListItem("test", "wi0063-32.png"));
-    model.addElement(new ListItem("32.png", "wi0064-32.png"));
-    model.addElement(new ListItem("67890.jpg", "wi0096-32.png"));
-    model.addElement(new ListItem("6896", "wi0111-32.png"));
-    model.addElement(new ListItem("t467467est", "wi0122-32.png"));
-    model.addElement(new ListItem("test123", "wi0124-32.png"));
-    model.addElement(new ListItem("test(1)", "wi0126-32.png"));
+    model.addElement(new ListItem("wi0009", "example/wi0009-32.png"));
+    model.addElement(new ListItem("12345", "example/wi0054-32.png"));
+    model.addElement(new ListItem("wi0062-32", "example/wi0062-32.png"));
+    model.addElement(new ListItem("test", "example/wi0063-32.png"));
+    model.addElement(new ListItem("32.png", "example/wi0064-32.png"));
+    model.addElement(new ListItem("67890.jpg", "example/wi0096-32.png"));
+    model.addElement(new ListItem("6896", "example/wi0111-32.png"));
+    model.addElement(new ListItem("t467467est", "example/wi0122-32.png"));
+    model.addElement(new ListItem("test123", "example/wi0124-32.png"));
+    model.addElement(new ListItem("test(1)", "example/wi0126-32.png"));
 
     add(new JScrollPane(new ReorderableList<>(model)));
     setPreferredSize(new Dimension(320, 240));
@@ -189,6 +193,7 @@ class ReorderableList<E extends ListItem> extends JList<E> {
       srcPoint.setLocation(e.getPoint());
       l.repaint();
     }
+
     // // JDK 1.7.0
     // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
     //   ListModel model = l.getModel();
@@ -300,9 +305,31 @@ class ListItem implements Serializable {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    this.icon = new ImageIcon(getClass().getResource(path));
+    this.icon = new ImageIcon(makeImage(path));
     ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ListItem::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }
 

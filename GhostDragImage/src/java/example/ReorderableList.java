@@ -7,12 +7,17 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
@@ -22,7 +27,7 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
   private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private transient MouseInputListener rbl;
   private Color rubberBandColor;
-  private final Path2D rubberBand = new Path2D.Double();
+  public final Path2D rubberBand = new Path2D.Double();
 
   public ReorderableList(ListModel<E> model) {
     super(model);
@@ -253,8 +258,30 @@ class ListItem implements Serializable {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    this.icon = new ImageIcon(getClass().getResource(path));
+    this.icon = new ImageIcon(makeImage(path));
     ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ListItem::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }

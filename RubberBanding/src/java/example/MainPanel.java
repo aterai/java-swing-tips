@@ -8,11 +8,16 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -21,15 +26,15 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    model.addElement(new ListItem("32x32Icon", "wi0054-32.png"));
-    model.addElement(new ListItem("test", "wi0062-32.png"));
-    model.addElement(new ListItem("PngImage", "wi0063-32.png"));
-    model.addElement(new ListItem("Test", "wi0064-32.png"));
-    model.addElement(new ListItem("3333", "wi0063-32.png"));
-    model.addElement(new ListItem("12345", "wi0096-32.png"));
-    model.addElement(new ListItem("111111", "wi0054-32.png"));
-    model.addElement(new ListItem("22222", "wi0062-32.png"));
-    model.addElement(new ListItem("Test2", "wi0064-32.png"));
+    model.addElement(new ListItem("32x32Icon", "example/wi0054-32.png"));
+    model.addElement(new ListItem("test", "example/wi0062-32.png"));
+    model.addElement(new ListItem("PngImage", "example/wi0063-32.png"));
+    model.addElement(new ListItem("Test", "example/wi0064-32.png"));
+    model.addElement(new ListItem("3333", "example/wi0063-32.png"));
+    model.addElement(new ListItem("12345", "example/wi0096-32.png"));
+    model.addElement(new ListItem("111111", "example/wi0054-32.png"));
+    model.addElement(new ListItem("22222", "example/wi0062-32.png"));
+    model.addElement(new ListItem("Test2", "example/wi0064-32.png"));
 
     add(new JScrollPane(new RubberBandSelectionList<>(model)));
     setPreferredSize(new Dimension(320, 240));
@@ -159,23 +164,24 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       srcPoint.setLocation(e.getPoint());
       l.repaint();
     }
-  }
 
-  // // JDK 1.7.0
-  // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-  //   ListModel model = l.getModel();
-  //   List<Integer> ll = new ArrayList<>(model.getSize());
-  //   for (int i = 0; i < model.getSize(); i++) {
-  //     if (rect.intersects(l.getCellBounds(i, i))) {
-  //       ll.add(i);
-  //     }
-  //   }
-  //   int[] il = new int[ll.size()];
-  //   for (int i = 0; i < ll.size(); i++) {
-  //     il[i] = ll.get(i);
-  //   }
-  //   return il;
-  // }
+    // // JDK 1.7.0
+    // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
+    //   ListModel model = l.getModel();
+    //   List<Integer> ll = new ArrayList<>(model.getSize());
+    //   for (int i = 0; i < model.getSize(); i++) {
+    //     if (rect.intersects(l.getCellBounds(i, i))) {
+    //       ll.add(i);
+    //     }
+    //   }
+    //   // JDK 1.8.0: return ll.stream().mapToInt(Integer::intValue).toArray();
+    //   int[] il = new int[ll.size()];
+    //   for (int i = 0; i < ll.size(); i++) {
+    //     il[i] = ll.get(i);
+    //   }
+    //   return il;
+    // }
+  }
 }
 
 class SelectedImageFilter extends RGBImageFilter {
@@ -269,8 +275,30 @@ class ListItem {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    this.icon = new ImageIcon(getClass().getResource(path));
+    this.icon = new ImageIcon(makeImage(path));
     ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ListItem::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }
