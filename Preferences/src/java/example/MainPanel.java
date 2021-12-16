@@ -29,13 +29,15 @@ public final class MainPanel extends JPanel {
         ex.printStackTrace();
         Toolkit.getDefaultToolkit().beep();
       }
-      Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
+      Component c = (Component) e.getSource();
+      Optional.ofNullable(SwingUtilities.getWindowAncestor(c)).ifPresent(Window::dispose);
     });
 
     JButton exitButton = new JButton("exit");
     exitButton.addActionListener(e -> {
       handler.saveLocation();
-      Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) e.getSource())).ifPresent(Window::dispose);
+      Component c = (Component) e.getSource();
+      Optional.ofNullable(SwingUtilities.getWindowAncestor(c)).ifPresent(Window::dispose);
     });
 
     Box box = Box.createHorizontalBox();
@@ -98,7 +100,7 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
     frame.pack();
 
     Rectangle screen = frame.getGraphicsConfiguration().getBounds();
-    pos.setLocation(screen.x + screen.width / 2 - dim.width / 2, screen.y + screen.height / 2 - dim.height / 2);
+    pos.setLocation(screen.getCenterX() - dim.width / 2d, screen.getCenterY() - dim.height / 2d);
     int xpos = prefs.getInt(PREFIX + "locx", pos.x);
     int ypos = prefs.getInt(PREFIX + "locy", pos.y);
     pos.setLocation(xpos, ypos);
