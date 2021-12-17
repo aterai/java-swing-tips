@@ -91,7 +91,7 @@ class HighlightListener extends MouseAdapter {
   private int viewColumnIndex = -1;
 
   public boolean isHighlightedCell(int row, int column) {
-    return this.viewRowIndex == row && this.viewColumnIndex == column;
+    return viewRowIndex == row && viewColumnIndex == column;
   }
 
   private static Optional<JTable> getTable(MouseEvent e) {

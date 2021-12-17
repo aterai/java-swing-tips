@@ -99,7 +99,7 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseLis
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     String str = Objects.toString(value, "");
-    if (!table.isEditing() && this.viewRowIndex == row && this.viewColumnIndex == column) {
+    if (!table.isEditing() && viewRowIndex == row && viewColumnIndex == column) {
       setText("<html><u>" + str);
     } else {
       setText(str);

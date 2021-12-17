@@ -179,7 +179,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   }
 
   protected boolean isRolloverCell(JTable table, int row, int column) {
-    return !table.isEditing() && this.viewRowIndex == row && this.viewColumnIndex == column && this.isRollover;
+    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isRollover;
   }
 
   // @see SwingUtilities2.pointOutsidePrefSize(...)
