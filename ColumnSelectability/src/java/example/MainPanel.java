@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      protected boolean isColumnSelectable(int column) {
+      private boolean isColumnSelectable(int column) {
         return convertColumnIndexToModel(column) == 0;
       }
 
@@ -43,7 +43,8 @@ public final class MainPanel extends JPanel {
         if (isColumnSelectable(column)) {
           return super.prepareRenderer(renderer, row, column);
         } else {
-          return renderer.getTableCellRendererComponent(this, getValueAt(row, column), false, false, row, column);
+          Object o = getValueAt(row, column);
+          return renderer.getTableCellRendererComponent(this, o, false, false, row, column);
         }
       }
     };
