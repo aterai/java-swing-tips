@@ -11,23 +11,32 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    ImageIcon icon = new ImageIcon(getClass().getResource("screenshot.png"));
+    String path = "example/screenshot.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    ImageIcon icon = new ImageIcon(img);
     int width = icon.getIconWidth();
     int height = icon.getIconHeight();
-    Image image = icon.getImage();
 
     BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    makeRoundedMemoryImageSource(image, width, height).ifPresent(producer -> {
-      Image img = createImage(producer);
+    makeRoundedMemoryImageSource(img, width, height).ifPresent(producer -> {
       Graphics g = bi.createGraphics();
-      g.drawImage(img, 0, 0, this);
+      g.drawImage(createImage(producer), 0, 0, this);
       g.dispose();
     });
 
@@ -56,7 +65,7 @@ public final class MainPanel extends JPanel {
 
     CardLayout cardLayout = new CardLayout();
     JPanel p = new JPanel(cardLayout);
-    p.add(new JLabel(new ImageIcon(image)), "original");
+    p.add(new JLabel(new ImageIcon(img)), "original");
     p.add(new JLabel(new ImageIcon(bi)), "rounded");
 
     JCheckBox check = new JCheckBox("transparency at the rounded windows corners");
@@ -67,7 +76,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Area makeNorthWestConer() {
+  private static Area makeNorthWestCorner() {
     Area area = new Area();
     area.add(new Area(new Rectangle(0, 0, 5, 1)));
     area.add(new Area(new Rectangle(0, 1, 3, 1)));
@@ -76,9 +85,9 @@ public final class MainPanel extends JPanel {
     return area;
   }
 
-  private static Optional<MemoryImageSource> makeRoundedMemoryImageSource(Image image, int width, int height) {
-    int[] pix = new int[height * width];
-    PixelGrabber pg = new PixelGrabber(image, 0, 0, width, height, pix, 0, width);
+  private static Optional<MemoryImageSource> makeRoundedMemoryImageSource(Image img, int w, int h) {
+    int[] pix = new int[h * w];
+    PixelGrabber pg = new PixelGrabber(img, 0, 0, w, h, pix, 0, w);
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
@@ -88,28 +97,28 @@ public final class MainPanel extends JPanel {
       return Optional.empty();
     }
     if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-      System.err.println("image fetch aborted or errored");
+      System.err.println("image fetch aborted or error");
       return Optional.empty();
     }
 
-    Area area = makeNorthWestConer();
+    Area area = makeNorthWestCorner();
     Rectangle r = area.getBounds();
 
     Shape s = area; // NW
     for (int y = 0; y < r.height; y++) {
       for (int x = 0; x < r.width; x++) {
         if (s.contains(x, y)) {
-          pix[x + y * width] = 0x0;
+          pix[x + y * w] = 0x0;
         }
       }
     }
     AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
-    at.translate(-width, 0);
+    at.translate(-w, 0);
     s = at.createTransformedShape(area); // NE
     for (int y = 0; y < r.height; y++) {
-      for (int x = width - r.width; x < width; x++) {
+      for (int x = w - r.width; x < w; x++) {
         if (s.contains(x, y)) {
-          pix[x + y * width] = 0x0;
+          pix[x + y * w] = 0x0;
         }
       }
     }
@@ -158,7 +167,18 @@ public final class MainPanel extends JPanel {
     //   }
     // }
 
-    return Optional.of(new MemoryImageSource(width, height, pix, 0, width));
+    return Optional.of(new MemoryImageSource(w, h, pix, 0, w));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
@@ -178,5 +198,33 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.GRAY);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 240;
+  }
+
+  @Override public int getIconHeight() {
+    return 160;
   }
 }
