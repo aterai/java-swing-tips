@@ -36,7 +36,6 @@ public final class MainPanel extends JPanel {
     });
 
     JTree tree = new JTree(treeModel) {
-      @SuppressWarnings("PMD.SimplifyStartsWith")
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
@@ -190,7 +189,6 @@ class BackgroundTask extends SwingWorker<String, File> {
 //     this.fileSystemView = fileSystemView;
 //   }
 //
-//   @SuppressWarnings("PMD.SimplifyStartsWith")
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     JLabel c = (JLabel) renderer.getTreeCellRendererComponent(
 //         tree, value, selected, expanded, leaf, row, hasFocus);
