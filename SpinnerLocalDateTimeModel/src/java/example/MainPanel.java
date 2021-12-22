@@ -262,7 +262,6 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
       }
     }
 
-    @SuppressWarnings("PMD.CyclomaticComplexity")
     @Override public Object stringToValue(String text) throws ParseException {
       // System.out.println("stringToValue:" + text);
       SpinnerLocalDateTimeModel m = getModel();
@@ -276,17 +275,21 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
             value = field.adjustInto(value, ta.getLong(field));
           }
         }
-        Comparable<ChronoLocalDateTime<?>> min = m.getStart();
-        Comparable<ChronoLocalDateTime<?>> max = m.getEnd();
-        boolean a = Objects.nonNull(min) && min.compareTo(value) > 0;
-        boolean b = Objects.nonNull(max) && max.compareTo(value) < 0;
-        if (a || b) {
+        if (checkMinMax(value, m)) {
           throw new ParseException(text + " is out of range", 0);
         }
         return value;
       } catch (DateTimeParseException ex) {
         throw (ParseException) new ParseException(ex.getMessage(), ex.getErrorIndex()).initCause(ex);
       }
+    }
+
+    private boolean checkMinMax(ChronoLocalDateTime<?> value, SpinnerLocalDateTimeModel m) {
+      Comparable<ChronoLocalDateTime<?>> min = m.getStart();
+      Comparable<ChronoLocalDateTime<?>> max = m.getEnd();
+      boolean a = Objects.nonNull(min) && min.compareTo(value) > 0;
+      boolean b = Objects.nonNull(max) && max.compareTo(value) < 0;
+      return a || b;
     }
   }
 }
