@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -21,11 +22,11 @@ public final class MainPanel extends JPanel {
     b1.add(new JButton("a"));
     b1.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
-    Component b2 = createRightAlignBox2(Arrays.asList(new JButton("getPreferredSize"), new JButton("xxx")), 120, 5);
-    Component b3 = createRightAlignBox3(Arrays.asList(new JButton("Spring+Box"), new JButton("Layout")), 100, 5);
-    Component b4 = createRightAlignBox4(Arrays.asList(new JButton("SpringLayout"), new JButton("gap:2")), 120, 2);
-    Component b5 = createRightAlignBox5(Arrays.asList(new JButton("GridLayout+Box"), new JButton("gap:2")), 2);
-    Component b6 = createRightAlignBox6(Arrays.asList(new JButton("GridBugLayout"), new JButton("gap:2")), 120, 2);
+    Component b2 = createRightAlignBox2(120, 5, "getPreferredSize", "xxx");
+    Component b3 = createRightAlignBox3(100, 5, "Spring+Box", "Layout");
+    Component b4 = createRightAlignBox4(120, 3, "SpringLayout", "gap:3");
+    Component b5 = createRightAlignBox5(2, "GridLayout+Box", "gap:2");
+    Component b6 = createRightAlignBox6(120, 2, "GridBugLayout", "gap:2");
 
     Box box = Box.createVerticalBox();
     Stream.of(b6, b5, b4, b3, b2, b1).forEach(c -> {
@@ -36,7 +37,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component createRightAlignBox6(List<? extends Component> list, int width, int gap) {
+  public static Component createRightAlignBox6(int width, int gap, String... titles) {
+    List<JButton> list = Arrays.stream(titles).map(JButton::new).collect(Collectors.toList());
     JPanel p = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(0, gap, 0, 0);
@@ -50,7 +52,8 @@ public final class MainPanel extends JPanel {
     return pp;
   }
 
-  private static Component createRightAlignBox5(List<? extends Component> list, int gap) {
+  public static Component createRightAlignBox5(int gap, String... titles) {
+    List<JButton> list = Arrays.stream(titles).map(JButton::new).collect(Collectors.toList());
     JPanel p = new JPanel(new GridLayout(1, list.size(), gap, gap)) {
       @Override public Dimension getMaximumSize() {
         return super.getPreferredSize();
@@ -64,7 +67,8 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private static Component createRightAlignBox4(List<? extends Component> list, int width, int gap) {
+  public static Component createRightAlignBox4(int width, int gap, String... titles) {
+    List<JButton> list = Arrays.stream(titles).map(JButton::new).collect(Collectors.toList());
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout) {
       @Override public Dimension getPreferredSize() {
@@ -90,7 +94,8 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Component createRightAlignBox3(List<? extends Component> list, int width, int gap) {
+  public static Component createRightAlignBox3(int width, int gap, String... titles) {
+    List<JButton> list = Arrays.stream(titles).map(JButton::new).collect(Collectors.toList());
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout) {
       @Override public Dimension getPreferredSize() {
@@ -124,7 +129,8 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private static Component createRightAlignBox2(List<? extends Component> list, int width, int gap) {
+  public static Component createRightAlignBox2(int width, int gap, String... titles) {
+    List<JButton> list = Arrays.stream(titles).map(JButton::new).collect(Collectors.toList());
     JComponent box = new JPanel() {
       @Override public void updateUI() {
         list.forEach(b -> b.setPreferredSize(null));
