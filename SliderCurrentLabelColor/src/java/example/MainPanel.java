@@ -5,40 +5,41 @@
 package example;
 
 import java.awt.*;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     JSlider slider1 = makeSlider();
     setCurrentLabelListener(slider1);
 
-    @SuppressWarnings("JdkObsolete")
-    Dictionary<Integer, Component> labelTable = new Hashtable<>();
-    // @SuppressWarnings("PMD.ReplaceHashtableWithMap")
-    // Hashtable labelTable = slider2.createStandardLabels(1);
-    List<Component> list = Stream.of("A", "B", "C", "D", "E")
-        .map(JLabel::new).collect(Collectors.toList());
-    IntStream.range(0, list.size()).boxed()
-        .forEach(i -> labelTable.put(i, list.get(i)));
-
-    JSlider slider2 = new JSlider(0, 4, 0);
+    // @SuppressWarnings("JdkObsolete")
+    // Dictionary<Integer, Component> labelTable = new Hashtable<>();
+    // List<Component> list = Stream.of("A", "B", "C", "D", "E")
+    //     .map(JLabel::new).collect(Collectors.toList());
+    // IntStream.range(0, list.size()).boxed()
+    //     .forEach(i -> labelTable.put(i, list.get(i)));
+    List<String> list2 = Arrays.asList("A", "B", "C", "D", "E");
+    JSlider slider2 = new JSlider(0, list2.size() - 1, 0);
     setCurrentLabelListener(slider2);
-    slider2.setLabelTable(labelTable);
+    // slider2.setLabelTable(labelTable);
     slider2.setSnapToTicks(true);
     slider2.setPaintTicks(true);
     slider2.setPaintLabels(true);
-    // slider2.setMajorTickSpacing(1);
-    labelTable.get(0).setForeground(Color.RED);
+    slider2.setMajorTickSpacing(1);
+    Object labelTable = slider2.getLabelTable();
+    if (labelTable instanceof Map) {
+      ((Map<?, ?>) labelTable).forEach((key, value) -> {
+        if (key instanceof Integer && value instanceof JLabel) {
+          updateLabel(list2, slider2, (Integer) key, (JLabel) value);
+        }
+      });
+    }
+    slider2.setLabelTable(slider2.getLabelTable()); // updateLabelUIs()
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
@@ -57,6 +58,13 @@ public final class MainPanel extends JPanel {
     });
   }
 
+  private static void updateLabel(List<String> list, JSlider slider, int i, JLabel l) {
+    l.setText(list.get(i));
+    if (slider.getValue() == i) {
+      l.setForeground(Color.RED);
+    }
+  }
+
   private static JSlider makeSlider() {
     JSlider slider = new JSlider(0, 100);
     slider.setMajorTickSpacing(10);
@@ -68,26 +76,28 @@ public final class MainPanel extends JPanel {
   }
 
   private static void setCurrentLabelListener(JSlider slider) {
-    slider.getModel().addChangeListener(new ChangeListener() {
-      private int prev = -1;
-      private void resetForeground(Object o, Color c) {
-        if (o instanceof Component) {
-          ((Component) o).setForeground(c);
+    AtomicInteger prev = new AtomicInteger(-1);
+    slider.getModel().addChangeListener(e -> {
+      BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+      int i = m.getValue();
+      int mts = slider.getMajorTickSpacing();
+      if ((mts == 0 || i % mts == 0) && i != prev.get()) {
+        Object labelTable = slider.getLabelTable();
+        if (labelTable instanceof Map) {
+          Map<?, ?> map = (Map<?, ?>) labelTable;
+          resetForeground(map.get(i), Color.RED);
+          resetForeground(map.get(prev.get()), Color.BLACK);
         }
-      }
-
-      @Override public void stateChanged(ChangeEvent e) {
-        BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-        int i = m.getValue();
-        if ((slider.getMajorTickSpacing() == 0 || i % slider.getMajorTickSpacing() == 0) && i != prev) {
-          Dictionary<?, ?> dictionary = slider.getLabelTable();
-          resetForeground(dictionary.get(i), Color.RED);
-          resetForeground(dictionary.get(prev), Color.BLACK);
-          slider.repaint();
-          prev = i;
-        }
+        slider.repaint();
+        prev.set(i);
       }
     });
+  }
+
+  private static void resetForeground(Object o, Color c) {
+    if (o instanceof Component) {
+      ((Component) o).setForeground(c);
+    }
   }
 
   private static Component makeTitledPanel(String title, Component c) {
