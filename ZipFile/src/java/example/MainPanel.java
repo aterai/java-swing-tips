@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Enumeration;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -63,17 +63,22 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       String str = field.getText();
       Path path = Paths.get(str);
-      // if (str.isEmpty() || Files.notExists(path)) { // noticeably poor performance in JDK 8
+      // noticeably poor performance in JDK 8
+      // if (str.isEmpty() || Files.notExists(path)) {
       if (str.isEmpty() || !path.toFile().exists()) {
         return;
       }
       String name = path.getFileName() + ".zip";
       Path tgt = path.resolveSibling(name);
-      // if (Files.exists(tgt)) { // noticeably poor performance in JDK 8
+      // noticeably poor performance in JDK 8
+      // if (Files.exists(tgt)) {
       JComponent c = (JComponent) e.getSource();
       if (tgt.toFile().exists()) {
-        String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", tgt);
-        int rv = JOptionPane.showConfirmDialog(c.getRootPane(), m, "Zip", JOptionPane.YES_NO_OPTION);
+        String s1 = String.format("%s already exists.", tgt);
+        String s2 = "Do you want to overwrite it?";
+        String m = String.format("<html>%s<br>%s", s1, s2);
+        Component p = c.getRootPane();
+        int rv = JOptionPane.showConfirmDialog(p, m, "Zip", JOptionPane.YES_NO_OPTION);
         if (rv != JOptionPane.YES_OPTION) {
           return;
         }
@@ -108,21 +113,25 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("unzip");
     button1.addActionListener(e -> {
       String str = field.getText();
-      makeDestDirPath(str).ifPresent(destDir -> {
+      makeDestDirPath(str).ifPresent(dir -> {
         Path path = Paths.get(str);
         try {
-          //if (Files.exists(destDir)) { // noticeably poor performance in JDK 8
-          if (destDir.toFile().exists()) {
-            String m = String.format("<html>%s already exists.<br>Do you want to overwrite it?", destDir);
-            int rv = JOptionPane.showConfirmDialog(button1.getRootPane(), m, "Unzip", JOptionPane.YES_NO_OPTION);
+          // noticeably poor performance in JDK 8
+          // if (Files.exists(dir)) {
+          if (dir.toFile().exists()) {
+            String s1 = String.format("%s already exists.", dir);
+            String s2 = "Do you want to overwrite it?";
+            String m = String.format("<html>%s<br>%s", s1, s2);
+            Component p = button1.getRootPane();
+            int rv = JOptionPane.showConfirmDialog(p, m, "Unzip", JOptionPane.YES_NO_OPTION);
             if (rv != JOptionPane.YES_OPTION) {
               return;
             }
           } else {
-            LOGGER.info(() -> String.format("mkdir0: %s", destDir));
-            Files.createDirectories(destDir);
+            LOGGER.info(() -> String.format("mkdir0: %s", dir));
+            Files.createDirectories(dir);
           }
-          ZipUtil.unzip(path, destDir);
+          ZipUtil.unzip(path, dir);
         } catch (IOException ex) {
           // ex.printStackTrace();
           LOGGER.info(() -> String.format("Cant unzip! : %s", path));
@@ -141,7 +150,8 @@ public final class MainPanel extends JPanel {
 
   private static Optional<Path> makeDestDirPath(String text) {
     Path path = Paths.get(text);
-    // if (str.isEmpty() || Files.notExists(path)) { // noticeably poor performance in JDK 8
+    // noticeably poor performance in JDK 8
+    // if (str.isEmpty() || Files.notExists(path)) {
     if (text.isEmpty() || !path.toFile().exists()) {
       return Optional.empty();
     }
@@ -201,12 +211,9 @@ final class ZipUtil {
     return new ZipEntry(name);
   }
 
-  @SuppressWarnings("JdkObsolete")
   public static void unzip(Path zipFilePath, Path destDir) throws IOException {
     try (ZipFile zipFile = new ZipFile(zipFilePath.toString())) {
-      Enumeration<? extends ZipEntry> e = zipFile.entries();
-      while (e.hasMoreElements()) {
-        ZipEntry zipEntry = e.nextElement();
+      for (ZipEntry zipEntry : Collections.list(zipFile.entries())) {
         String name = zipEntry.getName();
         Path path = destDir.resolve(name);
         if (name.endsWith("/")) { // if (Files.isDirectory(path)) {
@@ -214,7 +221,8 @@ final class ZipUtil {
           Files.createDirectories(path);
         } else {
           Path parent = path.getParent();
-          // if (Objects.nonNull(parent) && Files.notExists(parent)) { // noticeably poor performance in JDK 8
+          // noticeably poor performance in JDK 8
+          // if (Objects.nonNull(parent) && Files.notExists(parent)) {
           if (Objects.nonNull(parent) && !parent.toFile().exists()) {
             LOGGER.info(() -> String.format("mkdir2: %s", parent));
             Files.createDirectories(parent);
