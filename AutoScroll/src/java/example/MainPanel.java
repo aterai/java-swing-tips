@@ -105,7 +105,8 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
   private ActionListener listener;
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+    if (b && !e.getComponent().isDisplayable()) {
       scroller.stop();
       scroller.removeActionListener(listener);
     }
@@ -141,7 +142,8 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
       listener = event -> {
         Point vp = vport.getViewPosition(); // = SwingUtilities.convertPoint(vport, 0, 0, label);
         vp.translate(move.x, move.y);
-        label.scrollRectToVisible(new Rectangle(vp, vport.getSize())); // vport.setViewPosition(vp);
+        label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+        // vport.setViewPosition(vp);
       };
       scroller.addActionListener(listener);
       scroller.start();
@@ -167,7 +169,8 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
   private ActionListener listener;
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+    if (b && !e.getComponent().isDisplayable()) {
       scroller.stop();
       scroller.removeActionListener(listener);
     }

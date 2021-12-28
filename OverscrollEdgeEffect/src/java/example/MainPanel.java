@@ -115,7 +115,8 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+    if (b && !e.getComponent().isDisplayable()) {
       scroller.stop();
     }
   }

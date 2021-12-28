@@ -21,8 +21,10 @@ public final class MainPanel extends JPanel {
     SlideInNotification handler = new SlideInNotification();
 
     // optionPane.addPropertyChangeListener(e -> {
-    //   if (dialog.isVisible() && e.getSource() == optionPane // && e.getPropertyName().equals(VALUE_PROPERTY)
-    //       && Objects.nonNull(e.getNewValue()) && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+    //   if (dialog.isVisible() && e.getSource() == optionPane
+    //       // && e.getPropertyName().equals(VALUE_PROPERTY)
+    //       && Objects.nonNull(e.getNewValue())
+    //       && e.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
     //     dialog.setVisible(false);
     //   }
     // });
@@ -132,7 +134,8 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+    if (b && !e.getComponent().isDisplayable()) {
       animator.stop();
     }
   }

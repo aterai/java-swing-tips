@@ -39,7 +39,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     JProgressBar progress4 = new JProgressBar(model);
     progress4.setUI(new StripedProgressBarUI(false, false));
 
-    List<JProgressBar> list = Arrays.asList(new JProgressBar(model), progress1, progress2, progress3, progress4);
+    List<JProgressBar> list = Arrays.asList(
+        new JProgressBar(model), progress1, progress2, progress3, progress4);
 
     JPanel p = new JPanel(new GridLayout(5, 1));
     list.forEach(bar -> p.add(makePanel(bar)));
@@ -70,8 +71,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-    if (displayability && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+    if (b && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
       System.out.println("DISPOSE_ON_CLOSE");
       worker.cancel(true);
       // worker = null;

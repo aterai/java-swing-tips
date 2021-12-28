@@ -48,7 +48,8 @@ class FontRotateAnimation extends JComponent {
   protected FontRotateAnimation(String str) {
     super();
     addHierarchyListener(e -> {
-      if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
         animator.stop();
       }
     });

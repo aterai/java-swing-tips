@@ -116,7 +116,8 @@ public final class MainPanel extends JPanel {
 
   private void addHierarchyListener(SwingWorker<?, ?> worker) {
     addHierarchyListener(e -> {
-      if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0 && !e.getComponent().isDisplayable()) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
         System.out.println("DISPLAYABILITY_CHANGED");
         worker.cancel(true);
       }

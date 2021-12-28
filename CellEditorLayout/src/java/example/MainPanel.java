@@ -51,7 +51,8 @@ class CustomCellEditor extends DefaultCellEditor {
     field.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, BUTTON_WIDTH));
     field.addHierarchyListener(e -> {
       Component c = e.getComponent();
-      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c instanceof JTextField && c.isShowing()) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && c instanceof JTextField && c.isShowing()) {
         // System.out.println("hierarchyChanged: SHOWING_CHANGED");
         JTextField tc = (JTextField) c;
         tc.removeAll();
