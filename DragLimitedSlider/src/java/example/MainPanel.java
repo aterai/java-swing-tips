@@ -7,10 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Objects;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
@@ -20,7 +17,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-
     JSlider slider1 = makeSlider("ChangeListener");
     JSlider slider2 = makeSlider("TrackListener");
     if (slider2.getUI() instanceof WindowsSliderUI) {
@@ -33,25 +29,27 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @SuppressWarnings("JdkObsolete")
   private static JSlider makeSlider(String title) {
     JSlider slider = new JSlider(0, 100, 40);
     slider.setBorder(BorderFactory.createTitledBorder(title));
     slider.setMajorTickSpacing(10);
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
-    Dictionary<?, ?> dictionary = slider.getLabelTable();
-    if (Objects.nonNull(dictionary)) {
-      // Java 9: Collections.list(dictionary.elements()).stream()
-      Collections.list((Enumeration<?>) slider.getLabelTable().elements()).stream()
-          .filter(JLabel.class::isInstance)
-          .map(JLabel.class::cast)
-          .forEach(MainPanel::updateForeground);
-      // Enumeration<?> elements = dictionary.elements();
-      // while (elements.hasMoreElements()) {
-      //   updateForeground((JLabel) elements.nextElement());
-      // }
+    Object labelTable = slider.getLabelTable();
+    if (labelTable instanceof Map) {
+      ((Map<?, ?>) labelTable).forEach((key, value) -> {
+        if (value instanceof JLabel) {
+          updateForeground((JLabel) value);
+        }
+      });
     }
+    // Dictionary<?, ?> dictionary = slider.getLabelTable();
+    // if (Objects.nonNull(dictionary)) {
+    //   Collections.list(dictionary.elements()).stream()
+    //       .filter(JLabel.class::isInstance)
+    //       .map(JLabel.class::cast)
+    //       .forEach(MainPanel::updateForeground);
+    // }
     slider.getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
       m.setValue(Math.max(MINI, Math.min(m.getValue(), MAXI)));

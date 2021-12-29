@@ -5,8 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.util.Collections;
-import java.util.Dictionary;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -64,7 +63,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @SuppressWarnings("JdkObsolete")
   private JSlider makeSlider() {
     JSlider slider = new JSlider(0, 10_000);
     slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
@@ -74,15 +72,16 @@ public final class MainPanel extends JPanel {
     slider.setPaintTicks(true);
     slider.setSnapToTicks(true);
     // slider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 10));
-    Dictionary<?, ?> labelTable = slider.getLabelTable();
-    Collections.list(labelTable.keys()).stream()
-        .filter(Integer.class::isInstance)
-        .map(Integer.class::cast)
-        .forEach(i -> {
-          JLabel label = (JLabel) labelTable.get(i);
-          label.setText(Objects.toString(i / 100));
+    Object labelTable = slider.getLabelTable();
+    if (labelTable instanceof Map) {
+      ((Map<?, ?>) labelTable).forEach((key, value) -> {
+        if (key instanceof Integer && value instanceof JLabel) {
+          JLabel label = (JLabel) value;
+          label.setText(Objects.toString((Integer) key / 100));
           // TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
-        });
+        }
+      });
+    }
     return slider;
   }
 
