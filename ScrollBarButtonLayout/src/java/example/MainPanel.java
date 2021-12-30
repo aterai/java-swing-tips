@@ -14,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
       @Override public void updateUI() {
         super.updateUI();
@@ -109,7 +108,8 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
     int minHeight = getMinimumThumbSize().height;
     int thumbH = ScrollBarUtil.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
     int y = incrButtonY - incrGap - thumbH;
-    int thumbY = ScrollBarUtil.getThumbY(y, max, min, extent, range, value, trackH - thumbH);
+    float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
+    int thumbY = ScrollBarUtil.getThumbY(y, max, value, maxThumbY);
 
     /* If the buttons don't fit, allocate half of the available
      * space to each and move the lower one (incrButton) down.
@@ -211,7 +211,8 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
     int minHeight = getMinimumThumbSize().height;
     int thumbH = ScrollBarUtil.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
     int y = incrButtonY - incrGap - thumbH;
-    int thumbY = ScrollBarUtil.getThumbY(y, max, min, extent, range, value, trackH - thumbH);
+    float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
+    int thumbY = ScrollBarUtil.getThumbY(y, max, value, maxThumbY);
 
     /* If the buttons don't fit, allocate half of the available
      * space to each and move the lower one (incrButton) down.
@@ -268,10 +269,10 @@ final class ScrollBarUtil {
     return thumbH;
   }
 
-  public static int getThumbY(int y, float max, float min, float extent, float range, float value, int thumbRange) {
+  public static int getThumbY(int y, float max, float value, float maxThumbY) {
     int thumbY = y;
     if (value < max) {
-      thumbY = (int) (.5f + thumbRange * ((value - min) / (range - extent)));
+      thumbY = (int) (.5f + maxThumbY);
     }
     return thumbY;
   }

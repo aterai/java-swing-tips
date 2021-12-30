@@ -12,7 +12,6 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     // GroupLayout
     JPanel p1 = new JPanel();
     p1.setBorder(BorderFactory.createTitledBorder("GroupLayout"));
@@ -27,13 +26,21 @@ public final class MainPanel extends JPanel {
     JLabel label2 = new JLabel("GroupLayout:");
 
     GroupLayout.SequentialGroup hgp = layout.createSequentialGroup();
-    hgp.addGroup(layout.createParallelGroup().addComponent(label1).addComponent(label2));
-    hgp.addGroup(layout.createParallelGroup().addComponent(tf1).addComponent(tf2));
+    hgp.addGroup(layout.createParallelGroup()
+        .addComponent(label1)
+        .addComponent(label2));
+    hgp.addGroup(layout.createParallelGroup()
+        .addComponent(tf1)
+        .addComponent(tf2));
     layout.setHorizontalGroup(hgp);
 
     GroupLayout.SequentialGroup vgp = layout.createSequentialGroup();
-    vgp.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(label1).addComponent(tf1));
-    vgp.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(label2).addComponent(tf2));
+    vgp.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        .addComponent(label1)
+        .addComponent(tf1));
+    vgp.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+        .addComponent(label2)
+        .addComponent(tf2));
     layout.setVerticalGroup(vgp);
 
     // GridBagLayout
