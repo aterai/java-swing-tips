@@ -134,28 +134,34 @@ public final class MainPanel extends JPanel {
 // http://www.oracle.com/technetwork/java/persistence4-140124.html
 // https://ateraimemo.com/Swing/PersistenceDelegate.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
     super.initialize(type, oldInstance, newInstance, encoder);
     DefaultTableModel m = (DefaultTableModel) oldInstance;
     for (int row = 0; row < m.getRowCount(); row++) {
       for (int col = 0; col < m.getColumnCount(); col++) {
         Object[] o = {m.getValueAt(row, col), row, col};
-        encoder.writeStatement(new Statement(oldInstance, "setValueAt", o));
+        encoder.writeStatement(getSetValueAt(oldInstance, o));
       }
     }
+  }
+
+  private Statement getSetValueAt(Object oldInstance, Object[] o) {
+    return new Statement(oldInstance, "setValueAt", o);
   }
 }
 
 class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDelegate {
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
     super.initialize(type, oldInstance, newInstance, encoder);
     DefaultTableColumnModel m = (DefaultTableColumnModel) oldInstance;
     for (int col = 0; col < m.getColumnCount(); col++) {
       Object[] o = {m.getColumn(col)};
-      encoder.writeStatement(new Statement(oldInstance, "addColumn", o));
+      encoder.writeStatement(getAddColumn(oldInstance, o));
     }
+  }
+
+  private Statement getAddColumn(Object oldInstance, Object[] o) {
+    return new Statement(oldInstance, "addColumn", o);
   }
 }
 

@@ -54,8 +54,8 @@ public final class MainPanel extends JPanel {
           // xe.flush();
           // xe.close();
         }
-        // try (Reader r = new BufferedReader(new InputStreamReader(
-        //                                    new FileInputStream(file), StandardCharsets.UTF_8))) {
+        // try (Reader r = new BufferedReader(
+        //     new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
         try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
           textArea.read(r, "temp");
         }
@@ -113,19 +113,23 @@ public final class MainPanel extends JPanel {
 // http://web.archive.org/web/20090806075316/http://java.sun.com/products/jfc/tsc/articles/persistence4/
 // http://www.oracle.com/technetwork/java/persistence4-140124.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
-  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {
     super.initialize(type, oldInstance, newInstance, encoder);
     DefaultTableModel m = (DefaultTableModel) oldInstance;
     // Vector v = m.getDataVector();
     // for (int i = 0; i < m.getRowCount(); i++) {
-    //   encoder.writeStatement(new Statement(oldInstance, "addRow", new Object[] { (Vector) v.get(i) }));
+    //   Object[] o = new Object[] { (Vector) v.get(i) };
+    //   encoder.writeStatement(new Statement(oldInstance, "addRow", o));
     // }
     for (int row = 0; row < m.getRowCount(); row++) {
       for (int col = 0; col < m.getColumnCount(); col++) {
         Object[] o = {m.getValueAt(row, col), row, col};
-        encoder.writeStatement(new Statement(oldInstance, "setValueAt", o));
+        encoder.writeStatement(getSetValueAt(oldInstance, o));
       }
     }
+  }
+
+  private Statement getSetValueAt(Object oldInstance, Object[] o) {
+    return new Statement(oldInstance, "setValueAt", o);
   }
 }
