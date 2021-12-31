@@ -5,9 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Objects;
+import java.util.Map;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -24,7 +22,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @SuppressWarnings("JdkObsolete")
   private JSlider makeSlider(boolean icon) {
     JSlider slider = new JSlider(0, 100);
     slider.setMajorTickSpacing(10);
@@ -32,24 +29,22 @@ public final class MainPanel extends JPanel {
     slider.setPaintLabels(true);
     slider.setSnapToTicks(true);
     slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
-    if (icon) {
-      Dictionary<?, ?> dictionary = slider.getLabelTable();
-      if (Objects.nonNull(dictionary)) {
-        Icon tick = new TickIcon();
-        Collections.list(dictionary.elements()).stream()
-            .filter(JLabel.class::isInstance)
-            .map(JLabel.class::cast)
-            .forEach(label -> {
-              label.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-              label.setIcon(tick);
-              label.setIconTextGap(0);
-              label.setVerticalAlignment(SwingConstants.TOP);
-              label.setVerticalTextPosition(SwingConstants.BOTTOM);
-              label.setHorizontalAlignment(SwingConstants.CENTER);
-              label.setHorizontalTextPosition(SwingConstants.CENTER);
-              label.setForeground(Color.RED);
-            });
-      }
+    Object labelTable = slider.getLabelTable();
+    if (icon && labelTable instanceof Map) {
+      Icon tick = new TickIcon();
+      ((Map<?, ?>) labelTable).values().stream()
+          .filter(JLabel.class::isInstance)
+          .map(JLabel.class::cast)
+          .forEach(label -> {
+            label.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+            label.setIcon(tick);
+            label.setIconTextGap(0);
+            label.setVerticalAlignment(SwingConstants.TOP);
+            label.setVerticalTextPosition(SwingConstants.BOTTOM);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            label.setHorizontalTextPosition(SwingConstants.CENTER);
+            label.setForeground(Color.RED);
+          });
     } else {
       slider.setPaintTicks(true);
       slider.setForeground(Color.BLUE);
