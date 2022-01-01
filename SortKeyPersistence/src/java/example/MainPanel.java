@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.*;
@@ -29,7 +30,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
     Object[][] data = {
-      {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
+        {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setAutoCreateRowSorter(true);
@@ -44,9 +45,9 @@ public final class MainPanel extends JPanel {
     JButton encodeButton = new JButton("XMLEncoder");
     encodeButton.addActionListener(e -> {
       try {
-        File file = File.createTempFile("output", ".xml");
+        Path path = File.createTempFile("output", ".xml").toPath();
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
+        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(path)))) {
           PersistenceDelegate d = new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"});
           xe.setPersistenceDelegate(RowSorter.SortKey.class, d);
           xe.writeObject(table.getRowSorter().getSortKeys());
@@ -56,7 +57,7 @@ public final class MainPanel extends JPanel {
         }
         // try (Reader r = new BufferedReader(new InputStreamReader(
         //                                    new FileInputStream(file), StandardCharsets.UTF_8))) {
-        try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+        try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
           textArea.read(r, "temp");
         }
       } catch (IOException ex) {
@@ -128,13 +129,12 @@ class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
     DefaultTableModel m = (DefaultTableModel) oldInstance;
     for (int row = 0; row < m.getRowCount(); row++) {
       for (int col = 0; col < m.getColumnCount(); col++) {
-        Object[] o = {m.getValueAt(row, col), row, col};
-        encoder.writeStatement(getSetValueAt(oldInstance, o));
+        encoder.writeStatement(getSetValueAt(oldInstance, m.getValueAt(row, col), row, col));
       }
     }
   }
 
-  private Statement getSetValueAt(Object oldInstance, Object[] o) {
+  private Statement getSetValueAt(Object oldInstance, Object... o) {
     return new Statement(oldInstance, "setValueAt", o);
   }
 }
