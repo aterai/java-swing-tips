@@ -68,10 +68,10 @@ class LineStyleTreeUI extends BasicTreeUI {
     return Color.BLUE;
   }
 
-  @Override protected void paintHorizontalPartOfLeg(Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
+  @Override protected void paintHorizontalPartOfLeg(Graphics g, Rectangle clip, Insets ins, Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setStroke(horizontalLine);
-    super.paintHorizontalPartOfLeg(g2, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+    super.paintHorizontalPartOfLeg(g2, clip, ins, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
     g2.dispose();
   }
 

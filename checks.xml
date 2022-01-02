@@ -34,7 +34,7 @@
     <property name="optional" value="true"/>
   </module>
 
-  <!-- Checks for whitespace                               -->
+  <!-- Checks for whitespace                            -->
   <!-- See http://checkstyle.org/config_whitespace.html -->
   <module name="FileTabCharacter">
     <property name="eachLine" value="true"/>
@@ -44,7 +44,7 @@
 
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
-    <property name="max" value="115"/>
+    <property name="max" value="114"/>
     <property name="ignorePattern" value="^package.*|^import.*|href|http|throws|catch|@.*|&lt;html|\[JDK\-[0-9]*\]"/>
   </module>
 

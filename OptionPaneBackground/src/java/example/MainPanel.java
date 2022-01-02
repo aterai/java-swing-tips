@@ -14,15 +14,17 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     UIManager.put("OptionPane.background", Color.LIGHT_GRAY);
-    String txt = "<html>JOptionPane:<br><li>messageArea<li>realBody<li>separator<li>body<li>buttonArea";
+    String li = "<li>messageArea<li>realBody<li>separator<li>body<li>buttonArea";
+    String txt = "<html>JOptionPane:<br>" + li;
     String title = "Title";
     int type = JOptionPane.WARNING_MESSAGE;
 
+    JLabel l1 = new JLabel(txt);
     JButton b1 = new JButton("default");
-    b1.addActionListener(e -> JOptionPane.showMessageDialog(b1.getRootPane(), new JLabel(txt), title, type));
+    b1.addActionListener(e -> JOptionPane.showMessageDialog(getRootPane(), l1, title, type));
 
-    JLabel label = new JLabel(txt);
-    label.addHierarchyListener(e -> {
+    JLabel l2 = new JLabel(txt);
+    l2.addHierarchyListener(e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
         descendants(SwingUtilities.getAncestorOfClass(JOptionPane.class, c))
@@ -31,12 +33,12 @@ public final class MainPanel extends JPanel {
             .forEach(p -> p.setOpaque(false));
       }
     });
-
     JButton b2 = new JButton("background");
-    b2.addActionListener(e -> JOptionPane.showMessageDialog(b2.getRootPane(), label, title, type));
+    b2.addActionListener(e -> JOptionPane.showMessageDialog(getRootPane(), l2, title, type));
 
+    JLabel l3 = new JLabel(txt);
     JButton b3 = new JButton("override");
-    b3.addActionListener(e -> showMessageDialog(b3.getRootPane(), new JLabel(txt), title, type));
+    b3.addActionListener(e -> showMessageDialog(getRootPane(), l3, title, type));
 
     add(b1);
     add(b2);
@@ -44,8 +46,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void showMessageDialog(Component parent, Object message, String title, int messageType) {
-    JOptionPane pane = new JOptionPane(message, messageType, JOptionPane.DEFAULT_OPTION, null, null, null) {
+  private static void showMessageDialog(Component parent, Object msg, String title, int type) {
+    JOptionPane op = new JOptionPane(msg, type, JOptionPane.DEFAULT_OPTION, null, null, null) {
       private transient Paint texture;
       @Override public void updateUI() {
         super.updateUI();
@@ -59,13 +61,14 @@ public final class MainPanel extends JPanel {
         g2.dispose();
       }
     };
-    pane.setComponentOrientation((parent == null ? JOptionPane.getRootFrame() : parent).getComponentOrientation());
-    descendants(pane)
+    Component c = parent == null ? JOptionPane.getRootFrame() : parent;
+    op.setComponentOrientation(c.getComponentOrientation());
+    descendants(op)
         .filter(JPanel.class::isInstance)
         .map(JPanel.class::cast)
         .forEach(p -> p.setOpaque(false));
 
-    JDialog dialog = pane.createDialog(parent, title);
+    JDialog dialog = op.createDialog(parent, title);
     dialog.setVisible(true);
     dialog.dispose();
   }

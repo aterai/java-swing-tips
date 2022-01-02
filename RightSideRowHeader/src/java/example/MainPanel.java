@@ -21,12 +21,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Object[][] data = {
-      {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
-      {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
-      {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
-      {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
-      {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
-      {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
+        {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
+        {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
+        {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
+        {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
+        {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
+        {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
     };
     String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
@@ -354,42 +354,50 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       }
     }
 
-    if (Objects.nonNull(lowerLeft)) {
-      lowerLeft.setBounds(leftToRight ? rowHeadR.x : vsbR.x, hsbR.y,
-                          leftToRight ? rowHeadR.width : vsbR.width, hsbR.height);
-    }
-
-    if (Objects.nonNull(lowerRight)) {
-      lowerRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, hsbR.y,
-                           leftToRight ? vsbR.width : rowHeadR.width, hsbR.height);
-    }
-
-    if (Objects.nonNull(upperLeft)) {
-      upperLeft.setBounds(leftToRight ? rowHeadR.x : vsbR.x, colHeadR.y,
-                          leftToRight ? rowHeadR.width : vsbR.width, colHeadR.height);
-    }
-
-    if (Objects.nonNull(upperRight)) {
-      upperRight.setBounds(leftToRight ? vsbR.x : rowHeadR.x, colHeadR.y,
-                           leftToRight ? vsbR.width : rowHeadR.width, colHeadR.height);
+    if (leftToRight) {
+      setLtrCorner(colHeadR, rowHeadR, vsbR, hsbR);
+    } else {
+      setRtlCorner(colHeadR, rowHeadR, vsbR, hsbR);
     }
   }
 
-  private void adjustForVsb(boolean wantsVsb, Rectangle available, Rectangle vsbR, Insets vpbInsets, boolean ltr) {
+  private void setLtrCorner(Rectangle colHeadR, Rectangle rowHeadR, Rectangle vsbR, Rectangle hsbR) {
+    Optional.ofNullable(lowerLeft)
+        .ifPresent(c -> c.setBounds(rowHeadR.x, hsbR.y, rowHeadR.width, hsbR.height));
+    Optional.ofNullable(lowerRight)
+        .ifPresent(c -> c.setBounds(vsbR.x, hsbR.y, vsbR.width, hsbR.height));
+    Optional.ofNullable(upperLeft)
+        .ifPresent(c -> c.setBounds(rowHeadR.x, colHeadR.y, rowHeadR.width, colHeadR.height));
+    Optional.ofNullable(upperRight)
+        .ifPresent(c -> c.setBounds(vsbR.x, colHeadR.y, vsbR.width, colHeadR.height));
+  }
+
+  private void setRtlCorner(Rectangle colHeadR, Rectangle rowHeadR, Rectangle vsbR, Rectangle hsbR) {
+    Optional.ofNullable(lowerLeft)
+        .ifPresent(c -> c.setBounds(vsbR.x, hsbR.y, vsbR.width, hsbR.height));
+    Optional.ofNullable(lowerRight)
+        .ifPresent(c -> c.setBounds(rowHeadR.x, hsbR.y, rowHeadR.width, hsbR.height));
+    Optional.ofNullable(upperLeft)
+        .ifPresent(c -> c.setBounds(vsbR.x, colHeadR.y, vsbR.width, colHeadR.height));
+    Optional.ofNullable(upperRight)
+        .ifPresent(c -> c.setBounds(rowHeadR.x, colHeadR.y, rowHeadR.width, colHeadR.height));
+  }
+
+  private void adjustForVsb(boolean wantsVsb, Rectangle avr, Rectangle vsbR, Insets vpbIns, boolean ltr) {
     int oldWidth = vsbR.width;
     if (wantsVsb) {
-      int vsbWidth = Math.max(0, Math.min(vsb.getPreferredSize().width, available.width));
-      available.width -= vsbWidth;
+      int vsbWidth = Math.max(0, Math.min(vsb.getPreferredSize().width, avr.width));
+      avr.width -= vsbWidth;
       vsbR.width = vsbWidth;
 
       if (ltr) { // isLeftToRight
-        vsbR.x = available.x + available.width + vpbInsets.right;
+        vsbR.x = avr.x + avr.width + vpbIns.right;
       } else {
-        vsbR.x = available.x - vpbInsets.left;
-        available.x += vsbWidth;
+        vsbR.x = avr.x - vpbIns.left;
+        avr.x += vsbWidth;
       }
     } else {
-      available.width += oldWidth;
+      avr.width += oldWidth;
     }
   }
 

@@ -96,7 +96,8 @@ class EnterAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    LOGGER.info(() -> String.format("%s%n  %s%n", LocalDateTime.now(ZoneId.systemDefault()), textField.getText()));
+    LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
+    LOGGER.info(() -> String.format("%s%n  %s%n", now, textField.getText()));
   }
 }
 
@@ -106,6 +107,7 @@ class EnterAction extends AbstractAction {
 //   protected FIFODocumentListener(JTextComponent textComponent) {
 //     this.textComponent = textComponent;
 //   }
+//
 //   @Override public void insertUpdate(DocumentEvent e) {
 //     Document doc = e.getDocument();
 //     Element root = doc.getDefaultRootElement();
@@ -119,6 +121,7 @@ class EnterAction extends AbstractAction {
 //     });
 //     textComponent.setCaretPosition(doc.getLength());
 //   }
+//
 //   private static void removeLines(Document doc, Element root) {
 //     Element fl = root.getElement(0);
 //     try {
@@ -127,9 +130,11 @@ class EnterAction extends AbstractAction {
 //       throw new RuntimeException(ex); // should never happen
 //     }
 //   }
+//
 //   @Override public void removeUpdate(DocumentEvent e) {
 //     /* not needed */
 //   }
+//
 //   @Override public void changedUpdate(DocumentEvent e) {
 //     /* not needed */
 //   }
@@ -142,14 +147,17 @@ class EnterAction extends AbstractAction {
 //     super();
 //     this.textArea = textArea;
 //   }
+//
 //   @Override public void flush() throws IOException {
 //     super.flush();
 //     buf.flush();
 //   }
+//
 //   @Override public void close() throws IOException {
 //     super.close();
 //     buf.close();
 //   }
+//
 //   @Override public void write(int b) throws IOException {
 //     if (b == '\r') {
 //       return;
@@ -193,7 +201,7 @@ class TextAreaOutputStream extends OutputStream {
 }
 
 class TextAreaHandler extends StreamHandler {
-  private void configure() {
+  private void configure2() {
     setFormatter(new SimpleFormatter());
     try {
       setEncoding("UTF-8");
@@ -209,15 +217,15 @@ class TextAreaHandler extends StreamHandler {
 
   protected TextAreaHandler(OutputStream os) {
     super();
-    configure();
+    configure2();
     setOutputStream(os);
   }
 
   // [UnsynchronizedOverridesSynchronized]
   // Unsynchronized method publish overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
-  @Override public synchronized void publish(LogRecord record) {
-    super.publish(record);
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
     flush();
   }
 

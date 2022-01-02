@@ -37,17 +37,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, Rectangle2D.Float r) {
-    Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
-    Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
+  private static void setScaleAndAdd(Container p, SpringLayout layout, Component c, Rectangle2D r) {
+    Spring pw = layout.getConstraint(SpringLayout.WIDTH, p);
+    Spring ph = layout.getConstraint(SpringLayout.HEIGHT, p);
 
-    SpringLayout.Constraints c = layout.getConstraints(child);
-    c.setX(Spring.scale(panelw, r.x));
-    c.setY(Spring.scale(panelh, r.y));
-    c.setWidth(Spring.scale(panelw, r.width));
-    c.setHeight(Spring.scale(panelh, r.height));
+    SpringLayout.Constraints sc = layout.getConstraints(c);
+    sc.setX(Spring.scale(pw, (float) r.getX()));
+    sc.setY(Spring.scale(ph, (float) r.getY()));
+    sc.setWidth(Spring.scale(pw, (float) r.getWidth()));
+    sc.setHeight(Spring.scale(ph, (float) r.getHeight()));
 
-    parent.add(child);
+    p.add(c);
   }
 
   // public void initLayout() {
