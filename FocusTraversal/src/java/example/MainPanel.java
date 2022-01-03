@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -15,23 +14,23 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private final JPanel panel = new JPanel(new BorderLayout(2, 2));
   private final JTextArea textArea = new JTextArea();
-  private final JButton nb = new JButton("NORTH");
-  private final JButton sb = new JButton("SOUTH");
-  private final JButton wb = new JButton("WEST");
-  private final JButton eb = new JButton("EAST");
   private final JScrollPane scroll = new JScrollPane(textArea);
   private final Box box = Box.createHorizontalBox();
   private final JCheckBox check = new JCheckBox("setEditable", true);
 
-  @SuppressWarnings("JdkObsolete")
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    JButton nb = new JButton("NORTH");
+    JButton sb = new JButton("SOUTH");
+    JButton wb = new JButton("WEST");
+    JButton eb = new JButton("EAST");
+
     panel.add(scroll);
     panel.add(nb, BorderLayout.NORTH);
     panel.add(sb, BorderLayout.SOUTH);
     panel.add(wb, BorderLayout.WEST);
     panel.add(eb, BorderLayout.EAST);
+    panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
     setFocusTraversalPolicyProvider(true);
     // frame.setFocusTraversalPolicy(policy);
@@ -39,25 +38,37 @@ public final class MainPanel extends JPanel {
     // setFocusCycleRoot(true);
 
     FocusTraversalPolicy policy0 = getFocusTraversalPolicy();
+    JRadioButton r0 = new JRadioButton("Default", true);
+    r0.addActionListener(e -> {
+      setFocusTraversalPolicy(policy0);
+      debugPrint();
+    });
+
     FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(Arrays.asList(eb, wb, sb, nb));
+    JRadioButton r1 = new JRadioButton("Custom");
+    r1.addActionListener(e -> {
+      setFocusTraversalPolicy(policy1);
+      debugPrint();
+    });
+
     FocusTraversalPolicy policy2 = new LayoutFocusTraversalPolicy() {
       @Override protected boolean accept(Component c) {
         return c instanceof JTextComponent ? ((JTextComponent) c).isEditable() : super.accept(c);
       }
     };
+    JRadioButton r2 = new JRadioButton("Layout");
+    r2.addActionListener(e -> {
+      setFocusTraversalPolicy(policy2);
+      debugPrint();
+    });
 
     ButtonGroup bg = new ButtonGroup();
     box.setBorder(BorderFactory.createTitledBorder("FocusTraversalPolicy"));
-    Stream.of(new FocusTraversalPolicyChangeAction("Default", policy0),
-              new FocusTraversalPolicyChangeAction("Custom", policy1),
-              new FocusTraversalPolicyChangeAction("Layout", policy2))
-        .map(JRadioButton::new)
-        .forEach(rb -> {
-          bg.add(rb);
-          box.add(rb);
-          box.add(Box.createHorizontalStrut(3));
-        });
-    bg.getElements().nextElement().setSelected(true);
+    Stream.of(r0, r1, r2).forEach(rb -> {
+      bg.add(rb);
+      box.add(rb);
+      box.add(Box.createHorizontalStrut(3));
+    });
     box.add(Box.createHorizontalGlue());
 
     check.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -72,20 +83,6 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(this::debugPrint);
   }
 
-  protected final class FocusTraversalPolicyChangeAction extends AbstractAction {
-    private final FocusTraversalPolicy policy;
-
-    public FocusTraversalPolicyChangeAction(String name, FocusTraversalPolicy p) {
-      super(name);
-      this.policy = p;
-    }
-
-    @Override public void actionPerformed(ActionEvent e) {
-      setFocusTraversalPolicy(policy);
-      debugPrint();
-    }
-  }
-
   public void debugPrint() {
     Container w = getTopLevelAncestor();
     textArea.setText(String.join("\n",
@@ -94,8 +91,7 @@ public final class MainPanel extends JPanel {
         debugString("JPanel", panel),
         debugString("Box", box),
         debugString("JScrollPane", scroll),
-        debugString("JTextArea", textArea),
-        debugString("eb", eb)));
+        debugString("JTextArea", textArea)));
   }
 
   private static String debugString(String label, Container c) {
