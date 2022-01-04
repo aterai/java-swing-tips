@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -60,14 +61,14 @@ public final class MainPanel extends JPanel {
     JButton save = new JButton("save");
     save.addActionListener(e -> {
       try {
-        File file = File.createTempFile("output", ".xml");
+        Path path = File.createTempFile("output", ".xml").toPath();
         String[] names = {"label", "status"};
         // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(file.toPath())))) {
+        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(path)))) {
           xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(names));
           xe.writeObject(tree.getModel());
         }
-        try (Reader r = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+        try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
           textArea.read(r, "temp");
         }
       } catch (IOException ex) {
@@ -82,7 +83,7 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(new File("out.xml"))))) {
+      // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
       byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
       try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
         DefaultTreeModel m = (DefaultTreeModel) xd.readObject();

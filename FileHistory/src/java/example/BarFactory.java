@@ -242,7 +242,9 @@ class Utf8ResourceBundleControl extends ResourceBundle.Control {
       String bundleName = toBundleName(
           Objects.requireNonNull(baseName, "baseName must not be null"),
           Objects.requireNonNull(locale, "locale must not be null"));
-      String resourceName = toResourceName(bundleName, Objects.requireNonNull(format, "format must not be null"));
+      String resourceName = toResourceName(
+          bundleName,
+          Objects.requireNonNull(format, "format must not be null"));
       InputStream stream = null;
       ClassLoader cl = Objects.requireNonNull(loader, "loader must not be null");
       if (reload) {

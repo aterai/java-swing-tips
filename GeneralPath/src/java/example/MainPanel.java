@@ -251,32 +251,32 @@ class StarIcon2 implements Icon {
   }
 }
 
-//   // Java2D Shapes project.
-//   // http://java-sl.com/shapes.html
-//   protected static int[] getXCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
-//     int[] res = new int[vertexCount * 2];
-//     double addAngle = 2 * Math.PI / vertexCount;
-//     double angle = startAngle;
-//     double innerAngle = startAngle + Math.PI / vertexCount;
-//     for (int i = 0; i < vertexCount; i++) {
-//       res[i * 2] = (int) Math.round(r * Math.cos(angle)) + x;
-//       angle += addAngle;
-//       res[i * 2 + 1] = (int) Math.round(innerR * Math.cos(innerAngle)) + x;
-//       innerAngle += addAngle;
-//     }
-//     return res;
+// // Java2D Shapes project.
+// // http://java-sl.com/shapes.html
+// int[] getXCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
+//   int[] res = new int[vertexCount * 2];
+//   double addAngle = 2 * Math.PI / vertexCount;
+//   double angle = startAngle;
+//   double innerAngle = startAngle + Math.PI / vertexCount;
+//   for (int i = 0; i < vertexCount; i++) {
+//     res[i * 2] = (int) Math.round(r * Math.cos(angle)) + x;
+//     angle += addAngle;
+//     res[i * 2 + 1] = (int) Math.round(innerR * Math.cos(innerAngle)) + x;
+//     innerAngle += addAngle;
 //   }
+//   return res;
+// }
 //
-//   protected static int[] getYCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
-//     int[] res = new int[vertexCount * 2];
-//     double addAngle = 2 * Math.PI / vertexCount;
-//     double angle = startAngle;
-//     double innerAngle = startAngle + Math.PI / vertexCount;
-//     for (int i = 0; i < vertexCount; i++) {
-//       res[i * 2] = (int) Math.round(r * Math.sin(angle)) + y;
-//       angle += addAngle;
-//       res[i * 2 + 1] = (int) Math.round(innerR * Math.sin(innerAngle)) + y;
-//       innerAngle += addAngle;
-//     }
-//     return res;
+// int[] getYCoordinates(int x, int y, int r, int innerR, int vertexCount, double startAngle) {
+//   int[] res = new int[vertexCount * 2];
+//   double addAngle = 2 * Math.PI / vertexCount;
+//   double angle = startAngle;
+//   double innerAngle = startAngle + Math.PI / vertexCount;
+//   for (int i = 0; i < vertexCount; i++) {
+//     res[i * 2] = (int) Math.round(r * Math.sin(angle)) + y;
+//     angle += addAngle;
+//     res[i * 2 + 1] = (int) Math.round(innerR * Math.sin(innerAngle)) + y;
+//     innerAngle += addAngle;
 //   }
+//   return res;
+// }

@@ -106,7 +106,8 @@ public final class MainPanel extends JPanel {
   //       // outfile.deleteOnExit();
   //     } catch (IOException ex) {
   //       Toolkit.getDefaultToolkit().beep();
-  //       JOptionPane.showMessageDialog(null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
+  //       JOptionPane.showMessageDialog(
+  //           null, "Could not create file.", "Error", JOptionPane.ERROR_MESSAGE);
   //       return;
   //     }
   //     if (Objects.isNull(outfile)) {
@@ -157,7 +158,7 @@ public final class MainPanel extends JPanel {
     // Shape copyright = new TextLayout("\u3042", font, frc).getOutline(null);
     // Rectangle r = copyright.getBounds();
     // AffineTransform at = AffineTransform.getTranslateInstance(0d, r.getHeight());
-    // StringBuilder sb = makeStarburstSvg(copyright.getPathIterator(at), 200, styleField.getText().trim(), desc);
+    // StringBuilder sb = makeStarburstSvg(copyright.getPathIterator(at), 200, styleStr, desc);
 
     textArea.setText(sb.toString());
   }

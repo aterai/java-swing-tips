@@ -218,33 +218,33 @@ final class SpringLayoutUtil {
     /* Singleton */
   }
 
-  public static void setScaleAndAdd(Container parent, SpringLayout layout, Component child, Rectangle2D.Float r) {
-    Spring panelw = layout.getConstraint(SpringLayout.WIDTH, parent);
-    Spring panelh = layout.getConstraint(SpringLayout.HEIGHT, parent);
+  public static void setScaleAndAdd(Container p, SpringLayout layout, Component c, Rectangle2D r) {
+    Spring pw = layout.getConstraint(SpringLayout.WIDTH, p);
+    Spring ph = layout.getConstraint(SpringLayout.HEIGHT, p);
 
-    SpringLayout.Constraints c = layout.getConstraints(child);
-    c.setX(Spring.scale(panelw, r.x));
-    c.setY(Spring.scale(panelh, r.y));
-    c.setWidth(Spring.scale(panelw, r.width));
-    c.setHeight(Spring.scale(panelh, r.height));
+    SpringLayout.Constraints sc = layout.getConstraints(c);
+    sc.setX(Spring.scale(pw, (float) r.getX()));
+    sc.setY(Spring.scale(ph, (float) r.getY()));
+    sc.setWidth(Spring.scale(pw, (float) r.getWidth()));
+    sc.setHeight(Spring.scale(ph, (float) r.getHeight()));
 
-    parent.add(child);
+    p.add(c);
   }
 
-  public static Component makePanel(JList<?> leftList, JList<?> rightList, JButton l2rButton, JButton r2lButton) {
+  public static Component makePanel(JList<?> lefts, JList<?> rights, JButton l2r, JButton r2l) {
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
     box.add(Box.createVerticalGlue());
-    box.add(l2rButton);
+    box.add(l2r);
     box.add(Box.createVerticalStrut(20));
-    box.add(r2lButton);
+    box.add(r2l);
     box.add(Box.createVerticalGlue());
 
     JPanel cpn = new JPanel(new GridBagLayout());
     cpn.add(box);
 
-    JScrollPane spl = new JScrollPane(leftList);
-    JScrollPane spr = new JScrollPane(rightList);
+    JScrollPane spl = new JScrollPane(lefts);
+    JScrollPane spr = new JScrollPane(rights);
 
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout);

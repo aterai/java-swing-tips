@@ -214,19 +214,21 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JSplitPane> l) {
-    JSplitPane splitPane = l.getView();
+    JSplitPane sp = l.getView();
     Component c = e.getComponent();
-    Point pt = SwingUtilities.convertPoint(c, e.getPoint(), splitPane);
-    if (e.getID() == MouseEvent.MOUSE_MOVED) {
-      splitPane.setCursor(thumb.contains(e.getPoint()) ? wc : dc);
-    } else if (isDragging && isDraggableComponent(splitPane, c) && e.getID() == MouseEvent.MOUSE_DRAGGED) {
-      int delta = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? pt.x - startPt.x : pt.y - startPt.y;
-      splitPane.setDividerLocation(Math.max(0, dividerLocation + delta));
+    Point pt = SwingUtilities.convertPoint(c, e.getPoint(), sp);
+    int id = e.getID();
+    if (id == MouseEvent.MOUSE_MOVED) {
+      sp.setCursor(thumb.contains(e.getPoint()) ? wc : dc);
+    } else if (isDragging && isDraggableComponent(sp, c) && id == MouseEvent.MOUSE_DRAGGED) {
+      boolean isHorizontal = sp.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
+      int delta = isHorizontal ? pt.x - startPt.x : pt.y - startPt.y;
+      sp.setDividerLocation(Math.max(0, dividerLocation + delta));
     }
   }
 
-  private static boolean isDraggableComponent(JSplitPane splitPane, Component c) {
-    return Objects.equals(splitPane, c) || Objects.equals(splitPane, SwingUtilities.getUnwrappedParent(c));
+  private static boolean isDraggableComponent(JSplitPane sp, Component c) {
+    return Objects.equals(sp, c) || Objects.equals(sp, SwingUtilities.getUnwrappedParent(c));
   }
 
   private static void updateThumbLocation(Component c, Ellipse2D thumb) {

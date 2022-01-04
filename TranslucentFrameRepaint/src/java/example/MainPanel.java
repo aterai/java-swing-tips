@@ -23,9 +23,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-    JLabel label = new JLabel(LocalTime.now(ZoneId.systemDefault()).format(formatter), SwingConstants.CENTER);
+    String txt = LocalTime.now(ZoneId.systemDefault()).format(formatter);
+    JLabel label = new JLabel(txt, SwingConstants.CENTER);
     Timer timer = new Timer(100, null);
     timer.addActionListener(e -> {
       label.setText(LocalTime.now(ZoneId.systemDefault()).format(formatter));
@@ -34,7 +34,8 @@ public final class MainPanel extends JPanel {
         repaintWindowAncestor(label);
       }
     });
-    TexturePanel tp = TextureUtil.makeTexturePanel(label, getClass().getResource("YournameS7ScientificHalf.ttf"));
+    String path = "YournameS7ScientificHalf.ttf";
+    TexturePanel tp = TextureUtil.makeTexturePanel(label, getClass().getResource(path));
 
     JFrame digitalClock = new JFrame();
     digitalClock.getContentPane().add(tp);
@@ -126,10 +127,6 @@ public final class MainPanel extends JPanel {
 
 class TexturePanel extends JPanel {
   private transient Paint texture;
-
-  protected TexturePanel() {
-    super();
-  }
 
   protected TexturePanel(LayoutManager lm) {
     super(lm);

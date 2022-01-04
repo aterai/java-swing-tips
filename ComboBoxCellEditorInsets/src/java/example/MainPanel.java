@@ -52,7 +52,8 @@ public final class MainPanel extends JPanel {
   public static JComboBox<String> makeComboBox() {
     JComboBox<String> c = new JComboBox<>(new String[] {"11111", "222", "3"});
     c.setEditable(true);
-    c.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10), c.getBorder()));
+    c.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createEmptyBorder(8, 10, 8, 10), c.getBorder()));
     return c;
   }
 
@@ -327,8 +328,8 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //     Color back = getBackground();
 //     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
 //     if (o instanceof JTable) {
-//       JTable table = (JTable) o;
-//       boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//       JTable t = (JTable) o;
+//       boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
 //       return !colorMatch && super.isOpaque();
 //     } else {
 //       return super.isOpaque();

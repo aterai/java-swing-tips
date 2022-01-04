@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     list.setOpaque(false);
     list.setBackground(new Color(0x0, true));
     list.setForeground(Color.WHITE);
-    // list.addListSelectionListener(e -> SwingUtilities.getUnwrappedParent((Component) e.getSource()).repaint());
+    // list.addListSelectionListener(e -> SwingUtilities.getUnwrappedParent(list).repaint());
 
     JScrollPane scroll = new JScrollPane(list);
     scroll.setBackground(new Color(0x0, true));

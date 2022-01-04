@@ -28,7 +28,8 @@ public final class MainPanel extends JPanel {
     float length = 5f;
     float spacing = 5f;
     float[] array = {length - 1f, spacing + 1f};
-    BasicStroke dashedStroke = new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 2f, array, 0f);
+    BasicStroke dashedStroke = new BasicStroke(
+        1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 2f, array, 0f);
     Border dashed = new StrokeMatteBorder(0, 0, 1, 1, dashedStroke, Color.BLACK);
     for (c.gridy = 0; c.gridy < row; c.gridy++) {
       for (c.gridx = 0; c.gridx < column; c.gridx++) {

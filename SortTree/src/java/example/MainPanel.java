@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
       } else {
         TreeUtil.COMPARE_COUNTER.set(0);
         TreeUtil.SWAP_COUNTER.set(0);
-        DefaultMutableTreeNode r = TreeUtil.deepCopyTree(root, (DefaultMutableTreeNode) root.clone());
+        DefaultMutableTreeNode r = TreeUtil.deepCopy(root, (DefaultMutableTreeNode) root.clone());
         if (check.equals(sort1)) {
           TreeUtil.sortTree1(r);
         } else if (check.equals(sort2)) {
@@ -103,26 +103,27 @@ final class TreeUtil {
   public static final AtomicInteger SWAP_COUNTER = new AtomicInteger();
 
   // // JDK 1.7.0
-  // private static TreeNodeComparator tnc = new TreeNodeComparator();
-  // private static class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, java.io.Serializable {
+  // TreeNodeComparator COMPARATOR = new TreeNodeComparator();
+  // class TreeNodeComparator implements Comparator<DefaultMutableTreeNode>, Serializable {
   //   private static final long serialVersionUID = 1L;
-  //   @Override public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
+  //   @Override public int compare(DefaultMutableTreeNode n1, DefaultMutableTreeNode n2) {
   //     COMPARE_COUNTER.getAndIncrement();
-  //     if (a.isLeaf() && !b.isLeaf()) {
+  //     if (n1.isLeaf() && !n2.isLeaf()) {
   //       return 1;
-  //     } else if (!a.isLeaf() && b.isLeaf()) {
+  //     } else if (!n1.isLeaf() && n2.isLeaf()) {
   //       return -1;
   //     } else {
-  //       String sa = a.getUserObject().toString();
-  //       String sb = b.getUserObject().toString();
-  //       return sa.compareToIgnoreCase(sb);
+  //       String s1 = n1.getUserObject().toString();
+  //       String s2 = n2.getUserObject().toString();
+  //       return s1.compareToIgnoreCase(s2);
   //     }
   //   }
   // }
 
   // JDK 1.8.0
-  private static Comparator<DefaultMutableTreeNode> tnc = Comparator.comparing(DefaultMutableTreeNode::isLeaf)
-      .thenComparing(n -> n.getUserObject().toString());
+  private static final Comparator<DefaultMutableTreeNode> COMPARATOR =
+      Comparator.comparing(DefaultMutableTreeNode::isLeaf)
+          .thenComparing(n -> n.getUserObject().toString());
 
   private TreeUtil() {
     /* Singleton */
@@ -135,7 +136,7 @@ final class TreeUtil {
   //     for (int j = 0; j < i; j++) {
   //       DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j);
   //       COMPARE_COUNTER.getAndIncrement();
-  //       if (tnc.compare(node, prevNode) < 0) {
+  //       if (COMPARATOR.compare(node, prevNode) < 0) {
   //         root.insert(node, j);
   //         root.insert(prevNode, i);
   //         SWAP_COUNTER.getAndIncrement();
@@ -158,7 +159,7 @@ final class TreeUtil {
         if (!prevNode.isLeaf()) {
           sortTree1(prevNode);
         }
-        if (tnc.compare(prevNode, curNode) > 0) {
+        if (COMPARATOR.compare(prevNode, curNode) > 0) {
           SWAP_COUNTER.getAndIncrement();
           root.insert(curNode, j - 1);
           root.insert(prevNode, j);
@@ -172,7 +173,7 @@ final class TreeUtil {
     for (int i = 0; i < n - 1; i++) {
       int min = i;
       for (int j = i + 1; j < n; j++) {
-        if (tnc.compare((DefaultMutableTreeNode) parent.getChildAt(min),
+        if (COMPARATOR.compare((DefaultMutableTreeNode) parent.getChildAt(min),
             (DefaultMutableTreeNode) parent.getChildAt(j)) > 0) {
           min = j;
         }
@@ -210,7 +211,7 @@ final class TreeUtil {
       children.add((DefaultMutableTreeNode) parent.getChildAt(i));
     }
 
-    children.sort(tnc);
+    children.sort(COMPARATOR);
     parent.removeAllChildren();
     children.forEach(parent::add);
   }
@@ -224,7 +225,7 @@ final class TreeUtil {
         .forEach(TreeUtil::sort3);
   }
 
-  public static DefaultMutableTreeNode deepCopyTree(DefaultMutableTreeNode src, DefaultMutableTreeNode tgt) {
+  public static DefaultMutableTreeNode deepCopy(MutableTreeNode src, DefaultMutableTreeNode tgt) {
     // Java 9: Collections.list(src.children()).stream()
     Collections.list((Enumeration<?>) src.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
@@ -233,7 +234,7 @@ final class TreeUtil {
           DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
           tgt.add(clone);
           if (!node.isLeaf()) {
-            deepCopyTree(node, clone);
+            deepCopy(node, clone);
           }
         });
     // for (int i = 0; i < src.getChildCount(); i++) {

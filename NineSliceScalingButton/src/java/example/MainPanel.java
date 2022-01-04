@@ -16,7 +16,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
     // https://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
     BufferedImage img = makeBufferedImage(getClass().getResource("symbol_scale_2.jpg"));
@@ -33,16 +32,16 @@ public final class MainPanel extends JPanel {
     b3.setBorder(BorderFactory.createEmptyBorder());
     b3.setForeground(Color.WHITE);
     b3.setHorizontalTextPosition(SwingConstants.CENTER);
-    b3.setPressedIcon(new NineSliceScalingIcon(makeFilteredImage(bi, new PressedImageFilter()), 0, 0, 0, 0));
-    b3.setRolloverIcon(new NineSliceScalingIcon(makeFilteredImage(bi, new RolloverImageFilter()), 0, 0, 0, 0));
+    b3.setPressedIcon(new NineSliceScalingIcon(makeImage(bi, new PressedFilter()), 0, 0, 0, 0));
+    b3.setRolloverIcon(new NineSliceScalingIcon(makeImage(bi, new RolloverFilter()), 0, 0, 0, 0));
 
     JButton b4 = new JButton("9-Slice Scaling Icon", new NineSliceScalingIcon(bi, 8, 8, 8, 8));
     b4.setContentAreaFilled(false);
     b4.setBorder(BorderFactory.createEmptyBorder());
     b4.setForeground(Color.WHITE);
     b4.setHorizontalTextPosition(SwingConstants.CENTER);
-    b4.setPressedIcon(new NineSliceScalingIcon(makeFilteredImage(bi, new PressedImageFilter()), 8, 8, 8, 8));
-    b4.setRolloverIcon(new NineSliceScalingIcon(makeFilteredImage(bi, new RolloverImageFilter()), 8, 8, 8, 8));
+    b4.setPressedIcon(new NineSliceScalingIcon(makeImage(bi, new PressedFilter()), 8, 8, 8, 8));
+    b4.setRolloverIcon(new NineSliceScalingIcon(makeImage(bi, new RolloverFilter()), 8, 8, 8, 8));
 
     JPanel p2 = new JPanel(new GridLayout(1, 2, 5, 5));
     p2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -65,7 +64,7 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  private static BufferedImage makeFilteredImage(BufferedImage src, ImageFilter filter) {
+  private static BufferedImage makeImage(BufferedImage src, ImageFilter filter) {
     ImageProducer ip = src.getSource();
     Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, filter));
     int w = img.getWidth(null);
@@ -160,17 +159,34 @@ class NineSliceScalingButton extends JButton {
     int th = 36;
     int bh = 36;
 
-    g2.drawImage(image.getSubimage(lw, th, iw - lw - rw, ih - th - bh), lw, th, ww - lw - rw, hh - th - bh, this);
+    g2.drawImage(
+        image.getSubimage(lw, th, iw - lw - rw, ih - th - bh),
+        lw, th, ww - lw - rw, hh - th - bh, this);
 
-    g2.drawImage(image.getSubimage(lw, 0, iw - lw - rw, th), lw, 0, ww - lw - rw, th, this);
-    g2.drawImage(image.getSubimage(lw, ih - bh, iw - lw - rw, bh), lw, hh - bh, ww - lw - rw, bh, this);
-    g2.drawImage(image.getSubimage(0, th, lw, ih - th - bh), 0, th, lw, hh - th - bh, this);
-    g2.drawImage(image.getSubimage(iw - rw, th, rw, ih - th - bh), ww - rw, th, rw, hh - th - bh, this);
+    g2.drawImage(
+        image.getSubimage(lw, 0, iw - lw - rw, th),
+        lw, 0, ww - lw - rw, th, this);
+    g2.drawImage(
+        image.getSubimage(lw, ih - bh, iw - lw - rw, bh),
+        lw, hh - bh, ww - lw - rw, bh, this);
+    g2.drawImage(
+        image.getSubimage(0, th, lw, ih - th - bh),
+        0, th, lw, hh - th - bh, this);
+    g2.drawImage(
+        image.getSubimage(iw - rw, th, rw, ih - th - bh),
+        ww - rw, th, rw, hh - th - bh, this);
 
-    g2.drawImage(image.getSubimage(0, 0, lw, th), 0, 0, this);
-    g2.drawImage(image.getSubimage(iw - rw, 0, rw, th), ww - rw, 0, this);
-    g2.drawImage(image.getSubimage(0, ih - bh, lw, bh), 0, hh - bh, this);
-    g2.drawImage(image.getSubimage(iw - rw, ih - bh, rw, bh), ww - rw, hh - bh, this);
+    g2.drawImage(
+        image.getSubimage(0, 0, lw, th), 0, 0, this);
+    g2.drawImage(
+        image.getSubimage(iw - rw, 0, rw, th),
+        ww - rw, 0, this);
+    g2.drawImage(
+        image.getSubimage(0, ih - bh, lw, bh),
+        0, hh - bh, this);
+    g2.drawImage(
+        image.getSubimage(iw - rw, ih - bh, rw, bh),
+        ww - rw, hh - bh, this);
 
     g2.dispose();
     super.paintComponent(g);
@@ -253,14 +269,14 @@ class NineSliceScalingIcon implements Icon {
   }
 }
 
-class PressedImageFilter extends RGBImageFilter {
+class PressedFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     int r = Math.round(((argb >> 16) & 0xFF) * .6f);
     return (argb & 0xFF_00_FF_FF) | (r << 16);
   }
 }
 
-class RolloverImageFilter extends RGBImageFilter {
+class RolloverFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     // int r = (argb >> 16) & 0xFF;
     int g = Math.min(0xFF, Math.round(((argb >> 8) & 0xFF) * 1.5f));

@@ -44,8 +44,10 @@ public final class MainPanel extends JPanel {
     editor.setText(buf.toString());
 
     JCheckBox check = new JCheckBox("JEditorPane.HONOR_DISPLAY_PROPERTIES");
-    check.addActionListener(e ->
-        editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, ((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      boolean flg = ((JCheckBox) e.getSource()).isSelected();
+      editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, flg);
+    });
     // check.addActionListener(e -> {
     //   HTMLEditorKit kit = (HTMLEditorKit) editor.getEditorKit();
     //   kit.getStyleSheet().addRule("body {font-size: 64pt;}");

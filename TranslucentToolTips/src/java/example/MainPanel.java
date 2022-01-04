@@ -81,18 +81,24 @@ public final class MainPanel extends JPanel {
         setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
         setFixedCellWidth(CELL_SIZE.width);
         setFixedCellHeight(CELL_SIZE.height);
-        ListCellRenderer<? super Contribution> renderer = getCellRenderer();
+        ListCellRenderer<? super Contribution> r = getCellRenderer();
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-          if (value.date.isAfter(currentLocalDate)) {
-            l.setIcon(new ContributionIcon(Color.WHITE));
-          } else {
-            l.setIcon(activityIcons.get(value.activity));
+          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          if (c instanceof JLabel) {
+            ((JLabel) c).setIcon(getActivityIcon(value));
           }
-          return l;
+          return c;
         });
         getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+      }
+
+      private Icon getActivityIcon(Contribution value) {
+        if (value.date.isAfter(currentLocalDate)) {
+          return new ContributionIcon(Color.WHITE);
+        } else {
+          return activityIcons.get(value.activity);
+        }
       }
 
       @Override public String getToolTipText(MouseEvent e) {
@@ -108,19 +114,28 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public Point getToolTipLocation(MouseEvent e) {
-        Point p = e.getPoint();
-        int i = locationToIndex(p);
-        Rectangle rect = getCellBounds(i, i);
-
-        String toolTipText = getToolTipText(e);
-        if (Objects.nonNull(toolTipText)) {
+        return Optional.ofNullable(getToolTipText(e)).map(toolTipText -> {
+          Point p = e.getPoint();
+          int i = locationToIndex(p);
+          Rectangle r = getCellBounds(i, i);
           JToolTip tips = createToolTip();
           tips.setTipText(toolTipText);
           Dimension d = tips.getPreferredSize();
           int gap = 2;
-          return new Point((int) (rect.getCenterX() - d.getWidth() / 2d), rect.y - d.height - gap);
-        }
-        return null;
+          return new Point((int) (r.getCenterX() - d.getWidth() / 2d), r.y - d.height - gap);
+        }).orElse(null);
+        // String toolTipText = getToolTipText(e);
+        // if (Objects.nonNull(toolTipText)) {
+        //   Point p = e.getPoint();
+        //   int i = locationToIndex(p);
+        //   Rectangle rect = getCellBounds(i, i);
+        //   JToolTip tips = createToolTip();
+        //   tips.setTipText(toolTipText);
+        //   Dimension d = tips.getPreferredSize();
+        //   int gap = 2;
+        //   return new Point((int) (rect.getCenterX() - d.getWidth() / 2d), rect.y - d.height - gap);
+        // }
+        // return null;
       }
 
       @Override public JToolTip createToolTip() {
@@ -187,13 +202,16 @@ public final class MainPanel extends JPanel {
   //
   //   @Override public Component getListCellRendererComponent(JList<? extends Contribution> list, Contribution value, int index, boolean isSelected, boolean cellHasFocus) {
   //     // Contribution v = Optional.ofNullable(value).orElseGet(list::getPrototypeCellValue);
-  //     JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-  //     if (value.date.isAfter(currentLocalDate)) {
-  //       l.setIcon(new ContributionIcon(Color.WHITE));
-  //     } else {
-  //       l.setIcon(activityIcons.get(value.activity));
+  //     Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+  //     if (c instanceof JLabel) {
+  //       JLabel l = (JLabel) c;
+  //       if (value.date.isAfter(currentLocalDate)) {
+  //         l.setIcon(new ContributionIcon(Color.WHITE));
+  //       } else {
+  //         l.setIcon(activityIcons.get(value.activity));
+  //       }
   //     }
-  //     return l;
+  //     return c;
   //   }
   // }
 

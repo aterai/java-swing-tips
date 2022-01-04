@@ -189,7 +189,7 @@ class IntegerDocumentFilter extends DocumentFilter {
   }
 }
 
-// How to Use Formatted Text Fields (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// How to Use Formatted Text Fields (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/formattedtextfield.html
 class NumberFormatterFactory extends DefaultFormatterFactory {
   // private static NumberFormat amountEditFormat = NumberFormat.getNumberInstance();

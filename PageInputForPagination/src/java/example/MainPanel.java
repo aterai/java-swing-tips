@@ -207,9 +207,10 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
   }
 
   @Override protected String doInBackground() throws InterruptedException {
-    // File file = new File("C:/Users/(user)/AppData/Roaming/Mozilla/Firefox/Profiles/xxx.default/places.sqlite");
+    // path = "C:/Users/.../AppData/Roaming/Mozilla/Firefox/Profiles/xx.default/places.sqlite";
+    // File file = new File(path);
     // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
-    // try (Connection conn = DriverManager.getConnection(db); Statement stat = conn.createStatement()) {
+    // try (Connection c = DriverManager.getConnection(db); Statement s = c.createStatement()) {
     int current = 1;
     int c = max / itemsPerPage;
     int i = 0;
