@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"Border", "JPanel+JComboBox"};
     Object[][] data = {
-      {"AAA", "a"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "dd"}
+        {"AAA", "a"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "dd"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -145,11 +145,17 @@ class ComboBoxCellRenderer implements TableCellRenderer {
 }
 
 class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
-  private final ComboBoxPanel panel = new ComboBoxPanel();
+  private final ComboBoxPanel panel = new ComboBoxPanel() {
+    @Override public void updateUI() {
+      super.updateUI();
+      EventQueue.invokeLater(() -> comboBox.addActionListener(e -> fireEditingStopped()));
+    }
+  };
 
   protected ComboBoxCellEditor() {
     super();
-    panel.comboBox.addActionListener(e -> fireEditingStopped());
+    // SpotBugs: MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR
+    // panel.comboBox.addActionListener(e -> fireEditingStopped());
     panel.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         fireEditingStopped();
