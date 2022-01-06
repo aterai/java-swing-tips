@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -63,10 +64,14 @@ public final class MainPanel extends JPanel {
   }
 
   public void showMessageDialogAndPlayAudio(Component p, String msg, String audioResource) {
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    try (AudioInputStream soundStream = AudioSystem.getAudioInputStream(cl.getResource(audioResource));
-         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, soundStream.getFormat()))) {
-
+    URL url = Thread.currentThread().getContextClassLoader().getResource(audioResource);
+    if (url == null) {
+      UIManager.getLookAndFeel().provideErrorFeedback(p);
+      JOptionPane.showMessageDialog(p, audioResource + " not found");
+      return;
+    }
+    try (AudioInputStream ss = AudioSystem.getAudioInputStream(url);
+         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, ss.getFormat()))) {
       SecondaryLoop loop = p.getToolkit().getSystemEventQueue().createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
@@ -75,7 +80,7 @@ public final class MainPanel extends JPanel {
           loop.exit();
         }
       });
-      clip.open(soundStream);
+      clip.open(ss);
       clip.start();
       JOptionPane.showMessageDialog(p, msg);
       loop.enter();
@@ -169,19 +174,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

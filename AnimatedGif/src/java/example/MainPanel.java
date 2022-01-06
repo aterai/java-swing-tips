@@ -5,23 +5,34 @@
 package example;
 
 import java.awt.*;
-import java.util.stream.Stream;
+import java.net.URL;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
-    Stream.of("no_disposal_specified", "do_not_dispose", "restore_to_background_color", "restore_to_previous")
-        .forEach(s -> {
-          Icon i = new ImageIcon(getClass().getResource(s + ".gif"));
-          box.add(new JLabel(s, i, SwingConstants.LEFT));
-          box.add(Box.createVerticalStrut(20));
-        });
+    String[] list = {
+        "no_disposal_specified",
+        "do_not_dispose",
+        "restore_to_background_color",
+        "restore_to_previous"
+    };
+    for (String s : list) {
+      box.add(makeLabel(s));
+      box.add(Box.createVerticalStrut(20));
+    }
     box.add(Box.createVerticalGlue());
     add(box);
     setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static JLabel makeLabel(String name) {
+    String path = "example/" + name + ".gif";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
+    return new JLabel(name, icon, SwingConstants.LEFT);
   }
 
   public static void main(String[] args) {

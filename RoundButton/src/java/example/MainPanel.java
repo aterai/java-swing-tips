@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
+import java.net.URL;
 import java.util.Optional;
 import javax.swing.*;
 
@@ -26,7 +27,10 @@ public final class MainPanel extends JPanel {
     };
     add(button);
     add(new RoundedCornerButton("Rounded Corner Button"));
-    add(new RoundButton(new ImageIcon(getClass().getResource("16x16.png"))) {
+
+    URL url = Thread.currentThread().getContextClassLoader().getResource("example/16x16.png");
+    Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
+    add(new RoundButton(icon) {
       @Override public Dimension getPreferredSize() {
         int r = 16 + (FOCUS_STROKE + 4) * 2; // test margin = 4
         return new Dimension(r, r);
@@ -75,8 +79,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerButton extends JButton {
-  private static final double ARC_WIDTH = 16d;
-  private static final double ARC_HEIGHT = 16d;
+  private static final double ARC = 16d;
   protected static final int FOCUS_STROKE = 2;
   protected static final Color FC = new Color(100, 150, 255, 200);
   protected static final Color AC = new Color(230, 230, 230);
@@ -122,17 +125,18 @@ class RoundedCornerButton extends JButton {
   protected void initShape() {
     if (!getBounds().equals(base)) {
       base = getBounds();
-      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC, ARC);
       border = new RoundRectangle2D.Double(
           FOCUS_STROKE, FOCUS_STROKE,
           getWidth() - 1d - FOCUS_STROKE * 2d,
-          getHeight() - 1d - FOCUS_STROKE * 2d,
-          ARC_WIDTH, ARC_HEIGHT);
+          getHeight() - 1d - FOCUS_STROKE * 2d, ARC, ARC);
     }
   }
 
   private void paintFocusAndRollover(Graphics2D g2, Color color) {
-    g2.setPaint(new GradientPaint(0f, 0f, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
+    float x2 = getWidth() - 1f;
+    float y2 = getHeight() - 1f;
+    g2.setPaint(new GradientPaint(0f, 0f, color, x2, y2, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(getBackground());
     g2.fill(border);
@@ -221,7 +225,7 @@ class ShapeButton extends JButton {
   protected static final Color FC = new Color(100, 150, 255, 200);
   protected static final Color AC = new Color(230, 230, 230);
   protected static final Color RC = Color.ORANGE;
-  protected final Shape shape;
+  protected final transient Shape shape;
 
   protected ShapeButton(Shape s) {
     super();
@@ -239,7 +243,9 @@ class ShapeButton extends JButton {
   }
 
   private void paintFocusAndRollover(Graphics2D g2, Color color) {
-    g2.setPaint(new GradientPaint(0f, 0f, color, getWidth() - 1f, getHeight() - 1f, color.brighter(), true));
+    float x2 = getWidth() - 1f;
+    float y2 = getHeight() - 1f;
+    g2.setPaint(new GradientPaint(0f, 0f, color, x2, y2, color.brighter(), true));
     g2.fill(shape);
   }
 

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.Objects;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
@@ -13,33 +14,48 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    URL url1 = getClass().getResource("favicon.png");
-    URL url2 = getClass().getResource("animated.gif");
+    String path1 = "example/favicon.png";
+    String path2 = "example/animated.gif";
 
     JComboBox<Icon> combo = new JComboBox<>();
-    combo.setModel(new DefaultComboBoxModel<>(new Icon[] {new ImageIcon(url1), makeImageIcon(url2, combo, 1)}));
+    Icon[] icons = {makeIcon(path1), makeAnimatedIcon(path2, combo, 1)};
+    combo.setModel(new DefaultComboBoxModel<>(icons));
 
     JPanel p = new JPanel(new GridLayout(4, 1, 5, 5));
     setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
     p.add(new JLabel("Default ImageIcon"));
-    p.add(new JComboBox<>(new Icon[] {new ImageIcon(url1), new ImageIcon(url2)}));
+    p.add(new JComboBox<>(new Icon[] {makeIcon(path1), makeIcon(path2)}));
     p.add(new JLabel("ImageIcon#setImageObserver(ImageObserver)"));
     p.add(combo);
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Icon makeImageIcon(URL url, JComboBox<?> combo, int row) {
-    ImageIcon icon = new ImageIcon(url);
-    // Wastefulness: icon.setImageObserver(combo);
-    icon.setImageObserver((img, infoflags, x, y, w, h) -> {
-      // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
-      if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
-        repaintComboBox(combo, row);
-      }
-      return (infoflags & (ALLBITS | ABORT)) == 0;
-    });
-    return icon;
+  public static Icon makeAnimatedIcon(String path, JComboBox<?> combo, int row) {
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    if (Objects.nonNull(url)) {
+      ImageIcon icon = new ImageIcon(url);
+      // Wastefulness: icon.setImageObserver(combo);
+      icon.setImageObserver((img, infoflags, x, y, w, h) -> {
+        // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
+        if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
+          repaintComboBox(combo, row);
+        }
+        return (infoflags & (ALLBITS | ABORT)) == 0;
+      });
+      return icon;
+    } else {
+      return UIManager.getIcon("html.missingImage");
+    }
+  }
+
+  private static Icon makeIcon(String path) {
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    if (Objects.nonNull(url)) {
+      return new ImageIcon(url);
+    } else {
+      return UIManager.getIcon("html.missingImage");
+    }
   }
 
   public static void repaintComboBox(JComboBox<?> combo, int row) {
