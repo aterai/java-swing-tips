@@ -19,8 +19,8 @@ import java.util.stream.Stream;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
 public class BasicTransferable implements Transferable {
-  protected String plainData;
-  protected String htmlData;
+  private final String plainData;
+  private final String htmlData;
   private static DataFlavor[] htmlFlavors;
   private static DataFlavor[] stringFlavors;
   private static DataFlavor[] plainFlavors;
@@ -118,7 +118,7 @@ public class BasicTransferable implements Transferable {
   @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
     // ???: DataFlavor[] richerFlavors = getRicherFlavors();
     if (isRicherFlavor(flavor)) {
-      return getRicherData(flavor);
+      return null; // getRicherData(flavor);
     } else if (isHtmlFlavor(flavor)) {
       return getHtmlTransferData(flavor);
     } else if (isPlainFlavor(flavor)) {
@@ -147,7 +147,7 @@ public class BasicTransferable implements Transferable {
 
   // --- richer subclass flavors ----------------------------------------------
 
-  protected boolean isRicherFlavor(DataFlavor flavor) {
+  private boolean isRicherFlavor(DataFlavor flavor) {
     // DataFlavor[] richerFlavors = getRicherFlavors();
     // int numFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
     // for (int i = 0; i < numFlavors; i++) {
@@ -164,13 +164,13 @@ public class BasicTransferable implements Transferable {
    * or plain text.  If this method returns a non-null value, it will be
    * placed at the start of the array of supported flavors.
    */
-  protected DataFlavor[] getRicherFlavors() {
+  private DataFlavor[] getRicherFlavors() {
     return new DataFlavor[0]; // null;
   }
 
-  protected Object getRicherData(DataFlavor flavor) throws UnsupportedFlavorException {
-    return null;
-  }
+  // private Object getRicherData(DataFlavor flavor) throws UnsupportedFlavorException {
+  //   return null;
+  // }
 
   // --- html flavors ----------------------------------------------------------
 
@@ -181,7 +181,7 @@ public class BasicTransferable implements Transferable {
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
-  protected boolean isHtmlFlavor(DataFlavor flavor) {
+  private boolean isHtmlFlavor(DataFlavor flavor) {
     // DataFlavor[] flavors = htmlFlavors;
     // for (int i = 0; i < flavors.length; i++) {
     //   if (flavors[i].equals(flavor)) {
@@ -196,18 +196,18 @@ public class BasicTransferable implements Transferable {
    * Should the HTML flavors be offered?  If so, the method
    * getHtmlData should be implemented to provide something reasonable.
    */
-  protected boolean isHtmlSupported() {
+  private boolean isHtmlSupported() {
     return Objects.nonNull(htmlData);
   }
 
   /**
    * Fetch the data in a text/html format.
    */
-  protected String getHtmlData() {
+  private String getHtmlData() {
     return htmlData;
   }
 
-  protected Object getHtmlTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+  private Object getHtmlTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
     // String data = getHtmlData();
     // data = Objects.nonNull(data) ? data : "";
     String data = Objects.toString(getHtmlData(), "");
@@ -231,7 +231,7 @@ public class BasicTransferable implements Transferable {
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether or not the data flavor is supported
    */
-  protected boolean isPlainFlavor(DataFlavor flavor) {
+  private boolean isPlainFlavor(DataFlavor flavor) {
     // DataFlavor[] flavors = plainFlavors;
     // for (int i = 0; i < flavors.length; i++) {
     //   if (flavors[i].equals(flavor)) {
@@ -246,18 +246,18 @@ public class BasicTransferable implements Transferable {
    * Should the plain text flavors be offered?  If so, the method
    * getPlainData should be implemented to provide something reasonable.
    */
-  protected boolean isPlainSupported() {
+  private boolean isPlainSupported() {
     return Objects.nonNull(plainData);
   }
 
   /**
    * Fetch the data in a text/plain format.
    */
-  protected String getPlainData() {
+  private String getPlainData() {
     return plainData;
   }
 
-  protected Object getPlaneTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+  private Object getPlaneTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
     // String data = getPlainData();
     // data = Objects.nonNull(data) ? data : "";
     String data = Objects.toString(getPlainData(), "");
@@ -281,7 +281,7 @@ public class BasicTransferable implements Transferable {
    * @param flavor  the requested flavor for the data
    * @return boolean indicating whether the data flavor is supported
    */
-  protected boolean isStringFlavor(DataFlavor flavor) {
+  private boolean isStringFlavor(DataFlavor flavor) {
     // DataFlavor[] flavors = stringFlavors;
     // for (int i = 0; i < flavors.length; i++) {
     //   if (flavors[i].equals(flavor)) {
