@@ -16,7 +16,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox check1 = new JCheckBox("Custom Sorting");
 
     String[] columnNames = {"String", "Integer", "Boolean"};
@@ -62,7 +61,7 @@ public final class MainPanel extends JPanel {
     sorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
     JCheckBox check2 = new JCheckBox("viewRowIndex < " + MAXIMUM_ROW_COUNT);
-    check2.addActionListener(e -> sorter.setRowFilter(((JCheckBox) e.getSource()).isSelected() ? filter : null));
+    check2.addActionListener(e -> sorter.setRowFilter(check2.isSelected() ? filter : null));
 
     Box box = Box.createHorizontalBox();
     box.add(check1);

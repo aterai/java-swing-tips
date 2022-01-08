@@ -216,11 +216,12 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
     @Override public void mousePressed(MouseEvent e) {
       Container c = SwingUtilities.getAncestorOfClass(JTable.class, e.getComponent());
       if (c instanceof JTable) {
-        JTable table = (JTable) c;
-        if (checkBox.getModel().isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
-          renderer.setBackground(table.getBackground());
+        JTable t = (JTable) c;
+        boolean isPressed = checkBox.getModel().isPressed();
+        if (isPressed && t.isRowSelected(t.getEditingRow()) && e.isControlDown()) {
+          renderer.setBackground(t.getBackground());
         } else {
-          renderer.setBackground(table.getSelectionBackground());
+          renderer.setBackground(t.getSelectionBackground());
         }
       }
     }

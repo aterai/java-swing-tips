@@ -46,11 +46,12 @@ public final class MainPanel extends JPanel {
         if (convertColumnIndexToModel(col) == LIST_ICON_COLUMN) {
           TableCellRenderer tcr = getCellRenderer(row, col);
           Component c = prepareRenderer(tcr, row, col);
-          // Component c = tcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row, col);
+          // Object o = getValueAt(row, col);
+          // Component c = tcr.getTableCellRendererComponent(this, o, false, false, row, col);
           if (c instanceof JPanel) {
             Rectangle r = getCellRect(row, col, true);
             c.setBounds(r);
-            // @see https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
+            // https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
             c.doLayout();
             pt.translate(-r.x, -r.y);
             return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
@@ -68,9 +69,9 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void updateUI() {
-        // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+        // [JDK-6788475]
+        // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
         // https://bugs.openjdk.java.net/browse/JDK-6788475
-        // XXX: set dummy ColorUIResource
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));
         super.updateUI();

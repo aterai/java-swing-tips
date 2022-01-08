@@ -68,14 +68,14 @@ public final class MainPanel extends JPanel {
     Container c = getTopLevelAncestor();
     if (c instanceof Dialog) {
       Dialog dialog = (Dialog) c;
-      GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-      if (Objects.isNull(graphicsDevice.getFullScreenWindow())) {
+      GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+      if (Objects.isNull(gd.getFullScreenWindow())) {
         dialog.dispose(); // destroy the native resources
         dialog.setUndecorated(true);
         dialog.setVisible(true); // rebuilding the native resources
-        graphicsDevice.setFullScreenWindow(dialog);
+        gd.setFullScreenWindow(dialog);
       } else {
-        graphicsDevice.setFullScreenWindow(null);
+        gd.setFullScreenWindow(null);
         dialog.dispose();
         dialog.setUndecorated(false);
         dialog.setVisible(true);

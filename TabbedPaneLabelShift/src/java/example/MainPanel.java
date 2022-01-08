@@ -31,14 +31,16 @@ public final class MainPanel extends JPanel {
       SwingUtilities.updateComponentTreeUI(getTopLevelAncestor());
     });
 
+    String title1 = "UIManager.put(\"TabbedPane.selectedLabelShift\", offset)";
     Box box1 = Box.createHorizontalBox();
-    box1.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"TabbedPane.selectedLabelShift\", offset)"));
+    box1.setBorder(BorderFactory.createTitledBorder(title1));
     box1.add(new JLabel("offset = "));
     box1.add(new JSpinner(slsModel));
     box1.add(Box.createHorizontalGlue());
 
+    String title2 = "UIManager.put(\"TabbedPane.labelShift\", offset)";
     Box box2 = Box.createHorizontalBox();
-    box2.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"TabbedPane.labelShift\", offset)"));
+    box2.setBorder(BorderFactory.createTitledBorder(title2));
     box2.add(new JLabel("offset = "));
     box2.add(new JSpinner(lsModel));
     box2.add(Box.createHorizontalGlue());
@@ -47,15 +49,15 @@ public final class MainPanel extends JPanel {
     p.add(box1);
     p.add(box2);
 
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("title 0", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
-    tabbedPane.addTab("title 1", new ColorIcon(Color.GREEN), new JButton("button"));
-    tabbedPane.addTab("title 2", new ColorIcon(Color.BLUE), new JLabel("label"));
-    tabbedPane.addTab("title 3", new JPanel());
-    tabbedPane.setTabComponentAt(3, new JLabel("label", new ColorIcon(Color.ORANGE), SwingConstants.LEFT));
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.addTab("title 0", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
+    tabs.addTab("title 1", new ColorIcon(Color.GREEN), new JButton("button"));
+    tabs.addTab("title 2", new ColorIcon(Color.BLUE), new JLabel("label"));
+    tabs.addTab("title 3", new JPanel());
+    tabs.setTabComponentAt(3, new JLabel("label", new ColorIcon(Color.ORANGE), SwingConstants.LEFT));
 
     add(p, BorderLayout.NORTH);
-    add(tabbedPane);
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 

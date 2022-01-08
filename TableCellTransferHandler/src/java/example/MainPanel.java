@@ -17,7 +17,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  // DataFlavor FLAVOR = new ActivationDataFlavor(JTable.class, DataFlavor.javaJVMLocalObjectMimeType, "JTable");
+  // DataFlavor FLAVOR = new ActivationDataFlavor(
+  //     JTable.class, DataFlavor.javaJVMLocalObjectMimeType, "JTable");
   private MainPanel() {
     super(new BorderLayout());
 

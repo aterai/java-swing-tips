@@ -130,7 +130,8 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     try {
       FileContents fc = ps.get(codebase);
       try (XMLDecoder d = new XMLDecoder(new BufferedInputStream(fc.getInputStream()))) {
-        @SuppressWarnings("unchecked") Map<String, Serializable> map = (Map<String, Serializable>) d.readObject();
+        @SuppressWarnings("unchecked")
+        Map<String, Serializable> map = (Map<String, Serializable>) d.readObject();
         // d.close();
         windowState.setSize((Dimension) map.get("size"));
         windowState.setLocation((Point) map.get("location"));
@@ -148,7 +149,9 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
         long size = ps.create(codebase, 64_000);
         System.out.println("Cache created - size: " + size);
       } catch (IOException ignore) {
-        // PMD: PreserveStackTrace false positive when using UncheckedIOException in the nested try-catch blocks?
+        // PMD:
+        // PreserveStackTrace false positive when using UncheckedIOException
+        // in the nested try-catch blocks?
         // throw new UncheckedIOException("Application codebase is not a valid URL?!", ignore);
         assert false : "Application codebase is not a valid URL?!";
       }
@@ -159,7 +162,8 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     try {
       FileContents fc = ps.get(codebase);
       try (XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {
-        // Test: delete muf ex. C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxx-xxx.muf
+        // Test: delete muf ex.
+        // C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxx-xxx.muf
         // ps.delete(codebase);
         // ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
         HashMap<String, Serializable> map = new HashMap<>();

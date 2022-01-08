@@ -15,8 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JComboBox<String> makeComboBox(String... model) {
-    Highlighter.HighlightPainter highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
     return new JComboBox<String>(model) {
       @Override public void updateUI() {
         super.updateUI();
@@ -198,10 +199,10 @@ class ComboKeyHandler extends KeyAdapter {
     }
   }
 
-  private static void setSuggestionModel(JComboBox<String> comboBox, ComboBoxModel<String> mdl, String str) {
-    comboBox.setModel(mdl);
-    comboBox.setSelectedIndex(-1);
-    ((JTextField) comboBox.getEditor().getEditorComponent()).setText(str);
+  private static void setSuggestionModel(JComboBox<String> c, ComboBoxModel<String> m, String s) {
+    c.setModel(m);
+    c.setSelectedIndex(-1);
+    ((JTextField) c.getEditor().getEditorComponent()).setText(s);
   }
 
   private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {

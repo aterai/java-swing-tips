@@ -159,7 +159,8 @@ class FocusCaret extends DefaultCaret {
   }
 
   @Override public String toString() {
-    return "FocusCaret{" + "nonFocusPainter=" + nonFocusPainter + ", selectionPainter=" + selectionPainter + '}';
+    String fmt = "FocusCaret{nonFocusPainter=%s, selectionPainter=%s}";
+    return String.format(fmt, nonFocusPainter, selectionPainter);
   }
 }
 

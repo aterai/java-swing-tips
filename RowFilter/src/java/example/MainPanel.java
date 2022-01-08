@@ -155,7 +155,9 @@ class RowDataModel extends DefaultTableModel {
   }
 
   public RowData getRowData(int identifier) {
-    return new RowData(Objects.toString(getValueAt(identifier, 1)), Objects.toString(getValueAt(identifier, 2)));
+    String s1 = Objects.toString(getValueAt(identifier, 1));
+    String s2 = Objects.toString(getValueAt(identifier, 2));
+    return new RowData(s1, s2);
   }
 
   @Override public boolean isCellEditable(int row, int col) {

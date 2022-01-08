@@ -142,7 +142,7 @@ class TriStateCheckBox extends JCheckBox {
 class IndeterminateIcon implements Icon {
   // TEST: private static final Color FOREGROUND = UIManager.getColor("CheckBox.foreground");
   private static final Color FOREGROUND = new Color(0xC8_32_14_FF, true);
-  private static final int SIDE_MARGIN = 4;
+  private static final int MARGIN = 4;
   private static final int HEIGHT = 2;
   private final Icon icon = UIManager.getIcon("CheckBox.icon");
 
@@ -151,7 +151,7 @@ class IndeterminateIcon implements Icon {
     g2.translate(x, y);
     icon.paintIcon(c, g2, 0, 0);
     g2.setPaint(FOREGROUND);
-    g2.fillRect(SIDE_MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
+    g2.fillRect(MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - MARGIN - MARGIN, HEIGHT);
     g2.dispose();
   }
 
@@ -212,7 +212,8 @@ class FileTreeCellRenderer implements TreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = renderer.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     c.setFont(tree.getFont());
     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
       checkBox.setEnabled(tree.isEnabled());
@@ -348,7 +349,7 @@ class FolderSelectionListener implements TreeSelectionListener {
       return;
     }
 
-    Status parentStatus = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
+    Status status = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
     DefaultTreeModel model = (DefaultTreeModel) ((JTree) e.getSource()).getModel();
     BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
@@ -360,7 +361,8 @@ class FolderSelectionListener implements TreeSelectionListener {
         //   cancel(true);
         //   return;
         // }
-        chunks.stream().map(file -> new CheckBoxNode(file, parentStatus)).map(DefaultMutableTreeNode::new)
+        chunks.stream().map(file -> new CheckBoxNode(file, status))
+            .map(DefaultMutableTreeNode::new)
             .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
         // model.reload(parent); // = model.nodeStructureChanged(parent);
       }

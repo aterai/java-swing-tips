@@ -44,7 +44,7 @@
 
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
-    <property name="max" value="113"/>
+    <property name="max" value="112"/>
     <property name="ignorePattern" value="^package.*|^import.*|href|http|throws|catch|@.*|&lt;html|\[JDK\-[0-9]*\]"/>
   </module>
 

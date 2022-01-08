@@ -24,21 +24,20 @@ import javax.swing.undo.UndoManager;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     UndoManager undoManager0 = new UndoManager();
-    JTextField textField0 = new JTextField("default");
-    textField0.getDocument().addUndoableEditListener(undoManager0);
+    JTextField field0 = new JTextField("default");
+    field0.getDocument().addUndoableEditListener(undoManager0);
 
     UndoManager undoManager1 = new UndoManager();
-    JTextField textField1 = new JTextField();
-    textField1.setDocument(new CustomUndoPlainDocument());
-    textField1.setText("aaaaaaaaaaaaaaaaaaaaa");
-    textField1.getDocument().addUndoableEditListener(undoManager1);
+    JTextField field1 = new JTextField();
+    field1.setDocument(new CustomUndoPlainDocument());
+    field1.setText("Document#replace() + AbstractDocument#fireUndoableEditUpdate()");
+    field1.getDocument().addUndoableEditListener(undoManager1);
 
     DocumentFilterUndoManager undoManager2 = new DocumentFilterUndoManager();
-    JTextField textField2 = new JTextField();
-    textField2.setText("bbbbbbbbbbbbbbb");
-    Document d = textField2.getDocument();
+    JTextField field2 = new JTextField();
+    field2.setText("DocumentFilter#replace() + UndoableEditListener#undoableEditHappened()");
+    Document d = field2.getDocument();
     if (d instanceof AbstractDocument) {
       AbstractDocument doc = (AbstractDocument) d;
       doc.addUndoableEditListener(undoManager2);
@@ -48,7 +47,7 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("setText(LocalDateTime.now(...))");
     button.addActionListener(e -> {
       String str = LocalDateTime.now(ZoneId.systemDefault()).toString();
-      Stream.of(textField0, textField1, textField2).forEach(tf -> tf.setText(str));
+      Stream.of(field0, field1, field2).forEach(tf -> tf.setText(str));
     });
 
     Action undoAction = new AbstractAction("undo") {
@@ -73,11 +72,11 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("Default", textField0));
+    box.add(makeTitledPanel("Default", field0));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("Document#replace()+AbstractDocument#fireUndoableEditUpdate()", textField1));
+    box.add(makeTitledPanel(field1.getText(), field1));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("DocumentFilter#replace()+UndoableEditListener#undoableEditHappened()", textField2));
+    box.add(makeTitledPanel(field2.getText(), field2));
 
     add(box, BorderLayout.NORTH);
     add(p, BorderLayout.SOUTH);
@@ -174,29 +173,33 @@ class DocumentFilterUndoManager extends UndoManager {
 //   //   super();
 //   //   this.undoManager = undoManager;
 //   // }
+//
 //   @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 //     if (length == 0) { // insert
 //       super.replace(offset, length, text, attrs);
 //     } else { // replace
 //       // undoManager.undoableEditHappened(
 //       //     new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
-//       fireUndoableEditUpdate(new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
+//       fireUndoableEditUpdate(
+//           new UndoableEditEvent(this, new ReplaceUndoableEdit(offset, length, text)));
 //       replaceIgnoringUndo(offset, length, text, attrs);
 //     }
 //   }
+//
 //   private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-//     UndoableEditListener[] uels = getUndoableEditListeners();
-//     for (UndoableEditListener l : uels) {
+//     UndoableEditListener[] ls = getUndoableEditListeners();
+//     for (UndoableEditListener l : ls) {
 //       removeUndoableEditListener(l);
 //     }
 //     super.replace(offset, length, text, attrs);
-//     for (UndoableEditListener l : uels) {
+//     for (UndoableEditListener l : ls) {
 //       addUndoableEditListener(l);
 //     }
 //     // removeUndoableEditListener(undoManager);
 //     // super.replace(offset, length, text, attrs);
 //     // addUndoableEditListener(undoManager);
 //   }
+//
 //   class ReplaceUndoableEdit extends AbstractUndoableEdit {
 //     private final String oldValue;
 //     private final String newValue;
@@ -213,6 +216,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //       this.newValue = newValue;
 //       this.offset = offset;
 //     }
+//
 //     @Override public void undo() { // throws CannotUndoException {
 //       try {
 //         replaceIgnoringUndo(offset, newValue.length(), oldValue, null);
@@ -220,6 +224,7 @@ class DocumentFilterUndoManager extends UndoManager {
 //         throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //       }
 //     }
+//
 //     @Override public void redo() { // throws CannotRedoException {
 //       try {
 //         replaceIgnoringUndo(offset, oldValue.length(), newValue, null);
@@ -227,9 +232,11 @@ class DocumentFilterUndoManager extends UndoManager {
 //         throw (CannotUndoException) new CannotUndoException().initCause(ex);
 //       }
 //     }
+//
 //     @Override public boolean canUndo() {
 //       return true;
 //     }
+//
 //     @Override public boolean canRedo() {
 //       return true;
 //     }

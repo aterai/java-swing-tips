@@ -32,7 +32,6 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
   private static final float SCALE = .15f;
-  private final ScriptEngine engine = createEngine();
   private final JEditorPane editor = new JEditorPane();
   private final JScrollPane scroll = new JScrollPane(editor);
   private final JLabel label = new JLabel() {
@@ -52,25 +51,25 @@ public final class MainPanel extends JPanel {
       if (!(c instanceof JViewport)) {
         return;
       }
-      JViewport vport = (JViewport) c;
-      Rectangle vrect = vport.getBounds(); // scroll.getViewportBorderBounds();
-      Rectangle erect = editor.getBounds();
-      Rectangle crect = SwingUtilities.calculateInnerArea(this, new Rectangle());
+      JViewport viewport = (JViewport) c;
+      Rectangle vr = viewport.getBounds(); // scroll.getViewportBorderBounds();
+      Rectangle er = editor.getBounds();
+      Rectangle cr = SwingUtilities.calculateInnerArea(this, new Rectangle());
 
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      double sy = crect.getHeight() / erect.getHeight();
+      double sy = cr.getHeight() / er.getHeight();
       AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
 
       // paint Thumb
-      Rectangle thumbRect = new Rectangle(vrect);
-      thumbRect.y = vport.getViewPosition().y;
+      Rectangle thumbRect = new Rectangle(vr);
+      thumbRect.y = viewport.getViewPosition().y;
       Rectangle r = at.createTransformedShape(thumbRect).getBounds();
-      int y = crect.y + r.y;
+      int y = cr.y + r.y;
       g2.setColor(THUMB_COLOR);
-      g2.fillRect(0, y, crect.width, r.height);
+      g2.fillRect(0, y, cr.width, r.height);
       g2.setColor(THUMB_COLOR.darker());
-      g2.drawRect(0, y, crect.width - 1, r.height - 1);
+      g2.drawRect(0, y, cr.width - 1, r.height - 1);
       g2.dispose();
     }
   };
@@ -88,7 +87,8 @@ public final class MainPanel extends JPanel {
       Point pt = e.getPoint();
       Component c = e.getComponent();
       BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
-      int iv = Math.round(pt.y * (m.getMaximum() - m.getMinimum()) / (float) c.getHeight() - m.getExtent() / 2f);
+      int range = m.getMaximum() - m.getMinimum();
+      int iv = Math.round(pt.y * range / (float) c.getHeight() - m.getExtent() / 2f);
       m.setValue(iv);
     }
   }
@@ -196,6 +196,7 @@ public final class MainPanel extends JPanel {
   }
 
   private void loadFile(String path) {
+    ScriptEngine engine = createEngine();
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines.map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
@@ -213,9 +214,12 @@ public final class MainPanel extends JPanel {
     ScriptEngine engine = manager.getEngineByName("JavaScript");
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/prettify.js");
-    try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
-      engine.eval("var window={}, navigator=null;");
-      engine.eval(r);
+    try {
+      assert url != null;
+      try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
+        engine.eval("var window={}, navigator=null;");
+        engine.eval(r);
+      }
     } catch (IOException | ScriptException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();

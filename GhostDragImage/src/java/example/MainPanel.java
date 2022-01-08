@@ -244,7 +244,8 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
       throw new IllegalArgumentException("width and height must be > 0");
     }
     int[] selectedIndices = source.getSelectedIndices();
-    BufferedImage br = source.getGraphicsConfiguration().createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+    GraphicsConfiguration gc = source.getGraphicsConfiguration();
+    BufferedImage br = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
     Graphics2D g2 = br.createGraphics();
     ListCellRenderer<? super E> renderer = source.getCellRenderer();
     int idx = selectedIndices[0];
@@ -257,7 +258,9 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     if (oneOrMore) {
       LABEL.setText(Objects.toString(selectedCount));
       Dimension d = LABEL.getPreferredSize();
-      SwingUtilities.paintComponent(g2, LABEL, source, (w - d.width) / 2, (h - d.height) / 2, d.width, d.height);
+      int x = (w - d.width) / 2;
+      int y = (h - d.height) / 2;
+      SwingUtilities.paintComponent(g2, LABEL, source, x, y, d.width, d.height);
     }
     g2.dispose();
     br.coerceData(true);

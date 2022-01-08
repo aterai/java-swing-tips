@@ -15,19 +15,18 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     JTextArea area = new JTextArea();
     area.setEditable(false);
 
-    ProgressMonitor dmy = new ProgressMonitor(null, "message dummy", "note", 0, 100);
-    SpinnerNumberModel millisToDecide = new SpinnerNumberModel(dmy.getMillisToDecideToPopup(), 0, 5 * 1000, 100);
-    SpinnerNumberModel millisToPopup = new SpinnerNumberModel(dmy.getMillisToPopup(), 0, 5 * 1000, 100);
+    ProgressMonitor pm = new ProgressMonitor(null, "message", "note", 0, 100);
+    SpinnerNumberModel msToDecide = new SpinnerNumberModel(pm.getMillisToDecideToPopup(), 0, 5000, 100);
+    SpinnerNumberModel msToPopup = new SpinnerNumberModel(pm.getMillisToPopup(), 0, 5000, 100);
 
     JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {
       Window w = SwingUtilities.getWindowAncestor(runButton);
-      int toDecideToPopup = millisToDecide.getNumber().intValue();
-      int toPopup = millisToPopup.getNumber().intValue();
+      int toDecideToPopup = msToDecide.getNumber().intValue();
+      int toPopup = msToPopup.getNumber().intValue();
       ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
       monitor.setMillisToDecideToPopup(toDecideToPopup);
       monitor.setMillisToPopup(toPopup);
@@ -48,8 +47,8 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p.add(new JSpinner(millisToDecide), c);
-    p.add(new JSpinner(millisToPopup), c);
+    p.add(new JSpinner(msToDecide), c);
+    p.add(new JSpinner(msToPopup), c);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());

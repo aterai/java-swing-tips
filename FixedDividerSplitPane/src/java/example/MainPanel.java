@@ -17,16 +17,16 @@ public final class MainPanel extends JPanel {
     sp.setOneTouchExpandable(true);
 
     JCheckBox check1 = new JCheckBox("setEnabled(...)", true);
-    check1.addActionListener(e -> sp.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+    check1.addActionListener(e -> sp.setEnabled(check1.isSelected()));
 
     int dividerSize = UIManager.getInt("SplitPane.dividerSize");
     JCheckBox check2 = new JCheckBox("setDividerSize(0)");
-    check2.addActionListener(e -> sp.setDividerSize(((JCheckBox) e.getSource()).isSelected() ? 0 : dividerSize));
+    check2.addActionListener(e -> sp.setDividerSize(check2.isSelected() ? 0 : dividerSize));
 
     // // TEST:
     // Component divider = ((BasicSplitPaneUI) sp.getUI()).getDivider();
     // JCheckBox check3 = new JCheckBox("Divider#setEnabled(...)", true);
-    // check3.addActionListener(e -> divider.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+    // check3.addActionListener(e -> divider.setEnabled(check3.isSelected()));
 
     JPanel p = new JPanel(new GridLayout(1, 0));
     p.setBorder(BorderFactory.createTitledBorder("JSplitPane"));

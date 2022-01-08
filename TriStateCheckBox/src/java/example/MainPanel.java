@@ -203,7 +203,7 @@ class TriStateCheckBox extends JCheckBox {
 
 class IndeterminateIcon implements Icon {
   private static final Color FOREGROUND = Color.BLACK; // TEST: UIManager.getColor("CheckBox.foreground");
-  private static final int SIDE_MARGIN = 4;
+  private static final int MARGIN = 4;
   private static final int HEIGHT = 2;
   private final Icon icon = UIManager.getIcon("CheckBox.icon");
 
@@ -212,7 +212,7 @@ class IndeterminateIcon implements Icon {
     g2.translate(x, y);
     icon.paintIcon(c, g2, 0, 0);
     g2.setPaint(FOREGROUND);
-    g2.fillRect(SIDE_MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - SIDE_MARGIN - SIDE_MARGIN, HEIGHT);
+    g2.fillRect(MARGIN, (getIconHeight() - HEIGHT) / 2, getIconWidth() - MARGIN - MARGIN, HEIGHT);
     g2.dispose();
   }
 
@@ -266,19 +266,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 
