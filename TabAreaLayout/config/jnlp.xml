@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TabAreaLayout" />
+  <property name="jnlp.Name"     value="TabAreaLayout" />
+  <property name="jnlp.name"     value="tabarealayout" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabarealayout" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabAreaLayout.html" />
+</project>
