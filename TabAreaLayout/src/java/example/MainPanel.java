@@ -257,18 +257,18 @@ class CardLayoutTabbedPane extends JPanel {
 
   private JMenuItem makeRadioMenuItem(Container c, int i) {
     JToggleButton tab = (JToggleButton) c.getComponent(i);
-    JViewport vp = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, c);
-    Rectangle rect = SwingUtilities.convertRectangle(c, tab.getBounds(), vp);
-    if (vp.getBounds().contains(rect)) {
+    JViewport viewport = tabArea.getViewport();
+    Rectangle r = tab.getBounds();
+    if (viewport.getViewRect().contains(r)) {
       return null;
     }
-    JLabel l = (JLabel) tab.getComponent(0);
-    String title = l.getText();
+    JLabel label = (JLabel) tab.getComponent(0);
+    String title = label.getText();
     JMenuItem mi = new JRadioButtonMenuItem(title);
     mi.addActionListener(e -> {
       tab.setSelected(true);
       cardLayout.show(contentsPanel, title);
-      tab.scrollRectToVisible(rect);
+      viewport.scrollRectToVisible(SwingUtilities.convertRectangle(c, r, viewport));
     });
     return mi;
   }
