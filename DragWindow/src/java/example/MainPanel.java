@@ -63,11 +63,11 @@ public final class MainPanel {
     JButton button = new JButton("Exit");
     button.addActionListener(e -> {
       JComponent c = (JComponent) e.getSource();
-      Window frame = (Window) c.getTopLevelAncestor();
-      // frame.dispose();
+      Window w = (Window) c.getTopLevelAncestor();
+      // w.dispose();
       // System.exit(0);
-      // frame.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-      frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+      // w.getToolkit().getSystemEventQueue().postEvent(new WindowEvent(...));
+      w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
     });
 
     Box box = Box.createHorizontalBox();

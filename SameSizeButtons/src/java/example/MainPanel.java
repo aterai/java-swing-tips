@@ -10,9 +10,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox borderCheck = new JCheckBox("OptionPane.buttonAreaBorder");
-    JOptionPane op = new JOptionPane("message", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
+    JOptionPane op = new JOptionPane(
+        "message", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
 
     JButton button1 = new JButton("default");
     button1.addActionListener(e -> {
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("sameSizeButtons");
     button2.addActionListener(e -> {
       // UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
-      // UIManager.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(Color.RED, 10));
+      // UIManager.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(color, 10));
       // JOptionPane.showConfirmDialog(getRootPane(), "message");
       UIDefaults d = new UIDefaults();
       if (borderCheck.isSelected()) {

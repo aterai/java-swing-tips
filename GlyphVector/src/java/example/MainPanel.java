@@ -116,7 +116,8 @@ class WrappedLabel extends JLabel {
       Font font = getFont();
       FontMetrics fm = getFontMetrics(font);
       FontRenderContext frc = fm.getFontRenderContext();
-      gvText = getWrappedGlyphVector(getText(), r.width, font, frc);
+      GlyphVector gv = font.createGlyphVector(frc, getText());
+      gvText = getWrappedGlyphVector(gv, w);
       prevWidth = r.width;
     }
     super.doLayout();
@@ -134,14 +135,15 @@ class WrappedLabel extends JLabel {
     }
   }
 
-  private static GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
+  private static GlyphVector getWrappedGlyphVector(GlyphVector gv, double width) {
     Point2D gmPos = new Point2D.Float();
-    GlyphVector gv = font.createGlyphVector(frc, str);
     float lineHeight = (float) gv.getLogicalBounds().getHeight();
     float pos = 0f;
     int lineCount = 0;
     GlyphMetrics gm;
+
     for (int i = 0; i < gv.getNumGlyphs(); i++) {
+      // TEST: gv.setGlyphTransform(i, at);
       gm = gv.getGlyphMetrics(i);
       float advance = gm.getAdvance();
       if (pos < width && width <= pos + advance) {

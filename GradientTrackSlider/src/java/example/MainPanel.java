@@ -15,7 +15,8 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
-  private static final Paint TEXTURE = TextureUtils.createCheckerTexture(6, new Color(0x32_C8_96_64, true));
+  private static final Color COLOR = new Color(0x32_C8_96_64, true);
+  private static final Paint TEXTURE = TextureUtils.createCheckerTexture(6, COLOR);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -32,10 +33,10 @@ public final class MainPanel extends JPanel {
         return 64;
       }
     });
-    System.out.println(UIManager.get("Slider.trackWidth"));
-    System.out.println(UIManager.get("Slider.majorTickLength"));
-    System.out.println(UIManager.getInt("Slider.trackWidth"));
-    System.out.println(UIManager.getInt("Slider.majorTickLength"));
+    // System.out.println(UIManager.get("Slider.trackWidth"));
+    // System.out.println(UIManager.get("Slider.majorTickLength"));
+    // System.out.println(UIManager.getInt("Slider.trackWidth"));
+    // System.out.println(UIManager.getInt("Slider.majorTickLength"));
     UIManager.put("Slider.trackWidth", 64);
     UIManager.put("Slider.majorTickLength", 6);
 
@@ -111,12 +112,15 @@ public final class MainPanel extends JPanel {
 
 class GradientPalletSliderUI extends MetalSliderUI {
   private static final int[] GRADIENT_PALLET = GradientPalletUtils.makeGradientPallet();
-  protected Color controlDarkShadow = new Color(0x64_64_64); // MetalLookAndFeel.getControlDarkShadow();
-  protected Color controlHighlight = new Color(0xC8_FF_C8); // MetalLookAndFeel.getControlHighlight();
-  protected Color controlShadow = new Color(0x00_64_00); // MetalLookAndFeel.getControlShadow();
+  // protected Color controlDarkShadow = MetalLookAndFeel.getControlDarkShadow();
+  protected Color controlDarkShadow = new Color(0x64_64_64);
+  // protected Color controlHighlight = MetalLookAndFeel.getControlHighlight();
+  protected Color controlHighlight = new Color(0xC8_FF_C8);
+  // protected Color controlShadow = MetalLookAndFeel.getControlShadow();
+  protected Color controlShadow = new Color(0x00_64_00);
 
   @Override public void paintTrack(Graphics g) {
-    // Color trackColor = !slider.isEnabled() ? MetalLookAndFeel.getControlShadow() : slider.getForeground();
+    // Color trackColor = !slider.isEnabled() ? controlShadow : slider.getForeground();
     // boolean leftToRight = MetalUtils.isLeftToRight(slider);
 
     g.translate(trackRect.x, trackRect.y);
@@ -152,25 +156,25 @@ class GradientPalletSliderUI extends MetalSliderUI {
     g.translate(-trackRect.x, -trackRect.y);
   }
 
-  protected void paintTrackBase(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
+  protected void paintTrackBase(Graphics g, int trTop, int trLeft, int trBottom, int trRight) {
     if (slider.isEnabled()) {
       g.setColor(controlDarkShadow);
-      g.drawRect(trackLeft, trackTop, trackRight - trackLeft - 1, trackBottom - trackTop - 1);
+      g.drawRect(trLeft, trTop, trRight - trLeft - 1, trBottom - trTop - 1);
 
       g.setColor(controlHighlight);
-      g.drawLine(trackLeft + 1, trackBottom, trackRight, trackBottom);
-      g.drawLine(trackRight, trackTop + 1, trackRight, trackBottom);
+      g.drawLine(trLeft + 1, trBottom, trRight, trBottom);
+      g.drawLine(trRight, trTop + 1, trRight, trBottom);
 
       g.setColor(controlShadow);
-      g.drawLine(trackLeft + 1, trackTop + 1, trackRight - 2, trackTop + 1);
-      g.drawLine(trackLeft + 1, trackTop + 1, trackLeft + 1, trackBottom - 2);
+      g.drawLine(trLeft + 1, trTop + 1, trRight - 2, trTop + 1);
+      g.drawLine(trLeft + 1, trTop + 1, trLeft + 1, trBottom - 2);
     } else {
       g.setColor(controlShadow);
-      g.drawRect(trackLeft, trackTop, trackRight - trackLeft - 1, trackBottom - trackTop - 1);
+      g.drawRect(trLeft, trTop, trRight - trLeft - 1, trBottom - trTop - 1);
     }
   }
 
-  protected void paintTrackFill(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
+  protected void paintTrackFill(Graphics g, int trTop, int trLeft, int trBottom, int trRight) {
     int middleOfThumb;
     int fillTop;
     int fillLeft;
@@ -180,44 +184,44 @@ class GradientPalletSliderUI extends MetalSliderUI {
     if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
       middleOfThumb = thumbRect.x + thumbRect.width / 2;
       middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-      fillTop = trackTop + 1;
-      fillBottom = trackBottom - 2;
-      fillLeft = trackLeft + 1;
+      fillTop = trTop + 1;
+      fillBottom = trBottom - 2;
+      fillLeft = trLeft + 1;
       fillRight = middleOfThumb - 2;
     } else {
       middleOfThumb = thumbRect.y + thumbRect.height / 2;
       middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-      fillLeft = trackLeft;
-      fillRight = trackRight - 1;
+      fillLeft = trLeft;
+      fillRight = trRight - 1;
       fillTop = middleOfThumb;
-      fillBottom = trackBottom - 1;
+      fillBottom = trBottom - 1;
     }
 
     // if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
     //   middleOfThumb = thumbRect.x + thumbRect.width / 2;
     //   middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-    //   fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
-    //   fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
+    //   fillTop = slider.isEnabled() ? trTop + 1 : trTop;
+    //   fillBottom = slider.isEnabled() ? trBottom - 2 : trBottom - 1;
     //
     //   if (drawInverted()) {
     //     fillLeft = middleOfThumb;
-    //     fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+    //     fillRight = slider.isEnabled() ? trRight - 2 : trRight - 1;
     //   } else {
-    //     fillLeft = slider.isEnabled() ? trackLeft +1 : trackLeft;
+    //     fillLeft = slider.isEnabled() ? trLeft +1 : trLeft;
     //     fillRight = middleOfThumb;
     //   }
     // } else {
     //   middleOfThumb = thumbRect.y + thumbRect.height / 2;
     //   middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-    //   fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
-    //   fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
+    //   fillLeft = slider.isEnabled() ? trLeft + 1 : trLeft;
+    //   fillRight = slider.isEnabled() ? trRight - 2 : trRight - 1;
     //
     //   if (drawInverted()) {
-    //     fillTop = slider.isEnabled() ? trackTop + 1 : trackTop;
+    //     fillTop = slider.isEnabled() ? trTop + 1 : trTop;
     //     fillBottom = middleOfThumb;
     //   } else {
     //     fillTop = middleOfThumb;
-    //     fillBottom = slider.isEnabled() ? trackBottom - 2 : trackBottom - 1;
+    //     fillBottom = slider.isEnabled() ? trBottom - 2 : trBottom - 1;
     //   }
     // }
 
@@ -226,20 +230,20 @@ class GradientPalletSliderUI extends MetalSliderUI {
       // g.drawLine(fillLeft, fillTop, fillRight, fillTop);
       // g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
 
-      float x = (fillRight - fillLeft) / (float) (trackRight - trackLeft);
+      float x = (fillRight - fillLeft) / (float) (trRight - trLeft);
       g.setColor(GradientPalletUtils.getColorFromPallet(GRADIENT_PALLET, x, 0x64 << 24));
       g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
     } else {
       g.setColor(controlShadow);
-      g.fillRect(fillLeft, fillTop, fillRight - fillLeft, trackBottom - trackTop);
+      g.fillRect(fillLeft, fillTop, fillRight - fillLeft, trBottom - trTop);
     }
   }
 
-  protected void paintTrackHighlight(Graphics g, int trackTop, int trackLeft, int trackBottom, int trackRight) {
-    int yy = trackTop + (trackBottom - trackTop) / 2;
+  protected void paintTrackHighlight(Graphics g, int top, int left, int bottom, int right) {
+    int yy = top + (bottom - top) / 2;
     for (int i = 10; i >= 0; i--) {
       g.setColor(makeColor(i * .07f));
-      g.drawLine(trackLeft + 2, yy, trackRight - trackLeft - 2, yy);
+      g.drawLine(left + 2, yy, right - left - 2, yy);
       yy--;
     }
   }

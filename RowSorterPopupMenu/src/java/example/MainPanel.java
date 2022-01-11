@@ -21,8 +21,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -35,7 +34,8 @@ public final class MainPanel extends JPanel {
         /* Disable header click sorting */
       }
     });
-    table.getRowSorter().setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
+    RowSorter.SortKey key = new RowSorter.SortKey(1, SortOrder.DESCENDING);
+    table.getRowSorter().setSortKeys(Collections.singletonList(key));
 
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(80);

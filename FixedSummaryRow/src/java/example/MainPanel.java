@@ -62,9 +62,10 @@ public final class MainPanel extends JPanel {
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component c;
         TableModel m = table.getModel();
-        if (row == m.getRowCount() - 2) {
-          int total = IntStream.range(1, m.getRowCount() - 1).map(i -> (Integer) m.getValueAt(i, column)).sum();
-          c = super.getTableCellRendererComponent(table, total, isSelected, hasFocus, row, column);
+        int rc = m.getRowCount();
+        if (row == rc - 2) {
+          int sum = IntStream.range(1, rc - 1).map(i -> (Integer) m.getValueAt(i, column)).sum();
+          c = super.getTableCellRendererComponent(table, sum, isSelected, hasFocus, row, column);
           c.setBackground(Color.ORANGE);
         } else {
           c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

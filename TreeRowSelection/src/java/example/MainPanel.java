@@ -115,30 +115,31 @@ class RowSelectionTree extends JTree {
     });
     setOpaque(false);
   }
-
-  // private static class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
-  //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-  //     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-  //     c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
-  //     if (c instanceof JComponent) {
-  //       ((JComponent) c).setOpaque(true);
-  //     }
-  //     return c;
-  //   }
-  //
-  //   // @Override public void focusGained(FocusEvent e) {
-  //   //   e.getComponent().repaint();
-  //   // }
-  //
-  //   // @Override public void focusLost(FocusEvent e) {
-  //   //   e.getComponent().repaint();
-  //   //   // TEST:
-  //   //   // if (Objects.nonNull(tree.getLeadSelectionPath())) {
-  //   //   //   Rectangle r = tree.getRowBounds(tree.getRowForPath(tree.getLeadSelectionPath()));
-  //   //   //   r.width += r.x;
-  //   //   //   r.x = 0;
-  //   //   //   tree.repaint(r);
-  //   //   // }
-  //   // }
-  // }
 }
+
+// class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
+//   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+//     Component c = super.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
+//     c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
+//     if (c instanceof JComponent) {
+//       ((JComponent) c).setOpaque(true);
+//     }
+//     return c;
+//   }
+//
+//   // @Override public void focusGained(FocusEvent e) {
+//   //   e.getComponent().repaint();
+//   // }
+//
+//   // @Override public void focusLost(FocusEvent e) {
+//   //   e.getComponent().repaint();
+//   //   // TEST:
+//   //   // if (Objects.nonNull(tree.getLeadSelectionPath())) {
+//   //   //   Rectangle r = tree.getRowBounds(tree.getRowForPath(tree.getLeadSelectionPath()));
+//   //   //   r.width += r.x;
+//   //   //   r.x = 0;
+//   //   //   tree.repaint(r);
+//   //   // }
+//   // }
+// }

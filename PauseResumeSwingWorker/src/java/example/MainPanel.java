@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
       pauseButton.setEnabled(false);
     });
 
-    Component box = createRightAlignButtonBox4(Arrays.asList(pauseButton, cancelButton, runButton), 80, 5);
+    Component box = makeRightAlignBox(Arrays.asList(pauseButton, cancelButton, runButton), 80, 5);
     add(new JScrollPane(area));
     add(box, BorderLayout.NORTH);
     add(statusPanel, BorderLayout.SOUTH);
@@ -159,18 +159,21 @@ public final class MainPanel extends JPanel {
   }
 
   // @see https://ateraimemo.com/Swing/ButtonWidth.html
-  public static Component createRightAlignButtonBox4(List<? extends Component> list, int buttonWidth, int gap) {
+  public static Component makeRightAlignBox(List<? extends Component> list, int width, int gap) {
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout) {
       @Override public Dimension getPreferredSize() {
-        int maxHeight = list.stream().map(c -> c.getPreferredSize().height).max(Integer::compare).orElse(0);
-        return new Dimension(buttonWidth * list.size() + gap + gap, maxHeight + gap + gap);
+        int maxHeight = list.stream()
+            .map(c -> c.getPreferredSize().height)
+            .max(Integer::compare)
+            .orElse(0);
+        return new Dimension(width * list.size() + gap + gap, maxHeight + gap + gap);
       }
     };
     Spring x = layout.getConstraint(SpringLayout.WIDTH, p);
     Spring y = Spring.constant(gap);
     Spring g = Spring.minus(Spring.constant(gap));
-    Spring w = Spring.constant(buttonWidth);
+    Spring w = Spring.constant(width);
     for (Component b : list) {
       SpringLayout.Constraints constraints = layout.getConstraints(b);
       x = Spring.sum(x, g);

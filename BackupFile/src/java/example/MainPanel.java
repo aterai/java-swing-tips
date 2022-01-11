@@ -98,19 +98,19 @@ public final class MainPanel extends JPanel {
         try {
           File nf = get();
           if (Objects.isNull(nf)) {
-            append(makeMessage("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
+            append(mkMsg("バックアップファイルの生成に失敗しました。", MessageType.ERROR));
           } else if (nf.createNewFile()) {
-            append(makeMessage(nf.getName() + "を生成しました。", MessageType.REGULAR));
+            append(mkMsg(nf.getName() + "を生成しました。", MessageType.REGULAR));
           } else {
-            append(makeMessage(nf.getName() + "の生成に失敗しました。", MessageType.ERROR));
+            append(mkMsg(nf.getName() + "の生成に失敗しました。", MessageType.ERROR));
           }
         } catch (InterruptedException ex) {
-          append(makeMessage(ex.getMessage(), MessageType.ERROR));
+          append(mkMsg(ex.getMessage(), MessageType.ERROR));
           Thread.currentThread().interrupt();
         } catch (ExecutionException | IOException ex) {
-          append(makeMessage(ex.getMessage(), MessageType.ERROR));
+          append(mkMsg(ex.getMessage(), MessageType.ERROR));
         }
-        append(makeMessage("----------------------------------", MessageType.REGULAR));
+        append(mkMsg("----------------------------------", MessageType.REGULAR));
       }
     }.execute();
   }
@@ -175,14 +175,14 @@ class Message {
 
 class BackgroundTask extends SwingWorker<File, Message> {
   private final File orgFile;
-  private final int oldIndex;
-  private final int newIndex;
+  private final int oldIdx;
+  private final int newIdx;
 
-  protected BackgroundTask(File file, int oldIndex, int newIndex) {
+  protected BackgroundTask(File file, int oldIdx, int newIdx) {
     super();
     this.orgFile = file;
-    this.oldIndex = oldIndex;
-    this.newIndex = newIndex;
+    this.oldIdx = oldIdx;
+    this.newIdx = newIdx;
   }
 
   @Override public File doInBackground() throws IOException {
@@ -191,12 +191,12 @@ class BackgroundTask extends SwingWorker<File, Message> {
     }
 
     String newFileName = orgFile.getAbsolutePath();
-    if (oldIndex == 0 && newIndex == 0) { // = backup off
+    if (oldIdx == 0 && newIdx == 0) { // = backup off
       try {
         Files.delete(orgFile.toPath());
         return new File(newFileName);
       } catch (IOException ex) {
-        publish(makeMessage(ex.getMessage(), MessageType.ERROR));
+        publish(mkMsg(ex.getMessage(), MessageType.ERROR));
         return null;
       }
     }
@@ -215,18 +215,18 @@ class BackgroundTask extends SwingWorker<File, Message> {
 
   private File renameAndBackup(File file, String newFileName) throws IOException {
     boolean simpleRename = false;
-    File testFile = null;
-    for (int i = 1; i <= oldIndex; i++) {
-      testFile = createBackupFile(file, i);
-      if (!testFile.exists()) {
+    File test = null;
+    for (int i = 1; i <= oldIdx; i++) {
+      test = createBackupFile(file, i);
+      if (!test.exists()) {
         simpleRename = true;
         break;
       }
     }
     if (!simpleRename) {
-      for (int i = oldIndex + 1; i <= oldIndex + newIndex; i++) {
-        testFile = createBackupFile(file, i);
-        if (!testFile.exists()) {
+      for (int i = oldIdx + 1; i <= oldIdx + newIdx; i++) {
+        test = createBackupFile(file, i);
+        if (!test.exists()) {
           simpleRename = true;
           break;
         }
@@ -235,12 +235,13 @@ class BackgroundTask extends SwingWorker<File, Message> {
     if (simpleRename) {
       Path path = file.toPath();
       try {
-        publish(makeMessage("古い同名ファイルをリネーム", MessageType.REGULAR));
-        publish(makeMessage(String.format("  %s -> %s", file.getName(), testFile.getName()), MessageType.BLUE));
-        Files.move(path, path.resolveSibling(testFile.getName()));
+        publish(mkMsg("古い同名ファイルをリネーム", MessageType.REGULAR));
+        String msg = String.format("  %s -> %s", file.getName(), test.getName());
+        publish(mkMsg(msg, MessageType.BLUE));
+        Files.move(path, path.resolveSibling(test.getName()));
         return new File(newFileName);
       } catch (IOException ex) {
-        publish(makeMessage(ex.getMessage(), MessageType.ERROR));
+        publish(mkMsg(ex.getMessage(), MessageType.ERROR));
         throw ex;
       }
     }
@@ -248,43 +249,43 @@ class BackgroundTask extends SwingWorker<File, Message> {
   }
 
   private boolean renameAndShiftBackup(File file) {
-    File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIndex + 1));
-    publish(makeMessage("古いバックアップファイルを削除", MessageType.REGULAR));
-    publish(makeMessage("  del:" + tmpFile3.getAbsolutePath(), MessageType.BLUE));
+    File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIdx + 1));
+    publish(mkMsg("古いバックアップファイルを削除", MessageType.REGULAR));
+    publish(mkMsg("  del:" + tmpFile3.getAbsolutePath(), MessageType.BLUE));
     try {
       Files.delete(tmpFile3.toPath());
     } catch (IOException ex) {
-      publish(makeMessage(ex.getMessage(), MessageType.ERROR));
+      publish(mkMsg(ex.getMessage(), MessageType.ERROR));
       return false;
     }
-    for (int i = oldIndex + 2; i <= oldIndex + newIndex; i++) {
+    for (int i = oldIdx + 2; i <= oldIdx + newIdx; i++) {
       File tmpFile1 = createBackupFile(file, i);
       File tmpFile2 = createBackupFile(file, i - 1);
       Path oldPath = tmpFile1.toPath();
       try {
         Files.move(oldPath, oldPath.resolveSibling(tmpFile2.getName()));
       } catch (IOException ex) {
-        publish(makeMessage(ex.getMessage(), MessageType.ERROR));
+        publish(mkMsg(ex.getMessage(), MessageType.ERROR));
         return false;
       }
-      publish(makeMessage("古いバックアップファイルの番号を更新", MessageType.REGULAR));
-      publish(makeMessage("  " + tmpFile1.getName() + " -> " + tmpFile2.getName(), MessageType.BLUE));
+      publish(mkMsg("古いバックアップファイルの番号を更新", MessageType.REGULAR));
+      publish(mkMsg("  " + tmpFile1.getName() + " -> " + tmpFile2.getName(), MessageType.BLUE));
     }
-    File tmpFile = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIndex + newIndex));
-    publish(makeMessage("古い同名ファイルをリネーム", MessageType.REGULAR));
-    publish(makeMessage("  " + file.getName() + " -> " + tmpFile.getName(), MessageType.BLUE));
+    File tmp = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIdx + newIdx));
+    publish(mkMsg("古い同名ファイルをリネーム", MessageType.REGULAR));
+    publish(mkMsg("  " + file.getName() + " -> " + tmp.getName(), MessageType.BLUE));
 
     Path path = file.toPath();
     try {
-      Files.move(path, path.resolveSibling(tmpFile.getName()));
+      Files.move(path, path.resolveSibling(tmp.getName()));
     } catch (IOException ex) {
-      publish(makeMessage(ex.getMessage(), MessageType.ERROR));
+      publish(mkMsg(ex.getMessage(), MessageType.ERROR));
       return false;
     }
     return true;
   }
 
-  protected static Message makeMessage(String text, MessageType type) {
+  protected static Message mkMsg(String text, MessageType type) {
     return new Message(text, type);
   }
 

@@ -128,20 +128,20 @@ public class TableSorter extends AbstractTableModel {
   private transient TableModelListener modelListener;
 
   public void readObject() {
-    this.mouseListener = new MouseHandler();
-    this.modelListener = new TableModelHandler();
+    mouseListener = new MouseHandler();
+    modelListener = new TableModelHandler();
   }
 
   public Object readResolve() {
-    this.mouseListener = new MouseHandler();
-    this.modelListener = new TableModelHandler();
+    mouseListener = new MouseHandler();
+    modelListener = new TableModelHandler();
     return this;
   }
 
   public TableSorter() {
     super();
-    this.mouseListener = new MouseHandler();
-    this.modelListener = new TableModelHandler();
+    mouseListener = new MouseHandler();
+    modelListener = new TableModelHandler();
   }
 
   public TableSorter(TableModel tableModel) {
@@ -164,15 +164,15 @@ public class TableSorter extends AbstractTableModel {
   //   return tableModel;
   // }
 
-  public final void setTableModel(TableModel tableModel) {
-    Optional.ofNullable(this.tableModel).ifPresent(m -> m.removeTableModelListener(modelListener));
-    // if (this.tableModel != null) {
-    //   this.tableModel.removeTableModelListener(modelListener);
+  public final void setTableModel(TableModel model) {
+    Optional.ofNullable(tableModel).ifPresent(m -> m.removeTableModelListener(modelListener));
+    // if (tableModel != null) {
+    //   tableModel.removeTableModelListener(modelListener);
     // }
-    this.tableModel = tableModel;
-    Optional.ofNullable(this.tableModel).ifPresent(m -> m.addTableModelListener(modelListener));
-    // if (this.tableModel != null) {
-    //   this.tableModel.addTableModelListener(modelListener);
+    tableModel = model;
+    Optional.ofNullable(tableModel).ifPresent(m -> m.addTableModelListener(modelListener));
+    // if (tableModel != null) {
+    //   tableModel.addTableModelListener(modelListener);
     // }
 
     EventQueue.invokeLater(() -> {
@@ -185,33 +185,34 @@ public class TableSorter extends AbstractTableModel {
   //   return tableHeader;
   // }
 
-  public final void setTableHeader(JTableHeader tableHeader) {
-    Optional.ofNullable(this.tableHeader).ifPresent(header -> {
-      header.removeMouseListener(mouseListener);
-      Optional.ofNullable(header.getDefaultRenderer())
-          .filter(SortableHeaderRenderer.class::isInstance).map(SortableHeaderRenderer.class::cast)
-          .ifPresent(renderer -> header.setDefaultRenderer(renderer.cellRenderer));
-      // TableCellRenderer defaultRenderer = header.getDefaultRenderer();
+  public final void setTableHeader(JTableHeader header) {
+    Optional.ofNullable(tableHeader).ifPresent(h -> {
+      h.removeMouseListener(mouseListener);
+      Optional.ofNullable(h.getDefaultRenderer())
+          .filter(SortableHeaderRenderer.class::isInstance)
+          .map(SortableHeaderRenderer.class::cast)
+          .ifPresent(renderer -> h.setDefaultRenderer(renderer.cellRenderer));
+      // TableCellRenderer defaultRenderer = h.getDefaultRenderer();
       // if (defaultRenderer instanceof SortableHeaderRenderer) {
-      //   header.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
+      //   h.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
       // }
     });
-    this.tableHeader = tableHeader;
-    Optional.ofNullable(this.tableHeader).ifPresent(header -> {
-      header.addMouseListener(mouseListener);
-      header.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader.getDefaultRenderer()));
+    tableHeader = header;
+    Optional.ofNullable(tableHeader).ifPresent(h -> {
+      h.addMouseListener(mouseListener);
+      h.setDefaultRenderer(new SortableHeaderRenderer(tableHeader.getDefaultRenderer()));
     });
-    // if (this.tableHeader != null) {
-    //   this.tableHeader.removeMouseListener(mouseListener);
-    //   TableCellRenderer defaultRenderer = this.tableHeader.getDefaultRenderer();
+    // if (tableHeader != null) {
+    //   tableHeader.removeMouseListener(mouseListener);
+    //   TableCellRenderer defaultRenderer = tableHeader.getDefaultRenderer();
     //   if (defaultRenderer instanceof SortableHeaderRenderer) {
-    //     this.tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
+    //     tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
     //   }
     // }
-    // this.tableHeader = tableHeader;
-    // if (this.tableHeader != null) {
-    //   this.tableHeader.addMouseListener(mouseListener);
-    //   this.tableHeader.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader.getDefaultRenderer()));
+    // tableHeader = header;
+    // if (tableHeader != null) {
+    //   tableHeader.addMouseListener(mouseListener);
+    //   tableHeader.setDefaultRenderer(new SortableHeaderRenderer(tableHeader.getDefaultRenderer()));
     // }
   }
 
@@ -221,7 +222,7 @@ public class TableSorter extends AbstractTableModel {
 
   private Directive getDirective(int column) {
     return sortingColumns.stream().filter(directive -> directive.column == column)
-      .findFirst().orElse(EMPTY_DIRECTIVE);
+        .findFirst().orElse(EMPTY_DIRECTIVE);
     // for (Directive directive : sortingColumns) {
     //   if (directive.column == column) {
     //     return directive;
@@ -476,7 +477,8 @@ class SortableHeaderRenderer implements TableCellRenderer {
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = cellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = cellRenderer.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     // TableModel model = table.getModel();
     // if (c instanceof JLabel && model instanceof TableSorter) {
     //   JLabel l = (JLabel) c;

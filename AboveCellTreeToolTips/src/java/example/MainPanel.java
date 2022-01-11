@@ -17,14 +17,14 @@ import javax.swing.tree.TreeSelectionModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree0 = new JTree(new DefaultTreeModel(makeTreeRoot())) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
             ((JComponent) c).setToolTipText(value == null ? null : value.toString());
           }
@@ -140,9 +140,10 @@ class TooltipTree extends JTree {
     setCellRenderer(null);
     super.updateUI();
     // setRowHeight(24);
-    TreeCellRenderer renderer = getCellRenderer();
+    TreeCellRenderer r = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-      Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      Component c = r.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
       if (c instanceof JComponent) {
         ((JComponent) c).setToolTipText(value == null ? null : value.toString());
       }

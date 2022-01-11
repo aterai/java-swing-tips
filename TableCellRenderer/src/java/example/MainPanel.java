@@ -113,7 +113,8 @@ class WrappedLabel extends JLabel {
     Font font = getFont();
     FontMetrics fm = getFontMetrics(font);
     FontRenderContext frc = fm.getFontRenderContext();
-    gvText = getWrappedGlyphVector(getText(), r.width, font, frc);
+    GlyphVector gv = font.createGlyphVector(frc, getText());
+    gvText = getWrappedGlyphVector(gv, r.getWidth());
     super.doLayout();
   }
 
@@ -131,13 +132,13 @@ class WrappedLabel extends JLabel {
     }
   }
 
-  private static GlyphVector getWrappedGlyphVector(String str, double width, Font font, FontRenderContext frc) {
+  private static GlyphVector getWrappedGlyphVector(GlyphVector gv, double width) {
     Point2D gmPos = new Point2D.Float();
-    GlyphVector gv = font.createGlyphVector(frc, str);
     float lineHeight = (float) gv.getLogicalBounds().getHeight();
     float pos = 0f;
     int lineCount = 0;
     GlyphMetrics gm;
+
     for (int i = 0; i < gv.getNumGlyphs(); i++) {
       gm = gv.getGlyphMetrics(i);
       float advance = gm.getAdvance();
@@ -207,34 +208,48 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     Color back = getBackground();
 //     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
 //     if (o instanceof JTable) {
-//       JTable table = (JTable) o;
-//       boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//       JTable t = (JTable) o;
+//       boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
 //       return !colorMatch && super.isOpaque();
 //     } else {
 //       return super.isOpaque();
 //     }
 //   }
 //
-//   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//   @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
 //     if ("document".equals(propertyName)) {
-//       super.firePropertyChange(propertyName, oldValue, newValue);
-//     } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue) {
-//       super.firePropertyChange(propertyName, oldValue, newValue);
+//       super.firePropertyChange(propertyName, ov, nv);
+//     } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && ov != nv) {
+//       super.firePropertyChange(propertyName, ov, nv);
 //     }
 //   }
 //
-//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { /* Overridden for performance reasons. */ }
+//   @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
+//   @Override public void repaint(long tm, int x, int y, int width, int height) {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
+//   @Override public void repaint(Rectangle r) {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void repaint() { /* Overridden for performance reasons. */ }
+//   @Override public void repaint() {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void invalidate() { /* Overridden for performance reasons. */ }
+//   @Override public void invalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void validate() { /* Overridden for performance reasons. */ }
+//   @Override public void validate() {
+//     /* Overridden for performance reasons. */
+//   }
 //
-//   @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//   @Override public void revalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //   // <---- Overridden for performance reasons.
 // }

@@ -219,12 +219,14 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   //   return url.startsWith("https://ateraimemo.com/");
   // }
   // public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
-  //   ImageProducer ip = new FilteredImageSource(srcIcon.getImage().getSource(), new SelectedImageFilter());
+  //   ImageProducer ip = new FilteredImageSource(
+  //       srcIcon.getImage().getSource(), new SelectedImageFilter());
   //   return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   // }
   // // Test:
   // public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
-  //   RescaleOp op = new RescaleOp(new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
+  //   RescaleOp op = new RescaleOp(
+  //       new float[] { 1.2f, 1.2f, 1.2f, 1f }, new float[] { 0f, 0f, 0f, 0f }, null);
   //   int iw = srcIcon.getIconWidth();
   //   int ih = srcIcon.getIconHeight();
   //   BufferedImage img = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
@@ -270,26 +272,26 @@ class SiteComboBoxLayout implements LayoutManager {
     JComboBox<?> cb = (JComboBox<?>) parent;
     int width = cb.getWidth();
     int height = cb.getHeight();
-    Insets insets = cb.getInsets();
-    int arrowSize = height - insets.top - insets.bottom;
-    // int arrowHeight = height - insets.top - insets.bottom;
-    // int arrowWidth = arrowSize;
-    int faviconWidth = arrowSize;
+    Insets ins = cb.getInsets();
+    int arrowSz = height - ins.top - ins.bottom;
+    // int arrowHeight = height - ins.top - ins.bottom;
+    // int arrowWidth = arrowSz;
+    int faviconWidth = arrowSz;
     int feedWidth; // = arrowHeight;
 
     // Arrow Icon JButton
     JButton arrowButton = (JButton) cb.getComponent(0);
     if (Objects.nonNull(arrowButton)) {
       Insets arrowInsets = arrowButton.getInsets();
-      arrowSize = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-      arrowButton.setBounds(width - insets.right - arrowSize, insets.top, arrowSize, arrowSize);
+      arrowSz = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+      arrowButton.setBounds(width - ins.right - arrowSz, ins.top, arrowSz, arrowSz);
     }
 
     // Favicon JLabel
     if (Objects.nonNull(favicon)) {
       Insets faviconInsets = favicon.getInsets();
       faviconWidth = favicon.getPreferredSize().width + faviconInsets.left + faviconInsets.right;
-      favicon.setBounds(insets.left, insets.top, faviconWidth, arrowSize);
+      favicon.setBounds(ins.left, ins.top, faviconWidth, arrowSz);
     }
 
     // JButton rssButton = feedButton;
@@ -302,9 +304,9 @@ class SiteComboBoxLayout implements LayoutManager {
 
     // Feed Icon JButton
     if (Objects.nonNull(feedButton) && feedButton.isVisible()) {
-      Insets feedInsets = feedButton.getInsets();
-      feedWidth = feedButton.getPreferredSize().width + feedInsets.left + feedInsets.right;
-      feedButton.setBounds(width - insets.right - feedWidth - arrowSize, insets.top, feedWidth, arrowSize);
+      Insets feedIns = feedButton.getInsets();
+      feedWidth = feedButton.getPreferredSize().width + feedIns.left + feedIns.right;
+      feedButton.setBounds(width - ins.right - feedWidth - arrowSz, ins.top, feedWidth, arrowSz);
     } else {
       feedWidth = 0;
     }
@@ -312,9 +314,9 @@ class SiteComboBoxLayout implements LayoutManager {
     // JComboBox Editor
     Component editor = cb.getEditor().getEditorComponent();
     if (Objects.nonNull(editor)) {
-      editor.setBounds(insets.left + faviconWidth, insets.top,
-          width - insets.left - insets.right - arrowSize - faviconWidth - feedWidth,
-          height - insets.top - insets.bottom);
+      editor.setBounds(ins.left + faviconWidth, ins.top,
+          width - ins.left - ins.right - arrowSz - faviconWidth - feedWidth,
+          height - ins.top - ins.bottom);
     }
   }
 }
@@ -336,11 +338,11 @@ class SiteItem {
 }
 
 class SelectedImageFilter extends RGBImageFilter {
+  private static final float SCALE = 1.2f;
+
   // public SelectedImageFilter() {
   //   canFilterIndexColorModel = false;
   // }
-
-  private static final float SCALE = 1.2f;
 
   @Override public int filterRGB(int x, int y, int argb) {
     // int a = (argb >> 24) & 0xFF;

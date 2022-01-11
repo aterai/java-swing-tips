@@ -13,7 +13,6 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JSplitPane splitPane = new JSplitPane();
     Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
     divider.addMouseListener(new MouseAdapter() {
@@ -21,8 +20,10 @@ public final class MainPanel extends JPanel {
         super.mousePressed(e);
         splitPane.requestFocusInWindow();
         // or
-        // Action startResize = splitPane.getActionMap().get("startResize");
-        // startResize.actionPerformed(new ActionEvent(splitPane, ActionEvent.ACTION_PERFORMED, "startResize"));
+        // String cmd = "startResize";
+        // Action startResize = splitPane.getActionMap().get(cmd);
+        // ActionEvent ae = new ActionEvent(splitPane, ActionEvent.ACTION_PERFORMED, cmd);
+        // startResize.actionPerformed(ae);
       }
     });
 

@@ -12,15 +12,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    Object showHiddenFiles = Toolkit.getDefaultToolkit().getDesktopProperty("awt.file.showHiddenFiles");
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    Object showHiddenFiles = tk.getDesktopProperty("awt.file.showHiddenFiles");
     System.out.println("awt.file.showHiddenFiles: " + showHiddenFiles);
 
     JFileChooser chooser = new JFileChooser();
     Optional.ofNullable(searchPopupMenu(chooser)).ifPresent(pop -> {
       pop.addSeparator();
       JCheckBoxMenuItem mi = new JCheckBoxMenuItem("isFileHidingEnabled");
-      mi.addActionListener(e -> chooser.setFileHidingEnabled(((JCheckBoxMenuItem) e.getSource()).isSelected()));
+      mi.addActionListener(e -> chooser.setFileHidingEnabled(mi.isSelected()));
       mi.setSelected(chooser.isFileHidingEnabled());
       pop.add(mi);
     });

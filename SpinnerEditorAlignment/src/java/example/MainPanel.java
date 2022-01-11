@@ -9,15 +9,13 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JRadioButton r1 = new JRadioButton("LEADING");
-  private final JRadioButton r2 = new JRadioButton("CENTER");
-  private final JRadioButton r3 = new JRadioButton("TRAILING");
-
   private MainPanel() {
     super(new BorderLayout());
     // UIManager.put("Spinner.editorAlignment", SwingConstants.CENTER);
     // System.out.println(UIManager.get("Spinner.editorAlignment"));
-
+    JRadioButton r1 = new JRadioButton("LEADING");
+    JRadioButton r2 = new JRadioButton("CENTER");
+    JRadioButton r3 = new JRadioButton("TRAILING");
     ItemListener il = e -> {
       int alignment;
       if (e.getItemSelectable() == r1) {
@@ -40,25 +38,18 @@ public final class MainPanel extends JPanel {
 
     List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
     JSpinner spinner0 = new JSpinner(new SpinnerListModel(weeks));
-    System.out.println(((JSpinner.DefaultEditor) spinner0.getEditor()).getTextField().getHorizontalAlignment());
+    debug((JSpinner.DefaultEditor) spinner0.getEditor());
 
     @SuppressWarnings("JavaUtilDate")
     Date date = new Date();
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
-    System.out.println(((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().getHorizontalAlignment());
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, "yyyy/MM/dd"));
-    // JTextField field = ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField();
-    // field.setHorizontalAlignment(SwingConstants.TRAILING);
+    debug((JSpinner.DefaultEditor) spinner1.getEditor());
 
     JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(5, 0, 10, 1));
-    System.out.println(((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().getHorizontalAlignment());
-    // JTextField text = ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField();
-    // text.setHorizontalAlignment(SwingConstants.LEADING);
+    debug((JSpinner.DefaultEditor) spinner2.getEditor());
 
     GridBagConstraints c = new GridBagConstraints();
-    c.gridheight = 1;
-    c.gridwidth  = 1;
-
     c.gridx = 0;
     c.weightx = 0.0;
     c.insets = new Insets(5, 5, 5, 0);
@@ -93,6 +84,10 @@ public final class MainPanel extends JPanel {
     });
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void debug(JSpinner.DefaultEditor editor) {
+    System.out.println(editor.getTextField().getHorizontalAlignment());
   }
 
   public static void main(String[] args) {
@@ -132,19 +127,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

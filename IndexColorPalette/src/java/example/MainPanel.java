@@ -41,11 +41,11 @@ public final class MainPanel extends JPanel {
 
     ColorModel colorModel = image.getColorModel();
     // System.out.println(colorModel);
-    IndexColorModel indexColorModel = null;
+    IndexColorModel idxColorModel = null;
     int transIndex;
     if (colorModel instanceof IndexColorModel) {
-      indexColorModel = (IndexColorModel) colorModel;
-      transIndex = indexColorModel.getTransparentPixel();
+      idxColorModel = (IndexColorModel) colorModel;
+      transIndex = idxColorModel.getTransparentPixel();
     } else {
       transIndex = -1;
     }
@@ -53,11 +53,11 @@ public final class MainPanel extends JPanel {
     int w = image.getWidth();
     int h = image.getHeight();
     DataBuffer dataBuffer = image.getRaster().getDataBuffer();
-    label2.setIcon(new ImageIcon(makeTestImage(dataBuffer, colorModel, w, h, transIndex)));
+    label2.setIcon(new ImageIcon(makeImage(dataBuffer, colorModel, w, h, transIndex)));
 
     JPanel box = new JPanel(new GridBagLayout());
-    if (Objects.nonNull(indexColorModel)) {
-      JList<IndexedColor> palette = new JList<IndexedColor>(new PaletteListModel(indexColorModel)) {
+    if (Objects.nonNull(idxColorModel)) {
+      JList<IndexedColor> palette = new JList<IndexedColor>(new PaletteListModel(idxColorModel)) {
         @Override public void updateUI() {
           setCellRenderer(null);
           super.updateUI();
@@ -81,10 +81,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeTestImage(DataBuffer dataBuffer, ColorModel colorModel, int w, int h, int transIdx) {
+  private static Image makeImage(DataBuffer buffer, ColorModel model, int w, int h, int idx) {
     // DataBufferByte dataBufferByte = null;
-    // if (dataBuffer instanceof DataBufferByte) {
-    //   dataBufferByte = (DataBufferByte) dataBuffer;
+    // if (buffer instanceof DataBufferByte) {
+    //   dataBufferByte = (DataBufferByte) buffer;
     // } else {
     //   System.out.println("No DataBufferByte");
     // }
@@ -94,11 +94,11 @@ public final class MainPanel extends JPanel {
       for (int x = 0; x < w; x++) {
         int arrayIndex = x + y * w;
         // int colorIndex = Byte.toUnsignedInt(data[arrayIndex]);
-        int colorIndex = dataBuffer.getElem(arrayIndex);
-        if (transIdx == colorIndex) {
+        int colorIndex = buffer.getElem(arrayIndex);
+        if (idx == colorIndex) {
           buf.setRGB(x, y, Color.RED.getRGB()); // 0xFF_FF_00_00);
         } else {
-          buf.setRGB(x, y, colorModel.getRGB(colorIndex));
+          buf.setRGB(x, y, model.getRGB(colorIndex));
         }
       }
     }
@@ -160,8 +160,8 @@ class PaletteListModel extends AbstractListModel<IndexedColor> {
     return model.getMapSize();
   }
 
-  @Override public IndexedColor getElementAt(int index) {
-    return new IndexedColor(index, new Color(model.getRGB(index)), index == model.getTransparentPixel());
+  @Override public IndexedColor getElementAt(int idx) {
+    return new IndexedColor(idx, new Color(model.getRGB(idx)), idx == model.getTransparentPixel());
   }
 }
 
