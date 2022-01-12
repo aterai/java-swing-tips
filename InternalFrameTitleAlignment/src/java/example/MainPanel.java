@@ -50,7 +50,8 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-      UIManager.getLookAndFeelDefaults().put("InternalFrame:InternalFrameTitlePane.titleAlignment", "LEADING");
+      UIManager.getLookAndFeelDefaults().put(
+          "InternalFrame:InternalFrameTitlePane.titleAlignment", "LEADING");
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();

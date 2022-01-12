@@ -94,7 +94,8 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   @Override public void actionPerformed(ActionEvent e) {
     Object o = e.getSource();
     if (o instanceof Timer) {
-      if (Objects.nonNull(arrowButton) && !arrowButton.getModel().isPressed() && autoRepeatTimer.isRunning()) {
+      boolean isPressed = Objects.nonNull(arrowButton) && !arrowButton.getModel().isPressed();
+      if (isPressed && autoRepeatTimer.isRunning()) {
         autoRepeatTimer.stop();
         arrowButton = null;
       }

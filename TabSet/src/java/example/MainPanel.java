@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
         // new TabStop(300f, TabStop.ALIGN_BAR, TabStop.LEAD_NONE)
     }));
     textPane.setParagraphAttributes(attr, false);
-    // textPane.getStyledDocument().setParagraphAttributes(0, textPane.getDocument().getLength(), attr, false);
+    // textPane.getStyledDocument().setParagraphAttributes(0, doc.getLength(), attr, false);
 
     add(new JScrollPane(textPane));
     add(check, BorderLayout.SOUTH);

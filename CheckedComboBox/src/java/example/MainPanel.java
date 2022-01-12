@@ -137,7 +137,8 @@ class CheckableItem {
 //     //   }
 //     // }
 //     // if (sl.isEmpty()) {
-//     //   return " "; // When returning the empty string, the height of JComboBox may become 0 in some cases.
+//     //   // When returning the empty string, the height of JComboBox may become 0 in some cases.
+//     //   return " ";
 //     // } else {
 //     //   return sl.stream().sorted().collect(Collectors.joining(", "));
 //     // }
@@ -207,7 +208,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   }
 
   protected void initActionMap() {
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "checkbox-select");
+    KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
+    getInputMap(JComponent.WHEN_FOCUSED).put(ks, "checkbox-select");
     getActionMap().put("checkbox-select", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Accessible a = getAccessibleContext().getAccessibleChild(0);

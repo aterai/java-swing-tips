@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
           super.updateUI();
           EventQueue.invokeLater(() -> {
             BasicSplitPaneDivider d = ((BasicSplitPaneUI) getUI()).getDivider();
-            d.setCursor(ResizeCursorUtils.createCursor("⇹", 32, 32, d));
+            d.setCursor(ResizeUtil.createCursor("⇹", 32, 32, d));
           });
         }
       };
@@ -96,15 +96,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class ResizeCursorUtils {
-  private ResizeCursorUtils() {
+final class ResizeUtil {
+  private ResizeUtil() {
     /* HideUtilityClassConstructor */
   }
 
   public static Cursor createCursor(String s, int width, int height, Component c) {
     float size = height - 2f;
     BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    // BufferedImage bi = c.getGraphicsConfiguration().createCompatibleImage(32, 32, Transparency.TRANSLUCENT);
     Graphics2D g2 = bi.createGraphics();
     g2.setFont(c.getFont().deriveFont(size));
     Shape shape = new TextLayout(s, g2.getFont(), g2.getFontRenderContext()).getOutline(null);
@@ -146,7 +145,7 @@ final class ResizeCursorUtils {
 class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
   @Override protected MouseInputListener createMouseInputListener() {
     return new MouseInputHandler() {
-      private final Cursor resizeCursor = ResizeCursorUtils.createCursor("⇼", 32, 32, header);
+      private final Cursor resizeCursor = ResizeUtil.createCursor("⇼", 32, 32, header);
       private final Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
       @Override public void mouseMoved(MouseEvent e) {
@@ -154,7 +153,7 @@ class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
         if (!header.isEnabled()) {
           return;
         }
-        if (ResizeCursorUtils.canResize(ResizeCursorUtils.getResizeColumn(header, e.getPoint()), header)) {
+        if (ResizeUtil.canResize(ResizeUtil.getResizeColumn(header, e.getPoint()), header)) {
           header.setCursor(resizeCursor);
         } else {
           header.setCursor(defaultCursor);
@@ -167,7 +166,7 @@ class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
 class MySynthTableHeaderUI extends SynthTableHeaderUI {
   @Override protected MouseInputListener createMouseInputListener() {
     return new MouseInputHandler() {
-      private final Cursor resizeCursor = ResizeCursorUtils.createCursor("⇼", 32, 32, header);
+      private final Cursor resizeCursor = ResizeUtil.createCursor("⇼", 32, 32, header);
       private final Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
       @Override public void mouseMoved(MouseEvent e) {
@@ -175,7 +174,7 @@ class MySynthTableHeaderUI extends SynthTableHeaderUI {
         if (!header.isEnabled()) {
           return;
         }
-        if (ResizeCursorUtils.canResize(ResizeCursorUtils.getResizeColumn(header, e.getPoint()), header)) {
+        if (ResizeUtil.canResize(ResizeUtil.getResizeColumn(header, e.getPoint()), header)) {
           header.setCursor(resizeCursor);
         } else {
           header.setCursor(defaultCursor);
@@ -188,7 +187,7 @@ class MySynthTableHeaderUI extends SynthTableHeaderUI {
 class MyBasicTableHeaderUI extends BasicTableHeaderUI {
   @Override protected MouseInputListener createMouseInputListener() {
     return new MouseInputHandler() {
-      private final Cursor resizeCursor = ResizeCursorUtils.createCursor("⇼", 32, 32, header);
+      private final Cursor resizeCursor = ResizeUtil.createCursor("⇼", 32, 32, header);
       private final Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
       @Override public void mouseMoved(MouseEvent e) {
@@ -196,7 +195,7 @@ class MyBasicTableHeaderUI extends BasicTableHeaderUI {
         if (!header.isEnabled()) {
           return;
         }
-        if (ResizeCursorUtils.canResize(ResizeCursorUtils.getResizeColumn(header, e.getPoint()), header)) {
+        if (ResizeUtil.canResize(ResizeUtil.getResizeColumn(header, e.getPoint()), header)) {
           header.setCursor(resizeCursor);
         } else {
           header.setCursor(defaultCursor);

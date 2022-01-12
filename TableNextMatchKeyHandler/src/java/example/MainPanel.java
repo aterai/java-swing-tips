@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
+        {"aaa", 12, true}, {"bbb", 5, false},
       {"aaa", 15, true}, {"bbb", 6, false},
       {"abc", 92, true}, {"Bbb", 0, false}
     };
@@ -90,7 +90,8 @@ class TableNextMatchKeyHandler extends KeyAdapter {
   @Override public void keyTyped(KeyEvent e) {
     JTable src = (JTable) e.getComponent();
     int max = src.getRowCount();
-    if (max == 0 || e.isAltDown() || isNavigationKey(e)) { // || BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
+    if (max == 0 || e.isAltDown() || isNavigationKey(e)) {
+      // || BasicGraphicsUtils.isMenuShortcutKeyDown(e)) {
       // Nothing to select
       return;
     }

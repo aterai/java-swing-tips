@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"Default", "AutoWrap"};
     Object[][] data = {
-      {"123456789012345678901234567890", "123456789012345678901234567890"},
-      {"1111", "22222222222222222222222222222222222222222222222222222222"},
-      {"3333333", "----------------------------------------------0"},
-      {"4444444444444444444", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
+        {"123456789012345678901234567890", "123456789012345678901234567890"},
+        {"1111", "22222222222222222222222222222222222222222222222222222222"},
+        {"3333333", "----------------------------------------------0"},
+        {"4444444444444444444", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
     };
     TableModel model = new DefaultTableModel(data, columnNames);
     JTable table = new JTable(model) {
@@ -236,23 +236,23 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     Color back = getBackground();
 //     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
 //     if (o instanceof JTable) {
-//       JTable table = (JTable) o;
-//       boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//       JTable t = (JTable) o;
+//       boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
 //       return !colorMatch && super.isOpaque();
 //     } else {
 //       return super.isOpaque();
 //     }
 //   }
 //
-//   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//   @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
 //     if ("document".equals(propertyName)) {
-//       super.firePropertyChange(propertyName, oldValue, newValue);
-//     } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && oldValue != newValue) {
-//       super.firePropertyChange(propertyName, oldValue, newValue);
+//       super.firePropertyChange(propertyName, ov, nv);
+//     } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && ov != nv) {
+//       super.firePropertyChange(propertyName, ov, nv);
 //     }
 //   }
 //
-//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//   @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
 //     /* Overridden for performance reasons. */
 //   }
 //

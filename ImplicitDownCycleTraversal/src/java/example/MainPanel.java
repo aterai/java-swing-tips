@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     setFocusTraversalPolicy(ftp);
 
     JCheckBox check1 = new JCheckBox("ImplicitDownCycleTraversal");
-    check1.addActionListener(e -> ftp.setImplicitDownCycleTraversal(((JCheckBox) e.getSource()).isSelected()));
+    check1.addActionListener(e -> ftp.setImplicitDownCycleTraversal(check1.isSelected()));
 
     JPanel sub = new JPanel(new BorderLayout());
     sub.setBorder(BorderFactory.createTitledBorder("sub panel"));

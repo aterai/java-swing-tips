@@ -24,18 +24,19 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JCheckBox checkbox1 = new JCheckBox("the minimum size of this window: " + MW + "x" + MH1, true);
-    checkbox1.addActionListener(e -> {
+    String title = "the minimum size of this window";
+    JCheckBox check1 = new JCheckBox(title + ": " + MW + "x" + MH1, true);
+    check1.addActionListener(e -> {
       Object o = e.getSource();
       if (o instanceof JCheckBox && ((JCheckBox) o).isSelected()) {
         initFrameSize(SwingUtilities.getWindowAncestor(getRootPane()));
       }
     });
 
-    JCheckBox checkbox2 = new JCheckBox("the minimum size of this window(since 1.6): " + MW + "x" + MH2, true);
-    checkbox2.addActionListener(e -> {
+    JCheckBox check2 = new JCheckBox(title + "(since 1.6): " + MW + "x" + MH2, true);
+    check2.addActionListener(e -> {
       Window w = SwingUtilities.getWindowAncestor(getRootPane());
-      w.setMinimumSize(checkbox2.isSelected() ? new Dimension(MW, MH2) : null);
+      w.setMinimumSize(check2.isSelected() ? new Dimension(MW, MH2) : null);
     });
 
     EventQueue.invokeLater(() -> {
@@ -43,7 +44,7 @@ public final class MainPanel extends JPanel {
       w.setMinimumSize(new Dimension(MW, MH2));
       w.addComponentListener(new ComponentAdapter() {
         @Override public void componentResized(ComponentEvent e) {
-          if (checkbox1.isSelected()) {
+          if (check1.isSelected()) {
             initFrameSize((Window) e.getComponent());
           }
         }
@@ -51,8 +52,8 @@ public final class MainPanel extends JPanel {
     });
 
     Box box = Box.createVerticalBox();
-    box.add(checkbox1);
-    box.add(checkbox2);
+    box.add(check1);
+    box.add(check2);
     add(box, BorderLayout.NORTH);
     add(label);
     setPreferredSize(new Dimension(320, 240));
@@ -88,9 +89,9 @@ public final class MainPanel extends JPanel {
     // r2 = r;
     // frame.getRootPane().addComponentListener(new ComponentAdapter() {
     //   @Override public void componentResized(ComponentEvent e) {
-    //     Point loc = frame.getLocationOnScreen();
-    //     Point mouse = MouseInfo.getPointerInfo().getLocation();
-    //     if (Objects.nonNull(r2) && (mouse.getX() > loc.getX() + MAX || mouse.getY() > loc.getY() + MAX)) {
+    //     Point pt = frame.getLocationOnScreen();
+    //     Point mp = MouseInfo.getPointerInfo().getLocation();
+    //     if (r2 != null && (mp.getX() > pt.getX() + MAX || mp.getY() > pt.getY() + MAX)) {
     //       r2.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     //       frame.setSize(Math.min(MAX, frame.getWidth()), Math.min(MAX, frame.getHeight()));
     //     }

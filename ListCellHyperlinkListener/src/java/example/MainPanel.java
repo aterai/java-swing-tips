@@ -15,7 +15,6 @@ import javax.swing.event.HyperlinkEvent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultListModel<SiteItem> m = new DefaultListModel<>();
     m.addElement(new SiteItem("aterai", Arrays.asList("https://ateraimemo.com", "https://github.com/aterai")));
     m.addElement(new SiteItem("example", Arrays.asList("http://www.example.com", "https://www.example.com")));
@@ -26,12 +25,13 @@ public final class MainPanel extends JPanel {
     list.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         Point pt = e.getPoint();
-        int index = list.locationToIndex(pt);
-        if (index >= 0) {
-          SiteItem item = list.getModel().getElementAt(index);
-          Component c = list.getCellRenderer().getListCellRendererComponent(list, item, index, false, false);
+        int idx = list.locationToIndex(pt);
+        if (idx >= 0) {
+          SiteItem item = list.getModel().getElementAt(idx);
+          ListCellRenderer<? super SiteItem> renderer = list.getCellRenderer();
+          Component c = renderer.getListCellRendererComponent(list, item, idx, false, false);
           if (c instanceof JEditorPane) {
-            Rectangle r = list.getCellBounds(index, index);
+            Rectangle r = list.getCellBounds(idx, idx);
             c.setBounds(r);
             MouseEvent me = SwingUtilities.convertMouseEvent(list, e, c);
             me.translatePoint(pt.x - r.x - me.getX(), pt.y - r.y - me.getY());
@@ -40,8 +40,9 @@ public final class MainPanel extends JPanel {
             // c.dispatchEvent(SwingUtilities.convertMouseEvent(list, e, c));
             // TEST2:
             // pt.translate(-r.x, -r.y);
-            // c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
-            //   pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
+            // int modifiers = e.getModifiers() | e.getModifiersEx();
+            // c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), modifiers,
+            //     pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
           }
         }
       }

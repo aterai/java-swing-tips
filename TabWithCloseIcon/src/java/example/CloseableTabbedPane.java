@@ -28,7 +28,7 @@ import javax.swing.text.View;
  * type) use the method addTab(String, Component, Icon). Only clicking the 'X'
  * closes the tab.
  */
-public final class CloseableTabbedPane extends JTabbedPane { // implements MouseListener, MouseMotionListener {
+public final class CloseableTabbedPane extends JTabbedPane {
   /**
    * The <code>EventListenerList</code>.
    */

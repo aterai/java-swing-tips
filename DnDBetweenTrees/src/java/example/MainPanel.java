@@ -41,11 +41,12 @@ public final class MainPanel extends JPanel {
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
     // Disable node Cut action
-    tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
+    Action dummy =  new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         /* Dummy action */
       }
-    });
+    };
+    tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
 
     expandTree(tree);
     return tree;
@@ -116,7 +117,8 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
-    return support.isDrop() && support.isDataFlavorSupported(FLAVOR) && !support.getComponent().equals(source);
+    Component c = support.getComponent();
+    return support.isDrop() && support.isDataFlavorSupported(FLAVOR) && !Objects.equals(source, c);
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
@@ -141,19 +143,19 @@ class TreeTransferHandler extends TransferHandler {
       //   // sm.removeNodeFromParent(node);
       //   // model.insertNodeInto(node, parent, idx++);
       //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-      //   model.insertNodeInto(deepCopyTreeNode(node, clone), parent, idx++);
+      //   model.insertNodeInto(deepCopy(node, clone), parent, idx++);
       // }
       AtomicInteger idx = new AtomicInteger(childIndex < 0 ? parent.getChildCount() : childIndex);
       Stream.of(nodes).forEach(node -> {
         DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-        model.insertNodeInto(deepCopyTreeNode(node, clone), parent, idx.incrementAndGet());
+        model.insertNodeInto(deepCopy(node, clone), parent, idx.incrementAndGet());
       });
       return true;
     }
     return false;
   }
 
-  private static DefaultMutableTreeNode deepCopyTreeNode(MutableTreeNode src, DefaultMutableTreeNode tgt) {
+  private static DefaultMutableTreeNode deepCopy(MutableTreeNode src, DefaultMutableTreeNode tgt) {
     // Java 9: Collections.list(src.children()).stream()
     Collections.list((Enumeration<?>) src.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
@@ -162,15 +164,16 @@ class TreeTransferHandler extends TransferHandler {
           DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
           tgt.add(clone);
           if (!node.isLeaf()) {
-            deepCopyTreeNode(node, clone);
+            deepCopy(node, clone);
           }
         });
     // for (int i = 0; i < src.getChildCount(); i++) {
     //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
     //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
+    //   // DefaultMutableTreeNode clone = (DefaultMutableTreeNode) node.clone();
     //   tgt.add(clone);
     //   if (!node.isLeaf()) {
-    //     deepCopyTreeNode(node, clone);
+    //     deepCopyTree(node, clone);
     //   }
     // }
     return tgt;

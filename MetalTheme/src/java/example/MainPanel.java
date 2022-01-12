@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
           JComponent titleBar = ((BasicInternalFrameUI) getUI()).getNorthPane();
           UIDefaults d = new UIDefaults();
           d.put("InternalFrame:InternalFrameTitlePane[Enabled].textForeground", Color.GREEN);
-          // d.put("InternalFrame:InternalFrameTitlePane[Enabled+WindowNotFocused].textForeground", Color.RED);
+          // d.put("InternalFrame:InternalFrameTitlePane[Enabled+WindowNotFocused].textForeground", red);
           titleBar.putClientProperty("Nimbus.Overrides", d);
         }
       }
@@ -93,6 +93,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
+// @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
@@ -109,19 +110,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 
@@ -131,6 +132,7 @@ final class LookAndFeelUtil {
       UIManager.setLookAndFeel(lookAndFeel);
       LookAndFeelUtil.lookAndFeel = lookAndFeel;
       updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
     }
   }
 
