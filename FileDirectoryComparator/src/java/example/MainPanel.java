@@ -49,32 +49,32 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     table.setDropMode(DropMode.INSERT_ROWS);
     table.setTransferHandler(new FileTransferHandler());
-    table.setDefaultRenderer(Object.class, new FileIconTableCellRenderer(FileSystemView.getFileSystemView()));
-
-    TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) table.getRowSorter();
-    // RowSorter<? extends TableModel> rs = table.getRowSorter();
-    // if (rs instanceof TableRowSorter) {
-    //   TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) rs;
-    IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new DefaultFileComparator(i)));
+    table.setDefaultRenderer(Object.class, new FileIconCellRenderer());
 
     JRadioButton check1 = new JRadioButton("Default", true);
-    check1.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new DefaultFileComparator(i)));
-      }
-    });
     JRadioButton check2 = new JRadioButton("Directory < File", false);
-    check2.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new FileComparator(i)));
-      }
-    });
     JRadioButton check3 = new JRadioButton("Group Sorting", false);
-    check3.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        IntStream.range(0, 3).forEach(i -> sorter.setComparator(i, new FileGroupComparator(table, i)));
-      }
-    });
+
+    RowSorter<? extends TableModel> sorter = table.getRowSorter();
+    if (sorter instanceof TableRowSorter) {
+      TableRowSorter<? extends TableModel> rs = (TableRowSorter<? extends TableModel>) sorter;
+      IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
+      check1.addItemListener(e -> {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+          IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
+        }
+      });
+      check2.addItemListener(e -> {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+          IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new FileComparator(i)));
+        }
+      });
+      check3.addItemListener(e -> {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+          IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new FileGroupComparator(table, i)));
+        }
+      });
+    }
 
     JPanel p = new JPanel();
     ButtonGroup bg = new ButtonGroup();
@@ -107,43 +107,40 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class FileIconTableCellRenderer extends DefaultTableCellRenderer {
-  private final transient FileSystemView fileSystemView;
-
-  protected FileIconTableCellRenderer(FileSystemView fileSystemView) {
-    super();
-    this.fileSystemView = fileSystemView;
-  }
+class FileIconCellRenderer extends DefaultTableCellRenderer {
+  private final transient FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    l.setHorizontalAlignment(SwingConstants.LEFT);
-    l.setIcon(null);
-    File file = (File) value;
-    int c = table.convertColumnIndexToModel(column);
-    switch (c) {
-      case 0:
-        // ???: WindowsLnF, Java 1.7.0
-        // if (file.isDirectory()) {
-        //   l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
-        // } else {
-        //   l.setIcon(UIManager.getIcon("FileView.fileIcon"));
-        // }
-        l.setIcon(fileSystemView.getSystemIcon(file));
-        l.setText(fileSystemView.getSystemDisplayName(file));
-        // l.setText(file.getName());
-        break;
-      case 1:
-        l.setHorizontalAlignment(SwingConstants.RIGHT);
-        l.setText(file.isDirectory() ? null : Long.toString(file.length()));
-        break;
-      case 2:
-        l.setText(file.getAbsolutePath());
-        break;
-      default:
-        break;
+    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel && value instanceof File) {
+      JLabel l = (JLabel) c;
+      l.setHorizontalAlignment(SwingConstants.LEFT);
+      l.setIcon(null);
+      File file = (File) value;
+      switch (table.convertColumnIndexToModel(column)) {
+        case 0:
+          // ???: WindowsLnF, Java 1.7.0
+          // if (file.isDirectory()) {
+          //   l.setIcon(UIManager.getIcon("FileView.directoryIcon"));
+          // } else {
+          //   l.setIcon(UIManager.getIcon("FileView.fileIcon"));
+          // }
+          l.setIcon(fileSystemView.getSystemIcon(file));
+          l.setText(fileSystemView.getSystemDisplayName(file));
+          // l.setText(file.getName());
+          break;
+        case 1:
+          l.setHorizontalAlignment(SwingConstants.RIGHT);
+          l.setText(file.isDirectory() ? null : Long.toString(file.length()));
+          break;
+        case 2:
+          l.setText(file.getAbsolutePath());
+          break;
+        default:
+          break;
+      }
     }
-    return l;
+    return c;
   }
 }
 
@@ -278,20 +275,22 @@ class TablePopupMenu extends JPopupMenu {
   protected TablePopupMenu() {
     super();
     delete = add("delete");
-    delete.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      DefaultTableModel model = (DefaultTableModel) table.getModel();
-      int[] selection = table.getSelectedRows();
-      for (int i = selection.length - 1; i >= 0; i--) {
-        model.removeRow(table.convertRowIndexToModel(selection[i]));
-      }
-    });
+    delete.addActionListener(e -> deleteSelectedRows());
   }
 
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTable) {
       delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
       super.show(c, x, y);
+    }
+  }
+
+  private void deleteSelectedRows() {
+    JTable table = (JTable) getInvoker();
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    int[] selection = table.getSelectedRows();
+    for (int i = selection.length - 1; i >= 0; i--) {
+      model.removeRow(table.convertRowIndexToModel(selection[i]));
     }
   }
 }
