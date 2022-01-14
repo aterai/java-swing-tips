@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
     String[] comboModel = {"Name 0", "Name 1", "Name 2"};
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
-      {12, comboModel[0], true}, {5, comboModel[2], false},
-      {92, comboModel[1], true}, {0, comboModel[0], false}
+        {12, comboModel[0], true}, {5, comboModel[2], false},
+        {92, comboModel[1], true}, {0, comboModel[0], false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -130,8 +130,8 @@ class ComboCellRenderer implements TableCellRenderer {
       Color back = getBackground();
       Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
       if (o instanceof JTable) {
-        JTable table = (JTable) o;
-        boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+        JTable t = (JTable) o;
+        boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
         return !colorMatch && super.isOpaque();
       } else {
         return super.isOpaque();
@@ -177,6 +177,7 @@ class ComboCellRenderer implements TableCellRenderer {
 //       }
 //     });
 //   }
+//
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     JTextField editor = (JTextField) getEditor().getEditorComponent();
 //     editor.setBorder(BorderFactory.createEmptyBorder());
@@ -199,30 +200,53 @@ class ComboCellRenderer implements TableCellRenderer {
 //     addItem(Objects.toString(value, ""));
 //     return this;
 //   }
+//
 //   // Overridden for performance reasons. ---->
 //   @Override public boolean isOpaque() {
 //     Color back = getBackground();
 //     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
 //     if (o instanceof JTable) {
-//       JTable table = (JTable) o;
-//       boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//       JTable t = (JTable) o;
+//       boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
 //       return !colorMatch && super.isOpaque();
 //     } else {
 //       return super.isOpaque();
 //     }
 //   }
-//   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//
+//   @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
 //     // System.out.println(propertyName);
-//     // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-//     //   super.firePropertyChange(propertyName, oldValue, newValue);
+//     // if ((propertyName == "font" || propertyName == "foreground") && ov != nv) {
+//     //   super.firePropertyChange(propertyName, ov, nv);
 //     // }
 //   }
-//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
-//   @Override public void repaint(long tm, int x, int y, int width, int height) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint(Rectangle r) { /* Overridden for performance reasons. */ }
-//   @Override public void repaint() { /* Overridden for performance reasons. */ }
-//   // @Override public void invalidate() { /* Overridden for performance reasons. */ }
-//   // @Override public void validate() { /* Overridden for performance reasons. */ }
-//   @Override public void revalidate() { /* Overridden for performance reasons. */ }
+//
+//   // @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//
+//   @Override public void repaint(long tm, int x, int y, int width, int height) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint(Rectangle r) {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   @Override public void repaint() {
+//     /* Overridden for performance reasons. */
+//   }
+//
+//   // @Override public void invalidate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//
+//   // @Override public void validate() {
+//   //   /* Overridden for performance reasons. */
+//   // }
+//
+//   @Override public void revalidate() {
+//     /* Overridden for performance reasons. */
+//   }
 //   // <---- Overridden for performance reasons.
 // }

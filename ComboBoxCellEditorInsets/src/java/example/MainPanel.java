@@ -342,14 +342,14 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 //     }
 //   }
 //
-//   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//   @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
 //     // System.out.println(propertyName);
-//     // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-//     //   super.firePropertyChange(propertyName, oldValue, newValue);
+//     // if ((propertyName == "font" || propertyName == "foreground") && ov != nv) {
+//     //   super.firePropertyChange(propertyName, ov, nv);
 //     // }
 //   }
 //
-//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//   // @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
 //   //   /* Overridden for performance reasons. */
 //   // }
 //

@@ -299,19 +299,20 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //   //   if (Objects.nonNull(p)) {
 //   //     p = p.getParent();
 //   //   } // p should now be the JTable.
-//   //   boolean colorMatch = back != null && p != null && back.equals(p.getBackground()) && p.isOpaque();
+//   //   boolean colorMatch = back != null && p != null &&
+//   //       back.equals(p.getBackground()) && p.isOpaque();
 //   //   return !colorMatch && super.isOpaque();
 //   // }
 //   //
-//   // @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//   // @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
 //   //   if ("document".equals(propertyName)
-//   //     || !Objects.equals(oldValue, newValue) && ("font".equals(propertyName)
+//   //     || !Objects.equals(ov, nv) && ("font".equals(propertyName)
 //   //     || "foreground".equals(propertyName))) {
-//   //     super.firePropertyChange(propertyName, oldValue, newValue);
+//   //     super.firePropertyChange(propertyName, ov, nv);
 //   //   }
 //   // }
 //   //
-//   // @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//   // @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
 //   //   /* performance reasons. */
 //   // }
 //   //

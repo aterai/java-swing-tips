@@ -136,22 +136,22 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //     Color back = getBackground();
 //     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
 //     if (o instanceof JTable) {
-//       JTable table = (JTable) o;
-//       boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+//       JTable t = (JTable) o;
+//       boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
 //       return !colorMatch && super.isOpaque();
 //     } else {
 //       return super.isOpaque();
 //     }
 //   }
 //
-//   @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+//   @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
 //     // // System.out.println(propertyName);
-//     // if ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue) {
-//     //   super.firePropertyChange(propertyName, oldValue, newValue);
+//     // if ((propertyName == "font" || propertyName == "foreground") && ov != nv) {
+//     //   super.firePropertyChange(propertyName, ov, nv);
 //     // }
 //   }
 //
-//   @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+//   @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
 //     /* Overridden for performance reasons. */
 //   }
 //

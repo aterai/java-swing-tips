@@ -22,8 +22,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -211,23 +210,23 @@ class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UI
     Color back = getBackground();
     Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
     if (o instanceof JTable) {
-      JTable table = (JTable) o;
-      boolean colorMatch = Objects.nonNull(back) && back.equals(table.getBackground()) && table.isOpaque();
+      JTable t = (JTable) o;
+      boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
       return !colorMatch && super.isOpaque();
     } else {
       return super.isOpaque();
     }
   }
 
-  @Override protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+  @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
     // System.out.println(propertyName);
     // if (propertyName == "border" ||
-    //     ((propertyName == "font" || propertyName == "foreground") && oldValue != newValue)) {
-    //   super.firePropertyChange(propertyName, oldValue, newValue);
+    //     ((propertyName == "font" || propertyName == "foreground") && ov != nv)) {
+    //   super.firePropertyChange(propertyName, ov, nv);
     // }
   }
 
-  @Override public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+  @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
     /* Overridden for performance reasons. */
   }
 
