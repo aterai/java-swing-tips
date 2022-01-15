@@ -6,6 +6,8 @@ package example;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -18,15 +20,15 @@ public final class MainPanel extends JPanel {
     p.add(new JComboBox<>(new String[] {"Google", "Yahoo!", "Bing"}));
     p.add(new JLabel("SearchBar JComboBox"));
 
-    DefaultComboBoxModel<SearchEngine> model = new SearchEngineComboBoxModel<>();
-    model.addElement(new SearchEngine("Google", "http://www.google.com/", new ImageIcon(getClass().getResource("google.png"))));
-    model.addElement(new SearchEngine("Yahoo!", "http://www.yahoo.com/", new ImageIcon(getClass().getResource("yahoo.png"))));
-    model.addElement(new SearchEngine("Bing", "http://www.bing.com/", new ImageIcon(getClass().getResource("bing.png"))));
+    DefaultComboBoxModel<SearchEngine> m = new SearchEngineComboBoxModel<>();
+    m.addElement(new SearchEngine("Google", "https://www.google.com/", makeIcon("google")));
+    m.addElement(new SearchEngine("Yahoo!", "https://www.yahoo.com/", makeIcon("yahoo")));
+    m.addElement(new SearchEngine("Bing", "https://www.bing.com/", makeIcon("bing")));
 
-    JComboBox<SearchEngine> combo = new JSearchBar<>(model);
+    JComboBox<SearchEngine> combo = new JSearchBar<>(m);
     combo.getEditor().setItem("java swing");
 
-    // JComboBox combo = new JComboBox(model);
+    // JComboBox combo = new JComboBox(m);
     // combo.setUI(new BasicSearchBarComboBoxUI());
     // EventQueue.invokeLater(new Runnable() {
     //   @Override public void run() {
@@ -41,6 +43,28 @@ public final class MainPanel extends JPanel {
     // p.add(new SearchBarComboBox(makeModel()));
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static ImageIcon makeIcon(String name) {
+    String path = "example/" + name + ".png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource(path);
+    if (url == null) {
+      return new ImageIcon(makeMissingImage());
+    } else {
+      return new ImageIcon(url);
+    }
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {

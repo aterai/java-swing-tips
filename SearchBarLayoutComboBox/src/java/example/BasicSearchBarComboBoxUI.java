@@ -174,7 +174,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
    * {@inheritDoc}
    */
   @Override protected void uninstallComponents() {
-    if (Objects.nonNull(loupeButton)) {
+    if (loupeButton != null) {
       unconfigureLoupeButton();
     }
     loupeButton = null;
@@ -183,14 +183,14 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
 
   protected final JButton createLoupeButton() {
     JButton button = new JButton(loupeAction);
-    ImageIcon loupe = new ImageIcon(BasicSearchBarComboBoxUI.class.getResource("loupe.png"));
+    ImageIcon loupe = MainPanel.makeIcon("loupe");
     button.setIcon(loupe);
     button.setRolloverIcon(makeRolloverIcon(loupe));
     return button;
   }
 
   public final void configureLoupeButton() {
-    if (Objects.nonNull(loupeButton)) {
+    if (loupeButton != null) {
       loupeButton.setName("ComboBox.loupeButton");
       loupeButton.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
       loupeButton.setEnabled(comboBox.isEnabled());
@@ -208,7 +208,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   }
 
   public final void unconfigureLoupeButton() {
-    if (Objects.nonNull(loupeButton)) {
+    if (loupeButton != null) {
       loupeButton.setAction(null);
       // loupeButton.removeMouseListener(popup.getMouseListener());
       // loupeButton.removeMouseMotionListener(popup.getMouseMotionListener());
