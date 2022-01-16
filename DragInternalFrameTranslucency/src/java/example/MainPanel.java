@@ -27,13 +27,13 @@ public final class MainPanel extends JPanel {
 
       @Override public void beginResizingFrame(JComponent f, int direction) {
         setDraggingFrame(f);
-        // desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         super.beginResizingFrame(f, direction);
       }
 
       @Override public void endResizingFrame(JComponent f) {
         setDraggingFrame(null);
-        // desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
+        desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
         super.endResizingFrame(f);
       }
     });
