@@ -15,10 +15,10 @@ public final class MainPanel extends JPanel {
     String[] empty = {"", ""};
     String[] columnNames = {"DefaultTableRowSorter", "EmptiesLastTableRowSorter"};
     Object[][] data = {
-      {"aaa", "aaa"}, {"ddd", "ddd"},
-      {"bbb", "bbb"}, {"eee", "eee"},
-      {"ccc", "ddd"}, {"fff", "fff"},
-      empty, empty, empty, empty, empty
+        {"aaa", "aaa"}, {"ddd", "ddd"},
+        {"bbb", "bbb"}, {"eee", "eee"},
+        {"ccc", "ddd"}, {"fff", "fff"},
+        empty, empty, empty, empty, empty
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -27,8 +27,11 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
-    TableRowSorter<? extends TableModel> sorter = (TableRowSorter<? extends TableModel>) table.getRowSorter();
-    sorter.setComparator(1, new RowComparator(table, 1));
+    RowSorter<? extends TableModel> sorter = table.getRowSorter();
+    if (sorter instanceof TableRowSorter) {
+      RowComparator comparator = new RowComparator(table, 1);
+      ((TableRowSorter<? extends TableModel>) sorter).setComparator(1, comparator);
+    }
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
