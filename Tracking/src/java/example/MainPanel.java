@@ -5,12 +5,10 @@
 package example;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -100,7 +98,7 @@ class BadgeIcon implements Icon {
   }
 
   protected Shape getBadgeShape() {
-    return new Ellipse2D.Double(0d, 0d, getIconWidth() - 1d, getIconHeight() - 1d);
+    return new Ellipse2D.Double(0d, 0d, getIconWidth(), getIconHeight());
   }
 
   protected Shape getTextShape(Graphics2D g2) {
@@ -108,19 +106,17 @@ class BadgeIcon implements Icon {
     Map<TextAttribute, Object> attr = new ConcurrentHashMap<>();
     attr.put(TextAttribute.TRACKING, -.1f);
     Font font = txt.length() < 3 ? g2.getFont() : g2.getFont().deriveFont(attr);
-    FontRenderContext frc = g2.getFontRenderContext();
-    return new TextLayout(txt, font, frc).getOutline(null);
+    return new TextLayout(txt, font, g2.getFontRenderContext()).getOutline(null);
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     if (value <= 0) {
       return;
     }
-    int w = getIconWidth();
-    int h = getIconHeight();
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    // g2.setRenderingHint(
+    // RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
     g2.translate(x, y);
     Shape badge = getBadgeShape();
@@ -130,9 +126,10 @@ class BadgeIcon implements Icon {
     g2.setPaint(badgeFgc);
     Shape shape = getTextShape(g2);
     Rectangle b = shape.getBounds();
-    Point2D p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
-    AffineTransform at = AffineTransform.getTranslateInstance(w / 2d - p.getX() - 1d, h / 2d - p.getY() - 1d);
-    g2.fill(at.createTransformedShape(shape));
+    double tx = getIconWidth() / 2d - b.getCenterX();
+    double ty = getIconHeight() / 2d - b.getCenterY();
+    AffineTransform toCenterAT = AffineTransform.getTranslateInstance(tx, ty);
+    g2.fill(toCenterAT.createTransformedShape(shape));
     g2.dispose();
   }
 
@@ -154,7 +151,6 @@ class BadgeIcon2 extends BadgeIcon {
     String txt = getText();
     AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.95, 1d);
     Font font = g2.getFont().deriveFont(at);
-    FontRenderContext frc = g2.getFontRenderContext();
-    return new TextLayout(txt, font, frc).getOutline(null);
+    return new TextLayout(txt, font, g2.getFontRenderContext()).getOutline(null);
   }
 }

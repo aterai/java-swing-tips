@@ -5,11 +5,9 @@
 package example;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -178,15 +176,23 @@ class BadgeIcon implements Icon {
   }
 
   protected Shape getBadgeShape() {
-    return new Ellipse2D.Double(0, 0, getIconWidth(), getIconHeight());
+    return new Ellipse2D.Double(0d, 0d, getIconWidth(), getIconHeight());
+  }
+
+  protected Shape getTextShape(Graphics2D g2) {
+    // Java 12:
+    // NumberFormat fmt = NumberFormat.getCompactNumberInstance(
+    //    Locale.US, NumberFormat.Style.SHORT);
+    // String txt = fmt.format(value);
+    String txt = value > 999 ? "1K" : Objects.toString(value);
+    AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.66, 1d);
+    return new TextLayout(txt, g2.getFont(), g2.getFontRenderContext()).getOutline(at);
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     if (value <= 0) {
       return;
     }
-    int w = getIconWidth();
-    int h = getIconHeight();
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
     Shape badge = getBadgeShape();
@@ -196,16 +202,11 @@ class BadgeIcon implements Icon {
     g2.draw(badge);
 
     g2.setPaint(badgeFgc);
-    FontRenderContext frc = g2.getFontRenderContext();
-    // Java 12:
-    // NumberFormat fmt = NumberFormat.getCompactNumberInstance(Locale.US, NumberFormat.Style.SHORT);
-    // String txt = fmt.format(value);
-    String txt = value > 999 ? "1K" : Objects.toString(value);
-    AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.66, 1d);
-    Shape shape = new TextLayout(txt, g2.getFont(), frc).getOutline(at);
+    Shape shape = getTextShape(g2);
     Rectangle b = shape.getBounds();
-    Point2D p = new Point2D.Double(b.getX() + b.getWidth() / 2d, b.getY() + b.getHeight() / 2d);
-    AffineTransform toCenterAT = AffineTransform.getTranslateInstance(w / 2d - p.getX(), h / 2d - p.getY());
+    double tx = getIconWidth() / 2d - b.getCenterX();
+    double ty = getIconHeight() / 2d - b.getCenterY();
+    AffineTransform toCenterAT = AffineTransform.getTranslateInstance(tx, ty);
     g2.fill(toCenterAT.createTransformedShape(shape));
     g2.dispose();
   }
