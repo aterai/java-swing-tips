@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
     debug((JSpinner.DefaultEditor) spinner0.getEditor());
 
     @SuppressWarnings("JavaUtilDate")
-    Date date = new Date();
-    JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
+    Date d = new Date();
+    JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, d, null, Calendar.DAY_OF_MONTH));
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, "yyyy/MM/dd"));
     debug((JSpinner.DefaultEditor) spinner1.getEditor());
 

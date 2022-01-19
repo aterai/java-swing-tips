@@ -13,16 +13,15 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    URL[] icons = {getIconUrl("wi0062-16.png"), getIconUrl("wi0063-16.png"), getIconUrl("wi0064-16.png")};
+    URL[] icons = {getUrl("wi0062-16.png"), getUrl("wi0063-16.png"), getUrl("wi0064-16.png")};
     String[] columnNames = {"Column1", "Column2", "Column3"};
     JTable table = new JTable(new DefaultTableModel(columnNames, 8));
     TableColumnModel m = table.getColumnModel();
     for (int i = 0; i < m.getColumnCount(); i++) {
       // m.getColumn(i).setHeaderRenderer(new IconColumnHeaderRenderer());
       // m.getColumn(i).setHeaderRenderer(new HtmlIconHeaderRenderer());
-      // m.getColumn(i).setHeaderValue(String.format("<html><table><td><img src='%s'/></td>%s", icons[i], columnNames[i]));
-      String hv = String.format("<html><table cellpadding='0' cellspacing='0'><td><img src='%s'/></td>&nbsp;%s", icons[i], columnNames[i]);
-      m.getColumn(i).setHeaderValue(hv);
+      String td = String.format("<td><img src='%s'/></td>&nbsp;%s", icons[i], columnNames[i]);
+      m.getColumn(i).setHeaderValue("<html><table cellpadding='0' cellspacing='0'>" + td);
     }
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
@@ -34,7 +33,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private URL getIconUrl(String str) {
+  private URL getUrl(String str) {
     return getClass().getResource(str);
   }
 
@@ -99,19 +98,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

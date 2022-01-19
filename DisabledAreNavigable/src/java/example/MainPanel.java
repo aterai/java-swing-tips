@@ -50,7 +50,8 @@ public final class MainPanel extends JPanel {
     // Stream.of(menuBar)
     //   .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
     //     @Override public Stream<MenuElement> apply(MenuElement me) {
-    //       return Stream.concat(Stream.of(me), Stream.of(me.getSubElements()).flatMap(this::apply));
+    //       return Stream.concat(
+    //           Stream.of(me), Stream.of(me.getSubElements()).flatMap(this::apply));
     //     }
     //   })
     //   .filter(mi -> mi instanceof JRadioButtonMenuItem)
@@ -181,19 +182,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

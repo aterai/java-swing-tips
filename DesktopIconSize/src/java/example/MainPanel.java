@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Dimension ICON_SIZE = new Dimension(150, 40);
-  private final String info = String.format("JDesktopIcon: %dx%d", ICON_SIZE.width, ICON_SIZE.height);
+  private static final Dimension ICON_SZ = new Dimension(150, 40);
+  private final String info = String.format("JDesktopIcon: %dx%d", ICON_SZ.width, ICON_SZ.height);
   public final JCheckBox check = new JCheckBox(info);
 
   private MainPanel() {
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
         if (getUI().getClass().getName().contains("MotifDesktopIconUI")) {
           return new Dimension(64, 64 + 32);
         } else {
-          return ICON_SIZE;
+          return ICON_SZ;
         }
       }
     });
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      UIManager.put("DesktopIcon.width", ICON_SIZE.width);
+      UIManager.put("DesktopIcon.width", ICON_SZ.width);
       // TEST:
       // Font f = UIManager.getFont("InternalFrame.titleFont");
       // UIManager.put("InternalFrame.titleFont", f.deriveFont(30f));
@@ -120,19 +120,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

@@ -141,7 +141,7 @@ class SpinnerLayout implements LayoutManager {
     Dimension previousD = preferredSize(previousButton);
     Dimension editorD = preferredSize(editor);
 
-    // Force the editors height to be a multiple of 2
+    // Force the editors' height to be a multiple of 2
     editorD.height = ((editorD.height + 1) / 2) * 2;
 
     Dimension size = new Dimension(editorD.width, editorD.height);
@@ -163,26 +163,23 @@ class SpinnerLayout implements LayoutManager {
   }
 
   @Override public void layoutContainer(Container parent) {
-    int width = parent.getWidth();
-    int height = parent.getHeight();
-
-    Insets ins = parent.getInsets();
-
-    if (Objects.isNull(nextButton) && Objects.isNull(previousButton)) {
-      setBounds(editor, ins.left, ins.top, width - ins.left - ins.right, height - ins.top - ins.bottom);
+    Rectangle r = SwingUtilities.calculateInnerArea((JComponent) parent, null);
+    if (r != null && Objects.isNull(nextButton) && Objects.isNull(previousButton)) {
+      setBounds(editor, r.x, r.y, r.width, r.height);
       return;
     }
 
     // Dimension nextD = preferredSize(nextButton);
     // Dimension previousD = preferredSize(previousButton);
     int buttonsWidth = 100; // Math.max(nextD.width, previousD.width);
-    int editorHeight = height - (ins.top + ins.bottom);
+    int editorHeight = r == null ? parent.getHeight() : r.height;
 
     // The arrowButtonInsets value is used instead of the JSpinner's
     // insets if not null. Defining this to be (0, 0, 0, 0) causes the
     // buttons to be aligned with the outer edge of the spinner's
     // border, and leaving it as "null" places the buttons completely
     // inside the spinner's border.
+    Insets ins = parent.getInsets();
     Insets buttonInsets = UIManager.getInsets("Spinner.arrowButtonInsets");
     if (Objects.isNull(buttonInsets)) {
       buttonInsets = ins;
@@ -194,15 +191,16 @@ class SpinnerLayout implements LayoutManager {
     int buttonsX;
     if (parent.getComponentOrientation().isLeftToRight()) {
       editorX = ins.left;
-      editorWidth = width - ins.left - buttonsWidth - buttonInsets.right;
-      buttonsX = width - buttonsWidth - buttonInsets.right;
+      editorWidth = parent.getWidth() - ins.left - buttonsWidth - buttonInsets.right;
+      buttonsX = parent.getWidth() - buttonsWidth - buttonInsets.right;
     } else {
       buttonsX = buttonInsets.left;
       editorX = buttonsX + buttonsWidth;
-      editorWidth = width - buttonInsets.left - buttonsWidth - ins.right;
+      editorWidth = parent.getWidth() - buttonInsets.left - buttonsWidth - ins.right;
     }
 
     int nextY = buttonInsets.top;
+    int height = parent.getHeight();
     int nextHeight = height / 2 + height % 2 - nextY;
     int previousY = buttonInsets.top + nextHeight;
     int previousHeight = height - previousY - buttonInsets.bottom;
@@ -230,19 +228,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

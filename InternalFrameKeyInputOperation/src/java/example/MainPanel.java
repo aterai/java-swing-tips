@@ -33,12 +33,12 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addFrame(JDesktopPane desktop, int idx, boolean resizable) {
-    JInternalFrame frame = new JInternalFrame("resizable: " + resizable, resizable, true, true, true);
-    frame.add(makePanel());
-    frame.setSize(240, 100);
-    frame.setLocation(10 + 60 * idx, 10 + 120 * idx);
-    EventQueue.invokeLater(() -> frame.setVisible(true));
-    desktop.add(frame);
+    JInternalFrame f = new JInternalFrame("resizable: " + resizable, resizable, true, true, true);
+    f.add(makePanel());
+    f.setSize(240, 100);
+    f.setLocation(10 + 60 * idx, 10 + 120 * idx);
+    EventQueue.invokeLater(() -> f.setVisible(true));
+    desktop.add(f);
   }
 
   private static Component makePanel() {
@@ -79,19 +79,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

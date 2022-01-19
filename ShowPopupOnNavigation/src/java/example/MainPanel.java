@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check1 = new JCheckBox(SHOW_POPUP_NAVI);
     check1.setFocusable(false);
-    check1.addActionListener(e -> UIManager.put(SHOW_POPUP_NAVI, ((JCheckBox) e.getSource()).isSelected()));
+    check1.addActionListener(e -> UIManager.put(SHOW_POPUP_NAVI, check1.isSelected()));
 
     JComboBox<String> combo = new JComboBox<String>(makeModel()) {
       @Override public void updateUI() {
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check2 = new JCheckBox("isEditable");
     check2.setFocusable(false);
-    check2.addActionListener(e -> combo.setEditable(((JCheckBox) e.getSource()).isSelected()));
+    check2.addActionListener(e -> combo.setEditable(check2.isSelected()));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtil.createLookAndFeelMenu());
@@ -90,19 +90,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

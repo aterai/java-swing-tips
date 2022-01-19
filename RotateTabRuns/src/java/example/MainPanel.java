@@ -12,11 +12,10 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-
     UIManager.put("TabbedPane.tabRunOverlay", 0);
     UIManager.put("TabbedPane.selectedLabelShift", 0);
     UIManager.put("TabbedPane.labelShift", 0);
-    // TabbedPane.selectedTabPadInsets : javax.swing.plaf.InsetsUIResource[top=2,left=2,bottom=2,right=1]
+    // TabbedPane.selectedTabPadInsets : InsetsUIResource[top=2,left=2,bottom=2,right=1]
     UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(0, 0, 0, 0));
 
     JTabbedPane tabbedPane = new JTabbedPane() {
@@ -53,9 +52,9 @@ public final class MainPanel extends JPanel {
   }
 
   private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
-    tabbedPane.addTab("1111111111111111111111111111", new ColorIcon(Color.RED), new JLabel());
+    tabbedPane.addTab("111111111111111111111111", new ColorIcon(Color.RED), new JLabel());
     tabbedPane.addTab("2", new ColorIcon(Color.GREEN), new JLabel());
-    tabbedPane.addTab("333333333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
+    tabbedPane.addTab("3333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
     tabbedPane.addTab("444444444444", new ColorIcon(Color.ORANGE), new JLabel());
     return tabbedPane;
   }
@@ -121,19 +120,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

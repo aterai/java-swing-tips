@@ -15,12 +15,12 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextArea log = new JTextArea();
 
-    String key = "FileView.fullRowSelection";
-    System.out.println(UIManager.getLookAndFeelDefaults().getBoolean(key));
-    JCheckBox check = new JCheckBox(key) {
+    String cmd1 = "FileView.fullRowSelection";
+    System.out.println(UIManager.getLookAndFeelDefaults().getBoolean(cmd1));
+    JCheckBox check = new JCheckBox(cmd1) {
       @Override public void updateUI() {
         super.updateUI();
-        setSelected(UIManager.getLookAndFeelDefaults().getBoolean(key));
+        setSelected(UIManager.getLookAndFeelDefaults().getBoolean(cmd1));
       }
     };
     JButton button = new JButton("open");
@@ -29,8 +29,9 @@ public final class MainPanel extends JPanel {
       UIManager.put("FileView.fullRowSelection", flg);
       JFileChooser chooser = new JFileChooser();
       // https://ateraimemo.com/Swing/DetailsViewFileChooser.html
-      Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
-          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "viewTypeDetails")));
+      String cmd2 = "viewTypeDetails";
+      Optional.ofNullable(chooser.getActionMap().get(cmd2))
+          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), cmd2)));
 
       // https://ateraimemo.com/Swing/GetComponentsRecursively.html
       descendants(chooser)
@@ -99,19 +100,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

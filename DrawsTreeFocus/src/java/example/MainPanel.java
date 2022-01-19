@@ -5,66 +5,45 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private enum TreeDraws {
-    DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
-    DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
-    private final String key;
-    /* default */ TreeDraws(String key) {
-      this.key = key;
-    }
-
-    @Override public String toString() {
-      return key;
-    }
-  }
-
-  private final JCheckBox dfbaiCheck = new JCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString());
-  private final JCheckBox ddfiCheck = new JCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString());
-
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
 
-    dfbaiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
-    dfbaiCheck.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
-      UIManager.put(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString(), b);
-      SwingUtilities.updateComponentTreeUI(tree);
+    String key1 = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
+    JCheckBox check1 = new JCheckBox(key1, UIManager.getBoolean(key1));
+    check1.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      UIManager.put(key1, c.isSelected());
+      SwingUtilities.updateComponentTreeUI(c.getRootPane());
     });
 
-    ddfiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
-    ddfiCheck.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
-      UIManager.put(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString(), b);
-      SwingUtilities.updateComponentTreeUI(tree);
+    String key2 = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
+    JCheckBox check2 = new JCheckBox(key2, UIManager.getBoolean(key2));
+    check2.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      UIManager.put(key2, c.isSelected());
+      SwingUtilities.updateComponentTreeUI(c.getRootPane());
     });
+
+    JPanel p = new JPanel(new BorderLayout()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        check1.setSelected(UIManager.getBoolean(key1));
+        check2.setSelected(UIManager.getBoolean(key2));
+      }
+    };
+    p.add(new JScrollPane(tree));
 
     JPanel np = new JPanel(new GridLayout(2, 1));
-    np.add(dfbaiCheck);
-    np.add(ddfiCheck);
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    np.add(check1);
+    np.add(check2);
 
     add(np, BorderLayout.NORTH);
-    add(new JScrollPane(tree));
+    add(p);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    if (Objects.nonNull(dfbaiCheck)) {
-      dfbaiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString()));
-    }
-    if (Objects.nonNull(ddfiCheck)) {
-      ddfiCheck.setSelected(UIManager.getBoolean(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString()));
-    }
   }
 
   public static void main(String[] args) {
@@ -87,6 +66,19 @@ public final class MainPanel extends JPanel {
   }
 }
 
+enum TreeDraws {
+  DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
+  DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
+  private final String key;
+  /* default */ TreeDraws(String key) {
+    this.key = key;
+  }
+
+  @Override public String toString() {
+    return key;
+  }
+}
+
 // @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
@@ -104,19 +96,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

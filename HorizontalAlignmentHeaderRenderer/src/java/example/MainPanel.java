@@ -9,13 +9,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTable table0 = makeTable();
-    ((JLabel) table0.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    JLabel label0 = (JLabel) table0.getTableHeader().getDefaultRenderer();
+    label0.setHorizontalAlignment(SwingConstants.CENTER);
 
     JTable table1 = makeTable();
     table1.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -27,22 +28,24 @@ public final class MainPanel extends JPanel {
     });
 
     JTable table2 = makeTable();
-    TableColumnModel cm = table2.getColumnModel();
-    cm.getColumn(0).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.LEFT));
-    cm.getColumn(1).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.CENTER));
-    cm.getColumn(2).setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.RIGHT));
+    TableColumn c0 = table2.getColumnModel().getColumn(0);
+    c0.setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.LEFT));
+    TableColumn c1 = table2.getColumnModel().getColumn(1);
+    c1.setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.CENTER));
+    TableColumn c2 = table2.getColumnModel().getColumn(2);
+    c2.setHeaderRenderer(new HorizontalAlignmentHeaderRenderer(SwingConstants.RIGHT));
 
     // // LnF NullPointerException
     // JTable table3 = makeTable();
     // TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
-    // table3.getTableHeader().setDefaultRenderer((table, value, isSelected, hasFocus, row, column) -> {
-    //   JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    //   if (table.convertColumnIndexToModel(column) == 0) {
-    //     l.setHorizontalAlignment(SwingConstants.CENTER);
+    // table3.getTableHeader().setDefaultRenderer((t, v, isSelected, hasFocus, row, column) -> {
+    //   Component c = r.getTableCellRendererComponent(t, v, isSelected, hasFocus, row, column);
+    //   if (t.convertColumnIndexToModel(column) == 0) {
+    //     ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
     //   } else {
-    //     l.setHorizontalAlignment(SwingConstants.LEFT);
+    //     ((JLabel) c).setHorizontalAlignment(SwingConstants.LEFT);
     //   }
-    //   return l;
+    //   return c;
     // });
 
     JTabbedPane tabs = new JTabbedPane();
@@ -63,8 +66,7 @@ public final class MainPanel extends JPanel {
   public static JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -130,19 +132,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

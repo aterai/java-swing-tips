@@ -5,34 +5,17 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  // private static final String DRAWS_FOCUS_BORDER_AROUND_ICON = "Tree.drawsFocusBorderAroundIcon";
-  // private static final String DRAW_DASHED_FOCUS_INDICATOR = "Tree.drawDashedFocusIndicator";
-  private enum TreeDraws {
-    DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
-    DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
-    private final String key;
-    /* default */ TreeDraws(String key) {
-      this.key = key;
-    }
-
-    @Override public String toString() {
-      return key;
-    }
-  }
-
-  private final JCheckBox check1 = new ActionCommandCheckBox(TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON);
-  private final JCheckBox check2 = new ActionCommandCheckBox(TreeDraws.DRAW_DASHED_FOCUS_INDICATOR);
   private final JTextArea textArea = new JTextArea();
+  private final JCheckBox check1 = new JCheckBox();
+  private final JCheckBox check2 = new JCheckBox();
 
   private MainPanel() {
     super(new BorderLayout());
-
     append("MainPanel: init");
     // updateCheckBox("MainPanel: init");
 
@@ -60,14 +43,37 @@ public final class MainPanel extends JPanel {
           .forEach(mi -> mi.addActionListener(al));
     });
 
+    String key1 = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
+    check1.setText(key1);
+    check1.setSelected(UIManager.getBoolean(key1));
+    check1.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      UIManager.put(key1, c.isSelected());
+      SwingUtilities.updateComponentTreeUI(c.getRootPane());
+    });
+
+    String key2 = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
+    check2.setText(key2);
+    check2.setSelected(UIManager.getBoolean(key2));
+    check2.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      UIManager.put(key2, c.isSelected());
+      SwingUtilities.updateComponentTreeUI(c.getRootPane());
+    });
+
+    JPanel p = new JPanel(new GridLayout(2, 1)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        check1.setSelected(UIManager.getBoolean(key1));
+        check2.setSelected(UIManager.getBoolean(key2));
+      }
+    };
+    p.add(new JScrollPane(new JTree()));
+    p.add(new JScrollPane(textArea));
+
     JPanel np = new JPanel(new GridLayout(2, 1));
     np.add(check1);
     np.add(check2);
-
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    JTree tree = new JTree();
-    p.add(new JScrollPane(tree));
-    p.add(new JScrollPane(textArea));
 
     add(np, BorderLayout.NORTH);
     add(p);
@@ -139,17 +145,30 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 
-  private static class ActionCommandCheckBox extends JCheckBox {
-    protected ActionCommandCheckBox(TreeDraws key) {
-      super(key.toString());
-      setAction(new AbstractAction(key.toString()) {
-        @Override public void actionPerformed(ActionEvent e) {
-          JCheckBox c = (JCheckBox) e.getSource();
-          UIManager.put(key.toString(), c.isSelected());
-          SwingUtilities.updateComponentTreeUI(c.getRootPane());
-        }
-      });
-    }
+  // private static class ActionCheckBox extends JCheckBox {
+  //   protected ActionCheckBox(TreeDraws key) {
+  //     super(key.toString());
+  //     setAction(new AbstractAction(key.toString()) {
+  //       @Override public void actionPerformed(ActionEvent e) {
+  //         JCheckBox c = (JCheckBox) e.getSource();
+  //         UIManager.put(key.toString(), c.isSelected());
+  //         SwingUtilities.updateComponentTreeUI(c.getRootPane());
+  //       }
+  //     });
+  //   }
+  // }
+}
+
+enum TreeDraws {
+  DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
+  DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
+  private final String key;
+  /* default */ TreeDraws(String key) {
+    this.key = key;
+  }
+
+  @Override public String toString() {
+    return key;
   }
 }
 
@@ -170,19 +189,19 @@ final class LookAndFeelUtil {
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String lafName, String lafClassName, ButtonGroup lafGroup) {
-    JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(lafName, lafClassName.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClassName);
+  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
+    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
+    lafItem.setActionCommand(lafClass);
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
-      ButtonModel m = lafGroup.getSelection();
+      ButtonModel m = bg.getSelection();
       try {
         setLookAndFeel(m.getActionCommand());
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    lafGroup.add(lafItem);
+    bg.add(lafItem);
     return lafItem;
   }
 

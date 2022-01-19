@@ -28,7 +28,8 @@ public final class MainPanel extends JPanel {
     // UIManager.put("OptionPane.errorDialog.titlePane.background", Color.GREEN);
     // UIManager.put("OptionPane.errorDialog.titlePane.foreground", Color.RED);
     // UIManager.put("OptionPane.errorDialog.titlePane.shadow", Color.BLUE);
-    // JOptionPane.showInternalMessageDialog(desktop, "alert", "alert", JOptionPane.ERROR_MESSAGE);
+    // JOptionPane.showInternalMessageDialog(
+    //     desktop, "alert", "alert", JOptionPane.ERROR_MESSAGE);
 
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
@@ -46,7 +47,10 @@ public final class MainPanel extends JPanel {
           JComponent titleBar = ((BasicInternalFrameUI) getUI()).getNorthPane();
           UIDefaults d = new UIDefaults();
           d.put("InternalFrame:InternalFrameTitlePane[Enabled].textForeground", Color.GREEN);
-          // d.put("InternalFrame:InternalFrameTitlePane[Enabled+WindowNotFocused].textForeground", red);
+          // d.put(
+          //   "InternalFrame:InternalFrameTitlePane[Enabled+WindowNotFocused].textForeground",
+          //   red
+          // );
           titleBar.putClientProperty("Nimbus.Overrides", d);
         }
       }
