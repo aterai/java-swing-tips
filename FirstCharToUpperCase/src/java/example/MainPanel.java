@@ -18,12 +18,14 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JTextField field = new JTextField();
-    ((AbstractDocument) field.getDocument()).setDocumentFilter(new FirstCharToUpperCaseDocumentFilter(field));
-    field.setText("abcdefghijklmn");
+    Document doc = field.getDocument();
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new FirstCharToUpperCaseDocumentFilter(field));
+    }
+    field.setText("abc");
 
-    add(makeTitledPanel("Default", new JTextField("abcdefghijklmn")));
+    add(makeTitledPanel("Default", new JTextField("abc")));
     add(makeTitledPanel("FirstCharToUpperCase", field));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
