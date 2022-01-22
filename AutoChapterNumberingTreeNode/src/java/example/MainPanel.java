@@ -27,7 +27,8 @@ public final class MainPanel extends JPanel {
         // setCellRenderer(new ChapterNumberingTreeCellRenderer());
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
             TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
             String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
@@ -94,7 +95,8 @@ public final class MainPanel extends JPanel {
 //   private static final String MARK = "\u00a7"; // "§";
 //
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     Component c = super.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
 //     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
 //       JLabel l = (JLabel) c;
 //       TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();

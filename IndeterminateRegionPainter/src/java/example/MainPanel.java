@@ -264,7 +264,8 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     return decodeGradient(
       .5f * w + x, y, .5f * w + x, h + y,
       new float[] {
-        .038709678f, .05483871f, .07096774f, .28064516f, .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
+        .038709678f, .05483871f, .07096774f, .28064516f,
+        .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
       },
       new Color[] {
         color18,

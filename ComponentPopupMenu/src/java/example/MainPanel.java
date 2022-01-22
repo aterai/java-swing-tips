@@ -90,13 +90,17 @@ class TextComponentPopupMenu extends JPopupMenu {
     add(new DefaultEditorKit.PasteAction());
     addSeparator();
     deleteItem = add("delete");
-    deleteItem.addActionListener(e -> ((JTextComponent) getInvoker()).replaceSelection(null));
+    deleteItem.addActionListener(e -> getTextComponent().replaceSelection(null));
     addSeparator();
-    add(DefaultEditorKit.selectAllAction).addActionListener(e -> ((JTextComponent) getInvoker()).selectAll());
+    add(DefaultEditorKit.selectAllAction).addActionListener(e -> getTextComponent().selectAll());
     // add(DefaultEditorKit.selectAllAction).addActionListener(e -> {
     //   JTextComponent tc = (JTextComponent) getInvoker();
     //   tc.getActionMap().get(DefaultEditorKit.selectAllAction).actionPerformed(e);
     // });
+  }
+
+  private JTextComponent getTextComponent() {
+    return (JTextComponent) getInvoker();
   }
 
   @Override public void show(Component c, int x, int y) {

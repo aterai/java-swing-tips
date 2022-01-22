@@ -15,11 +15,11 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
-// import sun.awt.shell.ShellFolder;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -64,37 +64,42 @@ public final class MainPanel extends JPanel {
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(box);
 
-    String msg = "<html>warning: ShellFolder is internal proprietary API<br>and may be removed in a future release";
-    add(new JLabel(msg));
+    String s1 = "Warning: ShellFolder is internal proprietary API";
+    String s2 = "and may be removed in a future release";
+    add(new JLabel(String.format("<html>%s<br>%s", s1, s2)));
 
     DropTargetListener dtl = new DropTargetAdapter() {
-      @Override public void dragOver(DropTargetDragEvent dtde) {
-        if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          dtde.acceptDrag(DnDConstants.ACTION_COPY);
+      @Override public void dragOver(DropTargetDragEvent e) {
+        if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+          e.acceptDrag(DnDConstants.ACTION_COPY);
           return;
         }
-        dtde.rejectDrag();
+        e.rejectDrag();
       }
 
-      @Override public void drop(DropTargetDropEvent dtde) {
+      @Override public void drop(DropTargetDropEvent e) {
         try {
-          if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-            dtde.acceptDrop(DnDConstants.ACTION_COPY);
-            Transferable t = dtde.getTransferable();
+          if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+            e.acceptDrop(DnDConstants.ACTION_COPY);
+            Transferable t = e.getTransferable();
             List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
             Object o = list.get(0);
             if (o instanceof File) {
               File file = (File) o;
               smallLabel.setIcon(FileSystemView.getFileSystemView().getSystemIcon(file));
-              largeLabel.setIcon(new ImageIcon(sun.awt.shell.ShellFolder.getShellFolder(file).getIcon(true)));
+              largeLabel.setIcon(new ImageIcon(getLargeIconImage(file)));
             }
-            dtde.dropComplete(true);
+            e.dropComplete(true);
           } else {
-            dtde.rejectDrop();
+            e.rejectDrop();
           }
         } catch (UnsupportedFlavorException | IOException ex) {
-          dtde.rejectDrop();
+          e.rejectDrop();
         }
+      }
+
+      private Image getLargeIconImage(File file) throws FileNotFoundException {
+        return sun.awt.shell.ShellFolder.getShellFolder(file).getIcon(true);
       }
     };
     setDropTarget(new DropTarget(this, DnDConstants.ACTION_COPY, dtl, true));

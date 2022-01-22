@@ -148,14 +148,17 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
       bgc = renderer.getBackgroundSelectionColor();
       fgc = renderer.getTextSelectionColor();
     } else {
-      bgc = Optional.ofNullable(renderer.getBackgroundNonSelectionColor()).orElse(renderer.getBackground());
-      fgc = Optional.ofNullable(renderer.getTextNonSelectionColor()).orElse(renderer.getForeground());
+      bgc = Optional.ofNullable(renderer.getBackgroundNonSelectionColor())
+          .orElse(renderer.getBackground());
+      fgc = Optional.ofNullable(renderer.getTextNonSelectionColor())
+          .orElse(renderer.getForeground());
     }
     text.setForeground(fgc);
     text.setBackground(bgc);
     icon.setBackground(bgc);
 
-    Component c = renderer.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = renderer.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       text.setText(l.getText());

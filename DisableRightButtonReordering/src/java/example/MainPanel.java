@@ -86,9 +86,9 @@ class DisableRightButtonSwapLayerUI extends LayerUI<JScrollPane> {
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
-    int id = e.getID();
-    Component c = e.getComponent();
-    if (c instanceof JTableHeader && id == MouseEvent.MOUSE_DRAGGED && SwingUtilities.isRightMouseButton(e)) {
+    boolean isDrag = e.getID() == MouseEvent.MOUSE_DRAGGED;
+    boolean isRight = SwingUtilities.isRightMouseButton(e);
+    if (e.getComponent() instanceof JTableHeader && isDrag && isRight) {
       e.consume();
     }
   }

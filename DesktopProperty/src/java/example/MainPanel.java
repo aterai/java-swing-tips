@@ -23,7 +23,6 @@ public final class MainPanel extends JPanel {
       }
     };
     table.setAutoCreateRowSorter(true);
-    // for (String s : (String[]) Toolkit.getDefaultToolkit().getDesktopProperty("win.propNames")) println(s);
     PropertyChangeListener l = this::initModel;
     Toolkit.getDefaultToolkit().addPropertyChangeListener("win.xpstyle.colorName", l);
     Toolkit.getDefaultToolkit().addPropertyChangeListener("awt.multiClickInterval", l);

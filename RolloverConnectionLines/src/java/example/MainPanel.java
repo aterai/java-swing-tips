@@ -34,7 +34,8 @@ public final class MainPanel extends JPanel {
         addMouseListener(rolloverHandler);
         setUI(new BasicTreeUI() {
           @Override protected boolean shouldPaintExpandControl(TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
-            return rollover && super.shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded, isLeaf);
+            return rollover && super.shouldPaintExpandControl(
+                path, row, isExpanded, hasBeenExpanded, isLeaf);
           }
 
           @Override protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {

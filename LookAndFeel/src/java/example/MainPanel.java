@@ -97,8 +97,9 @@ final class LookAndFeelUtil {
   private static final String MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
   private static final String WINDOWS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
   private static final String GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-  // private static final String NIMBUS = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.6.0_10
-  private static final String NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel"; // JDK 1.7.0
+  // JDK 1.6.0_10: String NIMBUS = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+  // JDK 1.7.0:
+  private static final String NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 
   // The current Look & Feel
   private static String currentLaf = METAL;
@@ -120,9 +121,9 @@ final class LookAndFeelUtil {
     return lafMenu;
   }
 
-  private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup lafMenuGroup, String label, String laf) {
-    JMenuItem mi = menu.add(new JRadioButtonMenuItem(label));
-    lafMenuGroup.add(mi);
+  private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup bg, String txt, String laf) {
+    JMenuItem mi = menu.add(new JRadioButtonMenuItem(txt));
+    bg.add(mi);
     mi.addActionListener(new ChangeLookAndFeelAction(laf));
     mi.setEnabled(isAvailableLookAndFeel(laf));
     return mi;

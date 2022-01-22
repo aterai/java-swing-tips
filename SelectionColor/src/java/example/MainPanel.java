@@ -46,8 +46,10 @@ public final class MainPanel extends JPanel {
 
     // https://ateraimemo.com/Swing/StyleSheet.html
     StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule(".highlight {color: blue; background: #FF5533; opacity: 0.5;}"); // INCOMPLETE: opacity
-    // INCOMPLETE: styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
+    // INCOMPLETE: opacity
+    styleSheet.addRule(".highlight {color: blue; background: #FF5533; opacity: 0.5;}");
+    // INCOMPLETE:
+    // styleSheet.addRule(".highlight {background: rgba(255, 100, 100, 0.6); opacity: 0.5;}");
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
     editorPane.setEditorKit(htmlEditorKit);

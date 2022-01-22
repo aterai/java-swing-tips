@@ -15,14 +15,13 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    AlignedLabel fileNameLabel = new AlignedLabel("File Name:");
-    AlignedLabel filesOfTypeLabel = new AlignedLabel("Files of Type:");
-    AlignedLabel hostLabel = new AlignedLabel("Host:");
-    AlignedLabel portLabel = new AlignedLabel("Port:");
-    AlignedLabel userLabel = new AlignedLabel("User Name:");
-    AlignedLabel passwordLabel = new AlignedLabel("Password:");
-    AlignedLabel.groupLabels(fileNameLabel, filesOfTypeLabel, hostLabel, portLabel, userLabel, passwordLabel);
+    AlignedLabel fileName = new AlignedLabel("File Name:");
+    AlignedLabel filesOfType = new AlignedLabel("Files of Type:");
+    AlignedLabel host = new AlignedLabel("Host:");
+    AlignedLabel port = new AlignedLabel("Port:");
+    AlignedLabel user = new AlignedLabel("User Name:");
+    AlignedLabel password = new AlignedLabel("Password:");
+    AlignedLabel.groupLabels(fileName, filesOfType, host, port, user, password);
 
     Border innerBorder = BorderFactory.createEmptyBorder(5, 2, 5, 5);
 
@@ -30,21 +29,21 @@ public final class MainPanel extends JPanel {
     TitledBorder border1 = BorderFactory.createTitledBorder("FileChooser");
     border1.setTitlePosition(TitledBorder.ABOVE_TOP);
     box1.setBorder(BorderFactory.createCompoundBorder(border1, innerBorder));
-    box1.add(makeLabeledBox(fileNameLabel, new JTextField()));
+    box1.add(makeLabeledBox(fileName, new JTextField()));
     box1.add(Box.createVerticalStrut(5));
-    box1.add(makeLabeledBox(filesOfTypeLabel, new JComboBox<String>()));
+    box1.add(makeLabeledBox(filesOfType, new JComboBox<String>()));
 
     Box box2 = Box.createVerticalBox();
     TitledBorder border2 = BorderFactory.createTitledBorder("HTTP Proxy");
     border2.setTitlePosition(TitledBorder.ABOVE_TOP);
     box2.setBorder(BorderFactory.createCompoundBorder(border2, innerBorder));
-    box2.add(makeLabeledBox(hostLabel, new JTextField()));
+    box2.add(makeLabeledBox(host, new JTextField()));
     box2.add(Box.createVerticalStrut(5));
-    box2.add(makeLabeledBox(portLabel, new JTextField()));
+    box2.add(makeLabeledBox(port, new JTextField()));
     box2.add(Box.createVerticalStrut(5));
-    box2.add(makeLabeledBox(userLabel, new JTextField()));
+    box2.add(makeLabeledBox(user, new JTextField()));
     box2.add(Box.createVerticalStrut(5));
-    box2.add(makeLabeledBox(passwordLabel, new JPasswordField()));
+    box2.add(makeLabeledBox(password, new JPasswordField()));
 
     Box box = Box.createVerticalBox();
     box.add(box1);

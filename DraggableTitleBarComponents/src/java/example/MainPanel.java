@@ -370,7 +370,8 @@ class TitleBarDragLayerUI extends LayerUI<JComponent> {
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JComponent> l) {
     Component c = SwingUtilities.getRoot(e.getComponent());
-    if (e.getID() == MouseEvent.MOUSE_DRAGGED && c instanceof Window && SwingUtilities.isLeftMouseButton(e)) {
+    boolean isDrag = e.getID() == MouseEvent.MOUSE_DRAGGED;
+    if (c instanceof Window && isDrag && SwingUtilities.isLeftMouseButton(e)) {
       Point pt = c.getLocation();
       c.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
     }

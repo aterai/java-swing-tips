@@ -84,7 +84,8 @@ public final class MainPanel extends JPanel {
     });
 
     field.getActionMap().put("find-next", findNextAction);
-    field.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
+    field.getInputMap(JComponent.WHEN_FOCUSED)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
 
     add(p);
     setPreferredSize(new Dimension(320, 240));
@@ -235,7 +236,7 @@ final class AnimationUtil {
   }
 
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-  // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
+  // Math: EaseIn EaseOut, EaseInOut and Bezier curves | Anima Entertainment GmbH
   // public static double easeIn(double t) {
   //   // range: 0.0 <= t <= 1.0
   //   return Math.pow(t, N);

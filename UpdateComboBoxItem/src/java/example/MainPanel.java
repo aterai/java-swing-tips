@@ -182,7 +182,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     };
     setRenderer(new CheckBoxCellRenderer<>());
     addActionListener(listener);
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "checkbox-select");
+    getInputMap(JComponent.WHEN_FOCUSED)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "checkbox-select");
     getActionMap().put("checkbox-select", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Accessible a = getAccessibleContext().getAccessibleChild(0);

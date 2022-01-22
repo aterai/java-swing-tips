@@ -316,7 +316,8 @@ class CheckBoxNode {
 //         return leafRenderer;
 //       }
 //     }
-//     Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+//     Component c = super.getTreeCellRendererComponent(
+//         tree, value, selected, expanded, leaf, row, hasFocus);
 //     // if (selected) {
 //     //   c.setForeground(getTextSelectionColor());
 //     //   c.setBackground(getBackgroundSelectionColor());

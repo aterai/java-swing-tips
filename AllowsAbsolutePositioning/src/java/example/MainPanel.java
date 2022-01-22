@@ -15,14 +15,16 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/synth/doc-files/componentProperties.html
     UIManager.put("ScrollBar.allowsAbsolutePositioning", Boolean.TRUE);
 
-    String help = "middle mouse click in the track will set the position of the track to where the mouse is.";
+    String txt1 = "middle mouse click in the track will set the position";
+    String txt2 = "of the track to where the mouse is.";
+    String help = String.join(" ", txt1, txt2);
     String txt = String.join("\n", Collections.nCopies(100, help));
+    JTextArea textArea = new JTextArea("override TrackListener#mousePressed(...)\n" + txt);
 
-    JScrollPane scroll = new JScrollPane(new JTextArea("override TrackListener#mousePressed(...)\n" + txt));
+    JScrollPane scroll = new JScrollPane(textArea);
     scroll.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {
       @Override public void updateUI() {
         super.updateUI();

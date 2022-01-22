@@ -79,6 +79,10 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
 
   protected DnDList(ListModel<E> model) {
     super(model);
+    initDragGestureRecognizer();
+  }
+
+  private void initDragGestureRecognizer() {
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
         (Component) this, DnDConstants.ACTION_MOVE, (DragGestureListener) this);
   }
@@ -114,8 +118,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
   }
 
   // Interface: Transferable
-  // private final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
-  // private final DataFlavor FLAVOR = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
+  // DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+  // DataFlavor FLAVOR = new DataFlavor(Object.class, DataFlavor.javaJVMLocalObjectMimeType);
   @Override public Object getTransferData(DataFlavor flavor) {
     return this;
   }
@@ -192,7 +196,7 @@ class TabTitleDropTargetListener implements DropTargetListener {
     Point pt = e.getLocation();
     targetTabIndex = -1;
     Component o = c.getComponent();
-    if (o instanceof JTabbedPane) {
+    if (o instanceof JTabbedPane && t.isDataFlavorSupported(f[0])) {
       JTabbedPane jtp = (JTabbedPane) o;
       for (int i = 0; i < jtp.getTabCount(); i++) {
         if (jtp.getBoundsAt(i).contains(pt)) {
@@ -200,7 +204,7 @@ class TabTitleDropTargetListener implements DropTargetListener {
           break;
         }
       }
-      return targetTabIndex >= 0 && targetTabIndex != jtp.getSelectedIndex() && t.isDataFlavorSupported(f[0]);
+      return targetTabIndex >= 0 && targetTabIndex != jtp.getSelectedIndex();
     }
     return false;
   }
