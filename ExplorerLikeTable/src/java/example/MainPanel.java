@@ -9,10 +9,15 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
@@ -25,17 +30,16 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Name", "Comment"};
     Object[][] data = {
-      {"test1.jpg", "11111"},
-      {"test1234.jpg", "  "},
-      {"test15354.gif", "22222"},
-      {"t.png", "comment"},
-      {"33333.jpg", "123"},
-      {"4444444444444444.mpg", "test"},
-      {"5555555555555", ""},
-      {"test1.jpg", ""}
+        {"test1.jpg", "11111"},
+        {"test1234.jpg", "  "},
+        {"test15354.gif", "22222"},
+        {"t.png", "comment"},
+        {"33333.jpg", "123"},
+        {"4444444444444444.mpg", "test"},
+        {"5555555555555", ""},
+        {"test1.jpg", ""}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -118,11 +122,10 @@ class FileNameRenderer implements TableCellRenderer {
 
   protected FileNameRenderer(JTable table) {
     Border b = UIManager.getBorder("Table.noFocusBorder");
-    if (Objects.isNull(b)) { // Nimbus???
+    noFocusBorder = Optional.ofNullable(b).orElseGet(() -> {
       Insets i = focusBorder.getBorderInsets(textLabel);
-      b = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
-    }
-    noFocusBorder = b;
+      return BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+    });
 
     JPanel p = new JPanel(new BorderLayout()) {
       @Override public Dimension getPreferredSize() {
@@ -133,9 +136,10 @@ class FileNameRenderer implements TableCellRenderer {
     renderer.setOpaque(false);
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    icon = new ImageIcon(getClass().getResource("wi0063-16.png"));
+    Image image = makeImage("example/wi0063-16.png");
+    icon = new ImageIcon(image);
 
-    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());
     selectedIcon = new ImageIcon(p.createImage(ip));
 
     iconLabel = new JLabel(icon);
@@ -174,6 +178,28 @@ class FileNameRenderer implements TableCellRenderer {
     }
     return renderer;
   }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(FileNameRenderer::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
+  }
 }
 
 class FileListTable extends JTable {
@@ -182,7 +208,8 @@ class FileListTable extends JTable {
   }
 
   @Override public void updateUI() {
-    // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+    // [JDK-6788475]
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
     // https://bugs.openjdk.java.net/browse/JDK-6788475
     // XXX: set dummy ColorUIResource
     setSelectionForeground(new ColorUIResource(Color.RED));
