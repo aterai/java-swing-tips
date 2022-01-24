@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ToolTipAfterMouseWheelEvent" />
+  <property name="jnlp.Name"     value="ToolTipAfterMouseWheelEvent" />
+  <property name="jnlp.name"     value="tooltipaftermousewheelevent" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tooltipaftermousewheelevent/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolTipAfterMouseWheelEvent.html" />
+</project>
