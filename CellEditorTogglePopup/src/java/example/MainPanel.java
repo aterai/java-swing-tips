@@ -9,20 +9,21 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] model = {"Item 0", "Item 1", "Item 2"};
     String[] columnNames = {"Default", "setEnabled", "String"};
     Object[][] data = {
-      {model[0], model[0], "aaa"}, {model[1], model[2], "bbb"}
+        {model[0], model[0], "aaa"}, {model[1], model[2], "bbb"}
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setRowHeight(20);
 
-    table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JComboBox<>(model)));
+    TableColumnModel cm = table.getColumnModel();
+    cm.getColumn(0).setCellEditor(new DefaultCellEditor(new JComboBox<>(model)));
 
     JComboBox<String> comboBox = new JComboBox<>(model);
     // comboBox.setEnabled(false);
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
         /* not needed */
       }
     });
-    table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+    cm.getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));

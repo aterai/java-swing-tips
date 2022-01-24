@@ -10,7 +10,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -18,12 +18,12 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"Justified", "Default"};
     Object[][] data = {
-      {"会社名", ""},
-      {"所在地", ""},
-      {"電話番号", ""},
-      {"設立", ""},
-      {"代表取締役", ""},
-      {"事業内容", ""}
+        {"会社名", ""},
+        {"所在地", ""},
+        {"電話番号", ""},
+        {"設立", ""},
+        {"代表取締役", ""},
+        {"事業内容", ""}
     };
     TableModel model = new DefaultTableModel(data, columnNames);
     JTable table = new JTable(model) {
@@ -48,12 +48,11 @@ public final class MainPanel extends JPanel {
     table.setRowHeight(18);
     table.setRowHeight(5, 80);
 
-    TableColumn tc = table.getColumnModel().getColumn(0);
-    tc.setMinWidth(100);
-    tc.setCellRenderer(new InterIdeographJustifyCellRenderer());
+    TableColumnModel cm = table.getColumnModel();
+    cm.getColumn(0).setMinWidth(100);
+    cm.getColumn(0).setCellRenderer(new InterIdeographJustifyCellRenderer());
+    cm.getColumn(1).setPreferredWidth(220);
 
-    tc = table.getColumnModel().getColumn(1);
-    tc.setPreferredWidth(220);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -108,19 +107,18 @@ class JustifiedLabel extends JLabel {
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     Font font = getFont();
-    Insets ins = getInsets();
-    Dimension d = getSize();
-    int w = d.width - ins.left - ins.right;
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    int w = r.width;
     if (w != prevWidth) {
       prevWidth = w;
-      layout = new TextLayout(getText(), font, g2.getFontRenderContext()).getJustifiedLayout((float) w);
+      layout = new TextLayout(getText(), font, g2.getFontRenderContext()).getJustifiedLayout(w);
     }
     g2.setPaint(getBackground());
-    g2.fillRect(0, 0, d.width, d.height);
+    g2.fillRect(0, 0, getWidth(), getHeight());
     g2.setPaint(getForeground());
     // int baseline = getBaseline(d.width, d.height);
-    float baseline = ins.top + font.getSize2D();
-    layout.draw(g2, (float) ins.left, baseline);
+    float baseline = r.y + font.getSize2D();
+    layout.draw(g2, r.x, baseline);
     g2.dispose();
   }
 }
@@ -161,7 +159,8 @@ class JustifiedLabel extends JLabel {
 //     g2.dispose();
 //   }
 //
-//   private GlyphVector getJustifiedGlyphVector(int width, String str, Font font, FontRenderContext frc) {
+//   private GlyphVector getJustifiedGlyphVector(
+//         int width, String str, Font font, FontRenderContext frc) {
 //     GlyphVector gv = font.createGlyphVector(frc, str);
 //     Rectangle2D r = gv.getVisualBounds();
 //     float jw = (float) width;
@@ -169,13 +168,13 @@ class JustifiedLabel extends JLabel {
 //     if (jw > vw) {
 //       int num = gv.getNumGlyphs();
 //       float xx = (jw - vw) / (float) (num - 1);
-//       float xpos = num == 1 ? (jw - vw) * .5f : 0f;
+//       float pos = num == 1 ? (jw - vw) * .5f : 0f;
 //       Point2D gmPos = new Point2D.Float();
 //       for (int i = 0; i < num; i++) {
 //         GlyphMetrics gm = gv.getGlyphMetrics(i);
-//         gmPos.setLocation(xpos, 0);
+//         gmPos.setLocation(pos, 0);
 //         gv.setGlyphPosition(i, gmPos);
-//         xpos += gm.getAdvance() + xx;
+//         pos += gm.getAdvance() + xx;
 //       }
 //       return gv;
 //     }

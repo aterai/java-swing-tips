@@ -10,16 +10,15 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Integer", "Integer", "Boolean"};
     Object[][] data = {
-      {50, 50, false}, {13, 13, true}, {0, 0, false},
-      {20, 20, true}, {99, 99, false}
+        {50, 50, false}, {13, 13, true}, {0, 0, false}, {20, 20, true}, {99, 99, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -36,8 +35,9 @@ public final class MainPanel extends JPanel {
         putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         setAutoCreateRowSorter(true);
         setRowHeight(26);
-        getColumnModel().getColumn(1).setCellRenderer(new SliderRenderer());
-        getColumnModel().getColumn(1).setCellEditor(new SliderEditor());
+        TableColumn column = getColumnModel().getColumn(1);
+        column.setCellRenderer(new SliderRenderer());
+        column.setCellEditor(new SliderEditor());
       }
 
       @Override public Color getSelectionBackground() {

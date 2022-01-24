@@ -11,14 +11,25 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Box vb = Box.createVerticalBox();
-    vb.add(mkLbl("new Color(0xFF0000)", new Color(0xFF0000)));
-    vb.add(mkLbl("new Color(0x88_88_88)", new Color(0x88_88_88)));
-    vb.add(mkLbl("new Color(Integer.parseInt('00FF00', 16))", new Color(Integer.parseInt("00FF00", 16))));
-    vb.add(mkLbl("new Color(Integer.decode('#0000FF'))", new Color(Integer.decode("#0000FF"))));
-    vb.add(mkLbl("Color.decode('#00FFFF')", Color.decode("#00FFFF")));
 
-    JLabel label = new JLabel("<html><span style='color: #FF00FF'>#FF00FF");
-    label.setBorder(BorderFactory.createTitledBorder("new JLabel('<html><span style='color: #FF00FF'>#FF00FF')"));
+    Color c1 = new Color(0xFF0000);
+    vb.add(mkLbl("new Color(0xFF0000)", c1));
+
+    Color c2 = new Color(0x88_88_88);
+    vb.add(mkLbl("new Color(0x88_88_88)", c2));
+
+    Color c3 = new Color(Integer.parseInt("00FF00", 16));
+    vb.add(mkLbl("new Color(Integer.parseInt('00FF00', 16))", c3));
+
+    Color c4 = new Color(Integer.decode("#0000FF"));
+    vb.add(mkLbl("new Color(Integer.decode('#0000FF'))", c4));
+
+    Color c5 = Color.decode("#00FFFF");
+    vb.add(mkLbl("Color.decode('#00FFFF')", c5));
+
+    String html = "<html><span style='color: #FF00FF'>#FF00FF";
+    JLabel label = new JLabel(html);
+    label.setBorder(BorderFactory.createTitledBorder("new JLabel(" + html + ")"));
     vb.add(label);
     vb.add(Box.createVerticalGlue());
 

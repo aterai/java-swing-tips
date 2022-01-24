@@ -43,17 +43,17 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(60);
-    col.setMaxWidth(60);
-    col.setResizable(false);
+    TableColumn c0 = table.getColumnModel().getColumn(0);
+    c0.setMinWidth(60);
+    c0.setMaxWidth(60);
+    c0.setResizable(false);
 
     UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
     JComboBox<String> combo = makeComboBox(new DefaultComboBoxModel<>(comboModel));
 
-    col = table.getColumnModel().getColumn(1);
-    col.setCellRenderer(new ComboCellRenderer());
-    col.setCellEditor(new DefaultCellEditor(combo));
+    TableColumn c1 = table.getColumnModel().getColumn(1);
+    c1.setCellRenderer(new ComboCellRenderer());
+    c1.setCellEditor(new DefaultCellEditor(combo));
     // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
 
     table.setAutoCreateRowSorter(true);

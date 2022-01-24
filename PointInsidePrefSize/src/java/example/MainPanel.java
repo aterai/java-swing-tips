@@ -38,10 +38,10 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    model.addRow(new Object[] {0, "FrontPage", makeUrl("https://ateraimemo.com/")});
-    model.addRow(new Object[] {1, "Java Swing Tips", makeUrl("https://ateraimemo.com/Swing.html")});
-    model.addRow(new Object[] {2, "Example", makeUrl("http://www.example.com/")});
-    model.addRow(new Object[] {3, "Example.jp", makeUrl("http://www.example.jp/")});
+    model.addRow(new Object[] {0, "FrontPage", mkUrl("https://ateraimemo.com/")});
+    model.addRow(new Object[] {1, "Java Swing Tips", mkUrl("https://ateraimemo.com/Swing.html")});
+    model.addRow(new Object[] {2, "Example", mkUrl("https://www.example.com/")});
+    model.addRow(new Object[] {3, "Example.jp", mkUrl("https://www.example.jp/")});
 
     JTable table = new JTable(model) {
       private final Color evenColor = new Color(0xFA_FA_FA);
@@ -59,22 +59,19 @@ public final class MainPanel extends JPanel {
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
     table.setAutoCreateRowSorter(true);
 
-    TableColumn col = table.getColumnModel().getColumn(0);
+    TableColumnModel cm = table.getColumnModel();
+    TableColumn col = cm.getColumn(0);
     col.setMinWidth(50);
     col.setMaxWidth(50);
     col.setResizable(false);
+
+    cm.getColumn(1).setPreferredWidth(1000);
+    cm.getColumn(2).setPreferredWidth(2000);
 
     UrlRenderer renderer = new UrlRenderer();
     table.setDefaultRenderer(URL.class, renderer);
     table.addMouseListener(renderer);
     table.addMouseMotionListener(renderer);
-
-    col = table.getColumnModel().getColumn(1);
-    col.setPreferredWidth(1000);
-
-    col = table.getColumnModel().getColumn(2);
-    // col.setCellRenderer(renderer);
-    col.setPreferredWidth(2000);
 
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.getViewport().setBackground(Color.WHITE);
@@ -82,7 +79,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static URL makeUrl(String path) {
+  private static URL mkUrl(String path) {
     try {
       return new URL(path);
     } catch (MalformedURLException ex) {

@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 // http://www2.gol.com/users/tame/swing/examples/JTableExamples2.html
@@ -21,8 +22,7 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"Integer", "Answer"};
     Object[][] data = {
-      {1, Answer.A}, {2, Answer.B}, {3, Answer.C},
-      {4, Answer.C}, {5, Answer.A}
+        {1, Answer.A}, {2, Answer.B}, {3, Answer.C}, {4, Answer.C}, {5, Answer.A}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -32,8 +32,9 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
-        getColumnModel().getColumn(1).setCellRenderer(new RadioButtonsRenderer());
-        getColumnModel().getColumn(1).setCellEditor(new RadioButtonsEditor());
+        TableColumn column = getColumnModel().getColumn(1);
+        column.setCellRenderer(new RadioButtonsRenderer());
+        column.setCellEditor(new RadioButtonsEditor());
       }
     };
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
@@ -98,7 +99,7 @@ enum Answer {
 
 class RadioButtonsPanel extends JPanel {
   private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};
-  protected final List<JRadioButton> buttons = new ArrayList<>(answer.length);
+  protected final transient List<JRadioButton> buttons = new ArrayList<>(answer.length);
   protected ButtonGroup bg = new ButtonGroup();
 
   protected RadioButtonsPanel() {

@@ -33,14 +33,14 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"Name", "Comment"};
     Object[][] data = {
-      {"test1.jpg", "11111"},
-      {"test1234.jpg", "  "},
-      {"test15354.gif", "22222"},
-      {"t.png", "comment"},
-      {"33333.jpg", "123"},
-      {"4444444444444444.mpg", "test"},
-      {"5555555555555", ""},
-      {"test1.jpg", ""}
+        {"test1.jpg", "11111"},
+        {"test1234.jpg", "  "},
+        {"test15354.gif", "22222"},
+        {"t.png", "comment"},
+        {"33333.jpg", "123"},
+        {"4444444444444444.mpg", "test"},
+        {"5555555555555", ""},
+        {"test1.jpg", ""}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -128,10 +128,10 @@ class FileNameRenderer implements TableCellRenderer {
     renderer.setOpaque(false);
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    Image img = makeImage("example/wi0063-16.png");
-    icon = new ImageIcon(img);
+    Image image = makeImage("example/wi0063-16.png");
+    icon = new ImageIcon(image);
 
-    ImageProducer ip = new FilteredImageSource(img.getSource(), new SelectedImageFilter());
+    ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());
     selectedIcon = new ImageIcon(p.createImage(ip));
 
     iconLabel = new JLabel(icon);
@@ -175,7 +175,8 @@ class FileNameRenderer implements TableCellRenderer {
 
     FontMetrics fm = table.getFontMetrics(table.getFont());
     Insets i = textLabel.getInsets();
-    int width = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
+    String text = textLabel.getText();
+    int width = iconLabel.getPreferredSize().width + fm.stringWidth(text) + i.left + i.right;
     int colWidth = table.getColumnModel().getColumn(column).getWidth();
     dim.width = Math.min(width, colWidth);
 
@@ -195,7 +196,6 @@ class FileNameRenderer implements TableCellRenderer {
 }
 
 class FileListTable extends JTable {
-  private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private static final Color BAND_COLOR = makeRubberBandColor(SystemColor.activeCaption);
   private static final Path2D RUBBER_BAND = new Path2D.Double();
   private transient RubberBandingListener rbl;
@@ -205,7 +205,8 @@ class FileListTable extends JTable {
   }
 
   @Override public void updateUI() {
-    // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+    // [JDK-6788475]
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
     // https://bugs.openjdk.java.net/browse/JDK-6788475
     // XXX: set dummy ColorUIResource
     setSelectionForeground(new ColorUIResource(Color.RED));
@@ -320,7 +321,7 @@ class FileListTable extends JTable {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(SystemColor.activeCaption);
     g2.draw(RUBBER_BAND);
-    g2.setComposite(ALPHA);
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f));
     g2.setPaint(BAND_COLOR);
     g2.fill(RUBBER_BAND);
     g2.dispose();

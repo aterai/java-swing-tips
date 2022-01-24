@@ -10,7 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -21,11 +21,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
-      {12, "aaa", true}, {5, "bbb", false},
-      {92, "CCC", true}, {0, "DDD", false}
+        {12, "aaa", true}, {5, "bbb", false}, {92, "CCC", true}, {0, "DDD", false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -46,16 +44,12 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
 
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(60);
-    col.setMaxWidth(60);
-    col.setResizable(false);
-
-    col = table.getColumnModel().getColumn(1);
-    col.setCellRenderer(new HorizontalAlignmentTableRenderer());
-
-    col = table.getColumnModel().getColumn(2);
-    col.setHeaderRenderer(new HeaderRenderer());
+    TableColumnModel cm = table.getColumnModel();
+    cm.getColumn(0).setMinWidth(60);
+    cm.getColumn(0).setMaxWidth(60);
+    cm.getColumn(0).setResizable(false);
+    cm.getColumn(1).setCellRenderer(new HorizontalAlignmentTableRenderer());
+    cm.getColumn(2).setHeaderRenderer(new HeaderRenderer());
 
     ButtonGroup bg = new ButtonGroup();
     JPanel p = new JPanel();
@@ -72,7 +66,8 @@ public final class MainPanel extends JPanel {
 
   private class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-      Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+      Component c = super.getTableCellRendererComponent(
+          table, value, isSelected, hasFocus, row, column);
       if (c instanceof JLabel) {
         initLabel((JLabel) c, row);
       }

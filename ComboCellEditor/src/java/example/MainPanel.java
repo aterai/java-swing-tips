@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
     String[] comboModel = {"Name 0", "Name 1", "Name 2"};
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
-      {12, comboModel[0], true}, {5, comboModel[2], false},
-      {92, comboModel[1], true}, {3, comboModel[0], false}
+        {12, comboModel[0], true}, {5, comboModel[2], false},
+        {92, comboModel[1], true}, {3, comboModel[0], false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -28,13 +28,14 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model);
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(60);
-    col.setMaxWidth(60);
-    col.setResizable(false);
 
-    col = table.getColumnModel().getColumn(1);
-    col.setCellEditor(new DefaultCellEditor(makeComboBox(new DefaultComboBoxModel<>(comboModel))));
+    TableColumn c0 = table.getColumnModel().getColumn(0);
+    c0.setMinWidth(60);
+    c0.setMaxWidth(60);
+    c0.setResizable(false);
+
+    TableColumn c1 = table.getColumnModel().getColumn(1);
+    c1.setCellEditor(new DefaultCellEditor(makeCombo(new DefaultComboBoxModel<>(comboModel))));
     // table.setDefaultEditor(JComboBox.class, new DefaultCellEditor(combo));
 
     table.setAutoCreateRowSorter(true);
@@ -42,7 +43,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {
+  private static <E> JComboBox<E> makeCombo(ComboBoxModel<E> model) {
     return new JComboBox<E>(model) {
       @Override public void updateUI() {
         super.updateUI();

@@ -18,6 +18,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -37,8 +38,10 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
-    table.getColumnModel().getColumn(0).setCellRenderer(new LocalDateTimeTableCellRenderer());
-    table.getColumnModel().getColumn(0).setCellEditor(new LocalDateTimeTableCellEditor());
+    TableColumn col = table.getColumnModel().getColumn(0);
+    col.setCellRenderer(new LocalDateTimeTableCellRenderer());
+    col.setCellEditor(new LocalDateTimeTableCellEditor());
+
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -64,13 +67,13 @@ public final class MainPanel extends JPanel {
 }
 
 class LocalDateTimeTableCellRenderer extends DefaultTableCellRenderer {
-  private static final String DATE_PATTERN = "yyyy/MM/dd";
-  private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+  private static final String PATTERN = "yyyy/MM/dd";
+  private final transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     if (value instanceof TemporalAccessor) {
-      setText(dateTimeFormatter.format((TemporalAccessor) value));
+      setText(formatter.format((TemporalAccessor) value));
     }
     return this;
   }
@@ -162,12 +165,12 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
 }
 
 class LocalDateTimeCellRenderer extends JLabel implements ListCellRenderer<LocalDateTime> {
-  private static final String DATE_PATTERN = "yyyy/MM/dd";
-  private final transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
+  private static final String PATTERN = "yyyy/MM/dd";
+  private final transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
 
   @Override public Component getListCellRendererComponent(JList<? extends LocalDateTime> list, LocalDateTime value, int index, boolean isSelected, boolean cellHasFocus) {
     if (Objects.nonNull(value)) {
-      setText(dateTimeFormatter.format(value));
+      setText(formatter.format(value));
     }
     setOpaque(true);
     if (isSelected) {
