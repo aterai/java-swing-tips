@@ -253,18 +253,22 @@ class RoundedHeaderRenderer extends DefaultTableCellRenderer {
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JLabel l = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (column == 0) {
-      l = firstLabel;
+      c = firstLabel;
     } else if (column == table.getColumnCount() - 1) {
-      l = lastLabel;
+      c = lastLabel;
     }
-    l.setFont(table.getFont());
-    l.setText(value.toString());
-    l.setForeground(table.getTableHeader().getForeground());
-    l.setBackground(table.getTableHeader().getBackground());
-    l.setHorizontalAlignment(SwingConstants.CENTER);
-    return l;
+    c.setFont(table.getFont());
+    c.setForeground(table.getTableHeader().getForeground());
+    c.setBackground(table.getTableHeader().getBackground());
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setText(value.toString());
+      l.setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return c;
   }
 }
 
