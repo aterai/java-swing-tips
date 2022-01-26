@@ -29,7 +29,8 @@ public final class MainPanel extends JPanel {
         // init();
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
             ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value : null);
           }

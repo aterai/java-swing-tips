@@ -30,7 +30,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
             JLabel l = (JLabel) c;
             Object v = ((DefaultMutableTreeNode) value).getUserObject();

@@ -29,8 +29,7 @@ public final class MainPanel extends JPanel {
     // http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html
     String[] columnNames = {"SNo.", "1", "2", "Native", "2", "3"};
     Object[][] data = {
-        {"119", "foo", "bar", "ja", "ko", "zh"},
-        {"911", "bar", "foo", "en", "fr", "pt"}
+        {"119", "foo", "bar", "ja", "ko", "zh"}, {"911", "bar", "foo", "en", "fr", "pt"}
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames);
     JTable table = new JTable(model) {
@@ -199,17 +198,17 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
   }
 
   // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
-  private void paintCell2(Graphics g, Rectangle cellRect, int columnIndex) {
+  private void paintCell2(Graphics g, Rectangle rect, int columnIndex) {
     Component c = getHeaderRenderer2(columnIndex);
-    rendererPane.paintComponent(g, c, header, cellRect.x, cellRect.y, cellRect.width, cellRect.height, true);
+    rendererPane.paintComponent(g, c, header, rect.x, rect.y, rect.width, rect.height, true);
   }
 
-  private void paintCellGroup(Graphics g, Rectangle cellRect, ColumnGroup columnGroup) {
+  private void paintCellGroup(Graphics g, Rectangle rect, ColumnGroup columnGroup) {
     TableCellRenderer r = header.getDefaultRenderer();
     Object o = columnGroup.getHeaderValue();
     JTable table = header.getTable();
     Component c = r.getTableCellRendererComponent(table, o, false, false, -1, -1);
-    rendererPane.paintComponent(g, c, header, cellRect.x, cellRect.y, cellRect.width, cellRect.height, true);
+    rendererPane.paintComponent(g, c, header, rect.x, rect.y, rect.width, rect.height, true);
   }
 
   private int getHeaderHeight2() {

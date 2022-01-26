@@ -24,27 +24,27 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     BoundedRangeModel model = new DefaultBoundedRangeModel();
 
-    JProgressBar progress01 = new JProgressBar(model);
-    progress01.setStringPainted(true);
+    JProgressBar progress1 = new JProgressBar(model);
+    progress1.setStringPainted(true);
 
-    JProgressBar progress02 = new JProgressBar(model);
-    progress02.setStringPainted(true);
+    JProgressBar progress2 = new JProgressBar(model);
+    progress2.setStringPainted(true);
 
-    JProgressBar progress03 = new JProgressBar(model);
-    progress03.setOpaque(false);
+    JProgressBar progress3 = new JProgressBar(model);
+    progress3.setOpaque(false);
 
-    JProgressBar progress04 = new JProgressBar(model);
-    progress04.setOpaque(true); // for NimbusLookAndFeel
+    JProgressBar progress4 = new JProgressBar(model);
+    progress4.setOpaque(true); // for NimbusLookAndFeel
 
     BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("setStringPainted(true)", progress01, progress02));
-    p.add(makeTitledPanel("setStringPainted(false)", progress03, new JLayer<>(progress04, layerUI)));
+    p.add(makeTitledPanel("setStringPainted(true)", progress1, progress2));
+    p.add(makeTitledPanel("setStringPainted(false)", progress3, new JLayer<>(progress4, layerUI)));
 
     JCheckBox check = new JCheckBox("Turn the progress bar red");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
-      progress02.setForeground(b ? new Color(0x64_FF_00_00, true) : progress01.getForeground());
+      progress2.setForeground(b ? new Color(0x64_FF_00_00, true) : progress1.getForeground());
       layerUI.isPreventing = b;
       p.repaint();
     });
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         worker.cancel(true);
       }
       worker = new BackgroundTask();
-      worker.addPropertyChangeListener(new ProgressListener(progress01));
+      worker.addPropertyChangeListener(new ProgressListener(progress1));
       worker.execute();
     });
 
@@ -122,14 +122,15 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
     if (isPreventing && c instanceof JLayer) {
       Dimension d = ((JLayer<?>) c).getView().getSize();
       buf = Optional.ofNullable(buf)
-        .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
-        .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+          .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+          .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
 
       Graphics2D g2 = buf.createGraphics();
       super.paint(g2, c);
       g2.dispose();
 
-      Image image = c.createImage(new FilteredImageSource(buf.getSource(), new RedGreenChannelSwapFilter()));
+      RGBImageFilter filter = new RedGreenChannelSwapFilter();
+      Image image = c.createImage(new FilteredImageSource(buf.getSource(), filter));
       // BUG: cause an infinite repaint loop: g.drawImage(image, 0, 0, c);
       g.drawImage(image, 0, 0, null);
     } else {

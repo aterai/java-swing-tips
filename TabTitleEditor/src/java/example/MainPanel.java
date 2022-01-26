@@ -141,7 +141,8 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
     //     }
     //   }
     // });
-    tabbedPane.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), START);
+    InputMap im2 = tabbedPane.getInputMap(JComponent.WHEN_FOCUSED);
+    im2.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), START);
     tabbedPane.getActionMap().put(START, startEditing);
   }
 

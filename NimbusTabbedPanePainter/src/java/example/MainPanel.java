@@ -139,8 +139,10 @@ final class NimbusTabbedPanePainterUtils {
     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      int y = h - OVER_PAINT;
-      Shape r = new RoundRectangle2D.Double(0d, y, w - STROKE_SIZE, h - STROKE_SIZE, ARC, ARC);
+      double y = (double) h - OVER_PAINT;
+      double width = w - STROKE_SIZE;
+      double height = h - STROKE_SIZE;
+      Shape r = new RoundRectangle2D.Double(0d, y, width, height, ARC, ARC);
       g2.setPaint(TABAREA_BGC);
       g2.fill(r);
       g2.setColor(TABAREA_BORDER);
@@ -155,8 +157,9 @@ final class NimbusTabbedPanePainterUtils {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(0, -OVER_PAINT);
-
-      Shape r = new RoundRectangle2D.Double(0d, 0d, w - STROKE_SIZE, h - STROKE_SIZE + OVER_PAINT, ARC, ARC);
+      double width = w - STROKE_SIZE;
+      double height = h - STROKE_SIZE + OVER_PAINT;
+      Shape r = new RoundRectangle2D.Double(0d, 0d, width, height, ARC, ARC);
       g2.setPaint(CONTENT_BGC);
       g2.fill(r);
       g2.setColor(CONTENT_BORDER);

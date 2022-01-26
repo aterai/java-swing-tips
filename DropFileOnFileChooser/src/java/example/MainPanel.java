@@ -78,7 +78,8 @@ class FileChooserTransferHandler extends TransferHandler {
     //   try {
     //     JFileChooser fc = (JFileChooser) support.getComponent();
     //     // XXX: java.awt.dnd.InvalidDnDOperationException: No drop current
-    //     List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+    //     List<?> list = (List<?>) support.getTransferable()
+    //         .getTransferData(DataFlavor.javaFileListFlavor);
     //     isMultiSelection = list.size() != 1;
     //   } catch (IOException | UnsupportedFlavorException ex) {
     //     ex.printStackTrace();

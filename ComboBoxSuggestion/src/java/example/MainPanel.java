@@ -10,14 +10,16 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] array = {
-      "1111", "1111222", "111122233", "111122233444",
-      "12345", "67890", "55551", "555512"};
+        "1111", "1111222", "111122233", "111122233444",
+        "12345", "67890", "55551", "555512"
+    };
     JComboBox<String> combo = makeComboBox(array);
     combo.setEditable(true);
     combo.setSelectedIndex(-1);
@@ -200,10 +202,10 @@ class ComboKeyHandler extends KeyAdapter {
     }
   }
 
-  private static void setSuggestionModel(JComboBox<String> comboBox, ComboBoxModel<String> mdl, String str) {
-    comboBox.setModel(mdl);
-    comboBox.setSelectedIndex(-1);
-    ((JTextField) comboBox.getEditor().getEditorComponent()).setText(str);
+  private static <E> void setSuggestionModel(JComboBox<E> combo, ComboBoxModel<E> mdl, E value) {
+    combo.setModel(mdl);
+    combo.setSelectedIndex(-1);
+    ((JTextField) combo.getEditor().getEditorComponent()).setText(Objects.toString(value));
   }
 
   private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {
@@ -218,11 +220,13 @@ class ComboKeyHandler extends KeyAdapter {
 }
 
 // class DefaultSuggestionComboBoxUI extends BasicComboBoxUI {
+//   private KeyListener editorKeyListener = null;
+//   private Vector<String> list = new Vector<>();
+//
 //   public static BasicComboBoxUI createUI(JComponent c) {
 //     return new DefaultSuggestionComboBoxUI();
 //   }
-//   private KeyListener editorKeyListener = null;
-//   private Vector<String> list = new Vector<>();
+//
 //   @Override protected void configureEditor() {
 //     super.configureEditor();
 //     JTextField textField = (JTextField) editor;
@@ -236,12 +240,14 @@ class ComboKeyHandler extends KeyAdapter {
 //     }
 //     textField.setText("");
 //   }
+//
 //   @Override protected void unconfigureEditor() {
 //     super.unconfigureEditor();
 //     if (editorKeyListener != null) {
 //       editor.removeKeyListener(editorKeyListener);
 //     }
 //   }
+//
 //   class ComboKeyHandler extends KeyAdapter {
 //     private boolean shouldHide = false;
 //     @Override public void keyTyped(KeyEvent e) {
@@ -258,6 +264,7 @@ class ComboKeyHandler extends KeyAdapter {
 //         }
 //       });
 //     }
+//
 //     @Override public void keyPressed(KeyEvent e) {
 //       JTextField textField = (JTextField) e.getSource();
 //       String t = textField.getText();
@@ -284,11 +291,13 @@ class ComboKeyHandler extends KeyAdapter {
 //         break;
 //       }
 //     }
+//
 //     private void setSuggestionModel(ComboBoxModel mdl, String str) {
 //       comboBox.setModel(mdl);
 //       comboBox.setSelectedIndex(-1);
 //       ((JTextField) comboBox.getEditor().getEditorComponent()).setText(str);
 //     }
+//
 //     private ComboBoxModel getSuggestedModel(Vector<String> list, String text) {
 //       DefaultComboBoxModel m = new DefaultComboBoxModel();
 //       if (Objects.nonNull(text) && text.isEmpty()) {

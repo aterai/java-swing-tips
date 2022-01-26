@@ -235,7 +235,8 @@ class EditableList<E extends ListItem> extends JList<E> {
   protected EditableList(DefaultListModel<E> model) {
     super(model);
     editor.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(Color.BLACK), BorderFactory.createEmptyBorder(0, 2, 0, 0)));
+        BorderFactory.createLineBorder(Color.BLACK),
+        BorderFactory.createEmptyBorder(0, 2, 0, 0)));
     editor.setHorizontalAlignment(SwingConstants.CENTER);
     // editor.setOpaque(false);
     // editor.setLineWrap(true);
@@ -261,11 +262,13 @@ class EditableList<E extends ListItem> extends JList<E> {
         rect.height = h;
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick && rect.contains(e.getPoint())) {
-          startEditing.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+          Component c = e.getComponent();
+          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDITING);
+    InputMap im2 = getInputMap(JComponent.WHEN_FOCUSED);
+    im2.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDITING);
     getActionMap().put(EDITING, startEditing);
   }
 
@@ -302,7 +305,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
           if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-            renameTitle.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+            Component c = e.getComponent();
+            renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
           }
         }
       });

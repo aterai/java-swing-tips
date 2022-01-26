@@ -15,24 +15,24 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int BORDERWIDTH1 = 1;
-  public static final int BORDERWIDTH2 = 2;
-  public static final int CELLSIZE = 18;
+  public static final int BW1 = 1;
+  public static final int BW2 = 2;
+  public static final int CELL_SZ = 18;
 
   private MainPanel() {
     super(new GridBagLayout());
 
     String[] columnNames = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     Integer[][] data = {
-      {5, 3, 0, 0, 7, 0, 0, 0, 0},
-      {6, 0, 0, 1, 9, 5, 0, 0, 0},
-      {0, 9, 8, 0, 0, 0, 0, 6, 0},
-      {8, 0, 0, 0, 6, 0, 0, 0, 3},
-      {4, 0, 0, 8, 0, 3, 0, 0, 1},
-      {7, 0, 0, 0, 2, 0, 0, 0, 6},
-      {0, 6, 0, 0, 0, 0, 2, 8, 0},
-      {0, 0, 0, 4, 1, 9, 0, 0, 5},
-      {0, 0, 0, 0, 8, 0, 0, 7, 9}
+        {5, 3, 0, 0, 7, 0, 0, 0, 0},
+        {6, 0, 0, 1, 9, 5, 0, 0, 0},
+        {0, 9, 8, 0, 0, 0, 0, 6, 0},
+        {8, 0, 0, 0, 6, 0, 0, 0, 3},
+        {4, 0, 0, 8, 0, 3, 0, 0, 1},
+        {7, 0, 0, 0, 2, 0, 0, 0, 6},
+        {0, 6, 0, 0, 0, 0, 2, 8, 0},
+        {0, 0, 0, 4, 1, 9, 0, 0, 5},
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
 
     TableModel model = new DefaultTableModel(data, columnNames) {
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
       }
     };
     for (int i = 0; i < table.getRowCount(); i++) {
-      int a = (i + 1) % 3 == 0 ? BORDERWIDTH2 : BORDERWIDTH1;
-      table.setRowHeight(i, CELLSIZE + a);
+      int a = (i + 1) % 3 == 0 ? BW2 : BW1;
+      table.setRowHeight(i, CELL_SZ + a);
     }
 
     table.setCellSelectionEnabled(true);
@@ -86,8 +86,8 @@ public final class MainPanel extends JPanel {
     m.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     for (int i = 0; i < m.getColumnCount(); i++) {
       TableColumn col = m.getColumn(i);
-      int a = (i + 1) % 3 == 0 ? BORDERWIDTH2 : BORDERWIDTH1;
-      col.setPreferredWidth(CELLSIZE + a);
+      int a = (i + 1) % 3 == 0 ? BW2 : BW1;
+      col.setPreferredWidth(CELL_SZ + a);
       col.setResizable(false);
     }
 
@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.setViewportBorder(BorderFactory.createMatteBorder(BORDERWIDTH2, BORDERWIDTH2, 0, 0, Color.BLACK));
+    scroll.setViewportBorder(BorderFactory.createMatteBorder(BW2, BW2, 0, 0, Color.BLACK));
     scroll.setColumnHeader(new JViewport());
     scroll.getColumnHeader().setVisible(false);
 
@@ -105,14 +105,14 @@ public final class MainPanel extends JPanel {
 
   private static class SudokuCellRenderer extends DefaultTableCellRenderer {
     private final Font bold;
-    private final Border b0 = BorderFactory.createMatteBorder(0, 0, BORDERWIDTH1, BORDERWIDTH1, Color.GRAY);
-    private final Border b1 = BorderFactory.createMatteBorder(0, 0, BORDERWIDTH2, BORDERWIDTH2, Color.BLACK);
+    private final Border b0 = BorderFactory.createMatteBorder(0, 0, BW1, BW1, Color.GRAY);
+    private final Border b1 = BorderFactory.createMatteBorder(0, 0, BW2, BW2, Color.BLACK);
     private final Border b2 = BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, BORDERWIDTH2, 0, Color.BLACK),
-        BorderFactory.createMatteBorder(0, 0, 0, BORDERWIDTH1, Color.GRAY));
+        BorderFactory.createMatteBorder(0, 0, BW2, 0, Color.BLACK),
+        BorderFactory.createMatteBorder(0, 0, 0, BW1, Color.GRAY));
     private final Border b3 = BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, 0, BORDERWIDTH2, Color.BLACK),
-        BorderFactory.createMatteBorder(0, 0, BORDERWIDTH1, 0, Color.GRAY));
+        BorderFactory.createMatteBorder(0, 0, 0, BW2, Color.BLACK),
+        BorderFactory.createMatteBorder(0, 0, BW1, 0, Color.GRAY));
     private final Integer[][] mask;
 
     @SuppressWarnings("PMD.UseVarargs")

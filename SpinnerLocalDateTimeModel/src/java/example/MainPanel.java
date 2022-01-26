@@ -132,7 +132,8 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     //     Objects.nonNull(end) && end.compareTo(value) <= 0) {
     //   throw new IllegalArgumentException("(start <= value <= end) is false");
     // }
-    this.value = Optional.ofNullable(value).orElseThrow(() -> new IllegalArgumentException("value is null"));
+    this.value = Optional.ofNullable(value)
+        .orElseThrow(() -> new IllegalArgumentException("value is null"));
     this.start = start;
     this.end = end;
     this.temporalUnit = temporalUnit;

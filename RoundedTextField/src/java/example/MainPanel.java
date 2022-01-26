@@ -13,14 +13,14 @@ import java.awt.image.BufferedImage;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private static final Paint TEXTURE = makeCheckerTexture();
 
   private MainPanel() {
     super(new BorderLayout());
-
-    JTextField textField01 = new JTextField(20) {
+    JTextField field1 = new JTextField(20) {
       // Unleash Your Creativity with Swing and the Java 2D API!
       // http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
       // http://web.archive.org/web/20091205092230/http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
@@ -46,14 +46,17 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
       }
     };
-    textField01.setText("1111111111111111");
+    field1.setText("1111111111111111");
 
-    JTextField textField02 = new JTextField(20) {
+    JTextField field2 = new JTextField(20) {
       @Override protected void paintComponent(Graphics g) {
-        if (!isOpaque() && getBorder() instanceof RoundedCornerBorder) {
+        Border b = getBorder();
+        if (!isOpaque() && b instanceof RoundedCornerBorder) {
           Graphics2D g2 = (Graphics2D) g.create();
           g2.setPaint(getBackground());
-          g2.fill(((RoundedCornerBorder) getBorder()).getBorderShape(0, 0, getWidth() - 1, getHeight() - 1));
+          int w = getWidth() - 1;
+          int h = getHeight() - 1;
+          g2.fill(((RoundedCornerBorder) b).getBorderShape(0, 0, w, h));
           g2.dispose();
         }
         super.paintComponent(g);
@@ -65,7 +68,7 @@ public final class MainPanel extends JPanel {
         setBorder(new RoundedCornerBorder());
       }
     };
-    textField02.setText("2222222222222");
+    field2.setText("2222222222222");
 
     JRadioButton r1 = new JRadioButton("default", true);
     JRadioButton r2 = new JRadioButton("setOpaque(false) + TexturePaint");
@@ -84,8 +87,8 @@ public final class MainPanel extends JPanel {
     });
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
     p.setOpaque(false);
-    p.add(makeTitledPanel("Override: JTextField#paintComponent(...)", textField01));
-    p.add(makeTitledPanel("setBorder(new RoundedCornerBorder())", textField02));
+    p.add(makeTitledPanel("Override: JTextField#paintComponent(...)", field1));
+    p.add(makeTitledPanel("setBorder(new RoundedCornerBorder())", field2));
     add(p);
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(2, 20, 20, 20));

@@ -25,7 +25,8 @@ public final class MainPanel extends JPanel {
         setRowHeight(0);
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JLabel && Objects.equals(value, tree.getModel().getRoot())) {
             ((JLabel) c).setIcon(icon0);
           }
@@ -44,7 +45,8 @@ public final class MainPanel extends JPanel {
         setRowHeight(0);
         TreeCellRenderer r = getCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JLabel && Objects.equals(value, tree.getModel().getRoot())) {
             JLabel label = (JLabel) c;
             label.setIcon(icon1);

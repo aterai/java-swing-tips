@@ -39,11 +39,12 @@ public final class MainPanel extends JPanel {
           @Override public Void run() {
             try {
               // https://community.oracle.com/thread/1360123
+              Class<JSlider> clz = JSlider.class;
               Class<BasicSliderUI> uiClass = BasicSliderUI.class;
-              Method uninstall = uiClass.getDeclaredMethod("uninstallListeners", JSlider.class);
+              Method uninstall = uiClass.getDeclaredMethod("uninstallListeners", clz);
               uninstall.setAccessible(true);
               uninstall.invoke(getUI(), slider);
-              Method uninstallKbdActs = uiClass.getDeclaredMethod("uninstallKeyboardActions", JSlider.class);
+              Method uninstallKbdActs = uiClass.getDeclaredMethod("uninstallKeyboardActions", clz);
               uninstallKbdActs.setAccessible(true);
               uninstallKbdActs.invoke(getUI(), slider);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {

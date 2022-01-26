@@ -37,7 +37,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         DefaultTreeCellRenderer r = new DefaultTreeCellRenderer();
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+          Component c = r.getTreeCellRendererComponent(
+              tree, value, selected, expanded, leaf, row, hasFocus);
           if (selected) {
             c.setForeground(r.getTextSelectionColor());
             // c.setBackground(Color.BLUE); // r.getBackgroundSelectionColor());

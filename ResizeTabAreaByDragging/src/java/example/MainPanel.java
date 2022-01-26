@@ -98,8 +98,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       return;
     }
     Insets tabAreaInsets = getTabAreaInsets();
-    Insets insets = getInsets();
-    int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
+    Insets i = getInsets();
+    int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     int tabWidth; // = tabInsets.left + tabInsets.right + 3;
     int gap;
 
@@ -184,8 +184,8 @@ class TabAreaResizeLayer extends LayerUI<ClippedTitleTabbedPane> {
     SwingUtilities.convertPoint(e.getComponent(), pt, tabbedPane);
     if (e.getID() == MouseEvent.MOUSE_MOVED) {
       Rectangle r = getDividerBounds(tabbedPane);
-      Cursor c = Cursor.getPredefinedCursor(r.contains(pt) ? Cursor.W_RESIZE_CURSOR : Cursor.DEFAULT_CURSOR);
-      tabbedPane.setCursor(c);
+      tabbedPane.setCursor(Cursor.getPredefinedCursor(
+          r.contains(pt) ? Cursor.W_RESIZE_CURSOR : Cursor.DEFAULT_CURSOR));
     } else if (e.getID() == MouseEvent.MOUSE_DRAGGED && resizing) {
       tabbedPane.setTabAreaWidth(pt.x - offset);
       e.consume();

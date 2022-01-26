@@ -134,8 +134,8 @@ class DnDTabbedPane extends JTabbedPane {
         }
       }
     }
-    JButton button = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
-    Optional.ofNullable(button)
+    JButton b = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
+    Optional.ofNullable(b)
         .filter(JButton::isEnabled)
         .ifPresent(JButton::doClick);
 
@@ -143,12 +143,12 @@ class DnDTabbedPane extends JTabbedPane {
     // Optional.ofNullable(getActionMap())
     //   .map(am -> am.get(actionKey))
     //   .filter(Action::isEnabled)
-    //   .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0)));
+    //   .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ACTION_PERFORMED, null, 0, 0)));
     // // ActionMap map = getActionMap();
     // // if (Objects.nonNull(map)) {
     // //   Action action = map.get(actionKey);
     // //   if (Objects.nonNull(action) && action.isEnabled()) {
-    // //     action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null, 0, 0));
+    // //     action.actionPerformed(new ActionEvent(this, ACTION_PERFORMED, null, 0, 0));
     // //   }
     // // }
   }
@@ -192,16 +192,16 @@ class DnDTabbedPane extends JTabbedPane {
       r.translate(r.width * d.x / 2, r.height * d.y / 2);
       return r.contains(tabPt) ? count : -1;
     });
-//     for (int i = 0; i < getTabCount(); i++) {
-//       Rectangle r = getBoundsAt(i);
-//       r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
-//       if (r.contains(tabPt)) {
-//         return i;
-//       }
-//     }
-//     Rectangle r = getBoundsAt(getTabCount() - 1);
-//     r.translate(r.width * d.x / 2, r.height * d.y / 2);
-//     return r.contains(tabPt) ? getTabCount() : -1;
+    // for (int i = 0; i < getTabCount(); i++) {
+    //   Rectangle r = getBoundsAt(i);
+    //   r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
+    //   if (r.contains(tabPt)) {
+    //     return i;
+    //   }
+    // }
+    // Rectangle r = getBoundsAt(getTabCount() - 1);
+    // r.translate(r.width * d.x / 2, r.height * d.y / 2);
+    // return r.contains(tabPt) ? getTabCount() : -1;
   }
 
   protected void convertTab(int prev, int next) {
@@ -219,13 +219,13 @@ class DnDTabbedPane extends JTabbedPane {
     remove(prev);
     insertTab(title, icon, cmp, tip, tgtIndex);
     setEnabledAt(tgtIndex, isEnabled);
-    // When you drag'n'drop a disabled tab, it finishes enabled and selected.
+    // When you drag and drop a disabled tab, it finishes enabled and selected.
     // pointed out by dlorde
     if (isEnabled) {
       setSelectedIndex(tgtIndex);
     }
     // I have a component in all tabs (JLabel with an X to close the tab)
-    // and when i move a tab the component disappear.
+    // and when I move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
     setTabComponentAt(tgtIndex, tab);
   }
@@ -341,7 +341,6 @@ class DnDTabbedPane extends JTabbedPane {
 
 class TabTransferable implements Transferable {
   private static final String NAME = "test";
-  private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
   private final Component tabbedPane;
 
   protected TabTransferable(Component tabbedPane) {
@@ -353,7 +352,7 @@ class TabTransferable implements Transferable {
   }
 
   @Override public DataFlavor[] getTransferDataFlavors() {
-    return new DataFlavor[] {FLAVOR};
+    return new DataFlavor[] {new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME)};
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -434,7 +433,8 @@ class TabDropTargetListener implements DropTargetListener {
   private static final Point HIDDEN_POINT = new Point(0, -1000);
 
   private static Optional<GhostGlassPane> getGhostGlassPane(Component c) {
-    return Optional.ofNullable(c).filter(GhostGlassPane.class::isInstance).map(GhostGlassPane.class::cast);
+    Class<GhostGlassPane> clz = GhostGlassPane.class;
+    return Optional.ofNullable(c).filter(clz::isInstance).map(clz::cast);
   }
 
   @Override public void dragEnter(DropTargetDragEvent e) {
@@ -500,7 +500,6 @@ class TabDropTargetListener implements DropTargetListener {
 }
 
 class GhostGlassPane extends JComponent {
-  private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f);
   public final DnDTabbedPane tabbedPane;
   private final Rectangle lineRect = new Rectangle();
   private final Color lineColor = new Color(0, 100, 255);
@@ -511,7 +510,8 @@ class GhostGlassPane extends JComponent {
     super();
     this.tabbedPane = tabbedPane;
     setOpaque(false);
-    // [JDK-6700748] Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+    // [JDK-6700748]
+    // Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-6700748
     // setCursor(null);
   }
@@ -538,7 +538,7 @@ class GhostGlassPane extends JComponent {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setComposite(ALPHA);
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
     if (tabbedPane.isPaintScrollArea && tabbedPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {
       g2.setPaint(Color.RED);
       g2.fill(tabbedPane.rectBackward);

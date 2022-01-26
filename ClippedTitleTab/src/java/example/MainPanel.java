@@ -40,7 +40,8 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("LEFT");
     check.addActionListener(e -> {
-      int tabPlacement = ((JCheckBox) e.getSource()).isSelected() ? SwingConstants.LEFT : SwingConstants.TOP;
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      int tabPlacement = b ? SwingConstants.LEFT : SwingConstants.TOP;
       list.forEach(t -> t.setTabPlacement(tabPlacement));
     });
 
@@ -86,9 +87,9 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
   // protected Insets contentBorderInsets;
 
   @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-    Insets insets = tabPane.getInsets();
+    Insets i = tabPane.getInsets();
     // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
+    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       return width / 4;
     } else { // TOP || BOTTOM
@@ -106,7 +107,8 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle(x, y, w, h);
     String clippedText = SwingUtilities.layoutCompoundLabel(
-        metrics, title, null, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER,
+        metrics, title, null,
+        SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER,
         SwingConstants.TRAILING, viewR, iconR, textR, 0);
     super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, textRect, isSelected);
   }
@@ -118,9 +120,9 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
   // protected Insets tabAreaInsets;
   // protected Insets contentBorderInsets;
   @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-    Insets insets = tabPane.getInsets();
+    Insets i = tabPane.getInsets();
     // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
+    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       return width / 4;
     } else { // TOP || BOTTOM
@@ -138,7 +140,8 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle(x, y, w, h);
     String clippedText = SwingUtilities.layoutCompoundLabel(
-        metrics, title, null, SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER,
+        metrics, title, null,
+        SwingConstants.CENTER, SwingConstants.CENTER, SwingConstants.CENTER,
         SwingConstants.TRAILING, viewR, iconR, textR, 0);
     super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, textRect, isSelected);
   }

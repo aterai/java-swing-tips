@@ -301,7 +301,8 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
           if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-            renameTitle.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+            Component c = e.getComponent();
+            renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
           }
         }
       });

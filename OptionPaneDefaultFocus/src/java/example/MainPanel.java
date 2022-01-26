@@ -57,15 +57,16 @@ public final class MainPanel extends JPanel {
   private static JButton makeButton2(JTextField textField, JTextArea textArea) {
     JButton button = new JButton("show");
     button.addActionListener(e -> {
-      JOptionPane pane = new JOptionPane(textField, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-      JDialog dialog = pane.createDialog(textArea.getRootPane(), "Input Text");
+      JOptionPane op = new JOptionPane(
+          textField, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+      JDialog dialog = op.createDialog(textArea.getRootPane(), "Input Text");
       dialog.addWindowListener(new WindowAdapter() {
         @Override public void windowOpened(WindowEvent e) {
           textField.requestFocusInWindow();
         }
       });
       dialog.setVisible(true);
-      Object selectedValue = pane.getValue();
+      Object selectedValue = op.getValue();
       int result = JOptionPane.CLOSED_OPTION;
       if (selectedValue instanceof Integer) {
         result = (Integer) selectedValue;

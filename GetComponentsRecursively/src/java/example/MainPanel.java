@@ -40,7 +40,8 @@ public final class MainPanel extends JPanel {
       // SwingUtils.searchAndResizeMode(chooser);
 
       // TEST2:
-      // Component c = SwingUtils.findChildComponent(chooser, JTable.class); if (c instanceof JTable) { ... }
+      // Component c = SwingUtils.findChildComponent(chooser, JTable.class);
+      // if (c instanceof JTable) { ... }
 
       // TEST3:
       // SwingUtils.getComponentByClass(chooser, JTable.class).ifPresent(t -> ...);
