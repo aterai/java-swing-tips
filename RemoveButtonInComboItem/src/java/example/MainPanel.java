@@ -21,7 +21,6 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> c0 = makeComboBox(true, false);
     JComboBox<String> c1 = makeComboBox(false, false);
     JComboBox<String> c2 = makeComboBox(true, true);
@@ -209,7 +208,8 @@ class CellButtonsMouseListener extends MouseAdapter {
 
   private static <E> JButton getButton(JList<E> list, Point pt, int index) {
     E proto = list.getPrototypeCellValue();
-    Component c = list.getCellRenderer().getListCellRendererComponent(list, proto, index, false, false);
+    ListCellRenderer<? super E> renderer = list.getCellRenderer();
+    Component c = renderer.getListCellRendererComponent(list, proto, index, false, false);
     Rectangle r = list.getCellBounds(index, index);
     c.setBounds(r);
     // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout) // *1
@@ -260,11 +260,14 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     if (index < 0) {
-      return l;
+      return c;
     }
-    l.setOpaque(false);
+    if (c instanceof JComponent) {
+      ((JComponent) c).setOpaque(false);
+    }
     this.targetIndex = index;
     if (isSelected) {
       panel.setBackground(list.getSelectionBackground());
@@ -278,7 +281,7 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
       deleteButton.getModel().setRollover(isRollover);
       deleteButton.setForeground(isRollover ? Color.WHITE : list.getForeground());
     }
-    panel.add(l);
+    panel.add(c);
     return panel;
   }
 }
