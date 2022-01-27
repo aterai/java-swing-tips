@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
-// How to Use Internal Frames (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// How to Use Internal Frames (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/internalframe.html
 // Lock JInternalPane
 // https://community.oracle.com/thread/1392111

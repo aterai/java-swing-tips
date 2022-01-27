@@ -129,13 +129,14 @@ class SizeFilter extends DocumentFilter {
 }
 
 // // https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html
-// // Text Component Features (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// // Text Component Features (The Java™ Tutorials > ... > Using Swing Components)
 // // https://docs.oracle.com/javase/tutorial/uiswing/examples/components/TextComponentDemoProject/src/components/DocumentSizeFilter.java
 // class DocumentSizeFilter extends DocumentFilter {
 //   int maxCharacters;
 //   protected DocumentSizeFilter(int maxChars) {
 //     maxCharacters = maxChars;
 //   }
+//
 //   @Override public void insertString(DocumentFilter.FilterBypass fb, int offs, String str, AttributeSet a) throws BadLocationException {
 //     // This rejects the entire insertion if it would make
 //     // the contents too long. Another option would be
@@ -147,6 +148,7 @@ class SizeFilter extends DocumentFilter {
 //       Toolkit.getDefaultToolkit().beep();
 //     }
 //   }
+//
 //   @Override public void replace(DocumentFilter.FilterBypass fb, int offs, int length, String str, AttributeSet a) throws BadLocationException {
 //     // This rejects the entire replacement if it would make
 //     // the contents too long. Another option would be

@@ -88,7 +88,8 @@ class AnimatedToolTip extends JToolTip {
   protected AnimatedToolTip(JLabel label) {
     super();
     this.iconlabel = label;
-    LookAndFeel.installColorsAndFont(iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    LookAndFeel.installColorsAndFont(
+        iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
     iconlabel.setOpaque(true);
     setLayout(new BorderLayout());
     add(iconlabel);

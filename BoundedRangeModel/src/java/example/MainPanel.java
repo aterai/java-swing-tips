@@ -30,7 +30,8 @@ public final class MainPanel extends JPanel {
       super.updateUI();
       TableCellRenderer renderer = new DefaultTableCellRenderer();
       setDefaultRenderer(Object.class, (tbl, value, isSelected, hasFocus, row, column) -> {
-        Component c = renderer.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+        Component c = renderer.getTableCellRendererComponent(
+            tbl, value, isSelected, hasFocus, row, column);
         if (emphasisIndices.contains(row)) {
           c.setBackground(Color.YELLOW);
         } else {

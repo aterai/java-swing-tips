@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"String", "Number", "Boolean"};
     Object[][] data = {
-      {"aaa", 1, false}, {"bbb", 20, false},
-      {"ccc", 2, false}, {"ddd", 3, false},
-      {"aaa", 1, false}, {"bbb", 20, false},
-      {"ccc", 2, false}, {"ddd", 3, false},
+        {"aaa", 1, false}, {"bbb", 20, false},
+        {"ccc", 2, false}, {"ddd", 3, false},
+        {"aaa", 1, false}, {"bbb", 20, false},
+        {"ccc", 2, false}, {"ddd", 3, false},
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -105,11 +105,12 @@ public final class MainPanel extends JPanel {
   //
   // private static class RowColorTableRenderer extends DefaultTableCellRenderer {
   //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-  //     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+  //     Component c = super.getTableCellRendererComponent(
+  //         table, value, isSelected, hasFocus, row, column);
   //     TableModel model = table.getModel();
-  //     Boolean isChecked = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
+  //     Boolean b = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
   //     c.setForeground(table.getForeground());
-  //     c.setBackground(isChecked ? Color.ORANGE : table.getBackground());
+  //     c.setBackground(b ? Color.ORANGE : table.getBackground());
   //     return c;
   //   }
   // }

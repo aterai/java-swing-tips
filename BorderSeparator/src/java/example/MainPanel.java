@@ -10,16 +10,16 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultComboBoxModel<MyItem> model = new DefaultComboBoxModel<>();
-    model.addElement(new MyItem("1111"));
-    model.addElement(new MyItem("1111222"));
-    model.addElement(new MyItem("111122233"));
-    model.addElement(new MyItem("444444", true));
-    model.addElement(new MyItem("555"));
-    model.addElement(new MyItem("6666666"));
+    DefaultComboBoxModel<ListItem> model = new DefaultComboBoxModel<>();
+    model.addElement(new ListItem("1111"));
+    model.addElement(new ListItem("1111222"));
+    model.addElement(new ListItem("111122233"));
+    model.addElement(new ListItem("444444", true));
+    model.addElement(new ListItem("555"));
+    model.addElement(new ListItem("6666666"));
 
-    JComboBox<MyItem> combo1 = makeComboBox(model);
-    JComboBox<MyItem> combo2 = makeComboBox(model);
+    JComboBox<ListItem> combo1 = makeComboBox(model);
+    JComboBox<ListItem> combo2 = makeComboBox(model);
     combo2.setEditable(true);
 
     Box box1 = Box.createVerticalBox();
@@ -36,19 +36,21 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<MyItem> makeComboBox(ComboBoxModel<MyItem> model) {
-    return new JComboBox<MyItem>(model) {
+  private static JComboBox<ListItem> makeComboBox(ComboBoxModel<ListItem> model) {
+    return new JComboBox<ListItem>(model) {
       @Override public void updateUI() {
         setRenderer(null);
         super.updateUI();
-        ListCellRenderer<? super MyItem> renderer = getRenderer();
+        ListCellRenderer<? super ListItem> renderer = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (c instanceof JComponent) {
+            JComponent jc = (JComponent) c;
             if (index != -1 && value.hasSeparator()) {
-              ((JComponent) c).setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
+              jc.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
             } else {
-              ((JComponent) c).setBorder(BorderFactory.createEmptyBorder());
+              jc.setBorder(BorderFactory.createEmptyBorder());
             }
           }
           return c;
@@ -77,15 +79,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MyItem {
+class ListItem {
   private final String item;
   private final boolean flag;
 
-  protected MyItem(String str) {
+  protected ListItem(String str) {
     this(str, false);
   }
 
-  protected MyItem(String str, boolean flg) {
+  protected ListItem(String str, boolean flg) {
     item = str;
     flag = flg;
   }

@@ -19,10 +19,11 @@ import javax.swing.text.Utilities;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    String text = String.join("\n", Collections.nCopies(3, "The quick brown fox jumps over the lazy dog."));
+    String txt = "The quick brown fox jumps over the lazy dog.";
+    String repeat = String.join("\n", Collections.nCopies(3, txt));
 
-    JTextArea textArea1 = new JTextArea("default\n" + text);
-    JTextArea textArea2 = new JTextArea("setCaret\n" + text) {
+    JTextArea textArea1 = new JTextArea("default\n" + repeat);
+    JTextArea textArea2 = new JTextArea("setCaret\n" + repeat) {
       @Override public void updateUI() {
         setCaret(null);
         super.updateUI();

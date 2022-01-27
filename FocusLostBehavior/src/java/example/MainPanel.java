@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     field3.setFocusLostBehavior(JFormattedTextField.PERSIST);
 
     JCheckBox check = new JCheckBox("setCommitsOnValidEdit");
-    check.addActionListener(e -> formatter.setCommitsOnValidEdit(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> formatter.setCommitsOnValidEdit(check.isSelected()));
 
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("COMMIT_OR_REVERT(default)", new JFormattedTextField(formatter)));

@@ -80,7 +80,8 @@ class TextFieldPopupMenu extends JPopupMenu {
       boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
       for (MenuElement menuElement : getSubElements()) {
         Component m = menuElement.getComponent();
-        if (m instanceof JMenuItem && ((JMenuItem) m).getAction() instanceof DefaultEditorKit.PasteAction) {
+        Action a = m instanceof JMenuItem ? ((JMenuItem) m).getAction() : null;
+        if (a instanceof DefaultEditorKit.PasteAction) {
           continue;
         }
         m.setEnabled(hasSelectedText);

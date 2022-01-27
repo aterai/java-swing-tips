@@ -37,7 +37,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super String> renderer = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (isSelected) {
             c.setForeground(Color.WHITE);
             c.setBackground(Color.ORANGE);

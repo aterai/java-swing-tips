@@ -17,16 +17,16 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B", "C"};
     Object[][] data = {
-      {"0, 0", "0, 1", "0, 2"},
-      {"1, 0", "1, 1", "1, 2"},
-      {"2, 0", "2, 1", "2, 2"},
-      {"3, 0", "3, 1", "3, 2"},
-      {"4, 0", "4, 1", "4, 2"},
-      {"5, 0", "5, 1", "5, 2"},
-      {"6, 0", "6, 1", "6, 2"},
-      {"7, 0", "7, 1", "7, 2"},
-      {"8, 0", "8, 1", "8, 2"},
-      {"9, 0", "9, 1", "9, 2"}
+        {"0, 0", "0, 1", "0, 2"},
+        {"1, 0", "1, 1", "1, 2"},
+        {"2, 0", "2, 1", "2, 2"},
+        {"3, 0", "3, 1", "3, 2"},
+        {"4, 0", "4, 1", "4, 2"},
+        {"5, 0", "5, 1", "5, 2"},
+        {"6, 0", "6, 1", "6, 2"},
+        {"7, 0", "7, 1", "7, 2"},
+        {"8, 0", "8, 1", "8, 2"},
+        {"9, 0", "9, 1", "9, 2"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -95,8 +95,9 @@ public final class MainPanel extends JPanel {
     p.add(changeSelection);
     p.add(clear);
 
+    String title = "JTable#changeSelection(int, int, boolean, boolean)";
     JPanel panel = new JPanel(new BorderLayout());
-    panel.setBorder(BorderFactory.createTitledBorder("JTable#changeSelection(int, int, boolean, boolean)"));
+    panel.setBorder(BorderFactory.createTitledBorder(title));
     panel.add(box, BorderLayout.NORTH);
     panel.add(p, BorderLayout.SOUTH);
 
