@@ -5,15 +5,19 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -21,16 +25,16 @@ import javax.swing.event.DocumentListener;
 
 public final class MainPanel extends JPanel {
   private final transient ListItem[] defaultModel = {
-    new ListItem("wi0009-32.png"),
-    new ListItem("wi0054-32.png"),
-    new ListItem("wi0062-32.png"),
-    new ListItem("wi0063-32.png"),
-    new ListItem("wi0064-32.png"),
-    new ListItem("wi0096-32.png"),
-    new ListItem("wi0111-32.png"),
-    new ListItem("wi0122-32.png"),
-    new ListItem("wi0124-32.png"),
-    new ListItem("wi0126-32.png")
+      new ListItem("wi0009-32.png"),
+      new ListItem("wi0054-32.png"),
+      new ListItem("wi0062-32.png"),
+      new ListItem("wi0063-32.png"),
+      new ListItem("wi0064-32.png"),
+      new ListItem("wi0096-32.png"),
+      new ListItem("wi0111-32.png"),
+      new ListItem("wi0122-32.png"),
+      new ListItem("wi0124-32.png"),
+      new ListItem("wi0126-32.png")
   };
   private final DefaultListModel<ListItem> model = new DefaultListModel<>();
   private final JList<ListItem> list = new JList<ListItem>(model) {
@@ -89,7 +93,9 @@ public final class MainPanel extends JPanel {
     getPattern().ifPresent(pattern -> {
       List<ListItem> selected = list.getSelectedValuesList();
       model.clear();
-      Stream.of(defaultModel).filter(item -> pattern.matcher(item.title).find()).forEach(model::addElement);
+      Stream.of(defaultModel)
+          .filter(item -> pattern.matcher(item.title).find())
+          .forEach(model::addElement);
       // for (ListItem item : defaultModel) {
       //   if (!pattern.matcher(item.title).find()) {
       //     model.removeElement(item);
@@ -178,10 +184,33 @@ class ListItem {
   public final ImageIcon selectedIcon;
   public final String title;
 
-  protected ListItem(String path) {
-    this.title = path;
-    this.icon = new ImageIcon(getClass().getResource(path));
-    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+  protected ListItem(String title) {
+    this.title = title;
+    Image img = makeImage("example/" + title);
+    this.icon = new ImageIcon(img);
+    ImageProducer ip = new FilteredImageSource(img.getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ListItem::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }

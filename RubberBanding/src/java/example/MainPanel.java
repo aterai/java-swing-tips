@@ -275,8 +275,9 @@ class ListItem {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    this.icon = new ImageIcon(makeImage(path));
-    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    Image img = makeImage(path);
+    this.icon = new ImageIcon(img);
+    ImageProducer ip = new FilteredImageSource(img.getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 
