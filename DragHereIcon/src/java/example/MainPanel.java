@@ -26,18 +26,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-
-    JLabel label = new JLabel(new DragHereIcon());
-    label.setText("<html>Drag <b>Files</b> Here");
-    label.setVerticalTextPosition(SwingConstants.BOTTOM);
-    label.setHorizontalTextPosition(SwingConstants.CENTER);
-    label.setForeground(Color.GRAY);
-    label.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
-
-    label.setDropTarget(new DropTarget(label, DnDConstants.ACTION_COPY, new FileDropTargetAdapter(), true));
-    // Test: label.setTransferHandler(new FileTransferHandler());
-
-    add(label);
+    JLabel l = new JLabel(new DragHereIcon());
+    l.setText("<html>Drag <b>Files</b> Here");
+    l.setVerticalTextPosition(SwingConstants.BOTTOM);
+    l.setHorizontalTextPosition(SwingConstants.CENTER);
+    l.setForeground(Color.GRAY);
+    l.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+    l.setDropTarget(new DropTarget(l, DnDConstants.ACTION_COPY, new FileDropListener(), true));
+    // Test: l.setTransferHandler(new FileTransferHandler());
+    add(l);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -128,7 +125,7 @@ class DragHereIcon implements Icon {
   }
 }
 
-class FileDropTargetAdapter extends DropTargetAdapter {
+class FileDropListener extends DropTargetAdapter {
   @Override public void dragOver(DropTargetDragEvent e) {
     if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
       e.acceptDrag(DnDConstants.ACTION_COPY);

@@ -16,7 +16,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String help = String.join("\n",
         " Start editing: Double-Click, Enter-Key",
         " Commit rename: field-focusLost, Enter-Key",
@@ -82,7 +81,8 @@ class EditableTabbedPane extends JTabbedPane {
       String str = editor.getText().trim();
       if (!str.isEmpty()) {
         setTitleAt(getSelectedIndex(), str);
-        Optional.ofNullable(getTabComponentAt(getSelectedIndex())).ifPresent(Component::revalidate);
+        Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
+            .ifPresent(Component::revalidate);
       }
       glassPane.setVisible(false);
     }
@@ -93,7 +93,8 @@ class EditableTabbedPane extends JTabbedPane {
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 
     InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-tab");
+    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    im.put(enterKey, "rename-tab");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
 
     ActionMap am = editor.getActionMap();
@@ -104,11 +105,12 @@ class EditableTabbedPane extends JTabbedPane {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
-          startEditing.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+          Component c = e.getComponent();
+          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
+    getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, "start-editing");
     getActionMap().put("start-editing", startEditing);
   }
 
@@ -128,7 +130,8 @@ class EditableTabbedPane extends JTabbedPane {
       addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
           if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-            renameTab.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+            Component c = e.getComponent();
+            renameTab.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
           }
         }
       });

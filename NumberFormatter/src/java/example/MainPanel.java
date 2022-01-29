@@ -89,12 +89,15 @@ class WarningSpinner extends JSpinner {
       }
 
       private void updateEditValid() {
-        EventQueue.invokeLater(() -> ftf.setBackground(ftf.isEditValid() ? Color.WHITE : errorBackground));
+        EventQueue.invokeLater(() -> {
+          Color bgc = ftf.isEditValid() ? Color.WHITE : errorBackground;
+          ftf.setBackground(bgc);
+        });
       }
     });
   }
 
-  private static DefaultFormatterFactory makeFFactory(SpinnerNumberModel m) { // DecimalFormatSymbols dfs) {
+  private static DefaultFormatterFactory makeFFactory(SpinnerNumberModel m) {
     NumberFormat format = new DecimalFormat("####0"); // , dfs);
     NumberFormatter editFormatter = new NumberFormatter(format) {
       // @Override protected DocumentFilter getDocumentFilter() {

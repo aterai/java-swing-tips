@@ -338,11 +338,13 @@ class EditableList<E extends ListItem> extends JList<E> {
         rect.height = h;
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick && rect.contains(e.getPoint())) {
-          startEditing.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+          Component c = e.getComponent();
+          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDITING);
+    InputMap im2 = getInputMap(JComponent.WHEN_FOCUSED);
+    im2.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDITING);
     getActionMap().put(EDITING, startEditing);
   }
 
@@ -384,7 +386,8 @@ class TextComponentPopupMenu extends JPopupMenu {
       boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
       for (MenuElement menuElement : getSubElements()) {
         Component m = menuElement.getComponent();
-        if (m instanceof JMenuItem && ((JMenuItem) m).getAction() instanceof DefaultEditorKit.PasteAction) {
+        Action a = m instanceof JMenuItem ? ((JMenuItem) m).getAction() : null;
+        if (a instanceof DefaultEditorKit.PasteAction) {
           continue;
         }
         m.setEnabled(hasSelectedText);

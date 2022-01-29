@@ -161,7 +161,8 @@ class FileNameRenderer implements TableCellRenderer {
 
     FontMetrics fm = table.getFontMetrics(table.getFont());
     Insets i = textLabel.getInsets();
-    int width = iconLabel.getPreferredSize().width + fm.stringWidth(textLabel.getText()) + i.left + i.right;
+    String text = textLabel.getText();
+    int width = iconLabel.getPreferredSize().width + fm.stringWidth(text) + i.left + i.right;
     int colWidth = table.getColumnModel().getColumn(column).getWidth();
     dim.width = Math.min(width, colWidth);
 

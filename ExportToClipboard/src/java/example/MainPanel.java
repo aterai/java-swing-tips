@@ -48,7 +48,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super Color> renderer = getCellRenderer();
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           c.setForeground(value);
           return c;
         });
@@ -82,17 +83,17 @@ public final class MainPanel extends JPanel {
 }
 
 class ListPopupMenu extends JPopupMenu {
-  private final JMenuItem cutItem;
-  private final JMenuItem copyItem;
+  private final JMenuItem cut;
+  private final JMenuItem copy;
 
   protected ListPopupMenu(JList<?> list) {
     super();
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     TransferHandler handler = list.getTransferHandler();
-    cutItem = add("cut");
-    cutItem.addActionListener(e -> handler.exportToClipboard(list, clipboard, TransferHandler.MOVE));
-    copyItem = add("copy");
-    copyItem.addActionListener(e -> handler.exportToClipboard(list, clipboard, TransferHandler.COPY));
+    cut = add("cut");
+    cut.addActionListener(e -> handler.exportToClipboard(list, clipboard, TransferHandler.MOVE));
+    copy = add("copy");
+    copy.addActionListener(e -> handler.exportToClipboard(list, clipboard, TransferHandler.COPY));
     add("paste").addActionListener(e -> handler.importData(list, clipboard.getContents(null)));
     addSeparator();
     add("clearSelection").addActionListener(e -> list.clearSelection());
@@ -101,14 +102,14 @@ class ListPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JList) {
       boolean isSelected = !((JList<?>) c).isSelectionEmpty();
-      cutItem.setEnabled(isSelected);
-      copyItem.setEnabled(isSelected);
+      cut.setEnabled(isSelected);
+      copy.setEnabled(isSelected);
       super.show(c, x, y);
     }
   }
 }
 
-// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
@@ -126,7 +127,7 @@ class ListItemTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JList<?>) c;
-    // return new DataHandler(source.getSelectedValuesList().toArray(new Object[0]), FLAVOR.getMimeType());
+    // return new DataHandler(source.getSelectedValuesList().toArray(new Object[0]), mimeType);
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
