@@ -43,6 +43,7 @@ public final class MainPanel extends JPanel {
       JScrollPane scrollPane = (JScrollPane) e.getComponent();
       Component view = scrollPane.getViewport().getView();
       MouseEvent event = SwingUtilities.convertMouseEvent(scrollPane, e, view);
+      ToolTipManager.sharedInstance().mouseMoved(event);
       // Tooltips, the mouse wheel and JScrollPane oracle-tech
       // https://community.oracle.com/tech/developers/discussion/1353509/tooltips-the-mouse-wheel-and-jscrollpane
       // Point p = SwingUti.getMousePosition();
