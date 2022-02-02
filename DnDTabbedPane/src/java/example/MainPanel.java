@@ -388,8 +388,14 @@ class TabDragSourceListener implements DragSourceListener {
   }
 
   @Override public void dragDropEnd(DragSourceDropEvent e) {
+    // System.out.println("dragDropEnd");
     // dragTabIndex = -1;
     // glassPane.setVisible(false);
+    Component c = e.getDragSourceContext().getComponent();
+    if (c instanceof JComponent) {
+      JRootPane rp = ((JComponent) c).getRootPane();
+      Optional.ofNullable(rp.getGlassPane()).ifPresent(gp -> gp.setVisible(false));
+    }
   }
 
   @Override public void dropActionChanged(DragSourceDragEvent e) {
