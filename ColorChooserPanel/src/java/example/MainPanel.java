@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -16,18 +17,18 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(10, 10));
-
     // JDialog dialog = new JDialog(this, "JColorChooser", Dialog.ModalityType.APPLICATION_MODAL);
     // JPanel buttonPanel = new JPanel();
     // buttonPanel.add(new JButton("OK"));
     // buttonPanel.add(new JButton("Cancel"));
     // buttonPanel.add(new JButton("Reset"));
 
-    JCheckBox swatches = new JCheckBox(UIManager.getString("ColorChooser.swatchesNameText", getLocale()));
-    JCheckBox hsv = new JCheckBox(UIManager.getString("ColorChooser.hsvNameText", getLocale()));
-    JCheckBox hsl = new JCheckBox(UIManager.getString("ColorChooser.hslNameText", getLocale()));
-    JCheckBox rgb = new JCheckBox(UIManager.getString("ColorChooser.rgbNameText", getLocale()));
-    JCheckBox cmyk = new JCheckBox(UIManager.getString("ColorChooser.cmykNameText", getLocale()));
+    Locale loc = getLocale();
+    JCheckBox swatches = new JCheckBox(UIManager.getString("ColorChooser.swatchesNameText", loc));
+    JCheckBox hsv = new JCheckBox(UIManager.getString("ColorChooser.hsvNameText", loc));
+    JCheckBox hsl = new JCheckBox(UIManager.getString("ColorChooser.hslNameText", loc));
+    JCheckBox rgb = new JCheckBox(UIManager.getString("ColorChooser.rgbNameText", loc));
+    JCheckBox cmyk = new JCheckBox(UIManager.getString("ColorChooser.cmykNameText", loc));
     List<JCheckBox> list = Arrays.asList(swatches, hsv, hsl, rgb, cmyk);
 
     JButton button = new JButton("open JColorChooser");
@@ -37,8 +38,10 @@ public final class MainPanel extends JPanel {
           .map(AbstractButton::getText)
           .collect(Collectors.toList());
       Color color;
+      String title = "JColorChooser";
+      Component parent = getRootPane();
       if (selected.isEmpty()) { // use default JColorChooser
-        color = JColorChooser.showDialog(getRootPane(), "JColorChooser", null);
+        color = JColorChooser.showDialog(parent, title, null);
       } else {
         JColorChooser cc = new JColorChooser();
         for (AbstractColorChooserPanel p : cc.getChooserPanels()) {
@@ -46,13 +49,12 @@ public final class MainPanel extends JPanel {
             cc.removeChooserPanel(p);
           }
         }
-
         // ActionListener ok = ev -> {
         //   Color color = cc.getColor();
         //   System.out.println("ActionListener: " + color);
         // };
-        // JDialog dialog = JColorChooser.createDialog(getRootPane(), "JColorChooser", true, cc, ok, null);
-        JDialog dialog = JColorChooser.createDialog(getRootPane(), "JColorChooser", true, cc, null, null);
+        // JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
+        JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, null, null);
         // dialog.addComponentListener(new ColorChooserDialog.DisposeOnClose());
         dialog.addComponentListener(new ComponentAdapter() {
           @Override public void componentHidden(ComponentEvent e) {

@@ -13,7 +13,6 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JSplitPane splitPane = new JSplitPane();
     splitPane.setDividerSize(1);
     splitPane.setResizeWeight(.5);
@@ -22,8 +21,8 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("VERTICAL");
     check.addActionListener(e -> {
-      JCheckBox c = (JCheckBox) e.getSource();
-      splitPane.setOrientation(c.isSelected() ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      splitPane.setOrientation(b ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
     });
 
     add(check, BorderLayout.NORTH);
@@ -81,7 +80,8 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+      ((JLayer<?>) c).setLayerEventMask(
+          AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
   }
 
@@ -112,7 +112,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     }
   }
 
-  private static boolean isDraggableComponent(JSplitPane splitPane, Component c) {
-    return Objects.equals(splitPane, c) || Objects.equals(splitPane, SwingUtilities.getUnwrappedParent(c));
+  private static boolean isDraggableComponent(JSplitPane p, Component c) {
+    return Objects.equals(p, c) || Objects.equals(p, SwingUtilities.getUnwrappedParent(c));
   }
 }

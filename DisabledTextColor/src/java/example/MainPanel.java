@@ -35,14 +35,19 @@ public final class MainPanel extends JPanel {
     JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
     JLabel label = new JLabel("label disabledForeground");
     JButton button = new JButton("button disabledText");
-    JComboBox<String> combo1 = new JComboBox<>(new String[] {"disabledForeground", "bb"});
-    JComboBox<String> combo2 = new JComboBox<String>(new String[] {"<html>html</html>", "renderer"}) {
+
+    String[] model1 = {"disabledForeground", "bb"};
+    JComboBox<String> cmb1 = new JComboBox<>(model1);
+
+    String[] model2 = {"<html>html</html>", "renderer"};
+    JComboBox<String> cmb2 = new JComboBox<String>(model2) {
       @Override public void updateUI() {
         setRenderer(null);
         super.updateUI();
         ListCellRenderer<?super String> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = r.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (index < 0 && !isEnabled() && c instanceof JLabel) {
             JLabel l = (JLabel) c;
             l.setText("<html><font color='red'>" + l.getText());
@@ -54,22 +59,24 @@ public final class MainPanel extends JPanel {
         // setEditable(true);
       }
     };
-    JComboBox<String> combo3 = new JComboBox<>(new String[] {"setEditable(true)", "setDisabledTextColor"});
-    List<? extends JComponent> cmpList = Arrays.asList(cbx1, cbx2, combo1, combo2, combo3, label, button);
+
+    String[] model3 = {"setEditable(true)", "setDisabledTextColor"};
+    JComboBox<String> cmb3 = new JComboBox<>(model3);
+    cmb3.setEditable(true);
+    JTextField editor = (JTextField) cmb3.getEditor().getEditorComponent();
+    editor.setDisabledTextColor(Color.PINK);
+
+    List<JComponent> list = Arrays.asList(cbx1, cbx2, cmb1, cmb2, cmb3, label, button);
 
     JCheckBox cbx = new JCheckBox("setEnabled");
     cbx.addActionListener(e -> {
       boolean flg = ((JCheckBox) e.getSource()).isSelected();
-      cmpList.forEach(c -> c.setEnabled(flg));
+      list.forEach(c -> c.setEnabled(flg));
     });
-
-    combo3.setEditable(true);
-    JTextField editor = (JTextField) combo3.getEditor().getEditorComponent();
-    editor.setDisabledTextColor(Color.PINK);
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
-    cmpList.forEach(c -> {
+    list.forEach(c -> {
       c.setEnabled(false);
       c.setAlignmentX(Component.LEFT_ALIGNMENT);
       int h = c.getPreferredSize().height;

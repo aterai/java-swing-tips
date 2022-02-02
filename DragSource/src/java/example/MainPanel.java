@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
     clearFile();
 
     // // JDK 1.5.0
-    // DragSource.getDefaultDragSource()
-    //     .createDefaultDragGestureRecognizer(label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
+    // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+    //       label, DnDConstants.ACTION_MOVE, new DragGestureListener() {
     //   @Override public void dragGestureRecognized(DragGestureEvent e) {
     //     File tmpFile = getFile();
     //     if (Objects.isNull(tmpFile)) {
