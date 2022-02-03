@@ -13,13 +13,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-    model.addElement("aaaa");
-    model.addElement("aaaabbb");
-    model.addElement("aaaabbbcc");
-    model.addElement("1234567890abcdefghijklmnopqrstuvwxyz");
+    model.addElement("111");
+    model.addElement("111222");
+    model.addElement("11122233");
+    model.addElement("123456789012345678901234567890");
     model.addElement("bbb1");
     model.addElement("bbb12");
     model.addElement("1234567890-+*/=ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -93,12 +92,13 @@ class TooltipList<E> extends JList<E> {
     ListCellRenderer<? super E> r = getCellRenderer();
     int i = locationToIndex(p);
     Rectangle cellBounds = getCellBounds(i, i);
-    if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
+    if (i >= 0 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
       ListSelectionModel lsm = getSelectionModel();
       boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
       E value = getModel().getElementAt(i);
-      Component renderer = r.getListCellRendererComponent(this, value, i, lsm.isSelectedIndex(i), hasFocus);
-      if (renderer instanceof JComponent && Objects.nonNull(((JComponent) renderer).getToolTipText())) {
+      Component renderer = r.getListCellRendererComponent(
+          this, value, i, lsm.isSelectedIndex(i), hasFocus);
+      if (renderer instanceof JComponent && ((JComponent) renderer).getToolTipText() != null) {
         return cellBounds.getLocation();
       }
     }
@@ -120,12 +120,13 @@ class CellRendererTooltipList<E> extends JList<E> {
     int i = locationToIndex(p);
     ListCellRenderer<? super E> r = getCellRenderer();
     Rectangle cellBounds = getCellBounds(i, i);
-    if (i >= 0 && Objects.nonNull(r) && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
+    if (i >= 0 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
       ListSelectionModel lsm = getSelectionModel();
       E str = getModel().getElementAt(i);
       boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
-      Component renderer = r.getListCellRendererComponent(this, str, i, lsm.isSelectedIndex(i), hasFocus);
-      if (renderer instanceof JComponent && Objects.nonNull(((JComponent) renderer).getToolTipText())) {
+      Component renderer = r.getListCellRendererComponent(
+          this, str, i, lsm.isSelectedIndex(i), hasFocus);
+      if (renderer instanceof JComponent && ((JComponent) renderer).getToolTipText() != null) {
         Point pt = cellBounds.getLocation();
         Insets ins = label.getInsets();
         pt.translate(-ins.left, -ins.top);
@@ -157,15 +158,16 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    JLabel l = (JLabel) renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    Insets i = l.getInsets();
-    Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
-    Rectangle rect = c.getBounds();
-    rect.width -= i.left + i.right;
-    FontMetrics fm = l.getFontMetrics(l.getFont());
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
+    Container viewport = SwingUtilities.getAncestorOfClass(JViewport.class, list);
+    Rectangle rect = viewport.getBounds();
+    FontMetrics fm = c.getFontMetrics(c.getFont());
     String str = Objects.toString(value, "");
-    l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
-    return l;
+    if (c instanceof JComponent) {
+      ((JComponent) c).setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
+    }
+    return c;
   }
 }
 
