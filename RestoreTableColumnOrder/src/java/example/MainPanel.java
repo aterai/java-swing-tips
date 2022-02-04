@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SortableTableColumnModel extends DefaultTableColumnModel {
-  // TEST: private static Comparator<TableColumn> tcc = (o1, o2) -> o1.getModelIndex() - o2.getModelIndex();
+  // TEST: Comparator<TableColumn> tcc = (o1, o2) -> o1.getModelIndex() - o2.getModelIndex();
   public void restoreColumnOrder() {
     tableColumns.sort(Comparator.comparingInt(TableColumn::getModelIndex));
     fireColumnMoved(new TableColumnModelEvent(this, 0, tableColumns.size()));

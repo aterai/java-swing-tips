@@ -130,7 +130,8 @@ class TableHeaderPopupMenu extends JPopupMenu {
 
     @Override public void actionPerformed(ActionEvent e) {
       JTableHeader h = (JTableHeader) getInvoker();
-      h.getTable().getRowSorter().setSortKeys(Collections.singletonList(new RowSorter.SortKey(index, dir)));
+      RowSorter.SortKey sortKey = new RowSorter.SortKey(index, dir);
+      h.getTable().getRowSorter().setSortKeys(Collections.singletonList(sortKey));
     }
   }
 }

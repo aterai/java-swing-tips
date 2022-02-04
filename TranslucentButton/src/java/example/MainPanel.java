@@ -113,7 +113,9 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(MainPanel::makeMissingImage);
 
-    BufferedImage dest = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+    int w = image.getWidth();
+    int h = image.getHeight();
+    BufferedImage dest = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     for (int i = 0; i < b.length; i++) {
       b[i] = (byte) (i * .5);
@@ -240,8 +242,8 @@ class TranslucentButtonIcon implements Icon {
       height = h - i.top - i.bottom;
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      float fx = (float) (x - i.left);
-      float fy = (float) (y - i.top);
+      int fx = x - i.left;
+      int fy = y - i.top;
       Shape area = new RoundRectangle2D.Float(fx, fy, w - 1f, h - 1f, R, R);
       Color ssc = TL;
       Color bgc = BR;

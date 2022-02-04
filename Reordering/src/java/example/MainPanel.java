@@ -13,11 +13,9 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -28,10 +26,10 @@ public final class MainPanel extends JPanel {
     JTableHeader header = table.getTableHeader();
     header.setReorderingAllowed(false);
 
-    JCheckBox checkBox = new JCheckBox("disable column dragging", true);
-    checkBox.addActionListener(e -> header.setReorderingAllowed(!((JCheckBox) e.getSource()).isSelected()));
+    JCheckBox check = new JCheckBox("disable column dragging", true);
+    check.addActionListener(e -> header.setReorderingAllowed(!check.isSelected()));
 
-    add(checkBox, BorderLayout.NORTH);
+    add(check, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }

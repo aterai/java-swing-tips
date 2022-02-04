@@ -190,11 +190,13 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
   // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java
   private Component getHeaderRenderer2(int columnIndex) {
     TableColumn tc = header.getColumnModel().getColumn(columnIndex);
-    TableCellRenderer r = Optional.ofNullable(tc.getHeaderRenderer()).orElseGet(header::getDefaultRenderer);
+    TableCellRenderer r = Optional.ofNullable(tc.getHeaderRenderer())
+        .orElseGet(header::getDefaultRenderer);
     boolean hasFocus = !header.isPaintingForPrint() && header.hasFocus();
     // && (columnIndex == getSelectedColumnIndex())
     JTable table = header.getTable();
-    return r.getTableCellRendererComponent(table, tc.getHeaderValue(), false, hasFocus, -1, columnIndex);
+    Object hv = tc.getHeaderValue();
+    return r.getTableCellRendererComponent(table, hv, false, hasFocus, -1, columnIndex);
   }
 
   // Copied from javax/swing/plaf/basic/BasicTableHeaderUI.java

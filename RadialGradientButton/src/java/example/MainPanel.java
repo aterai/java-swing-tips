@@ -16,7 +16,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JButton button1 = new RadialGradientButton("JButton JButton JButton JButton");
     button1.setForeground(Color.WHITE);
 
@@ -70,8 +69,7 @@ public final class MainPanel extends JPanel {
 // https://blog.prototypr.io/stunning-hover-effects-with-css-variables-f855e7b95330
 class RadialGradientButton extends JButton {
   private static final int DELTA = 10;
-  private static final double ARC_WIDTH = 32d;
-  private static final double ARC_HEIGHT = 32d;
+  private static final double ARC = 32d;
   private int radius;
   private final float[] dist = {0f, 1f};
   private final Color[] colors = {new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true)};
@@ -140,7 +138,7 @@ class RadialGradientButton extends JButton {
   protected void update() {
     if (!getBounds().equals(base)) {
       base = getBounds();
-      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC, ARC);
     }
   }
 
@@ -186,11 +184,13 @@ class RadialGradientButton extends JButton {
 
 class RadialGradientPaintButton extends JButton {
   private static final int DELTA = 10;
-  private static final double ARC_WIDTH = 32d;
-  private static final double ARC_HEIGHT = 32d;
+  private static final double ARC = 32d;
   private int radius;
   private final float[] dist = {0f, 1f};
-  private final Color[] colors = {new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true)};
+  private final Color[] colors = {
+      new Color(0x64_44_05_F7, true),
+      new Color(0x00_F7_23_59, true)
+  };
   private final Timer timer1 = new Timer(10, e -> {
     radius = Math.min(200, radius + DELTA);
     repaint();
@@ -262,7 +262,7 @@ class RadialGradientPaintButton extends JButton {
       if (w > 0 && h > 0) {
         buf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       }
-      shape = new RoundRectangle2D.Double(0d, 0d, w - 1d, h - 1d, ARC_WIDTH, ARC_HEIGHT);
+      shape = new RoundRectangle2D.Double(0d, 0d, w - 1d, h - 1d, ARC, ARC);
     }
     if (buf == null) {
       return;

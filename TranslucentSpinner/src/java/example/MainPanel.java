@@ -10,7 +10,8 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(4, new Color(0xEE_EE_EE));
+  private static final Color COLOR = new Color(0xEE_EE_EE);
+  private static final TexturePaint TEXTURE = TextureUtils.createCheckerTexture(4, COLOR);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -26,8 +27,14 @@ public final class MainPanel extends JPanel {
     d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Enabled].backgroundPainter", painter1);
     d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Focused].backgroundPainter", painter2);
     d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Selected].backgroundPainter", painter2);
-    // d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Focused+Selected].backgroundPainter", painter2);
-    // d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Disabled].backgroundPainter", painter);
+    // d.put(
+    //   "Spinner:Panel:\"Spinner.formattedTextField\"[Focused+Selected].backgroundPainter",
+    //   painter2
+    // );
+    // d.put(
+    //   "Spinner:Panel:\"Spinner.formattedTextField\"[Disabled].backgroundPainter",
+    //   painter2
+    // );
 
     Painter<JComponent> painter3 = (g, c, w, h) -> {
       g.setColor(new Color(100, 100, 200, 100));
@@ -54,7 +61,8 @@ public final class MainPanel extends JPanel {
     SpinnerModel model = new SpinnerNumberModel(0, 0, 100, 5);
     JSpinner spinner1 = new JSpinner(model);
     // NG: spinner1.putClientProperty("Nimbus.Overrides", d);
-    ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().putClientProperty("Nimbus.Overrides", d);
+    JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) spinner1.getEditor();
+    editor1.getTextField().putClientProperty("Nimbus.Overrides", d);
     configureSpinnerButtons(spinner1, d);
 
     JSpinner spinner2 = new JSpinner(model) {

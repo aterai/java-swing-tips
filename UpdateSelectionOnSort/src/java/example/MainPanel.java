@@ -14,11 +14,9 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"CCC", 92, true}, {"DDD", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -40,7 +38,7 @@ public final class MainPanel extends JPanel {
     // table.setUpdateSelectionOnSort(false);
 
     JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
-    check1.addActionListener(e -> table.setUpdateSelectionOnSort(((JCheckBox) e.getSource()).isSelected()));
+    check1.addActionListener(e -> table.setUpdateSelectionOnSort(check1.isSelected()));
 
     JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
     table.getTableHeader().addMouseListener(new MouseAdapter() {

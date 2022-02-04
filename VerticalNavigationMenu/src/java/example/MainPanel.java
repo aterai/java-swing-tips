@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.addTreeSelectionListener(e -> {
       // https://ateraimemo.com/Swing/CardLayoutTabbedPane.html
-      Object o = e.getNewLeadSelectionPath().getLastPathComponent(); // tree.getLastSelectedPathComponent();
+      Object o = e.getNewLeadSelectionPath().getLastPathComponent();
       if (o instanceof DefaultMutableTreeNode) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
         String title = Objects.toString(node.getUserObject());
@@ -168,7 +168,8 @@ class RowSelectionTree extends JTree {
     UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
     TreeCellRenderer r = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-      Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      Component c = r.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
       c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
       if (c instanceof JComponent) {
         ((JComponent) c).setOpaque(true);
@@ -179,7 +180,7 @@ class RowSelectionTree extends JTree {
     setRootVisible(false);
     // https://ateraimemo.com/Swing/TreeNodeCollapseVeto.html
     listener = new TreeWillExpandListener() {
-      @Override public void treeWillExpand(TreeExpansionEvent e) { // throws ExpandVetoException {
+      @Override public void treeWillExpand(TreeExpansionEvent e) {
         // throw new ExpandVetoException(e, "Tree expansion cancelled");
       }
 

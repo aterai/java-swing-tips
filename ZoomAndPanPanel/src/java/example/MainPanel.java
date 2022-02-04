@@ -93,7 +93,8 @@ class ZoomAndPanePanel extends JPanel {
 
     // or use: Graphics2D#drawImage(Image, AffineTransform, ImageObserver)
     // https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html#drawImage-java.awt.Image-java.awt.geom.AffineTransform-java.awt.image.ImageObserver-
-    g2.drawImage(img, zoomTransform, this); // or: g2.drawRenderedImage((RenderedImage) img, zoomTransform);
+    g2.drawImage(img, zoomTransform, this);
+    // or: g2.drawRenderedImage((RenderedImage) img, zoomTransform);
     g2.fill(zoomTransform.createTransformedShape(r));
 
     // BAD EXAMPLE
@@ -124,13 +125,13 @@ class ZoomAndPanePanel extends JPanel {
     private static final double ZOOM_FACTOR = 1.2;
     private static final int MIN = -10;
     private static final int MAX = 10;
-    private static final int EXTENT = 1;
-    private final BoundedRangeModel range = new DefaultBoundedRangeModel(0, EXTENT, MIN, MAX + EXTENT);
+    private static final int EXT = 1;
+    private final BoundedRangeModel range = new DefaultBoundedRangeModel(0, EXT, MIN, MAX + EXT);
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
       double dir = e.getPreciseWheelRotation();
       int z = range.getValue();
-      range.setValue(z + EXTENT * (dir > 0 ? -1 : 1));
+      range.setValue(z + EXT * (dir > 0 ? -1 : 1));
       if (z != range.getValue()) {
         Component c = e.getComponent();
         Container p = SwingUtilities.getAncestorOfClass(JViewport.class, c);
@@ -141,7 +142,8 @@ class ZoomAndPanePanel extends JPanel {
           zoomTransform.scale(s, s);
           // double s = 1d + range.getValue() * .1;
           // zoomTransform.setToScale(s, s);
-          Rectangle nvr = AffineTransform.getScaleInstance(s, s).createTransformedShape(ovr).getBounds();
+          AffineTransform at = AffineTransform.getScaleInstance(s, s);
+          Rectangle nvr = at.createTransformedShape(ovr).getBounds();
           Point vp = nvr.getLocation();
           vp.translate((nvr.width - ovr.width) / 2, (nvr.height - ovr.height) / 2);
           viewport.setViewPosition(vp);

@@ -41,7 +41,8 @@ public final class MainPanel extends JPanel {
     //     resizeHandler = new ComponentAdapter() {
     //       @Override public void componentResized(ComponentEvent e) {
     //         Optional.ofNullable(getTableHeader()).ifPresent(header -> {
-    //           if (header.getResizingColumn() != null && getAutoResizeMode() == AUTO_RESIZE_LAST_COLUMN) {
+    //           if (header.getResizingColumn() != null &&
+    //               getAutoResizeMode() == AUTO_RESIZE_LAST_COLUMN) {
     //             TableColumnModel tcm = getColumnModel();
     //             header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
     //           }

@@ -35,7 +35,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super E> renderer = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (c instanceof JComponent) {
             ((JComponent) c).setToolTipText(String.format("Item%d: %s", index, value));
           }
