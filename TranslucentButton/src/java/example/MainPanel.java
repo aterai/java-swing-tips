@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     add(makeButton(makeTitleWithIcon(url, "align=middle", "middle")));
     add(makeButton(makeTitleWithIcon(url, "align=bottom", "bottom")));
 
-    Icon icon = new ImageIcon(url);
+    Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
     JLabel label = new JLabel("JLabel", icon, SwingConstants.CENTER);
     label.setForeground(Color.WHITE);
     label.setAlignmentX(Component.CENTER_ALIGNMENT);
