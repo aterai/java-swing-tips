@@ -11,14 +11,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private final JLabel label = new JLabel();
-  private final ImageIcon i1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("i03-04.gif")));
-  private final ImageIcon i2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("i03-10.gif")));
+  private final transient Icon i1 = makeIcon("example/i03-04.gif");
+  private final transient Icon i2 = makeIcon("example/i03-10.gif");
   private File file;
 
   private MainPanel() {
@@ -129,6 +132,21 @@ public final class MainPanel extends JPanel {
     file = null;
     label.setIcon(i1);
     label.setText("tmpFile#exists(): false");
+  }
+
+  private static Icon makeIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return makeMissingIcon();
+      }
+    }).orElseGet(MainPanel::makeMissingIcon);
+  }
+
+  private static Icon makeMissingIcon() {
+    return UIManager.getIcon("OptionPane.errorIcon");
   }
 
   public static void main(String[] args) {
