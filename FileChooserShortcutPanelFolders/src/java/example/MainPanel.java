@@ -4,8 +4,6 @@
 
 package example;
 
-import sun.awt.shell.ShellFolder;
-
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.io.File;
@@ -41,7 +39,7 @@ public final class MainPanel extends JPanel {
       JFileChooser chooser = new JFileChooser();
       chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       FileSystemView fsv = chooser.getFileSystemView();
-      File[] files = (File[]) ShellFolder.get("fileChooserShortcutPanelFolders");
+      File[] files = (File[]) sun.awt.shell.ShellFolder.get("fileChooserShortcutPanelFolders");
       for (File f : files) {
         System.out.println(f.getAbsolutePath());
       }
