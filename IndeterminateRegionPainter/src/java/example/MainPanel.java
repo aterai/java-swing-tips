@@ -24,7 +24,10 @@ public final class MainPanel extends JPanel {
 
     JProgressBar progressBar1 = new JProgressBar(model);
     UIDefaults d = new UIDefaults();
-    d.put("ProgressBar[Enabled+Indeterminate].foregroundPainter", new IndeterminateRegionPainter());
+    d.put(
+        "ProgressBar[Enabled+Indeterminate].foregroundPainter",
+        new IndeterminateRegionPainter()
+    );
     progressBar1.putClientProperty("Nimbus.Overrides", d);
 
     // UIManager.put("ProgressBar.cycleTime", 1000);
@@ -60,7 +63,8 @@ public final class MainPanel extends JPanel {
     //       p.lineTo(boxRect.x, boxRect.y);
     //       p.closePath();
     //       Graphics2D g2 = (Graphics2D) g.create();
-    //       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    //       g2.setRenderingHint(
+    //           RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     //       g2.setPaint(progressBar.getForeground());
     //       AffineTransform at = AffineTransform.getTranslateInstance(x, 0);
     //       for (int i = -x; i < boxRect.width; i += w) {
@@ -94,8 +98,8 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(5));
 
     addHierarchyListener(e -> {
-      boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (displayability && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
         System.out.println("DISPOSE_ON_CLOSE");
         worker.cancel(true);
         // worker = null;
@@ -179,27 +183,28 @@ class ProgressListener implements PropertyChangeListener {
 @SuppressWarnings("PMD.UseUnderscoresInNumericLiterals")
 class IndeterminateRegionPainter extends AbstractRegionPainter {
   // Copied from javax.swing.plaf.nimbus.ProgressBarPainter.java
-  private static final String NIMBUS_ORANGE = "nimbusOrange";
-  private final Color color17 = decodeColor(NIMBUS_ORANGE,  .0000000000f,  .00000000f,  .0000000000f, -156);
-  private final Color color18 = decodeColor(NIMBUS_ORANGE, -.0157965120f,  .02094239f, -.1529411700f, 0);
-  private final Color color19 = decodeColor(NIMBUS_ORANGE, -.0043216050f,  .02094239f, -.0745098000f, 0);
-  private final Color color20 = decodeColor(NIMBUS_ORANGE, -.0080213990f,  .02094239f, -.1019607800f, 0);
-  private final Color color21 = decodeColor(NIMBUS_ORANGE, -.0117069040f, -.17905760f, -.0235294100f, 0);
-  private final Color color22 = decodeColor(NIMBUS_ORANGE, -.0486912540f,  .02094239f, -.3019608000f, 0);
-  private final Color color23 = decodeColor(NIMBUS_ORANGE,  .0039403290f, -.73753220f,  .1764705800f, 0);
-  private final Color color24 = decodeColor(NIMBUS_ORANGE,  .0055067390f, -.46764207f,  .1098039150f, 0);
-  private final Color color25 = decodeColor(NIMBUS_ORANGE,  .0042127445f, -.18595415f,  .0470588200f, 0);
-  private final Color color26 = decodeColor(NIMBUS_ORANGE,  .0047626942f,  .02094239f,  .0039215684f, 0);
-  private final Color color27 = decodeColor(NIMBUS_ORANGE,  .0047626942f, -.15147138f,  .1607843000f, 0);
-  private final Color color28 = decodeColor(NIMBUS_ORANGE,  .0106654760f, -.27317524f,  .2509803800f, 0);
-  private final PaintContext ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(29, 19), false);
+  private static final String KEY = "nimbusOrange";
+  private final Color color17 = decodeColor(KEY,  .0000000000f,  .00000000f,  .0000000000f, -156);
+  private final Color color18 = decodeColor(KEY, -.0157965120f,  .02094239f, -.1529411700f, 0);
+  private final Color color19 = decodeColor(KEY, -.0043216050f,  .02094239f, -.0745098000f, 0);
+  private final Color color20 = decodeColor(KEY, -.0080213990f,  .02094239f, -.1019607800f, 0);
+  private final Color color21 = decodeColor(KEY, -.0117069040f, -.17905760f, -.0235294100f, 0);
+  private final Color color22 = decodeColor(KEY, -.0486912540f,  .02094239f, -.3019608000f, 0);
+  private final Color color23 = decodeColor(KEY,  .0039403290f, -.73753220f,  .1764705800f, 0);
+  private final Color color24 = decodeColor(KEY,  .0055067390f, -.46764207f,  .1098039150f, 0);
+  private final Color color25 = decodeColor(KEY,  .0042127445f, -.18595415f,  .0470588200f, 0);
+  private final Color color26 = decodeColor(KEY,  .0047626942f,  .02094239f,  .0039215684f, 0);
+  private final Color color27 = decodeColor(KEY,  .0047626942f, -.15147138f,  .1607843000f, 0);
+  private final Color color28 = decodeColor(KEY,  .0106654760f, -.27317524f,  .2509803800f, 0);
+  private final Insets ins = new Insets(5, 5, 5, 5);
+  private final PaintContext ctx = new PaintContext(ins, new Dimension(29, 19), false);
   private Rectangle2D rect = new Rectangle2D.Float();
-  private Path2D path = new Path2D.Float();
+  // private Path2D path = new Path2D.Float();
 
   @Override public void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] extendedCacheKeys) {
-    path = decodePath1();
+    // path = decodePath1();
     g.setPaint(color17);
-    g.fill(path);
+    g.fill(decodePath1());
     rect = decodeRect3();
     g.setPaint(decodeGradient5(rect));
     g.fill(rect);
@@ -213,45 +218,46 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
   }
 
   private Path2D decodePath1() {
-    path.reset();
+    // path.reset();
+    Path2D path = new Path2D.Float();
     path.moveTo(decodeX(1f), decodeY(.21111111f));
     path.curveTo(decodeAnchorX(1f, -2f), decodeAnchorY(.21111111f, 0f),
-                 decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, -2f),
-                 decodeX(.21111111f), decodeY(1f));
+        decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, -2f),
+        decodeX(.21111111f), decodeY(1f));
     path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(1f, 2f),
-                 decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, -2f),
-                 decodeX(.21111111f), decodeY(2f));
+        decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, -2f),
+        decodeX(.21111111f), decodeY(2f));
     path.curveTo(decodeAnchorX(.21111111f, 0f), decodeAnchorY(2f, 2f),
-                 decodeAnchorX(1f, -2f), decodeAnchorY(2.8222225f, 0f),
-                 decodeX(1f), decodeY(2.8222225f));
+        decodeAnchorX(1f, -2f), decodeAnchorY(2.8222225f, 0f),
+        decodeX(1f), decodeY(2.8222225f));
     path.curveTo(decodeAnchorX(1f, 2f), decodeAnchorY(2.8222225f, 0f),
-                 decodeAnchorX(3f, 0f), decodeAnchorY(2.8222225f, 0f),
-                 decodeX(3f), decodeY(2.8222225f));
+        decodeAnchorX(3f, 0f), decodeAnchorY(2.8222225f, 0f),
+        decodeX(3f), decodeY(2.8222225f));
     path.lineTo(decodeX(3f), decodeY(2.3333333f));
     path.lineTo(decodeX(.6666667f), decodeY(2.3333333f));
     path.lineTo(decodeX(.6666667f), decodeY(.6666667f));
     path.lineTo(decodeX(3f), decodeY(.6666667f));
     path.lineTo(decodeX(3f), decodeY(.2f));
     path.curveTo(decodeAnchorX(3f, 0f), decodeAnchorY(.2f, 0f),
-                 decodeAnchorX(1f, 2f), decodeAnchorY(.21111111f, 0f),
-                 decodeX(1f), decodeY(.21111111f));
+        decodeAnchorX(1f, 2f), decodeAnchorY(.21111111f, 0f),
+        decodeX(1f), decodeY(.21111111f));
     path.closePath();
     return path;
   }
 
   private Rectangle2D decodeRect3() {
     rect.setRect(decodeX(.4f), // x
-           decodeY(.4f), // y
-           decodeX(3f) - decodeX(.4f), // width
-           decodeY(2.6f) - decodeY(.4f)); // height
+        decodeY(.4f), // y
+        decodeX(3f) - decodeX(.4f), // width
+        decodeY(2.6f) - decodeY(.4f)); // height
     return rect;
   }
 
   private Rectangle2D decodeRect4() {
     rect.setRect(decodeX(.6f), // x
-           decodeY(.6f), // y
-           decodeX(2.8f) - decodeX(.6f), // width
-           decodeY(2.4f) - decodeY(.6f)); // height
+        decodeY(.6f), // y
+        decodeX(2.8f) - decodeX(.6f), // width
+        decodeY(2.4f) - decodeY(.6f)); // height
     return rect;
   }
 
@@ -262,22 +268,22 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     float w = (float) bounds.getWidth();
     float h = (float) bounds.getHeight();
     return decodeGradient(
-      .5f * w + x, y, .5f * w + x, h + y,
-      new float[] {
-        .038709678f, .05483871f, .07096774f, .28064516f,
-        .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
-      },
-      new Color[] {
-        color18,
-        decodeColor(color18, color19, .5f),
-        color19,
-        decodeColor(color19, color20, .5f),
-        color20,
-        decodeColor(color20, color21, .5f),
-        color21,
-        decodeColor(color21, color22, .5f),
-        color22
-      });
+        .5f * w + x, y, .5f * w + x, h + y,
+        new float[] {
+            .038709678f, .05483871f, .07096774f, .28064516f,
+            .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
+        },
+        new Color[] {
+            color18,
+            decodeColor(color18, color19, .5f),
+            color19,
+            decodeColor(color19, color20, .5f),
+            color20,
+            decodeColor(color20, color21, .5f),
+            color21,
+            decodeColor(color21, color22, .5f),
+            color22
+        });
   }
 
   private Paint decodeGradient6(Shape s) {
@@ -287,23 +293,23 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
     float w = (float) bounds.getWidth();
     float h = (float) bounds.getHeight();
     return decodeGradient(
-      .5f * w + x, y, .5f * w + x, h + y,
-      new float[] {
-        .038709678f, .061290324f, .08387097f, .27258065f, .46129033f, .4903226f,
-        .5193548f, .71774197f, .91612905f, .92419356f, .93225807f
-      },
-      new Color[] {
-        color23,
-        decodeColor(color23, color24, .5f),
-        color24,
-        decodeColor(color24, color25, .5f),
-        color25,
-        decodeColor(color25, color26, .5f),
-        color26,
-        decodeColor(color26, color27, .5f),
-        color27,
-        decodeColor(color27, color28, .5f),
-        color28
-      });
+        .5f * w + x, y, .5f * w + x, h + y,
+        new float[] {
+            .038709678f, .061290324f, .08387097f, .27258065f, .46129033f, .4903226f,
+            .5193548f, .71774197f, .91612905f, .92419356f, .93225807f
+        },
+        new Color[] {
+            color23,
+            decodeColor(color23, color24, .5f),
+            color24,
+            decodeColor(color24, color25, .5f),
+            color25,
+            decodeColor(color25, color26, .5f),
+            color26,
+            decodeColor(color26, color27, .5f),
+            color27,
+            decodeColor(color27, color28, .5f),
+            color28
+        });
   }
 }

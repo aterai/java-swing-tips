@@ -13,7 +13,6 @@ import javax.swing.plaf.metal.MetalSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 1000, 500);
     setSliderUI(slider1);
 
@@ -82,7 +81,8 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
   protected WindowsJumpToClickedPositionSliderUI(JSlider slider) {
     super(slider);
   }
-  // // JSlider question: Position after leftclick - Stack Overflow
+
+  // // JSlider question: Position after left-click - Stack Overflow
   // // https://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
   // // TEST:
   // protected void scrollDueToClickInTrack(int direction) {
@@ -98,7 +98,8 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
     return new TrackListener() {
       @Override public void mousePressed(MouseEvent e) {
-        if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
+        if (SwingUtilities.isLeftMouseButton(e)) {
           JSlider slider = (JSlider) e.getComponent();
           switch (slider.getOrientation()) {
             case SwingConstants.VERTICAL:
@@ -108,7 +109,8 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
               slider.setValue(valueForXPosition(e.getX()));
               break;
             default:
-              throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+              String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
+              throw new IllegalArgumentException(msg);
           }
           super.mousePressed(e); // isDragging = true;
           super.mouseDragged(e);
@@ -128,7 +130,8 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
     return new TrackListener() {
       @Override public void mousePressed(MouseEvent e) {
-        if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
+        if (SwingUtilities.isLeftMouseButton(e)) {
           JSlider slider = (JSlider) e.getComponent();
           switch (slider.getOrientation()) {
             case SwingConstants.VERTICAL:
@@ -138,7 +141,8 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
               slider.setValue(valueForXPosition(e.getX()));
               break;
             default:
-              throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+              String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
+              throw new IllegalArgumentException(msg);
           }
           super.mousePressed(e); // isDragging = true;
           super.mouseDragged(e);

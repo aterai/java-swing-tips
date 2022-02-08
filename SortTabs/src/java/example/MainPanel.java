@@ -69,6 +69,7 @@ class ComparableTab { // implements Comparable<ComparableTab> {
   // @Override public int compareTo(ComparableTab o) {
   //   return title.compareToIgnoreCase(o.title);
   // }
+  //
   // // http://jqno.nl/equalsverifier/errormessages/subclass-equals-is-not-final/
   // @Override public final boolean equals(Object o) {
   //   if (o == this) {
@@ -80,6 +81,7 @@ class ComparableTab { // implements Comparable<ComparableTab> {
   //   }
   //   return false;
   // }
+  //
   // @Override public final int hashCode() {
   //   return Objects.hash(title, comp);
   // }
@@ -93,7 +95,8 @@ class EditableTabbedPane extends JTabbedPane {
     @Override public void actionPerformed(ActionEvent e) {
       getRootPane().setGlassPane(glassPane);
       Rectangle rect = getBoundsAt(getSelectedIndex());
-      Point p = SwingUtilities.convertPoint(EditableTabbedPane.this, rect.getLocation(), glassPane);
+      Component src = EditableTabbedPane.this;
+      Point p = SwingUtilities.convertPoint(src, rect.getLocation(), glassPane);
       // rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
       rect.setLocation(p);
       rect.grow(-2, -2);
@@ -122,7 +125,8 @@ class EditableTabbedPane extends JTabbedPane {
         String str = editor.getText().trim();
         if (!str.isEmpty()) {
           setTitleAt(getSelectedIndex(), str);
-          Optional.ofNullable(getTabComponentAt(getSelectedIndex())).ifPresent(Component::revalidate);
+          Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
+              .ifPresent(Component::revalidate);
         }
         glassPane.setVisible(false);
       }
@@ -134,11 +138,13 @@ class EditableTabbedPane extends JTabbedPane {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
-          startEditing.actionPerformed(new ActionEvent(e.getComponent(), ActionEvent.ACTION_PERFORMED, ""));
+          Component c = e.getComponent();
+          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
+    InputMap im2 = getInputMap(JComponent.WHEN_FOCUSED);
+    im2.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
     getActionMap().put("start-editing", startEditing);
   }
 
@@ -186,19 +192,19 @@ class TabbedPanePopupMenu extends JPopupMenu {
   protected TabbedPanePopupMenu() {
     super();
     add("New tab").addActionListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
-      tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+      JTabbedPane tabs = (JTabbedPane) getInvoker();
+      tabs.addTab("Title: " + count, new JLabel("Tab: " + count));
+      tabs.setSelectedIndex(tabs.getTabCount() - 1);
       count++;
     });
     sortTabs = add("Sort");
     sortTabs.addActionListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      List<ComparableTab> list = IntStream.range(0, tabbedPane.getTabCount())
-          .mapToObj(i -> new ComparableTab(tabbedPane.getTitleAt(i), tabbedPane.getComponentAt(i)))
+      JTabbedPane tabs = (JTabbedPane) getInvoker();
+      List<ComparableTab> list = IntStream.range(0, tabs.getTabCount())
+          .mapToObj(i -> new ComparableTab(tabs.getTitleAt(i), tabs.getComponentAt(i)))
           .sorted(Comparator.comparing(ComparableTab::getTitle)).collect(Collectors.toList());
-      tabbedPane.removeAll();
-      list.forEach(c -> tabbedPane.addTab(c.getTitle(), c.getComponent()));
+      tabs.removeAll();
+      list.forEach(c -> tabs.addTab(c.getTitle(), c.getComponent()));
     });
     addSeparator();
     closePage = add("Close");

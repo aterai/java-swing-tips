@@ -13,7 +13,9 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    URL[] icons = {getUrl("wi0062-16.png"), getUrl("wi0063-16.png"), getUrl("wi0064-16.png")};
+    URL[] icons = {
+        getUrl("wi0062-16.png"), getUrl("wi0063-16.png"), getUrl("wi0064-16.png")
+    };
     String[] columnNames = {"Column1", "Column2", "Column3"};
     JTable table = new JTable(new DefaultTableModel(columnNames, 8));
     TableColumnModel m = table.getColumnModel();
@@ -62,10 +64,14 @@ public final class MainPanel extends JPanel {
 //   private final Icon icon = new ImageIcon(getClass().getResource("wi0063-16.png"));
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-//     JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-//     l.setHorizontalTextPosition(SwingConstants.RIGHT);
-//     l.setIcon(icon);
-//     return l;
+//     Component c = r.getTableCellRendererComponent(
+//         table, value, isSelected, hasFocus, row, column);
+//     if (c instanceof JLabel) {
+//       JLabel l = (JLabel) c;
+//       l.setHorizontalTextPosition(SwingConstants.RIGHT);
+//       l.setIcon(icon);
+//     }
+//     return c;
 //   }
 // }
 

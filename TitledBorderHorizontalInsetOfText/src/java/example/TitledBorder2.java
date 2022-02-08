@@ -81,7 +81,7 @@ public class TitledBorder2 extends TitledBorder {
    * @param height  the height of the painted border
    */
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-    if (isTitleNotEmpty()) {
+    if (isTitleNotEmpty() && c != null) {
       Border bdr = getBorder();
       int edge = bdr instanceof TitledBorder2 ? 0 : EDGE_SPACING;
       Rectangle br = new Rectangle(x, y, width, height);
@@ -115,9 +115,9 @@ public class TitledBorder2 extends TitledBorder {
     }
   }
 
-  private void initJustificationRect(int just, int x, int width, Rectangle lr, Dimension size, Insets ins) {
+  private void initJustificationRect(int just, int x, int w, Rectangle lr, Dimension size, Insets ins) {
     lr.x = x;
-    lr.width = width - ins.left - ins.right;
+    lr.width = w - ins.left - ins.right;
     if (lr.width > size.width) {
       lr.width = size.width;
     }
@@ -126,10 +126,10 @@ public class TitledBorder2 extends TitledBorder {
         lr.x += ins.left;
         break;
       case RIGHT:
-        lr.x += width - ins.right - lr.width;
+        lr.x += w - ins.right - lr.width;
         break;
       case CENTER:
-        lr.x += (width - lr.width) / 2;
+        lr.x += (w - lr.width) / 2;
         break;
       default:
         // will NOT execute because of the line preceding the switch.
@@ -263,14 +263,12 @@ public class TitledBorder2 extends TitledBorder {
   // }
 
   private JLabel getLabel2(Component c) {
-    if (c != null) {
-      label2.setText(getTitle());
-      label2.setFont(getFont(c));
-      Color color = getTitleColor();
-      label2.setForeground(Objects.nonNull(color) ? color : c.getForeground());
-      label2.setComponentOrientation(c.getComponentOrientation());
-      label2.setEnabled(c.isEnabled());
-    }
+    label2.setText(getTitle());
+    label2.setFont(getFont(c));
+    Color color = getTitleColor();
+    label2.setForeground(Objects.nonNull(color) ? color : c.getForeground());
+    label2.setComponentOrientation(c.getComponentOrientation());
+    label2.setEnabled(c.isEnabled());
     return label2;
   }
 

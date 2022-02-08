@@ -17,7 +17,7 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
-  private static final LinkViewRadioButtonUI LINKVIEW_UI = new LinkViewRadioButtonUI();
+  private static final LinkViewRadioButtonUI LINK_VIEW = new LinkViewRadioButtonUI();
   private static final int LR_PAGE_SIZE = 5;
   private final Box box = Box.createHorizontalBox();
   private final String[] columnNames = {"Year", "String", "Comment"};
@@ -87,13 +87,14 @@ public final class MainPanel extends JPanel {
     }
 
     ButtonGroup bg = new ButtonGroup();
-    JRadioButton f = makePrevNextRadioButton(itemsPerPage, 1, "|<", currentPageIndex > 1);
-    box.add(f);
-    bg.add(f);
-
-    JRadioButton p = makePrevNextRadioButton(itemsPerPage, currentPageIndex - 1, "<", currentPageIndex > 1);
-    box.add(p);
-    bg.add(p);
+    boolean flag1 = currentPageIndex > 1;
+    Arrays.asList(
+        makePrevNextRadioButton(itemsPerPage, 1, "|<", flag1),
+        makePrevNextRadioButton(itemsPerPage, currentPageIndex - 1, "<", flag1)
+    ).forEach(b -> {
+      box.add(b);
+      bg.add(b);
+    });
 
     box.add(Box.createHorizontalGlue());
     for (int i = startPageIndex; i <= endPageIndex; i++) {
@@ -103,10 +104,10 @@ public final class MainPanel extends JPanel {
     }
     box.add(Box.createHorizontalGlue());
 
-    boolean isEnabled = currentPageIndex < maxPageIndex;
+    boolean flag2 = currentPageIndex < maxPageIndex;
     Arrays.asList(
-        makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", isEnabled),
-        makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", isEnabled)
+        makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", flag2),
+        makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", flag2)
     ).forEach(b -> {
       box.add(b);
       bg.add(b);
@@ -135,7 +136,7 @@ public final class MainPanel extends JPanel {
       }
     };
     radio.setForeground(Color.BLUE);
-    radio.setUI(LINKVIEW_UI);
+    radio.setUI(LINK_VIEW);
     if (target == current) {
       radio.setSelected(true);
     }
@@ -146,7 +147,7 @@ public final class MainPanel extends JPanel {
   private JRadioButton makePrevNextRadioButton(int itemsPerPage, int target, String title, boolean flag) {
     JRadioButton radio = new JRadioButton(title);
     radio.setForeground(Color.BLUE);
-    radio.setUI(LINKVIEW_UI);
+    radio.setUI(LINK_VIEW);
     radio.setEnabled(flag);
     radio.addActionListener(e -> initLinkBox(itemsPerPage, target));
     return radio;

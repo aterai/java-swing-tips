@@ -16,16 +16,19 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JButton button = new JButton("JButton JButton");
 
-    Timer timer = new Timer(4000, e -> printInfo(button, LocalTime.now(ZoneId.systemDefault()).toString()));
+    Timer timer = new Timer(4000, e -> {
+      LocalTime now = LocalTime.now(ZoneId.systemDefault());
+      printInfo(button, now.toString());
+    });
 
-    JCheckBox vcheck = new JCheckBox("setVisible", true);
-    vcheck.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));
+    JCheckBox check1 = new JCheckBox("setVisible", true);
+    check1.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));
 
-    JCheckBox echeck = new JCheckBox("setEnabled", true);
-    echeck.addActionListener(e -> button.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+    JCheckBox check2 = new JCheckBox("setEnabled", true);
+    check2.addActionListener(e -> button.setEnabled(((JCheckBox) e.getSource()).isSelected()));
 
-    JCheckBox tcheck = new JCheckBox("start", true);
-    tcheck.addActionListener(e -> {
+    JCheckBox check3 = new JCheckBox("start", true);
+    check3.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
         timer.start();
       } else {
@@ -57,11 +60,11 @@ public final class MainPanel extends JPanel {
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p1.add(new JLabel("JButton:"));
-    p1.add(vcheck);
-    p1.add(echeck);
+    p1.add(check1);
+    p1.add(check2);
     JPanel p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p2.add(new JLabel("Timer:"));
-    p2.add(tcheck);
+    p2.add(check3);
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(p1);

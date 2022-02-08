@@ -125,7 +125,8 @@ class MetalTooltipSliderUI extends MetalSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
     return new TrackListener() {
       @Override public void mousePressed(MouseEvent e) {
-        if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag") && SwingUtilities.isLeftMouseButton(e)) {
+        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
+        if (SwingUtilities.isLeftMouseButton(e)) {
           JSlider slider = (JSlider) e.getComponent();
           if (slider.getOrientation() == SwingConstants.VERTICAL) {
             slider.setValue(valueForYPosition(e.getY()));

@@ -21,8 +21,7 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"CellEditable:false", "Integer", "String"};
     Object[][] data = {
-      {"aaa", 12, "eee"}, {"bbb", 5, "ggg"},
-      {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
+        {"aaa", 12, "eee"}, {"bbb", 5, "ggg"}, {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

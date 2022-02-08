@@ -21,8 +21,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B", "C"};
     Object[][] data = {
-        {"aaa", "ee ee", "l"}, {"bbb", "ff", "ggg"},
-        {"CCC", "kkk", "jj"}, {"DDD", "ii", "hhh"}
+        {"aaa", "eee", "ddd"}, {"bbb", "fff", "ggg"}, {"ccc", "hhh", "iii"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -92,7 +91,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class UnderlineCellRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
+class UnderlineCellRenderer extends DefaultTableCellRenderer
+    implements MouseListener, MouseMotionListener {
   private int viewRowIndex = -1;
   private int viewColumnIndex = -1;
 
