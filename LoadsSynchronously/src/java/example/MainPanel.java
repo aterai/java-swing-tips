@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.Element;
@@ -18,7 +19,8 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.ImageView;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "<span style='background-color:red'>1111111111111111111</span><br />";
+  private static final String TXT = "1111111111111111111111111";
+  private static final String HTML = "<span style='background-color:red'>" + TXT + "</span><br/>";
   private final JLabel label = new JLabel("screenshot");
 
   private MainPanel() {
@@ -29,10 +31,11 @@ public final class MainPanel extends JPanel {
     label.setHorizontalTextPosition(SwingConstants.CENTER);
 
     // String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/GIANT_TCR1_2013.jpg";
-    String path = getClass().getResource("GIANT_TCR1_2013.jpg").toString();
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    String path = Objects.toString(cl.getResource("example/GIANT_TCR1_2013.jpg"));
 
-    String html1 = String.join("\n", Collections.nCopies(50, TEXT));
-    String html2 = String.join("\n", Collections.nCopies(3, TEXT));
+    String html1 = String.join("\n", Collections.nCopies(50, HTML));
+    String html2 = String.join("\n", Collections.nCopies(3, HTML));
 
     JTabbedPane tabs = new JTabbedPane();
 
@@ -66,7 +69,7 @@ public final class MainPanel extends JPanel {
     editor1.setText(st1);
     tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
 
-    // [JDK-8223384] ImageView incorrectly calculates size when synchronously loaded - Java Bug System
+    // ImageView incorrectly calculates size when synchronously loaded - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-8223384
     JEditorPane editor2 = new JEditorPane();
     editor2.setEditorKit(new ImageLoadSynchronouslyHtmlEditorKit());
