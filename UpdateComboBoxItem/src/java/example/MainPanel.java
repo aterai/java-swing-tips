@@ -32,13 +32,16 @@ public final class MainPanel extends JPanel {
     c.gridx = 0;
     c.weightx = 0.0;
     c.anchor = GridBagConstraints.WEST;
-    Stream.of("setSelectedIndex(-1/idx):", "contentsChanged(...):", "repaint():",
-              "(remove/insert)ItemAt(...):", "fireContentsChanged(...):")
-        .map(JLabel::new)
-        .forEach(l -> {
-          p.add(l, c);
-          c.gridy += 1;
-        });
+    Stream.of(
+        "setSelectedIndex(-1/idx):",
+        "contentsChanged(...):",
+        "repaint():",
+        "(remove/insert)ItemAt(...):",
+        "fireContentsChanged(...):"
+    ).map(JLabel::new).forEach(l -> {
+      p.add(l, c);
+      c.gridy += 1;
+    });
 
     c.gridy = 0;
     c.gridx = 1;
@@ -46,12 +49,12 @@ public final class MainPanel extends JPanel {
     c.fill = GridBagConstraints.HORIZONTAL;
 
     CheckableItem[] m = {
-      new CheckableItem("aaa", false),
-      new CheckableItem("bbb bbb", true),
-      new CheckableItem("111", false),
-      new CheckableItem("33333", true),
-      new CheckableItem("2222", true),
-      new CheckableItem("ccc ccc", false)
+        new CheckableItem("aaa", false),
+        new CheckableItem("bbb bbb", true),
+        new CheckableItem("111", false),
+        new CheckableItem("33333", true),
+        new CheckableItem("2222", true),
+        new CheckableItem("ccc ccc", false)
     };
 
     JComboBox<CheckableItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
@@ -59,12 +62,11 @@ public final class MainPanel extends JPanel {
     JComboBox<CheckableItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
     JComboBox<CheckableItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
     JComboBox<CheckableItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
-    Stream.of(combo0, combo1, combo2, combo3, combo4)
-        .forEach(cmp -> {
-          // cmp.setPrototypeDisplayValue(displayValue);
-          p.add(cmp, c);
-          c.gridy += 1;
-        });
+    Stream.of(combo0, combo1, combo2, combo3, combo4).forEach(cmp -> {
+      // cmp.setPrototypeDisplayValue(displayValue);
+      p.add(cmp, c);
+      c.gridy += 1;
+    });
 
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
@@ -137,11 +139,11 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
 
   private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
     return IntStream.range(0, model.getSize())
-      .mapToObj(model::getElementAt)
-      .filter(CheckableItem::isSelected)
-      .map(Objects::toString)
-      .sorted()
-      .collect(Collectors.joining(", "));
+        .mapToObj(model::getElementAt)
+        .filter(CheckableItem::isSelected)
+        .map(Objects::toString)
+        .sorted()
+        .collect(Collectors.joining(", "));
   }
 }
 
@@ -182,9 +184,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     };
     setRenderer(new CheckBoxCellRenderer<>());
     addActionListener(listener);
-    getInputMap(JComponent.WHEN_FOCUSED)
-        .put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "checkbox-select");
-    getActionMap().put("checkbox-select", new AbstractAction() {
+    String selectCmd = "checkbox-select";
+    getActionMap().put(selectCmd, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Accessible a = getAccessibleContext().getAccessibleChild(0);
         if (a instanceof ComboPopup) {
@@ -192,6 +193,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
         }
       }
     });
+    KeyStroke spaceKey = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
+    getInputMap(JComponent.WHEN_FOCUSED).put(spaceKey, selectCmd);
   }
 
   protected void updateItem(int index) {

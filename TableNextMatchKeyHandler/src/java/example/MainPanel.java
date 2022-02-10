@@ -19,9 +19,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-      {"aaa", 15, true}, {"bbb", 6, false},
-      {"abc", 92, true}, {"Bbb", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"aaa", 15, true},
+        {"bbb", 6, false}, {"abc", 92, true}, {"Bbb", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -74,9 +73,9 @@ class TableNextMatchKeyHandler extends KeyAdapter {
 
   private boolean isNavigationKey(KeyEvent event) {
     JTable table = (JTable) event.getComponent();
-    InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     KeyStroke key = KeyStroke.getKeyStrokeForEvent(event);
-    return Objects.nonNull(inputMap) && Objects.nonNull(inputMap.get(key));
+    return Objects.nonNull(im) && Objects.nonNull(im.get(key));
   }
 
   @Override public void keyPressed(KeyEvent e) {
@@ -145,22 +144,22 @@ class TableNextMatchKeyHandler extends KeyAdapter {
 
   // @see javax/swing/JList#getNextMatch(String prefix, int startIndex, Position.Bias bias)
   // @see javax/swing/JTree#getNextMatch(String prefix, int startIndex, Position.Bias bias)
-  public static int getNextMatch(JTable table, String prefix, int startingRow, Position.Bias bias) {
+  public static int getNextMatch(JTable table, String prefix, int startRow, Position.Bias bias) {
     // int max = table.getRowCount();
-    // if (Objects.isNull(prefix) || startingRow < 0 || startingRow >= max) {
+    // if (Objects.isNull(prefix) || startRow < 0 || startRow >= max) {
     //   throw new IllegalArgumentException();
     // }
     Objects.requireNonNull(prefix, "Must supply non-null prefix");
     int max = table.getRowCount();
-    if (startingRow < 0 || startingRow >= max) {
-      throw new IllegalArgumentException("(0 <= startingRow < max) is false");
+    if (startRow < 0 || startRow >= max) {
+      throw new IllegalArgumentException("(0 <= startRow < max) is false");
     }
 
     String upperPrefix = prefix.toUpperCase(Locale.ENGLISH);
     // start search from the next/previous element from the
     // selected element
     int increment = bias == Position.Bias.Forward ? 1 : -1;
-    int row = startingRow;
+    int row = startRow;
     do {
       Object value = table.getValueAt(row, TARGET_COLUMN);
       String text = Objects.toString(value, "");
@@ -168,7 +167,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
         return row;
       }
       row = (row + increment + max) % max;
-    } while (row != startingRow);
+    } while (row != startRow);
     return -1;
   }
 }

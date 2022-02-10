@@ -12,13 +12,16 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JButton button1 = new JButton("JOptionPane.showMessageDialog");
-    button1.addActionListener(e -> JOptionPane.showMessageDialog(getRootPane(), "showMessageDialog"));
+    button1.addActionListener(e -> {
+      Component c = ((JComponent) e.getSource()).getRootPane();
+      JOptionPane.showMessageDialog(c, "showMessageDialog");
+    });
 
     JButton button2 = new JButton("Default");
     button2.addActionListener(e -> {
-      JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
+      Frame frame = JOptionPane.getFrameForComponent(getRootPane());
+      JDialog dialog = new JDialog(frame, "title", true);
       Action act = new AbstractAction("OK") {
         @Override public void actionPerformed(ActionEvent e) {
           dialog.dispose();
@@ -33,15 +36,18 @@ public final class MainPanel extends JPanel {
 
     JButton button3 = new JButton("close JDialog with ESC key");
     button3.addActionListener(e -> {
-      JDialog dialog = new JDialog(JOptionPane.getFrameForComponent(getRootPane()), "title", true);
+      Frame frame = JOptionPane.getFrameForComponent(getRootPane());
+      JDialog dialog = new JDialog(frame, "title", true);
       Action act = new AbstractAction("OK") {
         @Override public void actionPerformed(ActionEvent e) {
           dialog.dispose();
         }
       };
-      InputMap imap = dialog.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-      imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-it");
-      dialog.getRootPane().getActionMap().put("close-it", act);
+      JRootPane rp = dialog.getRootPane();
+      String cmd = "close-it";
+      rp.getActionMap().put(cmd, act);
+      KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+      rp.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, cmd);
       dialog.getContentPane().add(makePanel(act));
       dialog.pack();
       dialog.setResizable(false);
@@ -78,7 +84,7 @@ public final class MainPanel extends JPanel {
     p.add(new JLabel(new ColorIcon(Color.RED)), c);
 
     c.insets = new Insets(5, 0, 5, 0);
-    // p.add(new JLabel("<html>Message<br>aaaaaa<br>aaaaaaaaaaa<br>aaaaaaaaaaaaaaaa"), c);
+    // p.add(new JLabel("<html>Message<br>11111<br>222222222<br>333333333"), c);
     p.add(new JLabel("Message"), c);
 
     c.gridwidth = 2;

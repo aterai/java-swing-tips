@@ -117,9 +117,13 @@ class EditableTabbedPane extends JTabbedPane {
   protected EditableTabbedPane() {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
+    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    im.put(enterKey, EDIT_KEY);
+    String cancelCmd = "cancel-editing";
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelCmd);
+
     ActionMap am = editor.getActionMap();
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), EDIT_KEY);
     am.put(EDIT_KEY, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         String str = editor.getText().trim();
@@ -131,21 +135,20 @@ class EditableTabbedPane extends JTabbedPane {
         glassPane.setVisible(false);
       }
     });
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
-    am.put("cancel-editing", cancelEditing);
+    am.put(cancelCmd, cancelEditing);
 
+    String startCmd = "start-editing";
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
           Component c = e.getComponent();
-          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, startCmd));
         }
       }
     });
-    InputMap im2 = getInputMap(JComponent.WHEN_FOCUSED);
-    im2.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "start-editing");
-    getActionMap().put("start-editing", startEditing);
+    getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, startCmd);
+    getActionMap().put(startCmd, startEditing);
   }
 
   protected JTextField getEditor() {

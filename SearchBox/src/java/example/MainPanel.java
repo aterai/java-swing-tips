@@ -51,9 +51,11 @@ public final class MainPanel extends JPanel {
     button.setAction(findNextAction);
     button.setFocusable(false);
 
-    field.getActionMap().put("find-next", findNextAction);
-    field.getInputMap(JComponent.WHEN_FOCUSED)
-        .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "find-next");
+
+    String findCmd = "find-next";
+    field.getActionMap().put(findCmd, findNextAction);
+    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    field.getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, findCmd);
 
     JPanel controls = new JPanel();
     ControlPanelLayout layout = new ControlPanelLayout(controls, 5, 5);
@@ -68,11 +70,12 @@ public final class MainPanel extends JPanel {
     showHideButton.setAction(layout.showHideAction);
     showHideButton.setFocusable(false);
 
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    String searchCmd = "open-search-box";
+    getActionMap().put(searchCmd, layout.showHideAction);
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-search-box");
-    getActionMap().put("open-search-box", layout.showHideAction);
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers);
+    getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(key, searchCmd);
 
     add(controls, BorderLayout.NORTH);
     add(new JScrollPane(tree));
