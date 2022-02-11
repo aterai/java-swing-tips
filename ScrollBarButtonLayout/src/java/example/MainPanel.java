@@ -64,9 +64,9 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
     /* Nominal locations of the buttons, assuming their preferred
      * size will fit.
      */
-    // boolean squareButtons = DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
-    // int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
-    // int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
+    // boolean square = DefaultLookup.getBoolean(sb, this, "ScrollBar.squareButtons", false);
+    // int decrButtonH = square ? itemW : decrButton.getPreferredSize().height;
+    // int incrButtonH = square ? itemW : incrButton.getPreferredSize().height;
     int decrButtonH = decrButton.getPreferredSize().height;
     int incrButtonH = incrButton.getPreferredSize().height;
 
@@ -167,9 +167,9 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
     /* Nominal locations of the buttons, assuming their preferred
      * size will fit.
      */
-    // boolean squareButtons = DefaultLookup.getBoolean(scrollbar, this, "ScrollBar.squareButtons", false);
-    // int decrButtonH = squareButtons ? itemW : decrButton.getPreferredSize().height;
-    // int incrButtonH = squareButtons ? itemW : incrButton.getPreferredSize().height;
+    // boolean square = DefaultLookup.getBoolean(sb, this, "ScrollBar.squareButtons", false);
+    // int decrButtonH = square ? itemW : decrButton.getPreferredSize().height;
+    // int incrButtonH = square ? itemW : incrButton.getPreferredSize().height;
     int decrButtonH = decrButton.getPreferredSize().height;
     int incrButtonH = incrButton.getPreferredSize().height;
 

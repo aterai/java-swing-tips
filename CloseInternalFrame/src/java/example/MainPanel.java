@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
   private static JToolBar createToolBar(JDesktopPane desktop) {
     JToolBar toolBar = new JToolBar();
     toolBar.setFloatable(false);
-    JButton b = new JButton(UIManager.getIcon("FileView.fileIcon"));
-    b.addActionListener(e -> {
+    JButton b1 = new JButton(UIManager.getIcon("FileView.fileIcon"));
+    b1.addActionListener(e -> {
       JInternalFrame frame = makeInternalFrame(desktop);
       try {
         frame.setSelected(true);
@@ -56,35 +56,38 @@ public final class MainPanel extends JPanel {
         throw new IllegalStateException(ex);
       }
     });
-    b.setToolTipText("create new InternalFrame");
-    toolBar.add(b);
+    b1.setToolTipText("create new InternalFrame");
+    toolBar.add(b1);
     toolBar.add(Box.createGlue());
 
-    b = new JButton(new CloseIcon(Color.RED));
-    b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(JInternalFrame::dispose));
-    b.setToolTipText("f.dispose();");
-    toolBar.add(b);
+    JButton b2 = new JButton(new CloseIcon(Color.RED));
+    b2.addActionListener(e -> getSelectedFrame(desktop)
+        .ifPresent(JInternalFrame::dispose));
+    b2.setToolTipText("f.dispose();");
+    toolBar.add(b2);
 
-    b = new JButton(new CloseIcon(Color.GREEN));
-    b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(desktop.getDesktopManager()::closeFrame));
-    b.setToolTipText("desktop.getDesktopManager().closeFrame(f);");
-    toolBar.add(b);
+    JButton b3 = new JButton(new CloseIcon(Color.GREEN));
+    b3.addActionListener(e -> getSelectedFrame(desktop)
+        .ifPresent(desktop.getDesktopManager()::closeFrame));
+    b3.setToolTipText("desktop.getDesktopManager().closeFrame(f);");
+    toolBar.add(b3);
 
-    b = new JButton(new CloseIcon(Color.BLUE));
-    b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(JInternalFrame::doDefaultCloseAction));
-    b.setToolTipText("f.doDefaultCloseAction();");
-    toolBar.add(b);
+    JButton b4 = new JButton(new CloseIcon(Color.BLUE));
+    b4.addActionListener(e -> getSelectedFrame(desktop)
+        .ifPresent(JInternalFrame::doDefaultCloseAction));
+    b4.setToolTipText("f.doDefaultCloseAction();");
+    toolBar.add(b4);
 
-    b = new JButton(new CloseIcon(Color.YELLOW));
-    b.addActionListener(e -> getSelectedFrame(desktop).ifPresent(f -> {
+    JButton b5 = new JButton(new CloseIcon(Color.YELLOW));
+    b5.addActionListener(e -> getSelectedFrame(desktop).ifPresent(f -> {
       try {
         f.setClosed(true);
       } catch (PropertyVetoException ex) {
         throw new IllegalStateException(ex);
       }
     }));
-    b.setToolTipText("f.setClosed(true);");
-    toolBar.add(b);
+    b5.setToolTipText("f.setClosed(true);");
+    toolBar.add(b5);
 
     return toolBar;
   }

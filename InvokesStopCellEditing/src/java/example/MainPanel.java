@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     tree.setEditable(true);
 
     JCheckBox check = new JCheckBox("InvokesStopCellEditing");
-    check.addActionListener(e -> tree.setInvokesStopCellEditing(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> tree.setInvokesStopCellEditing(check.isSelected()));
 
     add(check, BorderLayout.NORTH);
     add(new JScrollPane(tree));

@@ -43,7 +43,8 @@ public final class MainPanel extends JPanel {
       @Override public JToolTip createToolTip() {
         JToolTip tip = super.createToolTip();
         tip.addHierarchyListener(e -> {
-          if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && e.getComponent().isShowing()) {
+          boolean showing = e.getComponent().isShowing();
+          if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && showing) {
             panel.setBackground(tip.getBackground());
             popup.show(tip, 0, 0);
           }
@@ -57,7 +58,8 @@ public final class MainPanel extends JPanel {
     editor.addHyperlinkListener(e -> {
       JEditorPane editorPane = (JEditorPane) e.getSource();
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
+        String message = "You click the link with the URL " + e.getURL();
+        JOptionPane.showMessageDialog(editorPane, message);
       } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
         editorPane.setToolTipText("");
         Optional.ofNullable(e.getSourceElement())

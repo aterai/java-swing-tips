@@ -13,18 +13,18 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "drag select table cells 1 22 333 4444 55555 666666 7777777 88888888";
+  private static final String TEXT = "drag select table cells 1 22 333 4444 55555 666666 7777777";
 
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"html"};
     Object[][] data = {
-      {"<html><font color=red>font color red</font><br /> " + TEXT},
-      {"<html><font color=green>font color green</font> " + TEXT},
-      {"<html><font color=blue>font color blue</font> " + TEXT},
-      {"<html><font color=black>font color black</font><br />  " + TEXT},
-      {"<html><font color=orange>font color orange</font> " + TEXT},
-      {"<html><font color=gray>font color gray</font> " + TEXT}
+        {"<html><font color=red>font color red</font><br /> " + TEXT},
+        {"<html><font color=green>font color green</font> " + TEXT},
+        {"<html><font color=blue>font color blue</font> " + TEXT},
+        {"<html><font color=black>font color black</font><br />  " + TEXT},
+        {"<html><font color=orange>font color orange</font> " + TEXT},
+        {"<html><font color=gray>font color gray</font> " + TEXT}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

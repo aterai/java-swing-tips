@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JRadioButton r0 = new JRadioButton("PreferredSize: 0, shift pressed: Horizontal WheelScrolling", true);
+    JRadioButton r0 = new JRadioButton("Size: 0, shift pressed: Horizontal WheelScrolling", true);
     r0.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);

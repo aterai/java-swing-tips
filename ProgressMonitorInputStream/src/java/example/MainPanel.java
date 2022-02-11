@@ -31,13 +31,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     textArea.setEditable(false);
-
     runButton.addActionListener(this::executeWorker);
-
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(runButton);
-
     add(new JScrollPane(textArea));
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -73,8 +70,9 @@ public final class MainPanel extends JPanel {
     Charset cs = getCharset(urlConnection);
     int length = urlConnection.getContentLength();
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+    JRootPane rp = b.getRootPane();
     try (InputStream is = urlConnection.getInputStream();
-         ProgressMonitorInputStream pms = new ProgressMonitorInputStream(b.getRootPane(), "Loading", is)) {
+         ProgressMonitorInputStream pms = new ProgressMonitorInputStream(rp, "Loading", is)) {
       monitor = pms.getProgressMonitor();
       monitor.setNote(" "); // Need for JLabel#getPreferredSize
       monitor.setMillisToDecideToPopup(0);

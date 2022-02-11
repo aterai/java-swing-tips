@@ -74,8 +74,9 @@ public final class MainPanel extends JPanel {
       // Element root = doc.getDefaultRootElement();
       // try {
       //   for (int i = 0; i < root.getElementCount(); i++) {
-      //     Element elem = root.getElement(i);
-      //     String line = doc.getText(elem.getStartOffset(), elem.getEndOffset() - elem.getStartOffset());
+      //     Element elm = root.getElement(i);
+      //     int len = elm.getEndOffset() - elm.getStartOffset();
+      //     String line = doc.getText(elm.getStartOffset(), len);
       //     if (line.codePointAt(0) == SHARP) {
       //       count++;
       //     }

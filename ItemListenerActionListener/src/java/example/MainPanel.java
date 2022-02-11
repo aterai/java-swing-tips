@@ -99,9 +99,10 @@ public final class MainPanel extends JPanel {
     ButtonGroup bg = new ButtonGroup();
     ItemListener il = e -> {
       AbstractButton c = (AbstractButton) e.getItemSelectable();
-      boolean b = e.getStateChange() == ItemEvent.SELECTED;
-      String ac = Optional.ofNullable(bg.getSelection()).map(ButtonModel::getActionCommand).orElse("NULL");
-      print(textArea, e, c.getClass(), b, ac);
+      String ac = Optional.ofNullable(bg.getSelection())
+          .map(ButtonModel::getActionCommand)
+          .orElse("NULL");
+      print(textArea, e, c.getClass(), e.getStateChange() == ItemEvent.SELECTED, ac);
     };
     ActionListener al = e -> {
       AbstractButton c = (AbstractButton) e.getSource();
@@ -127,9 +128,9 @@ public final class MainPanel extends JPanel {
     return new JScrollPane(p);
   }
 
-  private static void print(JTextArea log, AWTEvent e, Class<?> clz, boolean isSelected, Object o) {
+  private static void print(JTextArea log, AWTEvent e, Class<?> clz, boolean selected, Object o) {
     String l = e.getClass().getSimpleName();
-    String s = isSelected ? "SELECTED" : "DESELECTED";
+    String s = selected ? "SELECTED" : "DESELECTED";
     log.append(String.format("%-14s %s %-10s %s%n", l, clz.getSimpleName(), s, o));
     log.setCaretPosition(log.getDocument().getLength());
   }

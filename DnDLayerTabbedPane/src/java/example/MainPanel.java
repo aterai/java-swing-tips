@@ -115,8 +115,8 @@ public final class MainPanel extends JPanel {
     TabTransferHandler handler = new TabTransferHandler();
     JCheckBoxMenuItem check = new JCheckBoxMenuItem("Ghost image: Heavyweight");
     check.addActionListener(e -> {
-      JCheckBoxMenuItem c = (JCheckBoxMenuItem) e.getSource();
-      handler.setDragImageMode(c.isSelected() ? DragImageMode.HEAVYWEIGHT : DragImageMode.LIGHTWEIGHT);
+      boolean b = ((AbstractButton) e.getSource()).isSelected();
+      handler.setDragImageMode(b ? DragImageMode.HEAVYWEIGHT : DragImageMode.LIGHTWEIGHT);
     });
     JMenu menu = new JMenu("Debug");
     menu.add(check);
@@ -207,12 +207,13 @@ class DnDTabbedPane extends JTabbedPane {
     Rectangle r = getTabAreaBounds();
     // int tabPlacement = getTabPlacement();
     // if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+    int arrowBoxSize = SCROLL_SZ + BUTTON_SZ;
     if (isTopBottomTabPlacement(getTabPlacement())) {
       RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SZ, r.height);
-      RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SZ - BUTTON_SZ, r.y, SCROLL_SZ + BUTTON_SZ, r.height);
+      RECT_FORWARD.setBounds(r.x + r.width - arrowBoxSize, r.y, arrowBoxSize, r.height);
     } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SZ);
-      RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SZ - BUTTON_SZ, r.width, SCROLL_SZ + BUTTON_SZ);
+      RECT_FORWARD.setBounds(r.x, r.y + r.height - arrowBoxSize, r.width, arrowBoxSize);
     }
     if (RECT_BACKWARD.contains(pt)) {
       clickArrowButton("scrollTabsBackwardAction");
@@ -567,11 +568,14 @@ class TabTransferHandler extends TransferHandler {
       // System.out.println("target == source");
       canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
     } else {
-      // System.out.format("target!=source%n target: %s%n source: %s", target.getName(), source.getName());
-      canDrop = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && inArea;
+      // System.out.format("tgt!=src%n tgt: %s%n src: %s", target.getName(), source.getName());
+      canDrop = Optional.ofNullable(source)
+          .map(c -> !c.isAncestorOf(target))
+          .orElse(false) && inArea;
     }
 
-    // [JDK-6700748] Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+    // [JDK-6700748]
+    // Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
     // https://bugs.openjdk.java.net/browse/JDK-6700748
     target.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
@@ -592,7 +596,9 @@ class TabTransferHandler extends TransferHandler {
 
   private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
     Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
-    BufferedImage img = new BufferedImage(tabs.getWidth(), tabs.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    int w = tabs.getWidth();
+    int h = tabs.getHeight();
+    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics g = img.createGraphics();
     tabs.paint(g);
     g.dispose();
@@ -703,7 +709,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
   }
 }
 
-// How to Use Tabbed Panes (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
   protected final JTabbedPane tabbedPane;

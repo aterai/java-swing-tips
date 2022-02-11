@@ -12,7 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea log = new JTextArea();
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
@@ -43,13 +42,10 @@ public final class MainPanel extends JPanel {
       //   System.out.println(key);
       // }
 
-      Optional.ofNullable(chooser.getActionMap().get("viewTypeDetails"))
-          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), "viewTypeDetails")));
+      String cmd = "viewTypeDetails";
+      Optional.ofNullable(chooser.getActionMap().get(cmd))
+          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), cmd)));
 
-      // Action detailsAction = chooser.getActionMap().get("viewTypeDetails");
-      // if (Objects.nonNull(detailsAction)) {
-      //   detailsAction.actionPerformed(null);
-      // }
       int retValue = chooser.showOpenDialog(p);
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -62,6 +58,7 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
+
   // public static boolean searchAndClick(Container parent, Icon icon) {
   //   for (Component c : parent.getComponents()) {
   //     if (c instanceof JToggleButton && ((JToggleButton) c).getIcon() == icon) {
@@ -75,12 +72,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   return false;
   // }
-  //   AbstractButton b = getDetailsViewButton(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"));
-  //   if (Objects.nonNull(b)) {
-  //     Dimension d = chooser.getPreferredSize();
-  //     chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
-  //     b.doClick();
-  //   };
+  //
   // private static AbstractButton getDetailsViewButton(Container parent, Icon icon) {
   //   AbstractButton b = null;
   //   for (Component c : parent.getComponents()) {
@@ -95,6 +87,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   return b;
   // }
+  //
   // private Component findChildComponent(Container container, Class<?> cls) {
   //   int n = container.getComponentCount();
   //   for (int i = 0; i < n; i++) {
