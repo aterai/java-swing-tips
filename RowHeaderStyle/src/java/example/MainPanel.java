@@ -17,8 +17,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", 12, true}, {"bbb", 5, false},
-      {"ccc", 92, true}, {"ddd", 0, false}
+        {"aaa", 12, true}, {"bbb", 5, false}, {"ccc", 92, true}, {"ddd", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -77,15 +76,14 @@ class RowHeaderRenderer extends MouseAdapter implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer tcr = table.getTableHeader().getDefaultRenderer();
-    boolean f = row == rollOverRowIndex;
-    JLabel l = (JLabel) tcr.getTableCellRendererComponent(table, value, isSelected, f || hasFocus, -1, -1);
-    if (tcr.getClass().getName().contains("XPDefaultRenderer")) {
-      l.setOpaque(!f);
-      renderer.setIcon(new ComponentIcon(l));
+    boolean focus = row == rollOverRowIndex; // || hasFocus;
+    Component c = tcr.getTableCellRendererComponent(table, value, isSelected, focus, -1, -1);
+    if (c instanceof JComponent && tcr.getClass().getName().contains("XPDefaultRenderer")) {
+      ((JComponent) c).setOpaque(!focus);
+      renderer.setIcon(new ComponentIcon(c));
       return renderer;
-    } else {
-      return l;
     }
+    return c;
   }
 
   // @Override public void mouseMoved(MouseEvent e) {
