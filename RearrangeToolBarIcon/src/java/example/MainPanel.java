@@ -8,14 +8,16 @@ import java.awt.*;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final String PATH = "toolbarButtonGraphics/general/";
+
   private MainPanel() {
     super(new BorderLayout());
-
     JToolBar toolBar = new JToolBar("ToolBarButton");
     toolBar.setFloatable(false);
     DragHandler dh = new DragHandler();
@@ -23,22 +25,23 @@ public final class MainPanel extends JPanel {
     toolBar.addMouseMotionListener(dh);
     toolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
-    Stream.of("Copy24.gif", "Cut24.gif", "Paste24.gif",
+    Stream.of(
+        "Copy24.gif", "Cut24.gif", "Paste24.gif",
         "Delete24.gif", "Undo24.gif", "Redo24.gif",
-        "Help24.gif", "Open24.gif", "Save24.gif")
-        .map(name -> "/toolBarButtonGraphics/general/" + name)
-        .map(this::createToolBarButton)
-        .forEach(toolBar::add);
+        "Help24.gif", "Open24.gif", "Save24.gif"
+    ).map(this::createToolBarButton).forEach(toolBar::add);
 
     add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component createToolBarButton(String path) {
-    JComponent b = new JLabel(new ImageIcon(getClass().getResource(path)));
-    b.setOpaque(false);
-    return b;
+  private Component createToolBarButton(String name) {
+    URL url = Thread.currentThread().getContextClassLoader().getResource(PATH + name);
+    Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
+    JComponent label = new JLabel(icon);
+    label.setOpaque(false);
+    return label;
   }
 
   public static void main(String[] args) {
@@ -71,7 +74,8 @@ class DragHandler extends MouseAdapter {
   private final Point startPt = new Point();
   private final int dragThreshold = DragSource.getDragThreshold();
 
-  @Override public void mousePressed(MouseEvent e) {
+  @Override
+  public void mousePressed(MouseEvent e) {
     Container parent = (Container) e.getComponent();
     if (parent.getComponentCount() > 0) {
       startPt.setLocation(e.getPoint());
@@ -86,7 +90,7 @@ class DragHandler extends MouseAdapter {
       return;
     }
     draggingComponent = c;
-    swapComponentLocation(parent, c, gap, index);
+    swapComponent(parent, c, gap, index);
 
     window.add(draggingComponent);
     window.pack();
@@ -98,14 +102,15 @@ class DragHandler extends MouseAdapter {
     window.setVisible(true);
   }
 
-  private static void swapComponentLocation(Container parent, Component remove, Component add, int idx) {
-    parent.remove(remove);
-    parent.add(add, idx);
-    parent.revalidate();
-    // parent.repaint();
+  private static void swapComponent(Container p, Component remove, Component add, int idx) {
+    p.remove(remove);
+    p.add(add, idx);
+    p.revalidate();
+    // p.repaint();
   }
 
-  @Override public void mouseDragged(MouseEvent e) {
+  @Override
+  public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
 
@@ -128,10 +133,10 @@ class DragHandler extends MouseAdapter {
       PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
       NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
       if (PREV_AREA.contains(pt)) {
-        swapComponentLocation(parent, gap, gap, i > 1 ? i : 0);
+        swapComponent(parent, gap, gap, i > 1 ? i : 0);
         return;
       } else if (NEXT_AREA.contains(pt)) {
-        swapComponentLocation(parent, gap, gap, i);
+        swapComponent(parent, gap, gap, i);
         return;
       }
     }
@@ -139,7 +144,8 @@ class DragHandler extends MouseAdapter {
     parent.revalidate();
   }
 
-  @Override public void mouseReleased(MouseEvent e) {
+  @Override
+  public void mouseReleased(MouseEvent e) {
     if (!window.isVisible() || Objects.isNull(draggingComponent)) {
       return;
     }
@@ -157,17 +163,17 @@ class DragHandler extends MouseAdapter {
       PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
       NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
       if (PREV_AREA.contains(pt)) {
-        swapComponentLocation(parent, gap, cmp, i > 1 ? i : 0);
+        swapComponent(parent, gap, cmp, i > 1 ? i : 0);
         return;
       } else if (NEXT_AREA.contains(pt)) {
-        swapComponentLocation(parent, gap, cmp, i);
+        swapComponent(parent, gap, cmp, i);
         return;
       }
     }
     if (parent.getBounds().contains(pt)) {
-      swapComponentLocation(parent, gap, cmp, parent.getComponentCount());
+      swapComponent(parent, gap, cmp, parent.getComponentCount());
     } else {
-      swapComponentLocation(parent, gap, cmp, index);
+      swapComponent(parent, gap, cmp, index);
     }
   }
 }
