@@ -31,7 +31,10 @@ public final class MainPanel extends JPanel {
     add(makeTitledPanel("Default", makeToggleSlider(null)));
     add(makeTitledPanel("Thumb size", slider0));
     add(makeTitledPanel("SliderTrack", slider1));
-    add(makeTitledPanel("JSlider + JLayer", new JLayer<>(makeToggleSlider(d), new ToggleSwitchLayerUI())));
+
+    JSlider slider2 = makeToggleSlider(d);
+    add(makeTitledPanel("JSlider + JLayer", new JLayer<>(slider2, new ToggleSwitchLayerUI())));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -67,7 +70,8 @@ public final class MainPanel extends JPanel {
       g.setPaint(Color.WHITE);
       g.drawString(off, w - g.getFontMetrics().stringWidth(off) - fillLeft * 5, baseline);
 
-      int fillRight = getXPositionForValue(c, new Rectangle(fillLeft, fillTop, trackWidth, trackHeight));
+      Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, trackHeight);
+      int fillRight = getXPositionForValue(c, r);
       g.setColor(Color.ORANGE);
       g.fillRoundRect(fillLeft + 1, fillTop, fillRight - fillLeft, trackHeight, arc, arc);
 
@@ -104,7 +108,7 @@ public final class MainPanel extends JPanel {
     int max = slider.getMaximum();
     int trackLength = trackRect.width;
     float valueRange = (float) max - (float) min;
-    float pixelsPerValue = (float) trackLength / valueRange;
+    float pixelsPerValue = trackLength / valueRange;
     int trackLeft = trackRect.x;
     int trackRight = trackRect.x + trackRect.width - 1;
 
@@ -146,7 +150,8 @@ class ToggleSwitchLayerUI extends LayerUI<JSlider> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+      JLayer<?> l = (JLayer<?>) c;
+      l.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
   }
 

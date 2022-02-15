@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
       });
     }
   };
-  // TEST: public final ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-  // TEST: public final Executor executor = Executors.newFixedThreadPool(2);
+  // TEST: ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+  // TEST: Executor executor = Executors.newFixedThreadPool(2);
   private final Set<Integer> deletedRowSet = new TreeSet<>();
-  // private final Map<Integer, SwingWorker<Integer, Integer>> workerMap = new ConcurrentHashMap<>();
+  // Map<Integer, SwingWorker<Integer, Integer>> workerMap = new ConcurrentHashMap<>();
   private int number;
 
   private MainPanel() {

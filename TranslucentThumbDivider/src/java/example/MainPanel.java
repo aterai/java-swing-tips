@@ -42,7 +42,8 @@ public final class MainPanel extends JPanel {
     Graphics g = source.createGraphics();
     g.drawImage(source, 0, 0, this);
     g.dispose();
-    ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+    ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+    ColorConvertOp colorConvert = new ColorConvertOp(colorSpace, null);
     BufferedImage destination = colorConvert.filter(source, null);
 
     Component beforeCanvas = new JComponent() {
@@ -77,7 +78,7 @@ public final class MainPanel extends JPanel {
 
     DividerLocationDragLayerUI layerUI = new DividerLocationDragLayerUI();
     JCheckBox check = new JCheckBox("Paint divider");
-    check.addActionListener(e -> layerUI.setPaintDividerEnabled(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> layerUI.setPaintDividerEnabled(check.isSelected()));
 
     add(new JLayer<>(split, layerUI));
     add(check, BorderLayout.SOUTH);
@@ -130,7 +131,8 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+      JLayer<?> l = (JLayer<?>) c;
+      l.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
   }
 

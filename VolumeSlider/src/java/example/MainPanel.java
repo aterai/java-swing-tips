@@ -21,7 +21,8 @@ public final class MainPanel extends JPanel {
     JSlider slider2 = new JSlider(0, 100, 0);
     slider2.setUI(new MetalSliderUI() {
       @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
-        // [JDK-5099681] Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
+        // [JDK-5099681]
+        // Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
         // https://bugs.openjdk.java.net/browse/JDK-5099681
         label.setForeground(Color.GREEN);
         super.paintHorizontalLabel(g, value, label);
@@ -121,7 +122,9 @@ class TriSliderUI extends MetalSliderUI {
         fillRight = middleOfThumb;
       }
 
-      g2.setPaint(new GradientPaint(0f, 0f, new Color(0, 100, 100), cw, 0f, new Color(0, 255, 100), true));
+      Color color1 = new Color(0, 100, 100);
+      Color color2 = new Color(0, 255, 100);
+      g2.setPaint(new GradientPaint(0f, 0f, color1, cw, 0f, color2, true));
       g2.fillRect(0, -cy, fillRight - fillLeft, cy * 2);
 
       g2.setPaint(slider.getBackground());

@@ -202,7 +202,8 @@ public final class MainPanel extends JPanel {
   //
   //   @Override public Component getListCellRendererComponent(JList<? extends Contribution> list, Contribution value, int index, boolean isSelected, boolean cellHasFocus) {
   //     // Contribution v = Optional.ofNullable(value).orElseGet(list::getPrototypeCellValue);
-  //     Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+  //     Component c = renderer.getListCellRendererComponent(
+  //         list, value, index, isSelected, cellHasFocus);
   //     if (c instanceof JLabel) {
   //       JLabel l = (JLabel) c;
   //       if (value.date.isAfter(currentLocalDate)) {

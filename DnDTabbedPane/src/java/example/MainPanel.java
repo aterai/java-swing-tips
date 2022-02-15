@@ -545,7 +545,8 @@ class GhostGlassPane extends JComponent {
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-    if (tabbedPane.isPaintScrollArea && tabbedPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {
+    boolean b = tabbedPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT;
+    if (b && tabbedPane.isPaintScrollArea) {
       g2.setPaint(Color.RED);
       g2.fill(tabbedPane.rectBackward);
       g2.fill(tabbedPane.rectForward);
