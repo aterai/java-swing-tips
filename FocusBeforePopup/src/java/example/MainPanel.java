@@ -18,7 +18,6 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPopupMenu popup1 = makePopupMenu();
 
     JTextField textField1 = new JTextField("Default setComponentPopupMenu");
@@ -36,7 +35,8 @@ public final class MainPanel extends JPanel {
     textField2.setComponentPopupMenu(popup2);
     textField2.setName("textField2");
 
-    JComboBox<String> combo3 = new JComboBox<>(new String[] {"JPopupMenu does not open???", "111", "222"});
+    String[] model3 = {"JPopupMenu does not open???", "aaa", "bbb"};
+    JComboBox<String> combo3 = new JComboBox<>(model3);
     combo3.setEditable(true);
     // NOT work: combo3.setComponentPopupMenu(popup2);
     JTextField textField3 = (JTextField) combo3.getEditor().getEditorComponent();
@@ -44,7 +44,8 @@ public final class MainPanel extends JPanel {
     textField3.setName("textField3");
     // TEST: textField3.putClientProperty("doNotCancelPopup", null);
 
-    JComboBox<String> combo4 = new JComboBox<>(new String[] {"addMouseListener", "111", "222"});
+    String[] model4 = {"addMouseListener", "ccc", "ddd"};
+    JComboBox<String> combo4 = new JComboBox<>(model4);
     combo4.setEditable(true);
     JTextField textField4 = (JTextField) combo4.getEditor().getEditorComponent();
     textField4.setComponentPopupMenu(popup2);
@@ -79,7 +80,7 @@ public final class MainPanel extends JPanel {
       box.add(Box.createVerticalStrut(5));
     });
 
-    JTextArea textArea = new JTextArea("dummy");
+    JTextArea textArea = new JTextArea("JTextArea");
     textArea.setComponentPopupMenu(popup2);
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -159,7 +160,7 @@ class TextComponentPopupMenu extends JPopupMenu {
       JTextComponent tc = (JTextComponent) c;
       tc.requestFocusInWindow();
       boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
-      if (tc instanceof JTextComponent && !tc.isFocusOwner() && !hasSelectedText) {
+      if (!tc.isFocusOwner() && !hasSelectedText) {
         tc.selectAll();
         hasSelectedText = true;
       }
