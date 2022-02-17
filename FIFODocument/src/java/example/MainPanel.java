@@ -27,7 +27,10 @@ public final class MainPanel extends JPanel {
     textArea1.setEditable(false);
 
     JTextArea textArea2 = new JTextArea();
-    ((AbstractDocument) textArea2.getDocument()).setDocumentFilter(new FifoDocumentFilter());
+    Document doc2 = textArea2.getDocument();
+    if (doc2 instanceof AbstractDocument) {
+      ((AbstractDocument) doc2).setDocumentFilter(new FifoDocumentFilter());
+    }
 
     Timer timer = new Timer(200, e -> {
       String s = LocalDateTime.now(ZoneId.systemDefault()).toString();

@@ -25,8 +25,10 @@ public final class MainPanel extends JPanel {
     JTextArea textArea = new JTextArea();
     textArea.setMargin(new Insets(2, 5, 2, 2));
     textArea.setText(MESSAGE + NonEditableLineDocumentFilter.PROMPT);
-    ((AbstractDocument) textArea.getDocument()).setDocumentFilter(new NonEditableLineDocumentFilter());
-
+    Document doc = textArea.getDocument();
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new NonEditableLineDocumentFilter());
+    }
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }

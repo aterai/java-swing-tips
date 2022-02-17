@@ -21,23 +21,25 @@ import javax.swing.text.PlainDocument;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTextField field1 = new JTextField("1000");
+    field1.setHorizontalAlignment(SwingConstants.RIGHT);
+    field1.setInputVerifier(new IntegerInputVerifier());
 
-    JTextField textField1 = new JTextField("1000");
-    textField1.setHorizontalAlignment(SwingConstants.RIGHT);
-    textField1.setInputVerifier(new IntegerInputVerifier());
+    JTextField field2 = new JTextField();
+    field2.setDocument(new IntegerDocument());
+    field2.setText("2000");
 
-    JTextField textField2 = new JTextField();
-    textField2.setDocument(new IntegerDocument());
-    textField2.setText("2000");
+    JTextField field3 = new JTextField();
+    Document doc = field3.getDocument();
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new IntegerDocumentFilter());
+    }
+    field3.setText("3000");
 
-    JTextField textField3 = new JTextField();
-    ((AbstractDocument) textField3.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
-    textField3.setText("3000");
-
-    JFormattedTextField textField4 = new JFormattedTextField();
-    textField4.setFormatterFactory(new NumberFormatterFactory());
-    textField4.setHorizontalAlignment(SwingConstants.RIGHT);
-    textField4.setValue(4000);
+    JFormattedTextField field4 = new JFormattedTextField();
+    field4.setFormatterFactory(new NumberFormatterFactory());
+    field4.setHorizontalAlignment(SwingConstants.RIGHT);
+    field4.setValue(4000);
 
     JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
     ((JSpinner.NumberEditor) spinner.getEditor()).getFormat().setGroupingUsed(false);
@@ -46,19 +48,19 @@ public final class MainPanel extends JPanel {
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createTitledBorder("TextField"));
     box.add(new JLabel("InputVerifier"));
-    box.add(textField1);
+    box.add(field1);
     box.add(Box.createVerticalStrut(10));
 
     box.add(new JLabel("Custom Document"));
-    box.add(textField2);
+    box.add(field2);
     box.add(Box.createVerticalStrut(10));
 
     box.add(new JLabel("DocumentFilter"));
-    box.add(textField3);
+    box.add(field3);
     box.add(Box.createVerticalStrut(10));
 
     box.add(new JLabel("FormatterFactory"));
-    box.add(textField4);
+    box.add(field4);
     box.add(Box.createVerticalStrut(10));
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
@@ -178,12 +180,12 @@ class IntegerDocumentFilter extends DocumentFilter {
     fb.replace(offset, length, text, attrs);
   }
 
-  private static void checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (!proposedValue.isEmpty()) {
+  private static void checkInput(String value, int offset) throws BadLocationException {
+    if (!value.isEmpty()) {
       try {
-        Integer.parseInt(proposedValue);
+        Integer.parseInt(value);
       } catch (NumberFormatException ex) {
-        throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
+        throw (BadLocationException) new BadLocationException(value, offset).initCause(ex);
       }
     }
   }

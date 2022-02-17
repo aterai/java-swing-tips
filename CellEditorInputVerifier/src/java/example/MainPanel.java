@@ -23,18 +23,20 @@ import javax.swing.text.NumberFormatter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTextField field1 = new JTextField();
+    initBorderAndAlignment(field1);
+    Document doc1 = field1.getDocument();
+    if (doc1 instanceof AbstractDocument) {
+      ((AbstractDocument) doc1).setDocumentFilter(new IntegerDocumentFilter());
+    }
 
-    JTextField textField1 = new JTextField();
-    initBorderAndAlignment(textField1);
-    ((AbstractDocument) textField1.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
+    JTextField field2 = new JTextField();
+    initBorderAndAlignment(field2);
+    field2.setInputVerifier(new IntegerInputVerifier());
 
-    JTextField textField2 = new JTextField();
-    initBorderAndAlignment(textField2);
-    textField2.setInputVerifier(new IntegerInputVerifier());
-
-    JFormattedTextField textField3 = new JFormattedTextField();
-    initBorderAndAlignment(textField3);
-    textField3.setFormatterFactory(new NumberFormatterFactory());
+    JFormattedTextField field3 = new JFormattedTextField();
+    initBorderAndAlignment(field3);
+    field3.setFormatterFactory(new NumberFormatterFactory());
 
     String[] columnNames = {"Default", "DocumentFilter", "InputVerifier", "JFormattedTextField"};
     TableModel model = new DefaultTableModel(columnNames, 10) {
@@ -45,12 +47,14 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(model) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
-        ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        if (c instanceof JComponent) {
+          ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        }
         return c;
       }
     };
-    table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(textField1));
-    table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(textField2) {
+    table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(field1));
+    table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(field2) {
       @Override public boolean stopCellEditing() {
         JComponent editor = (JComponent) getComponent();
         boolean isEditValid = editor.getInputVerifier().verify(editor);
@@ -59,7 +63,7 @@ public final class MainPanel extends JPanel {
         return isEditValid && super.stopCellEditing();
       }
     });
-    table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textField3) {
+    table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(field3) {
       @Override public boolean stopCellEditing() {
         JFormattedTextField editor = (JFormattedTextField) getComponent();
         boolean isEditValid = editor.isEditValid();

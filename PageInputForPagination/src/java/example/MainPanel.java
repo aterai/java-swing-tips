@@ -71,9 +71,13 @@ public final class MainPanel extends JPanel {
     KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
     field.getActionMap().put("Enter", enterAction);
-    ((AbstractDocument) field.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
+    Document doc = field.getDocument();
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new IntegerDocumentFilter());
+    }
 
-    Stream.of(first, prev, next, last).forEach(b -> b.addActionListener(this::updateCurrentPageIndex));
+    Stream.of(first, prev, next, last)
+        .forEach(b -> b.addActionListener(this::updateCurrentPageIndex));
 
     new TableUpdateTask(2020, itemsPerPage).execute();
 
@@ -242,7 +246,8 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
 
   // private int load(Statement stat, int current, int limit) throws SQLException {
   //   List<Object[]> result = new ArrayList<>(limit);
-  //   String q = String.format("select * from moz_bookmarks limit %d offset %d", limit, current - 1);
+  //   String q = String.format(
+  //       "select * from moz_bookmarks limit %d offset %d", limit, current - 1);
   //   ResultSet rs = stat.executeQuery(q);
   //   int i = current;
   //   while (rs.next() && !isCancelled()) {

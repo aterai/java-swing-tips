@@ -22,17 +22,18 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
     JTextField field = new JTextField(12);
-
-    ((AbstractDocument) field.getDocument()).setDocumentFilter(new SizeFilter());
-    // ((AbstractDocument) field.getDocument()).setDocumentFilter(new DocumentSizeFilter(5));
+    Document doc = field.getDocument();
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new SizeFilter());
+      // ((AbstractDocument) doc).setDocumentFilter(new DocumentSizeFilter(5));
+    }
 
     ActionMap am = field.getActionMap();
+    String delPrev = DefaultEditorKit.deletePrevCharAction; // "delete-previous";
+    am.put(delPrev, new SilentDeleteTextAction(delPrev, am.get(delPrev)));
 
-    String key = DefaultEditorKit.deletePrevCharAction; // "delete-previous";
-    am.put(key, new SilentDeleteTextAction(key, am.get(key)));
-
-    key = DefaultEditorKit.deleteNextCharAction; // "delete-next";
-    am.put(key, new SilentDeleteTextAction(key, am.get(key)));
+    String delNext = DefaultEditorKit.deleteNextCharAction; // "delete-next";
+    am.put(delNext, new SilentDeleteTextAction(delNext, am.get(delNext)));
 
     add(makeTitledPanel("Default", new JTextField()));
     add(makeTitledPanel("Override delete-previous, delete-next beep", field));
@@ -72,7 +73,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SilentDeleteTextAction extends TextAction {
-  private final Action deleteAction;
+  private final transient Action deleteAction;
 
   protected SilentDeleteTextAction(String name, Action deleteAction) {
     super(name);
