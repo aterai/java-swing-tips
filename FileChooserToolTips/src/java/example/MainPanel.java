@@ -109,7 +109,8 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     c.setFont(list.getFont());
     // Container v = SwingUtilities.getAncestorOfClass(JViewport.class, list);
     // if (c instanceof JComponent && v instanceof JViewport) {
@@ -131,14 +132,16 @@ class TooltipTableCellRenderer implements TableCellRenderer {
   private final TableCellRenderer renderer = new DefaultTableCellRenderer();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = renderer.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     c.setFont(table.getFont());
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       Insets i = l.getInsets();
       Rectangle cr = table.getCellRect(row, column, false);
       cr.width -= i.left + i.right;
-      Optional.ofNullable(l.getIcon()).ifPresent(ic -> cr.width -= ic.getIconWidth() + l.getIconTextGap());
+      int gap = l.getIconTextGap();
+      Optional.ofNullable(l.getIcon()).ifPresent(icon -> cr.width -= icon.getIconWidth() + gap);
       FontMetrics fm = c.getFontMetrics(c.getFont());
       String str = Objects.toString(value, "");
       l.setToolTipText(fm.stringWidth(str) > cr.width ? str : null);

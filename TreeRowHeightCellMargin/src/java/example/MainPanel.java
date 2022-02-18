@@ -107,7 +107,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     text.setBackground(bgc);
     text.setBorder(hasFocus ? focusBorder : emptyBorder);
 
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       text.setText(l.getText());

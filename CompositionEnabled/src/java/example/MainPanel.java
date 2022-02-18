@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.im.InputContext;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -20,7 +21,8 @@ public final class MainPanel extends JPanel {
           System.out.println("tab or enter typed");
           return super.processKeyBinding(ks, e, condition, pressed);
         }
-        if (getInputContext().isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
+        InputContext ic = getInputContext();
+        if (ic.isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
           int selectedRow = getSelectedRow();
           int selectedColumn = getSelectedColumn();
           if (selectedRow != -1 && selectedColumn != -1) {
@@ -31,7 +33,7 @@ public final class MainPanel extends JPanel {
         return super.processKeyBinding(ks, e, condition, pressed);
       }
 
-      protected boolean isTabOrEnterKey(KeyStroke ks) {
+      private boolean isTabOrEnterKey(KeyStroke ks) {
         return KeyStroke.getKeyStroke('\t').equals(ks) || KeyStroke.getKeyStroke('\n').equals(ks);
       }
     };

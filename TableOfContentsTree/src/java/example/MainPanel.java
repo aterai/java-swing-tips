@@ -17,7 +17,6 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree(makeModel()) {
       @Override public boolean getScrollableTracksViewportWidth() {
         return true;
@@ -47,9 +46,7 @@ public final class MainPanel extends JPanel {
 
   private static DefaultTreeModel makeModel() {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-
-    DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(new TableOfContents("1. Introduction", 1));
-    root.add(s0);
+    root.add(new DefaultMutableTreeNode(new TableOfContents("1. Introduction", 1)));
 
     DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(new TableOfContents("2. Chapter", 1));
     s1.add(new DefaultMutableTreeNode(new TableOfContents("2.1. Section", 2)));
@@ -141,11 +138,14 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     return Optional.ofNullable(value)
-        .filter(DefaultMutableTreeNode.class::isInstance).map(DefaultMutableTreeNode.class::cast)
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
         .map(DefaultMutableTreeNode::getUserObject)
-        .filter(TableOfContents.class::isInstance).map(TableOfContents.class::cast)
+        .filter(TableOfContents.class::isInstance)
+        .map(TableOfContents.class::cast)
         .<Component>map(toc -> {
           renderer.removeAll();
           renderer.add(c, BorderLayout.WEST);

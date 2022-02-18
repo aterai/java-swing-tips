@@ -206,16 +206,17 @@ public final class CloseableTabbedPane extends JTabbedPane {
   }
 
   private static boolean isCloseTabButton(Object o, int i) {
-    return o instanceof CloseableTabbedPaneListener && !((CloseableTabbedPaneListener) o).closeTab(i);
+    return o instanceof CloseableTabbedPaneListener
+        && !((CloseableTabbedPaneListener) o).closeTab(i);
   }
 
   public Point getHeaderViewPosition() {
     return Stream.of(getComponents())
-      .filter(JViewport.class::isInstance)
-      .filter(c -> "TabbedPane.scrollableViewport".equals(c.getName()))
-      .findFirst()
-      .map(c -> ((JViewport) c).getViewPosition())
-      .orElseGet(Point::new);
+        .filter(JViewport.class::isInstance)
+        .filter(c -> "TabbedPane.scrollableViewport".equals(c.getName()))
+        .findFirst()
+        .map(c -> ((JViewport) c).getViewPosition())
+        .orElseGet(Point::new);
     // for (Component c : getComponents()) {
     //   if (c instanceof JViewport && "TabbedPane.scrollableViewport".equals(c.getName())) {
     //     return ((JViewport) c).getViewPosition();
@@ -228,9 +229,9 @@ public final class CloseableTabbedPane extends JTabbedPane {
 class CloseableTabIconHandler extends MouseAdapter {
   private final Rectangle drawRect = new Rectangle();
 
-  private boolean isCloseTabIconRollover(CloseableTabbedPane tabbedPane, CloseTabIcon icon, MouseEvent e) {
+  private boolean isCloseTabIconRollover(JTabbedPane tabs, CloseTabIcon icon, MouseEvent e) {
     Rectangle rect = icon.getBounds();
-    Point pos = tabbedPane.getHeaderViewPosition();
+    Point pos = tabs.getHeaderViewPosition();
     drawRect.setBounds(rect.x - pos.x, rect.y - pos.y, rect.width, rect.height);
     pos.translate(e.getX(), e.getY());
     return rect.contains(pos);

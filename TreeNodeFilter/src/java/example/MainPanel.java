@@ -26,7 +26,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     field.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
         fireDocumentChangeEvent();
@@ -51,7 +50,7 @@ public final class MainPanel extends JPanel {
     Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
-        .forEach(n -> n.setUserObject(new FilterableNode(Objects.toString(n.getUserObject(), ""))));
+        .forEach(this::setUserObject);
 
     model.addTreeModelListener(new FilterableStatusUpdateListener());
 
@@ -62,6 +61,11 @@ public final class MainPanel extends JPanel {
     add(north, BorderLayout.NORTH);
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void setUserObject(DefaultMutableTreeNode node) {
+    String str = Objects.toString(node.getUserObject(), "");
+    node.setUserObject(new FilterableNode(str));
   }
 
   public void fireDocumentChangeEvent() {
@@ -197,7 +201,8 @@ class FilterTreeCellRenderer extends DefaultTreeCellRenderer {
   private final JLabel emptyLabel = new JLabel();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
     FilterableNode uo = (FilterableNode) node.getUserObject();
     return uo.status ? c : emptyLabel;

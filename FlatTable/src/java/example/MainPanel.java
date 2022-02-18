@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
     table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
       private final CellBorder border = new CellBorder(2, 2, 1, 2);
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        Component c = super.getTableCellRendererComponent(
+            table, value, isSelected, hasFocus, row, column);
         border.setStartCell(column == 0);
         if (c instanceof JComponent) {
           ((JComponent) c).setBorder(border);
@@ -52,7 +53,8 @@ public final class MainPanel extends JPanel {
     header.setDefaultRenderer(new DefaultTableCellRenderer() {
       private final CellBorder border = new CellBorder(2, 2, 1, 2);
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        Component c = super.getTableCellRendererComponent(
+            table, value, isSelected, hasFocus, row, column);
         c.setBackground(table.getGridColor());
         if (c instanceof JLabel) {
           JLabel l = (JLabel) c;

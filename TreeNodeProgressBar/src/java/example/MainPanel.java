@@ -211,15 +211,16 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
   };
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     Object o = ((DefaultMutableTreeNode) value).getUserObject();
     if (o instanceof ProgressObject) {
       ProgressObject n = (ProgressObject) o;
       int i = n.getValue();
       progress.setValue(i);
 
-      // FontMetrics metrics = c.getFontMetrics(c.getFont());
-      // int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + metrics.stringWidth(n.getTitle());
+      // int titleWidth = c.getFontMetrics(c.getFont()).stringWidth(n.getTitle());
+      // int ww = getX() + getIcon().getIconWidth() + getIconTextGap() + titleWidth;
       // nodeWidth = ww;
 
       renderer.removeAll();

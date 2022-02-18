@@ -149,7 +149,7 @@ public class BasicTransferable implements Transferable {
 
   private boolean isRicherFlavor(DataFlavor flavor) {
     // DataFlavor[] richerFlavors = getRicherFlavors();
-    // int numFlavors = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+    // int numFlavors = richerFlavors.length;
     // for (int i = 0; i < numFlavors; i++) {
     //   if (richerFlavors[i].equals(flavor)) {
     //     return true;

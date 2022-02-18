@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -41,13 +42,14 @@ public final class MainPanel extends JPanel {
   }
 
   private static ComboBoxModel<String> makeComboBoxModel() {
+    String str = String.join("/", Collections.nCopies(5, "12345678901234567890"));
     DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
-    m.addElement("1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
-    m.addElement("aaaa.tif");
-    m.addElement("\\asdfsadfs\\afsdfasdf\\asdfasdfasd.avi");
-    m.addElement("aaaabbbcc.pdf");
-    m.addElement("c:/b12312343245/643667345624523451/324513/41234125/134513451345135125123412341bb1.mpg");
-    m.addElement("http://localhost/1234567890123456789012/3456789012345678901234567890123/456789012345678901234567890.jpg");
+    m.addElement(str + ".jpg");
+    m.addElement("aaa.tif");
+    m.addElement("\\1234567890\\1234567890\\1234567890.avi");
+    m.addElement("1234567890.pdf");
+    m.addElement("c:/" + str + ".mpg");
+    m.addElement("https://localhost/" + str + ".jpg");
     return m;
   }
 

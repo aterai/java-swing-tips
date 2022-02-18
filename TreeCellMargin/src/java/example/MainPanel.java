@@ -221,7 +221,8 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     Border ib = BorderFactory.createEmptyBorder(1, 2, 1, 2);
     text.setBorder(hasFocus ? makeFocusBorder(ib) : makeEmptyBorder(ib));
 
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    Component c = super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       text.setText(l.getText());
