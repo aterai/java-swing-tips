@@ -27,36 +27,37 @@ public final class MainPanel extends JPanel {
       super.updateUI();
       removeColumn(getColumnModel().getColumn(3));
       JProgressBar progress = new JProgressBar();
-      TableCellRenderer renderer = new DefaultTableCellRenderer();
+      TableCellRenderer r = new DefaultTableCellRenderer();
       TableColumn tc = getColumnModel().getColumn(2);
       tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-        Component c;
         progress.setValue(0);
+        String msg;
         if (value instanceof ProgressValue) {
           ProgressValue pv = (ProgressValue) value;
           Integer current = pv.getProgress();
           Integer lengthOfTask = pv.getLengthOfTask();
           if (current < 0) {
-            c = renderer.getTableCellRendererComponent(tbl, "Canceled", isSelected, hasFocus, row, column);
+            msg = "Canceled";
           } else if (current < lengthOfTask) {
             // progress.setMaximum(lengthOfTask);
             // progress.setEnabled(true);
             progress.setValue(current * 100 / lengthOfTask);
             progress.setStringPainted(true);
             progress.setString(String.format("%d/%d", current, lengthOfTask));
-            c = progress;
+            return progress;
           } else {
-            c = renderer.getTableCellRendererComponent(tbl, "Done", isSelected, hasFocus, row, column);
+            msg = "Done";
           }
         } else {
-          c = renderer.getTableCellRendererComponent(tbl, "Waiting...", isSelected, hasFocus, row, column);
+          msg = "Waiting...";
         }
-        return c;
+        return r.getTableCellRendererComponent(tbl, msg, isSelected, hasFocus, row, column);
       });
     }
   };
   private final Set<Integer> deletedRowSet = new TreeSet<>();
   private int number;
+  private final Random rnd = new Random();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -90,7 +91,7 @@ public final class MainPanel extends JPanel {
 
   public void addActionPerformed() {
     int key = model.getRowCount();
-    int lengthOfTask = new Random().nextInt(100) + 100;
+    int lengthOfTask = rnd.nextInt(100) + 100;
     SwingWorker<Integer, ProgressValue> worker = new BackgroundTask(lengthOfTask) {
       @Override protected void process(List<ProgressValue> c) {
         if (isCancelled()) {
@@ -128,7 +129,8 @@ public final class MainPanel extends JPanel {
         System.out.format("%s:%s(%dms)%n", key, text, i);
       }
     };
-    addProgressValue("example(max: " + lengthOfTask + ")", new ProgressValue(lengthOfTask, 0), worker);
+    ProgressValue pv = new ProgressValue(lengthOfTask, 0);
+    addProgressValue("example(max: " + lengthOfTask + ")", pv, worker);
     // executor.execute(worker);
     worker.execute();
   }
@@ -175,11 +177,14 @@ public final class MainPanel extends JPanel {
         // worker = null;
       }
       RowSorter<? extends TableModel> sorter = table.getRowSorter();
-      ((TableRowSorter<? extends TableModel>) sorter).setRowFilter(new RowFilter<TableModel, Integer>() {
-        @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-          return !deletedRowSet.contains(entry.getIdentifier());
-        }
-      });
+      if (sorter instanceof TableRowSorter) {
+        RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
+          @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+            return !deletedRowSet.contains(entry.getIdentifier());
+          }
+        };
+        ((TableRowSorter<? extends TableModel>) sorter).setRowFilter(filter);
+      }
       table.clearSelection();
       table.repaint();
     }
