@@ -4,10 +4,8 @@
 
 package example;
 
-import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -59,21 +57,23 @@ class UnderlineFocusTabbedPane extends JTabbedPane {
   }
 
   @Override public void updateUI() {
+    UIManager.put("TabbedPane.focus", new Color(0x0, true));
     super.updateUI();
-    // setFocusable(false);
-    if (getUI() instanceof WindowsTabbedPaneUI) {
-      setUI(new WindowsTabbedPaneUI() {
-        @Override protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
-          super.paintFocusIndicator(g, tabPlacement, rects, tabIndex, iconRect, textRect, false);
-        }
-      });
-    } else {
-      setUI(new BasicTabbedPaneUI() {
-        @Override protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
-          super.paintFocusIndicator(g, tabPlacement, rects, tabIndex, iconRect, textRect, false);
-        }
-      });
-    }
+    // if (getUI() instanceof WindowsTabbedPaneUI) {
+    //   setUI(new WindowsTabbedPaneUI() {
+    //     @Override protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
+    //       super.paintFocusIndicator(
+    //           g, tabPlacement, rects, tabIndex, iconRect, textRect, false);
+    //     }
+    //   });
+    // } else {
+    //   setUI(new BasicTabbedPaneUI() {
+    //     @Override protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
+    //       super.paintFocusIndicator(
+    //           g, tabPlacement, rects, tabIndex, iconRect, textRect, false);
+    //     }
+    //   });
+    // }
     addChangeListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
       if (tabbedPane.getTabCount() <= 0) {
