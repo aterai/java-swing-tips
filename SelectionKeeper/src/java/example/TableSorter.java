@@ -115,11 +115,11 @@ public class TableSorter extends AbstractTableModel {
   private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
   public static final Comparator<Object> LEXICAL_COMP = new LexicalComparator();
 
-  protected TableModel tableModel;
+  protected transient TableModel tableModel;
 
-  protected final List<Row> viewToModel = new ArrayList<>();
-  protected final List<Integer> modelToView = new ArrayList<>();
-  protected final List<Directive> sortingColumns = new ArrayList<>();
+  protected final transient List<Row> viewToModel = new ArrayList<>();
+  protected final transient List<Integer> modelToView = new ArrayList<>();
+  protected final transient List<Directive> sortingColumns = new ArrayList<>();
 
   private JTableHeader tableHeader;
   private final transient Map<Class<?>, Comparator<?>> columnComparators = new ConcurrentHashMap<>();
@@ -211,8 +211,8 @@ public class TableSorter extends AbstractTableModel {
     // }
     // tableHeader = header;
     // if (tableHeader != null) {
-    //   tableHeader.addMouseListener(mouseListener);
-    //   tableHeader.setDefaultRenderer(new SortableHeaderRenderer(tableHeader.getDefaultRenderer()));
+    //   header.addMouseListener(mouseListener);
+    //   header.setDefaultRenderer(new SortableHeaderRenderer(tableHeader.getDefaultRenderer()));
     // }
   }
 
@@ -272,7 +272,8 @@ public class TableSorter extends AbstractTableModel {
 
   public void setColumnComparator(Class<?> type, Comparator<?> comparator) {
     // Optional.ofNullable(comparator)
-    //     .ifPresentOrElse(c -> columnComparators.put(type, c), () -> columnComparators.remove(type));
+    //     .ifPresentOrElse(c ->
+    //         columnComparators.put(type, c), () -> columnComparators.remove(type));
     if (Objects.isNull(comparator)) {
       columnComparators.remove(type);
     } else {
@@ -430,9 +431,11 @@ public class TableSorter extends AbstractTableModel {
       int column = e.getColumn();
       int fr = e.getFirstRow();
       int lr = e.getLastRow();
-      if (fr == lr && column != TableModelEvent.ALL_COLUMNS && getSortingStatus(column) == NOT_SORTED) {
+      boolean b = fr == lr && column != TableModelEvent.ALL_COLUMNS;
+      if (b && getSortingStatus(column) == NOT_SORTED) {
         int viewIndex = getModelToView().get(fr);
-        fireTableChanged(new TableModelEvent(TableSorter.this, viewIndex, viewIndex, column, e.getType()));
+        TableModel src = TableSorter.this;
+        fireTableChanged(new TableModelEvent(src, viewIndex, viewIndex, column, e.getType()));
         return;
       }
 
@@ -531,7 +534,8 @@ class SortableHeaderRenderer implements TableCellRenderer {
   }
 }
 
-// class ComparableComparator<T extends Comparable<? super T>> implements Comparator<T>, Serializable {
+// class ComparableComparator<T extends Comparable<? super T>>
+//       implements Comparator<T>, Serializable {
 //   private static final long serialVersionUID = 1L;
 //   @Override public int compare(T c1, T c2) {
 //     return c1.compareTo(c2);

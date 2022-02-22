@@ -21,17 +21,18 @@ public final class MainPanel extends JPanel {
   private static final String HELP = String.join("\n",
       " Start editing: Double-Click",
       " Commit rename: field-focusLost, Enter-Key",
-      "Cancel editing: Esc-Key, title.isEmpty"
-  );
+      "Cancel editing: Esc-Key, title.isEmpty");
 
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
 
+    String t1 = "JTree 111111111111111";
     JScrollPane l1 = new JScrollPane(new JTree());
-    l1.setBorder(new EditableTitledBorder("JTree 111111111111111", l1));
+    l1.setBorder(new EditableTitledBorder(t1, l1));
 
+    String t2 = "JTextArea";
     JScrollPane l2 = new JScrollPane(new JTextArea(HELP));
-    l2.setBorder(new EditableTitledBorder(null, "JTextArea", TitledBorder.RIGHT, TitledBorder.BOTTOM, l2));
+    l2.setBorder(new EditableTitledBorder(null, t2, TitledBorder.RIGHT, TitledBorder.BOTTOM, l2));
 
     add(l1);
     add(l2);
@@ -112,28 +113,30 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
   //   this(border, title, LEADING, DEFAULT_POSITION, null, null, c);
   // }
 
-  protected EditableTitledBorder(Border border, String title, int justification, int pos, Component c) {
+  protected EditableTitledBorder(Border border,
+                                 String title,
+                                 int justification,
+                                 int pos,
+                                 Component c) {
     this(border, title, justification, pos, null, null, c);
   }
 
-  // protected EditableTitledBorder(
-  //     Border border,
-  //     String title,
-  //     int justification,
-  //     int pos,
-  //     Font font,
-  //     Component c) {
+  // protected EditableTitledBorder(Border border,
+  //                                String title,
+  //                                int justification,
+  //                                int pos,
+  //                                Font font,
+  //                                Component c) {
   //   this(border, title, justification, pos, font, null, c);
   // }
 
-  protected EditableTitledBorder(
-      Border border,
-      String title,
-      int justification,
-      int pos,
-      Font font,
-      Color color,
-      Component c) {
+  protected EditableTitledBorder(Border border,
+                                 String title,
+                                 int justification,
+                                 int pos,
+                                 Font font,
+                                 Color color,
+                                 Component c) {
     super(border, title, justification, pos, font, color);
     this.comp = c;
     comp.addMouseListener(this);

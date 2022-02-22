@@ -7,7 +7,6 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
@@ -52,8 +51,8 @@ public final class MainPanel extends JPanel {
 }
 
 class UnderlineFocusTabbedPane extends JTabbedPane {
-  private static final Border DEF_BDR = BorderFactory.createMatteBorder(0, 0, 3, 0, new Color(0x0, true));
-  private static final Border SEL_BDR = BorderFactory.createMatteBorder(0, 0, 3, 0, new Color(0x00_AA_FF));
+  private static final Color ALPHA_ZERO = new Color(0x0, true);
+  private static final Color SELECTION_COLOR = new Color(0x00_AA_FF);
 
   protected UnderlineFocusTabbedPane() {
     super();
@@ -84,7 +83,8 @@ class UnderlineFocusTabbedPane extends JTabbedPane {
       for (int i = 0; i < tabbedPane.getTabCount(); i++) {
         Component c = tabbedPane.getTabComponentAt(i);
         if (c instanceof JComponent) {
-          ((JComponent) c).setBorder(i == idx ? SEL_BDR : DEF_BDR);
+          Color color = i == idx ? SELECTION_COLOR : ALPHA_ZERO;
+          ((JComponent) c).setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, color));
         }
       }
     });

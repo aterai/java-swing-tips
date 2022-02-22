@@ -42,13 +42,12 @@ public final class MainPanel extends JPanel {
       " as are layout management and accessibility.",
       " This lesson ends with a set of questions and exercises",
       " so you can test yourself on what you've learned.",
-      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
-  );
-  private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
-  private static final Color CURRENT_COLOR = new Color(0xAA_00_64_00, true);
-  private static final Color HIGHLIGHT_COLOR = new Color(0x64_DD_DD_00, true);
-  private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(CURRENT_COLOR);
-  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(HIGHLIGHT_COLOR);
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html");
+  private static final Color WARNING = new Color(0xFF_C8_C8);
+  private static final Color CURRENT = new Color(0xAA_00_64_00, true);
+  private static final Color MATCHED = new Color(0x64_DD_DD_00, true);
+  private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(CURRENT);
+  private final transient HighlightPainter matchedPainter = new DefaultHighlightPainter(MATCHED);
   private final JTextPane textPane = new JTextPane();
   private final JTextField field = new JTextField("Swing");
   private final JCheckBox checkCase = new JCheckBox("Match case");
@@ -123,12 +122,12 @@ public final class MainPanel extends JPanel {
     try {
       return Optional.of(Pattern.compile(pattern, flags));
     } catch (PatternSyntaxException ex) {
-      field.setBackground(WARNING_COLOR);
+      field.setBackground(WARNING);
       return Optional.empty();
     }
   }
 
-  public int changeHighlight(int index) {
+  /* default */ int changeHighlight(int index) {
     field.setBackground(Color.WHITE);
     StyledDocument doc = textPane.getStyledDocument();
     Style s = doc.getStyle("highlight-text-foreground");
@@ -150,7 +149,7 @@ public final class MainPanel extends JPanel {
         while (matcher.find(pos) && !matcher.group().isEmpty()) {
           int start = matcher.start();
           int end = matcher.end();
-          highlighter.addHighlight(start, end, highlightPainter);
+          highlighter.addHighlight(start, end, matchedPainter);
           // doc.setCharacterAttributes(start, end - start, red, true);
           pos = end;
         }

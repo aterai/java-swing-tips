@@ -38,7 +38,8 @@ public class BasicTransferable implements Transferable {
       plainFlavors[2] = new DataFlavor("text/plain;charset=unicode;class=java.io.InputStream");
 
       stringFlavors = new DataFlavor[2];
-      stringFlavors[0] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=java.lang.String");
+      String mimeType = DataFlavor.javaJVMLocalObjectMimeType + ";class=java.lang.String";
+      stringFlavors[0] = new DataFlavor(mimeType);
       stringFlavors[1] = DataFlavor.stringFlavor;
 
     } catch (ClassNotFoundException ex) {
@@ -60,7 +61,7 @@ public class BasicTransferable implements Transferable {
    */
   @Override public DataFlavor[] getTransferDataFlavors() {
     DataFlavor[] richerFlavors = getRicherFlavors();
-    int numRicher = richerFlavors.length; // Objects.nonNull(richerFlavors) ? richerFlavors.length : 0;
+    int numRicher = richerFlavors.length;
     int numHtml = isHtmlSupported() ? htmlFlavors.length : 0;
     int numPlain = isPlainSupported() ? plainFlavors.length : 0;
     int numString = isPlainSupported() ? stringFlavors.length : 0;
@@ -115,7 +116,8 @@ public class BasicTransferable implements Transferable {
    * @exception IOException  if the data is no longer available in the requested flavor.
    * @exception UnsupportedFlavorException  if the requested data flavor is not supported.
    */
-  @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+  @Override public Object getTransferData(DataFlavor flavor)
+      throws UnsupportedFlavorException, IOException {
     // ???: DataFlavor[] richerFlavors = getRicherFlavors();
     if (isRicherFlavor(flavor)) {
       return null; // getRicherData(flavor);
@@ -136,10 +138,12 @@ public class BasicTransferable implements Transferable {
     // }
     // String encoding = flavor.getParameter("charset");
     // return Objects.nonNull(encoding) ? encoding : Charset.defaultCharset().name();
-    return Optional.ofNullable(flavor.getParameter("charset")).orElse(Charset.defaultCharset().name());
+    return Optional.ofNullable(flavor.getParameter("charset"))
+        .orElseGet(() -> Charset.defaultCharset().name());
   }
 
-  private InputStream createInputStream(DataFlavor flavor, String data) throws IOException, UnsupportedFlavorException {
+  private InputStream createInputStream(DataFlavor flavor, String data)
+      throws IOException, UnsupportedFlavorException {
     String s = getTextCharset(flavor);
     String cs = Optional.ofNullable(s).orElseThrow(() -> new UnsupportedFlavorException(flavor));
     return new ByteArrayInputStream(data.getBytes(cs));
@@ -207,7 +211,8 @@ public class BasicTransferable implements Transferable {
     return htmlData;
   }
 
-  private Object getHtmlTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+  private Object getHtmlTransferData(DataFlavor flavor)
+      throws IOException, UnsupportedFlavorException {
     // String data = getHtmlData();
     // data = Objects.nonNull(data) ? data : "";
     String data = Objects.toString(getHtmlData(), "");
@@ -257,7 +262,8 @@ public class BasicTransferable implements Transferable {
     return plainData;
   }
 
-  private Object getPlaneTransferData(DataFlavor flavor) throws IOException, UnsupportedFlavorException {
+  private Object getPlaneTransferData(DataFlavor flavor)
+      throws IOException, UnsupportedFlavorException {
     // String data = getPlainData();
     // data = Objects.nonNull(data) ? data : "";
     String data = Objects.toString(getPlainData(), "");
