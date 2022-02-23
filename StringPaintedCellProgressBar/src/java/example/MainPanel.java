@@ -30,7 +30,6 @@ public final class MainPanel extends JPanel {
       TableCellRenderer r = new DefaultTableCellRenderer();
       TableColumn tc = getColumnModel().getColumn(2);
       tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-        progress.setValue(0);
         String msg;
         if (value instanceof ProgressValue) {
           ProgressValue pv = (ProgressValue) value;
@@ -39,6 +38,7 @@ public final class MainPanel extends JPanel {
           if (current < 0) {
             msg = "Canceled";
           } else if (current < lengthOfTask) {
+            // progress.setValue(0);
             // progress.setMaximum(lengthOfTask);
             // progress.setEnabled(true);
             progress.setValue(current * 100 / lengthOfTask);
