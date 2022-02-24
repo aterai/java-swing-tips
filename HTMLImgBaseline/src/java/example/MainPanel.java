@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -77,8 +76,8 @@ class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
           System.out.println("debug: " + view.getAlignment(View.Y_AXIS));
         }
         AttributeSet attrs = elem.getAttributes();
-        Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-        Object o = Objects.nonNull(elementName) ? null : attrs.getAttribute(StyleConstants.NameAttribute);
+        Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
+        Object o = name == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
         if (o instanceof HTML.Tag) {
           HTML.Tag kind = (HTML.Tag) o;
           if (kind == HTML.Tag.IMG) {

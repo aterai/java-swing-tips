@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     });
 
     JList<String> list3 = new JList<>(makeModel());
-    ListCellRenderer<? super String> renderer = list3.getCellRenderer(); // new DefaultListCellRenderer();
+    ListCellRenderer<? super String> renderer = list3.getCellRenderer();
     list3.setCellRenderer((list, value, index, isSelected, cellHasFocus) ->
         renderer.getListCellRendererComponent(list, value, index, false, false));
 

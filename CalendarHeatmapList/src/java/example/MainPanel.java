@@ -35,7 +35,8 @@ public final class MainPanel extends JPanel {
         new ContributionIcon(color.darker()),
         new ContributionIcon(color.darker().darker()));
 
-    JList<Contribution> weekList = new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
+    ListModel<Contribution> model = new CalendarViewListModel(currentLocalDate);
+    JList<Contribution> weekList = new JList<Contribution>(model) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
@@ -43,10 +44,11 @@ public final class MainPanel extends JPanel {
         setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
         setFixedCellWidth(CELL_SIZE.width);
         setFixedCellHeight(CELL_SIZE.height);
-        ListCellRenderer<? super Contribution> r = getCellRenderer();
+        ListCellRenderer<? super Contribution> renderer = getCellRenderer();
         Icon futureCellIcon = new ContributionIcon(getBackground());
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (c instanceof JLabel) {
             boolean b = value.date.isAfter(currentLocalDate);
             ((JLabel) c).setIcon(b ? futureCellIcon : activityIcons.get(value.activity));
@@ -218,7 +220,10 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
     this.displayDays = DayOfWeek.values().length * (WEEK_VIEW - 1) + dow;
     this.contribution = new ConcurrentHashMap<>(displayDays);
     Random rnd = new Random();
-    IntStream.range(0, displayDays).forEach(i -> contribution.put(startDate.plusDays(i), rnd.nextInt(5)));
+    IntStream.range(0, displayDays).forEach(i -> {
+      int iv = rnd.nextInt(5);
+      contribution.put(startDate.plusDays(i), iv);
+    });
   }
 
   @Override public int getSize() {

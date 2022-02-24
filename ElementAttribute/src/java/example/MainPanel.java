@@ -33,7 +33,8 @@ public final class MainPanel extends JPanel {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     String htmlText = String.join("\n",
         "<html><body>",
-        "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span span span</span><br />",
+        "span tag: <span style='background:#88ff88;' title='tooltip: span[@title]'>span</span>",
+        "<br />",
         "<div title='tooltip: div[@title]'>div tag: div div div div</div>",
         "<div style='padding: 2 24;'><img src='",
         Objects.toString(cl.getResource("example/favicon.png")),
@@ -55,10 +56,12 @@ public final class MainPanel extends JPanel {
     editor2.addHyperlinkListener(e -> {
       JEditorPane editorPane = (JEditorPane) e.getSource();
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
+        String message = "You click the link with the URL " + e.getURL();
+        JOptionPane.showMessageDialog(editorPane, message);
       } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
         tooltip = editorPane.getToolTipText();
-        editorPane.setToolTipText(Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null));
+        String text = Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null);
+        editorPane.setToolTipText(text);
         // URL url = e.getURL();
         // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
       } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
@@ -98,7 +101,8 @@ public final class MainPanel extends JPanel {
 class CustomTooltipEditorPane extends JEditorPane {
   private final transient Position.Bias[] bias = new Position.Bias[1];
   private transient HyperlinkListener listener;
-  // private boolean doesElementContainLocation(JEditorPane editor, Element e, int offset, int x, int y) {
+  // private boolean doesElementContainLocation(
+  //     JEditorPane editor, Element e, int offset, int x, int y) {
   //   if (e != null && offset > 0 && e.getStartOffset() == offset) {
   //     try {
   //       TextUI ui = editor.getUI();
@@ -177,7 +181,8 @@ class CustomTooltipEditorPane extends JEditorPane {
     // if (elem != null) {
     AttributeSet a = elem.getAttributes();
     AttributeSet span = (AttributeSet) a.getAttribute(HTML.Tag.SPAN);
-    return Optional.ofNullable(span).map(s -> Objects.toString(s.getAttribute(HTML.Attribute.TITLE)));
+    return Optional.ofNullable(span)
+        .map(s -> Objects.toString(s.getAttribute(HTML.Attribute.TITLE)));
   }
 }
 
@@ -186,8 +191,8 @@ class TooltipEditorKit extends HTMLEditorKit {
     return new HTMLFactory() {
       @Override public View create(Element elem) {
         AttributeSet attrs = elem.getAttributes();
-        Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-        Object o = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
+        Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
+        Object o = name == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
         if (o instanceof HTML.Tag) {
           HTML.Tag kind = (HTML.Tag) o;
           if (kind == HTML.Tag.DIV) {

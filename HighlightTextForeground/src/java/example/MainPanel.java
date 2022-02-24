@@ -136,7 +136,9 @@ public final class MainPanel extends JPanel {
     // clear the previous highlight:
     Highlighter highlighter = textPane.getHighlighter();
     for (Highlighter.Highlight h : highlighter.getHighlights()) {
-      doc.setCharacterAttributes(h.getStartOffset(), h.getEndOffset() - h.getStartOffset(), def, true);
+      int start = h.getStartOffset();
+      int end = h.getEndOffset();
+      doc.setCharacterAttributes(start, end - start, def, true);
     }
     highlighter.removeAllHighlights();
     // doc.setCharacterAttributes(0, doc.getLength(), def, true);
@@ -172,11 +174,12 @@ public final class MainPanel extends JPanel {
       label.setOpaque(false);
       Highlighter.Highlight hh = highlighter.getHighlights()[idx];
       highlighter.removeHighlight(hh);
+      int start = hh.getStartOffset();
+      int end = hh.getEndOffset();
       try {
-        highlighter.addHighlight(hh.getStartOffset(), hh.getEndOffset(), currentPainter);
-
-        doc.setCharacterAttributes(hh.getStartOffset(), hh.getEndOffset() - hh.getStartOffset(), s, true);
-        scrollToCenter(textPane, hh.getStartOffset());
+        highlighter.addHighlight(start, end, currentPainter);
+        doc.setCharacterAttributes(start, end - start, s, true);
+        scrollToCenter(textPane, start);
       } catch (BadLocationException ex) {
         // should never happen
         RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());

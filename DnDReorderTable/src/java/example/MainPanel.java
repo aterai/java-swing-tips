@@ -90,9 +90,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html)
-// Demo - DropDemo (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - DropDemo (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
@@ -149,7 +149,8 @@ class TableRowTransferHandler extends TransferHandler {
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
     boolean canDrop = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
     // XXX bug? The cursor flickering problem with JTableHeader:
-    // info.getComponent().setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+    // info.getComponent().setCursor(
+    //     canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
     Component glassPane = ((JComponent) info.getComponent()).getRootPane().getGlassPane();
     glassPane.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
     return canDrop;

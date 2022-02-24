@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");

@@ -10,21 +10,22 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
-  private static final String MYSITE = "https://ateraimemo.com/";
-  private static final String HREF = String.format("<html><a href='%s'>%s</a>", MYSITE, MYSITE);
+  private static final String SITE = "https://ateraimemo.com/";
+  private static final String HREF = String.format("<html><a href='%s'>%s</a>", SITE, SITE);
 
   private MainPanel() {
     super(new GridLayout(3, 1));
     add(makeUrlPanel("Default", HREF));
 
-    // Customize detault html link color in java swing - Stack Overflow
+    // Customize default html link color in java swing - Stack Overflow
     // https://stackoverflow.com/questions/26749495/customize-detault-html-link-color-in-java-swing
     HTMLEditorKit kit = new HTMLEditorKit();
     StyleSheet styleSheet = kit.getStyleSheet();
     styleSheet.addRule("a{color:#FF0000;}");
     add(makeUrlPanel("styleSheet.addRule(\"a{color:#FF0000;}\")", HREF));
 
-    add(makeUrlPanel("<a style='color:#00FF00'...", String.format("<html><a style='color:#00FF00' href='%s'>%s</a>", MYSITE, MYSITE)));
+    String html = String.format("<html><a style='color:#00FF00' href='%s'>%s</a>", SITE, SITE);
+    add(makeUrlPanel("<a style='color:#00FF00'...", html));
 
     setPreferredSize(new Dimension(320, 240));
   }
@@ -165,7 +166,8 @@ public final class MainPanel extends JPanel {
 //
 //     Insets i = c.getInsets();
 //     b.getSize(size);
-//     viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
+//     viewRect.setBounds(
+//         i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
 //     iconRect.setBounds(0, 0, 0, 0);
 //     textRect.setBounds(0, 0, 0, 0);
 //
@@ -182,7 +184,8 @@ public final class MainPanel extends JPanel {
 //     }
 //
 //     ButtonModel n = b.getModel();
-//     if (!n.isSelected() && !m.isPressed() && !m.isArmed() && b.isRolloverEnabled() && m.isRollover()) {
+//     if (!n.isSelected() && !m.isPressed() && !m.isArmed() &&
+//         b.isRolloverEnabled() && m.isRollover()) {
 //       g.setColor(Color.BLUE);
 //       g.drawLine(viewRect.x, viewRect.y + viewRect.height,
 //            viewRect.x + viewRect.width, viewRect.y + viewRect.height);

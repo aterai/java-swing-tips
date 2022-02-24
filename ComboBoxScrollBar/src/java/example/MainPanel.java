@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         UIManager.put(KEY, BorderFactory.createLineBorder(Color.GRAY));
         UIManager.put("ScrollBar.width", 10);
-        UIManager.put("ScrollBar.thumbHeight", 20); // GTKLookAndFeel, SynthLookAndFeel, NimbusLookAndFeel
+        UIManager.put("ScrollBar.thumbHeight", 20); // SynthLookAndFeel(GTK, Nimbus)
         UIManager.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));
         UIManager.put("ScrollBar.incrementButtonGap", 0);
         UIManager.put("ScrollBar.decrementButtonGap", 0);

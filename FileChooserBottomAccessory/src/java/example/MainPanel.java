@@ -26,7 +26,8 @@ public final class MainPanel extends JPanel {
       };
       int retValue = fileChooser.showSaveDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        String enc = "\nEncoding: " + ((EncodingFileChooserUI) fileChooser.getUI()).getSelectedEncoding();
+        EncodingFileChooserUI ui = (EncodingFileChooserUI) fileChooser.getUI();
+        String enc = "\nEncoding: " + ui.getSelectedEncoding();
         log.setText(fileChooser.getSelectedFile().getAbsolutePath() + enc);
       }
     });

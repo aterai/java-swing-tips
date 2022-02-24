@@ -180,12 +180,13 @@ class DnDTabbedPane extends JTabbedPane {
     Rectangle r = getTabAreaBounds();
     // int tabPlacement = getTabPlacement();
     // if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+    int arrowBoxSize = SCROLL_SZ + BUTTON_SZ;
     if (isTopBottomTabPlacement(getTabPlacement())) {
       RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SZ, r.height);
-      RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SZ - BUTTON_SZ, r.y, SCROLL_SZ + BUTTON_SZ, r.height);
+      RECT_FORWARD.setBounds(r.x + r.width - arrowBoxSize, r.y, arrowBoxSize, r.height);
     } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
       RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SZ);
-      RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SZ - BUTTON_SZ, r.width, SCROLL_SZ + BUTTON_SZ);
+      RECT_FORWARD.setBounds(r.x, r.y + r.height - arrowBoxSize, r.width, arrowBoxSize);
     }
     if (RECT_BACKWARD.contains(pt)) {
       clickArrowButton("scrollTabsBackwardAction");
@@ -243,7 +244,7 @@ class DnDTabbedPane extends JTabbedPane {
   // // The method DnDTabbedPane.setDropLocation(TransferHandler.DropLocation, Object, boolean)
   // // does not override the inherited method from JComponent since
   // // it is private to a different package
-  // @Override Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
+  // @Override Object setDropLocation(DropLocation location, Object state, boolean forDrop) {
   //   DropLocation old = dropLocation;
   //   if (Objects.isNull(location) || !forDrop) {
   //     dropLocation = new DnDTabbedPane.DropLocation(new Point(), -1);
@@ -561,7 +562,9 @@ class TabTransferHandler extends TransferHandler {
       canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
     } else {
       // System.out.format("tgt!=src%n tgt: %s%n src: %s", tgt.getName(), src.getName());
-      canDrop = Optional.ofNullable(source).map(c -> !c.isAncestorOf(target)).orElse(false) && inArea;
+      canDrop = Optional.ofNullable(source)
+          .map(c -> !c.isAncestorOf(target))
+          .orElse(false) && inArea;
     }
 
     // [JDK-6700748]
@@ -588,7 +591,9 @@ class TabTransferHandler extends TransferHandler {
 
   private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
     Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
-    BufferedImage img = new BufferedImage(tabs.getWidth(), tabs.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    int w = tabs.getWidth();
+    int h = tabs.getHeight();
+    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics g = img.createGraphics();
     tabs.paint(g);
     g.dispose();
