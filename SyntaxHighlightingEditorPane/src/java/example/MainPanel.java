@@ -5,10 +5,9 @@
 package example;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,12 +23,8 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
-  private final JEditorPane editor = new JEditorPane();
-  private final ScriptEngine engine = createEngine();
-
   private MainPanel() {
     super(new BorderLayout());
-
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str {color:#008800}");
     styleSheet.addRule(".kwd {color:#000088}");
@@ -45,15 +40,18 @@ public final class MainPanel extends JPanel {
 
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
+
+    JEditorPane editor = new JEditorPane();
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
 
+    ScriptEngine engine = createEngine();
     JButton button = new JButton("open");
     button.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       int ret = fileChooser.showOpenDialog(getRootPane());
       if (ret == JFileChooser.APPROVE_OPTION) {
-        loadFile(fileChooser.getSelectedFile().getAbsolutePath());
+        loadFile(fileChooser.getSelectedFile().getAbsolutePath(), engine, editor);
       }
     });
 
@@ -67,7 +65,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void loadFile(String path) {
+  private static void loadFile(String path, ScriptEngine engine, JEditorPane editor) {
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines.map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
@@ -86,10 +84,15 @@ public final class MainPanel extends JPanel {
     // URL url = new URL(p);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/prettify.js");
-    try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
-      engine.eval("var window={}, navigator=null;");
-      engine.eval(r);
-    } catch (IOException | ScriptException ex) {
+    try {
+      assert url != null;
+      // Charset cs = StandardCharsets.UTF_8;
+      // try (Reader reader = new BufferedReader(new InputStreamReader(url.openStream(), cs))) {
+      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
+        engine.eval("var window={}, navigator=null;");
+        engine.eval(reader);
+      }
+    } catch (IOException | ScriptException | URISyntaxException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }

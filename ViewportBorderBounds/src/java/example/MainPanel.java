@@ -5,10 +5,9 @@
 package example;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,7 +26,6 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // https://github.com/google/code-prettify/blob/master/styles/desert.css
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str {color:#ffa0a0}");
@@ -103,10 +101,13 @@ public final class MainPanel extends JPanel {
     // URL url = new URL(p);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/prettify.js");
-    try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
-      engine.eval("var window={}, navigator=null;");
-      engine.eval(r);
-    } catch (IOException | ScriptException ex) {
+    try {
+      assert url != null;
+      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
+        engine.eval("var window={}, navigator=null;");
+        engine.eval(reader);
+      }
+    } catch (IOException | ScriptException | URISyntaxException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }

@@ -5,10 +5,9 @@
 package example;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -26,11 +25,10 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private final JEditorPane editor1 = new JEditorPane();
   private final JEditorPane editor2 = new JEditorPane();
-  private final ScriptEngine engine = createEngine();
+  private final transient ScriptEngine engine = createEngine();
 
   private MainPanel() {
     super(new BorderLayout());
-
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str {color:#008800}");
     styleSheet.addRule(".kwd {color:#000088}");
@@ -102,10 +100,15 @@ public final class MainPanel extends JPanel {
     // URL url = new URL(p);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/prettify.js");
-    try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
-      engine.eval("var window={}, navigator=null;");
-      engine.eval(r);
-    } catch (IOException | ScriptException ex) {
+    try {
+      assert url != null;
+      // Charset cs = StandardCharsets.UTF_8;
+      // try (Reader reader = new BufferedReader(new InputStreamReader(url.openStream(), cs))) {
+      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
+        engine.eval("var window={}, navigator=null;");
+        engine.eval(reader);
+      }
+    } catch (IOException | ScriptException | URISyntaxException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }

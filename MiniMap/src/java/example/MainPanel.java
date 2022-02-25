@@ -8,12 +8,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -96,7 +94,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str {color:#008800}");
     styleSheet.addRule(".kwd {color:#000088}");
@@ -219,12 +216,11 @@ public final class MainPanel extends JPanel {
     URL url = cl.getResource("example/prettify.js");
     try {
       assert url != null;
-      Charset utf8 = StandardCharsets.UTF_8;
-      try (Reader r = new BufferedReader(new InputStreamReader(url.openStream(), utf8))) {
+      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
         engine.eval("var window={}, navigator=null;");
-        engine.eval(r);
+        engine.eval(reader);
       }
-    } catch (IOException | ScriptException ex) {
+    } catch (IOException | ScriptException | URISyntaxException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }

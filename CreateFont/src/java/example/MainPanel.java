@@ -7,10 +7,11 @@ package example;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
 import javax.swing.*;
 
@@ -19,13 +20,18 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextPane textPane = new JTextPane();
 
-    makeFont(getClass().getResource("mona.ttf"))
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    makeFont(cl.getResource("example/mona.ttf"))
         .ifPresent(font -> textPane.setFont(font.deriveFont(10f)));
 
-    URL url = getClass().getResource("bar.utf8.txt");
-    try (Reader reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-      textPane.read(reader, "text");
-    } catch (IOException ex) {
+    URL url = cl.getResource("example/bar.utf8.txt");
+    try {
+      assert url != null;
+      // try (Reader br = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
+      try (Reader br = Files.newBufferedReader(Paths.get(url.toURI()))) {
+        textPane.read(br, "text");
+      }
+    } catch (IOException | URISyntaxException ex) {
       ex.printStackTrace();
       textPane.setText(ex.getMessage());
       UIManager.getLookAndFeel().provideErrorFeedback(textPane);
