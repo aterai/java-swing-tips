@@ -117,7 +117,8 @@ class RowDataRenderer implements TableCellRenderer {
   private final TableCellRenderer renderer = new DefaultTableCellRenderer();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = renderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = renderer.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (value instanceof RowData && c instanceof JLabel) {
       updateCellRenderer(table, (RowData) value, row, column, (JLabel) c);
     }

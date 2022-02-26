@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    JSplitPane sp = new JSplitPane();
+    Component c1 = makeTitledPanel(new JTree(), "Default");
+    Component c2 = makeTitledPanel(tree, "Paint the lines that connect the nodes during rollover");
+    JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
     sp.setResizeWeight(.5);
-    sp.setLeftComponent(makeTitledPanel(new JTree(), "Default"));
-    sp.setRightComponent(makeTitledPanel(tree, "Paint the lines that connect the nodes during rollover"));
     add(sp);
     setPreferredSize(new Dimension(320, 240));
   }

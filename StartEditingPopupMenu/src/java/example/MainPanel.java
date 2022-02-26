@@ -32,7 +32,8 @@ public final class MainPanel extends JPanel {
     //   }
     // });
 
-    tree.setCellEditor(new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()) {
+    DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
+    tree.setCellEditor(new DefaultTreeCellEditor(tree, renderer) {
       // @Override protected boolean shouldStartEditingTimer(EventObject e) {
       //   return false;
       // }

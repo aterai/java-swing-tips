@@ -96,8 +96,8 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
       return x + ICON.getIconWidth(); // fm.charWidth(c);
     }
 
-    // Java 9
-    // warning: [deprecation] drawEchoCharacter(Graphics,int,int,char) in PasswordView has been deprecated
+    // // Java 9 warning: [deprecation]
+    // // drawEchoCharacter(Graphics,int,int,char) in PasswordView has been deprecated
     // @Override protected float drawEchoCharacter(Graphics2D g, float x, float y, char c) {
     //   Graphics2D g2 = (Graphics2D) g.create();
     //   FontMetrics fm = g2.getFontMetrics();

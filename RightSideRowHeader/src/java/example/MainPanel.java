@@ -325,7 +325,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     if (Objects.nonNull(vsb)) {
       if (vsbNeeded) {
         // if (Objects.nonNull(colHead) && UIManager.getBoolean("ScrollPane.fillUpperCorner")) {
-        //   if (leftToRight && Objects.isNull(upperRight) || !leftToRight && Objects.isNull(upperLeft)) {
+        //   if (leftToRight && upperRight == null || !leftToRight && upperLeft == null) {
         //     vsbR.y = colHeadR.y;
         //     vsbR.height += colHeadR.height;
         //   }
@@ -340,7 +340,7 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     if (Objects.nonNull(hsb)) {
       if (hsbNeeded) {
         // if (Objects.nonNull(rowHead) && UIManager.getBoolean("ScrollPane.fillLowerCorner")) {
-        //   if (leftToRight && Objects.isNull(lowerLeft) || !leftToRight && Objects.isNull(lowerRight)) {
+        //   if (leftToRight && lowerLeft == null || !leftToRight && lowerRight == null) {
         //     if (leftToRight) {
         //       hsbR.x = rowHeadR.x;
         //     }
@@ -361,7 +361,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     }
   }
 
-  private void setLtrCorner(Rectangle colHeadR, Rectangle rowHeadR, Rectangle vsbR, Rectangle hsbR) {
+  private void setLtrCorner(
+      Rectangle colHeadR, Rectangle rowHeadR, Rectangle vsbR, Rectangle hsbR) {
     Optional.ofNullable(lowerLeft)
         .ifPresent(c -> c.setBounds(rowHeadR.x, hsbR.y, rowHeadR.width, hsbR.height));
     Optional.ofNullable(lowerRight)
@@ -372,7 +373,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
         .ifPresent(c -> c.setBounds(vsbR.x, colHeadR.y, vsbR.width, colHeadR.height));
   }
 
-  private void setRtlCorner(Rectangle colHeadR, Rectangle rowHeadR, Rectangle vsbR, Rectangle hsbR) {
+  private void setRtlCorner(
+      Rectangle colHeadR, Rectangle rowHeadR, Rectangle vsbR, Rectangle hsbR) {
     Optional.ofNullable(lowerLeft)
         .ifPresent(c -> c.setBounds(vsbR.x, hsbR.y, vsbR.width, hsbR.height));
     Optional.ofNullable(lowerRight)
@@ -383,7 +385,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
         .ifPresent(c -> c.setBounds(rowHeadR.x, colHeadR.y, rowHeadR.width, colHeadR.height));
   }
 
-  private void adjustForVsb(boolean wantsVsb, Rectangle avr, Rectangle vsbR, Insets vpbIns, boolean ltr) {
+  private void adjustForVsb(
+      boolean wantsVsb, Rectangle avr, Rectangle vsbR, Insets vpbIns, boolean ltr) {
     int oldWidth = vsbR.width;
     if (wantsVsb) {
       int vsbWidth = Math.max(0, Math.min(vsb.getPreferredSize().width, avr.width));
@@ -401,7 +404,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     }
   }
 
-  private void adjustForHsb(boolean wantsHsb, Rectangle available, Rectangle hsbR, Insets vpbInsets) {
+  private void adjustForHsb(
+      boolean wantsHsb, Rectangle available, Rectangle hsbR, Insets vpbInsets) {
     int oldHeight = hsbR.height;
     if (wantsHsb) {
       int hsbHeight = Math.max(0, Math.min(available.height, hsb.getPreferredSize().height));

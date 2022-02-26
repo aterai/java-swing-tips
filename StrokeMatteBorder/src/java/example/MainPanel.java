@@ -73,8 +73,8 @@ class StrokeMatteBorder extends EmptyBorder {
   private final transient BasicStroke stroke;
   private final Color color;
 
-  protected StrokeMatteBorder(int top, int left, int bottom, int right, BasicStroke stroke, Color color) {
-    super(top, left, bottom, right);
+  protected StrokeMatteBorder(int t, int l, int b, int r, BasicStroke stroke, Color color) {
+    super(t, l, b, r);
     this.stroke = stroke;
     this.color = color;
   }

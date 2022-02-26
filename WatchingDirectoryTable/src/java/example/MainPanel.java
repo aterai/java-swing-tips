@@ -48,7 +48,10 @@ public final class MainPanel extends JPanel {
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
     Thread worker = new Thread(() -> {
       try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
-        dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
+        dir.register(
+            watcher,
+            StandardWatchEventKinds.ENTRY_CREATE,
+            StandardWatchEventKinds.ENTRY_DELETE);
         append("register: " + dir);
         processEvents(dir, watcher);
         loop.exit();
@@ -188,9 +191,9 @@ public final class MainPanel extends JPanel {
 
 class FileModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, false),
-    new ColumnContext("Full Path", String.class, false)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, false),
+      new ColumnContext("Full Path", String.class, false)
   };
   private int number;
 

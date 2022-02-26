@@ -22,7 +22,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     initStar();
     ChangeListener cl = e -> initStar();
     outer.addChangeListener(cl);
@@ -146,11 +145,14 @@ public final class MainPanel extends JPanel {
     // outer.setMinimum(r2 + 1);
     Path2D star = SvgUtils.makeStar(r1, r2, vc);
     label.setIcon(new StarIcon(star, antialias));
-    String style = styleField.getText().trim();
     int min = Math.min(r1, r2);
     int max = Math.max(r1, r2);
-    String fmt = "addendum_circle_radius=\"%d\" dedendum_circle_radius =\"%d\" number_of_teeth=\"%dT\"";
+    String fmt1 = "addendum_circle_radius=\"%d\" ";
+    String fmt2 = "dedendum_circle_radius =\"%d\" ";
+    String fmt3 = "number_of_teeth=\"%dT\"";
+    String fmt = fmt1 + fmt2 + fmt3;
     String desc = String.format(fmt, max, min, vc);
+    String style = styleField.getText().trim();
     StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), max * 2, style, desc);
 
     // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
@@ -189,8 +191,10 @@ final class SvgUtils {
   }
 
   public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
+    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    String dtd = "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">";
     StringBuilder sb = new StringBuilder(200);
-    sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n")
+    sb.append(String.format("%s%n%s%n", xml, dtd))
         .append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz))
         .append(String.format("  <desc>%s</desc>%n", desc))
         .append("  <path d=\"");
@@ -207,7 +211,8 @@ final class SvgUtils {
           sb.append(String.format("Q%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3]));
           break;
         case PathIterator.SEG_CUBICTO:
-          sb.append(String.format("C%.2f,%.2f,%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3], c[4], c[5]));
+          sb.append(String.format(
+              "C%.2f,%.2f,%.2f,%.2f,%.2f,%.2f ", c[0], c[1], c[2], c[3], c[4], c[5]));
           break;
         case PathIterator.SEG_CLOSE:
           sb.append('Z');

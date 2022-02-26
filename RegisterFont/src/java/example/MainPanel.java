@@ -25,12 +25,13 @@ public final class MainPanel extends JPanel {
     label.setText("1: setFont(font.deriveFont(Font.PLAIN, 24))");
     p.add(label);
     JLabel label2 = new JLabel();
-    label2.setText("<html><font size='+3' face='Burnstown Dam'>2: html, font, size,+3</font></html>");
+    label2.setText("<html><font size='+3' face='Burnstown Dam'>2: html, font, size,+3</font>");
     p.add(label2);
 
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule("body {font-size: 24pt; font-family: Burnstown Dam;}");
-    // styleSheet.addRule(".highlight {color: red; background: green; font-family: Burnstown Dam.ttf; }");
+    // styleSheet.addRule(
+    //     ".highlight {color: red; background: green; font-family: Burnstown Dam.ttf; }");
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
     JEditorPane editor = new JEditorPane();

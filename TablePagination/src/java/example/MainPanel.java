@@ -89,8 +89,8 @@ public final class MainPanel extends JPanel {
     ButtonGroup bg = new ButtonGroup();
     boolean flag1 = currentPageIndex > 1;
     Arrays.asList(
-        makePrevNextRadioButton(itemsPerPage, 1, "|<", flag1),
-        makePrevNextRadioButton(itemsPerPage, currentPageIndex - 1, "<", flag1)
+        makePrevNextButton(itemsPerPage, 1, "|<", flag1),
+        makePrevNextButton(itemsPerPage, currentPageIndex - 1, "<", flag1)
     ).forEach(b -> {
       box.add(b);
       bg.add(b);
@@ -106,8 +106,8 @@ public final class MainPanel extends JPanel {
 
     boolean flag2 = currentPageIndex < maxPageIndex;
     Arrays.asList(
-        makePrevNextRadioButton(itemsPerPage, currentPageIndex + 1, ">", flag2),
-        makePrevNextRadioButton(itemsPerPage, maxPageIndex, ">|", flag2)
+        makePrevNextButton(itemsPerPage, currentPageIndex + 1, ">", flag2),
+        makePrevNextButton(itemsPerPage, maxPageIndex, ">|", flag2)
     ).forEach(b -> {
       box.add(b);
       bg.add(b);
@@ -144,12 +144,12 @@ public final class MainPanel extends JPanel {
     return radio;
   }
 
-  private JRadioButton makePrevNextRadioButton(int itemsPerPage, int target, String title, boolean flag) {
-    JRadioButton radio = new JRadioButton(title);
+  private JRadioButton makePrevNextButton(int itemsPerPage, int tgt, String txt, boolean flg) {
+    JRadioButton radio = new JRadioButton(txt);
     radio.setForeground(Color.BLUE);
     radio.setUI(LINK_VIEW);
-    radio.setEnabled(flag);
-    radio.addActionListener(e -> initLinkBox(itemsPerPage, target));
+    radio.setEnabled(flg);
+    radio.addActionListener(e -> initLinkBox(itemsPerPage, tgt));
     return radio;
   }
 
@@ -239,7 +239,8 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 
     ButtonModel m = b.getModel();
     g.setColor(c.getForeground());
-    if (!m.isSelected() && !m.isPressed() && !m.isArmed() && b.isRolloverEnabled() && m.isRollover()) {
+    boolean isRollover = b.isRolloverEnabled() && m.isRollover();
+    if (!m.isSelected() && !m.isPressed() && !m.isArmed() && isRollover) {
       int vy = VIEW_RECT.y + VIEW_RECT.height;
       g.drawLine(VIEW_RECT.x, vy, VIEW_RECT.x + VIEW_RECT.width, vy);
     }

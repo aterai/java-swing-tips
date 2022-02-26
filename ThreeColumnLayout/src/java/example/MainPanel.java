@@ -104,31 +104,33 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(layout);
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    SpringLayout.Constraints centerConstraints = layout.getConstraints(box);
-    centerConstraints.setWidth(Spring.constant(box.getPreferredSize().width));
+    SpringLayout.Constraints centerSpring = layout.getConstraints(box);
+    centerSpring.setWidth(Spring.constant(box.getPreferredSize().width));
 
-    SpringLayout.Constraints leftConstraints = layout.getConstraints(lsp);
-    SpringLayout.Constraints rightConstraints = layout.getConstraints(rsp);
+    SpringLayout.Constraints leftSpring = layout.getConstraints(lsp);
+    SpringLayout.Constraints rightSpring = layout.getConstraints(rsp);
 
-    Spring width = Spring.max(leftConstraints.getWidth(), rightConstraints.getWidth());
-    leftConstraints.setWidth(width);
-    rightConstraints.setWidth(width);
+    Spring width = Spring.max(leftSpring.getWidth(), rightSpring.getWidth());
+    leftSpring.setWidth(width);
+    rightSpring.setWidth(width);
 
-    panel.add(lsp, leftConstraints);
-    panel.add(box, centerConstraints);
-    panel.add(rsp, rightConstraints);
+    panel.add(lsp, leftSpring);
+    panel.add(box, centerSpring);
+    panel.add(rsp, rightSpring);
 
-    // TEST1: Spring height = Spring.max(leftConstraints.getHeight(), rightConstraints.getHeight());
+    // TEST1:
+    // Spring height = Spring.max(leftSpring.getHeight(), rightSpring.getHeight());
     Spring height = layout.getConstraint(SpringLayout.HEIGHT, panel);
-    leftConstraints.setHeight(height);
-    rightConstraints.setHeight(height);
-    centerConstraints.setHeight(height);
+    leftSpring.setHeight(height);
+    rightSpring.setHeight(height);
+    centerSpring.setHeight(height);
 
-    centerConstraints.setConstraint(SpringLayout.WEST, leftConstraints.getConstraint(SpringLayout.EAST));
-    rightConstraints.setConstraint(SpringLayout.WEST, centerConstraints.getConstraint(SpringLayout.EAST));
+    centerSpring.setConstraint(SpringLayout.WEST, leftSpring.getConstraint(SpringLayout.EAST));
+    rightSpring.setConstraint(SpringLayout.WEST, centerSpring.getConstraint(SpringLayout.EAST));
 
     layout.putConstraint(SpringLayout.EAST, panel, 0, SpringLayout.EAST, rsp);
-    // TEST1: layout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH, rsp);
+    // TEST1:
+    // layout.putConstraint(SpringLayout.SOUTH, panel, 0, SpringLayout.SOUTH, rsp);
 
     return panel;
   }

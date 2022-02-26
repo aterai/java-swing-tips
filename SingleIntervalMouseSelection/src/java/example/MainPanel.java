@@ -147,7 +147,8 @@ public final class MainPanel extends JPanel {
         if (index < monthList.getModel().getSize() - 1) {
           monthList.setSelectedIndex(index + 1);
         } else {
-          LocalDate d = monthList.getModel().getElementAt(monthList.getModel().getSize() - 1).plusDays(1);
+          int size = monthList.getModel().getSize() - 1;
+          LocalDate d = monthList.getModel().getElementAt(size).plusDays(1);
           updateMonthView(getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
         }
@@ -194,7 +195,8 @@ public final class MainPanel extends JPanel {
     private final ListCellRenderer<? super LocalDate> renderer = new DefaultListCellRenderer();
 
     @Override public Component getListCellRendererComponent(JList<? extends LocalDate> list, LocalDate value, int index, boolean isSelected, boolean cellHasFocus) {
-      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (c instanceof JLabel) {
         JLabel l = (JLabel) c;
         l.setOpaque(true);

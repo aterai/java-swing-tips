@@ -88,8 +88,8 @@ public final class MainPanel extends JPanel {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         map.forEach(UIManager::put);
         UIManager.put(e.getItem(), Color.GREEN);
-        // XXX: JComboBox: by UP/DOWN keys
-        // XXX: NullPointerException at BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
+        // JComboBox: by UP/DOWN keys NullPointerException at
+        // BasicComboBoxUI.selectNextPossibleValue(BasicComboBoxUI.java:1128)
         // SwingUtilities.updateComponentTreeUI(tabs);
         tabs.updateUI();
       }

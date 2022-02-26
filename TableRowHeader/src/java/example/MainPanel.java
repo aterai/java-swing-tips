@@ -178,9 +178,10 @@ class RowHeaderList<E> extends JList<E> {
       // table.getSelectionModel().setLeadSelectionIndex(row);
       // tableSelection.addSelectionInterval(row, row);
       // listSelection.addSelectionInterval(row, row);
-      // table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(0);
-      // table.getColumnModel().getSelectionModel().setLeadSelectionIndex(0);
-      // table.changeSelection(pressedRowIndex, table.getColumnModel().getColumnCount() - 1, false, true);
+      // ColumnModel cm = table.getColumnModel()
+      // cm.getSelectionModel().setAnchorSelectionIndex(0);
+      // cm.getSelectionModel().setLeadSelectionIndex(0);
+      // table.changeSelection(pressedRowIndex, cm.getColumnCount() - 1, false, true);
     }
 
     @Override public void mouseReleased(MouseEvent e) {

@@ -32,7 +32,8 @@ public final class MainPanel extends JPanel {
           Component c = r.getTreeCellRendererComponent(
               tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
-            ((JComponent) c).setToolTipText(Objects.nonNull(value) ? "TreeCellRenderer: " + value : null);
+            String txt = Objects.nonNull(value) ? "TreeCellRenderer: " + value : null;
+            ((JComponent) c).setToolTipText(txt);
           }
           return c;
         });
@@ -44,7 +45,8 @@ public final class MainPanel extends JPanel {
       //   setOpenIcon(DefaultLookup.getIcon(this, ui, "Tree.openIcon"));
       //   setTextSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionForeground"));
       //   setTextNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textForeground"));
-      //   setBackgroundSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
+      //   setBackgroundSelectionColor(
+      //       DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
       //   setBackgroundNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textBackground"));
       //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
       //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);

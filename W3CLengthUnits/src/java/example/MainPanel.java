@@ -42,8 +42,10 @@ public final class MainPanel extends JPanel {
     // editor.setText(buf.toString());
 
     JCheckBox check = new JCheckBox("JEditorPane.W3C_LENGTH_UNITS");
-    check.addActionListener(e ->
-        editor.putClientProperty(JEditorPane.W3C_LENGTH_UNITS, ((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      editor.putClientProperty(JEditorPane.W3C_LENGTH_UNITS, b);
+    });
 
     add(check, BorderLayout.NORTH);
     add(new JScrollPane(editor));

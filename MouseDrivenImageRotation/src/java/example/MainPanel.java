@@ -57,8 +57,10 @@ public final class MainPanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     // super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new GradientPaint(50f, 0f, Color.GRAY, getWidth(), getHeight(), Color.DARK_GRAY, true));
-    g2.fillRect(0, 0, getWidth(), getHeight());
+    int w = getWidth();
+    int h = getHeight();
+    g2.setPaint(new GradientPaint(50f, 0f, Color.GRAY, w, h, Color.DARK_GRAY, true));
+    g2.fillRect(0, 0, w, h);
     g2.dispose();
     di.paint(g, this);
   }
@@ -126,7 +128,9 @@ class DraggableImageMouseListener extends MouseAdapter {
 
     double w2 = imageSz.width / 2d;
     double h2 = imageSz.height / 2d;
-    AffineTransform at = AffineTransform.getTranslateInstance(centerPt.getX() - w2, centerPt.getY() - h2);
+    double tx = centerPt.getX() - w2;
+    double ty = centerPt.getY() - h2;
+    AffineTransform at = AffineTransform.getTranslateInstance(tx, ty);
     at.rotate(radian, w2, h2);
 
     g2.setPaint(BORDER_COLOR);

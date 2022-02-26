@@ -83,7 +83,8 @@ public final class MainPanel extends JPanel {
 //   private static final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 2);
 //
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//     Component c = super.getTableCellRendererComponent(
+//         table, value, isSelected, hasFocus, row, column);
 //     if (c instanceof JComponent) {
 //       int lsi = table.getSelectionModel().getLeadSelectionIndex();
 //       ((JComponent) c).setBorder(row == lsi ? dotBorder : emptyBorder);
@@ -102,9 +103,9 @@ class LineFocusTable extends JTable {
   }
 
   @Override public void updateUI() {
-    // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
     // https://bugs.openjdk.java.net/browse/JDK-6788475
-    // XXX: set dummy ColorUIResource
+    // Set a temporary ColorUIResource
     setSelectionForeground(new ColorUIResource(Color.RED));
     setSelectionBackground(new ColorUIResource(Color.RED));
     super.updateUI();

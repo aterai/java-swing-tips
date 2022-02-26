@@ -24,9 +24,10 @@ public final class MainPanel extends JPanel {
     field1.setOpaque(false);
 
     // JSpinner s2 = new JSpinner();
+    // Color bgc2 = UIManager.getColor("FormattedTextField.inactiveBackground");
     // s2.setBorder(BorderFactory.createCompoundBorder(
     //   BorderFactory.createLineBorder(new Color(127, 157, 185)),
-    //   BorderFactory.createLineBorder(UIManager.getColor("FormattedTextField.inactiveBackground"), 2)));
+    //   BorderFactory.createLineBorder(bgc2, 2)));
 
     System.out.println(UIManager.getColor("TextField.shadow"));
     System.out.println(UIManager.getColor("TextField.darkShadow"));

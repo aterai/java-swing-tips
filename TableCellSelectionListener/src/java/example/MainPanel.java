@@ -64,7 +64,9 @@ public final class MainPanel extends JPanel {
       if (e.getValueIsAdjusting()) {
         return;
       }
-      textArea.append(String.format("row first, last: %d, %d%n", e.getFirstIndex(), e.getLastIndex()));
+      int firstIndex = e.getFirstIndex();
+      int lastIndex = e.getLastIndex();
+      textArea.append(String.format("row first, last: %d, %d%n", firstIndex, lastIndex));
       ListSelectionModel m = (ListSelectionModel) e.getSource();
       int asi = m.getAnchorSelectionIndex();
       int lsi = m.getLeadSelectionIndex();
@@ -75,7 +77,9 @@ public final class MainPanel extends JPanel {
       if (e.getValueIsAdjusting()) {
         return;
       }
-      textArea.append(String.format("column first, last: %d, %d%n", e.getFirstIndex(), e.getLastIndex()));
+      int firstIndex = e.getFirstIndex();
+      int lastIndex = e.getLastIndex();
+      textArea.append(String.format("column first, last: %d, %d%n", firstIndex, lastIndex));
       ListSelectionModel m = (ListSelectionModel) e.getSource();
       int asi = m.getAnchorSelectionIndex();
       int lsi = m.getLeadSelectionIndex();

@@ -47,13 +47,13 @@ public final class MainPanel extends JPanel {
   private static JTable makeDnDTable(TransferHandler handler) {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"AAA", 12, true}, {"aaa", 1, false},
-      {"BBB", 13, true}, {"bbb", 2, false},
-      {"CCC", 15, true}, {"ccc", 3, false},
-      {"DDD", 17, true}, {"ddd", 4, false},
-      {"EEE", 18, true}, {"eee", 5, false},
-      {"FFF", 19, true}, {"fff", 6, false},
-      {"GGG", 92, true}, {"ggg", 0, false}
+        {"AAA", 12, true}, {"aaa", 1, false},
+        {"BBB", 13, true}, {"bbb", 2, false},
+        {"CCC", 15, true}, {"ccc", 3, false},
+        {"DDD", 17, true}, {"ddd", 4, false},
+        {"EEE", 18, true}, {"eee", 5, false},
+        {"FFF", 19, true}, {"fff", 6, false},
+        {"GGG", 92, true}, {"ggg", 0, false}
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -149,7 +149,8 @@ public final class MainPanel extends JPanel {
   //     JTableHeader target = (JTableHeader) info.getComponent();
   //     // JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
   //     try {
-  //       JTableHeader source = (JTableHeader) info.getTransferable().getTransferData(localObjectFlavor);
+  //       JTableHeader source = (JTableHeader) info.getTransferable().getTransferData(
+  //           localObjectFlavor);
   //       System.out.println("source: " + source);
   //       if (!source.equals(target)) {
   //         System.out.println("-------------------------------");
@@ -197,9 +198,9 @@ public final class MainPanel extends JPanel {
 //   }
 // }
 
-// Demo - BasicDnD (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
-// Demo - DropDemo (The Java™ Tutorials > Creating a GUI With JFC/Swing > Drag and Drop and Data Transfer)
+// Demo - DropDemo (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 class TableRowTransferHandler extends TransferHandler {
@@ -300,10 +301,10 @@ class TableRowTransferHandler extends TransferHandler {
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
     boolean isSupported = info.isDataFlavorSupported(FLAVOR) && canDropTableIntersection(info);
     boolean canDrop = info.isDrop() && isSupported;
-    // XXX bug? The cursor flickering problem with JTableHeader:
-    // info.getComponent().setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-    getRootGlassPane(info.getComponent())
-        .ifPresent(p -> p.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop));
+    getRootGlassPane(info.getComponent()).ifPresent(p -> {
+      Cursor cursor = canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
+      p.setCursor(cursor);
+    });
     return canDrop;
   }
 
