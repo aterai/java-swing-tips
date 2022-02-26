@@ -23,10 +23,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"Boolean", "Integer", "String"};
     Object[][] data = {
-      {true, 1, "BBB"}, {false, 12, "AAA"},
-      {true, 2, "DDD"}, {false, 5, "CCC"},
-      {true, 3, "EEE"}, {false, 6, "GGG"},
-      {true, 4, "FFF"}, {false, 7, "HHH"}
+        {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -35,9 +33,6 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new JTable(model) {
       @Override public void updateUI() {
-        // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
-        // https://bugs.openjdk.java.net/browse/JDK-6788475
-        // XXX: set dummy ColorUIResource
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));
         super.updateUI();
@@ -165,32 +160,34 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    setIcon(new MenuArrowIcon());
-    l.removeAll();
-    int mci = table.convertColumnIndexToModel(column);
-
-    if (rolloverIndex == mci) {
-      int w = table.getColumnModel().getColumn(mci).getWidth();
-      int h = table.getTableHeader().getHeight();
-      // Icon icon = new MenuArrowIcon();
-      Border outside = l.getBorder();
-      Border inside = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);
-      Border b = BorderFactory.createCompoundBorder(outside, inside);
-      l.setBorder(b);
-      l.add(this);
-      // Insets i = b.getBorderInsets(l);
-      // setBounds(w - i.right, 0, BUTTON_WIDTH, h - 2);
-      setBounds(w - BUTTON_WIDTH, 0, BUTTON_WIDTH, h - 2);
-      setBackground(BUTTON_BGC);
-      setOpaque(true);
-      setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
+    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      setIcon(new MenuArrowIcon());
+      l.removeAll();
+      int mci = table.convertColumnIndexToModel(column);
+      if (rolloverIndex == mci) {
+        int w = table.getColumnModel().getColumn(mci).getWidth();
+        int h = table.getTableHeader().getHeight();
+        // Icon icon = new MenuArrowIcon();
+        Border outside = l.getBorder();
+        Border inside = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);
+        Border b = BorderFactory.createCompoundBorder(outside, inside);
+        l.setBorder(b);
+        l.add(this);
+        // Insets i = b.getBorderInsets(l);
+        // setBounds(w - i.right, 0, BUTTON_WIDTH, h - 2);
+        setBounds(w - BUTTON_WIDTH, 0, BUTTON_WIDTH, h - 2);
+        setBackground(BUTTON_BGC);
+        setOpaque(true);
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
+      }
+      // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus
+      //   System.out.println(l.getPreferredSize().height);
+      //   l.setPreferredSize(new Dimension(0, h));
+      // }
     }
-    // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus
-    //   System.out.println(l.getPreferredSize().height);
-    //   l.setPreferredSize(new Dimension(0, h));
-    // }
-    return l;
+    return c;
   }
 }
 
