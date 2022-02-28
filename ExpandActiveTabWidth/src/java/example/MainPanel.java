@@ -5,8 +5,13 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,14 +20,14 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     List<String> icons = Arrays.asList(
-        "wi0009-16.png",
-        "wi0054-16.png",
-        "wi0062-16.png",
-        "wi0063-16.png",
-        "wi0124-16.png",
-        "wi0126-16.png");
+        "example/wi0009-16.png",
+        "example/wi0054-16.png",
+        "example/wi0062-16.png",
+        "example/wi0063-16.png",
+        "example/wi0124-16.png",
+        "example/wi0126-16.png");
     icons.forEach(s -> {
-      Icon icon = new ImageIcon(getClass().getResource(s));
+      Icon icon = new ImageIcon(makeImage(s));
       ShrinkLabel label = new ShrinkLabel(s, icon);
       tabbedPane.addTab(s, icon, new JLabel(s), s);
       tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
@@ -33,7 +38,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void updateTabWidth(JTabbedPane tabs) {
+  private static void updateTabWidth(JTabbedPane tabs) {
     int tp = tabs.getTabPlacement();
     if (tp == SwingConstants.LEFT || tp == SwingConstants.RIGHT) {
       return;
@@ -45,6 +50,28 @@ public final class MainPanel extends JPanel {
         ((ShrinkLabel) c).setSelected(i == idx);
       }
     }
+  }
+
+  private static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {

@@ -7,12 +7,17 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -60,19 +65,18 @@ class CardLayoutTabbedPane extends JPanel {
   protected final ButtonGroup bg = new ButtonGroup();
   private final JButton button = new JButton(new PlusIcon());
   private final Random rnd = new Random();
-  private final transient ClassLoader cl = Thread.currentThread().getContextClassLoader();
   // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
   private final List<ImageIcon> icons = Arrays.asList(
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0009-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0054-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0062-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0063-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0064-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0096-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0111-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0122-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0124-16.png"))),
-      new ImageIcon(Objects.requireNonNull(cl.getResource("example/wi0126-16.png")))
+      new ImageIcon(makeImage("wi0009-16.png")),
+      new ImageIcon(makeImage("wi0054-16.png")),
+      new ImageIcon(makeImage("wi0062-16.png")),
+      new ImageIcon(makeImage("wi0063-16.png")),
+      new ImageIcon(makeImage("wi0064-16.png")),
+      new ImageIcon(makeImage("wi0096-16.png")),
+      new ImageIcon(makeImage("wi0111-16.png")),
+      new ImageIcon(makeImage("wi0122-16.png")),
+      new ImageIcon(makeImage("wi0124-16.png")),
+      new ImageIcon(makeImage("wi0126-16.png"))
   );
 
   protected CardLayoutTabbedPane() {
@@ -162,6 +166,28 @@ class CardLayoutTabbedPane extends JPanel {
     tabPanel.revalidate();
     contentsPanel.add(comp, title);
     cardLayout.show(contentsPanel, title);
+  }
+
+  private Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource("example/" + path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(this::makeMissingImage);
+  }
+
+  private Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }
 
