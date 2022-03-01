@@ -154,6 +154,7 @@ enum TexturePaints {
   IMAGE("Image TexturePaint"),
   CHECKER("Checker TexturePaint");
   private final String description;
+
   TexturePaints(String description) {
     this.description = description;
   }

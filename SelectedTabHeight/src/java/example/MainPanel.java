@@ -73,6 +73,7 @@ enum TabPlacements {
   LEFT(SwingConstants.LEFT),
   RIGHT(SwingConstants.RIGHT);
   public final int tabPlacement;
+
   TabPlacements(int tabPlacement) {
     this.tabPlacement = tabPlacement;
   }

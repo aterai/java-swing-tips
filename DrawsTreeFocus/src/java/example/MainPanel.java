@@ -70,6 +70,7 @@ enum TreeDraws {
   DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
   DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
   private final String key;
+
   /* default */ TreeDraws(String key) {
     this.key = key;
   }

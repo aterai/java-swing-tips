@@ -12,15 +12,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-    Icon informationIcon = UIManager.getIcon("OptionPane.informationIcon");
-    Icon errorIcon = UIManager.getIcon("OptionPane.errorIcon");
-    Icon questionIcon = UIManager.getIcon("OptionPane.questionIcon");
-    Icon warningIcon = UIManager.getIcon("OptionPane.warningIcon");
-    Stream.of(informationIcon, errorIcon, questionIcon, warningIcon).forEach(icon -> add(makeBox(icon)));
+    Icon information = UIManager.getIcon("OptionPane.informationIcon");
+    Icon error = UIManager.getIcon("OptionPane.errorIcon");
+    Icon question = UIManager.getIcon("OptionPane.questionIcon");
+    Icon warning = UIManager.getIcon("OptionPane.warningIcon");
+    Stream.of(information, error, question, warning).map(this::makeBox).forEach(this::add);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Box makeBox(Icon icon) {
+  private Box makeBox(Icon icon) {
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(makeLabel("0", icon));
@@ -62,10 +62,9 @@ public final class MainPanel extends JPanel {
 }
 
 enum QuadrantRotate {
-  CLOCKWISE(1),
-  HORIZONTAL_FLIP(2),
-  COUNTER_CLOCKWISE(-1);
+  CLOCKWISE(1), HORIZONTAL_FLIP(2), COUNTER_CLOCKWISE(-1);
   private final int numquadrants;
+
   QuadrantRotate(int numquadrants) {
     this.numquadrants = numquadrants;
   }

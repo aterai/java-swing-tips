@@ -188,6 +188,7 @@ enum SortAlgorithms {
   QSORT("Quicksort"),
   QSORT2("2-way Quicksort");
   private final String description;
+
   SortAlgorithms(String description) {
     this.description = description;
   }
