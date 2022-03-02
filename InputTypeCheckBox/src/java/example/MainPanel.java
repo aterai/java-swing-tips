@@ -27,10 +27,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
-      {true, 1, "BBB"}, {false, 12, "AAA"},
-      {true, 2, "DDD"}, {false, 5, "CCC"},
-      {true, 3, "EEE"}, {false, 6, "GGG"},
-      {true, 4, "FFF"}, {false, 7, "HHH"}
+        {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -42,9 +40,6 @@ public final class MainPanel extends JPanel {
       private transient HeaderCheckBoxHandler handler;
 
       @Override public void updateUI() {
-        // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
-        // https://bugs.openjdk.java.net/browse/JDK-6788475
-        // XXX: set dummy ColorUIResource
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));
         getTableHeader().removeMouseListener(handler);
@@ -110,21 +105,21 @@ class HeaderRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    JLabel l = (JLabel) r.getTableCellRendererComponent(table, INPUT, isSelected, hasFocus, row, column);
+    Component c = r.getTableCellRendererComponent(table, INPUT, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      // // TEST:
+      // JCheckBox check = new JCheckBox();
+      // updateCheckBox(check, value);
+      // String selected = check.isSelected() ? "checked " : "";
+      // String indeterminate = check.isEnabled() ? "" : "disabled ";
+      // l.setText(String.format("<html><table><td><input type='checkbox' %s%s/><td>All", selected, indeterminate));
 
-    // // TEST:
-    // JCheckBox check = new JCheckBox();
-    // updateCheckBox(check, value);
-    // String selected = check.isSelected() ? "checked " : "";
-    // String indeterminate = check.isEnabled() ? "" : "disabled ";
-    // l.setText(String.format("<html><table><td><input type='checkbox' %s%s/><td>Check All", selected, indeterminate));
-    // System.out.println(l.getText());
-
-    // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
-    for (Component c : l.getComponents()) {
-      updateCheckBox(((Container) c).getComponent(0), value);
+      // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
+      for (Component cmp : ((JLabel) c).getComponents()) {
+        updateCheckBox(((Container) cmp).getComponent(0), value);
+      }
     }
-    return l;
+    return c;
   }
 
   private static void updateCheckBox(Component c, Object value) {
