@@ -5,10 +5,14 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -50,10 +54,32 @@ public final class MainPanel extends JPanel {
         "wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
         "wi0063-16.png", "wi0124-16.png", "wi0126-16.png");
     JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    icons.forEach(s -> tabbedPane.addTab(s, new ImageIcon(getClass().getResource(s)), new JLabel(s), s));
+    icons.forEach(s -> tabbedPane.addTab(s, new ImageIcon(makeImage(s)), new JLabel(s), s));
     tabbedPane.setComponentPopupMenu(new PinTabPopupMenu());
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource("example/" + path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
@@ -77,30 +103,7 @@ public final class MainPanel extends JPanel {
 }
 
 class PinTabPopupMenu extends JPopupMenu {
-  private final JCheckBoxMenuItem pinTabMenuItem = new JCheckBoxMenuItem(new AbstractAction("pin tab") {
-    @Override public void actionPerformed(ActionEvent e) {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      JCheckBoxMenuItem check = (JCheckBoxMenuItem) e.getSource();
-      int idx = t.getSelectedIndex();
-      Component cmp = t.getComponentAt(idx);
-      Component tab = t.getTabComponentAt(idx);
-      Icon icon = t.getIconAt(idx);
-      String tip = t.getToolTipTextAt(idx);
-      boolean flg = t.isEnabledAt(idx);
-
-      int i = searchNewSelectedIndex(t, idx, check.isSelected());
-      t.remove(idx);
-      t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
-      t.setTabComponentAt(i, tab);
-      t.setEnabledAt(i, flg);
-      if (flg) {
-        t.setSelectedIndex(i);
-      }
-      // JComponent c = (JComponent) t.getTabComponentAt(idx);
-      // c.revalidate();
-    }
-  });
-
+  private final JMenuItem pinTabMenuItem = new JCheckBoxMenuItem("pin tab");
   // private final Action newTabAction = new AbstractAction("new tab") {
   //   @Override public void actionPerformed(ActionEvent e) {
   //     JTabbedPane t = (JTabbedPane) getInvoker();
@@ -113,7 +116,24 @@ class PinTabPopupMenu extends JPopupMenu {
 
   protected PinTabPopupMenu() {
     super();
-    add(pinTabMenuItem);
+    add(pinTabMenuItem).addActionListener(e -> {
+      JTabbedPane t = (JTabbedPane) getInvoker();
+      JCheckBoxMenuItem check = (JCheckBoxMenuItem) e.getSource();
+      int idx = t.getSelectedIndex();
+      Component cmp = t.getComponentAt(idx);
+      Component tab = t.getTabComponentAt(idx);
+      Icon icon = t.getIconAt(idx);
+      String tip = t.getToolTipTextAt(idx);
+      boolean flg = t.isEnabledAt(idx);
+      int i = searchNewSelectedIndex(t, idx, check.isSelected());
+      t.remove(idx);
+      t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
+      t.setTabComponentAt(i, tab);
+      t.setEnabledAt(i, flg);
+      if (flg) {
+        t.setSelectedIndex(i);
+      }
+    });
     addSeparator();
     add("close all").addActionListener(e -> {
       JTabbedPane t = (JTabbedPane) getInvoker();
