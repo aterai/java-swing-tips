@@ -16,7 +16,10 @@ public final class MainPanel extends JPanel {
     for (Color c : Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
       desktop.add(makeInternalFrame(c, ++idx));
     }
-    EventQueue.invokeLater(() -> Arrays.asList(desktop.getAllFrames()).forEach(f -> f.setVisible(true)));
+    EventQueue.invokeLater(() -> {
+      JInternalFrame[] frames = desktop.getAllFrames();
+      Arrays.asList(frames).forEach(f -> f.setVisible(true));
+    });
 
     add(desktop);
     setPreferredSize(new Dimension(320, 240));

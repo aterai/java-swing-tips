@@ -22,7 +22,10 @@ public final class MainPanel extends JPanel {
     desktop.add(makeInternalFrame("DefaultCaret", new Point(10, 10), makeTextArea(false)));
     desktop.add(makeInternalFrame("FocusCaret", new Point(50, 50), makeTextArea(true)));
     desktop.add(makeInternalFrame("FocusCaret", new Point(90, 90), makeTextArea(true)));
-    EventQueue.invokeLater(() -> Arrays.asList(desktop.getAllFrames()).forEach(f -> f.setVisible(true)));
+    EventQueue.invokeLater(() -> {
+      JInternalFrame[] frames = desktop.getAllFrames();
+      Arrays.asList(frames).forEach(f -> f.setVisible(true));
+    });
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -79,7 +82,7 @@ public final class MainPanel extends JPanel {
 
 class FocusCaret extends DefaultCaret {
   private static final Color COLOR = Color.GRAY.brighter();
-  private static final HighlightPainter NONFOCUS = new DefaultHighlightPainter(COLOR);
+  private static final HighlightPainter NO_FOCUS = new DefaultHighlightPainter(COLOR);
 
   @Override public void focusLost(FocusEvent e) {
     super.focusLost(e);
@@ -102,11 +105,10 @@ class FocusCaret extends DefaultCaret {
     // boolean selected = c.hasFocus();
     // Container f = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
     // if (f instanceof JInternalFrame) {
-    //   System.out.println("bbbbbbbbbbbbbb");
     //   JInternalFrame frame = (JInternalFrame) f;
     //   selected = frame.isSelected();
     // }
     // return selected ? DefaultHighlighter.DefaultPainter : nonFocusHighlightPainter;
-    return getComponent().hasFocus() ? DefaultHighlighter.DefaultPainter : NONFOCUS;
+    return getComponent().hasFocus() ? DefaultHighlighter.DefaultPainter : NO_FOCUS;
   }
 }

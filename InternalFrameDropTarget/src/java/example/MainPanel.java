@@ -23,24 +23,27 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JDesktopPane dp = new JDesktopPane();
+    JDesktopPane desktop = new JDesktopPane();
     TransferHandler handler = new TableRowTransferHandler();
     // TransferHandler handler2 = new TableColumnTransferHandler();
 
     JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
     f1.add(new JScrollPane(makeDnDTable(handler)));
     f1.setOpaque(false);
-    dp.add(f1, 1, 1);
+    desktop.add(f1, 1, 1);
     f1.setBounds(0, 0, 240, 160);
 
     JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
     f2.add(new JScrollPane(makeDnDTable(handler)));
-    dp.add(f2, 1, 0);
+    desktop.add(f2, 1, 0);
     f2.setBounds(50, 50, 240, 160);
     f2.setOpaque(false);
 
-    EventQueue.invokeLater(() -> Arrays.asList(dp.getAllFrames()).forEach(f -> f.setVisible(true)));
-    add(dp);
+    EventQueue.invokeLater(() -> {
+      JInternalFrame[] frames = desktop.getAllFrames();
+      Arrays.asList(frames).forEach(f -> f.setVisible(true));
+    });
+    add(desktop);
     setPreferredSize(new Dimension(320, 240));
   }
 
