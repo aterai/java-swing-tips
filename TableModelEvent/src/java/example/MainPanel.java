@@ -19,10 +19,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
-      {true, 1, "BBB"}, {false, 12, "AAA"},
-      {true, 2, "DDD"}, {false, 5, "CCC"},
-      {true, 3, "EEE"}, {false, 6, "GGG"},
-      {true, 4, "FFF"}, {false, 7, "HHH"}
+        {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -125,21 +123,25 @@ class HeaderRenderer implements TableCellRenderer {
     }
     check.setOpaque(false);
     check.setFont(table.getFont());
-    TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    JLabel l = (JLabel) r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     label.setIcon(new ComponentIcon(check));
-    l.setIcon(new ComponentIcon(label));
-    l.setText(null); // XXX: Nimbus???
-    // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
-    // System.out.println("getPreferredSize: " + l.getPreferredSize());
-    // System.out.println("getMaximumSize: " + l.getMaximumSize());
-    // System.out.println("----");
-    // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
-    //   System.out.println(l.getPreferredSize().height);
-    //   Rectangle rect = table.getTableHeader().getHeaderRect(column);
-    //   l.setPreferredSize(new Dimension(0, rect.height));
-    // }
-    return l;
+
+    TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
+    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setIcon(new ComponentIcon(label));
+      l.setText(null); // XXX: Nimbus???
+      // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
+      // System.out.println("getPreferredSize: " + l.getPreferredSize());
+      // System.out.println("getMaximumSize: " + l.getMaximumSize());
+      // System.out.println("----");
+      // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
+      //   System.out.println(l.getPreferredSize().height);
+      //   Rectangle rect = table.getTableHeader().getHeaderRect(column);
+      //   l.setPreferredSize(new Dimension(0, rect.height));
+      // }
+    }
+    return c;
   }
 }
 
