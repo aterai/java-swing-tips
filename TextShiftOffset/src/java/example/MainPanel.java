@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
         new JRadioButton(new TextShiftOffsetAction(-1)));
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createHorizontalBox();
-    box.setBorder(BorderFactory.createTitledBorder("UIManager.put(\"Button.textShiftOffset\", offset)"));
+    String title = "UIManager.put(\"Button.textShiftOffset\", offset)";
+    box.setBorder(BorderFactory.createTitledBorder(title));
     box.add(new JLabel("offset = "));
     boolean isFirst = true;
     for (JRadioButton rb : rl) {
@@ -39,7 +40,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     p.add(new JButton("JButton"));
-    p.add(new JButton(new ImageIcon(getClass().getResource("16x16.png"))));
+    p.add(new JButton(UIManager.getIcon("FileChooser.detailsViewIcon")));
     p.add(new JButton("<html>JButton<br>html<br>tag<br>test"));
     p.add(new JToggleButton("JToggleButton"));
 
