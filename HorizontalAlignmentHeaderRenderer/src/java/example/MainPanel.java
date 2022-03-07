@@ -15,8 +15,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTable table0 = makeTable();
-    JLabel label0 = (JLabel) table0.getTableHeader().getDefaultRenderer();
-    label0.setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer0 = table0.getTableHeader().getDefaultRenderer();
+    if (renderer0 instanceof JLabel) {
+      ((JLabel) renderer0).setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
     JTable table1 = makeTable();
     table1.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -65,9 +67,7 @@ public final class MainPanel extends JPanel {
 
   public static JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
+    Object[][] data = {{"aa", 12, true}, {"bb", 5, false}, {"CC", 92, true}, {"DD", 0, false}};
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
