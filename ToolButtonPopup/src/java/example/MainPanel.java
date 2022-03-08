@@ -31,17 +31,19 @@ public final class MainPanel extends JPanel {
     toolBar.add(makeButton(pop1, "Text", null));
     Component rigid = Box.createRigidArea(new Dimension(5, 5));
     toolBar.add(rigid);
-    URL url = getClass().getResource("ei0021-16.png");
-    toolBar.add(makeButton(pop2, "", new ImageIcon(url)));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/ei0021-16.png");
+    Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
+    toolBar.add(makeButton(pop2, "", icon));
     toolBar.add(rigid);
-    toolBar.add(makeButton(pop2, "Icon+Text", new ImageIcon(url)));
+    toolBar.add(makeButton(pop2, "Icon+Text", icon));
     toolBar.add(Box.createGlue());
 
     add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private AbstractButton makeButton(JPopupMenu pop, String title, ImageIcon icon) {
+  private AbstractButton makeButton(JPopupMenu pop, String title, Icon icon) {
     MenuToggleButton b = new MenuToggleButton(title, icon);
     b.setPopupMenu(pop);
     return b;
