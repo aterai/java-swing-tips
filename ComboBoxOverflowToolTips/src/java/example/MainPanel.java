@@ -12,9 +12,11 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     ComboBoxModel<String> model = makeComboBoxModel();
+    JComboBox<String> combo1 = new ToolTipComboBox<>(model);
+    add(makeTitledPanel("Overflow ToolTip JComboBox", combo1), BorderLayout.NORTH);
 
-    add(makeTitledPanel("Overflow ToolTip JComboBox", new ToolTipComboBox<>(model)), BorderLayout.NORTH);
-    add(makeTitledPanel("Default JComboBox", new JComboBox<>(model)), BorderLayout.SOUTH);
+    JComboBox<String> combo2 = new JComboBox<>(model);
+    add(makeTitledPanel("Default JComboBox", combo2), BorderLayout.SOUTH);
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
@@ -68,7 +70,8 @@ class ToolTipComboBox<E> extends JComboBox<E> {
     super.updateUI();
     ListCellRenderer<? super E> renderer = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component r = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component r = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       JComponent c = (JComponent) r;
       // Insets i1 = getInsets();
       Insets ins = c.getInsets();

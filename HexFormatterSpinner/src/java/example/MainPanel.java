@@ -22,17 +22,18 @@ import javax.swing.text.DefaultFormatterFactory;
 
 public final class MainPanel extends JPanel {
   // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
-  private final SpinnerNumberModel nm = new SpinnerNumberModel(0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
+  private final SpinnerNumberModel numberModel = new SpinnerNumberModel(
+      0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
   private final GlyphPaintPanel fontPanel = new GlyphPaintPanel();
 
   private MainPanel() {
     super(new BorderLayout());
-    nm.addChangeListener(e -> fontPanel.repaint());
-    JSpinner spinner = new JSpinner(nm);
+    numberModel.addChangeListener(e -> fontPanel.repaint());
+    JSpinner spinner = new JSpinner(numberModel);
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
-    ftf.setFormatterFactory(makeFFactory());
+    ftf.setFormatterFactory(makeFormatterFactory());
 
     JRadioButton exMi = new JRadioButton(FontPaint.IPA_EX_MINCHO.toString());
     exMi.addItemListener(e -> {
@@ -74,7 +75,7 @@ public final class MainPanel extends JPanel {
   }
 
   public String getCharacterString() {
-    int code = nm.getNumber().intValue();
+    int code = numberModel.getNumber().intValue();
     // char[] ca = Character.toChars(code);
     // int len = Character.charCount(code);
     // https://docs.oracle.com/javase/tutorial/i18n/text/usage.html
@@ -143,7 +144,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static DefaultFormatterFactory makeFFactory() {
+  private static DefaultFormatterFactory makeFormatterFactory() {
     DefaultFormatter formatter = new DefaultFormatter() {
       @Override public Object stringToValue(String text) throws ParseException {
         Pattern pattern = Pattern.compile("^\\s*(\\p{XDigit}{1,6})\\s*$");

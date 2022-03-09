@@ -20,14 +20,14 @@ public final class MainPanel extends JPanel {
   private final JTextArea textArea0 = new JTextArea();
   private final JTextArea textArea1 = new JTextArea();
   private final JTextArea textArea2 = new JTextArea();
-  // TEST: Timer timer = new Timer(500, e -> test(LocalDateTime.now(ZoneId.systemDefault()).toString()));
+  // TEST: Timer timer = new Timer(500, e -> test(LocalDateTime.now().toString()));
   // TEST: Thread thread;
   private transient SwingWorker<String, String> worker;
 
   private MainPanel() {
     super(new BorderLayout());
 
-    ((DefaultCaret) textArea0.getCaret()).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT); // default
+    ((DefaultCaret) textArea0.getCaret()).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT);
     ((DefaultCaret) textArea1.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     ((DefaultCaret) textArea2.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 

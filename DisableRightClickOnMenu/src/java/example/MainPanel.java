@@ -113,12 +113,12 @@ class CustomWindowsMenuUI extends WindowsMenuUI {
         //     }
         //   }
         // }
-        // MenuElement[] selectedPath = manager.getSelectedPath();
-        // if (selectedPath.length > 0 && selectedPath[selectedPath.length - 1] != menu.getPopupMenu()) {
+        // MenuElement[] paths = manager.getSelectedPath();
+        // if (paths.length > 0 && paths[paths.length - 1] != menu.getPopupMenu()) {
         //   if (menu.isTopLevelMenu() || menu.getDelay() == 0) {
-        //     MenuElement[] newPath = new MenuElement[selectedPath.length + 1];
-        //     System.arraycopy(selectedPath, 0, newPath, 0, selectedPath.length);
-        //     newPath[selectedPath.length] = menu.getPopupMenu();
+        //     MenuElement[] newPath = new MenuElement[paths.length + 1];
+        //     System.arraycopy(paths, 0, newPath, 0, paths.length);
+        //     newPath[paths.length] = menu.getPopupMenu();
         //     MenuSelectionManager.defaultManager().setSelectedPath(newPath);
         //   } else {
         //     setupPostTimer(menu);

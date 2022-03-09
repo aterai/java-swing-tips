@@ -12,11 +12,11 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("BasicComboBoxUI#DefaultKeySelectionManager", new JComboBox<>(makeModel())));
-    box.add(Box.createVerticalStrut(5));
 
-    // JComboBox<String> combo0 = new JComboBox<>(makeModel());
+    JComboBox<String> combo0 = new JComboBox<>(makeModel());
     // combo0.setEditable(true);
+    box.add(makeTitledPanel("BasicComboBoxUI#DefaultKeySelectionManager", combo0));
+    box.add(Box.createVerticalStrut(5));
 
     JComboBox<String> combo1 = new JComboBox<String>(makeModel()) {
       @Override public boolean selectWithKeyChar(char keyChar) {
@@ -34,7 +34,6 @@ public final class MainPanel extends JPanel {
     //     return -1;
     //   }
     // });
-
     box.add(makeTitledPanel("disable KeySelectionManager#selectionForKey(...)", combo2));
 
     add(box, BorderLayout.NORTH);
@@ -49,9 +48,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static ComboBoxModel<String> makeModel() {
-    String[] data = {
-      "a", "ab", "abc", "b1", "b2", "b3"
-    };
+    String[] data = {"a", "ab", "abc", "b1", "b2", "b3"};
     return new DefaultComboBoxModel<>(data);
   }
 

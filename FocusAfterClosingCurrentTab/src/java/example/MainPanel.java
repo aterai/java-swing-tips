@@ -149,8 +149,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
     Insets tabInsets = getTabInsets();
     Insets tabAreaInsets = getTabAreaInsets();
-    Insets insets = getInsets();
-    int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
+    Insets ins = getInsets();
+    int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - ins.left - ins.right;
     // int tabWidth = tabInsets.left + tabInsets.right + 3;
     int gap = 0;
 
@@ -194,7 +194,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   }
 }
 
-// How to Use Tabbed Panes (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
   protected final JTabbedPane tabbedPane;

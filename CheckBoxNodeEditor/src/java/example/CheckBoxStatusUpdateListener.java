@@ -346,7 +346,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //   }
 //
 //   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-//     Component c = renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+//     Component c = renderer.getTreeCellRendererComponent(
+//         tree, value, true, expanded, leaf, row, true);
 //     c.setFont(tree.getFont());
 //     if (value instanceof DefaultMutableTreeNode) {
 //       this.setEnabled(tree.isEnabled());
@@ -386,7 +387,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       Dimension d = getPreferredSize();
 //       r.setSize(new Dimension(d.width, r.height));
 //       if (r.contains(me.getX(), me.getY())) {
-//         // Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
+//         // Fixed: First mousepress doesn't start editing in JTree - Java Bug System
 //         //    https://bugs.openjdk.java.net/browse/JDK-8023474
 //         // if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
 //         //   System.out.println("XXX: Java 7, only on first run\n" + getBounds());
@@ -548,7 +549,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //   }
 //
 //   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-//     Component c = renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+//     Component c = renderer.getTreeCellRendererComponent(
+//         tree, value, true, expanded, leaf, row, true);
 //     c.setFont(tree.getFont());
 //     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
 //       check.setEnabled(tree.isEnabled());
@@ -588,7 +590,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       Dimension d = check.getPreferredSize();
 //       r.setSize(new Dimension(d.width, r.height));
 //       if (r.contains(me.getPoint())) {
-//         // Fixed: [JDK-8023474] First mousepress doesn't start editing in JTree - Java Bug System
+//         // Fixed: First mousepress doesn't start editing in JTree - Java Bug System
 //         //    https://bugs.openjdk.java.net/browse/JDK-8023474
 //         // if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
 //         //   System.out.println("XXX: Java 7, only on first run\n" + getBounds());

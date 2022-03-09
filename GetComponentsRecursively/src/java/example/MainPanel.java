@@ -27,34 +27,34 @@ public final class MainPanel extends JPanel {
 
     JButton button2 = new JButton("Details View");
     button2.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
+      JFileChooser fc = new JFileChooser();
       // java - How can I start the JFileChooser in the Details view? - Stack Overflow
       // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
       String cmd = "viewTypeDetails";
-      Action detailsAction = chooser.getActionMap().get(cmd);
+      Action detailsAction = fc.getActionMap().get(cmd);
       if (Objects.nonNull(detailsAction)) {
-        detailsAction.actionPerformed(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, cmd));
+        detailsAction.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, cmd));
       }
 
       // TEST1:
-      // SwingUtils.searchAndResizeMode(chooser);
+      // SwingUtils.searchAndResizeMode(fc);
 
       // TEST2:
-      // Component c = SwingUtils.findChildComponent(chooser, JTable.class);
+      // Component c = SwingUtils.findChildComponent(fc, JTable.class);
       // if (c instanceof JTable) { ... }
 
       // TEST3:
-      // SwingUtils.getComponentByClass(chooser, JTable.class).ifPresent(t -> ...);
+      // SwingUtils.getComponentByClass(fc, JTable.class).ifPresent(t -> ...);
 
       // TEST4:
-      SwingUtils.descendants(chooser)
+      SwingUtils.descendants(fc)
           .filter(JTable.class::isInstance).map(JTable.class::cast)
           .findFirst()
           .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
-      int retValue = chooser.showOpenDialog(getRootPane());
+      int retValue = fc.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
+        log.setText(fc.getSelectedFile().getAbsolutePath());
       }
     });
 

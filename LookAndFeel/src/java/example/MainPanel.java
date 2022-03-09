@@ -53,7 +53,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeSystemColor(Color color, String text) {
-    JTextField field = new JTextField(String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFF_FF_FF));
+    String txt = String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFF_FF_FF);
+    JTextField field = new JTextField(txt);
     field.setEditable(false);
     JLabel c = new JLabel() {
       @Override public Dimension getPreferredSize() {
@@ -75,11 +76,6 @@ public final class MainPanel extends JPanel {
   }
 
   private static void createAndShowGui() {
-    // try {
-    //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-    //   ex.printStackTrace();
-    // }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
