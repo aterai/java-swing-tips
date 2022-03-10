@@ -7,16 +7,11 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.imageio.ImageIO;
 import javax.swing.*;
-// import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -154,9 +149,9 @@ class RoundButton extends JButton {
   // }
 
   protected RoundButton(String i1, String i2, String i3) {
-    super(new ImageIcon(makeImage(i1)));
-    setPressedIcon(new ImageIcon(makeImage(i2)));
-    setRolloverIcon(new ImageIcon(makeImage(i3)));
+    super(makeIcon(i1));
+    setPressedIcon(makeIcon(i2));
+    setRolloverIcon(makeIcon(i3));
   }
 
   @Override public void updateUI() {
@@ -185,26 +180,11 @@ class RoundButton extends JButton {
     }
   }
 
-  public static Image makeImage(String path) {
+  public static Icon makeIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    return Optional.ofNullable(cl.getResource("example/" + path)).map(url -> {
-      try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(RoundButton::makeMissingImage);
-  }
-
-  private static BufferedImage makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
-    int iw = missingIcon.getIconWidth();
-    int ih = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
-    g2.dispose();
-    return bi;
+    return Optional.ofNullable(cl.getResource("example/" + path))
+        .<Icon>map(ImageIcon::new)
+        .orElseGet(() -> UIManager.getIcon("OptionPane.errorIcon"));
   }
 
   @Override protected void paintBorder(Graphics g) {
