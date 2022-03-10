@@ -7,9 +7,14 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 // import javax.swing.plaf.basic.BasicButtonUI;
 
@@ -34,11 +39,11 @@ public final class MainPanel extends JPanel {
     box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
 
     List<? extends JButton> buttons = Arrays.asList(
-        new RoundButton(new ImageIcon(getClass().getResource("005.png")), "005d.png", "005g.png"),
-        new RoundButton(new ImageIcon(getClass().getResource("003.png")), "003d.png", "003g.png"),
-        new RoundButton(new ImageIcon(getClass().getResource("001.png")), "001d.png", "001g.png"),
-        new RoundButton(new ImageIcon(getClass().getResource("002.png")), "002d.png", "002g.png"),
-        new RoundButton(new ImageIcon(getClass().getResource("004.png")), "004d.png", "004g.png"));
+        new RoundButton("005.png", "005d.png", "005g.png"),
+        new RoundButton("003.png", "003d.png", "003g.png"),
+        new RoundButton("001.png", "001d.png", "001g.png"),
+        new RoundButton("002.png", "002d.png", "002g.png"),
+        new RoundButton("004.png", "004d.png", "004g.png"));
     // TEST: buttons = makeButtonArray2(getClass()); // Set ButtonUI
     buttons.forEach(b -> {
       box.add(b);
@@ -123,31 +128,35 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundButton extends JButton {
-  protected Shape shape;
-  protected Shape base;
+  protected transient Shape shape;
+  protected transient Shape base;
   // protected RoundButton() {
   //   super();
   // }
+  //
   // protected RoundButton(Icon icon) {
   //   super(icon);
   // }
+  //
   // protected RoundButton(String text) {
   //   super(text);
   // }
+  //
   // protected RoundButton(Action a) {
   //   super(a);
   //   // setAction(a);
   // }
+  //
   // protected RoundButton(String text, Icon icon) {
   //   super(text, icon);
   //   // setModel(new DefaultButtonModel());
   //   // init(text, icon);
   // }
 
-  protected RoundButton(Icon icon, String i2, String i3) {
-    super(icon);
-    setPressedIcon(new ImageIcon(getClass().getResource(i2)));
-    setRolloverIcon(new ImageIcon(getClass().getResource(i3)));
+  protected RoundButton(String i1, String i2, String i3) {
+    super(new ImageIcon(makeImage(i1)));
+    setPressedIcon(new ImageIcon(makeImage(i2)));
+    setRolloverIcon(new ImageIcon(makeImage(i3)));
   }
 
   @Override public void updateUI() {
@@ -174,6 +183,28 @@ class RoundButton extends JButton {
       base = getBounds();
       shape = new Ellipse2D.Double(0d, 0d, s.width - 1d, s.height - 1d);
     }
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource("example/" + path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(RoundButton::makeMissingImage);
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   @Override protected void paintBorder(Graphics g) {
@@ -211,6 +242,7 @@ class RoundButton extends JButton {
 //     b.setAlignmentY(Component.TOP_ALIGNMENT);
 //     initShape(b);
 //   }
+//
 //   @Override protected void installListeners(AbstractButton b) {
 //     BasicButtonListener listener = new BasicButtonListener(b) {
 //       @Override public void mousePressed(MouseEvent e) {
@@ -220,11 +252,13 @@ class RoundButton extends JButton {
 //           super.mousePressed(e);
 //         }
 //       }
+//
 //       @Override public void mouseEntered(MouseEvent e) {
 //         if (shape.contains(e.getX(), e.getY())) {
 //           super.mouseEntered(e);
 //         }
 //       }
+//
 //       @Override public void mouseMoved(MouseEvent e) {
 //         if (shape.contains(e.getX(), e.getY())) {
 //           super.mouseEntered(e);
@@ -241,6 +275,7 @@ class RoundButton extends JButton {
 //       b.addChangeListener(listener);
 //     }
 //   }
+//
 //   @Override public void paint(Graphics g, JComponent c) {
 //     super.paint(g, c);
 //     Graphics2D g2 = (Graphics2D) g.create();
@@ -252,6 +287,7 @@ class RoundButton extends JButton {
 //     g2.draw(shape);
 //     g2.dispose();
 //   }
+//
 //   @Override public Dimension getPreferredSize(JComponent c) {
 //     JButton b = (JButton) c;
 //     Icon icon = b.getIcon();
@@ -259,6 +295,7 @@ class RoundButton extends JButton {
 //     int iw = Math.max(icon.getIconWidth(), icon.getIconHeight());
 //     return new Dimension(iw + i.right + i.left, iw + i.top + i.bottom);
 //   }
+//
 //   private void initShape(JComponent c) {
 //     if (!c.getBounds().equals(base)) {
 //       Dimension s = c.getPreferredSize();
