@@ -29,9 +29,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
-    Object[][] data = {
-        {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
-    };
+    Object[][] data = {{"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}};
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setAutoCreateRowSorter(true);
 
@@ -46,17 +44,18 @@ public final class MainPanel extends JPanel {
     encodeButton.addActionListener(e -> {
       try {
         Path path = File.createTempFile("output", ".xml").toPath();
-        // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(path)))) {
-          PersistenceDelegate d = new DefaultPersistenceDelegate(new String[] {"column", "sortOrder"});
+        try (XMLEncoder xe = new XMLEncoder(getOutputStream(path))) {
+          String[] constructors = {"column", "sortOrder"};
+          PersistenceDelegate d = new DefaultPersistenceDelegate(constructors);
           xe.setPersistenceDelegate(RowSorter.SortKey.class, d);
           xe.writeObject(table.getRowSorter().getSortKeys());
 
-          xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+          xe.setPersistenceDelegate(
+              DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
           xe.writeObject(table.getModel());
         }
-        // try (Reader r = new BufferedReader(new InputStreamReader(
-        //                                    new FileInputStream(file), StandardCharsets.UTF_8))) {
+        // try (Reader r = new BufferedReader(
+        //    new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
         try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
           textArea.read(r, "temp");
         }
@@ -72,10 +71,9 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
-      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
+      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
         // @SuppressWarnings("unchecked")
-        // List<? extends RowSorter.SortKey> keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        // var keys = (List<? extends RowSorter.SortKey>) xd.readObject();
         Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
         List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject()).stream()
             .filter(clz::isInstance)
@@ -98,6 +96,15 @@ public final class MainPanel extends JPanel {
     add(sp);
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private BufferedOutputStream getOutputStream(Path path) throws IOException {
+    return new BufferedOutputStream(Files.newOutputStream(path));
+  }
+
+  private BufferedInputStream getInputStream(String text) {
+    byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+    return new BufferedInputStream(new ByteArrayInputStream(bytes));
   }
 
   public static void main(String[] args) {

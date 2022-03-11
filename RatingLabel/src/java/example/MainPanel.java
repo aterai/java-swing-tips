@@ -18,7 +18,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 2, 4, 4));
-    // PI Diagona Icons Pack 1.0 - Download Royalty Free Icons and Stock Images For Web & Graphics Design
+    // PI Diagona Icons Pack 1.0
+    //   Download Royalty Free Icons and Stock Images For Web & Graphics Design
     // http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
     ImageIcon defaultIcon = new ImageIcon(getClass().getResource("31g.png"));
     ImageProducer ip = defaultIcon.getImage().getSource();

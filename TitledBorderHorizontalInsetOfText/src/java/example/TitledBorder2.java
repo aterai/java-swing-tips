@@ -45,24 +45,24 @@ public class TitledBorder2 extends TitledBorder {
   //   this(border, title, justification, position, null, null);
   // }
 
-  // public TitledBorder2(Border border, String title, int justification, int position, Font font) {
-  //   this(border, title, justification, position, font, null);
+  // public TitledBorder2(Border border, String title, int just, int position, Font font) {
+  //   this(border, title, just, position, font, null);
   // }
 
   /**
    * Creates a TitledBorder instance with the specified border,
-   * title, title-justification, title-position, title-font, and
+   * title, title-just, title-position, title-font, and
    * title-color.
    *
    * @param border  the border
    * @param title  the title the border should display
-   * @param justification  the justification for the title
+   * @param just  the justification for the title
    * @param pos  the position for the title
    * @param font  the font of the title
    * @param color  the color of the title
    */
-  public TitledBorder2(Border border, String title, int justification, int pos, Font font, Color color) {
-    super(border, title, justification, pos, font, color);
+  public TitledBorder2(Border border, String title, int just, int pos, Font font, Color color) {
+    super(border, title, just, pos, font, color);
     label2 = new JLabel();
     label2.setOpaque(false);
     label2.putClientProperty(BasicHTML.propertyKey, null);
@@ -103,7 +103,7 @@ public class TitledBorder2 extends TitledBorder {
       ins.left += edge + TEXT_INSET_H2;
       ins.right += edge + TEXT_INSET_H2;
       int justification = getJustification2(c);
-      initJustificationRect(justification, x, width, lr, size, ins);
+      initJustification(justification, x, width, lr, size, ins);
 
       paintWrapBorder(c, bdr, g, br, lr);
       g.translate(lr.x, lr.y);
@@ -115,11 +115,11 @@ public class TitledBorder2 extends TitledBorder {
     }
   }
 
-  private void initJustificationRect(int just, int x, int w, Rectangle lr, Dimension size, Insets ins) {
+  private void initJustification(int just, int x, int w, Rectangle lr, Dimension sz, Insets ins) {
     lr.x = x;
     lr.width = w - ins.left - ins.right;
-    if (lr.width > size.width) {
-      lr.width = size.width;
+    if (lr.width > sz.width) {
+      lr.width = sz.width;
     }
     switch (just) {
       case LEFT:

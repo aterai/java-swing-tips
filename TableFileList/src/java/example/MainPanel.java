@@ -157,7 +157,7 @@ class FileNameRenderer implements TableCellRenderer {
     }).orElseGet(FileNameRenderer::makeMissingImage);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

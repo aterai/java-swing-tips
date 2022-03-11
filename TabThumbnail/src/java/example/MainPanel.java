@@ -97,7 +97,8 @@ class TabThumbnailTabbedPane extends JTabbedPane {
       int newH = (int) (d.height * SCALE);
       BufferedImage image = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = image.createGraphics();
-      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+      g2.setRenderingHint(
+          RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
       g2.scale(SCALE, SCALE);
       c.print(g2);
       g2.dispose();
@@ -127,7 +128,8 @@ class TabThumbnailTabbedPane extends JTabbedPane {
       }
     };
     tip.setComponent(this);
-    LookAndFeel.installColorsAndFont(p, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    LookAndFeel.installColorsAndFont(
+        p, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
     tip.setLayout(new BorderLayout());
     tip.add(p);
     return tip;

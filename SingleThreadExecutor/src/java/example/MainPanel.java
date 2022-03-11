@@ -180,11 +180,14 @@ public final class MainPanel extends JPanel {
         // worker = null;
       }
       RowSorter<? extends TableModel> sorter = table.getRowSorter();
-      ((TableRowSorter<? extends TableModel>) sorter).setRowFilter(new RowFilter<TableModel, Integer>() {
-        @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-          return !deletedRowSet.contains(entry.getIdentifier());
-        }
-      });
+      if (sorter instanceof TableRowSorter) {
+        RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
+          @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+            return !deletedRowSet.contains(entry.getIdentifier());
+          }
+        };
+        ((TableRowSorter<? extends TableModel>) sorter).setRowFilter(filter);
+      }
       table.clearSelection();
       table.repaint();
     }

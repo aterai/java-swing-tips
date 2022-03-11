@@ -106,7 +106,8 @@ class RowSelectionTree extends JTree {
     // addFocusListener(handler);
     TreeCellRenderer r = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-      Component c = r.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      Component c = r.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
       c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
       if (c instanceof JComponent) {
         ((JComponent) c).setOpaque(true);

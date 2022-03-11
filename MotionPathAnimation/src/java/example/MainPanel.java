@@ -16,7 +16,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private static final double PLAY_TIME = 5000d;
   private long startTime = -1L;
-  private final Shape shape;
+  private final transient Shape shape;
   private final Point2D pos = new Point2D.Double();
   private final List<Point2D> points = new ArrayList<>();
   private final JButton button = new JButton("start");
@@ -122,10 +122,12 @@ public final class MainPanel extends JPanel {
   }
 
   public static void applyQualityRenderingHints(Graphics2D g2) {
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-    g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-    // // import static java.awt.RenderingHints.*;
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+    g2.setRenderingHint(
+        RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
     // g2.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_QUALITY);
     // g2.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_QUALITY);
     // g2.setRenderingHint(KEY_DITHERING, VALUE_DITHER_ENABLE);

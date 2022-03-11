@@ -184,7 +184,7 @@ class FocusAncestorListener implements AncestorListener {
 class FindNextAction extends AbstractAction {
   private final JTree tree;
   private final JTextField field;
-  private final List<TreePath> rollOverPathLists = new ArrayList<>();
+  private final List<TreePath> matchedResults = new ArrayList<>();
 
   protected FindNextAction(JTree tree, JTextField field) {
     super();
@@ -195,35 +195,35 @@ class FindNextAction extends AbstractAction {
   @Override public void actionPerformed(ActionEvent e) {
     TreePath selectedPath = tree.getSelectionPath();
     tree.clearSelection();
-    rollOverPathLists.clear();
-    searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
-    if (!rollOverPathLists.isEmpty()) {
+    matchedResults.clear();
+    searchTree(tree, tree.getPathForRow(0), field.getText(), matchedResults);
+    if (!matchedResults.isEmpty()) {
       int nextIndex = 0;
-      int size = rollOverPathLists.size();
+      int size = matchedResults.size();
       for (int i = 0; i < size; i++) {
-        if (rollOverPathLists.get(i).equals(selectedPath)) {
+        if (matchedResults.get(i).equals(selectedPath)) {
           nextIndex = i + 1 < size ? i + 1 : 0;
           break;
         }
       }
-      TreePath p = rollOverPathLists.get(nextIndex);
+      TreePath p = matchedResults.get(nextIndex);
       tree.addSelectionPath(p);
       tree.scrollPathToVisible(p);
     }
   }
 
-  private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
+  private static void searchTree(JTree tree, TreePath path, String q, List<TreePath> results) {
     Object o = path.getLastPathComponent();
     if (o instanceof TreeNode) {
       TreeNode node = (TreeNode) o;
       if (node.toString().startsWith(q)) {
-        rollOverPathLists.add(path);
+        results.add(path);
         tree.expandPath(path.getParentPath());
       }
       if (!node.isLeaf()) {
         // Java 9: Collections.list(node.children())
         Collections.list((Enumeration<?>) node.children())
-            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, results));
       }
     }
   }
@@ -237,7 +237,7 @@ final class AnimationUtil {
   }
 
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-  // Math: EaseIn EaseOut, EaseInOut and Bezier curves | Anima Entertainment GmbH
+  // Math: EaseIn EaseOut, EaseInOut and Bézier curves | Anima Entertainment GmbH
   // public static double easeIn(double t) {
   //   // range: 0.0 <= t <= 1.0
   //   return Math.pow(t, N);

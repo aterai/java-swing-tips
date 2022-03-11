@@ -26,9 +26,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
-    Object[][] data = {
-        {"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}
-    };
+    Object[][] data = {{"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}};
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
 
     JTextArea textArea = new JTextArea();
@@ -42,16 +40,16 @@ public final class MainPanel extends JPanel {
     encodeButton.addActionListener(e -> {
       try {
         Path path = File.createTempFile("output", ".xml").toPath();
-        // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(path)))) {
-          xe.setPersistenceDelegate(DefaultTableModel.class, new DefaultTableModelPersistenceDelegate());
+        // try (XMLEncoder xe = new XMLEncoder(new FileOutputStream(file))) {
+        try (XMLEncoder xe = new XMLEncoder(getOutputStream(path))) {
+          Class<DefaultTableModel> clz = DefaultTableModel.class;
+          xe.setPersistenceDelegate(clz, new DefaultTableModelPersistenceDelegate());
           // xe.setExceptionListener(new ExceptionListener() {
           //   @Override public void exceptionThrown(Exception ex) {
           //     // XXX: ex.printStackTrace();
           //   }
           // });
-          DefaultTableModel m = (DefaultTableModel) table.getModel();
-          xe.writeObject(m);
+          xe.writeObject(clz.cast(table.getModel()));
           // xe.flush();
           // xe.close();
         }
@@ -72,8 +70,7 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
-      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
+      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
         DefaultTableModel m = (DefaultTableModel) xd.readObject();
         table.setModel(m);
       }
@@ -89,6 +86,15 @@ public final class MainPanel extends JPanel {
     add(sp);
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private BufferedOutputStream getOutputStream(Path path) throws IOException {
+    return new BufferedOutputStream(Files.newOutputStream(path));
+  }
+
+  private BufferedInputStream getInputStream(String text) {
+    byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+    return new BufferedInputStream(new ByteArrayInputStream(bytes));
   }
 
   public static void main(String[] args) {

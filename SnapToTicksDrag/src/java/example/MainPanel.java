@@ -126,16 +126,16 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
         } else if (pos >= trackRight) {
           snappedPos = trackRight;
         } else {
-          // int tickSpacing = slider.getMajorTickSpacing();
-          // float tickPixels = trackLength * tickSpacing / (float) slider.getMaximum();
+          // int tickSp = slider.getMajorTickSpacing();
+          // float tickPixels = trackLength * tickSp / (float) slider.getMaximum();
 
           // a problem if you choose to set a negative MINIMUM for the JSlider;
           // the calculated drag-positions are wrong.
           // Fixed by bobndrew:
           int possibleTickPos = slider.getMaximum() - slider.getMinimum();
-          boolean hasMinorTickSp = slider.getMinorTickSpacing() > 0;
-          int tickSpacing = hasMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
-          float tickPixels = trackLength * tickSpacing / (float) possibleTickPos;
+          boolean isMinorTickSp = slider.getMinorTickSpacing() > 0;
+          int tickSp = isMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
+          float tickPixels = trackLength * tickSp / (float) possibleTickPos;
           pos -= trackLeft;
           // snappedPos = (int) (Math.round(pos / tickPixels) * tickPixels + .5) + trackLeft;
           snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
@@ -149,7 +149,6 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
         //   snappedPos, e.getY(),
         //   e.getXOnScreen(), e.getYOnScreen(),
         //   e.getClickCount(), e.isPopupTrigger(), e.getButton());
-        // e.consume();
         // super.mouseDragged(me);
       }
     };
@@ -176,16 +175,16 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
         } else if (pos >= trackRight) {
           snappedPos = trackRight;
         } else {
-          // int tickSpacing = slider.getMajorTickSpacing();
-          // float tickPixels = trackLength * tickSpacing / (float) slider.getMaximum();
+          // int tickSp = slider.getMajorTickSpacing();
+          // float tickPixels = trackLength * tickSp / (float) slider.getMaximum();
 
           // a problem if you choose to set a negative MINIMUM for the JSlider;
           // the calculated drag-positions are wrong.
           // Fixed by bobndrew:
           int possibleTickPos = slider.getMaximum() - slider.getMinimum();
-          boolean hasMinorTickSp = slider.getMinorTickSpacing() > 0;
-          int tickSpacing = hasMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
-          float tickPixels = trackLength * tickSpacing / (float) possibleTickPos;
+          boolean isMinorTickSp = slider.getMinorTickSpacing() > 0;
+          int tickSp = isMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
+          float tickPixels = trackLength * tickSp / (float) possibleTickPos;
           pos -= trackLeft;
           // snappedPos = (int) (Math.round(pos / tickPixels) * tickPixels + .5) + trackLeft;
           snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;

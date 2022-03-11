@@ -128,7 +128,8 @@ public final class MainPanel extends JPanel {
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
       boolean isEditable = mask[row][column] == 0;
-      super.getTableCellRendererComponent(table, value, isEditable && isSelected, hasFocus, row, column);
+      super.getTableCellRendererComponent(
+          table, value, isEditable && isSelected, hasFocus, row, column);
       if (isEditable && Objects.equals(value, 0)) {
         this.setText(" ");
       }

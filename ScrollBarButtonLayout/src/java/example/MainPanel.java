@@ -263,7 +263,8 @@ final class ScrollBarUtil {
     /* Singleton */
   }
 
-  public static int getThumbHeight(int trackH, float extent, float range, int maxThumbH, int minThumbH) {
+  public static int getThumbHeight(
+      int trackH, float extent, float range, int maxThumbH, int minThumbH) {
     int thumbH = range <= 0 ? maxThumbH : (int) (trackH * (extent / range));
     thumbH = Math.min(Math.max(thumbH, minThumbH), maxThumbH);
     return thumbH;

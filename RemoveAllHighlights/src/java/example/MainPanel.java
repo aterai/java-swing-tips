@@ -40,8 +40,7 @@ public final class MainPanel extends JPanel {
       " This lesson ends with a set of questions and exercises",
       " so you can test yourself on what you've learned.",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
-      ""
-  );
+      "");
   private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
 
   private MainPanel() {
@@ -107,7 +106,9 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class WordHighlightListener extends MouseAdapter implements CaretListener, KeyListener {
+  private static class WordHighlightListener
+      extends MouseAdapter
+      implements CaretListener, KeyListener {
     private boolean dragActive;
     private boolean shiftActive;
 

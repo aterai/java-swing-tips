@@ -15,7 +15,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Box box = Box.createVerticalBox();
     MouseAdapter dh = new RearrangingHandler();
     box.addMouseListener(dh);
@@ -131,11 +130,11 @@ class RearrangingHandler extends MouseAdapter {
     return -1;
   }
 
-  private static void swapComponentLocation(Container parent, Component remove, Component add, int idx) {
-    parent.remove(remove);
-    parent.add(add, idx);
-    parent.revalidate();
-    parent.repaint();
+  private static void swapComponentLocation(Container p, Component remove, Component add, int i) {
+    p.remove(remove);
+    p.add(add, i);
+    p.revalidate();
+    p.repaint();
   }
 
   @Override public void mouseDragged(MouseEvent e) {
