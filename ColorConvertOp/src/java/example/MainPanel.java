@@ -13,21 +13,34 @@ import java.awt.image.ColorConvertOp;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-    ImageIcon orgImage = new ImageIcon(getClass().getResource("i03-10.gif"));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    String path = "example/i03-10.gif";
+    Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    Icon icon = new ImageIcon(image);
 
     JPanel p1 = new JPanel(new GridLayout(1, 2));
-    p1.add(makeLabel(makeGrayImageIcon1(orgImage.getImage()), orgImage, "ColorConvertOp"));
-    p1.add(makeLabel(makeGrayImageIcon2(orgImage.getImage()), orgImage, "TYPE_BYTE_GRAY"));
+    p1.add(makeLabel(makeGrayIcon1(image), icon, "ColorConvertOp"));
+    p1.add(makeLabel(makeGrayIcon2(image), icon, "TYPE_BYTE_GRAY"));
     add(p1);
-    add(makeLabel(makeGrayImageIcon3(orgImage.getImage()), orgImage, "GrayFilter.createDisabledImage"));
+    add(makeLabel(makeGrayIcon3(image), icon, "GrayFilter.createDisabledImage"));
     JPanel p3 = new JPanel(new GridLayout(1, 2));
-    p3.add(makeLabel(makeGrayImageIcon4(orgImage.getImage()), orgImage, "GrayFilter(true, 50)"));
-    p3.add(makeLabel(makeGrayImageIcon5(orgImage.getImage()), orgImage, "GrayImageFilter"));
+    p3.add(makeLabel(makeGrayIcon4(image), icon, "GrayFilter(true, 50)"));
+    p3.add(makeLabel(makeGrayIcon5(image), icon, "GrayImageFilter"));
     add(p3);
 
     p1.setBackground(Color.WHITE);
@@ -37,7 +50,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JLabel makeLabel(ImageIcon image, ImageIcon orgImage, String str) {
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
+    g2.dispose();
+    return bi;
+  }
+
+  private static JLabel makeLabel(Icon image, Icon orgImage, String str) {
     JLabel label = new JLabel(str, image, SwingConstants.LEFT);
     label.addMouseListener(new MouseAdapter() {
       private boolean isGray;
@@ -50,7 +74,7 @@ public final class MainPanel extends JPanel {
     return label;
   }
 
-  private static ImageIcon makeGrayImageIcon1(Image img) {
+  private static Icon makeGrayIcon1(Image img) {
     int w = img.getWidth(null);
     int h = img.getHeight(null);
     BufferedImage source = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -61,7 +85,7 @@ public final class MainPanel extends JPanel {
     return new ImageIcon(ccOp.filter(source, null));
   }
 
-  private static ImageIcon makeGrayImageIcon2(Image img) {
+  private static Icon makeGrayIcon2(Image img) {
     int w = img.getWidth(null);
     int h = img.getHeight(null);
     BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
@@ -74,18 +98,18 @@ public final class MainPanel extends JPanel {
     return new ImageIcon(destination);
   }
 
-  private static ImageIcon makeGrayImageIcon3(Image img) {
+  private static Icon makeGrayIcon3(Image img) {
     // GrayFilter1
     return new ImageIcon(GrayFilter.createDisabledImage(img));
   }
 
-  private static ImageIcon makeGrayImageIcon4(Image img) {
+  private static Icon makeGrayIcon4(Image img) {
     // GrayFilter2
     ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true, 50));
     return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 
-  private static ImageIcon makeGrayImageIcon5(Image img) {
+  private static Icon makeGrayIcon5(Image img) {
     // RGBImageFilter
     ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayImageFilter());
     return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
