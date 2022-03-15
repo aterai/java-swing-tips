@@ -44,6 +44,7 @@ public final class MainPanel extends JPanel {
         int fillTop = (thumbSize - trackHeight) / 2;
         int fillLeft = thumbSize / 2;
 
+        // Paint track
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(new Color(0xC6_E4_FC));
         g.fillRoundRect(fillLeft, fillTop + 2, trackWidth, trackHeight - 4, arc, arc);
@@ -51,10 +52,8 @@ public final class MainPanel extends JPanel {
         int fillBottom = fillTop + trackHeight;
         Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
         int fillRight = getXPositionForValue(c, r, c.getValue());
-        g.setColor(new Color(0x21_98_F6));
-        g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
 
-        // Paints the major tick on the track
+        // Paint the major tick marks on the track
         int value = c.getMinimum();
         while (value <= c.getMaximum()) {
           int xpt = getXPositionForValue(c, r, value);
@@ -65,6 +64,10 @@ public final class MainPanel extends JPanel {
           }
           value += c.getMajorTickSpacing();
         }
+
+        // JSlider.isFilled
+        g.setColor(new Color(0x21_98_F6));
+        g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
       }
 
       // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
@@ -94,7 +97,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("Default", new JSlider()));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Nimbus JSlider.isFilled", slider));
+    box.add(makeTitledPanel("Paint major tick marks on the track", slider));
     box.add(Box.createVerticalGlue());
     add(box);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
