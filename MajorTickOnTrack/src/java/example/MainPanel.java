@@ -51,7 +51,6 @@ public final class MainPanel extends JPanel {
 
         int fillBottom = fillTop + trackHeight;
         Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
-        int fillRight = getXPositionForValue(c, r, c.getValue());
 
         // Paint the major tick marks on the track
         g.setColor(new Color(0x31_A8_F8));
@@ -67,6 +66,7 @@ public final class MainPanel extends JPanel {
         }
 
         // JSlider.isFilled
+        int fillRight = getXPositionForValue(c, r, c.getValue());
         g.setColor(new Color(0x21_98_F6));
         g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
       }
