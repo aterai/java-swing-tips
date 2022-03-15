@@ -54,6 +54,7 @@ public final class MainPanel extends JPanel {
         int fillRight = getXPositionForValue(c, r, c.getValue());
 
         // Paint the major tick marks on the track
+        g.setColor(new Color(0x31_A8_F8));
         int value = c.getMinimum();
         while (value <= c.getMaximum()) {
           int xpt = getXPositionForValue(c, r, value);
