@@ -152,7 +152,8 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
   private static final Color ALPHA_OF_ZERO = new Color(0x0, true);
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    Component c = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, false);
+    Component c = super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, false);
     if (c instanceof JComponent) {
       ((JComponent) c).setOpaque(false);
     }

@@ -20,7 +20,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JButton label = new JButton(SITE);
     // label.addActionListener(e -> {
     //   System.out.println(e);
@@ -52,14 +51,17 @@ public final class MainPanel extends JPanel {
   //   @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
   //     return (flavors.length > 0 && flavors[0].equals(uriFlavor));
   //   }
+  //
   //   @Override protected Transferable createTransferable(JComponent c) {
   //     return new Transferable() {
   //       @Override public Object getTransferData(DataFlavor flavor) {
   //         return SITE;
   //       }
+  //
   //       @Override public DataFlavor[] getTransferDataFlavors() {
   //         return new DataFlavor[] {uriFlavor};
   //       }
+  //
   //       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
   //         return flavor.equals(uriFlavor);
   //       }
@@ -75,7 +77,7 @@ public final class MainPanel extends JPanel {
   // });
   // // DragGestureListener
   // DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-  //     label, DnDConstants.ACTION_COPY, new DragGestureListener() {
+  //       label, DnDConstants.ACTION_COPY, new DragGestureListener() {
   //   @Override public void dragGestureRecognized(DragGestureEvent dge) {
   //     Transferable t = new Transferable() {
   //       @Override public Object getTransferData(DataFlavor flavor) {
@@ -164,15 +166,12 @@ class LinkViewButtonUI extends BasicButtonUI {
     AbstractButton b = (AbstractButton) c;
     Font f = b.getFont();
     g.setFont(f);
-    // Insets i = c.getInsets();
-    // b.getSize(size);
-    // viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
     SwingUtilities.calculateInnerArea(c, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
-        c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
+        c, c.getFontMetrics(f), b.getText(), null, // icon != null ? icon : getDefaultIcon(),
         b.getVerticalAlignment(), b.getHorizontalAlignment(),
         b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
         viewRect, iconRect, textRect,
@@ -184,7 +183,8 @@ class LinkViewButtonUI extends BasicButtonUI {
     }
 
     ButtonModel m = b.getModel();
-    if (!m.isSelected() && !m.isPressed() && !m.isArmed() && b.isRolloverEnabled() && m.isRollover()) {
+    boolean isRollover = b.isRolloverEnabled() && m.isRollover();
+    if (!m.isSelected() && !m.isPressed() && !m.isArmed() && isRollover) {
       g.setColor(Color.BLUE);
       int yh = viewRect.y + viewRect.height;
       g.drawLine(viewRect.x, yh, viewRect.x + viewRect.width, yh);

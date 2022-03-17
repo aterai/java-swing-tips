@@ -140,7 +140,7 @@ public final class MainPanel extends JPanel {
   public void checkId(Element element) {
     AttributeSet attrs = element.getAttributes();
     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-    Object name = Objects.isNull(elementName) ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
+    Object name = elementName == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
     HTML.Tag tag;
     if (name instanceof HTML.Tag) {
       tag = (HTML.Tag) name;

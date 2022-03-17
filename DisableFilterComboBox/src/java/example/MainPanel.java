@@ -47,11 +47,11 @@ public final class MainPanel extends JPanel {
   private static void updateFileChooser(JFileChooser fileChooser) {
     boolean f = fileChooser.getFileSelectionMode() != JFileChooser.DIRECTORIES_ONLY;
     fileChooser.setAcceptAllFileFilterUsed(f);
-    String labelText = UIManager.getString("FileChooser.filesOfTypeLabelText", fileChooser.getLocale());
+    String txt = UIManager.getString("FileChooser.filesOfTypeLabelText", fileChooser.getLocale());
     SwingUtils.descendants(fileChooser)
         .filter(JLabel.class::isInstance).map(JLabel.class::cast)
         .forEach(label -> {
-          if (labelText.equals(label.getText())) {
+          if (txt.equals(label.getText())) {
             Component c = label.getLabelFor();
             label.setEnabled(f);
             if (c instanceof JComboBox) {

@@ -187,7 +187,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     check.setOpaque(false);
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       panel.removeAll();
-      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (index < 0) {
         String txt = getCheckedItemString(list.getModel());
         JLabel l = (JLabel) c;

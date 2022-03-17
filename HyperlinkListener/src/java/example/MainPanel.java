@@ -185,15 +185,12 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
     AbstractButton b = (AbstractButton) c;
     Font f = b.getFont();
     g.setFont(f);
-    // Insets i = c.getInsets();
-    // b.getSize(size);
-    // viewRect.setBounds(i.left, i.top, size.width - i.left - i.right, size.height - i.top - i.bottom);
     SwingUtilities.calculateInnerArea(c, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
-        c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
+        c, c.getFontMetrics(f), b.getText(), null, // icon != null ? icon : getDefaultIcon(),
         b.getVerticalAlignment(), b.getHorizontalAlignment(),
         b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
         viewRect, iconRect, textRect,

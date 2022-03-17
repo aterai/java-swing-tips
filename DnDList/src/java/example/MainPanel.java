@@ -85,7 +85,8 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     super.updateUI();
     ListCellRenderer<? super E> renderer = getCellRenderer();
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (isSelected) {
         c.setForeground(list.getSelectionForeground());
         c.setBackground(list.getSelectionBackground());

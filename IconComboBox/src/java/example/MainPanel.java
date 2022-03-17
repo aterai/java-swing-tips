@@ -191,7 +191,8 @@ final class ComboBoxUtil {
   public static <E> void initComboBoxRenderer(JComboBox<E> combo, ImageIcon icon) {
     ListCellRenderer<? super E> renderer = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (c instanceof JLabel) {
         ((JLabel) c).setIcon(icon);
       }

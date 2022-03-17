@@ -33,10 +33,8 @@ public final class MainPanel extends JPanel {
       " as are layout management and accessibility.",
       " This lesson ends with a set of questions and exercises",
       " so you can test yourself on what you've learned.",
-      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
-  );
+      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html");
 
-  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private final JTextField field = new JTextField("Swing");
   private final JTextArea textArea = new JTextArea(TEXT);
 
@@ -105,6 +103,7 @@ public final class MainPanel extends JPanel {
     try {
       String text = doc.getText(0, doc.getLength());
       Matcher matcher = Pattern.compile(pattern).matcher(text);
+      HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
       int pos = 0;
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();

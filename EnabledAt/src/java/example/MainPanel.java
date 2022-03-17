@@ -11,11 +11,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     int tgtIndex = 1;
-
     JTabbedPane tabs = new JTabbedPane();
 
     JCheckBox check = new JCheckBox("Enable Advanced");
-    check.addActionListener(e -> tabs.setEnabledAt(tgtIndex, ((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> tabs.setEnabledAt(tgtIndex, check.isSelected()));
 
     tabs.addTab("Preferences", check);
     tabs.addTab("Advanced", new JScrollPane(new JTree()));

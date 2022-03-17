@@ -189,7 +189,7 @@ class CheckBoxesRenderer implements TableCellRenderer {
     renderer.updateButtons(value);
     return renderer;
   }
-  // public static class UIResource extends CheckBoxesRenderer implements javax.swing.plaf.UIResource {}
+  // public static class UIResource extends CheckBoxesRenderer implements UIResource {}
 }
 
 class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {

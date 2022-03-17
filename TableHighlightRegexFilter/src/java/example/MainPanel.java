@@ -110,7 +110,6 @@ public final class MainPanel extends JPanel {
 
 class HighlightTableCellRenderer extends JTextField implements TableCellRenderer {
   private static final Color SELECTION_BGC = new Color(0xDC_F0_FF);
-  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private String pattern = "";
   private String prev;
 
@@ -141,6 +140,7 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
     setBackground(isSelected ? SELECTION_BGC : Color.WHITE);
     if (Objects.nonNull(pattern) && !pattern.isEmpty() && !Objects.equals(pattern, prev)) {
       Matcher matcher = Pattern.compile(pattern).matcher(txt);
+      HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
       int pos = 0;
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();

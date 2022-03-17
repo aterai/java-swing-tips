@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
@@ -89,9 +90,10 @@ class FileChooserTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(TransferSupport support) {
+    JFileChooser fc = (JFileChooser) support.getComponent();
+    Transferable transferable = support.getTransferable();
     try {
-      JFileChooser fc = (JFileChooser) support.getComponent();
-      List<?> list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+      List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
       File[] files = new File[list.size()];
       for (int i = 0; i < list.size(); i++) {
         files[i] = (File) list.get(i);
