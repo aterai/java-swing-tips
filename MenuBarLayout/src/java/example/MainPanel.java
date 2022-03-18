@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
       }
       // // https://tips4java.wordpress.com/2008/11/06/wrap-layout/
       // // WrapLayout.java
-      // // Rob Camick on November 6, 2008
+      // // Rob Camick on November 6, 2008,
       // private Dimension preferredLayoutSize;
       // @Override public void layoutContainer(Container target) {
       //   Dimension size = preferredLayoutSize(target);
@@ -81,8 +81,10 @@ public final class MainPanel extends JPanel {
       //   }
       // }
     });
-    Stream.of("File", "Edit", "View", "Navigate", "Code", "Analyze", "Refactor", "Build", "Run", "Help")
-        .map(MainPanel::createMenu).forEach(menuBar::add);
+    Stream.of(
+        "File", "Edit", "View", "Navigate", "Code", "Analyze",
+        "Refactor", "Build", "Run", "Help"
+    ).map(MainPanel::createMenu).forEach(menuBar::add);
     return menuBar;
   }
 

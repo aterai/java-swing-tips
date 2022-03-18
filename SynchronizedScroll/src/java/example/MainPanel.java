@@ -49,11 +49,10 @@ public final class MainPanel extends JPanel {
         Dimension dim2 = tgt.getViewSize();
         Dimension siz2 = tgt.getSize();
         // Point pnt2 = tgt.getViewPosition();
-        double d;
-        d = pnt1.getY() / (dim1.getHeight() - siz1.getHeight()) * (dim2.getHeight() - siz2.getHeight());
-        pnt1.y = (int) d;
-        d = pnt1.getX() / (dim1.getWidth() - siz1.getWidth()) * (dim2.getWidth() - siz2.getWidth());
-        pnt1.x = (int) d;
+        double dy = pnt1.getY() / (dim1.height - siz1.height) * (dim2.height - siz2.height);
+        pnt1.y = (int) dy;
+        double dx = pnt1.getX() / (dim1.width - siz1.width) * (dim2.width - siz2.width);
+        pnt1.x = (int) dx;
         tgt.setViewPosition(pnt1);
         adjusting = false;
       }

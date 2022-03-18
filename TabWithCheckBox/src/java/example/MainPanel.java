@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
         //       int height = getHeight();
         //       FontMetrics fm = getFontMetrics(getFont());
         //       Insets i = getInsets();
-        //       viewRect.setBounds(i.left, i.top, width - i.right - i.left, height - i.bottom - i.top);
+        //       viewRect.setBounds(
+        //           i.left, i.top, width - i.right - i.left, height - i.bottom - i.top);
         //       textRect.setBounds(0, 0, 0, 0);
         //       iconRect.setBounds(0, 0, 0, 0);
         //       SwingUtilities.layoutCompoundLabel(

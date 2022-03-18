@@ -63,8 +63,7 @@ public final class MainPanel extends JPanel {
       try {
         Path path = File.createTempFile("output", ".xml").toPath();
         String[] names = {"label", "status"};
-        // try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-        try (XMLEncoder xe = new XMLEncoder(new BufferedOutputStream(Files.newOutputStream(path)))) {
+        try (XMLEncoder xe = new XMLEncoder(getOutputStream(path))) {
           xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(names));
           xe.writeObject(tree.getModel());
         }
@@ -83,9 +82,7 @@ public final class MainPanel extends JPanel {
       if (text.isEmpty()) {
         return;
       }
-      // try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new FileInputStream(file)))) {
-      byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
-      try (XMLDecoder xd = new XMLDecoder(new BufferedInputStream(new ByteArrayInputStream(bytes)))) {
+      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
         DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
         m.addTreeModelListener(new CheckBoxStatusUpdateListener());
         tree.setModel(m);
@@ -107,6 +104,15 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private BufferedOutputStream getOutputStream(Path path) throws IOException {
+    return new BufferedOutputStream(Files.newOutputStream(path));
+  }
+
+  private BufferedInputStream getInputStream(String text) {
+    byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+    return new BufferedInputStream(new ByteArrayInputStream(bytes));
   }
 
   public static void main(String[] args) {

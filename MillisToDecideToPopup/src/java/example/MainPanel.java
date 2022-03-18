@@ -19,8 +19,11 @@ public final class MainPanel extends JPanel {
     area.setEditable(false);
 
     ProgressMonitor pm = new ProgressMonitor(null, "message", "note", 0, 100);
-    SpinnerNumberModel msToDecide = new SpinnerNumberModel(pm.getMillisToDecideToPopup(), 0, 5000, 100);
-    SpinnerNumberModel msToPopup = new SpinnerNumberModel(pm.getMillisToPopup(), 0, 5000, 100);
+    int ms1 = pm.getMillisToDecideToPopup();
+    SpinnerNumberModel msToDecide = new SpinnerNumberModel(ms1, 0, 5000, 100);
+
+    int ms2 = pm.getMillisToPopup();
+    SpinnerNumberModel msToPopup = new SpinnerNumberModel(ms2, 0, 5000, 100);
 
     JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {

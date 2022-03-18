@@ -13,7 +13,6 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JScrollPane s1 = new JScrollPane(new JTable(5, 3)) {
       @Override public Dimension getMinimumSize() {
         return new Dimension(0, 100);
@@ -74,7 +73,8 @@ public final class MainPanel extends JPanel {
         splitPane.requestFocusInWindow();
         EventQueue.invokeLater(() -> {
           String cmd = e.getActionCommand();
-          splitPane.getActionMap().get(cmd).actionPerformed(new ActionEvent(splitPane, e.getID(), cmd));
+          ActionMap am = splitPane.getActionMap();
+          am.get(cmd).actionPerformed(new ActionEvent(splitPane, e.getID(), cmd));
         });
       }
     };
@@ -85,7 +85,8 @@ public final class MainPanel extends JPanel {
         splitPane.requestFocusInWindow();
         EventQueue.invokeLater(() -> {
           String cmd = e.getActionCommand();
-          splitPane.getActionMap().get(cmd).actionPerformed(new ActionEvent(splitPane, e.getID(), cmd));
+          ActionMap am = splitPane.getActionMap();
+          am.get(cmd).actionPerformed(new ActionEvent(splitPane, e.getID(), cmd));
         });
       }
     };
@@ -103,7 +104,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void initDividerButtonModel(Container divider, JButton minButton, JButton maxButton) {
+  private static void initDividerButtonModel(Container divider, JButton minBtn, JButton maxBtn) {
     ButtonModel selectMinModel = null;
     ButtonModel selectMaxModel = null;
     for (Component c : divider.getComponents()) {
@@ -116,8 +117,8 @@ public final class MainPanel extends JPanel {
         }
       }
     }
-    minButton.setModel(selectMinModel);
-    maxButton.setModel(selectMaxModel);
+    minBtn.setModel(selectMinModel);
+    maxBtn.setModel(selectMaxModel);
   }
 
   public static void main(String[] args) {

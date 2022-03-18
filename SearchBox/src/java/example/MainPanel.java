@@ -182,18 +182,18 @@ final class TreeUtil {
     /* Singleton */
   }
 
-  public static void searchTree(JTree tree, TreePath path, String q, List<TreePath> rollOverPathLists) {
+  public static void searchTree(JTree tree, TreePath path, String q, List<TreePath> results) {
     Object o = path.getLastPathComponent();
     if (o instanceof TreeNode) {
       TreeNode node = (TreeNode) o;
       if (node.toString().startsWith(q)) {
-        rollOverPathLists.add(path);
+        results.add(path);
         tree.expandPath(path.getParentPath());
       }
       if (!node.isLeaf()) {
         // Java 9: Collections.list(node.children())
         Collections.list((Enumeration<?>) node.children())
-            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, rollOverPathLists));
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q, results));
       }
     }
   }

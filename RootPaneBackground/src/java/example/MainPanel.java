@@ -162,7 +162,9 @@ final class ImageUtil {
       }
     }).orElseGet(ImageUtil::makeMissingImage);
 
-    BufferedImage dest = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+    int w = img.getWidth();
+    int h = img.getHeight();
+    BufferedImage dest = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     IntStream.range(0, b.length).forEach(i -> b[i] = (byte) (i * .5));
     BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
@@ -352,7 +354,7 @@ Translucent and Shaped Swing Windows | Java.net
 </a>
 */
 class TranslucentPopupFactory extends PopupFactory {
-  @Override public Popup getPopup(Component owner, Component contents, int x, int y) { // throws IllegalArgumentException {
+  @Override public Popup getPopup(Component owner, Component contents, int x, int y) {
     return new TranslucentPopup(owner, contents, x, y);
   }
 }

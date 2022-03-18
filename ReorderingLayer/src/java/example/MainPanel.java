@@ -83,7 +83,8 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      ((JLayer<?>) c).setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+      ((JLayer<?>) c).setLayerEventMask(
+          AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
   }
 
@@ -204,10 +205,10 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     return -1;
   }
 
-  private static void replaceComponents(Container parent, Component remove, Component insert, int idx) {
-    parent.remove(remove);
-    parent.add(insert, idx);
-    parent.revalidate();
-    parent.repaint();
+  private static void replaceComponents(Container p, Component remove, Component add, int idx) {
+    p.remove(remove);
+    p.add(add, idx);
+    p.revalidate();
+    p.repaint();
   }
 }

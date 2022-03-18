@@ -105,7 +105,8 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
           //     slider.setValue(valueForXPosition(e.getX()));
           //     break;
           //   default:
-          //     throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+          //     throw new IllegalArgumentException(
+          //         "orientation must be one of: VERTICAL, HORIZONTAL");
           // }
           super.mousePressed(e); // isDragging = true;
           super.mouseDragged(e);
