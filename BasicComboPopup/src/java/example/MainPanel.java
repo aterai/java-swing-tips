@@ -22,15 +22,14 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    JTextPane jtp = new JTextPane();
-    jtp.setText("Shift+Tab");
+    JTextPane textPane = new JTextPane();
+    textPane.setText("Shift+Tab");
 
     JComboBox<String> combo = new JComboBox<>(new String[] {
         "public", "protected", "private",
         "final", "transient", "super", "this", "return", "class"
     });
-    BasicComboPopup popup = new EditorComboPopup(jtp, combo);
+    BasicComboPopup popup = new EditorComboPopup(textPane, combo);
 
     ActionMap amc = popup.getActionMap();
     amc.put("myUp", new AbstractAction() {
@@ -50,7 +49,7 @@ public final class MainPanel extends JPanel {
         int i = combo.getSelectedIndex();
         Optional.ofNullable(combo.getItemAt(i)).ifPresent(str -> {
           popup.hide();
-          TextEditorUtils.append(jtp, str);
+          TextEditorUtils.append(textPane, str);
         });
       }
     });
@@ -60,12 +59,13 @@ public final class MainPanel extends JPanel {
     imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
     imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "myEnt");
 
-    jtp.getActionMap().put("myPop", new AbstractAction() {
+    textPane.getActionMap().put("myPop", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         try {
-          Rectangle rect = jtp.modelToView(jtp.getCaretPosition());
-          // Java 9: Rectangle rect = jtp.modelToView2D(jtp.getCaretPosition()).getBounds();
-          popup.show(jtp, rect.x, (int) rect.getMaxY());
+          // Java 9:
+          // Rectangle rect = textPane.modelToView2D(textPane.getCaretPosition()).getBounds();
+          Rectangle rect = textPane.modelToView(textPane.getCaretPosition());
+          popup.show(textPane, rect.x, (int) rect.getMaxY());
           EventQueue.invokeLater(() -> {
             Container c = popup.getTopLevelAncestor();
             if (c instanceof Window) {
@@ -81,9 +81,10 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    jtp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), "myPop");
+    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
+    textPane.getInputMap().put(keyStroke, "myPop");
 
-    add(new JScrollPane(jtp));
+    add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -111,6 +112,8 @@ class EditorComboPopup extends BasicComboPopup {
   protected final JTextComponent textArea;
   private transient MouseListener listener;
 
+  // Java 9:
+  // protected EditorComboPopup(JTextComponent textArea, JComboBox<Object> cb) {
   protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
     super(cb);
     this.textArea = textArea;
