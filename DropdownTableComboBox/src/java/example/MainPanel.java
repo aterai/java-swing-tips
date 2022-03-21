@@ -63,7 +63,8 @@ public final class MainPanel extends JPanel {
     });
     ListCellRenderer<? super List<Object>> renderer = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (isSelected) {
         c.setBackground(list.getSelectionBackground());
         c.setForeground(list.getSelectionForeground());

@@ -12,7 +12,6 @@ import javax.swing.text.Document;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String u1F60x = "😀😁😂😃😄😅😆😇😈😉😊😋😌😍😎😏";
     String u1F61x = "😐😑😒😓😔😕😖😗😘😙😚😛😜😝😞😟";
     String u1F62x = "😠😡😢😣😤😥😦😧😨😩😪😫😬😭😮😯";
@@ -23,7 +22,8 @@ public final class MainPanel extends JPanel {
     label.setEditable(false);
     label.setFont(label.getFont().deriveFont(32f));
 
-    JTextArea textArea = new JTextArea(String.join("\n", u1F60x, u1F61x, u1F62x, u1F63x, u1F64x));
+    String str = String.join("\n", u1F60x, u1F61x, u1F62x, u1F63x, u1F64x);
+    JTextArea textArea = new JTextArea(str);
     textArea.addCaretListener(e -> {
       try {
         int dot = e.getDot();
@@ -35,7 +35,8 @@ public final class MainPanel extends JPanel {
           if (Character.isHighSurrogate((char) code)) {
             txt = doc.getText(dot, 2);
             code = txt.codePointAt(0);
-            // code = Character.toCodePoint((char) code, (char) doc.getText(dot + 1, 1).codePointAt(0));
+            // code = Character.toCodePoint(
+            //     (char) code, (char) doc.getText(dot + 1, 1).codePointAt(0));
             // txt = new String(Character.toChars(code));
           }
           label.setText(String.format("%s: U+%04X", txt, code));

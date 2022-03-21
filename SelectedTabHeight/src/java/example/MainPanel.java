@@ -13,7 +13,6 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       @Override public void updateUI() {
         super.updateUI();
@@ -94,8 +93,8 @@ class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
   // }
 
   @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-    boolean isTopOrBottom = tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
-    if (isTopOrBottom && tabPane.getSelectedIndex() != tabIndex) {
+    boolean tob = tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    if (tob && tabPane.getSelectedIndex() != tabIndex) {
       int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
       rects[tabIndex].height = tabHeight;
       if (tabPlacement == SwingConstants.TOP) {
@@ -114,8 +113,8 @@ class BasicTabHeightTabbedPaneUI extends BasicTabbedPaneUI {
   }
 
   @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-    boolean isTopOrBottom = tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
-    if (isTopOrBottom && tabPane.getSelectedIndex() != tabIndex) {
+    boolean tob = tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    if (tob && tabPane.getSelectedIndex() != tabIndex) {
       int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
       rects[tabIndex].height = tabHeight;
       if (tabPlacement == SwingConstants.TOP) {

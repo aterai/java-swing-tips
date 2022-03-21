@@ -42,8 +42,6 @@ public final class MainPanel extends JPanel {
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html"
   );
   private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
-  private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(Color.ORANGE);
-  private final transient HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
   private final JTextArea textArea = new JTextArea();
   private final JTextField field = new JTextField("Swing");
   private final JCheckBox checkCase = new JCheckBox("Match case");
@@ -125,6 +123,7 @@ public final class MainPanel extends JPanel {
     getPattern().ifPresent(pattern -> {
       try {
         Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
+        HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
         int pos = 0;
         while (matcher.find(pos) && !matcher.group().isEmpty()) {
           int start = matcher.start();
@@ -151,6 +150,7 @@ public final class MainPanel extends JPanel {
       label.setOpaque(false);
       Highlighter.Highlight hh = highlighter.getHighlights()[idx];
       highlighter.removeHighlight(hh);
+      HighlightPainter currentPainter = new DefaultHighlightPainter(Color.ORANGE);
       try {
         highlighter.addHighlight(hh.getStartOffset(), hh.getEndOffset(), currentPainter);
         scrollToCenter(textArea, hh.getStartOffset());

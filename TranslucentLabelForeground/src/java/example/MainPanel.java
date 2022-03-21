@@ -17,7 +17,9 @@ public final class MainPanel extends JPanel {
     label1.setBackground(new Color(0x64_64_C8));
     label1.setFont(new Font(Font.MONOSPACED, Font.BOLD, 140));
 
-    String style = "font-family:monospace;font-weight:bold;color:rgba(255,170,170,0.4);font-size:140pt";
+    String color = "color:rgba(255,170,170,0.4);";
+    String font = "font-family:monospace;font-weight:bold;font-size:140pt;";
+    String style = font + color;
     JLabel label2 = new JLabel(String.format("<html><span style='%s'>ABC", style));
     label2.setBackground(new Color(0x64_64_C8));
     label2.setHorizontalAlignment(SwingConstants.CENTER);

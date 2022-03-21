@@ -17,7 +17,9 @@ public final class MainPanel extends JPanel {
       Toolkit.getDefaultToolkit().beep();
       // or: getToolkit().beep();
       // or: UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
-      JOptionPane.showMessageDialog(getRootPane(), "Error Message", "Title", JOptionPane.ERROR_MESSAGE);
+      String msg = "Error Message";
+      String title = "Title";
+      JOptionPane.showMessageDialog(getRootPane(), msg, title, JOptionPane.ERROR_MESSAGE);
     });
     p.add(button);
     add(p);
