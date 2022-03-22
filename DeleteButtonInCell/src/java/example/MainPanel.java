@@ -85,10 +85,10 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true),
-    new ColumnContext("", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true),
+      new ColumnContext("", String.class, true)
   };
   private int number;
 

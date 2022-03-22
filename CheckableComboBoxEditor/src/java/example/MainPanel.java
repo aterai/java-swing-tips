@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
 
   private static ComboItem[] makeModel() {
     return new ComboItem[] {
-      new ComboItem(true, true, "00000"),
-      new ComboItem(true, false, "11111"),
-      new ComboItem(false, true, "22222"),
-      new ComboItem(false, false, "33333")
+        new ComboItem(true, true, "00000"),
+        new ComboItem(true, false, "11111"),
+        new ComboItem(false, true, "22222"),
+        new ComboItem(false, false, "33333")
     };
   }
 

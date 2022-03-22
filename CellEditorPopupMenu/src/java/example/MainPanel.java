@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "String"};
     Object[][] data = {
-      {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
-      {"AAA", "bbb bbb"}, {"CCC", "ddd ddd"}
+        {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
+        {"AAA", "bbb bbb"}, {"CCC", "ddd ddd"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

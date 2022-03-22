@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"Integer", "String", "Date"};
     @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
-      {-1, "AAA", new Date()}, {2, "BBB", new Date()},
-      {-9, "EEE", new Date()}, {1, "", new Date()},
-      {10, "CCC", new Date()}, {7, "FFF", new Date()},
+        {-1, "AAA", new Date()}, {2, "BBB", new Date()},
+        {-9, "EEE", new Date()}, {1, "", new Date()},
+        {10, "CCC", new Date()}, {7, "FFF", new Date()},
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

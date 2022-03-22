@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable();
     URL url = getClass().getResource("restore_to_background_color.gif");
     Object[][] data = {
-      {"Default ImageIcon", new ImageIcon(url)},
-      {"ImageIcon#setImageObserver", makeImageIcon(url, table, 1, 1)}
+        {"Default ImageIcon", new ImageIcon(url)},
+        {"ImageIcon#setImageObserver", makeImageIcon(url, table, 1, 1)}
     };
     String[] columnNames = {"String", "ImageIcon"};
     table.setModel(new DefaultTableModel(data, columnNames) {

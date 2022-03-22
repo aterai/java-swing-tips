@@ -57,9 +57,9 @@ public final class MainPanel extends JPanel {
   private static JTable makeTable() {
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
-      {"owner", EnumSet.allOf(Permissions.class)},
-      {"group", EnumSet.of(Permissions.READ)},
-      {"other", EnumSet.noneOf(Permissions.class)}
+        {"owner", EnumSet.allOf(Permissions.class)},
+        {"group", EnumSet.of(Permissions.READ)},
+        {"other", EnumSet.noneOf(Permissions.class)}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

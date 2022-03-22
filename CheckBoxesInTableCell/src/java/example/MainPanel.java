@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
-      {"owner", 7}, {"group", 6}, {"other", 5}
+        {"owner", 7}, {"group", 6}, {"other", 5}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
