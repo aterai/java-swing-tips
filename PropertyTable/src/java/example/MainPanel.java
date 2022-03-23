@@ -205,7 +205,8 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
 
 class ColorRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (value instanceof Color && c instanceof JLabel) {
       Color color = (Color) value;
       JLabel l = (JLabel) c;

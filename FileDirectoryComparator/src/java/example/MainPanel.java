@@ -111,7 +111,8 @@ class FileIconCellRenderer extends DefaultTableCellRenderer {
   private final transient FileSystemView fileSystemView = FileSystemView.getFileSystemView();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel && value instanceof File) {
       JLabel l = (JLabel) c;
       l.setHorizontalAlignment(SwingConstants.LEFT);

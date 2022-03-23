@@ -296,7 +296,7 @@ class CheckBoxNode {
 //   private JTree tree = null;
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     this.tree = tree;
-//     // String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
+//     // String strVal = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
 //     if (leaf && value instanceof DefaultMutableTreeNode) {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //       if (userObject instanceof CheckBoxNode) {
@@ -311,7 +311,7 @@ class CheckBoxNode {
 //         //   leafRenderer.setBackground(getBackgroundNonSelectionColor());
 //         // }
 //         CheckBoxNode node = (CheckBoxNode) userObject;
-//         leafRenderer.setText(node.text); // leafRenderer.setText(stringValue);
+//         leafRenderer.setText(node.text); // leafRenderer.setText(strVal);
 //         leafRenderer.setSelected(node.selected);
 //         return leafRenderer;
 //       }

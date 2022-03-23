@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     col.setMaxWidth(80);
 
     JCheckBox check = new JCheckBox("setEnabledAt(2, false)");
-    check.addActionListener(e -> hrenderer.setEnabledAt(2, !((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> hrenderer.setEnabledAt(2, !check.isSelected()));
 
     add(new JScrollPane(table));
     add(check, BorderLayout.SOUTH);

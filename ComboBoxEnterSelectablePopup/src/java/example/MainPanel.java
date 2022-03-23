@@ -36,8 +36,9 @@ public final class MainPanel extends JPanel {
     combo.setEditable(true);
     combo.addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        UIManager.put("ComboBox.isEnterSelectablePopup", isEnterSelectable);
-        append("\nisEnterSelectablePopup: " + UIManager.getBoolean("ComboBox.isEnterSelectablePopup"));
+        String key = "ComboBox.isEnterSelectablePopup";
+        UIManager.put(key, isEnterSelectable);
+        append("\n" + key + ": " + UIManager.getBoolean(key));
       }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
