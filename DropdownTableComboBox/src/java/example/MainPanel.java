@@ -179,6 +179,7 @@ class ComboTablePopup extends BasicComboPopup {
   private final JTable table;
   private final JScrollPane scroll;
 
+  // Java 9: protected ComboTablePopup(JComboBox<Object> combo, JTable table) {
   protected ComboTablePopup(JComboBox<?> combo, JTable table) {
     super(combo);
     this.table = table;
