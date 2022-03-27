@@ -259,7 +259,7 @@ class DnDTabbedPane extends JTabbedPane {
       g2.dispose();
       glassPane.setImage(image);
       // Rectangle rect = getBoundsAt(dragTabIndex);
-      // BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+      // BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       // Graphics2D g2 = image.createGraphics();
       // paint(g2);
       // g2.dispose();

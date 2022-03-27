@@ -258,8 +258,9 @@ class ListItem implements Serializable {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    this.icon = new ImageIcon(makeImage(path));
-    ImageProducer ip = new FilteredImageSource(icon.getImage().getSource(), new SelectedImageFilter());
+    Image image = makeImage(path);
+    this.icon = new ImageIcon(image);
+    ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 

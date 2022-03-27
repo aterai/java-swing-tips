@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
     UndoManager um = new UndoManager();
     undoSupport.addUndoableEditListener(um);
 
-    Action undoAction = new UndoAction(um);
-    Action redoAction = new RedoAction(um);
-    Action selectAllAction = new AbstractAction("select all") {
+    Action undoAct = new UndoAction(um);
+    Action redoAct = new RedoAction(um);
+    Action selectAllAct = new AbstractAction("select all") {
       @Override public void actionPerformed(ActionEvent e) {
         BitSet newValue = new BitSet(BIT_LENGTH);
         newValue.set(0, BIT_LENGTH, true);
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         updateCheckBoxes(newValue);
       }
     };
-    Action clearAllAction = new AbstractAction("clear all") {
+    Action clearAllAct = new AbstractAction("clear all") {
       @Override public void actionPerformed(ActionEvent e) {
         BitSet newValue = new BitSet(BIT_LENGTH);
         undoSupport.postEdit(new StatusEdit(status, newValue));
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    Stream.of(undoAction, redoAction, selectAllAction, clearAllAction).map(JButton::new).forEach(b -> {
+    Stream.of(undoAct, redoAct, selectAllAct, clearAllAct).map(JButton::new).forEach(b -> {
       box.add(b);
       box.add(Box.createHorizontalStrut(2));
     });

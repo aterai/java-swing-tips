@@ -12,7 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JFileChooser fileChooser = new JFileChooser();
     JTextField field = new JTextField("C:/temp/test.txt");
     JTextArea log = new JTextArea();
@@ -78,10 +77,14 @@ public final class MainPanel extends JPanel {
           //   c.requestFocusInWindow();
           // });
           Class<JTextField> clz = JTextField.class;
-          descendants(fileChooser).filter(clz::isInstance).map(clz::cast).findFirst().ifPresent(tf -> {
-            tf.selectAll();
-            tf.requestFocusInWindow();
-          });
+          descendants(fileChooser)
+              .filter(clz::isInstance)
+              .map(clz::cast)
+              .findFirst()
+              .ifPresent(tf -> {
+                tf.selectAll();
+                tf.requestFocusInWindow();
+              });
         });
       }
       int ret = fileChooser.showOpenDialog(getRootPane());

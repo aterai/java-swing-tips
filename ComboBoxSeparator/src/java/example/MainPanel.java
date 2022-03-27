@@ -52,7 +52,8 @@ public final class MainPanel extends JPanel {
           if (value instanceof JSeparator) {
             return (Component) value;
           } else {
-            return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            return renderer.getListCellRendererComponent(
+                list, value, index, isSelected, cellHasFocus);
           }
         });
       }

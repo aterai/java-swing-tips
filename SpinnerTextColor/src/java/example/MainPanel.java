@@ -16,27 +16,17 @@ import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
-
+    super(new GridLayout(0, 1));
     String[] items = {
-      "<html><font color='red'>Sunday</font> <font color='gray'>(Sun.)",
-      "<html><font color='black'>Monday</font> <font color='gray'>(Mon.)",
-      "<html><font color='black'>Tuesday</font> <font color='gray'>(Tue.)",
-      "<html><font color='black'>Wednesday</font> <font color='gray'>(Wed.)",
-      "<html><font color='black'>Thursday</font> <font color='gray'>(Thu.)",
-      "<html><font color='black'>Friday</font> <font color='gray'>(Fri.)",
-      "<html><font color='blue'>Saturday</font> <font color='gray'>(Sat.)"};
-
-    JPanel p1 = new JPanel(new BorderLayout(5, 5));
-    p1.add(new JSpinner(new SpinnerListModel(items)));
-    p1.setBorder(BorderFactory.createTitledBorder("JSpinner"));
-
-    JPanel p2 = new JPanel(new BorderLayout(5, 5));
-    p2.add(makeColorSpinner(items));
-    p2.setBorder(BorderFactory.createTitledBorder("ColorSpinner(JComboBox)"));
+        "<html><font color='red'>Sunday</font> <font color='gray'>(Sun.)",
+        "<html><font color='black'>Monday</font> <font color='gray'>(Mon.)",
+        "<html><font color='black'>Tuesday</font> <font color='gray'>(Tue.)",
+        "<html><font color='black'>Wednesday</font> <font color='gray'>(Wed.)",
+        "<html><font color='black'>Thursday</font> <font color='gray'>(Thu.)",
+        "<html><font color='black'>Friday</font> <font color='gray'>(Fri.)",
+        "<html><font color='blue'>Saturday</font> <font color='gray'>(Sat.)"};
 
     // // TEST:
-    // JPanel p3 = new JPanel(new BorderLayout(5, 5));
     // JSpinner spinner = new JSpinner(new SpinnerListModel(items)) {
     //   @Override public void setEditor(JComponent editor) {
     //     JComponent oldEditor = getEditor();
@@ -47,13 +37,10 @@ public final class MainPanel extends JPanel {
     //   }
     // };
     // spinner.setEditor(new HTMLListEditor(spinner));
-    // p3.add(spinner);
 
-    JPanel panel = new JPanel(new BorderLayout(25, 25));
-    panel.add(p1, BorderLayout.NORTH);
-    panel.add(p2, BorderLayout.SOUTH);
-    panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    add(panel, BorderLayout.NORTH);
+    add(makeTitledPanel("JSpinner", new JSpinner(new SpinnerListModel(items))));
+    add(makeTitledPanel("ColorSpinner(JComboBox)", makeColorSpinner(items)));
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -64,12 +51,6 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setUI(new NoPopupComboBoxUI());
         setFocusable(false);
-        ListCellRenderer<? super String> r = getRenderer();
-        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          JComponent c = (JComponent) r.getListCellRendererComponent(list, value, index, false, false);
-          c.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-          return c;
-        });
       }
     };
     JButton nb = createArrowButton(SwingConstants.NORTH);
@@ -95,6 +76,7 @@ public final class MainPanel extends JPanel {
     };
     p.add(comboBox);
     p.add(box, BorderLayout.EAST);
+    p.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
     return p;
   }
 
@@ -113,6 +95,17 @@ public final class MainPanel extends JPanel {
         setInheritsPopupMenu(true);
       }
     };
+  }
+
+  private static Component makeTitledPanel(String title, Component cmp) {
+    JPanel p = new JPanel(new GridBagLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    GridBagConstraints c = new GridBagConstraints();
+    c.weightx = 1d;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.insets = new Insets(5, 5, 5, 5);
+    p.add(cmp, c);
+    return p;
   }
 
   public static void main(String[] args) {
@@ -142,6 +135,7 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
     button.setVisible(false);
     return button;
   }
+
   // @Override public void setPopupVisible(JComboBox c, boolean v) {
   //   System.out.println("setPopupVisible: " + v);
   //   if (v) {
@@ -163,16 +157,10 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
 
 // // TEST:
 // class HTMLListEditor extends JLabel implements ChangeListener {
-//   @Override public Dimension getPreferredSize() {
-//     Dimension d = super.getPreferredSize();
-//     d.width = 200;
-//     return d;
-//   }
 //   private final JSpinner spinner;
 //
 //   protected HTMLListEditor(JSpinner spinner) {
 //     super();
-//
 //     if (!(spinner.getModel() instanceof SpinnerListModel)) {
 //       throw new IllegalArgumentException("model not a SpinnerListModel");
 //     }
@@ -190,10 +178,18 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
 //       setToolTipText(toolTipText);
 //     }
 //   }
+//
+//   @Override public Dimension getPreferredSize() {
+//     Dimension d = super.getPreferredSize();
+//     d.width = 200;
+//     return d;
+//   }
+//
 //   @Override public void stateChanged(ChangeEvent e) {
 //     JSpinner spinner = (JSpinner) e.getSource();
 //     setText(Objects.toString(spinner.getValue()));
 //   }
+//
 //   public void dismiss(JSpinner spinner) {
 //     spinner.removeChangeListener(this);
 //   }

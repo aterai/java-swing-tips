@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
     radio1.setToolTipText("ToolTip: " + allWindows);
     radio1.addItemListener(e -> UIManager.put(TOOLTIP_MODE, allWindows));
 
-    String activeApplication = "activeApplication";
-    JRadioButton radio2 = new JRadioButton(activeApplication, Objects.equals(activeApplication, mode));
-    radio2.setToolTipText("ToolTip: " + activeApplication);
-    radio2.addItemListener(e -> UIManager.put(TOOLTIP_MODE, activeApplication));
+    String activeApp = "activeApplication";
+    JRadioButton radio2 = new JRadioButton(activeApp, Objects.equals(activeApp, mode));
+    radio2.setToolTipText("ToolTip: " + activeApp);
+    radio2.addItemListener(e -> UIManager.put(TOOLTIP_MODE, activeApp));
 
     JPanel panel = new JPanel();
     panel.setBorder(BorderFactory.createTitledBorder(TOOLTIP_MODE));
