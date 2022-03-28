@@ -11,22 +11,19 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    JScrollPane scroll = new JScrollPane(new JTable(100, 3));
+    // UIManager.put("ScrollBar.alwaysShowThumb", Boolean.TRUE);
+    JScrollPane scroll = new JScrollPane(new JTable(24, 3));
+    // scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scroll.getVerticalScrollBar().addAdjustmentListener(e -> {
       JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
       BoundedRangeModel m = scrollBar.getModel();
       int value = m.getValue();
-      if (value == m.getMaximum() - m.getExtent()) {
-        Optional.ofNullable(scrollBar.getComponent(0)).ifPresent(b -> b.setEnabled(false));
-      } else if (value == m.getMinimum()) {
-        Optional.ofNullable(scrollBar.getComponent(1)).ifPresent(b -> b.setEnabled(false));
-      } else {
-        for (Component button : scrollBar.getComponents()) {
-          button.setEnabled(true);
-        }
-      }
+      boolean max = value == m.getMaximum() - m.getExtent();
+      Optional.ofNullable(scrollBar.getComponent(0)).ifPresent(b -> b.setEnabled(!max));
+      boolean min = value == m.getMinimum();
+      Optional.ofNullable(scrollBar.getComponent(1)).ifPresent(b -> b.setEnabled(!min));
     });
-    add(new JScrollPane(new JTable(100, 3)));
+    add(new JScrollPane(new JTable(24, 3)));
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
