@@ -158,7 +158,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     }
   }
 
-  protected static void saveWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
+  protected static void saveWindowState(PersistenceService ps, URL codebase, WindowState state) {
     try {
       FileContents fc = ps.get(codebase);
       try (XMLEncoder e = new XMLEncoder(new BufferedOutputStream(fc.getOutputStream(true)))) {
@@ -167,10 +167,10 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
         // ps.delete(codebase);
         // ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
         HashMap<String, Serializable> map = new HashMap<>();
-        map.put("size", (Serializable) windowState.getSize());
-        map.put("location", (Serializable) windowState.getLocation());
-        // Test1: map.put("setting", (Serializable) windowState);
-        // Test2: e.writeObject(windowState);
+        map.put("size", (Serializable) state.getSize());
+        map.put("location", (Serializable) state.getLocation());
+        // Test1: map.put("setting", (Serializable) state);
+        // Test2: e.writeObject(state);
         e.writeObject(map);
         e.flush();
         // e.close();

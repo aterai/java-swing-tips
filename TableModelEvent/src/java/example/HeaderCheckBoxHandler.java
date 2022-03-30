@@ -71,7 +71,8 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     return true;
   }
 
-  private boolean fireInsertEvent(TableModel m, TableColumn column, Object status, TableModelEvent e) {
+  private boolean fireInsertEvent(
+      TableModel m, TableColumn column, Object status, TableModelEvent e) {
     boolean selected = status == Status.DESELECTED;
     boolean deselected = status == Status.SELECTED;
     for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {

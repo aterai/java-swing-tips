@@ -260,7 +260,8 @@ class DnDTree extends JTree {
 
 class TreeNodeTransferable implements Transferable {
   public static final String NAME = "TREE-TEST";
-  private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+  private static final String MIME_TYPE = DataFlavor.javaJVMLocalObjectMimeType;
+  private static final DataFlavor FLAVOR = new DataFlavor(MIME_TYPE, NAME);
   // private static final DataFlavor[] supportedFlavors = {FLAVOR};
   private final Object object;
 

@@ -83,7 +83,10 @@ public final class MainPanel extends JPanel {
   public static List<Integer> getWidthRatioArray(String text, int length) {
     try {
       return Stream.concat(
-          Stream.of(text.split(":")).map(String::trim).filter(s -> !s.isEmpty()).map(Integer::valueOf),
+          Stream.of(text.split(":"))
+              .map(String::trim)
+              .filter(s -> !s.isEmpty())
+              .map(Integer::valueOf),
           Stream.generate(() -> 1).limit(length)
       ).limit(length).collect(Collectors.toList());
     } catch (NumberFormatException ex) {

@@ -90,7 +90,6 @@ public final class MainPanel extends JPanel {
 }
 
 class RubberBandSelectionList<E extends ListItem> extends JList<E> {
-  private static final AlphaComposite ALPHA = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f);
   private transient RubberBandingListener rbl;
   private Color rubberBandColor;
   private final Path2D rubberBand = new Path2D.Double();
@@ -125,7 +124,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(getSelectionBackground());
     g2.draw(rubberBand);
-    g2.setComposite(ALPHA);
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f));
     g2.setPaint(rubberBandColor);
     g2.fill(rubberBand);
     g2.dispose();

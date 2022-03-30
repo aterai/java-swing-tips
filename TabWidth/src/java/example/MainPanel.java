@@ -15,20 +15,21 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(2, 1, 0, 10));
-
     JTabbedPane tabbedPane = new JTabbedPane() {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsTabbedPaneUI) {
           setUI(new WindowsTabbedPaneUI() {
             @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-              return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+              int tabWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
+              return Math.max(MIN_TAB_WIDTH, tabWidth);
             }
           });
         } else {
           setUI(new BasicTabbedPaneUI() {
             @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-              return Math.max(MIN_TAB_WIDTH, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+              int tabWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
+              return Math.max(MIN_TAB_WIDTH, tabWidth);
             }
           });
         }

@@ -41,7 +41,10 @@ public final class MainPanel extends JPanel {
     log.append("----\n");
     log.append("getMargin().left: " + c.getMargin().left + "\n");
     log.append("getInsets().left: " + c.getInsets().left + "\n");
-    log.append("getBorder().getBorderInsets(c).left: " + c.getBorder().getBorderInsets(c).left + "\n");
+    Border bdr = c.getBorder();
+    if (bdr != null) {
+      log.append("getBorder().getBorderInsets(c).left: " + bdr.getBorderInsets(c).left + "\n");
+    }
     return c.getInsets().left;
   }
 

@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     System.out.println(s);
     System.out.println(e);
 
-    SpinnerDateModel m1 = new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH);
+    SpinnerModel m1 = new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH);
     JSpinner spinner1 = new JSpinner(m1);
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
 

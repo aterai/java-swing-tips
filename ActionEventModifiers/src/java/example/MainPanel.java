@@ -30,14 +30,15 @@ public final class MainPanel extends JPanel {
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
     JTextField field = new JTextField(20);
-    field.getActionMap().put("beep", new AbstractAction() {
+    KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK);
+    String key = "beep";
+    field.getInputMap().put(ks, key);
+    field.getActionMap().put(key, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Toolkit.getDefaultToolkit().beep();
         // UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
-    field.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK), "beep");
-
     field.addKeyListener(new KeyAdapter() {
       @Override public void keyPressed(KeyEvent e) {
         // InputEvent.SHIFT_MASK @Deprecated(since="9")
@@ -132,6 +133,12 @@ class TextAreaOutputStream extends OutputStream {
     this.textArea = textArea;
   }
 
+  // // Java 10:
+  // @Override public void flush() {
+  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
+  //   buffer.reset();
+  // }
+
   @Override public void flush() throws IOException {
     textArea.append(buffer.toString("UTF-8"));
     buffer.reset();
@@ -170,8 +177,8 @@ class TextAreaHandler extends StreamHandler {
   // [UnsynchronizedOverridesSynchronized]
   // Unsynchronized method publish overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
-  @Override public synchronized void publish(LogRecord record) {
-    super.publish(record);
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
     flush();
   }
 

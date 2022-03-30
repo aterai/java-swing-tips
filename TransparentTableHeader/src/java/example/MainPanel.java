@@ -183,7 +183,8 @@ class TransparentHeader extends JLabel implements TableCellRenderer {
 
 class TranslucentObjectRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (c instanceof JComponent) {
       // ((JComponent) c).setOpaque(true);
       ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));

@@ -186,7 +186,8 @@ public final class MainPanel extends JPanel {
     int newH = Math.round(d.height * SCALE);
     BufferedImage image = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();
-    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g2.setRenderingHint(
+        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     g2.scale(SCALE, SCALE);
     c.print(g2);
     g2.dispose();

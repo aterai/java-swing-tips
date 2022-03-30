@@ -67,7 +67,8 @@ public final class MainPanel extends JPanel {
 class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
   private static final Color LINE_COLOR = new Color(0x64_64_FF);
   private static final String NAME = "test";
-  private static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME);
+  private static final String MIME_TYPE = DataFlavor.javaJVMLocalObjectMimeType;
+  private static final DataFlavor FLAVOR = new DataFlavor(MIME_TYPE, NAME);
   private static final Color EVEN_BGC = new Color(0xF0_F0_F0);
   private final Rectangle targetLine = new Rectangle();
   protected int draggedIndex = -1;
