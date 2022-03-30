@@ -6,7 +6,11 @@ package example;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -27,14 +31,13 @@ public final class MainPanel extends JPanel {
       add(r);
     });
 
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    JRadioButton r4 = makeRadioButton("test1.jpg", new ImageIcon(cl.getResource("example/test1.jpg")));
+    JRadioButton r4 = makeRadioButton("test1.jpg", makeIcon("example/test1.jpg"));
     r4.setSelectedIcon(new SelectedIcon(r4.getIcon(), Color.GREEN));
 
-    JRadioButton r5 = makeRadioButton("test2.jpg", new ImageIcon(cl.getResource("example/test2.jpg")));
+    JRadioButton r5 = makeRadioButton("test2.jpg", makeIcon("example/test2.jpg"));
     r5.setSelectedIcon(new SelectedIcon(r5.getIcon(), Color.BLUE));
 
-    JRadioButton r6 = makeRadioButton("test3.jpg", new ImageIcon(cl.getResource("example/test3.jpg")));
+    JRadioButton r6 = makeRadioButton("test3.jpg", makeIcon("example/test3.jpg"));
     r6.setSelectedIcon(new SelectedIcon(r6.getIcon(), Color.RED));
 
     ButtonGroup bg2 = new ButtonGroup();
@@ -52,6 +55,17 @@ public final class MainPanel extends JPanel {
     radio.setHorizontalAlignment(SwingConstants.CENTER);
     radio.setHorizontalTextPosition(SwingConstants.CENTER);
     return radio;
+  }
+
+  private static Icon makeIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return new MissingIcon();
+      }
+    }).orElseGet(MissingIcon::new);
   }
 
   public static void main(String[] args) {
@@ -134,5 +148,33 @@ class SelectedIcon implements Icon {
 
   @Override public int getIconHeight() {
     return icon.getIconHeight();
+  }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 92;
+  }
+
+  @Override public int getIconHeight() {
+    return 69;
   }
 }
