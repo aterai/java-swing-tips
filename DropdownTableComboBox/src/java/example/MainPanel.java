@@ -205,17 +205,32 @@ class ComboTablePopup extends BasicComboPopup {
     setBorder(BorderFactory.createEmptyBorder());
   }
 
-  @Override public void show() {
-    if (isEnabled()) {
+  // Java 9: @SuppressWarnings("deprecation")
+  // @Override public void show() {
+  //   if (isEnabled()) {
+  //     Insets ins = scroll.getInsets();
+  //     int tableHeight = table.getPreferredSize().height;
+  //     int headerHeight = table.getTableHeader().getPreferredSize().height;
+  //     int scrollHeight = tableHeight + headerHeight + ins.top + ins.bottom;
+  //     scroll.setPreferredSize(new Dimension(240, scrollHeight));
+  //     super.removeAll();
+  //     super.add(scroll);
+  //     setRowSelection(comboBox.getSelectedIndex());
+  //     super.show(comboBox, 0, comboBox.getBounds().height);
+  //   }
+  // }
+
+  @Override protected void togglePopup() {
+    if (!isVisible()) {
       Insets ins = scroll.getInsets();
       int tableHeight = table.getPreferredSize().height;
       int headerHeight = table.getTableHeader().getPreferredSize().height;
-      scroll.setPreferredSize(new Dimension(240, tableHeight + headerHeight + ins.top + ins.bottom));
+      int scrollHeight = tableHeight + headerHeight + ins.top + ins.bottom;
+      scroll.setPreferredSize(new Dimension(240, scrollHeight));
       super.removeAll();
       super.add(scroll);
-      setRowSelection(comboBox.getSelectedIndex());
-      super.show(comboBox, 0, comboBox.getBounds().height);
     }
+    super.togglePopup();
   }
 
   private void setRowSelection(int index) {
