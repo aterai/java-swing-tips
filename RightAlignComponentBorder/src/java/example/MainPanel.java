@@ -11,14 +11,14 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-
     JTree tree = new JTree();
     JCheckBox c = new JCheckBox("setEnabled", true);
     c.addActionListener(e -> tree.setEnabled(((JCheckBox) e.getSource()).isSelected()));
     add(makePanel(new JScrollPane(tree), c));
 
     JTextArea textArea = new JTextArea("aaaaaaaaaa");
-    // textArea.setBorder(new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder()));
+    // Border border = new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder());
+    // textArea.setBorder(border);
     JButton b = new JButton("Clear");
     b.setFocusable(false);
     b.addActionListener(e -> textArea.setText(""));
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// class ComponentTitledBorder implements Border, MouseListener, MouseMotionListener, SwingConstants {
+// class ComponentTitledBorder implements Border, MouseListener, MouseMotionListener {
 //   private static final int OFFSET = 5;
 //   private final Component comp;
 //   private final JComponent container;
@@ -132,24 +132,31 @@ public final class MainPanel extends JPanel {
 //     comp.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, comp));
 //     src.repaint();
 //   }
+//
 //   @Override public void mouseClicked(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseEntered(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseExited(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mousePressed(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseReleased(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseMoved(MouseEvent e) {
 //     dispatchEvent(e);
 //   }
+//
 //   @Override public void mouseDragged(MouseEvent e) {
 //     dispatchEvent(e);
 //   }

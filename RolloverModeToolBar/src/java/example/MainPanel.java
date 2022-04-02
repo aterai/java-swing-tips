@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     });
 
     JCheckBox check = new JCheckBox("setRollover");
-    check.addActionListener(e -> toolBar.setRollover(((AbstractButton) e.getSource()).isSelected()));
+    check.addActionListener(e -> toolBar.setRollover(check.isSelected()));
     toolBar.add(Box.createGlue());
     toolBar.add(check);
 

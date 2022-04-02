@@ -14,10 +14,9 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3, 5, 5));
-
     JPanel p1 = new JPanel(new BorderLayout());
     p1.add(new JScrollPane(new JTree()));
-    p1.setBorder(new TitledBorder("TitledBorder 1234567890"));
+    p1.setBorder(BorderFactory.createTitledBorder("TitledBorder 1234567890"));
 
     JPanel p2 = new JPanel(new BorderLayout());
     p2.add(new JScrollPane(new JTree()));
@@ -25,7 +24,8 @@ public final class MainPanel extends JPanel {
 
     JPanel p3 = new JPanel(new BorderLayout());
     p3.add(new JScrollPane(new JTree()));
-    p3.setBorder(new TitledBorder(new VerticalTitledBorder("VerticalTitledBorder"), "TitledBorder"));
+    p3.setBorder(BorderFactory.createTitledBorder(
+        new VerticalTitledBorder("VerticalTitledBorder"), "TitledBorder"));
 
     add(p1);
     add(p2);
@@ -147,7 +147,7 @@ class VerticalTitledBorder extends TitledBorder {
     return this.label;
   }
 
-  // @see javax/swing/border/TitledBorder.java#getBorderInsets(Border border, Component c, Insets insets)
+  // @see javax/swing/border/TitledBorder.java#getBorderInsets(Border, Component, Insets)
   private static Insets makeComponentBorderInsets(Border border, Component c, Insets i) {
     Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
     if (Objects.isNull(border)) {

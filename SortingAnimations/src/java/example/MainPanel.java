@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
   private double factory;
   private transient SwingWorker<String, Rectangle> worker;
 
-  private final JComboBox<GenerateInputs> distributionsCmb = new JComboBox<>(GenerateInputs.values());
+  private final JComboBox<GenerateInputs> distribCmb = new JComboBox<>(GenerateInputs.values());
   private final JComboBox<SortAlgorithms> algorithmsCmb = new JComboBox<>(SortAlgorithms.values());
   private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
   private final JSpinner spinner = new JSpinner(model);
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
         panel.repaint();
       }
     };
-    distributionsCmb.addItemListener(il);
+    distribCmb.addItemListener(il);
     algorithmsCmb.addItemListener(il);
     panel.setBackground(BACK_COLOR);
     Box box1 = Box.createHorizontalBox();
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     box1.add(new JLabel(" Number:"));
     box1.add(spinner);
     box1.add(new JLabel(" Input:"));
-    box1.add(distributionsCmb);
+    box1.add(distribCmb);
 
     Box box2 = Box.createHorizontalBox();
     box2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
     cancelButton.setEnabled(!flag);
     startButton.setEnabled(flag);
     spinner.setEnabled(flag);
-    distributionsCmb.setEnabled(flag);
+    distribCmb.setEnabled(flag);
     algorithmsCmb.setEnabled(flag);
   }
 
@@ -110,7 +110,7 @@ public final class MainPanel extends JPanel {
     array.clear();
     factorx = (MAXX - MINX) / (double) n;
     factory = (double) MAXY - MINY;
-    distributionsCmb.getItemAt(distributionsCmb.getSelectedIndex()).generate(array, n);
+    distribCmb.getItemAt(distribCmb.getSelectedIndex()).generate(array, n);
   }
 
   public void workerExecute() {

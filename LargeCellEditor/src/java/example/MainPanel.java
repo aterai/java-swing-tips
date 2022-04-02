@@ -115,8 +115,10 @@ class IconTable extends JTable {
 
     @Override protected void paintComponent(Graphics g) {
       g.setColor(new Color(0x64_FF_FF_FF, true));
-      g.fillRect(0, 0, getWidth(), getHeight());
-      BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+      int w = getWidth();
+      int h = getHeight();
+      g.fillRect(0, 0, w, h);
+      BufferedImage buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = buffer.createGraphics();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));

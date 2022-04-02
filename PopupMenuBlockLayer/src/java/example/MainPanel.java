@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
+    IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, false}));
 
     JTable table = new JTable(model) {
       @Override public String getToolTipText(MouseEvent e) {

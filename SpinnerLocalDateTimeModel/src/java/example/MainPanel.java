@@ -281,7 +281,9 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         }
         return value;
       } catch (DateTimeParseException ex) {
-        throw (ParseException) new ParseException(ex.getMessage(), ex.getErrorIndex()).initCause(ex);
+        String msg = ex.getMessage();
+        int idx = ex.getErrorIndex();
+        throw (ParseException) new ParseException(msg, idx).initCause(ex);
       }
     }
 

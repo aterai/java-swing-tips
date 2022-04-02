@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     });
 
     JCheckBox check = new JCheckBox("setHideActionText");
-    check.addActionListener(e -> button.setHideActionText(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> button.setHideActionText(check.isSelected()));
 
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createHorizontalBox();

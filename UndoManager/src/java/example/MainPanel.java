@@ -30,20 +30,20 @@ public final class MainPanel extends JPanel {
   }
 
   private static void initUndoRedo(JTextComponent tc) {
-    String undoAction = "undo";
-    String redoAction = "redo";
+    String undoCmd = "undo";
+    String redoCmd = "redo";
 
     UndoManager manager = new UndoManager();
     tc.getDocument().addUndoableEditListener(manager);
-    tc.getActionMap().put(undoAction, new UndoAction(manager));
-    tc.getActionMap().put(redoAction, new RedoAction(manager));
+    tc.getActionMap().put(undoCmd, new UndoAction(manager));
+    tc.getActionMap().put(redoCmd, new RedoAction(manager));
 
     int modifiers = tc.getToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = tc.getToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), undoAction);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers | InputEvent.SHIFT_DOWN_MASK), redoAction);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), redoAction);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), undoCmd);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers | InputEvent.SHIFT_DOWN_MASK), redoCmd);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), redoCmd);
   }
 
   private static class UndoAction extends AbstractAction {

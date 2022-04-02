@@ -92,7 +92,8 @@ public final class MainPanel extends JPanel {
     private final JPanel panel = new JPanel(new BorderLayout());
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-      Component c = super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+      Component c = super.getTableCellRendererComponent(
+          table, value, selected, focused, row, column);
       if (value instanceof LocalDate && c instanceof JLabel) {
         LocalDate d = (LocalDate) value;
         JLabel l = (JLabel) c;

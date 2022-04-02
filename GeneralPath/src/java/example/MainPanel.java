@@ -213,7 +213,7 @@ class StarIcon1 implements Icon {
 class StarIcon2 implements Icon {
   private static final int R2 = 40;
   private static final int R1 = 20;
-  // private static final double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); // =15.0;
+  // double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); // =15.0;
   private static final int VC = 5; // 16;
   private final Shape star;
 

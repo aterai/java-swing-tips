@@ -61,17 +61,20 @@ public final class MainPanel extends JPanel {
       IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
       check1.addItemListener(e -> {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-          IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
+          IntStream.range(0, 3)
+              .forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
         }
       });
       check2.addItemListener(e -> {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-          IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new FileComparator(i)));
+          IntStream.range(0, 3)
+              .forEach(i -> rs.setComparator(i, new FileComparator(i)));
         }
       });
       check3.addItemListener(e -> {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-          IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new FileGroupComparator(table, i)));
+          IntStream.range(0, 3)
+              .forEach(i -> rs.setComparator(i, new FileGroupComparator(table, i)));
         }
       });
     }

@@ -49,7 +49,8 @@ public final class MainPanel extends JPanel {
     //   {start, d.minus(2, ChronoUnit.DAYS)},
     //   {end, d.plus(7, ChronoUnit.DAYS)}
     // };
-    // DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date", "LocalDateTime"}) {
+    // String[] columnNames = {"Date", "LocalDateTime"};
+    // DefaultTableModel model = new DefaultTableModel(data, columnNames) {
     //   @Override public Class<?> getColumnClass(int column) {
     //     return column == 0 ? Date.class : column == 1 ? LocalDateTime.class : Object.class;
     //   }

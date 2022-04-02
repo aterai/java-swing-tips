@@ -96,7 +96,6 @@ class TriSliderUI extends MetalSliderUI {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(trackBounds.x, trackBounds.y + cy);
 
-      // g2.setPaint(new GradientPaint(0f, 0f, getShadowColor(), cw, 0f, getHighlightColor(), true));
       g2.setPaint(Color.GRAY);
       g2.fillRect(0, -cy, cw, cy * 2);
 

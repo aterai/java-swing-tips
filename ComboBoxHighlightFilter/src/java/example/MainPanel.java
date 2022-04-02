@@ -65,7 +65,8 @@ public final class MainPanel extends JPanel {
             field.setBackground(isSelected ? new Color(0xAA_64_AA_FF, true) : Color.WHITE);
             return field;
           }
-          return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          return renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
         });
       }
 

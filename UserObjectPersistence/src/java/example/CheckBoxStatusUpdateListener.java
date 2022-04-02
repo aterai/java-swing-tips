@@ -166,7 +166,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   private String str;
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-    Component c = renderer.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+    Component c = renderer.getTreeCellRendererComponent(
+        tree, value, true, expanded, leaf, row, true);
     c.setFont(tree.getFont());
     if (value instanceof DefaultMutableTreeNode) {
       panel.setFocusable(false);

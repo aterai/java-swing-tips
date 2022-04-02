@@ -107,7 +107,8 @@ class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E
       list.setSelectionForeground(ic);
       list.setSelectionBackground(color);
     }
-    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     c.setForeground(ic);
     c.setBackground(isSelected ? color : list.getBackground());
     // ((JLabel) c).setText(item.description);
@@ -123,7 +124,8 @@ class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
     if (index < 0) {
       list.setSelectionBackground(color);
     }
-    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     c.setBackground(isSelected ? color : list.getBackground());
     if (c instanceof JLabel) {
       int rgb = value.color.getRGB() & 0xFF_FF_FF;

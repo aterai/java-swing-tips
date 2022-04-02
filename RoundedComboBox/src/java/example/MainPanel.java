@@ -73,15 +73,15 @@ public final class MainPanel extends JPanel {
     // UIManager.put("ComboBox.editorBorder", BorderFactory.createLineBorder(Color.GREEN));
     UIManager.put("ComboBox.border", new KamabokoBorder());
 
-    JComboBox<String> combo00 = new JComboBox<>(makeModel());
-    JComboBox<String> combo01 = new JComboBox<>(makeModel());
+    JComboBox<String> cmb00 = new JComboBox<>(makeModel());
+    JComboBox<String> cmb01 = new JComboBox<>(makeModel());
 
     UIManager.put("ComboBox.border", new KamabokoBorder());
-    JComboBox<String> combo02 = new JComboBox<>(makeModel());
+    JComboBox<String> cmb02 = new JComboBox<>(makeModel());
 
-    combo00.setUI(new MetalComboBoxUI());
-    combo01.setUI(new BasicComboBoxUI());
-    combo02.setUI(new BasicComboBoxUI() {
+    cmb00.setUI(new MetalComboBoxUI());
+    cmb01.setUI(new BasicComboBoxUI());
+    cmb02.setUI(new BasicComboBoxUI() {
       @Override protected JButton createArrowButton() {
         JButton b = new JButton(new ArrowIcon(BACKGROUND, FOREGROUND));
         b.setContentAreaFilled(false);
@@ -91,21 +91,21 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    combo02.addMouseListener(new ComboRolloverHandler());
+    cmb02.addMouseListener(new ComboRolloverHandler());
 
-    Object o = combo00.getAccessibleContext().getAccessibleChild(0);
+    Object o = cmb00.getAccessibleContext().getAccessibleChild(0);
     ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, FOREGROUND));
-    o = combo01.getAccessibleContext().getAccessibleChild(0);
+    o = cmb01.getAccessibleContext().getAccessibleChild(0);
     ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, FOREGROUND));
-    o = combo02.getAccessibleContext().getAccessibleChild(0);
+    o = cmb02.getAccessibleContext().getAccessibleChild(0);
     ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, FOREGROUND));
 
     Box box1 = Box.createVerticalBox();
-    box1.add(makeTitledPanel("MetalComboBoxUI:", combo00, BACKGROUND));
+    box1.add(makeTitledPanel("MetalComboBoxUI:", cmb00, BACKGROUND));
     box1.add(Box.createVerticalStrut(10));
-    box1.add(makeTitledPanel("BasicComboBoxUI:", combo01, BACKGROUND));
+    box1.add(makeTitledPanel("BasicComboBoxUI:", cmb01, BACKGROUND));
     box1.add(Box.createVerticalStrut(10));
-    box1.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo02, BACKGROUND));
+    box1.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", cmb02, BACKGROUND));
     box1.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     JTabbedPane tabbedPane = new JTabbedPane();
@@ -115,7 +115,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("editable");
     check.addActionListener(e -> {
       boolean flag = ((JCheckBox) e.getSource()).isSelected();
-      Stream.of(combo00, combo01, combo02, combo0, combo1, combo2).forEach(c -> c.setEditable(flag));
+      Stream.of(cmb00, cmb01, cmb02, combo0, combo1, combo2).forEach(c -> c.setEditable(flag));
       repaint();
     });
 

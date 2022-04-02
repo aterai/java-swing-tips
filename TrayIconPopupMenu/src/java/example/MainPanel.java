@@ -274,10 +274,10 @@ class ChangeLookAndFeelAction extends AbstractAction {
   private final String lnf;
   private final List<? extends Component> list;
 
-  protected ChangeLookAndFeelAction(LookAndFeelEnum lookAndFeelEnum, List<? extends Component> list) {
-    super(lookAndFeelEnum.toString());
+  protected ChangeLookAndFeelAction(LookAndFeelEnum lookAndFeels, List<? extends Component> list) {
+    super(lookAndFeels.toString());
     this.list = list;
-    this.lnf = lookAndFeelEnum.getClassName();
+    this.lnf = lookAndFeels.getClassName();
     this.setEnabled(isAvailableLookAndFeel(lnf));
   }
 

@@ -96,7 +96,8 @@ public final class MainPanel extends JPanel {
         setPrototypeDisplayValue(proto);
         ListCellRenderer<? super Icon> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = r.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (c instanceof JLabel) {
             JLabel l = (JLabel) c;
             l.setIcon(value);

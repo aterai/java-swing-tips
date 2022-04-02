@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
 //
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 //     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-//     Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+//     Component c = r.getTableCellRendererComponent(
+//         table, value, isSelected, hasFocus, row, column);
 //     c.setFont(font);
 //     return c;
 //   }

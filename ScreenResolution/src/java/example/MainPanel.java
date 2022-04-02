@@ -22,7 +22,9 @@ public final class MainPanel extends JPanel {
   @Override public Dimension getPreferredSize() {
     if (Objects.isNull(dpiPreferredSize)) {
       float s = getDpiScaling();
-      dpiPreferredSize = new Dimension((int) (defaultSize.width * s), (int) (defaultSize.height * s));
+      float fw = defaultSize.width * s;
+      float fh = defaultSize.height * s;
+      dpiPreferredSize = new Dimension((int) fw, (int) fh);
     }
     System.out.println(dpiPreferredSize);
     return dpiPreferredSize;

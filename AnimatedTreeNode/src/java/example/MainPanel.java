@@ -20,8 +20,10 @@ public final class MainPanel extends JPanel {
     ImageIcon icon = new ImageIcon(Objects.requireNonNull(cl.getResource(p)));
 
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-    DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(new NodeObject("default", icon));
-    DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(new NodeObject("setImageObserver", icon));
+    Object uo0 = new NodeObject("default", icon);
+    DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(uo0);
+    Object uo1 = new NodeObject("setImageObserver", icon);
+    DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(uo1);
     root.add(s0);
     root.add(s1);
     JTree tree = new JTree(new DefaultTreeModel(root)) {

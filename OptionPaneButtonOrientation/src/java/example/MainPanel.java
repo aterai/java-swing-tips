@@ -21,28 +21,28 @@ public final class MainPanel extends JPanel {
       Integer iv = UIManager.getLookAndFeelDefaults().getInt(key);
       System.out.println(iv);
       UIManager.put(key, iv);
-      String str = JOptionPane.showInputDialog(getRootPane(), "Default");
+      String str = JOptionPane.showInputDialog(log, "Default");
       log.setText(str);
     });
 
     JButton rightButton = new JButton("RIGHT");
     rightButton.addActionListener(e -> {
       UIManager.put(key, SwingConstants.RIGHT);
-      String str = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: RIGHT");
+      String str = JOptionPane.showInputDialog(log, "OptionPane.buttonOrientation: RIGHT");
       log.setText(str);
     });
 
     JButton centerButton = new JButton("CENTER");
     centerButton.addActionListener(e -> {
       UIManager.put(key, SwingConstants.CENTER);
-      String str = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: CENTER");
+      String str = JOptionPane.showInputDialog(log, "OptionPane.buttonOrientation: CENTER");
       log.setText(str);
     });
 
     JButton leftButton = new JButton("LEFT");
     leftButton.addActionListener(e -> {
       UIManager.put(key, SwingConstants.LEFT);
-      String str = JOptionPane.showInputDialog(getRootPane(), "OptionPane.buttonOrientation: LEFT");
+      String str = JOptionPane.showInputDialog(log, "OptionPane.buttonOrientation: LEFT");
       log.setText(str);
     });
 

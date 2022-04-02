@@ -11,24 +11,23 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTextField field0 = new JTextField("Initially has BasicTextUI$TextTransferHandler");
+    field0.setName("default");
 
-    JTextField textField0 = new JTextField("Initially has BasicTextUI$TextTransferHandler");
-    textField0.setName("default");
+    JTextField field1 = new JTextField("setEditable(false)");
+    field1.setEditable(false);
 
-    JTextField textField1 = new JTextField("setEditable(false)");
-    textField1.setEditable(false);
+    JTextField field2 = new JTextField("setEnabled(false)");
+    field2.setEnabled(false);
 
-    JTextField textField2 = new JTextField("setEnabled(false)");
-    textField2.setEnabled(false);
+    JTextField field3 = new JTextField("setTransferHandler(null)");
+    field3.setTransferHandler(null);
 
-    JTextField textField3 = new JTextField("setTransferHandler(null)");
-    textField3.setTransferHandler(null);
+    JTextField field4 = new JTextField("setDropTarget(null)");
+    field4.setDropTarget(null);
 
-    JTextField textField4 = new JTextField("setDropTarget(null)");
-    textField4.setDropTarget(null);
-
-    JTextField textField5 = new JTextField("TransferHandler#canImport(...): false");
-    textField5.setTransferHandler(new TransferHandler() {
+    JTextField field5 = new JTextField("TransferHandler#canImport(...): false");
+    field5.setTransferHandler(new TransferHandler() {
       @Override public boolean canImport(TransferSupport info) {
         return false;
       }
@@ -53,7 +52,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    Stream.of(textField0, textField1, textField2, textField3, textField4, textField5).forEach(tf -> {
+    Stream.of(field0, field1, field2, field3, field4, field5).forEach(tf -> {
       tf.setDragEnabled(true);
       box.add(tf);
       box.add(Box.createVerticalStrut(10));

@@ -18,7 +18,8 @@ public final class MainPanel extends JPanel {
 
     @SuppressWarnings("JavaUtilDate")
     Date date = new Date();
-    JSpinner spinner1 = new JSpinner(new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH));
+    SpinnerDateModel model1 = new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH);
+    JSpinner spinner1 = new JSpinner(model1);
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
 
     Calendar today = Calendar.getInstance();
@@ -31,10 +32,12 @@ public final class MainPanel extends JPanel {
     System.out.println(date);
     System.out.println(start);
 
-    JSpinner spinner2 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
+    SpinnerDateModel model2 = new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH);
+    JSpinner spinner2 = new JSpinner(model2);
     spinner2.setEditor(new JSpinner.DateEditor(spinner2, dateFormat));
 
-    JSpinner spinner3 = new JSpinner(new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH));
+    SpinnerDateModel model3 = new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH);
+    JSpinner spinner3 = new JSpinner(model3);
     JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner3, dateFormat);
     spinner3.setEditor(editor);
     editor.getTextField().addFocusListener(new FocusAdapter() {

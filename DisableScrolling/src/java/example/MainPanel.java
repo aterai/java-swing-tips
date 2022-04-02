@@ -12,7 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  // [JDK-6299213] The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731) - Java Bug System
+  // [JDK-6299213]
+  // The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731)
   // Fixed: https://bugs.openjdk.java.net/browse/JDK-6299213
   // private final JScrollPane scroll = new JScrollPane(table) {
   //   @Override public void updateUI() {
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
     };
     JScrollPane scroll = new JScrollPane(table);
 
-    IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, Boolean.FALSE}));
+    IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, false}));
     table.setAutoCreateRowSorter(true);
 
     JCheckBox check = new JCheckBox("Disable Scrolling");

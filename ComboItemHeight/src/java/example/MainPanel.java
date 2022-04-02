@@ -72,7 +72,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super String> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = r.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (c instanceof JLabel) {
             ((JLabel) c).setIcon(index >= 0 ? new H32Icon() : null);
           }

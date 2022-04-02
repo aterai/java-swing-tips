@@ -241,7 +241,8 @@ class DnDTree extends JTree {
         isTargetNode = value.equals(dropTargetNode);
         isTargetNodeLeaf = isTargetNode && ((TreeNode) value).isLeaf();
       }
-      return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      return super.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
     }
 
     @Override protected void paintComponent(Graphics g) {

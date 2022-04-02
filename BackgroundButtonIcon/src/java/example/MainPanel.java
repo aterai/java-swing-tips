@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
   private static AbstractButton makeButton(String title, Color color, boolean first) {
     // https://java-swing-tips.blogspot.com/2008/11/rounded-corner-jbutton.html
     AbstractButton b = new JToggleButton(title) {
-      private final transient ArrowToggleButtonBarCellIcon icon = new ArrowToggleButtonBarCellIcon();
+      private final transient ArrowToggleButtonCellIcon icon = new ArrowToggleButtonCellIcon();
       @Override public boolean contains(int x, int y) {
         Shape s = icon.getShape();
         return Objects.nonNull(s) && s.contains(x, y);
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
       }
     });
     b.setContentAreaFilled(false);
-    int th = ArrowToggleButtonBarCellIcon.TH;
+    int th = ArrowToggleButtonCellIcon.TH;
     int left = LINE_WIDTH + BI_GAP + (first ? 0 : th);
     b.setBorder(BorderFactory.createEmptyBorder(0, left, 0, th));
     b.setHorizontalAlignment(SwingConstants.LEFT);
@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
 
 // https://ateraimemo.com/Swing/ToggleButtonBar.html
 // https://java-swing-tips.blogspot.com/2012/11/make-togglebuttonbar-with-jradiobuttons.html
-class ArrowToggleButtonBarCellIcon implements Icon {
+class ArrowToggleButtonCellIcon implements Icon {
   public static final int TH = 10; // The height of a triangle
   private static final int HEIGHT = TH * 2 + 1;
   private static final int WIDTH = 100;

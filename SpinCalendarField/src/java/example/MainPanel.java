@@ -36,7 +36,8 @@ public final class MainPanel extends JPanel {
     JSpinner spinner2 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND) {
       @Override public void setCalendarField(int calendarField) {
         // https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setCalendarField-int-
-        // If you only want one field to spin you can subclass and ignore the setCalendarField calls.
+        // If you only want one field to spin you can subclass
+        // and ignore the setCalendarField calls.
       }
     });
     ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);

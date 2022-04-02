@@ -113,7 +113,7 @@ class CheckBoxesPanel extends JPanel {
     // b.setRolloverEnabled(false);
     return b;
   }).collect(Collectors.toList());
-  protected transient Border focusBorder; // = UIManager.getBorder("Table.focusCellHighlightBorder");
+  protected transient Border focusBorder; // UIManager.getBorder("Table.focusCellHighlightBorder");
   protected transient Border noFocusBorder;
 
   @Override public void updateUI() {

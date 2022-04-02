@@ -126,15 +126,15 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     }
   }
 
-  private static void loadWindowState(PersistenceService ps, URL codebase, WindowState windowState) {
+  private static void loadWindowState(PersistenceService ps, URL codebase, WindowState state) {
     try {
       FileContents fc = ps.get(codebase);
       try (XMLDecoder d = new XMLDecoder(new BufferedInputStream(fc.getInputStream()))) {
         @SuppressWarnings("unchecked")
         Map<String, Serializable> map = (Map<String, Serializable>) d.readObject();
         // d.close();
-        windowState.setSize((Dimension) map.get("size"));
-        windowState.setLocation((Point) map.get("location"));
+        state.setSize((Dimension) map.get("size"));
+        state.setLocation((Point) map.get("location"));
         // // Test:
         // // ObjectInputStream d = new ObjectInputStream(appSettings.getInputStream());
         // // WindowState cache = (WindowState) d.readObject();

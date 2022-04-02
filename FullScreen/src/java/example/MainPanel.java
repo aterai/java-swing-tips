@@ -58,7 +58,9 @@ public final class MainPanel extends JPanel {
         // triggered windowClosing
       }
     });
-    add(new JLabel("<html>F11 or Double Click: toggle full-screen<br>ESC: exit"), BorderLayout.NORTH);
+    String help1 = "F11 or Double Click: toggle full-screen";
+    String help2 = "ESC: exit";
+    add(new JLabel(String.format("<html>%s<br/>%s", help1, help2)), BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -68,7 +70,8 @@ public final class MainPanel extends JPanel {
     Container c = getTopLevelAncestor();
     if (c instanceof Dialog) {
       Dialog dialog = (Dialog) c;
-      GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      GraphicsDevice gd = ge.getDefaultScreenDevice();
       if (Objects.isNull(gd.getFullScreenWindow())) {
         dialog.dispose(); // destroy the native resources
         dialog.setUndecorated(true);

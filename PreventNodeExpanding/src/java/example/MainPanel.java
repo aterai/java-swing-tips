@@ -60,7 +60,8 @@ public final class MainPanel extends JPanel {
               l.setIcon(fileSystemView.getSystemIcon(file));
               l.setText(fileSystemView.getSystemDisplayName(file));
               l.setToolTipText(file.getPath());
-              // StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
+              // StringIndexOutOfBoundsException:
+              // c.setEnabled(file.getName().codePointAt(0) != '.');
               // String name = file.getName();
               // c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
             }

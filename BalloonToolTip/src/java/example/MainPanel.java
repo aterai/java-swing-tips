@@ -86,7 +86,8 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    Component c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     // Insets i = l.getInsets();
     // Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
     // Rectangle rect = c.getBounds();

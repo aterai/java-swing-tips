@@ -32,12 +32,12 @@ public final class MainPanel extends JPanel {
 
     // TEST:
     double d = 29.7 - 29.6 - .1;
-    String str1 = String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, .1, d >= .0);
-    String str2 = String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, .1, Math.abs(d) < 1.0e-14);
-    String str3 = String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, .1, Math.abs(d) < 1.0e-15);
+    String s1 = String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, .1, d >= .0);
+    String s2 = String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, .1, Math.abs(d) < 1.0e-14);
+    String s3 = String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, .1, Math.abs(d) < 1.0e-15);
 
     add(box, BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea(str1 + str2 + str3)));
+    add(new JScrollPane(new JTextArea(s1 + s2 + s3)));
     setPreferredSize(new Dimension(320, 240));
   }
 

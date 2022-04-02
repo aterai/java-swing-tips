@@ -190,7 +190,8 @@ enum PasswordField {
 // //         throw new BadLocationException(proposedValue, offset);
 // //       }
 // //     }
-// //     // if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) { // JDK 8
+// //     // // Java 8:
+// //     // if (!proposedValue.isEmpty() && !proposedValue.chars().allMatch(c -> c < 128)) {
 // //     Matcher m = pattern.matcher(proposedValue);
 // //     if (!proposedValue.isEmpty() && !m.find()) {
 // //       throw new BadLocationException(proposedValue, offset);

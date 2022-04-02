@@ -45,7 +45,8 @@ public final class MainPanel extends JPanel {
         });
         ListCellRenderer<? super String> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+          Component c = r.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
           if (isSelected) {
             c.setForeground(list.getSelectionForeground());
             c.setBackground(list.getSelectionBackground());

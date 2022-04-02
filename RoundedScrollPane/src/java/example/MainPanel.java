@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(15, 15));
 
     UIManager.put("ScrollBar.width", 10);
-    UIManager.put("ScrollBar.thumbHeight", 20); // GTKLookAndFeel, SynthLookAndFeel, NimbusLookAndFeel
+    UIManager.put("ScrollBar.thumbHeight", 20); // SynthLookAndFeel(GTK, Nimbus)
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));
     UIManager.put("ScrollBar.incrementButtonGap", 0);
     UIManager.put("ScrollBar.decrementButtonGap", 0);

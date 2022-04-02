@@ -352,10 +352,12 @@ class CheckBoxNode {
 //     //   setTextNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textForeground"));
 //     // }
 //     // if (getBackgroundSelectionColor() instanceof UIResource) {
-//     //   setBackgroundSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
+//     //   setBackgroundSelectionColor(
+//     //       DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
 //     // }
 //     // if (getBackgroundNonSelectionColor() instanceof UIResource) {
-//     //   setBackgroundNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textBackground"));
+//     //   setBackgroundNonSelectionColor(
+//     //       DefaultLookup.getColor(this, ui, "Tree.textBackground"));
 //     // }
 //     // if (getBorderSelectionColor() instanceof UIResource) {
 //     //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
@@ -364,7 +366,8 @@ class CheckBoxNode {
 //     // //     this, ui, "Tree.drawsFocusBorderAroundIcon", false);
 //     // // drawDashedFocusIndicator = DefaultLookup.getBoolean(
 //     // //     this, ui, "Tree.drawDashedFocusIndicator", false);
-//     // // fillBackground = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
+//     // // fillBackground = DefaultLookup.getBoolean(
+//     // //     this, ui, "Tree.rendererFillBackground", true);
 //     // Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
 //     // if (Objects.nonNull(margins)) {
 //     //   setBorder(new EmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
