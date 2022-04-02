@@ -25,14 +25,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon image1 = makeImageIcon("example/favicon.png");
-    ImageIcon image2 = makeImageIcon("example/16x16.png");
-    ImageIcon rss = makeImageIcon("example/feed-icon-14x14.png"); // http://feedicons.com/
+    Image image1 = ImageUtils.makeImage("example/favicon.png");
+    Image image2 = ImageUtils.makeImage("example/16x16.png");
 
     JComboBox<SiteItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
     initComboBox(combo01);
 
-    JComboBox<SiteItem> combo02 = new SiteItemComboBox(makeTestModel(image1, image2), rss);
+    JComboBox<SiteItem> combo02 = new SiteItemComboBox(makeTestModel(image1, image2));
     initComboBox(combo02);
 
     Box box = Box.createVerticalBox();
@@ -49,30 +48,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ImageIcon makeImageIcon(String path) {
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
-      try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-    return new ImageIcon(img);
-  }
-
-  private static BufferedImage makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("html.missingImage");
-    int iw = missingIcon.getIconWidth();
-    int ih = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
-    g2.dispose();
-    return bi;
-  }
-
-  private static DefaultComboBoxModel<SiteItem> makeTestModel(Icon i1, Icon i2) {
+  private static DefaultComboBoxModel<SiteItem> makeTestModel(Image i1, Image i2) {
     DefaultComboBoxModel<SiteItem> model = new DefaultComboBoxModel<>();
     model.addElement(new SiteItem("https://ateraimemo.com/", i1, true));
     model.addElement(new SiteItem("https://ateraimemo.com/Swing.html", i1, true));
@@ -116,15 +92,18 @@ public final class MainPanel extends JPanel {
 }
 
 class SiteItemComboBox extends JComboBox<SiteItem> {
-  protected SiteItemComboBox(DefaultComboBoxModel<SiteItem> model, ImageIcon rss) {
+  protected SiteItemComboBox(DefaultComboBoxModel<SiteItem> model) {
     super(model);
+    initComponents(model);
+  }
 
+  private void initComponents(DefaultComboBoxModel<SiteItem> model) {
     JTextField field = (JTextField) getEditor().getEditorComponent();
-    JButton feedButton = makeRssButton(rss);
-    JLabel favicon = makeLabel(field);
-    setLayout(new SiteComboBoxLayout(favicon, feedButton));
+    JLabel faviconLabel = makeFaviconLabel(field);
+    JButton feedButton = makeRssButton();
+    setLayout(new SiteComboBoxLayout(faviconLabel, feedButton));
     add(feedButton);
-    add(favicon);
+    add(faviconLabel);
 
     field.addFocusListener(new FocusListener() {
       @Override public void focusGained(FocusEvent e) {
@@ -136,7 +115,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
         getSiteItemFromModel(model, field.getText()).ifPresent(item -> {
           model.removeElement(item);
           model.insertElementAt(item, 0);
-          favicon.setIcon(item.favicon);
+          faviconLabel.setIcon(item.favicon);
           feedButton.setVisible(item.hasRss);
           setSelectedIndex(0);
         });
@@ -144,19 +123,20 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     });
     addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        updateFavicon(model, favicon);
+        updateFavicon(model, faviconLabel);
       }
     });
-    EventQueue.invokeLater(() -> updateFavicon(model, favicon));
+    EventQueue.invokeLater(() -> updateFavicon(model, faviconLabel));
   }
 
   private void updateFavicon(ComboBoxModel<SiteItem> model, JLabel l) {
     getSiteItemFromModel(model, getSelectedItem()).map(i -> i.favicon).ifPresent(l::setIcon);
   }
 
-  private static JButton makeRssButton(ImageIcon rss) {
-    JButton button = new JButton(rss);
-    ImageProducer ip = new FilteredImageSource(rss.getImage().getSource(), new SelectedImageFilter());
+  private static JButton makeRssButton() {
+    Image rss = ImageUtils.makeImage("example/feed-icon-14x14.png"); // http://feedicons.com/
+    JButton button = new JButton(new ImageIcon(rss));
+    ImageProducer ip = new FilteredImageSource(rss.getSource(), new SelectedImageFilter());
     button.setRolloverIcon(new ImageIcon(button.getToolkit().createImage(ip)));
     // button.setRolloverIcon(makeFilteredImage(rss));
     // button.setRolloverIcon(makeFilteredImage2(rss));
@@ -169,7 +149,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     return button;
   }
 
-  private static JLabel makeLabel(JTextField field) {
+  private static JLabel makeFaviconLabel(JTextField field) {
     JLabel label = new JLabel();
     label.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -208,6 +188,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     // }
     // return item;
   }
+
   // private ImageIcon getFavicon(String url) {
   //   if (url.startsWith("https://ateraimemo.com/")) {
   //     return image1;
@@ -215,14 +196,17 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   //     return image2;
   //   }
   // }
+  //
   // private boolean hasRss(String url) {
   //   return url.startsWith("https://ateraimemo.com/");
   // }
+  //
   // public static ImageIcon makeFilteredImage(ImageIcon srcIcon) {
   //   ImageProducer ip = new FilteredImageSource(
   //       srcIcon.getImage().getSource(), new SelectedImageFilter());
   //   return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   // }
+  //
   // // Test:
   // public static ImageIcon makeFilteredImage2(ImageIcon srcIcon) {
   //   RescaleOp op = new RescaleOp(
@@ -241,11 +225,11 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
 }
 
 class SiteComboBoxLayout implements LayoutManager {
-  private final JLabel favicon;
+  private final JLabel faviconLabel;
   private final JButton feedButton;
 
-  protected SiteComboBoxLayout(JLabel favicon, JButton feedButton) {
-    this.favicon = favicon;
+  protected SiteComboBoxLayout(JLabel faviconLabel, JButton feedButton) {
+    this.faviconLabel = faviconLabel;
     this.feedButton = feedButton;
   }
 
@@ -270,53 +254,35 @@ class SiteComboBoxLayout implements LayoutManager {
       return;
     }
     JComboBox<?> cb = (JComboBox<?>) parent;
-    int width = cb.getWidth();
-    int height = cb.getHeight();
-    Insets ins = cb.getInsets();
-    int arrowSz = height - ins.top - ins.bottom;
-    // int arrowHeight = height - ins.top - ins.bottom;
-    // int arrowWidth = arrowSz;
-    int faviconWidth = arrowSz;
-    int feedWidth; // = arrowHeight;
+    Rectangle r = SwingUtilities.calculateInnerArea(cb, null);
 
     // Arrow Icon JButton
+    int arrowWidth = 0;
     JButton arrowButton = (JButton) cb.getComponent(0);
     if (Objects.nonNull(arrowButton)) {
-      Insets arrowInsets = arrowButton.getInsets();
-      arrowSz = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
-      arrowButton.setBounds(width - ins.right - arrowSz, ins.top, arrowSz, arrowSz);
+      arrowWidth = arrowButton.getPreferredSize().width;
+      arrowButton.setBounds(r.x + r.width - arrowWidth, r.y, arrowWidth, r.height);
     }
 
     // Favicon JLabel
-    if (Objects.nonNull(favicon)) {
-      Insets faviconInsets = favicon.getInsets();
-      faviconWidth = favicon.getPreferredSize().width + faviconInsets.left + faviconInsets.right;
-      favicon.setBounds(ins.left, ins.top, faviconWidth, arrowSz);
+    int faviconWidth = 0;
+    if (Objects.nonNull(faviconLabel)) {
+      faviconWidth = faviconLabel.getPreferredSize().width;
+      faviconLabel.setBounds(r.x, r.y, faviconWidth, r.height);
     }
 
-    // JButton rssButton = feedButton;
-    // for (Component c : cb.getComponents()) {
-    //   if ("ComboBox.rssButton".equals(c.getName())) {
-    //     rssButton = (JButton) c;
-    //     break;
-    //   }
-    // }
-
     // Feed Icon JButton
+    int feedWidth = 0;
     if (Objects.nonNull(feedButton) && feedButton.isVisible()) {
-      Insets feedIns = feedButton.getInsets();
-      feedWidth = feedButton.getPreferredSize().width + feedIns.left + feedIns.right;
-      feedButton.setBounds(width - ins.right - feedWidth - arrowSz, ins.top, feedWidth, arrowSz);
-    } else {
-      feedWidth = 0;
+      feedWidth = feedButton.getPreferredSize().width;
+      feedButton.setBounds(r.x + r.width - feedWidth - arrowWidth, r.y, feedWidth, r.height);
     }
 
     // JComboBox Editor
     Component editor = cb.getEditor().getEditorComponent();
     if (Objects.nonNull(editor)) {
-      editor.setBounds(ins.left + faviconWidth, ins.top,
-          width - ins.left - ins.right - arrowSz - faviconWidth - feedWidth,
-          height - ins.top - ins.bottom);
+      int w = r.width - arrowWidth - faviconWidth - feedWidth;
+      editor.setBounds(r.x + faviconWidth, r.y, w, r.height);
     }
   }
 }
@@ -326,9 +292,9 @@ class SiteItem {
   public final Icon favicon;
   public final boolean hasRss;
 
-  protected SiteItem(String url, Icon icon, boolean hasRss) {
+  protected SiteItem(String url, Image image, boolean hasRss) {
     this.url = url;
-    this.favicon = icon;
+    this.favicon = new ImageIcon(image);
     this.hasRss = hasRss;
   }
 
@@ -350,5 +316,33 @@ class SelectedImageFilter extends RGBImageFilter {
     int g = Math.min(0xFF, Math.round(((argb >> 8) & 0xFF) * SCALE));
     int b = Math.min(0xFF, Math.round((argb & 0xFF) * SCALE));
     return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ImageUtils::makeMissingImage);
+  }
+
+  public static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }
