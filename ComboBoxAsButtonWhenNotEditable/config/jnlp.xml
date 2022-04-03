@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ComboBoxAsButtonWhenNotEditable" />
+  <property name="jnlp.Name"     value="ComboBoxAsButtonWhenNotEditable" />
+  <property name="jnlp.name"     value="comboboxasbuttonwhennoteditable" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/comboboxasbuttonwhennoteditable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ComboBoxAsButtonWhenNotEditable.html" />
+</project>
