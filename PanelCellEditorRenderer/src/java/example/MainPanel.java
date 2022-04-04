@@ -255,8 +255,10 @@ class ButtonsRenderer implements TableCellRenderer {
   private final ButtonsPanel renderer = new ButtonsPanel();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-    renderer.label.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+    Color bgc = isSelected ? table.getSelectionBackground() : table.getBackground();
+    renderer.setBackground(bgc);
+    Color fgc = isSelected ? table.getSelectionForeground() : table.getForeground();
+    renderer.label.setForeground(fgc);
     renderer.label.setText(Objects.toString(value, ""));
     return renderer;
   }

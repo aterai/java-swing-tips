@@ -108,7 +108,8 @@ public final class ResizeMouseListener extends MouseInputAdapter {
   }
 
   private int getDeltaY(int dy, Rectangle pr) {
-    int bottom = Math.max(startRect.height - MAX.height, startRect.y + startRect.height - pr.height);
+    int maxHeight = startRect.height - MAX.height;
+    int bottom = Math.max(maxHeight, startRect.y + startRect.height - pr.height);
     return Math.min(Math.max(dy, bottom), startRect.height - MIN.height);
     // int deltaY = dy;
     // if (startingBounds.height - MIN.height < deltaY) {

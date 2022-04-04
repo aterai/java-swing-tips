@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     append("GlyphVector#getVisualBounds()", gv.getVisualBounds());
 
     append("JLabel#getPreferredSize()", label.getPreferredSize());
-    append("SwingUtilities.layoutCompoundLabel(...)", getLayoutCompoundLabelBounds(label).getSize());
+    append("SwingUtilities.layoutCompoundLabel(...)", getCompoundLabelBounds(label).getSize());
   }
 
   private void append(String s, Object o) {
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static Rectangle getLayoutCompoundLabelBounds(JLabel label) {
+  private static Rectangle getCompoundLabelBounds(JLabel label) {
     Rectangle viewR = new Rectangle();
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle();

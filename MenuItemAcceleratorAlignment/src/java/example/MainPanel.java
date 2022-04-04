@@ -261,7 +261,8 @@ final class MenuItemHelper {
         g.setColor(menuItem.getBackground().brighter());
         drawString(menuItem, g, text, accRect.x, accRect.y + ascent);
         g.setColor(menuItem.getBackground().darker());
-        drawString(menuItem, g, text, accRect.x - 1, accRect.y + lh.getFontMetrics().getAscent() - 1);
+        int yy = accRect.y + lh.getFontMetrics().getAscent() - 1;
+        drawString(menuItem, g, text, accRect.x - 1, yy);
       }
     }
   }

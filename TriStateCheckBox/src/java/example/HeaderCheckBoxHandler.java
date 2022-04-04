@@ -33,14 +33,14 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
       TableColumn column = table.getColumnModel().getColumn(vci);
       Object status = column.getHeaderValue();
       TableModel m = table.getModel();
-      if (m instanceof DefaultTableModel && fireUpdateEvent((DefaultTableModel) m, column, status)) {
+      if (m instanceof DefaultTableModel && checkRepaint((DefaultTableModel) m, column, status)) {
         JTableHeader h = table.getTableHeader();
         h.repaint(h.getHeaderRect(vci));
       }
     }
   }
 
-  private boolean fireUpdateEvent(DefaultTableModel m, TableColumn column, Object status) {
+  private boolean checkRepaint(DefaultTableModel m, TableColumn column, Object status) {
     if (status == Status.INDETERMINATE) {
       List<?> data =  m.getDataVector();
       List<Boolean> l = data.stream()
@@ -60,7 +60,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
       return true;
     }
   }
-  // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+  // private boolean checkRepaint(TableModel m, TableColumn column, Object status) {
   //   if (status == Status.INDETERMINATE) {
   //     boolean selected = true;
   //     boolean deselected = true;

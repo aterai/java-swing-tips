@@ -38,11 +38,14 @@ public final class MainPanel extends JPanel {
           JCheckBox b = (JCheckBox) c;
           b.setBorderPainted(true);
           b.setBackground(getSelectionBackground());
-        // } else if (c instanceof JComponent && convertColumnIndexToModel(column) == 1) {
-        } else if (c instanceof JComponent && Number.class.isAssignableFrom(getColumnClass(column))) {
+        } else if (c instanceof JComponent && isNumberColumn(column)) {
           ((JComponent) c).setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         }
         return c;
+      }
+
+      private boolean isNumberColumn(int column) {
+        return Number.class.isAssignableFrom(getColumnClass(column));
       }
     };
 

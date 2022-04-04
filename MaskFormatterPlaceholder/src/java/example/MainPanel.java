@@ -19,9 +19,9 @@ public final class MainPanel extends JPanel {
     box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
     String mask = "###-####";
-
     JFormattedTextField field0 = new JFormattedTextField();
-    createFormatter(mask).ifPresent(f -> field0.setFormatterFactory(new DefaultFormatterFactory(f)));
+    createFormatter(mask)
+        .ifPresent(f -> field0.setFormatterFactory(new DefaultFormatterFactory(f)));
     box.add(makeTitledPanel("new MaskFormatter(\"###-####\")", field0));
     box.add(Box.createVerticalStrut(15));
 
