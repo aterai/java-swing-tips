@@ -7,12 +7,16 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
-import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -21,25 +25,33 @@ public final class MainPanel extends JPanel {
     // PI Diagona Icons Pack 1.0
     //   Download Royalty Free Icons and Stock Images For Web & Graphics Design
     // http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
-    ImageIcon defaultIcon = new ImageIcon(getClass().getResource("31g.png"));
-    ImageProducer ip = defaultIcon.getImage().getSource();
+    String path = "example/31g.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    ImageIcon defaultIcon = new ImageIcon(img);
 
     // 1
     List<ImageIcon> list1 = Arrays.asList(
-        makeStarImageIcon(ip, new SelectedImageFilter(1f, .5f, .5f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(.5f, 1f, .5f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(1f, .5f, 1f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(.5f, .5f, 1f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(1f, 1f, .5f)));
+        makeStarImageIcon(img, new SelectedImageFilter(1f, .5f, .5f)),
+        makeStarImageIcon(img, new SelectedImageFilter(.5f, 1f, .5f)),
+        makeStarImageIcon(img, new SelectedImageFilter(1f, .5f, 1f)),
+        makeStarImageIcon(img, new SelectedImageFilter(.5f, .5f, 1f)),
+        makeStarImageIcon(img, new SelectedImageFilter(1f, 1f, .5f)));
     add(makeStarRatingPanel("gap=0", new LevelBar(defaultIcon, list1, 0)));
 
     // 2
     List<ImageIcon> list2 = Arrays.asList(
-        makeStarImageIcon(ip, new SelectedImageFilter(.2f, .5f, .5f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(0f, 1f, .2f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(1f, 1f, .2f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(.8f, .4f, .2f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(1f, .1f, .1f)));
+        makeStarImageIcon(img, new SelectedImageFilter(.2f, .5f, .5f)),
+        makeStarImageIcon(img, new SelectedImageFilter(0f, 1f, .2f)),
+        makeStarImageIcon(img, new SelectedImageFilter(1f, 1f, .2f)),
+        makeStarImageIcon(img, new SelectedImageFilter(.8f, .4f, .2f)),
+        makeStarImageIcon(img, new SelectedImageFilter(1f, .1f, .1f)));
     add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list2, 1) {
       @Override protected void repaintIcon(int index) {
         for (int i = 0; i < getLabelList().size(); i++) {
@@ -51,15 +63,15 @@ public final class MainPanel extends JPanel {
 
     // 3
     List<ImageIcon> list3 = Arrays.asList(
-        makeStarImageIcon(ip, new SelectedImageFilter(.6f, .6f, 0f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(.7f, .7f, 0f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(.8f, .8f, 0f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(.9f, .9f, 0f)),
-        makeStarImageIcon(ip, new SelectedImageFilter(1f, 1f, 0f)));
+        makeStarImageIcon(img, new SelectedImageFilter(.6f, .6f, 0f)),
+        makeStarImageIcon(img, new SelectedImageFilter(.7f, .7f, 0f)),
+        makeStarImageIcon(img, new SelectedImageFilter(.8f, .8f, 0f)),
+        makeStarImageIcon(img, new SelectedImageFilter(.9f, .9f, 0f)),
+        makeStarImageIcon(img, new SelectedImageFilter(1f, 1f, 0f)));
     add(makeStarRatingPanel("gap=2+2", new LevelBar(defaultIcon, list3, 2)));
 
     // 4
-    ImageIcon star = makeStarImageIcon(ip, new SelectedImageFilter(1f, 1f, 0f));
+    ImageIcon star = makeStarImageIcon(img, new SelectedImageFilter(1f, 1f, 0f));
     List<ImageIcon> list4 = Arrays.asList(star, star, star, star, star);
     add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list4, 1)));
     setPreferredSize(new Dimension(320, 240));
@@ -76,9 +88,20 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static ImageIcon makeStarImageIcon(ImageProducer ip, ImageFilter filter) {
-    Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, filter));
-    return new ImageIcon(img);
+  private static ImageIcon makeStarImageIcon(Image image, ImageFilter filter) {
+    FilteredImageSource producer = new FilteredImageSource(image.getSource(), filter);
+    return new ImageIcon(Toolkit.getDefaultToolkit().createImage(producer));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
