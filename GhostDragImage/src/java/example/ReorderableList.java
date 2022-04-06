@@ -146,6 +146,7 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
       srcPoint.setLocation(e.getPoint());
       l.repaint();
     }
+
     // // JDK 1.7.0
     // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
     //   ListModel model = l.getModel();
@@ -274,7 +275,7 @@ class ListItem implements Serializable {
     }).orElseGet(ListItem::makeMissingImage);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

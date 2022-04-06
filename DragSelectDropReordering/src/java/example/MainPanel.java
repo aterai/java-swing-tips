@@ -321,7 +321,7 @@ class ListItem implements Serializable {
     }).orElseGet(ListItem::makeMissingImage);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
