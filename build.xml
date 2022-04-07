@@ -367,6 +367,38 @@
     </javac>
   </target>
 
+  <target name="errorprone-jdk11" depends="prepare-src, prepare-resource, prepare-web">
+    <path id="processorpath.ref">
+      <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
+    </path>
+    <javac srcdir="${build.src}"
+           includes="**/*.java"
+           destdir="${build.dest}"
+           encoding="${compile.encoding}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           fork="yes"
+           includeantruntime="no"
+           classpathref="project.class.path">
+      <compilerarg value="-XDcompilePolicy=simple"/>
+      <compilerarg value="-processorpath"/>
+      <compilerarg pathref="processorpath.ref"/>
+      <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
+      <compilerarg value="-J-Dfile.encoding=UTF-8" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" />
+      <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" />
+      <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" />
+    </javac>
+  </target>
+
   <target name="ecj" depends="prepare-src, prepare-resource, prepare-web">
     <javac srcdir="${build.src}"
            excludes="**/module-info.java"
@@ -447,12 +479,31 @@
   </target>
 
   <condition property="have.checkstyle">
-    <available file="${env.CHECKSTYLE_HOME}" />
+    <available file="${env.CHECKSTYLE_HOME}/checkstyle-9.3-all.jar" />
   </condition>
   <target name="checkstyle" if="have.checkstyle">
     <path id="checkstyle.classpath">
       <fileset dir="${env.CHECKSTYLE_HOME}">
+        <include name="checkstyle-9.3-all.jar" />
+      </fileset>
+    </path>
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
+    <mkdir dir="${build.reports}" />
+    <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
+      <formatter type="plain" />
+      <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
+      <fileset dir="${src.dir}" excludes="**/module-info.java" includes="**/*.java" />
+    </checkstyle>
+  </target>
+
+  <condition property="have.checkstyle-jdk11">
+    <available file="${env.CHECKSTYLE_HOME}" />
+  </condition>
+  <target name="checkstyle-jdk11" if="have.checkstyle-jdk11">
+    <path id="checkstyle.classpath">
+      <fileset dir="${env.CHECKSTYLE_HOME}">
         <include name="*-all.jar" />
+        <exclude name="checkstyle-9.3-all.jar" />
       </fileset>
     </path>
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
