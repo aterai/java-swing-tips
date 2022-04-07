@@ -5,14 +5,28 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final ImageIcon icon;
+  private final transient Image image;
 
   private MainPanel() {
     super(new BorderLayout());
-    icon = new ImageIcon(getClass().getResource("16x16.png"));
+    String path = "example/16x16.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
     add(new JLabel("@title@"));
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
@@ -20,9 +34,8 @@ public final class MainPanel extends JPanel {
 
   @Override protected void paintComponent(Graphics g) {
     Dimension d = getSize();
-    int w = icon.getIconWidth();
-    int h = icon.getIconHeight();
-    Image image = icon.getImage();
+    int w = image.getWidth(this);
+    int h = image.getHeight(this);
     for (int i = 0; i * w < d.width; i++) {
       for (int j = 0; j * h < d.height; j++) {
         g.drawImage(image, i * w, j * h, w, h, this);
@@ -34,6 +47,17 @@ public final class MainPanel extends JPanel {
     //   }
     // }
     super.paintComponent(g);
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
