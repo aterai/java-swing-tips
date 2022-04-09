@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -20,15 +19,15 @@ public final class MainPanel {
   public void start(JFrame frame) {
     String path = "example/splash.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        return new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return makeMissingImage();
+        return new MissingIcon();
       }
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MissingIcon::new);
 
-    JWindow splashScreen = createSplashScreen(frame, new ImageIcon(img));
+    JWindow splashScreen = createSplashScreen(frame, icon);
     splashScreen.setVisible(true);
 
     new Thread(() -> {
@@ -81,21 +80,10 @@ public final class MainPanel {
     return p;
   }
 
-  private static Image makeMissingImage() {
-    Icon missingIcon = new MissingIcon();
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
-  }
-
-  public static JWindow createSplashScreen(Frame frame, ImageIcon img) {
+  public static JWindow createSplashScreen(Frame frame, Icon icon) {
     DragWindowListener dwl = new DragWindowListener();
 
-    JLabel label = new JLabel(img);
+    JLabel label = new JLabel(icon);
     label.addMouseListener(dwl);
     label.addMouseMotionListener(dwl);
 
