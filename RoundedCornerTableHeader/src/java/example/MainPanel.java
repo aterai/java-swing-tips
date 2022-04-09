@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
 
         LocalDate nextWeekDay = d.plusDays(7);
         boolean isLastRow = row == table.getModel().getRowCount() - 1;
-        if (isLastRow && YearMonth.from(nextWeekDay).equals(YearMonth.from(getCurrentLocalDate()))) {
+        if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
           JLabel sub = new JLabel(Objects.toString(nextWeekDay.getDayOfMonth()));
           sub.setFont(table.getFont());
           sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -156,6 +156,10 @@ public final class MainPanel extends JPanel {
         }
       }
       return c;
+    }
+
+    private boolean isDiagonallySplitCell(LocalDate nextWeekDay) {
+      return YearMonth.from(nextWeekDay).equals(YearMonth.from(getCurrentLocalDate()));
     }
 
     private void updateCellWeekColor(LocalDate d, Component fgc) {
