@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RendererUseListColors" />
+  <property name="jnlp.Name"     value="RendererUseListColors" />
+  <property name="jnlp.name"     value="rendereruselistcolors" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rendereruselistcolors/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RendererUseListColors.html" />
+</project>
