@@ -11,7 +11,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -20,20 +19,19 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private transient ZoomAndPanHandler zoomAndPanHandler;
-  private final ImageIcon icon;
+  private final transient Icon icon;
 
   private MainPanel() {
     super(new BorderLayout());
     String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+    icon = Optional.ofNullable(cl.getResource(path)).map(u -> {
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        return new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return makeMissingImage();
+        return new MissingIcon();
       }
-    }).orElseGet(MainPanel::makeMissingImage);
-    icon = new ImageIcon(img);
+    }).orElseGet(MissingIcon::new);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -54,17 +52,6 @@ public final class MainPanel extends JPanel {
     g2.setTransform(zoomAndPanHandler.getCoordAndZoomTransform());
     icon.paintIcon(this, g2, 0, 0);
     g2.dispose();
-  }
-
-  private static Image makeMissingImage() {
-    Icon missingIcon = new MissingIcon();
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {

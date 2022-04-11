@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -21,27 +20,16 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(u -> {
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        return new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return makeMissingImage();
+        return new MissingIcon();
       }
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MissingIcon::new);
 
-    add(new JScrollPane(new ZoomAndPanePanel(img)));
+    add(new JScrollPane(new ZoomAndPanePanel(icon)));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Image makeMissingImage() {
-    Icon missingIcon = new MissingIcon();
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {
@@ -66,36 +54,38 @@ public final class MainPanel extends JPanel {
 
 class ZoomAndPanePanel extends JPanel {
   private final AffineTransform zoomTransform = new AffineTransform();
-  private final transient Image img;
+  private final transient Icon icon;
   private final Rectangle imageRect;
   private transient ZoomHandler handler;
   private transient DragScrollListener listener;
 
-  protected ZoomAndPanePanel(Image img) {
+  protected ZoomAndPanePanel(Icon icon) {
     super();
-    this.img = img;
-    this.imageRect = new Rectangle(img.getWidth(this), img.getHeight(this));
+    this.icon = icon;
+    this.imageRect = new Rectangle(icon.getIconWidth(), icon.getIconHeight());
   }
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new Color(0x55_FF_00_00, true));
-    Rectangle r = new Rectangle(500, 140, 150, 150);
 
     // use: AffineTransform#concatenate(...) and Graphics2D#setTransform(...)
     // https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html#concatenate-java.awt.geom.AffineTransform-
-    // AffineTransform at = g2.getTransform();
-    // at.concatenate(zoomTransform);
-    // g2.setTransform(at);
-    // g2.drawImage(img, 0, 0, this); // icon.paintIcon(this, g2, 0, 0);
-    // g2.fill(r);
+    AffineTransform at = g2.getTransform();
+    at.concatenate(zoomTransform);
+    g2.setTransform(at);
+    icon.paintIcon(this, g2, 0, 0);
+    // g2.drawImage(img, 0, 0, this);
+
+    g2.setPaint(new Color(0x55_FF_00_00, true));
+    Rectangle r = new Rectangle(500, 140, 150, 150);
+    g2.fill(r);
 
     // or use: Graphics2D#drawImage(Image, AffineTransform, ImageObserver)
     // https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html#drawImage-java.awt.Image-java.awt.geom.AffineTransform-java.awt.image.ImageObserver-
-    g2.drawImage(img, zoomTransform, this);
+    // g2.drawImage(img, zoomTransform, this);
     // or: g2.drawRenderedImage((RenderedImage) img, zoomTransform);
-    g2.fill(zoomTransform.createTransformedShape(r));
+    // g2.fill(zoomTransform.createTransformedShape(r));
 
     // BAD EXAMPLE
     // g2.setTransform(zoomTransform);

@@ -18,14 +18,14 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(u -> {
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        return new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return makeMissingImage();
+        return new MissingIcon();
       }
-    }).orElseGet(MainPanel::makeMissingImage);
-    ZoomImage zoom = new ZoomImage(img);
+    }).orElseGet(MissingIcon::new);
+    ZoomImage zoom = new ZoomImage(icon);
 
     JButton button1 = new JButton("Zoom In");
     button1.addActionListener(e -> zoom.changeScale(-5d));
@@ -45,17 +45,6 @@ public final class MainPanel extends JPanel {
     add(zoom);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Image makeMissingImage() {
-    Icon missingIcon = new MissingIcon();
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {
@@ -80,16 +69,12 @@ public final class MainPanel extends JPanel {
 
 class ZoomImage extends JPanel {
   private transient MouseWheelListener handler;
-  private final transient Image image;
-  private final int iw;
-  private final int ih;
+  private final transient Icon icon;
   private double scale = 1d;
 
-  protected ZoomImage(Image image) {
+  protected ZoomImage(Icon icon) {
     super();
-    this.image = image;
-    iw = image.getWidth(this);
-    ih = image.getHeight(this);
+    this.icon = icon;
   }
 
   @Override public void updateUI() {
@@ -108,7 +93,7 @@ class ZoomImage extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
     g2.scale(scale, scale);
-    g2.drawImage(image, 0, 0, iw, ih, this);
+    icon.paintIcon(this, g2, 0, 0);
     g2.dispose();
   }
 
