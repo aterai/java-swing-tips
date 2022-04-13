@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
