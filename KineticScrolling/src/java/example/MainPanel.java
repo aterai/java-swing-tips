@@ -10,7 +10,6 @@ import java.awt.event.HierarchyListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -51,15 +50,15 @@ public final class MainPanel extends JPanel {
 
     String path = "example/GIANT_TCR1_2013.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        return new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return makeMissingImage();
+        return new MissingIcon();
       }
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MissingIcon::new);
 
-    JLabel label = new JLabel(new ImageIcon(img));
+    JLabel label = new JLabel(icon);
     viewport.add(label);
     KineticScrollingListener1 l1 = new KineticScrollingListener1(label);
     KineticScrollingListener2 l2 = new KineticScrollingListener2(label);
@@ -102,17 +101,6 @@ public final class MainPanel extends JPanel {
     add(scroll);
     add(box, BorderLayout.NORTH);
     scroll.setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Image makeMissingImage() {
-    Icon missingIcon = new MissingIcon();
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {
