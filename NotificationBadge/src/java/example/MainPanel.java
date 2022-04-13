@@ -206,8 +206,8 @@ class BadgeIcon implements Icon {
     Rectangle b = shape.getBounds();
     double tx = getIconWidth() / 2d - b.getCenterX();
     double ty = getIconHeight() / 2d - b.getCenterY();
-    AffineTransform toCenterAT = AffineTransform.getTranslateInstance(tx, ty);
-    g2.fill(toCenterAT.createTransformedShape(shape));
+    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(tx, ty);
+    g2.fill(toCenterAtf.createTransformedShape(shape));
     g2.dispose();
   }
 
