@@ -20,13 +20,13 @@ public final class MainPanel extends JPanel {
     JScrollPane l1 = new JScrollPane(tree);
     l1.setBorder(new ComponentTitledBorder(c, l1, BorderFactory.createEtchedBorder()));
 
-    JLabel icon = new JLabel(new ImageIcon(getClass().getResource("16x16.png")));
-    JLabel l2 = new JLabel("<html>aaaaaaaaaaaaaaaa<br>bbbbbbbbbbbbbbbbb");
+    JLabel icon = new JLabel(UIManager.getIcon("FileChooser.detailsViewIcon"));
+    JLabel l2 = new JLabel("<html>ComponentTitledBorder<br>+ JLabel + Icon");
     l2.setBorder(new ComponentTitledBorder(icon, l2, BorderFactory.createEtchedBorder()));
 
     JButton b = new JButton("Button");
     b.setFocusPainted(false);
-    JLabel l3 = new JLabel("ccccccccccccccc");
+    JLabel l3 = new JLabel("ComponentTitledBorder + JButton");
     l3.setBorder(new ComponentTitledBorder(b, l3, BorderFactory.createEtchedBorder()));
 
     add(l1);
