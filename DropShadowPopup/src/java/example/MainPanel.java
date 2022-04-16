@@ -6,7 +6,11 @@ package example;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -19,7 +23,16 @@ public final class MainPanel extends JPanel {
     DropShadowPopupMenu popup1 = new DropShadowPopupMenu();
     initPopupMenu(popup1);
 
-    JLabel label = new JLabel(new ImageIcon(getClass().getResource("test.png")));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return new MissingIcon();
+      }
+    }).orElseGet(MissingIcon::new);
+    JLabel label = new JLabel(icon);
     label.setComponentPopupMenu(popup1);
 
     JCheckBox check = new JCheckBox("Paint Shadow", true);
@@ -67,6 +80,32 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 }
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 320;
+  }
+
+  @Override public int getIconHeight() {
+    return 240;
+  }
+}
+
 /*
 class DropShadowPopupMenu extends JPopupMenu {
   private static final int OFFSET = 4;
