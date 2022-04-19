@@ -151,8 +151,9 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
 
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
-      int index = l.locationToIndex(e.getPoint());
-      if (l.getCellBounds(index, index).contains(e.getPoint())) {
+      Point pt = e.getPoint();
+      int index = l.locationToIndex(pt);
+      if (l.getCellBounds(index, index).contains(pt)) {
         l.setFocusable(true);
       } else {
         l.clearSelection();
@@ -160,7 +161,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         l.getSelectionModel().setLeadSelectionIndex(-1);
         l.setFocusable(false);
       }
-      srcPoint.setLocation(e.getPoint());
+      srcPoint.setLocation(pt);
       l.repaint();
     }
 

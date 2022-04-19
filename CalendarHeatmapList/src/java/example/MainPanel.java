@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         Point p = e.getPoint();
         int idx = locationToIndex(p);
         Rectangle rect = getCellBounds(idx, idx);
-        if (idx < 0 || !rect.contains(p.x, p.y)) {
+        if (rect == null || !rect.contains(p)) {
           return null;
         }
         Contribution value = getModel().getElementAt(idx);

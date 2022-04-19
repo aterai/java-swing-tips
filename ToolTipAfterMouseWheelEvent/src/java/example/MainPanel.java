@@ -113,7 +113,7 @@ class TooltipList<E> extends JList<E> {
     if (p1 != null && !p1.equals(p0)) {
       int i = locationToIndex(p1);
       Rectangle cellBounds = getCellBounds(i, i);
-      if (i >= 0 && cellBounds != null && cellBounds.contains(p1.x, p1.y)) {
+      if (cellBounds != null && cellBounds.contains(p1)) {
         MouseEvent event = new MouseEvent(
             e.getComponent(),
             MouseEvent.MOUSE_MOVED,
@@ -136,7 +136,7 @@ class TooltipList<E> extends JList<E> {
     if (p1 != null && !p1.equals(p0)) {
       int i = locationToIndex(p1);
       Rectangle cellBounds = getCellBounds(i, i);
-      if (i >= 0 && cellBounds != null && cellBounds.contains(p1.x, p1.y)) {
+      if (cellBounds != null && cellBounds.contains(p1)) {
         return new Point(p1.x, p1.y + cellBounds.height);
       }
     }

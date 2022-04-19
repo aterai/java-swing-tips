@@ -92,7 +92,7 @@ class TooltipList<E> extends JList<E> {
     ListCellRenderer<? super E> r = getCellRenderer();
     int i = locationToIndex(p);
     Rectangle cellBounds = getCellBounds(i, i);
-    if (i >= 0 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
+    if (r != null && cellBounds != null && cellBounds.contains(p)) {
       ListSelectionModel lsm = getSelectionModel();
       boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
       E value = getModel().getElementAt(i);
@@ -120,7 +120,7 @@ class CellRendererTooltipList<E> extends JList<E> {
     int i = locationToIndex(p);
     ListCellRenderer<? super E> r = getCellRenderer();
     Rectangle cellBounds = getCellBounds(i, i);
-    if (i >= 0 && r != null && cellBounds != null && cellBounds.contains(p.x, p.y)) {
+    if (r != null && cellBounds != null && cellBounds.contains(p)) {
       ListSelectionModel lsm = getSelectionModel();
       E str = getModel().getElementAt(i);
       boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
