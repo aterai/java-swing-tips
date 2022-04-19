@@ -94,7 +94,7 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
   }
 
   public boolean isShapeContains(Point pt) {
-    return shape != null && shape.contains(pt.x, pt.y);
+    return shape != null && shape.contains(pt);
   }
 
   public void initShape(Component c) {

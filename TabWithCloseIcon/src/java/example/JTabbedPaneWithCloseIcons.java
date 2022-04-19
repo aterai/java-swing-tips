@@ -19,7 +19,7 @@ public final class JTabbedPaneWithCloseIcons extends JTabbedPane {
           return;
         }
         Rectangle rect = ((SimpleCloseTabIcon) getIconAt(index)).getBounds();
-        if (rect.contains(e.getX(), e.getY())) {
+        if (rect.contains(e.getPoint())) {
           removeTabAt(index);
         }
       }

@@ -158,10 +158,11 @@ class DraggableImageMouseListener extends MouseAdapter {
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getX(), e.getY())) {
+    Point pt = e.getPoint();
+    if (outer.contains(pt) && !inner.contains(pt)) {
       moverHover = false;
       rotatorHover = true;
-    } else if (inner.contains(e.getX(), e.getY())) {
+    } else if (inner.contains(pt)) {
       moverHover = true;
       rotatorHover = false;
     } else {
@@ -178,13 +179,14 @@ class DraggableImageMouseListener extends MouseAdapter {
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    if (outer.contains(e.getX(), e.getY()) && !inner.contains(e.getPoint())) {
+    Point pt = e.getPoint();
+    if (outer.contains(pt) && !inner.contains(pt)) {
       rotatorHover = true;
       startRadian = radian - Math.atan2(e.getY() - centerPt.getY(), e.getX() - centerPt.getX());
       e.getComponent().repaint();
-    } else if (inner.contains(e.getPoint())) {
+    } else if (inner.contains(pt)) {
       moverHover = true;
-      startPt.setLocation(e.getPoint());
+      startPt.setLocation(pt);
       e.getComponent().repaint();
     }
   }

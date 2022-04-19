@@ -228,19 +228,19 @@ class RoundButton extends JButton {
 //       @Override public void mousePressed(MouseEvent e) {
 //         AbstractButton b = (AbstractButton) e.getSource();
 //         initShape(b);
-//         if (shape.contains(e.getX(), e.getY())) {
+//         if (shape.contains(e.getPoint())) {
 //           super.mousePressed(e);
 //         }
 //       }
 //
 //       @Override public void mouseEntered(MouseEvent e) {
-//         if (shape.contains(e.getX(), e.getY())) {
+//         if (shape.contains(e.getPoint())) {
 //           super.mouseEntered(e);
 //         }
 //       }
 //
 //       @Override public void mouseMoved(MouseEvent e) {
-//         if (shape.contains(e.getX(), e.getY())) {
+//         if (shape.contains(e.getPoint())) {
 //           super.mouseEntered(e);
 //         } else {
 //           super.mouseExited(e);

@@ -155,7 +155,7 @@ class TooltipTree extends JTree {
     Point p = e.getPoint();
     int i = getRowForLocation(p.x, p.y);
     Rectangle cellBounds = getRowBounds(i);
-    if (i >= 0 && Objects.nonNull(cellBounds) && cellBounds.contains(p.x, p.y)) {
+    if (Objects.nonNull(cellBounds) && cellBounds.contains(p)) {
       TreeSelectionModel tsm = getSelectionModel();
       Object node = getPathForRow(i).getLastPathComponent();
       // System.out.println(node);
