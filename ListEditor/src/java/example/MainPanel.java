@@ -156,7 +156,8 @@ class ClearSelectionListener extends MouseAdapter {
 
   private static <E> boolean contains(JList<E> list, Point pt) {
     for (int i = 0; i < list.getModel().getSize(); i++) {
-      if (list.getCellBounds(i, i).contains(pt)) {
+      Rectangle r = list.getCellBounds(i, i);
+      if (r != null && r.contains(pt)) {
         return true;
       }
     }

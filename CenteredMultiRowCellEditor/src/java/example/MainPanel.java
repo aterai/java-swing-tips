@@ -396,7 +396,8 @@ class EditableList<E extends ListItem> extends JList<E> {
 
     private boolean contains(JList<?> list, Point pt) {
       for (int i = 0; i < list.getModel().getSize(); i++) {
-        if (list.getCellBounds(i, i).contains(pt)) {
+        Rectangle r = list.getCellBounds(i, i);
+        if (r != null && r.contains(pt)) {
           return true;
         }
       }

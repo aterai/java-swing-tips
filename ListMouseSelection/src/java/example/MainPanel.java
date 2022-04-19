@@ -154,7 +154,7 @@ class SingleClickSelectList<E> extends JList<E> {
   protected boolean cellsContains(Point pt) {
     for (int i = 0; i < getModel().getSize(); i++) {
       Rectangle r = getCellBounds(i, i);
-      if (r.contains(pt)) {
+      if (r != null && r.contains(pt)) {
         return true;
       }
     }
