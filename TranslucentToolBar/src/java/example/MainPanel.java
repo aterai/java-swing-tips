@@ -12,13 +12,25 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    JLabel label = new LabelWithToolBox(new ImageIcon(getClass().getResource("test.png")));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return new MissingIcon();
+      }
+    }).orElseGet(MissingIcon::new);
+    JLabel label = new LabelWithToolBox(icon);
     label.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(0xDE_DE_DE)),
         BorderFactory.createLineBorder(Color.WHITE, 4)));
@@ -77,8 +89,8 @@ class LabelWithToolBox extends JLabel {
     }
   };
 
-  protected LabelWithToolBox(Icon image) {
-    super(image);
+  protected LabelWithToolBox(Icon icon) {
+    super(icon);
 
     animator.addActionListener(e -> {
       int height = toolBox.getPreferredSize().height;
@@ -160,7 +172,17 @@ class LabelWithToolBox extends JLabel {
   }
 
   private JButton makeToolButton(String name) {
-    ImageIcon icon = new ImageIcon(getClass().getResource(name));
+    String path = "example/" + name;
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(LabelWithToolBox::makeMissingImage);
+
+    ImageIcon icon = new ImageIcon(image);
     JButton b = new JButton();
     b.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     // b.addChangeListener(new ChangeListener() {
@@ -182,6 +204,17 @@ class LabelWithToolBox extends JLabel {
     b.setFocusable(false);
     b.setToolTipText(name);
     return b;
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   private static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
@@ -266,4 +299,32 @@ final class AnimationUtil {
   // public static double delta(double t) {
   //   return 1d - Math.sin(Math.acos(t));
   // }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 240;
+  }
+
+  @Override public int getIconHeight() {
+    return 160;
+  }
 }
