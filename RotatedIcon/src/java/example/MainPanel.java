@@ -7,16 +7,29 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    Icon i = new ImageIcon(getClass().getResource("duke.gif"));
-    add(makeLabel("Default", i));
-    add(makeLabel("Rotate: 180", new RotateIcon(i, 180)));
-    add(makeLabel("Rotate:  90", new RotateIcon(i, 90)));
-    add(makeLabel("Rotate: -90", new RotateIcon(i, -90)));
+    String path = "example/duke.gif";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("OptionPane.warningIcon");
+      }
+    }).orElseGet(() -> UIManager.getIcon("OptionPane.warningIcon"));
+
+    add(makeLabel("Default", icon));
+    add(makeLabel("Rotate: 180", new RotateIcon(icon, 180)));
+    add(makeLabel("Rotate:  90", new RotateIcon(icon, 90)));
+    add(makeLabel("Rotate: -90", new RotateIcon(icon, -90)));
     setBorder(BorderFactory.createEmptyBorder(0, 32, 0, 32));
     setPreferredSize(new Dimension(320, 240));
   }
