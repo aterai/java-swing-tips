@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalSliderUI;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
   public static final int MAXI = 80;
@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     if (slider2.getUI() instanceof WindowsSliderUI) {
       slider2.setUI(new WindowsDragLimitedSliderUI(slider2));
     } else {
-      slider2.setUI(new MetalDragLimitedSliderUI());
+      slider2.setUI(new BasicDragLimitedSliderUI(slider2));
     }
     add(slider1);
     add(slider2);
@@ -88,7 +88,11 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class MetalDragLimitedSliderUI extends MetalSliderUI {
+  private static class BasicDragLimitedSliderUI extends BasicSliderUI {
+    protected BasicDragLimitedSliderUI(JSlider slider) {
+      super(slider);
+    }
+
     @Override protected TrackListener createTrackListener(JSlider slider) {
       return new TrackListener() {
         @Override public void mouseDragged(MouseEvent e) {

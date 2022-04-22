@@ -10,7 +10,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
-import javax.swing.plaf.metal.MetalSliderUI;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
             }
           });
         } else {
-          setUI(new MetalSliderUI() {
+          setUI(new BasicSliderUI(this) {
             @Override protected TrackListener createTrackListener(JSlider slider) {
               return new TrackListener() {
                 @Override public boolean shouldScroll(int direction) {

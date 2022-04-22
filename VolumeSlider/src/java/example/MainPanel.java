@@ -6,20 +6,20 @@ package example;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalSliderUI;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     JSlider slider1 = new JSlider(0, 100, 0);
-    slider1.setUI(new TriSliderUI());
+    slider1.setUI(new TriSliderUI(slider1));
     slider1.setMajorTickSpacing(10);
     slider1.setMinorTickSpacing(5);
     slider1.setPaintTicks(true);
     slider1.setPaintLabels(true);
 
     JSlider slider2 = new JSlider(0, 100, 0);
-    slider2.setUI(new MetalSliderUI() {
+    slider2.setUI(new BasicSliderUI(slider2) {
       @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
         // [JDK-5099681]
         // Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
@@ -72,12 +72,17 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TriSliderUI extends MetalSliderUI {
+class TriSliderUI extends BasicSliderUI {
+  protected TriSliderUI(JSlider slider) {
+    super(slider);
+  }
+
   @Override public void paintThumb(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     // Rectangle thumb = thumbRect;
-    g2.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
+    g2.setPaint(Color.DARK_GRAY);
+    g2.fillRect(thumbRect.x, thumbRect.y, thumbRect.width - 4, thumbRect.height - 4);
     g2.dispose();
   }
 
