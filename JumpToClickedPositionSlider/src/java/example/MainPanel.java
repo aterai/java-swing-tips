@@ -43,6 +43,12 @@ public final class MainPanel extends JPanel {
     if (slider.getUI() instanceof WindowsSliderUI) {
       slider.setUI(new WindowsJumpToClickedPositionSliderUI(slider));
     } else {
+      // NullPointerException ???
+      Icon icon = UIManager.getIcon("html.missingImage");
+      UIManager.put("Slider.trackWidth", icon.getIconHeight());
+      UIManager.put("Slider.majorTickLength", icon.getIconWidth());
+      UIManager.put("Slider.verticalThumbIcon", icon);
+      UIManager.put("Slider.horizontalThumbIcon", icon);
       slider.setUI(new MetalJumpToClickedPositionSliderUI());
     }
     // slider.setSnapToTicks(false);

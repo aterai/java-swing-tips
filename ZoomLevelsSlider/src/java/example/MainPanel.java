@@ -24,6 +24,12 @@ public final class MainPanel extends JPanel {
         if (getUI() instanceof WindowsSliderUI) {
           setUI(new WindowsZoomLevelsSliderUI(this));
         } else {
+          // NullPointerException ???
+          Icon icon = UIManager.getIcon("html.missingImage");
+          UIManager.put("Slider.trackWidth", icon.getIconHeight());
+          UIManager.put("Slider.majorTickLength", icon.getIconWidth());
+          UIManager.put("Slider.verticalThumbIcon", icon);
+          UIManager.put("Slider.horizontalThumbIcon", icon);
           setUI(new MetalZoomLevelsSliderUI());
         }
       }
