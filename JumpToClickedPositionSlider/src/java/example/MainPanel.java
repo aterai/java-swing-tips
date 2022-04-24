@@ -44,11 +44,11 @@ public final class MainPanel extends JPanel {
       slider.setUI(new WindowsJumpToClickedPositionSliderUI(slider));
     } else {
       // NullPointerException ???
-      Icon icon = UIManager.getIcon("html.missingImage");
-      UIManager.put("Slider.trackWidth", icon.getIconHeight());
-      UIManager.put("Slider.majorTickLength", icon.getIconWidth());
-      UIManager.put("Slider.verticalThumbIcon", icon);
-      UIManager.put("Slider.horizontalThumbIcon", icon);
+      UIManager.put("Slider.trackWidth", 0); // Meaningless settings that are not used?
+      UIManager.put("Slider.majorTickLength", 8); // BasicSliderUI#getTickLength(): 8
+      Icon missingIcon = UIManager.getIcon("html.missingImage");
+      UIManager.put("Slider.verticalThumbIcon", missingIcon);
+      UIManager.put("Slider.horizontalThumbIcon", missingIcon);
       slider.setUI(new MetalJumpToClickedPositionSliderUI());
     }
     // slider.setSnapToTicks(false);
