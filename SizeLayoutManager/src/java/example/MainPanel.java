@@ -12,12 +12,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    add(makeUI1());
-    add(makeUI2());
+    add(makeCmp1());
+    add(makeCmp2());
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeUI1() {
+  private static Component makeCmp1() {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("Override JToggleButton#getPreferredSize(...)"));
     GridBagConstraints c = new GridBagConstraints();
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Component makeUI2() {
+  private static Component makeCmp2() {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("Override FlowLayout#layoutContainer(...)"));
     p.setLayout(new FlowLayout() {

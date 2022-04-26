@@ -117,7 +117,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
 
   protected DnDTable(TableModel model) {
     super(model);
-    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
+    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new RowDropTargetListener(), true);
     DragSource ds = DragSource.getDefaultDragSource();
     ds.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY_OR_MOVE, this);
   }
@@ -218,7 +218,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
     return NAME.equals(flavor.getHumanPresentableName());
   }
 
-  private class CDropTargetListener implements DropTargetListener {
+  private class RowDropTargetListener implements DropTargetListener {
     @Override public void dragExit(DropTargetEvent e) {
       targetIndex = -1;
       repaint();

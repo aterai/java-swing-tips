@@ -18,7 +18,6 @@ import javax.swing.text.NumberFormatter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(3, 1));
-
     JSpinner spinner = new JSpinner(makeSpinnerNumberModel());
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField.AbstractFormatter formatter = editor.getTextField().getFormatter();
@@ -73,7 +72,7 @@ class WarningSpinner extends JSpinner {
     super(model);
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
     JFormattedTextField ftf = editor.getTextField();
-    ftf.setFormatterFactory(makeFFactory(model));
+    ftf.setFormatterFactory(makeFormatterFactory(model));
     ftf.getDocument().addDocumentListener(new DocumentListener() {
       private final Color errorBackground = new Color(0xFF_C8_C8);
       @Override public void changedUpdate(DocumentEvent e) {
@@ -97,7 +96,7 @@ class WarningSpinner extends JSpinner {
     });
   }
 
-  private static DefaultFormatterFactory makeFFactory(SpinnerNumberModel m) {
+  private static DefaultFormatterFactory makeFormatterFactory(SpinnerNumberModel m) {
     NumberFormat format = new DecimalFormat("####0"); // , dfs);
     NumberFormatter editFormatter = new NumberFormatter(format) {
       // @Override protected DocumentFilter getDocumentFilter() {

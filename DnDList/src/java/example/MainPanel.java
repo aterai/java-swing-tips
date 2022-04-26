@@ -76,7 +76,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
 
   protected DnDList() {
     super();
-    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
+    new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new ItemDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
         (Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
   }
@@ -181,7 +181,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     return NAME.equals(flavor.getHumanPresentableName());
   }
 
-  private class CDropTargetListener implements DropTargetListener {
+  private class ItemDropTargetListener implements DropTargetListener {
     // DropTargetListener interface
     @Override public void dragExit(DropTargetEvent e) {
       targetIndex = -1;

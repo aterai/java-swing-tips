@@ -58,39 +58,39 @@ public final class MainPanel extends JPanel {
 
   private static JSpinner makeSpinner1(SpinnerNumberModel m) {
     JSpinner s = new JSpinner(m);
-    JFormattedTextField ftf = getJFormattedTextField(s);
+    JFormattedTextField ftf = getFormattedTextField(s);
     DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-    ftf.setFormatterFactory(makeFFactory(dfs));
+    ftf.setFormatterFactory(makeFormatterFactory(dfs));
     ftf.setDisabledTextColor(UIManager.getColor("TextField.disabledColor"));
     return s;
   }
 
   private static JSpinner makeSpinner2(SpinnerNumberModel m) {
     JSpinner s = new JSpinner(m);
-    JFormattedTextField ftf = getJFormattedTextField(s);
+    JFormattedTextField ftf = getFormattedTextField(s);
     DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     dfs.setNaN(" ");
-    ftf.setFormatterFactory(makeFFactory(dfs));
+    ftf.setFormatterFactory(makeFormatterFactory(dfs));
     return s;
   }
 
   private static JSpinner makeSpinner3(SpinnerNumberModel m) {
     JSpinner s = new JSpinner(m);
-    JFormattedTextField ftf = getJFormattedTextField(s);
+    JFormattedTextField ftf = getFormattedTextField(s);
     DecimalFormatSymbols dfs = new DecimalFormatSymbols();
     dfs.setNaN("----");
-    ftf.setFormatterFactory(makeFFactory(dfs));
+    ftf.setFormatterFactory(makeFormatterFactory(dfs));
     return s;
   }
 
-  private static JFormattedTextField getJFormattedTextField(JSpinner s) {
+  private static JFormattedTextField getFormattedTextField(JSpinner s) {
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) s.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setColumns(8);
     return ftf;
   }
 
-  private static DefaultFormatterFactory makeFFactory(DecimalFormatSymbols dfs) {
+  private static DefaultFormatterFactory makeFormatterFactory(DecimalFormatSymbols dfs) {
     DecimalFormat format = new DecimalFormat("0.00", dfs);
 
     NumberFormatter displayFormatter = new NumberFormatter(format);

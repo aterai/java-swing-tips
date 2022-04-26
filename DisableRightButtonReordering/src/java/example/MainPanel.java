@@ -13,16 +13,16 @@ import javax.swing.table.JTableHeader;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Component c = new JLayer<>(new JScrollPane(makeJTable()), new DisableRightButtonSwapLayerUI());
+    Component c = new JLayer<>(new JScrollPane(makeTable()), new DisableRightButtonSwapLayerUI());
 
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("Default", new JScrollPane(makeJTable())));
+    p.add(makeTitledPanel("Default", new JScrollPane(makeTable())));
     p.add(makeTitledPanel("Disable right mouse button reordering", c));
     add(p);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeJTable() {
+  private static JTable makeTable() {
     JTable table = new JTable(4, 3);
     table.setAutoCreateRowSorter(true);
     JPopupMenu popup = new JPopupMenu() {

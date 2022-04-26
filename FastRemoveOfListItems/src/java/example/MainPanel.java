@@ -17,9 +17,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("default remove", makeUI0());
-    tabbedPane.addTab("clear + addElement", makeUI1());
-    tabbedPane.addTab("addAll + remove", makeUI2());
+    tabbedPane.addTab("default remove", makeCmp0());
+    tabbedPane.addTab("clear + addElement", makeCmp1());
+    tabbedPane.addTab("addAll + remove", makeCmp2());
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     return button;
   }
 
-  private Component makeUI0() {
+  private Component makeCmp0() {
     DefaultListModel<String> model = new DefaultListModel<>();
     IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
     JList<String> leftList = makeList(model);
@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
     return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
   }
 
-  private Component makeUI1() {
+  private Component makeCmp1() {
     DefaultListModel<String> model = new DefaultListModel<>();
     IntStream.range(10_000, 30_000).mapToObj(Objects::toString).forEach(model::addElement);
     JList<String> leftList = makeList(model);
@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
     return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
   }
 
-  private Component makeUI2() {
+  private Component makeCmp2() {
     ArrayListModel<String> model = new ArrayListModel<>();
     IntStream.range(30_000, 50_000).mapToObj(Objects::toString).forEach(model::add);
     JList<String> leftList = makeList(model);
