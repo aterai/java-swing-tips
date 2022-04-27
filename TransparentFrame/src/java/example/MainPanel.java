@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(MainPanel::makeMissingImage);
     desktop.setBorder(new CentredBackgroundBorder(image));
-    // [JDK-6655001] D3D/OGL: Window translucency doesn't work with accelerated pipelines - Java Bug System
+    // D3D/OGL: Window translucency doesn't work with accelerated pipelines
     // https://bugs.openjdk.java.net/browse/JDK-6655001
     // desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
 

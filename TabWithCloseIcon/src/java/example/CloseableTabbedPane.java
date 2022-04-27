@@ -179,7 +179,8 @@ public final class CloseableTabbedPane extends JTabbedPane {
    * Returns an array of all the <code>SearchListener</code>s added to this
    * <code>SearchPane</code> with addSearchListener().
    *
-   * @return all of the <code>SearchListener</code>s added or an empty array if no listeners have been added
+   * @return all of the <code>SearchListener</code>s added
+   *     or an empty array if no listeners have been added
    */
   public CloseableTabbedPaneListener[] getCloseableTabbedPaneListener() {
     return eventListenerList.getListeners(CloseableTabbedPaneListener.class);
@@ -421,7 +422,8 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
    *
-   * @param horizTextPosition  the horizontal position of the text (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
+   * @param horizTextPosition  the horizontal position of the text
+   *     (e.g. SwingConstants.TRAILING or SwingConstants.LEFT)
    */
   protected CloseableWindowsTabbedPaneUI(int horizTextPosition) {
     super();

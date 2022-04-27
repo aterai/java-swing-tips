@@ -45,7 +45,7 @@
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
     <property name="max" value="100"/>
-    <property name="ignorePattern" value="^package.*|^import.*|href|http|throws|catch|@.*|&lt;html|\[JDK\-[0-9]*\]"/>
+    <property name="ignorePattern" value="^package.*|^import.*|href|http|throws|catch|@Override|&lt;html"/>
   </module>
 
   <module name="TreeWalker">

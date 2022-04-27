@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
       private transient HeaderCheckBoxHandler handler;
 
       @Override public void updateUI() {
-        // [JDK-6788475] Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely - Java Bug System
+        // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
         // https://bugs.openjdk.java.net/browse/JDK-6788475
         // XXX: set dummy ColorUIResource
         setSelectionForeground(new ColorUIResource(Color.RED));

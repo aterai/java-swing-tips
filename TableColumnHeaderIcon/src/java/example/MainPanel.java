@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
 //     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
 //     String str = Objects.toString(value, "");
 //     String html = String.format("<html><img src='%s'/>&nbsp;%s", url, str);
-//     // String html = String.format("<html><table><td cellpadding='0'><img src='%s'/></td>%s", url, str);
+//     // = String.format("<html><table><td cellpadding='0'><img src='%s'/>%s", url, str);
 //     return r.getTableCellRendererComponent(table, html, isSelected, hasFocus, row, column);
 //   }
 // }

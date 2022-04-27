@@ -270,7 +270,7 @@ final class MenuItemHelper {
   private static void drawString(JComponent c, Graphics g, String text, int x, int y) {
     sun.swing.SwingUtilities2.drawString(c, g, text, x, y);
 
-    // [JDK-8132119] Provide public API for text related methods in SwingUtilities2 - Java Bug System
+    // Provide public API for text related methods in SwingUtilities2
     // https://bugs.openjdk.java.net/browse/JDK-8132119
     // Java 9
     // // import javax.swing.plaf.basic.BasicGraphicsUtils;

@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    // // [JDK-4330950] Lost newly entered data in the cell when resizing column width - Java Bug System
+    // // Lost newly entered data in the cell when resizing column width
     // // https://bugs.openjdk.java.net/browse/JDK-4330950
     // table.getTableHeader().addComponentListener(new ComponentAdapter() {
     //   @Override public void componentResized(ComponentEvent e) {
