@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 class RowHeightResizeLayer extends LayerUI<JScrollPane> {
   private static final int MIN_ROW_HEIGHT = 16;
   private static final Cursor RESIZE_CURSOR = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
-  private int mouseYOffset;
+  private int mouseOffsetY;
   private int resizingRow = -1;
   private Cursor otherCursor = RESIZE_CURSOR;
 
@@ -68,7 +68,7 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
       JTable table = (JTable) c;
       resizingRow = getResizeTargetRow(table, e.getPoint());
       if (resizingRow >= 0) {
-        mouseYOffset = e.getY() - table.getRowHeight(resizingRow);
+        mouseOffsetY = e.getY() - table.getRowHeight(resizingRow);
         e.consume();
       }
     }
@@ -89,7 +89,7 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
         otherCursor = tmp;
       }
     } else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-      int newHeight = e.getY() - mouseYOffset;
+      int newHeight = e.getY() - mouseOffsetY;
       if (newHeight > MIN_ROW_HEIGHT && resizingRow >= 0) {
         table.setRowHeight(resizingRow, newHeight);
       }
@@ -113,7 +113,7 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
 // // https://stackoverflow.com/questions/4387995/adjusting-individual-row-height-using-cursor-on-jtable
 // class RowHeightResizer extends MouseAdapter {
 //   private static final Cursor RESIZE_CURSOR = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
-//   private int mouseYOffset;
+//   private int mouseOffsetY;
 //   private int resizingRow;
 //   private Cursor otherCursor = RESIZE_CURSOR;
 //
@@ -138,7 +138,7 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
 //     JTable table = (JTable) e.getComponent();
 //     Point p = e.getPoint();
 //     resizingRow = getResizingRow(table, p);
-//     mouseYOffset = p.y - table.getRowHeight(resizingRow);
+//     mouseOffsetY = p.y - table.getRowHeight(resizingRow);
 //   }
 //
 //   @Override public void mouseMoved(MouseEvent e) {
@@ -155,7 +155,7 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
 //     JTable table = (JTable) e.getComponent();
 //     int mouseY = e.getY();
 //     if (resizingRow >= 0) {
-//       int newHeight = mouseY - mouseYOffset;
+//       int newHeight = mouseY - mouseOffsetY;
 //       if (newHeight > 0) {
 //         table.setRowHeight(resizingRow, newHeight);
 //       }

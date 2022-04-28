@@ -233,7 +233,7 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
     this.dummy = dummy;
   }
 
-  private void showJPopupMenu(MouseEvent e) {
+  private void showPopupMenu(MouseEvent e) {
     if (e.isPopupTrigger()) {
       Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getPoint());
       dummy.setLocation(p);
@@ -244,11 +244,11 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    showJPopupMenu(e);
+    showPopupMenu(e);
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    showJPopupMenu(e);
+    showPopupMenu(e);
   }
 }
 

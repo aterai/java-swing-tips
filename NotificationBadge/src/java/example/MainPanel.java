@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
       add(new JLayer<>(label, ui));
     });
 
-    LayerUI<BadgeLabel> ui2 = new BadgeLayerUI2();
+    LayerUI<BadgeLabel> ui2 = new BadgeIconLayerUI();
     Stream.of(informationIcon, errorIcon, questionIcon, warningIcon)
         .map(icon -> new BadgeLabel(icon, BadgePosition.SOUTH_EAST, 128))
         .forEach(label -> {
@@ -154,7 +154,7 @@ class BadgeLayerUI extends LayerUI<BadgeLabel> {
   }
 }
 
-class BadgeLayerUI2 extends BadgeLayerUI {
+class BadgeIconLayerUI extends BadgeLayerUI {
   @Override protected Icon getBadgeIcon(int count) {
     return new BadgeIcon(count, Color.WHITE, new Color(0xAA_16_16_16, true)) {
       @Override protected Shape getBadgeShape() {

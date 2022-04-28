@@ -15,8 +15,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("SpringLayout", makeUI1());
-    tabbedPane.addTab("Custom BorderLayout", makeUI2());
+    tabbedPane.addTab("SpringLayout", makeCmp1());
+    tabbedPane.addTab("Custom BorderLayout", makeCmp2());
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private Component makeUI1() {
+  private Component makeCmp1() {
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("loooooooooooooooooooooooooooooooooooong");
     IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
@@ -135,7 +135,7 @@ public final class MainPanel extends JPanel {
     return panel;
   }
 
-  private Component makeUI2() {
+  private Component makeCmp2() {
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("loooooooooooooooooooooooooooooooooooong");
     IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);

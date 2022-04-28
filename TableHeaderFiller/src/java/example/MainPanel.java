@@ -16,9 +16,8 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    JTable table1 = makeJTable();
-    JTable table2 = makeJTable();
+    JTable table1 = makeTable();
+    JTable table2 = makeTable();
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     sp.setTopComponent(new JScrollPane(table1));
@@ -28,7 +27,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeJTable() {
+  private static JTable makeTable() {
     JTable table = new JTable(4, 3);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     table.setAutoCreateRowSorter(true);

@@ -57,14 +57,14 @@ public final class MainPanel extends JPanel {
             Long.valueOf(1)));
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("Byte, Short, Integer, Long", makeJSpinnerListPanel(list1)));
-    box.add(makeTitledPanel("Long.valueOf", makeJSpinnerListPanel(list2)));
+    box.add(makeTitledPanel("Byte, Short, Integer, Long", makeSpinnerListPanel(list1)));
+    box.add(makeTitledPanel("Long.valueOf", makeSpinnerListPanel(list2)));
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Box makeJSpinnerListPanel(List<SpinnerNumberModel> list) {
+  private static Box makeSpinnerListPanel(List<SpinnerNumberModel> list) {
     Box box = Box.createVerticalBox();
     list.stream().map(JSpinner::new).forEach(spinner -> {
       box.add(spinner);

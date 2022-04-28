@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor", true);
     JMenuBar bar = makeMenuBar();
-    addListenerToJMenu(bar, new MouseAdapter() {
+    addListenerToMenu(bar, new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         if (check.isSelected()) {
           ((AbstractButton) e.getComponent()).doClick();
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     return bar;
   }
 
-  private static void addListenerToJMenu(JMenuBar menuBar, MouseListener l) {
+  private static void addListenerToMenu(JMenuBar menuBar, MouseListener l) {
     // for (Component menu : menuBar.getComponents()) {
     for (MenuElement menu : menuBar.getSubElements()) {
       if (menu instanceof JMenu) {

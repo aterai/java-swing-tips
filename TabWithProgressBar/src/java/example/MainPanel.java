@@ -16,8 +16,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    JTabbedPane tabbedPane = new ProgressJTabbedPane();
+    JTabbedPane tabbedPane = new ProgressTabbedPane();
     Action addAction = new AbstractAction("Add") {
       private int count;
       @Override public void actionPerformed(ActionEvent e) {
@@ -60,7 +59,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ProgressJTabbedPane extends JTabbedPane {
+class ProgressTabbedPane extends JTabbedPane {
   // private final Executor executor = Executors.newCachedThreadPool();
   @Override public void addTab(String title, Component content) {
     super.addTab(title, new JLabel("Loading..."));

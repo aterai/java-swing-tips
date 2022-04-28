@@ -92,10 +92,10 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      setJMenuEnabled(false);
+      setMenuBarEnabled(false);
       JOptionPane.showInternalMessageDialog(
           getDesktop(), "information", "modal1", JOptionPane.INFORMATION_MESSAGE);
-      setJMenuEnabled(true);
+      setMenuBarEnabled(true);
     }
   }
 
@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      setJMenuEnabled(false);
+      setMenuBarEnabled(false);
       Window w = SwingUtilities.getWindowAncestor(getDesktop());
       Rectangle screen = w.getGraphicsConfiguration().getBounds();
       glass.setSize(screen.width, screen.height);
@@ -120,7 +120,7 @@ public final class MainPanel extends JPanel {
       JOptionPane.showInternalMessageDialog(
           getDesktop(), "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
       glass.setVisible(false);
-      setJMenuEnabled(true);
+      setMenuBarEnabled(true);
     }
   }
 
@@ -184,7 +184,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public void setJMenuEnabled(boolean flag) {
+  public void setMenuBarEnabled(boolean flag) {
     JMenuBar bar = getRootPane().getJMenuBar();
     bar.setVisible(flag);
     sampleBar.setVisible(!flag);

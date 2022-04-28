@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         g.setColor(new Color(0x31_A8_F8));
         int value = c.getMinimum();
         while (value <= c.getMaximum()) {
-          int xpt = getXPositionForValue(c, r, value);
+          int xpt = getPositionForValue(c, r, value);
           g.fillOval(xpt, (int) r.getCenterY() - tickSize / 2, tickSize, tickSize);
           // Overflow checking
           if (Integer.MAX_VALUE - c.getMajorTickSpacing() < value) {
@@ -66,13 +66,13 @@ public final class MainPanel extends JPanel {
         }
 
         // JSlider.isFilled
-        int fillRight = getXPositionForValue(c, r, c.getValue());
+        int fillRight = getPositionForValue(c, r, c.getValue());
         g.setColor(new Color(0x21_98_F6));
         g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
       }
 
       // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
-      private int getXPositionForValue(JSlider slider, Rectangle trackRect, float value) {
+      private int getPositionForValue(JSlider slider, Rectangle trackRect, float value) {
         float min = slider.getMinimum();
         float max = slider.getMaximum();
         float pixelsPerValue = trackRect.width / (max - min);

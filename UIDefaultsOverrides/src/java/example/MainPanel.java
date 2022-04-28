@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JCheckBoxMenuItem makeJCheckBoxMenuItem(String title, UIDefaults d) {
+  private JCheckBoxMenuItem makeCheckBoxMenuItem(String title, UIDefaults d) {
     JCheckBoxMenuItem mi = new JCheckBoxMenuItem(title);
     mi.putClientProperty("Nimbus.Overrides", d);
     mi.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
@@ -94,14 +94,14 @@ public final class MainPanel extends JPanel {
     JMenu menu = new JMenu("Menu");
     menuBar.add(menu);
     menu.add(new JCheckBoxMenuItem("Default"));
-    menu.add(makeJCheckBoxMenuItem("Test1", d));
-    menu.add(makeJCheckBoxMenuItem("Test2", d));
-    menu.add(makeJCheckBoxMenuItem("Test3", d));
-    JCheckBoxMenuItem cmi1 = makeJCheckBoxMenuItem("Test4", d);
+    menu.add(makeCheckBoxMenuItem("Test1", d));
+    menu.add(makeCheckBoxMenuItem("Test2", d));
+    menu.add(makeCheckBoxMenuItem("Test3", d));
+    JCheckBoxMenuItem cmi1 = makeCheckBoxMenuItem("Test4", d);
     cmi1.setSelected(true);
     cmi1.setEnabled(false);
     menu.add(cmi1);
-    JCheckBoxMenuItem cmi2 = makeJCheckBoxMenuItem("Test5", d);
+    JCheckBoxMenuItem cmi2 = makeCheckBoxMenuItem("Test5", d);
     cmi2.setSelected(false);
     cmi2.setEnabled(false);
     menu.add(cmi2);
