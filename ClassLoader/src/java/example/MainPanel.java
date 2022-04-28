@@ -5,11 +5,11 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -39,15 +39,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static Icon makeIcon(URL url) {
-    BufferedImage img = null;
-    if (url != null) {
-      try (InputStream s = url.openStream()) {
-        img = ImageIO.read(s);
+    return Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        img = null;
+        return UIManager.getIcon("html.missingImage");
       }
-    }
-    return img == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(img);
+    }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
   }
 
   private static Component makeTitledPanel(String title, Component c) {
