@@ -76,7 +76,7 @@ class AnimatedBorder extends EmptyBorder {
   private final transient Stroke bottomStroke = new BasicStroke(BORDER / 2f);
   private long startTime = -1L;
   private final transient List<Point2D> points = new ArrayList<>();
-  protected transient Shape shape;
+  protected final Path2D borderPath = new Path2D.Double();
 
   protected AnimatedBorder(JComponent c) {
     super(BORDER, BORDER, BORDER + BOTTOM_SPACE, BORDER);
@@ -95,16 +95,15 @@ class AnimatedBorder extends EmptyBorder {
       }
       Point2D pos = new Point2D.Double();
       pos.setLocation(points.get(0));
-      Path2D border = new Path2D.Double();
-      border.moveTo(pos.getX(), pos.getY());
+      borderPath.reset();
+      borderPath.moveTo(pos.getX(), pos.getY());
       int idx = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
       for (int i = 0; i <= idx; i++) {
         pos.setLocation(points.get(i));
-        border.lineTo(pos.getX(), pos.getY());
-        border.moveTo(pos.getX(), pos.getY());
+        borderPath.lineTo(pos.getX(), pos.getY());
+        borderPath.moveTo(pos.getX(), pos.getY());
       }
-      border.closePath();
-      shape = border;
+      borderPath.closePath();
       c.repaint();
     });
     c.addFocusListener(new FocusListener() {
@@ -123,7 +122,7 @@ class AnimatedBorder extends EmptyBorder {
 
       @Override public void focusLost(FocusEvent e) {
         points.clear();
-        shape = null;
+        borderPath.reset();
         c.repaint();
       }
     });
@@ -137,9 +136,7 @@ class AnimatedBorder extends EmptyBorder {
     g2.setStroke(bottomStroke);
     g2.drawLine(0, h - BOTTOM_SPACE, w - 1, h - BOTTOM_SPACE);
     g2.setStroke(stroke);
-    if (shape != null) {
-      g2.draw(shape);
-    }
+    g2.draw(borderPath);
     g2.dispose();
   }
 
