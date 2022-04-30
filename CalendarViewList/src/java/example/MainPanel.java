@@ -140,8 +140,8 @@ public final class MainPanel extends JPanel {
         if (index < monthList.getModel().getSize() - 1) {
           monthList.setSelectedIndex(index + 1);
         } else {
-          int size = monthList.getModel().getSize() - 1;
-          LocalDate d = monthList.getModel().getElementAt(size).plusDays(1);
+          int lastDayOfThisMonth = monthList.getModel().getSize() - 1;
+          LocalDate d = monthList.getModel().getElementAt(lastDayOfThisMonth).plusDays(1);
           updateMonthView(getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
         }
