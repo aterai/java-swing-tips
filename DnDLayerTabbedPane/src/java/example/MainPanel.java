@@ -286,7 +286,7 @@ class DnDTabbedPane extends JTabbedPane {
     final Icon icon = getIconAt(dragIndex);
     final String toolTipText = getToolTipTextAt(dragIndex);
     final boolean isEnabled = isEnabledAt(dragIndex);
-    final Component tab = getTabComponentAt(dragIndex);
+    Component tab = getTabComponentAt(dragIndex);
     if (tab instanceof ButtonTabComponent) {
       tab = new ButtonTabComponent(target);
     }
