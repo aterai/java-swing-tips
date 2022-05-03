@@ -117,7 +117,7 @@ class WrappedLabel extends JLabel {
       FontMetrics fm = getFontMetrics(font);
       FontRenderContext frc = fm.getFontRenderContext();
       GlyphVector gv = font.createGlyphVector(frc, getText());
-      gvText = getWrappedGlyphVector(gv, w);
+      gvText = getWrappedGlyphVector(gv, r.getWidth());
       prevWidth = r.width;
     }
     super.doLayout();
