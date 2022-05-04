@@ -232,7 +232,10 @@ class CloseableTabIconHandler extends MouseAdapter {
 
   private boolean isCloseTabIconRollover(JTabbedPane tabs, CloseTabIcon icon, MouseEvent e) {
     Rectangle rect = icon.getBounds();
-    Point pos = tabs.getHeaderViewPosition();
+    Point pos = new Point();
+    if (tabs instanceof CloseableTabbedPane) {
+      pos.setLocation(((CloseableTabbedPane) tabs).getHeaderViewPosition());
+    }
     drawRect.setBounds(rect.x - pos.x, rect.y - pos.y, rect.width, rect.height);
     pos.translate(e.getX(), e.getY());
     return rect.contains(pos);
