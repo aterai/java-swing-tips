@@ -27,8 +27,9 @@ public final class MainPanel extends JPanel {
         Point pt = super.getPopupLocation(event);
         try {
           Rectangle r = modelToView(getCaretPosition());
+          // Java 9: Rectangle r = modelToView2D(getCaretPosition()).getBounds();
           if (event == null && r != null) {
-            pt = r.getLocation();
+            pt.setLocation(r.getLocation());
             pt.translate(0, r.height);
           }
         } catch (BadLocationException ex) {
