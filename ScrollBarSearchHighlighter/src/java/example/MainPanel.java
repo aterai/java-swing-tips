@@ -174,6 +174,7 @@ class HighlightIcon implements Icon {
     try {
       for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
+        // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);
         g2.fillRect(0, top + s.y, getIconWidth(), h);
@@ -232,6 +233,7 @@ class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
     try {
       for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
+        // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);
         g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
@@ -264,6 +266,7 @@ class MetalHighlightScrollBarUI extends MetalScrollBarUI {
     try {
       for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());
+        // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
         Rectangle s = at.createTransformedShape(r).getBounds();
         int h = 2; // Math.max(2, s.height - 2);
         g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);

@@ -52,6 +52,7 @@ public final class MainPanel extends JPanel {
         @Override public void focusGained(FocusEvent e) {
           try {
             Rectangle rect = textPane.modelToView(pos);
+            // Java 9: Rectangle rect = textPane.modelToView2D(pos).getBounds();
             rect.grow(0, 4);
             rect.setSize(field.getSize());
             // System.out.println(rect);
