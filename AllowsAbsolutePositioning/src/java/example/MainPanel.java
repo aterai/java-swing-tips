@@ -86,6 +86,7 @@ class AbsolutePositioningWindowsScrollBarUI extends WindowsScrollBarUI {
           super.mousePressed(new MouseEvent(
               e.getComponent(), e.getID(), e.getWhen(),
               InputEvent.BUTTON2_DOWN_MASK ^ InputEvent.BUTTON2_MASK, // e.getModifiers(),
+              // Java 9: InputEvent.BUTTON2_DOWN_MASK, // e.getModifiersEx(),
               e.getX(), e.getY(),
               e.getXOnScreen(), e.getYOnScreen(),
               e.getClickCount(),
@@ -107,6 +108,7 @@ class AbsolutePositioningBasicScrollBarUI extends BasicScrollBarUI {
           super.mousePressed(new MouseEvent(
               e.getComponent(), e.getID(), e.getWhen(),
               InputEvent.BUTTON2_DOWN_MASK ^ InputEvent.BUTTON2_MASK,
+              // Java 9: InputEvent.BUTTON2_DOWN_MASK,
               e.getX(), e.getY(),
               e.getXOnScreen(), e.getYOnScreen(),
               e.getClickCount(),
