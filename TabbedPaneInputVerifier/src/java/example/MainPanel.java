@@ -72,6 +72,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.setModel(new DefaultSingleSelectionModel() {
           @Override public void setSelectedIndex(int index) {
             InputVerifier verifier = p.getInputVerifier();
+            // Java 9: if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p, tabbedPane)) {
             if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p)) {
               UIManager.getLookAndFeel().provideErrorFeedback(p);
               JOptionPane.showMessageDialog(p, "InputVerifier#verify(...): false");
@@ -142,8 +143,10 @@ class IntegerInputVerifier extends InputVerifier {
 
   // Java 9:
   // @Override public boolean shouldYieldFocus(JComponent source, JComponent target) {
-  //   System.out.println("shouldYieldFocus");
-  //   target.setEnabled(isAllValid());
-  //   return super.shouldYieldFocus(source, target);
+  //   boolean verified = verify(input);
+  //   if (!verified) {
+  //     UIManager.getLookAndFeel().provideErrorFeedback(input);
+  //   }
+  //   return verified;
   // }
 }
