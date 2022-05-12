@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
       //       e.getComponent(),
       //       MouseEvent.MOUSE_MOVED,
       //       e.getWhen(),
-      //       e.getModifiers(),
+      //       e.getModifiersEx() | e.getModifiers(),
       //       p.x,
       //       p.y,
       //       e.getClickCount(),
@@ -118,7 +118,8 @@ class TooltipList<E> extends JList<E> {
             e.getComponent(),
             MouseEvent.MOUSE_MOVED,
             e.getWhen(),
-            e.getModifiers(),
+            // since Java 9, MouseEvent#getModifiers() has been deprecated
+            e.getModifiersEx() | e.getModifiers(),
             p1.x,
             p1.y,
             e.getClickCount(),
