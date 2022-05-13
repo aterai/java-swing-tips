@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -17,7 +18,8 @@ public final class MainPanel extends JPanel {
     JEditorPane editor0 = makeEditorPane();
     editor0.setText(String.format(html, "Default"));
 
-    String url = getClass().getResource("bullet.png").toString();
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    String url = Objects.toString(cl.getResource("example/bullet.png"), "null");
     JEditorPane editor1 = makeEditorPane();
     HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor1.getEditorKit();
     StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
@@ -29,7 +31,7 @@ public final class MainPanel extends JPanel {
     // styleSheet.addRule("ul{list-style-type:square;margin:0px 20px;}");
     // styleSheet.addRule("ul{list-style-type:decimal;margin:0px 20px;}");
 
-    // Pseudo element is not supported in javax.swing.text.html.CSS
+    // Pseudo-element is not supported in javax.swing.text.html.CSS
     // styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
     // styleSheet.addRule("ul li:before{content: "\u00BB";}");
 
