@@ -5,8 +5,9 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
+import java.net.URL;
 import javax.swing.*;
+import javax.swing.text.EditorKit;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
@@ -19,21 +20,25 @@ public final class MainPanel extends JPanel {
     editor0.setText(String.format(html, "Default"));
 
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    String url = Objects.toString(cl.getResource("example/bullet.png"), "null");
+    URL url = cl.getResource("example/bullet.png");
+
     JEditorPane editor1 = makeEditorPane();
-    HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor1.getEditorKit();
-    StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
-    styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;}", url));
+    EditorKit kit = editor1.getEditorKit();
+    if (kit instanceof HTMLEditorKit && url != null) {
+      HTMLEditorKit htmlEditorKit = (HTMLEditorKit) kit;
+      StyleSheet styleSheet = htmlEditorKit.getStyleSheet();
+      styleSheet.addRule(String.format("ul{list-style-image:url(%s);margin:0px 20px;}", url));
+
+      // styleSheet.addRule("ul{list-style-type:circle;margin:0px 20px;}");
+      // styleSheet.addRule("ul{list-style-type:disc;margin:0px 20px;}");
+      // styleSheet.addRule("ul{list-style-type:square;margin:0px 20px;}");
+      // styleSheet.addRule("ul{list-style-type:decimal;margin:0px 20px;}");
+
+      // Pseudo-element is not supported in javax.swing.text.html.CSS
+      // styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
+      // styleSheet.addRule("ul li:before{content: "\u00BB";}");
+    }
     editor1.setText(String.format(html, "bullet.png"));
-
-    // styleSheet.addRule("ul{list-style-type:circle;margin:0px 20px;}");
-    // styleSheet.addRule("ul{list-style-type:disc;margin:0px 20px;}");
-    // styleSheet.addRule("ul{list-style-type:square;margin:0px 20px;}");
-    // styleSheet.addRule("ul{list-style-type:decimal;margin:0px 20px;}");
-
-    // Pseudo-element is not supported in javax.swing.text.html.CSS
-    // styleSheet.addRule("ul{list-style-type:none;margin:0px 20px;}");
-    // styleSheet.addRule("ul li:before{content: "\u00BB";}");
 
     add(new JScrollPane(editor0));
     add(new JScrollPane(editor1));
