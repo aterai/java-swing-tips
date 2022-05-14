@@ -98,6 +98,7 @@ class AnimatedToolTip extends JToolTip {
   @Override public Dimension getPreferredSize() {
     return getLayout().preferredLayoutSize(this);
   }
+
   // @Override public Dimension getPreferredSize() {
   //   Insets i = getInsets();
   //   Dimension d = iconlabel.getPreferredSize();

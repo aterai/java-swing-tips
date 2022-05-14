@@ -5,7 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -13,17 +17,25 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    URL url = getClass().getResource("wi0124-48.png");
-    ImageIcon icon = new ImageIcon(url);
+    String path = "example/wi0124-48.png";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    Icon icon = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("html.missingImage");
+      }
+    }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
+
     JLabel l1 = new JLabel("ToolTip icon using JLabel") {
       @Override public JToolTip createToolTip() {
-        JLabel iconlabel = new JLabel(icon);
-        iconlabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         JToolTip tip = new JToolTip() {
           @Override public Dimension getPreferredSize() {
             // if (getLayout() == null) {
             //   Insets i = getInsets();
-            //   Dimension d = iconlabel.getPreferredSize();
+            //   Dimension d = iconLabel.getPreferredSize();
             //   d.width += i.left + i.right;
             //   d.height += i.top + i.bottom;
             //   return d;
@@ -31,14 +43,14 @@ public final class MainPanel extends JPanel {
           }
 
           @Override public void setTipText(String tipText) {
-            String oldValue = iconlabel.getText();
-            iconlabel.setText(tipText);
+            String oldValue = iconLabel.getText();
+            iconLabel.setText(tipText);
             firePropertyChange("tiptext", oldValue, tipText);
           }
         };
         tip.setComponent(this);
         tip.setLayout(new BorderLayout());
-        tip.add(iconlabel);
+        tip.add(iconLabel);
         return tip;
       }
     };
