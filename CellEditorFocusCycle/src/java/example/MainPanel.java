@@ -48,8 +48,8 @@ public final class MainPanel extends JPanel {
   public boolean isEditorFocusCycle(Component editor) {
     Component child = CheckBoxesEditor.getEditorFocusCycleAfter(editor);
     if (child != null) {
-      child.requestFocus();
-      return true;
+      // child.requestFocus();
+      return child.requestFocusInWindow();
     }
     return false;
   }
@@ -241,7 +241,8 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
     EventQueue.invokeLater(() -> {
       Component child = getEditorFocusCycleAfter((Component) e.getSource());
       if (child != null) {
-        child.requestFocus();
+        // child.requestFocus();
+        child.requestFocusInWindow();
       }
     });
     return super.isCellEditable(e);

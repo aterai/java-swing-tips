@@ -62,7 +62,8 @@ public final class MainPanel extends JPanel {
   }
 
   private void selectMinMax(JSplitPane splitPane, String cmd) {
-    splitPane.requestFocus();
+    // splitPane.requestFocus();
+    splitPane.requestFocusInWindow();
     new SwingWorker<Void, Void>() {
       @Override protected Void doInBackground() {
         return null;

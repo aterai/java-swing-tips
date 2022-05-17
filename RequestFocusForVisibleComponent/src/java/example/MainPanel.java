@@ -119,7 +119,8 @@ class TabSelectionMouseListener extends MouseAdapter {
         ActionEvent a = new ActionEvent(tabPane, ActionEvent.ACTION_PERFORMED, cmd);
         EventQueue.invokeLater(() -> tabPane.getActionMap().get(cmd).actionPerformed(a));
       } else if (tabPane.isRequestFocusEnabled()) {
-        tabPane.requestFocus();
+        // tabPane.requestFocus();
+        tabPane.requestFocusInWindow();
       }
     }
   }
