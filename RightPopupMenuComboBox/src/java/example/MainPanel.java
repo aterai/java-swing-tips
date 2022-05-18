@@ -9,7 +9,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.RescaleOp;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import javax.accessibility.Accessible;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -103,7 +107,15 @@ class RightPopupMenuListener implements PopupMenuListener {
 
 class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
   @Override protected JButton createArrowButton() {
-    ImageIcon icon = new ImageIcon(getClass().getResource("14x14.png"));
+    String path = "example/14x14.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("html.missingImage");
+      }
+    }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
     JButton button = new JButton(icon) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(14, 14);

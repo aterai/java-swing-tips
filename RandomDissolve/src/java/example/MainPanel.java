@@ -10,15 +10,19 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    BufferedImage i1 = makeImage(getClass().getResource("test.png"));
-    BufferedImage i2 = makeImage(getClass().getResource("test.jpg"));
+    BufferedImage i1 = makeImage("example/test.png");
+    BufferedImage i2 = makeImage("example/test.jpg");
 
     RandomDissolve randomDissolve = new RandomDissolve(i1, i2);
     JButton button = new JButton("change");
@@ -29,20 +33,21 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private BufferedImage makeImage(URL url) {
-    ImageIcon icon = new ImageIcon(url);
+  private BufferedImage makeImage(String path) {
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    Icon icon = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("html.missingImage");
+      }
+    }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
     int w = icon.getIconWidth();
     int h = icon.getIconHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = img.createGraphics();
     icon.paintIcon(this, g2, 0, 0);
     g2.dispose();
-    // BufferedImage img = null;
-    // try {
-    //   img = ImageIO.read(url);
-    // } catch (IOException ex) {
-    //   ex.printStackTrace();
-    // }
     return img;
   }
 
