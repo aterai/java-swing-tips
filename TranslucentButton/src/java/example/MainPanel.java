@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
 
   private static BufferedImage getFilteredImage(URL url) {
     BufferedImage image = Optional.ofNullable(url).map(u -> {
-      try (InputStream s = url.openStream()) {
+      try (InputStream s = u.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
         return makeMissingImage();
