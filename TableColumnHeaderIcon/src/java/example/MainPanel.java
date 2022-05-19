@@ -36,7 +36,9 @@ public final class MainPanel extends JPanel {
   }
 
   private URL getUrl(String str) {
-    return getClass().getResource(str);
+    String path = "example/" + str;
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return cl.getResource(path);
   }
 
   public static void main(String[] args) {

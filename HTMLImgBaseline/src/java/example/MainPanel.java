@@ -22,8 +22,8 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
-    URL url = getClass().getResource("16x16.png");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/16x16.png");
     String text = String.format("<span>Hello <img src='%s' />!!!</span>", url);
 
     JEditorPane editor1 = makeEditorPane(new HTMLEditorKit(), text);

@@ -25,8 +25,10 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super();
-    // Icon: refer to http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
-    URL url = getClass().getResource("RECYCLE BIN - EMPTY_16x16-32.png");
+    // ecqlipse 2 PNG by chrfb on DeviantArt
+    // https://www.deviantart.com/chrfb/art/ecqlipse-2-PNG-59941546
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/RECYCLE BIN - EMPTY_16x16-32.png");
 
     add(makeButton(makeTitleWithIcon(url, "align=top", "top")));
     add(makeButton(makeTitleWithIcon(url, "align=middle", "middle")));
@@ -54,7 +56,7 @@ public final class MainPanel extends JPanel {
     add(makeButton("333333333333333333"));
     add(makeButton("44444444444444444444444444444"));
 
-    BufferedImage bi = getFilteredImage(getClass().getResource("test.jpg"));
+    BufferedImage bi = getFilteredImage(cl.getResource("example/test.jpg"));
     setBorder(new CentredBackgroundBorder(bi));
     // setBackground(new Color(50, 50, 50));
     setOpaque(false);
