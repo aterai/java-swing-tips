@@ -10,13 +10,25 @@ import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SERIAL NO: 00000000";
-    ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return new MissingIcon();
+      }
+    }).orElseGet(MissingIcon::new);
+    String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SERIAL NO: 0000";
     add(new ImageCaptionLabel(txt, icon));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -247,4 +259,32 @@ final class AnimationUtil {
   // public static double delta(double t) {
   //   return 1d - Math.sin(Math.acos(t));
   // }
+}
+
+class MissingIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+
+    int w = getIconWidth();
+    int h = getIconHeight();
+    int gap = w / 5;
+
+    g2.setColor(Color.WHITE);
+    g2.fillRect(x, y, w, h);
+
+    g2.setColor(Color.RED);
+    g2.setStroke(new BasicStroke(w / 8f));
+    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 240;
+  }
+
+  @Override public int getIconHeight() {
+    return 160;
+  }
 }

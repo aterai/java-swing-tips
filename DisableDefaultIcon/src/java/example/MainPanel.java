@@ -7,16 +7,17 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 import java.util.stream.Stream;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final URL url = getClass().getResource("16x16transparent.png");
-
   private MainPanel() {
     super(new BorderLayout());
-
     JRadioButton r1 = new JRadioButton("img=null");
     r1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -37,14 +38,27 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/16x16transparent.png");
+    Image image = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+
     JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)", true);
     r4.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        setIconImage(Toolkit.getDefaultToolkit().createImage(url)); // 16x16transparent.png
+        // setIconImage(Toolkit.getDefaultToolkit().createImage(url)); // 16x16transparent.png
+        setIconImage(image);
       }
     });
 
-    EventQueue.invokeLater(() -> setIconImage(Toolkit.getDefaultToolkit().createImage(url)));
+    if (url != null) {
+      EventQueue.invokeLater(() -> setIconImage(Toolkit.getDefaultToolkit().createImage(url)));
+    }
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createTitledBorder("frame.setIconImage(img)"));
@@ -56,6 +70,10 @@ public final class MainPanel extends JPanel {
     });
     add(box);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Image makeMissingImage() {
+    return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
   }
 
   public void setIconImage(Image image) {
