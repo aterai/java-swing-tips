@@ -5,31 +5,42 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("16x16.png")));
+    String path = "example/16x16.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("html.missingImage");
+      }
+    }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
 
     // JComboBox<String> combo01 = new JComboBox<>(makeModel());
 
     JComboBox<String> combo02 = new JComboBox<>(makeModel());
-    ComboBoxUtil.initComboBoxRenderer(combo02, image);
+    ComboBoxUtil.initComboBoxRenderer(combo02, icon);
 
     JComboBox<String> combo03 = new JComboBox<>(makeModel());
     combo03.setEditable(true);
-    ComboBoxUtil.initComboBoxRenderer(combo03, image);
+    ComboBoxUtil.initComboBoxRenderer(combo03, icon);
 
     // JComboBox<String> combo04 = new JComboBox<String>(makeModel()) {
     //   @Override public void updateUI() {
     //     setBorder(null);
     //     super.updateUI();
     //     setEditable(true);
-    //     ComboBoxUtil.initComboBoxRenderer(this, image);
-    //     setBorder(ComboBoxUtil.makeIconComboBorder(this, image));
+    //     ComboBoxUtil.initComboBoxRenderer(this, icon);
+    //     setBorder(ComboBoxUtil.makeIconComboBorder(this, icon));
     //   }
     // };
 
@@ -39,8 +50,8 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         setEditable(true);
-        ComboBoxUtil.initComboBoxRenderer(this, image);
-        ComboBoxUtil.initIconComboBorder1(this, image);
+        ComboBoxUtil.initComboBoxRenderer(this, icon);
+        ComboBoxUtil.initIconComboBorder1(this, icon);
       }
     };
 
@@ -50,8 +61,8 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         setEditable(true);
-        ComboBoxUtil.initComboBoxRenderer(this, image);
-        ComboBoxUtil.initIconComboBorder2(this, image);
+        ComboBoxUtil.initComboBoxRenderer(this, icon);
+        ComboBoxUtil.initIconComboBorder2(this, icon);
       }
     };
 
@@ -140,7 +151,7 @@ final class ComboBoxUtil {
   //   return BorderFactory.createCompoundBorder(comp.getBorder(), b3);
   // }
 
-  public static void initIconComboBorder1(JComboBox<?> comboBox, ImageIcon icon) {
+  public static void initIconComboBorder1(JComboBox<?> comboBox, Icon icon) {
     JTextField comp = (JTextField) comboBox.getEditor().getEditorComponent();
     Icon wrappedIcon = new Icon() {
       @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -167,7 +178,7 @@ final class ComboBoxUtil {
     comp.setBorder(BorderFactory.createCompoundBorder(comp.getBorder(), b3));
   }
 
-  public static void initIconComboBorder2(JComboBox<?> comboBox, ImageIcon icon) {
+  public static void initIconComboBorder2(JComboBox<?> comboBox, Icon icon) {
     EventQueue.invokeLater(() -> {
       Border margin = BorderFactory.createEmptyBorder(0, icon.getIconWidth() + 2, 0, 2);
 
@@ -188,7 +199,7 @@ final class ComboBoxUtil {
     });
   }
 
-  public static <E> void initComboBoxRenderer(JComboBox<E> combo, ImageIcon icon) {
+  public static <E> void initComboBoxRenderer(JComboBox<E> combo, Icon icon) {
     ListCellRenderer<? super E> renderer = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = renderer.getListCellRendererComponent(
