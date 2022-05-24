@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
   }
 
   public TexturePaint makeTexturePaint() {
-    // unkaku_w.gif http://www.viva-edo.com/komon/edokomon.html
+    // unkaku_w.gif https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.gif";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(u -> {

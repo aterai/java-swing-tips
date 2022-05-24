@@ -238,7 +238,7 @@ final class AnimationUtil {
 
   // http://d.hatena.ne.jp/pcl/20120617/p1
   // http://d.hatena.ne.jp/rexpit/20110328/1301305266
-  // http://c2.com/cgi/wiki?IntegerPowerAlgorithm
+  // https://wiki.c2.com/?IntegerPowerAlgorithm
   // http://www.osix.net/modules/article/?id=696
   public static double intPow(double da, int ib) {
     int b = ib;

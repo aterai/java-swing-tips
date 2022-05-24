@@ -139,7 +139,7 @@ class StarIcon0 implements Icon {
   private final GeneralPath path = new GeneralPath();
 
   protected StarIcon0() {
-    // <blockquote cite="http://gihyo.jp/dev/serial/01/javafx/0009?page=2">
+    // <blockquote cite="https://gihyo.jp/dev/serial/01/javafx/0009?page=2">
     path.moveTo(50.000 * .8, 0.0000 * .8);
     path.lineTo(61.803 * .8, 38.196 * .8);
     path.lineTo(100.00 * .8, 38.196 * .8);

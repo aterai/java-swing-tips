@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 //  December 10, 2005                                  //
 //  Supports: Mac OS X, GNU/Linux, Unix, Windows XP    //
 //  Example Usage:                                     //
-//   String url = "http://www.centerkey.com/";         //
+//   String url = "https://www.centerkey.com/";        //
 //   BareBonesBrowserLaunch.openUrl(url);              //
 //  Public Domain Software -- Free to Use as You Like  //
 /////////////////////////////////////////////////////////

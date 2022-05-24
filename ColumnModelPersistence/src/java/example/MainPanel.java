@@ -138,8 +138,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// http://web.archive.org/web/20090806075316/http://java.sun.com/products/jfc/tsc/articles/persistence4/
-// http://www.oracle.com/technetwork/java/persistence4-140124.html
+// https://web.archive.org/web/20090806075316/http://java.sun.com/products/jfc/tsc/articles/persistence4/
+// https://www.oracle.com/technical-resources/articles/java/persistence4.html
 // https://ateraimemo.com/Swing/PersistenceDelegate.html
 class DefaultTableModelPersistenceDelegate extends DefaultPersistenceDelegate {
   @Override protected void initialize(Class<?> type, Object oldInstance, Object newInstance, Encoder encoder) {

@@ -123,7 +123,7 @@ public final class MainPanel extends JPanel {
   }
 
   private JLabel makeImageLabel() {
-    String path = "example/CRW_3857_JFR.jpg"; // http://sozai-free.com/
+    String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(u -> {
       try (InputStream s = u.openStream()) {

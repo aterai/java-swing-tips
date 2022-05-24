@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
   }
 }
 
-// http://d.hatena.ne.jp/aidiary/20070601/1251545490
+// https://aidiary.hatenablog.com/entry/20070601/1251545490
 class Racket implements Serializable {
   private static final long serialVersionUID = 1L;
   private static final int WIDTH = 80;
