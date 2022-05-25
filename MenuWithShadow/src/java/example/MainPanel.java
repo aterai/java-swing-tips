@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
-    String path = "example/16x16.png";
+    String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
       try (InputStream s = url.openStream()) {
