@@ -369,7 +369,12 @@
 
   <target name="errorprone-jdk11" depends="prepare-src, prepare-resource, prepare-web">
     <path id="processorpath.ref">
-      <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
+      <fileset dir="${env.ERRORPRONE_HOME}">
+        <include name="*.jar" />
+        <exclude name="error_prone_core-2.10.0-with-dependencies.jar" />
+        <exclude name="javac-9+181-r4173-1.jar" />
+        <exclude name="jFormatString-3.0.0.jar" />
+      </fileset>
     </path>
     <javac srcdir="${build.src}"
            includes="**/*.java"
