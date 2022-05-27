@@ -5,7 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,11 +17,19 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     Timer animator = new Timer(25, null);
     AtomicInteger alpha = new AtomicInteger(10);
 
-    ImageIcon icon = new ImageIcon(getClass().getResource("test.png"));
+    String path = "example/test.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("OptionPane.errorIcon");
+      }
+    }).orElseGet(() -> UIManager.getIcon("OptionPane.errorIcon"));
+
     Component fade = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();

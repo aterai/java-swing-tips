@@ -34,8 +34,10 @@ public final class MainPanel extends JPanel {
         repaintWindowAncestor(label);
       }
     });
-    String path = "YournameS7ScientificHalf.ttf";
-    TexturePanel tp = TextureUtil.makeTexturePanel(label, getClass().getResource(path));
+    // http://www.yourname.jp/soft/digitalfonts-20090306.shtml
+    // Digital display font: Copyright (c) Yourname, Inc.
+    String path = "example/YournameS7ScientificHalf.ttf";
+    TexturePanel tp = TextureUtil.makeTexturePanel(label, path);
 
     JFrame digitalClock = new JFrame();
     digitalClock.getContentPane().add(tp);
@@ -221,10 +223,9 @@ final class TextureUtil {
     return new TexturePaint(bi, new Rectangle(sz, sz));
   }
 
-  public static TexturePanel makeTexturePanel(JLabel label, URL url) {
-    // http://www.yourname.jp/soft/digitalfonts-20090306.shtml
-    // Digital display font: Copyright (c) Yourname, Inc.
-    Font font = makeFont(url).orElseGet(label::getFont);
+  public static TexturePanel makeTexturePanel(JLabel label, String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Font font = makeFont(cl.getResource(path)).orElseGet(label::getFont);
     label.setFont(font.deriveFont(80f));
     label.setBackground(new Color(0x0, true));
     label.setOpaque(false);
