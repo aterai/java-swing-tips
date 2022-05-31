@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -188,7 +188,7 @@ class ComboKeyHandler extends KeyAdapter {
       case KeyEvent.VK_ENTER:
         if (!list.contains(text)) {
           list.add(text);
-          Collections.sort(list);
+          list.sort(Comparator.naturalOrder());
           // setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
           setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
         }

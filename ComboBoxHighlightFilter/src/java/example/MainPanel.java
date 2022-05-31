@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] array = {
-      "1111", "1111222", "111122233", "111122233444",
-      "12345", "67890", "55551", "555512"};
+        "1111", "1111222", "111122233", "111122233444",
+        "12345", "67890", "55551", "555512"};
     JComboBox<String> combo = makeComboBox(array);
     combo.setEditable(true);
     combo.setSelectedIndex(-1);
@@ -187,7 +187,7 @@ class ComboKeyHandler extends KeyAdapter {
       case KeyEvent.VK_ENTER:
         if (!list.contains(text)) {
           list.add(text);
-          Collections.sort(list);
+          list.sort(Comparator.naturalOrder());
           setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
         }
         shouldHide = true;
