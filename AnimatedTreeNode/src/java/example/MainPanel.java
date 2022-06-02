@@ -5,7 +5,9 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -15,10 +17,7 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    String p = "example/restore_to_background_color.gif";
-    ImageIcon icon = new ImageIcon(Objects.requireNonNull(cl.getResource(p)));
-
+    ImageIcon icon = makeImageIcon("example/restore_to_background_color.gif");
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     Object uo0 = new NodeObject("default", icon);
     DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(uo0);
@@ -65,6 +64,24 @@ public final class MainPanel extends JPanel {
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static ImageIcon makeImageIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path))
+        .map(ImageIcon::new)
+        .orElseGet(() -> new ImageIcon(makeMissingImage()));
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 
   public static void main(String[] args) {
