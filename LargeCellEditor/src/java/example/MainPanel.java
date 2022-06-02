@@ -10,7 +10,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -85,12 +89,23 @@ public final class MainPanel extends JPanel {
 }
 
 class IconItem {
-  public final ImageIcon large;
-  public final ImageIcon small;
+  public final Icon large;
+  public final Icon small;
 
   protected IconItem(String str) {
-    large = new ImageIcon(Objects.requireNonNull(getClass().getResource(str + "-48.png")));
-    small = new ImageIcon(Objects.requireNonNull(getClass().getResource(str + "-24.png")));
+    large = makeIcon("example/" + str + "-48.png");
+    small = makeIcon("example/" + str + "-24.png");
+  }
+
+  private static Icon makeIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return UIManager.getIcon("html.missingImage");
+      }
+    }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
   }
 }
 
@@ -230,7 +245,7 @@ class EditorFromList<E extends IconItem> extends JList<E> {
 
   protected EditorFromList(ListModel<E> model) {
     super(model);
-    ImageIcon icon = model.getElementAt(0).small;
+    Icon icon = model.getElementAt(0).small;
     int iw = INS + icon.getIconWidth();
     int ih = INS + icon.getIconHeight();
 
