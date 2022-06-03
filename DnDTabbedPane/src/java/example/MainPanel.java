@@ -250,14 +250,22 @@ class DnDTabbedPane extends JTabbedPane {
   protected void initGlassPane(Point tabPt) {
     getRootPane().setGlassPane(glassPane);
     if (hasGhost) {
-      Component c = Optional.ofNullable(getTabComponentAt(dragTabIndex))
+      Component c = getTabComponentAt(dragTabIndex);
+      Component copy = Optional.ofNullable(c)
           .orElseGet(() -> new JLabel(getTitleAt(dragTabIndex)));
-      Dimension d = c.getPreferredSize();
+      Dimension d = copy.getPreferredSize();
       BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = image.createGraphics();
-      SwingUtilities.paintComponent(g2, c, glassPane, 0, 0, d.width, d.height);
+      SwingUtilities.paintComponent(g2, copy, glassPane, 0, 0, d.width, d.height);
       g2.dispose();
       glassPane.setImage(image);
+      if (c != null) {
+        // https://github.com/aterai/java-swing-tips/issues/11
+        // SwingUtilities.paintComponent(...) method adds a tab component to the GlassPane
+        // to draw the tab, and the tab component being dragged is removed from the tab.
+        // Therefore, the tab component needs to be re-configured.
+        setTabComponentAt(dragTabIndex, c);
+      }
       // Rectangle rect = getBoundsAt(dragTabIndex);
       // BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       // Graphics2D g2 = image.createGraphics();
