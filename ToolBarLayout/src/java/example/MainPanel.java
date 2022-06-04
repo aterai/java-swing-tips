@@ -5,8 +5,11 @@
 package example;
 
 import java.awt.*;
-import java.net.URL;
-import java.util.Objects;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -14,29 +17,21 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     // toolBar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
     // toolBar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
-
-    URL url1 = getClass().getResource("/toolBarButtonGraphics/general/Copy24.gif");
-    URL url2 = getClass().getResource("/toolBarButtonGraphics/general/Cut24.gif");
-    URL url3 = getClass().getResource("/toolBarButtonGraphics/general/Help24.gif");
-
-    // When jlfgr-1_0.jar does not exist in the classpath
-    if (Objects.isNull(url1)) {
-      url1 = getClass().getResource("Copy24.gif");
-      url2 = getClass().getResource("Cut24.gif");
-      url3 = getClass().getResource("Help24.gif");
-    }
+    Icon icon1 = makeIcon("toolbarButtonGraphics/general/Copy24.gif");
+    Icon icon2 = makeIcon("toolbarButtonGraphics/general/Cut24.gif");
+    Icon icon3 = makeIcon("toolbarButtonGraphics/general/Help24.gif");
 
     JToolBar toolBar1 = new JToolBar("ToolBarButton");
-    toolBar1.add(new JButton(new ImageIcon(url1)));
-    toolBar1.add(new JButton(new ImageIcon(url2)));
+    toolBar1.add(new JButton(icon1));
+    toolBar1.add(new JButton(icon2));
     toolBar1.add(Box.createGlue());
-    toolBar1.add(new JButton(new ImageIcon(url3)));
+    toolBar1.add(new JButton(icon3));
 
     JToolBar toolBar2 = new JToolBar("JButton");
-    toolBar2.add(createToolBarButton(url1));
-    toolBar2.add(createToolBarButton(url2));
+    toolBar2.add(createToolBarButton(icon1));
+    toolBar2.add(createToolBarButton(icon2));
     toolBar2.add(Box.createGlue());
-    toolBar2.add(createToolBarButton(url3));
+    toolBar2.add(createToolBarButton(icon3));
 
     add(toolBar1, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
@@ -44,10 +39,32 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton createToolBarButton(URL url) {
-    JButton b = new JButton(new ImageIcon(url));
+  private static JButton createToolBarButton(Icon icon) {
+    JButton b = new JButton(icon);
     b.setRequestFocusEnabled(false);
     return b;
+  }
+
+  private static Icon makeIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return makeMissingIcon();
+      }
+    }).orElseGet(MainPanel::makeMissingIcon);
+  }
+
+  private static Icon makeMissingIcon() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (24 - iw) / 2, (24 - ih) / 2);
+    g2.dispose();
+    return new ImageIcon(bi);
   }
 
   public static void main(String[] args) {
