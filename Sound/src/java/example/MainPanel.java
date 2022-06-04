@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,12 +20,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JButton b1 = new JButton("play");
-    b1.addActionListener(e -> loadAndPlayAudio("notice1.wav"));
+    b1.addActionListener(e -> loadAndPlayAudio("example/notice1.wav"));
 
     JButton b2 = new JButton("play");
-    b2.addActionListener(e -> loadAndPlayAudio("notice2.wav"));
+    b2.addActionListener(e -> loadAndPlayAudio("example/notice2.wav"));
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -37,8 +37,12 @@ public final class MainPanel extends JPanel {
   }
 
   public void loadAndPlayAudio(String path) {
-    try (AudioInputStream sound = AudioSystem.getAudioInputStream(getClass().getResource(path));
-         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, sound.getFormat()))) {
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    if (url == null) {
+      return;
+    }
+    try (AudioInputStream wav = AudioSystem.getAudioInputStream(url);
+         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, wav.getFormat()))) {
       SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
@@ -46,7 +50,7 @@ public final class MainPanel extends JPanel {
           loop.exit();
         }
       });
-      clip.open(sound);
+      clip.open(wav);
       clip.start();
       loop.enter();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
