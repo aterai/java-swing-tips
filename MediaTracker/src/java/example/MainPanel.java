@@ -17,6 +17,7 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -79,13 +80,16 @@ public final class MainPanel extends JPanel {
     col.setMaxWidth(60);
     col.setResizable(false);
 
-    try {
-      addImage(Paths.get(getClass().getResource("test.png").toURI()));
-    } catch (URISyntaxException ex) {
-      ex.printStackTrace();
-      UIManager.getLookAndFeel().provideErrorFeedback(this);
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/test.png");
+    if (url != null) {
+      try {
+        addImage(Paths.get(url.toURI()));
+      } catch (URISyntaxException ex) {
+        ex.printStackTrace();
+        UIManager.getLookAndFeel().provideErrorFeedback(this);
+      }
     }
-
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -236,14 +240,16 @@ class TablePopupMenu extends JPopupMenu {
   protected TablePopupMenu() {
     super();
     delete = add("Remove from list");
-    delete.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      DefaultTableModel model = (DefaultTableModel) table.getModel();
-      int[] selection = table.getSelectedRows();
-      for (int i = selection.length - 1; i >= 0; i--) {
-        model.removeRow(table.convertRowIndexToModel(selection[i]));
-      }
-    });
+    delete.addActionListener(e -> deleteActionPerformed());
+  }
+
+  private void deleteActionPerformed() {
+    JTable table = (JTable) getInvoker();
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    int[] selection = table.getSelectedRows();
+    for (int i = selection.length - 1; i >= 0; i--) {
+      model.removeRow(table.convertRowIndexToModel(selection[i]));
+    }
   }
 
   @Override public void show(Component c, int x, int y) {
