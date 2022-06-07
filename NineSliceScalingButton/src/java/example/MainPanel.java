@@ -10,7 +10,10 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -18,7 +21,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     // symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
     // https://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
-    BufferedImage img = makeBufferedImage(getClass().getResource("symbol_scale_2.jpg"));
+    BufferedImage img = makeBufferedImage("example/symbol_scale_2.jpg");
     JButton b1 = new ScalingButton("Scaling", img);
     JButton b2 = new NineSliceScalingButton("9-Slice Scaling", img);
 
@@ -26,7 +29,7 @@ public final class MainPanel extends JPanel {
     p1.add(b1);
     p1.add(b2);
 
-    BufferedImage bi = makeBufferedImage(getClass().getResource("blue.png"));
+    BufferedImage bi = makeBufferedImage("example/blue.png");
     JButton b3 = new JButton("Scaling Icon", new NineSliceScalingIcon(bi, 0, 0, 0, 0));
     b3.setContentAreaFilled(false);
     b3.setBorder(BorderFactory.createEmptyBorder());
@@ -53,13 +56,32 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private BufferedImage makeBufferedImage(URL url) {
-    ImageIcon ic = new ImageIcon(url);
-    int w = ic.getIconWidth();
-    int h = ic.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+  private BufferedImage makeBufferedImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    // ImageIcon ic = new ImageIcon(url);
+    // int w = ic.getIconWidth();
+    // int h = ic.getIconHeight();
+    // BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    // Graphics2D g2 = bi.createGraphics();
+    // ic.paintIcon(this, g2, 0, 0);
+    // g2.dispose();
+    // return bi;
+  }
+
+  private static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(124, 124, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = bi.createGraphics();
-    ic.paintIcon(this, g2, 0, 0);
+    missingIcon.paintIcon(null, g2, (124 - iw) / 2, (124 - ih) / 2);
     g2.dispose();
     return bi;
   }
@@ -106,10 +128,12 @@ class ScalingButton extends JButton {
     init(title, null);
     setContentAreaFilled(false);
   }
+
   // @Override public Dimension getPreferredSize() {
   //   Insets i = getInsets();
   //   return new Dimension(image.getWidth(this) + i.right + i.left, 80);
   // }
+
   // @Override public Dimension getMinimumSize() {
   //   return getPreferredSize();
   // }
