@@ -39,36 +39,39 @@ public final class MainPanel extends JPanel {
     // https://bugs.openjdk.java.net/browse/JDK-8080225
     // try (InputStream is = getClass().getResourceAsStream("test.jpg");
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-    URL url = getClass().getResource("test.jpg");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/test.jpg");
     // try (InputStream is = Files.newInputStream(Paths.get(url.toURI()));
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-    try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
-      // FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
-      reader.setInput(iis, true);
+    if (url != null) {
+      try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
+        // FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
+        reader.setInput(iis, true);
 
-      // ImageReadParam param = reader.getDefaultReadParam();
-      buf.append(String.format("Width: %d%n", reader.getWidth(0)));
-      buf.append(String.format("Height: %d%n", reader.getHeight(0)));
+        // ImageReadParam param = reader.getDefaultReadParam();
+        buf.append(String.format("Width: %d%n", reader.getWidth(0)));
+        buf.append(String.format("Height: %d%n", reader.getHeight(0)));
 
-      IIOMetadata meta = reader.getImageMetadata(0);
-      for (String s : meta.getMetadataFormatNames()) {
-        buf.append(String.format("MetadataFormatName: %s%n", s));
+        IIOMetadata meta = reader.getImageMetadata(0);
+        for (String s : meta.getMetadataFormatNames()) {
+          buf.append(String.format("MetadataFormatName: %s%n", s));
+        }
+
+        root = (IIOMetadataNode) meta.getAsTree("javax_imageio_jpeg_image_1.0");
+        // root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
+
+        NodeList com = root.getElementsByTagName("com");
+        if (com.getLength() > 0) {
+          String comment = ((IIOMetadataNode) com.item(0)).getAttribute("comment");
+          buf.append(String.format("Comment: %s%n", comment));
+        }
+        buf.append("------------\n");
+        print(buf, root, 0);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        buf.append(String.format("%s%n", ex.getMessage()));
+        UIManager.getLookAndFeel().provideErrorFeedback(this);
       }
-
-      root = (IIOMetadataNode) meta.getAsTree("javax_imageio_jpeg_image_1.0");
-      // root = (IIOMetadataNode) meta.getAsTree("javax_imageio_1.0");
-
-      NodeList com = root.getElementsByTagName("com");
-      if (com.getLength() > 0) {
-        String comment = ((IIOMetadataNode) com.item(0)).getAttribute("comment");
-        buf.append(String.format("Comment: %s%n", comment));
-      }
-      buf.append("------------\n");
-      print(buf, root, 0);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      buf.append(String.format("%s%n", ex.getMessage()));
-      UIManager.getLookAndFeel().provideErrorFeedback(this);
     }
     JTextArea log = new JTextArea(buf.toString());
     JTree tree = new JTree(new DefaultTreeModel(new XmlTreeNode(root)));
