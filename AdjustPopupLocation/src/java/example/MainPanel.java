@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 
     JPopupMenu popup = new JPopupMenu() {
       @Override public void show(Component c, int x, int y) {
-        System.out.println(c.getClass().getName());
+        // System.out.println(c.getClass().getName());
         if (check.isSelected()) {
           Point p = new Point(x, y);
           Rectangle r = c.getBounds();

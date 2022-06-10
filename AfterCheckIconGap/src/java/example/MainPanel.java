@@ -16,10 +16,10 @@ public final class MainPanel extends JPanel {
   }
 
   private static JMenuBar createMenuBar() {
-    System.out.println("checkIconOffset: " + UIManager.get("CheckBoxMenuItem.checkIconOffset"));
-    System.out.println("afterCheckIconGap: " + UIManager.get("CheckBoxMenuItem.afterCheckIconGap"));
-    System.out.println("minimumTextOffset: " + UIManager.get("CheckBoxMenuItem.minimumTextOffset"));
-    System.out.println("evenHeight: " + UIManager.get("CheckBoxMenuItem.evenHeight"));
+    // System.out.println(UIManager.get("CheckBoxMenuItem.checkIconOffset"));
+    // System.out.println(UIManager.get("CheckBoxMenuItem.afterCheckIconGap"));
+    // System.out.println(UIManager.get("CheckBoxMenuItem.minimumTextOffset"));
+    // System.out.println(UIManager.get("CheckBoxMenuItem.evenHeight"));
 
     // UIManager.put("MenuItem.checkIconOffset", 20);
     // UIManager.put("MenuItem.afterCheckIconGap", 20);

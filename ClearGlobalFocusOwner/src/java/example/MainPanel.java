@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
       root.setJMenuBar(createMenuBar());
       root.addMouseListener(new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
-          System.out.println("clicked");
+          // System.out.println("clicked");
           KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
         }
       });
