@@ -18,7 +18,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    URL url = getClass().getResource("anime.gif");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/anime.gif");
+    Icon icon = Optional.ofNullable(url).<Icon>map(ImageIcon::new)
+        .orElseGet(() -> UIManager.getIcon("html.missingImage"));
 
     JLabel l1 = new JLabel("Timer Animated ToolTip") {
       @Override public JToolTip createToolTip() {
@@ -32,7 +35,7 @@ public final class MainPanel extends JPanel {
     JLabel l2 = new JLabel("Gif Animated ToolTip") {
       // private final Icon icon = new ImageIcon(url);
       @Override public JToolTip createToolTip() {
-        JLabel label = new JLabel("", new ImageIcon(url), SwingConstants.LEFT);
+        JLabel label = new JLabel("", icon, SwingConstants.LEFT);
         JToolTip tip = new AnimatedToolTip(label);
         tip.setComponent(this);
         return tip;
@@ -191,16 +194,15 @@ class AnimeIcon implements Icon {
     g2.setPaint(ELLIPSE_COLOR);
     g2.translate(x, y);
 
-    float size = (float) list.size();
+    int size = list.size();
     list.forEach(s -> {
-      float alpha = running ? (list.indexOf(s) + 1) / size : .5f;
+      float alpha = running ? (list.indexOf(s) + 1f) / size : .5f;
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
       g2.fill(s);
     });
 
-    // int size = list.size();
     // for (int i = 0; i < size; i++) {
-    //   float alpha = running ? (i + 1) / (float) size : .5f;
+    //   float alpha = running ? (i + 1f) / size : .5f;
     //   g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     //   g2.fill(list.get(i));
     // }
