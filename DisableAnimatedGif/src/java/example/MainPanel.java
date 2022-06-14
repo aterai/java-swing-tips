@@ -5,13 +5,21 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Optional;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon icon = new ImageIcon(getClass().getResource("duke.running.gif"));
-
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/duke.running.gif");
+    Icon icon = Optional.ofNullable(url).<Icon>map(ImageIcon::new)
+        .orElseGet(() -> UIManager.getIcon("html.missingImage"));
     JLabel label1 = new JLabel(icon);
     label1.setEnabled(false);
     label1.setBorder(BorderFactory.createTitledBorder("Default"));
@@ -31,8 +39,15 @@ public final class MainPanel extends JPanel {
     JLabel label3 = new JLabel(icon);
     label3.setEnabled(false);
     label3.setBorder(BorderFactory.createTitledBorder("setDisabledIcon"));
-    ImageIcon i = new ImageIcon(getClass().getResource("duke.running_frame_0001.gif"));
-    label3.setDisabledIcon(makeDisabledIcon(i));
+    String path = "example/duke.running_frame_0001.gif";
+    Image image = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    label3.setDisabledIcon(makeDisabledIcon(image));
 
     JCheckBox check = new JCheckBox("setEnabled");
     check.addActionListener(e -> {
@@ -51,8 +66,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Icon makeDisabledIcon(ImageIcon icon) {
-    Image img = icon.getImage();
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
+  }
+
+  private static Icon makeDisabledIcon(Image img) {
     // BufferedImage source = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     // Graphics g = source.createGraphics();
     // g.drawImage(img, 0, 0, null);
