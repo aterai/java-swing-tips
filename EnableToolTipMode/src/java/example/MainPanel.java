@@ -14,9 +14,8 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     String mode = UIManager.getString(TOOLTIP_MODE);
-    System.out.println(mode);
+    // System.out.println(mode);
 
     String allWindows = "allWindows";
     JRadioButton radio1 = new JRadioButton(allWindows, Objects.equals(allWindows, mode));

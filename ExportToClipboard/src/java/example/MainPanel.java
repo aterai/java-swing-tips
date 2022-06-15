@@ -163,7 +163,7 @@ class ListItemTransferHandler extends TransferHandler {
     JList<?> target = (JList<?>) info.getComponent();
     int index; // = dl.getIndex();
     if (info.isDrop()) { // Mouse Drag & Drop
-      System.out.println("Mouse Drag & Drop");
+      // System.out.println("Mouse Drag & Drop");
       TransferHandler.DropLocation tdl = info.getDropLocation();
       if (tdl instanceof JList.DropLocation) {
         index = ((JList.DropLocation) tdl).getIndex();

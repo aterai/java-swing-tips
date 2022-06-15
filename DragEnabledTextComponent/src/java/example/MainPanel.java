@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
           }
 
           @Override public boolean importData(TransferSupport support) {
-            System.out.println(support.getTransferable());
+            // System.out.println(support.getTransferable());
             return true;
           }
         });

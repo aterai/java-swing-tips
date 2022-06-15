@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Toolkit tk = Toolkit.getDefaultToolkit();
     Object showHiddenFiles = tk.getDesktopProperty("awt.file.showHiddenFiles");
-    System.out.println("awt.file.showHiddenFiles: " + showHiddenFiles);
+    // System.out.println("awt.file.showHiddenFiles: " + showHiddenFiles);
 
     JFileChooser chooser = new JFileChooser();
     Optional.ofNullable(searchPopupMenu(chooser)).ifPresent(pop -> {
