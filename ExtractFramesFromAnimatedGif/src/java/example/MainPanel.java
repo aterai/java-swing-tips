@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -20,9 +21,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    URL url = getClass().getResource("duke.running.gif");
-    JLabel label = new JLabel();
-    label.setIcon(new ImageIcon(url));
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/duke.running.gif");
+    Icon icon = Optional.ofNullable(url).<Icon>map(ImageIcon::new)
+        .orElseGet(() -> UIManager.getIcon("html.missingImage"));
+    JLabel label = new JLabel(icon);
     label.setBorder(BorderFactory.createTitledBorder("duke.running.gif"));
 
     Box box = Box.createHorizontalBox();
@@ -35,11 +38,13 @@ public final class MainPanel extends JPanel {
     // URL url = getClass().getResource("duke.running.gif");
     // try (InputStream is = Files.newInputStream(Paths.get(url.toURI()));
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-    try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
-      loadFromStream(iis).stream().map(ImageIcon::new).map(JLabel::new).forEach(box::add);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      label.setText(ex.getMessage());
+    if (url != null) {
+      try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
+        loadFromStream(iis).stream().map(ImageIcon::new).map(JLabel::new).forEach(box::add);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        label.setText(ex.getMessage());
+      }
     }
     add(label, BorderLayout.WEST);
     add(new JScrollPane(box));
