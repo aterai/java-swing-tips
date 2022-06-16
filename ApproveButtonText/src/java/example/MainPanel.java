@@ -35,10 +35,7 @@ public final class MainPanel extends JPanel {
       JFileChooser fileChooser = new JFileChooser();
       // fileChooser.setApproveButtonText("開く(O)");
       // fileChooser.setApproveButtonMnemonic('O');
-      int retValue = fileChooser.showOpenDialog(p);
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.append(String.format("%s%n", fileChooser.getSelectedFile()));
-      }
+      appendSelectedFile(fileChooser, p);
     });
 
     // JButton showSaveDialog = new JButton("Save:取消し->キャンセル");
@@ -55,10 +52,7 @@ public final class MainPanel extends JPanel {
       //     fileChooser.setApproveButtonMnemonic('S');
       //   }
       // });
-      int retValue = fileChooser.showSaveDialog(p);
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.append(String.format("%s%n", fileChooser.getSelectedFile()));
-      }
+      appendSelectedFile(fileChooser, p);
     });
     p.add(showOpenDialog);
     p.add(showSaveDialog);
@@ -70,18 +64,19 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("default"));
     JButton showOpenDialog = new JButton("showOpenDialog");
-    showOpenDialog.addActionListener(e -> {
-      int retValue = defaultChooser.showOpenDialog(p);
-      System.out.println(retValue);
-    });
+    showOpenDialog.addActionListener(e -> appendSelectedFile(defaultChooser, p));
     JButton showSaveDialog = new JButton("showSaveDialog");
-    showSaveDialog.addActionListener(e -> {
-      int retValue = defaultChooser.showSaveDialog(p);
-      System.out.println(retValue);
-    });
+    showSaveDialog.addActionListener(e -> appendSelectedFile(defaultChooser, p));
     p.add(showOpenDialog);
     p.add(showSaveDialog);
     return p;
+  }
+
+  private void appendSelectedFile(JFileChooser defaultChooser, JPanel p) {
+    int retValue = defaultChooser.showOpenDialog(p);
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.append(String.format("%s%n", defaultChooser.getSelectedFile()));
+    }
   }
 
   // private String saveButtonText = null;
