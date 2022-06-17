@@ -26,7 +26,9 @@ public final class MainPanel extends JPanel {
     pause.setEnabled(false);
     JButton reset = makeButton("reset");
 
-    URL url = getClass().getResource("Mozart_toruko_k.mid");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/Mozart_toruko_k.mid");
+    assert url != null;
     SwingWorker<Void, Long> worker = new SwingWorker<Void, Long>() {
       private long tickPos;
       @Override protected Void doInBackground() throws InterruptedException {
@@ -45,8 +47,6 @@ public final class MainPanel extends JPanel {
         } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
           ex.printStackTrace();
           publish(0L);
-        } finally {
-          System.out.println("try-with-resources: AutoCloseable");
         }
         return null;
       }
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
       //   initButtons(true);
       // }
 
-      protected void initButtons(boolean flg) {
+      private void initButtons(boolean flg) {
         start.setEnabled(flg);
         pause.setEnabled(!flg);
       }
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
     addHierarchyListener(e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (b && !e.getComponent().isDisplayable()) {
-        System.out.println("DISPLAYABILITY_CHANGED");
+        // System.out.println("DISPLAYABILITY_CHANGED");
         worker.cancel(true);
       }
     });
