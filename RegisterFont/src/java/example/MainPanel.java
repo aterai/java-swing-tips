@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
@@ -16,7 +15,15 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Font font = makeFont(getClass().getResource("Burnstown Dam.ttf")).orElseGet(this::getFont);
+    String path = "example/Burnstown Dam.ttf";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Font font = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return Font.createFont(Font.TRUETYPE_FONT, s).deriveFont(12f);
+      } catch (IOException | FontFormatException ex) {
+        return getFont();
+      }
+    }).orElseGet(this::getFont);
     GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
 
     JPanel p = new JPanel(new GridLayout(0, 1));
@@ -48,15 +55,6 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(p2);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Optional<Font> makeFont(URL url) {
-    try (InputStream is = url.openStream()) {
-      return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
-    } catch (IOException | FontFormatException ex) {
-      ex.printStackTrace();
-      return Optional.empty();
-    }
   }
 
   private static String makeTestHtml() {
