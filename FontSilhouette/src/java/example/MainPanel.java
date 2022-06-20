@@ -19,10 +19,11 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(4, 6, 0, 0));
-    String[] pieces = {
-      "♔", "♕", "♖", "♗", "♘", "♙", // "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
-      "♚", "♛", "♜", "♝", "♞", "♟", // "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F",
-    };
+    // String[] pieces = {
+    //   "\u2654", "\u2655", "\u2656", "\u2657", "\u2658", "\u2659",
+    //   "\u265A", "\u265B", "\u265C", "\u265D", "\u265E", "\u265F"
+    // };
+    String[] pieces = {"♔", "♕", "♖", "♗", "♘", "♙", "♚", "♛", "♜", "♝", "♞", "♟"};
     for (int i = 0; i < pieces.length; i++) {
       add(initLabel(makeCharLabel(pieces[i]), i));
     }
@@ -117,7 +118,7 @@ class SilhouetteIcon implements Icon, Serializable {
           path.reset();
           break;
         default:
-          System.err.println("Unexpected value! " + pathSegmentType);
+          // System.err.println("Unexpected value! " + pathSegmentType);
           break;
       }
       pi.next();
