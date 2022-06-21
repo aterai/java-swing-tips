@@ -17,6 +17,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea log = new JTextArea();
     // EventQueue eventQueue = new EventQueue() {
     //   @Override protected void dispatchEvent(AWTEvent e) {
     //     super.dispatchEvent(e);
@@ -28,12 +29,12 @@ public final class MainPanel extends JPanel {
     Timer timer = new Timer(DELAY, null);
     AWTEventListener awtEvent = e -> {
       if (timer.isRunning()) {
-        System.out.println("timer.restart()");
+        log.append("timer.restart()\n");
         timer.restart();
       }
     };
     timer.addActionListener(e -> {
-      System.out.println("timeout");
+      log.append("timeout\n");
       setTestConnected(false);
       Toolkit.getDefaultToolkit().removeAWTEventListener(awtEvent);
       ((Timer) e.getSource()).stop();
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
     box.add(textField);
     box.add(combo, BorderLayout.EAST);
     panel.add(box, BorderLayout.NORTH);
-    panel.add(new JScrollPane(new JTextArea()));
+    panel.add(new JScrollPane(log));
 
     add(p, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

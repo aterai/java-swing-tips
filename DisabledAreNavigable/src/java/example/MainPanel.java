@@ -15,9 +15,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     String key = "MenuItem.disabledAreNavigable";
-
     boolean b = UIManager.getBoolean(key);
-    System.out.println(key + ": " + b);
+    // System.out.println(key + ": " + b);
     JCheckBox check = new JCheckBox(key, b) {
       @Override public void updateUI() {
         super.updateUI();
