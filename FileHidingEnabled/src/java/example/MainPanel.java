@@ -12,9 +12,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea log = new JTextArea();
+
     Toolkit tk = Toolkit.getDefaultToolkit();
     Object showHiddenFiles = tk.getDesktopProperty("awt.file.showHiddenFiles");
-    // System.out.println("awt.file.showHiddenFiles: " + showHiddenFiles);
+    log.setText("awt.file.showHiddenFiles: " + showHiddenFiles + "\n");
 
     JFileChooser chooser = new JFileChooser();
     Optional.ofNullable(searchPopupMenu(chooser)).ifPresent(pop -> {
@@ -25,12 +27,11 @@ public final class MainPanel extends JPanel {
       pop.add(mi);
     });
 
-    JTextArea log = new JTextArea();
     JButton button = new JButton("showOpenDialog");
     button.addActionListener(e -> {
       int retValue = chooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
+        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
       }
     });
 
