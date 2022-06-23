@@ -13,12 +13,16 @@ import javax.swing.filechooser.FileSystemView;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super();
+    super(new BorderLayout());
+    JTextArea log = new JTextArea();
     JButton button0 = new JButton("Default");
     button0.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      chooser.showOpenDialog(getRootPane());
+      int retValue = chooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
+      }
     });
 
     JButton button1 = new JButton("System.getenv(\"SystemDrive\")");
@@ -31,7 +35,10 @@ public final class MainPanel extends JPanel {
       File systemDrive = new File(System.getenv("SystemDrive") + File.separatorChar);
       File pcDir = chooser.getFileSystemView().getParentDirectory(systemDrive);
       chooser.setCurrentDirectory(pcDir);
-      chooser.showOpenDialog(getRootPane());
+      int retValue = chooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
+      }
     });
 
     JButton button2 = new JButton("ShellFolder.get(\"fileChooserShortcutPanelFolders\")");
@@ -41,7 +48,7 @@ public final class MainPanel extends JPanel {
       FileSystemView fsv = chooser.getFileSystemView();
       File[] files = (File[]) sun.awt.shell.ShellFolder.get("fileChooserShortcutPanelFolders");
       for (File f : files) {
-        System.out.println(f.getAbsolutePath());
+        log.append(f.getAbsolutePath() + "\n");
       }
       chooser.addHierarchyListener(ev -> {
         Component c = ev.getComponent();
@@ -53,12 +60,24 @@ public final class MainPanel extends JPanel {
               .findFirst().ifPresent(AbstractButton::doClick);
         }
       });
-      chooser.showOpenDialog(getRootPane());
+      int retValue = chooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
+      }
     });
 
-    add(button0);
-    add(button1);
-    add(button2);
+    Box box1 = Box.createHorizontalBox();
+    box1.add(button0);
+    box1.add(Box.createHorizontalStrut(5));
+    box1.add(button1);
+
+    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    p.add(box1);
+    p.add(button2);
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
