@@ -89,8 +89,8 @@ class SiteListItemRenderer extends JEditorPane implements ListCellRenderer<SiteI
     this.setEditable(false);
     this.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        System.out.println("You click the link with the URL " + e.getURL());
-        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+        Component c = ((JComponent) e.getSource()).getRootPane();
+        JOptionPane.showMessageDialog(c, "You click the link with the URL " + e.getURL());
       }
     });
   }
