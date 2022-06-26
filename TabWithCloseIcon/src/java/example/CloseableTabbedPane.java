@@ -477,6 +477,10 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     textRect.x += xnudge;
     textRect.y += ynudge;
   }
+
+  public void setHorizTextPosition(int horizTextPosition) {
+    this.horizTextPosition = horizTextPosition;
+  }
 }
 
 /**
@@ -551,5 +555,9 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     iconRect.y += ynudge;
     textRect.x += xnudge;
     textRect.y += ynudge;
+  }
+
+  public void setHorizTextPosition(int horizTextPosition) {
+    this.horizTextPosition = horizTextPosition;
   }
 }
