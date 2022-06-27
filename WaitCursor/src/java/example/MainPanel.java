@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
       new BackgroundTask() {
         @Override protected void done() {
           if (!isDisplayable()) {
-            System.out.println("done: DISPOSE_ON_CLOSE");
+            // System.out.println("done: DISPOSE_ON_CLOSE");
             cancel(true);
             return;
           }

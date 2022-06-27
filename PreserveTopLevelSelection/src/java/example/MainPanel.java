@@ -11,9 +11,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     String key = "Menu.preserveTopLevelSelection";
-
     Boolean b = UIManager.getBoolean(key);
-    System.out.println(key + ": " + b);
+    // System.out.println(key + ": " + b);
     JCheckBox keepTopLvlSel = new JCheckBox(key, b) {
       @Override public void updateUI() {
         super.updateUI();

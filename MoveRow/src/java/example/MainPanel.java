@@ -196,7 +196,6 @@ class UpAction extends AbstractAction {
     }
     RowDataModel model = (RowDataModel) table.getModel();
     boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-    System.out.println(isShiftDown);
     if (isShiftDown) { // Jump to the top
       model.moveRow(pos[0], pos[pos.length - 1], 0);
       table.setRowSelectionInterval(0, pos.length - 1);

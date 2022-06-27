@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
     JButton defaultButton = new JButton("Default");
     defaultButton.addActionListener(e -> {
       Integer iv = UIManager.getLookAndFeelDefaults().getInt(key);
-      System.out.println(iv);
       UIManager.put(key, iv);
       String str = JOptionPane.showInputDialog(log, "Default");
       log.setText(str);

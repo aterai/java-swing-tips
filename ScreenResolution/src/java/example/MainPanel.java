@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
       float fh = defaultSize.height * s;
       dpiPreferredSize = new Dimension((int) fw, (int) fh);
     }
-    System.out.println(dpiPreferredSize);
+    // System.out.println(dpiPreferredSize);
     return dpiPreferredSize;
   }
 
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         if (isFixedRowHeight()) {
           setRowHeight((int) (getRowHeight() * getDpiScaling()));
-          System.out.println("Tree.rowHeight: " + getRowHeight());
+          // System.out.println("Tree.rowHeight: " + getRowHeight());
         }
       }
     };

@@ -83,7 +83,6 @@ public final class MainPanel extends JPanel {
     handler = e -> {
       boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (displayability && Objects.nonNull(timer) && !e.getComponent().isDisplayable()) {
-        System.out.println("case DISPOSE_ON_CLOSE: hierarchyChanged");
         timer.stop();
       }
     };

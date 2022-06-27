@@ -81,7 +81,6 @@ public final class MainPanel extends JPanel {
     filterButton.addActionListener(e -> sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
-        System.out.println(model.contains(o));
         return model.isEmpty() || model.contains(o);
       }
     }));
