@@ -26,7 +26,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
       if (Objects.isNull(o)) {
         o = comboBox.getItemAt(0);
       }
-      System.out.println(o + ": " + comboBox.getEditor().getItem());
+      String msg = o + ": " + comboBox.getEditor().getItem();
+      JOptionPane.showMessageDialog(comboBox.getRootPane(), msg);
     }
   };
 

@@ -176,6 +176,6 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
   // }
 
   @Override protected void processFocusEvent(FocusEvent e) {
-    System.out.println("processFocusEvent");
+    // System.out.println("processFocusEvent");
   }
 }
