@@ -12,17 +12,18 @@ import javax.swing.plaf.basic.DefaultMenuLayout;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JMenuBar mb = new JMenuBar();
-    JMenu menu = makeMenu(mb.add(new JMenu("Default")));
-    // menu.getPopupMenu().setPreferredSize(new Dimension(200, 0));
-    // System.out.println(menu.getPopupMenu().getPreferredSize());
+    makeMenu(mb.add(new JMenu("Default")));
+    // JMenu menu0 = makeMenu(mb.add(new JMenu("Default")));
+    // Dimension d = menu0.getPopupMenu().getPreferredSize();
+    // d.width = 200;
+    // menu0.getPopupMenu().setPreferredSize(d);
 
-    menu = makeMenu(mb.add(new JMenu("BoxHStrut")));
-    menu.add(Box.createHorizontalStrut(200));
+    JMenu menu1 = makeMenu(mb.add(new JMenu("BoxHStrut")));
+    menu1.add(Box.createHorizontalStrut(200));
 
-    menu = makeMenu(mb.add(new JMenu("Override")));
-    menu.add(new JMenuItem("PreferredSize") {
+    JMenu menu2 = makeMenu(mb.add(new JMenu("Override")));
+    menu2.add(new JMenuItem("PreferredSize") {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
         d.width = 200;
@@ -30,8 +31,8 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    menu = makeMenu(mb.add(new JMenu("Layout")));
-    JPopupMenu popup = menu.getPopupMenu();
+    JMenu menu3 = makeMenu(mb.add(new JMenu("Layout")));
+    JPopupMenu popup = menu3.getPopupMenu();
     popup.setLayout(new DefaultMenuLayout(popup, BoxLayout.Y_AXIS) {
       @Override public Dimension preferredLayoutSize(Container target) {
         Dimension d = super.preferredLayoutSize(target);
@@ -40,11 +41,12 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    menu = mb.add(new JMenu("Html"));
-    JMenuItem item = menu.add("<html><table cellpadding='0' cellspacing='0' style='width:200'>Table");
+    JMenu menu4 = mb.add(new JMenu("Html"));
+    String s = "<html><table cellpadding='0' cellspacing='0' style='width:200'>Table";
+    JMenuItem item = menu4.add(s);
     item.setMnemonic(KeyEvent.VK_T);
     // item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-    makeMenu(menu);
+    makeMenu(menu4);
 
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
