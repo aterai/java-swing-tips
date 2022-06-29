@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
           return;
         }
         if (!isDisplayable()) {
-          System.out.println("process: DISPOSE_ON_CLOSE");
+          // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
           // executor.shutdown();
           return;

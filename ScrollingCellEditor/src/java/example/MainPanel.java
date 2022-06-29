@@ -97,13 +97,13 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    System.out.println("getTableCellEditorComponent");
+    // System.out.println("getTableCellEditorComponent");
     textArea.setFont(table.getFont());
     textArea.setText(Objects.toString(value, ""));
     EventQueue.invokeLater(() -> {
       textArea.setCaretPosition(textArea.getText().length());
       textArea.requestFocusInWindow();
-      System.out.println("invokeLater: getTableCellEditorComponent");
+      // System.out.println("invokeLater: getTableCellEditorComponent");
     });
     return scroll;
   }
@@ -112,14 +112,14 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
     if (e instanceof MouseEvent) {
       return ((MouseEvent) e).getClickCount() >= 2;
     }
-    System.out.println("isCellEditable");
+    // System.out.println("isCellEditable");
     EventQueue.invokeLater(() -> {
       if (e instanceof KeyEvent) {
         KeyEvent ke = (KeyEvent) e;
         char kc = ke.getKeyChar();
         if (Character.isUnicodeIdentifierStart(kc)) {
           textArea.setText(textArea.getText() + kc);
-          System.out.println("invokeLater: isCellEditable");
+          // System.out.println("invokeLater: isCellEditable");
         }
       }
     });

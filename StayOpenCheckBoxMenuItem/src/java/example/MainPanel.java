@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     popup.add(makeStayOpenCheckBoxMenuItem("JMenuItem + JCheckBox"));
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
     popup.add(new JCheckBoxMenuItem("keeping open #1")).addActionListener(e -> {
-      System.out.println("ActionListener");
+      // System.out.println("ActionListener");
       Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
       if (c instanceof JPopupMenu) {
         c.setVisible(true);
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
           // https://stackoverflow.com/questions/3759379/how-to-prevent-jpopupmenu-disappearing-when-checking-checkboxes-in-it
           @Override protected void doClick(MenuSelectionManager msm) {
             // super.doClick(msm);
-            System.out.println("MenuSelectionManager: doClick");
+            // System.out.println("MenuSelectionManager: doClick");
             menuItem.doClick(0);
           }
         });

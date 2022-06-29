@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         return;
       }
       if (!isDisplayable()) {
-        System.out.println("process: DISPOSE_ON_CLOSE");
+        // System.out.println("process: DISPOSE_ON_CLOSE");
         cancel(true);
         return;
       }
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 
     @Override protected void done() {
       if (!isDisplayable()) {
-        System.out.println("done: DISPOSE_ON_CLOSE");
+        // System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
         return;
       }
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
           combo.setSelectedIndex(0);
         }
       } catch (InterruptedException | ExecutionException ex) {
-        System.out.println("Interrupted");
+        // System.out.println("Interrupted");
         Thread.currentThread().interrupt();
       }
       combo.setEnabled(true);

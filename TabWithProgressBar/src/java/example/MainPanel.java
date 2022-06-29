@@ -77,14 +77,14 @@ class ProgressTabbedPane extends JTabbedPane {
     SwingWorker<String, Integer> worker = new BackgroundTask() {
       @Override protected void process(List<Integer> dummy) {
         if (!isDisplayable()) {
-          System.out.println("process: DISPOSE_ON_CLOSE");
+          // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
         }
       }
 
       @Override protected void done() {
         if (!isDisplayable()) {
-          System.out.println("done: DISPOSE_ON_CLOSE");
+          // System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
           return;
         }

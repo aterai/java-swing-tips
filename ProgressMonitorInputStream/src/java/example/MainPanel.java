@@ -108,7 +108,7 @@ public final class MainPanel extends JPanel {
           .map(Charset::forName)
           .orElse(StandardCharsets.UTF_8);
     }
-    System.out.println(cs);
+    // System.out.println(cs);
     return cs;
   }
 
