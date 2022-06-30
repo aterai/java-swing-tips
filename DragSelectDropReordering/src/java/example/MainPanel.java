@@ -380,7 +380,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    System.out.println("getSourceActions");
+    // System.out.println("getSourceActions");
     c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
     // glassPane.setVisible(true);
     return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
@@ -418,7 +418,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    System.out.println("exportDone");
+    // System.out.println("exportDone");
     Component glassPane = c.getRootPane().getGlassPane();
     // glassPane.setCursor(Cursor.getDefaultCursor());
     glassPane.setVisible(false);

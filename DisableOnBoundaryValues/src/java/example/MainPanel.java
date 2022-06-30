@@ -10,17 +10,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String key = "Spinner.disableOnBoundaryValues";
-    boolean flg = UIManager.getLookAndFeelDefaults().getBoolean(key);
-    System.out.println(flg);
-
-    // UIManager.put(key, Boolean.TRUE);
     SpinnerModel model = new SpinnerNumberModel(0, 0, 10, 1);
     JSpinner spinner1 = new JSpinner(model);
     spinner1.setFont(spinner1.getFont().deriveFont(32f));
     JSpinner spinner2 = new JSpinner(model);
     spinner2.setFont(spinner2.getFont().deriveFont(32f));
 
+    String key = "Spinner.disableOnBoundaryValues";
+    boolean flg = UIManager.getLookAndFeelDefaults().getBoolean(key);
+    // UIManager.put(key, Boolean.TRUE);
     JCheckBox check = new JCheckBox(key, flg);
     check.addActionListener(e -> {
       UIManager.put(key, ((JCheckBox) e.getSource()).isSelected());

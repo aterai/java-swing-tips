@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
     JTextArea log = new JTextArea();
 
     String cmd1 = "FileView.fullRowSelection";
-    System.out.println(UIManager.getLookAndFeelDefaults().getBoolean(cmd1));
-    JCheckBox check = new JCheckBox(cmd1) {
+    boolean b = UIManager.getLookAndFeelDefaults().getBoolean(cmd1);
+    JCheckBox check = new JCheckBox(cmd1, b) {
       @Override public void updateUI() {
         super.updateUI();
         setSelected(UIManager.getLookAndFeelDefaults().getBoolean(cmd1));

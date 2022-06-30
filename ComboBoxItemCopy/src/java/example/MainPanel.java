@@ -32,7 +32,6 @@ public final class MainPanel extends JPanel {
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
           Transferable contents = new StringSelection(Objects.toString(text));
           clipboard.setContents(contents, null);
-          System.out.println(text);
         });
       }
     };
