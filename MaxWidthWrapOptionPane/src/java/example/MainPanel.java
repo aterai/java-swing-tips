@@ -35,14 +35,14 @@ public final class MainPanel extends JPanel {
         // i.e. layout cannot be computed until the component has been sized.
         // The component does not have to be visible or painted.
         setSize(super.getPreferredSize()); // setSize: looks like ugly hack...
-        System.out.println(super.getPreferredSize());
+        // System.out.println(super.getPreferredSize());
 
         Rectangle r = modelToView(t.length());
         // Java 9: Rectangle rect = modelToView2D(t.length()).getBounds();
         int rc = Math.round((float) r.getMaxY() / getRowHeight());
         setRows(rc);
-        System.out.format("Rows: %d%n", rc);
-        System.out.println(super.getPreferredSize());
+        // System.out.format("Rows: %d%n", rc);
+        // System.out.println(super.getPreferredSize());
         boolean isOnlyOneColumn = rc == 1;
         if (isOnlyOneColumn) {
           setSize(getPreferredSize());

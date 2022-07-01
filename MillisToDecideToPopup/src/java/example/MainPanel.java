@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
         //   return;
         // }
         if (!isDisplayable()) {
-          System.out.println("process: DISPOSE_ON_CLOSE");
+          // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
           return;
         }
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 
       @Override protected void done() {
         if (!isDisplayable()) {
-          System.out.println("done: DISPOSE_ON_CLOSE");
+          // System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
           return;
         }

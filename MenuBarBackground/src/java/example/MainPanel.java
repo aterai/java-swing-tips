@@ -97,8 +97,8 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    String key = "Menu.useMenuBarBackgroundForTopLevel";
-    System.out.println(key + ": " + UIManager.getBoolean(key));
+    // String key = "Menu.useMenuBarBackgroundForTopLevel";
+    // System.out.println(key + ": " + UIManager.getBoolean(key));
     // TEST: UIManager.put(key, Boolean.FALSE);
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

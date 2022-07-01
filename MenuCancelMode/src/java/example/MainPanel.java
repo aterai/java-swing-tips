@@ -14,9 +14,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     String key = "Menu.cancelMode";
-
     String cancelMode = UIManager.getString(key);
-    System.out.println(key + ": " + cancelMode);
+    // System.out.println(key + ": " + cancelMode);
     boolean defaultMode = "hideMenuTree".equals(cancelMode);
     JRadioButton radio1 = makeRadioButton("hideMenuTree", defaultMode);
     JRadioButton radio2 = makeRadioButton("hideLastSubmenu", !defaultMode);

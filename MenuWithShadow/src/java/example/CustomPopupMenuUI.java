@@ -84,7 +84,6 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
   @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
     Popup pp = super.getPopup(popup, x, y);
     if (pp != null) {
-      System.out.println(pp);
       EventQueue.invokeLater(() -> {
         Window p = SwingUtilities.getWindowAncestor(popup);
         if (p instanceof JWindow) {

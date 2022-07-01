@@ -220,7 +220,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     if (isUrlColumn(table, col) && pointInsidePrefSize(table, pt)) {
       int crow = table.rowAtPoint(pt);
       URL url = (URL) table.getValueAt(crow, col);
-      System.out.println(url);
+      // System.out.println(url);
       try {
         // Web Start
         // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");

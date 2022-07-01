@@ -12,9 +12,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    System.out.println(UIManager.getInt("Menu.submenuPopupOffsetX"));
+    // System.out.println(UIManager.getInt("Menu.submenuPopupOffsetX"));
     UIManager.put("Menu.submenuPopupOffsetX", -16);
-    System.out.println(UIManager.getInt("Menu.submenuPopupOffsetY"));
+    // System.out.println(UIManager.getInt("Menu.submenuPopupOffsetY"));
     UIManager.put("Menu.submenuPopupOffsetY", -3);
 
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));
