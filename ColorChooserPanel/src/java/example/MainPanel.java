@@ -22,6 +22,8 @@ public final class MainPanel extends JPanel {
     // buttonPanel.add(new JButton("OK"));
     // buttonPanel.add(new JButton("Cancel"));
     // buttonPanel.add(new JButton("Reset"));
+    JLabel label = new JLabel();
+    label.setOpaque(true);
 
     Locale loc = getLocale();
     JCheckBox swatches = new JCheckBox(UIManager.getString("ColorChooser.swatchesNameText", loc));
@@ -51,7 +53,7 @@ public final class MainPanel extends JPanel {
         }
         // ActionListener ok = ev -> {
         //   Color color = cc.getColor();
-        //   System.out.println("ActionListener: " + color);
+        //   label.setBackground(color);
         // };
         // JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
         JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, null, null);
@@ -72,7 +74,7 @@ public final class MainPanel extends JPanel {
         // dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(getRootPane()));
         // dialog.setVisible(true);
       }
-      System.out.println(color);
+      label.setBackground(color);
     });
 
     Box box = Box.createVerticalBox();
@@ -81,6 +83,7 @@ public final class MainPanel extends JPanel {
       box.add(Box.createVerticalStrut(5));
     }
     add(box, BorderLayout.NORTH);
+    add(label);
     add(button, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));

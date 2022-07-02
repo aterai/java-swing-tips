@@ -29,19 +29,13 @@ public final class MainPanel extends JPanel {
     // comboBox.setEnabled(false);
     comboBox.addAncestorListener(new AncestorListener() {
       @Override public void ancestorAdded(AncestorEvent e) {
-        // System.out.println("ancestorAdded");
         Component c = e.getComponent();
         c.setEnabled(false);
-        EventQueue.invokeLater(() -> {
-          System.out.println("invokeLater");
-          c.setEnabled(true);
-        });
+        EventQueue.invokeLater(() -> c.setEnabled(true));
       }
 
       @Override public void ancestorRemoved(AncestorEvent e) {
-        // OR:
-        // System.out.println("ancestorRemoved");
-        // e.getComponent().setEnabled(false);
+        // OR: e.getComponent().setEnabled(false);
       }
 
       @Override public void ancestorMoved(AncestorEvent e) {

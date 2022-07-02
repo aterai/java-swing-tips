@@ -14,7 +14,6 @@ import javax.swing.event.PopupMenuListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPopupMenu popup = new JPopupMenu();
     popup.add("000");
     popup.add("11111");
@@ -27,10 +26,7 @@ public final class MainPanel extends JPanel {
     setComponentPopupMenu(popup);
 
     JButton beep = new JButton("Beep");
-    beep.addActionListener(e -> {
-      Toolkit.getDefaultToolkit().beep();
-      System.out.println("Beep button clicked");
-    });
+    beep.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
 
     String[] model = {"00000", "111", "2"};
     JComboBox<String> combo = new JComboBox<>(model);
