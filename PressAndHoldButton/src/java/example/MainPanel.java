@@ -82,7 +82,7 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
   private final ButtonGroup bg = new ButtonGroup();
   private AbstractButton arrowButton;
   private final Timer holdTimer = new Timer(1000, e -> {
-    System.out.println("InitialDelay(1000)");
+    // System.out.println("InitialDelay(1000)");
     Timer timer = (Timer) e.getSource();
     if (Objects.nonNull(arrowButton) && arrowButton.getModel().isPressed() && timer.isRunning()) {
       timer.stop();
@@ -98,10 +98,11 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
     makeMenuList().stream()
         .map(PressAndHoldHandler::makeMenuButton)
         .forEach(b -> {
-          b.addActionListener(e -> {
-            System.out.println(bg.getSelection().getActionCommand());
-            pop.setVisible(false);
-          });
+          b.addActionListener(e -> pop.setVisible(false));
+          // b.addActionListener(e -> {
+          //   System.out.println(bg.getSelection().getActionCommand());
+          //   pop.setVisible(false);
+          // });
           pop.add(b);
           bg.add(b);
         });
@@ -134,18 +135,18 @@ class PressAndHoldHandler extends AbstractAction implements MouseListener {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    System.out.println("actionPerformed");
+    // System.out.println("actionPerformed");
     if (holdTimer.isRunning()) {
-      ButtonModel model = bg.getSelection();
-      if (Objects.nonNull(model)) {
-        System.out.println(model.getActionCommand());
-      }
+      // ButtonModel model = bg.getSelection();
+      // if (Objects.nonNull(model)) {
+      //   System.out.println(model.getActionCommand());
+      // }
       holdTimer.stop();
     }
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    System.out.println("mousePressed");
+    // System.out.println("mousePressed");
     Component c = e.getComponent();
     if (SwingUtilities.isLeftMouseButton(e) && c.isEnabled()) {
       arrowButton = (AbstractButton) c;

@@ -9,7 +9,7 @@ import java.util.ListResourceBundle;
 @SuppressWarnings({"PMD.ClassNamingConventions", "checkstyle:typename"})
 public final class awt_ja extends ListResourceBundle {
   @Override protected Object[][] getContents() {
-    System.out.println("---- awt_ja ----");
+    // System.out.println("---- awt_ja ----");
     return new Object[][] {{"AWT.space", "XXXXX"}};
   }
 }

@@ -11,11 +11,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JToolBar toolBar = new JToolBar();
-    System.out.println(toolBar.isRollover());
-    EventQueue.invokeLater(() -> System.out.println(toolBar.isRollover()));
-    // toolBar.setRollover(true);
+    // System.out.println(toolBar.isRollover());
+    // EventQueue.invokeLater(() -> System.out.println(toolBar.isRollover()));
 
     JToggleButton tg1 = new JToggleButton("Tg1");
     JToggleButton tg2 = new JToggleButton("Tg2");

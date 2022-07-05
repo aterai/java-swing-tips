@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     JDialog splashScreen = new JDialog(frame, Dialog.ModalityType.DOCUMENT_MODAL);
     JProgressBar progress = new JProgressBar();
 
-    System.out.println(splashScreen.getModalityType());
+    // System.out.println(splashScreen.getModalityType());
 
     EventQueue.invokeLater(() -> {
       String path = "example/splash.png";

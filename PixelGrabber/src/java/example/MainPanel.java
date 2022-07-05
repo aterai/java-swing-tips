@@ -91,13 +91,13 @@ public final class MainPanel extends JPanel {
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
-      System.err.println("interrupted waiting for pixels!");
+      // System.err.println("interrupted waiting for pixels!");
       ex.printStackTrace();
       Thread.currentThread().interrupt();
       return Optional.empty();
     }
     if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-      System.err.println("image fetch aborted or error");
+      // System.err.println("image fetch aborted or error");
       return Optional.empty();
     }
 

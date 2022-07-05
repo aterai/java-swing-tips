@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     JMenu menu = new JMenu(title);
     menu.add(item);
     menu.addSeparator();
-    menu.add("JMenuItem").addActionListener(e -> System.out.println("actionPerformed"));
+    menu.add("JMenuItem"); // .addActionListener(e -> System.out.println("actionPerformed"));
     menu.add("JMenuItem + Icon").setIcon(new ColorIcon(Color.RED));
     menu.add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return menu;
