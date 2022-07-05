@@ -13,11 +13,13 @@ public final class MainPanel extends JPanel {
   private static final String PAD = "<html><table><td style='padding:1'>";
 
   private MainPanel() {
-    super();
-    System.out.println(UIManager.getInt("Button.dashedRectGapX"));
-    System.out.println(UIManager.getInt("Button.dashedRectGapY"));
-    System.out.println(UIManager.getInt("Button.dashedRectGapHeight"));
-    System.out.println(UIManager.getInt("Button.dashedRectGapWidth"));
+    super(new BorderLayout());
+    JTextArea log = new JTextArea();
+    log.setFont(log.getFont().deriveFont(10f));
+    log.append(info("Button.dashedRectGapX"));
+    log.append(info("Button.dashedRectGapY"));
+    log.append(info("Button.dashedRectGapHeight"));
+    log.append(info("Button.dashedRectGapWidth"));
 
     UIManager.put("Button.dashedRectGapX", 5);
     UIManager.put("Button.dashedRectGapY", 5);
@@ -29,24 +31,31 @@ public final class MainPanel extends JPanel {
     UIManager.put("RadioButton.margin", new Insets(8, 8, 8, 8));
     UIManager.put("CheckBox.margin", new Insets(8, 8, 8, 8));
 
-    add(new JButton("JButton"));
-    add(Box.createHorizontalStrut(32));
-    add(new JToggleButton("JToggleButton"));
-    add(Box.createHorizontalStrut(32));
+    JPanel p = new JPanel();
+    p.add(new JButton("JButton"));
+    p.add(Box.createHorizontalStrut(32));
+    p.add(new JToggleButton("JToggleButton"));
+    p.add(Box.createHorizontalStrut(32));
 
-    add(new JCheckBox("JCheckBox"));
-    add(new JCheckBox("JCheckBox+BorderPainted") {
+    p.add(new JCheckBox("JCheckBox"));
+    p.add(new JCheckBox("JCheckBox + BorderPainted") {
       @Override public void updateUI() {
         super.updateUI();
         setBorderPainted(true);
       }
     });
-    add(new JCheckBox(PAD + "JCheckBox+td.padding"));
+    p.add(new JCheckBox(PAD + "JCheckBox + td.padding"));
 
-    add(new JRadioButton("JRadioButton"));
-    add(new JRadioButton(PAD + "JRadioButton+td.padding"));
+    p.add(new JRadioButton("JRadioButton"));
+    p.add(new JRadioButton(PAD + "JRadioButton + td.padding"));
 
+    add(p);
+    add(new JScrollPane(log), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String info(String key) {
+    return String.format("%s: %d%n", key, UIManager.getInt(key));
   }
 
   public static void main(String[] args) {

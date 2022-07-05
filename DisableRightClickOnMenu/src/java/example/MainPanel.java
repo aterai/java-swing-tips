@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     // TEST: menu1.setInheritsPopupMenu(true);
 
     JPopupMenu popup = new JPopupMenu();
-    popup.add("MenuItem 1").addActionListener(e -> System.out.println("PopupMenu"));
+    popup.add("MenuItem 1"); // .addActionListener(e -> System.out.println("PopupMenu"));
     popup.add("MenuItem 2");
     popup.add("MenuItem 3");
 
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void initMenu(JMenu menu) {
-    menu.add("MenuItem 1").addActionListener(e -> System.out.println("MenuBar"));
+    menu.add("MenuItem 1"); // .addActionListener(e -> System.out.println("MenuBar"));
     menu.addSeparator();
     menu.add("MenuItem 2");
     menu.add("MenuItem 3");

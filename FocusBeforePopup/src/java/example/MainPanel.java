@@ -18,8 +18,8 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JPopupMenu popup1 = makePopupMenu();
-
+    JTextArea log = new JTextArea("");
+    JPopupMenu popup1 = makePopupMenu(log);
     JTextField textField1 = new JTextField("Default setComponentPopupMenu");
     textField1.setComponentPopupMenu(popup1);
     textField1.setName("textField1");
@@ -31,6 +31,7 @@ public final class MainPanel extends JPanel {
     // });
 
     JPopupMenu popup2 = new TextComponentPopupMenu();
+    log.setComponentPopupMenu(popup2);
     JTextField textField2 = new JTextField("Override JPopupMenu#show(...)");
     textField2.setComponentPopupMenu(popup2);
     textField2.setName("textField2");
@@ -53,7 +54,7 @@ public final class MainPanel extends JPanel {
     textField4.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         if (combo4.isPopupVisible()) {
-          System.out.println("Close all JPopupMenu(excludes dropdown list of own JComboBox)");
+          log.append("Close all JPopupMenu(excludes dropdown list of own JComboBox)\n");
           // https://ateraimemo.com/Swing/GetAllPopupMenus.html
           for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
             if (m instanceof JPopupMenu) {
@@ -65,7 +66,7 @@ public final class MainPanel extends JPanel {
     });
     // textField4.addFocusListener(new FocusAdapter() {
     //   @Override public void focusGained(FocusEvent e) {
-    //     System.out.println("focusGained");
+    //     log.append("focusGained\n");
     //     for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
     //       if (m instanceof JPopupMenu) {
     //         ((JPopupMenu) m).setVisible(false);
@@ -80,16 +81,13 @@ public final class MainPanel extends JPanel {
       box.add(Box.createVerticalStrut(5));
     });
 
-    JTextArea textArea = new JTextArea("JTextArea");
-    textArea.setComponentPopupMenu(popup2);
-
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(box, BorderLayout.NORTH);
-    add(new JScrollPane(textArea));
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPopupMenu makePopupMenu() {
+  private static JPopupMenu makePopupMenu(JTextArea log) {
     Action cutAction = new DefaultEditorKit.CutAction();
     Action copyAction = new DefaultEditorKit.CopyAction();
     Action pasteAction = new DefaultEditorKit.PasteAction();
@@ -110,7 +108,7 @@ public final class MainPanel extends JPanel {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         JPopupMenu pop = (JPopupMenu) e.getSource();
         JTextComponent tc = (JTextComponent) pop.getInvoker();
-        System.out.println(tc.getClass().getName() + ": " + tc.getName());
+        log.append(tc.getClass().getName() + ": " + tc.getName() + "\n");
         // TEST:
         // tc.requestFocusInWindow();
         // tc.selectAll();

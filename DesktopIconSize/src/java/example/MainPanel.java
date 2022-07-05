@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
     JDesktopPane desktop = new JDesktopPane();
     desktop.setDesktopManager(new DefaultDesktopManager() {
       @Override protected Rectangle getBoundsForIconOf(JInternalFrame f) {
-        Rectangle r = super.getBoundsForIconOf(f);
-        // TEST: r.width = 200;
-        System.out.println(r.getSize());
-        return r;
+        // Rectangle r = super.getBoundsForIconOf(f);
+        // r.width = 200;
+        // return r;
+        return super.getBoundsForIconOf(f);
       }
     });
 

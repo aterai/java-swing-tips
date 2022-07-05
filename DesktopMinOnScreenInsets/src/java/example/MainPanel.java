@@ -17,8 +17,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    System.out.println(UIManager.get("Desktop.minOnScreenInsets"));
-
+    // System.out.println(UIManager.get("Desktop.minOnScreenInsets"));
     JInternalFrame f = createInternalFrame();
     Dimension d = ((BasicInternalFrameUI) f.getUI()).getNorthPane().getPreferredSize();
     UIManager.put("Desktop.minOnScreenInsets", new Insets(d.height, 16, 3, 16));

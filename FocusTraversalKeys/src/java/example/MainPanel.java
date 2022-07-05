@@ -16,17 +16,19 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea info = new JTextArea(HELP1 + HELP2 + "\n----\n");
+    info.setEditable(false);
 
     JButton button = new JButton("showOptionDialog");
     button.addActionListener(e -> {
       JComponent c = (JComponent) e.getSource();
       int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), HELP1 + HELP2);
       if (retValue == JOptionPane.YES_OPTION) {
-        System.out.println("YES_OPTION");
+        info.append("YES_OPTION\n");
       } else if (retValue == JOptionPane.NO_OPTION) {
-        System.out.println("NO_OPTION");
+        info.append("NO_OPTION\n");
       } else if (retValue == JOptionPane.CANCEL_OPTION) {
-        System.out.println("CANCEL_OPTION");
+        info.append("CANCEL_OPTION\n");
       }
     });
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
@@ -68,7 +70,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    add(new JScrollPane(new JTextArea(HELP1 + HELP2)));
+    add(new JScrollPane(info));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }

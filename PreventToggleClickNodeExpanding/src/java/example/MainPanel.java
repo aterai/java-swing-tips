@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
@@ -49,15 +48,15 @@ public final class MainPanel extends JPanel {
   private static JTree initTree(JTree tree) {
     tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     tree.setCellRenderer(new FileTreeCellRenderer());
-    tree.addMouseListener(new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        boolean isDoubleClick = e.getClickCount() == 2;
-        if (isDoubleClick) {
-          File file = getFileFromTreePath(tree.getSelectionPath());
-          System.out.println(file);
-        }
-      }
-    });
+    // tree.addMouseListener(new MouseAdapter() {
+    //   @Override public void mouseClicked(MouseEvent e) {
+    //     boolean isDoubleClick = e.getClickCount() == 2;
+    //     if (isDoubleClick) {
+    //       File file = getFileFromTreePath(tree.getSelectionPath());
+    //       System.out.println(file);
+    //     }
+    //   }
+    // });
     // tree.setToggleClickCount(0);
     tree.expandRow(0);
     return tree;
