@@ -131,6 +131,12 @@ public final class MainPanel extends JPanel {
         };
         addPopupMenuListener(handler);
       }
+
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.width = Math.min(d.width, 240);
+        return d;
+      }
     };
     combo.setMaximumRowCount(1);
     return combo;
@@ -168,7 +174,6 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    frame.setMinimumSize(new Dimension(100, 100));
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
