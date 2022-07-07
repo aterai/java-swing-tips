@@ -9,31 +9,34 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super();
-    System.out.println(UIManager.getDimension("ColorChooser.swatchesRecentSwatchSize"));
-    System.out.println(UIManager.getDimension("ColorChooser.swatchesSwatchSize"));
+    super(new BorderLayout());
+    JTextArea log = new JTextArea();
+    String key1 = "ColorChooser.swatchesRecentSwatchSize";
+    log.append(String.format("%s: %s%n", key1, UIManager.getDimension(key1)));
+    String key2 = "ColorChooser.swatchesSwatchSize";
+    log.append(String.format("%s: %s%n", key2, UIManager.getDimension(key2)));
 
     // UIManager.put("ColorChooser.swatchesDefaultRecentColor", Color.RED);
-    UIManager.put("ColorChooser.swatchesRecentSwatchSize", new Dimension(10, 8));
-    UIManager.put("ColorChooser.swatchesSwatchSize", new Dimension(6, 10));
+    UIManager.put(key1, new Dimension(10, 8));
+    UIManager.put(key2, new Dimension(6, 10));
 
     JButton button1 = new JButton("JColorChooser.showDialog(...)");
     button1.addActionListener(e -> {
       Color color = JColorChooser.showDialog(getRootPane(), "JColorChooser", null);
-      System.out.println(color);
+      log.append(String.format("color: %s%n", color));
     });
 
     JColorChooser cc = new JColorChooser();
     JDialog dialog = JColorChooser.createDialog(
         getRootPane(), "JST ColorChooserSwatchSize", true, cc,
-        e -> System.out.println("ok"),
-        e -> System.out.println("cancel"));
+        e -> log.append("ok\n"),
+        e -> log.append("cancel\n"));
     JButton button2 = new JButton("JColorChooser.createDialog(...).setVisible(true)");
     button2.addActionListener(e -> {
       // dialog.setSize(320, 240);
       dialog.setVisible(true);
       Color color = cc.getColor();
-      System.out.println(color);
+      log.append(String.format("color: %s%n", color));
     });
 
     // JButton serialize = new JButton("serialize");
@@ -60,11 +63,14 @@ public final class MainPanel extends JPanel {
     //   }
     // });
 
-    add(button1);
-    add(button2);
+    JPanel p = new JPanel(new GridLayout(2, 1, 10, 10));
+    p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    p.add(button1);
+    p.add(button2);
+    add(p, BorderLayout.NORTH);
     // add(serialize);
     // add(deserialize);
-    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
