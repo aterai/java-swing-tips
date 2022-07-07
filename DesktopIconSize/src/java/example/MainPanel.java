@@ -19,14 +19,13 @@ public final class MainPanel extends JPanel {
     check.setOpaque(false);
 
     JDesktopPane desktop = new JDesktopPane();
-    desktop.setDesktopManager(new DefaultDesktopManager() {
-      @Override protected Rectangle getBoundsForIconOf(JInternalFrame f) {
-        // Rectangle r = super.getBoundsForIconOf(f);
-        // r.width = 200;
-        // return r;
-        return super.getBoundsForIconOf(f);
-      }
-    });
+    // desktop.setDesktopManager(new DefaultDesktopManager() {
+    //   @Override protected Rectangle getBoundsForIconOf(JInternalFrame f) {
+    //     Rectangle r = super.getBoundsForIconOf(f);
+    //     r.width = 200;
+    //     return r;
+    //   }
+    // });
 
     AtomicInteger idx = new AtomicInteger();
     JButton button = new JButton("add");
