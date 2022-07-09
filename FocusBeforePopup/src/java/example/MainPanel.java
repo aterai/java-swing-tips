@@ -153,7 +153,7 @@ class TextComponentPopupMenu extends JPopupMenu {
   }
 
   @Override public void show(Component c, int x, int y) {
-    System.out.println(c.getClass().getName() + ": " + c.getName());
+    // System.out.println(c.getClass().getName() + ": " + c.getName());
     if (c instanceof JTextComponent) {
       JTextComponent tc = (JTextComponent) c;
       tc.requestFocusInWindow();

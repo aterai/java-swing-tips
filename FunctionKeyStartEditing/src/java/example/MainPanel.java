@@ -64,7 +64,6 @@ public final class MainPanel extends JPanel {
 
     table.getActionMap().put("beep", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
-        System.out.println("F3");
         Toolkit.getDefaultToolkit().beep();
       }
     });

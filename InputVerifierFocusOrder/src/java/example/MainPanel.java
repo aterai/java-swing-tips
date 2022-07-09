@@ -21,13 +21,13 @@ public final class MainPanel extends JPanel {
 
     setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
       @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
-        System.out.println("getComponentAfter");
+        // System.out.println("getComponentAfter");
         button.setEnabled(isAllValid());
         return super.getComponentAfter(focusCycleRoot, cmp);
       }
 
       @Override public Component getComponentBefore(Container focusCycleRoot, Component cmp) {
-        System.out.println("getComponentBefore");
+        // System.out.println("getComponentBefore");
         button.setEnabled(isAllValid());
         return super.getComponentBefore(focusCycleRoot, cmp);
       }
@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public boolean shouldYieldFocus(JComponent input) {
-        System.out.println("shouldYieldFocus");
+        // System.out.println("shouldYieldFocus");
         button.setEnabled(isAllValid());
         return super.shouldYieldFocus(input);
       }
@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
         if (e.isTemporary()) {
           return;
         }
-        System.out.println("focusLost");
+        // System.out.println("focusLost");
         button.setEnabled(isAllValid());
       }
     });

@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
     addHierarchyListener(e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (b && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
-        System.out.println("DISPOSE_ON_CLOSE");
+        // System.out.println("DISPOSE_ON_CLOSE");
         worker.cancel(true);
         // worker = null;
       }
