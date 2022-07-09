@@ -5,8 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.stream.Stream;
@@ -25,17 +23,9 @@ public final class MainPanel extends JPanel {
     JList<String> list = new JList<>(m1);
     list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    // JWindow window = new JWindow(SwingUtilities.getWindowAncestor(this));
-    // window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-    // window.setFocusableWindowState(true);
-    // window.setType(Window.Type.POPUP);
-    // window.setAlwaysOnTop(true);
-    // window.setSize(240, 120);
     JPopupMenu popup = new JPopupMenu();
     popup.setBorder(BorderFactory.createEmptyBorder());
-    popup.setPreferredSize(new Dimension(240, 120));
-    popup.pack();
-    popup.setSize(240, 120);
+    popup.setPopupSize(240, 120);
 
     JComboBox<String> combo = makeComboBox(fonts, list, popup);
     list.addListSelectionListener(e -> combo.setSelectedIndex(list.getSelectedIndex()));
@@ -56,7 +46,7 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(list);
     scroll.setBorder(BorderFactory.createEmptyBorder());
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
-    popup.add(makeResizePanel(scroll));
+    popup.add(makeResizePanel(scroll, popup));
 
     // JToggleButton button = new JToggleButton("JToggleButton");
     // button.addActionListener(e -> {
@@ -70,26 +60,6 @@ public final class MainPanel extends JPanel {
     //   popup.setLocation(p);
     //   popup.requestFocusInWindow();
     // });
-    EventQueue.invokeLater(() -> {
-      Window frame = SwingUtilities.getWindowAncestor(this);
-      frame.addMouseListener(new MouseAdapter() {
-        @Override public void mousePressed(MouseEvent e) {
-          popup.setVisible(false);
-          // button.setSelected(false);
-        }
-      });
-      frame.addComponentListener(new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) {
-          popup.setVisible(false);
-          // button.setSelected(false);
-        }
-
-        @Override public void componentMoved(ComponentEvent e) {
-          componentResized(e);
-        }
-      });
-    });
-
     // add(button);
     add(combo);
     setPreferredSize(new Dimension(320, 240));
@@ -106,19 +76,8 @@ public final class MainPanel extends JPanel {
         handler = new PopupMenuListener() {
           @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             JComboBox<?> c = (JComboBox<?>) e.getSource();
-            EventQueue.invokeLater(() -> {
-              list.setSelectedIndex(c.getSelectedIndex());
-              popup.setPreferredSize(popup.getSize());
-              Point p = c.getLocation();
-              p.y += c.getHeight();
-              // popup.show(c, p.x, p.y);
-              // popup.setInvoker(c);
-              SwingUtilities.convertPointToScreen(p, c.getParent());
-              popup.setLocation(p);
-              popup.setVisible(true);
-              popup.requestFocusInWindow();
-              EventQueue.invokeLater(list::requestFocusInWindow);
-            });
+            list.setSelectedIndex(c.getSelectedIndex());
+            EventQueue.invokeLater(() -> popup.show(c, 0, c.getHeight()));
           }
 
           @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -142,9 +101,9 @@ public final class MainPanel extends JPanel {
     return combo;
   }
 
-  private static JPanel makeResizePanel(JScrollPane scroll) {
+  private static JPanel makeResizePanel(JScrollPane scroll, JPopupMenu popup) {
     JLabel bottom = new JLabel("", new DotIcon(), SwingConstants.CENTER);
-    MouseInputListener rwl = new ResizeWindowListener();
+    MouseInputListener rwl = new ResizeWindowListener(popup);
     bottom.addMouseListener(rwl);
     bottom.addMouseMotionListener(rwl);
     bottom.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
@@ -182,19 +141,30 @@ public final class MainPanel extends JPanel {
 
 class ResizeWindowListener extends MouseInputAdapter {
   private final Rectangle rect = new Rectangle();
+  private final JPopupMenu popup;
+  private final Point startPt = new Point();
+  private final Dimension startDim = new Dimension();
+
+  protected ResizeWindowListener(JPopupMenu popup) {
+    this.popup = popup;
+  }
 
   @Override public void mousePressed(MouseEvent e) {
-    Window w = SwingUtilities.getWindowAncestor(e.getComponent());
-    if (w != null) {
-      rect.setSize(w.getSize());
-    }
+    rect.setSize(popup.getSize());
+    startDim.setSize(popup.getSize());
+    startPt.setLocation(e.getComponent().getLocationOnScreen());
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    Window w = SwingUtilities.getWindowAncestor(e.getComponent());
-    if (!rect.isEmpty() && w != null) {
-      rect.height += e.getY();
-      w.setSize(rect.width, rect.height);
+    rect.height = startDim.height + e.getLocationOnScreen().y - startPt.y;
+    popup.setPreferredSize(rect.getSize());
+    Container p = popup.getTopLevelAncestor();
+    if (p instanceof JWindow) {
+      // System.out.println("Heavy weight");
+      p.setSize(rect.width, rect.height);
+    } else {
+      // System.out.println("Light weight");
+      popup.pack();
     }
   }
 }
