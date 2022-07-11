@@ -85,7 +85,7 @@ class CardLayoutTabbedPane extends JPanel {
     add(contentsPanel);
   }
 
-  protected Component createTabComponent(String title) {
+  protected Component createTabComponent(String title, Component comp) {
     TabButton tab = new TabButton(title);
     tab.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -100,21 +100,18 @@ class CardLayoutTabbedPane extends JPanel {
         return new Dimension(12, 12);
       }
     };
-    close.addActionListener(e -> System.out.println("dummy action: close button"));
-
-    // @See https://github.com/aterai/java-swing-tips/tree/master/NewTabButton
-    // close.addActionListener(e -> {
-    //   tabPanel.remove(tab);
-    //   contentsPanel.remove(comp);
-    //   boolean oneOrMore = tabPanel.getComponentCount() > 1;
-    //   if (oneOrMore) {
-    //     tabPanel.revalidate();
-    //     TabButton b = (TabButton) tabPanel.getComponent(0);
-    //     b.setSelected(true);
-    //     cardLayout.first(contentsPanel);
-    //   }
-    //   tabPanel.revalidate();
-    // });
+    close.addActionListener(e -> {
+      tabPanel.remove(tab);
+      contentsPanel.remove(comp);
+      boolean oneOrMore = tabPanel.getComponentCount() > 1;
+      if (oneOrMore) {
+        tabPanel.revalidate();
+        TabButton b = (TabButton) tabPanel.getComponent(0);
+        b.setSelected(true);
+        cardLayout.first(contentsPanel);
+      }
+      tabPanel.revalidate();
+    });
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusPainted(false);
     close.setContentAreaFilled(false);
@@ -131,7 +128,7 @@ class CardLayoutTabbedPane extends JPanel {
   }
 
   public void addTab(String title, Component comp) {
-    tabPanel.add(createTabComponent(title));
+    tabPanel.add(createTabComponent(title, comp));
     contentsPanel.add(comp, title);
     cardLayout.show(contentsPanel, title);
   }

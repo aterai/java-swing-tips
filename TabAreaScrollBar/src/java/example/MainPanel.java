@@ -63,7 +63,7 @@ class CardLayoutTabbedPane extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
-  private final JButton hiddenTabs = new JButton("V");
+  private final JButton hiddenTabs = new JButton("⊽");
   private final ButtonGroup group = new ButtonGroup();
   private final JScrollPane tabArea = new JScrollPane(tabPanel) {
     @Override public boolean isOptimizedDrawingEnabled() {
@@ -113,7 +113,7 @@ class CardLayoutTabbedPane extends JPanel {
     add(contentsPanel);
   }
 
-  protected JComponent createTabComponent(String title, Icon icon) {
+  protected JComponent createTabComponent(String title, Icon icon, Component comp) {
     JToggleButton tab = new TabButton();
     tab.setInheritsPopupMenu(true);
     group.add(tab);
@@ -137,7 +137,18 @@ class CardLayoutTabbedPane extends JPanel {
         return new Dimension(12, 12);
       }
     };
-    close.addActionListener(e -> System.out.println("dummy action: close button"));
+    close.addActionListener(e -> {
+      tabPanel.remove(tab);
+      contentsPanel.remove(comp);
+      boolean oneOrMore = tabPanel.getComponentCount() > 1;
+      if (oneOrMore) {
+        tabPanel.revalidate();
+        TabButton b = (TabButton) tabPanel.getComponent(0);
+        b.setSelected(true);
+        cardLayout.first(contentsPanel);
+      }
+      tabPanel.revalidate();
+    });
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusable(false);
     close.setOpaque(false);
@@ -152,7 +163,7 @@ class CardLayoutTabbedPane extends JPanel {
   }
 
   public void addTab(String title, Icon icon, Component comp) {
-    JComponent tab = createTabComponent(title, icon);
+    JComponent tab = createTabComponent(title, icon, comp);
     tabPanel.add(tab);
     contentsPanel.add(comp, title);
     cardLayout.show(contentsPanel, title);
