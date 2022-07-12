@@ -12,7 +12,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 2));
-    URL url = getClass().getResource("duke.running.gif");
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/duke.running.gif");
     assert url != null;
     ImageIcon imageIcon = new ImageIcon(url);
     JLabel label0 = new JLabel(imageIcon);
