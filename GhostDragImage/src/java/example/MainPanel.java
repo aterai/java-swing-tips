@@ -129,7 +129,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    System.out.println("getSourceActions");
+    // System.out.println("getSourceActions");
     c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
     if (c instanceof JList) {
       JList<?> source = (JList<?>) c;
@@ -190,7 +190,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    System.out.println("exportDone");
+    // System.out.println("exportDone");
     Component glassPane = c.getRootPane().getGlassPane();
     // glassPane.setCursor(Cursor.getDefaultCursor());
     glassPane.setVisible(false);
@@ -223,7 +223,7 @@ class ListItemTransferHandler extends TransferHandler {
 
 class CompactListItemTransferHandler extends ListItemTransferHandler {
   @Override public int getSourceActions(JComponent c) {
-    System.out.println("getSourceActions");
+    // System.out.println("getSourceActions");
     Component glassPane = c.getRootPane().getGlassPane();
     glassPane.setCursor(DragSource.DefaultMoveDrop);
     if (!(c instanceof JList)) {
@@ -233,7 +233,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     JList<?> source = (JList<?>) c;
     int w = source.getFixedCellWidth();
     int h = source.getFixedCellHeight() - cellLabelHeight;
-    System.out.println(h);
+    // System.out.println(h);
     setDragImage(createCompactDragImage(source, w, h));
     setDragImageOffset(new Point(w / 2, h));
     return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;

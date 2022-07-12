@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
       @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
         // System.out.println("key: " + ks.toString());
         if (!check.isSelected() || isTabOrEnterKey(ks)) {
-          System.out.println("tab or enter typed");
+          // System.out.println("tab or enter typed");
           return super.processKeyBinding(ks, e, condition, pressed);
         }
         InputContext ic = getInputContext();
@@ -26,8 +26,9 @@ public final class MainPanel extends JPanel {
           int selectedRow = getSelectedRow();
           int selectedColumn = getSelectedColumn();
           if (selectedRow != -1 && selectedColumn != -1) {
-            boolean dummy = editCellAt(selectedRow, selectedColumn);
-            System.out.println("editCellAt: " + dummy);
+            editCellAt(selectedRow, selectedColumn);
+            // boolean b = editCellAt(selectedRow, selectedColumn);
+            // System.out.println("editCellAt: " + b);
           }
         }
         return super.processKeyBinding(ks, e, condition, pressed);
