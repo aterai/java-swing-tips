@@ -159,7 +159,7 @@ final class LookAndFeelUtil {
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
-      System.out.println("Failed loading L&F: " + currentLaf);
+      // System.out.println("Failed loading L&F: " + currentLaf);
     }
   }
 

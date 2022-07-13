@@ -148,7 +148,7 @@ class NoPopupComboBoxUI extends BasicComboBoxUI {
   @Override protected ComboPopup createPopup() {
     return new BasicComboPopup(comboBox) {
       @Override public void show() {
-        System.out.println("togglePopup");
+        // System.out.println("disable togglePopup");
         // super.show();
       }
     };

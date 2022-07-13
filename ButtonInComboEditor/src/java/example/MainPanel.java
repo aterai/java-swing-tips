@@ -140,7 +140,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     button.setRolloverIcon(new ImageIcon(button.getToolkit().createImage(ip)));
     // button.setRolloverIcon(makeFilteredImage(rss));
     // button.setRolloverIcon(makeFilteredImage2(rss));
-    button.addActionListener(e -> System.out.println("clicked..."));
+    button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
     button.setFocusPainted(false);
     button.setBorderPainted(false);
     button.setContentAreaFilled(false);
