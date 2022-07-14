@@ -146,6 +146,7 @@ class ResizeWindowListener extends MouseInputAdapter {
   private final Dimension startDim = new Dimension();
 
   protected ResizeWindowListener(JPopupMenu popup) {
+    super();
     this.popup = popup;
   }
 
