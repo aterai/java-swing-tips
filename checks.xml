@@ -16,7 +16,9 @@
     Authors: Max Vetrenko, Ruslan Diachenko, Roman Ivanov.
  -->
 
-<module name = "Checker">
+<module name="Checker">
+  <module name="SuppressWarningsFilter"/>
+
   <property name="charset" value="UTF-8"/>
 
   <property name="severity" value="warning"/>
@@ -40,8 +42,6 @@
     <property name="eachLine" value="true"/>
   </module>
 
-  <module name="SuppressWarningsFilter" />
-
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
     <property name="max" value="100"/>
@@ -49,7 +49,6 @@
   </module>
 
   <module name="TreeWalker">
-    <module name="SuppressWarningsHolder" />
     <module name="OuterTypeFilename"/>
     <module name="IllegalTokenText">
       <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
@@ -64,7 +63,7 @@
       <property name="allowNonPrintableEscapes" value="true"/>
     </module>
     <module name="AvoidStarImport">
-      <property name="excludes" value="java.awt,javax.swing"/>
+      <property name="excludes" value="java.awt, javax.swing"/>
     </module>
     <!-- module name="OneTopLevelClass"/ -->
     <module name="NoLineWrap">
@@ -262,7 +261,7 @@
     <module name="AbbreviationAsWordInName">
       <property name="ignoreFinal" value="false"/>
       <property name="allowedAbbreviationLength" value="0"/>
-      <property name="allowedAbbreviations" value="UI,J,D"/>
+      <property name="allowedAbbreviations" value="UI, J, D"/>
       <property name="tokens"
                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
                     PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,
@@ -368,6 +367,19 @@
       <property name="file" value="${org.checkstyle.google.suppressionxpathfilter.config}"
              default="checkstyle-xpath-suppressions.xml" />
       <property name="optional" value="true"/>
+    </module>
+    <module name="SuppressWarningsHolder" />
+    <module name="SuppressionCommentFilter">
+      <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)" />
+      <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)" />
+      <property name="checkFormat" value="$1" />
+    </module>
+    <module name="SuppressWithNearbyCommentFilter">
+      <property name="commentFormat" value="CHECKSTYLE.SUPPRESS\: ([\w\|]+)"/>
+      <!-- $1 refers to the first match group in the regex defined in commentFormat -->
+      <property name="checkFormat" value="$1"/>
+      <!-- The check is suppressed in the next line of code after the comment -->
+      <property name="influenceFormat" value="1"/>
     </module>
   </module>
 </module>
