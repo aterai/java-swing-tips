@@ -280,7 +280,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
-    System.out.println("exportTab");
+    // System.out.println("exportTab");
     final Component cmp = getComponentAt(dragIndex);
     final String title = getTitleAt(dragIndex);
     final Icon icon = getIconAt(dragIndex);
@@ -302,7 +302,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public void convertTab(int prev, int next) {
-    System.out.println("convertTab");
+    // System.out.println("convertTab");
     // if (next < 0 || prev == next) {
     //   return;
     // }
@@ -447,20 +447,20 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 
   @Override public void drop(DropTargetDropEvent e) {
     Component c = e.getDropTargetContext().getComponent();
-    System.out.println("DropTargetListener#drop: " + c.getName());
+    // System.out.println("DropTargetListener#drop: " + c.getName());
     clearDropLocationPaint(c);
   }
 
   @Override public void dragExit(DropTargetEvent e) {
     Component c = e.getDropTargetContext().getComponent();
-    System.out.println("DropTargetListener#dragExit: " + c.getName());
+    // System.out.println("DropTargetListener#dragExit: " + c.getName());
     clearDropLocationPaint(c);
   }
 
-  @Override public void dragEnter(DropTargetDragEvent e) {
-    Component c = e.getDropTargetContext().getComponent();
-    System.out.println("DropTargetListener#dragEnter: " + c.getName());
-  }
+  // @Override public void dragEnter(DropTargetDragEvent e) {
+  //   Component c = e.getDropTargetContext().getComponent();
+  //   System.out.println("DropTargetListener#dragEnter: " + c.getName());
+  // }
 
   // @Override public void dragOver(DropTargetDragEvent e) {
   //   // System.out.println("dragOver");
@@ -499,7 +499,7 @@ class TabTransferHandler extends TransferHandler {
 
   protected TabTransferHandler() {
     super();
-    System.out.println("TabTransferHandler");
+    // System.out.println("TabTransferHandler");
     // localObjectFlavor = new ActivationDataFlavor(
     //     DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
     dialog.add(label);
@@ -514,7 +514,7 @@ class TabTransferHandler extends TransferHandler {
   }
 
   @Override protected Transferable createTransferable(JComponent c) {
-    System.out.println("createTransferable");
+    // System.out.println("createTransferable");
     if (c instanceof DnDTabbedPane) {
       source = (DnDTabbedPane) c;
     }
@@ -541,8 +541,8 @@ class TabTransferHandler extends TransferHandler {
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
     // System.out.println("canImport");
     if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
-      boolean b = support.isDataFlavorSupported(localObjectFlavor);
-      System.out.println("canImport:" + support.isDrop() + " " + b);
+      // boolean b = support.isDataFlavorSupported(localObjectFlavor);
+      // System.out.println("canImport:" + support.isDrop() + " " + b);
       return false;
     }
     support.setDropAction(TransferHandler.MOVE);
@@ -618,7 +618,7 @@ class TabTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    System.out.println("getSourceActions");
+    // System.out.println("getSourceActions");
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane src = (DnDTabbedPane) c;
       if (src.dragTabIndex < 0) {
@@ -656,7 +656,7 @@ class TabTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    System.out.println("exportDone");
+    // System.out.println("exportDone");
     DnDTabbedPane src = (DnDTabbedPane) c;
     src.updateTabDropLocation(null, false);
     src.repaint();

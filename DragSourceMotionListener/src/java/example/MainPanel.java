@@ -128,7 +128,7 @@ class LabelTransferHandler extends TransferHandler {
   }
 
   @Override protected Transferable createTransferable(JComponent c) {
-    System.out.println("createTransferable" + localObjectFlavor.getMimeType());
+    // System.out.println("createTransferable" + localObjectFlavor.getMimeType());
     DragPanel p = (DragPanel) c;
     return new LabelTransferable(localObjectFlavor, p);
     //  DataHandler dh = new DataHandler(c, localObjectFlavor.getMimeType());
@@ -149,7 +149,7 @@ class LabelTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    System.out.println("getSourceActions");
+    // System.out.println("getSourceActions");
     if (c instanceof DragPanel) {
       DragPanel p = (DragPanel) c;
       JLabel l = p.draggingLabel;
@@ -181,7 +181,7 @@ class LabelTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    System.out.println("exportDone");
+    // System.out.println("exportDone");
     DragPanel src = (DragPanel) c;
     if (action == TransferHandler.MOVE) {
       src.remove(src.draggingLabel);
