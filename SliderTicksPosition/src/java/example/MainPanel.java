@@ -183,43 +183,55 @@ class UpArrowThumbSliderUI extends BasicSliderUI {
   }
 
   @Override public void paintThumb(Graphics g) {
-    Boolean arrowShape = (Boolean) slider.getClientProperty("Slider.paintThumbArrowShape");
-    boolean isArrow = slider.getPaintTicks() && !Boolean.FALSE.equals(arrowShape);
-    if (isArrow && slider.getOrientation() == SwingConstants.HORIZONTAL) {
-      Color bc = slider.getBackground();
-      g.setColor(slider.isEnabled() ? bc : bc.darker());
-
-      Rectangle knobBounds = thumbRect;
+    if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.translate(knobBounds.x, knobBounds.y + knobBounds.height);
+      g2.translate(0, contentRect.y + contentRect.height + thumbRect.height);
       g2.scale(1d, -1d);
-
-      int w = knobBounds.width;
-      int h = knobBounds.height;
-      int cw = w / 2;
-      g2.fillRect(1, 1, w - 3, h - 1 - cw);
-      Polygon p = new Polygon();
-      p.addPoint(1, h - cw);
-      p.addPoint(cw - 1, h - 1);
-      p.addPoint(w - 2, h - 1 - cw);
-      g2.fillPolygon(p);
-
-      g2.setColor(Color.WHITE);
-      g2.drawLine(0, 0, w - 2, 0);
-      g2.drawLine(0, 1, 0, h - 1 - cw);
-      g2.drawLine(0, h - cw, cw - 1, h - 1);
-
-      g2.setColor(Color.BLACK);
-      g2.drawLine(w - 1, 0, w - 1, h - 2 - cw);
-      g2.drawLine(w - 1, h - 1 - cw, w - 1 - cw, h - 1);
-
-      g2.setColor(Color.GRAY);
-      g2.drawLine(w - 2, 1, w - 2, h - 2 - cw);
-      g2.drawLine(w - 2, h - 1 - cw, w - 1 - cw, h - 2);
-
+      super.paintThumb(g2);
       g2.dispose();
     } else {
       super.paintThumb(g);
     }
   }
+
+  // @Override public void paintThumb(Graphics g) {
+  //   Boolean arrowShape = (Boolean) slider.getClientProperty("Slider.paintThumbArrowShape");
+  //   boolean isArrow = slider.getPaintTicks() && !Boolean.FALSE.equals(arrowShape);
+  //   if (isArrow && slider.getOrientation() == SwingConstants.HORIZONTAL) {
+  //     Color bc = slider.getBackground();
+  //     g.setColor(slider.isEnabled() ? bc : bc.darker());
+  //
+  //     Rectangle knobBounds = thumbRect;
+  //     Graphics2D g2 = (Graphics2D) g.create();
+  //     g2.translate(knobBounds.x, knobBounds.y + knobBounds.height);
+  //     g2.scale(1d, -1d);
+  //
+  //     int w = knobBounds.width;
+  //     int h = knobBounds.height;
+  //     int cw = w / 2;
+  //     g2.fillRect(1, 1, w - 3, h - 1 - cw);
+  //     Polygon p = new Polygon();
+  //     p.addPoint(1, h - cw);
+  //     p.addPoint(cw - 1, h - 1);
+  //     p.addPoint(w - 2, h - 1 - cw);
+  //     g2.fillPolygon(p);
+  //
+  //     g2.setColor(Color.WHITE);
+  //     g2.drawLine(0, 0, w - 2, 0);
+  //     g2.drawLine(0, 1, 0, h - 1 - cw);
+  //     g2.drawLine(0, h - cw, cw - 1, h - 1);
+  //
+  //     g2.setColor(Color.BLACK);
+  //     g2.drawLine(w - 1, 0, w - 1, h - 2 - cw);
+  //     g2.drawLine(w - 1, h - 1 - cw, w - 1 - cw, h - 1);
+  //
+  //     g2.setColor(Color.GRAY);
+  //     g2.drawLine(w - 2, 1, w - 2, h - 2 - cw);
+  //     g2.drawLine(w - 2, h - 1 - cw, w - 1 - cw, h - 2);
+  //
+  //     g2.dispose();
+  //   } else {
+  //     super.paintThumb(g);
+  //   }
+  // }
 }
