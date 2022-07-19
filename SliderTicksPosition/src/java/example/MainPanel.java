@@ -87,10 +87,8 @@ class VerticalFlipLayerUI extends LayerUI<JComponent> {
     super.installUI(c);
     if (c instanceof JLayer) {
       JLayer<?> l = (JLayer<?>) c;
-      l.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK
-          | AWTEvent.MOUSE_MOTION_EVENT_MASK
-          | AWTEvent.MOUSE_WHEEL_EVENT_MASK
-          | AWTEvent.KEY_EVENT_MASK);
+      l.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+      // | AWTEvent.MOUSE_WHEEL_EVENT_MASK);
     }
   }
 
@@ -113,7 +111,8 @@ class VerticalFlipLayerUI extends LayerUI<JComponent> {
       }
       // Horizontal: me.translatePoint((int) pt.getX() - me.getX(), 0);
       me.translatePoint(0, (int) pt.getY() - me.getY());
-      l.repaint();
+      me.getComponent().repaint();
+      // or: l.getView().repaint();
     }
     super.eventDispatched(e, l);
   }
