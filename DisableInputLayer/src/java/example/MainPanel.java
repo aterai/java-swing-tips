@@ -13,7 +13,6 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
     Timer stopper = new Timer(5000, e -> layerUI.stop());
 
@@ -32,7 +31,7 @@ public final class MainPanel extends JPanel {
     stopper.setRepeats(false);
 
     add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea("dummy")));
+    add(new JScrollPane(new JTextArea("JTextArea")));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -88,9 +87,9 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      JLayer<?> jlayer = (JLayer<?>) c;
-      jlayer.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-      jlayer.setLayerEventMask(
+      JLayer<?> l = (JLayer<?>) c;
+      l.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+      l.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
           | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
           | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
@@ -113,7 +112,7 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
   @Override public void applyPropertyChange(PropertyChangeEvent e, JLayer<? extends V> l) {
     if (CMD_REPAINT.equals(e.getPropertyName())) {
       l.getGlassPane().setVisible((Boolean) e.getNewValue());
-      l.repaint();
+      l.getView().repaint();
     }
   }
 }
