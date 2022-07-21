@@ -112,7 +112,7 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
   @Override public void applyPropertyChange(PropertyChangeEvent e, JLayer<? extends V> l) {
     if (CMD_REPAINT.equals(e.getPropertyName())) {
       l.getGlassPane().setVisible((Boolean) e.getNewValue());
-      l.getView().repaint();
+      // l.getView().repaint();
     }
   }
 }

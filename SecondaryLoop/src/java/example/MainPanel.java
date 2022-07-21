@@ -112,9 +112,9 @@ class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      JLayer<?> jlayer = (JLayer<?>) c;
-      jlayer.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-      jlayer.setLayerEventMask(
+      JLayer<?> l = (JLayer<?>) c;
+      l.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+      l.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
           | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
           | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
@@ -137,7 +137,7 @@ class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
   @Override public void applyPropertyChange(PropertyChangeEvent e, JLayer<? extends V> l) {
     if (CMD_REPAINT.equals(e.getPropertyName())) {
       l.getGlassPane().setVisible((Boolean) e.getNewValue());
-      l.repaint();
+      // l.getView().repaint();
     }
   }
 }
