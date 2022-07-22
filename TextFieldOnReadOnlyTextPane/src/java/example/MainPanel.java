@@ -17,7 +17,6 @@ import javax.swing.text.StyleContext;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextPane textPane = new JTextPane();
     textPane.setEditable(false);
     textPane.setMargin(new Insets(0, 10, 0, 0));
@@ -36,45 +35,43 @@ public final class MainPanel extends JPanel {
   }
 
   private static void insertQuestion(JTextPane textPane, String str) {
+    JTextField field = new JTextField(4) {
+      @Override public Dimension getMaximumSize() {
+        return getPreferredSize();
+      }
+    };
+    field.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
     Document doc = textPane.getDocument();
+    int pos = doc.getLength();
+    // System.out.println(pos);
+    field.addFocusListener(new FocusAdapter() {
+      @Override public void focusGained(FocusEvent e) {
+        try {
+          Rectangle rect = textPane.modelToView(pos);
+          // Java 9: Rectangle rect = textPane.modelToView2D(pos).getBounds();
+          rect.grow(0, 4);
+          rect.setSize(field.getSize());
+          // System.out.println(rect);
+          // System.out.println(field.getLocation());
+          textPane.scrollRectToVisible(rect);
+        } catch (BadLocationException ex) {
+          // should never happen
+          RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+          wrap.initCause(ex);
+          throw wrap;
+        }
+      }
+    });
+    Dimension d = field.getPreferredSize();
+    int baseline = field.getBaseline(d.width, d.height);
+    field.setAlignmentY(baseline / (float) d.height);
+
     try {
       doc.insertString(doc.getLength(), str, null);
-
-      int pos = doc.getLength();
-      System.out.println(pos);
-      JTextField field = new JTextField(4) {
-        @Override public Dimension getMaximumSize() {
-          return getPreferredSize();
-        }
-      };
-      field.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-      field.addFocusListener(new FocusAdapter() {
-        @Override public void focusGained(FocusEvent e) {
-          try {
-            Rectangle rect = textPane.modelToView(pos);
-            // Java 9: Rectangle rect = textPane.modelToView2D(pos).getBounds();
-            rect.grow(0, 4);
-            rect.setSize(field.getSize());
-            // System.out.println(rect);
-            // System.out.println(field.getLocation());
-            textPane.scrollRectToVisible(rect);
-          } catch (BadLocationException ex) {
-            // should never happen
-            RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-            wrap.initCause(ex);
-            throw wrap;
-          }
-        }
-      });
-      Dimension d = field.getPreferredSize();
-      int baseline = field.getBaseline(d.width, d.height);
-      field.setAlignmentY(baseline / (float) d.height);
-
       // MutableAttributeSet a = new SimpleAttributeSet();
       MutableAttributeSet a = textPane.getStyle(StyleContext.DEFAULT_STYLE);
       StyleConstants.setLineSpacing(a, 1.5f);
       textPane.setParagraphAttributes(a, true);
-
       textPane.insertComponent(field);
       doc.insertString(doc.getLength(), "\n", null);
     } catch (BadLocationException ex) {
