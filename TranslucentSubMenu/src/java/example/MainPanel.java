@@ -110,11 +110,9 @@ class TranslucentPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     EventQueue.invokeLater(() -> {
       Container p = getTopLevelAncestor();
-      if (p instanceof JWindow) {
-        System.out.println("Heavy weight");
+      if (p instanceof JWindow && ((JWindow) p).getType() == Window.Type.POPUP) {
+        // Heavy weight
         p.setBackground(ALPHA_ZERO);
-      } else {
-        System.out.println("Light weight");
       }
     });
     super.show(c, x, y);
@@ -141,7 +139,7 @@ class TransparentMenu extends JMenu {
   // https://bugs.openjdk.java.net/browse/JDK-4688783
   private void ensurePopupMenuCreated2() {
     if (Objects.isNull(popupMenu)) {
-      this.popupMenu = new TranslucentPopupMenu();
+      popupMenu = new TranslucentPopupMenu();
       popupMenu.setInvoker(this);
       popupListener = createWinListener(popupMenu);
     }
@@ -151,7 +149,7 @@ class TransparentMenu extends JMenu {
   // private void ensurePopupMenuCreated() {
   //   if (popupMenu == null) {
   //     final JMenu thisMenu = this;
-  //     this.popupMenu = new JPopupMenu();
+  //     popupMenu = new JPopupMenu();
   //     popupMenu.setInvoker(this);
   //     popupListener = createWinListener(popupMenu);
   //   }
@@ -230,7 +228,7 @@ class TranslucentPopup extends Popup {
   protected TranslucentPopup(Component owner, Component contents, int ownerX, int ownerY) {
     super(owner, contents, ownerX, ownerY);
     // create a new heavyweight window
-    this.popupWindow = new JWindow();
+    popupWindow = new JWindow();
     // mark the popup with partial opacity
     // AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
     // popupWindow.setOpacity(.5f);
@@ -247,18 +245,18 @@ class TranslucentPopup extends Popup {
   }
 
   @Override public void show() {
-    System.out.println("Always Heavy weight!");
-    this.popupWindow.setVisible(true);
-    this.popupWindow.pack();
+    // System.out.println("Always Heavy weight!");
+    popupWindow.setVisible(true);
+    popupWindow.pack();
     // mark the window as non-opaque, so that the
     // shadow border pixels take on the per-pixel
     // translucency
-    // AWTUtilities.setWindowOpaque(this.popupWindow, false);
+    // AWTUtilities.setWindowOpaque(popupWindow, false);
   }
 
   @Override public void hide() {
-    this.popupWindow.setVisible(false);
-    this.popupWindow.removeAll();
-    this.popupWindow.dispose();
+    popupWindow.setVisible(false);
+    popupWindow.removeAll();
+    popupWindow.dispose();
   }
 }
