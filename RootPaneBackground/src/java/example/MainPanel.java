@@ -251,15 +251,14 @@ class TranslucentPopupMenu extends JPopupMenu {
     menuItem.setOpaque(false);
     return super.add(menuItem);
   }
+
   // private static final Color ALPHA_ZERO = new Color(0x0, true);
   // @Override public void show(Component c, int x, int y) {
   //   EventQueue.invokeLater(() -> {
   //     Container p = getTopLevelAncestor();
-  //     if (p instanceof JWindow) {
-  //       System.out.println("Heavy weight");
+  //     if (p instanceof JWindow && ((JWindow) p).getType() == Window.Type.POPUP) {
+  //       // Popup$HeavyWeightWindow
   //       p.setBackground(ALPHA_ZERO);
-  //     } else {
-  //       System.out.println("Light weight");
   //     }
   //   });
   //   super.show(c, x, y);

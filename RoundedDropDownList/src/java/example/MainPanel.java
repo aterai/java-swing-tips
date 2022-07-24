@@ -319,7 +319,7 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     // // TEST: WindowsLookAndFeel
     // if (c instanceof JPopupMenu) {
     //   Container top = ((JPopupMenu) c).getTopLevelAncestor();
-    //   if (top instanceof JWindow) {
+    //   if (top instanceof JWindow && ((JWindow) top).getType() == Window.Type.POPUP) {
     //     Composite cmp = g2.getComposite();
     //     g2.setComposite(AlphaComposite.Clear);
     //     g2.setPaint(new Color(0x0, true));

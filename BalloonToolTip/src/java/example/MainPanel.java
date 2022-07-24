@@ -117,8 +117,8 @@ class BalloonToolTip extends JToolTip {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
         // Component w = SwingUtilities.getRoot(c);
-        // if (w instanceof JWindow) {
-        //   System.out.println("Popup$HeavyWeightWindow");
+        // if (w instanceof JWindow && ((JWindow) w).getType() == Window.Type.POPUP) {
+        //   // Popup$HeavyWeightWindow
         //   w.setBackground(new Color(0x0, true));
         // }
         Optional.ofNullable(SwingUtilities.getRoot(c))
