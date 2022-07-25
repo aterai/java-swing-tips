@@ -38,6 +38,7 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
   //   }
   //   return false;
   // }
+  //
   // static class ShadowBorder extends AbstractBorder {
   //   private final transient BufferedImage screenShot;
   //   protected ShadowBorder(JComponent c, Point p) {
@@ -85,9 +86,9 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
     Popup pp = super.getPopup(popup, x, y);
     if (pp != null) {
       EventQueue.invokeLater(() -> {
-        Window p = SwingUtilities.getWindowAncestor(popup);
-        if (p instanceof JWindow) {
-          p.setBackground(new Color(0x0, true)); // JDK 1.7.0
+        Window w = SwingUtilities.getWindowAncestor(popup);
+        if (w != null && w.getType() == Window.Type.POPUP) {
+          w.setBackground(new Color(0x0, true)); // JDK 1.7.0
         }
       });
       Container c = SwingUtilities.getUnwrappedParent(popup);

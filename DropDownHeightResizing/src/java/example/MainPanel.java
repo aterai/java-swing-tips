@@ -159,14 +159,20 @@ class ResizeWindowListener extends MouseInputAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     rect.height = startDim.height + e.getLocationOnScreen().y - startPt.y;
     popup.setPreferredSize(rect.getSize());
-    Container p = popup.getTopLevelAncestor();
-    if (p instanceof JWindow) {
-      // System.out.println("Heavy weight");
-      p.setSize(rect.width, rect.height);
+    Window w = SwingUtilities.getWindowAncestor(popup);
+    if (w != null && w.getType() == Window.Type.POPUP) {
+      // Popup$HeavyWeightWindow
+      w.setSize(rect.width, rect.height);
     } else {
-      // System.out.println("Light weight");
+      // Popup$LightWeightWindow
       popup.pack();
     }
+    // Container p = popup.getTopLevelAncestor();
+    // if (p instanceof JWindow && ((Window) p).getType() == Window.Type.POPUP) {
+    //   p.setSize(rect.width, rect.height);
+    // } else {
+    //   popup.pack();
+    // }
   }
 }
 

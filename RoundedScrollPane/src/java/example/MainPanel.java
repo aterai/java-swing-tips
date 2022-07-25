@@ -169,12 +169,11 @@ class HeavyWeightContainerListener implements PopupMenuListener {
       JComboBox<?> combo = (JComboBox<?>) e.getSource();
       Accessible a = combo.getUI().getAccessibleChild(combo, 0);
       if (a instanceof JPopupMenu) {
-        JPopupMenu pop = (JPopupMenu) a;
-        Container top = pop.getTopLevelAncestor();
-        if (top instanceof JWindow) {
-          // System.out.println("HeavyWeightContainer");
-          // https://ateraimemo.com/Swing/DropShadowPopup.html
-          top.setBackground(new Color(0x0, true));
+        Window w = SwingUtilities.getWindowAncestor((Component) a);
+        // https://ateraimemo.com/Swing/DropShadowPopup.html
+        if (w != null && w.getType() == Window.Type.POPUP) {
+          // Popup$HeavyWeightWindow
+          w.setBackground(new Color(0x0, true));
         }
       }
     });
@@ -328,8 +327,8 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
 
     // // TEST: WindowsLookAndFeel
     // if (c instanceof JPopupMenu) {
-    //   Container top = ((JPopupMenu) c).getTopLevelAncestor();
-    //   if (top instanceof JWindow && ((JWindow) top).getType() == Window.Type.POPUP) {
+    //   Window w = SwingUtilities.getWindowAncestor((Component) c);
+    //   if (w != null && w.getType() == Window.Type.POPUP) {
     //     Composite cmp = g2.getComposite();
     //     g2.setComposite(AlphaComposite.Clear);
     //     g2.setPaint(new Color(0x0, true));
