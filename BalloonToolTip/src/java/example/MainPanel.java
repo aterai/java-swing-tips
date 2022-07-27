@@ -116,13 +116,13 @@ class BalloonToolTip extends JToolTip {
     listener = e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-        // Component w = SwingUtilities.getRoot(c);
-        // if (w instanceof JWindow && ((JWindow) w).getType() == Window.Type.POPUP) {
+        // Window w = SwingUtilities.getWindowAncestor(c);
+        // if (w != null && w.getType() == Window.Type.POPUP) {
         //   // Popup$HeavyWeightWindow
         //   w.setBackground(new Color(0x0, true));
         // }
-        Optional.ofNullable(SwingUtilities.getRoot(c))
-            .filter(JWindow.class::isInstance).map(JWindow.class::cast)
+        Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
+            .filter(w -> w.getType() == Window.Type.POPUP)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };
