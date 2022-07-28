@@ -108,9 +108,10 @@ class FocusOwnerCaret extends DefaultCaret {
 
   @Override protected Highlighter.HighlightPainter getSelectionPainter() {
     JTextComponent c = getComponent();
-    Container w = c.getTopLevelAncestor();
-    // boolean isFocused = w instanceof Window && ((Window) w).isFocused();
-    boolean isActive = w instanceof Window && ((Window) w).isActive();
+    // Container w = c.getTopLevelAncestor();
+    // boolean isActive = w instanceof Window && ((Window) w).isActive();
+    Window w = SwingUtilities.getWindowAncestor(c);
+    boolean isActive = w != null && w.isActive();
     return c.hasFocus() && isActive ? super.getSelectionPainter() : NO_FOCUS_PAINTER;
     // https://ateraimemo.com/Swing/CaretSelectionHighlight.html
     // return c.hasFocus() ? super.getSelectionPainter() : NO_FOCUS_PAINTER;
