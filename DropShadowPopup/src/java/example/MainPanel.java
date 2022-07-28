@@ -54,10 +54,8 @@ public final class MainPanel extends JPanel {
     p.add("Exit").addActionListener(e -> {
       JMenuItem m = (JMenuItem) e.getSource();
       JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
-      Component w = SwingUtilities.getRoot(pop.getInvoker());
-      if (w instanceof Window) {
-        ((Window) w).dispose();
-      }
+      Optional.ofNullable(SwingUtilities.getWindowAncestor(pop.getInvoker()))
+          .ifPresent(Window::dispose);
     });
   }
 

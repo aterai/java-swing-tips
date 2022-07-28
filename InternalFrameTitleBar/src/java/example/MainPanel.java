@@ -11,21 +11,18 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JButton closeButton = new JButton("close");
     closeButton.addActionListener(e -> {
-      Component c = SwingUtilities.getRoot((Component) e.getSource());
-      if (c instanceof Window) {
-        Window w = (Window) c;
-        // w.dispose();
-        w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
-      }
+      Component c = (Component) e.getSource();
+      Optional.ofNullable(SwingUtilities.getWindowAncestor(c)) // .ifPresent(Window::dispose);
+          .ifPresent(w -> w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING)));
     });
 
     JPanel p = new JPanel(new BorderLayout());
