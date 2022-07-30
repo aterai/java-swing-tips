@@ -37,15 +37,24 @@ public final class MainPanel extends JPanel {
     sub.addTab("Title bb", new JScrollPane(new JTree()));
     sub.addTab("Title cc", new JScrollPane(new JTextArea("123412341234\n46746745\n245342\n")));
 
+    JCheckBox check = new JCheckBox();
+    check.setOpaque(false);
+    check.setSelected(true);
+    JPanel p = new JPanel(new BorderLayout());
+    p.setOpaque(false);
+    p.add(check, BorderLayout.WEST);
+    p.add(new JLabel("JTree 00"));
+
     DnDTabbedPane tab = new DnDTabbedPane();
     tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tab.addTab("JTree 00", new JScrollPane(new JTree()));
-    tab.addTab("JLabel 01", new JLabel("Test"));
-    tab.addTab("JTable 02", new JScrollPane(new JTable(20, 3)));
-    tab.addTab("JTextArea 03", new JScrollPane(new JTextArea("111111111\n2222222222\n")));
-    tab.addTab("JLabel 04", new JLabel("<html>33333333333<br>13412341234123446745"));
-    tab.addTab("null 05", null);
-    tab.addTab("JTabbedPane 06", sub);
+    tab.setTabComponentAt(0, p);
+    tab.addTab("JLabel 01", new ColorIcon(Color.RED), new JLabel("Test"));
+    tab.addTab("JTable 02", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(20, 3)));
+    tab.addTab("JTabbedPane 03", new ColorIcon(Color.BLUE), sub);
+    tab.addTab("JTextArea 04", new JScrollPane(new JTextArea("1\n22\n")));
+    tab.addTab("JLabel 05", new JLabel("<html>33333333333<br>13412341234123446745"));
+    tab.addTab("null 06", null);
     tab.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
     add(makeCheckBoxPanel(tab), BorderLayout.NORTH);
@@ -251,8 +260,13 @@ class DnDTabbedPane extends JTabbedPane {
     getRootPane().setGlassPane(glassPane);
     if (hasGhost) {
       Component c = getTabComponentAt(dragTabIndex);
-      Component copy = Optional.ofNullable(c)
-          .orElseGet(() -> new JLabel(getTitleAt(dragTabIndex)));
+      Component copy = Optional.ofNullable(c).orElseGet(() -> {
+        String title = getTitleAt(dragTabIndex);
+        Icon icon = getIconAt(dragTabIndex);
+        JLabel label = new JLabel(title, icon, SwingConstants.LEADING); // Nimbus?
+        label.setIconTextGap(UIManager.getInt("TabbedPane.textIconGap"));
+        return label;
+      });
       Dimension d = copy.getPreferredSize();
       BufferedImage image = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = image.createGraphics();
@@ -567,5 +581,31 @@ class GhostGlassPane extends JComponent {
     g2.setPaint(lineColor);
     g2.fill(lineRect);
     g2.dispose();
+  }
+}
+
+class ColorIcon implements Icon {
+  private final Color color;
+
+  protected ColorIcon(Color color) {
+    this.color = color;
+  }
+
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.translate(x, y);
+    g2.setPaint(color);
+    g2.fillRect(2, 2, getIconWidth() - 4, getIconHeight() - 4);
+    g2.setPaint(Color.BLACK);
+    g2.drawRect(2, 2, getIconWidth() - 4, getIconHeight() - 4);
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 16;
+  }
+
+  @Override public int getIconHeight() {
+    return 16;
   }
 }
