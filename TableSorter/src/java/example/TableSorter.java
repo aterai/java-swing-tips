@@ -106,7 +106,7 @@ import javax.swing.table.TableModel;
  * @author Parwinder Sekhon
  * @version 2.0 02/27/04
  */
-@SuppressWarnings("DesignForExtension")
+@SuppressWarnings({"PMD.TooManyMethods", "DesignForExtension"})
 public class TableSorter extends AbstractTableModel {
   public static final int DESCENDING = -1;
   public static final int NOT_SORTED = 0;

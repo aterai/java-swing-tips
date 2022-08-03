@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicHTML;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class TitledBorder2 extends TitledBorder {
   private final JLabel label2;
 
