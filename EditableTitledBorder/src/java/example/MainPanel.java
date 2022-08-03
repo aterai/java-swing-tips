@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
@@ -27,12 +26,23 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(0, 1, 5, 5));
 
     String t1 = "JTree 111111111111111";
-    JScrollPane l1 = new JScrollPane(new JTree());
-    l1.setBorder(new EditableTitledBorder(t1, l1));
+    JScrollPane l1 = new JScrollPane(new JTree()) {
+      @Override public void updateUI() {
+        setBorder(null);
+        super.updateUI();
+        setBorder(new EditableTitledBorder(t1, this));
+      }
+    };
 
     String t2 = "JTextArea";
-    JScrollPane l2 = new JScrollPane(new JTextArea(HELP));
-    l2.setBorder(new EditableTitledBorder(null, t2, TitledBorder.RIGHT, TitledBorder.BOTTOM, l2));
+    JScrollPane l2 = new JScrollPane(new JTextArea(HELP)) {
+      @Override public void updateUI() {
+        setBorder(null);
+        super.updateUI();
+        setBorder(new EditableTitledBorder(
+            null, t2, TitledBorder.RIGHT, TitledBorder.BOTTOM, this));
+      }
+    };
 
     add(l1);
     add(l2);
@@ -60,7 +70,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class EditableTitledBorder extends TitledBorder implements MouseListener {
+class EditableTitledBorder extends TitledBorder {
   protected final Container glassPane = new EditorGlassPane();
   protected final JTextField editor = new JTextField();
   protected final JLabel renderer = new JLabel();
@@ -73,15 +83,16 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
         Optional.ofNullable(((JComponent) comp).getRootPane())
             .ifPresent(r -> r.setGlassPane(glassPane));
       }
-      glassPane.removeAll();
-      glassPane.add(editor);
-      glassPane.setVisible(true);
-
       Point p = SwingUtilities.convertPoint(comp, rect.getLocation(), glassPane);
       rect.setLocation(p);
+      // Insets i = editor.getInsets();
+      // rect.grow(i.top + i.bottom, i.left + i.right);
       rect.grow(2, 2);
       editor.setBounds(rect);
       editor.setText(getTitle());
+      glassPane.removeAll();
+      glassPane.add(editor);
+      glassPane.setVisible(true);
       editor.selectAll();
       editor.requestFocusInWindow();
     }
@@ -113,33 +124,47 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
   //   this(border, title, LEADING, DEFAULT_POSITION, null, null, c);
   // }
 
-  protected EditableTitledBorder(Border border,
-                                 String title,
-                                 int justification,
-                                 int pos,
-                                 Component c) {
+  protected EditableTitledBorder(
+      Border border,
+      String title,
+      int justification,
+      int pos,
+      Component c) {
     this(border, title, justification, pos, null, null, c);
   }
 
-  // protected EditableTitledBorder(Border border,
-  //                                String title,
-  //                                int justification,
-  //                                int pos,
-  //                                Font font,
-  //                                Component c) {
+  // protected EditableTitledBorder(
+  //     Border border,
+  //     String title,
+  //     int justification,
+  //     int pos,
+  //     Font font,
+  //     Component c) {
   //   this(border, title, justification, pos, font, null, c);
   // }
 
-  protected EditableTitledBorder(Border border,
-                                 String title,
-                                 int justification,
-                                 int pos,
-                                 Font font,
-                                 Color color,
-                                 Component c) {
+  protected EditableTitledBorder(
+      Border border,
+      String title,
+      int justification,
+      int pos,
+      Font font,
+      Color color,
+      Component c) {
     super(border, title, justification, pos, font, color);
     this.comp = c;
-    comp.addMouseListener(this);
+    comp.addMouseListener(new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        boolean isDoubleClick = e.getClickCount() >= 2;
+        if (isDoubleClick) {
+          Component src = e.getComponent();
+          rect.setBounds(getTitleBounds(src));
+          if (rect.contains(e.getPoint())) {
+            startEditing.actionPerformed(new ActionEvent(src, ActionEvent.ACTION_PERFORMED, ""));
+          }
+        }
+      }
+    });
     InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
     ActionMap am = editor.getActionMap();
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
@@ -150,33 +175,6 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
 
   @Override public boolean isBorderOpaque() {
     return true;
-  }
-
-  @Override public void mouseClicked(MouseEvent e) {
-    boolean isDoubleClick = e.getClickCount() >= 2;
-    if (isDoubleClick) {
-      Component src = e.getComponent();
-      rect.setBounds(getTitleBounds(src));
-      if (rect.contains(e.getPoint())) {
-        startEditing.actionPerformed(new ActionEvent(src, ActionEvent.ACTION_PERFORMED, ""));
-      }
-    }
-  }
-
-  @Override public void mouseEntered(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseExited(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mousePressed(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseReleased(MouseEvent e) {
-    /* not needed */
   }
 
   private JLabel getLabel2(Component c) {
@@ -200,7 +198,7 @@ class EditableTitledBorder extends TitledBorder implements MouseListener {
   }
 
   // @see public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
-  private Rectangle getTitleBounds(Component c) {
+  protected Rectangle getTitleBounds(Component c) {
     String title = getTitle();
     if (Objects.nonNull(title) && !title.isEmpty()) {
       Border border = getBorder();
