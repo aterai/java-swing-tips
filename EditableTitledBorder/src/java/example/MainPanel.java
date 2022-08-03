@@ -24,28 +24,35 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
-
-    String t1 = "JTree 111111111111111";
-    JScrollPane l1 = new JScrollPane(new JTree()) {
+    JScrollPane c1 = new JScrollPane(new JTree()) {
       @Override public void updateUI() {
+        Border b = getBorder();
+        String title = "JTree 111111111111111";
+        if (b instanceof TitledBorder) {
+          title = ((TitledBorder) b).getTitle();
+        }
         setBorder(null);
         super.updateUI();
-        setBorder(new EditableTitledBorder(t1, this));
+        setBorder(new EditableTitledBorder(title, this));
       }
     };
 
-    String t2 = "JTextArea";
-    JScrollPane l2 = new JScrollPane(new JTextArea(HELP)) {
+    JScrollPane c2 = new JScrollPane(new JTextArea(HELP)) {
       @Override public void updateUI() {
+        Border b = getBorder();
+        String title = "JTextArea";
+        if (b instanceof TitledBorder) {
+          title = ((TitledBorder) b).getTitle();
+        }
         setBorder(null);
         super.updateUI();
         setBorder(new EditableTitledBorder(
-            null, t2, TitledBorder.RIGHT, TitledBorder.BOTTOM, this));
+            null, title, TitledBorder.RIGHT, TitledBorder.BOTTOM, this));
       }
     };
 
-    add(l1);
-    add(l2);
+    add(c1);
+    add(c2);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
   }
