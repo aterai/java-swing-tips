@@ -32,12 +32,11 @@ public final class MainPanel extends JPanel {
     combo2.setRenderer(new DefaultListCellRenderer() {
       private int cellHeight;
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         // Dimension d = super.getPreferredSize();
         // cellHeight = index < 0 ? d.height : 32;
         cellHeight = Optional.ofNullable(super.getPreferredSize())
             .filter(d -> index < 0).map(d -> d.height).orElse(32);
-        return this;
+        return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       }
 
       @Override public Dimension getPreferredSize() {

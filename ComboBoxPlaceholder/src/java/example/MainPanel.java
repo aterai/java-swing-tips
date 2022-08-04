@@ -12,7 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[][] arrays = {
         {"blue", "violet", "red", "yellow"},
         {"basketball", "soccer", "football", "hockey"},
@@ -26,8 +25,7 @@ public final class MainPanel extends JPanel {
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         // XXX: String str = index < 0 ? "- Select category -" : value.toString();
         String str = Objects.toString(value, "- Select category -");
-        super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
-        return this;
+        return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
       }
     });
     // combo1.addActionListener(e -> {
@@ -51,8 +49,8 @@ public final class MainPanel extends JPanel {
     combo2.setRenderer(new DefaultListCellRenderer() {
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         String str = Objects.toString(value, "- Select type -");
-        super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
-        return this;
+        
+        return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
       }
     });
 

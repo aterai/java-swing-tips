@@ -85,23 +85,25 @@ public final class MainPanel extends JPanel {
 
   private class CalendarTableRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-      super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-      setHorizontalAlignment(SwingConstants.CENTER);
-      if (value instanceof LocalDate) {
+      Component c = super.getTableCellRendererComponent(
+          table, value, selected, focused, row, column);
+      if (c instanceof JLabel && value instanceof LocalDate) {
+        JLabel l = (JLabel) c;
+        l.setHorizontalAlignment(SwingConstants.CENTER);
         LocalDate d = (LocalDate) value;
-        setText(Objects.toString(d.getDayOfMonth()));
+        l.setText(Objects.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-          setForeground(Color.BLACK);
+          l.setForeground(Color.BLACK);
         } else {
-          setForeground(Color.GRAY);
+          l.setForeground(Color.GRAY);
         }
         if (d.isEqual(realLocalDate)) {
-          setBackground(new Color(0xDC_FF_DC));
+          l.setBackground(new Color(0xDC_FF_DC));
         } else {
-          setBackground(getDayOfWeekColor(d.getDayOfWeek()));
+          l.setBackground(getDayOfWeekColor(d.getDayOfWeek()));
         }
       }
-      return this;
+      return c;
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {

@@ -112,10 +112,14 @@ class HighlightRenderer extends DefaultTableCellRenderer {
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
-    setBackground(table.getBackground());
-    highlighter.getCellHighlightColor(row, column).ifPresent(this::setBackground);
-    return this;
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
+      l.setBackground(table.getBackground());
+      highlighter.getCellHighlightColor(row, column).ifPresent(c::setBackground);
+    }
+    return c;
   }
 }
