@@ -49,7 +49,6 @@ public final class MainPanel extends JPanel {
     combo2.setRenderer(new DefaultListCellRenderer() {
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         String str = Objects.toString(value, "- Select type -");
-        
         return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
       }
     });

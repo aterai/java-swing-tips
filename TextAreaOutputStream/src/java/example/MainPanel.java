@@ -271,7 +271,7 @@ class TextAreaHandler extends StreamHandler {
 //   }
 // }
 
-// // http://d.hatena.ne.jp/altcla/20091029/1256824750
+// // https://altcla.hatenadiary.org/entry/20091029/1256824750
 // class TextAreaOutputStream extends OutputStream {
 //   private JTextArea textArea;
 //   private ByteArrayOutputStream buf;
@@ -284,6 +284,7 @@ class TextAreaHandler extends StreamHandler {
 //   @Override public void write(int i) throws IOException {
 //     buf.write(i);
 //   }
+//
 //   @Override public void flush() throws IOException {
 //     EventQueue.invokeLater(new Runnable() {
 //       @Override public void run() {
@@ -303,6 +304,7 @@ class TextAreaHandler extends StreamHandler {
 //     super();
 //     this.textArea = textArea;
 //   }
+//
 //   @Override public void write(int i) throws IOException {
 //     String s;
 //     if (Character.charCount(i) == 1) {
@@ -322,6 +324,7 @@ class TextAreaHandler extends StreamHandler {
 //     super();
 //     this.textArea = textArea;
 //   }
+//
 //   @Override public void write(int i) throws IOException {
 //     textArea.append(Objects.toString((char) i));
 //     textArea.setCaretPosition(textArea.getDocument().getLength());
@@ -334,6 +337,7 @@ class TextAreaHandler extends StreamHandler {
 //     super();
 //     this.doc = doc;
 //   }
+//
 //   @Override public void write(int i) throws IOException {
 //     try {
 //       doc.replace(doc.getLength(), 0, new String(Character.toChars(i)), null);

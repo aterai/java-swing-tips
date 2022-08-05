@@ -19,6 +19,7 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
   public static ComponentUI createUI(JComponent c) {
     return new CustomPopupMenuUI();
   }
+
   // public static JFrame frame = null;
   // private static boolean isInRootPanel(JComponent popup, Point p) {
   //   if (Objects.isNull(frame)) {
@@ -54,9 +55,11 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
   //     }
   //     screenShot = bi;
   //   }
+  //
   //   @Override public Insets getBorderInsets(Component c) {
   //     return new Insets(0, 0, OFF, OFF);
   //   }
+  //
   //   @Override public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
   //     if (screenShot == null) {
   //       return;
@@ -67,6 +70,7 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
   //     g2.dispose();
   //   }
   // }
+  //
   // @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
   //   Popup pp = super.getPopup(popup, x, y);
   //   JPanel panel = (JPanel) SwingUtilities.getUnwrappedParent(popup);
@@ -88,7 +92,7 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
       EventQueue.invokeLater(() -> {
         Window w = SwingUtilities.getWindowAncestor(popup);
         if (w != null && w.getType() == Window.Type.POPUP) {
-          w.setBackground(new Color(0x0, true)); // JDK 1.7.0
+          w.setBackground(new Color(0x0, true));
         }
       });
       Container c = SwingUtilities.getUnwrappedParent(popup);
