@@ -12,11 +12,9 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     UIManager.put("SplitPane.oneTouchButtonSize", 32);
     UIManager.put("SplitPane.oneTouchButtonOffset", 50);
-    UIManager.put("SplitPane.centerOneTouchButtons", true);
-
+    // UIManager.put("SplitPane.centerOneTouchButtons", true);
     UIManager.put("SplitPaneDivider.border", BorderFactory.createLineBorder(Color.RED, 10));
     UIManager.put("SplitPaneDivider.draggingColor", new Color(0x64_FF_64_64, true));
 
@@ -44,7 +42,8 @@ public final class MainPanel extends JPanel {
     divider.setBackground(Color.ORANGE);
     for (Component c : divider.getComponents()) {
       if (c instanceof JButton) {
-        JButton b = (JButton) c;
+        c.setBackground(Color.ORANGE);
+        // JButton b = (JButton) c;
         // @see BasicSplitPaneDivider#createLeftOneTouchButton()
         // @see BasicSplitPaneDivider#createRightOneTouchButton()
         // public void paint(Graphics g) {
@@ -54,7 +53,6 @@ public final class MainPanel extends JPanel {
         //  ...
         // b.setOpaque(false);
         // b.setForeground(Color.BLUE);
-        b.setBackground(Color.ORANGE);
       }
     }
   }

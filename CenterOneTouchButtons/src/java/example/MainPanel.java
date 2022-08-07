@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(splitPane);
-    setBorder(BorderFactory.createEmptyBorder(25, 5, 25, 5));
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
