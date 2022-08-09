@@ -111,9 +111,15 @@ class IconItem {
 
 class IconTableCellRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    setIcon(((IconItem) value).large);
-    setHorizontalAlignment(SwingConstants.CENTER);
-    return this;
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel && value instanceof IconItem) {
+      JLabel l = (JLabel) c;
+      l.setIcon(((IconItem) value).large);
+      l.setText(null);
+      l.setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return c;
   }
 }
 

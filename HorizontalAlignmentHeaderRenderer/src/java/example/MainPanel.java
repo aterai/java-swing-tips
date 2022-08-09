@@ -23,9 +23,12 @@ public final class MainPanel extends JPanel {
     JTable table1 = makeTable();
     table1.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        setHorizontalAlignment(SwingConstants.CENTER);
-        return this;
+        Component c = super.getTableCellRendererComponent(
+            table, value, isSelected, hasFocus, row, column);
+        if (c instanceof JLabel) {
+          ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+        }
+        return c;
       }
     });
 
