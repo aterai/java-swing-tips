@@ -150,14 +150,14 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     if (c instanceof JLabel) {
       TableColumnModel cm = table.getColumnModel();
       TableColumn col = cm.getColumn(column);
-      Insets i = this.getInsets();
+      JLabel l = (JLabel) c;
+      Insets i = l.getInsets();
       CELL_RECT.x = i.left;
       CELL_RECT.y = i.top;
       CELL_RECT.width = col.getWidth() - cm.getColumnMargin() - i.right - CELL_RECT.x;
       CELL_RECT.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - CELL_RECT.y;
       ICON_RECT.setBounds(0, 0, 0, 0);
       TEXT_RECT.setBounds(0, 0, 0, 0);
-      JLabel l = (JLabel) c;
       String str = SwingUtilities.layoutCompoundLabel(
           l,
           l.getFontMetrics(l.getFont()),

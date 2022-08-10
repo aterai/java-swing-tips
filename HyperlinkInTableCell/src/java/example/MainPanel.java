@@ -117,45 +117,22 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   private boolean isRollover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-    // >>>> @see https://ateraimemo.com/Swing/ClippedHtmlLabel.html
-    // int mw = table.getColumnModel().getColumnMargin();
-    // int rh = table.getRowMargin();
-    // int w = table.getColumnModel().getColumn(column).getWidth();
-    // int h = table.getRowHeight(row);
-    //
-    // Insets i = this.getInsets();
-    // CELL_RECT.x = i.left;
-    // CELL_RECT.y = i.top;
-    // CELL_RECT.width = w - (mw + i.right + CELL_RECT.x);
-    // CELL_RECT.height = h - (rh + i.bottom + CELL_RECT.y);
-    // ICON_RECT.x = ICON_RECT.y = ICON_RECT.width = ICON_RECT.height = 0;
-    // TEXT_RECT.x = TEXT_RECT.y = TEXT_RECT.width = TEXT_RECT.height = 0;
-    //
-    // String str = SwingUtilities.layoutCompoundLabel(
-    //   this,
-    //   this.getFontMetrics(this.getFont()),
-    //   Objects.toString(value, ""), // this.getText(),
-    //   this.getIcon(),
-    //   this.getVerticalAlignment(),
-    //   this.getHorizontalAlignment(),
-    //   this.getVerticalTextPosition(),
-    //   this.getHorizontalTextPosition(),
-    //   CELL_RECT,
-    //   ICON_RECT, // icon
-    //   TEXT_RECT, // text
-    //   this.getIconTextGap());
-    // <<<<
-    String str = Objects.toString(value, "");
-
-    if (isRolloverCell(table, row, column)) {
-      setText("<html><u><font color='blue'>" + str);
-    } else if (hasFocus) {
-      setText("<html><font color='blue'>" + str);
-    } else {
-      setText(str);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, false, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      // @see https://ateraimemo.com/Swing/ClippedHtmlLabel.html
+      // String str = SwingUtilities.layoutCompoundLabel(...);
+      String str = Objects.toString(value, "");
+      if (isRolloverCell(table, row, column)) {
+        l.setText("<html><u><font color='blue'>" + str);
+      } else if (hasFocus) {
+        l.setText("<html><font color='blue'>" + str);
+      } else {
+        l.setText(str);
+      }
     }
-    return this;
+    return c;
   }
 
   protected boolean isRolloverCell(JTable table, int row, int column) {
