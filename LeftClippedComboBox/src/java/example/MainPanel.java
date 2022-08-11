@@ -57,12 +57,15 @@ public final class MainPanel extends JPanel {
     JButton arrowButton = getArrowButton(combo);
     combo.setRenderer(new DefaultListCellRenderer() {
       @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        String text = Objects.toString(value, "");
-        FontMetrics fm = getFontMetrics(getFont());
-        int width = getAvailableWidth(combo, index);
-        setText(getLeftClippedText(text, fm, width));
-        return this;
+        Component c = super.getListCellRendererComponent(
+            list, value, index, isSelected, cellHasFocus);
+        if (c instanceof JLabel) {
+          String text = Objects.toString(value, "");
+          FontMetrics fm = c.getFontMetrics(c.getFont());
+          int width = getAvailableWidth(combo, index);
+          ((JLabel) c).setText(getLeftClippedText(text, fm, width));
+        }
+        return c;
       }
 
       private int getAvailableWidth(JComboBox<String> combo, int index) {
