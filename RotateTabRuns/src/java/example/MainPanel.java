@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
               return false;
             }
 
+            // This method with two arguments is not used at all elsewhere and may be a bug.
             @Override protected boolean shouldRotateTabRuns(int tabPlacement, int selectedRun) {
               return false;
             }
