@@ -117,38 +117,40 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   private boolean isRollover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
-    TableColumnModel cm = table.getColumnModel();
-    TableColumn col = cm.getColumn(column);
-    // TEST: this.setBorder(BorderFactory.createMatteBorder(0, 16, 0, 16, Color.RED));
-    Insets i = this.getInsets();
-    CELL_RECT.x = i.left;
-    CELL_RECT.y = i.top;
-    CELL_RECT.width = col.getWidth() - cm.getColumnMargin() - i.right - CELL_RECT.x;
-    CELL_RECT.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - CELL_RECT.y;
-    ICON_RECT.setBounds(0, 0, 0, 0); // .x = ICON_RECT.y = ICON_RECT.width = ICON_RECT.height = 0;
-    TEXT_RECT.setBounds(0, 0, 0, 0); // .x = TEXT_RECT.y = TEXT_RECT.width = TEXT_RECT.height = 0;
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, false, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      TableColumnModel cm = table.getColumnModel();
+      TableColumn col = cm.getColumn(column);
+      Insets i = l.getInsets();
+      CELL_RECT.x = i.left;
+      CELL_RECT.y = i.top;
+      CELL_RECT.width = col.getWidth() - cm.getColumnMargin() - i.right - CELL_RECT.x;
+      CELL_RECT.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - CELL_RECT.y;
+      ICON_RECT.setBounds(0, 0, 0, 0);
+      TEXT_RECT.setBounds(0, 0, 0, 0);
+      String str = SwingUtilities.layoutCompoundLabel(
+          l,
+          l.getFontMetrics(l.getFont()),
+          Objects.toString(value, ""),
+          l.getIcon(),
+          l.getVerticalAlignment(),
+          l.getHorizontalAlignment(),
+          l.getVerticalTextPosition(),
+          l.getHorizontalTextPosition(),
+          CELL_RECT,
+          ICON_RECT,
+          TEXT_RECT,
+          l.getIconTextGap());
 
-    String str = SwingUtilities.layoutCompoundLabel(
-        this,
-        this.getFontMetrics(this.getFont()),
-        Objects.toString(value, ""), // this.getText(),
-        this.getIcon(),
-        this.getVerticalAlignment(),
-        this.getHorizontalAlignment(),
-        this.getVerticalTextPosition(),
-        this.getHorizontalTextPosition(),
-        CELL_RECT,
-        ICON_RECT, // icon
-        TEXT_RECT, // text
-        this.getIconTextGap());
-
-    if (isRolloverCell(table, row, column)) {
-      setText("<html><u><font color='blue'>" + str);
-    } else {
-      setText(str);
+      if (isRolloverCell(table, row, column)) {
+        l.setText("<html><u><font color='blue'>" + str);
+      } else {
+        l.setText(str);
+      }
     }
-    return this;
+    return c;
   }
 
   protected boolean isRolloverCell(JTable table, int row, int column) {
