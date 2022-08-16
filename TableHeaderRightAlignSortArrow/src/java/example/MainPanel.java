@@ -47,6 +47,28 @@ public final class MainPanel extends JPanel {
     mb.add(check);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
+    // // NimbusLookAndFeel TEST:
+    // if (UIManager.getLookAndFeel().getClass().getName().contains("Nimbus")) {
+    //   UIManager.put(key, Boolean.FALSE);
+    //   TableCellRenderer renderer = (t, value, isSelected, hasFocus, row, column) -> {
+    //     TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
+    //     Component c = r.getTableCellRendererComponent(
+    //         t, value, isSelected, hasFocus, row, column);
+    //     if (c instanceof JLabel) {
+    //       JLabel l = (JLabel) c;
+    //       UIDefaults d = new UIDefaults();
+    //       d.put(key, Boolean.FALSE);
+    //       l.putClientProperty("Nimbus.Overrides", d);
+    //       l.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    //     }
+    //     return c;
+    //   };
+    //   TableColumnModel cm = table.getColumnModel();
+    //   for (int i = 1; i < cm.getColumnCount(); i++) {
+    //     cm.getColumn(i).setHeaderRenderer(renderer);
+    //   }
+    // }
+
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
