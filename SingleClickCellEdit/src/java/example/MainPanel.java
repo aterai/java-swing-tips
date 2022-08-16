@@ -97,15 +97,17 @@ class UnderlineCellRenderer extends DefaultTableCellRenderer
   private int viewColumnIndex = -1;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    String str = Objects.toString(value, "");
-    if (!table.isEditing() && viewRowIndex == row && viewColumnIndex == column) {
-      setText("<html><u>" + str);
-    } else {
-      setText(str);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      String str = Objects.toString(value, "");
+      if (!table.isEditing() && viewRowIndex == row && viewColumnIndex == column) {
+        ((JLabel) c).setText("<html><u>" + str);
+      } else {
+        ((JLabel) c).setText(str);
+      }
     }
-    // setForeground(table.getForeground());
-    return this;
+    return c;
   }
 
   @Override public void mouseMoved(MouseEvent e) {
