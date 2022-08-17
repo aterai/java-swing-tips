@@ -104,7 +104,6 @@ public final class MainPanel extends JPanel {
   }
 
   private static class SudokuCellRenderer extends DefaultTableCellRenderer {
-    private final Font bold;
     private final Border b0 = BorderFactory.createMatteBorder(0, 0, BW1, BW1, Color.GRAY);
     private final Border b1 = BorderFactory.createMatteBorder(0, 0, BW2, BW2, Color.BLACK);
     private final Border b2 = BorderFactory.createCompoundBorder(
@@ -118,7 +117,6 @@ public final class MainPanel extends JPanel {
     @SuppressWarnings("PMD.UseVarargs")
     protected SudokuCellRenderer(Integer[][] src) {
       super();
-      this.bold = getFont().deriveFont(Font.BOLD);
       Integer[][] dest = new Integer[src.length][src[0].length];
       for (int i = 0; i < src.length; i++) {
         System.arraycopy(src[i], 0, dest[i], 0, src[0].length);
@@ -128,25 +126,28 @@ public final class MainPanel extends JPanel {
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
       boolean isEditable = mask[row][column] == 0;
-      super.getTableCellRendererComponent(
+      Component c = super.getTableCellRendererComponent(
           table, value, isEditable && isSelected, hasFocus, row, column);
-      if (isEditable && Objects.equals(value, 0)) {
-        this.setText(" ");
+      c.setFont(isEditable ? c.getFont() : c.getFont().deriveFont(Font.BOLD));
+      if (c instanceof JLabel) {
+        JLabel l = (JLabel) c;
+        l.setHorizontalAlignment(CENTER);
+        if (isEditable && Objects.equals(value, 0)) {
+          l.setText(" ");
+        }
+        boolean rf = (row + 1) % 3 == 0;
+        boolean cf = (column + 1) % 3 == 0;
+        if (rf && cf) {
+          l.setBorder(b1);
+        } else if (rf) {
+          l.setBorder(b2);
+        } else if (cf) {
+          l.setBorder(b3);
+        } else {
+          l.setBorder(b0);
+        }
       }
-      setFont(isEditable ? getFont() : bold);
-      setHorizontalAlignment(CENTER);
-      boolean rf = (row + 1) % 3 == 0;
-      boolean cf = (column + 1) % 3 == 0;
-      if (rf && cf) {
-        setBorder(b1);
-      } else if (rf) {
-        setBorder(b2);
-      } else if (cf) {
-        setBorder(b3);
-      } else {
-        setBorder(b0);
-      }
-      return this;
+      return c;
     }
   }
 

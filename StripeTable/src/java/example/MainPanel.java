@@ -13,7 +13,6 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     RowDataModel model = new RowDataModel();
     model.addRowData(new RowData("Name 1", "comment..."));
     model.addRowData(new RowData("Name 2", "Test"));
@@ -84,24 +83,27 @@ class StripeTableRenderer extends DefaultTableCellRenderer {
   private static final Color EVEN_COLOR = new Color(0xF0_F0_FF);
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
+      c.setForeground(table.getSelectionForeground());
+      c.setBackground(table.getSelectionBackground());
     } else {
-      setForeground(table.getForeground());
-      setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
+      c.setForeground(table.getForeground());
+      c.setBackground(row % 2 == 0 ? EVEN_COLOR : table.getBackground());
     }
-    setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
-    return this;
+    if (c instanceof JLabel) {
+      ((JLabel) c).setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
+    }
+    return c;
   }
 }
 
 class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true)
   };
   private int number;
 
