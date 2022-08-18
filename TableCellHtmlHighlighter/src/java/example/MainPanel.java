@@ -134,7 +134,6 @@ class HighlightTableCellRenderer extends DefaultTableCellRenderer {
       buf.append(txt.substring(pos));
       txt = buf.toString();
     }
-    super.getTableCellRendererComponent(table, txt, isSelected, hasFocus, row, column);
-    return this;
+    return super.getTableCellRendererComponent(table, txt, isSelected, hasFocus, row, column);
   }
 }
