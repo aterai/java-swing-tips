@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -20,10 +21,10 @@ public final class MainPanel extends JPanel {
 
     ActionMap am = tabs.getActionMap();
     String forward = "scrollTabsForwardAction";
-    am.put(forward, new ScrollTabsAction(tabs, forward));
+    am.put(forward, new ScrollTabsAction(tabs, am.get(forward)));
 
     String backward = "scrollTabsBackwardAction";
-    am.put(backward, new ScrollTabsAction(tabs, backward));
+    am.put(backward, new ScrollTabsAction(tabs, am.get(backward)));
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
@@ -51,18 +52,19 @@ public final class MainPanel extends JPanel {
 
 class ScrollTabsAction extends AbstractAction {
   private final JTabbedPane tabbedPane;
-  private final String direction;
+  private final Action action;
   private final int index;
 
-  protected ScrollTabsAction(JTabbedPane tabbedPane, String direction) {
+  protected ScrollTabsAction(JTabbedPane tabbedPane, Action action) {
     super();
     this.tabbedPane = tabbedPane;
-    this.direction = direction;
-    this.index = "scrollTabsForwardAction".equals(direction) ? tabbedPane.getTabCount() - 1 : 0;
+    this.action = action;
+    Object name = action.getValue(Action.NAME);
+    String forward = "scrollTabsForwardAction";
+    this.index = Objects.equals(name, forward) ? tabbedPane.getTabCount() - 1 : 0;
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    Action action = tabbedPane.getActionMap().get(direction);
     if (action != null && action.isEnabled()) {
       boolean isCtrlDown = (e.getModifiers() & ActionEvent.CTRL_MASK) != 0;
       if (isCtrlDown) {
