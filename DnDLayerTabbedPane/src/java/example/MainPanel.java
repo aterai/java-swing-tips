@@ -575,7 +575,7 @@ class TabTransferHandler extends TransferHandler {
 
     // [JDK-6700748]
     // Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
-    // https://bugs.openjdk.java.net/browse/JDK-6700748
+    // https://bugs.openjdk.org/browse/JDK-6700748
     target.setCursor(canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
     support.setShowDropLocation(canDrop);

@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     box.setBorder(BorderFactory.createTitledBorder("Extract frames from Animated GIF"));
 
     // [JDK-8080225] FileInput/OutputStream/FileChannel cleanup should be improved - Java Bug System
-    // https://bugs.openjdk.java.net/browse/JDK-8080225
+    // https://bugs.openjdk.org/browse/JDK-8080225
     // try (InputStream is = getClass().getResourceAsStream("duke.running.gif");
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     // URL url = getClass().getResource("duke.running.gif");

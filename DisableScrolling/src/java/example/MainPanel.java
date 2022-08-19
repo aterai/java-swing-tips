@@ -14,7 +14,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   // [JDK-6299213]
   // The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731)
-  // Fixed: https://bugs.openjdk.java.net/browse/JDK-6299213
+  // Fixed: https://bugs.openjdk.org/browse/JDK-6299213
   // private final JScrollPane scroll = new JScrollPane(table) {
   //   @Override public void updateUI() {
   //     super.updateUI();

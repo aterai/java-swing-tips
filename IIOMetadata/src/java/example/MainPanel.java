@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     StringBuilder buf = new StringBuilder();
 
     // [JDK-8080225] FileInput/OutputStream/FileChannel cleanup should be improved - Java Bug System
-    // https://bugs.openjdk.java.net/browse/JDK-8080225
+    // https://bugs.openjdk.org/browse/JDK-8080225
     // try (InputStream is = getClass().getResourceAsStream("test.jpg");
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();

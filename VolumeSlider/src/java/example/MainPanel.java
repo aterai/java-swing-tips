@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
       @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
         // [JDK-5099681]
         // Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
-        // https://bugs.openjdk.java.net/browse/JDK-5099681
+        // https://bugs.openjdk.org/browse/JDK-5099681
         label.setForeground(Color.GREEN);
         super.paintHorizontalLabel(g, value, label);
       }

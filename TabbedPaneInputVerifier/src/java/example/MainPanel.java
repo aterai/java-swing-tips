@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
 
     // [JDK-4403182] InputVerifier failed on JTabbedPane & JMenuBar - Java Bug System
-    // https://bugs.openjdk.java.net/browse/JDK-4403182
+    // https://bugs.openjdk.org/browse/JDK-4403182
     // JTabbedPane tabbedPane0 = makeTestTabbedPane();
     // TEST: tabbedPane0.setVerifyInputWhenFocusTarget(true);
     // TEST: tabbedPane0.setFocusCycleRoot(false);

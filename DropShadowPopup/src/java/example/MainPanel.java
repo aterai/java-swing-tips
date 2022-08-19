@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
   private static void initPopupMenu(JPopupMenu p) {
     Stream.of("Open", "Save", "Close").map(s -> s.concat("(dummy)")).forEach(p::add);
     // [JDK-6595814] Nimbus LAF: Renderers, MenuSeparators, colors rollup bug - Java Bug System
-    // https://bugs.openjdk.java.net/browse/JDK-6595814
+    // https://bugs.openjdk.org/browse/JDK-6595814
     // Fixed 6u10: p.add(new JSeparator());
     p.addSeparator();
     p.add("Exit").addActionListener(e -> {

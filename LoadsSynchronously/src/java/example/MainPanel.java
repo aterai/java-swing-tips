@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     tabs.addTab("<img width='%d' ...", new JScrollPane(editor1));
 
     // ImageView incorrectly calculates size when synchronously loaded - Java Bug System
-    // https://bugs.openjdk.java.net/browse/JDK-8223384
+    // https://bugs.openjdk.org/browse/JDK-8223384
     JEditorPane editor2 = new JEditorPane();
     editor2.setEditorKit(new ImageLoadSynchronouslyHtmlEditorKit());
     tabs.addTab("LoadsSynchronously", new JScrollPane(editor2));

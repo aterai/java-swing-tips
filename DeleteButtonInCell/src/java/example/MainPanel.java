@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
       }
       // @Override public int rowAtPoint(Point pt) {
       //   // [JDK-6291631] JTable: rowAtPoint returns 0 for negative y - Java Bug System
-      //   // https://bugs.openjdk.java.net/browse/JDK-6291631
+      //   // https://bugs.openjdk.org/browse/JDK-6291631
       //   return pt.y < 0 ? -1 : super.rowAtPoint(pt);
       // }
     };
