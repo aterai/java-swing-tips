@@ -164,22 +164,25 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
   }
 }
 
-class LocalDateTimeCellRenderer extends JLabel implements ListCellRenderer<LocalDateTime> {
+class LocalDateTimeCellRenderer implements ListCellRenderer<LocalDateTime> {
+  private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
   private static final String PATTERN = "yyyy/MM/dd";
-  private final transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
 
   @Override public Component getListCellRendererComponent(JList<? extends LocalDateTime> list, LocalDateTime value, int index, boolean isSelected, boolean cellHasFocus) {
-    if (Objects.nonNull(value)) {
-      setText(formatter.format(value));
-    }
-    setOpaque(true);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     if (isSelected) {
-      setBackground(list.getSelectionBackground());
-      setForeground(list.getSelectionForeground());
+      c.setBackground(list.getSelectionBackground());
+      c.setForeground(list.getSelectionForeground());
     } else {
-      setBackground(list.getBackground());
-      setForeground(list.getForeground());
+      c.setBackground(list.getBackground());
+      c.setForeground(list.getForeground());
     }
-    return this;
+    if (c instanceof JLabel && Objects.nonNull(value)) {
+      JLabel l = (JLabel) c;
+      l.setOpaque(true);
+      l.setText(DateTimeFormatter.ofPattern(PATTERN).format(value));
+    }
+    return c;
   }
 }
