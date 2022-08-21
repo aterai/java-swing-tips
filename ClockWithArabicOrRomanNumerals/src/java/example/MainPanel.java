@@ -106,13 +106,8 @@ class AnalogClock extends JPanel {
     float radius = Math.min(rect.width, rect.height) / 2f - 10f;
     g2.translate(rect.getCenterX(), rect.getCenterY());
 
-    float hourMarkerLen = radius / 6f - 10f;
-
-    // Drawing the clock numbers
-    paintClockNumbers(g2, radius, hourMarkerLen);
-
     // Drawing the hour markers
-    // float hourMarkerLen = radius / 6f - 10f;
+    float hourMarkerLen = radius / 6f - 10f;
     Shape hourMarker = new Line2D.Float(0f, hourMarkerLen - radius, 0f, -radius);
     Shape minuteMarker = new Line2D.Float(0f, hourMarkerLen / 2f - radius, 0f, -radius);
     AffineTransform at = AffineTransform.getRotateInstance(0d);
@@ -126,6 +121,9 @@ class AnalogClock extends JPanel {
       }
       at.rotate(Math.PI / 30d);
     }
+
+    // Drawing the clock numbers
+    paintClockNumbers(g2, radius, hourMarkerLen);
 
     // Drawing the hour hand
     float hourHandLen = radius / 2f;
@@ -170,8 +168,8 @@ class AnalogClock extends JPanel {
     } else {
       Point ptSrc = new Point();
       for (int i = 0; i < 12; i++) {
-        double ty = hourMarkerLen - radius + font.getSize2D() * .6d;
-        AffineTransform at2 = AffineTransform.getTranslateInstance(0d, ty);
+        double ty = radius - hourMarkerLen - font.getSize2D() * .6d;
+        AffineTransform at2 = AffineTransform.getTranslateInstance(0d, -ty);
         Point2D pt = at.transform(at2.transform(ptSrc, null), null);
         String txt = i == 0 ? "12" : Objects.toString(i);
         Rectangle r = getOutline(txt, font, frc).getBounds();
