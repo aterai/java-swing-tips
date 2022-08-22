@@ -18,7 +18,6 @@ import java.awt.geom.Rectangle2D;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 
@@ -63,6 +62,9 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
+  private final String[] arabicNumerals = {
+      "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
+  };
   private final String[] romanNumerals = {
       "XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI"
   };
@@ -150,7 +152,6 @@ class AnalogClock extends JPanel {
     g2.setStroke(new BasicStroke(1f));
     g2.draw(AffineTransform.getRotateInstance(secondRot).createTransformedShape(secondHand));
     g2.fill(new Ellipse2D.Float(-r / 4f, -r / 4f, r / 2f, r / 2f));
-
     g2.dispose();
   }
 
@@ -161,31 +162,29 @@ class AnalogClock extends JPanel {
     FontRenderContext frc = g2.getFontRenderContext();
     if (isRomanNumerals) {
       for (String txt : romanNumerals) {
-        Shape s = moveTo12o(getOutline(txt, font, frc), radius, hourMarkerLen);
-        g2.fill(at.createTransformedShape(s));
+        Shape s = getOutline(txt, font, frc);
+        Rectangle2D r = s.getBounds2D();
+        double tx = r.getCenterX();
+        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY();
+        Shape t = AffineTransform.getTranslateInstance(-tx, -ty).createTransformedShape(s);
+        g2.fill(at.createTransformedShape(t));
         at.rotate(Math.PI / 6d);
       }
     } else {
-      Point ptSrc = new Point();
-      for (int i = 0; i < 12; i++) {
-        double ty = radius - hourMarkerLen - font.getSize2D() * .6d;
-        AffineTransform at2 = AffineTransform.getTranslateInstance(0d, -ty);
-        Point2D pt = at.transform(at2.transform(ptSrc, null), null);
-        String txt = i == 0 ? "12" : Objects.toString(i);
-        Rectangle r = getOutline(txt, font, frc).getBounds();
+      Point2D ptSrc = new Point2D.Double();
+      for (String txt : arabicNumerals) {
+        Shape s = getOutline(txt, font, frc);
+        Rectangle2D r = s.getBounds2D();
+        double ty = radius - hourMarkerLen - r.getHeight();
+        ptSrc.setLocation(0d, -ty);
+        Point2D pt = at.transform(ptSrc, null);
         double dx = pt.getX() - r.getCenterX();
         double dy = pt.getY() - r.getCenterY();
-        g2.drawString(txt, (float) dx, (float) dy);
+        // g2.drawString(txt, (float) dx, (float) dy);
+        g2.fill(AffineTransform.getTranslateInstance(dx, dy).createTransformedShape(s));
         at.rotate(Math.PI / 6d);
       }
     }
-  }
-
-  protected Shape moveTo12o(Shape s, double radius, double tick) {
-    Rectangle2D r = s.getBounds2D();
-    double ty = radius - tick * 2d - r.getHeight();
-    AffineTransform at = AffineTransform.getTranslateInstance(-r.getCenterX(), -ty);
-    return at.createTransformedShape(s);
   }
 
   private static Shape getOutline(String txt, Font font, FontRenderContext frc) {
