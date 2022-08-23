@@ -68,14 +68,14 @@ public final class MainPanel extends JPanel {
 
 class LocalDateTimeTableCellRenderer extends DefaultTableCellRenderer {
   private static final String PATTERN = "yyyy/MM/dd";
-  private final transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    if (value instanceof TemporalAccessor) {
-      setText(formatter.format((TemporalAccessor) value));
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel && value instanceof TemporalAccessor) {
+      ((JLabel) c).setText(DateTimeFormatter.ofPattern(PATTERN).format((TemporalAccessor) value));
     }
-    return this;
+    return c;
   }
 }
 
