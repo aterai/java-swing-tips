@@ -29,16 +29,31 @@ public final class MainPanel extends JPanel {
         new WebSite("a", new ColorIcon(Color.RED)),
         new WebSite("b", new ColorIcon(Color.GREEN)),
         new WebSite("c", new ColorIcon(Color.BLUE))});
-    JComboBox<WebSite> combo4 = new JComboBox<>(model2);
-    combo4.setRenderer(new SiteListCellRenderer<>());
+    JComboBox<WebSite> combo4 = new JComboBox<WebSite>(model2) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        setRenderer(new SiteListCellRenderer<>());
+      }
+    };
 
-    JComboBox<WebSite> combo5 = new JComboBox<>(model2);
-    combo5.setRenderer(new SiteListCellRenderer<>());
-    combo5.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+    JComboBox<WebSite> combo5 = new JComboBox<WebSite>(model2) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        setRenderer(new SiteListCellRenderer<>());
+        setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+      }
+    };
 
-    JComboBox<WebSite> combo6 = new JComboBox<>();
-    combo6.setRenderer(new SiteListCellRenderer<>());
-    combo6.setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+    JComboBox<WebSite> combo6 = new JComboBox<WebSite>() {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        setRenderer(new SiteListCellRenderer<>());
+        setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+      }
+    };
 
     SpringLayout layout = new SpringLayout();
     setLayout(layout);
@@ -119,22 +134,26 @@ class ColorIcon implements Icon {
   }
 }
 
-class SiteListCellRenderer<E extends WebSite> extends JLabel implements ListCellRenderer<E> {
+class SiteListCellRenderer<E extends WebSite> implements ListCellRenderer<E> {
+  private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    setOpaque(index >= 0);
-    setEnabled(list.isEnabled());
-    setFont(list.getFont());
-    if (Objects.nonNull(value)) {
-      setText(value.title);
-      setIcon(value.favicon);
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
+    c.setEnabled(list.isEnabled());
+    c.setFont(list.getFont());
+    if (c instanceof JLabel && Objects.nonNull(value)) {
+      JLabel l = (JLabel) c;
+      l.setOpaque(index >= 0);
+      l.setText(value.title);
+      l.setIcon(value.favicon);
     }
     if (isSelected) {
-      setBackground(list.getSelectionBackground());
-      setForeground(list.getSelectionForeground());
+      c.setBackground(list.getSelectionBackground());
+      c.setForeground(list.getSelectionForeground());
     } else {
-      setBackground(list.getBackground());
-      setForeground(list.getForeground());
+      c.setBackground(list.getBackground());
+      c.setForeground(list.getForeground());
     }
-    return this;
+    return c;
   }
 }
