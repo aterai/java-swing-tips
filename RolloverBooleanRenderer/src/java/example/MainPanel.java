@@ -155,18 +155,21 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-    String str = Objects.toString(value, "");
-    if (highlighter.isHighlightedCell(row, column)) {
-      setText("<html><u>" + str);
-      setForeground(isSelected ? table.getSelectionForeground() : HIGHLIGHT);
-      setBackground(isSelected ? table.getSelectionBackground().darker() : table.getBackground());
-    } else {
-      setText(str);
-      setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
-      setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+    Component c = super.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    boolean highlightedCell = highlighter.isHighlightedCell(row, column);
+    String fmt = highlightedCell ? "<html><u>%s" : "%s";
+    if (c instanceof JLabel) {
+      ((JLabel) c).setText(String.format(fmt, value));
     }
-    return this;
+    if (highlightedCell) {
+      c.setForeground(isSelected ? table.getSelectionForeground() : HIGHLIGHT);
+      c.setBackground(isSelected ? table.getSelectionBackground().darker() : table.getBackground());
+    } else {
+      c.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+      c.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+    }
+    return c;
   }
 }
 
@@ -177,81 +180,85 @@ class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
   }
 }
 
-class RolloverBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
-  private final transient HighlightListener highlighter;
+class RolloverBooleanRenderer implements TableCellRenderer, UIResource {
+  private final HighlightListener highlighter;
+  private final JCheckBox check = new JCheckBox() {
+    @Override public void updateUI() {
+      super.updateUI();
+      // setHorizontalAlignment(SwingConstants.CENTER);
+      setBorderPainted(true);
+      setRolloverEnabled(true);
+      setOpaque(true);
+      setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    }
+
+    // Overridden for performance reasons. ---->
+    @Override public boolean isOpaque() {
+      Color back = getBackground();
+      Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
+      if (o instanceof JTable) {
+        JTable t = (JTable) o;
+        boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
+        return !colorMatch && super.isOpaque();
+      } else {
+        return super.isOpaque();
+      }
+    }
+
+    @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
+      // System.out.println(propertyName);
+      // if (propertyName == "border" ||
+      //     ((propertyName == "font" || propertyName == "foreground") && ov != nv)) {
+      //   super.firePropertyChange(propertyName, ov, nv);
+      // }
+    }
+
+    @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
+      /* Overridden for performance reasons. */
+    }
+
+    @Override public void repaint(long tm, int x, int y, int width, int height) {
+      /* Overridden for performance reasons. */
+    }
+
+    @Override public void repaint(Rectangle r) {
+      /* Overridden for performance reasons. */
+    }
+
+    @Override public void repaint() {
+      /* Overridden for performance reasons. */
+    }
+
+    @Override public void invalidate() {
+      /* Overridden for performance reasons. */
+    }
+
+    @Override public void validate() {
+      /* Overridden for performance reasons. */
+    }
+
+    @Override public void revalidate() {
+      /* Overridden for performance reasons. */
+    }
+    // <---- Overridden for performance reasons.
+  };
 
   protected RolloverBooleanRenderer(HighlightListener highlighter) {
-    super();
     this.highlighter = highlighter;
-    setHorizontalAlignment(SwingConstants.CENTER);
-    setBorderPainted(true);
-    setRolloverEnabled(true);
-    setOpaque(true);
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    getModel().setRollover(highlighter.isHighlightedCell(row, column));
-
+    check.getModel().setRollover(highlighter.isHighlightedCell(row, column));
+    check.setHorizontalAlignment(SwingConstants.CENTER);
     if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      super.setBackground(table.getSelectionBackground());
+      check.setForeground(table.getSelectionForeground());
+      check.setBackground(table.getSelectionBackground());
     } else {
-      setForeground(table.getForeground());
-      setBackground(table.getBackground());
+      check.setForeground(table.getForeground());
+      check.setBackground(table.getBackground());
       // setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); // Nimbus
     }
-    setSelected(Objects.equals(value, Boolean.TRUE));
-    return this;
+    check.setSelected(Objects.equals(value, Boolean.TRUE));
+    return check;
   }
-
-  // Overridden for performance reasons. ---->
-  @Override public boolean isOpaque() {
-    Color back = getBackground();
-    Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
-    if (o instanceof JTable) {
-      JTable t = (JTable) o;
-      boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
-      return !colorMatch && super.isOpaque();
-    } else {
-      return super.isOpaque();
-    }
-  }
-
-  @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
-    // System.out.println(propertyName);
-    // if (propertyName == "border" ||
-    //     ((propertyName == "font" || propertyName == "foreground") && ov != nv)) {
-    //   super.firePropertyChange(propertyName, ov, nv);
-    // }
-  }
-
-  @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
-    /* Overridden for performance reasons. */
-  }
-
-  @Override public void repaint(long tm, int x, int y, int width, int height) {
-    /* Overridden for performance reasons. */
-  }
-
-  @Override public void repaint(Rectangle r) {
-    /* Overridden for performance reasons. */
-  }
-
-  @Override public void repaint() {
-    /* Overridden for performance reasons. */
-  }
-
-  @Override public void invalidate() {
-    /* Overridden for performance reasons. */
-  }
-
-  @Override public void validate() {
-    /* Overridden for performance reasons. */
-  }
-
-  @Override public void revalidate() {
-    /* Overridden for performance reasons. */
-  }
-  // <---- Overridden for performance reasons.
 }
