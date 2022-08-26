@@ -120,7 +120,8 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
 
   @Override public void paint(Graphics g, JComponent c) {
     if (isPreventing && c instanceof JLayer) {
-      Dimension d = ((JLayer<?>) c).getView().getSize();
+      Component view = ((JLayer<?>) c).getView();
+      Dimension d = view.getSize();
       buf = Optional.ofNullable(buf)
           .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
           .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
@@ -131,8 +132,7 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
 
       RGBImageFilter filter = new RedGreenChannelSwapFilter();
       Image image = c.createImage(new FilteredImageSource(buf.getSource(), filter));
-      // BUG: cause an infinite repaint loop: g.drawImage(image, 0, 0, c);
-      g.drawImage(image, 0, 0, null);
+      g.drawImage(image, 0, 0, view);
     } else {
       super.paint(g, c);
     }

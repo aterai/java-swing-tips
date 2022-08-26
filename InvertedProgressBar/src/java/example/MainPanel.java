@@ -167,7 +167,8 @@ class VerticalFlipLayerUI<V extends Component> extends LayerUI<V> {
 
   @Override public void paint(Graphics g, JComponent c) {
     if (c instanceof JLayer) {
-      Dimension d = ((JLayer<?>) c).getView().getSize();
+      Component view = ((JLayer<?>) c).getView();
+      Dimension d = view.getSize();
       buf = Optional.ofNullable(buf)
         .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
         .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
@@ -178,7 +179,7 @@ class VerticalFlipLayerUI<V extends Component> extends LayerUI<V> {
       super.paint(g2, c);
       g2.dispose();
 
-      g.drawImage(buf, 0, 0, null);
+      g.drawImage(buf, 0, 0, view);
     } else {
       super.paint(g, c);
     }
