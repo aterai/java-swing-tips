@@ -27,7 +27,9 @@ public final class MainPanel extends JPanel {
     model.addRowData(new RowData("Name 0", "gg"));
 
     JTable table = new JTable(model);
+    // table.setAutoCreateRowSorter(true);
     table.setCellSelectionEnabled(true);
+    table.setRowHeight(20);
 
     JTableHeader header = table.getTableHeader();
     header.addMouseListener(new MouseAdapter() {
@@ -101,34 +103,39 @@ class RowHeaderList<E> extends JList<E> {
     listSelection = getSelectionModel();
   }
 
-  protected class RowHeaderRenderer<E2> extends JLabel implements ListCellRenderer<E2> {
+  protected class RowHeaderRenderer<E2> implements ListCellRenderer<E2> {
     private final JTableHeader header; // = table.getTableHeader();
+    private final JLabel renderer = new JLabel(); // new DefaultListCellRenderer();
 
     protected RowHeaderRenderer(JTableHeader header) {
       super();
       this.header = header;
-      this.setOpaque(true);
-      // this.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
-      this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 2, Color.GRAY.brighter()));
-      this.setHorizontalAlignment(CENTER);
-      this.setForeground(header.getForeground());
-      this.setBackground(header.getBackground());
-      this.setFont(header.getFont());
+      renderer.setOpaque(true);
+      // renderer.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+      renderer.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY.brighter()));
+      renderer.setHorizontalAlignment(SwingConstants.CENTER);
+      // renderer.setForeground(header.getForeground());
+      // renderer.setBackground(header.getBackground());
+      // renderer.setFont(header.getFont());
     }
 
     @Override public Component getListCellRendererComponent(JList<? extends E2> list, E2 value, int index, boolean isSelected, boolean cellHasFocus) {
+      // Component c = renderer.getListCellRendererComponent(
+      //     list, value, index, isSelected, cellHasFocus);
+      // Component c = renderer;
+      renderer.setFont(header.getFont());
       if (index == pressedRowIndex) {
-        setBackground(Color.GRAY);
+        renderer.setBackground(Color.GRAY);
       } else if (index == rollOverRowIndex) {
-        setBackground(Color.WHITE);
+        renderer.setBackground(Color.WHITE);
       } else if (isSelected) {
-        setBackground(Color.GRAY.brighter());
+        renderer.setBackground(Color.GRAY.brighter());
       } else {
-        setForeground(header.getForeground());
-        setBackground(header.getBackground());
+        renderer.setForeground(header.getForeground());
+        renderer.setBackground(header.getBackground());
       }
-      setText(Objects.toString(value, ""));
-      return this;
+      renderer.setText(Objects.toString(value, ""));
+      return renderer;
     }
   }
 
