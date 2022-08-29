@@ -13,17 +13,29 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super();
+    SpringLayout layout = new SpringLayout();
+    setLayout(layout);
+
     ComboBoxModel<String> model1 = new DefaultComboBoxModel<>(new String[] {"a", "b", "c"});
     JComboBox<String> combo1 = new JComboBox<>(model1);
     combo1.setEditable(false);
     // ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
+    layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, this);
+    layout.putConstraint(SpringLayout.NORTH, combo1, 10, SpringLayout.NORTH, this);
+    add(combo1);
 
     JComboBox<String> combo2 = new JComboBox<>(model1);
     combo2.setPrototypeDisplayValue(TITLE);
+    add(combo2);
+    layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, this);
+    layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
 
     JComboBox<String> combo3 = new JComboBox<>(model1);
     combo3.setPrototypeDisplayValue(TITLE);
     combo3.setEditable(true);
+    layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, this);
+    layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
+    add(combo3);
 
     ComboBoxModel<WebSite> model2 = new DefaultComboBoxModel<>(new WebSite[] {
         new WebSite("a", new ColorIcon(Color.RED)),
@@ -36,6 +48,9 @@ public final class MainPanel extends JPanel {
         setRenderer(new SiteListCellRenderer<>());
       }
     };
+    layout.putConstraint(SpringLayout.WEST, combo4, 10, SpringLayout.WEST, this);
+    layout.putConstraint(SpringLayout.NORTH, combo4, 10, SpringLayout.SOUTH, combo3);
+    add(combo4);
 
     JComboBox<WebSite> combo5 = new JComboBox<WebSite>(model2) {
       @Override public void updateUI() {
@@ -45,6 +60,9 @@ public final class MainPanel extends JPanel {
         setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
       }
     };
+    layout.putConstraint(SpringLayout.WEST, combo5, 10, SpringLayout.WEST, this);
+    layout.putConstraint(SpringLayout.NORTH, combo5, 10, SpringLayout.SOUTH, combo4);
+    add(combo5);
 
     JComboBox<WebSite> combo6 = new JComboBox<WebSite>() {
       @Override public void updateUI() {
@@ -54,29 +72,10 @@ public final class MainPanel extends JPanel {
         setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
       }
     };
-
-    SpringLayout layout = new SpringLayout();
-    setLayout(layout);
-    layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.WEST, combo4, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.WEST, combo5, 10, SpringLayout.WEST, this);
     layout.putConstraint(SpringLayout.WEST, combo6, 10, SpringLayout.WEST, this);
-
-    layout.putConstraint(SpringLayout.NORTH, combo1, 10, SpringLayout.NORTH, this);
-    layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
-    layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
-    layout.putConstraint(SpringLayout.NORTH, combo4, 10, SpringLayout.SOUTH, combo3);
-    layout.putConstraint(SpringLayout.NORTH, combo5, 10, SpringLayout.SOUTH, combo4);
     layout.putConstraint(SpringLayout.NORTH, combo6, 10, SpringLayout.SOUTH, combo5);
-
-    add(combo1);
-    add(combo2);
-    add(combo3);
-    add(combo4);
-    add(combo5);
     add(combo6);
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -136,6 +135,7 @@ class ColorIcon implements Icon {
 
 class SiteListCellRenderer<E extends WebSite> implements ListCellRenderer<E> {
   private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = renderer.getListCellRendererComponent(
         list, value, index, isSelected, cellHasFocus);
