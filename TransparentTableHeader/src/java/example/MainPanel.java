@@ -164,20 +164,26 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TransparentHeader extends JLabel implements TableCellRenderer {
+class TransparentHeader implements TableCellRenderer {
   private final CompoundBorder border = BorderFactory.createCompoundBorder(
       BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
       BorderFactory.createEmptyBorder(2, 2, 1, 2));
   private final Color alphaZero = new Color(0x0, true);
+  private final TableCellRenderer renderer = new DefaultTableCellRenderer();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    this.setText(Objects.toString(value, ""));
-    this.setHorizontalAlignment(SwingConstants.CENTER);
-    this.setOpaque(false);
-    this.setBackground(alphaZero);
-    this.setForeground(Color.BLACK);
-    this.setBorder(border);
-    return this;
+    Component c = renderer.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setText(Objects.toString(value, ""));
+      l.setHorizontalAlignment(SwingConstants.CENTER);
+      l.setOpaque(false);
+      l.setBackground(alphaZero);
+      l.setForeground(Color.BLACK);
+      l.setBorder(border);
+    }
+    return c;
   }
 }
 
