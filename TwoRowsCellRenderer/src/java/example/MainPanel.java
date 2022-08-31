@@ -16,8 +16,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
     Object[][] data = {
-      {"123456789012345678901234567890123456789012345678901234567890", "12345"},
-      {"bbb", "abcdefghijklmnopqrstuvwxyz----abcdefghijklmnopqrstuvwxyz"},
+        {"123456789012345678901234567890123456789012345678901234567890", "12345"},
+        {"bbb", "abcdefghijklmnopqrstuvwxyz----abcdefghijklmnopqrstuvwxyz"},
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
@@ -28,11 +28,16 @@ public final class MainPanel extends JPanel {
         return String.class;
       }
     };
-
-    JTable table = new JTable(model);
+    JTable table = new JTable(model) {
+      @Override public void updateUI() {
+        setSelectionForeground(null); // Nimbus
+        setSelectionBackground(null); // Nimbus
+        super.updateUI();
+        setDefaultRenderer(String.class, new TwoRowsCellRenderer());
+      }
+    };
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(table.getRowHeight() * 2);
-    table.setDefaultRenderer(String.class, new TwoRowsCellRenderer());
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -58,25 +63,28 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
+class TwoRowsCellRenderer implements TableCellRenderer {
   private final JLabel top = new JLabel();
   private final JLabel bottom = new JLabel();
+  private final JPanel renderer = new JPanel(new GridLayout(2, 1, 0, 0));
 
   protected TwoRowsCellRenderer() {
-    super(new GridLayout(2, 1, 0, 0));
-    add(top);
-    add(bottom);
+    renderer.add(top);
+    renderer.add(bottom);
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
+      top.setForeground(table.getSelectionForeground());
+      bottom.setForeground(table.getSelectionForeground());
+      renderer.setBackground(table.getSelectionBackground());
     } else {
-      setForeground(table.getForeground());
-      setBackground(table.getBackground());
+      top.setForeground(table.getForeground());
+      bottom.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
     }
-    setFont(table.getFont());
+    top.setFont(table.getFont());
+    bottom.setFont(table.getFont());
     FontMetrics fm = top.getFontMetrics(top.getFont());
     String text = Objects.toString(value, "");
     String first = text;
@@ -126,6 +134,6 @@ class TwoRowsCellRenderer extends JPanel implements TableCellRenderer {
     }
     top.setText(first);
     bottom.setText(second);
-    return this;
+    return renderer;
   }
 }
