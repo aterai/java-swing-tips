@@ -7,12 +7,12 @@ package example;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(10, 10));
+    JTextArea log = new JTextArea();
     String deviceName = "con.txt";
 
     JButton b1 = new JButton("c:/" + deviceName);
@@ -20,27 +20,15 @@ public final class MainPanel extends JPanel {
       File file = new File(deviceName);
       try {
         if (file.createNewFile()) {
-          System.out.println("the named file does not exist and was successfully created.");
+          log.append("the named file does not exist and was successfully created.\n");
         } else {
-          System.out.println("the named file already exists.");
+          log.append("the named file already exists.\n");
         }
       } catch (IOException ex) {
-        ex.printStackTrace();
-        Object[] obj = {ex.getMessage()};
-        JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+        // ex.printStackTrace();
+        Object[] msg = {ex.getMessage()};
+        showMessageDialog(msg);
       }
-      // JFileChooser fileChooser = new JFileChooser();
-      // int retValue = fileChooser.showOpenDialog(getRootPane());
-      // if (retValue == JFileChooser.APPROVE_OPTION) {
-      //   File file = fileChooser.getSelectedFile();
-      //   System.out.println(file.getAbsolutePath());
-      //   try {
-      //     file.createNewFile();
-      //     file.deleteOnExit();
-      //   } catch (IOException ex) {
-      //     ex.printStackTrace();
-      //   }
-      // }
     });
     Component p1 = makeTitledPanel("IOException: before 1.5", b1);
 
@@ -48,8 +36,8 @@ public final class MainPanel extends JPanel {
     b2.addActionListener(e -> {
       File file = new File(deviceName);
       if (!isCanonicalPath(file)) {
-        Object[] obj = {file.getAbsolutePath() + " is not a canonical path."};
-        JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+        Object[] msg = {file.getAbsolutePath() + " is not a canonical path."};
+        showMessageDialog(msg);
       }
     });
     Component p2 = makeTitledPanel("getCanonicalPath: before 1.5", b2);
@@ -58,8 +46,8 @@ public final class MainPanel extends JPanel {
     b3.addActionListener(e -> {
       File file = new File(deviceName);
       if (!file.isFile()) {
-        Object[] obj = {file.getAbsolutePath() + " is not a file."};
-        JOptionPane.showMessageDialog(getRootPane(), obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+        Object[] msg = {file.getAbsolutePath() + " is not a file."};
+        showMessageDialog(msg);
       }
     });
     Component p3 = makeTitledPanel("isFile: JDK 1.5+", b3);
@@ -69,17 +57,23 @@ public final class MainPanel extends JPanel {
     p.add(p2);
     p.add(p3);
     add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private void showMessageDialog(Object[] obj) {
+    JRootPane root = getRootPane();
+    JOptionPane.showMessageDialog(root, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
+  }
+
   // Before 1.5
   public static boolean isCanonicalPath(File file) {
-    if (Objects.isNull(file)) {
+    if (file == null) {
       return false;
     }
     try {
-      if (Objects.isNull(file.getCanonicalPath())) {
+      if (file.getCanonicalPath() == null || !file.isFile()) {
         return false;
       }
     } catch (IOException ex) {
@@ -110,7 +104,6 @@ public final class MainPanel extends JPanel {
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
-    frame.setResizable(false);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
