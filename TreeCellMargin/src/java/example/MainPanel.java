@@ -86,11 +86,9 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, false);
-    // this.tree = tree;
     this.hasFocus = hasFocus;
     this.selected = selected;
-    return this;
+    return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, false);
   }
 
   @Override public void paint(Graphics g) {
@@ -228,7 +226,6 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
       text.setText(l.getText());
       icon.setIcon(l.getIcon());
     }
-
     return renderer;
   }
 }
