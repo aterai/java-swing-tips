@@ -21,7 +21,6 @@ public final class MainPanel extends JPanel {
   //     JTable.class, DataFlavor.javaJVMLocalObjectMimeType, "JTable");
   private MainPanel() {
     super(new BorderLayout());
-
     CellIconTransferHandler handler = new CellIconTransferHandler();
 
     String[] columnNames = {"String", "Icon", "Boolean"};
@@ -153,10 +152,7 @@ class CellIconTransferHandler extends TransferHandler {
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
     Component c = info.getComponent();
-    if (c instanceof JList) {
-      return info.isDrop() && info.isDataFlavorSupported(ICON_FLAVOR);
-    }
-    return false;
+    return c instanceof JList && info.isDrop() && info.isDataFlavorSupported(ICON_FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
