@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TabbedPaneUseBasicArrows" />
+  <property name="jnlp.Name"     value="TabbedPaneUseBasicArrows" />
+  <property name="jnlp.name"     value="tabbedpaneusebasicarrows" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tabbedpaneusebasicarrows/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TabbedPaneUseBasicArrows.html" />
+</project>
