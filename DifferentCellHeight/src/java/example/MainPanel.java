@@ -24,7 +24,6 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setCellRenderer(new TextAreaRenderer<>());
         if (getFixedCellHeight() != -1) {
-          // System.out.println(getFixedCellHeight());
           setFixedCellHeight(-1);
         }
       }
@@ -55,39 +54,40 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextAreaRenderer<E> extends JTextArea implements ListCellRenderer<E> {
+class TextAreaRenderer<E> implements ListCellRenderer<E> {
   // private Border focusBorder = new DotBorder(new Color(~selectionBgc.getRGB()), 2);
   // private static final Border NORMAL_BORDER = BorderFactory.createEmptyBorder(2, 2, 2, 2);
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
-  private transient Border noFocusBorder;
-  private transient Border focusBorder;
+  private Border noFocusBorder;
+  private Border focusBorder;
+  private final JTextArea renderer = new JTextArea() {
+    @Override public void updateUI() {
+      super.updateUI();
+      focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
+      noFocusBorder = UIManager.getBorder("List.noFocusBorder");
+      if (Objects.isNull(noFocusBorder) && Objects.nonNull(focusBorder)) {
+        Insets i = focusBorder.getBorderInsets(this);
+        noFocusBorder = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
+      }
+    }
+  };
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     // setLineWrap(true);
-    setText(Objects.toString(value, ""));
+    renderer.setText(Objects.toString(value, ""));
     if (isSelected) {
-      setBackground(new Color(list.getSelectionBackground().getRGB())); // Nimbus
-      setForeground(list.getSelectionForeground());
+      renderer.setBackground(new Color(list.getSelectionBackground().getRGB())); // Nimbus
+      renderer.setForeground(list.getSelectionForeground());
     } else {
-      setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
-      setForeground(list.getForeground());
+      renderer.setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
+      renderer.setForeground(list.getForeground());
     }
     if (cellHasFocus) {
-      setBorder(focusBorder);
+      renderer.setBorder(focusBorder);
     } else {
-      setBorder(noFocusBorder);
+      renderer.setBorder(noFocusBorder);
     }
-    return this;
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
-    noFocusBorder = UIManager.getBorder("List.noFocusBorder");
-    if (Objects.isNull(noFocusBorder) && Objects.nonNull(focusBorder)) {
-      Insets i = focusBorder.getBorderInsets(this);
-      noFocusBorder = BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right);
-    }
+    return renderer;
   }
 }
 
