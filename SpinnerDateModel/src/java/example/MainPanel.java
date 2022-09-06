@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new GridLayout(3, 1));
+    super(new BorderLayout());
     String dateFormat = "yyyy/MM/dd";
 
     @SuppressWarnings("JavaUtilDate")
@@ -29,8 +29,9 @@ public final class MainPanel extends JPanel {
     today.set(Calendar.HOUR_OF_DAY, 0);
     Date start = today.getTime();
 
-    System.out.println(date);
-    System.out.println(start);
+    JTextArea log = new JTextArea();
+    log.append(date + "\n");
+    log.append(start + "\n");
 
     SpinnerDateModel model2 = new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH);
     JSpinner spinner2 = new JSpinner(model2);
@@ -49,10 +50,14 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    add(makeTitledPanel("Calendar.DAY_OF_MONTH", spinner1));
-    add(makeTitledPanel("min: set(Calendar.HOUR_OF_DAY, 0)", spinner2));
-    add(makeTitledPanel("JSpinner.DateEditor + FocusListener", spinner3));
-    setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+    JPanel p = new JPanel(new GridLayout(3, 1));
+    p.add(makeTitledPanel("Calendar.DAY_OF_MONTH", spinner1));
+    p.add(makeTitledPanel("min: set(Calendar.HOUR_OF_DAY, 0)", spinner2));
+    p.add(makeTitledPanel("JSpinner.DateEditor + FocusListener", spinner3));
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
   }
 
