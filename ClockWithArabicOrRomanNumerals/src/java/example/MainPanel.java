@@ -26,7 +26,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     AnalogClock clock = new AnalogClock();
     Map<TextAttribute, Object> attr = new ConcurrentHashMap<>();
+    // attr.put(TextAttribute.TRACKING, TextAttribute.TRACKING_TIGHT);
     attr.put(TextAttribute.TRACKING, -.08f);
+    // AffineTransform at = AffineTransform.getScaleInstance(1d, 2d);
+    // clock.setFont(clock.getFont().deriveFont(20f).deriveFont(attr).deriveFont(at));
     clock.setFont(clock.getFont().deriveFont(20f).deriveFont(attr));
 
     JCheckBox check = new JCheckBox("roman", true);
@@ -105,13 +108,13 @@ class AnalogClock extends JPanel {
     Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
     g2.setColor(Color.BLACK);
     g2.fill(rect);
-    float radius = Math.min(rect.width, rect.height) / 2f - 10f;
+    double radius = Math.min(rect.width, rect.height) / 2d - 10d;
     g2.translate(rect.getCenterX(), rect.getCenterY());
 
     // Drawing the hour markers
-    float hourMarkerLen = radius / 6f - 10f;
-    Shape hourMarker = new Line2D.Float(0f, hourMarkerLen - radius, 0f, -radius);
-    Shape minuteMarker = new Line2D.Float(0f, hourMarkerLen / 2f - radius, 0f, -radius);
+    double hourMarkerLen = radius / 6d - 10d;
+    Shape hourMarker = new Line2D.Double(0d, hourMarkerLen - radius, 0d, -radius);
+    Shape minuteMarker = new Line2D.Double(0d, hourMarkerLen / 2d - radius, 0d, -radius);
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setStroke(new BasicStroke(2f));
     g2.setColor(Color.WHITE);
@@ -127,35 +130,38 @@ class AnalogClock extends JPanel {
     // Drawing the clock numbers
     paintClockNumbers(g2, radius, hourMarkerLen);
 
-    // Drawing the hour hand
-    float hourHandLen = radius / 2f;
-    Shape hourHand = new Line2D.Float(0f, 0f, 0f, -hourHandLen);
-    double minuteRot = time.getMinute() * Math.PI / 30d;
+    // Calculate the angle of rotation
+    double secondRot = time.getSecond() * Math.PI / 30d;
+    double minuteRot = time.getMinute() * Math.PI / 30d + secondRot / 60d;
     double hourRot = time.getHour() * Math.PI / 6d + minuteRot / 12d;
+
+    // Drawing the hour hand
+    double hourHandLen = radius / 2d;
+    Shape hourHand = new Line2D.Double(0d, 0d, 0d, -hourHandLen);
     g2.setStroke(new BasicStroke(8f));
     g2.setPaint(Color.LIGHT_GRAY);
     g2.draw(AffineTransform.getRotateInstance(hourRot).createTransformedShape(hourHand));
 
     // Drawing the minute hand
-    float minuteHandLen = 5f * radius / 6f;
-    Shape minuteHand = new Line2D.Float(0f, 0f, 0f, -minuteHandLen);
+    double minuteHandLen = 5d * radius / 6d;
+    Shape minuteHand = new Line2D.Double(0d, 0d, 0d, -minuteHandLen);
     g2.setStroke(new BasicStroke(4f));
     g2.setPaint(Color.WHITE);
     g2.draw(AffineTransform.getRotateInstance(minuteRot).createTransformedShape(minuteHand));
 
     // Drawing the second hand
-    float r = radius / 6f;
-    float secondHandLen = radius - r;
-    Shape secondHand = new Line2D.Float(0f, r, 0f, -secondHandLen);
-    double secondRot = time.getSecond() * Math.PI / 30d;
+    double r = radius / 6d;
+    double secondHandLen = radius - r;
+    Shape secondHand = new Line2D.Double(0d, r, 0d, -secondHandLen);
     g2.setPaint(Color.RED);
     g2.setStroke(new BasicStroke(1f));
     g2.draw(AffineTransform.getRotateInstance(secondRot).createTransformedShape(secondHand));
-    g2.fill(new Ellipse2D.Float(-r / 4f, -r / 4f, r / 2f, r / 2f));
+    g2.fill(new Ellipse2D.Double(-r / 4d, -r / 4d, r / 2d, r / 2d));
+
     g2.dispose();
   }
 
-  private void paintClockNumbers(Graphics2D g2, float radius, float hourMarkerLen) {
+  private void paintClockNumbers(Graphics2D g2, double radius, double hourMarkerLen) {
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setColor(Color.WHITE);
     Font font = g2.getFont();
@@ -165,7 +171,7 @@ class AnalogClock extends JPanel {
         Shape s = getOutline(txt, font, frc);
         Rectangle2D r = s.getBounds2D();
         double tx = r.getCenterX();
-        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY();
+        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY() * .5;
         Shape t = AffineTransform.getTranslateInstance(-tx, -ty).createTransformedShape(s);
         g2.fill(at.createTransformedShape(t));
         at.rotate(Math.PI / 6d);
@@ -175,7 +181,7 @@ class AnalogClock extends JPanel {
       for (String txt : arabicNumerals) {
         Shape s = getOutline(txt, font, frc);
         Rectangle2D r = s.getBounds2D();
-        double ty = radius - hourMarkerLen - r.getHeight();
+        double ty = radius - hourMarkerLen - r.getHeight() - r.getCenterY() * .5;
         ptSrc.setLocation(0d, -ty);
         Point2D pt = at.transform(ptSrc, null);
         double dx = pt.getX() - r.getCenterX();
