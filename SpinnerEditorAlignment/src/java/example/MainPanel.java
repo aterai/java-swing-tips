@@ -9,6 +9,8 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
     // UIManager.put("Spinner.editorAlignment", SwingConstants.CENTER);
@@ -74,8 +76,12 @@ public final class MainPanel extends JPanel {
     c.gridy = 2;
     p.add(spinner2, c);
 
-    add(box, BorderLayout.NORTH);
-    add(p);
+    JPanel panel = new JPanel(new BorderLayout());
+    panel.add(box, BorderLayout.NORTH);
+    panel.add(p);
+
+    add(panel, BorderLayout.NORTH);
+    add(new JScrollPane(log));
 
     EventQueue.invokeLater(() -> {
       JMenuBar mb = new JMenuBar();
@@ -86,8 +92,26 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void debug(JSpinner.DefaultEditor editor) {
-    System.out.println(editor.getTextField().getHorizontalAlignment());
+  private void debug(JSpinner.DefaultEditor editor) {
+    switch (editor.getTextField().getHorizontalAlignment()) {
+      case SwingConstants.LEFT:
+        log.append("LEFT\n");
+        break;
+      case SwingConstants.CENTER:
+        log.append("CENTER\n");
+        break;
+      case SwingConstants.RIGHT:
+        log.append("RIGHT\n");
+        break;
+      case SwingConstants.LEADING:
+        log.append("LEADING\n");
+        break;
+      case SwingConstants.TRAILING:
+        log.append("TRAILING\n");
+        break;
+      default:
+        log.append("ERROR\n");
+    }
   }
 
   public static void main(String[] args) {
