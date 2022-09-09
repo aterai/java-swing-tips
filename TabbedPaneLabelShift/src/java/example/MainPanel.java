@@ -10,35 +10,38 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    System.out.println(UIManager.getLookAndFeelDefaults().get("TabbedPane.selectedLabelShift"));
-    System.out.println(UIManager.getLookAndFeelDefaults().get("TabbedPane.labelShift"));
+    JTextArea log = new JTextArea();
+    String key1 = "TabbedPane.selectedLabelShift";
+    log.append(key1 + ": " + UIManager.getLookAndFeelDefaults().get(key1) + "\n");
+    String key2 = "TabbedPane.labelShift";
+    log.append(key2 + ": " + UIManager.getLookAndFeelDefaults().get(key2) + "\n");
 
-    int slsiv = UIManager.getLookAndFeelDefaults().getInt("TabbedPane.selectedLabelShift");
-    SpinnerNumberModel slsModel = new SpinnerNumberModel(slsiv, -5, 5, 1);
+    int iv1 = UIManager.getLookAndFeelDefaults().getInt(key1);
+    SpinnerNumberModel slsModel = new SpinnerNumberModel(iv1, -5, 5, 1);
     slsModel.addChangeListener(e -> {
       SpinnerNumberModel source = (SpinnerNumberModel) e.getSource();
       Integer offset = source.getNumber().intValue();
-      UIManager.put("TabbedPane.selectedLabelShift", offset);
+      UIManager.put(key1, offset);
       SwingUtilities.updateComponentTreeUI(getTopLevelAncestor());
     });
 
-    int lsiv = UIManager.getLookAndFeelDefaults().getInt("TabbedPane.labelShift");
-    SpinnerNumberModel lsModel = new SpinnerNumberModel(lsiv, -5, 5, 1);
+    int iv2 = UIManager.getLookAndFeelDefaults().getInt(key2);
+    SpinnerNumberModel lsModel = new SpinnerNumberModel(iv2, -5, 5, 1);
     lsModel.addChangeListener(e -> {
       SpinnerNumberModel source = (SpinnerNumberModel) e.getSource();
       Integer offset = source.getNumber().intValue();
-      UIManager.put("TabbedPane.labelShift", offset);
+      UIManager.put(key2, offset);
       SwingUtilities.updateComponentTreeUI(getTopLevelAncestor());
     });
 
-    String title1 = "UIManager.put(\"TabbedPane.selectedLabelShift\", offset)";
+    String title1 = String.format("UIManager.put(\"%s\", offset)", key1);
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createTitledBorder(title1));
     box1.add(new JLabel("offset = "));
     box1.add(new JSpinner(slsModel));
     box1.add(Box.createHorizontalGlue());
 
-    String title2 = "UIManager.put(\"TabbedPane.labelShift\", offset)";
+    String title2 = String.format("UIManager.put(\"%s\", offset)", key2);
     Box box2 = Box.createHorizontalBox();
     box2.setBorder(BorderFactory.createTitledBorder(title2));
     box2.add(new JLabel("offset = "));
@@ -50,11 +53,11 @@ public final class MainPanel extends JPanel {
     p.add(box2);
 
     JTabbedPane tabs = new JTabbedPane();
-    tabs.addTab("title 0", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
+    tabs.addTab("title 0", new ColorIcon(Color.RED), new JScrollPane(log));
     tabs.addTab("title 1", new ColorIcon(Color.GREEN), new JButton("button"));
     tabs.addTab("title 2", new ColorIcon(Color.BLUE), new JLabel("label"));
     tabs.addTab("title 3", new JPanel());
-    tabs.setTabComponentAt(3, new JLabel("lbl", new ColorIcon(Color.ORANGE), SwingConstants.LEFT));
+    tabs.setTabComponentAt(3, new JLabel("lbl", new ColorIcon(Color.CYAN), SwingConstants.LEFT));
 
     add(p, BorderLayout.NORTH);
     add(tabs);
