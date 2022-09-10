@@ -11,6 +11,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -24,11 +25,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
     Object[][] data = {
-      {STR0, STR1, STR2}, {STR0, STR1, STR2},
-      {STR3, STR3, STR3}, {STR3, STR3, STR3}
+        {STR0, STR1, STR2}, {STR0, STR1, STR2}, {STR3, STR3, STR3}, {STR3, STR3, STR3}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -37,12 +36,16 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new JTable(model) {
       @Override public void updateUI() {
+        setSelectionForeground(null); // Nimbus
+        setSelectionBackground(null); // Nimbus
+        getColumnModel().getColumn(0).setCellRenderer(null);
         getColumnModel().getColumn(1).setCellRenderer(null);
         getColumnModel().getColumn(2).setCellRenderer(null);
         super.updateUI();
         setRowSelectionAllowed(true);
         setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         setRowHeight(50);
+        getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
         getColumnModel().getColumn(1).setCellRenderer(new TestRenderer());
         getColumnModel().getColumn(2).setCellRenderer(new TextAreaCellRenderer());
       }
@@ -75,25 +78,28 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TestRenderer extends WrappedLabel implements TableCellRenderer {
-  @Override public void updateUI() {
-    super.updateUI();
-    setOpaque(true);
-    setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-  }
+class TestRenderer implements TableCellRenderer {
+  private final JLabel renderer = new WrappedLabel() {
+    @Override public void updateUI() {
+      super.updateUI();
+      setOpaque(true);
+      setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+    }
+  };
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
+      renderer.setForeground(table.getSelectionForeground());
+      renderer.setBackground(table.getSelectionBackground());
     } else {
-      setForeground(table.getForeground());
-      setBackground(table.getBackground());
+      renderer.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
     }
-    setHorizontalAlignment(value instanceof Number ? RIGHT : LEFT);
-    setFont(table.getFont());
-    setText(Objects.toString(value, ""));
-    return this;
+    boolean b = value instanceof Number;
+    renderer.setHorizontalAlignment(b ? SwingConstants.RIGHT : SwingConstants.LEFT);
+    renderer.setFont(table.getFont());
+    renderer.setText(Objects.toString(value, ""));
+    return renderer;
   }
 }
 
