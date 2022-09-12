@@ -167,8 +167,9 @@ class AnalogClock extends JPanel {
     Font font = g2.getFont();
     FontRenderContext frc = g2.getFontRenderContext();
     if (isRomanNumerals) {
+      AffineTransform si = AffineTransform.getScaleInstance(1d, 2d);
       for (String txt : romanNumerals) {
-        Shape s = getOutline(txt, font, frc);
+        Shape s = getTextLayout(txt, font, frc).getOutline(si);
         Rectangle2D r = s.getBounds2D();
         double tx = r.getCenterX();
         double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY() * .5;
@@ -179,7 +180,7 @@ class AnalogClock extends JPanel {
     } else {
       Point2D ptSrc = new Point2D.Double();
       for (String txt : arabicNumerals) {
-        Shape s = getOutline(txt, font, frc);
+        Shape s = getTextLayout(txt, font, frc).getOutline(null);
         Rectangle2D r = s.getBounds2D();
         double ty = radius - hourMarkerLen - r.getHeight() - r.getCenterY() * .5;
         ptSrc.setLocation(0d, -ty);
@@ -193,7 +194,7 @@ class AnalogClock extends JPanel {
     }
   }
 
-  private static Shape getOutline(String txt, Font font, FontRenderContext frc) {
-    return new TextLayout(txt, font, frc).getOutline(null);
+  private static TextLayout getTextLayout(String txt, Font font, FontRenderContext frc) {
+    return new TextLayout(txt, font, frc);
   }
 }
