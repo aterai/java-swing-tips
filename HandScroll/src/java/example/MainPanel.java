@@ -29,32 +29,37 @@ public final class MainPanel extends JPanel {
     }).orElseGet(MissingIcon::new);
     JLabel label = new JLabel(icon);
 
-    // JViewport vport = scroll.getViewport();
-    // JDK 1.7.0
-    JViewport vport = new JViewport() {
-      private static final boolean WEIGHT_MIXING = false;
-      private boolean isAdjusting;
-      @Override public void revalidate() {
-        if (!WEIGHT_MIXING && isAdjusting) {
-          return;
-        }
-        super.revalidate();
-      }
+    // // JDK 1.7.0
+    // // https://bugs.openjdk.org/browse/JDK-8195738
+    // // scroll position in ScrollPane is reset after calling validate()
+    // JViewport vport = new JViewport() {
+    //   private static final boolean WEIGHT_MIXING = false;
+    //   private boolean isAdjusting;
+    //   @Override public void revalidate() {
+    //     if (!WEIGHT_MIXING && isAdjusting) {
+    //       return;
+    //     }
+    //     super.revalidate();
+    //   }
+    //
+    //   @Override public void setViewPosition(Point p) {
+    //     if (WEIGHT_MIXING) {
+    //       super.setViewPosition(p);
+    //     } else {
+    //       isAdjusting = true;
+    //       super.setViewPosition(p);
+    //       isAdjusting = false;
+    //     }
+    //   }
+    // };
+    // vport.add(label);
+    // JScrollPane scroll = new JScrollPane();
+    // scroll.setViewport(vport);
 
-      @Override public void setViewPosition(Point p) {
-        if (WEIGHT_MIXING) {
-          super.setViewPosition(p);
-        } else {
-          isAdjusting = true;
-          super.setViewPosition(p);
-          isAdjusting = false;
-        }
-      }
-    };
-    vport.add(label);
-
-    JScrollPane scroll = new JScrollPane(); // new JScrollPane(label);
-    scroll.setViewport(vport);
+    // Java 11: JDK-8195738 fixed
+    // Java 8: backporting https://bugs.openjdk.org/browse/JDK-8200226
+    JScrollPane scroll = new JScrollPane(label);
+    JViewport vport = scroll.getViewport();
 
     HandScrollListener hsl1 = new HandScrollListener();
     vport.addMouseMotionListener(hsl1);
