@@ -29,8 +29,11 @@ public final class MainPanel extends JPanel {
     }).orElseGet(MissingIcon::new);
     JLabel label = new JLabel(icon);
 
+    // // JDK 1.6.0
+    // JScrollPane scroll = new JScrollPane(label);
     // JViewport vport = scroll.getViewport();
-    // JDK 1.7.0
+
+    // JDK 1.7.0 or later
     JViewport vport = new JViewport() {
       private static final boolean WEIGHT_MIXING = false;
       private boolean isAdjusting;
@@ -52,8 +55,7 @@ public final class MainPanel extends JPanel {
       }
     };
     vport.add(label);
-
-    JScrollPane scroll = new JScrollPane(); // new JScrollPane(label);
+    JScrollPane scroll = new JScrollPane();
     scroll.setViewport(vport);
 
     HandScrollListener hsl1 = new HandScrollListener();
