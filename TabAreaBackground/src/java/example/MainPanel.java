@@ -17,11 +17,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // Insets
-    // UIManager.put("TabbedPane.tabInsets",      new Insets(8, 8, 8, 8));
-    // UIManager.put("TabbedPane.tabAreaInsets",    new Insets(8, 8, 8, 8));
-    // UIManager.put("TabbedPane.contentBorderInsets",  new Insets(8, 8, 8, 8));
+    // UIManager.put("TabbedPane.tabInsets", new Insets(8, 8, 8, 8));
+    // UIManager.put("TabbedPane.tabAreaInsets", new Insets(8, 8, 8, 8));
+    // UIManager.put("TabbedPane.contentBorderInsets", new Insets(8, 8, 8, 8));
     // UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(8, 8, 8, 8));
 
     // Color
@@ -43,10 +42,6 @@ public final class MainPanel extends JPanel {
     // UIManager.put("TabbedPane.tabsOpaque", Boolean.FALSE);
     // UIManager.put("TabbedPane.contentOpaque", Boolean.FALSE);
 
-    // ???
-    // UIManager.put("TabbedPane.tabRunOverlay", Boolean.FALSE);
-    // UIManager.put("TabbedPane.tabsOverlapBorder", Boolean.FALSE);
-    // // UIManager.put("TabbedPane.selectionFollowsFocus", Boolean.FALSE);
     HashMap<String, Color> map = new HashMap<>();
     map.put("TabbedPane.darkShadow", Color.GRAY);
     map.put("TabbedPane.light", Color.GRAY);
