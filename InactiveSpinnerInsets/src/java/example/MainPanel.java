@@ -30,11 +30,12 @@ public final class MainPanel extends JPanel {
     //   BorderFactory.createLineBorder(bgc2, 2)));
 
     JTextArea info = new JTextArea();
-    info.append("shadow: " + UIManager.getColor("TextField.shadow"));
-    info.append("\ndarkShadow: " + UIManager.getColor("TextField.darkShadow"));
-    info.append("\nlight: " + UIManager.getColor("TextField.light"));
-    info.append("\nhighlight: " + UIManager.getColor("TextField.highlight"));
-    info.append("\neditorBorderPainted: " + UIManager.getColor("TextField.editorBorderPainted"));
+    append(info, "TextField.shadow");
+    append(info, "TextField.darkShadow");
+    append(info, "TextField.light");
+    append(info, "TextField.highlight");
+    append(info, "Spinner.border");
+    append(info, "Spinner.editorBorderPainted");
 
     JSpinner spinner2 = new JSpinner() {
       @Override public void updateUI() {
@@ -78,6 +79,10 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder(title));
     box.add(p);
     box.add(Box.createVerticalStrut(2));
+  }
+
+  private static void append(JTextArea info, String key) {
+    info.append(String.format("%s: %s%n", key, UIManager.get(key)));
   }
 
   public static void main(String[] args) {
