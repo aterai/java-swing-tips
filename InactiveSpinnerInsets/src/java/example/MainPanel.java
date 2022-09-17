@@ -29,12 +29,12 @@ public final class MainPanel extends JPanel {
     //   BorderFactory.createLineBorder(new Color(127, 157, 185)),
     //   BorderFactory.createLineBorder(bgc2, 2)));
 
-    System.out.println(UIManager.getColor("TextField.shadow"));
-    System.out.println(UIManager.getColor("TextField.darkShadow"));
-    System.out.println(UIManager.getColor("TextField.light"));
-    System.out.println(UIManager.getColor("TextField.highlight"));
-    System.out.println(UIManager.getBorder("Spinner.border"));
-    System.out.println(UIManager.getBoolean("Spinner.editorBorderPainted"));
+    JTextArea info = new JTextArea();
+    info.append("shadow: " + UIManager.getColor("TextField.shadow"));
+    info.append("\ndarkShadow: " + UIManager.getColor("TextField.darkShadow"));
+    info.append("\nlight: " + UIManager.getColor("TextField.light"));
+    info.append("\nhighlight: " + UIManager.getColor("TextField.highlight"));
+    info.append("\neditorBorderPainted: " + UIManager.getColor("TextField.editorBorderPainted"));
 
     JSpinner spinner2 = new JSpinner() {
       @Override public void updateUI() {
@@ -67,6 +67,7 @@ public final class MainPanel extends JPanel {
 
     setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 20));
     add(box, BorderLayout.NORTH);
+    add(new JScrollPane(info));
     add(check, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -110,8 +111,8 @@ class SimpleBorderSpinner extends JSpinner {
   @Override protected void paintComponent(Graphics g) {
     if (isWindowsLnF) {
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setPaint(isEnabled() ? UIManager.getColor("FormattedTextField.background")
-                              : UIManager.getColor("FormattedTextField.inactiveBackground"));
+      String key = isEnabled() ? "background" : "inactiveBackground";
+      g2.setPaint(UIManager.getColor("FormattedTextField." + key));
       g2.fillRect(0, 0, getWidth(), getHeight());
       g2.dispose();
     } else {
@@ -127,7 +128,6 @@ class SimpleBorderSpinner extends JSpinner {
       r.width--;
       r.height--;
       // r.grow(-1, -1);
-
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(UIManager.getColor("FormattedTextField.inactiveBackground"));
       g2.draw(r);
