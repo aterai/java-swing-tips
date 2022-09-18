@@ -16,8 +16,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     DefaultListModel<SiteItem> m = new DefaultListModel<>();
-    m.addElement(new SiteItem("aterai", Arrays.asList("https://ateraimemo.com", "https://github.com/aterai")));
-    m.addElement(new SiteItem("example", Arrays.asList("http://www.example.com", "https://www.example.com")));
+    List<String> link1 = Arrays.asList("https://ateraimemo.com", "https://github.com/aterai");
+    m.addElement(new SiteItem("aterai", link1));
+    List<String> link2 = Arrays.asList("http://www.example.com", "https://www.example.com");
+    m.addElement(new SiteItem("example", link2));
 
     JList<SiteItem> list = new JList<>(m);
     list.setFixedCellHeight(120);
@@ -82,29 +84,32 @@ class SiteItem {
   }
 }
 
-class SiteListItemRenderer extends JEditorPane implements ListCellRenderer<SiteItem> {
-  protected SiteListItemRenderer() {
-    super();
-    this.setContentType("text/html");
-    this.setEditable(false);
-    this.addHyperlinkListener(e -> {
-      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        Component c = ((JComponent) e.getSource()).getRootPane();
-        JOptionPane.showMessageDialog(c, "You click the link with the URL " + e.getURL());
-      }
-    });
-  }
+class SiteListItemRenderer implements ListCellRenderer<SiteItem> {
+  private final JEditorPane renderer = new JEditorPane("text/html", "") {
+    @Override public void updateUI() {
+      super.updateUI();
+      // setContentType("text/html");
+      setEditable(false);
+      addHyperlinkListener(e -> {
+        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+          Component c = ((JComponent) e.getSource()).getRootPane();
+          JOptionPane.showMessageDialog(c, "You click the link with the URL " + e.getURL());
+        }
+      });
+    }
+  };
 
   @Override public Component getListCellRendererComponent(JList<? extends SiteItem> list, SiteItem item, int index, boolean isSelected, boolean cellHasFocus) {
     StringBuilder buf = new StringBuilder(100);
     buf.append("<html><h1>").append(item.name).append("</h1><table>");
     for (int c = 0; c < item.link.size(); c++) {
       String url = item.link.get(c);
-      buf.append("<tr><td><a href='").append(url).append("'>").append(url).append("</a></td></tr>");
+      buf.append("<tr><td><a href='").append(url).append("'>").append(url);
+      // .append("</a></td></tr>");
     }
     buf.append("</table></html>");
-    this.setText(buf.toString());
-    this.setBackground(isSelected ? Color.LIGHT_GRAY : Color.WHITE);
-    return this;
+    renderer.setText(buf.toString());
+    renderer.setBackground(isSelected ? Color.LIGHT_GRAY : Color.WHITE);
+    return renderer;
   }
 }
