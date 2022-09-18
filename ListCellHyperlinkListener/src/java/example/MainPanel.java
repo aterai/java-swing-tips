@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -21,9 +22,13 @@ public final class MainPanel extends JPanel {
     List<String> link2 = Arrays.asList("http://www.example.com", "https://www.example.com");
     m.addElement(new SiteItem("example", link2));
 
-    JList<SiteItem> list = new JList<>(m);
-    list.setFixedCellHeight(120);
-    list.setCellRenderer(new SiteListItemRenderer());
+    JList<SiteItem> list = new JList<SiteItem>(m) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setFixedCellHeight(120);
+        setCellRenderer(new SiteListItemRenderer());
+      }
+    };
     list.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         Point pt = e.getPoint();
@@ -86,16 +91,19 @@ class SiteItem {
 
 class SiteListItemRenderer implements ListCellRenderer<SiteItem> {
   private final JEditorPane renderer = new JEditorPane("text/html", "") {
+    private transient HyperlinkListener listener;
     @Override public void updateUI() {
+      removeHyperlinkListener(listener);
       super.updateUI();
       // setContentType("text/html");
       setEditable(false);
-      addHyperlinkListener(e -> {
+      listener = e -> {
         if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
           Component c = ((JComponent) e.getSource()).getRootPane();
           JOptionPane.showMessageDialog(c, "You click the link with the URL " + e.getURL());
         }
-      });
+      };
+      addHyperlinkListener(listener);
     }
   };
 
@@ -109,6 +117,7 @@ class SiteListItemRenderer implements ListCellRenderer<SiteItem> {
     }
     buf.append("</table></html>");
     renderer.setText(buf.toString());
+    renderer.setOpaque(true);
     renderer.setBackground(isSelected ? Color.LIGHT_GRAY : Color.WHITE);
     return renderer;
   }
