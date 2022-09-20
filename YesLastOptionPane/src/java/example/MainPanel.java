@@ -12,7 +12,14 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea log = new JTextArea();
+    JTextArea log = new JTextArea() {
+      @Override public void updateUI() {
+        UIManager.put(KEY, null);
+        super.updateUI();
+        boolean b = UIManager.getLookAndFeelDefaults().getBoolean(KEY);
+        EventQueue.invokeLater(() -> setText(KEY + ": " + b));
+      }
+    };
 
     JButton defaultButton = new JButton(KEY + ": false(default)");
     defaultButton.addActionListener(e -> {
@@ -35,13 +42,6 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  @Override public void updateUI() {
-    UIManager.put(KEY, null);
-    super.updateUI();
-    boolean b = UIManager.getLookAndFeelDefaults().getBoolean(KEY);
-    System.out.println(KEY + ": " + b);
   }
 
   public static void main(String[] args) {
