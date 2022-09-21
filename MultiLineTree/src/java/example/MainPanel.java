@@ -19,12 +19,20 @@ import javax.swing.tree.TreeModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
+    JTree tree1 = new JTree(getDefaultTreeModel());
+    tree1.setRowHeight(0);
 
-    JTree tree = makeTree(getDefaultTreeModel2());
-    tree.setCellRenderer(new MultiLineCellRenderer());
+    JTree tree2 = new JTree(getDefaultTreeModel2()) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        setRowHeight(0);
+        setCellRenderer(new MultiLineCellRenderer());
+      }
+    };
 
-    add(makeTitledPanel("Html", makeTree(getDefaultTreeModel())));
-    add(makeTitledPanel("TextAreaRenderer", tree));
+    add(makeTitledPanel("Html", expandRow(tree1)));
+    add(makeTitledPanel("TextAreaRenderer", expandRow(tree2)));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -35,9 +43,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JTree makeTree(TreeModel model) {
-    JTree tree = new JTree(model);
-    tree.setRowHeight(0);
+  private static JTree expandRow(JTree tree) {
     for (int i = 0; i < tree.getRowCount(); i++) {
       tree.expandRow(i);
     }
@@ -118,13 +124,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
-  private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+class MultiLineCellRenderer implements TreeCellRenderer {
+  private final DefaultTreeCellRenderer rdr = new DefaultTreeCellRenderer();
   private final JLabel icon = new JLabel();
   private final JTextArea text = new CellTextArea2();
+  private final JPanel panel = new JPanel(new BorderLayout());
 
   protected MultiLineCellRenderer() {
-    super(new BorderLayout());
     // text.setLineWrap(true);
     // text.setWrapStyleWord(true);
     text.setOpaque(true);
@@ -133,10 +139,10 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
     icon.setOpaque(true);
     icon.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 2));
     icon.setVerticalAlignment(SwingConstants.TOP);
-    setOpaque(false);
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    add(icon, BorderLayout.WEST);
-    add(text);
+    panel.setOpaque(false);
+    panel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    panel.add(icon, BorderLayout.WEST);
+    panel.add(text);
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -145,31 +151,24 @@ class MultiLineCellRenderer extends JPanel implements TreeCellRenderer {
     Color bgc;
     Color fgc;
     if (selected) {
-      bgc = renderer.getBackgroundSelectionColor();
-      fgc = renderer.getTextSelectionColor();
+      bgc = rdr.getBackgroundSelectionColor();
+      fgc = rdr.getTextSelectionColor();
     } else {
-      bgc = Optional.ofNullable(renderer.getBackgroundNonSelectionColor())
-          .orElse(renderer.getBackground());
-      fgc = Optional.ofNullable(renderer.getTextNonSelectionColor())
-          .orElse(renderer.getForeground());
+      bgc = Optional.ofNullable(rdr.getBackgroundNonSelectionColor()).orElse(rdr.getBackground());
+      fgc = Optional.ofNullable(rdr.getTextNonSelectionColor()).orElse(rdr.getForeground());
     }
     text.setForeground(fgc);
     text.setBackground(bgc);
     icon.setBackground(bgc);
 
-    Component c = renderer.getTreeCellRendererComponent(
+    Component c = rdr.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       text.setText(l.getText());
       icon.setIcon(l.getIcon());
     }
-    return this;
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    renderer = new DefaultTreeCellRenderer();
+    return panel;
   }
 }
 
