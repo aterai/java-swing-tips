@@ -12,21 +12,25 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
+    super(new GridLayout(2, 1));
+    JTextArea log = new JTextArea();
+    log.setEditable(false);
+    log.append("MouseInfo.getNumberOfButtons: " + MouseInfo.getNumberOfButtons() + "\n");
+
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.setComponentPopupMenu(new TabbedPanePopupMenu());
     tabbedPane.addTab("Title a", new JLabel("Close a tab by the middle mouse button clicking."));
-    tabbedPane.addTab("Title b", new JLabel());
-    tabbedPane.addTab("Title c", new JLabel());
+    tabbedPane.addTab("Title b", new JLabel("JLabel b"));
+    tabbedPane.addTab("Title c", new JLabel("JLabel c"));
 
-    System.out.println("MouseInfo.getNumberOfButtons: " + MouseInfo.getNumberOfButtons());
     tabbedPane.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         int button = e.getButton();
         boolean isB2Clicked = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
 
-        System.out.println(button);
-        System.out.println("BUTTON2 mouseClicked: " + isB2Clicked);
+        String mask = button == 0 ? "NOBUTTON" : "BUTTON" + button;
+        log.append(mask + "\n");
+        log.append("BUTTON2 mouseClicked: " + isB2Clicked + "\n");
 
         boolean isB1Double = e.getClickCount() == 2 && button == 1;
         // && InputEvent.getMaskForButton(button) == InputEvent.BUTTON1_DOWN_MASK;
@@ -42,15 +46,16 @@ public final class MainPanel extends JPanel {
 
       @Override public void mousePressed(MouseEvent e) {
         boolean mousePressed = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
-        System.out.println("BUTTON2 mousePressed: " + mousePressed);
+        log.append("BUTTON2 mousePressed: " + mousePressed + "\n");
       }
 
       @Override public void mouseReleased(MouseEvent e) {
         boolean mouseReleased = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
-        System.out.println("BUTTON2 mouseReleased: " + mouseReleased);
+        log.append("BUTTON2 mouseReleased: " + mouseReleased + "\n");
       }
     });
     add(tabbedPane);
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
