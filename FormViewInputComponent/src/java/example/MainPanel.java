@@ -17,6 +17,8 @@ import javax.swing.text.html.HTMLEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    // System.out.println(UIManager.getString("IsindexView.prompt"));
+    // UIManager.put("IsindexView.prompt", "Search1: ");
     JEditorPane editor = new JEditorPane();
     HTMLEditorKit kit = new HTMLEditorKit();
     kit.setAutoFormSubmission(false);
@@ -61,6 +63,8 @@ public final class MainPanel extends JPanel {
         "<div>submit: <input type='submit' id='submit1' name='submit1'></div>",
         "<div>text: <input type='text' id='text1' name='text1'></div>",
         "<div>file: <input type='file' id='file1' name='file1'></div>",
+        "<div><isindex id='search1' name='search1' action='#'></div>",
+        "<div><isindex id='search2' name='search2' prompt='search: ' action='#'></div>",
         "</form><br/><hr/>",
         "<form id='form3' action='#'>",
         "<div><select name='select1' size='5' multiple>",
