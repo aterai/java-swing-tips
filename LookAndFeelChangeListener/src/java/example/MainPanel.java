@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
 
   @Override public void updateUI() {
     super.updateUI();
-    System.out.println("JPanel: updateUI");
+    // System.out.println("JPanel: updateUI");
     updateCheckBox("JPanel: updateUI: invokeLater");
   }
 
