@@ -26,7 +26,7 @@ import javax.swing.text.InternationalFormatter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new GridLayout(0, 1));
+    super(new BorderLayout());
     Calendar cal = Calendar.getInstance();
     cal.clear(Calendar.MILLISECOND);
     cal.clear(Calendar.SECOND);
@@ -38,9 +38,10 @@ public final class MainPanel extends JPanel {
     cal.add(Calendar.DATE, 9);
     Date end = cal.getTime();
 
-    System.out.println(date);
-    System.out.println(start);
-    System.out.println(end);
+    JTextArea info = new JTextArea();
+    info.append(date + "\n");
+    info.append(start + "\n");
+    info.append(end + "\n");
 
     String dateFormat = "yyyy/MM/dd";
 
@@ -52,9 +53,9 @@ public final class MainPanel extends JPanel {
     LocalDateTime s = d.minus(2, ChronoUnit.DAYS);
     LocalDateTime e = d.plus(7, ChronoUnit.DAYS);
 
-    System.out.println(d);
-    System.out.println(s);
-    System.out.println(e);
+    info.append(d + "\n");
+    info.append(s + "\n");
+    info.append(e + "\n");
 
     SpinnerModel m1 = new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH);
     JSpinner spinner1 = new JSpinner(m1);
@@ -73,10 +74,13 @@ public final class MainPanel extends JPanel {
     // ftf.setEditable(true);
     // ftf.setFormatterFactory(factory);
 
-    add(makeTitledPanel("SpinnerDateModel", spinner0));
-    add(makeTitledPanel("SpinnerDateModel / toInstant", spinner1));
-    add(makeTitledPanel("SpinnerLocalDateTimeModel", spinner2));
-    setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    p.add(makeTitledPanel("SpinnerDateModel", spinner0));
+    p.add(makeTitledPanel("SpinnerDateModel / toInstant", spinner1));
+    p.add(makeTitledPanel("SpinnerLocalDateTimeModel", spinner2));
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(info));
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
   }
 
