@@ -12,10 +12,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String key = "ColorChooser.showPreviewPanelText";
     JTextArea log = new JTextArea();
-    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
+    JCheckBox check = new JCheckBox(key, getBoolean(UIManager.get(key))) {
       @Override public void updateUI() {
         super.updateUI();
-        boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
+        boolean b = getBoolean(UIManager.getLookAndFeelDefaults().get(key));
         setSelected(b);
         LookAndFeel laf = UIManager.getLookAndFeel();
         log.append(String.format("%s%n  %s: %s%n", laf, key, b));
@@ -41,6 +41,16 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static boolean getBoolean(Object o) {
+    boolean b = false;
+    if (o instanceof Boolean) {
+      b = (Boolean) o;
+    } else if (o == null) {
+      b = true;
+    }
+    return b;
   }
 
   public static void main(String[] args) {
