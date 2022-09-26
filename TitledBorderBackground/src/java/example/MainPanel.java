@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
-    add(init(new JPanel(), "Default TitleBorder"));
+    add(init(new JPanel(), "Default TitledBorder"));
 
     JPanel p1 = new JPanel() {
       // https://stackoverflow.com/questions/72578926/how-to-set-background-within-the-titled-border
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
       }
     };
-    add(init(p1, "Transparent TitleBorder"));
+    add(init(p1, "Transparent TitledBorder"));
 
     JPanel p2 = new JPanel() {
       @Override protected void paintComponent(Graphics g) {
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
       }
     };
-    add(init(p2, "Paint TitleBorder background"));
+    add(init(p2, "Paint TitledBorder background"));
 
     JPanel p3 = new JPanel(new BorderLayout());
     p3.setBorder(new TitledBorder("Override paintBorder") {
