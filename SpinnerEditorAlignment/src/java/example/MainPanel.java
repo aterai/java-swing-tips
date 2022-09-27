@@ -9,8 +9,6 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea log = new JTextArea();
-
   private MainPanel() {
     super(new BorderLayout());
     // UIManager.put("Spinner.editorAlignment", SwingConstants.CENTER);
@@ -37,20 +35,41 @@ public final class MainPanel extends JPanel {
       bg.add(r);
       box.add(r);
     }
+    JTextArea log = new JTextArea();
+    log.setEditable(false);
 
     List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
     JSpinner spinner0 = new JSpinner(new SpinnerListModel(weeks));
-    debug((JSpinner.DefaultEditor) spinner0.getEditor());
+    String str0 = getHorizontalAlignment((JSpinner.DefaultEditor) spinner0.getEditor());
+    log.append("SpinnerListModel: " + str0 + "\n");
 
     @SuppressWarnings("JavaUtilDate")
     Date d = new Date();
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, d, null, Calendar.DAY_OF_MONTH));
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, "yyyy/MM/dd"));
-    debug((JSpinner.DefaultEditor) spinner1.getEditor());
+    String str1 = getHorizontalAlignment((JSpinner.DefaultEditor) spinner1.getEditor());
+    log.append("SpinnerDateModel: " + str1 + "\n");
 
     JSpinner spinner2 = new JSpinner(new SpinnerNumberModel(5, 0, 10, 1));
-    debug((JSpinner.DefaultEditor) spinner2.getEditor());
+    String str2 = getHorizontalAlignment((JSpinner.DefaultEditor) spinner2.getEditor());
+    log.append("SpinnerNumberModel: " + str2 + "\n");
 
+    JPanel p = new JPanel(new BorderLayout());
+    p.add(box, BorderLayout.NORTH);
+    p.add(makeSpinnerPanel(spinner0, spinner1, spinner2));
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
+    setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeSpinnerPanel(JSpinner sp0, JSpinner sp1, JSpinner sp2) {
     GridBagConstraints c = new GridBagConstraints();
     c.gridx = 0;
     c.weightx = 0.0;
@@ -70,47 +89,28 @@ public final class MainPanel extends JPanel {
     c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
     c.gridy = 0;
-    p.add(spinner0, c);
+    p.add(sp0, c);
     c.gridy = 1;
-    p.add(spinner1, c);
+    p.add(sp1, c);
     c.gridy = 2;
-    p.add(spinner2, c);
-
-    JPanel panel = new JPanel(new BorderLayout());
-    panel.add(box, BorderLayout.NORTH);
-    panel.add(p);
-
-    add(panel, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-
-    EventQueue.invokeLater(() -> {
-      JMenuBar mb = new JMenuBar();
-      mb.add(LookAndFeelUtil.createLookAndFeelMenu());
-      getRootPane().setJMenuBar(mb);
-    });
-    setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-    setPreferredSize(new Dimension(320, 240));
+    p.add(sp2, c);
+    return p;
   }
 
-  private void debug(JSpinner.DefaultEditor editor) {
+  private static String getHorizontalAlignment(JSpinner.DefaultEditor editor) {
     switch (editor.getTextField().getHorizontalAlignment()) {
       case SwingConstants.LEFT:
-        log.append("LEFT\n");
-        break;
+        return "LEFT";
       case SwingConstants.CENTER:
-        log.append("CENTER\n");
-        break;
+        return "CENTER";
       case SwingConstants.RIGHT:
-        log.append("RIGHT\n");
-        break;
+        return "RIGHT";
       case SwingConstants.LEADING:
-        log.append("LEADING\n");
-        break;
+        return "LEADING";
       case SwingConstants.TRAILING:
-        log.append("TRAILING\n");
-        break;
+        return "TRAILING";
       default:
-        log.append("ERROR\n");
+        return "ERROR";
     }
   }
 
