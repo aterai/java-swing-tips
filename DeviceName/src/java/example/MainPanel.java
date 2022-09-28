@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void showMessageDialog(Object[] obj) {
+  private void showMessageDialog(Object... obj) {
     JRootPane root = getRootPane();
     JOptionPane.showMessageDialog(root, obj, "Error", JOptionPane.INFORMATION_MESSAGE);
   }
