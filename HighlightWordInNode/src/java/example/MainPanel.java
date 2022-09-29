@@ -20,13 +20,11 @@ import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private final JTextField field = new JTextField("foo");
-  private transient HighlightTreeCellRenderer renderer;
   private final JTree tree = new JTree() {
     @Override public void updateUI() {
       setCellRenderer(null);
       super.updateUI();
-      renderer = new HighlightTreeCellRenderer();
-      setCellRenderer(renderer);
+      setCellRenderer(new HighlightTreeCellRenderer());
       EventQueue.invokeLater(MainPanel.this::fireDocumentChangeEvent);
     }
   };
@@ -56,12 +54,16 @@ public final class MainPanel extends JPanel {
   }
 
   public void fireDocumentChangeEvent() {
-    String q = field.getText();
-    renderer.setQuery(q);
-    TreePath root = tree.getPathForRow(0);
-    collapseAll(tree, root);
-    if (!q.isEmpty()) {
-      searchTree(tree, root, q);
+    TreeCellRenderer r = tree.getCellRenderer();
+    if (r instanceof HighlightTreeCellRenderer) {
+      HighlightTreeCellRenderer renderer = (HighlightTreeCellRenderer) r;
+      String q = field.getText();
+      renderer.setQuery(q);
+      TreePath root = tree.getPathForRow(0);
+      collapseAll(tree, root);
+      if (!q.isEmpty()) {
+        searchTree(tree, root, q);
+      }
     }
   }
 
