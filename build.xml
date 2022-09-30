@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="example" default="compile" xmlns:unless="ant:unless">
+<project name="example" default="compile" xmlns:if="ant:if" xmlns:unless="ant:unless">
   <!-- all properties are in build.properties -->
   <!--property file="build.properties" /-->
   <property environment="env" />
@@ -7,6 +7,9 @@
   <import file="${basedir}/${config.dir}/properties.xml" />
   <import file="${basedir}/${config.dir}/jnlp.xml" />
 
+  <condition property="jdk9orlater">
+    <javaversion atleast="9" />
+  </condition>
   <condition property="have.resources">
     <available file="${res.dir}" />
   </condition>
@@ -140,6 +143,7 @@
            classpathref="project.class.path">
       <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
       <compilerarg value="-J-Duser.language=${user.language}" />
+      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-Xlint:unchecked" />
     </javac>
   </target>
@@ -148,6 +152,7 @@
     <java classname="${main.class}" classpathref="project.class.path" fork="true">
       <jvmarg value="-Dfile.encoding=${compile.encoding}" />
       <jvmarg value="-Duser.language=${user.language}" />
+      <jvmarg value="--add-opens=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
     </java>
   </target>
 
@@ -340,9 +345,9 @@
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
     <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar"/>
-    <condition property="jdk9orlater">
+    <!-- condition property="jdk9orlater">
       <javaversion atleast="9"/>
-    </condition>
+    </condition -->
     <path id="processorpath.ref">
       <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
     </path>
@@ -401,6 +406,7 @@
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" />
       <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" />
       <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" />
+      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" />
     </javac>
   </target>
 
@@ -413,7 +419,6 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
-           compiler="org.eclipse.jdt.core.JDTCompilerAdapter"
            source="1.8"
            target="1.8"
            includeAntRuntime="false"
@@ -421,7 +426,8 @@
       <compilerclasspath>
         <fileset dir="${env.ECJ_HOME}" includes="*.jar" />
       </compilerclasspath>
-      <compilerarg line="-warn:-serial,-warningToken" />
+      <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="-warn:-serial,-warningToken" unless:set="jdk9orlater" />
+      <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED -warn:-serial,-warningToken" if:set="jdk9orlater" />
     </javac>
   </target>
 
@@ -484,31 +490,14 @@
   </target>
 
   <condition property="have.checkstyle">
-    <available file="${env.CHECKSTYLE_HOME}/checkstyle-9.3-all.jar" />
+    <available file="${env.CHECKSTYLE_HOME}" />
   </condition>
   <target name="checkstyle" if="have.checkstyle">
     <path id="checkstyle.classpath">
       <fileset dir="${env.CHECKSTYLE_HOME}">
-        <include name="checkstyle-9.3-all.jar" />
-      </fileset>
-    </path>
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
-    <mkdir dir="${build.reports}" />
-    <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
-      <formatter type="plain" />
-      <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
-      <fileset dir="${src.dir}" excludes="**/module-info.java" includes="**/*.java" />
-    </checkstyle>
-  </target>
-
-  <condition property="have.checkstyle-jdk11">
-    <available file="${env.CHECKSTYLE_HOME}" />
-  </condition>
-  <target name="checkstyle-jdk11" if="have.checkstyle-jdk11">
-    <path id="checkstyle.classpath">
-      <fileset dir="${env.CHECKSTYLE_HOME}">
-        <include name="*-all.jar" />
-        <exclude name="checkstyle-9.3-all.jar" />
+        <include name="*-all.jar" if:set="jdk9orlater" />
+        <exclude name="checkstyle-9.3-all.jar" if:set="jdk9orlater" />
+        <include name="checkstyle-9.3-all.jar" unless:set="jdk9orlater" />
       </fileset>
     </path>
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
