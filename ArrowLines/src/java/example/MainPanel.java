@@ -58,20 +58,19 @@ public final class MainPanel extends JPanel {
 class Arrow {
   private final Point start = new Point();
   private final Point end = new Point();
-  private final Path2D arrowHead;
+  private final Path2D arrowHead = makeArrowHead(new Dimension(8, 8));
 
   protected Arrow(Point start, Point end) {
     this.start.setLocation(start);
     this.end.setLocation(end);
-    arrowHead = makeArrowHead(new Dimension(8, 8));
   }
 
   protected Path2D makeArrowHead(Dimension size) {
     Path2D path = new Path2D.Double();
-    double t = size.height;
     double w = size.width * .5;
+    double h = size.height;
     path.moveTo(0d, -w);
-    path.lineTo(t, 0d);
+    path.lineTo(h, 0d);
     path.lineTo(0d, w);
     path.closePath();
     return path;
