@@ -6,9 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Collections;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BoxView;
@@ -23,18 +21,21 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
-  private static String text;
-
-  private MainPanel(ExecutorService threadPool) {
+  private MainPanel() {
     super(new BorderLayout());
+    int n = 1024 * 1024 - 2;
+    String txt = String.join("", Collections.nCopies(n, "a")) + "x\n";
+    // Java 11: String txt = "a".repeat(n) + "x\n";
 
-    // JTextPane textPane;
     JEditorPane editorPane = new JEditorPane();
+    editorPane.setEditorKit(new NoWrapEditorKit2());
+
     JTextArea textArea = new JTextArea();
+
     JButton editorPaneButton = new JButton("JEditorPane");
     JButton textAreaButton = new JButton("JTextArea");
 
-    // textPane = new JTextPane() {
+    // JTextPane textPane = new JTextPane() {
     //   // Non Wrapping(Wrap) TextPane : TextField : Swing JFC : Java
     //   // http://www.java2s.com/Code/Java/Swing-JFC/NonWrappingWrapTextPane.htm
     //   @Override public boolean getScrollableTracksViewportWidth() {
@@ -47,17 +48,13 @@ public final class MainPanel extends JPanel {
     // };
     // textPane.setEditorKit(new NoWrapEditorKit1());
 
-    editorPane.setEditorKit(new NoWrapEditorKit2());
-
-    ActionListener longTextListener = e -> threadPool.execute(() -> {
-      if (Objects.nonNull(text)) {
-        if (editorPaneButton.equals(e.getSource())) {
-          editorPane.setText(text);
-        } else {
-          textArea.setText(text);
-        }
+    ActionListener longTextListener = e -> {
+      if (editorPaneButton.equals(e.getSource())) {
+        editorPane.setText(txt);
+      } else {
+        textArea.setText(txt);
       }
-    });
+    };
     editorPaneButton.addActionListener(longTextListener);
     textAreaButton.addActionListener(longTextListener);
 
@@ -88,17 +85,6 @@ public final class MainPanel extends JPanel {
     return sp;
   }
 
-  public static void initLongLineStringInBackground(ExecutorService threadPool, int length) {
-    threadPool.execute(() -> {
-      StringBuilder sb = new StringBuilder(length);
-      for (int i = 0; i < length - 2; i++) {
-        sb.append('a');
-      }
-      sb.append("x\n");
-      text = sb.toString();
-    });
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -110,11 +96,9 @@ public final class MainPanel extends JPanel {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
-    ExecutorService threadPool = Executors.newCachedThreadPool();
-    initLongLineStringInBackground(threadPool, 1024 * 1024);
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel(threadPool));
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
