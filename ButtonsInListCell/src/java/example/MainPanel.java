@@ -172,24 +172,30 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
   }
 }
 
-class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
+class ButtonsRenderer<E> implements ListCellRenderer<E> {
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
   private final JTextArea textArea = new JTextArea();
   private final JButton deleteButton = new JButton("delete");
   private final JButton copyButton = new JButton("copy");
   private final List<JButton> buttons = Arrays.asList(deleteButton, copyButton);
+  private final JPanel renderer = new JPanel(new BorderLayout()) { // *1
+    @Override public Dimension getPreferredSize() {
+      Dimension d = super.getPreferredSize();
+      d.width = 0; // VerticalScrollBar as needed
+      return d;
+    }
+  };
   private int targetIndex;
   protected int pressedIndex = -1;
   protected int rolloverIndex = -1;
   protected JButton button;
 
   protected ButtonsRenderer(DefaultListModel<E> model) {
-    super(new BorderLayout()); // *1
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
-    setOpaque(true);
+    renderer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+    renderer.setOpaque(true);
     textArea.setLineWrap(true);
     textArea.setOpaque(false);
-    add(textArea);
+    renderer.add(textArea);
 
     deleteButton.addActionListener(e -> {
       boolean oneOrMore = model.getSize() > 1;
@@ -206,23 +212,17 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
       box.add(b);
       box.add(Box.createHorizontalStrut(5));
     });
-    add(box, BorderLayout.EAST);
-  }
-
-  @Override public Dimension getPreferredSize() {
-    Dimension d = super.getPreferredSize();
-    d.width = 0; // VerticalScrollBar as needed
-    return d;
+    renderer.add(box, BorderLayout.EAST);
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     textArea.setText(Objects.toString(value, ""));
     this.targetIndex = index;
     if (isSelected) {
-      setBackground(list.getSelectionBackground());
+      renderer.setBackground(list.getSelectionBackground());
       textArea.setForeground(list.getSelectionForeground());
     } else {
-      setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
+      renderer.setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
       textArea.setForeground(list.getForeground());
     }
     buttons.forEach(ButtonsRenderer::resetButtonStatus);
@@ -235,7 +235,7 @@ class ButtonsRenderer<E> extends JPanel implements ListCellRenderer<E> {
         button.getModel().setRollover(true);
       }
     }
-    return this;
+    return renderer;
   }
 
   private static void resetButtonStatus(AbstractButton button) {
