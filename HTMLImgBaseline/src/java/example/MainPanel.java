@@ -10,7 +10,6 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
-import javax.swing.text.LabelView;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
@@ -71,10 +70,10 @@ class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
   @Override public ViewFactory getViewFactory() {
     return new HTMLEditorKit.HTMLFactory() {
       @Override public View create(Element elem) {
-        View view = super.create(elem);
-        if (view instanceof LabelView) {
-          System.out.println("debug: " + view.getAlignment(View.Y_AXIS));
-        }
+        // View view = super.create(elem);
+        // if (view instanceof LabelView) {
+        //   System.out.println("debug: " + view.getAlignment(View.Y_AXIS));
+        // }
         AttributeSet attrs = elem.getAttributes();
         Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
         Object o = name == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
@@ -89,7 +88,7 @@ class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
             };
           }
         }
-        return view;
+        return super.create(elem);
       }
     };
   }
