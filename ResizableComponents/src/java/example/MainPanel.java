@@ -138,7 +138,7 @@ class JResizer extends JPanel { // implements Serializable {
 }
 
 // Resizable Components - Santhosh Kumar's Weblog
-// http://www.jroller.com/santhosh/entry/resizable_components
+// https://github.com/santhosh-tekuri/MyBlog/tree/master/ResizableBorder
 interface ResizableBorder extends Border {
   Cursor getResizeCursor(MouseEvent e);
 }
