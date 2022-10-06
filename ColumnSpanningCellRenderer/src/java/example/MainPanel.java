@@ -12,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -31,7 +32,23 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    JTable table = new JTable(model);
+    JTable table = new JTable(model) {
+      @Override public void updateUI() {
+        setColumnCellRenderer(null);
+        super.updateUI();
+        TableCellRenderer r = new ColumnSpanningCellRenderer();
+        setColumnCellRenderer(r);
+      }
+
+      private void setColumnCellRenderer(TableCellRenderer renderer) {
+        TableColumnModel cm = getColumnModel();
+        for (int i = 0; i < cm.getColumnCount(); i++) {
+          TableColumn c = cm.getColumn(i);
+          c.setCellRenderer(renderer);
+          c.setMinWidth(50);
+        }
+      }
+    };
     table.setAutoCreateRowSorter(true);
     table.getTableHeader().setReorderingAllowed(false);
     table.setRowSelectionAllowed(true);
@@ -40,12 +57,6 @@ public final class MainPanel extends JPanel {
     table.setShowVerticalLines(false);
     table.setIntercellSpacing(new Dimension(0, 1));
     table.setRowHeight(56);
-    TableCellRenderer renderer = new ColumnSpanningCellRenderer();
-    for (int i = 0; i < table.getColumnModel().getColumnCount(); i++) {
-      TableColumn c = table.getColumnModel().getColumn(i);
-      c.setCellRenderer(renderer);
-      c.setMinWidth(50);
-    }
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -78,16 +89,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
+class ColumnSpanningCellRenderer implements TableCellRenderer {
   private static final int TARGET_IDX = 0;
   private final JTextArea textArea = new JTextArea(2, 999_999);
   private final JLabel label = new JLabel();
   private final JLabel iconLabel = new JLabel();
   private final JScrollPane scroll = new JScrollPane(textArea);
+  private final JPanel renderer = new JPanel(new BorderLayout());
 
   protected ColumnSpanningCellRenderer() {
-    super(new BorderLayout());
-
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setBorder(BorderFactory.createEmptyBorder());
@@ -109,17 +119,16 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
     Border b2 = BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY);
     label.setBorder(BorderFactory.createCompoundBorder(b2, b1));
 
-    setBackground(textArea.getBackground());
-    setOpaque(true);
-    add(label, BorderLayout.NORTH);
-    add(scroll);
+    renderer.setOpaque(true);
+    renderer.add(label, BorderLayout.NORTH);
+    renderer.add(scroll);
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     OptionPaneDescription d;
     if (value instanceof OptionPaneDescription) {
       d = (OptionPaneDescription) value;
-      add(iconLabel, BorderLayout.WEST);
+      renderer.add(iconLabel, BorderLayout.WEST);
     } else {
       String title = Objects.toString(value, "");
       int mri = table.convertRowIndexToModel(row);
@@ -130,7 +139,7 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
       } else {
         d = new OptionPaneDescription(title, null, "");
       }
-      remove(iconLabel);
+      renderer.remove(iconLabel);
     }
     label.setText(d.title);
     textArea.setText(d.text);
@@ -149,12 +158,10 @@ class ColumnSpanningCellRenderer extends JPanel implements TableCellRenderer {
       cr.x -= iconLabel.getPreferredSize().width;
     }
     scroll.getViewport().setViewPosition(cr.getLocation());
-    if (isSelected) {
-      setBackground(Color.ORANGE);
-    } else {
-      setBackground(Color.WHITE);
-    }
-    return this;
+    Color bgc = isSelected ? Color.ORANGE : Color.WHITE;
+    renderer.setBackground(bgc);
+    textArea.setBackground(bgc); // Nimbus???
+    return renderer;
   }
 }
 
