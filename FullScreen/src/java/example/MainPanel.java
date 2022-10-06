@@ -110,6 +110,7 @@ public final class MainPanel extends JPanel {
       //   System.out.println("System.exit(0);");
       //   System.exit(0); // WebStart
       // }
+
       @Override public void windowClosing(WindowEvent e) {
         System.out.println("windowClosing:");
         System.out.println("  triggered only when you click on the X");
