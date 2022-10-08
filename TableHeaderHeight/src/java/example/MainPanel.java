@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -47,18 +46,29 @@ public final class MainPanel extends JPanel {
     // });
     p.add(makeTitledPanel("Override getPreferredSize()", scroll));
 
+    JTextField info = new JTextField();
+    info.setEditable(false);
     JButton button = new JButton("addColumn");
-    button.addActionListener(e -> Stream.of(table1, table2).forEach(t -> {
-      t.getColumnModel().addColumn(new TableColumn());
-      JTableHeader h = t.getTableHeader();
-      Dimension d = h.getPreferredSize();
-      System.out.println(d);
-    }));
+    button.addActionListener(e -> {
+      table1.getColumnModel().addColumn(new TableColumn());
+      table2.getColumnModel().addColumn(new TableColumn());
+      info.setText(String.format("%s - %s", getDim(table1), getDim(table2)));
+    });
+
+    Box box = Box.createHorizontalBox();
+    box.add(button);
+    box.add(info);
 
     add(p);
-    add(button, BorderLayout.SOUTH);
+    add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getDim(JTable t) {
+    JTableHeader h = t.getTableHeader();
+    Dimension d = h.getPreferredSize();
+    return String.format("%dx%d", d.width, d.height);
   }
 
   private static JTable makeTable() {
