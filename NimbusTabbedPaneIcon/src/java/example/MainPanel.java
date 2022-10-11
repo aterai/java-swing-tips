@@ -10,17 +10,18 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    // UIManager.put("TabbedPane.textIconGap", 4);
-    JTabbedPane tabbedPane0 = new JTabbedPane() {
-      @Override public void updateUI() {
-        super.updateUI();
-        System.out.println(UIManager.getInt("TabbedPane.textIconGap"));
-        // UIDefaults d = new UIDefaults();
-        // d.put("TabbedPane.textIconGap", 4);
-        // putClientProperty("Nimbus.Overrides", d);
-        // putClientProperty("Nimbus.Overrides.InheritDefaults", true);
-      }
-    };
+    // // UIManager.put("TabbedPane.textIconGap", 4);
+    // JTabbedPane tabbedPane0 = new JTabbedPane() {
+    //   @Override public void updateUI() {
+    //     super.updateUI();
+    //     System.out.println(UIManager.getInt("TabbedPane.textIconGap"));
+    //     // UIDefaults d = new UIDefaults();
+    //     // d.put("TabbedPane.textIconGap", 4);
+    //     // putClientProperty("Nimbus.Overrides", d);
+    //     // putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+    //   }
+    // };
+    JTabbedPane tabbedPane0 = new JTabbedPane();
     add(makeTitledPanel("Default addTab(title, icon, c)", initTabbedPane(tabbedPane0)));
 
     JTabbedPane tabbedPane1 = new JTabbedPane() {
