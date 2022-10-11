@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
 
   private void initPopupMenu(Frame frame) {
     // This code is inspired from:
-    // http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
-    // http://java.net/projects/swinghelper/sources/svn/content/trunk/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
+    // https://web.archive.org/web/20090327054056/http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
+    // https://github.com/floscher/swinghelper/blob/master/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
 
     // JWindow dummy = new JWindow(); // Ubuntu?
     JDialog dummy = new JDialog();
