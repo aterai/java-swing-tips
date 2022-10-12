@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
       JSpinner source = (JSpinner) e.getComponent();
       SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
       Integer oldValue = (Integer) source.getValue();
-      int intValue = oldValue - e.getWheelRotation() * model.getStepSize().intValue();
-      int max = (int) model.getMaximum(); // 1000
-      int min = (int) model.getMinimum(); // 0
+      Integer intValue = oldValue - e.getWheelRotation() * model.getStepSize().intValue();
+      Integer max = (Integer) model.getMaximum(); // 1000
+      Integer min = (Integer) model.getMinimum(); // 0
       if (min <= intValue && intValue <= max) {
         source.setValue(intValue);
       }
