@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -51,8 +50,7 @@ public final class MainPanel extends JPanel {
         String title = frame.getTitle();
         Font font = getFont();
         if (Objects.nonNull(font)) {
-          testWidth();
-
+          // testWidth();
           // @see javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
           // Handler#minimumLayoutSize(Container)
           // Calculate width.
@@ -75,21 +73,20 @@ public final class MainPanel extends JPanel {
           d.width = buttonsW + i.left + i.right + titleW + 2 + 2 + 2;
           // 27: Magic number for NimbusLookAndFeel
           d.height = Math.min(27, d.height);
-          System.out.println("BasicInternalFrameTitlePane: " + d.width);
+          // System.out.println("BasicInternalFrameTitlePane: " + d.width);
         }
         return d;
       }
 
-      private void testWidth() {
-        Dimension dim = getLayout().minimumLayoutSize(this);
-        System.out.println("minimumLayoutSize: " + dim.width);
-
-        int buttonsW = SwingUtils.descendants(this)
-            .filter(AbstractButton.class::isInstance)
-            .mapToInt(c -> c.getPreferredSize().width)
-            .sum();
-        System.out.println("Total width of all buttons: " + buttonsW);
-      }
+      // private void testWidth() {
+      //   Dimension dim = getLayout().minimumLayoutSize(this);
+      //   System.out.println("minimumLayoutSize: " + dim.width);
+      //   int buttonsW = SwingUtils.descendants(this)
+      //       .filter(AbstractButton.class::isInstance)
+      //       .mapToInt(c -> c.getPreferredSize().width)
+      //       .sum();
+      //   System.out.println("Total width of all buttons: " + buttonsW);
+      // }
     };
   }
 
@@ -113,14 +110,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class SwingUtils {
-  private SwingUtils() {
-    /* Singleton */
-  }
-
-  public static Stream<Component> descendants(Container parent) {
-    return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance).map(Container.class::cast)
-        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
-  }
-}
+// final class SwingUtils {
+//   private SwingUtils() {
+//     /* Singleton */
+//   }
+//
+//   public static Stream<Component> descendants(Container parent) {
+//     return Stream.of(parent.getComponents())
+//         .filter(Container.class::isInstance).map(Container.class::cast)
+//         .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
+//   }
+// }
