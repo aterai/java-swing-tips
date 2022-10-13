@@ -419,8 +419,8 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
-           source="1.8"
-           target="1.8"
+           source="${compile.source}"
+           target="${compile.source}"
            includeAntRuntime="false"
            classpathref="project.class.path">
       <compilerclasspath>
