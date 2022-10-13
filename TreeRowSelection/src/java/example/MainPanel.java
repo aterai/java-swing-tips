@@ -15,11 +15,9 @@ import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
-    JPanel p = new JPanel(new GridLayout(1, 2));
-    p.add(new JScrollPane(new JTree()));
-    p.add(new JScrollPane(new RowSelectionTree()));
-    add(p);
+    super(new GridLayout(1, 2));
+    add(new JScrollPane(new JTree()));
+    add(new JScrollPane(new RowSelectionTree()));
     setPreferredSize(new Dimension(320, 240));
   }
 
