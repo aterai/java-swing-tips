@@ -140,12 +140,11 @@ class FileDropListener extends DropTargetAdapter {
         e.acceptDrop(DnDConstants.ACTION_COPY);
         Transferable t = e.getTransferable();
         List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
-        for (Object o : list) {
-          if (o instanceof File) {
-            File f = (File) o;
-            System.out.println(f.getAbsolutePath());
-          }
-        }
+        String str = list.stream()
+            .filter(File.class::isInstance)
+            .map(o -> ((File) o).getAbsolutePath() + "<br>")
+            .reduce("<html>", String::concat);
+        JOptionPane.showMessageDialog(null, str);
         e.dropComplete(true);
       } else {
         e.rejectDrop();
