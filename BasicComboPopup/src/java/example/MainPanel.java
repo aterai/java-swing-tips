@@ -25,11 +25,39 @@ public final class MainPanel extends JPanel {
     JTextPane textPane = new JTextPane();
     textPane.setText("Shift+Tab");
 
-    JComboBox<String> combo = new JComboBox<>(new String[] {
+    JComboBox<Object> combo = new JComboBox<>(new String[] {
         "public", "protected", "private",
         "final", "transient", "super", "this", "return", "class"
     });
-    BasicComboPopup popup = new EditorComboPopup(textPane, combo);
+    BasicComboPopup popup = new BasicComboPopup(combo) {
+      private transient MouseListener listener;
+
+      @Override protected void installListListeners() {
+        super.installListListeners();
+        listener = new MouseAdapter() {
+          @Override public void mouseClicked(MouseEvent e) {
+            hide();
+            TextEditorUtils.append(textPane, Objects.toString(comboBox.getSelectedItem()));
+          }
+        };
+        if (Objects.nonNull(list)) {
+          list.addMouseListener(listener);
+        }
+      }
+
+      @Override public void uninstallingUI() {
+        if (Objects.nonNull(listener)) {
+          list.removeMouseListener(listener);
+          listener = null;
+        }
+        super.uninstallingUI();
+      }
+
+      @Override public boolean isFocusable() {
+        return true;
+      }
+
+    };
 
     ActionMap amc = popup.getActionMap();
     amc.put("myUp", new AbstractAction() {
@@ -47,9 +75,9 @@ public final class MainPanel extends JPanel {
     amc.put("myEnt", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int i = combo.getSelectedIndex();
-        Optional.ofNullable(combo.getItemAt(i)).ifPresent(str -> {
+        Optional.ofNullable(combo.getItemAt(i)).ifPresent(o -> {
           popup.hide();
-          TextEditorUtils.append(textPane, str);
+          TextEditorUtils.append(textPane, Objects.toString(o, ""));
         });
       }
     });
@@ -108,42 +136,42 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class EditorComboPopup extends BasicComboPopup {
-  protected final JTextComponent textArea;
-  private transient MouseListener listener;
-
-  // Java 9:
-  // protected EditorComboPopup(JTextComponent textArea, JComboBox<Object> cb) {
-  protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
-    super(cb);
-    this.textArea = textArea;
-  }
-
-  @Override protected void installListListeners() {
-    super.installListListeners();
-    listener = new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        hide();
-        TextEditorUtils.append(textArea, Objects.toString(comboBox.getSelectedItem()));
-      }
-    };
-    if (Objects.nonNull(list)) {
-      list.addMouseListener(listener);
-    }
-  }
-
-  @Override public void uninstallingUI() {
-    if (Objects.nonNull(listener)) {
-      list.removeMouseListener(listener);
-      listener = null;
-    }
-    super.uninstallingUI();
-  }
-
-  @Override public boolean isFocusable() {
-    return true;
-  }
-}
+// class EditorComboPopup extends BasicComboPopup {
+//   protected final JTextComponent textArea;
+//   private transient MouseListener listener;
+//
+//   // Java 9:
+//   // protected EditorComboPopup(JTextComponent textArea, JComboBox<Object> cb) {
+//   protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
+//     super(cb);
+//     this.textArea = textArea;
+//   }
+//
+//   @Override protected void installListListeners() {
+//     super.installListListeners();
+//     listener = new MouseAdapter() {
+//       @Override public void mouseClicked(MouseEvent e) {
+//         hide();
+//         TextEditorUtils.append(textArea, Objects.toString(comboBox.getSelectedItem()));
+//       }
+//     };
+//     if (Objects.nonNull(list)) {
+//       list.addMouseListener(listener);
+//     }
+//   }
+//
+//   @Override public void uninstallingUI() {
+//     if (Objects.nonNull(listener)) {
+//       list.removeMouseListener(listener);
+//       listener = null;
+//     }
+//     super.uninstallingUI();
+//   }
+//
+//   @Override public boolean isFocusable() {
+//     return true;
+//   }
+// }
 
 final class TextEditorUtils {
   private TextEditorUtils() {
