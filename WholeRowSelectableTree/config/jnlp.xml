@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST WholeRowSelectableTree" />
+  <property name="jnlp.Name"     value="WholeRowSelectableTree" />
+  <property name="jnlp.name"     value="wholerowselectabletree" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/wholerowselectabletree/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WholeRowSelectableTree.html" />
+</project>
