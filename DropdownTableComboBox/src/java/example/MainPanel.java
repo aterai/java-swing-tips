@@ -179,8 +179,10 @@ class ComboTablePopup extends BasicComboPopup {
   private final JTable table;
   private final JScrollPane scroll;
 
+  // Java 8: protected ComboTablePopup(JComboBox<?> combo, JTable table) {
   // Java 9: protected ComboTablePopup(JComboBox<Object> combo, JTable table) {
-  protected ComboTablePopup(JComboBox<?> combo, JTable table) {
+  @SuppressWarnings("unchecked")
+  protected ComboTablePopup(JComboBox combo, JTable table) {
     super(combo);
     this.table = table;
 

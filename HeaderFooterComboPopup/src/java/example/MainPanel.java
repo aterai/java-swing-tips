@@ -65,8 +65,10 @@ class HeaderFooterComboPopup extends BasicComboPopup {
   protected transient JLabel header;
   protected transient JMenuItem footer;
 
+  // Java 8: protected HeaderFooterComboPopup(JComboBox<?> combo) {
   // Java 9: protected HeaderFooterComboPopup(JComboBox<Object> combo) {
-  protected HeaderFooterComboPopup(JComboBox<?> combo) {
+  @SuppressWarnings("unchecked")
+  protected HeaderFooterComboPopup(JComboBox combo) {
     super(combo);
   }
 
