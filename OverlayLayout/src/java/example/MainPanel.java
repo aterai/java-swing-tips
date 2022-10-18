@@ -10,7 +10,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    add(new JButton("Dummy"));
+    add(new JButton("JButton"));
     add(makeOverlayLayoutButton());
     setPreferredSize(new Dimension(320, 240));
   }
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
         return getPreferredSize();
       }
     };
-    b2.addActionListener(e -> System.out.println("sub"));
+    b2.addActionListener(e -> JOptionPane.showMessageDialog(b2, "▼:sub"));
     b2.setAlignmentX(Component.RIGHT_ALIGNMENT);
     b2.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 
