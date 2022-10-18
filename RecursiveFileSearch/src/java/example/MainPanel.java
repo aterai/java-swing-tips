@@ -59,23 +59,21 @@ public final class MainPanel extends JPanel {
       fileChooser.setSelectedFile(new File(Objects.toString(dirCombo.getEditor().getItem())));
       Component c = dirCombo.getRootPane();
       int fcSelected = fileChooser.showOpenDialog(c);
-      String title = "title";
       if (fcSelected == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         if (Objects.isNull(file) || !file.isDirectory()) {
-          Object[] obj = {"Please select directory."};
-          UIManager.getLookAndFeel().provideErrorFeedback(c);
-          JOptionPane.showMessageDialog(c, obj, title, JOptionPane.ERROR_MESSAGE);
-          return;
+          textArea.setText("Please select directory.");
+        } else {
+          String path = file.getAbsolutePath();
+          textArea.setText(path);
+          addItem(dirCombo, path, 4);
+          repaint();
         }
-        addItem(dirCombo, file.getAbsolutePath(), 4);
-        repaint();
       } else if (fcSelected == JFileChooser.CANCEL_OPTION) {
-        System.out.println("Cancel");
+        textArea.setText("JFileChooser cancelled.");
       } else {
-        Object[] obj = {"Error."};
         UIManager.getLookAndFeel().provideErrorFeedback(c);
-        JOptionPane.showMessageDialog(c, obj, title, JOptionPane.ERROR_MESSAGE);
+        textArea.setText("JFileChooser error.");
       }
     });
 
