@@ -219,8 +219,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   /**
    * {@inheritDoc}
    */
-  @Override protected ListCellRenderer<SearchEngine> createRenderer() {
-    return new SearchEngineListCellRenderer<>();
+  @Override protected ListCellRenderer<Object> createRenderer() {
+    return new SearchEngineListCellRenderer();
   }
 
   /**
@@ -244,16 +244,17 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   }
 }
 
-class SearchEngineListCellRenderer<E extends SearchEngine> implements ListCellRenderer<E> {
-  private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
+class SearchEngineListCellRenderer implements ListCellRenderer<Object> {
+  private final ListCellRenderer<? super Object> renderer = new DefaultListCellRenderer();
 
-  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+  @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = renderer.getListCellRendererComponent(
         list, value, index, isSelected, cellHasFocus);
-    if (Objects.nonNull(value) && c instanceof JLabel) {
+    if (value instanceof SearchEngine && c instanceof JLabel) {
       JLabel l = (JLabel) c;
-      l.setIcon(value.favicon);
-      l.setToolTipText(value.url);
+      SearchEngine se = (SearchEngine) value;
+      l.setIcon(se.favicon);
+      l.setToolTipText(se.url);
     }
     return c;
   }
