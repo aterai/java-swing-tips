@@ -22,6 +22,9 @@ public final class MainPanel extends JPanel {
   @SuppressWarnings("JavaUtilDate")
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea log = new JTextArea();
+    log.setEditable(false);
+
     Calendar cal = Calendar.getInstance();
     // cal.set(2002, 12 - 1, 31, 10, 30, 15);
     cal.set(2002, Calendar.DECEMBER, 31, 10, 30, 15);
@@ -31,10 +34,10 @@ public final class MainPanel extends JPanel {
     cal.add(Calendar.DATE, 9);
     Date end = cal.getTime();
 
-    System.out.println(date.toString()); // --> Tue Dec 31 10:30:15 JST 2002
+    log.append(date + "\n"); // -> Tue Dec 31 10:30:15 JST 2002
 
     Object[][] data = {
-      {date}, {start}, {end}
+        {date}, {start}, {end}
     };
     DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date"}) {
       @Override public Class<?> getColumnClass(int column) {
@@ -67,14 +70,14 @@ public final class MainPanel extends JPanel {
 
     // RowFilter.regexFilter
     Matcher m1 = Pattern.compile("12").matcher(date.toString());
-    System.out.println(m1.find()); // --> false
+    log.append("String 12 find -> " + m1.find() + "\n"); // false
 
     Matcher m2 = Pattern.compile("Dec").matcher(date.toString());
-    System.out.println(m2.find()); // --> true
+    log.append("String Dec find -> " + m2.find() + "\n"); // true
 
     // a customized RegexFilter
     Matcher m3 = Pattern.compile("12").matcher(DateFormat.getDateInstance().format(date));
-    System.out.println(m3.find()); // --> true
+    log.append("DateFormat 12 find -> " + m3.find() + "\n"); // true
 
     JTextField field = new JTextField("(?i)12");
 
@@ -115,8 +118,12 @@ public final class MainPanel extends JPanel {
     box.add(p1);
     box.add(p2);
 
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(new JScrollPane(table));
+    p.add(new JScrollPane(log));
+
     add(box, BorderLayout.NORTH);
-    add(new JScrollPane(table));
+    add(p);
     setPreferredSize(new Dimension(320, 240));
   }
 
