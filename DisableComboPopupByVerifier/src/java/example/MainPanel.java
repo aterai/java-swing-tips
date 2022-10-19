@@ -120,8 +120,10 @@ class BasicComboPopup2 extends BasicComboPopup {
     handler2 = null;
   }
 
+  // Java 8: protected BasicComboPopup2(JComboBox<?> combo) {
   // Java 9: protected BasicComboPopup2(JComboBox<Object> combo) {
-  protected BasicComboPopup2(JComboBox<?> combo) {
+  @SuppressWarnings("unchecked")
+  protected BasicComboPopup2(JComboBox combo) {
     super(combo);
   }
 
