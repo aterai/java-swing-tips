@@ -117,8 +117,10 @@ class BasicComboPopup2 extends BasicComboPopup {
     handler2 = null;
   }
 
+  // Java 8: protected BasicComboPopup2(JComboBox<?> combo) {
   // Java 9: protected BasicComboPopup2(JComboBox<Object> combo) {
-  protected BasicComboPopup2(JComboBox<?> combo) {
+  @SuppressWarnings("unchecked")
+  protected BasicComboPopup2(JComboBox combo) {
     super(combo);
   }
 
@@ -156,8 +158,10 @@ class BasicComboPopup2 extends BasicComboPopup {
 }
 
 class BasicComboPopup3 extends BasicComboPopup {
+  // Java 8: protected BasicComboPopup3(JComboBox<?> combo) {
   // Java 9: protected BasicComboPopup3(JComboBox<Object> combo) {
-  protected BasicComboPopup3(JComboBox<?> combo) {
+  @SuppressWarnings("unchecked")
+  protected BasicComboPopup3(JComboBox combo) {
     super(combo);
   }
 
@@ -185,7 +189,7 @@ class BasicComboPopup3 extends BasicComboPopup {
   // @Override protected JList<Object> createList() {
   //   return new JList<>(comboBox.getModel()) {
   @SuppressWarnings("unchecked")
-  @Override protected JList<?> createList() {
+  @Override protected JList createList() {
     return new JList<Object>(comboBox.getModel()) {
       @Override protected void processMouseEvent(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {

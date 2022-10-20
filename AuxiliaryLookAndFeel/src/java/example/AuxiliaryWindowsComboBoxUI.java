@@ -87,8 +87,10 @@ public final class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
 class BasicComboPopup2 extends BasicComboPopup {
   private transient MouseListener handler2;
 
+  // Java 8: protected BasicComboPopup2(JComboBox<?> combo) {
   // Java 9: protected BasicComboPopup2(JComboBox<Object> combo) {
-  protected BasicComboPopup2(JComboBox<?> combo) {
+  @SuppressWarnings("unchecked")
+  protected BasicComboPopup2(JComboBox combo) {
     super(combo);
   }
 
