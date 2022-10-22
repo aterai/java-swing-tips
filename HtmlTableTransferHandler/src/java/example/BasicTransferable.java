@@ -41,9 +41,10 @@ public class BasicTransferable implements Transferable {
       String mimeType = DataFlavor.javaJVMLocalObjectMimeType + ";class=java.lang.String";
       stringFlavors[0] = new DataFlavor(mimeType);
       stringFlavors[1] = DataFlavor.stringFlavor;
-
     } catch (ClassNotFoundException ex) {
-      System.err.println("error initializing javax.swing.plaf.basic.BasicTransferable");
+      // System.err.println("error initializing javax.swing.plaf.basic.BasicTransferable");
+      UIManager.getLookAndFeel().provideErrorFeedback(null);
+      ex.printStackTrace();
     }
   }
 
