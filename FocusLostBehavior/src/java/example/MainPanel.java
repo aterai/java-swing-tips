@@ -49,7 +49,9 @@ public final class MainPanel extends JPanel {
     try {
       formatter = new MaskFormatter(s);
     } catch (ParseException ex) {
-      System.err.println("formatter is bad: " + ex.getMessage());
+      // System.err.println("formatter is bad: " + ex.getMessage());
+      UIManager.getLookAndFeel().provideErrorFeedback(null);
+      ex.printStackTrace();
     }
     return formatter;
   }
