@@ -136,7 +136,7 @@ class BackgroundTask extends SwingWorker<String, String> {
   private final Random rnd = new Random();
 
   @Override protected String doInBackground() throws InterruptedException {
-    System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+    // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     Thread.sleep(2000);
     int current = 0;
     int total = 0;
@@ -169,7 +169,7 @@ class ProgressListener implements PropertyChangeListener {
 
   @Override public void propertyChange(PropertyChangeEvent e) {
     if (!progressBar.isDisplayable() && e.getSource() instanceof SwingWorker) {
-      System.out.println("progress: DISPOSE_ON_CLOSE");
+      // System.out.println("progress: DISPOSE_ON_CLOSE");
       ((SwingWorker<?, ?>) e.getSource()).cancel(true);
     }
     String strPropertyName = e.getPropertyName();
