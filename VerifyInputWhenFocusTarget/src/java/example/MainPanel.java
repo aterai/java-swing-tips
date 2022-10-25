@@ -17,10 +17,11 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
+    JTextArea log = new JTextArea();
     EventQueue.invokeLater(field0::requestFocusInWindow);
     ActionListener al = e -> {
       Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-      System.out.println(c);
+      log.append(c + "\n");
       Stream.of(field0, field1, field2).forEach(tf -> tf.setText(""));
     };
     JButton button0 = new JButton("Default");
@@ -82,6 +83,7 @@ public final class MainPanel extends JPanel {
     p.add(p2, BorderLayout.SOUTH);
 
     add(box, BorderLayout.NORTH);
+    add(new JScrollPane(log));
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -118,7 +120,7 @@ class IntegerInputVerifier extends InputVerifier {
         Integer.parseInt(textField.getText());
         verified = true;
       } catch (NumberFormatException ex) {
-        System.out.println("InputVerifier#verify: false");
+        // System.err.println("InputVerifier#verify: false");
         UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
     }
