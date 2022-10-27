@@ -29,7 +29,8 @@ public final class MainPanel extends JPanel {
         String data = ((FormSubmitEvent) e).getData();
         String charset = Charset.defaultCharset().toString();
         try {
-          System.out.println(URLDecoder.decode(data, charset));
+          String para = URLDecoder.decode(data, charset);
+          JOptionPane.showMessageDialog(editor.getRootPane(), para);
         } catch (UnsupportedEncodingException ex) {
           UIManager.getLookAndFeel().provideErrorFeedback(editor);
           ex.printStackTrace();
