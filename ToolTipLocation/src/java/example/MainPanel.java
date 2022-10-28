@@ -81,9 +81,8 @@ class ToolTipLocationHandler extends MouseInputAdapter {
       }
       popup = factory.getPopup(e.getComponent(), tip, p.x, p.y);
       Container c = tip.getTopLevelAncestor();
-      if (c instanceof JWindow && ((JWindow) c).getType() == Window.Type.POPUP) {
-        System.out.println("Popup$HeavyWeightWindow");
-      } else {
+      if (c instanceof JWindow && ((JWindow) c).getType() != Window.Type.POPUP) {
+        // Popup$LightWeightWindow
         popup.show();
       }
     }
