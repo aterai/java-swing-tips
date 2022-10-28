@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(list);
     scroll.setBorder(BorderFactory.createEmptyBorder());
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
-    popup.add(makeResizePanel(scroll, popup));
+    popup.add(makeResizePanel(scroll));
 
     // JToggleButton button = new JToggleButton("JToggleButton");
     // button.addActionListener(e -> {
@@ -101,9 +101,9 @@ public final class MainPanel extends JPanel {
     return combo;
   }
 
-  private static JPanel makeResizePanel(JScrollPane scroll, JPopupMenu popup) {
+  private static JPanel makeResizePanel(JScrollPane scroll) {
     JLabel bottom = new JLabel("", new DotIcon(), SwingConstants.CENTER);
-    MouseInputListener rwl = new ResizeWindowListener(popup);
+    MouseInputListener rwl = new ResizePopupMenuListener();
     bottom.addMouseListener(rwl);
     bottom.addMouseMotionListener(rwl);
     bottom.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
@@ -139,18 +139,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ResizeWindowListener extends MouseInputAdapter {
+class ResizePopupMenuListener extends MouseInputAdapter {
   private final Rectangle rect = new Rectangle();
-  private final JPopupMenu popup;
   private final Point startPt = new Point();
   private final Dimension startDim = new Dimension();
 
-  protected ResizeWindowListener(JPopupMenu popup) {
-    super();
-    this.popup = popup;
-  }
-
   @Override public void mousePressed(MouseEvent e) {
+    Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, e.getComponent());
     rect.setSize(popup.getSize());
     startDim.setSize(popup.getSize());
     startPt.setLocation(e.getComponent().getLocationOnScreen());
@@ -158,14 +153,18 @@ class ResizeWindowListener extends MouseInputAdapter {
 
   @Override public void mouseDragged(MouseEvent e) {
     rect.height = startDim.height + e.getLocationOnScreen().y - startPt.y;
-    popup.setPreferredSize(rect.getSize());
-    Window w = SwingUtilities.getWindowAncestor(popup);
-    if (w != null && w.getType() == Window.Type.POPUP) {
-      // Popup$HeavyWeightWindow
-      w.setSize(rect.width, rect.height);
-    } else {
-      // Popup$LightWeightWindow
-      popup.pack();
+    Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, e.getComponent());
+    if (c instanceof JPopupMenu) {
+      JPopupMenu popup = (JPopupMenu) c;
+      popup.setPreferredSize(rect.getSize());
+      Window w = SwingUtilities.getWindowAncestor(popup);
+      if (w != null && w.getType() == Window.Type.POPUP) {
+        // Popup$HeavyWeightWindow
+        w.setSize(rect.width, rect.height);
+      } else {
+        // Popup$LightWeightWindow
+        popup.pack();
+      }
     }
     // Container p = popup.getTopLevelAncestor();
     // if (p instanceof JWindow && ((Window) p).getType() == Window.Type.POPUP) {
