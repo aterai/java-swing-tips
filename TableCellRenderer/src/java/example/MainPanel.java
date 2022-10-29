@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         setRowHeight(50);
         getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
-        getColumnModel().getColumn(1).setCellRenderer(new TestRenderer());
+        getColumnModel().getColumn(1).setCellRenderer(new WrappedLabelRenderer());
         getColumnModel().getColumn(2).setCellRenderer(new TextAreaCellRenderer());
       }
     };
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TestRenderer implements TableCellRenderer {
+class WrappedLabelRenderer implements TableCellRenderer {
   private final JLabel renderer = new WrappedLabel() {
     @Override public void updateUI() {
       super.updateUI();

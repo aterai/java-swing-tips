@@ -15,14 +15,13 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
-    JPanel p1 = new TestPanel();
+    JPanel p1 = new CenterLinePanel();
     p1.setLayout(new BoxLayout(p1, BoxLayout.X_AXIS));
     p1.add(Box.createHorizontalGlue());
     p1.add(makeLabel());
     p1.add(Box.createHorizontalGlue());
 
-    JPanel p2 = new TestPanel();
+    JPanel p2 = new CenterLinePanel();
     p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
     p2.add(Box.createVerticalGlue());
     p2.add(makeLabel());
@@ -98,7 +97,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TestPanel extends JPanel {
+class CenterLinePanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     g.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);

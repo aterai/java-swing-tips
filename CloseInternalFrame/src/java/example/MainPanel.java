@@ -108,7 +108,35 @@ public final class MainPanel extends JPanel {
         col += 1;
       }
     });
-    f.addInternalFrameListener(new TestInternalFrameListener());
+    f.addInternalFrameListener(new InternalFrameListener() {
+      @Override public void internalFrameClosing(InternalFrameEvent e) {
+        System.out.println("internalFrameClosing: " + e.getInternalFrame().getTitle());
+      }
+
+      @Override public void internalFrameClosed(InternalFrameEvent e) {
+        System.out.println("internalFrameClosed: " + e.getInternalFrame().getTitle());
+      }
+
+      @Override public void internalFrameOpened(InternalFrameEvent e) {
+        System.out.println("internalFrameOpened: " + e.getInternalFrame().getTitle());
+      }
+
+      @Override public void internalFrameIconified(InternalFrameEvent e) {
+        System.out.println("internalFrameIconified: " + e.getInternalFrame().getTitle());
+      }
+
+      @Override public void internalFrameDeiconified(InternalFrameEvent e) {
+        System.out.println("internalFrameDeiconified: " + e.getInternalFrame().getTitle());
+      }
+
+      @Override public void internalFrameActivated(InternalFrameEvent e) {
+        // System.out.println("internalFrameActivated: " + e.getInternalFrame().getTitle());
+      }
+
+      @Override public void internalFrameDeactivated(InternalFrameEvent e) {
+        System.out.println("internalFrameDeactivated: " + e.getInternalFrame().getTitle());
+      }
+    });
     return f;
   }
 
@@ -129,36 +157,6 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-  }
-}
-
-class TestInternalFrameListener implements InternalFrameListener {
-  @Override public void internalFrameClosing(InternalFrameEvent e) {
-    System.out.println("internalFrameClosing: " + e.getInternalFrame().getTitle());
-  }
-
-  @Override public void internalFrameClosed(InternalFrameEvent e) {
-    System.out.println("internalFrameClosed: " + e.getInternalFrame().getTitle());
-  }
-
-  @Override public void internalFrameOpened(InternalFrameEvent e) {
-    System.out.println("internalFrameOpened: " + e.getInternalFrame().getTitle());
-  }
-
-  @Override public void internalFrameIconified(InternalFrameEvent e) {
-    System.out.println("internalFrameIconified: " + e.getInternalFrame().getTitle());
-  }
-
-  @Override public void internalFrameDeiconified(InternalFrameEvent e) {
-    System.out.println("internalFrameDeiconified: " + e.getInternalFrame().getTitle());
-  }
-
-  @Override public void internalFrameActivated(InternalFrameEvent e) {
-    // System.out.println("internalFrameActivated: " + e.getInternalFrame().getTitle());
-  }
-
-  @Override public void internalFrameDeactivated(InternalFrameEvent e) {
-    System.out.println("internalFrameDeactivated: " + e.getInternalFrame().getTitle());
   }
 }
 
