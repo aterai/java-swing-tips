@@ -102,6 +102,16 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(new JScrollPane(table));
+    p.add(new JScrollPane(log));
+
+    add(makeRegexBox(field, r0, r1, r2), BorderLayout.NORTH);
+    add(p);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Box makeRegexBox(JTextField field, JRadioButton... buttons) {
     Box box = Box.createVerticalBox(); // new JPanel(new GridLayout(2, 1, 5, 5));
     box.setBorder(BorderFactory.createEmptyBorder(5, 2, 5, 2));
 
@@ -111,20 +121,13 @@ public final class MainPanel extends JPanel {
 
     JPanel p2 = new JPanel();
     ButtonGroup bg = new ButtonGroup();
-    Stream.of(r0, r1, r2).forEach(rb -> {
+    Stream.of(buttons).forEach(rb -> {
       bg.add(rb);
       p2.add(rb);
     });
     box.add(p1);
     box.add(p2);
-
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(new JScrollPane(table));
-    p.add(new JScrollPane(log));
-
-    add(box, BorderLayout.NORTH);
-    add(p);
-    setPreferredSize(new Dimension(320, 240));
+    return box;
   }
 
   public static void main(String[] args) {
