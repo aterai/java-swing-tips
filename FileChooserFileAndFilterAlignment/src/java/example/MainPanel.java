@@ -98,7 +98,7 @@ class RightAlignmentWindowsFileChooserUI extends WindowsFileChooserUI {
     SwingUtils.descendants(getBottomPanel())
         .filter(JLabel.class::isInstance)
         .map(JLabel.class::cast)
-        .forEach(l -> l.setAlignmentX(1f));
+        .forEach(l -> l.setAlignmentX(Component.RIGHT_ALIGNMENT));
   }
 }
 
