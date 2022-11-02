@@ -93,10 +93,10 @@ class HeaderFooterComboPopup extends BasicComboPopup {
   }
 
   protected void configureHeader() {
-    header = new JLabel("History");
-    header.setBorder(BorderFactory.createEmptyBorder(4, 5, 4, 0));
-    header.setMaximumSize(new Dimension(Short.MAX_VALUE, 20));
-    header.setAlignmentX(1f);
+    header = new JLabel("History", SwingConstants.CENTER);
+    header.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+    header.setMaximumSize(new Dimension(Short.MAX_VALUE, 24));
+    header.setAlignmentX(Component.CENTER_ALIGNMENT);
   }
 
   protected void configureFooter() {
