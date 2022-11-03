@@ -8,7 +8,6 @@ import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
@@ -63,8 +62,9 @@ public final class MainPanel extends JPanel {
       if (b64.isEmpty()) {
         return;
       }
-      byte[] bytes = b64.getBytes(StandardCharsets.ISO_8859_1);
-      try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(bytes))) {
+      // byte[] bytes = b64.getBytes(StandardCharsets.ISO_8859_1);
+      // try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(bytes))) {
+      try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(b64))) {
         label.setIcon(new ImageIcon(ImageIO.read(input)));
       } catch (IOException ex) {
         ex.printStackTrace();
