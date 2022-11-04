@@ -81,7 +81,7 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   protected TableTouchScreenHandler(JTable table) {
     super();
     this.scroller = new Timer(DELAY, e -> {
-      System.out.print(".");
+      // System.out.print(".");
       JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(table);
       Point vp = vport.getViewPosition();
       vp.translate(-delta.x, -delta.y);
@@ -95,7 +95,7 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    System.out.println("mousePressed: " + delta);
+    // System.out.println("mousePressed: " + delta);
     Component c = e.getComponent();
     c.setCursor(hc);
     // c.setEnabled(false);
@@ -121,7 +121,7 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    System.out.println("mouseReleased: " + delta);
+    // System.out.println("mouseReleased: " + delta);
     JTable c = (JTable) e.getComponent();
     c.setCursor(dc);
     // c.setEnabled(true);
@@ -133,9 +133,9 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   }
 
   @Override public void valueChanged(ListSelectionEvent e) {
-    System.out.println("\nvalueChanged: " + e.getValueIsAdjusting());
+    // System.out.println("\nvalueChanged: " + e.getValueIsAdjusting());
     if (scroller.isRunning()) {
-      System.out.println("isRunning");
+      // System.out.println("isRunning");
       delta.setLocation(0, 0);
     }
     scroller.stop();
