@@ -113,7 +113,8 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
         if (path != null && bounds != null) {
           isLeaf = treeModel.isLeaf(path.getLastPathComponent());
           if (isLeaf) {
-            isExpanded = hasBeenExpanded = false;
+            isExpanded = false;
+            hasBeenExpanded = false;
           } else {
             isExpanded = treeState.getExpandedState(path);
             hasBeenExpanded = tree.hasBeenExpanded(path);
@@ -152,7 +153,8 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
         if (path != null && bounds != null) {
           isLeaf = treeModel.isLeaf(path.getLastPathComponent());
           if (isLeaf) {
-            isExpanded = hasBeenExpanded = false;
+            isExpanded = false;
+            hasBeenExpanded = false;
           } else {
             isExpanded = treeState.getExpandedState(path);
             hasBeenExpanded = tree.hasBeenExpanded(path);
