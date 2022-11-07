@@ -142,8 +142,8 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
   }
 
   // https://github.com/aterai/java-swing-tips/blob/master/RotatedVerticalTextTabs/src/java/example/MainPanel.java
-  private Icon makeVerticalHeaderIcon(Component label) {
-    Dimension d = label.getPreferredSize();
+  private Icon makeVerticalHeaderIcon(Component c) {
+    Dimension d = c.getPreferredSize();
     int w = d.height;
     int h = d.width;
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -151,7 +151,7 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
     AffineTransform at = AffineTransform.getTranslateInstance(0, h);
     at.quadrantRotate(-1);
     g2.setTransform(at);
-    SwingUtilities.paintComponent(g2, label, intermediate, 0, 0, h, w);
+    SwingUtilities.paintComponent(g2, c, intermediate, 0, 0, h, w);
     g2.dispose();
     return new ImageIcon(bi);
   }
