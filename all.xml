@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $ ant -f all.xml -Dall=package -->
-<project name="swingall" default="all" basedir=".">
+<!-- $ ant -f all.xml checkstyle pmd -->
+<project name="swing-all" default="all" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
   <property environment="env" />
+
+  <condition property="jdk9orlater">
+    <javaversion atleast="9" />
+  </condition>
 
   <target name="all">
     <subant target="${all}">
@@ -25,45 +30,29 @@
       <sourceLanguage name="java" version="1.8" />
       <formatter type="xml" toFile="pmd.xml" />
       <formatter type="text" toConsole="true" />
-      <fileset dir="${basedir}" excludes="*/target/**" includes="*/src/**/*.java" />
-    </pmd>
-  </target>
-
-  <condition property="have.checkstyle">
-    <available file="${env.CHECKSTYLE_HOME}/checkstyle-9.3-all.jar" />
-  </condition>
-  <target name="checkstyle" if="have.checkstyle">
-    <path id="checkstyle.classpath">
-      <fileset dir="${env.CHECKSTYLE_HOME}">
-        <include name="checkstyle-9.3-all.jar" />
-      </fileset>
-    </path>
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
-    <checkstyle config="${basedir}/checks.xml" failOnViolation="false">
-      <formatter type="plain" />
-      <formatter type="xml" toFile="checkstyle-result.xml" />
       <fileset dir="${basedir}">
         <exclude name="**/target/**" />
         <exclude name="**/module-info.java" />
         <include name="**/*.java" />
       </fileset>
-    </checkstyle>
+    </pmd>
   </target>
 
-  <condition property="have.checkstyle-jdk11">
+  <condition property="have.checkstyle">
     <available file="${env.CHECKSTYLE_HOME}" />
   </condition>
-  <target name="checkstyle-jdk11" if="have.checkstyle-jdk11">
+  <target name="checkstyle" if="have.checkstyle">
     <path id="checkstyle.classpath">
       <fileset dir="${env.CHECKSTYLE_HOME}">
-        <include name="*-all.jar" />
-        <exclude name="checkstyle-9.3-all.jar" />
+        <include name="*-all.jar" if:set="jdk9orlater" />
+        <exclude name="checkstyle-9.3-all.jar" if:set="jdk9orlater" />
+        <include name="checkstyle-9.3-all.jar" unless:set="jdk9orlater" />
       </fileset>
     </path>
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
     <checkstyle config="${basedir}/checks.xml" failOnViolation="false">
       <formatter type="plain" />
-      <formatter type="xml" toFile="checkstyle-result.xml" />
+      <formatter type="xml" toFile="${basedir}/checkstyle-result.xml" />
       <fileset dir="${basedir}">
         <exclude name="**/target/**" />
         <exclude name="**/module-info.java" />
