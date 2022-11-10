@@ -146,8 +146,8 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     } catch (IOException ex) {
       // create the cache
       try {
-        long size = ps.create(codebase, 64_000);
-        System.out.println("Cache created - size: " + size);
+        ps.create(codebase, 64_000);
+        // System.out.println("Cache created - size: " + ps.create(codebase, 64_000));
       } catch (IOException ignore) {
         // PMD:
         // PreserveStackTrace false positive when using UncheckedIOException
