@@ -11,12 +11,28 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   private MainPanel() {
     super(new BorderLayout());
+    LOGGER.setUseParentHandlers(false);
+    JTextArea textArea = new JTextArea();
+    textArea.setEditable(false);
+    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
+
     setFocusable(true);
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
@@ -26,17 +42,19 @@ public final class MainPanel extends JPanel {
         }
       }
     });
+    InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    ActionMap am = getActionMap();
     String key = "full-screen";
-    getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), key);
-    getActionMap().put(key, new AbstractAction() {
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), key);
+    am.put(key, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         toggleFullScreenWindow();
       }
     });
-    getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
-    getActionMap().put("close", new AbstractAction() {
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+    am.put("close", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
-        System.out.println("ESC KeyEvent:");
+        LOGGER.info(() -> "ESC KeyEvent:");
         // int mode = 2;
         // if (mode == 0) {
         //   // dialog.dispose();
@@ -60,7 +78,10 @@ public final class MainPanel extends JPanel {
     });
     String help1 = "F11 or Double Click: toggle full-screen";
     String help2 = "ESC: exit";
-    add(new JLabel(String.format("<html>%s<br/>%s", help1, help2)), BorderLayout.NORTH);
+    JLabel label = new JLabel(String.format("<html>%s<br/>%s", help1, help2));
+    label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    add(label, BorderLayout.NORTH);
+    add(new JScrollPane(textArea));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -112,18 +133,87 @@ public final class MainPanel extends JPanel {
       // }
 
       @Override public void windowClosing(WindowEvent e) {
-        System.out.println("windowClosing:");
-        System.out.println("  triggered only when you click on the X");
-        System.out.println("  or on the close menu item in the window's system menu.'");
+        LOGGER.info(() -> {
+          String str1 = "windowClosing:";
+          String str2 = "triggered only when you click on the X";
+          String str3 = "or on the close menu item in the window's system menu.'";
+          return String.join("\n  ", str1, str2, str3);
+        });
       }
 
       @Override public void windowClosed(WindowEvent e) {
-        System.out.println("windowClosed & rebuild:");
+        LOGGER.info(() -> "windowClosed & rebuild:");
       }
     });
     dialog.getContentPane().add(new MainPanel());
     dialog.pack();
     dialog.setLocationRelativeTo(null);
     dialog.setVisible(true);
+  }
+}
+
+class TextAreaOutputStream extends OutputStream {
+  private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+  private final JTextArea textArea;
+
+  protected TextAreaOutputStream(JTextArea textArea) {
+    super();
+    this.textArea = textArea;
+  }
+
+  // // Java 10:
+  // @Override public void flush() {
+  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
+  //   buffer.reset();
+  // }
+
+  @Override public void flush() throws IOException {
+    textArea.append(buffer.toString("UTF-8"));
+    buffer.reset();
+  }
+
+  @Override public void write(int b) {
+    buffer.write(b);
+  }
+
+  @Override public void write(byte[] b, int off, int len) {
+    buffer.write(b, off, len);
+  }
+}
+
+class TextAreaHandler extends StreamHandler {
+  private void configure() {
+    setFormatter(new SimpleFormatter());
+    try {
+      setEncoding("UTF-8");
+    } catch (IOException ex) {
+      try {
+        setEncoding(null);
+      } catch (IOException ex2) {
+        // doing a setEncoding with null should always work.
+        assert false;
+      }
+    }
+  }
+
+  protected TextAreaHandler(OutputStream os) {
+    super();
+    configure();
+    setOutputStream(os);
+  }
+
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method publish overrides synchronized method in StreamHandler
+  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
+    flush();
+  }
+
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method close overrides synchronized method in StreamHandler
+  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @Override public synchronized void close() {
+    flush();
   }
 }
