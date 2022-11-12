@@ -8,13 +8,20 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.Optional;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   private MainPanel() {
     super(new BorderLayout());
+    LOGGER.addHandler(new ConsoleHandler());
     try {
       Thread.sleep(5000);
     } catch (InterruptedException ex) {
@@ -38,9 +45,9 @@ public final class MainPanel extends JPanel {
   }
 
   public static void main(String[] args) {
-    System.out.println("main start / EDT: " + EventQueue.isDispatchThread());
+    LOGGER.info(() -> "main start / EDT: " + EventQueue.isDispatchThread());
     createAndShowGui();
-    System.out.println("main end");
+    LOGGER.info(() -> "main end");
   }
 
   private static void createAndShowGui() {
@@ -52,7 +59,7 @@ public final class MainPanel extends JPanel {
     }
     JWindow splashScreen = new JWindow();
     EventQueue.invokeLater(() -> {
-      System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
+      LOGGER.info(() -> "splashScreen show start / EDT: " + EventQueue.isDispatchThread());
       String path = "example/splash.png";
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
@@ -66,26 +73,26 @@ public final class MainPanel extends JPanel {
       splashScreen.pack();
       splashScreen.setLocationRelativeTo(null);
       splashScreen.setVisible(true);
-      System.out.println("splashScreen show end");
+      LOGGER.info(() -> "splashScreen show end");
     });
 
-    System.out.println("createGUI start / EDT: " + EventQueue.isDispatchThread());
+    LOGGER.info(() -> "createGUI start / EDT: " + EventQueue.isDispatchThread());
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel()); // new MainPanel() take long time
     frame.pack();
     frame.setLocationRelativeTo(null);
-    System.out.println("createGUI end");
+    LOGGER.info(() -> "createGUI end");
 
     EventQueue.invokeLater(() -> {
-      System.out.println("  splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
+      LOGGER.info(() -> "  splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
       // splashScreen.setVisible(false);
       splashScreen.dispose();
-      System.out.println("  splashScreen dispose end");
+      LOGGER.info(() -> "  splashScreen dispose end");
 
-      System.out.println("  frame show start / EDT: " + EventQueue.isDispatchThread());
+      LOGGER.info(() -> "  frame show start / EDT: " + EventQueue.isDispatchThread());
       frame.setVisible(true);
-      System.out.println("  frame show end");
+      LOGGER.info(() -> "  frame show end");
     });
   }
 }
