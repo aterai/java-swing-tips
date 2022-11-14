@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
       dialog.setVisible(true); // blocks until user brings dialog down...
       Color color = ok.getColor();
       if (color != null) {
-        EventQueue.invokeLater(() -> label.setBackground(color));
+        label.setBackground(color);
       }
     });
 

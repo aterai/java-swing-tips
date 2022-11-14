@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,20 +25,24 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("JColorChooser.showDialog(...)");
     button1.addActionListener(e -> {
       Color color = JColorChooser.showDialog(getRootPane(), "JColorChooser", null);
-      log.append(String.format("color: %s%n", color));
+      if (color != null) {
+        log.append(String.format("color: %s%n", color));
+      }
     });
 
     JColorChooser cc = new JColorChooser();
-    JDialog dialog = JColorChooser.createDialog(
-        getRootPane(), "JST ColorChooserSwatchSize", true, cc,
-        e -> log.append("ok\n"),
-        e -> log.append("cancel\n"));
+    ColorTracker ok = new ColorTracker(cc);
+    ActionListener cancel = e -> log.append("cancel\n");
+    String title = "ColorChooserSwatchSize";
+    JDialog dialog = JColorChooser.createDialog(getRootPane(), title, true, cc, ok, cancel);
     JButton button2 = new JButton("JColorChooser.createDialog(...).setVisible(true)");
     button2.addActionListener(e -> {
       // dialog.setSize(320, 240);
       dialog.setVisible(true);
-      Color color = cc.getColor();
-      log.append(String.format("color: %s%n", color));
+      Color color = ok.getColor();
+      if (color != null) {
+        log.append(String.format("color: %s%n", color));
+      }
     });
 
     // JButton serialize = new JButton("serialize");
@@ -91,5 +97,22 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ColorTracker implements ActionListener {
+  private final JColorChooser chooser;
+  private Color color;
+
+  protected ColorTracker(JColorChooser c) {
+    chooser = c;
+  }
+
+  @Override public void actionPerformed(ActionEvent e) {
+    color = chooser.getColor();
+  }
+
+  public Color getColor() {
+    return color;
   }
 }

@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Arrays;
@@ -24,6 +26,7 @@ public final class MainPanel extends JPanel {
     // buttonPanel.add(new JButton("Reset"));
     JLabel label = new JLabel();
     label.setOpaque(true);
+    label.setBackground(Color.WHITE);
 
     Locale loc = getLocale();
     JCheckBox swatches = new JCheckBox(UIManager.getString("ColorChooser.swatchesNameText", loc));
@@ -43,20 +46,17 @@ public final class MainPanel extends JPanel {
       String title = "JColorChooser";
       Component parent = getRootPane();
       if (selected.isEmpty()) { // use default JColorChooser
-        color = JColorChooser.showDialog(parent, title, null);
+        color = JColorChooser.showDialog(parent, title, label.getBackground());
       } else {
         JColorChooser cc = new JColorChooser();
+        cc.setColor(label.getBackground());
         for (AbstractColorChooserPanel p : cc.getChooserPanels()) {
           if (!selected.contains(p.getDisplayName())) {
             cc.removeChooserPanel(p);
           }
         }
-        // ActionListener ok = ev -> {
-        //   Color color = cc.getColor();
-        //   label.setBackground(color);
-        // };
-        // JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
-        JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, null, null);
+        ColorTracker ok = new ColorTracker(cc);
+        JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
         // dialog.addComponentListener(new ColorChooserDialog.DisposeOnClose());
         dialog.addComponentListener(new ComponentAdapter() {
           @Override public void componentHidden(ComponentEvent e) {
@@ -64,8 +64,7 @@ public final class MainPanel extends JPanel {
           }
         });
         dialog.setVisible(true); // blocks until user brings dialog down...
-        // return ok.getColor();
-        color = cc.getColor();
+        color = ok.getColor();
 
         // dialog.getContentPane().removeAll();
         // dialog.getContentPane().add(cc);
@@ -74,7 +73,9 @@ public final class MainPanel extends JPanel {
         // dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(getRootPane()));
         // dialog.setVisible(true);
       }
-      label.setBackground(color);
+      if (color != null) {
+        label.setBackground(color);
+      }
     });
 
     Box box = Box.createVerticalBox();
@@ -106,5 +107,22 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ColorTracker implements ActionListener {
+  private final JColorChooser chooser;
+  private Color color;
+
+  protected ColorTracker(JColorChooser c) {
+    chooser = c;
+  }
+
+  @Override public void actionPerformed(ActionEvent e) {
+    color = chooser.getColor();
+  }
+
+  public Color getColor() {
+    return color;
   }
 }
