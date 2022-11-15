@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.plaf.basic.BasicColorChooserUI;
 
 public final class MainPanel extends JPanel {
   private final JRadioButton defaultRadio = new JRadioButton("Default");
@@ -25,38 +26,10 @@ public final class MainPanel extends JPanel {
     JLabel label = new JLabel();
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
-    Box box = Box.createVerticalBox();
-    box.setBorder(BorderFactory.createTitledBorder("ColorTransparencySelectionEnabled"));
-    ButtonGroup bg = new ButtonGroup();
-    JRadioButton visibleRadio = new JRadioButton("setVisible(false)");
-    for (JRadioButton r : Arrays.asList(defaultRadio, enabledRadio, visibleRadio)) {
-      bg.add(r);
-      box.add(r);
-    }
+
     JButton button = new JButton("open JColorChooser");
     button.addActionListener(e -> {
-      String rgbName = UIManager.getString("ColorChooser.rgbNameText", getLocale());
-      JColorChooser cc = new JColorChooser();
-      for (AbstractColorChooserPanel ccPanel : cc.getChooserPanels()) {
-        // Java 9: ccPanel.setColorTransparencySelectionEnabled(colorTransparency);
-        if (rgbName.equals(ccPanel.getDisplayName())) {
-          if (!defaultRadio.isSelected()) {
-            EventQueue.invokeLater(() -> setTransparencySelectionEnabled(ccPanel));
-          }
-        } else {
-          cc.removeChooserPanel(ccPanel);
-        }
-      }
-      Component rp = getRootPane();
-      ColorTracker ok = new ColorTracker(cc);
-      JDialog dialog = JColorChooser.createDialog(rp, "title", true, cc, ok, null);
-      dialog.addComponentListener(new ComponentAdapter() {
-        @Override public void componentHidden(ComponentEvent e) {
-          ((Window) e.getComponent()).dispose();
-        }
-      });
-      dialog.setVisible(true); // blocks until user brings dialog down...
-      Color color = ok.getColor();
+      Color color = getColor();
       if (color != null) {
         label.setBackground(color);
       }
@@ -68,16 +41,60 @@ public final class MainPanel extends JPanel {
     //   // JColorChooser should have a way to disable transparency controls - Java Bug System
     //   // https://bugs.openjdk.org/browse/JDK-8051548
     //   // Java 9:
-    //   Color c = JColorChooser.showDialog(rp, "", label.getBackground(), check.isSelected());
+    //   Color c = JColorChooser.showDialog(rp, "", color, defaultRadio.isSelected());
     //   label.setBackground(c);
     // });
 
-    add(box, BorderLayout.NORTH);
+    add(makeBox(), BorderLayout.NORTH);
     add(label);
     add(button, BorderLayout.SOUTH);
     // box.add(button2, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private Color getColor() {
+    JColorChooser cc = new JColorChooser() {
+      @Override public void updateUI() {
+        super.updateUI();
+        if ("GTK".equals(UIManager.getLookAndFeel().getID())) {
+          setUI(new BasicColorChooserUI());
+        }
+      }
+    };
+    String rgbName = UIManager.getString("ColorChooser.rgbNameText", getLocale());
+    for (AbstractColorChooserPanel ccPanel : cc.getChooserPanels()) {
+      // Java 9: ccPanel.setColorTransparencySelectionEnabled(colorTransparency);
+      if (rgbName.equals(ccPanel.getDisplayName())) {
+        if (!defaultRadio.isSelected()) {
+          EventQueue.invokeLater(() -> setTransparencySelectionEnabled(ccPanel));
+        }
+      } else {
+        cc.removeChooserPanel(ccPanel);
+      }
+    }
+    Component rp = getRootPane();
+    ColorTracker ok = new ColorTracker(cc);
+    JDialog dialog = JColorChooser.createDialog(rp, "title", true, cc, ok, null);
+    dialog.addComponentListener(new ComponentAdapter() {
+      @Override public void componentHidden(ComponentEvent e) {
+        ((Window) e.getComponent()).dispose();
+      }
+    });
+    dialog.setVisible(true); // blocks until user brings dialog down...
+    return ok.getColor();
+  }
+
+  private Box makeBox() {
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createTitledBorder("ColorTransparencySelectionEnabled"));
+    ButtonGroup bg = new ButtonGroup();
+    JRadioButton visibleRadio = new JRadioButton("setVisible(false)");
+    for (JRadioButton r : Arrays.asList(defaultRadio, enabledRadio, visibleRadio)) {
+      bg.add(r);
+      box.add(r);
+    }
+    return box;
   }
 
   private void setTransparencySelectionEnabled(AbstractColorChooserPanel p) {
