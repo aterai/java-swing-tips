@@ -60,8 +60,9 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       Color bgc = scroll.getViewport().getBackground();
       Color color = JColorChooser.showDialog(getRootPane(), "background color", bgc);
-      scroll.getViewport().setBackground(color);
-      scroll.repaint();
+      if (color != null) {
+        scroll.getViewport().setBackground(color);
+      }
     });
 
     JPanel pnl = new JPanel();
