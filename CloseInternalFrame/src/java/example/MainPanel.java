@@ -8,18 +8,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.Optional;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 public final class MainPanel extends JPanel {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
   private static int openFrameCount;
   private static int row;
   private static int col;
 
   private MainPanel() {
     super(new BorderLayout());
+    LOGGER.setUseParentHandlers(false);
+    JTextArea textArea = new JTextArea(2, 0);
+    textArea.setEditable(false);
+    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
+    JScrollPane scroll = new JScrollPane(textArea);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
     JDesktopPane desktop = new JDesktopPane();
 
     InputMap im = desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -32,8 +49,9 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    add(desktop);
     add(createToolBar(desktop), BorderLayout.NORTH);
+    add(desktop);
+    add(scroll, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -110,31 +128,31 @@ public final class MainPanel extends JPanel {
     });
     f.addInternalFrameListener(new InternalFrameListener() {
       @Override public void internalFrameClosing(InternalFrameEvent e) {
-        System.out.println("internalFrameClosing: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameClosing: " + e.getInternalFrame().getTitle());
       }
 
       @Override public void internalFrameClosed(InternalFrameEvent e) {
-        System.out.println("internalFrameClosed: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameClosed: " + e.getInternalFrame().getTitle());
       }
 
       @Override public void internalFrameOpened(InternalFrameEvent e) {
-        System.out.println("internalFrameOpened: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameOpened: " + e.getInternalFrame().getTitle());
       }
 
       @Override public void internalFrameIconified(InternalFrameEvent e) {
-        System.out.println("internalFrameIconified: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameIconified: " + e.getInternalFrame().getTitle());
       }
 
       @Override public void internalFrameDeiconified(InternalFrameEvent e) {
-        System.out.println("internalFrameDeiconified: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameDeiconified: " + e.getInternalFrame().getTitle());
       }
 
       @Override public void internalFrameActivated(InternalFrameEvent e) {
-        // System.out.println("internalFrameActivated: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameActivated: " + e.getInternalFrame().getTitle());
       }
 
       @Override public void internalFrameDeactivated(InternalFrameEvent e) {
-        System.out.println("internalFrameDeactivated: " + e.getInternalFrame().getTitle());
+        LOGGER.info(() -> "internalFrameDeactivated: " + e.getInternalFrame().getTitle());
       }
     });
     return f;
@@ -210,5 +228,71 @@ class CloseIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 16;
+  }
+}
+
+class TextAreaOutputStream extends OutputStream {
+  private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+  private final JTextArea textArea;
+
+  protected TextAreaOutputStream(JTextArea textArea) {
+    super();
+    this.textArea = textArea;
+  }
+
+  // // Java 10:
+  // @Override public void flush() {
+  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
+  //   buffer.reset();
+  // }
+
+  @Override public void flush() throws IOException {
+    textArea.append(buffer.toString("UTF-8"));
+    buffer.reset();
+  }
+
+  @Override public void write(int b) {
+    buffer.write(b);
+  }
+
+  @Override public void write(byte[] b, int off, int len) {
+    buffer.write(b, off, len);
+  }
+}
+
+class TextAreaHandler extends StreamHandler {
+  private void configure() {
+    setFormatter(new SimpleFormatter());
+    try {
+      setEncoding("UTF-8");
+    } catch (IOException ex) {
+      try {
+        setEncoding(null);
+      } catch (IOException ex2) {
+        // doing a setEncoding with null should always work.
+        assert false;
+      }
+    }
+  }
+
+  protected TextAreaHandler(OutputStream os) {
+    super();
+    configure();
+    setOutputStream(os);
+  }
+
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method publish overrides synchronized method in StreamHandler
+  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
+    flush();
+  }
+
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method close overrides synchronized method in StreamHandler
+  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @Override public synchronized void close() {
+    flush();
   }
 }
