@@ -47,6 +47,7 @@ public final class MainPanel extends JPanel {
 
     startButton.addActionListener(e -> {
       setComponentEnabled(false);
+      panel.setToolTipText(null);
       workerExecute();
     });
 
@@ -60,6 +61,7 @@ public final class MainPanel extends JPanel {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         genArray(number);
         panel.repaint();
+        panel.setToolTipText(null);
       }
     };
     distribCmb.addItemListener(il);
@@ -151,7 +153,7 @@ public final class MainPanel extends JPanel {
           ex.printStackTrace();
           text = "Error: " + ex.getMessage();
         }
-        System.out.println(text);
+        panel.setToolTipText(text);
         repaint();
       }
     };

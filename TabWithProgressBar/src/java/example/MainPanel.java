@@ -99,7 +99,7 @@ class ProgressTabbedPane extends JTabbedPane {
         } catch (ExecutionException ex) {
           txt = "Exception";
         }
-        System.out.println(txt);
+        label.setToolTipText(txt);
       }
     };
     worker.addPropertyChangeListener(new ProgressListener(bar));
