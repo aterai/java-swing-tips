@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import java.util.Objects;
@@ -63,6 +64,9 @@ class ButtonPanel extends JPanel {
   protected ButtonPanel() {
     super();
     setOpaque(false);
+    // b1.addActionListener(e -> System.out.println("b1: " + renderer.getText()));
+    // b2.addActionListener(e -> System.out.println("b2: " + renderer.getText()));
+    // b3.addActionListener(e -> System.out.println("b3: " + renderer.getText()));
   }
 
   public Component remakePanel(Component c) {
@@ -70,6 +74,7 @@ class ButtonPanel extends JPanel {
     Stream.of(b1, b2, b3, c).forEach(this::add);
     return this;
   }
+
   // public int getButtonAreaWidth() {
   //   int hgap = ((FlowLayout) getLayout()).getHgap();
   //   return Arrays.asList(b1, b2, b3).stream()
@@ -94,21 +99,12 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
   protected ButtonCellEditor() {
     super();
-    panel.b1.addActionListener(e -> {
-      System.out.println("b1: " + panel.renderer.getText());
-      stopCellEditing();
-    });
-    panel.b2.addActionListener(e -> {
-      System.out.println("b2: " + panel.renderer.getText());
-      stopCellEditing();
-    });
-    panel.b3.addActionListener(e -> {
-      System.out.println("b3: " + panel.renderer.getText());
-      stopCellEditing();
-    });
+    ActionListener al = e -> stopCellEditing();
+    panel.b1.addActionListener(al);
+    panel.b2.addActionListener(al);
+    panel.b3.addActionListener(al);
     // panel.renderer.addMouseListener(new MouseAdapter() {
     //   @Override public void mousePressed(MouseEvent e) {
-    //     System.out.println("label");
     //     stopCellEditing();
     //   }
     // });
@@ -126,13 +122,13 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
   @Override public boolean isCellEditable(EventObject e) {
     // return e instanceof MouseEvent;
-    Object source = e.getSource();
-    if (!(source instanceof JTree) || !(e instanceof MouseEvent)) {
+    if (!(e instanceof MouseEvent) || !(e.getSource() instanceof JTree)) {
       return false;
     }
-    JTree tree = (JTree) source;
-    Point p = ((MouseEvent) e).getPoint();
-    TreePath path = tree.getPathForLocation(p.x, p.y);
+    MouseEvent me = (MouseEvent) e;
+    JTree tree = (JTree) me.getComponent();
+    Point pt = me.getPoint();
+    TreePath path = tree.getPathForLocation(pt.x, pt.y);
     if (Objects.isNull(path)) {
       return false;
     }
@@ -141,18 +137,18 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
       return false;
     }
     // rect.width = panel.getButtonAreaWidth();
-    // return rect.contains(p);
-    if (rect.contains(p)) {
+    // return rect.contains(pt);
+    if (rect.contains(pt)) {
       TreeNode node = (TreeNode) path.getLastPathComponent();
-      int row = tree.getRowForLocation(p.x, p.y);
+      int row = tree.getRowForLocation(pt.x, pt.y);
       TreeCellRenderer r = tree.getCellRenderer();
       Component c = r.getTreeCellRendererComponent(tree, " ", true, true, node.isLeaf(), row, true);
       c.setBounds(rect);
       c.setLocation(0, 0);
       // tree.doLayout();
       tree.revalidate();
-      p.translate(-rect.x, -rect.y);
-      return SwingUtilities.getDeepestComponentAt(c, p.x, p.y) instanceof JButton;
+      pt.translate(-rect.x, -rect.y);
+      return SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y) instanceof JButton;
     }
     return false;
   }
