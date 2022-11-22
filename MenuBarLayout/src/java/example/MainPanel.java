@@ -45,9 +45,7 @@ public final class MainPanel extends JPanel {
           int height = vgap;
           int rowWidth = hgap;
           int rowHeight = 0;
-          int nmembers = target.getComponentCount();
-          for (int i = 0; i < nmembers; i++) {
-            Component m = target.getComponent(i);
+          for (Component m : target.getComponents()) {
             if (m.isVisible()) {
               Dimension d = m.getPreferredSize();
               if (rowWidth + d.width > maxWidth) {
