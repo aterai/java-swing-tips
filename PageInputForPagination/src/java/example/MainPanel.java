@@ -157,7 +157,7 @@ public final class MainPanel extends JPanel {
       } catch (ExecutionException ex) {
         text = "ExecutionException";
       }
-      System.out.println(text);
+      label.setToolTipText(text);
       table.setEnabled(true);
       field.setEditable(true);
     }
