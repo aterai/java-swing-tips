@@ -100,6 +100,7 @@ public final class MainPanel extends JPanel {
     tabs.setMnemonicAt(2, KeyEvent.VK_B);
     tabs.setMnemonicAt(3, KeyEvent.VK_P);
 
+    EventQueue.invokeLater(() -> updateTabColor(tabs, tabs.getSelectedIndex(), -1));
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -110,24 +111,31 @@ public final class MainPanel extends JPanel {
     tabs.setOpaque(true);
     tabs.addChangeListener(e -> {
       JTabbedPane t = (JTabbedPane) e.getSource();
-      int si = t.getSelectedIndex();
-      for (int i = 0; i < t.getTabCount(); i++) {
-        t.setForegroundAt(i, (i == si) ? Color.BLACK : Color.WHITE);
-      }
+      updateTabColor(t, t.getSelectedIndex(), -1);
     });
     tabs.addMouseMotionListener(new MouseAdapter() {
       @Override public void mouseMoved(MouseEvent e) {
         JTabbedPane t = (JTabbedPane) e.getComponent();
-        int si = t.getSelectedIndex();
-        int tgt = t.indexAtLocation(e.getX(), e.getY());
-        for (int i = 0; i < t.getTabCount(); i++) {
-          if (i != si) {
-            t.setForegroundAt(i, (i == tgt) ? Color.ORANGE : Color.WHITE);
-          }
-        }
+        updateTabColor(t, t.getSelectedIndex(), t.indexAtLocation(e.getX(), e.getY()));
       }
     });
     return tabs;
+  }
+
+  private static void updateTabColor(JTabbedPane t, int si, int tgt) {
+    for (int i = 0; i < t.getTabCount(); i++) {
+      t.setForegroundAt(i, getTabTabForeground(i, si, tgt));
+    }
+  }
+
+  private static Color getTabTabForeground(int i, int selected, int cursor) {
+    if (i == selected) {
+      return Color.BLACK;
+    } else if (i == cursor) {
+      return Color.ORANGE;
+    } else {
+      return Color.WHITE;
+    }
   }
 
   private static JComboBox<String> makeComboBox(Map<String, Color> map) {
