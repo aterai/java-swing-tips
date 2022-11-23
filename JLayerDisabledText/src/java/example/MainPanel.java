@@ -130,15 +130,15 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
   }
 
   @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends V> l) {
-    System.out.println("processComponentEvent");
+    // System.out.println("processComponentEvent");
   }
 
   @Override protected void processKeyEvent(KeyEvent e, JLayer<? extends V> l) {
-    System.out.println("processKeyEvent");
+    // System.out.println("processKeyEvent");
   }
 
   @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends V> l) {
-    System.out.println("processFocusEvent");
+    // System.out.println("processFocusEvent");
   }
 
   @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
@@ -178,6 +178,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 //     requestFocusInWindow();
 //     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //   }
+//
 //   @Override public void setVisible(boolean flag) {
 //     super.setVisible(flag);
 //     setFocusTraversalPolicyProvider(flag);
@@ -190,6 +191,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 //     setOpaque(false);
 //     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //   }
+//
 //   @Override public void setVisible(boolean isVisible) {
 //     boolean oldVisible = isVisible();
 //     super.setVisible(isVisible);
@@ -198,6 +200,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 //       rootPane.getLayeredPane().setVisible(!isVisible);
 //     }
 //   }
+//
 //   @Override protected void paintComponent(Graphics g) {
 //     JRootPane rootPane = SwingUtilities.getRootPane(this);
 //     if (rootPane != null) {
@@ -216,6 +219,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 //     super((LayoutManager) null);
 //     setOpaque(false);
 //   }
+//
 //   @Override public void setVisible(boolean isVisible) {
 //     boolean oldVisible = isVisible();
 //     super.setVisible(isVisible);
@@ -224,6 +228,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
 //       rootPane.getLayeredPane().setVisible(!isVisible);
 //     }
 //   }
+//
 //   @Override protected void paintComponent(Graphics g) {
 //     super.paintComponent(g);
 //     JRootPane rootPane = SwingUtilities.getRootPane(this);
