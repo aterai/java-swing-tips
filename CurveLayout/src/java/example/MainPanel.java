@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel panel2 = new JPanel() {
-      protected static final double A2 = 4d;
+      public static final double A2 = 4d;
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
@@ -45,8 +45,7 @@ public final class MainPanel extends JPanel {
               int rh = (r.height - vgap * 2) / nmembers;
               int x = r.x + hgap;
               int y = r.y + vgap;
-              for (int i = 0; i < nmembers; i++) {
-                Component m = target.getComponent(i);
+              for (Component m : target.getComponents()) {
                 if (m.isVisible()) {
                   Dimension d = m.getPreferredSize();
                   m.setSize(d.width, d.height);
