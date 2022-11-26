@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
     return tabs;
   }
 
-  private static void updateTabColor(JTabbedPane t, int si, int tgt) {
+  public static void updateTabColor(JTabbedPane t, int si, int tgt) {
     for (int i = 0; i < t.getTabCount(); i++) {
       t.setForegroundAt(i, getTabTabForeground(i, si, tgt));
     }
