@@ -51,16 +51,15 @@ public final class MainPanel extends JPanel {
           Insets insets = target.getInsets();
           // int vgap = getVgap();
           int hgap = getHgap();
-          int rowh = target.getHeight();
+          int rowHeight = target.getHeight();
           int x = insets.left + hgap;
           Dimension d = new Dimension();
-          for (int i = 0; i < nmembers; i++) {
-            Component m = target.getComponent(i);
+          for (Component m : target.getComponents()) {
             if (m.isVisible() && m instanceof AbstractButton) {
               int v = ((AbstractButton) m).isSelected() ? 80 : 50;
               d.setSize(v, v);
               m.setSize(d);
-              int y = (rowh - v) / 2;
+              int y = (rowHeight - v) / 2;
               m.setLocation(x, y);
               x += d.width + hgap;
             }
