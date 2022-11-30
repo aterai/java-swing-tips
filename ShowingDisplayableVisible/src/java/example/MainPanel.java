@@ -6,12 +6,17 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.lang.invoke.MethodHandles;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  public static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   private MainPanel() {
     super(new BorderLayout());
     JButton button = new JButton("JButton JButton");
@@ -77,10 +82,12 @@ public final class MainPanel extends JPanel {
   }
 
   public static void printInfo(Component c, String str) {
-    System.out.println(c.getClass().getName() + ": " + str);
-    System.out.println("  isDisplayable:" + c.isDisplayable());
-    System.out.println("  isShowing:" + c.isShowing());
-    System.out.println("  isVisible:" + c.isVisible());
+    LOGGER.info(() -> String.join(
+        "\n",
+        c.getClass().getName() + ": " + str,
+        "  isDisplayable:" + c.isDisplayable(),
+        "  isShowing:" + c.isShowing(),
+        "  isVisible:" + c.isVisible()));
   }
 
   public static void main(String[] args) {
