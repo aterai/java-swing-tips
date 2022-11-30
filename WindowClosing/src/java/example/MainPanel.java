@@ -9,8 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,7 +20,6 @@ import javax.swing.event.DocumentListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea textArea = new JTextArea("JFrame Conditional Close Test");
     JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
     JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
@@ -74,6 +75,8 @@ public final class MainPanel extends JPanel {
 }
 
 class SaveHandler extends WindowAdapter implements DocumentListener, ActionListener {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  public static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
   // public static final String ASTERISK_TITLE_BAR = "unsaved";
   public static final String CMD_SAVE = "save";
   public static final String CMD_EXIT = "exit";
@@ -89,13 +92,13 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
 
   // WindowAdapter
   @Override public void windowClosing(WindowEvent e) {
-    System.out.println("windowClosing");
+    LOGGER.info(() -> "windowClosing");
     maybeExit();
   }
 
   // @SuppressWarnings("PMD.DoNotCallSystemExit")
   // @Override public void windowClosed(WindowEvent e) {
-  //   System.out.println("windowClosed");
+  //   MainPanel.LOGGER.info(() -> "windowClosed");
   //   System.exit(0); // webStart
   // }
 
@@ -124,7 +127,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
 
   private void maybeExit() {
     if (title.equals(frame.getTitle())) {
-      System.out.println("The document has already been saved, exit without doing anything.");
+      LOGGER.info(() -> "The document has already been saved, exit without doing anything.");
       frame.dispose();
       return;
     }
@@ -135,7 +138,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
         "Exit Options", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE,
         null, options, options[0]);
     if (retValue == JOptionPane.YES_OPTION) {
-      System.out.println("exit");
+      LOGGER.info(() -> "exit");
       // boolean ret = dummyDocumentSaveMethod();
       // if (ret) { // saved and exit
       //   frame.dispose();
@@ -144,10 +147,10 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
       // }
       frame.dispose();
     } else if (retValue == JOptionPane.NO_OPTION) {
-      System.out.println("Exit without save");
+      LOGGER.info(() -> "Exit without save");
       frame.dispose();
     } else if (retValue == JOptionPane.CANCEL_OPTION) {
-      System.out.println("Cancel exit");
+      LOGGER.info(() -> "Cancel exit");
     }
   }
 
