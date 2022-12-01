@@ -5,13 +5,25 @@
 package example;
 
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.invoke.MethodHandles;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  public static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea ta = new JTextArea("JTextArea");
-    ta.setEditable(false);
+    JTextArea log = new JTextArea();
+    log.setEditable(false);
+    LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(log)));
 
     JTextField field = new JTextField();
     JButton nb = new JButton("NORTH");
@@ -27,26 +39,26 @@ public final class MainPanel extends JPanel {
     p.add(eb, BorderLayout.EAST);
     p.add(field);
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(ta));
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
 
     // frame.addWindowListener(new WindowAdapter() {
     //   @Override public void windowOpened(WindowEvent e) {
-    //     System.out.println("windowOpened");
+    //     LOGGER.info(() -> "windowOpened");
     //     field.requestFocus();
     //   }
     // });
 
     // frame.setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
     //   @Override public Component getInitialComponent(Window w) {
-    //     System.out.println("getInitialComponent");
+    //     LOGGER.info(() -> "getInitialComponent");
     //     return field;
     //   }
     // });
 
     // frame.addComponentListener(new ComponentAdapter() {
     //   @Override public void componentShown(ComponentEvent e) {
-    //     System.out.println("componentShown");
+    //     LOGGER.info(() -> "componentShown");
     //     field.requestFocusInWindow();
     //   }
     // });
@@ -56,20 +68,20 @@ public final class MainPanel extends JPanel {
     //   @Override public void propertyChange(PropertyChangeEvent e) {
     //     String prop = e.getPropertyName();
     //     if ("activeWindow".equals(prop) && e.getNewValue() != null) {
-    //       System.out.println("activeWindow");
+    //       LOGGER.info(() -> "activeWindow");
     //       field.requestFocusInWindow();
     //     }
     //   }
     // });
 
     EventQueue.invokeLater(() -> {
-      System.out.println("invokeLater");
+      LOGGER.info(() -> "invokeLater");
       field.requestFocusInWindow();
-      System.out.println("getRootPane().setDefaultButton(eb)");
+      LOGGER.info(() -> "getRootPane().setDefaultButton(eb)");
       getRootPane().setDefaultButton(eb);
     });
 
-    System.out.println("this");
+    LOGGER.info(() -> "this");
     // field.requestFocusInWindow();
   }
 
@@ -87,10 +99,76 @@ public final class MainPanel extends JPanel {
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    System.out.println("frame.pack();");
+    LOGGER.info(() -> "frame.pack();");
     frame.pack();
     frame.setLocationRelativeTo(null);
-    System.out.println("frame.setVisible(true);");
+    LOGGER.info(() -> "frame.setVisible(true);");
     frame.setVisible(true);
+  }
+}
+
+class TextAreaOutputStream extends OutputStream {
+  private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+  private final JTextArea textArea;
+
+  protected TextAreaOutputStream(JTextArea textArea) {
+    super();
+    this.textArea = textArea;
+  }
+
+  // // Java 10:
+  // @Override public void flush() {
+  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
+  //   buffer.reset();
+  // }
+
+  @Override public void flush() throws IOException {
+    textArea.append(buffer.toString("UTF-8"));
+    buffer.reset();
+  }
+
+  @Override public void write(int b) {
+    buffer.write(b);
+  }
+
+  @Override public void write(byte[] b, int off, int len) {
+    buffer.write(b, off, len);
+  }
+}
+
+class TextAreaHandler extends StreamHandler {
+  private void configure() {
+    setFormatter(new SimpleFormatter());
+    try {
+      setEncoding("UTF-8");
+    } catch (IOException ex) {
+      try {
+        setEncoding(null);
+      } catch (IOException ex2) {
+        // doing a setEncoding with null should always work.
+        assert false;
+      }
+    }
+  }
+
+  protected TextAreaHandler(OutputStream os) {
+    super();
+    configure();
+    setOutputStream(os);
+  }
+
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method publish overrides synchronized method in StreamHandler
+  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
+    flush();
+  }
+
+  // [UnsynchronizedOverridesSynchronized]
+  // Unsynchronized method close overrides synchronized method in StreamHandler
+  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @Override public synchronized void close() {
+    flush();
   }
 }
