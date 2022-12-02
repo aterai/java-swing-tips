@@ -7,11 +7,15 @@ package example;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
+  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  public static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
   private final String[] columnNames = {"Name", "Class", "Value"};
   private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
 
@@ -33,8 +37,11 @@ public final class MainPanel extends JPanel {
 
   private void initModel(PropertyChangeEvent e) {
     if (Objects.nonNull(e)) {
-      System.out.println("----\n" + e.getPropertyName());
-      System.out.println(Toolkit.getDefaultToolkit().getDesktopProperty(e.getPropertyName()));
+      LOGGER.info(() -> {
+        String n = e.getPropertyName();
+        Object p = Toolkit.getDefaultToolkit().getDesktopProperty(n);
+        return String.format("%s: %s", n, p);
+      });
     }
     model.setRowCount(0);
     Toolkit tk = Toolkit.getDefaultToolkit();
