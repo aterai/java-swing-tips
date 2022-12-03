@@ -8,7 +8,6 @@
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="AvoidPrintStackTrace" />
-    <exclude name="SystemPrintln" />
   </rule>
   <rule ref="category/java/codestyle.xml">
     <exclude name="AtLeastOneConstructor" />
