@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,24 +28,19 @@ public final class MainPanel {
 
     JWindow splashScreen = createSplashScreen(frame, icon);
     splashScreen.setVisible(true);
-
-    new Thread(() -> {
-      try {
-        // dummy long task
+    new SwingWorker<Void, Void>() {
+      @Override protected Void doInBackground() throws Exception {
         Thread.sleep(6000);
-        EventQueue.invokeAndWait(() -> {
-          showFrame(frame);
-          // hideSplash();
-          splashScreen.setVisible(false);
-          splashScreen.dispose();
-        });
-      } catch (InterruptedException | InvocationTargetException ex) {
-        ex.printStackTrace();
+        return null;
+      }
+
+      @Override protected void done() {
+        showFrame(frame);
+        // hideSplash();
         splashScreen.setVisible(false);
         splashScreen.dispose();
-        Thread.currentThread().interrupt();
       }
-    }).start();
+    }.execute();
   }
 
   private static Component makeUI() {
