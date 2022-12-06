@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
     label1.setText("<html><font color=red>Html l1</font></html>");
     button1.setText("<html><font color=red>Html b1</font></html>");
-    label1.setToolTipText("<html>&lt;html&gt;&lt;font color=red&gt;Html&lt;/font&gt;&lt;/html&gt;</html>");
+    label1.setToolTipText("<html>&lt;html&gt;&lt;font color=red&gt;Html&lt;/font&gt;");
     button1.setToolTipText("<html><font color=red>Html</font></html>");
 
     JLabel label2 = new JLabel();

@@ -77,7 +77,9 @@ class PairItem {
   }
 
   public String getHtmlText() {
-    return String.format("<html><table width='290'><tr><td align='left'>%s</td><td align='right'>%s</td></tr></table></html>", leftText, rightText);
+    String td1 = String.format("<td align='left'>%s</td>", leftText);
+    String td2 = String.format("<td align='right'>%s</td>", rightText);
+    return String.format("<html><table width='290'><tr>%s%s</tr></table>", td1, td2);
   }
 
   public String getLeftText() {

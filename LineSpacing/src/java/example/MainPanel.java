@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     // HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     // htmlEditorKit.setStyleSheet(styleSheet);
     // editor1.setEditorKit(htmlEditorKit);
-    // editor1.setText("<html><body>12341234<br />***<br />111<font size='32'>12341234<br />999</font></body></html>");
+    // editor1.setText("<html><body>123<br />***<br />111<font size='32'>123<br />999</font>");
 
     JTextPane editor2 = new JTextPane();
     editor2.setEditorKit(new BottomInsetEditorKit());

@@ -64,7 +64,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static String makeTitleWithIcon(URL url, String title, String align) {
-    return String.format("<html><p align='%s'><img src='%s' align='%s' />&nbsp;%s</p></html>", align, url, align, title);
+    String html = "<html><p align='%s'><img src='%s' align='%s' />&nbsp;%s</p>";
+    return String.format(html, align, url, align, title);
   }
 
   private static AbstractButton makeButton(String title) {

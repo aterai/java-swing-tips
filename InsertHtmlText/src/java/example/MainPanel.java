@@ -15,7 +15,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 public final class MainPanel extends JPanel {
-  private static final String HTML_TEXT = "<html><body>head<table id='log' border='1'></table>tail</body></html>";
   private static final String ROW_TEXT = "<tr bgColor='%s'><td>%s</td><td>%s</td></tr>";
 
   private MainPanel() {
@@ -24,7 +23,7 @@ public final class MainPanel extends JPanel {
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(htmlEditorKit);
-    editor.setText(HTML_TEXT);
+    editor.setText("<html><body>head<table id='log' border='1'></table>tail</body>");
     editor.setEditable(false);
 
     JButton insertAfterStart = new JButton("insertAfterStart");

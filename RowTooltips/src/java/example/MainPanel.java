@@ -26,7 +26,10 @@ public final class MainPanel extends JPanel {
       @Override public String getToolTipText(MouseEvent e) {
         int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
         TableModel m = getModel();
-        return String.format("<html>%s<br>%s<br>%s</html>", m.getValueAt(row, 0), m.getValueAt(row, 1), m.getValueAt(row, 2));
+        Object v0 = m.getValueAt(row, 0);
+        Object v1 = m.getValueAt(row, 1);
+        Object v2 = m.getValueAt(row, 2);
+        return String.format("<html>%s<br>%s<br>%s</html>", v0, v1, v2);
       }
 
       // public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {

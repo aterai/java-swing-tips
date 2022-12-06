@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      protected static final int MODEL_COLUMN_IDX = 0;
+      private static final int MODEL_COLUMN_IDX = 0;
       private transient HeaderCheckBoxHandler handler;
 
       @Override public void updateUI() {
@@ -101,7 +101,10 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderRenderer implements TableCellRenderer {
-  private static final String INPUT = "<html><table cellpadding='0' cellspacing='0'><td><input type='checkbox'><td>&nbsp;Check All";
+  private static final String TABLE = "<table cellpadding='0' cellspacing='0'>";
+  private static final String TD = "<td><input type='checkbox'><td>";
+  private static final String TITLE = "Check All";
+  private static final String INPUT = "<html>" + TABLE + TD + "&nbsp;" + TITLE;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
@@ -110,9 +113,9 @@ class HeaderRenderer implements TableCellRenderer {
       // // TEST:
       // JCheckBox check = new JCheckBox();
       // updateCheckBox(check, value);
-      // String selected = check.isSelected() ? "checked " : "";
-      // String indeterminate = check.isEnabled() ? "" : "disabled ";
-      // l.setText(String.format("<html><table><td><input type='checkbox' %s%s/><td>All", selected, indeterminate));
+      // String s = check.isSelected() ? "checked " : "";
+      // String i = check.isEnabled() ? "" : "disabled ";
+      // l.setText(String.format("<html><table><td><input type='checkbox' %s%s/>All", s, i));
 
       // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
       for (Component cmp : ((JLabel) c).getComponents()) {

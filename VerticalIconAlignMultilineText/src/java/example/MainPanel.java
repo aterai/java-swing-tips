@@ -18,14 +18,13 @@ import javax.swing.text.Position;
 import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "<html>The vertical alignment of this text gets offset when the font changes.";
-
   private MainPanel() {
     super(new BorderLayout());
-    JCheckBox check1 = new JCheckBox(TEXT);
+    String txt = "<html>The vertical alignment of this text gets offset when the font changes.";
+    JCheckBox check1 = new JCheckBox(txt);
     check1.setVerticalTextPosition(SwingConstants.TOP);
 
-    JCheckBox check2 = new JCheckBox(TEXT) {
+    JCheckBox check2 = new JCheckBox(txt) {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsCheckBoxUI) {

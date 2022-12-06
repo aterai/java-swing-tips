@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     editor.setEditable(false);
     editor.setEditorKit(htmlEditorKit);
-    editor.setText("<html><body><h1>Scrollspy</h1><p id='main'></p><p id='bottom'>id=bottom</p></body></html>");
+    editor.setText("<html><body><h1>Scrollspy</h1><p id='main'></p><p id='bottom'>id=bottom</p>");
 
     HTMLDocument doc = (HTMLDocument) editor.getDocument();
     Element element = doc.getElement("main");

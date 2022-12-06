@@ -134,9 +134,14 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
     Toolkit.getDefaultToolkit().beep();
     Object[] options = {"Save", "Discard", "Cancel"};
     int retValue = JOptionPane.showOptionDialog(
-        frame, "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue</html>",
-        "Exit Options", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE,
-        null, options, options[0]);
+        frame,
+        "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue",
+        "Exit Options",
+        JOptionPane.YES_NO_CANCEL_OPTION,
+        JOptionPane.INFORMATION_MESSAGE,
+        null,
+        options,
+        options[0]);
     if (retValue == JOptionPane.YES_OPTION) {
       LOGGER.info(() -> "exit");
       // boolean ret = dummyDocumentSaveMethod();
