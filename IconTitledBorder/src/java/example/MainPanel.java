@@ -25,21 +25,27 @@ public final class MainPanel extends JPanel {
       path = "html.missingImage";
       icon = UIManager.getIcon(path);
     }
-    String title1 = String.format("<html><img src='%s' />test", path);
-    String title2 = String.format("<html><table cellpadding='0'><tr><td><img src='%s'></td><td>test</td></tr></table></html>", path);
     JLabel label = new JLabel("test");
     label.setIcon(icon);
 
+    String title1 = String.format("<html><img src='%s' />test", path);
     add(makeComponent(title1, BorderFactory.createTitledBorder(title1)));
+
+    String img = String.format("<img src='%s'/>", path);
+    String tbl = "<table cellpadding='0'>";
+    String title2 = String.format("<html>%s<tr><td>%s</td><td>test</td></tr>", tbl, img);
     add(makeComponent(title2, BorderFactory.createTitledBorder(title2)));
+
     add(makeComponent("TitledBorder#paintBorder(...)", new TitledBorder("  test") {
       @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         super.paintBorder(c, g, x, y, width, height);
         icon.paintIcon(c, g, 5, 0);
       }
     }));
+
     Border border = new ComponentTitledBorder(label, UIManager.getBorder("TitledBorder.border"));
     add(makeComponent("ComponentTitledBorder", border));
+
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
