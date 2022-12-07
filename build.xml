@@ -345,15 +345,15 @@
   <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
     <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar"/>
-    <!-- condition property="jdk9orlater">
-      <javaversion atleast="9"/>
-    </condition -->
     <path id="processorpath.ref">
-      <fileset dir="${env.ERRORPRONE_HOME}" includes="*.jar" />
+      <fileset dir="${env.ERRORPRONE_HOME}">
+        <include name="*.jar" />
+        <exclude name="error_prone_core-2.10.0-with-dependencies.jar" if:set="jdk9orlater" />
+        <exclude name="javac-9+181-r4173-1.jar" if:set="jdk9orlater" />
+        <exclude name="jFormatString-3.0.0.jar" if:set="jdk9orlater" />
+      </fileset>
     </path>
     <javac srcdir="${build.src}"
-           excludes="**/module-info.java"
-           includes="**/*.java"
            destdir="${build.dest}"
            encoding="${compile.encoding}"
            debug="${compile.debug}"
@@ -362,51 +362,25 @@
            fork="yes"
            includeAntRuntime="no"
            classpathref="project.class.path">
+      <include name="**/*.java" />
+      <exclude name="**/module-info.java" if:set="jdk9orlater" />
       <compilerarg value="-J-Xbootclasspath/p:${javac.jar}" unless:set="jdk9orlater"/>
-      <compilerarg line="-XDcompilePolicy=simple"/>
-      <compilerarg value="-processorpath"/>
-      <compilerarg pathref="processorpath.ref"/>
-      <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
-      <compilerarg value="-J-Dfile.encoding=UTF-8" />
-      <!-- compilerarg value="-J-Dsun.jnu.encoding=UTF-8" / -->
-    </javac>
-  </target>
-
-  <target name="errorprone-jdk11" depends="prepare-src, prepare-resource, prepare-web">
-    <path id="processorpath.ref">
-      <fileset dir="${env.ERRORPRONE_HOME}">
-        <include name="*.jar" />
-        <exclude name="error_prone_core-2.10.0-with-dependencies.jar" />
-        <exclude name="javac-9+181-r4173-1.jar" />
-        <exclude name="jFormatString-3.0.0.jar" />
-      </fileset>
-    </path>
-    <javac srcdir="${build.src}"
-           includes="**/*.java"
-           destdir="${build.dest}"
-           encoding="${compile.encoding}"
-           debug="${compile.debug}"
-           optimize="${compile.optimize}"
-           deprecation="${compile.deprecation}"
-           fork="yes"
-           includeantruntime="no"
-           classpathref="project.class.path">
       <compilerarg value="-XDcompilePolicy=simple"/>
       <compilerarg value="-processorpath"/>
       <compilerarg pathref="processorpath.ref"/>
       <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
       <compilerarg value="-J-Dfile.encoding=UTF-8" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED" />
-      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" />
-      <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" />
-      <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" />
-      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
     </javac>
   </target>
 
