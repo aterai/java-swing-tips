@@ -5,14 +5,13 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
-import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -75,17 +74,19 @@ public final class MainPanel extends JPanel {
   //   return list;
   // }
 
-  private static List<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
-    Iterable<ImageReader> it = () -> ImageIO.getImageReaders(imageStream);
-    ImageReader reader = StreamSupport.stream(it.spliterator(), false)
+  private static List<Image> loadFromStream(ImageInputStream stream) throws IOException {
+    Iterable<ImageReader> iterable = () -> ImageIO.getImageReaders(stream);
+    ImageReader reader = StreamSupport.stream(iterable.spliterator(), false)
         .filter(MainPanel::checkGifFormat)
         .findFirst()
         .orElseThrow(() -> new IOException("Can not read image format!"));
-    reader.setInput(imageStream, false, false);
-    List<BufferedImage> list = new ArrayList<>();
+    reader.setInput(stream, false, false);
+    List<Image> list = new ArrayList<>();
     for (int i = 0; i < reader.getNumImages(true); i++) {
-      IIOImage frame = reader.readAll(i, null);
-      list.add((BufferedImage) frame.getRenderedImage());
+      RenderedImage img = reader.readAll(i, null).getRenderedImage();
+      if (img instanceof Image) {
+        list.add((Image) img);
+      }
     }
     reader.dispose();
     return list;
