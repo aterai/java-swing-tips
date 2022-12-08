@@ -103,9 +103,9 @@ public final class MainPanel extends JPanel {
 
       // Create animated GIF using imageio | Oracle Community
       // https://community.oracle.com/thread/1264385
-      BufferedImage image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+      BufferedImage img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
       ImageWriteParam iwp = writer.getDefaultWriteParam();
-      IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(image), iwp);
+      IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(img), iwp);
       String metaFormat = metadata.getNativeMetadataFormatName();
       Node root = metadata.getAsTree(metaFormat);
       root.appendChild(gce);
@@ -114,9 +114,9 @@ public final class MainPanel extends JPanel {
 
       // make frame
       for (int i = 0; i < list.size() * DELAY; i++) {
-        paintFrame(image, list);
+        paintFrame(img, list);
         Collections.rotate(list, 1);
-        writeToSequence(writer, image, metadata);
+        writer.writeToSequence(makeIioImage(img, metadata), null);
         metadata = null;
       }
       writer.endWriteSequence();
@@ -139,8 +139,8 @@ public final class MainPanel extends JPanel {
     g2.dispose();
   }
 
-  private static void writeToSequence(ImageWriter writer, BufferedImage image, IIOMetadata meta) throws IOException {
-    writer.writeToSequence(new IIOImage(image, null, meta), null);
+  private static IIOImage makeIioImage(BufferedImage image, IIOMetadata meta) {
+    return new IIOImage(image, null, meta);
   }
 
   public static void main(String[] args) {
