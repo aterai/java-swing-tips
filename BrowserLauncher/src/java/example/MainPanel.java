@@ -94,7 +94,8 @@ final class BrowserLauncher {
     }
   }
 
-  private static void macOpenUrl(String url) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+  private static void macOpenUrl(String url) throws ClassNotFoundException, NoSuchMethodException,
+      IllegalAccessException, InvocationTargetException {
     Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
     // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
     Method openUrl = fileMgr.getDeclaredMethod("openURL", String.class);

@@ -79,7 +79,8 @@ public final class MainPanel extends JPanel {
   //   return lafItem;
   // }
   //
-  // public void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+  // private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException,
+  //     InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
   //   String oldLookAndFeel = this.lookAndFeel;
   //   if (!oldLookAndFeel.equals(lookAndFeel)) {
   //     UIManager.setLookAndFeel(lookAndFeel);
@@ -215,7 +216,8 @@ final class LookAndFeelUtil {
     return lafItem;
   }
 
-  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException,
+      InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
     String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
     if (!oldLookAndFeel.equals(lookAndFeel)) {
       UIManager.setLookAndFeel(lookAndFeel);

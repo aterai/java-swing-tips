@@ -186,7 +186,8 @@ class DocumentFilterUndoManager extends UndoManager {
 //     }
 //   }
 //
-//   private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+//   private void replaceIgnoringUndo(int offset, int length, String text, AttributeSet attrs)
+//       throws BadLocationException {
 //     UndoableEditListener[] ls = getUndoableEditListeners();
 //     for (UndoableEditListener l : ls) {
 //       removeUndoableEditListener(l);

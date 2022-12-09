@@ -120,7 +120,8 @@ final class LookAndFeelUtil {
     return lafItem;
   }
 
-  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException,
+      InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
     String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
     if (!oldLookAndFeel.equals(lookAndFeel)) {
       UIManager.setLookAndFeel(lookAndFeel);
