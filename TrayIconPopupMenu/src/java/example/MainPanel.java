@@ -136,9 +136,11 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-      ex.printStackTrace();
+    } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
     }
     JFrame frame = new JFrame("@title@");
     if (SystemTray.isSupported()) {
@@ -299,10 +301,11 @@ class ChangeLookAndFeelAction extends AbstractAction {
   @Override public void actionPerformed(ActionEvent e) {
     try {
       UIManager.setLookAndFeel(lnf);
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-      // System.out.println("Failed loading L&F: " + lnf);
-      ex.printStackTrace();
+    } catch (UnsupportedLookAndFeelException ignored) {
       UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
     }
     for (Frame f : Frame.getFrames()) {
       SwingUtilities.updateComponentTreeUI(f);

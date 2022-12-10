@@ -57,11 +57,12 @@ public final class MainPanel extends JPanel {
       @Override protected void done() {
         try {
           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-          ex.printStackTrace();
+        } catch (UnsupportedLookAndFeelException ignored) {
           Toolkit.getDefaultToolkit().beep();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+          ex.printStackTrace();
+          return;
         }
-
         JFrame frame = new JFrame("@title@");
         try {
           WindowListener windowListener = get();

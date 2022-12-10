@@ -53,9 +53,11 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-      ex.printStackTrace();
+    } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
     }
     JWindow splashScreen = new JWindow();
     EventQueue.invokeLater(() -> {
@@ -134,8 +136,11 @@ class MissingIcon implements Icon {
 //   println static void createAndShowGui() {
 //     try {
 //       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+//     } catch (UnsupportedLookAndFeelException ignored) {
+//       Toolkit.getDefaultToolkit().beep();
+//     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
 //       ex.printStackTrace();
+//       return;
 //     }
 //     System.out.println("splashScreen show start / EDT: " + EventQueue.isDispatchThread());
 //     JWindow splashScreen = new JWindow();

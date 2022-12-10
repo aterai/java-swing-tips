@@ -89,9 +89,11 @@ public final class MainPanel extends JPanel {
       // TEST:
       // Font f = UIManager.getFont("InternalFrame.titleFont");
       // UIManager.put("InternalFrame.titleFont", f.deriveFont(30f));
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-      ex.printStackTrace();
+    } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -102,7 +104,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// @see https://java.net/projects/swingset3/sources/svn/content/trunk/SwingSet3/src/com/sun/swingset3/SwingSet3.java
+// @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtil {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
@@ -125,22 +127,24 @@ final class LookAndFeelUtil {
     lafItem.setHideActionText(true);
     lafItem.addActionListener(e -> {
       ButtonModel m = bg.getSelection();
-      try {
-        setLookAndFeel(m.getActionCommand());
-      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
-      }
+      setLookAndFeel(m.getActionCommand());
     });
     bg.add(lafItem);
     return lafItem;
   }
 
-  private static void setLookAndFeel(String lookAndFeel) throws ClassNotFoundException,
-      InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+  private static void setLookAndFeel(String lookAndFeel) {
     String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
     if (!oldLookAndFeel.equals(lookAndFeel)) {
-      UIManager.setLookAndFeel(lookAndFeel);
-      LookAndFeelUtil.lookAndFeel = lookAndFeel;
+      try {
+        UIManager.setLookAndFeel(lookAndFeel);
+        LookAndFeelUtil.lookAndFeel = lookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
       updateLookAndFeel();
       // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
     }
