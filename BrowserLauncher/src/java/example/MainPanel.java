@@ -102,13 +102,12 @@ final class BrowserLauncher {
       Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
       // openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
       openUrl = fileMgr.getDeclaredMethod("openURL", String.class);
-    } catch (ClassNotFoundException | NoSuchMethodException ex) {
-      throw new UnsupportedOperationException("Could not find com.apple.eio.FileManager");
-    }
-    try {
       openUrl.invoke(null, url);
-    } catch (IllegalAccessException | InvocationTargetException ex) {
-      throw new UnsupportedOperationException("Could not find Mac web browser");
+    } catch (ClassNotFoundException | NoSuchMethodException
+             | IllegalAccessException | InvocationTargetException ex) {
+      Toolkit.getDefaultToolkit().beep();
+      String msg = ERR_MSG + ":\n" + ex.getLocalizedMessage();
+      JOptionPane.showMessageDialog(null, msg, "title", JOptionPane.ERROR_MESSAGE);
     }
   }
 
