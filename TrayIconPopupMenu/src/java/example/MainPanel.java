@@ -5,15 +5,11 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -29,20 +25,21 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     add(new JLabel("SystemTray.isSupported(): " + SystemTray.isSupported()), BorderLayout.NORTH);
 
-    ButtonGroup group = new ButtonGroup();
+    ButtonGroup bg = new ButtonGroup();
     Box box = Box.createVerticalBox();
-    Stream.of(LookAndFeelEnum.values())
-        .map(lnf -> new ChangeLookAndFeelAction(lnf, Collections.singletonList(popup)))
-        .map(JRadioButton::new)
-        .forEach(rb -> {
-          group.add(rb);
+    String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+    Stream.of(UIManager.getInstalledLookAndFeels())
+        .forEach(info -> {
+          boolean selected = info.getClassName().equals(lookAndFeel);
+          AbstractButton rb = new JRadioButton(info.getName(), selected);
+          LookAndFeelUtil.initLookAndFeelAction(info, rb);
+          rb.addActionListener(e -> EventQueue.invokeLater(() -> {
+            SwingUtilities.updateComponentTreeUI(popup);
+            popup.pack();
+          }));
+          bg.add(rb);
           box.add(rb);
         });
-    // for (LookAndFeelEnum lnf : LookAndFeelEnum.values()) {
-    //   JRadioButton rb = new JRadioButton(new ChangeLookAndFeelAction(lnf, Arrays.asList(popup)));
-    //   group.add(rb);
-    //   box.add(rb);
-    // }
     box.add(Box.createVerticalGlue());
     box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
 
@@ -254,63 +251,55 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
   }
 }
 
-enum LookAndFeelEnum {
-  METAL("javax.swing.plaf.metal.MetalLookAndFeel"),
-  MAC("com.sun.java.swing.plaf.mac.MacLookAndFeel"),
-  MOTIF("com.sun.java.swing.plaf.motif.MotifLookAndFeel"),
-  WINDOWS("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"),
-  GTK("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"),
-  NIMBUS("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-  private final String clazz;
+// @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
+final class LookAndFeelUtil {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  LookAndFeelEnum(String clazz) {
-    this.clazz = clazz;
+  private LookAndFeelUtil() {
+    /* Singleton */
   }
 
-  public String getClassName() {
-    return clazz;
-  }
-}
+  // public static JMenu createLookAndFeelMenu() {
+  //   JMenu menu = new JMenu("LookAndFeel");
+  //   ButtonGroup lafGroup = new ButtonGroup();
+  //   for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
+  //     boolean selected = lafInfo.getClassName().equals(lookAndFeel);
+  //     AbstractButton lafItem = new JRadioButtonMenuItem(lafInfo.getName(), selected);
+  //     initLookAndFeelAction(lafInfo, lafItem);
+  //     menu.add(lafItem);
+  //     lafGroup.add(lafItem);
+  //   }
+  //   return menu;
+  // }
 
-class ChangeLookAndFeelAction extends AbstractAction {
-  private final String lnf;
-  private final List<? extends Component> list;
-
-  protected ChangeLookAndFeelAction(LookAndFeelEnum lookAndFeels, List<? extends Component> list) {
-    super(lookAndFeels.toString());
-    this.list = list;
-    this.lnf = lookAndFeels.getClassName();
-    this.setEnabled(isAvailableLookAndFeel(lnf));
-  }
-
-  private static boolean isAvailableLookAndFeel(String laf) {
-    Class<?> lnfClass;
-    try {
-      lnfClass = Class.forName(laf);
-    } catch (ClassNotFoundException ex) {
-      return false;
-    }
-    try {
-      LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
-      return newLnF.isSupportedLookAndFeel();
-    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
-      return false;
-    }
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
   }
 
-  @Override public void actionPerformed(ActionEvent e) {
-    try {
-      UIManager.setLookAndFeel(lnf);
-    } catch (UnsupportedLookAndFeelException ignored) {
-      UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
+  private static void setLookAndFeel(String lookAndFeel) {
+    String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
+    if (!oldLookAndFeel.equals(lookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(lookAndFeel);
+        LookAndFeelUtil.lookAndFeel = lookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
     }
-    for (Frame f : Frame.getFrames()) {
-      SwingUtilities.updateComponentTreeUI(f);
-      f.pack();
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
     }
-    list.forEach(SwingUtilities::updateComponentTreeUI);
   }
 }

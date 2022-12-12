@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
@@ -121,18 +122,34 @@ final class LookAndFeelUtil {
     JMenuItem mi = menu.add(new JRadioButtonMenuItem(txt));
     bg.add(mi);
     mi.addActionListener(new ChangeLookAndFeelAction(laf));
-    mi.setEnabled(isAvailableLookAndFeel(laf));
+    Class<?> lnfClass = getLnfClass(laf);
+    mi.setEnabled(lnfClass != null && isAvailableLookAndFeel(lnfClass));
     return mi;
   }
 
-  private static boolean isAvailableLookAndFeel(String laf) {
+  private static boolean isAvailableLookAndFeel(Class<?> lnfClass) {
+    Constructor<?> cc;
     try {
-      Class<?> lnfClass = Class.forName(laf);
-      LookAndFeel newLnF = (LookAndFeel) lnfClass.getConstructor().newInstance();
-      return newLnF.isSupportedLookAndFeel();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+      cc = lnfClass.getConstructor();
+    } catch (NoSuchMethodException e) {
       return false;
     }
+    try {
+      LookAndFeel newLnF = (LookAndFeel) cc.newInstance();
+      return newLnF.isSupportedLookAndFeel();
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+      return false;
+    }
+  }
+
+  private static Class<?> getLnfClass(String laf) {
+    Class<?> lnfClass;
+    try {
+      lnfClass = Class.forName(laf);
+    } catch (ClassNotFoundException ex) {
+      return null;
+    }
+    return lnfClass;
   }
 
   private static class ChangeLookAndFeelAction extends AbstractAction {
@@ -159,9 +176,9 @@ final class LookAndFeelUtil {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
       // System.out.println("Failed loading L&F: " + currentLaf);
+      ex.printStackTrace();
+      Toolkit.getDefaultToolkit().beep();
     }
   }
 

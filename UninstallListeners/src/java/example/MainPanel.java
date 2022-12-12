@@ -33,24 +33,34 @@ public final class MainPanel extends JPanel {
     JSlider slider2 = new JSlider(0, 100, 50) {
       @Override public void updateUI() {
         super.updateUI();
-        JSlider slider = this;
+        uninstallListeners(this);
+      }
+
+      private void uninstallListeners(JSlider slider) {
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
-          @SuppressWarnings("AvoidAccessibilityAlteration")
           @Override public Void run() {
             try {
               // https://community.oracle.com/thread/1360123
-              Class<JSlider> clz = JSlider.class;
-              Class<BasicSliderUI> uiClass = BasicSliderUI.class;
-              Method uninstall = uiClass.getDeclaredMethod("uninstallListeners", clz);
-              uninstall.setAccessible(true);
+              Method uninstall = getMethod("uninstallListeners");
               uninstall.invoke(getUI(), slider);
-              Method uninstallKbdActs = uiClass.getDeclaredMethod("uninstallKeyboardActions", clz);
-              uninstallKbdActs.setAccessible(true);
+              Method uninstallKbdActs = getMethod("uninstallKeyboardActions");
               uninstallKbdActs.invoke(getUI(), slider);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+            } catch (IllegalAccessException | InvocationTargetException ex) {
               throw new UnsupportedOperationException(ex);
             }
             return null;
+          }
+
+          @SuppressWarnings("AvoidAccessibilityAlteration")
+          private Method getMethod(String name) {
+            Method method;
+            try {
+              method = BasicSliderUI.class.getDeclaredMethod(name, JSlider.class);
+            } catch (NoSuchMethodException ex) {
+              throw new UnsupportedOperationException(ex);
+            }
+            method.setAccessible(true);
+            return method;
           }
         });
       }

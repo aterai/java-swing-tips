@@ -89,19 +89,27 @@ final class BrowserLauncher {
       }
     } catch (InterruptedException ex) {
       Thread.currentThread().interrupt();
-    } catch (IOException | ClassNotFoundException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+    } catch (IOException ex) {
       Toolkit.getDefaultToolkit().beep();
       String msg = ERR_MSG + ":\n" + ex.getLocalizedMessage();
       JOptionPane.showMessageDialog(null, msg, "title", JOptionPane.ERROR_MESSAGE);
     }
   }
 
-  private static void macOpenUrl(String url) throws ClassNotFoundException, NoSuchMethodException,
-      IllegalAccessException, InvocationTargetException {
-    Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
-    // Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
-    Method openUrl = fileMgr.getDeclaredMethod("openURL", String.class);
-    openUrl.invoke(null, url);
+  private static void macOpenUrl(String url) {
+    Method openUrl;
+    try {
+      Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
+      // openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
+      openUrl = fileMgr.getDeclaredMethod("openURL", String.class);
+    } catch (ClassNotFoundException | NoSuchMethodException ex) {
+      throw new UnsupportedOperationException("Could not find com.apple.eio.FileManager");
+    }
+    try {
+      openUrl.invoke(null, url);
+    } catch (IllegalAccessException | InvocationTargetException ex) {
+      throw new UnsupportedOperationException("Could not find Mac web browser");
+    }
   }
 
   private static void windowsOpenUrl(String url) throws IOException {
@@ -120,7 +128,7 @@ final class BrowserLauncher {
     if (Objects.nonNull(browser)) {
       Runtime.getRuntime().exec(new String[] {browser, url});
     } else {
-      throw new UnsupportedOperationException("Could not find web browser");
+      throw new UnsupportedOperationException("Could not find Linux web browser");
     }
   }
 }
