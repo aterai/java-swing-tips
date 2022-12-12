@@ -92,31 +92,35 @@ final class LookAndFeelUtil {
 
   public static JMenu createLookAndFeelMenu() {
     JMenu menu = new JMenu("LookAndFeel");
-    ButtonGroup lafGroup = new ButtonGroup();
-    for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
-      menu.add(createLookAndFeelItem(lafInfo.getName(), lafInfo.getClassName(), lafGroup));
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
     }
     return menu;
   }
 
-  private static JMenuItem createLookAndFeelItem(String laf, String lafClass, ButtonGroup bg) {
-    JMenuItem lafItem = new JRadioButtonMenuItem(laf, lafClass.equals(lookAndFeel));
-    lafItem.setActionCommand(lafClass);
-    lafItem.setHideActionText(true);
-    lafItem.addActionListener(e -> {
-      ButtonModel m = bg.getSelection();
-      setLookAndFeel(m.getActionCommand());
-    });
-    bg.add(lafItem);
-    return lafItem;
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
   }
 
-  private static void setLookAndFeel(String lookAndFeel) {
-    String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
-    if (!oldLookAndFeel.equals(lookAndFeel)) {
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
       try {
-        UIManager.setLookAndFeel(lookAndFeel);
-        LookAndFeelUtil.lookAndFeel = lookAndFeel;
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
@@ -124,7 +128,7 @@ final class LookAndFeelUtil {
         return;
       }
       updateLookAndFeel();
-      // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
     }
   }
 
