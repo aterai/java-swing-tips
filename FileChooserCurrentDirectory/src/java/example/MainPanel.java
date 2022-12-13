@@ -78,13 +78,13 @@ public final class MainPanel extends JPanel {
     button2.addActionListener(e -> {
       File f = new File(field.getText().trim());
       JFileChooser fc = fc1;
-      System.out.format(
-          "isAbsolute: %s, isParent: %s%n",
-          f.isAbsolute(), !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f));
+      boolean b = !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f);
+      String str = String.format("isAbsolute: %s, isParent: %s%n", f.isAbsolute(), b);
+      log.append(str);
       fc.setSelectedFile(f);
       int retValue = fc.showOpenDialog(p);
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fc.getSelectedFile().getAbsolutePath());
+        log.append(fc.getSelectedFile().getAbsolutePath() + "\n");
       }
       if (check2.isSelected()) {
         fc.setSelectedFile(f.getParentFile()); // XXX: reset???
