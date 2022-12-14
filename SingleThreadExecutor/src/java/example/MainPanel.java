@@ -33,14 +33,19 @@ public final class MainPanel extends JPanel {
       TableCellRenderer renderer = new DefaultTableCellRenderer();
       TableColumn tc = getColumnModel().getColumn(2);
       tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-        Integer i = (Integer) value;
-        String text = "Done";
-        if (i < 0) {
-          text = "Canceled";
-        } else if (i < progress.getMaximum()) { // < 100
-          progress.setValue(i);
-          progress.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-          return progress;
+        String text;
+        if (value instanceof Integer) {
+          text = "Done(0ms)";
+          int i = (int) value;
+          if (i < 0) {
+            text = "Canceled";
+          } else if (i < progress.getMaximum()) { // < 100
+            progress.setValue(i);
+            progress.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+            return progress;
+          }
+        } else {
+          text = Objects.toString(value);
         }
         return renderer.getTableCellRendererComponent(tbl, text, isSelected, hasFocus, row, column);
       });
@@ -128,7 +133,7 @@ public final class MainPanel extends JPanel {
             Thread.currentThread().interrupt();
           }
         }
-        System.out.format("%s:%s(%dms)%n", key, text, i);
+        model.setValueAt(String.format("%s(%dms)%n", text, i), key, 2);
         // executor.remove(this);
       }
     };
