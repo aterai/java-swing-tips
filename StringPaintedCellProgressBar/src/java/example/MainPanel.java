@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       TableCellRenderer r = new DefaultTableCellRenderer();
       TableColumn tc = getColumnModel().getColumn(2);
       tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-        String msg;
+        String msg = Objects.toString(value);
         if (value instanceof ProgressValue) {
           ProgressValue pv = (ProgressValue) value;
           Integer current = pv.getProgress();
@@ -45,11 +45,7 @@ public final class MainPanel extends JPanel {
             progress.setStringPainted(true);
             progress.setString(String.format("%d/%d", current, lengthOfTask));
             return progress;
-          } else {
-            msg = "Done";
           }
-        } else {
-          msg = "Waiting...";
         }
         return r.getTableCellRendererComponent(tbl, msg, isSelected, hasFocus, row, column);
       });
@@ -126,7 +122,7 @@ public final class MainPanel extends JPanel {
             Thread.currentThread().interrupt();
           }
         }
-        System.out.format("%s:%s(%dms)%n", key, text, i);
+        model.setValueAt(String.format("%s(%dms)%n", text, i), key, 2);
       }
     };
     ProgressValue pv = new ProgressValue(lengthOfTask, 0);
