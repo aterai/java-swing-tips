@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
           try {
             int start = elm.getStartOffset();
             int end = elm.getEndOffset();
-            System.out.format("start: %d, end: %d%n", start, end);
+            // System.out.format("start: %d, end: %d%n", start, end);
             String text = doc.getText(start, end - start);
             // int pos = text.lastIndexOf(faceMark);
             // while (pos > -1) {
