@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JMenuBar menuBar = new JMenuBar();
-    menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
     add(new JScrollPane(makeTestBox()));
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
 }
 
 // @see SwingSet2.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   // Possible Look & Feels
   private static final String MAC = "com.sun.java.swing.plaf.mac.MacLookAndFeel";
   private static final String METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
@@ -101,7 +101,7 @@ final class LookAndFeelUtil {
   // The current Look & Feel
   private static String currentLaf = METAL;
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
     add(makeToolBar(), BorderLayout.NORTH);
     add(scroll);
     addComp(new JLabel("aaaaaaaaaaaaaaaaaaaaaa"));
-    addComp(MakeComponentUtil.makeButton());
-    addComp(MakeComponentUtil.makeCheckBox());
-    addComp(MakeComponentUtil.makeLabel());
+    addComp(MakeComponentUtils.makeButton());
+    addComp(MakeComponentUtils.makeCheckBox());
+    addComp(MakeComponentUtils.makeLabel());
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -38,13 +38,13 @@ public final class MainPanel extends JPanel {
 
   private JToolBar makeToolBar() {
     JButton addLabel = new JButton("add JLabel");
-    addLabel.addActionListener(e -> addComp(MakeComponentUtil.makeLabel()));
+    addLabel.addActionListener(e -> addComp(MakeComponentUtils.makeLabel()));
 
     JButton addButton = new JButton("add JButton");
-    addButton.addActionListener(e -> addComp(MakeComponentUtil.makeButton()));
+    addButton.addActionListener(e -> addComp(MakeComponentUtils.makeButton()));
 
     JButton addCheckBox = new JButton("add JCheckBox");
-    addCheckBox.addActionListener(e -> addComp(MakeComponentUtil.makeCheckBox()));
+    addCheckBox.addActionListener(e -> addComp(MakeComponentUtils.makeCheckBox()));
 
     JToolBar bar = new JToolBar();
     bar.add(addLabel);
@@ -77,8 +77,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class MakeComponentUtil {
-  private MakeComponentUtil() {
+final class MakeComponentUtils {
+  private MakeComponentUtils() {
     /* Singleton */
   }
 

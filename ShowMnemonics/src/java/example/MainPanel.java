@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     JMenuBar mb = new JMenuBar();
     mb.add(createMenu("File", Arrays.asList("Open", "Save", "Exit")));
     mb.add(createMenu("Edit", Arrays.asList("Cut", "Copy", "Paste", "Delete")));
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     mb.add(Box.createGlue());
     mb.add(createMenu("Help", Arrays.asList("Version", "About")));
     return mb;
@@ -83,10 +83,10 @@ public final class MainPanel extends JPanel {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

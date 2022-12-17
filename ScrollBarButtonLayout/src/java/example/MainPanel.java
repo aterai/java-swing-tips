@@ -108,10 +108,10 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
 
     int maxHeight = getMaximumThumbSize().height;
     int minHeight = getMinimumThumbSize().height;
-    int thumbH = ScrollBarUtil.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
+    int thumbH = ScrollBarUtils.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
     int y = incrButtonY - incrGap - thumbH;
     float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
-    int thumbY = ScrollBarUtil.getThumbY(y, max, value, maxThumbY);
+    int thumbY = ScrollBarUtils.getThumbY(y, max, value, maxThumbY);
 
     /* If the buttons don't fit, allocate half of the available
      * space to each and move the lower one (incrButton) down.
@@ -211,10 +211,10 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
 
     int maxHeight = getMaximumThumbSize().height;
     int minHeight = getMinimumThumbSize().height;
-    int thumbH = ScrollBarUtil.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
+    int thumbH = ScrollBarUtils.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
     int y = incrButtonY - incrGap - thumbH;
     float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
-    int thumbY = ScrollBarUtil.getThumbY(y, max, value, maxThumbY);
+    int thumbY = ScrollBarUtils.getThumbY(y, max, value, maxThumbY);
 
     /* If the buttons don't fit, allocate half of the available
      * space to each and move the lower one (incrButton) down.
@@ -260,8 +260,8 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
   }
 }
 
-final class ScrollBarUtil {
-  private ScrollBarUtil() {
+final class ScrollBarUtils {
+  private ScrollBarUtils() {
     /* Singleton */
   }
 

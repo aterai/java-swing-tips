@@ -21,8 +21,8 @@ import javax.swing.tree.MutableTreeNode;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultMutableTreeNode root = TreeUtil.makeTreeRoot();
-    JTree tree = new JTree(new DefaultTreeModel(TreeUtil.makeTreeRoot()));
+    DefaultMutableTreeNode root = TreeUtils.makeTreeRoot();
+    JTree tree = new JTree(new DefaultTreeModel(TreeUtils.makeTreeRoot()));
     // JRadioButton sort0 = new JRadioButton("0: bubble sort");
     JRadioButton sort1 = new JRadioButton("1: bubble sort");
     JRadioButton sort2 = new JRadioButton("2: selection sort");
@@ -36,20 +36,20 @@ public final class MainPanel extends JPanel {
       if (check.equals(reset)) {
         tree.setModel(new DefaultTreeModel(root));
       } else {
-        TreeUtil.COMPARE_COUNTER.set(0);
-        TreeUtil.SWAP_COUNTER.set(0);
-        DefaultMutableTreeNode r = TreeUtil.deepCopy(root, (DefaultMutableTreeNode) root.clone());
+        TreeUtils.COMPARE_COUNTER.set(0);
+        TreeUtils.SWAP_COUNTER.set(0);
+        DefaultMutableTreeNode r = TreeUtils.deepCopy(root, (DefaultMutableTreeNode) root.clone());
         if (check.equals(sort1)) {
-          TreeUtil.sortTree1(r);
+          TreeUtils.sortTree1(r);
         } else if (check.equals(sort2)) {
-          TreeUtil.sortTree2(r);
+          TreeUtils.sortTree2(r);
         } else {
-          TreeUtil.sortTree3(r);
+          TreeUtils.sortTree3(r);
         }
         swapCounter(check);
         tree.setModel(new DefaultTreeModel(r));
       }
-      TreeUtil.expandAll(tree);
+      TreeUtils.expandAll(tree);
     };
     ButtonGroup bg = new ButtonGroup();
     Stream.of(reset, sort1, sort2, sort3).forEach(check -> {
@@ -63,18 +63,18 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder("Sort JTree"));
     p.add(new JScrollPane(tree));
     add(p);
-    TreeUtil.expandAll(tree);
+    TreeUtils.expandAll(tree);
     setPreferredSize(new Dimension(320, 240));
   }
 
   private static void swapCounter(JRadioButton check) {
     String title = check.getText();
-    if (TreeUtil.SWAP_COUNTER.get() == 0) {
-      int cc = TreeUtil.COMPARE_COUNTER.get();
+    if (TreeUtils.SWAP_COUNTER.get() == 0) {
+      int cc = TreeUtils.COMPARE_COUNTER.get();
       check.setToolTipText(String.format("%-24s - compare: %3d, swap: ---%n", title, cc));
     } else {
-      int cc = TreeUtil.COMPARE_COUNTER.get();
-      int sc = TreeUtil.SWAP_COUNTER.get();
+      int cc = TreeUtils.COMPARE_COUNTER.get();
+      int sc = TreeUtils.SWAP_COUNTER.get();
       check.setToolTipText(String.format("%-24s - compare: %3d, swap: %3d%n", title, cc, sc));
     }
   }
@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class TreeUtil {
+final class TreeUtils {
   public static final AtomicInteger COMPARE_COUNTER = new AtomicInteger();
   public static final AtomicInteger SWAP_COUNTER = new AtomicInteger();
 
@@ -128,7 +128,7 @@ final class TreeUtil {
       Comparator.comparing(DefaultMutableTreeNode::isLeaf)
           .thenComparing(n -> n.getUserObject().toString());
 
-  private TreeUtil() {
+  private TreeUtils() {
     /* Singleton */
   }
 
@@ -200,7 +200,7 @@ final class TreeUtil {
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !node.isLeaf())
-        .forEach(TreeUtil::sort2);
+        .forEach(TreeUtils::sort2);
   }
 
   private static void sort3(DefaultMutableTreeNode parent) {
@@ -225,7 +225,7 @@ final class TreeUtil {
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !node.isLeaf())
-        .forEach(TreeUtil::sort3);
+        .forEach(TreeUtils::sort3);
   }
 
   public static DefaultMutableTreeNode deepCopy(MutableTreeNode src, DefaultMutableTreeNode tgt) {

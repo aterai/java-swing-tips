@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     box.add(box2);
 
     JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(box, BorderLayout.NORTH);
@@ -77,10 +77,10 @@ public final class MainPanel extends JPanel {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

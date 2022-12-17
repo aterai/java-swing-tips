@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = makeButton("<");
     button2.addActionListener(e -> move0(rightList, leftList));
 
-    return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
+    return SpringLayoutUtils.makePanel(leftList, rightList, button1, button2);
   }
 
   private Component makeCmp1() {
@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = makeButton("<");
     button2.addActionListener(e -> move1(rightList, leftList));
 
-    return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
+    return SpringLayoutUtils.makePanel(leftList, rightList, button1, button2);
   }
 
   private Component makeCmp2() {
@@ -143,7 +143,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = makeButton("<");
     button2.addActionListener(e -> move2(rightList, leftList));
 
-    return SpringLayoutUtil.makePanel(leftList, rightList, button1, button2);
+    return SpringLayoutUtils.makePanel(leftList, rightList, button1, button2);
   }
 
   public static void main(String[] args) {
@@ -215,8 +215,8 @@ class ArrayListModel<E> extends AbstractListModel<E> {
   }
 }
 
-final class SpringLayoutUtil {
-  private SpringLayoutUtil() {
+final class SpringLayoutUtils {
+  private SpringLayoutUtils() {
     /* Singleton */
   }
 

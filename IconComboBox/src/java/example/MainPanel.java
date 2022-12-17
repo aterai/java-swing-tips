@@ -28,19 +28,19 @@ public final class MainPanel extends JPanel {
     // JComboBox<String> combo01 = new JComboBox<>(makeModel());
 
     JComboBox<String> combo02 = new JComboBox<>(makeModel());
-    ComboBoxUtil.initComboBoxRenderer(combo02, icon);
+    ComboBoxUtils.initComboBoxRenderer(combo02, icon);
 
     JComboBox<String> combo03 = new JComboBox<>(makeModel());
     combo03.setEditable(true);
-    ComboBoxUtil.initComboBoxRenderer(combo03, icon);
+    ComboBoxUtils.initComboBoxRenderer(combo03, icon);
 
     // JComboBox<String> combo04 = new JComboBox<String>(makeModel()) {
     //   @Override public void updateUI() {
     //     setBorder(null);
     //     super.updateUI();
     //     setEditable(true);
-    //     ComboBoxUtil.initComboBoxRenderer(this, icon);
-    //     setBorder(ComboBoxUtil.makeIconComboBorder(this, icon));
+    //     ComboBoxUtils.initComboBoxRenderer(this, icon);
+    //     setBorder(ComboBoxUtils.makeIconComboBorder(this, icon));
     //   }
     // };
 
@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         setEditable(true);
-        ComboBoxUtil.initComboBoxRenderer(this, icon);
-        ComboBoxUtil.initIconComboBorder1(this, icon);
+        ComboBoxUtils.initComboBoxRenderer(this, icon);
+        ComboBoxUtils.initIconComboBorder1(this, icon);
       }
     };
 
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         setEditable(true);
-        ComboBoxUtil.initComboBoxRenderer(this, icon);
-        ComboBoxUtil.initIconComboBorder2(this, icon);
+        ComboBoxUtils.initComboBoxRenderer(this, icon);
+        ComboBoxUtils.initIconComboBorder2(this, icon);
       }
     };
 
@@ -122,8 +122,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class ComboBoxUtil {
-  private ComboBoxUtil() {
+final class ComboBoxUtils {
+  private ComboBoxUtils() {
     /* Singleton */
   }
 

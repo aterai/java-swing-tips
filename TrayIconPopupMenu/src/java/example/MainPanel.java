@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         .forEach(info -> {
           boolean selected = info.getClassName().equals(lookAndFeel);
           AbstractButton rb = new JRadioButton(info.getName(), selected);
-          LookAndFeelUtil.initLookAndFeelAction(info, rb);
+          LookAndFeelUtils.initLookAndFeelAction(info, rb);
           rb.addActionListener(e -> EventQueue.invokeLater(() -> {
             SwingUtilities.updateComponentTreeUI(popup);
             popup.pack();
@@ -157,8 +157,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class TrayIconPopupMenuUtil {
-  private TrayIconPopupMenuUtil() {
+final class TrayIconPopupMenuUtils {
+  private TrayIconPopupMenuUtils() {
     /* Singleton */
   }
 
@@ -234,7 +234,7 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
 
   private void showPopupMenu(MouseEvent e) {
     if (e.isPopupTrigger()) {
-      Point p = TrayIconPopupMenuUtil.adjustPopupLocation(popup, e.getPoint());
+      Point p = TrayIconPopupMenuUtils.adjustPopupLocation(popup, e.getPoint());
       dummy.setLocation(p);
       dummy.setVisible(true);
       // dummy.toFront();
@@ -252,10 +252,10 @@ class TrayIconPopupMenuHandler extends MouseAdapter {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 
@@ -281,11 +281,11 @@ final class LookAndFeelUtil {
   }
 
   private static void setLookAndFeel(String lookAndFeel) {
-    String oldLookAndFeel = LookAndFeelUtil.lookAndFeel;
+    String oldLookAndFeel = LookAndFeelUtils.lookAndFeel;
     if (!oldLookAndFeel.equals(lookAndFeel)) {
       try {
         UIManager.setLookAndFeel(lookAndFeel);
-        LookAndFeelUtil.lookAndFeel = lookAndFeel;
+        LookAndFeelUtils.lookAndFeel = lookAndFeel;
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {

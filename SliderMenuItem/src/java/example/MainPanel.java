@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     addCheckBoxMenuItemAndSlider(menu);
 
     JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     mb.add(menu);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
@@ -182,10 +182,10 @@ class DispatchParentHandler extends MouseInputAdapter {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

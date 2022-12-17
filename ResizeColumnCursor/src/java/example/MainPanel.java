@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
           super.updateUI();
           EventQueue.invokeLater(() -> {
             BasicSplitPaneDivider d = ((BasicSplitPaneUI) getUI()).getDivider();
-            d.setCursor(ResizeUtil.createCursor("⇹", 32, 32, d));
+            d.setCursor(ResizeUtils.createCursor("⇹", 32, 32, d));
           });
         }
       };
@@ -98,8 +98,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class ResizeUtil {
-  private ResizeUtil() {
+final class ResizeUtils {
+  private ResizeUtils() {
     /* HideUtilityClassConstructor */
   }
 
@@ -147,7 +147,7 @@ final class ResizeUtil {
 class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
   @Override protected MouseInputListener createMouseInputListener() {
     return new MouseInputHandler() {
-      private final Cursor resizeCursor = ResizeUtil.createCursor("⇼", 32, 32, header);
+      private final Cursor resizeCursor = ResizeUtils.createCursor("⇼", 32, 32, header);
       private final Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
       @Override public void mouseMoved(MouseEvent e) {
@@ -155,7 +155,7 @@ class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
         if (!header.isEnabled()) {
           return;
         }
-        if (ResizeUtil.canResize(ResizeUtil.getResizeColumn(header, e.getPoint()), header)) {
+        if (ResizeUtils.canResize(ResizeUtils.getResizeColumn(header, e.getPoint()), header)) {
           header.setCursor(resizeCursor);
         } else {
           header.setCursor(defaultCursor);
@@ -168,7 +168,7 @@ class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
 class MySynthTableHeaderUI extends SynthTableHeaderUI {
   @Override protected MouseInputListener createMouseInputListener() {
     return new MouseInputHandler() {
-      private final Cursor resizeCursor = ResizeUtil.createCursor("⇼", 32, 32, header);
+      private final Cursor resizeCursor = ResizeUtils.createCursor("⇼", 32, 32, header);
       private final Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
       @Override public void mouseMoved(MouseEvent e) {
@@ -176,7 +176,7 @@ class MySynthTableHeaderUI extends SynthTableHeaderUI {
         if (!header.isEnabled()) {
           return;
         }
-        if (ResizeUtil.canResize(ResizeUtil.getResizeColumn(header, e.getPoint()), header)) {
+        if (ResizeUtils.canResize(ResizeUtils.getResizeColumn(header, e.getPoint()), header)) {
           header.setCursor(resizeCursor);
         } else {
           header.setCursor(defaultCursor);
@@ -189,7 +189,7 @@ class MySynthTableHeaderUI extends SynthTableHeaderUI {
 class MyBasicTableHeaderUI extends BasicTableHeaderUI {
   @Override protected MouseInputListener createMouseInputListener() {
     return new MouseInputHandler() {
-      private final Cursor resizeCursor = ResizeUtil.createCursor("⇼", 32, 32, header);
+      private final Cursor resizeCursor = ResizeUtils.createCursor("⇼", 32, 32, header);
       private final Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
       @Override public void mouseMoved(MouseEvent e) {
@@ -197,7 +197,7 @@ class MyBasicTableHeaderUI extends BasicTableHeaderUI {
         if (!header.isEnabled()) {
           return;
         }
-        if (ResizeUtil.canResize(ResizeUtil.getResizeColumn(header, e.getPoint()), header)) {
+        if (ResizeUtils.canResize(ResizeUtils.getResizeColumn(header, e.getPoint()), header)) {
           header.setCursor(resizeCursor);
         } else {
           header.setCursor(defaultCursor);

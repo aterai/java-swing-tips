@@ -98,7 +98,7 @@ class LabelWithToolBox extends JLabel {
       int height = toolBox.getPreferredSize().height;
       double h = (double) height;
       if (isHidden) {
-        double a = AnimationUtil.easeInOut(++counter / h);
+        double a = AnimationUtils.easeInOut(++counter / h);
         yy = (int) (.5 + a * h);
         toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
         if (yy >= height) {
@@ -106,7 +106,7 @@ class LabelWithToolBox extends JLabel {
           animator.stop();
         }
       } else {
-        double a = AnimationUtil.easeInOut(--counter / h);
+        double a = AnimationUtils.easeInOut(--counter / h);
         yy = (int) (.5 + a * h);
         toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
         if (yy <= 0) {
@@ -249,10 +249,10 @@ class ParentDispatchMouseListener extends MouseAdapter {
   }
 }
 
-final class AnimationUtil {
+final class AnimationUtils {
   private static final int N = 3;
 
-  private AnimationUtil() {
+  private AnimationUtils() {
     /* Singleton */
   }
 

@@ -22,7 +22,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  public static final Paint TEXTURE = ImageUtil.makeCheckerTexture();
+  public static final Paint TEXTURE = ImageUtils.makeCheckerTexture();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -95,7 +95,7 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             URL url = cl.getResource("example/test.jpg");
-            BufferedImage bi = ImageUtil.getFilteredImage(url);
+            BufferedImage bi = ImageUtils.getFilteredImage(url);
             setBorder(new CentredBackgroundBorder(bi));
             setOpaque(false);
           }
@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
     if (contentPane instanceof JComponent) {
       ((JComponent) contentPane).setOpaque(false);
     }
-    frame.setJMenuBar(ImageUtil.createMenuBar());
+    frame.setJMenuBar(ImageUtils.createMenuBar());
     frame.getContentPane().add(new MainPanel());
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.pack();
@@ -118,8 +118,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class ImageUtil {
-  private ImageUtil() {
+final class ImageUtils {
+  private ImageUtils() {
     /* Singleton */
   }
 
@@ -138,7 +138,7 @@ final class ImageUtil {
       }
     };
     mb.setOpaque(false);
-    Stream.of("File", "Edit", "Help").map(ImageUtil::createMenu).forEach(mb::add);
+    Stream.of("File", "Edit", "Help").map(ImageUtils::createMenu).forEach(mb::add);
     return mb;
   }
 
@@ -162,7 +162,7 @@ final class ImageUtil {
       } catch (IOException ex) {
         return makeMissingImage();
       }
-    }).orElseGet(ImageUtil::makeMissingImage);
+    }).orElseGet(ImageUtils::makeMissingImage);
 
     int w = img.getWidth();
     int h = img.getHeight();

@@ -98,7 +98,7 @@ public class TitledBorder2 extends TitledBorder {
       Dimension size = getLabel2(c).getPreferredSize();
       lr.height = size.height;
 
-      Insets ins = TitledBorderUtil.getBorderInsets(bdr, c);
+      Insets ins = TitledBorderUtils.getBorderInsets(bdr, c);
       initPositionRect(height, edge, ins, br, lr);
 
       ins.left += edge + TEXT_INSET_H2;
@@ -216,7 +216,7 @@ public class TitledBorder2 extends TitledBorder {
     if (isTitleNotEmpty()) {
       int edge = getBorder() instanceof TitledBorder2 ? 0 : EDGE_SPACING;
       Dimension size = getLabel2(c).getPreferredSize();
-      TitledBorderUtil.initInsets(insets, getPosition2(), edge, size);
+      TitledBorderUtils.initInsets(insets, getPosition2(), edge, size);
       insets.top += edge + TEXT_SPACING2;
       insets.left += edge + TEXT_SPACING2;
       insets.right += edge + TEXT_SPACING2;
@@ -239,7 +239,7 @@ public class TitledBorder2 extends TitledBorder {
         return i;
       }
     } else if (value instanceof String) {
-      Integer aboveTop = TitledBorderUtil.getPositionByString(value);
+      Integer aboveTop = TitledBorderUtils.getPositionByString(value);
       if (aboveTop != null) {
         return aboveTop;
       }
@@ -297,8 +297,8 @@ public class TitledBorder2 extends TitledBorder {
   }
 }
 
-final class TitledBorderUtil {
-  private TitledBorderUtil() {
+final class TitledBorderUtils {
+  private TitledBorderUtils() {
     /* Singleton */
   }
 

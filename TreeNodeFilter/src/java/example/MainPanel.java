@@ -72,12 +72,12 @@ public final class MainPanel extends JPanel {
     String q = field.getText();
     TreePath rtp = tree.getPathForRow(0);
     if (q.isEmpty()) {
-      TreeUtil.resetAll(rtp, true);
+      TreeUtils.resetAll(rtp, true);
       ((DefaultTreeModel) tree.getModel()).reload();
-      // TreeUtil.visitAll(tree, rtp, true);
+      // TreeUtils.visitAll(tree, rtp, true);
     } else {
-      TreeUtil.visitAll(tree, rtp, false);
-      TreeUtil.searchTree(tree, rtp, q);
+      TreeUtils.visitAll(tree, rtp, false);
+      TreeUtils.searchTree(tree, rtp, q);
     }
   }
 
@@ -211,8 +211,8 @@ class FilterTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 }
 
-final class TreeUtil {
-  private TreeUtil() {
+final class TreeUtils {
+  private TreeUtils() {
     /* Singleton */
   }
 

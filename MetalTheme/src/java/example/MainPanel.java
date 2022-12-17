@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
     EventQueue.invokeLater(() -> {
       JMenuBar menuBar = new JMenuBar();
-      menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
+      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
       getRootPane().setJMenuBar(menuBar);
     });
 
@@ -98,10 +98,10 @@ public final class MainPanel extends JPanel {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

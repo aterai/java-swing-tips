@@ -111,11 +111,11 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
       double v = count.addAndGet(STEP) / (double) d.height;
       double a;
       if (slideInAnimation == SlideInAnimation.EASE_IN) {
-        a = AnimationUtil.easeIn(v);
+        a = AnimationUtils.easeIn(v);
       } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
-        a = AnimationUtil.easeOut(v);
+        a = AnimationUtils.easeOut(v);
       } else { // EASE_IN_OUT
-        a = AnimationUtil.easeInOut(v);
+        a = AnimationUtils.easeInOut(v);
       }
       int visibleHeight = (int) (.5 + a * d.height);
       if (visibleHeight >= d.height) {
@@ -165,10 +165,10 @@ enum SlideInAnimation {
   EASE_IN, EASE_OUT, EASE_IN_OUT
 }
 
-final class AnimationUtil {
+final class AnimationUtils {
   private static final int N = 3;
 
-  private AnimationUtil() {
+  private AnimationUtils() {
     /* Singleton */
   }
 

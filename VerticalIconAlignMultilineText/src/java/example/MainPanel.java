@@ -85,8 +85,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class HtmlViewUtil {
-  private HtmlViewUtil() {
+final class HtmlViewUtils {
+  private HtmlViewUtils() {
     /* Singleton */
   }
 
@@ -149,7 +149,7 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
     // }
 
     // Paint the radio button
-    int y = HtmlViewUtil.getFirstLineCenterY(text, b, iconRect);
+    int y = HtmlViewUtils.getFirstLineCenterY(text, b, iconRect);
     getDefaultIcon().paintIcon(c, g, iconRect.x, iconRect.y + y);
 
     // Draw the Text
@@ -207,7 +207,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
     // }
 
     // Paint the radio button
-    int y = HtmlViewUtil.getFirstLineCenterY(text, b, iconRect);
+    int y = HtmlViewUtils.getFirstLineCenterY(text, b, iconRect);
     getDefaultIcon().paintIcon(c, g, iconRect.x, iconRect.y + y);
 
     // Draw the Text

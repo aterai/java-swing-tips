@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
         }
       };
       JMenuBar menuBar = new JMenuBar();
-      menuBar.add(LookAndFeelUtil.createLookAndFeelMenu());
+      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
       getRootPane().setJMenuBar(menuBar);
       descendants(menuBar)
           .filter(JRadioButtonMenuItem.class::isInstance)
@@ -176,10 +176,10 @@ enum TreeDraws {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

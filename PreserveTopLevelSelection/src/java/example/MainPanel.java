@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     menu.add(sub);
     menu.add("JMenuItem3");
 
-    bar.add(LookAndFeelUtil.createLookAndFeelMenu());
+    bar.add(LookAndFeelUtils.createLookAndFeelMenu());
 
     return bar;
   }
@@ -82,10 +82,10 @@ public final class MainPanel extends JPanel {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

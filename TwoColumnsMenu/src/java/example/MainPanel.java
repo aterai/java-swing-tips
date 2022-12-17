@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     menu1.addSeparator();
     menu1.add("Exit");
 
-    JMenu menu2 = LookAndFeelUtil.createLookAndFeelMenu();
+    JMenu menu2 = LookAndFeelUtils.createLookAndFeelMenu();
     JPopupMenu popup = menu2.getPopupMenu();
     popup.setLayout(new GridLayout(0, 2, 8, 0));
     Border b = BorderFactory.createCompoundBorder(popup.getBorder(), new ColumnRulesBorder());
@@ -83,10 +83,10 @@ class ColumnRulesBorder implements Border {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

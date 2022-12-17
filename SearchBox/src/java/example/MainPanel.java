@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
         TreePath selectedPath = tree.getSelectionPath();
         tree.clearSelection();
         rollOverPathLists.clear();
-        TreeUtil.searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
+        TreeUtils.searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
         if (!rollOverPathLists.isEmpty()) {
           int nextIndex = 0;
           int size = rollOverPathLists.size();
@@ -179,8 +179,8 @@ class ControlPanelLayout extends BorderLayout {
   }
 }
 
-final class TreeUtil {
-  private TreeUtil() {
+final class TreeUtils {
+  private TreeUtils() {
     /* Singleton */
   }
 

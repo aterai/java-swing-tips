@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     add(makeTitledPanel("TabComponent + JLabel + LEADING", initTabbedPane(tabbedPane1)));
 
     JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -102,10 +102,10 @@ class ColorIcon implements Icon {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

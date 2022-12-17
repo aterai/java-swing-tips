@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     p2.add(new JButton("ghi"));
 
     JMenuBar mb = new JMenuBar();
-    mb.add(SizeVariantUtil.createSizeVariantMenu());
+    mb.add(SizeVariantUtils.createSizeVariantMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(new JSlider(), BorderLayout.NORTH);
@@ -78,8 +78,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class SizeVariantUtil {
-  private SizeVariantUtil() {
+final class SizeVariantUtils {
+  private SizeVariantUtils() {
     /* Singleton */
   }
 

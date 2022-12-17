@@ -39,13 +39,13 @@ public final class MainPanel extends JPanel {
     //     }
     //   });
     //   List<JRadioButtonMenuItem> list = new ArrayList<>();
-    //   MenuBarUtil.searchAllMenuElements(getRootPane().getJMenuBar(), list);
+    //   MenuBarUtils.searchAllMenuElements(getRootPane().getJMenuBar(), list);
     //   for (JRadioButtonMenuItem mi : list) {
     //     mi.addActionListener(al);
     //   }
     // });
 
-    // JMenuBar menuBar = MenuBarUtil.createMenuBar();
+    // JMenuBar menuBar = MenuBarUtils.createMenuBar();
     // Stream.of(menuBar)
     //   .flatMap(new Function<MenuElement, Stream<MenuElement>>() {
     //     @Override public Stream<MenuElement> apply(MenuElement me) {
@@ -55,10 +55,10 @@ public final class MainPanel extends JPanel {
     //   })
     //   .filter(mi -> mi instanceof JRadioButtonMenuItem)
     //   .forEach(mi -> System.out.println("----\n" + mi.getClass()));
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtils.createMenuBar()));
 
     JPopupMenu popup = new JPopupMenu();
-    MenuBarUtil.initMenu(popup);
+    MenuBarUtils.initMenu(popup);
     setComponentPopupMenu(popup);
     add(check);
     setPreferredSize(new Dimension(320, 240));
@@ -114,8 +114,8 @@ class ExitAction extends AbstractAction {
   }
 }
 
-final class MenuBarUtil {
-  private MenuBarUtil() {
+final class MenuBarUtils {
+  private MenuBarUtils() {
     /* Singleton */
   }
 
@@ -129,7 +129,7 @@ final class MenuBarUtil {
     Stream.of("Cut", "Copy", "Paste", "Delete").map(edit::add).forEach(mi -> mi.setEnabled(false));
     mb.add(edit);
 
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     mb.add(Box.createGlue());
 
     JMenu help = new JMenu("Help");
@@ -168,10 +168,10 @@ final class MenuBarUtil {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 

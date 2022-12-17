@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
         }
       }
       try {
-        ZipUtil.zip(path, tgt);
+        ZipUtils.zip(path, tgt);
       } catch (IOException ex) {
         LOGGER.info(() -> String.format("Cant zip! : %s", path));
         UIManager.getLookAndFeel().provideErrorFeedback(c);
@@ -131,7 +131,7 @@ public final class MainPanel extends JPanel {
             LOGGER.info(() -> String.format("mkdir0: %s", dir));
             Files.createDirectories(dir);
           }
-          ZipUtil.unzip(path, dir);
+          ZipUtils.unzip(path, dir);
         } catch (IOException ex) {
           // ex.printStackTrace();
           LOGGER.info(() -> String.format("Cant unzip! : %s", path));
@@ -185,10 +185,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class ZipUtil {
+final class ZipUtils {
   private static final Logger LOGGER = Logger.getLogger(MainPanel.LOGGER_NAME);
 
-  private ZipUtil() {
+  private ZipUtils() {
     /* HideUtilityClassConstructor */
   }
 

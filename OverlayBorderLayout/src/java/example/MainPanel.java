@@ -130,13 +130,13 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
     Timer animator = (Timer) e.getSource();
     int height = component.getPreferredSize().height;
     if (isShowing) {
-      yy = (int) (.5 + AnimationUtil.easeInOut(++counter / (double) height) * height);
+      yy = (int) (.5 + AnimationUtils.easeInOut(++counter / (double) height) * height);
       if (yy >= height) {
         yy = height;
         animator.stop();
       }
     } else {
-      yy = (int) (.5 + AnimationUtil.easeInOut(--counter / (double) height) * height);
+      yy = (int) (.5 + AnimationUtils.easeInOut(--counter / (double) height) * height);
       if (yy <= 0) {
         yy = 0;
         animator.stop();
@@ -231,10 +231,10 @@ class FindNextAction extends AbstractAction {
   }
 }
 
-final class AnimationUtil {
+final class AnimationUtils {
   private static final int N = 3;
 
-  private AnimationUtil() {
+  private AnimationUtils() {
     /* Singleton */
   }
 

@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     // http://www.yourname.jp/soft/digitalfonts-20090306.shtml
     // Digital display font: Copyright (c) Yourname, Inc.
     String path = "example/YournameS7ScientificHalf.ttf";
-    TexturePanel tp = TextureUtil.makeTexturePanel(label, path);
+    TexturePanel tp = TextureUtils.makeTexturePanel(label, path);
 
     JFrame digitalClock = new JFrame();
     digitalClock.getContentPane().add(tp);
@@ -165,8 +165,8 @@ enum TexturePaints {
 
   public Paint getTexturePaint() {
     switch (this) {
-      case IMAGE: return TextureUtil.makeImageTexture();
-      case CHECKER: return TextureUtil.makeCheckerTexture();
+      case IMAGE: return TextureUtils.makeImageTexture();
+      case CHECKER: return TextureUtils.makeCheckerTexture();
       case NULL: return null;
       default: throw new AssertionError();
     }
@@ -177,8 +177,8 @@ enum TexturePaints {
   }
 }
 
-final class TextureUtil {
-  private TextureUtil() {
+final class TextureUtils {
+  private TextureUtils() {
     /* Singleton */
   }
 
@@ -192,7 +192,7 @@ final class TextureUtil {
       } catch (IOException ex) {
         return makeMissingImage();
       }
-    }).orElseGet(TextureUtil::makeMissingImage);
+    }).orElseGet(TextureUtils::makeMissingImage);
     return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
   }
 

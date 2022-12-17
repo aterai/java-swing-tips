@@ -148,7 +148,7 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
 
   private void updateTextAreaLocation() {
     double height = textArea.getPreferredSize().getHeight();
-    double a = AnimationUtil.easeInOut(count / height);
+    double a = AnimationUtils.easeInOut(count / height);
     count += direction;
     areaHeight = (int) (.5 + a * height);
     textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
@@ -200,10 +200,10 @@ class LabelHandler extends MouseAdapter implements HierarchyListener {
   }
 }
 
-final class AnimationUtil {
+final class AnimationUtils {
   private static final int N = 3;
 
-  private AnimationUtil() {
+  private AnimationUtils() {
     /* Singleton */
   }
 

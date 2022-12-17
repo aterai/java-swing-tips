@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     });
     add(check);
 
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtil.createMenuBar()));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(MenuBarUtils.createMenuBar()));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class MenuBarUtil {
-  private MenuBarUtil() {
+final class MenuBarUtils {
+  private MenuBarUtils() {
     /* Singleton */
   }
 
@@ -54,7 +54,7 @@ final class MenuBarUtil {
     JMenuBar mb = new JMenuBar();
     mb.add(createFileMenu());
     mb.add(createEditMenu());
-    mb.add(LookAndFeelUtil.createLookAndFeelMenu());
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     mb.add(Box.createGlue());
     mb.add(createHelpMenu());
     return mb;
@@ -88,10 +88,10 @@ final class MenuBarUtil {
 }
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
-final class LookAndFeelUtil {
+final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
 
-  private LookAndFeelUtil() {
+  private LookAndFeelUtils() {
     /* Singleton */
   }
 
