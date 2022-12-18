@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST NonEditableTextFieldCaret" />
+  <property name="jnlp.Name"     value="NonEditableTextFieldCaret" />
+  <property name="jnlp.name"     value="noneditabletextfieldcaret" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/noneditabletextfieldcaret/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/NonEditableTextFieldCaret.html" />
+</project>
