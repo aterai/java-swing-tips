@@ -15,7 +15,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p0 = new JPanel();
     p0.setBorder(BorderFactory.createTitledBorder("Default JButton"));
     JButton b0 = new JButton("Default JButton");
@@ -23,7 +22,7 @@ public final class MainPanel extends JPanel {
 
     JPanel p1 = new JPanel();
     p1.setBorder(BorderFactory.createTitledBorder("Blurred JButton1"));
-    JButton b1 = new BlurJButton("Blurred JButton1");
+    JButton b1 = new BlurredButton("Blurred JButton1");
     p1.add(b1);
 
     JPanel p2 = new JPanel();
@@ -75,7 +74,7 @@ public final class MainPanel extends JPanel {
 // https://code.google.com/archive/p/filthy-rich-clients/
 // trunk/swing-hacks-examples-20060109/
 // Ch01-JComponents/09/swinghacks/ch01/JComponents/hack09/BlurJButton.java
-class BlurJButton extends JButton {
+class BlurredButton extends JButton {
   private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
@@ -83,7 +82,7 @@ class BlurJButton extends JButton {
   }));
   private transient BufferedImage buf;
 
-  protected BlurJButton(String label) {
+  protected BlurredButton(String label) {
     super(label);
     // System.out.println(op.getEdgeCondition());
   }
