@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
   private static Component createTree() {
     JTree tree = new JTree();
     tree.setVisibleRowCount(8);
-    Container c = new JResizer(new BorderLayout());
+    Container c = new ResizablePanel(new BorderLayout());
     c.add(new JScrollPane(tree));
     return c;
   }
@@ -74,7 +74,7 @@ public final class MainPanel extends JPanel {
   private static Component createTable() {
     JTable table = new JTable(12, 3);
     table.setPreferredScrollableViewportSize(new Dimension(160, 160));
-    Container c = new JResizer(new BorderLayout());
+    Container c = new ResizablePanel(new BorderLayout());
     c.add(new JScrollPane(table));
     return c;
   }
@@ -101,10 +101,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class JResizer extends JPanel { // implements Serializable {
+class ResizablePanel extends JPanel { // implements Serializable {
   private transient MouseInputListener resizeListener;
 
-  protected JResizer(LayoutManager layout) {
+  protected ResizablePanel(LayoutManager layout) {
     super(layout);
   }
 
@@ -117,12 +117,17 @@ class JResizer extends JPanel { // implements Serializable {
     addMouseMotionListener(resizeListener);
     setBorder(new DefaultResizableBorder());
   }
+
   // private void writeObject(ObjectOutputStream out) throws IOException {}
+
   // private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {}
+
   // private void readObjectNoData() throws ObjectStreamException {}
+
   // private void readObject() {
   //   this.resizeListener = new ResizeMouseListener();
   // }
+
   // private Object readResolve() {
   //   this.resizeListener = new ResizeMouseListener();
   //   return this;
