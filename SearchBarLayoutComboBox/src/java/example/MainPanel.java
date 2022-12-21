@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     m.addElement(new SearchEngine("Yahoo!", "https://www.yahoo.com/", makeIcon("yahoo")));
     m.addElement(new SearchEngine("Bing", "https://www.bing.com/", makeIcon("bing")));
 
-    JComboBox<SearchEngine> combo = new JSearchBar<>(m);
+    JComboBox<SearchEngine> combo = new SearchBarComboBox<>(m);
     combo.getEditor().setItem("java swing");
 
     // JComboBox combo = new JComboBox(m);
@@ -113,7 +113,7 @@ class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxM
   }
 }
 
-class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
+class SearchBarComboBox<E extends SearchEngine> extends JComboBox<E> {
   private static final String UI_CLASS_ID = "SearchBarComboBoxUI";
 
   @Override public String getUIClassID() {
@@ -147,25 +147,25 @@ class JSearchBar<E extends SearchEngine> extends JComboBox<E> {
     // }
   }
 
-  // protected JSearchBar() {
+  // protected SearchBarComboBox() {
   //   super();
   //   setModel(new DefaultComboBoxModel<>());
   //   init();
   // }
 
-  protected JSearchBar(ComboBoxModel<E> model) {
+  protected SearchBarComboBox(ComboBoxModel<E> model) {
     super(model);
     // setModel(model);
     // init();
   }
 
-  @SafeVarargs protected JSearchBar(E... items) {
+  @SafeVarargs protected SearchBarComboBox(E... items) {
     super(items);
     // setModel(new DefaultComboBoxModel<>(items));
     // init();
   }
 
-  // protected JSearchBar(Vector<?> items) {
+  // protected SearchBarComboBox(Vector<?> items) {
   //   super();
   //   setModel(new DefaultComboBoxModel(items));
   //   init();

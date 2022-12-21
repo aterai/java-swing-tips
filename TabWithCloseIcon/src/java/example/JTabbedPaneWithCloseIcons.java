@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
 
+@SuppressWarnings("AbbreviationAsWordInName")
 public final class JTabbedPaneWithCloseIcons extends JTabbedPane {
   public JTabbedPaneWithCloseIcons() {
     super();

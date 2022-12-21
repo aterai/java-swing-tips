@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
+@SuppressWarnings("AbbreviationAsWordInName")
 public final class JTabbedPaneWithCloseButton extends JTabbedPane {
   private List<JButton> closeButtons;
 
