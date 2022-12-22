@@ -70,16 +70,16 @@ class SelectWordCaret extends DefaultCaret {
   private int p0; // = Math.min(getDot(), getMark());
   private int p1; // = Math.max(getDot(), getMark());
 
-  @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
   @Override public void mousePressed(MouseEvent e) {
     super.mousePressed(e);
     int clickCount = e.getClickCount();
-    if (SwingUtilities.isLeftMouseButton(e) && !e.isConsumed()) {
-      if (clickCount == 2) {
+    if (SwingUtilities.isLeftMouseButton(e) && !e.isConsumed() && clickCount > 1) {
+      boolean isDoubleClicked = clickCount == 2;
+      if (isDoubleClicked) {
         selectingMode = SelectingMode.WORD;
         p0 = Math.min(getDot(), getMark());
         p1 = Math.max(getDot(), getMark());
-      } else if (clickCount >= 3) {
+      } else {
         selectingMode = SelectingMode.ROW;
         JTextComponent target = getComponent();
         int offs = target.getCaretPosition();
