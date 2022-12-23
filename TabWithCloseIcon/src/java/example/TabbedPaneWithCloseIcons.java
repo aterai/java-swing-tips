@@ -9,9 +9,8 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
 
-@SuppressWarnings("AbbreviationAsWordInName")
-public final class JTabbedPaneWithCloseIcons extends JTabbedPane {
-  public JTabbedPaneWithCloseIcons() {
+public final class TabbedPaneWithCloseIcons extends JTabbedPane {
+  public TabbedPaneWithCloseIcons() {
     super();
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {

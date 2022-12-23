@@ -11,10 +11,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(3, 1));
-
-    JTabbedPaneWithCloseButton tab1 = new JTabbedPaneWithCloseButton();
-    JTabbedPaneWithCloseIcons tab2 = new JTabbedPaneWithCloseIcons();
-    CloseableTabbedPane tab3 = new CloseableTabbedPane();
+    JTabbedPane tab1 = new TabbedPaneWithCloseButton();
+    JTabbedPane tab2 = new TabbedPaneWithCloseIcons();
+    JTabbedPane tab3 = new CloseableTabbedPane();
 
     Stream.of(tab1, tab2, tab3).map(MainPanel::makeTabbedPane).forEach(this::add);
     setPreferredSize(new Dimension(320, 240));
