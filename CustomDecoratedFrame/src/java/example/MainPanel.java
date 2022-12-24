@@ -168,7 +168,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings("PMD.AccessorMethodGeneration") // maybe false positive
 enum Side {
   N(Cursor.N_RESIZE_CURSOR, 0, 4) {
     @Override public Rectangle getBounds(Rectangle r, Point d) {
@@ -229,11 +228,9 @@ enum Side {
     }
   };
 
-  private final int cursor;
-  private final int width;
-  private final int height;
-  // @SuppressWarnings("ImmutableEnumChecker")
-  // private final BiFunction<Rectangle, Point, Rectangle> getBounds;
+  final int cursor;
+  final int width;
+  final int height;
 
   Side(int cursor, int width, int height) {
     this.cursor = cursor;
