@@ -117,13 +117,13 @@ public class TableSorter extends AbstractTableModel {
 
   protected transient TableModel tableModel;
 
-  protected final transient List<Row> viewToModel = new ArrayList<>();
+  protected final transient List<TableRow> viewToModel = new ArrayList<>();
   protected final transient List<Integer> modelToView = new ArrayList<>();
   protected final transient List<Directive> sortingColumns = new ArrayList<>();
 
   private JTableHeader tableHeader;
   private final Map<Class<?>, Comparator<?>> columnComparators = new ConcurrentHashMap<>();
-  private final RowComparator<Row> rowComparator = new RowComparator<>();
+  private final RowComparator<TableRow> rowComparator = new RowComparator<>();
   private transient MouseListener mouseListener;
   private transient TableModelListener modelListener;
 
@@ -294,14 +294,16 @@ public class TableSorter extends AbstractTableModel {
     }
   }
 
-  private List<Row> getViewToModel() {
+  private List<TableRow> getViewToModel() {
     if (viewToModel.isEmpty()) {
       // int tableModelRowCount = tableModel.getRowCount();
-      // // viewToModel = new Row[tableModelRowCount];
+      // // viewToModel = new TableRow[tableModelRowCount];
       // for (int row = 0; row < tableModelRowCount; row++) {
-      //   viewToModel.add(new Row(row));
+      //   viewToModel.add(new TableRow(row));
       // }
-      IntStream.range(0, tableModel.getRowCount()).forEach(row -> viewToModel.add(new Row(row)));
+      IntStream.range(0, tableModel.getRowCount())
+          .mapToObj(TableRow::new)
+          .forEach(viewToModel::add);
       if (isSorting()) {
         viewToModel.sort(rowComparator);
       }
@@ -357,8 +359,8 @@ public class TableSorter extends AbstractTableModel {
   }
 
   // Helper classes
-  private class RowComparator<E extends Row> implements Comparator<E> {
-    @Override public int compare(Row r1, Row r2) {
+  private class RowComparator<E extends TableRow> implements Comparator<E> {
+    @Override public int compare(TableRow r1, TableRow r2) {
       int row1 = r1.modelIndex;
       int row2 = r2.modelIndex;
       for (Directive directive : sortingColumns) {
@@ -626,12 +628,11 @@ class Directive implements Serializable {
   }
 }
 
-@SuppressWarnings("PMD.ShortClassName")
-class Row implements Serializable {
+class TableRow implements Serializable {
   private static final long serialVersionUID = 1L;
   public final int modelIndex;
 
-  protected Row(int index) {
+  protected TableRow(int index) {
     this.modelIndex = index;
   }
 }
