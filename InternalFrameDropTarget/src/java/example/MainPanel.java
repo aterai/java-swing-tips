@@ -28,13 +28,13 @@ public final class MainPanel extends JPanel {
     // TransferHandler handler2 = new TableColumnTransferHandler();
 
     JInternalFrame f1 = new JInternalFrame("11111111", true, true, true, true);
-    f1.add(new JScrollPane(makeDnDTable(handler)));
+    f1.add(new JScrollPane(makeDragAndDropTable(handler)));
     f1.setOpaque(false);
     desktop.add(f1, 1, 1);
     f1.setBounds(0, 0, 240, 160);
 
     JInternalFrame f2 = new JInternalFrame("22222222", true, true, true, true);
-    f2.add(new JScrollPane(makeDnDTable(handler)));
+    f2.add(new JScrollPane(makeDragAndDropTable(handler)));
     desktop.add(f2, 1, 0);
     f2.setBounds(50, 50, 240, 160);
     f2.setOpaque(false);
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeDnDTable(TransferHandler handler) {
+  private static JTable makeDragAndDropTable(TransferHandler handler) {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},

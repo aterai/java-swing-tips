@@ -21,17 +21,17 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    TableRowTransferHandler h = new TableRowTransferHandler();
+    TableRowTransferHandler handler = new TableRowTransferHandler();
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JTable"));
-    p.add(new JScrollPane(makeDnDTable(h)));
-    p.add(new JScrollPane(makeDnDTable(h)));
+    p.add(new JScrollPane(makeDragAndDropTable(handler)));
+    p.add(new JScrollPane(makeDragAndDropTable(handler)));
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeDnDTable(TableRowTransferHandler handler) {
+  private static JTable makeDragAndDropTable(TableRowTransferHandler handler) {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
       {"AAA", 12, true}, {"aaa", 1, false},
