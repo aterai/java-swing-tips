@@ -52,6 +52,12 @@ public final class MainPanel extends JPanel {
           .findFirst()
           .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
 
+      // TEST5:
+      // SwingUtils.descendantOrSelf(fc)
+      //     .filter(JTable.class::isInstance).map(JTable.class::cast)
+      //     .findFirst()
+      //     .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+
       int retValue = fc.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fc.getSelectedFile().getAbsolutePath());
@@ -147,11 +153,12 @@ final class SwingUtils {
         .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
-  // public static Stream<Component> descendants(Container parent) {
-  //   return Stream.of(parent.getComponents())
-  //       .filter(Container.class::isInstance).map(c -> descendants((Container) c))
-  //       .reduce(Stream.of(parent), Stream::concat);
-  // }
+  // TEST5
+  public static Stream<Component> descendantOrSelf(Container parent) {
+    return Stream.of(parent.getComponents())
+        .filter(Container.class::isInstance).map(c -> descendantOrSelf((Container) c))
+        .reduce(Stream.of(parent), Stream::concat);
+  }
 
   // // import java.util.function.Function;
   // private static Optional<Component> findFileNameTextField(JFileChooser fc) {

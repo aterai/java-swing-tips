@@ -98,9 +98,9 @@ public final class MainPanel extends JPanel {
   //   }
   // }
 
-  // private static Stream<MenuElement> descendants(MenuElement me) {
+  // private static Stream<MenuElement> descendantOrSelf(MenuElement me) {
   //   return Stream.of(me.getSubElements())
-  //       .map(MainPanel::descendants).reduce(Stream.of(me), Stream::concat);
+  //       .map(MainPanel::descendantOrSelf).reduce(Stream.of(me), Stream::concat);
   // }
 
   private static Stream<MenuElement> descendants(MenuElement me) {
