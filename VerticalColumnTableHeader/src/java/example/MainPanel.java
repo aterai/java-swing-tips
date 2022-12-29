@@ -83,15 +83,14 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
   private static final String DESCENDING = "Table.descendingSortIcon";
   private final Icon ascendingIcon;
   private final Icon descendingIcon;
-  private final EmptyIcon emptyIcon = new EmptyIcon();
+  private final EmptyIcon emptyIcon;
   private final JPanel intermediate = new JPanel();
   private final JLabel label = new JLabel("", null, SwingConstants.LEADING);
 
   protected VerticalTableHeaderRenderer() {
     ascendingIcon = UIManager.getLookAndFeelDefaults().getIcon(ASCENDING);
     descendingIcon = UIManager.getLookAndFeelDefaults().getIcon(DESCENDING);
-    emptyIcon.width = ascendingIcon.getIconWidth();
-    emptyIcon.height = ascendingIcon.getIconHeight();
+    emptyIcon = new EmptyIcon(ascendingIcon.getIconWidth(), ascendingIcon.getIconHeight());
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -181,8 +180,13 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
 }
 
 class EmptyIcon implements Icon {
-  protected int width = 5;
-  protected int height = 5;
+  private final int width;
+  private final int height;
+
+  protected EmptyIcon(int width, int height) {
+    this.width = width;
+    this.height = height;
+  }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     /* do nothing */
