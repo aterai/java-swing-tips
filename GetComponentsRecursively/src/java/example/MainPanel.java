@@ -160,6 +160,13 @@ final class SwingUtils {
         .reduce(Stream.of(parent), Stream::concat);
   }
 
+  // TEST6
+  // public static Stream<Component> descendantOrSelf2(Container parent) {
+  //   return Stream.concat(Stream.of(parent), Stream.of(parent.getComponents())
+  //       .filter(Container.class::isInstance).map(Container.class::cast)
+  //       .flatMap(SwingUtils::descendantOrSelf2));
+  // }
+
   // // import java.util.function.Function;
   // private static Optional<Component> findFileNameTextField(JFileChooser fc) {
   //   return Stream.of(fc.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
