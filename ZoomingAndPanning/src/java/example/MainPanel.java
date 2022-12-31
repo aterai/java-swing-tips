@@ -48,6 +48,7 @@ public final class MainPanel extends JPanel {
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
+    g.clearRect(0, 0, getWidth(), getHeight());
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setTransform(zoomAndPanHandler.getCoordAndZoomTransform());
     icon.paintIcon(this, g2, 0, 0);
@@ -104,18 +105,20 @@ class ZoomAndPanHandler extends MouseAdapter {
     int dir = e.getWheelRotation();
     int z = zoomRange.getValue();
     zoomRange.setValue(z + EXT * (dir > 0 ? -1 : 1));
-    if (z == zoomRange.getValue()) {
-      return;
+    if (z != zoomRange.getValue()) {
+      double scale = dir > 0 ? 1d / ZOOM_FACTOR : ZOOM_FACTOR;
+      Point2D pt;
+      if (e.isControlDown()) {
+        Rectangle r = e.getComponent().getBounds();
+        pt = new Point2D.Double(r.getCenterX(), r.getCenterY());
+      } else {
+        pt = transformPoint(e.getPoint());
+      }
+      coordAndZoomAtf.translate(pt.getX(), pt.getY());
+      coordAndZoomAtf.scale(scale, scale);
+      coordAndZoomAtf.translate(-pt.getX(), -pt.getY());
+      e.getComponent().repaint();
     }
-    Component c = e.getComponent();
-    Rectangle r = c.getBounds();
-    Point2D p = new Point2D.Double(r.getCenterX(), r.getCenterY());
-    Point2D p1 = transformPoint(p);
-    double scale = dir > 0 ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
-    coordAndZoomAtf.scale(scale, scale);
-    Point2D p2 = transformPoint(p);
-    coordAndZoomAtf.translate(p2.getX() - p1.getX(), p2.getY() - p1.getY());
-    c.repaint();
   }
 
   // https://community.oracle.com/thread/1263955
