@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
+import javax.swing.UIManager;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
 public class BasicTransferable implements Transferable {
