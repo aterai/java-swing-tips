@@ -22,8 +22,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextField field1 = new JTextField(20) {
       // Unleash Your Creativity with Swing and the Java 2D API!
-      // http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
-      // http://web.archive.org/web/20091205092230/http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
+      // https://web.archive.org/web/20091205092230/http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
       @Override protected void paintComponent(Graphics g) {
         if (!isOpaque()) {
           int w = getWidth() - 1;

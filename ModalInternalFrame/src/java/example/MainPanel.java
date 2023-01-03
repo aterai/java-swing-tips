@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
   // menuItem = new JMenuItem(new ModalInternalFrameAction3("Modal"));
   // menuItem.setMnemonic(KeyEvent.VK_3);
   // Creating Modal Internal Frames -- Approach 1 and Approach 2
-  // http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
+  // https://web.archive.org/web/20031219134141/http://java.sun.com/developer/JDCTechTips/2001/tt1220.html
   private final class ModalInternalFrameAction3 extends AbstractAction {
     private final JComponent glassPane = new PrintGlassPane();
 
