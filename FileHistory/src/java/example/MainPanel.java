@@ -18,7 +18,7 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
   private static final int MAX_HISTORY = 3;
-  private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
+  private static final BarFactory BAR_FACTORY = new BarFactory("example.Main");
 
   private static final List<Path> RECENT_FILES = new ArrayList<>();
   private final JMenuItem noFile = new JMenuItem("(Empty)");

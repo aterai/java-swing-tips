@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 public final class MainPanel extends JPanel {
-  private static final BarFactory BAR_FACTORY = new BarFactory("resources.Main");
+  private static final BarFactory BAR_FACTORY = new BarFactory("example.Main");
 
   private MainPanel() {
     super(new BorderLayout());

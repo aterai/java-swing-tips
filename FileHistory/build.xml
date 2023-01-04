@@ -45,7 +45,7 @@
     <echo message=" available targets are:" />
     <echo message="" />
     <echo message="   compile  - compiles the source code (default)" />
-    <echo message="   run      - execute the exsample" />
+    <echo message="   run      - execute the example" />
     <echo message="   package  - generates the ${name}.jar file" />
     <echo message="   javadoc  - generates the API documentation" />
     <echo message="   clean    - cleans up the directory" />
@@ -65,23 +65,6 @@
     <mkdir dir="${build.dest}" />
     <!--chmod file="${basedir}/run.sh" perm="700"/-->
   </target>
-
-  <!-- =================================================================== -->
-  <!-- Prepares the resource                                               -->
-  <!-- =================================================================== -->
-  <target name="prepare-resource" depends="prepare" if="have.resources">
-    <!--target name="prepare-resource" depends="prepare,check-cond" if="cond-is-true"-->
-    <mkdir dir="${build.res}" />
-    <!--native2ascii encoding="UTF-8" src="${res.dir}" dest="${build.res}" includes="**/*.properties.utf8" ext="" /-->
-    <copy todir="${build.res}">
-      <fileset dir="${res.dir}" excludes="**/*.properties.*, **/*.bak" />
-    </copy>
-  </target>
-  <!--target name="check-cond">
-    <condition property="cond-is-true">
-      <isset property="build.res" />
-    </condition>
-  </target-->
 
   <!-- =================================================================== -->
   <!-- Prepares the source code                                            -->
@@ -127,7 +110,7 @@
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare-src, prepare-resource, prepare-web">
+  <target name="compile" depends="prepare-src, prepare-web">
     <javac srcdir="${build.src}"
            includes="**/*.java"
            destdir="${build.dest}"
@@ -337,7 +320,7 @@
   <!-- static code analysis -->
   <property name="sca.dir" value=".." />
 
-  <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
+  <target name="errorprone" depends="prepare-src, prepare-web">
     <javac srcdir="${build.src}"
            excludes="**/module-info.java"
            includes="**/*.java"
