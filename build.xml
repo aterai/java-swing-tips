@@ -48,8 +48,8 @@
     <echo message=" available targets are:" />
     <echo message="" />
     <echo message="   compile  - compiles the source code (default)" />
-    <echo message="   run      - execute the exsample" />
-    <echo message="   package  - generates the ${name}.jar file" />
+    <echo message="   run      - execute the example" />
+    <echo message="   package  - generates the example.jar file" />
     <echo message="   javadoc  - generates the API documentation" />
     <echo message="   clean    - cleans up the directory" />
     <echo message="" />
@@ -68,23 +68,6 @@
     <mkdir dir="${build.dest}" />
     <!--chmod file="${basedir}/run.sh" perm="700"/-->
   </target>
-
-  <!-- =================================================================== -->
-  <!-- Prepares the resource                                               -->
-  <!-- =================================================================== -->
-  <target name="prepare-resource" depends="prepare" if="have.resources">
-    <!--target name="prepare-resource" depends="prepare,check-cond" if="cond-is-true"-->
-    <mkdir dir="${build.res}" />
-    <!--native2ascii encoding="UTF-8" src="${res.dir}" dest="${build.res}" includes="**/*.properties.utf8" ext="" /-->
-    <copy todir="${build.res}">
-      <fileset dir="${res.dir}" excludes="**/*.properties.*, **/*.bak" />
-    </copy>
-  </target>
-  <!--target name="check-cond">
-    <condition property="cond-is-true">
-      <isset property="build.res" />
-    </condition>
-  </target-->
 
   <!-- =================================================================== -->
   <!-- Prepares the source code                                            -->
@@ -130,7 +113,7 @@
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare-src, prepare-resource, prepare-web">
+  <target name="compile" depends="prepare-src">
     <javac srcdir="${build.src}"
            includes="**/*.java"
            destdir="${build.dest}"
@@ -148,6 +131,9 @@
     </javac>
   </target>
 
+  <!-- =================================================================== -->
+  <!-- Execute the example                                                 -->
+  <!-- =================================================================== -->
   <target name="run" depends="compile">
     <java classname="${main.class}" classpathref="project.class.path" fork="true">
       <jvmarg value="-Dfile.encoding=${compile.encoding}" />
@@ -195,8 +181,7 @@
              bottom="Copyright &#169; ${year} ${vendor} All Rights Reserved."
              encoding="${javadoc.encoding}"
              docencoding="${javadoc.docencoding}"
-             locale="${javadoc.locale}"
-    />
+             locale="${javadoc.locale}" />
   </target>
 
   <!-- =================================================================== -->
@@ -240,11 +225,10 @@
     <include name="*.sh" />
     <include name="${config.dir}/**/*.xml" />
     <include name="${web.dir}/*.jnlp" />
-    <include name="${conf.dir}/**" />
     <include name="${res.dir}/**" />
     <include name="${lib.dir}/*.jar" />
   </fileset>
-  <target name="dist" depends="package, dist-libcopy">
+  <target name="dist" depends="package, prepare-web, dist-libcopy">
     <mkdir dir="${bkup.dir}" />
     <filter token="homepage" value="${jnlp.homepage}" />
     <filter token="title" value="${jnlp.Name}" />
@@ -269,35 +253,6 @@
     </copy>
   </target>
 
-  <target name="sign-libcopy" if="have.library">
-    <fileset id="lib.jar.fileset" dir="${lib.dir}">
-      <include name="jlfgr-1_0.jar" />
-    </fileset>
-    <mkdir dir="${build.dir}/lib" />
-    <copy todir="${build.dir}/lib">
-      <fileset refid="lib.jar.fileset" />
-    </copy>
-  </target>
-  <target name="sign" depends="sign-libcopy">
-    <input type="secure" message="Enter Password:" addproperty="store.password" />
-    <signjar keystore="${signjar.keystore}" alias="${signjar.alias}" storepass="${store.password}">
-      <fileset dir="${build.dir}" includes="**/*.jar" />
-    </signjar>
-  </target>
-
-  <target name="bkup">
-    <echo message="Building the buckup files (zip)" />
-    <tstamp>
-      <format property="TSTAMP_BACKUP" pattern="yyyyMMddHHmm" />
-    </tstamp>
-    <mkdir dir="${bkup.dir}" />
-    <copy todir="${bkup.dir}">
-      <fileset refid="dist.src.fileset" />
-    </copy>
-    <zip destfile="${name}-${TSTAMP_BACKUP}.zip" basedir="${bkup.dir}" includes="**" />
-    <delete dir="${bkup.dir}" />
-  </target>
-
   <target name="test" depends="compile">
     <junit printsummary="yes" haltonfailure="no">
       <formatter type="xml" />
@@ -315,34 +270,10 @@
     </junitreport>
   </target>
 
-  <!--target name="crlf" depends="prepare-src">
-    <property name="src.crlf" value="./src_crlf" />
-    <mkdir dir="${src.crlf}" />
-    <copy todir="${src.crlf}">
-      <fileset dir="${src.dir}" excludes="**/*.bak" />
-    </copy>
-    <fixcrlf srcdir="${src.crlf}" includes="**/*.java" eol="crlf" />
-  </target>
-
-  <target name="lf" depends="prepare-src">
-    <property name="src.crlf" value="./src_crlf" />
-    <mkdir dir="${src.crlf}" />
-    <copy todir="${src.crlf}">
-      <fileset dir="${src.dir}" excludes="**/*.bak" />
-    </copy>
-    <fixcrlf srcdir="${src.crlf}" includes="**/*.java, **/*.java_, **/*.bat, **/*.rx*" eol="lf" />
-  </target>
-
-  <target name="n2a" depends="prepare-src">
-    <property name="src.n2a" value="./src_native2ascii" />
-    <mkdir dir="${src.n2a}" />
-    <native2ascii encoding="UTF-8" src="${src.dir}" dest="${src.n2a}" includes="**/*.java" />
-  </target-->
-
   <!-- static code analysis -->
   <property name="sca.dir" value="${user.dir}" />
 
-  <target name="errorprone" depends="prepare-src, prepare-resource, prepare-web">
+  <target name="errorprone" depends="prepare-src">
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
     <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar"/>
     <path id="processorpath.ref">
@@ -384,7 +315,7 @@
     </javac>
   </target>
 
-  <target name="ecj" depends="prepare-src, prepare-resource, prepare-web">
+  <target name="ecj" depends="prepare-src">
     <javac srcdir="${build.src}"
            excludes="**/module-info.java"
            includes="**/*.java"
@@ -487,7 +418,6 @@
 
   <fileset id="ftp.upload.fileset" dir="${build.dir}">
     <include name="${name}.*" />
-    <!-- include name="screenshot*.*" / -->
     <include name="*.jar" />
     <include name="src.zip" />
     <include name="index.html" />
