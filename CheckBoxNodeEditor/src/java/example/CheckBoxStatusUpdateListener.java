@@ -95,7 +95,7 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   // }
 
   private void updateParentUserObject(DefaultMutableTreeNode parent) {
-    // Java 9: Collections.list(parent.children()).stream()
+    // Java 9: List<Status> list = Collections.list(parent.children()).stream()
     List<Status> list = Collections.list((Enumeration<?>) parent.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)

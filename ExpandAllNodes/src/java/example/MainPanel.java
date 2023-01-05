@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
   // http://www.exampledepot.com/egs/javax.swing.tree/ExpandAll.html
   public static void visitAll(JTree tree, TreePath parent, boolean expand) {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
-    // Java 9: return Collections.list(node.children())
+    // Java 9: Collections.list(node.children()).stream()
     Collections.list((Enumeration<?>) node.children()).stream()
       .filter(TreeNode.class::isInstance)
       .map(TreeNode.class::cast)

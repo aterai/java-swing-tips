@@ -227,7 +227,7 @@ final class TreeUtils {
         tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
       }
       if (!uo.status && !node.isLeaf()) {
-        // Java 9: return Collections.list(node.children()).stream()
+        // Java 9: Collections.list(node.children()).stream()
         Collections.list((Enumeration<?>) node.children()).stream()
             .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
             .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
