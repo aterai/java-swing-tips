@@ -5,11 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Optional;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -17,9 +12,12 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     // toolBar1.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
     // toolBar2.putClientProperty("JToolBar.isRollover", Boolean.FALSE);
-    Icon icon1 = makeIcon("toolbarButtonGraphics/general/Copy24.gif");
-    Icon icon2 = makeIcon("toolbarButtonGraphics/general/Cut24.gif");
-    Icon icon3 = makeIcon("toolbarButtonGraphics/general/Help24.gif");
+    // Icon icon1 = makeIcon("toolbarButtonGraphics/general/Copy24.gif");
+    // Icon icon2 = makeIcon("toolbarButtonGraphics/general/Cut24.gif");
+    // Icon icon3 = makeIcon("toolbarButtonGraphics/general/Help24.gif");
+    Icon icon1 = new ColorIcon(Color.RED);
+    Icon icon2 = new ColorIcon(Color.GREEN);
+    Icon icon3 = new ColorIcon(Color.BLUE);
 
     JToolBar toolBar1 = new JToolBar("ToolBarButton");
     toolBar1.add(new JButton(icon1));
@@ -45,27 +43,27 @@ public final class MainPanel extends JPanel {
     return b;
   }
 
-  private static Icon makeIcon(String path) {
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    return Optional.ofNullable(cl.getResource(path)).map(url -> {
-      try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
-      } catch (IOException ex) {
-        return makeMissingIcon();
-      }
-    }).orElseGet(MainPanel::makeMissingIcon);
-  }
+  // private static Icon makeIcon(String path) {
+  //   ClassLoader cl = Thread.currentThread().getContextClassLoader();
+  //   return Optional.ofNullable(cl.getResource(path)).map(url -> {
+  //     try (InputStream s = url.openStream()) {
+  //       return new ImageIcon(ImageIO.read(s));
+  //     } catch (IOException ex) {
+  //       return makeMissingIcon();
+  //     }
+  //   }).orElseGet(MainPanel::makeMissingIcon);
+  // }
 
-  private static Icon makeMissingIcon() {
-    Icon missingIcon = UIManager.getIcon("html.missingImage");
-    int iw = missingIcon.getIconWidth();
-    int ih = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, (24 - iw) / 2, (24 - ih) / 2);
-    g2.dispose();
-    return new ImageIcon(bi);
-  }
+  // private static Icon makeMissingIcon() {
+  //   Icon missingIcon = UIManager.getIcon("html.missingImage");
+  //   int iw = missingIcon.getIconWidth();
+  //   int ih = missingIcon.getIconHeight();
+  //   BufferedImage bi = new BufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB);
+  //   Graphics2D g2 = bi.createGraphics();
+  //   missingIcon.paintIcon(null, g2, (24 - iw) / 2, (24 - ih) / 2);
+  //   g2.dispose();
+  //   return new ImageIcon(bi);
+  // }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
@@ -86,6 +84,31 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ColorIcon implements Icon {
+  private final Color color;
+
+  protected ColorIcon(Color color) {
+    this.color = color;
+  }
+
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.translate(x, y);
+    g2.setPaint(color);
+    g2.fillOval(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 24;
+  }
+
+  @Override public int getIconHeight() {
+    return 24;
   }
 }
 

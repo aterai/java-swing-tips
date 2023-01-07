@@ -9,7 +9,7 @@
 
 <!-- class -->
 <property name="main.class"        value="example.MainPanel" />
-<property name="runtime.classpath" value=". jlfgr-1_0.jar" />
+<property name="runtime.classpath" value="." />
 
 <!-- compile -->
 <property name="compile.debug"       value="on" />
