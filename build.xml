@@ -80,26 +80,6 @@
     </copy>
   </target>
 
-  <condition property="have.web">
-    <available file="${web.dir}" />
-  </condition>
-  <target name="prepare-web" depends="prepare" if="have.web">
-    <filter token="codebase"       value="${jnlp.codebase}" />
-    <filter token="title"          value="${jnlp.title}" />
-    <filter token="homepage"       value="${jnlp.homepage}" />
-    <filter token="vendor"         value="${vendor}" />
-    <filter token="main.class"     value="${main.class}" />
-    <filter token="compile.source" value="${compile.source}" />
-    <copy todir="${build.dir}" filtering="yes"
-          encoding="${compile.encoding}"
-          outputencoding="${compile.encoding}">
-      <fileset dir="${web.dir}" includes="**/*.jnlp **/*.html" />
-    </copy>
-    <copy todir="${build.dir}" filtering="no">
-      <fileset dir="${web.dir}" excludes="**/*.jnlp **/*.html **/*.bak" />
-    </copy>
-  </target>
-
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
@@ -208,6 +188,25 @@
   </target>
 
 <!-- End of file -->
+  <condition property="have.web">
+    <available file="${web.dir}" />
+  </condition>
+  <target name="prepare-web" depends="prepare" if="have.web">
+    <filter token="codebase"       value="${jnlp.codebase}" />
+    <filter token="title"          value="${jnlp.title}" />
+    <filter token="homepage"       value="${jnlp.homepage}" />
+    <filter token="vendor"         value="${vendor}" />
+    <filter token="main.class"     value="${main.class}" />
+    <filter token="compile.source" value="${compile.source}" />
+    <copy todir="${build.dir}" filtering="yes"
+          encoding="${compile.encoding}"
+          outputencoding="${compile.encoding}">
+      <fileset dir="${web.dir}" includes="**/*.jnlp **/*.html" />
+    </copy>
+    <copy todir="${build.dir}" filtering="no">
+      <fileset dir="${web.dir}" excludes="**/*.jnlp **/*.html **/*.bak" />
+    </copy>
+  </target>
 
   <target name="dist" depends="package, prepare-web">
     <tstamp>
