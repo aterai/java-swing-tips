@@ -262,29 +262,19 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
       }
 
       private MouseEvent convertMouseEvent(MouseEvent e) {
-        if (!tree.isEnabled() || !SwingUtilities.isLeftMouseButton(e) || e.isConsumed()) {
-          return e;
-        }
-
+        boolean b1 = !tree.isEnabled() || !SwingUtilities.isLeftMouseButton(e) || e.isConsumed();
         int x = e.getX();
         int y = e.getY();
         TreePath path = getClosestPathForLocation(tree, x, y);
-        if (path == null || isLocationInExpandControl(path, x, y)) {
-          return e;
-        }
-
+        boolean b2 = path == null || isLocationInExpandControl(path, x, y);
         Rectangle bounds = getPathBounds(tree, path);
         int newX = (int) bounds.getCenterX();
         bounds.x = 0;
         bounds.width = tree.getWidth();
-        if (bounds.contains(e.getPoint())) {
-          return new MouseEvent(
-              e.getComponent(), e.getID(), e.getWhen(),
-              e.getModifiers() | e.getModifiersEx(),
-              newX, e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
-        } else {
-          return e;
-        }
+        return !b1 && !b2 && bounds.contains(e.getPoint()) ? new MouseEvent(
+            e.getComponent(), e.getID(), e.getWhen(),
+            e.getModifiers() | e.getModifiersEx(),
+            newX, e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton()) : e;
       }
     };
   }
