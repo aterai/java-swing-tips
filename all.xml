@@ -27,7 +27,6 @@
     </path>
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <pmd rulesetfiles="${basedir}/ruleset.xml" cacheLocation="${env.TEMP}/pmd/pmd.cache" encoding="UTF-8">
-      <sourceLanguage name="java" version="1.8" />
       <formatter type="xml" toFile="pmd.xml" />
       <formatter type="text" toConsole="true" />
       <fileset dir="${basedir}">

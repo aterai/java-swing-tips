@@ -308,8 +308,6 @@
            debug="${compile.debug}"
            optimize="${compile.optimize}"
            deprecation="${compile.deprecation}"
-           source="${compile.source}"
-           target="${compile.source}"
            includeAntRuntime="false"
            classpathref="project.class.path">
       <compilerclasspath>
@@ -348,7 +346,6 @@
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath" />
     <mkdir dir="${build.reports}" />
     <pmd rulesetfiles="${sca.dir}/ruleset.xml" cacheLocation="${env.TEMP}/pmd/pmd.cache" encoding="${compile.encoding}">
-      <sourceLanguage name="java" version="${compile.source}" />
       <classpath refid="project.class.path" />
       <formatter type="xml" toFile="${build.reports}/pmd.xml" />
       <formatter type="text" toConsole="true" />
