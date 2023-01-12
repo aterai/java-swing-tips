@@ -5,11 +5,8 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
@@ -96,11 +93,11 @@ public final class MainPanel extends JPanel {
 class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
   private static final String CMD_BLOCKING = "lock";
   private static final boolean DEBUG_POPUP_BLOCK = false;
-  private final transient MouseListener dmyMouseListener = new MouseAdapter() {
-    /* Dummy listener */
+  private final transient MouseListener emptyMouseListener = new MouseAdapter() {
+    /* Do nothing */
   };
-  private final transient KeyListener dmyKeyListener = new KeyAdapter() {
-    /* Dummy listener */
+  private final transient KeyListener emptyKeyListener = new KeyAdapter() {
+    /* Do nothing */
   };
   private boolean isBlocking;
 
@@ -109,13 +106,13 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     if (c instanceof JLayer) {
       JLayer<?> layer = (JLayer<?>) c;
       if (DEBUG_POPUP_BLOCK) {
-        layer.getGlassPane().addMouseListener(dmyMouseListener);
-        layer.getGlassPane().addKeyListener(dmyKeyListener);
+        layer.getGlassPane().addMouseListener(emptyMouseListener);
+        layer.getGlassPane().addKeyListener(emptyKeyListener);
       }
       layer.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
-          | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
-          | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
+              | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
+              | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
     }
   }
 
@@ -124,24 +121,24 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       JLayer<?> layer = (JLayer<?>) c;
       layer.setLayerEventMask(0);
       if (DEBUG_POPUP_BLOCK) {
-        layer.getGlassPane().removeMouseListener(dmyMouseListener);
-        layer.getGlassPane().removeKeyListener(dmyKeyListener);
+        layer.getGlassPane().removeMouseListener(emptyMouseListener);
+        layer.getGlassPane().removeKeyListener(emptyKeyListener);
       }
     }
     super.uninstallUI(c);
   }
 
-  @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends V> l) {
-    // System.out.println("processComponentEvent");
-  }
+  // @Override protected void processComponentEvent(ComponentEvent e, JLayer<? extends V> l) {
+  //   System.out.println("processComponentEvent");
+  // }
 
-  @Override protected void processKeyEvent(KeyEvent e, JLayer<? extends V> l) {
-    // System.out.println("processKeyEvent");
-  }
+  // @Override protected void processKeyEvent(KeyEvent e, JLayer<? extends V> l) {
+  //   System.out.println("processKeyEvent");
+  // }
 
-  @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends V> l) {
-    // System.out.println("processFocusEvent");
-  }
+  // @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends V> l) {
+  //   System.out.println("processFocusEvent");
+  // }
 
   @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
     if (isBlocking && e instanceof InputEvent) {
