@@ -239,20 +239,19 @@ final class AnimationUtils {
   }
 
   // https://wiki.c2.com/?IntegerPowerAlgorithm
-  public static double intPow(double da, int ib) {
-    int b = ib;
-    if (b < 0) {
-      // return d / intPow(a, -b);
-      throw new IllegalArgumentException("B must be a positive integer or zero");
+  public static double intPow(double base0, int exp0) {
+    if (exp0 < 0) {
+      throw new IllegalArgumentException("exp must be a positive integer or zero");
     }
-    double a = da;
-    double d = 1d;
-    for (; b > 0; a *= a, b >>>= 1) {
-      if ((b & 1) != 0) {
-        d *= a;
+    double base = base0;
+    int exp = exp0;
+    double result = 1d;
+    for (; exp > 0; base *= base, exp >>>= 1) {
+      if ((exp & 1) != 0) {
+        result *= base;
       }
     }
-    return d;
+    return result;
   }
 
   // public static double delta(double t) {
