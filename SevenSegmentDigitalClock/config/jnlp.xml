@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST SevenSegmentDigitalClock" />
+  <property name="jnlp.Name"     value="SevenSegmentDigitalClock" />
+  <property name="jnlp.name"     value="sevensegmentdigitalclock" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/sevensegmentdigitalclock/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SevenSegmentDigitalClock.html" />
+</project>
