@@ -87,21 +87,22 @@ class DigitalClock extends JPanel {
     setBackground(DigitalNumber.BGC);
     double x = SIZE * 3d;
     double y = SIZE * 8d;
-    double gap = SIZE * 2d;
+    double gap = SIZE * 1.5;
     h1 = new DigitalNumber(x, y, SIZE);
-    x += h1.getBounds().width + gap;
+    Rectangle r = h1.getBounds();
+    x += r.width + gap;
     h2 = new DigitalNumber(x, y, SIZE);
-    x += h2.getBounds().width + gap / 2;
+    x += r.width;
     double sz = SIZE * 1.5d;
-    dot1 = new Ellipse2D.Double(x, y - gap * 1.5, sz, sz);
-    dot2 = new Ellipse2D.Double(x, y + gap, sz, sz);
+    dot1 = new Ellipse2D.Double(x, (float) r.getCenterY() - gap, sz, sz);
+    dot2 = new Ellipse2D.Double(x, (float) r.getCenterY() + gap, sz, sz);
     x += sz + gap;
     m1 = new DigitalNumber(x, y, SIZE);
-    x += m1.getBounds().width + gap;
+    x += r.width + gap;
     m2 = new DigitalNumber(x, y, SIZE);
-    x += m2.getBounds().width + gap;
+    x += r.width + gap;
     double hs = SIZE / 2d;
-    double y2 = y + h1.getBounds().height / 2d;
+    double y2 = y + h1.getBounds().height / 4d;
     s1 = new DigitalNumber(x, y2, hs);
     x += s1.getBounds().width + gap / 2d;
     s2 = new DigitalNumber(x, y2, hs);
@@ -183,8 +184,8 @@ class DigitalNumber {
     this.dy = dy;
     this.width = 2d * isosceles;
     this.height = width + isosceles;
-    rect.setLocation((int) dx, (int) dy);
-    rect.setSize((int) (width + 3 * isosceles), (int) (height * 2));
+    rect.setLocation((int) (dx - isosceles), (int) (dy - height * 2d));
+    rect.setSize((int) (width + 4d * isosceles), (int) (height * 4d));
   }
 
   public Rectangle getBounds() {
@@ -206,6 +207,8 @@ class DigitalNumber {
       g2.fill(seg);
       g2.setColor(BGC);
       g2.draw(seg);
+      // g2.setColor(Color.RED);
+      // g2.draw(rect);
     });
   }
 }
@@ -219,14 +222,14 @@ enum Seg {
   },
   B() {
     @Override public Shape getShape(double x, double y, double w, double h, double i) {
-      AffineTransform at = AffineTransform.getTranslateInstance(x + h + i, y);
+      AffineTransform at = AffineTransform.getTranslateInstance(x + w + i * 2, y);
       at.scale(-1, 1);
       return at.createTransformedShape(vert(h, i));
     }
   },
   C() {
     @Override public Shape getShape(double x, double y, double w, double h, double i) {
-      AffineTransform at = AffineTransform.getTranslateInstance(x + h + i, y);
+      AffineTransform at = AffineTransform.getTranslateInstance(x + w + i * 2, y);
       at.scale(-1, -1);
       return at.createTransformedShape(vert(h, i));
     }
@@ -315,13 +318,13 @@ class HelpPanel extends JPanel {
     g2.setPaint(Color.RED);
     g2.setFont(getFont().deriveFont(32f));
     Rectangle r = help.getBounds();
-    g2.drawString("A", r.x + r.width / 3f, r.y - r.height / 1.5f);
-    g2.drawString("B", r.x + r.width / 1.5f, r.y - r.height / 3f);
-    g2.drawString("C", r.x + r.width / 1.5f,  r.y + r.height / 2f);
-    g2.drawString("D", r.x + r.width / 3f, r.y + r.height / 1.1f);
-    g2.drawString("E", r.x, r.y + r.height / 2f);
-    g2.drawString("F", r.x, r.y - r.height / 3f);
-    g2.drawString("G", r.x + r.width / 3f,  r.y);
+    g2.drawString("A", r.x + r.width * .5f, r.y);
+    g2.drawString("B", r.x + r.width * .75f, r.y + r.height * .25f);
+    g2.drawString("C", r.x + r.width * .75f, r.y + r.height * .75f);
+    g2.drawString("D", r.x + r.width * .5f, (r.y + r.height));
+    g2.drawString("E", r.x, r.y + r.height * .75f);
+    g2.drawString("F", r.x, r.y + r.height * .25f);
+    g2.drawString("G", r.x + r.width * .5f,  r.y + r.height * .5f);
     g2.dispose();
   }
 }
