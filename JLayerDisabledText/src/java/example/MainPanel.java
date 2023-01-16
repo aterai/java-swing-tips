@@ -93,10 +93,10 @@ public final class MainPanel extends JPanel {
 class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
   private static final String CMD_BLOCKING = "lock";
   private static final boolean DEBUG_POPUP_BLOCK = false;
-  private final transient MouseListener emptyMouseListener = new MouseAdapter() {
+  private final transient MouseListener mouseBlocker = new MouseAdapter() {
     /* Do nothing */
   };
-  private final transient KeyListener emptyKeyListener = new KeyAdapter() {
+  private final transient KeyListener keyBlocker = new KeyAdapter() {
     /* Do nothing */
   };
   private boolean isBlocking;
@@ -106,8 +106,8 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     if (c instanceof JLayer) {
       JLayer<?> layer = (JLayer<?>) c;
       if (DEBUG_POPUP_BLOCK) {
-        layer.getGlassPane().addMouseListener(emptyMouseListener);
-        layer.getGlassPane().addKeyListener(emptyKeyListener);
+        layer.getGlassPane().addMouseListener(mouseBlocker);
+        layer.getGlassPane().addKeyListener(keyBlocker);
       }
       layer.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
@@ -121,8 +121,8 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       JLayer<?> layer = (JLayer<?>) c;
       layer.setLayerEventMask(0);
       if (DEBUG_POPUP_BLOCK) {
-        layer.getGlassPane().removeMouseListener(emptyMouseListener);
-        layer.getGlassPane().removeKeyListener(emptyKeyListener);
+        layer.getGlassPane().removeMouseListener(mouseBlocker);
+        layer.getGlassPane().removeKeyListener(keyBlocker);
       }
     }
     super.uninstallUI(c);
