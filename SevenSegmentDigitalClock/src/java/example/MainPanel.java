@@ -318,13 +318,15 @@ class HelpPanel extends JPanel {
     g2.setPaint(Color.RED);
     g2.setFont(getFont().deriveFont(32f));
     Rectangle r = help.getBounds();
-    g2.drawString("A", r.x + r.width * .5f, r.y);
-    g2.drawString("B", r.x + r.width * .75f, r.y + r.height * .25f);
-    g2.drawString("C", r.x + r.width * .75f, r.y + r.height * .75f);
-    g2.drawString("D", r.x + r.width * .5f, (r.y + r.height));
-    g2.drawString("E", r.x, r.y + r.height * .75f);
-    g2.drawString("F", r.x, r.y + r.height * .25f);
-    g2.drawString("G", r.x + r.width * .5f,  r.y + r.height * .5f);
+    float fw = help.getBounds().width;
+    float fh = help.getBounds().height;
+    g2.drawString("A", r.x + fw * .5f, r.y);
+    g2.drawString("B", r.x + fw * .75f, r.y + fh * .25f);
+    g2.drawString("C", r.x + fw * .75f, r.y + fh * .75f);
+    g2.drawString("D", r.x + fw * .5f, r.y + fh);
+    g2.drawString("E", r.x, r.y + fh * .75f);
+    g2.drawString("F", r.x, r.y + fh * .25f);
+    g2.drawString("G", r.x + fw * .5f,  r.y + fh * .5f);
     g2.dispose();
   }
 }
