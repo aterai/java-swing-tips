@@ -86,10 +86,6 @@ class DragPanel extends JPanel {
   protected DragPanel() {
     super();
   }
-
-  protected DragPanel(LayoutManager lm) {
-    super(lm);
-  }
 }
 
 class Handler extends MouseAdapter {
