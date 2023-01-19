@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
-  protected LocalTime time = LocalTime.now(ZoneId.systemDefault());
-  protected final Timer timer = new Timer(200, e -> {
+  private LocalTime time = LocalTime.now(ZoneId.systemDefault());
+  private final Timer timer = new Timer(200, e -> {
     time = LocalTime.now(ZoneId.systemDefault());
     repaint();
   });

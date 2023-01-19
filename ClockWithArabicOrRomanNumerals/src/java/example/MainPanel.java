@@ -73,8 +73,8 @@ class AnalogClock extends JPanel {
   private final String[] romanNumerals = {
       "XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI"
   };
-  protected LocalTime time = LocalTime.now(ZoneId.systemDefault());
-  protected final Timer timer = new Timer(200, e -> {
+  private LocalTime time = LocalTime.now(ZoneId.systemDefault());
+  private final Timer timer = new Timer(200, e -> {
     time = LocalTime.now(ZoneId.systemDefault());
     repaint();
   });

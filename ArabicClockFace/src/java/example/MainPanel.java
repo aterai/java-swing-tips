@@ -70,8 +70,8 @@ class AnalogClock extends JPanel {
   // private final String[] earthlyBranches = {
   //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"
   // };
-  protected LocalTime time = LocalTime.now(ZoneId.systemDefault());
-  protected final Timer timer = new Timer(200, e -> {
+  private LocalTime time = LocalTime.now(ZoneId.systemDefault());
+  private final Timer timer = new Timer(200, e -> {
     time = LocalTime.now(ZoneId.systemDefault());
     repaint();
   });
