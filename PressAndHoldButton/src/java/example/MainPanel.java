@@ -24,20 +24,19 @@ public final class MainPanel extends JPanel {
     makeMenuList().stream()
         .map(MainPanel::makeMenuButton)
         .forEach(b -> {
-          b.addActionListener(e -> popupMenu.setVisible(false));
+          b.addActionListener(e -> {
+            String cmd = getCommand(bg);
+            log.append(String.format("Selected JRadioButton command: %s%n", cmd));
+            popupMenu.setVisible(false);
+          });
           popupMenu.add(b);
           bg.add(b);
         });
 
     Icon icon = UIManager.getIcon("FileChooser.detailsViewIcon");
     JButton button = new PressAndHoldButton(icon, popupMenu);
-    // button.setComponentPopupMenu(popupMenu);
     button.addActionListener(e -> {
-      ButtonModel model = bg.getSelection();
-      String cmd = "null";
-      if (model != null) {
-        cmd = model.getActionCommand();
-      }
+      String cmd = getCommand(bg);
       log.append(String.format("Selected action command: %s%n", cmd));
     });
 
@@ -47,6 +46,15 @@ public final class MainPanel extends JPanel {
     add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getCommand(ButtonGroup bg) {
+    ButtonModel model = bg.getSelection();
+    String cmd = "null";
+    if (model != null) {
+      cmd = model.getActionCommand();
+    }
+    return cmd;
   }
 
   private static AbstractButton makeMenuButton(MenuContext m) {
