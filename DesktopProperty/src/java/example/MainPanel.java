@@ -14,28 +14,28 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
-  public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
-  public static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
-  private final String[] columnNames = {"Name", "Class", "Value"};
-  private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
+  private static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
+  private static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
 
   private MainPanel() {
     super(new BorderLayout());
+    String[] columnNames = {"Name", "Class", "Value"};
+    DefaultTableModel model = new DefaultTableModel(null, columnNames);
     JTable table = new JTable(model) {
       @Override public boolean isCellEditable(int row, int column) {
         return false;
       }
     };
     table.setAutoCreateRowSorter(true);
-    PropertyChangeListener l = this::initModel;
+    PropertyChangeListener l = e -> updateModel(model, e);
     Toolkit.getDefaultToolkit().addPropertyChangeListener("win.xpstyle.colorName", l);
     Toolkit.getDefaultToolkit().addPropertyChangeListener("awt.multiClickInterval", l);
-    initModel(null);
+    updateModel(model, null);
     setPreferredSize(new Dimension(320, 240));
     add(new JScrollPane(table));
   }
 
-  private void initModel(PropertyChangeEvent e) {
+  private static void updateModel(DefaultTableModel model, PropertyChangeEvent e) {
     if (Objects.nonNull(e)) {
       LOGGER.info(() -> {
         String n = e.getPropertyName();
