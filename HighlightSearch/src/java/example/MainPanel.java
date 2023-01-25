@@ -138,7 +138,7 @@ public final class MainPanel extends JPanel {
         throw wrap;
       }
     });
-    JLabel label = layerUI.hint;
+    JLabel label = layerUI.getHintLabel();
     Highlighter.Highlight[] array = highlighter.getHighlights();
     int hits = array.length;
     int idx = index;
@@ -218,7 +218,7 @@ public final class MainPanel extends JPanel {
 }
 
 class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
-  public final JLabel hint = new JLabel() {
+  private final JLabel hint = new JLabel() {
     @Override public void updateUI() {
       super.updateUI();
       setForeground(UIManager.getColor("TextField.inactiveForeground"));
@@ -241,5 +241,9 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
         g2.dispose();
       }
     }
+  }
+
+  public JLabel getHintLabel() {
+    return hint;
   }
 }
