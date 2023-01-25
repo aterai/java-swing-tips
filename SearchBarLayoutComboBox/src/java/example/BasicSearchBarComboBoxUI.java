@@ -17,6 +17,7 @@ import javax.swing.plaf.ComponentUI;
 
 @SuppressWarnings("PMD.TooManyMethods") // This class has too many methods, consider refactoring it.
 public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
+  private static final String LOUPE = "loupe";
   protected PopupMenuListener popupMenuListener;
   protected JButton loupeButton;
   protected Action loupeAction = new AbstractAction() {
@@ -124,9 +125,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     editor.addPropertyChangeListener(propertyChangeListener);
 
     ((JComponent) editor).setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-    ((JComponent) editor).getActionMap().put("loupe", loupeAction);
+    ((JComponent) editor).getActionMap().put(LOUPE, loupeAction);
     InputMap im = ((JComponent) editor).getInputMap(JComponent.WHEN_FOCUSED);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "loupe");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), LOUPE);
   }
 
   /**
@@ -184,7 +185,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
 
   protected final JButton createLoupeButton() {
     JButton button = new JButton(loupeAction);
-    ImageIcon loupe = MainPanel.makeIcon("loupe");
+    ImageIcon loupe = MainPanel.makeIcon(LOUPE);
     button.setIcon(loupe);
     button.setRolloverIcon(makeRolloverIcon(loupe));
     return button;
