@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     vport.addMouseListener(hsl1);
 
     JRadioButton radio = new JRadioButton("scrollRectToVisible", true);
-    radio.addItemListener(e -> hsl1.withinRangeMode = e.getStateChange() == ItemEvent.SELECTED);
+    radio.addItemListener(e -> hsl1.setWithinRangeMode(e.getStateChange() == ItemEvent.SELECTED));
 
     Box box = Box.createHorizontalBox();
     ButtonGroup bg = new ButtonGroup();
@@ -107,7 +107,7 @@ class HandScrollListener extends MouseAdapter {
   private final Cursor defCursor = Cursor.getDefaultCursor();
   private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final Point pp = new Point();
-  protected boolean withinRangeMode = true;
+  private boolean withinRangeMode = true;
 
   @Override public void mouseDragged(MouseEvent e) {
     JViewport viewport = (JViewport) e.getComponent();
@@ -131,6 +131,10 @@ class HandScrollListener extends MouseAdapter {
 
   @Override public void mouseReleased(MouseEvent e) {
     e.getComponent().setCursor(defCursor);
+  }
+
+  public void setWithinRangeMode(boolean withinRangeMode) {
+    this.withinRangeMode = withinRangeMode;
   }
 }
 
