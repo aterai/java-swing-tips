@@ -40,17 +40,10 @@ public final class MainPanel extends JPanel {
 
 class ColorWheel extends JPanel {
   private static final int SIZE = 180;
-  private final transient BufferedImage image;
-
-  protected ColorWheel() {
-    super();
-    image = updateImage();
-    setPreferredSize(new Dimension(320, 240));
-  }
+  private final Image image = makeColorWheelImage();
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-
     int s = SIZE;
     Graphics2D g2 = (Graphics2D) g.create();
 
@@ -75,10 +68,10 @@ class ColorWheel extends JPanel {
   // https://javagraphics.blogspot.com/2007/04/jcolorchooser-making-alternative.html
   //   https://javagraphics.java.net/
   //   http://www.javased.com/index.php?source_dir=SPREAD/src/colorpicker/swing/ColorPickerPanel.java
-  private BufferedImage updateImage() {
+  private Image makeColorWheelImage() {
     BufferedImage img = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
     int[] row = new int[SIZE];
-    float size = (float) SIZE;
+    float size = SIZE;
     float radius = size / 2f;
 
     for (int yi = 0; yi < SIZE; yi++) {
