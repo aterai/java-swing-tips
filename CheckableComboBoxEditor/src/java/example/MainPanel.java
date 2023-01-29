@@ -6,6 +6,8 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -75,8 +77,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings("PMD.DataClass")
-class ComboItem {
+class ComboItem implements Serializable {
+  private static final long serialVersionUID = 1L;
   private boolean enabled;
   private boolean editable;
   private String text;
@@ -113,6 +115,18 @@ class ComboItem {
 
   public void setText(String text) {
     this.text = text;
+  }
+
+  @Override public int hashCode() {
+    return Objects.hashCode(this);
+  }
+
+  @Override public boolean equals(Object o) {
+    return o instanceof ComboItem && Objects.equals(((ComboItem) o).getText(), getText());
+  }
+
+  @Override public String toString() {
+    return String.format("%s: %b, %b", text, enabled, editable);
   }
 }
 
