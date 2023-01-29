@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicPopupMenuUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -42,8 +41,6 @@ public final class MainPanel extends JPanel {
     };
     list.forEach(popup::add);
     setComponentPopupMenu(popup);
-
-    popup.setUI(new BasicPopupMenuUI());
     setPreferredSize(new Dimension(320, 240));
   }
 
