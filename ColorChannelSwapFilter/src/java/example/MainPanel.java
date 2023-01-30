@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
       progress2.setForeground(b ? new Color(0x64_FF_00_00, true) : progress1.getForeground());
-      layerUI.isPreventing = b;
+      layerUI.setBlocking(b);
       p.repaint();
     });
 
@@ -117,11 +117,11 @@ public final class MainPanel extends JPanel {
 }
 
 class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
-  protected boolean isPreventing;
+  private boolean blocking;
   private transient BufferedImage buf;
 
   @Override public void paint(Graphics g, JComponent c) {
-    if (isPreventing && c instanceof JLayer) {
+    if (blocking && c instanceof JLayer) {
       Component view = ((JLayer<?>) c).getView();
       Dimension d = view.getSize();
       buf = Optional.ofNullable(buf)
@@ -138,6 +138,10 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
     } else {
       super.paint(g, c);
     }
+  }
+
+  public void setBlocking(boolean b) {
+    this.blocking = b;
   }
 }
 
