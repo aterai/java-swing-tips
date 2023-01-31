@@ -118,11 +118,14 @@ class ComboItem implements Serializable {
   }
 
   @Override public int hashCode() {
-    return Objects.hashCode(this);
+    return Objects.hash(text);
   }
 
   @Override public boolean equals(Object o) {
-    return o instanceof ComboItem && Objects.equals(((ComboItem) o).getText(), getText());
+    if (this == o) {
+      return true;
+    }
+    return o instanceof ComboItem && Objects.equals(((ComboItem) o).getText(), text);
   }
 
   @Override public String toString() {

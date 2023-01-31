@@ -13,12 +13,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     ColorItem[] model = {
-      new ColorItem(Color.RED, "Red"),
-      new ColorItem(Color.GREEN, "Green"),
-      new ColorItem(Color.BLUE, "Blue"),
-      new ColorItem(Color.CYAN, "Cyan"),
-      new ColorItem(Color.ORANGE, "Orange"),
-      new ColorItem(Color.MAGENTA, "Magenta")};
+        new ColorItem(Color.RED, "Red"),
+        new ColorItem(Color.GREEN, "Green"),
+        new ColorItem(Color.BLUE, "Blue"),
+        new ColorItem(Color.CYAN, "Cyan"),
+        new ColorItem(Color.ORANGE, "Orange"),
+        new ColorItem(Color.MAGENTA, "Magenta")};
 
     JComboBox<ColorItem> combo00 = new JComboBox<>(model);
 
@@ -79,12 +79,34 @@ public final class MainPanel extends JPanel {
 
 class ColorItem implements Serializable {
   private static final long serialVersionUID = 1L;
-  public final Color color;
-  public final String description;
+  private final Color color;
+  private final String description;
 
   protected ColorItem(Color color, String description) {
     this.color = color;
     this.description = description;
+  }
+
+  public Color getColor() {
+    return color;
+  }
+
+  @Override public int hashCode() {
+    return Objects.hash(color, description);
+  }
+
+  @Override public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof ColorItem) {
+      ColorItem item = (ColorItem) obj;
+      boolean b1 = Objects.equals(item.getColor(), color);
+      boolean b2 = Objects.equals(item.toString(), description);
+      return b1 && b2;
+    } else {
+      return false;
+    }
   }
 
   @Override public String toString() {
@@ -103,7 +125,7 @@ class ComboForegroundRenderer<E extends ColorItem> implements ListCellRenderer<E
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    Color ic = value.color;
+    Color ic = value.getColor();
     if (index < 0 && Objects.nonNull(ic) && !ic.equals(combo.getForeground())) {
       combo.setForeground(ic); // Windows, Motif Look&Feel
       list.setSelectionForeground(ic);
@@ -130,9 +152,10 @@ class ComboHtmlRenderer<E extends ColorItem> implements ListCellRenderer<E> {
         list, value, index, isSelected, cellHasFocus);
     c.setBackground(isSelected ? color : list.getBackground());
     if (c instanceof JLabel) {
-      int rgb = value.color.getRGB() & 0xFF_FF_FF;
-      ((JLabel) c).setText(String.format("<html><font color='#%06X'>%s", rgb, value.description));
-      // ((JLabel) c).setText("<html><font color=" + hex(item.color) + ">" + item.description);
+      int rgb = value.getColor().getRGB() & 0xFF_FF_FF;
+      String description = Objects.toString(value);
+      ((JLabel) c).setText(String.format("<html><font color='#%06X'>%s", rgb, description));
+      // ((JLabel) c).setText("<html><font color=" + hex(item.color) + ">" + description);
     }
     return c;
   }
