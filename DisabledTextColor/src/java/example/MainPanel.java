@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     UIManager.put("Label.disabledForeground", Color.ORANGE);
 
     JCheckBox cbx1 = new JCheckBox("default", true);
-    JCheckBox cbx2 = new JCheckBox("<html>html tag</html>", true);
+    JCheckBox cbx2 = new JCheckBox("<html>html <span style='color:red'>tag", true);
     JLabel label = new JLabel("label disabledForeground");
     JButton button = new JButton("button disabledText");
 
