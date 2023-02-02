@@ -54,8 +54,12 @@ public final class MainPanel extends JPanel {
         button1,
         button2,
         button3,
-        new JLayer<>(button4, new ImageFilterLayerUI<>(new ColorFilter()))
-    );
+        new JLayer<>(button4, new ImageFilterLayerUI<>(new ColorFilter())));
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -133,7 +137,7 @@ class ImageFilterLayerUI<V extends Component> extends LayerUI<V> {
           .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
           .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
       Graphics2D g2 = buf.createGraphics();
-      super.paint(g2, c);
+      view.paint(g2);
       g2.dispose();
       Image image = c.createImage(new FilteredImageSource(buf.getSource(), filter));
       g.drawImage(image, 0, 0, view);
@@ -149,5 +153,62 @@ class ColorFilter extends RGBImageFilter {
     int g = (argb >> 8) & 0xFF;
     int b = argb & 0xFF;
     return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
+  }
+}
+
+// @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }
