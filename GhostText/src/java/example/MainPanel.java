@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -15,11 +16,17 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field1 = new JTextField("Please enter your E-mail address");
-    field1.addFocusListener(new PlaceholderFocusListener(field1));
+    String hint1 = "Please enter your E-mail address";
+    JTextField field1 = new JTextField();
+    PlaceholderFocusListener listener1 = new PlaceholderFocusListener(hint1);
+    field1.addFocusListener(listener1);
+    listener1.update(field1);
 
-    JTextField field2 = new JTextField("History Search");
-    field2.addFocusListener(new PlaceholderFocusListener(field2));
+    String hint2 = "History Search";
+    JTextField field2 = new JTextField();
+    PlaceholderFocusListener listener2 = new PlaceholderFocusListener(hint2);
+    field2.addFocusListener(listener2);
+    listener2.update(field2);
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -64,27 +71,30 @@ public final class MainPanel extends JPanel {
 }
 
 class PlaceholderFocusListener implements FocusListener {
-  private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
   private final String hintMessage;
 
-  protected PlaceholderFocusListener(JTextComponent tf) {
-    hintMessage = tf.getText();
-    tf.setForeground(INACTIVE);
+  protected PlaceholderFocusListener(String hintMessage) {
+    this.hintMessage = hintMessage;
   }
 
   @Override public void focusGained(FocusEvent e) {
-    JTextComponent tf = (JTextComponent) e.getComponent();
-    if (hintMessage.equals(tf.getText()) && INACTIVE.equals(tf.getForeground())) {
-      tf.setForeground(UIManager.getColor("TextField.foreground"));
-      tf.setText("");
-    }
+    update((JTextComponent) e.getComponent());
   }
 
   @Override public void focusLost(FocusEvent e) {
-    JTextComponent tf = (JTextComponent) e.getComponent();
-    if ("".equals(tf.getText().trim())) {
-      tf.setForeground(INACTIVE);
-      tf.setText(hintMessage);
+    update((JTextComponent) e.getComponent());
+  }
+
+  public void update(JTextComponent c) {
+    String txt = c.getText().trim();
+    if (txt.isEmpty()) {
+      c.setForeground(UIManager.getColor("TextField.inactiveForeground"));
+      c.setText(hintMessage);
+    } else {
+      c.setForeground(UIManager.getColor("TextField.foreground"));
+      if (Objects.equals(txt, hintMessage)) {
+        c.setText("");
+      }
     }
   }
 }
@@ -121,9 +131,10 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
   private void paintHint(Graphics g, JTextComponent tc) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(hint.getBackground());
-    Insets i = tc.getInsets();
+    Rectangle r = SwingUtilities.calculateInnerArea(tc, null);
     Dimension d = hint.getPreferredSize();
-    SwingUtilities.paintComponent(g2, hint, tc, i.left, i.top, d.width, d.height);
+    int yy = (int) (r.getCenterY() - d.height / 2d);
+    SwingUtilities.paintComponent(g2, hint, tc, r.x, yy, d.width, d.height);
     // int baseline = tc.getBaseline(tc.getWidth(), tc.getHeight());
     // Font font = tc.getFont();
     // FontRenderContext frc = g2.getFontRenderContext();
