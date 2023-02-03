@@ -23,6 +23,11 @@ public final class MainPanel extends JPanel {
     sp.setTopComponent(new JScrollPane(table1));
     sp.setBottomComponent(new JLayer<>(new JScrollPane(table2), new TableHeaderFillerLayerUI()));
     sp.setResizeWeight(.5);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(sp);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -60,6 +65,11 @@ class TableHeaderFillerLayerUI extends LayerUI<JScrollPane> {
   private final JTable tempTable = new JTable(new DefaultTableModel(new Object[] {""}, 0));
   private final JTableHeader filler = tempTable.getTableHeader();
   private final TableColumn fillerColumn = tempTable.getColumnModel().getColumn(0);
+
+  @Override public void updateUI(JLayer<? extends JScrollPane> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(tempTable);
+  }
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
@@ -196,3 +206,60 @@ class TableHeaderFillerLayerUI extends LayerUI<JScrollPane> {
 //     update();
 //   }
 // }
+
+// @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
+  }
+}
