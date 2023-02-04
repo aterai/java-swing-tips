@@ -37,6 +37,17 @@ public final class MainPanel extends JPanel {
       }
     }
 
+    @Override public void updateUI() {
+      super.updateUI();
+      setFillsViewportHeight(true);
+      setBackground(Color.WHITE);
+      setShowVerticalLines(false);
+      setShowHorizontalLines(true);
+      setIntercellSpacing(new Dimension(0, 1));
+      setFont(getFont().deriveFont(Font.BOLD));
+      setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
+    }
+
     @Override public void doLayout() {
       super.doLayout();
       Class<JViewport> clz = JViewport.class;
@@ -56,13 +67,6 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     monthLabel.setOpaque(false);
     monthLabel.setFont(monthLabel.getFont().deriveFont(Font.BOLD));
-
-    monthTable.setFont(monthTable.getFont().deriveFont(Font.BOLD));
-    monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
-    monthTable.setFillsViewportHeight(true);
-    monthTable.setBackground(Color.WHITE);
-    monthTable.setShowVerticalLines(false);
-    monthTable.setIntercellSpacing(new Dimension(0, 1));
 
     JTableHeader header = monthTable.getTableHeader();
     header.setForeground(Color.WHITE);
