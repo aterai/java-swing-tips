@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
 class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   private static final Rectangle TOP_HALF_RECT = new Rectangle();
   private static final Rectangle BOTTOM_HALF_RECT = new Rectangle();
-  private static final Rectangle INNER_RECT = new Rectangle();
+  private static final Rectangle TEMP_RECT = new Rectangle();
   private static final Rectangle PREV_RECT = new Rectangle();
   private static final Rectangle DRAGGING_RECT = new Rectangle();
   private final Point startPt = new Point();
@@ -143,7 +143,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     }
 
     // update the dragging panel location
-    updateDraggingPanelLocation(parent, pt, dragOffset);
+    updateDraggingPanelLocation(parent, SwingUtilities.convertPoint(c, pt, l), dragOffset);
     parent.repaint();
   }
 
@@ -166,18 +166,10 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   }
 
   private static void updateDraggingPanelLocation(JComponent parent, Point pt, Point dragOffset) {
-    Insets i = parent.getInsets();
-    Rectangle r = SwingUtilities.calculateInnerArea(parent, INNER_RECT);
-    int x = r.x;
     int y = pt.y - dragOffset.y;
-    int h = DRAGGING_RECT.height;
-    int yy;
-    if (y < i.top) {
-      yy = i.top;
-    } else {
-      yy = r.contains(x, y + h) ? y : r.height + i.top - h;
-    }
-    DRAGGING_RECT.setLocation(x, yy);
+    Rectangle r = SwingUtilities.calculateInnerArea(parent, TEMP_RECT);
+    int bottom = r.y + r.height - DRAGGING_RECT.height;
+    DRAGGING_RECT.setLocation(r.x, Math.min(Math.max(y, r.y), bottom));
   }
 
   private static void updateFillerLocation(Container parent, Component filler, Point pt) {
