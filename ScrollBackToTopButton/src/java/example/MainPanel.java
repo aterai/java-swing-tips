@@ -26,15 +26,15 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll1 = new JScrollPane(textArea);
     scroll1.setRowHeaderView(new LineNumberView(textArea));
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
-    textArea.setEditable(false);
+    // textArea.setEditable(false);
 
     JTable table = new JTable(500, 3);
     JScrollPane scroll2 = new JScrollPane(table);
     SwingUtilities.invokeLater(() -> table.scrollRectToVisible(table.getCellRect(500, 0, true)));
 
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("JTextArea", new JLayer<>(scroll1, new ScrollBackToTopLayerUI()));
-    tabbedPane.addTab("JTable", new JLayer<>(scroll2, new ScrollBackToTopLayerUI()));
+    tabbedPane.addTab("JTextArea", new JLayer<>(scroll1, new ScrollBackToTopLayerUI<>()));
+    tabbedPane.addTab("JTable", new JLayer<>(scroll2, new ScrollBackToTopLayerUI<>()));
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -96,7 +96,7 @@ class ScrollBackToTopIcon implements Icon {
   }
 }
 
-class ScrollBackToTopLayerUI extends LayerUI<JScrollPane> {
+class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
   private static final int GAP = 5;
   private final Container rubberStamp = new JPanel();
   private final Point mousePt = new Point();
@@ -134,8 +134,9 @@ class ScrollBackToTopLayerUI extends LayerUI<JScrollPane> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
-      ((JLayer<?>) c).setLayerEventMask(
-          AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+      JLayer<?> l = (JLayer<?>) c;
+      l.getGlassPane().setCursor(Cursor.getDefaultCursor());
+      l.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
   }
 
@@ -146,7 +147,7 @@ class ScrollBackToTopLayerUI extends LayerUI<JScrollPane> {
     super.uninstallUI(c);
   }
 
-  @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
+  @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
     JScrollPane scroll = l.getView();
     Rectangle r = scroll.getViewport().getViewRect();
     Point p = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), scroll);
@@ -161,9 +162,10 @@ class ScrollBackToTopLayerUI extends LayerUI<JScrollPane> {
     }
   }
 
-  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
+  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
     Point p = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), l.getView());
     mousePt.setLocation(p);
+    l.getGlassPane().setVisible(buttonRect.contains(mousePt));
     l.repaint(buttonRect);
   }
 
