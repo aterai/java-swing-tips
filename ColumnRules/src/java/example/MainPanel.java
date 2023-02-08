@@ -37,9 +37,13 @@ public final class MainPanel extends JPanel {
     c.fill = GridBagConstraints.BOTH;
     p1.add(new JLabel("right", SwingConstants.CENTER), c);
 
-    JPanel p2 = new JPanel(new GridLayout(0, 2, 5, 5));
-    p2.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createEmptyBorder(5, 5, 5, 5), new ColumnRulesBorder()));
+    JPanel p2 = new JPanel(new GridLayout(0, 2, 5, 5)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        Border b = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        setBorder(BorderFactory.createCompoundBorder(b, new ColumnRulesBorder()));
+      }
+    };
 
     JPanel p3 = new JPanel(new GridLayout(0, 2, 5, 5));
     p3.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -110,6 +114,11 @@ class ColumnRulesBorder implements Border {
 class ColumnRulesLayerUI extends LayerUI<JComponent> {
   private final JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
   private final Container renderer = new JPanel();
+
+  @Override public void updateUI(JLayer<? extends JComponent> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(separator);
+  }
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
