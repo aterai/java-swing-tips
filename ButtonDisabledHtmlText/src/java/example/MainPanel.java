@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     JPopupMenu pop = new JPopupMenu();
     pop.add(title);
     JButton button = new JButton(title);
-    if (title.length() > 0) {
+    if (!title.isEmpty()) {
       button.setMnemonic(title.codePointAt(0));
     }
     button.setIcon(UIManager.getIcon("FileView.directoryIcon"));
@@ -159,20 +159,20 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       Component view = ((JLayer<?>) c).getView();
       if (isBlocking) {
         Dimension d = view.getSize();
-        buf = Optional.ofNullable(buf)
+        BufferedImage img = Optional.ofNullable(buf)
             .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
             .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
-
-        Graphics2D g2 = buf.createGraphics();
+        Graphics2D g2 = img.createGraphics();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .25f));
         // NimbusLookAndFeel bug???: super.paint(g2, c);
-        super.paint(g2, (JComponent) view);
+        view.paint(g2);
         g2.dispose();
-
-        g.drawImage(buf, 0, 0, c);
+        g.drawImage(img, 0, 0, c);
+        buf = img;
       } else {
         // NimbusLookAndFeel bug???: super.paint(g, c);
-        super.paint(g, (JComponent) view);
+        view.paint(g);
+        // super.paint(g, (JComponent) view);
       }
     }
   }
