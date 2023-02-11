@@ -10,17 +10,21 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super();
+    super(new BorderLayout());
     UIManager.put("Button.disabledText", Color.RED);
     JButton button1 = makeButton("Default");
     JButton button2 = makeButton("setForeground");
-    DisableInputLayerUI<AbstractButton> layerUI = new DisableInputLayerUI<>();
+    DisableInputLayerUI<AbstractButton> layer3 = new DisableInputLayerUI<>();
+    JButton button4 = makeButton("<html>html <font color='red'>tag");
+    DisableInputLayerUI<AbstractButton> layer5 = new DisableInputLayerUI<>();
 
     JCheckBox check = new JCheckBox("setEnabled", true);
     check.addActionListener(e -> {
@@ -28,31 +32,43 @@ public final class MainPanel extends JPanel {
       button1.setEnabled(isSelected);
       button2.setEnabled(isSelected);
       button2.setForeground(isSelected ? Color.BLACK : Color.RED);
-      layerUI.setLocked(!isSelected);
+      layer3.setLocked(!isSelected);
+      button4.setEnabled(isSelected);
+      layer5.setLocked(!isSelected);
     });
 
     JPanel p1 = new JPanel();
     p1.setBorder(BorderFactory.createTitledBorder("setEnabled"));
     p1.add(button1);
     p1.add(button2);
-    p1.add(new JLayer<>(makeButton("JLayer"), layerUI));
+    p1.add(new JLayer<>(makeButton("JLayer"), layer3));
 
     JPanel p2 = new JPanel();
-    p2.setBorder(BorderFactory.createTitledBorder("Focus dummy"));
-    p2.add(new JTextField(16));
-    p2.add(new JButton("dummy"));
+    p2.setBorder(BorderFactory.createTitledBorder("html"));
+    p2.add(button4);
+    p2.add(new JLayer<>(makeButton("<html>JLayer <font color='#0000ff'>html"), layer5));
 
-    JPanel panel = new JPanel(new GridLayout(2, 1));
+    // JPanel p3 = new JPanel();
+    // p3.setBorder(BorderFactory.createTitledBorder("Focus test"));
+    // p3.add(new JTextField(16));
+    // p3.add(new JButton("JButton"));
+
+    JPanel panel = new JPanel(new GridLayout(0, 1));
     panel.add(p1);
     panel.add(p2);
+    // panel.add(p3);
+    add(panel, BorderLayout.NORTH);
 
-    add(panel);
-    add(check);
+    Box box = Box.createHorizontalBox();
+    box.add(Box.createHorizontalGlue());
+    box.add(check);
+    add(box, BorderLayout.SOUTH);
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -100,6 +116,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
     /* Do nothing */
   };
   private boolean isBlocking;
+  private transient BufferedImage buf;
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -159,6 +176,30 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       b.setMnemonic(isBlocking ? 0 : b.getText().codePointAt(0));
       b.setForeground(isBlocking ? Color.RED : Color.BLACK);
       l.getGlassPane().setVisible((Boolean) e.getNewValue());
+    }
+  }
+
+  @Override public void paint(Graphics g, JComponent c) {
+    if (c instanceof JLayer) {
+      Component view = ((JLayer<?>) c).getView();
+      if (isBlocking) {
+        Dimension d = view.getSize();
+        buf = Optional.ofNullable(buf)
+            .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+            .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+
+        Graphics2D g2 = buf.createGraphics();
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .25f));
+        // NimbusLookAndFeel bug???: super.paint(g2, c);
+        view.paint(g2);
+        g2.dispose();
+
+        g.drawImage(buf, 0, 0, c);
+      } else {
+        // NimbusLookAndFeel bug???: super.paint(g, c);
+        view.paint(g);
+        // super.paint(g2, (JComponent) view);
+      }
     }
   }
 }
