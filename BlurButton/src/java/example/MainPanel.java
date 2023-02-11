@@ -78,11 +78,12 @@ public final class MainPanel extends JPanel {
 // trunk/swing-hacks-examples-20060109/
 // Ch01-JComponents/09/swinghacks/ch01/JComponents/hack09/BlurJButton.java
 class BlurredButton extends JButton {
-  private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
+  private static final Kernel KNL = new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
       .05f, .05f, .05f
-  }));
+  });
+  private static final ConvolveOp CONVOLVE = new ConvolveOp(KNL);
   private transient BufferedImage buf;
 
   protected BlurredButton(String label) {
@@ -94,29 +95,27 @@ class BlurredButton extends JButton {
     if (isEnabled()) {
       super.paintComponent(g);
     } else {
-      // if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
-      //   iw = getWidth();
-      //   ih = getHeight();
-      //   buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
-      // }
-      buf = Optional.ofNullable(buf)
-          .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
-          .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
-      Graphics2D g2 = buf.createGraphics();
+      Dimension d = getSize();
+      BufferedImage img = Optional.ofNullable(buf)
+          .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+          .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+      Graphics2D g2 = img.createGraphics();
       g2.setFont(g.getFont()); // pointed out by 八ツ玉舘
       super.paintComponent(g2);
       g2.dispose();
-      g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, this);
+      g.drawImage(CONVOLVE.filter(img, null), 0, 0, this);
+      buf = img;
     }
   }
 }
 
 class BlurButton extends JButton {
-  private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
+  private static final Kernel KNL = new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
       .05f, .05f, .05f
-  }), ConvolveOp.EDGE_NO_OP, null);
+  });
+  private static final ConvolveOp CONVOLVE = new ConvolveOp(KNL, ConvolveOp.EDGE_NO_OP, null);
   private transient BufferedImage buf;
 
   protected BlurButton(String label) {
@@ -128,19 +127,16 @@ class BlurButton extends JButton {
     if (isEnabled()) {
       super.paintComponent(g);
     } else {
-      // if (Objects.isNull(buf) || iw != getWidth() || ih != getHeight()) {
-      //   iw = getWidth();
-      //   ih = getHeight();
-      //   buf = new BufferedImage(iw, ih, BufferedImage.TYPE_INT_ARGB);
-      // }
-      buf = Optional.ofNullable(buf)
-          .filter(bi -> bi.getWidth() == getWidth() && bi.getHeight() == getHeight())
-          .orElseGet(() -> new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB));
-      Graphics2D g2 = buf.createGraphics();
+      Dimension d = getSize();
+      BufferedImage img = Optional.ofNullable(buf)
+          .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+          .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+      Graphics2D g2 = img.createGraphics();
       g2.setFont(g.getFont()); // pointed out by 八ツ玉舘
       super.paintComponent(g2);
       g2.dispose();
-      g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, this);
+      g.drawImage(CONVOLVE.filter(img, null), 0, 0, this);
+      buf = img;
     }
   }
 
@@ -154,11 +150,12 @@ class BlurButton extends JButton {
 // https://ateraimemo.com/Swing/ButtonDisabledHtmlText.html
 // https://github.com/aterai/java-swing-tips/tree/master/ButtonDisabledHtmlText
 class BlurLayerUI<V extends AbstractButton> extends LayerUI<V> {
-  private static final ConvolveOp CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, new float[] {
+  private static final Kernel KNL = new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
       .05f, .05f, .05f
-  }), ConvolveOp.EDGE_NO_OP, null);
+  });
+  private static final ConvolveOp CONVOLVE = new ConvolveOp(KNL, ConvolveOp.EDGE_NO_OP, null);
   private transient BufferedImage buf;
 
   @Override public void paint(Graphics g, JComponent c) {
@@ -169,13 +166,14 @@ class BlurLayerUI<V extends AbstractButton> extends LayerUI<V> {
         view.paint(g);
       } else {
         Dimension d = view.getSize();
-        buf = Optional.ofNullable(buf)
+        BufferedImage img = Optional.ofNullable(buf)
             .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
             .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
-        Graphics2D g2 = buf.createGraphics();
+        Graphics2D g2 = img.createGraphics();
         view.paint(g2);
         g2.dispose();
-        g.drawImage(CONVOLVE_OP.filter(buf, null), 0, 0, c);
+        g.drawImage(CONVOLVE.filter(img, null), 0, 0, c);
+        buf = img;
       }
     }
   }
