@@ -181,6 +181,7 @@ class TextLabelProgressBar extends JProgressBar {
     // };
     // addChangeListener(changeListener);
     EventQueue.invokeLater(() -> {
+      SwingUtilities.updateComponentTreeUI(label);
       add(label);
       label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
     });
@@ -209,6 +210,11 @@ class ProgressBarLayerUI extends LayerUI<JProgressBar> {
   protected ProgressBarLayerUI(JLabel label) {
     super();
     this.label = label;
+  }
+
+  @Override public void updateUI(JLayer<? extends JProgressBar> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(label);
   }
 
   @Override public void paint(Graphics g, JComponent c) {
