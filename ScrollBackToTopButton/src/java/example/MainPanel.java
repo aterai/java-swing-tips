@@ -14,6 +14,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.Element;
 
@@ -28,7 +29,17 @@ public final class MainPanel extends JPanel {
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
     // textArea.setEditable(false);
 
-    JTable table = new JTable(500, 3);
+    JTable table = new JTable(500, 3) {
+      @Override public void updateUI() {
+        ColorUIResource reset = new ColorUIResource(Color.RED);
+        setSelectionForeground(reset);
+        setSelectionBackground(reset);
+        super.updateUI();
+        Object showGrid = UIManager.getLookAndFeelDefaults().get("Table.showGrid");
+        setShowGrid(showGrid == null || (Boolean) showGrid);
+        setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer());
+      }
+    };
     JScrollPane scroll2 = new JScrollPane(table);
     SwingUtilities.invokeLater(() -> table.scrollRectToVisible(table.getCellRect(500, 0, true)));
 
@@ -112,6 +123,11 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
   };
   private final Rectangle buttonRect = new Rectangle(button.getPreferredSize());
 
+  @Override public void updateUI(JLayer<? extends V> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(button);
+  }
+
   private void updateButtonRect(JScrollPane scroll) {
     JViewport viewport = scroll.getViewport();
     int x = viewport.getX() + viewport.getWidth() - buttonRect.width - GAP;
@@ -187,22 +203,10 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
 class LineNumberView extends JComponent {
   private static final int MARGIN = 5;
   private final JTextArea textArea;
-  private final FontMetrics fontMetrics;
-  private final int fontAscent;
-  private final int fontHeight;
-  private final int fontDescent;
-  private final int fontLeading;
 
   protected LineNumberView(JTextArea textArea) {
     super();
     this.textArea = textArea;
-    Font font = textArea.getFont();
-    fontMetrics = getFontMetrics(font);
-    fontHeight = fontMetrics.getHeight();
-    fontAscent = fontMetrics.getAscent();
-    fontDescent = fontMetrics.getDescent();
-    fontLeading = fontMetrics.getLeading();
-
     textArea.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
         repaint();
@@ -227,14 +231,18 @@ class LineNumberView extends JComponent {
         BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
         BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
     setOpaque(true);
-    setBackground(Color.WHITE);
-    setFont(font);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    SwingUtilities.updateComponentTreeUI(textArea);
   }
 
   private int getComponentWidth() {
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
     Insets i = getInsets();
+    FontMetrics fontMetrics = getFontMetrics(getFont());
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
   }
 
@@ -250,9 +258,16 @@ class LineNumberView extends JComponent {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    g.setColor(getBackground());
+    g.setColor(textArea.getBackground());
     Rectangle clip = g.getClipBounds();
     g.fillRect(clip.x, clip.y, clip.width, clip.height);
+    g.setFont(textArea.getFont());
+
+    FontMetrics fontMetrics = g.getFontMetrics();
+    int fontHeight = fontMetrics.getHeight();
+    int fontAscent = fontMetrics.getAscent();
+    int fontDescent = fontMetrics.getDescent();
+    int fontLeading = fontMetrics.getLeading();
 
     g.setColor(getForeground());
     int base = clip.y;
