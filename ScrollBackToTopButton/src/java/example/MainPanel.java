@@ -37,7 +37,6 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         Object showGrid = UIManager.getLookAndFeelDefaults().get("Table.showGrid");
         setShowGrid(showGrid == null || (Boolean) showGrid);
-        setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer());
       }
     };
     JScrollPane scroll2 = new JScrollPane(table);
