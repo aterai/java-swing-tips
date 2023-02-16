@@ -17,7 +17,6 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> combo1 = new JComboBox<>(new String[] {"colors", "sports", "food"});
     combo1.setEditable(true);
     combo1.setSelectedIndex(-1);
@@ -60,9 +59,9 @@ public final class MainPanel extends JPanel {
             return editorComponent;
           }
         });
-          Border b1 = UIManager.getLookAndFeelDefaults().getBorder("ComboBox.border");
-          Border b2 = BorderFactory.createEmptyBorder(0, 2, 0, 0);
-          setBorder(BorderFactory.createCompoundBorder(b1, b2));
+        Border b1 = UIManager.getLookAndFeelDefaults().getBorder("ComboBox.border");
+        Border b2 = BorderFactory.createEmptyBorder(0, 2, 0, 0);
+        setBorder(BorderFactory.createCompoundBorder(b1, b2));
       }
     };
 
@@ -115,13 +114,22 @@ public final class MainPanel extends JPanel {
 }
 
 class PlaceholderLayerUI<E extends JTextComponent> extends LayerUI<E> {
-  private static final Color INACTIVE = UIManager.getColor("TextField.inactiveForeground");
   private final JLabel hint;
 
   protected PlaceholderLayerUI(String hintMessage) {
     super();
-    this.hint = new JLabel(hintMessage);
-    hint.setForeground(INACTIVE);
+    this.hint = new JLabel(hintMessage) {
+      @Override public void updateUI() {
+        super.updateUI();
+        String inactive = "TextField.inactiveForeground";
+        setForeground(UIManager.getLookAndFeelDefaults().getColor(inactive));
+      }
+    };
+  }
+
+  @Override public void updateUI(JLayer<? extends E> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(hint);
   }
 
   @Override public void paint(Graphics g, JComponent c) {
@@ -130,7 +138,7 @@ class PlaceholderLayerUI<E extends JTextComponent> extends LayerUI<E> {
       JTextComponent tc = (JTextComponent) ((JLayer<?>) c).getView();
       if (tc.getText().length() == 0 && !tc.hasFocus()) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(INACTIVE);
+        g2.setPaint(hint.getForeground());
         // System.out.println("getInsets: " + tc.getInsets());
         // System.out.println("getMargin: " + tc.getMargin());
         // Insets i = tc.getMargin();
