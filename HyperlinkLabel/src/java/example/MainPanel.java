@@ -26,10 +26,15 @@ public final class MainPanel extends JPanel {
     super(new GridBagLayout());
     String link = "https://ateraimemo.com/";
     String html = String.format("<html><a href='%s'>%s</a>", link, link);
-    JEditorPane editor = new JEditorPane("text/html", html);
-    editor.setOpaque(false); // editor.setBackground(getBackground());
-    editor.setEditable(false); // REQUIRED
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    JEditorPane editor = new JEditorPane("text/html", html) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false); // editor.setBackground(getBackground());
+        setEditable(false); // REQUIRED
+        setBackground(new Color(0x0, true)); // Nimbus???
+        putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+      }
+    };
     editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
