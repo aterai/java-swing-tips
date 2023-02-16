@@ -24,9 +24,9 @@ import javax.swing.text.View;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridBagLayout());
-    String siteLink = "https://ateraimemo.com/";
-
-    JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", siteLink, siteLink));
+    String link = "https://ateraimemo.com/";
+    String html = String.format("<html><a href='%s'>%s</a>", link, link);
+    JEditorPane editor = new JEditorPane("text/html", html);
     editor.setOpaque(false); // editor.setBackground(getBackground());
     editor.setEditable(false); // REQUIRED
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -36,11 +36,11 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    Action browseAction = new AbstractAction(siteLink) {
+    Action browseAction = new AbstractAction(link) {
       @Override public void actionPerformed(ActionEvent e) {
         try {
           if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().browse(new URI(siteLink));
+            Desktop.getDesktop().browse(new URI(link));
           }
         } catch (IOException | URISyntaxException ex) {
           ex.printStackTrace();
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     };
 
     LinkedHashMap<String, Component> map = new LinkedHashMap<>(4);
-    map.put("JLabel+MouseListener: ", new UrlLabel(siteLink));
+    map.put("JLabel+MouseListener: ", new UrlLabel(link));
     map.put("JButton: ", new JButton(browseAction));
     map.put("JButton+ButtonUI: ", new HyperlinkButton(browseAction));
     map.put("JEditorPane+HyperlinkListener: ", editor);
@@ -167,7 +167,7 @@ class LinkViewButtonUI extends BasicButtonUI {
 }
 
 class BasicLinkViewButtonUI extends LinkViewButtonUI {
-  private static final LinkViewButtonUI LINKVIEW_UI = new BasicLinkViewButtonUI();
+  private static final LinkViewButtonUI LINK_VIEW = new BasicLinkViewButtonUI();
   // private final Dimension size = new Dimension();
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
@@ -177,7 +177,8 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
     // b.setForeground(Color.BLUE);
     // b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
     // b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    return LINKVIEW_UI;
+    b.setOpaque(false);
+    return LINK_VIEW;
   }
 
   @Override public void paint(Graphics g, JComponent c) {
