@@ -21,7 +21,6 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
   private MainPanel() {
     super(new BorderLayout());
-
     BoundedRangeModel m = new DefaultBoundedRangeModel();
     JProgressBar progress0 = new JProgressBar(m);
     progress0.setStringPainted(false);
@@ -171,17 +170,17 @@ class VerticalFlipLayerUI<V extends Component> extends LayerUI<V> {
     if (c instanceof JLayer) {
       Component view = ((JLayer<?>) c).getView();
       Dimension d = view.getSize();
-      buf = Optional.ofNullable(buf)
-        .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
-        .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
-
-      Graphics2D g2 = buf.createGraphics();
+      BufferedImage img = Optional.ofNullable(buf)
+          .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
+          .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+      Graphics2D g2 = img.createGraphics();
       g2.scale(1, -1);
       g2.translate(0, -d.height);
-      super.paint(g2, c);
+      // super.paint(g2, c);
+      view.paint(g2);
       g2.dispose();
-
-      g.drawImage(buf, 0, 0, view);
+      g.drawImage(img, 0, 0, view);
+      buf = img;
     } else {
       super.paint(g, c);
     }
