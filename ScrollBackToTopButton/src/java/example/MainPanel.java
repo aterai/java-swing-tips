@@ -230,6 +230,7 @@ class LineNumberView extends JComponent {
         BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
         BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
     setOpaque(true);
+    setFont(textArea.getFont());
   }
 
   @Override public void updateUI() {
@@ -241,7 +242,7 @@ class LineNumberView extends JComponent {
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
     Insets i = getInsets();
-    FontMetrics fontMetrics = getFontMetrics(getFont());
+    FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
   }
 
@@ -260,9 +261,9 @@ class LineNumberView extends JComponent {
     g.setColor(textArea.getBackground());
     Rectangle clip = g.getClipBounds();
     g.fillRect(clip.x, clip.y, clip.width, clip.height);
-    g.setFont(textArea.getFont());
-
-    FontMetrics fontMetrics = g.getFontMetrics();
+    // g.setFont(textArea.getFont());
+    // FontMetrics fontMetrics = g.getFontMetrics();
+    FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
     int fontHeight = fontMetrics.getHeight();
     int fontAscent = fontMetrics.getAscent();
     int fontDescent = fontMetrics.getDescent();
