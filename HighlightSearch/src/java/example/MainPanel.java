@@ -226,6 +226,11 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
     }
   };
 
+  @Override public void updateUI(JLayer<? extends V> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(hint);
+  }
+
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
     if (c instanceof JLayer) {
@@ -233,10 +238,13 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
       if (!tc.getText().isEmpty()) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(hint.getForeground());
-        Insets i = tc.getInsets();
         Dimension d = hint.getPreferredSize();
-        int x = tc.getWidth() - i.right - d.width - 2;
-        int y = (tc.getHeight() - d.height) / 2;
+        // Insets i = tc.getInsets();
+        // int x = tc.getWidth() - i.right - d.width - 1;
+        // int y = (tc.getHeight() - d.height) / 2;
+        Rectangle r = SwingUtilities.calculateInnerArea(tc, null);
+        int x = r.x + r.width - d.width - 1;
+        int y = r.y + (r.height - d.height) / 2;
         SwingUtilities.paintComponent(g2, hint, tc, x, y, d.width, d.height);
         g2.dispose();
       }
