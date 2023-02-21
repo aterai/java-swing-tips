@@ -16,15 +16,22 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String hint1 = "Please enter your E-mail address";
-    JTextField field1 = new JTextField();
-    PlaceholderFocusListener listener1 = new PlaceholderFocusListener(hint1);
-    field1.addFocusListener(listener1);
-    listener1.update(field1);
+    JTextField field1 = new JTextField() {
+      private transient PlaceholderFocusListener listener;
+
+      @Override public void updateUI() {
+        removeFocusListener(listener);
+        super.updateUI();
+        String hint = "Please enter your E-mail address";
+        listener = new PlaceholderFocusListener(hint);
+        addFocusListener(listener);
+        EventQueue.invokeLater(() -> listener.update(this));
+      }
+    };
 
     String hint2 = "History Search";
-    JTextField field2 = new JTextField();
     PlaceholderFocusListener listener2 = new PlaceholderFocusListener(hint2);
+    JTextField field2 = new JTextField();
     field2.addFocusListener(listener2);
     listener2.update(field2);
 
@@ -110,6 +117,11 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
   protected PlaceholderLayerUI(String hintMessage) {
     super();
     hint.setText(hintMessage);
+  }
+
+  @Override public void updateUI(JLayer<? extends V> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(hint);
   }
 
   @Override public void paint(Graphics g, JComponent c) {
