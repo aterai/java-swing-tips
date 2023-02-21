@@ -16,39 +16,55 @@ import javax.swing.plaf.basic.BasicSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    add(makeSlider(SwingConstants.VERTICAL), BorderLayout.WEST);
-    add(makeSlider(SwingConstants.HORIZONTAL), BorderLayout.NORTH);
+    JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
+    initSliderTicks(slider1);
 
-    JSlider slider1 = makeSlider(SwingConstants.VERTICAL);
-    slider1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    add(slider1, BorderLayout.EAST);
+    JSlider slider2 = new JSlider(SwingConstants.VERTICAL);
+    slider2.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    initSliderTicks(slider2);
 
-    JSlider slider2 = makeSlider(SwingConstants.HORIZONTAL);
-    add(new JLayer<>(slider2, new VerticalFlipLayerUI()), BorderLayout.SOUTH);
+    JSlider slider3 = new JSlider(SwingConstants.HORIZONTAL);
+    initSliderTicks(slider3);
 
-    JSlider slider3 = makeSlider(SwingConstants.HORIZONTAL);
-    slider3.setPaintLabels(true);
-    slider3.setUI(new BasicSliderUI(slider3));
+    JSlider slider4 = new JSlider(SwingConstants.HORIZONTAL);
+    initSliderTicks(slider4);
 
-    JSlider slider4 = makeSlider(SwingConstants.HORIZONTAL);
-    slider4.setPaintLabels(true);
-    slider4.setUI(new UpArrowThumbSliderUI(slider4));
+    add(slider1, BorderLayout.WEST);
+    add(slider2, BorderLayout.EAST);
+    add(slider3, BorderLayout.NORTH);
+    add(new JLayer<>(slider4, new VerticalFlipLayerUI()), BorderLayout.SOUTH);
+
+    JSlider slider5 = new JSlider(SwingConstants.HORIZONTAL) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new BasicSliderUI(this));
+      }
+    };
+    initSliderTicks(slider5);
+    slider5.setPaintLabels(true);
+
+    JSlider slider6 = new JSlider(SwingConstants.HORIZONTAL) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new UpArrowThumbSliderUI(this));
+      }
+    };
+    initSliderTicks(slider6);
+    slider6.setPaintLabels(true);
 
     JPanel p = new JPanel(new BorderLayout());
-    p.add(slider3, BorderLayout.NORTH);
-    p.add(slider4, BorderLayout.SOUTH);
+    p.add(slider5, BorderLayout.NORTH);
+    p.add(slider6, BorderLayout.SOUTH);
     add(p);
 
     setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JSlider makeSlider(int orientation) {
-    JSlider slider = new JSlider(orientation);
+  private void initSliderTicks(JSlider slider) {
     slider.setMajorTickSpacing(20);
     slider.setMinorTickSpacing(10);
     slider.setPaintTicks(true);
-    return slider;
   }
 
   public static void main(String[] args) {
