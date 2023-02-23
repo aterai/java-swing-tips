@@ -121,25 +121,23 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
-    if (e.getID() != MouseEvent.MOUSE_DRAGGED) {
+    Component c = e.getComponent();
+    if (e.getID() != MouseEvent.MOUSE_DRAGGED || !(c instanceof JLayer<?>)) {
       return;
     }
     JComponent parent = l.getView();
     Point pt = e.getPoint();
-    Component c = e.getComponent();
-    if (c instanceof JLayer<?>) {
-      if (Objects.isNull(draggingComponent)) {
-        // MotionThreshold
-        if (startPt.distance(pt) > dragThreshold) {
-          startDragging(parent, pt);
-        }
-        return;
+    if (Objects.isNull(draggingComponent)) {
+      // MotionThreshold
+      if (startPt.distance(pt) > dragThreshold) {
+        startDragging(parent, pt);
       }
+      return;
+    }
 
-      // update the filler panel location
-      if (!PREV_RECT.contains(pt)) {
-        updateFillerLocation(parent, fillerComponent, pt);
-      }
+    // update the filler panel location
+    if (!PREV_RECT.contains(pt)) {
+      updateFillerLocation(parent, fillerComponent, pt);
     }
 
     // update the dragging panel location
