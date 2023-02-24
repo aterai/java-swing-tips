@@ -16,24 +16,24 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field1 = new JTextField() {
+    String hint1 = "Please enter your E-mail address";
+    PlaceholderFocusListener listener1 = new PlaceholderFocusListener(hint1);
+    JTextField field1 = new JTextField();
+    field1.addFocusListener(listener1);
+    listener1.update(field1);
+
+    JTextField field2 = new JTextField() {
       private transient PlaceholderFocusListener listener;
 
       @Override public void updateUI() {
         removeFocusListener(listener);
         super.updateUI();
-        String hint = "Please enter your E-mail address";
+        String hint = "History Search";
         listener = new PlaceholderFocusListener(hint);
         addFocusListener(listener);
         EventQueue.invokeLater(() -> listener.update(this));
       }
     };
-
-    String hint2 = "History Search";
-    PlaceholderFocusListener listener2 = new PlaceholderFocusListener(hint2);
-    JTextField field2 = new JTextField();
-    field2.addFocusListener(listener2);
-    listener2.update(field2);
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
