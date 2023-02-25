@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
 
     JComboBox<String> combo2 = new JComboBox<>(model);
     combo2.setRenderer(new BasicComboBoxRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+      @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         return super.getListCellRendererComponent(
             list, "TEST1: " + value, index, isSelected, cellHasFocus);
       }
