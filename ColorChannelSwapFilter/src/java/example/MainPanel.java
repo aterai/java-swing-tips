@@ -124,17 +124,19 @@ class BlockedColorLayerUI<V extends Component> extends LayerUI<V> {
     if (blocking && c instanceof JLayer) {
       Component view = ((JLayer<?>) c).getView();
       Dimension d = view.getSize();
-      buf = Optional.ofNullable(buf)
+      BufferedImage img = Optional.ofNullable(buf)
           .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
           .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
 
-      Graphics2D g2 = buf.createGraphics();
-      super.paint(g2, c);
+      Graphics2D g2 = img.createGraphics();
+      // super.paint(g2, c);
+      view.paint(g2);
       g2.dispose();
 
       RGBImageFilter filter = new RedGreenChannelSwapFilter();
-      Image image = c.createImage(new FilteredImageSource(buf.getSource(), filter));
+      Image image = c.createImage(new FilteredImageSource(img.getSource(), filter));
       g.drawImage(image, 0, 0, view);
+      buf = img;
     } else {
       super.paint(g, c);
     }

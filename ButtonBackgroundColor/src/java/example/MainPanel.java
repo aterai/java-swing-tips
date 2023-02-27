@@ -133,14 +133,15 @@ class ImageFilterLayerUI<V extends Component> extends LayerUI<V> {
     if (c instanceof JLayer) {
       Component view = ((JLayer<?>) c).getView();
       Dimension d = view.getSize();
-      buf = Optional.ofNullable(buf)
+      BufferedImage img = Optional.ofNullable(buf)
           .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
           .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
-      Graphics2D g2 = buf.createGraphics();
+      Graphics2D g2 = img.createGraphics();
       view.paint(g2);
       g2.dispose();
-      Image image = c.createImage(new FilteredImageSource(buf.getSource(), filter));
+      Image image = c.createImage(new FilteredImageSource(img.getSource(), filter));
       g.drawImage(image, 0, 0, view);
+      buf = img;
     } else {
       super.paint(g, c);
     }
