@@ -382,6 +382,7 @@
     <include name="${name}.*" />
     <include name="*.jar" />
     <include name="src.zip" />
+    <include name="*.png" />
     <include name="index.html" />
   </fileset>
   <target name="ftp" depends="dist">
