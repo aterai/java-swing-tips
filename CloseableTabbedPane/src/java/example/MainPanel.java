@@ -146,6 +146,11 @@ class CloseableTabbedPaneLayerUI extends LayerUI<JTabbedPane> {
     return r;
   }
 
+  @Override public void updateUI(JLayer<? extends JTabbedPane> l) {
+    super.updateUI(l);
+    SwingUtilities.updateComponentTreeUI(button);
+  }
+
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
     if (c instanceof JLayer) {
