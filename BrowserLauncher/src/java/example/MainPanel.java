@@ -19,7 +19,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextArea textArea = new JTextArea();
 
-    JEditorPane editor = new JEditorPane("text/html", String.format("<html><a href='%s'>%s</a>", SITE, SITE));
+    String html = String.format("<html><a href='%s'>%s</a>", SITE, SITE);
+    JEditorPane editor = new JEditorPane("text/html", html);
     editor.setOpaque(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setEditable(false);
@@ -29,6 +30,7 @@ public final class MainPanel extends JPanel {
         textArea.setText(e.toString());
       }
     });
+
     JPanel p = new JPanel();
     p.add(editor);
     p.setBorder(BorderFactory.createTitledBorder("BrowserLauncher.openUrl(...)"));
