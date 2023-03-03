@@ -153,16 +153,8 @@ public final class MainPanel extends JPanel {
     String fmt = fmt1 + fmt2 + fmt3;
     String desc = String.format(fmt, max, min, vc);
     String style = styleField.getText().trim();
-    StringBuilder sb = SvgUtils.makeStarburstSvg(star.getPathIterator(null), max * 2, style, desc);
-
-    // Font font = new Font(Font.MONOSPACED, Font.PLAIN, 200);
-    // FontRenderContext frc = new FontRenderContext(null, true, true);
-    // Shape copyright = new TextLayout("\u3042", font, frc).getOutline(null);
-    // Rectangle r = copyright.getBounds();
-    // AffineTransform at = AffineTransform.getTranslateInstance(0d, r.getHeight());
-    // StringBuilder sb = makeStarburstSvg(copyright.getPathIterator(at), 200, styleStr, desc);
-
-    textArea.setText(sb.toString());
+    String str = SvgUtils.makeStarburstSvg(star.getPathIterator(null), max * 2, style, desc);
+    textArea.setText(str);
   }
 
   public static void main(String[] args) {
@@ -192,12 +184,14 @@ final class SvgUtils {
     /* HideUtilityClassConstructor */
   }
 
-  public static StringBuilder makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
+  public static String makeStarburstSvg(PathIterator pi, int sz, String style, String desc) {
     String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-    String dtd = "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">";
+    String dtd = "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd";
+    String type = String.format("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"%s\">", dtd);
+    String xmlns = "http://www.w3.org/2000/svg";
     StringBuilder sb = new StringBuilder(200);
-    sb.append(String.format("%s%n%s%n", xml, dtd))
-        .append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"http://www.w3.org/2000/svg\">%n", sz, sz))
+    sb.append(String.format("%s%n%s%n", xml, type))
+        .append(String.format("<svg width=\"%d\" height=\"%d\" xmlns=\"%s\">%n", sz, sz, xmlns))
         .append(String.format("  <desc>%s</desc>%n", desc))
         .append("  <path d=\"");
     double[] c = new double[6];
@@ -226,7 +220,7 @@ final class SvgUtils {
       pi.next();
     }
     sb.append(String.format("\" style=\"%s\" />%n</svg>%n", style));
-    return sb;
+    return sb.toString();
   }
 
   public static Path2D makeStar(int r1, int r2, int vc) {
