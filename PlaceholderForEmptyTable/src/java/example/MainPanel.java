@@ -11,11 +11,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private static final String PLACEHOLDER = "<html>No data! <a href='dummy'>Input hint(beep)</a></html>";
-
   private MainPanel() {
     super(new BorderLayout());
-    JEditorPane editor = new JEditorPane("text/html", PLACEHOLDER);
+    String placeholder = "<html>No data! <a href='dummy'>Input hint(beep)</a>";
+    JEditorPane editor = new JEditorPane("text/html", placeholder);
     editor.setOpaque(false);
     editor.setEditable(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
