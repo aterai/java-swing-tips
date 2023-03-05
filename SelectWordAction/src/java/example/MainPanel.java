@@ -7,8 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.text.BreakIterator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -93,7 +91,7 @@ final class TextUtils {
     int lineStart = line.getStartOffset();
     int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
     int offs2 = offs;
-    Segment seg = SegmentCache.getSharedSegment();
+    Segment seg = new Segment(); // SegmentCache.getSharedSegment();
     doc.getText(lineStart, lineEnd - lineStart, seg);
     if (seg.count > 0) {
       BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
@@ -115,7 +113,7 @@ final class TextUtils {
         }
       }
     }
-    SegmentCache.releaseSharedSegment(seg);
+    // SegmentCache.releaseSharedSegment(seg);
     return offs2;
   }
 
@@ -128,7 +126,7 @@ final class TextUtils {
     int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
     int offs2 = offs;
 
-    Segment seg = SegmentCache.getSharedSegment();
+    Segment seg = new Segment(); // SegmentCache.getSharedSegment();
     doc.getText(lineStart, lineEnd - lineStart, seg);
     if (seg.count > 0) {
       BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
@@ -147,89 +145,89 @@ final class TextUtils {
         }
       }
     }
-    SegmentCache.releaseSharedSegment(seg);
+    // SegmentCache.releaseSharedSegment(seg);
     return offs2;
   }
 }
 
-class SegmentCache {
-  /**
-   * A global cache.
-   */
-  private static final SegmentCache SHARED_CACHE = new SegmentCache();
-
-  /**
-   * A list of the currently unused Segments.
-   */
-  private final List<Segment> segments = new ArrayList<>(11);
-
-  /**
-   * Returns the shared SegmentCache.
-   */
-  public static SegmentCache getSharedInstance() {
-    return SHARED_CACHE;
-  }
-
-  /**
-   * A convenience method to get a Segment from the shared
-   * <code>SegmentCache</code>.
-   */
-  public static Segment getSharedSegment() {
-    return getSharedInstance().getSegment();
-  }
-
-  /**
-   * A convenience method to release a Segment to the shared
-   * <code>SegmentCache</code>.
-   */
-  public static void releaseSharedSegment(Segment segment) {
-    getSharedInstance().releaseSegment(segment);
-  }
-
-  // /**
-  //  * Creates and returns a SegmentCache.
-  //  */
-  // public SegmentCache() {
-  //   segments = new ArrayList<>(11);
-  // }
-
-  /**
-   * Returns a <code>Segment</code>. When done, the <code>Segment</code>
-   * should be recycled by invoking <code>releaseSegment</code>.
-   */
-  public Segment getSegment() {
-    synchronized (this) {
-      int size = segments.size();
-      if (size > 0) {
-        return segments.remove(size - 1);
-      }
-    }
-    return new CachedSegment();
-  }
-
-  /**
-   * Releases a Segment. You should not use a Segment after you release it,
-   * and you should NEVER release the same Segment more than once, eg:
-   * <pre>
-   *   segmentCache.releaseSegment(segment);
-   *   segmentCache.releaseSegment(segment);
-   * </pre>
-   * Will likely result in very bad things happening!
-   */
-  public void releaseSegment(Segment segment) {
-    if (segment instanceof CachedSegment) {
-      synchronized (this) {
-        segment.array = null;
-        segment.count = 0;
-        segments.add(segment);
-      }
-    }
-  }
-
-  /**
-   * CachedSegment is used as a tagging interface to determine if
-   * a Segment can successfully be shared.
-   */
-  private static class CachedSegment extends Segment {
-  }
-}
+// class SegmentCache {
+//   /**
+//    * A global cache.
+//    */
+//   private static final SegmentCache SHARED_CACHE = new SegmentCache();
+//
+//   /**
+//    * A list of the currently unused Segments.
+//    */
+//   private final List<Segment> segments = new ArrayList<>(11);
+//
+//   /**
+//    * Returns the shared SegmentCache.
+//    */
+//   public static SegmentCache getSharedInstance() {
+//     return SHARED_CACHE;
+//   }
+//
+//   /**
+//    * A convenience method to get a Segment from the shared
+//    * <code>SegmentCache</code>.
+//    */
+//   public static Segment getSharedSegment() {
+//     return getSharedInstance().getSegment();
+//   }
+//
+//   /**
+//    * A convenience method to release a Segment to the shared
+//    * <code>SegmentCache</code>.
+//    */
+//   public static void releaseSharedSegment(Segment segment) {
+//     getSharedInstance().releaseSegment(segment);
+//   }
+//
+//   // /**
+//   //  * Creates and returns a SegmentCache.
+//   //  */
+//   // public SegmentCache() {
+//   //   segments = new ArrayList<>(11);
+//   // }
+//
+//   /**
+//    * Returns a <code>Segment</code>. When done, the <code>Segment</code>
+//    * should be recycled by invoking <code>releaseSegment</code>.
+//    */
+//   public Segment getSegment() {
+//     synchronized (this) {
+//       int size = segments.size();
+//       if (size > 0) {
+//         return segments.remove(size - 1);
+//       }
+//     }
+//     return new CachedSegment();
+//   }
+//
+//   /**
+//    * Releases a Segment. You should not use a Segment after you release it,
+//    * and you should NEVER release the same Segment more than once, eg:
+//    * <pre>
+//    *   segmentCache.releaseSegment(segment);
+//    *   segmentCache.releaseSegment(segment);
+//    * </pre>
+//    * Will likely result in very bad things happening!
+//    */
+//   public void releaseSegment(Segment segment) {
+//     if (segment instanceof CachedSegment) {
+//       synchronized (this) {
+//         segment.array = null;
+//         segment.count = 0;
+//         segments.add(segment);
+//       }
+//     }
+//   }
+//
+//   /**
+//    * CachedSegment is used as a tagging interface to determine if
+//    * a Segment can successfully be shared.
+//    */
+//   private static class CachedSegment extends Segment {
+//   }
+// }
