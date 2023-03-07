@@ -7,6 +7,10 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -98,10 +102,10 @@ public final class MainPanel extends JPanel {
     b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
     b.setAlignmentX(Component.RIGHT_ALIGNMENT);
     b.setAlignmentY(Component.CENTER_ALIGNMENT);
-    b.setIcon(new ColorIcon(Color.GREEN));
-    b.setRolloverIcon(new ColorIcon(Color.BLUE));
-    b.setSelectedIcon(new ColorIcon(Color.RED));
-    b.setRolloverSelectedIcon(new ColorIcon(Color.ORANGE));
+    b.setIcon(new EyeIcon(Color.BLUE));
+    b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
+    b.setSelectedIcon(new EyeIcon(Color.BLUE));
+    b.setRolloverSelectedIcon(new EyeIcon(Color.BLUE));
     b.setToolTipText("show/hide passwords");
   }
 
@@ -168,9 +172,11 @@ enum PasswordField {
 //       replace(fb, offset, 0, text, attr);
 //     }
 //   }
+//
 //   @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
 //     replace(fb, offset, length, "", null);
 //   }
+//
 //   @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
 //     Document doc = fb.getDocument();
 //     int currentLength = doc.getLength();
@@ -181,6 +187,7 @@ enum PasswordField {
 //     checkInput(newValue, offset);
 //     fb.replace(offset, length, text, attrs);
 //   }
+//
 //   // In Java, is it possible to check if a String is only ASCII? - Stack Overflow
 //   // https://stackoverflow.com/questions/3585053/in-java-is-it-possible-to-check-if-a-string-is-only-ascii
 //   private static void checkInput(String proposedValue, int offset) throws BadLocationException {
@@ -201,18 +208,34 @@ enum PasswordField {
 //   }
 // }
 
-class ColorIcon implements Icon {
+class EyeIcon implements Icon {
   private final Color color;
 
-  protected ColorIcon(Color color) {
+  protected EyeIcon(Color color) {
     this.color = color;
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.translate(x, y);
     g2.setPaint(color);
-    g2.fillRect(1, 1, getIconWidth() - 2, getIconHeight() - 2);
+    double w = getIconWidth();
+    double h = getIconHeight();
+    double r = 3d * w / 4d;
+    double x0 = w / 2d - r + 1d;
+    Area eye = new Area(new Ellipse2D.Double(x0, -r, 2d * r, 2d * r));
+    eye.intersect(new Area(new Ellipse2D.Double(x0, h - r, 2d * r, 2d * r)));
+    AffineTransform at = AffineTransform.getScaleInstance(0.9, 1.1);
+    g2.draw(at.createTransformedShape(eye));
+    g2.draw(new Ellipse2D.Double(w / 2d - 2d, h / 2d - 2d, 4d, 4d));
+    if (c instanceof AbstractButton) {
+      ButtonModel m = ((AbstractButton) c).getModel();
+      if (m.isSelected() || m.isPressed()) {
+        g2.setStroke(new BasicStroke(1.5f));
+        g2.draw(new Line2D.Double(w / 6d, 5d * h / 6d, 5d * w / 6d, h / 6d));
+      }
+    }
     g2.dispose();
   }
 
