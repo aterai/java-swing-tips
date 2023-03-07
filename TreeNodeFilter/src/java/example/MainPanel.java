@@ -161,29 +161,45 @@ class FilterableStatusUpdateListener implements TreeModelListener {
 
   private void updateParentUserObject(DefaultMutableTreeNode parent) {
     FilterableNode uo = (FilterableNode) parent.getUserObject();
-    // Java 9: Enumeration<TreeNode> children = parent.children();
-    Enumeration<?> children = parent.children();
-    while (children.hasMoreElements()) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
-      FilterableNode check = (FilterableNode) node.getUserObject();
-      if (check.status) {
-        uo.status = true;
-        return;
-      }
-    }
-    uo.status = false;
+    // Java 9: Collections.list(node.children()).stream()
+    uo.status = Collections.list((Enumeration<?>) parent.children()).stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .map(DefaultMutableTreeNode::getUserObject)
+        .filter(FilterableNode.class::isInstance)
+        .map(FilterableNode.class::cast)
+        .anyMatch(c -> c.status);
+    // // Java 9: Enumeration<TreeNode> children = parent.children();
+    // Enumeration<?> children = parent.children();
+    // while (children.hasMoreElements()) {
+    //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
+    //   FilterableNode check = (FilterableNode) node.getUserObject();
+    //   if (check.status) {
+    //     uo.status = true;
+    //     return;
+    //   }
+    // }
+    // uo.status = false;
   }
 
   private void updateAllChildrenUserObject(DefaultMutableTreeNode root, boolean match) {
-    Enumeration<?> breadth = root.breadthFirstEnumeration();
-    while (breadth.hasMoreElements()) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
-      if (Objects.equals(root, node)) {
-        continue;
-      }
-      FilterableNode uo = (FilterableNode) node.getUserObject();
-      uo.status = match;
-    }
+    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+        .filter(n -> !Objects.equals(n, root))
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .map(DefaultMutableTreeNode::getUserObject)
+        .filter(FilterableNode.class::isInstance)
+        .map(FilterableNode.class::cast)
+        .forEach(n -> n.status = match);
+    // Enumeration<?> breadth = root.breadthFirstEnumeration();
+    // while (breadth.hasMoreElements()) {
+    //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
+    //   if (Objects.equals(root, node)) {
+    //     continue;
+    //   }
+    //   FilterableNode uo = (FilterableNode) node.getUserObject();
+    //   uo.status = match;
+    // }
   }
 
   @Override public void treeNodesInserted(TreeModelEvent e) {
