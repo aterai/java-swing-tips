@@ -220,30 +220,39 @@ class EyeIcon implements Icon {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.translate(x, y);
     g2.setPaint(color);
-    double w = getIconWidth();
-    double h = getIconHeight();
-    double r = 3d * w / 4d;
-    double x0 = w / 2d - r + 1d;
-    Area eye = new Area(new Ellipse2D.Double(x0, -r, 2d * r, 2d * r));
-    eye.intersect(new Area(new Ellipse2D.Double(x0, h - r, 2d * r, 2d * r)));
-    AffineTransform at = AffineTransform.getScaleInstance(0.9, 1.1);
-    g2.draw(at.createTransformedShape(eye));
-    g2.draw(new Ellipse2D.Double(w / 2d - 2d, h / 2d - 2d, 4d, 4d));
+    int iw = getIconWidth();
+    int ih = getIconHeight();
+    double s = getIconWidth() / 12d;
+    g2.setStroke(new BasicStroke((float) s));
+    double w = iw - s * 2d;
+    double h = ih - s * 2d;
+    // double r = (Math.sqrt(2d) * w - 2d * s) / 2d;
+    double r = w * 3d / 4d - s * 2d;
+    double x0 = w / 2d - r + s;
+    Area eye = new Area(new Ellipse2D.Double(x0, s * 4d - r, r * 2d, r * 2d));
+    eye.intersect(new Area(new Ellipse2D.Double(x0, h - r - s * 2d, r * 2d, r * 2d)));
+    g2.draw(eye);
+    double rr = iw / 6d;
+    g2.draw(new Ellipse2D.Double(iw / 2d - rr, ih / 2d - rr, rr * 2d, rr * 2d));
     if (c instanceof AbstractButton) {
       ButtonModel m = ((AbstractButton) c).getModel();
       if (m.isSelected() || m.isPressed()) {
-        g2.setStroke(new BasicStroke(1.5f));
-        g2.draw(new Line2D.Double(w / 6d, 5d * h / 6d, 5d * w / 6d, h / 6d));
+        Shape l = new Line2D.Double(iw / 6d, ih * 5d / 6d, iw * 5d / 6d, ih / 6d);
+        AffineTransform at = AffineTransform.getTranslateInstance(-s, 0d);
+        g2.setPaint(Color.WHITE);
+        g2.draw(at.createTransformedShape(l));
+        g2.setPaint(color);
+        g2.draw(l);
       }
     }
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    return 12;
+    return 16;
   }
 
   @Override public int getIconHeight() {
-    return 12;
+    return 16;
   }
 }
