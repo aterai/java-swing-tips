@@ -60,9 +60,10 @@ public final class MainPanel extends JPanel {
         .filter(node -> !node.isRoot())
         .map(node -> Objects.toString(node.getUserObject()))
         .forEach(ref -> {
+          String br = String.join("", Collections.nCopies(12, "<br />"));
+          String tag = "<a name='%s' href='#'>%s</a>%s";
           try {
-            String tag = "<a name='%s' href='#'>%s</a><br><br><br><br><br><br><br><br><br><br><br><br>";
-            doc.insertBeforeEnd(element, String.format(tag, ref, ref));
+            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
           } catch (BadLocationException | IOException ex) {
             ex.printStackTrace();
             UIManager.getLookAndFeel().provideErrorFeedback(editor);
