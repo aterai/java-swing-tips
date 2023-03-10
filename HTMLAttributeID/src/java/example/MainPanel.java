@@ -89,7 +89,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     editorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-    editorPane.setText("<html>12<span id='2'>345678</span>90<p>1<a href='..'>23</a>45<span class='insert' id='0'>6</span>7<span id='1'>8</span>90<div class='fff' id='3'>123</div>4567890</p></html>");
+    String span2 = "<span id='2'>345678</span>";
+    String span0 = "<span class='insert' id='0'>6</span>";
+    String span1 = "<span id='1'>8</span>";
+    String div3 = "<div class='fff' id='3'>123</div>";
+    String html = "<html>12%s90<p>1<a href='..'>23</a>45%s7%s90%s4567890</p>";
+    editorPane.setText(String.format(html, span2, span0, span1, div3));
     DefaultHighlighter dh = (DefaultHighlighter) editorPane.getHighlighter();
     dh.setDrawsLayeredHighlights(false);
 
