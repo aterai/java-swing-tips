@@ -73,24 +73,17 @@ public final class MainPanel extends JPanel {
 
 class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
   private final Pattern pattern = Pattern.compile("^a.*", Pattern.CASE_INSENSITIVE);
-  private Color color;
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     Component c = super.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
-    if (selected) {
-      setParticularCondition(value);
-      c.setForeground(getTextSelectionColor());
-      c.setBackground(getBackgroundSelectionColor());
-      String str = Objects.toString(value, "");
-      // if (leaf && !str.isEmpty() && str.codePointAt(0) == 'a') {
-      if (leaf && pattern.matcher(str).matches()) {
-        ((JComponent) c).setOpaque(true);
-        c.setBackground(Color.RED);
-      } else {
-        ((JComponent) c).setOpaque(false);
-        c.setBackground(getBackgroundSelectionColor());
-      }
+    if (selected && c instanceof JComponent) {
+      JComponent jc = (JComponent) c;
+      jc.setOpaque(false);
+      jc.setForeground(getTextSelectionColor());
+      jc.setBackground(getBackgroundSelectionColor());
+      setUserObjectColor(value, jc);
+      setPatternColor(value, jc, leaf);
     } else {
       c.setForeground(getTextNonSelectionColor());
       c.setBackground(getBackgroundNonSelectionColor());
@@ -98,18 +91,21 @@ class SelectionColorTreeCellRenderer extends DefaultTreeCellRenderer {
     return c;
   }
 
-  private void setParticularCondition(Object value) {
+  private void setUserObjectColor(Object value, JComponent c) {
     if (value instanceof DefaultMutableTreeNode) {
       Object uo = ((DefaultMutableTreeNode) value).getUserObject();
       if (uo instanceof Color) {
-        color = (Color) uo;
-        return;
+        c.setOpaque(true);
+        c.setBackground((Color) uo);
       }
     }
-    color = null;
   }
 
-  @Override public Color getBackgroundSelectionColor() {
-    return Objects.nonNull(color) ? color : super.getBackgroundSelectionColor();
+  private void setPatternColor(Object value, JComponent c, boolean leaf) {
+    String str = Objects.toString(value, "");
+    if (leaf && pattern.matcher(str).matches()) {
+      c.setOpaque(true);
+      c.setBackground(Color.RED);
+    }
   }
 }
