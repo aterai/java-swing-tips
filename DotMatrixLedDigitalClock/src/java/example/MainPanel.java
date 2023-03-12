@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
     int start = 0;
     int end = start + COLUMN;
     if (contains(index, start, end, h1)) {
-      return true;
+      return hours >= ten;
     }
     int gap = 1;
     int h2 = hours - h1 * ten;
