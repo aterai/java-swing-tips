@@ -13,9 +13,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "javascript:(function(){var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3]).replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');}());";
-  private final JTextField textField1 = new JTextField(TEXT);
-  private final JTextField textField2 = new JTextField(TEXT);
+  private final JTextField field1 = new JTextField();
+  private final JTextField field2 = new JTextField();
   private final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
   private final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
     @Override public void updateUI() {
@@ -29,58 +28,65 @@ public final class MainPanel extends JPanel {
       return d;
     }
   };
-  private final transient EmptyThumbHandler handler = new EmptyThumbHandler(textField1, scroller1);
+  private final transient EmptyThumbHandler handler = new EmptyThumbHandler(field1, scroller1);
 
   private MainPanel() {
     super(new BorderLayout());
-    scroller1.setModel(textField1.getHorizontalVisibility());
-    scroller2.setModel(textField2.getHorizontalVisibility());
+    String var = "var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');";
+    String code = "if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3])";
+    String replace = ".replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');";
+    String js = String.format("javascript:(function(){%s%s%s}());", var, code, replace);
+    field1.setText(js);
+    field2.setText(js);
+
+    scroller1.setModel(field1.getHorizontalVisibility());
+    scroller2.setModel(field2.getHorizontalVisibility());
 
     JCheckBox check = new JCheckBox("add EmptyThumbHandler");
     check.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
-        textField1.addComponentListener(handler);
-        textField1.getDocument().addDocumentListener(handler);
+        field1.addComponentListener(handler);
+        field1.getDocument().addDocumentListener(handler);
       } else {
-        textField1.removeComponentListener(handler);
-        textField1.getDocument().removeDocumentListener(handler);
+        field1.removeComponentListener(handler);
+        field1.getDocument().removeDocumentListener(handler);
       }
     });
 
     JButton caretButton = new JButton("setCaretPosition: 0");
     caretButton.addActionListener(e -> {
-      textField1.requestFocusInWindow();
-      textField1.setCaretPosition(0);
+      field1.requestFocusInWindow();
+      field1.setCaretPosition(0);
       scroller1.revalidate();
-      textField2.requestFocusInWindow();
-      textField2.setCaretPosition(0);
+      field2.requestFocusInWindow();
+      field2.setCaretPosition(0);
       scroller2.revalidate();
     });
 
     JButton offsetButton = new JButton("setScrollOffset: 0");
     offsetButton.addActionListener(e -> {
-      textField1.setScrollOffset(0);
+      field1.setScrollOffset(0);
       scroller1.revalidate();
-      textField2.setScrollOffset(0);
+      field2.setScrollOffset(0);
       scroller2.revalidate();
     });
 
     Box p = Box.createVerticalBox();
-    JScrollPane scroll = new JScrollPane(new JTextField(TEXT));
+    JScrollPane scroll = new JScrollPane(new JTextField(js));
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
     p.add(new JLabel("JScrollPane + VERTICAL_SCROLLBAR_NEVER"));
     p.add(scroll);
     p.add(Box.createVerticalStrut(5));
     p.add(new JLabel("BoundedRangeModel: textField.getHorizontalVisibility()"));
-    p.add(textField1);
+    p.add(field1);
     p.add(Box.createVerticalStrut(2));
     p.add(scroller1);
     p.add(Box.createVerticalStrut(2));
     p.add(check);
     p.add(Box.createVerticalStrut(5));
     p.add(new JLabel("BoundedRangeModel+textField.ArrowButtonlessScrollBarUI"));
-    p.add(textField2);
+    p.add(field2);
     p.add(Box.createVerticalStrut(2));
     p.add(scroller2);
     p.add(Box.createVerticalStrut(5));
