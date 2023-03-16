@@ -20,9 +20,9 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"AA",  1, true}, {"BB",  2, false}, {"cc",  3, true}, {"dd",  4, false}, {"ee",  5, false},
-      {"FF", -1, true}, {"GG", -2, false}, {"HH", -3, true}, {"II", -4, false}, {"JJ", -5, false},
-      {"KK", 11, true}, {"LL", 22, false}, {"MM", 33, true}, {"NN", 44, false}, {"OO", 55, false},
+        {"AA", 1, true}, {"BB", 2, false}, {"cc", 3, true}, {"dd", 4, false}, {"ee", 5, false},
+        {"FF", -1, true}, {"GG", -2, true}, {"HH", -3, true}, {"II", -4, true}, {"JJ", -5, true},
+        {"KK", 6, true}, {"LL", 7, false}, {"MM", 8, true}, {"NN", 9, false}, {"OO", 0, false},
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -33,12 +33,6 @@ public final class MainPanel extends JPanel {
     table.setFillsViewportHeight(true);
     // XXX: sorter.setSortsOnUpdates(true);
 
-    RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
-      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        int vidx = table.convertRowIndexToView(entry.getIdentifier());
-        return vidx < MAXIMUM_ROW_COUNT;
-      }
-    };
     TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
       @Override public void toggleSortOrder(int column) {
         super.toggleSortOrder(column);
@@ -56,12 +50,20 @@ public final class MainPanel extends JPanel {
         // }
       }
     };
-
     table.setRowSorter(sorter);
     sorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
+    RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
+      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+        int viewIndex = table.convertRowIndexToView(entry.getIdentifier());
+        return viewIndex < MAXIMUM_ROW_COUNT;
+      }
+    };
+    RowFilter<? super TableModel, ? super Integer> defFilter = sorter.getRowFilter();
+    // System.out.println(defFilter); // -> null
+
     JCheckBox check2 = new JCheckBox("viewRowIndex < " + MAXIMUM_ROW_COUNT);
-    check2.addActionListener(e -> sorter.setRowFilter(check2.isSelected() ? filter : null));
+    check2.addActionListener(e -> sorter.setRowFilter(check2.isSelected() ? filter : defFilter));
 
     Box box = Box.createHorizontalBox();
     box.add(check1);
