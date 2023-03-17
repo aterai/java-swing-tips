@@ -102,8 +102,8 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
           .orElseGet(Rectangle::new);
       // rect.width -= i.left + i.right;
       FontMetrics fm = c.getFontMetrics(c.getFont());
-      String str = Objects.toString(value, "");
-      ((JComponent) c).setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
+      String s = Objects.toString(value, "");
+      ((JComponent) c).setToolTipText(fm.stringWidth(s) > rect.width ? s : list.getToolTipText());
     }
     return c;
   }
