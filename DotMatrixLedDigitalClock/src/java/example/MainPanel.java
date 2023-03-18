@@ -45,6 +45,19 @@ public final class MainPanel extends JPanel {
       immutableSetOf(0, 1, 2, 3, 7, 14, 21, 22, 23, 24, 25, 26, 27), // 7
       immutableSetOf(0, 1, 2, 3, 4, 5, 6, 7, 10, 13, 14, 17, 20, 21, 22, 23, 24, 25, 26, 27), // 8
       immutableSetOf(0, 1, 2, 3, 6, 7, 10, 13, 14, 17, 20, 21, 22, 23, 24, 25, 26, 27)); // 9
+  // private static final int COLUMN = 5;
+  // private static final int ROW = 7;
+  // private static final List<Set<Integer>> NUMBERS = Arrays.asList(
+  //     Set.of(1, 2, 3, 4, 5, 7, 9, 13, 14, 17, 20, 21, 25, 27, 29, 30, 31, 32, 33), // 0
+  //     Set.of(8, 13, 14, 15, 16, 17, 18, 19, 20, 27), // 1
+  //     Set.of(1, 6, 7, 12, 13, 14, 18, 20, 21, 24, 27, 29, 30, 34), // 2
+  //     Set.of(0, 5, 7, 13, 14, 17, 20, 21, 23, 24, 27, 28, 29, 32, 33), // 3
+  //     Set.of(3, 4, 9, 11, 15, 18, 21, 22, 23, 24, 25, 26, 27, 32), // 4
+  //     Set.of(0, 1, 2, 5, 7, 9, 13, 14, 16, 20, 21, 23, 27, 28, 31, 32, 33), // 5
+  //     Set.of(1, 2, 3, 4, 5, 7, 10, 13, 14, 17, 20, 21, 24, 27, 29, 32, 33), // 6
+  //     Set.of(0, 7, 11, 12, 13, 14, 17, 21, 23, 28, 29), // 7
+  //     Set.of(1, 2, 4, 5, 7, 10, 13, 14, 17, 20, 21, 24, 27, 29, 30, 32, 33), // 8
+  //     Set.of(1, 2, 5, 7, 10, 13, 14, 17, 20, 21, 24, 27, 29, 30, 31, 32, 33)); // 9
   private static final List<Integer> DOT = Arrays.asList(2, 4);
   private transient HierarchyListener listener;
   private final Timer timer = new Timer(100, null);
