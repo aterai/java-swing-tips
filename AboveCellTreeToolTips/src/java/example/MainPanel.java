@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
           Component c = r.getTreeCellRendererComponent(
               tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
-            ((JComponent) c).setToolTipText(value == null ? null : value.toString());
+            ((JComponent) c).setToolTipText(Objects.toString(value, null));
           }
           // JLabel l = (JLabel) c;
           // Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
@@ -52,8 +52,9 @@ public final class MainPanel extends JPanel {
 
     JSplitPane sp = new JSplitPane();
     sp.setResizeWeight(.5);
+    sp.setDividerLocation(160);
     sp.setLeftComponent(p);
-    sp.setRightComponent(new JLabel("dummy panel"));
+    sp.setRightComponent(new JLabel("JLabel"));
 
     add(sp);
     setPreferredSize(new Dimension(320, 240));
@@ -147,7 +148,7 @@ class TooltipTree extends JTree {
       Component c = r.getTreeCellRendererComponent(
           tree, value, selected, expanded, leaf, row, hasFocus);
       if (c instanceof JComponent) {
-        ((JComponent) c).setToolTipText(value == null ? null : value.toString());
+        ((JComponent) c).setToolTipText(Objects.toString(value, null));
       }
       return c;
     });
@@ -207,7 +208,7 @@ class TooltipTree extends JTree {
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     JLabel l = (JLabel) renderer.getTreeCellRendererComponent(
 //         tree, value, selected, expanded, leaf, row, hasFocus);
-//     l.setToolTipText(value == null ? null : value.toString());
+//     l.setToolTipText(Objects.toString(value, null));
 //     // Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
 //     // if (c instanceof JScrollPane) {
 //     //   Insets i = l.getInsets();
