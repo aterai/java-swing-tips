@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"AAA", 0, true}, {"BBB", 1, false},
-      {"CCC", 2, true}, {"DDD", 3, true},
-      {"EEE", 4, true}, {"FFF", 5, false},
+        {"AAA", 0, true}, {"BBB", 1, false},
+        {"CCC", 2, true}, {"DDD", 3, true},
+        {"EEE", 4, true}, {"FFF", 5, false},
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -26,21 +26,26 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model);
+    // RowSorter<? extends TableModel> defSorter = table.getRowSorter();
     TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
       @Override public boolean isSortable(int column) {
         return false;
       }
     };
-    sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+    table.setRowSorter(sorter);
+
+    RowFilter<? super TableModel, ? super Integer> defFilter = sorter.getRowFilter();
+    RowFilter<TableModel, Integer> filter = new RowFilter<>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         return entry.getIdentifier() % 2 == 0;
       }
-    });
+    };
 
     JCheckBox check = new JCheckBox("filter: idx%2==0");
     check.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
-      table.setRowSorter(c.isSelected() ? sorter : null);
+      // table.setRowSorter(c.isSelected() ? sorter : defSorter);
+      sorter.setRowFilter(c.isSelected() ? filter : defFilter);
     });
 
     add(check, BorderLayout.NORTH);
