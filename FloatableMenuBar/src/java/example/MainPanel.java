@@ -13,9 +13,6 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JToolBar toolBar = new JToolBar();
-    toolBar.setLayout(new BorderLayout());
-
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(makeMenu("JMenu 1"));
 
@@ -39,7 +36,6 @@ public final class MainPanel extends JPanel {
               JPopupMenu popup = menu.getPopupMenu();
               Rectangle bounds = popup.getBounds();
               Point loc = menu.getLocationOnScreen();
-              // int h = bounds.height + UIManager.getInt("Menu.menuPopupOffsetY");
               loc.y -= bounds.height + UIManager.getInt("Menu.menuPopupOffsetY");
               popup.setLocation(loc);
             });
@@ -57,7 +53,10 @@ public final class MainPanel extends JPanel {
     });
     menuBar.add(menu2);
 
+    JToolBar toolBar = new JToolBar();
+    toolBar.setLayout(new BorderLayout());
     toolBar.add(menuBar);
+
     add(toolBar, BorderLayout.NORTH);
     add(Box.createRigidArea(new Dimension()), BorderLayout.WEST);
     add(Box.createRigidArea(new Dimension()), BorderLayout.EAST);
