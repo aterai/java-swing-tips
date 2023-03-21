@@ -18,18 +18,17 @@ public final class MainPanel extends JPanel {
 
     JMenu menu2 = makeMenu("JMenu 2");
     menu2.addMenuListener(new MenuListener() {
-      private boolean isFloating(JMenu menu) {
-        Container c = SwingUtilities.getAncestorOfClass(JToolBar.class, menu);
-        return c instanceof JToolBar && !((BasicToolBarUI) ((JToolBar) c).getUI()).isFloating();
+      private boolean isFloating(Component c) {
+        Container p = SwingUtilities.getAncestorOfClass(JToolBar.class, c);
+        return p instanceof JToolBar && ((BasicToolBarUI) ((JToolBar) p).getUI()).isFloating();
       }
 
       @Override public void menuSelected(MenuEvent e) {
         JMenu menu = (JMenu) e.getSource();
-        if (menu.isTopLevelMenu() && isFloating(menu)) {
+        if (menu.isTopLevelMenu() && !isFloating(menu)) {
           Dimension d = menu.getPreferredSize();
-          Point p = menu.getLocation();
-          Component cp = getRootPane().getContentPane();
-          Point pt = SwingUtilities.convertPoint(menu.getParent(), p, cp);
+          Component cp = menu.getRootPane().getContentPane();
+          Point pt = SwingUtilities.convertPoint(menu.getParent(), menu.getLocation(), cp);
           pt.y += d.height * 2;
           if (!cp.getBounds().contains(pt)) {
             EventQueue.invokeLater(() -> {
@@ -53,8 +52,15 @@ public final class MainPanel extends JPanel {
     });
     menuBar.add(menu2);
 
-    JToolBar toolBar = new JToolBar();
-    toolBar.setLayout(new BorderLayout());
+    JToolBar toolBar = new JToolBar() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setLayout(new BorderLayout());
+        // Color bgc = UIManager.getLookAndFeelDefaults().getColor("MenuBar.background");
+        // setBackground(bgc);
+        // setBorderPainted(false);
+      }
+    };
     toolBar.add(menuBar);
 
     add(toolBar, BorderLayout.NORTH);
@@ -79,14 +85,14 @@ public final class MainPanel extends JPanel {
   }
 
   private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
+//    try {
+//      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//    } catch (UnsupportedLookAndFeelException ignored) {
+//      Toolkit.getDefaultToolkit().beep();
+//    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+//      ex.printStackTrace();
+//      return;
+//    }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
