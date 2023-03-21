@@ -137,7 +137,7 @@ class FileIconCellRenderer extends DefaultTableCellRenderer {
           break;
         case 1:
           l.setHorizontalAlignment(SwingConstants.RIGHT);
-          l.setText(file.isDirectory() ? null : Long.toString(file.length()));
+          l.setText(file.isDirectory() ? "" : Long.toString(file.length()));
           break;
         case 2:
           l.setText(file.getAbsolutePath());
