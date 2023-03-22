@@ -85,14 +85,14 @@ public final class MainPanel extends JPanel {
   }
 
   private static void createAndShowGui() {
-//    try {
-//      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//    } catch (UnsupportedLookAndFeelException ignored) {
-//      Toolkit.getDefaultToolkit().beep();
-//    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-//      ex.printStackTrace();
-//      return;
-//    }
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
+    }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());

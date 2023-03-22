@@ -248,7 +248,8 @@ class ContributionIcon implements Icon {
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.translate(x, y);
+    // JList#setLayoutOrientation(VERTICAL_WRAP) + SynthLookAndFeel(Nimbus, GTK) bug???
+    // g2.translate(x, y);
     g2.setPaint(color);
     g2.fillRect(0, 0, getIconWidth(), getIconHeight());
     g2.dispose();

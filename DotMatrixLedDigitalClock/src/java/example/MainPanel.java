@@ -237,7 +237,8 @@ class LedDotIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.translate(x, y);
+    // JList#setLayoutOrientation(VERTICAL_WRAP) + SynthLookAndFeel(Nimbus, GTK) bug???
+    // g2.translate(x, y);
     g2.setPaint(led ? on : c.getBackground());
     g2.fillOval(0, 0, getIconWidth() - 1, getIconHeight() - 1);
     g2.dispose();
