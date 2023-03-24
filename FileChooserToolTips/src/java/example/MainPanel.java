@@ -140,14 +140,29 @@ class TooltipTableCellRenderer implements TableCellRenderer {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       Insets i = l.getInsets();
-      Rectangle cr = table.getCellRect(row, column, false);
-      cr.width -= i.left + i.right;
-      int gap = l.getIconTextGap();
-      Optional.ofNullable(l.getIcon()).ifPresent(icon -> cr.width -= icon.getIconWidth() + gap);
-      FontMetrics fm = c.getFontMetrics(c.getFont());
-      String str = Objects.toString(value, "");
-      l.setToolTipText(fm.stringWidth(str) > cr.width ? str : null);
+      Rectangle rect = table.getCellRect(row, column, false);
+      rect.width -= i.left + i.right;
+      l.setToolTipText(isClipped(l, rect) ? l.getText() : table.getToolTipText());
     }
     return c;
+  }
+
+  private static boolean isClipped(JLabel label, Rectangle viewR) {
+    Rectangle iconR = new Rectangle();
+    Rectangle textR = new Rectangle();
+    String str = SwingUtilities.layoutCompoundLabel(
+        label,
+        label.getFontMetrics(label.getFont()),
+        label.getText(),
+        label.getIcon(),
+        label.getVerticalAlignment(),
+        label.getHorizontalAlignment(),
+        label.getVerticalTextPosition(),
+        label.getHorizontalTextPosition(),
+        viewR,
+        iconR,
+        textR,
+        label.getIconTextGap());
+    return !Objects.equals(label.getText(), str);
   }
 }
