@@ -38,35 +38,32 @@ public final class MainPanel extends JPanel {
   }
 
   private static JEditorPane makeEditorPane(boolean editable) {
-    JEditorPane editorPane = new JEditorPane();
-    editorPane.setEditable(editable);
-    editorPane.setContentType("text/html");
-    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-    editorPane.setText(HTML_TEXT);
-    editorPane.addHyperlinkListener(e -> {
+    JEditorPane editor = new JEditorPane();
+    editor.setEditable(editable);
+    editor.setContentType("text/html");
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.setText(HTML_TEXT);
+    editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        JOptionPane.showMessageDialog(editorPane, "Clicked on the link " + e.getURL());
+        JOptionPane.showMessageDialog(editor, "Clicked on the link " + e.getURL());
       } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-        tooltip = editorPane.getToolTipText();
+        tooltip = editor.getToolTipText();
         // URL url = e.getURL();
-        // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+        // editor.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
         String txt = Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null);
-        editorPane.setToolTipText(txt);
+        editor.setToolTipText(txt);
       } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-        editorPane.setToolTipText(tooltip);
+        editor.setToolTipText(tooltip);
       }
     });
 
-    HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
+    HTMLDocument doc = (HTMLDocument) editor.getDocument();
     Style s = doc.addStyle("button", null);
     StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
     HyperlinkButton button = new HyperlinkButton(LINK);
-    button.addActionListener(e -> {
-      AbstractButton b = (AbstractButton) e.getSource();
-      editorPane.setBackground(b.isSelected() ? Color.RED : Color.WHITE);
-      JOptionPane.showMessageDialog(editorPane, "Clicked on the link " + LINK);
-    });
-    button.setToolTipText("button: " + LINK);
+    String msg = "Clicked on the link " + button.getText();
+    button.addActionListener(e -> JOptionPane.showMessageDialog(editor, msg));
+    button.setToolTipText("button: " + button.getText());
     button.setOpaque(false);
     StyleConstants.setComponent(s, button);
     try {
@@ -79,7 +76,7 @@ public final class MainPanel extends JPanel {
       wrap.initCause(ex);
       throw wrap;
     }
-    return editorPane;
+    return editor;
   }
 
   public static void main(String[] args) {
