@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -44,11 +45,13 @@ public final class MainPanel extends JPanel {
     editorPane.setText(HTML_TEXT);
     editorPane.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + e.getURL());
+        JOptionPane.showMessageDialog(editorPane, "Clicked on the link " + e.getURL());
       } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
         tooltip = editorPane.getToolTipText();
-        URL url = e.getURL();
-        editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+        // URL url = e.getURL();
+        // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+        String txt = Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null);
+        editorPane.setToolTipText(txt);
       } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
         editorPane.setToolTipText(tooltip);
       }
@@ -61,7 +64,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       AbstractButton b = (AbstractButton) e.getSource();
       editorPane.setBackground(b.isSelected() ? Color.RED : Color.WHITE);
-      JOptionPane.showMessageDialog(editorPane, "You click the link with the URL " + LINK);
+      JOptionPane.showMessageDialog(editorPane, "Clicked on the link " + LINK);
     });
     button.setToolTipText("button: " + LINK);
     button.setOpaque(false);
@@ -120,6 +123,7 @@ class HyperlinkButton extends JButton {
   // @Override public String getUIClassID() {
   //   return UI_CLASS_ID;
   // }
+
   // @Override public void setUI(LinkViewButtonUI ui) {
   //   super.setUI(ui);
   // }
