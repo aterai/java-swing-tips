@@ -47,11 +47,7 @@ public final class MainPanel extends JPanel {
 
   public boolean isEditorFocusCycle(Component editor) {
     Component child = CheckBoxesEditor.getEditorFocusCycleAfter(editor);
-    if (child != null) {
-      // child.requestFocus();
-      return child.requestFocusInWindow();
-    }
-    return false;
+    return child != null && child.requestFocusInWindow();
   }
 
   private static JTable makeTable() {
