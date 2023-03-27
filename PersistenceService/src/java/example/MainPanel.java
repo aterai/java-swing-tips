@@ -167,7 +167,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
         // C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxx-xxx.muf
         // ps.delete(codebase);
         // ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
-        HashMap<String, Serializable> map = new HashMap<>();
+        Map<String, Serializable> map = new HashMap<>();
         map.put("size", (Serializable) state.getSize());
         map.put("location", (Serializable) state.getLocation());
         // Test1: map.put("setting", (Serializable) state);

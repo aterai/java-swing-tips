@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.swing.*;
 
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
   private Box makeRadioPane() {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createTitledBorder("JRootPane#setDefaultButton(...)"));
-    LinkedHashMap<String, JButton> map = new LinkedHashMap<>();
+    Map<String, JButton> map = new LinkedHashMap<>();
     map.put("null", null);
     map.put("Button1", b1);
     map.put("Button2", b2);

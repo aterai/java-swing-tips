@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
+import java.util.Map;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -20,7 +21,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     Font font = textField2.getFont();
     textField2.setFont(font.deriveFont(16f));
     // TEST:
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
   private static void initUnderline(JTextComponent tc, Object style) {
     Font font = tc.getFont();
-    HashMap<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
+    Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
     attrs.put(TextAttribute.UNDERLINE, style);
     tc.setFont(font.deriveFont(attrs));
   }

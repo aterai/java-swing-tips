@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
@@ -29,8 +30,7 @@ public final class MainPanel extends JPanel {
     DefaultFormatterFactory factory = new DefaultFormatterFactory(new DateFormatter(format));
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND));
     ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().setFormatterFactory(factory);
-
-    HashMap<Integer, Integer> stepSizeMap = new HashMap<>();
+    Map<Integer, Integer> stepSizeMap = new HashMap<>();
     stepSizeMap.put(Calendar.HOUR_OF_DAY, 1);
     stepSizeMap.put(Calendar.MINUTE, 1);
     stepSizeMap.put(Calendar.SECOND, 30);

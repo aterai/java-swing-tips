@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    LinkedHashMap<String, Component> map = new LinkedHashMap<>();
+    Map<String, Component> map = new LinkedHashMap<>();
     map.put("CellBounds", list1);
     map.put("ListCellRenderer", list2);
     map.put("Default location", list3);

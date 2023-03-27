@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -54,7 +55,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    LinkedHashMap<String, Component> map = new LinkedHashMap<>(4);
+    Map<String, Component> map = new LinkedHashMap<>(4);
     map.put("JLabel+MouseListener: ", new UrlLabel(link));
     map.put("JButton: ", new JButton(browseAction));
     map.put("JButton+ButtonUI: ", new HyperlinkButton(browseAction));
