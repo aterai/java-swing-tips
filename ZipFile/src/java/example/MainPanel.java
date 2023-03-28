@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -246,6 +247,12 @@ class TextAreaOutputStream extends OutputStream {
     this.textArea = textArea;
   }
 
+  // // Java 10:
+  // @Override public void flush() {
+  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
+  //   buffer.reset();
+  // }
+
   @Override public void flush() throws IOException {
     textArea.append(buffer.toString("UTF-8"));
     buffer.reset();
@@ -262,23 +269,11 @@ class TextAreaOutputStream extends OutputStream {
 
 class TextAreaHandler extends StreamHandler {
   protected TextAreaHandler(OutputStream os) {
-    super();
-    configureEncoding();
-    setOutputStream(os);
+    super(os, new SimpleFormatter());
   }
 
-  private void configureEncoding() {
-    setFormatter(new SimpleFormatter());
-    try {
-      setEncoding("UTF-8");
-    } catch (IOException ex) {
-      try {
-        setEncoding(null);
-      } catch (IOException ex2) {
-        // doing a setEncoding with null should always work.
-        assert false;
-      }
-    }
+  @Override public String getEncoding() {
+    return StandardCharsets.UTF_8.name();
   }
 
   // [UnsynchronizedOverridesSynchronized]

@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -150,6 +151,12 @@ class TextAreaOutputStream extends OutputStream {
     this.textArea = textArea;
   }
 
+  // // Java 10:
+  // @Override public void flush() {
+  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
+  //   buffer.reset();
+  // }
+
   @Override public void flush() throws IOException {
     textArea.append(buffer.toString("UTF-8"));
     buffer.reset();
@@ -165,31 +172,19 @@ class TextAreaOutputStream extends OutputStream {
 }
 
 class TextAreaHandler extends StreamHandler {
-  private void configure() {
-    setFormatter(new SimpleFormatter());
-    try {
-      setEncoding("UTF-8");
-    } catch (IOException ex) {
-      try {
-        setEncoding(null);
-      } catch (IOException ex2) {
-        // doing a setEncoding with null should always work.
-        assert false;
-      }
-    }
+  protected TextAreaHandler(OutputStream os) {
+    super(os, new SimpleFormatter());
   }
 
-  protected TextAreaHandler(OutputStream os) {
-    super();
-    configure();
-    setOutputStream(os);
+  @Override public String getEncoding() {
+    return StandardCharsets.UTF_8.name();
   }
 
   // [UnsynchronizedOverridesSynchronized]
   // Unsynchronized method publish overrides synchronized method in StreamHandler
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
-  @Override public synchronized void publish(LogRecord record) {
-    super.publish(record);
+  @Override public synchronized void publish(LogRecord logRecord) {
+    super.publish(logRecord);
     flush();
   }
 
