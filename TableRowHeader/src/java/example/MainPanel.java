@@ -105,7 +105,7 @@ class RowHeaderList<E> extends JList<E> {
     listSelection = getSelectionModel();
   }
 
-  protected class RowHeaderRenderer<E2> implements ListCellRenderer<E2> {
+  protected class RowHeaderRenderer<F> implements ListCellRenderer<F> {
     private final JTableHeader header; // = table.getTableHeader();
     private final JLabel renderer = new JLabel(); // new DefaultListCellRenderer();
 
@@ -121,7 +121,7 @@ class RowHeaderList<E> extends JList<E> {
       // renderer.setFont(header.getFont());
     }
 
-    @Override public Component getListCellRendererComponent(JList<? extends E2> list, E2 value, int index, boolean isSelected, boolean cellHasFocus) {
+    @Override public Component getListCellRendererComponent(JList<? extends F> list, F value, int index, boolean isSelected, boolean cellHasFocus) {
       // Component c = renderer.getListCellRendererComponent(
       //     list, value, index, isSelected, cellHasFocus);
       // Component c = renderer;
