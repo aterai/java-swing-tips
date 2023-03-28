@@ -106,7 +106,7 @@ class TableHeaderTabbedPane extends JPanel {
     }
   }
 
-  private class TableHeaderMouseInputHandler extends MouseAdapter {
+  private final class TableHeaderMouseInputHandler extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
       JTableHeader h = (JTableHeader) e.getComponent();
       int idx = h.columnAtPoint(e.getPoint());

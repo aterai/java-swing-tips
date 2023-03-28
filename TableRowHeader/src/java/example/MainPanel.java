@@ -141,7 +141,7 @@ class RowHeaderList<E> extends JList<E> {
     }
   }
 
-  private class RollOverListener extends MouseAdapter {
+  private final class RollOverListener extends MouseAdapter {
     @Override public void mouseExited(MouseEvent e) {
       if (pressedRowIndex < 0) {
         // pressedRowIndex = -1;

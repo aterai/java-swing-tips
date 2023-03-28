@@ -69,7 +69,7 @@ class RollOverList<E> extends JList<E> {
     setCellRenderer(rollOverHandler);
   }
 
-  private class RollOverCellHandler extends MouseAdapter implements ListCellRenderer<E> {
+  private final class RollOverCellHandler extends MouseAdapter implements ListCellRenderer<E> {
     private final Color rolloverBgc = new Color(0xDC_F0_FF);
     private int rollOverRowIndex = -1;
     private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();

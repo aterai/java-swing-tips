@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     return new JLayer<>(wrap, new TimerScrollBarLayerUI());
   }
 
-  private class ScrollBarLayout extends BorderLayout {
+  private final class ScrollBarLayout extends BorderLayout {
     public static final int MIN_WIDTH = 6;
     private int controlsWidth = MIN_WIDTH;
 
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private class TimerScrollBarLayerUI extends ScrollBarLayerUI {
+  private final class TimerScrollBarLayerUI extends ScrollBarLayerUI {
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
       if (!(e.getComponent() instanceof JScrollBar)) {
         return;

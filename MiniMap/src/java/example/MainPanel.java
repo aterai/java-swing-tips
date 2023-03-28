@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
     }
   };
 
-  private class MiniMapHandler extends MouseInputAdapter {
+  private final class MiniMapHandler extends MouseInputAdapter {
     @Override public void mousePressed(MouseEvent e) {
       processMiniMapMouseEvent(e);
     }

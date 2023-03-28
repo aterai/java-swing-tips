@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
     return firstDayOfMonth.minusDays(v);
   }
 
-  private class CalendarTableRenderer extends DefaultTableCellRenderer {
+  private final class CalendarTableRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       Component c = super.getTableCellRendererComponent(
           table, value, selected, focused, row, column);

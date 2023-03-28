@@ -133,7 +133,7 @@ class BasicComboPopup2 extends BasicComboPopup {
     return handler2;
   }
 
-  private class Handler2 extends MouseAdapter {
+  private final class Handler2 extends MouseAdapter {
     @Override public void mouseReleased(MouseEvent e) {
       if (!Objects.equals(e.getSource(), list)) {
         return;

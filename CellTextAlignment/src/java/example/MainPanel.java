@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
+  private final class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
       Component c = super.getTableCellRendererComponent(
           table, value, isSelected, hasFocus, row, column);

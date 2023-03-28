@@ -239,7 +239,7 @@ class ButtonTabComponent extends JPanel {
     setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
   }
 
-  private class TabButtonHandler extends MouseAdapter implements ActionListener {
+  private final class TabButtonHandler extends MouseAdapter implements ActionListener {
     @Override public void actionPerformed(ActionEvent e) {
       int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
       if (i != -1) {

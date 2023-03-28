@@ -96,7 +96,7 @@ class HighlightCursorTextArea extends JTextArea {
     super.paintComponent(g);
   }
 
-  private class RollOverListener extends MouseInputAdapter {
+  private final class RollOverListener extends MouseInputAdapter {
     @Override public void mouseExited(MouseEvent e) {
       rollOverRowIndex = -1;
       e.getComponent().repaint();

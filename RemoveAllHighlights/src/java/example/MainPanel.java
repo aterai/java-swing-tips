@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class WordHighlightListener
+  private static final class WordHighlightListener
       extends MouseAdapter
       implements CaretListener, KeyListener {
     private boolean dragActive;

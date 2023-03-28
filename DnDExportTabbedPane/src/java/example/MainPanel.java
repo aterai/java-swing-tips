@@ -390,7 +390,7 @@ class DnDTabbedPane extends JTabbedPane {
     return tabPlacement == TOP || tabPlacement == BOTTOM;
   }
 
-  private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag
+  private final class Handler extends MouseAdapter implements PropertyChangeListener {
     private Point startPt;
     private final int dragThreshold = DragSource.getDragThreshold();
     // Toolkit tk = Toolkit.getDefaultToolkit();

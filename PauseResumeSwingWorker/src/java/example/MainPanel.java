@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class ProgressTask extends BackgroundTask {
+  private final class ProgressTask extends BackgroundTask {
     @Override protected void process(List<Progress> chunks) {
       // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
       if (isCancelled()) {

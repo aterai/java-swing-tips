@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
     }.execute();
   }
 
-  private class FileDropTargetListener extends DropTargetAdapter {
+  private final class FileDropTargetListener extends DropTargetAdapter {
     @Override public void drop(DropTargetDropEvent e) {
       Transferable transferable = e.getTransferable();
       if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
@@ -146,7 +146,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private class FileTransferHandler extends TransferHandler {
+  private final class FileTransferHandler extends TransferHandler {
     @Override public boolean canImport(TransferSupport support) {
       // System.out.println(support.getComponent().getClass().getName());
       boolean isDrop = support.isDrop();

@@ -149,7 +149,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     return rubberBand;
   }
 
-  private class RubberBandingListener extends MouseAdapter {
+  private final class RubberBandingListener extends MouseAdapter {
     private final Point srcPoint = new Point();
 
     @Override public void mouseDragged(MouseEvent e) {

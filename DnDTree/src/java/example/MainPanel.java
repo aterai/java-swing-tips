@@ -107,7 +107,7 @@ class DnDTree extends JTree {
     }
   }
 
-  private class NodeDragGestureListener implements DragGestureListener {
+  private final class NodeDragGestureListener implements DragGestureListener {
     @Override public void dragGestureRecognized(DragGestureEvent e) {
       // System.out.println("dragGestureRecognized");
       Point pt = e.getDragOrigin();
@@ -122,7 +122,7 @@ class DnDTree extends JTree {
     }
   }
 
-  private class NodeDropTargetListener implements DropTargetListener {
+  private final class NodeDropTargetListener implements DropTargetListener {
     @Override public void dropActionChanged(DropTargetDragEvent e) {
       /* not needed */
     }
@@ -234,7 +234,7 @@ class DnDTree extends JTree {
     }
   }
 
-  private class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
+  private final class DnDTreeCellRenderer extends DefaultTreeCellRenderer {
     private boolean isTargetNode;
     private boolean isTargetNodeLeaf;
 

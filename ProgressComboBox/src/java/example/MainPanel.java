@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     return Objects.nonNull(worker) && !worker.isDone();
   }
 
-  private class ComboTask extends BackgroundTask {
+  private final class ComboTask extends BackgroundTask {
     @Override protected void process(List<Integer> chunks) {
       if (isCancelled()) {
         return;

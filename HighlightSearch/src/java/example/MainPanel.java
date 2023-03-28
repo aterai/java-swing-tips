@@ -166,7 +166,7 @@ public final class MainPanel extends JPanel {
     return idx;
   }
 
-  private class HighlightHandler implements DocumentListener, ActionListener {
+  private final class HighlightHandler implements DocumentListener, ActionListener {
     private int current;
 
     @Override public void changedUpdate(DocumentEvent e) {

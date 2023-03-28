@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class MySpinnerUI extends BasicSpinnerUI {
+  private static final class MySpinnerUI extends BasicSpinnerUI {
     @Override protected Component createNextButton() {
       JComponent nextButton = (JComponent) super.createNextButton();
       nextButton.setToolTipText("SpinnerUI: next next");
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class MyWinSpinnerUI extends WindowsSpinnerUI {
+  private static final class MyWinSpinnerUI extends WindowsSpinnerUI {
     @Override protected Component createNextButton() {
       JComponent nextButton = (JComponent) super.createNextButton();
       nextButton.setToolTipText("WindowsSpinnerUI: next next");

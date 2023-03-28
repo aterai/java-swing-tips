@@ -220,7 +220,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
     return NAME.equals(flavor.getHumanPresentableName());
   }
 
-  private class RowDropTargetListener implements DropTargetListener {
+  private final class RowDropTargetListener implements DropTargetListener {
     @Override public void dragExit(DropTargetEvent e) {
       targetIndex = -1;
       repaint();

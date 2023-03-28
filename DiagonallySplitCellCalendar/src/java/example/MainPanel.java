@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     // EventQueue.invokeLater(monthTable::doLayout);
   }
 
-  private class CalendarTableRenderer extends DefaultTableCellRenderer {
+  private final class CalendarTableRenderer extends DefaultTableCellRenderer {
     private final JPanel panel = new JPanel(new BorderLayout());
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {

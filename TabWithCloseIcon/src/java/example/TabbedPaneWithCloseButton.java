@@ -53,7 +53,7 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
     return defaultInsets;
   }
 
-  private class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
+  private final class CloseButtonTabbedPaneLayout extends TabbedPaneLayout {
     // a list of our close buttons
     @Override public void layoutContainer(Container parent) {
       super.layoutContainer(parent);

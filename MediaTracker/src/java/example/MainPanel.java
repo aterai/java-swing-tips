@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
   public final FileModel model = new FileModel();
   public transient MediaTracker tracker;
 
-  private class ImageDropTargetListener extends DropTargetAdapter {
+  private final class ImageDropTargetListener extends DropTargetAdapter {
     @Override public void dragOver(DropTargetDragEvent e) {
       if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
         e.acceptDrag(DnDConstants.ACTION_COPY);

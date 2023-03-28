@@ -184,7 +184,7 @@ public final class MainPanel extends JPanel {
     monthList.setModel(new CalendarViewListModel(localDate));
   }
 
-  private class CalendarListRenderer implements ListCellRenderer<LocalDate> {
+  private final class CalendarListRenderer implements ListCellRenderer<LocalDate> {
     private final ListCellRenderer<? super LocalDate> renderer = new DefaultListCellRenderer();
 
     @Override public Component getListCellRendererComponent(JList<? extends LocalDate> list, LocalDate value, int index, boolean isSelected, boolean cellHasFocus) {

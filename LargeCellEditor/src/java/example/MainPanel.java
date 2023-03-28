@@ -293,7 +293,7 @@ class EditorFromList<E extends IconItem> extends JList<E> {
     });
   }
 
-  private class RollOverListener extends MouseAdapter {
+  private final class RollOverListener extends MouseAdapter {
     @Override public void mouseExited(MouseEvent e) {
       rollOverRowIndex = -1;
       e.getComponent().repaint();

@@ -210,7 +210,7 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
     return super.isCellEditable(e);
   }
 
-  private class Handler extends MouseAdapter implements ActionListener {
+  private final class Handler extends MouseAdapter implements ActionListener {
     @Override public void actionPerformed(ActionEvent e) {
       fireEditingStopped();
     }

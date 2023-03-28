@@ -183,7 +183,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     return NAME.equals(flavor.getHumanPresentableName());
   }
 
-  private class ItemDropTargetListener implements DropTargetListener {
+  private final class ItemDropTargetListener implements DropTargetListener {
     // DropTargetListener interface
     @Override public void dragExit(DropTargetEvent e) {
       targetIndex = -1;

@@ -154,7 +154,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   protected final ButtonsPanel panel = new ButtonsPanel();
   protected final JTable table;
 
-  private class EditingStopHandler extends MouseAdapter implements ActionListener {
+  private final class EditingStopHandler extends MouseAdapter implements ActionListener {
     @Override public void mousePressed(MouseEvent e) {
       Object o = e.getSource();
       if (o instanceof TableCellEditor) {

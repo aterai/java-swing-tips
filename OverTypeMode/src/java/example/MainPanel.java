@@ -113,7 +113,7 @@ class OvertypeTextArea extends JTextArea {
   /*
    * Paint a horizontal line the width of a column and 1 pixel high
    */
-  private class OvertypeCaret extends DefaultCaret {
+  private final class OvertypeCaret extends DefaultCaret {
     /*
      * The overtype caret will simply be a horizontal line one pixel high
      * (once we determine where to paint it)

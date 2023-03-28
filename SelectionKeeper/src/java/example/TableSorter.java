@@ -359,7 +359,7 @@ public class TableSorter extends AbstractTableModel {
   }
 
   // Helper classes
-  private class RowComparator<E extends TableRow> implements Comparator<E> {
+  private final class RowComparator<E extends TableRow> implements Comparator<E> {
     @Override public int compare(TableRow r1, TableRow r2) {
       int row1 = r1.modelIndex;
       int row2 = r2.modelIndex;
@@ -394,7 +394,7 @@ public class TableSorter extends AbstractTableModel {
     }
   }
 
-  private class TableModelHandler implements TableModelListener {
+  private final class TableModelHandler implements TableModelListener {
     @Override public void tableChanged(TableModelEvent e) {
       // If we're not sorting by anything, just pass the event along.
       if (!isSorting()) {
@@ -448,7 +448,7 @@ public class TableSorter extends AbstractTableModel {
     }
   }
 
-  private class MouseHandler extends MouseAdapter {
+  private final class MouseHandler extends MouseAdapter {
     @Override public void mouseClicked(MouseEvent e) {
       JTableHeader h = (JTableHeader) e.getComponent();
       TableColumnModel columnModel = h.getColumnModel();

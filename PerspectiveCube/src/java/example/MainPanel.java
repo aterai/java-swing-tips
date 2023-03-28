@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class DragRotateHandler extends MouseAdapter {
+  private final class DragRotateHandler extends MouseAdapter {
     private final Cursor defCursor = Cursor.getDefaultCursor();
     private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
     private final Point pp = new Point();

@@ -93,7 +93,7 @@ class TitledSeparator extends JLabel {
     updateBorder();
   }
 
-  private class TitledSeparatorIcon implements Icon {
+  private final class TitledSeparatorIcon implements Icon {
     private int width = -1;
     private Paint painter1;
     private Paint painter2;

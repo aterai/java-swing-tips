@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
     monthTable.setModel(new CalendarViewTableModel(localDate));
   }
 
-  private class CalendarTableRenderer implements TableCellRenderer {
+  private final class CalendarTableRenderer implements TableCellRenderer {
     private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEADING, 1, 1));
     private final JLabel label = new EnclosedLabel();
     // private final JLabel holiday = new EnclosedLabel();

@@ -150,7 +150,7 @@ class LabelWithToolBox extends JLabel {
     addHierarchyListener(handler);
   }
 
-  private class ToolBoxHandler extends MouseAdapter implements HierarchyListener {
+  private final class ToolBoxHandler extends MouseAdapter implements HierarchyListener {
     @Override public void mouseEntered(MouseEvent e) {
       if (!animator.isRunning()) { // && yy != toolBox.getPreferredSize().height) {
         isHidden = true;

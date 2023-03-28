@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     // }
   }
 
-  private class GlyphPaintPanel extends JPanel {
+  private final class GlyphPaintPanel extends JPanel {
     private Set<FontPaint> fontPaintFlag = EnumSet.allOf(FontPaint.class);
     private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
     private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);

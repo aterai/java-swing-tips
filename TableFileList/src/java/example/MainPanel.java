@@ -262,7 +262,7 @@ class FileListTable extends JTable {
     return RUBBER_BAND;
   }
 
-  private class RubberBandingListener extends MouseAdapter {
+  private final class RubberBandingListener extends MouseAdapter {
     private final Point srcPoint = new Point();
 
     @Override public void mouseDragged(MouseEvent e) {

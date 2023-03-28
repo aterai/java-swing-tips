@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class TabWheelHandler implements MouseWheelListener {
+  private final class TabWheelHandler implements MouseWheelListener {
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
       JTabbedPane src = (JTabbedPane) e.getComponent();
       if (!getTabAreaBounds(src).contains(e.getPoint())) {

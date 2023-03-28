@@ -138,7 +138,7 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     return rubberBand;
   }
 
-  private class RubberBandingListener extends MouseInputAdapter {
+  private final class RubberBandingListener extends MouseInputAdapter {
     private final Point srcPoint = new Point();
 
     @Override public void mouseDragged(MouseEvent e) {
