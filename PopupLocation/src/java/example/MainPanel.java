@@ -187,7 +187,7 @@ class NewspaperStyleList<E extends ListItem> extends JList<E> {
     setSelectionBackground(null);
     setCellRenderer(null);
     super.updateUI();
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     setVisibleRowCount(0);
     setFixedCellWidth(64);

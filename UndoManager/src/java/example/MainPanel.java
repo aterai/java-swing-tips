@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
     int modifiers = tc.getToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = tc.getToolkit().getMenuShortcutKeyMaskEx();
-    InputMap im = tc.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = tc.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), undoCmd);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers | InputEvent.SHIFT_DOWN_MASK), redoCmd);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), redoCmd);

@@ -97,7 +97,7 @@ class MultiColumnCellRenderer<E extends PairItem> implements ListCellRenderer<E>
       setOpaque(false);
       setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
       setForeground(Color.GRAY);
-      setHorizontalAlignment(SwingConstants.RIGHT);
+      setHorizontalAlignment(RIGHT);
     }
 
     @Override public Dimension getPreferredSize() {

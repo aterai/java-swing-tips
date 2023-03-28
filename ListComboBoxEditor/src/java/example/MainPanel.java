@@ -236,7 +236,7 @@ class NewspaperStyleList<E extends ListItem> extends JList<E> {
     setCellRenderer(null);
     super.updateUI();
 
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     setFixedCellWidth(62);
     setFixedCellHeight(40);

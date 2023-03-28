@@ -261,7 +261,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    return tabPlacement == TOP || tabPlacement == BOTTOM;
   }
 }
 

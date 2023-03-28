@@ -72,10 +72,10 @@ class BadgeLabel extends JLabel {
   @Override public void updateUI() {
     super.updateUI();
     setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    setVerticalAlignment(SwingConstants.CENTER);
-    setVerticalTextPosition(SwingConstants.BOTTOM);
-    setHorizontalAlignment(SwingConstants.CENTER);
-    setHorizontalTextPosition(SwingConstants.CENTER);
+    setVerticalAlignment(CENTER);
+    setVerticalTextPosition(BOTTOM);
+    setHorizontalAlignment(CENTER);
+    setHorizontalTextPosition(CENTER);
   }
 
   @Override protected void paintComponent(Graphics g) {

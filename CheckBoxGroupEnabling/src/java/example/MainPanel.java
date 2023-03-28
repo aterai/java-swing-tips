@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
             c.setEnabled(!n.isLeaf());
             Box box = Box.createHorizontalBox();
             box.add(Box.createHorizontalStrut((n.getLevel() - 1) * 16));
-            box.setAlignmentX(Component.LEFT_ALIGNMENT);
+            box.setAlignmentX(LEFT_ALIGNMENT);
             box.add(c);
             verticalBox.add(box);
           }

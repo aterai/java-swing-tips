@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     String findCmd = "find-next";
     field.getActionMap().put(findCmd, findNextAction);
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    field.getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, findCmd);
+    field.getInputMap(WHEN_FOCUSED).put(enterKey, findCmd);
 
     JPanel controls = new JPanel();
     ControlPanelLayout layout = new ControlPanelLayout(controls, 5, 5);

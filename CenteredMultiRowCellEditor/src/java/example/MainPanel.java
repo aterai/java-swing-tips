@@ -282,7 +282,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     });
 
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = editor.getInputMap(WHEN_FOCUSED);
     im.put(enterKey, RENAME);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
@@ -291,7 +291,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     am.put(RENAME, renameTitle);
     am.put(CANCEL, cancelEditing);
 
-    getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, EDITING);
+    getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
     getActionMap().put(EDITING, startEditing);
 
     EventQueue.invokeLater(() -> {
@@ -336,7 +336,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     setSelectionBackground(null);
     setCellRenderer(null);
     super.updateUI();
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     setVisibleRowCount(0);
     setFixedCellWidth(72);
@@ -476,9 +476,9 @@ class WrapLabelView extends LabelView {
   // https://stackoverflow.com/questions/30590031/jtextpane-line-wrap-behavior
   @Override public float getMinimumSpan(int axis) {
     switch (axis) {
-      case View.X_AXIS:
+      case X_AXIS:
         return 0;
-      case View.Y_AXIS:
+      case Y_AXIS:
         return super.getMinimumSpan(axis);
       default:
         throw new IllegalArgumentException("Invalid axis: " + axis);

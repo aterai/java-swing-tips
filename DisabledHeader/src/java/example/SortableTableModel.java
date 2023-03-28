@@ -44,7 +44,7 @@ class ColumnComparator implements Comparator<Object>, Serializable {
     if (one instanceof List && two instanceof List) {
       Comparable<Object> o1 = (Comparable<Object>) ((List<Object>) one).get(index);
       Comparable<Object> o2 = (Comparable<Object>) ((List<Object>) two).get(index);
-      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
+      int c = Objects.compare(o1, o2, nullsFirst(naturalOrder()));
       return c * (ascending ? 1 : -1);
     }
     return 0;
@@ -109,7 +109,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     Icon i = UIManager.getIcon("Table.ascendingSortIcon");
     iconSize = new Dimension(i.getIconWidth(), i.getIconHeight());
     setIcon(new EmptyIcon(iconSize));
-    setHorizontalTextPosition(SwingConstants.LEFT);
+    setHorizontalTextPosition(LEFT);
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

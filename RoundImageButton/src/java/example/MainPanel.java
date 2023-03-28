@@ -163,7 +163,7 @@ class RoundButton extends JButton {
     setContentAreaFilled(false);
     setFocusPainted(false);
     // setVerticalAlignment(SwingConstants.TOP);
-    setAlignmentY(Component.TOP_ALIGNMENT);
+    setAlignmentY(TOP_ALIGNMENT);
     initShape();
   }
 

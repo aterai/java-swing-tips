@@ -159,14 +159,14 @@ public final class MainPanel extends JPanel {
           int bottom = height - insets.bottom;
           int left = insets.left;
           int right = width - insets.right;
-          Component ec = getLayoutComponent(parent, BorderLayout.EAST);
+          Component ec = getLayoutComponent(parent, EAST);
           if (Objects.nonNull(ec)) {
             Dimension d = ec.getPreferredSize();
             JScrollBar vsb = scroll.getVerticalScrollBar();
             int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
             ec.setBounds(right - d.width - vsw, top, d.width, bottom - top);
           }
-          Component cc = getLayoutComponent(parent, BorderLayout.CENTER);
+          Component cc = getLayoutComponent(parent, CENTER);
           if (Objects.nonNull(cc)) {
             cc.setBounds(left, top, right - left, bottom - top);
           }

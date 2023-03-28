@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
       tabs.setTabPlacement(b ? SwingConstants.TOP : SwingConstants.LEFT);
     });
 
-    InputMap im0 = tabs.getInputMap(JComponent.WHEN_FOCUSED);
-    InputMap im1 = tabs.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im0 = tabs.getInputMap(WHEN_FOCUSED);
+    InputMap im1 = tabs.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap am = tabs.getActionMap();
 
     String prev = "navigatePrevious";
@@ -99,7 +99,7 @@ class TabNavigateAction extends AbstractAction {
     if (action != null && action.isEnabled()) {
       boolean isWrap = tabs.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT;
       boolean isAltDown = (e.getModifiers() & ActionEvent.ALT_MASK) != 0;
-      Object name = action.getValue(Action.NAME);
+      Object name = action.getValue(NAME);
       int base = tabs.getSelectedIndex();
       boolean prev = Objects.equals(name, "navigatePrevious") && base != 0;
       boolean next = Objects.equals(name, "navigateNext") && base != tabs.getTabCount() - 1;

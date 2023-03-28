@@ -132,8 +132,8 @@ public final class MainPanel extends JPanel {
         LocalDate d = (LocalDate) value;
         JLabel l = (JLabel) c;
         l.setText(Objects.toString(d.getDayOfMonth()));
-        l.setVerticalAlignment(SwingConstants.TOP);
-        l.setHorizontalAlignment(SwingConstants.CENTER);
+        l.setVerticalAlignment(TOP);
+        l.setHorizontalAlignment(CENTER);
         updateCellWeekColor(d, c);
 
         LocalDate nextWeekDay = d.plusDays(7);
@@ -143,8 +143,8 @@ public final class MainPanel extends JPanel {
           sub.setFont(table.getFont());
           sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
           sub.setOpaque(false);
-          sub.setVerticalAlignment(SwingConstants.BOTTOM);
-          sub.setHorizontalAlignment(SwingConstants.RIGHT);
+          sub.setVerticalAlignment(BOTTOM);
+          sub.setHorizontalAlignment(RIGHT);
 
           panel.removeAll();
           panel.setOpaque(false);
@@ -153,7 +153,7 @@ public final class MainPanel extends JPanel {
           panel.add(c, BorderLayout.NORTH);
           panel.setBorder(l.getBorder());
           l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-          l.setHorizontalAlignment(SwingConstants.LEFT);
+          l.setHorizontalAlignment(LEFT);
 
           updateCellWeekColor(d, sub);
           return new JLayer<>(panel, new DiagonallySplitCellLayerUI());
@@ -276,7 +276,7 @@ class RoundedHeaderRenderer extends DefaultTableCellRenderer {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       l.setText(value.toString());
-      l.setHorizontalAlignment(SwingConstants.CENTER);
+      l.setHorizontalAlignment(CENTER);
     }
     return c;
   }

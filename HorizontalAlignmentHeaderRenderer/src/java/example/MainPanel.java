@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
         Component c = super.getTableCellRendererComponent(
             table, value, isSelected, hasFocus, row, column);
         if (c instanceof JLabel) {
-          ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+          ((JLabel) c).setHorizontalAlignment(CENTER);
         }
         return c;
       }

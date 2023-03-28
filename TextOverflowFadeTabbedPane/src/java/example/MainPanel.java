@@ -129,7 +129,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
-    setTabComponentAt(index, new JLabel(title, icon, SwingConstants.LEADING));
+    setTabComponentAt(index, new JLabel(title, icon, LEADING));
   }
 
   private void updateAllTabWidth(int tabWidth, int gap) {

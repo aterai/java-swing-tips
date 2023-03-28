@@ -61,7 +61,7 @@ class ScrollTabsAction extends AbstractAction {
     super();
     this.tabbedPane = tabbedPane;
     this.action = action;
-    Object name = action.getValue(Action.NAME);
+    Object name = action.getValue(NAME);
     String forward = "scrollTabsForwardAction";
     this.index = Objects.equals(name, forward) ? tabbedPane.getTabCount() - 1 : 0;
   }

@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
       // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 
       KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, modifiers);
-      tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks1, "prev1");
+      tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks1, "prev1");
       tabs.getActionMap().put("prev1", new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
           int s = tabs.getTabCount();
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
       });
 
       KeyStroke ks2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, modifiers);
-      tabs.getInputMap(JComponent.WHEN_FOCUSED).put(ks2, "next1");
+      tabs.getInputMap(WHEN_FOCUSED).put(ks2, "next1");
       tabs.getActionMap().put("next1", new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
           tabs.setSelectedIndex((tabs.getSelectedIndex() + 1) % tabs.getTabCount());
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
       });
 
       KeyStroke ks3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, modifiers);
-      tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks3, "prev2");
+      tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks3, "prev2");
       tabs.getActionMap().put("prev2", new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
           tabs.dispatchEvent(new MouseEvent(tabs, MouseEvent.MOUSE_PRESSED, 0, 0, 0, 0, 1, false));
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
       });
 
       KeyStroke ks4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, modifiers);
-      tabs.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ks4, "next2");
+      tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks4, "next2");
       tabs.getActionMap().put("next2", new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
           for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {

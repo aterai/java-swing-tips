@@ -95,6 +95,6 @@ public final class HtmlTableTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.COPY;
+    return COPY;
   }
 }

@@ -42,7 +42,7 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
     super.updateUI();
 
     rubberBandColor = makeRubberBandColor(getSelectionBackground());
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     setFixedCellWidth(62);
     setFixedCellHeight(62);

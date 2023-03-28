@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JDesktopPane desktop = new JDesktopPane();
 
-    InputMap im = desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = desktop.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     int modifiers = InputEvent.CTRL_DOWN_MASK;
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, modifiers), "shrinkUp");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, modifiers), "shrinkDown");

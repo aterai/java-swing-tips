@@ -28,9 +28,9 @@ public final class MainPanel extends JPanel {
       @Override public boolean getScrollableTracksViewportWidth() {
         Container parent = SwingUtilities.getUnwrappedParent(this);
         if (getPreferredSize().width < parent.getWidth()) {
-          setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+          setAutoResizeMode(AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         } else {
-          setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+          setAutoResizeMode(AUTO_RESIZE_OFF);
         }
         return super.getScrollableTracksViewportWidth();
       }

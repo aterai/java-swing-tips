@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
       setSelectionBackground(null); // Nimbus
       setCellRenderer(null);
       super.updateUI();
-      setLayoutOrientation(JList.HORIZONTAL_WRAP);
+      setLayoutOrientation(HORIZONTAL_WRAP);
       setVisibleRowCount(0);
       setFixedCellWidth(82);
       setFixedCellHeight(64);

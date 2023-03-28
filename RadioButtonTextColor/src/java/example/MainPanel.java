@@ -83,7 +83,7 @@ class ColorRadioButton extends JRadioButton {
   @Override public void updateUI() {
     super.updateUI();
     setForeground(DefaultIcon.DEFAULT_COLOR);
-    setAlignmentX(Component.LEFT_ALIGNMENT);
+    setAlignmentX(LEFT_ALIGNMENT);
   }
 
   @Override protected void fireStateChanged() {

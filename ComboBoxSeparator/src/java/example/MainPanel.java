@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    InputMap im = combo.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = combo.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);

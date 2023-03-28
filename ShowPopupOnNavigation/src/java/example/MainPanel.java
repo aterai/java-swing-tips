@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JLabel help = new JLabel("This setting only responds to the upwards arrow key↑");
-    help.setAlignmentX(Component.LEFT_ALIGNMENT);
+    help.setAlignmentX(LEFT_ALIGNMENT);
 
     JCheckBox check1 = new JCheckBox(SHOW_POPUP_NAVI);
     check1.setFocusable(false);
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
       }
     };
     combo.setSelectedIndex(5);
-    combo.setAlignmentX(Component.LEFT_ALIGNMENT);
+    combo.setAlignmentX(LEFT_ALIGNMENT);
 
     JCheckBox check2 = new JCheckBox("isEditable");
     check2.setFocusable(false);

@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
 
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap im = p.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
     p.getActionMap().put("open-searchbox", act);
     p.add(controls, BorderLayout.NORTH);

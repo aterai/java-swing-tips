@@ -159,7 +159,7 @@ class LabelTransferHandler extends TransferHandler {
       window.setLocation(pt);
       window.setVisible(true);
     }
-    return TransferHandler.MOVE;
+    return MOVE;
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
@@ -181,7 +181,7 @@ class LabelTransferHandler extends TransferHandler {
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     // System.out.println("exportDone");
     DragPanel src = (DragPanel) c;
-    if (action == TransferHandler.MOVE) {
+    if (action == MOVE) {
       src.remove(src.draggingLabel);
       src.revalidate();
       src.repaint();

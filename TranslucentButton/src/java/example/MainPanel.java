@@ -37,9 +37,9 @@ public final class MainPanel extends JPanel {
     Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
     JLabel label = new JLabel("JLabel", icon, SwingConstants.CENTER);
     label.setForeground(Color.WHITE);
-    label.setAlignmentX(Component.CENTER_ALIGNMENT);
+    label.setAlignmentX(CENTER_ALIGNMENT);
     AbstractButton b = makeButton("");
-    b.setAlignmentX(Component.CENTER_ALIGNMENT);
+    b.setAlignmentX(CENTER_ALIGNMENT);
     JPanel p = new JPanel();
     p.setLayout(new OverlayLayout(p));
     p.setOpaque(false);
@@ -72,10 +72,10 @@ public final class MainPanel extends JPanel {
     return new JButton(title) {
       @Override public void updateUI() {
         super.updateUI();
-        setVerticalAlignment(SwingConstants.CENTER);
-        setVerticalTextPosition(SwingConstants.CENTER);
-        setHorizontalAlignment(SwingConstants.CENTER);
-        setHorizontalTextPosition(SwingConstants.CENTER);
+        setVerticalAlignment(CENTER);
+        setVerticalTextPosition(CENTER);
+        setHorizontalAlignment(CENTER);
+        setHorizontalTextPosition(CENTER);
         setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
         setMargin(new Insets(2, 8, 2, 8));
         setBorderPainted(false);

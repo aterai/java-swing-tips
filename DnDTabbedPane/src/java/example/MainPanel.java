@@ -265,7 +265,7 @@ class DnDTabbedPane extends JTabbedPane {
       Component copy = Optional.ofNullable(c).orElseGet(() -> {
         String title = getTitleAt(dragTabIndex);
         Icon icon = getIconAt(dragTabIndex);
-        JLabel label = new JLabel(title, icon, SwingConstants.LEADING); // Nimbus?
+        JLabel label = new JLabel(title, icon, LEADING); // Nimbus?
         label.setIconTextGap(UIManager.getInt("TabbedPane.textIconGap"));
         return label;
       });
@@ -359,7 +359,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    return tabPlacement == TOP || tabPlacement == BOTTOM;
   }
 }
 

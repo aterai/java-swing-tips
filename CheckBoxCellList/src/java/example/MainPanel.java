@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         .forEach(title -> {
           boolean isSelected = title.length() % 2 == 0;
           JCheckBox c = new JCheckBox(title, isSelected);
-          c.setAlignmentX(Component.LEFT_ALIGNMENT);
+          c.setAlignmentX(LEFT_ALIGNMENT);
           list1.add(c);
           model.addElement(new CheckBoxNode(title, isSelected));
           root.add(new DefaultMutableTreeNode(new CheckBoxNode(title, isSelected)));

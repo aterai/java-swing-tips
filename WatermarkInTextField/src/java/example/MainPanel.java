@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     });
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap im = field2.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = field2.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, modifiers), amKey);
 
     Box box = Box.createVerticalBox();

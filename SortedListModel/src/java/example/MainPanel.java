@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
       setSelectionBackground(null);
       setCellRenderer(null);
       super.updateUI();
-      setLayoutOrientation(JList.HORIZONTAL_WRAP);
+      setLayoutOrientation(HORIZONTAL_WRAP);
       getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
       setVisibleRowCount(0);
       setFixedCellWidth(64);

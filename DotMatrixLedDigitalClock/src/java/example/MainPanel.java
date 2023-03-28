@@ -87,8 +87,8 @@ public final class MainPanel extends JPanel {
       seconds.repaint();
     });
 
-    hoursMinutes.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-    seconds.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    hoursMinutes.setAlignmentY(BOTTOM_ALIGNMENT);
+    seconds.setAlignmentY(BOTTOM_ALIGNMENT);
     Box box = Box.createHorizontalBox();
     box.add(hoursMinutes);
     box.add(Box.createHorizontalStrut(10));
@@ -183,7 +183,7 @@ public final class MainPanel extends JPanel {
         setVisibleRowCount(ROW);
         setCellRenderer(null);
         super.updateUI();
-        setLayoutOrientation(JList.VERTICAL_WRAP);
+        setLayoutOrientation(VERTICAL_WRAP);
         setFocusable(false);
         ListCellRenderer<? super Boolean> renderer = getCellRenderer();
         Icon on = new LedDotIcon(true, dim);

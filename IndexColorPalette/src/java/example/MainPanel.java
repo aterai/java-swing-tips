@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
         @Override public void updateUI() {
           setCellRenderer(null);
           super.updateUI();
-          setLayoutOrientation(JList.HORIZONTAL_WRAP);
+          setLayoutOrientation(HORIZONTAL_WRAP);
           setVisibleRowCount(8);
           setFixedCellWidth(CELL_SIZE.width);
           setFixedCellHeight(CELL_SIZE.height);

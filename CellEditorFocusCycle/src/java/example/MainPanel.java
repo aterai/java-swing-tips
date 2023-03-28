@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "selectNextColumnCell2");
 
     add(new JScrollPane(makeTable()));

@@ -212,7 +212,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
 
   protected void initActionMap() {
     KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
-    getInputMap(JComponent.WHEN_FOCUSED).put(ks, "checkbox-select");
+    getInputMap(WHEN_FOCUSED).put(ks, "checkbox-select");
     getActionMap().put("checkbox-select", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Accessible a = getAccessibleContext().getAccessibleChild(0);

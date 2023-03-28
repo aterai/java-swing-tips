@@ -120,7 +120,7 @@ class FileIconCellRenderer extends DefaultTableCellRenderer {
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel && value instanceof File) {
       JLabel l = (JLabel) c;
-      l.setHorizontalAlignment(SwingConstants.LEFT);
+      l.setHorizontalAlignment(LEFT);
       l.setIcon(null);
       File file = (File) value;
       switch (table.convertColumnIndexToModel(column)) {
@@ -136,7 +136,7 @@ class FileIconCellRenderer extends DefaultTableCellRenderer {
           // l.setText(file.getName());
           break;
         case 1:
-          l.setHorizontalAlignment(SwingConstants.RIGHT);
+          l.setHorizontalAlignment(RIGHT);
           l.setText(file.isDirectory() ? "" : Long.toString(file.length()));
           break;
         case 2:
@@ -152,7 +152,7 @@ class FileIconCellRenderer extends DefaultTableCellRenderer {
 
 class FileTransferHandler extends TransferHandler {
   @Override public int getSourceActions(JComponent component) {
-    return TransferHandler.COPY;
+    return COPY;
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {

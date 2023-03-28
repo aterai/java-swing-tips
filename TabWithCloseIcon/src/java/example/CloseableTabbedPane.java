@@ -413,7 +413,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
   /**
    * the horizontal position of the text.
    */
-  private int horizTextPosition = SwingConstants.LEFT;
+  private int horizTextPosition = LEFT;
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
@@ -458,11 +458,10 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     SwingUtilities.layoutCompoundLabel(
         tabPane,
         metrics, title, icon,
-        SwingConstants.CENTER,
-        SwingConstants.CENTER,
-        SwingConstants.CENTER,
-        // SwingConstants.TRAILING,
-        horizTextPosition,
+        CENTER,
+        CENTER,
+        CENTER,
+        horizTextPosition, // TRAILING,
         tabRect,
         iconRect,
         textRect,
@@ -492,7 +491,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   /**
    * the horizontal position of the text.
    */
-  private int horizTextPosition = SwingConstants.LEFT;
+  private int horizTextPosition = LEFT;
 
   /**
    * Creates a new instance of <code>CloseableTabbedPaneUI</code>.
@@ -537,11 +536,10 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     SwingUtilities.layoutCompoundLabel(
         tabPane,
         metrics, title, icon,
-        SwingConstants.CENTER,
-        SwingConstants.CENTER,
-        SwingConstants.CENTER,
-        // SwingConstants.TRAILING,
-        horizTextPosition,
+        CENTER,
+        CENTER,
+        CENTER,
+        horizTextPosition, // TRAILING,
         tabRect,
         iconRect,
         textRect,

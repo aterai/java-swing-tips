@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
 
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-    InputMap im = tabbedPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    InputMap im = tabbedPane.getInputMap(WHEN_IN_FOCUSED_WINDOW);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, modifiers), CLOSE_CURRENT_TAB);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), CLOSE_CURRENT_TAB);
 
@@ -192,7 +192,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   }
 
   private static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    return tabPlacement == TOP || tabPlacement == BOTTOM;
   }
 }
 

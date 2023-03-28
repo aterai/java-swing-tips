@@ -320,7 +320,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     });
 
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = editor.getInputMap(WHEN_FOCUSED);
     im.put(enterKey, RENAME);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
@@ -346,7 +346,7 @@ class EditableList<E extends ListItem> extends JList<E> {
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, EDITING);
+    getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
     getActionMap().put(EDITING, startEditing);
   }
 
@@ -356,7 +356,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     setSelectionBackground(null);
     setCellRenderer(null);
     super.updateUI();
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     setVisibleRowCount(0);
     setFixedCellWidth(64);

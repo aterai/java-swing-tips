@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
       Thread.currentThread().interrupt();
       return Optional.empty();
     }
-    if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
+    if ((pg.getStatus() & ABORT) != 0) {
       // System.err.println("image fetch aborted or error");
       return Optional.empty();
     }

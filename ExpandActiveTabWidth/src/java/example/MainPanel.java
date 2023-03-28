@@ -100,7 +100,7 @@ class ShrinkLabel extends JLabel {
   private boolean selected;
 
   protected ShrinkLabel(String title, Icon icon) {
-    super(title, icon, SwingConstants.LEFT);
+    super(title, icon, LEFT);
   }
 
   @Override public Dimension getPreferredSize() {

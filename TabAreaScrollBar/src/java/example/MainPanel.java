@@ -82,8 +82,8 @@ class CardLayoutTabbedPane extends JPanel {
         setComponentZOrder(getHorizontalScrollBar(), 1);
         setComponentZOrder(getViewport(), 2);
       });
-      setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-      setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+      setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+      setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
       getVerticalScrollBar().setOpaque(false);
       getHorizontalScrollBar().setOpaque(false);
       setBackground(Color.DARK_GRAY);

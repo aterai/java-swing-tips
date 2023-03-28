@@ -65,12 +65,12 @@ class LineFocusTabbedPane extends JTabbedPane {
     super.updateUI();
     listener = new TabSelectionListener();
     addChangeListener(listener);
-    setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
   }
 
   @Override public void insertTab(String title, Icon icon, Component c, String tip, int index) {
     super.insertTab(title, icon, c, tip, index);
-    JLabel label = new JLabel(title, icon, SwingConstants.CENTER);
+    JLabel label = new JLabel(title, icon, CENTER);
     setTabComponentAt(index, label);
   }
 }

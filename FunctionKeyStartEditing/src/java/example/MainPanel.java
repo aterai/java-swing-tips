@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         Toolkit.getDefaultToolkit().beep();
       }
     });
-    InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "beep");
 
     // for (int ks : Arrays.asList(KeyEvent.VK_F1, KeyEvent.VK_F2, KeyEvent.VK_F3, KeyEvent.VK_F4,

@@ -178,7 +178,7 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
 class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
   protected RolloverNumberRenderer(HighlightListener highlighter) {
     super(highlighter);
-    setHorizontalAlignment(SwingConstants.RIGHT);
+    setHorizontalAlignment(RIGHT);
   }
 }
 

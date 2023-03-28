@@ -195,7 +195,7 @@ public final class MainPanel extends JPanel {
 
 class EnclosedLabel extends JLabel {
   protected EnclosedLabel() {
-    super("", SwingConstants.CENTER);
+    super("", CENTER);
   }
 
   @Override public void updateUI() {

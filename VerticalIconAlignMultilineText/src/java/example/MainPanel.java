@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
         } else {
           setUI(new BasicVerticalAlignmentCheckBoxUI());
         }
-        setVerticalTextPosition(SwingConstants.TOP);
+        setVerticalTextPosition(TOP);
       }
     };
 

@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         UIManager.put("TabbedPane.highlight", Color.GRAY);
-        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
         setUI(new IsoscelesTrapezoidTabbedPaneUI());
       }
     };

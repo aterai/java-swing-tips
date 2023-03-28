@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     Container p3 = new JPanel(cardLayout) {
       @Override public void updateUI() {
         super.updateUI();
-        setAlignmentX(Component.RIGHT_ALIGNMENT);
+        setAlignmentX(RIGHT_ALIGNMENT);
       }
     };
     p3.add(pf3, PasswordField.HIDE.toString());
@@ -100,8 +100,8 @@ public final class MainPanel extends JPanel {
     b.setOpaque(false);
     b.setContentAreaFilled(false);
     b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-    b.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    b.setAlignmentY(Component.CENTER_ALIGNMENT);
+    b.setAlignmentX(RIGHT_ALIGNMENT);
+    b.setAlignmentY(CENTER_ALIGNMENT);
     b.setIcon(new EyeIcon(Color.BLUE));
     b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
     b.setSelectedIcon(new EyeIcon(Color.BLUE));
@@ -122,7 +122,7 @@ public final class MainPanel extends JPanel {
   private static JPasswordField makePasswordField() {
     JPasswordField pf = new JPasswordField(24);
     pf.setText("1234567890");
-    pf.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    pf.setAlignmentX(RIGHT_ALIGNMENT);
     return pf;
   }
 

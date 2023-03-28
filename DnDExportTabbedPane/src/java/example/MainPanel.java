@@ -387,7 +387,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   public static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+    return tabPlacement == TOP || tabPlacement == BOTTOM;
   }
 
   private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag
@@ -440,8 +440,7 @@ class DnDTabbedPane extends JTabbedPane {
         int idx = src.indexAtLocation(tabPt.x, tabPt.y);
         int selIdx = src.getSelectedIndex();
         boolean isRotateTabRuns = !(src.getUI() instanceof MetalTabbedPaneUI)
-            && src.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
-            && idx != selIdx;
+            && src.getTabLayoutPolicy() == WRAP_TAB_LAYOUT && idx != selIdx;
         dragTabIndex = isRotateTabRuns ? selIdx : idx;
         th.exportAsDrag(src, e, TransferHandler.MOVE);
         RECT_LINE.setBounds(0, 0, 0, 0);
@@ -539,7 +538,7 @@ class TabTransferHandler extends TransferHandler {
       // System.out.println("canImport:" + support.isDrop() + " " + b);
       return false;
     }
-    support.setDropAction(TransferHandler.MOVE);
+    support.setDropAction(MOVE);
     TransferHandler.DropLocation tdl = support.getDropLocation();
     Point pt = tdl.getDropPoint();
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
@@ -619,13 +618,13 @@ class TabTransferHandler extends TransferHandler {
       DnDTabbedPane src = (DnDTabbedPane) c;
       c.getRootPane().setGlassPane(new GhostGlassPane(src));
       if (src.dragTabIndex < 0) {
-        return TransferHandler.NONE;
+        return NONE;
       }
       setDragImage(makeDragTabImage(src));
       c.getRootPane().getGlassPane().setVisible(true);
-      return TransferHandler.MOVE;
+      return MOVE;
     }
-    return TransferHandler.NONE;
+    return NONE;
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {

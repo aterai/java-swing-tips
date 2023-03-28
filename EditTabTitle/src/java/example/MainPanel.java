@@ -94,7 +94,7 @@ class EditableTabbedPane extends JTabbedPane {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 
-    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = editor.getInputMap(WHEN_FOCUSED);
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     im.put(enterKey, "rename-tab");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
@@ -112,7 +112,7 @@ class EditableTabbedPane extends JTabbedPane {
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, "start-editing");
+    getInputMap(WHEN_FOCUSED).put(enterKey, "start-editing");
     getActionMap().put("start-editing", startEditing);
   }
 

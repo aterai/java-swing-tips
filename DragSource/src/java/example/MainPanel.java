@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
     label.setTransferHandler(new TransferHandler() {
       @Override public int getSourceActions(JComponent c) {
-        return TransferHandler.COPY_OR_MOVE;
+        return COPY_OR_MOVE;
       }
 
       @Override protected Transferable createTransferable(JComponent c) {
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void exportDone(JComponent c, Transferable data, int action) {
-        cleanup(c, action == TransferHandler.MOVE);
+        cleanup(c, action == MOVE);
       }
 
       private void cleanup(JComponent c, boolean isMoved) {

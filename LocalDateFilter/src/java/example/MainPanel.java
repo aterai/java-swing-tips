@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
       if (value instanceof LocalDate && c instanceof JLabel) {
         LocalDate d = (LocalDate) value;
         JLabel l = (JLabel) c;
-        l.setHorizontalAlignment(SwingConstants.CENTER);
+        l.setHorizontalAlignment(CENTER);
         l.setText(Objects.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
           l.setForeground(Color.BLACK);

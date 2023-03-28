@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     box.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
     Stream.of(s0, s1, s2, s3).forEach(c -> {
       c.setEnabled(true);
-      c.setAlignmentX(Component.LEFT_ALIGNMENT);
+      c.setAlignmentX(LEFT_ALIGNMENT);
       Dimension d = c.getPreferredSize();
       d.width = Integer.MAX_VALUE;
       c.setMaximumSize(d);

@@ -234,7 +234,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.MOVE;
+    return MOVE;
   }
 
   @SuppressWarnings("unchecked")
@@ -265,7 +265,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    cleanup(c, action == TransferHandler.MOVE);
+    cleanup(c, action == MOVE);
   }
 
   private void cleanup(JComponent c, boolean remove) {
@@ -330,7 +330,7 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
+    return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport info) {
@@ -361,7 +361,7 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    cleanup(c, action == TransferHandler.MOVE);
+    cleanup(c, action == MOVE);
   }
 
   private void cleanup(JComponent c, boolean remove) {
@@ -418,7 +418,7 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.MOVE;
+    return MOVE;
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
@@ -468,7 +468,7 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent src, Transferable data, int action) {
-    if (action == TransferHandler.MOVE && src instanceof JTree) {
+    if (action == MOVE && src instanceof JTree) {
       JTree tree = (JTree) src;
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
       TreePath[] selectionPaths = tree.getSelectionPaths();

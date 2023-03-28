@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
         setOpaque(true);
         setForeground(Color.WHITE);
         setBackground(UNSELECTED_BG);
-        setTabPlacement(SwingConstants.LEFT);
-        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        setTabPlacement(LEFT);
+        setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
       }
     };
 

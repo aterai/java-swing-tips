@@ -94,7 +94,7 @@ class UnderlineFocusTabbedPane extends JTabbedPane {
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     super.insertTab(title, icon, component, tip, index);
-    JLabel label = new JLabel(title, icon, SwingConstants.CENTER);
+    JLabel label = new JLabel(title, icon, CENTER);
     setTabComponentAt(index, label);
   }
 }

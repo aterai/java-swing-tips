@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    InputMap im = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     ActionMap am = getActionMap();
     String key = "full-screen";
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), key);

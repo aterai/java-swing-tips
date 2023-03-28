@@ -119,7 +119,7 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
       JLabel l = (JLabel) c;
       l.setIcon(((IconItem) value).large);
       l.setText(null);
-      l.setHorizontalAlignment(SwingConstants.CENTER);
+      l.setHorizontalAlignment(CENTER);
     }
     return c;
   }
@@ -167,7 +167,7 @@ class IconTable extends JTable {
 
     editor = new EditorFromList<>(list);
     KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-    editor.getInputMap(JComponent.WHEN_FOCUSED).put(key, "cancel-editing");
+    editor.getInputMap(WHEN_FOCUSED).put(key, "cancel-editing");
     editor.getActionMap().put("cancel-editing", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         cancelEditing();
@@ -274,7 +274,7 @@ class EditorFromList<E extends IconItem> extends JList<E> {
     addMouseMotionListener(handler);
     addMouseListener(handler);
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     JLabel renderer = new JLabel();
     Color selectedColor = new Color(0xC8_C8_FF);

@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     am.put(COPY_KEY, copy);
     int modifiers = InputEvent.CTRL_DOWN_MASK;
     KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
-    InputMap im = combo1.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = combo1.getInputMap(WHEN_FOCUSED);
     im.put(keyStroke, COPY_KEY);
     JPopupMenu popup = new JPopupMenu();
     popup.add(COPY_KEY).addActionListener(e -> {

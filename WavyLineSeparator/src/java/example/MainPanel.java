@@ -55,15 +55,15 @@ public final class MainPanel extends JPanel {
 class WavyLineSeparator extends JSeparator {
   protected static final int ICON_WIDTH = 3;
   protected static final Icon HORIZONTAL_ICON = new WavyLineIcon();
-  protected static final Icon VERTICAL_ICON = new WavyLineIcon(SwingConstants.VERTICAL);
+  protected static final Icon VERTICAL_ICON = new WavyLineIcon(VERTICAL);
 
   protected WavyLineSeparator() {
-    this(SwingConstants.HORIZONTAL);
+    this(HORIZONTAL);
   }
 
   protected WavyLineSeparator(int orientation) {
     super(orientation);
-    if (orientation == SwingConstants.HORIZONTAL) {
+    if (orientation == HORIZONTAL) {
       setBorder(BorderFactory.createEmptyBorder(2, 1, 2, 1));
     } else {
       setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
@@ -75,7 +75,7 @@ class WavyLineSeparator extends JSeparator {
     // g.setClip(0, 0, getWidth(), getHeight());
     int pos;
     Insets i = getInsets();
-    if (getOrientation() == SwingConstants.HORIZONTAL) {
+    if (getOrientation() == HORIZONTAL) {
       for (pos = i.left; getWidth() - pos > 0; pos += HORIZONTAL_ICON.getIconWidth()) {
         HORIZONTAL_ICON.paintIcon(this, g, pos, i.top);
       }
@@ -88,7 +88,7 @@ class WavyLineSeparator extends JSeparator {
 
   @Override public Dimension getPreferredSize() {
     Insets i = getInsets();
-    if (getOrientation() == SwingConstants.HORIZONTAL) {
+    if (getOrientation() == HORIZONTAL) {
       return new Dimension(30, ICON_WIDTH + i.top + i.bottom);
     } else {
       return new Dimension(ICON_WIDTH + i.left + i.right, 30);
@@ -100,7 +100,7 @@ class WavyLineSeparator extends JSeparator {
     private final int orientation;
 
     protected WavyLineIcon() {
-      this.orientation = SwingConstants.HORIZONTAL;
+      this.orientation = HORIZONTAL;
     }
 
     protected WavyLineIcon(int orientation) {
@@ -110,7 +110,7 @@ class WavyLineSeparator extends JSeparator {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(sfc);
-      if (orientation == SwingConstants.VERTICAL) {
+      if (orientation == VERTICAL) {
         g2.translate(x + getIconWidth(), y);
         g2.rotate(Math.PI / 2);
       } else {
@@ -125,11 +125,11 @@ class WavyLineSeparator extends JSeparator {
     }
 
     @Override public int getIconWidth() {
-      return orientation == SwingConstants.HORIZONTAL ? ICON_WIDTH * 2 : ICON_WIDTH;
+      return orientation == HORIZONTAL ? ICON_WIDTH * 2 : ICON_WIDTH;
     }
 
     @Override public int getIconHeight() {
-      return orientation == SwingConstants.HORIZONTAL ? ICON_WIDTH : ICON_WIDTH * 2;
+      return orientation == HORIZONTAL ? ICON_WIDTH : ICON_WIDTH * 2;
     }
   }
 }

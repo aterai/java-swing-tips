@@ -98,8 +98,8 @@ public final class MainPanel extends JPanel {
         LocalDate d = (LocalDate) value;
         JLabel l = (JLabel) c;
         l.setText(Objects.toString(d.getDayOfMonth()));
-        l.setVerticalAlignment(SwingConstants.TOP);
-        l.setHorizontalAlignment(SwingConstants.LEFT);
+        l.setVerticalAlignment(TOP);
+        l.setHorizontalAlignment(LEFT);
         updateCellWeekColor(d, c, c);
 
         LocalDate nextWeekDay = d.plusDays(7);
@@ -108,8 +108,8 @@ public final class MainPanel extends JPanel {
           JLabel sub = new JLabel(Objects.toString(nextWeekDay.getDayOfMonth()));
           sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
           sub.setOpaque(false);
-          sub.setVerticalAlignment(SwingConstants.BOTTOM);
-          sub.setHorizontalAlignment(SwingConstants.RIGHT);
+          sub.setVerticalAlignment(BOTTOM);
+          sub.setHorizontalAlignment(RIGHT);
 
           panel.removeAll();
           panel.add(sub, BorderLayout.SOUTH);

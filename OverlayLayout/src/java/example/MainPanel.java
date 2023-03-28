@@ -37,8 +37,8 @@ public final class MainPanel extends JPanel {
       }
     };
     b2.addActionListener(e -> JOptionPane.showMessageDialog(b2, "▼:sub"));
-    b2.setAlignmentX(Component.RIGHT_ALIGNMENT);
-    b2.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+    b2.setAlignmentX(RIGHT_ALIGNMENT);
+    b2.setAlignmentY(BOTTOM_ALIGNMENT);
 
     b1.add(b2);
     return b1;

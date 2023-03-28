@@ -90,7 +90,7 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     super.updateUI();
 
     rubberBandColor = makeRubberBandColor(getSelectionBackground());
-    setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     setFixedCellWidth(62);
     setFixedCellHeight(62);
@@ -385,7 +385,7 @@ class ListItemTransferHandler extends TransferHandler {
     // System.out.println("getSourceActions");
     c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
     // glassPane.setVisible(true);
-    return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
+    return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
   @SuppressWarnings("unchecked")
@@ -424,7 +424,7 @@ class ListItemTransferHandler extends TransferHandler {
     Component glassPane = c.getRootPane().getGlassPane();
     // glassPane.setCursor(Cursor.getDefaultCursor());
     glassPane.setVisible(false);
-    cleanup(c, action == TransferHandler.MOVE);
+    cleanup(c, action == MOVE);
   }
 
   private void cleanup(JComponent c, boolean remove) {

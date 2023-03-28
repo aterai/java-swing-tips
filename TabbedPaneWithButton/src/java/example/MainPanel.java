@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public float getAlignmentY() {
-        return Component.TOP_ALIGNMENT;
+        return TOP_ALIGNMENT;
       }
     };
 
@@ -76,11 +76,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public float getAlignmentX() {
-        return Component.LEFT_ALIGNMENT;
+        return LEFT_ALIGNMENT;
       }
 
       @Override public float getAlignmentY() {
-        return Component.TOP_ALIGNMENT;
+        return TOP_ALIGNMENT;
       }
 
       private Insets getButtonPaddingTabAreaInsets() {
@@ -198,7 +198,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
-    setTabComponentAt(index, new JLabel(title, icon, SwingConstants.CENTER));
+    setTabComponentAt(index, new JLabel(title, icon, CENTER));
   }
 
   private void updateAllTabWidth(int tabWidth, int gap) {

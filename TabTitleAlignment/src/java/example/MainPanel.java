@@ -178,10 +178,10 @@ class LeftAlignmentWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     SwingUtilities.layoutCompoundLabel(
         tabPane,
         metrics, title, icon,
-        SwingConstants.CENTER,
-        SwingConstants.LEFT, // CENTER, <----
-        SwingConstants.CENTER,
-        SwingConstants.TRAILING,
+        CENTER,
+        LEFT, // CENTER, <----
+        CENTER,
+        TRAILING,
         tabRect,
         iconRect,
         textRect,
@@ -211,10 +211,10 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
     SwingUtilities.layoutCompoundLabel(
         tabPane,
         metrics, title, icon,
-        SwingConstants.CENTER,
-        SwingConstants.LEFT, // CENTER, <----
-        SwingConstants.CENTER,
-        SwingConstants.TRAILING,
+        CENTER,
+        LEFT, // CENTER, <----
+        CENTER,
+        TRAILING,
         tabRect,
         iconRect,
         textRect,

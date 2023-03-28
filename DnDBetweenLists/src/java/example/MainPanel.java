@@ -141,7 +141,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
+    return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
   @SuppressWarnings("unchecked")
@@ -176,7 +176,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    cleanup(c, action == TransferHandler.MOVE);
+    cleanup(c, action == MOVE);
   }
 
   private void cleanup(JComponent c, boolean remove) {

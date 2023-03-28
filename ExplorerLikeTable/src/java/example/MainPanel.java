@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
     KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
     KeyStroke stab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
-    InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(tab, im.get(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)));
     im.put(stab, im.get(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK)));
 

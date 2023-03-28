@@ -85,7 +85,7 @@ class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
             return new ImageView(elem) {
               @Override public float getAlignment(int axis) {
                 // .8125f magic number...
-                return axis == View.Y_AXIS ? .8125f : super.getAlignment(axis);
+                return axis == Y_AXIS ? .8125f : super.getAlignment(axis);
               }
             };
           }

@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabbedPane1 = new JTabbedPane() {
       @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
         super.insertTab(title, icon, component, tip, index);
-        JLabel label = new JLabel(title, icon, SwingConstants.LEADING);
+        JLabel label = new JLabel(title, icon, LEADING);
         setTabComponentAt(getTabCount() - 1, label);
       }
     };

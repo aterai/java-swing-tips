@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
               SwingUtils.descendants(bottomPanel)
                   .filter(JLabel.class::isInstance).map(JLabel.class::cast)
                   .forEach(l -> {
-                    l.setAlignmentX(Component.RIGHT_ALIGNMENT);
+                    l.setAlignmentX(RIGHT_ALIGNMENT);
                     l.setHorizontalAlignment(SwingConstants.RIGHT);
                   });
             }

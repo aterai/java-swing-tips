@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
           JLabel l = (JLabel) c;
           border.setStartCell(column == 0);
           l.setBorder(border);
-          l.setHorizontalAlignment(SwingConstants.CENTER);
+          l.setHorizontalAlignment(CENTER);
         }
         return c;
       }
@@ -97,8 +97,8 @@ public final class MainPanel extends JPanel {
           getVerticalScrollBar().setOpaque(false);
           getHorizontalScrollBar().setOpaque(false);
         });
-        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
         setLayout(new OverlapScrollPaneLayout());
       }
     };

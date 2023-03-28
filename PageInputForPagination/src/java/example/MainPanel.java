@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
       }
     };
     KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    field.getInputMap(JComponent.WHEN_FOCUSED).put(enter, "Enter");
+    field.getInputMap(WHEN_FOCUSED).put(enter, "Enter");
     field.getActionMap().put("Enter", enterAction);
     Document doc = field.getDocument();
     if (doc instanceof AbstractDocument) {

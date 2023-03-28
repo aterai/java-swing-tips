@@ -196,7 +196,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
       }
     });
     KeyStroke spaceKey = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
-    getInputMap(JComponent.WHEN_FOCUSED).put(spaceKey, selectCmd);
+    getInputMap(WHEN_FOCUSED).put(spaceKey, selectCmd);
   }
 
   protected void updateItem(int index) {

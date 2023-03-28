@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
       removeMouseMotionListener(handler);
       setCellRenderer(null);
       super.updateUI();
-      setLayoutOrientation(JList.HORIZONTAL_WRAP);
+      setLayoutOrientation(HORIZONTAL_WRAP);
       setVisibleRowCount(CalendarViewListModel.ROW_COUNT); // ensure 6 rows in the list
       setFixedCellWidth(size.width);
       setFixedCellHeight(size.height);
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
           return c;
         });
         getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        setLayoutOrientation(HORIZONTAL_WRAP);
         setVisibleRowCount(0);
         setFixedCellWidth(size.width);
         setFixedCellHeight(size.height);
@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
   }
 
   private void installActions() {
-    InputMap im = monthList.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = monthList.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "selectNextIndex");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "selectPreviousIndex");
 

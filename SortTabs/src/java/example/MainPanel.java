@@ -120,7 +120,7 @@ class EditableTabbedPane extends JTabbedPane {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = editor.getInputMap(WHEN_FOCUSED);
     im.put(enterKey, EDIT_KEY);
     String cancelCmd = "cancel-editing";
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelCmd);
@@ -149,7 +149,7 @@ class EditableTabbedPane extends JTabbedPane {
         }
       }
     });
-    getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, startCmd);
+    getInputMap(WHEN_FOCUSED).put(enterKey, startCmd);
     getActionMap().put(startCmd, startEditing);
   }
 

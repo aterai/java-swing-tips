@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     box.add(makeTitledPanel("JLayer + Slider.onlyLeftMouseButtonDrag: false", layer));
     box.add(Box.createVerticalGlue());
     for (Component c : box.getComponents()) {
-      ((JComponent) c).setAlignmentX(Component.LEFT_ALIGNMENT);
+      ((JComponent) c).setAlignmentX(LEFT_ALIGNMENT);
     }
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));

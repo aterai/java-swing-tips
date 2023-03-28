@@ -162,7 +162,7 @@ class ProgressListener implements PropertyChangeListener {
 }
 
 class TextLabelProgressBar extends JProgressBar {
-  private final JLabel label = new JLabel("000/100", SwingConstants.CENTER);
+  private final JLabel label = new JLabel("000/100", CENTER);
   // private transient ChangeListener changeListener;
 
   protected TextLabelProgressBar(BoundedRangeModel model) {

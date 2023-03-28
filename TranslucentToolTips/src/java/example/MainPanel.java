@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        setLayoutOrientation(JList.VERTICAL_WRAP);
+        setLayoutOrientation(VERTICAL_WRAP);
         setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
         setFixedCellWidth(CELL_SIZE.width);
         setFixedCellHeight(CELL_SIZE.height);

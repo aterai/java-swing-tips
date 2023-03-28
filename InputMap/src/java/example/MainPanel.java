@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
       String cmd = "close-it";
       rp.getActionMap().put(cmd, act);
       KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-      rp.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, cmd);
+      rp.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, cmd);
       dialog.getContentPane().add(makePanel(act));
       dialog.pack();
       dialog.setResizable(false);

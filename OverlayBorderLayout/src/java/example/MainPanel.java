@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
 
     field.getActionMap().put("find-next", findNextAction);
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    field.getInputMap(JComponent.WHEN_FOCUSED).put(enterKey, "find-next");
+    field.getInputMap(WHEN_FOCUSED).put(enterKey, "find-next");
     add(p);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -155,13 +155,13 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
       int bottom = height - insets.bottom;
       int left = insets.left;
       int right = width - insets.right;
-      Component nc = getLayoutComponent(parent, BorderLayout.NORTH);
+      Component nc = getLayoutComponent(parent, NORTH);
       if (Objects.nonNull(nc)) {
         Dimension d = nc.getPreferredSize();
         int vsw = UIManager.getInt("ScrollBar.width");
         nc.setBounds(right - d.width - vsw, yy - d.height, d.width, d.height);
       }
-      Component cc = getLayoutComponent(parent, BorderLayout.CENTER);
+      Component cc = getLayoutComponent(parent, CENTER);
       if (Objects.nonNull(cc)) {
         cc.setBounds(left, top, right - left, bottom - top);
       }

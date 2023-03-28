@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
       // https://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
       // https://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
       @Override public void doLayout() {
-        if (getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
+        if (getAutoResizeMode() == AUTO_RESIZE_LAST_COLUMN) {
           Optional.ofNullable(getTableHeader()).ifPresent(header -> {
             if (Objects.isNull(header.getResizingColumn())) {
               TableColumnModel tcm = getColumnModel();

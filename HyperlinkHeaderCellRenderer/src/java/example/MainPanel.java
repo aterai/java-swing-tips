@@ -105,7 +105,7 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
       } else {
         l.setText("<html>" + str + sort);
       }
-      l.setHorizontalAlignment(SwingConstants.LEADING);
+      l.setHorizontalAlignment(LEADING);
       l.setOpaque(false);
       l.setBackground(alphaZero);
       l.setForeground(Color.BLACK);

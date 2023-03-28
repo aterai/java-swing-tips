@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 
     JDesktopPane desktop = new JDesktopPane();
 
-    InputMap im = desktop.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    InputMap im = desktop.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
 
     ActionMap am = desktop.getActionMap();

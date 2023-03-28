@@ -60,11 +60,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public float getAlignmentX() {
-        return Component.LEFT_ALIGNMENT;
+        return LEFT_ALIGNMENT;
       }
 
       @Override public float getAlignmentY() {
-        return Component.TOP_ALIGNMENT;
+        return TOP_ALIGNMENT;
       }
 
       private Insets getButtonPaddingTabAreaInsets() {
@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public float getAlignmentY() {
-        return Component.TOP_ALIGNMENT;
+        return TOP_ALIGNMENT;
       }
     };
     button.addActionListener(e -> {
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     });
 
     Box box = Box.createHorizontalBox();
-    box.setAlignmentX(Component.LEFT_ALIGNMENT);
+    box.setAlignmentX(LEFT_ALIGNMENT);
     // TEST: box.setOpaque(true);
     box.add(Box.createHorizontalGlue());
     box.add(button);
@@ -193,7 +193,7 @@ class CardLayoutTabbedPane extends JPanel {
     }
 
     @Override public float getAlignmentY() {
-      return Component.TOP_ALIGNMENT;
+      return TOP_ALIGNMENT;
     }
   };
 
@@ -213,8 +213,8 @@ class CardLayoutTabbedPane extends JPanel {
         setComponentZOrder(getHorizontalScrollBar(), 1);
         setComponentZOrder(getViewport(), 2);
       });
-      setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-      setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+      setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+      setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
       getVerticalScrollBar().setOpaque(false);
       getHorizontalScrollBar().setOpaque(false);
       setBackground(Color.DARK_GRAY);
@@ -635,7 +635,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {
     super.insertTab(title, icon, component, Objects.toString(tip, title), index);
-    setTabComponentAt(index, new JLabel(title, icon, SwingConstants.CENTER));
+    setTabComponentAt(index, new JLabel(title, icon, CENTER));
   }
 
   private void updateAllTabWidth(int tabWidth, int gap) {

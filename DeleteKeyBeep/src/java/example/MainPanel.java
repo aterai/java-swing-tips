@@ -88,7 +88,7 @@ class SilentDeleteTextAction extends TextAction {
       Caret caret = target.getCaret();
       int dot = caret.getDot();
       int mark = caret.getMark();
-      if (DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
+      if (DefaultEditorKit.deletePrevCharAction.equals(getValue(NAME))) {
         // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
         if (dot == 0 && mark == 0) {
           return;

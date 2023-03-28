@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         requestFocusInWindow();
       }
     });
-    InputMap im = table.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = table.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), actionMapKey);
 
     SpinnerNumberModel rowField = new SpinnerNumberModel(1, 0, model.getRowCount() - 1, 1);

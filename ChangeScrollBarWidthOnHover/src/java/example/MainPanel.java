@@ -125,8 +125,8 @@ public final class MainPanel extends JPanel {
           getVerticalScrollBar().setOpaque(false);
           getVerticalScrollBar().setPreferredSize(new Dimension(6, 0));
         });
-        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
         setLayout(new TranslucentScrollPaneLayout());
       }
     };

@@ -89,7 +89,7 @@ public final class MainPanel extends JPanel {
           table, value, selected, focused, row, column);
       if (c instanceof JLabel && value instanceof LocalDate) {
         JLabel l = (JLabel) c;
-        l.setHorizontalAlignment(SwingConstants.CENTER);
+        l.setHorizontalAlignment(CENTER);
         LocalDate d = (LocalDate) value;
         l.setText(Objects.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {

@@ -141,9 +141,9 @@ class ListItemTransferHandler extends TransferHandler {
       //   setDragImageOffset(pt);
       // }
       Optional.ofNullable(c.getMousePosition()).ifPresent(this::setDragImageOffset);
-      return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
+      return MOVE; // TransferHandler.COPY_OR_MOVE;
     }
-    return TransferHandler.NONE;
+    return NONE;
   }
 
   private static <E> BufferedImage createDragImage(JList<E> source) {
@@ -196,7 +196,7 @@ class ListItemTransferHandler extends TransferHandler {
     Component glassPane = c.getRootPane().getGlassPane();
     // glassPane.setCursor(Cursor.getDefaultCursor());
     glassPane.setVisible(false);
-    cleanup(c, action == TransferHandler.MOVE);
+    cleanup(c, action == MOVE);
   }
 
   private void cleanup(JComponent c, boolean remove) {
@@ -229,7 +229,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     Component glassPane = c.getRootPane().getGlassPane();
     glassPane.setCursor(DragSource.DefaultMoveDrop);
     if (!(c instanceof JList)) {
-      return TransferHandler.NONE;
+      return NONE;
     }
     int cellLabelHeight = 21; // = height(15) + top(2) + bottom(2) + cell.bottom(2)
     JList<?> source = (JList<?>) c;
@@ -238,7 +238,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     // System.out.println(h);
     setDragImage(createCompactDragImage(source, w, h));
     setDragImageOffset(new Point(w / 2, h));
-    return TransferHandler.MOVE; // TransferHandler.COPY_OR_MOVE;
+    return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
   private static <E> BufferedImage createCompactDragImage(JList<E> source, int w, int h) {

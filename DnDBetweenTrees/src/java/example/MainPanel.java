@@ -115,7 +115,7 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.MOVE;
+    return MOVE;
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
@@ -182,7 +182,7 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent src, Transferable data, int action) {
-    if (action == TransferHandler.MOVE && src instanceof JTree) {
+    if (action == MOVE && src instanceof JTree) {
       JTree tree = (JTree) src;
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
       TreePath[] selectionPaths = tree.getSelectionPaths();

@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
       throw wrap;
     }
     String key = "Do-Nothing";
-    InputMap im = textPane.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap im = textPane.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), key);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), key);
     textPane.getActionMap().put(key, new AbstractAction() {
@@ -77,8 +77,8 @@ public final class MainPanel extends JPanel {
     JScrollPane scrollPane = new JScrollPane(textPane) {
       @Override public void updateUI() {
         super.updateUI();
-        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setViewportBorder(BorderFactory.createEmptyBorder());
       }

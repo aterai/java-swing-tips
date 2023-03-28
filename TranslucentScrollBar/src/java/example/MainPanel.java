@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
           setComponentZOrder(getViewport(), 1);
           getVerticalScrollBar().setOpaque(false);
         });
-        setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
         setLayout(new TranslucentScrollPaneLayout());
       }
     };

@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
         setOpaque(false); // editor.setBackground(getBackground());
         setEditable(false); // REQUIRED
         setBackground(new Color(0x0, true)); // Nimbus???
-        putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+        putClientProperty(HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
       }
     };
     editor.addHyperlinkListener(e -> {

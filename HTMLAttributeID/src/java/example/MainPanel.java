@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
   public final JTextField field = new JTextField("3");
   public final Action elementIdAction = new AbstractAction("Element#getElement(id)") {
     @Override public void actionPerformed(ActionEvent e) {
-      textArea.append(String.format(SEPARATOR, getValue(Action.NAME)));
+      textArea.append(String.format(SEPARATOR, getValue(NAME)));
       String id = field.getText().trim();
       HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
       Element element = doc.getElement(id);
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
   };
   public final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
     @Override public void actionPerformed(ActionEvent e) {
-      textArea.append(String.format(SEPARATOR, getValue(Action.NAME)));
+      textArea.append(String.format(SEPARATOR, getValue(NAME)));
       JToggleButton b = (JToggleButton) e.getSource();
       if (b.isSelected()) {
         for (Element root : editorPane.getDocument().getRootElements()) {
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
   };
   public final Action parserAction = new AbstractAction("ParserDelegator") {
     @Override public void actionPerformed(ActionEvent e) {
-      textArea.append(String.format(SEPARATOR, getValue(Action.NAME)));
+      textArea.append(String.format(SEPARATOR, getValue(NAME)));
       String id = field.getText().trim();
       String text = editorPane.getText();
       ParserDelegator delegator = new ParserDelegator();

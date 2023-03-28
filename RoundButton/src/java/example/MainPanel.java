@@ -234,10 +234,10 @@ class ShapeButton extends JButton {
     shape = s;
     setModel(new DefaultButtonModel());
     init("Shape", new DummySizeIcon(s));
-    setVerticalAlignment(SwingConstants.CENTER);
-    setVerticalTextPosition(SwingConstants.CENTER);
-    setHorizontalAlignment(SwingConstants.CENTER);
-    setHorizontalTextPosition(SwingConstants.CENTER);
+    setVerticalAlignment(CENTER);
+    setVerticalTextPosition(CENTER);
+    setHorizontalAlignment(CENTER);
+    setHorizontalTextPosition(CENTER);
     setBorder(BorderFactory.createEmptyBorder());
     setContentAreaFilled(false);
     setFocusPainted(false);

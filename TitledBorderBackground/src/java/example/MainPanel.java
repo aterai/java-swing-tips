@@ -79,22 +79,22 @@ public final class MainPanel extends JPanel {
     label.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
-    label.setAlignmentX(Component.LEFT_ALIGNMENT);
-    label.setAlignmentY(Component.TOP_ALIGNMENT);
+    label.setAlignmentX(LEFT_ALIGNMENT);
+    label.setAlignmentY(TOP_ALIGNMENT);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalStrut(8));
     box.add(label);
-    box.setAlignmentX(Component.LEFT_ALIGNMENT);
-    box.setAlignmentY(Component.TOP_ALIGNMENT);
+    box.setAlignmentX(LEFT_ALIGNMENT);
+    box.setAlignmentY(TOP_ALIGNMENT);
 
     int height = label.getPreferredSize().height / 2;
     Color color = new Color(0x0, true);
     Border b1 = BorderFactory.createMatteBorder(height, 2, 2, 2, color);
     Border b2 = BorderFactory.createTitledBorder("");
     p.setBorder(BorderFactory.createCompoundBorder(b1, b2));
-    p.setAlignmentX(Component.LEFT_ALIGNMENT);
-    p.setAlignmentY(Component.TOP_ALIGNMENT);
+    p.setAlignmentX(LEFT_ALIGNMENT);
+    p.setAlignmentY(TOP_ALIGNMENT);
 
     JPanel panel = new JPanel();
     panel.setLayout(new OverlayLayout(panel));
