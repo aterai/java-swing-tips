@@ -112,8 +112,7 @@ class SiteListItemRenderer implements ListCellRenderer<SiteItem> {
   @Override public Component getListCellRendererComponent(JList<? extends SiteItem> list, SiteItem item, int index, boolean isSelected, boolean cellHasFocus) {
     StringBuilder buf = new StringBuilder(100);
     buf.append("<html><h1>").append(item.name).append("</h1><table>");
-    for (int c = 0; c < item.link.size(); c++) {
-      String url = item.link.get(c);
+    for (String url : item.link) {
       buf.append("<tr><td><a href='").append(url).append("'>").append(url);
       // .append("</a></td></tr>");
     }
