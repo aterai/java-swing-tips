@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import javax.jnlp.BasicService;
 import javax.jnlp.FileContents;
@@ -167,7 +167,7 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
         // C:\Users\(user)\AppData\LocalLow\Sun\Java\Deployment\cache\6.0\muffin\xxx-xxx.muf
         // ps.delete(codebase);
         // ObjectOutputStream e = new ObjectOutputStream(fc.getOutputStream(true));
-        Map<String, Serializable> map = new HashMap<>();
+        Map<String, Serializable> map = new ConcurrentHashMap<>();
         map.put("size", (Serializable) state.getSize());
         map.put("location", (Serializable) state.getLocation());
         // Test1: map.put("setting", (Serializable) state);

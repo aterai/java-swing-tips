@@ -9,8 +9,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 // import javax.swing.plaf.ComponentUI;
 
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     // UIManager.put("TabbedPane.tabsOpaque", Boolean.FALSE);
     // UIManager.put("TabbedPane.contentOpaque", Boolean.FALSE);
 
-    Map<String, Color> map = new HashMap<>();
+    Map<String, Color> map = new ConcurrentHashMap<>();
     map.put("TabbedPane.darkShadow", Color.GRAY);
     map.put("TabbedPane.light", Color.GRAY);
     map.put("TabbedPane.tabAreaBackground", Color.GRAY);

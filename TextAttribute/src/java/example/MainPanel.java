@@ -7,8 +7,8 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.font.TextAttribute;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     Font font = textField2.getFont();
     textField2.setFont(font.deriveFont(16f));
     // TEST:
-    // Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
+    // Map<TextAttribute, Object> attrs = new ConcurrentHashMap<>(font.getAttributes());
     // attrs.put(TextAttribute.SIZE, 32);
     // attrs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
     // textField.setFont(font.deriveFont(attrs));
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
   private static void initUnderline(JTextComponent tc, Object style) {
     Font font = tc.getFont();
-    Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
+    Map<TextAttribute, Object> attrs = new ConcurrentHashMap<>(font.getAttributes());
     attrs.put(TextAttribute.UNDERLINE, style);
     tc.setFont(font.deriveFont(attrs));
   }
