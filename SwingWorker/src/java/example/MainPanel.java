@@ -174,8 +174,8 @@ class ProgressListener implements PropertyChangeListener {
       // System.out.println("progress: DISPOSE_ON_CLOSE");
       ((SwingWorker<?, ?>) e.getSource()).cancel(true);
     }
-    String strPropertyName = e.getPropertyName();
-    if ("progress".equals(strPropertyName)) {
+    boolean isProgress = "progress".equals(e.getPropertyName());
+    if (isProgress) {
       progressBar.setIndeterminate(false);
       int progress = (Integer) e.getNewValue();
       progressBar.setValue(progress);

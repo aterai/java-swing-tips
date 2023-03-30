@@ -81,7 +81,8 @@ public final class MainPanel extends JPanel {
       }
     };
     worker.addPropertyChangeListener(e -> {
-      if ("progress".equals(e.getPropertyName())) {
+      boolean isProgress = "progress".equals(e.getPropertyName());
+      if (isProgress) {
         progress.setValue((Integer) e.getNewValue());
       }
     });
