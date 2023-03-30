@@ -173,10 +173,10 @@ class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDeleg
   }
 }
 
-class TableHeaderPopupMenu extends JPopupMenu {
+final class TableHeaderPopupMenu extends JPopupMenu {
   private int index = -1;
 
-  protected TableHeaderPopupMenu() {
+  public TableHeaderPopupMenu() {
     super();
     JTextField textField = new JTextField();
     textField.addAncestorListener(new FocusAncestorListener());

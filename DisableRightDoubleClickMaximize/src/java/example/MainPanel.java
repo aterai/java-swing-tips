@@ -19,10 +19,12 @@ public final class MainPanel extends JPanel {
     JDesktopPane desktop0 = makeDesktopPane();
     desktop0.add(createFrame("Default", 0));
 
-    JDesktopPane desktop1 = makeDesktopPane();
     JInternalFrame f = createFrame("JPopupMenu", 0);
-    JPopupMenu popup = new InternalFrameTitlePanePopupMenu();
+    JPopupMenu popup = new JPopupMenu();
+    popup.add("test1");
+    popup.add("test2");
     ((BasicInternalFrameUI) f.getUI()).getNorthPane().setComponentPopupMenu(popup);
+    JDesktopPane desktop1 = makeDesktopPane();
     desktop1.add(f);
 
     JDesktopPane desktop2 = makeDesktopPane();
@@ -104,20 +106,6 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-  }
-}
-
-class InternalFrameTitlePanePopupMenu extends JPopupMenu {
-  protected InternalFrameTitlePanePopupMenu() {
-    super();
-    add("test1");
-    add("test2");
-  }
-
-  @Override public void show(Component c, int x, int y) {
-    if (c instanceof BasicInternalFrameTitlePane) {
-      super.show(c, x, y);
-    }
   }
 }
 

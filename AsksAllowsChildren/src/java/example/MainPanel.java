@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TreePopupMenu extends JPopupMenu {
+final class TreePopupMenu extends JPopupMenu {
   private final JTextField textField = new JTextField(24) {
     private transient AncestorListener listener;
     @Override public void updateUI() {
@@ -114,9 +114,8 @@ class TreePopupMenu extends JPopupMenu {
   private final JMenuItem addNodeItem;
   private TreePath path;
 
-  protected TreePopupMenu() {
+  public TreePopupMenu() {
     super();
-
     addFolderItem = add("add folder");
     addFolderItem.addActionListener(e -> {
       JTree tree = (JTree) getInvoker();

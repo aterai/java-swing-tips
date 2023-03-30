@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextFieldPopupMenu extends JPopupMenu {
+final class TextFieldPopupMenu extends JPopupMenu {
   private final Action cutAction = new DefaultEditorKit.CutAction();
   private final Action copyAction = new DefaultEditorKit.CopyAction();
   // private final Action pasteAction = new DefaultEditorKit.PasteAction();
@@ -125,7 +125,7 @@ class TextFieldPopupMenu extends JPopupMenu {
     }
   };
 
-  protected TextFieldPopupMenu() {
+  public TextFieldPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);

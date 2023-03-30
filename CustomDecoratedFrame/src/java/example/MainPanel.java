@@ -7,8 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.util.EnumSet;
-import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -248,15 +246,15 @@ enum Side {
 
   abstract Rectangle getBounds(Rectangle rect, Point delta);
 
-  public static Optional<Side> getByType(int cursor) {
-    return EnumSet.allOf(Side.class).stream().filter(d -> d.cursor == cursor).findFirst();
-  }
+  // public static Optional<Side> getByType(int cursor) {
+  //   return EnumSet.allOf(Side.class).stream().filter(d -> d.cursor == cursor).findFirst();
+  // }
 }
 
-class SideLabel extends JLabel {
+final class SideLabel extends JLabel {
   public final Side side;
 
-  protected SideLabel(Side side) {
+  public SideLabel(Side side) {
     super();
     this.side = side;
     setCursor(side.getCursor());

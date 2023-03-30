@@ -64,13 +64,13 @@ class TabChangeListener implements ChangeListener {
   }
 }
 
-class TabbedPanePopupMenu extends JPopupMenu {
+final class TabbedPanePopupMenu extends JPopupMenu {
   private transient int count;
   private final JMenuItem closePage;
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
 
-  protected TabbedPanePopupMenu() {
+  public TabbedPanePopupMenu() {
     super();
     add("New tab").addActionListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) getInvoker();

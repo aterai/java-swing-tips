@@ -80,12 +80,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextComponentPopupMenu extends JPopupMenu {
+final class TextComponentPopupMenu extends JPopupMenu {
   private final Action cutAction = new DefaultEditorKit.CutAction();
   private final Action copyAction = new DefaultEditorKit.CopyAction();
   private final JMenuItem deleteItem;
 
-  protected TextComponentPopupMenu() {
+  public TextComponentPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);

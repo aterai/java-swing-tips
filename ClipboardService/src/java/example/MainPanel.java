@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextComponentPopupMenu extends JPopupMenu {
+final class TextComponentPopupMenu extends JPopupMenu {
   private final Action cutAction = new DefaultEditorKit.CutAction();
   private final Action copyAction = new DefaultEditorKit.CopyAction();
   private final Action deleteAction = new AbstractAction("delete") {
@@ -108,7 +108,7 @@ class TextComponentPopupMenu extends JPopupMenu {
     }
   };
 
-  protected TextComponentPopupMenu(JTextComponent textComponent) {
+  public TextComponentPopupMenu(JTextComponent textComponent) {
     super();
     add(cutAction);
     add(copyAction);

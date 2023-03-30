@@ -90,11 +90,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem createMenuItem;
   private final JMenuItem deleteMenuItem;
 
-  protected TablePopupMenu() {
+  public TablePopupMenu() {
     super();
     createMenuItem = add("add");
     createMenuItem.addActionListener(e -> {

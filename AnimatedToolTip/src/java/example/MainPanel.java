@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.geom.Ellipse2D;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public final class MainPanel extends JPanel {
     JLabel l2 = new JLabel("Gif Animated ToolTip") {
       // private final Icon icon = new ImageIcon(url);
       @Override public JToolTip createToolTip() {
-        JLabel label = new JLabel("", icon, SwingConstants.LEFT);
+        JLabel label = new JLabel("", icon, LEFT);
         JToolTip tip = new AnimatedToolTip(label);
         tip.setComponent(this);
         return tip;
@@ -87,17 +88,17 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class AnimatedToolTip extends JToolTip {
-  private final JLabel iconlabel;
+final class AnimatedToolTip extends JToolTip {
+  private final JLabel iconLabel;
 
-  protected AnimatedToolTip(JLabel label) {
+  public AnimatedToolTip(JLabel label) {
     super();
-    this.iconlabel = label;
+    this.iconLabel = label;
     LookAndFeel.installColorsAndFont(
-        iconlabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
-    iconlabel.setOpaque(true);
+            iconLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    iconLabel.setOpaque(true);
     setLayout(new BorderLayout());
-    add(iconlabel);
+    add(iconLabel);
   }
 
   @Override public Dimension getPreferredSize() {
@@ -106,36 +107,44 @@ class AnimatedToolTip extends JToolTip {
 
   // @Override public Dimension getPreferredSize() {
   //   Insets i = getInsets();
-  //   Dimension d = iconlabel.getPreferredSize();
+  //   Dimension d = iconLabel.getPreferredSize();
   //   d.width += i.left + i.right;
   //   d.height += i.top + i.bottom;
   //   return d;
   // }
 
   @Override public void setTipText(String tipText) {
-    String oldValue = iconlabel.getText();
-    iconlabel.setText(tipText);
+    String oldValue = iconLabel.getText();
+    iconLabel.setText(tipText);
     firePropertyChange("tiptext", oldValue, tipText);
   }
 
   @Override public String getTipText() {
-    // return Objects.nonNull(iconlabel) ? iconlabel.getText() : "";
-    return Optional.ofNullable(iconlabel).map(JLabel::getText).orElse("");
+    // return Objects.nonNull(iconLabel) ? iconLabel.getText() : "";
+    return Optional.ofNullable(iconLabel).map(JLabel::getText).orElse("");
   }
 }
 
 class AnimatedLabel extends JLabel {
-  private final transient AnimeIcon icon = new AnimeIcon();
-  private final Timer animator = new Timer(100, e -> {
-    icon.next();
-    repaint();
-  });
+  private transient HierarchyListener listener;
+  private final Timer animator = new Timer(100, null);
 
   protected AnimatedLabel(String title) {
-    super(title);
+    super(title, new AnimeIcon(), LEADING);
+    animator.addActionListener(e -> {
+      Icon icon = getIcon();
+      if (icon instanceof AnimeIcon) {
+        ((AnimeIcon) icon).next();
+      }
+      repaint();
+    });
+  }
+
+  @Override public void updateUI() {
+    removeHierarchyListener(listener);
+    super.updateUI();
     setOpaque(true);
-    setIcon(icon);
-    addHierarchyListener(e -> {
+    listener = e -> {
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
         if (e.getComponent().isShowing()) {
           startAnimation();
@@ -143,16 +152,23 @@ class AnimatedLabel extends JLabel {
           stopAnimation();
         }
       }
-    });
+    };
+    addHierarchyListener(listener);
   }
 
   private void startAnimation() {
-    icon.setRunning(true);
+    Icon icon = getIcon();
+    if (icon instanceof AnimeIcon) {
+      ((AnimeIcon) icon).setRunning(true);
+    }
     animator.start();
   }
 
   private void stopAnimation() {
-    icon.setRunning(false);
+    Icon icon = getIcon();
+    if (icon instanceof AnimeIcon) {
+      ((AnimeIcon) icon).setRunning(false);
+    }
     animator.stop();
   }
 }

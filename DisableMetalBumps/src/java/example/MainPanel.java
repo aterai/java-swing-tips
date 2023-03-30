@@ -61,8 +61,20 @@ public final class MainPanel extends JPanel {
 class BumpsFreeInternalFrameTitlePane extends BasicInternalFrameTitlePane {
   protected BumpsFreeInternalFrameTitlePane(JInternalFrame w) {
     super(w);
-    Color color = MetalLookAndFeel.getPrimaryControlDarkShadow();
-    setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, color));
+  }
+
+  @Override protected void paintTitleBackground(Graphics g) {
+    super.paintTitleBackground(g);
+    boolean isSelected = frame.isSelected();
+    int width = getWidth();
+    int height = getHeight();
+    Color shadow = isSelected
+        ? MetalLookAndFeel.getPrimaryControlDarkShadow()
+        : MetalLookAndFeel.getControlDarkShadow();
+    g.setColor(shadow);
+    g.drawLine(0, height - 1, width, height - 1);
+    g.drawLine(0, 0, 0, 0);
+    g.drawLine(width - 1, 0, width - 1, 0);
   }
 
   @Override public Dimension getPreferredSize() {

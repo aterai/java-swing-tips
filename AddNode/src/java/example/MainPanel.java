@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TreePopupMenu extends JPopupMenu {
+final class TreePopupMenu extends JPopupMenu {
   private TreePath path;
 
-  protected TreePopupMenu() {
+  public TreePopupMenu() {
     super();
     JTextField textField = new JTextField(24) {
       private transient AncestorListener listener;

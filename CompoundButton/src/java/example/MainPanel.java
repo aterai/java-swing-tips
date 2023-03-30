@@ -46,13 +46,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class CompoundButtonPanel extends JComponent {
+final class CompoundButtonPanel extends JPanel {
   private final Dimension dim;
 
-  protected CompoundButtonPanel(Dimension dim) {
+  public CompoundButtonPanel(Dimension dim) {
     super();
-    this.dim = dim;
     setLayout(new OverlayLayout(this));
+    this.dim = dim;
     add(new CompoundButton(dim, ButtonLocation.CENTER));
     add(new CompoundButton(dim, ButtonLocation.NORTH));
     add(new CompoundButton(dim, ButtonLocation.SOUTH));

@@ -93,9 +93,7 @@ class AlignedLabel extends JLabel {
   private int maxWidth;
 
   protected AlignedLabel(String text) {
-    super(text);
-    // setAlignmentX(JComponent.LEFT_ALIGNMENT);
-    setHorizontalAlignment(SwingConstants.RIGHT);
+    super(text, RIGHT);
   }
 
   @Override public Dimension getPreferredSize() {
