@@ -80,7 +80,7 @@ class AlignDecimalCellRenderer implements TableCellRenderer {
     @Override public void updateUI() {
       super.updateUI();
       setOpaque(false);
-      putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+      putClientProperty(HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
       EventQueue.invokeLater(() -> {
         // MutableAttributeSet attr = new SimpleAttributeSet();
         Style attr = getStyle(StyleContext.DEFAULT_STYLE);

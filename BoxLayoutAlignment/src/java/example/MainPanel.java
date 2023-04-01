@@ -68,8 +68,8 @@ public final class MainPanel extends JPanel {
     l.setOpaque(true);
     l.setBackground(Color.ORANGE);
     l.setFont(l.getFont().deriveFont(Font.PLAIN));
-    l.setAlignmentX(Component.CENTER_ALIGNMENT);
-    l.setAlignmentY(Component.CENTER_ALIGNMENT);
+    l.setAlignmentX(CENTER_ALIGNMENT);
+    l.setAlignmentY(CENTER_ALIGNMENT);
     l.setVerticalAlignment(SwingConstants.CENTER);
     l.setVerticalTextPosition(SwingConstants.CENTER);
     l.setHorizontalAlignment(SwingConstants.CENTER);
