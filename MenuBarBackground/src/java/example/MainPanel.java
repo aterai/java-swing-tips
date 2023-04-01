@@ -44,10 +44,8 @@ public final class MainPanel extends JPanel {
           setOpaque(true);
         } else if (m.isSelected()) {
           setOpaque(true);
-        } else if (isRolloverEnabled() && m.isRollover()) {
-          setOpaque(true);
         } else {
-          setOpaque(false);
+          setOpaque(isRolloverEnabled() && m.isRollover());
         }
         super.fireStateChanged();
       }
@@ -59,12 +57,12 @@ public final class MainPanel extends JPanel {
     };
     // System.out.println(System.getProperty("os.name"));
     // System.out.println(System.getProperty("os.version"));
-    if ("Windows XP".equals(System.getProperty("os.name"))) {
-      menu.setBackground(new Color(0x0, true)); // XXX Windows XP lnf?
-    }
-    menu.add("dummy1");
-    menu.add("dummy2");
-    menu.add("dummy3");
+    // if (Objects.equals("Windows XP", System.getProperty("os.name"))) {
+    //   menu.setBackground(new Color(0x0, true)); // XXX Windows XP lnf?
+    // }
+    menu.add("JMenuItem1");
+    menu.add("JMenuItem2");
+    menu.add("JMenuItem3");
     return menu;
   }
 

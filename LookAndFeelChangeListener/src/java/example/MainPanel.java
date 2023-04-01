@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -20,7 +21,7 @@ public final class MainPanel extends JPanel {
     // updateCheckBox("MainPanel: init");
 
     UIManager.addPropertyChangeListener(e -> {
-      if ("lookAndFeel".equals(e.getPropertyName())) {
+      if (Objects.equals("lookAndFeel", e.getPropertyName())) {
         // String lnf = e.getNewValue().toString();
         updateCheckBox("UIManager: propertyChange");
       }

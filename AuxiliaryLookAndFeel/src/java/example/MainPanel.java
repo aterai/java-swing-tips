@@ -5,22 +5,22 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> combo = makeComboBox();
     UIManager.put("ComboBox.font", combo.getFont());
-
     JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
 
     LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
     UIManager.addPropertyChangeListener(e -> {
-      if ("lookAndFeel".equals(e.getPropertyName())) {
-        String lnf = e.getNewValue().toString();
-        if (lnf.contains("Windows")) {
+      boolean lnf = Objects.equals("lookAndFeel", e.getPropertyName());
+      if (lnf) {
+        boolean isWindows = Objects.equals("Windows", e.getNewValue());
+        if (isWindows) {
           if (check.isSelected()) {
             UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
           }

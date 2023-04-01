@@ -153,6 +153,7 @@ class DnDTabbedPane extends JTabbedPane {
   // private final DropMode dropMode = DropMode.INSERT;
   protected int dragTabIndex = -1;
   private transient DnDTabbedPane.DropLocation dropLocation;
+  private transient Handler handler;
 
   public static final class DropLocation extends TransferHandler.DropLocation {
     private final int index;
@@ -223,12 +224,15 @@ class DnDTabbedPane extends JTabbedPane {
     }
   }
 
-  protected DnDTabbedPane() {
-    super();
-    Handler h = new Handler();
-    addMouseListener(h);
-    addMouseMotionListener(h);
-    addPropertyChangeListener(h);
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removeMouseMotionListener(handler);
+    removePropertyChangeListener(handler);
+    super.updateUI();
+    handler = new Handler();
+    addMouseListener(handler);
+    addMouseMotionListener(handler);
+    addPropertyChangeListener(handler);
   }
 
   // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
@@ -390,9 +394,7 @@ class DnDTabbedPane extends JTabbedPane {
 
     // PropertyChangeListener
     @Override public void propertyChange(PropertyChangeEvent e) {
-      String propertyName = e.getPropertyName();
-      if ("dropLocation".equals(propertyName)) {
-        // System.out.println("propertyChange: dropLocation");
+      if (Objects.equals("dropLocation", e.getPropertyName())) {
         repaint();
       }
     }
@@ -717,7 +719,6 @@ class ButtonTabComponent extends JPanel {
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane is null");
-    setOpaque(false);
     JLabel label = new JLabel() {
       @Override public String getText() {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
@@ -737,11 +738,17 @@ class ButtonTabComponent extends JPanel {
     };
     add(label);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
     JButton button = new TabButton();
     TabButtonHandler handler = new TabButtonHandler();
     button.addActionListener(handler);
     button.addMouseListener(handler);
     add(button);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
   }
 
@@ -775,8 +782,9 @@ class TabButton extends JButton {
   private static final int SZ = 17;
   private static final int DELTA = 6;
 
-  protected TabButton() {
-    super();
+  @Override public void updateUI() {
+    // we don't want to update UI for this button
+    // super.updateUI();
     setUI(new BasicButtonUI());
     setToolTipText("close this tab");
     setContentAreaFilled(false);
@@ -788,10 +796,6 @@ class TabButton extends JButton {
 
   @Override public Dimension getPreferredSize() {
     return new Dimension(SZ, SZ);
-  }
-
-  @Override public void updateUI() {
-    // we don't want to update UI for this button
   }
 
   @Override protected void paintComponent(Graphics g) {

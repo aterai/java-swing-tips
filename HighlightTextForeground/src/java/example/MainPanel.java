@@ -211,9 +211,9 @@ public final class MainPanel extends JPanel {
       Object o = e.getSource();
       if (o instanceof AbstractButton) {
         String cmd = ((AbstractButton) o).getActionCommand();
-        if ("prev".equals(cmd)) {
+        if (Objects.equals("prev", cmd)) {
           current--;
-        } else if ("next".equals(cmd)) {
+        } else if (Objects.equals("next", cmd)) {
           current++;
         }
       }

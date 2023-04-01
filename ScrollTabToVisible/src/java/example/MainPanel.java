@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -43,7 +44,7 @@ public final class MainPanel extends JPanel {
   private static void scrollTabAt(JTabbedPane tabbedPane, int index) {
     Component cmp = null;
     for (Component c : tabbedPane.getComponents()) {
-      if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+      if (Objects.equals("TabbedPane.scrollableViewport", c.getName())) {
         cmp = c;
         break;
       }

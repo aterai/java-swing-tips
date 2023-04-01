@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.text.Style;
 import javax.swing.text.html.HTMLEditorKit;
@@ -14,7 +15,6 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JEditorPane editor = new JEditorPane("text/html", "");
     editor.setFont(new Font("Serif", Font.PLAIN, 16));
 
@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     Enumeration<?> rules = styles.getStyleNames();
     while (rules.hasMoreElements()) {
       String name = rules.nextElement().toString();
-      if ("body".equals(name)) {
+      if (Objects.equals("body", name)) {
         Style rule = styles.getRule(name);
         Enumeration<?> attrs = rule.getAttributeNames();
         while (attrs.hasMoreElements()) {

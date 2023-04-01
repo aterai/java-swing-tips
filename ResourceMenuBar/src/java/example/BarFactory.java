@@ -96,7 +96,7 @@ public final class BarFactory {
     toolBar.setRollover(true);
     toolBar.setFloatable(false);
     for (String key : tokenize(tmp)) {
-      if ("-".equals(key)) {
+      if (Objects.equals("-", key)) {
         toolBar.add(Box.createHorizontalStrut(5));
         toolBar.addSeparator();
         toolBar.add(Box.createHorizontalStrut(5));
@@ -166,7 +166,7 @@ public final class BarFactory {
           menu.setMnemonic(txt.codePointAt(0));
         });
     for (String m : tokenize(getResourceString(key))) {
-      if ("-".equals(m)) {
+      if (Objects.equals("-", m)) {
         menu.addSeparator();
       } else {
         menu.add(createMenuItem(m));
@@ -238,7 +238,7 @@ class Utf8ResourceBundleControl extends ResourceBundle.Control {
 
   @Override public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IOException {
     ResourceBundle bundle = null;
-    if ("properties".equals(format)) {
+    if (Objects.equals("properties", format)) {
       String bundleName = toBundleName(
           Objects.requireNonNull(baseName, "baseName must not be null"),
           Objects.requireNonNull(locale, "locale must not be null"));

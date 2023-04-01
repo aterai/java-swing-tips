@@ -14,7 +14,6 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     SpinnerModel model = new SpinnerNumberModel(5, 0, 10, 1);
-
     JSpinner spinner0 = new JSpinner(model);
 
     UIManager.put("Spinner.arrowButtonSize", new Dimension(60, 0));
@@ -114,11 +113,11 @@ class SpinnerLayout implements LayoutManager {
   private Component editor;
 
   @Override public void addLayoutComponent(String name, Component c) {
-    if ("Next".equals(name)) {
+    if (Objects.equals("Next", name)) {
       nextButton = c;
-    } else if ("Previous".equals(name)) {
+    } else if (Objects.equals("Previous", name)) {
       previousButton = c;
-    } else if ("Editor".equals(name)) {
+    } else if (Objects.equals("Editor", name)) {
       editor = c;
     }
   }
@@ -144,7 +143,7 @@ class SpinnerLayout implements LayoutManager {
     Dimension editorD = preferredSize(editor);
 
     // Force the editors' height to be a multiple of 2
-    editorD.height = ((editorD.height + 1) / 2) * 2;
+    editorD.height = (editorD.height + 1) / 2 * 2;
 
     Dimension size = new Dimension(editorD.width, editorD.height);
     size.width += Math.max(nextD.width, previousD.width);

@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 
 class ScrollTabsAction extends AbstractAction {
   private final JTabbedPane tabbedPane;
-  private final Action action;
+  private final transient Action action;
   private final int index;
 
   protected ScrollTabsAction(JTabbedPane tabbedPane, Action action) {
@@ -82,7 +82,7 @@ class ScrollTabsAction extends AbstractAction {
   public static void scrollTabAt(JTabbedPane tabbedPane, int index) {
     Component cmp = null;
     for (Component c : tabbedPane.getComponents()) {
-      if ("TabbedPane.scrollableViewport".equals(c.getName())) {
+      if (Objects.equals("TabbedPane.scrollableViewport", c.getName())) {
         cmp = c;
         break;
       }

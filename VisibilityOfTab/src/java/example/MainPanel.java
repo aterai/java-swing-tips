@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -60,29 +61,6 @@ public final class MainPanel extends JPanel {
 
   private static JTabbedPane makeTabbedPane2() {
     return new JTabbedPane() {
-      private Component getScrollableViewport() {
-        Component cmp = null;
-        for (Component c : getComponents()) {
-          if ("TabbedPane.scrollableViewport".equals(c.getName())) {
-            cmp = c;
-            break;
-          }
-        }
-        return cmp;
-      }
-
-      private void resetViewportPosition(int idx) {
-        if (getTabCount() <= 0) {
-          return;
-        }
-        Component o = getScrollableViewport();
-        if (o instanceof JViewport) {
-          JViewport viewport = (JViewport) o;
-          JComponent c = (JComponent) viewport.getView();
-          c.scrollRectToVisible(getBoundsAt(idx));
-        }
-      }
-
       @Override public void removeTabAt(int index) {
         if (getTabCount() > 0) {
           resetViewportPosition(0);
@@ -90,6 +68,20 @@ public final class MainPanel extends JPanel {
           resetViewportPosition(index - 1);
         } else {
           super.removeTabAt(index);
+        }
+      }
+
+      private void resetViewportPosition(int idx) {
+        if (getTabCount() <= 0) {
+          return;
+        }
+        String name = "TabbedPane.scrollableViewport";
+        Component o = Arrays.stream(getComponents())
+            .filter(c -> Objects.equals(name, c.getName())).findFirst().orElse(null);
+        if (o instanceof JViewport) {
+          JViewport viewport = (JViewport) o;
+          JComponent c = (JComponent) viewport.getView();
+          c.scrollRectToVisible(getBoundsAt(idx));
         }
       }
     };

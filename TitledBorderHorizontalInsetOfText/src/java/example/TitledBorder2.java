@@ -8,6 +8,7 @@ import java.awt.geom.Path2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -67,7 +68,7 @@ public class TitledBorder2 extends TitledBorder {
     label2 = new JLabel();
     label2.setOpaque(false);
     label2.putClientProperty(BasicHTML.propertyKey, null);
-    installPropertyChangeListeners();
+    installPropertyChangeListeners2();
   }
 
   /**
@@ -273,7 +274,7 @@ public class TitledBorder2 extends TitledBorder {
     return label2;
   }
 
-  private void installPropertyChangeListeners() {
+  private void installPropertyChangeListeners2() {
     WeakReference<TitledBorder2> weakReference = new WeakReference<>(this);
     PropertyChangeListener listener = new PropertyChangeListener() {
       @Override public void propertyChange(PropertyChangeEvent e) {
@@ -345,23 +346,23 @@ final class TitledBorderUtils {
   }
 
   public static Integer getPositionByString(Object value) {
-    String s = Objects.toString(value);
-    if ("ABOVE_TOP".equalsIgnoreCase(s)) {
+    String s = Objects.toString(value).toUpperCase(Locale.ENGLISH);
+    if (Objects.equals("ABOVE_TOP", s)) {
       return TitledBorder.ABOVE_TOP;
     }
-    if ("TOP".equalsIgnoreCase(s)) {
+    if (Objects.equals("TOP", s)) {
       return TitledBorder.TOP;
     }
-    if ("BELOW_TOP".equalsIgnoreCase(s)) {
+    if (Objects.equals("BELOW_TOP", s)) {
       return TitledBorder.BELOW_TOP;
     }
-    if ("ABOVE_BOTTOM".equalsIgnoreCase(s)) {
+    if (Objects.equals("ABOVE_BOTTOM", s)) {
       return TitledBorder.ABOVE_BOTTOM;
     }
-    if ("BOTTOM".equalsIgnoreCase(s)) {
+    if (Objects.equals("BOTTOM", s)) {
       return TitledBorder.BOTTOM;
     }
-    if ("BELOW_BOTTOM".equalsIgnoreCase(s)) {
+    if (Objects.equals("BELOW_BOTTOM", s)) {
       return TitledBorder.BELOW_BOTTOM;
     }
     return null;

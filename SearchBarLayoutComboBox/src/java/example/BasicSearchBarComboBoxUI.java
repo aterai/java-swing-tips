@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -286,27 +287,23 @@ class SearchBarLayout implements LayoutManager {
     Rectangle r = SwingUtilities.calculateInnerArea(cb, null);
 
     int arrowSize = 0;
-    JButton arrowButton = (JButton) cb.getComponent(0);
-    if (Objects.nonNull(arrowButton)) {
-      Insets arrowInsets = arrowButton.getInsets();
+    Component arrowButton = cb.getComponent(0);
+    if (arrowButton instanceof JButton) {
+      Insets arrowInsets = ((JComponent) arrowButton).getInsets();
       int bw = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
       arrowButton.setBounds(r.x, r.y, bw, r.height);
       arrowSize = bw;
     }
-    JButton loupeButton = null;
-    for (Component c : cb.getComponents()) {
-      if ("ComboBox.loupeButton".equals(c.getName())) {
-        loupeButton = (JButton) c;
-        break;
-      }
-    }
+    Component loupeButton = Arrays.stream(cb.getComponents())
+        .filter(c -> Objects.equals("ComboBox.loupeButton", c.getName()))
+        .findFirst().orElse(null);
     int loupeSize = 0;
-    if (Objects.nonNull(loupeButton)) {
+    if (loupeButton instanceof JButton) {
       loupeSize = r.height;
       loupeButton.setBounds(r.x + r.width - loupeSize, r.y, loupeSize, r.height);
     }
-    JTextField editor = (JTextField) cb.getEditor().getEditorComponent();
-    if (Objects.nonNull(editor)) {
+    Component editor = cb.getEditor().getEditorComponent();
+    if (editor instanceof JTextField) {
       editor.setBounds(r.x + arrowSize, r.y, r.width - arrowSize - loupeSize, r.height);
     }
   }

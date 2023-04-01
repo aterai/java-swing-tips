@@ -9,6 +9,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -71,7 +72,7 @@ public final class MainPanel extends JPanel {
       }
     };
     b.setOpaque(true);
-    if ("\u21E8".equals(symbol)) { // Test
+    if (Objects.equals("⇨", symbol)) { // test
       b.setEnabled(false);
       b.setToolTipText("forward");
     }

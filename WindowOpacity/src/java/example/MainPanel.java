@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,13 +38,12 @@ public final class MainPanel extends JPanel {
     // }
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        // JComboBox cbox = (JComboBox) e.getSource();
-        // Object o = cbox.getSelectedItem();
+        // Object o = ((JComboBox) e.getSource()).getSelectedItem();
         Object o = e.getItem();
-        if ("ImageTexturePaint".equals(o)) {
+        if (Objects.equals("ImageTexturePaint", o)) {
           texture = imageTexture;
           setOpaque(false);
-        } else if ("CheckerTexturePaint".equals(o)) {
+        } else if (Objects.equals("CheckerTexturePaint", o)) {
           texture = checkerTexture;
           setOpaque(false);
         } else {

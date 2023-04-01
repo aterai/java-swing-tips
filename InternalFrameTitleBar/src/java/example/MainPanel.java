@@ -51,15 +51,12 @@ public final class MainPanel extends JPanel {
 
     KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
     focusManager.addPropertyChangeListener(e -> {
-      String prop = e.getPropertyName();
-      // System.out.println(prop);
-      if ("activeWindow".equals(prop)) {
+      if (Objects.equals("activeWindow", e.getPropertyName())) {
         try {
           internal.setSelected(Objects.nonNull(e.getNewValue()));
         } catch (PropertyVetoException ex) {
           throw new IllegalStateException(ex);
         }
-        // System.out.println("---------------------");
       }
     });
 

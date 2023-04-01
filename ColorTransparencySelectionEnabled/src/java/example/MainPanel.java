@@ -11,6 +11,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -57,7 +58,8 @@ public final class MainPanel extends JPanel {
     JColorChooser cc = new JColorChooser() {
       @Override public void updateUI() {
         super.updateUI();
-        if ("GTK".equals(UIManager.getLookAndFeel().getID())) {
+        boolean isGtk = Objects.equals("GTK", UIManager.getLookAndFeel().getID());
+        if (isGtk) {
           setUI(new BasicColorChooserUI());
         }
       }

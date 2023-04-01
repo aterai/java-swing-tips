@@ -29,7 +29,6 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DnDTabbedPane sub = new DnDTabbedPane();
     sub.addTab("Title aa", new JLabel("aaa"));
     sub.addTab("Title bb", new JScrollPane(new JTree()));
@@ -126,6 +125,7 @@ class DnDTabbedPane extends JTabbedPane {
   // private final DropMode dropMode = DropMode.INSERT;
   protected int dragTabIndex = -1;
   private transient DnDTabbedPane.DropLocation dropLocation;
+  private transient Handler handler;
 
   public static final class DropLocation extends TransferHandler.DropLocation {
     private final int index;
@@ -196,12 +196,15 @@ class DnDTabbedPane extends JTabbedPane {
     }
   }
 
-  protected DnDTabbedPane() {
-    super();
-    Handler h = new Handler();
-    addMouseListener(h);
-    addMouseMotionListener(h);
-    addPropertyChangeListener(h);
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removeMouseMotionListener(handler);
+    removePropertyChangeListener(handler);
+    super.updateUI();
+    handler = new Handler();
+    addMouseListener(handler);
+    addMouseMotionListener(handler);
+    addPropertyChangeListener(handler);
   }
 
   // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
@@ -407,9 +410,7 @@ class DnDTabbedPane extends JTabbedPane {
 
     // PropertyChangeListener
     @Override public void propertyChange(PropertyChangeEvent e) {
-      String propertyName = e.getPropertyName();
-      if ("dropLocation".equals(propertyName)) {
-        // System.out.println("propertyChange: dropLocation");
+      if (Objects.equals("dropLocation", e.getPropertyName())) {
         repaintDropLocation();
       }
     }
@@ -662,6 +663,10 @@ class GhostGlassPane extends JComponent {
   protected GhostGlassPane(DnDTabbedPane tabbedPane) {
     super();
     this.tabbedPane = tabbedPane;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setOpaque(false);
   }
 

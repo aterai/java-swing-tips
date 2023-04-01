@@ -129,8 +129,7 @@ class GhostFocusListener implements FocusListener {
 
   @Override public void focusLost(FocusEvent e) {
     JTextComponent textField = (JTextComponent) e.getComponent();
-    String str = textField.getText().trim();
-    if ("".equals(str)) {
+    if (textField.getText().isEmpty()) {
       textField.setForeground(INACTIVE_COLOR);
       textField.setText(ghostMessage);
     }

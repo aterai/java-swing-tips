@@ -32,9 +32,9 @@ public final class MainPanel extends JPanel {
   private static final String TAB_TXT = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
   private static final String IDEOGRAPHIC_SPACE = String.join("\n",
       "123456789012",
-      "bbb2　　1 3 ccc3\n",
-      "　00000　12345　",
-      "　　日本語　");
+      "bbb2\u3000\u3000\u30001 3 ccc3\n",
+      "\u300000000 \u300012345 ",
+      "\u3000\u3000日本語\u3000");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -155,7 +155,8 @@ class ParagraphWithEopmView extends ParagraphView {
 }
 
 class WhitespaceLabelView extends LabelView {
-  private static final String IDEOGRAPHIC_SPACE = "　"; // "\u3000";
+  private static final String IDEOGRAPHIC_SPACE = "\u3000";
+  private static final String TABULATION = "\t";
   private static final Color MARK_COLOR = new Color(0x78_82_6E);
   private static final BasicStroke DASHED = new BasicStroke(
       1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
@@ -182,8 +183,8 @@ class WhitespaceLabelView extends LabelView {
         g2.setPaint(MARK_COLOR);
         g2.drawLine(sx + 1, sy - 1, sx + spaceWidth - 2, sy - 1);
         g2.drawLine(sx + 2, sy, sx + spaceWidth - 2, sy);
-      } else if ("\t".equals(s)) {
-        int tabWidth = (int) getTabExpander().nextTabStop((float) sx, i) - sx;
+      } else if (TABULATION.equals(s)) {
+        int tabWidth = (int) getTabExpander().nextTabStop(sx, i) - sx;
         g2.setPaint(MARK_COLOR);
         g2.drawLine(sx + 2, sy, sx + 2 + 2, sy);
         g2.drawLine(sx + 2, sy - 1, sx + 2 + 1, sy - 1);
