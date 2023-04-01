@@ -177,10 +177,10 @@ class FileModel extends DefaultTableModel {
   }
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  protected TablePopupMenu() {
+  public TablePopupMenu() {
     super();
     delete = add("Remove only from JTable");
     delete.addActionListener(e -> {

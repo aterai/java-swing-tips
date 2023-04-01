@@ -158,10 +158,10 @@ class TabButton extends JButton {
   }
 }
 
-class TabTitleRenamePopupMenu extends JPopupMenu {
+final class TabTitleRenamePopupMenu extends JPopupMenu {
   private final JMenuItem rename;
 
-  protected TabTitleRenamePopupMenu() {
+  public TabTitleRenamePopupMenu() {
     super();
     JTextField textField = new JTextField(10);
     textField.addAncestorListener(new FocusAncestorListener());

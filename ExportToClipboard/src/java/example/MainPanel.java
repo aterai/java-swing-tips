@@ -84,11 +84,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ListPopupMenu extends JPopupMenu {
+final class ListPopupMenu extends JPopupMenu {
   private final JMenuItem cut;
   private final JMenuItem copy;
 
-  protected ListPopupMenu(JList<?> list) {
+  public ListPopupMenu(JList<?> list) {
     super();
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     TransferHandler handler = list.getTransferHandler();

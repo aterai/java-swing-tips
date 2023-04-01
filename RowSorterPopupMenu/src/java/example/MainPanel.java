@@ -92,12 +92,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TableHeaderPopupMenu extends JPopupMenu {
+final class TableHeaderPopupMenu extends JPopupMenu {
   private final List<SortAction> actions = Arrays.asList(
       new SortAction(SortOrder.ASCENDING),
       new SortAction(SortOrder.DESCENDING)); // new SortAction(SortOrder.UNSORTED));
 
-  protected TableHeaderPopupMenu() {
+  public TableHeaderPopupMenu() {
     super();
     actions.forEach(this::add);
   }

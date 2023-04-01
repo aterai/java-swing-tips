@@ -78,8 +78,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class HtmlColorPopupMenu extends JPopupMenu {
-  protected HtmlColorPopupMenu() {
+final class HtmlColorPopupMenu extends JPopupMenu {
+  public HtmlColorPopupMenu() {
     super();
     MutableAttributeSet red = new SimpleAttributeSet();
     StyleConstants.setForeground(red, Color.RED);

@@ -40,12 +40,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TabbedPanePopupMenu extends JPopupMenu {
+final class TabbedPanePopupMenu extends JPopupMenu {
   private final JMenuItem closePage;
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
 
-  protected TabbedPanePopupMenu() {
+  public TabbedPanePopupMenu() {
     super();
     AtomicInteger counter = new AtomicInteger();
     add("New tab").addActionListener(e -> {

@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class PinTabPopupMenu extends JPopupMenu {
+final class PinTabPopupMenu extends JPopupMenu {
   private final JMenuItem pinTabMenuItem = new JCheckBoxMenuItem("pin tab");
   // private final Action newTabAction = new AbstractAction("new tab") {
   //   @Override public void actionPerformed(ActionEvent e) {
@@ -116,7 +116,7 @@ class PinTabPopupMenu extends JPopupMenu {
   //   }
   // };
 
-  protected PinTabPopupMenu() {
+  public PinTabPopupMenu() {
     super();
     add(pinTabMenuItem).addActionListener(e -> {
       JTabbedPane t = (JTabbedPane) getInvoker();

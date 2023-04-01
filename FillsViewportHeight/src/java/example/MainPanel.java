@@ -127,10 +127,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  protected TablePopupMenu() {
+  public TablePopupMenu() {
     super();
     add("add").addActionListener(e -> {
       JTable table = (JTable) getInvoker();

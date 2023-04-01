@@ -75,12 +75,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TreePopupMenu extends JPopupMenu {
+final class TreePopupMenu extends JPopupMenu {
   private TreePath path;
   private final JMenuItem editItem;
   private final JMenuItem editDialogItem;
 
-  protected TreePopupMenu() {
+  public TreePopupMenu() {
     super();
     JTextField field = new JTextField();
     field.addAncestorListener(new FocusAncestorListener());

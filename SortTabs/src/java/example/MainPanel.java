@@ -187,14 +187,14 @@ class EditableTabbedPane extends JTabbedPane {
   }
 }
 
-class TabbedPanePopupMenu extends JPopupMenu {
+final class TabbedPanePopupMenu extends JPopupMenu {
   private transient int count;
   private final JMenuItem sortTabs;
   private final JMenuItem closePage;
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
 
-  protected TabbedPanePopupMenu() {
+  public TabbedPanePopupMenu() {
     super();
     add("New tab").addActionListener(e -> {
       JTabbedPane tabs = (JTabbedPane) getInvoker();

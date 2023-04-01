@@ -142,12 +142,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextComponentPopupMenu extends JPopupMenu {
+final class TextComponentPopupMenu extends JPopupMenu {
   private final transient Action cutAction = new DefaultEditorKit.CutAction();
   private final transient Action copyAction = new DefaultEditorKit.CopyAction();
   // private final transient Action pasteAction = new DefaultEditorKit.PasteAction();
 
-  protected TextComponentPopupMenu() {
+  public TextComponentPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);

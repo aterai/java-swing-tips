@@ -233,7 +233,7 @@ class CentredBackgroundBorder implements Border {
 }
 
 // https://ateraimemo.com/Swing/TranslucentPopupMenu.html
-class TranslucentPopupMenu extends JPopupMenu {
+final class TranslucentPopupMenu extends JPopupMenu {
   private static final Paint POPUP_BACK = new Color(250, 250, 250, 100);
   private static final Paint POPUP_LEFT = new Color(230, 230, 230, 100);
   private static final int LEFT_WIDTH = 24;

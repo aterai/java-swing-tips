@@ -107,7 +107,7 @@ class MissingIcon implements Icon {
 }
 
 /*
-class DropShadowPopupMenu extends JPopupMenu {
+final class DropShadowPopupMenu extends JPopupMenu {
   private static final int OFFSET = 4;
   private transient BufferedImage shadow;
   private transient Border inner;
@@ -220,7 +220,7 @@ class ShadowBorder extends AbstractBorder {
 }
 /*/
 // JDK 1.7.0: JPopupMenu#setBackground(new Color(0x0, true));
-class DropShadowPopupMenu extends JPopupMenu {
+final class DropShadowPopupMenu extends JPopupMenu {
   private static final int OFFSET = 4;
   private final Dimension dim = new Dimension();
   private transient BufferedImage shadow;

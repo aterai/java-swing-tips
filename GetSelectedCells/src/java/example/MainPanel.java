@@ -99,14 +99,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem select;
   private final JMenuItem clear;
   private final JMenuItem toggle;
 
-  protected TablePopupMenu() {
+  public TablePopupMenu() {
     super();
-
     select = add("select");
     select.addActionListener(e -> initAllTableValue((JTable) getInvoker(), true));
 

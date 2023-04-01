@@ -87,11 +87,11 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private class TablePopupMenu extends JPopupMenu {
+  private final class TablePopupMenu extends JPopupMenu {
     private final JMenuItem addMenuItem;
     private final JMenuItem deleteMenuItem;
 
-    protected TablePopupMenu() {
+    public TablePopupMenu() {
       super();
       addMenuItem = add("add");
       addMenuItem.addActionListener(e -> {

@@ -88,14 +88,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final transient Action createAction;
   private final transient Action deleteAction;
   private final transient Action upAction;
   private final transient Action downAction;
   private final JTable table;
 
-  protected TablePopupMenu(JTable table) {
+  public TablePopupMenu(JTable table) {
     super();
     this.table = table;
 

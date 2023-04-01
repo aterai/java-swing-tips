@@ -457,7 +457,6 @@ class GhostGlassPane extends JComponent {
   protected GhostGlassPane(DnDTabbedPane tabbedPane) {
     super();
     this.tabbedPane = tabbedPane;
-    setOpaque(false);
   }
 
   public void setTargetRect(int x, int y, int width, int height) {
@@ -470,6 +469,10 @@ class GhostGlassPane extends JComponent {
 
   public void setPoint(Point pt) {
     this.location.setLocation(pt);
+  }
+
+  @Override public boolean isOpaque() {
+    return false;
   }
 
   @Override public void setVisible(boolean v) {

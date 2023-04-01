@@ -539,7 +539,6 @@ class GhostGlassPane extends JComponent {
   protected GhostGlassPane(DnDTabbedPane tabbedPane) {
     super();
     this.tabbedPane = tabbedPane;
-    setOpaque(false);
     // [JDK-6700748]
     // Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
     // https://bugs.openjdk.org/browse/JDK-6700748
@@ -556,6 +555,10 @@ class GhostGlassPane extends JComponent {
 
   public void setPoint(Point pt) {
     this.location.setLocation(pt);
+  }
+
+  @Override public boolean isOpaque() {
+    return false;
   }
 
   @Override public void setVisible(boolean v) {

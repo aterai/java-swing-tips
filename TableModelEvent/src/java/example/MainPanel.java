@@ -171,10 +171,10 @@ enum Status {
   SELECTED, DESELECTED, INDETERMINATE
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  protected TablePopupMenu() {
+  public TablePopupMenu() {
     super();
     add("add(true)").addActionListener(e -> addRowActionPerformed(true));
     add("add(false)").addActionListener(e -> addRowActionPerformed(false));

@@ -141,11 +141,11 @@ public final class MainPanel extends JPanel {
     executor.execute(worker);
   }
 
-  private class TablePopupMenu extends JPopupMenu {
+  private final class TablePopupMenu extends JPopupMenu {
     private final JMenuItem cancelMenuItem;
     private final JMenuItem deleteMenuItem;
 
-    protected TablePopupMenu(ExecutorService executor) {
+    public TablePopupMenu(ExecutorService executor) {
       super();
       add("add").addActionListener(e -> addActionPerformed(executor));
       addSeparator();

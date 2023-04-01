@@ -73,8 +73,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TableHeaderPopupMenu extends JPopupMenu {
-  protected TableHeaderPopupMenu(JTable table) {
+final class TableHeaderPopupMenu extends JPopupMenu {
+  public TableHeaderPopupMenu(JTable table) {
     super();
     TableColumnModel columnModel = table.getColumnModel();
     List<TableColumn> list = Collections.list(columnModel.getColumns());

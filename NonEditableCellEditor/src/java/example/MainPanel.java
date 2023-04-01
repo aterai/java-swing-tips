@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TextComponentPopupMenu extends JPopupMenu {
+final class TextComponentPopupMenu extends JPopupMenu {
   private final Action copyAction = new DefaultEditorKit.CopyAction();
 
-  protected TextComponentPopupMenu() {
+  public TextComponentPopupMenu() {
     super();
     add(copyAction);
   }

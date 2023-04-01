@@ -59,11 +59,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final String[] columnNames;
   private int index = -1;
 
-  protected TablePopupMenu(String... arrays) {
+  public TablePopupMenu(String... arrays) {
     super();
     columnNames = new String[arrays.length];
     System.arraycopy(arrays, 0, columnNames, 0, arrays.length);

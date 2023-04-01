@@ -43,10 +43,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TreePopupMenu extends JPopupMenu {
+final class TreePopupMenu extends JPopupMenu {
   private TreePath path;
 
-  protected TreePopupMenu() {
+  public TreePopupMenu() {
     super();
     add("add child node").addActionListener(e -> {
       JTree tree = (JTree) getInvoker();

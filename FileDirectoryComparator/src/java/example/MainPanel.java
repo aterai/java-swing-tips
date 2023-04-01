@@ -275,10 +275,10 @@ class FileGroupComparator extends DefaultFileComparator {
 //   // }
 // }
 
-class TablePopupMenu extends JPopupMenu {
+final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  protected TablePopupMenu() {
+  public TablePopupMenu() {
     super();
     delete = add("delete");
     delete.addActionListener(e -> deleteSelectedRows());
