@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     // char[] ca = Character.toChars(code);
     // int len = Character.charCount(code);
     // https://docs.oracle.com/javase/tutorial/i18n/text/usage.html
-    return new String(Character.toChars(code)); // , 0, len);
+    return String.valueOf(Character.toChars(code)); // , 0, len);
     // if (code < 0x10000) {
     //   str = Character.toString((char) code);
     // } else {
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     //   char[] ca = new char[2];
     //   ca[0] = (char) (Math.floor(x / 0x400) + 0xD800);
     //   ca[1] = (char) (x % 0x400 + 0xDC00);
-    //   str = new String(ca, 0, 2);
+    //   str = String.valueOf(ca, 0, 2);
     // }
   }
 

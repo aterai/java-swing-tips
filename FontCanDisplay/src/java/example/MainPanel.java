@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     int code = 0x1F512;
-    JLabel label = new JLabel(new String(Character.toChars(code)));
+    JLabel label = new JLabel(String.valueOf(Character.toChars(code)));
     label.setFont(label.getFont().deriveFont(24f));
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setVerticalAlignment(SwingConstants.CENTER);
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
     Stream.of(fonts)
         .map(f -> {
-          String txt = new String(Character.toChars(code));
+          String txt = String.valueOf(Character.toChars(code));
           FontRenderContext frc = getFontMetrics(f).getFontRenderContext();
           return new Object[] {
               f.getFamily(),
