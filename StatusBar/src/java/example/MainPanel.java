@@ -41,11 +41,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class StatusBar extends JPanel {
-  protected StatusBar() {
+final class StatusBar extends JPanel {
+  public StatusBar() {
     super(new BorderLayout());
     add(new BottomRightCornerLabel(), BorderLayout.EAST);
-    setOpaque(false);
+  }
+
+  @Override public boolean isOpaque() {
+    return false;
   }
 }
 

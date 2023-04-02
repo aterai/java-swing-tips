@@ -175,9 +175,13 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
   }
 }
 
-class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
-  protected RolloverNumberRenderer(HighlightListener highlighter) {
+final class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
+  public RolloverNumberRenderer(HighlightListener highlighter) {
     super(highlighter);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setHorizontalAlignment(RIGHT);
   }
 }

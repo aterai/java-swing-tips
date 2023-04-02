@@ -87,8 +87,15 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
 }
 
 class CloseButton extends JButton implements UIResource {
+  private transient MouseAdapter handler;
+
   protected CloseButton(JTabbedPane tabPane, int index) {
     super(new CloseButtonAction(tabPane, index));
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    super.updateUI();
     setToolTipText("Close this tab");
     // setMargin(new Insets(0, 0, 0, 0));
     setBorder(BorderFactory.createEmptyBorder());
@@ -96,7 +103,7 @@ class CloseButton extends JButton implements UIResource {
     setBorderPainted(false);
     setContentAreaFilled(false);
     setRolloverEnabled(false);
-    addMouseListener(new MouseAdapter() {
+    handler = new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         setForeground(Color.RED);
       }
@@ -104,7 +111,8 @@ class CloseButton extends JButton implements UIResource {
       @Override public void mouseExited(MouseEvent e) {
         setForeground(Color.BLACK);
       }
-    });
+    };
+    addMouseListener(handler);
   }
 
   @Override public Dimension getPreferredSize() {

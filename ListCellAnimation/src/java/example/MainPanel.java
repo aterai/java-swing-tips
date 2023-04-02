@@ -89,7 +89,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
         running = false;
       }
     });
-    setOpaque(true);
+    // setOpaque(true);
     add(icon, BorderLayout.WEST);
     add(label);
     list.addHierarchyListener(this);
@@ -117,12 +117,11 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
     return running && animateIndex == list.getSelectedIndex();
   }
 
-  private class MarqueeLabel extends JLabel {
+  private final class MarqueeLabel extends JLabel {
     private float xx;
 
-    protected MarqueeLabel() {
-      super();
-      setOpaque(false);
+    @Override public boolean isOpaque() {
+      return false;
     }
 
     @Override protected void paintComponent(Graphics g) {
@@ -143,7 +142,7 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
     }
   }
 
-  private class AnimeIcon extends JComponent {
+  private final class AnimeIcon extends JComponent {
     private static final double R = 2d;
     private static final double SX = 1d;
     private static final double SY = 1d;
@@ -159,10 +158,13 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
         new Ellipse2D.Double(SX + 0 * R, SY + 3 * R, 2 * R, 2 * R),
         new Ellipse2D.Double(SX + 1 * R, SY + 1 * R, 2 * R, 2 * R)));
 
-    protected AnimeIcon() {
-      super();
+    @Override public void updateUI() {
+      super.updateUI();
       setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
-      setOpaque(false);
+    }
+
+    @Override public boolean isOpaque() {
+      return false;
     }
 
     @Override public Dimension getPreferredSize() {

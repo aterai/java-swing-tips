@@ -118,20 +118,9 @@ class ButtonTabComponent extends JPanel {
   }
 }
 
-class TabButton extends JButton {
+final class TabButton extends JButton {
   private static final int SIZE = 17;
   private static final int DELTA = 6;
-
-  protected TabButton() {
-    super();
-    setUI(new BasicButtonUI());
-    setToolTipText("close this tab");
-    setContentAreaFilled(false);
-    setFocusable(false);
-    setBorder(BorderFactory.createEtchedBorder());
-    setBorderPainted(false);
-    setRolloverEnabled(true);
-  }
 
   @Override public Dimension getPreferredSize() {
     return new Dimension(SIZE, SIZE);
@@ -139,6 +128,14 @@ class TabButton extends JButton {
 
   @Override public void updateUI() {
     // we don't want to update UI for this button
+    // super.updateUI();
+    setUI(new BasicButtonUI());
+    setToolTipText("close this tab");
+    setContentAreaFilled(false);
+    setFocusable(false);
+    setBorder(BorderFactory.createEtchedBorder());
+    setBorderPainted(false);
+    setRolloverEnabled(true);
   }
 
   @Override protected void paintComponent(Graphics g) {

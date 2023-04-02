@@ -80,11 +80,11 @@ class DigitalClock extends JPanel {
       }
     };
     addHierarchyListener(listener);
+    setBackground(DigitalNumber.BGC);
   }
 
   public DigitalClock() {
     super();
-    setBackground(DigitalNumber.BGC);
     double x = SIZE * 3d;
     double y = SIZE * 8d;
     double gap = SIZE * 1.5;

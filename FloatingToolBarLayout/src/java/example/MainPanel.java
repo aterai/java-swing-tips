@@ -118,10 +118,16 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ColorPanel extends JPanel {
-  protected ColorPanel(Color color) {
+final class ColorPanel extends JPanel {
+  private final Color color;
+
+  public ColorPanel(Color color) {
     super();
-    setBackground(color);
+    this.color = color;
+  }
+
+  @Override public Color getBackground() {
+    return color;
   }
 
   @Override public Dimension getPreferredSize() {

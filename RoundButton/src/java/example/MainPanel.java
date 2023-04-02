@@ -86,9 +86,9 @@ class RoundedCornerButton extends JButton {
   protected static final Color FC = new Color(100, 150, 255, 200);
   protected static final Color AC = new Color(230, 230, 230);
   protected static final Color RC = Color.ORANGE;
-  protected Shape shape;
-  protected Shape border;
-  protected Shape base;
+  protected transient Shape shape;
+  protected transient Shape border;
+  protected transient Shape base;
 
   protected RoundedCornerButton() {
     super();
@@ -230,10 +230,12 @@ class ShapeButton extends JButton {
   protected final transient Shape shape;
 
   protected ShapeButton(Shape s) {
-    super();
+    super("Shape", new ShapeSizeIcon(s));
     shape = s;
-    setModel(new DefaultButtonModel());
-    init("Shape", new DummySizeIcon(s));
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setVerticalAlignment(CENTER);
     setVerticalTextPosition(CENTER);
     setHorizontalAlignment(CENTER);
@@ -287,10 +289,10 @@ class ShapeButton extends JButton {
   // }
 }
 
-class DummySizeIcon implements Icon {
+class ShapeSizeIcon implements Icon {
   private final Shape shape;
 
-  protected DummySizeIcon(Shape s) {
+  protected ShapeSizeIcon(Shape s) {
     shape = s;
   }
 

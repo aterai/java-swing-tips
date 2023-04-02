@@ -57,18 +57,21 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ButtonPanel extends JPanel {
-  protected final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-  protected final JButton b1 = new ColorButton(new ColorIcon(Color.RED));
-  protected final JButton b2 = new ColorButton(new ColorIcon(Color.GREEN));
-  protected final JButton b3 = new ColorButton(new ColorIcon(Color.BLUE));
+final class ButtonPanel extends JPanel {
+  public final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+  public final JButton b1 = new ColorButton(new ColorIcon(Color.RED));
+  public final JButton b2 = new ColorButton(new ColorIcon(Color.GREEN));
+  public final JButton b3 = new ColorButton(new ColorIcon(Color.BLUE));
 
-  protected ButtonPanel() {
-    super();
-    setOpaque(false);
-    // b1.addActionListener(e -> System.out.println("b1: " + renderer.getText()));
-    // b2.addActionListener(e -> System.out.println("b2: " + renderer.getText()));
-    // b3.addActionListener(e -> System.out.println("b3: " + renderer.getText()));
+  // public ButtonPanel() {
+  //   super();
+  //   b1.addActionListener(e -> System.out.println("b1: " + renderer.getText()));
+  //   b2.addActionListener(e -> System.out.println("b2: " + renderer.getText()));
+  //   b3.addActionListener(e -> System.out.println("b3: " + renderer.getText()));
+  // }
+
+  @Override public boolean isOpaque() {
+    return false;
   }
 
   public Component remakePanel(Component c) {
@@ -156,20 +159,25 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 }
 
-class ColorButton extends JButton {
-  protected ColorButton(ColorIcon icon) {
+final class ColorButton extends JButton {
+  public ColorButton(ColorIcon icon) {
     super(icon);
     setPressedIcon(new ColorIcon(icon.color.darker()));
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setFocusable(false);
     setFocusPainted(false);
     setBorderPainted(false);
     setContentAreaFilled(false);
     setBorder(BorderFactory.createEmptyBorder());
   }
-//   @Override public Dimension getPreferredSize() {
-//     Icon icon = getIcon();
-//     return new Dimension(icon.getIconWidth(), icon.getIconHeight());
-//   }
+
+  // @Override public Dimension getPreferredSize() {
+  //   Icon icon = getIcon();
+  //   return new Dimension(icon.getIconWidth(), icon.getIconHeight());
+  // }
 }
 
 class ColorIcon implements Icon {

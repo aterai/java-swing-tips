@@ -125,8 +125,8 @@ class ImageCaptionLabel extends JLabel {
   }
 
   protected ImageCaptionLabel(String caption, Icon icon) {
-    super();
-    setIcon(icon);
+    super(icon);
+    // setIcon(icon);
     textArea.setText(caption);
     add(textArea);
     addMouseListener(handler);

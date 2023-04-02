@@ -257,7 +257,6 @@ class RoundedHeaderRenderer extends DefaultTableCellRenderer {
     super();
     firstLabel.setOpaque(false);
     lastLabel.setOpaque(false);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     firstLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     lastLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
   }

@@ -206,6 +206,10 @@ class ComboTablePopup extends BasicComboPopup {
     });
 
     scroll = new JScrollPane(table);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setBorder(BorderFactory.createEmptyBorder());
   }
 
