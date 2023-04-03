@@ -177,15 +177,16 @@ class ComboKeyHandler extends KeyAdapter {
   @Override public void keyPressed(KeyEvent e) {
     JTextField textField = (JTextField) e.getComponent();
     String text = textField.getText();
-    shouldHide = false;
     switch (e.getKeyCode()) {
       case KeyEvent.VK_RIGHT:
         for (String s : list) {
           if (s.startsWith(text)) {
             textField.setText(s);
+            shouldHide = false;
             return;
           }
         }
+        shouldHide = false;
         break;
       case KeyEvent.VK_ENTER:
         if (!list.contains(text)) {
@@ -200,6 +201,7 @@ class ComboKeyHandler extends KeyAdapter {
         shouldHide = true;
         break;
       default:
+        shouldHide = false;
         break;
     }
   }

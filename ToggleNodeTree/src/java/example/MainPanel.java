@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.TreeExpansionEvent;
@@ -22,16 +23,16 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree(makeModel());
     tree.setRootVisible(false);
     tree.addTreeWillExpandListener(new TreeWillExpandListener() {
-      private boolean isAdjusting;
+      private final AtomicBoolean isAdjusting = new AtomicBoolean();
       @Override public void treeWillExpand(TreeExpansionEvent e) { // throws ExpandVetoException {
         // collapseAll(tree); // StackOverflowError when collapsing nodes below 2nd level
-        if (isAdjusting) {
+        if (isAdjusting.get()) {
           return;
         }
-        isAdjusting = true;
+        isAdjusting.set(true);
         collapseFirstHierarchy(tree);
         tree.setSelectionPath(e.getPath());
-        isAdjusting = false;
+        isAdjusting.set(false);
       }
 
       @Override public void treeWillCollapse(TreeExpansionEvent e) { // throws ExpandVetoException {

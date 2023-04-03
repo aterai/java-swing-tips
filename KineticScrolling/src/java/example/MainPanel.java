@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,11 +26,11 @@ public final class MainPanel extends JPanel {
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+    AtomicBoolean adjusting = new AtomicBoolean();
     JViewport viewport = new JViewport() {
       private static final boolean MIDDLEWEIGHT = false;
-      private boolean adjusting;
       @Override public void revalidate() {
-        if (!MIDDLEWEIGHT && adjusting) {
+        if (!MIDDLEWEIGHT && adjusting.get()) {
           return;
         }
         super.revalidate();
@@ -39,9 +40,9 @@ public final class MainPanel extends JPanel {
         if (MIDDLEWEIGHT) {
           super.setViewPosition(p);
         } else {
-          adjusting = true;
+          adjusting.set(true);
           super.setViewPosition(p);
-          adjusting = false;
+          adjusting.set(false);
         }
       }
     };

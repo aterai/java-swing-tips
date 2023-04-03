@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -77,21 +78,19 @@ public final class MainPanel extends JPanel {
 // https://community.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
 class WidePopupMenuListener implements PopupMenuListener {
   private static final int POPUP_MIN_WIDTH = 300;
-  private boolean adjusting;
+  private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     JComboBox<?> combo = (JComboBox<?>) e.getSource();
     Dimension size = combo.getSize();
-    if (size.width >= POPUP_MIN_WIDTH) {
+    if (size.width >= POPUP_MIN_WIDTH || adjusting.get()) {
       return;
     }
-    if (!adjusting) {
-      adjusting = true;
-      combo.setSize(POPUP_MIN_WIDTH, size.height);
-      combo.showPopup();
-    }
+    adjusting.set(true);
+    combo.setSize(POPUP_MIN_WIDTH, size.height);
+    combo.showPopup();
     combo.setSize(size);
-    adjusting = false;
+    adjusting.set(false);
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

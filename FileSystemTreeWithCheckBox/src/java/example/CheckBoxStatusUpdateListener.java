@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -18,13 +19,13 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class CheckBoxStatusUpdateListener implements TreeModelListener {
-  private boolean adjusting;
+  private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void treeNodesChanged(TreeModelEvent e) {
-    if (adjusting) {
+    if (adjusting.get()) {
       return;
     }
-    adjusting = true;
+    adjusting.set(true);
 
     DefaultTreeModel model = (DefaultTreeModel) e.getSource();
     // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
@@ -58,7 +59,7 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
       model.nodeChanged(node);
     }
 
-    adjusting = false;
+    adjusting.set(false);
   }
 
   // private void updateParentUserObject(DefaultMutableTreeNode parent) {

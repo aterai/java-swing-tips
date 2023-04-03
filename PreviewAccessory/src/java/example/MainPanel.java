@@ -118,10 +118,11 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
       update = true;
     }
     if (update) {
-      thumbnail = null;
       if (isShowing()) {
         thumbnail = getImageThumbnail(file);
         repaint();
+      } else {
+        thumbnail = null;
       }
     }
   }

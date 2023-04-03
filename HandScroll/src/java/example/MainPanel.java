@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,11 +35,12 @@ public final class MainPanel extends JPanel {
     // JViewport vport = scroll.getViewport();
 
     // JDK 1.7.0 or later
+    AtomicBoolean isAdjusting = new AtomicBoolean();
     JViewport vport = new JViewport() {
       private static final boolean WEIGHT_MIXING = false;
-      private boolean isAdjusting;
+      // private boolean isAdjusting;
       @Override public void revalidate() {
-        if (!WEIGHT_MIXING && isAdjusting) {
+        if (!WEIGHT_MIXING && isAdjusting.get()) {
           return;
         }
         super.revalidate();
@@ -48,9 +50,9 @@ public final class MainPanel extends JPanel {
         if (WEIGHT_MIXING) {
           super.setViewPosition(p);
         } else {
-          isAdjusting = true;
+          isAdjusting.set(true);
           super.setViewPosition(p);
-          isAdjusting = false;
+          isAdjusting.set(false);
         }
       }
     };

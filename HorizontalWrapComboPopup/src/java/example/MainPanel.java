@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -116,7 +117,7 @@ public final class MainPanel extends JPanel {
         }
 
         listener = new PopupMenuListener() {
-          private boolean adjusting;
+          private final AtomicBoolean adjusting = new AtomicBoolean();
 
           @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             JComboBox<?> combo = (JComboBox<?>) e.getSource();
@@ -130,13 +131,13 @@ public final class MainPanel extends JPanel {
             if (size.width >= popupWidth) {
               return;
             }
-            if (!adjusting) {
-              adjusting = true;
+            if (!adjusting.get()) {
+              adjusting.set(true);
               combo.setSize(popupWidth, size.height);
               combo.showPopup();
             }
             combo.setSize(size);
-            adjusting = false;
+            adjusting.set(false);
           }
 
           @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

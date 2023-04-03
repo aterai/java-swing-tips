@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -123,13 +124,13 @@ class FilterableNode {
 }
 
 class FilterableStatusUpdateListener implements TreeModelListener {
-  private boolean adjusting;
+  private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void treeNodesChanged(TreeModelEvent e) {
-    if (adjusting) {
+    if (adjusting.get()) {
       return;
     }
-    adjusting = true;
+    adjusting.set(true);
     Object[] children = e.getChildren();
     DefaultTreeModel model = (DefaultTreeModel) e.getSource();
 
@@ -156,7 +157,7 @@ class FilterableStatusUpdateListener implements TreeModelListener {
     }
     updateAllChildrenUserObject(node, c.status);
     model.nodeChanged(node);
-    adjusting = false;
+    adjusting.set(false);
   }
 
   private void updateParentUserObject(DefaultMutableTreeNode parent) {

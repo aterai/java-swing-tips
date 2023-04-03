@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -25,8 +26,8 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("check");
     button.addActionListener(e -> {
       String txt = Optional.ofNullable(bg.getSelection())
-          .map(b -> String.format("\"%s\" isSelected.", b.getActionCommand()))
-          .orElse("Please select one of the option above.");
+        .map(b -> String.format("\"%s\" isSelected.", b.getActionCommand()))
+        .orElse("Please select one of the option above.");
       label.setText(txt);
       // ButtonModel bm = bg.getSelection();
       // if (bm != null) {
@@ -72,16 +73,17 @@ public final class MainPanel extends JPanel {
 
 class ToggleButtonGroup extends ButtonGroup {
   private ButtonModel prevModel;
-  private boolean isAdjusting;
+  private final AtomicBoolean isAdjusting = new AtomicBoolean();
 
-  @Override public void setSelected(ButtonModel m, boolean b) {
-    if (isAdjusting) {
+  @Override
+  public void setSelected(ButtonModel m, boolean b) {
+    if (isAdjusting.get()) {
       return;
     }
     if (m.equals(prevModel)) {
-      isAdjusting = true;
+      isAdjusting.set(true);
       clearSelection();
-      isAdjusting = false;
+      isAdjusting.set(false);
     } else {
       super.setSelected(m, b);
     }

@@ -13,6 +13,7 @@ import java.util.EventObject;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeModelEvent;
@@ -205,13 +206,13 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 }
 
 class CheckBoxStatusUpdateListener implements TreeModelListener {
-  private boolean adjusting;
+  private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void treeNodesChanged(TreeModelEvent e) {
-    if (adjusting) {
+    if (adjusting.get()) {
       return;
     }
-    adjusting = true;
+    adjusting.set(true);
 
     DefaultTreeModel model = (DefaultTreeModel) e.getSource();
     Object[] children = e.getChildren();
@@ -225,7 +226,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
       }
       model.nodeChanged((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());
     }
-    adjusting = false;
+    adjusting.set(false);
   }
 
   private void updateAllChildrenUserObject(DefaultMutableTreeNode parent, boolean enabled) {

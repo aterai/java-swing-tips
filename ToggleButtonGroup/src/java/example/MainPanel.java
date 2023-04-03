@@ -56,16 +56,10 @@ public final class MainPanel extends JPanel {
 
 class ToggleButtonGroup extends ButtonGroup {
   private ButtonModel prevModel;
-  private boolean isAdjusting;
 
   @Override public void setSelected(ButtonModel m, boolean b) {
-    if (isAdjusting) {
-      return;
-    }
     if (m.equals(prevModel)) {
-      isAdjusting = true;
       clearSelection();
-      isAdjusting = false;
     } else {
       super.setSelected(m, b);
     }

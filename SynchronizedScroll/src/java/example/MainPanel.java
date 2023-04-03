@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -28,7 +29,7 @@ public final class MainPanel extends JPanel {
     JScrollPane sp2 = new JScrollPane(lbl2);
 
     ChangeListener cl = new ChangeListener() {
-      private boolean adjusting;
+      private final AtomicBoolean adjusting = new AtomicBoolean();
       @Override public void stateChanged(ChangeEvent e) {
         JViewport src = null;
         JViewport tgt = null;
@@ -39,10 +40,10 @@ public final class MainPanel extends JPanel {
           src = sp2.getViewport();
           tgt = sp1.getViewport();
         }
-        if (adjusting || Objects.isNull(tgt) || Objects.isNull(src)) {
+        if (adjusting.get() || Objects.isNull(tgt) || Objects.isNull(src)) {
           return;
         }
-        adjusting = true;
+        adjusting.set(true);
         Dimension dim1 = src.getViewSize();
         Dimension siz1 = src.getSize();
         Point pnt1 = src.getViewPosition();
@@ -54,7 +55,7 @@ public final class MainPanel extends JPanel {
         double dx = pnt1.getX() / (dim1.width - siz1.width) * (dim2.width - siz2.width);
         pnt1.x = (int) dx;
         tgt.setViewPosition(pnt1);
-        adjusting = false;
+        adjusting.set(false);
       }
     };
     sp1.getViewport().addChangeListener(cl);
