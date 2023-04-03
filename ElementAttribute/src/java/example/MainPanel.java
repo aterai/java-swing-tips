@@ -163,7 +163,7 @@ class CustomTooltipEditorPane extends JEditorPane {
     if (!editor.isEditable()) {
       int pos = editor.getUI().viewToModel(editor, e.getPoint(), bias);
       // Java 9: int pos = editor.getUI().viewToModel2D(editor, e.getPoint(), bias);
-      if (bias[0] == Position.Bias.Backward && pos > 0) {
+      if (Position.Bias.Backward.equals(bias[0]) && pos > 0) {
         pos--;
       }
       Document doc = editor.getDocument();

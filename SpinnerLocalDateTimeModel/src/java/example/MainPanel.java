@@ -168,7 +168,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
   }
 
   public void setTemporalUnit(TemporalUnit temporalUnit) {
-    if (temporalUnit != this.temporalUnit) {
+    if (Objects.equals(temporalUnit, this.temporalUnit)) {
       this.temporalUnit = temporalUnit;
       fireStateChanged();
     }

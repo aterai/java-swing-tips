@@ -160,7 +160,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     String upperPrefix = prefix.toUpperCase(Locale.ENGLISH);
     // start search from the next/previous element from the
     // selected element
-    int increment = bias == Position.Bias.Forward ? 1 : -1;
+    int increment = Position.Bias.Forward.equals(bias) ? 1 : -1;
     int row = startRow;
     do {
       Object value = table.getValueAt(row, TARGET_COLUMN);

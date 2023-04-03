@@ -18,9 +18,10 @@ public final class MainPanel extends JPanel {
     JRadioButton r3 = new JRadioButton("TRAILING");
     ItemListener il = e -> {
       int alignment;
-      if (e.getItemSelectable() == r1) {
+      ItemSelectable item = e.getItemSelectable();
+      if (r1.equals(item)) {
         alignment = SwingConstants.LEADING;
-      } else if (e.getItemSelectable() == r2) {
+      } else if (r2.equals(item)) {
         alignment = SwingConstants.CENTER;
       } else {
         alignment = SwingConstants.TRAILING;

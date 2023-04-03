@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("check");
     button.addActionListener(e -> {
       String txt = Optional.ofNullable(bg.getSelection())
-        .map(b -> String.format("\"%s\" isSelected.", b.getActionCommand()))
-        .orElse("Please select one of the option above.");
+          .map(b -> String.format("\"%s\" isSelected.", b.getActionCommand()))
+          .orElse("Please select one of the option above.");
       label.setText(txt);
       // ButtonModel bm = bg.getSelection();
       // if (bm != null) {

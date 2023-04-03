@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
     JRadioButton r1 = new JRadioButton("default", true);
     JRadioButton r2 = new JRadioButton("setOpaque(false) + TexturePaint");
     ActionListener l = e -> {
-      setOpaque(e.getSource() == r1);
+      setOpaque(r1.equals(e.getSource()));
       repaint();
     };
     ButtonGroup bg = new ButtonGroup();
