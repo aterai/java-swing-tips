@@ -10,29 +10,14 @@ import java.util.List;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  @SuppressWarnings("PMD.UnnecessaryBoxing")
   private MainPanel() {
     super(new BorderLayout());
     List<SpinnerNumberModel> list1 = Arrays.asList(
-        new SpinnerNumberModel(
-            Byte.valueOf(Byte.MAX_VALUE),
-            Byte.valueOf((byte) 0),
-            Byte.valueOf(Byte.MAX_VALUE),
-            Byte.valueOf((byte) 1)),
-        new SpinnerNumberModel(
-            Short.valueOf(Short.MAX_VALUE),
-            Short.valueOf((short) 0),
-            Short.valueOf(Short.MAX_VALUE),
-            Short.valueOf((short) 1)),
-        new SpinnerNumberModel(
-            Integer.MAX_VALUE,
-            0,
-            Integer.MAX_VALUE,
-            1),
-        new SpinnerNumberModel(
-            Long.valueOf(Long.MAX_VALUE),
-            Long.valueOf(0),
-            Long.valueOf(Long.MAX_VALUE),
-            Long.valueOf(1)));
+        new SpinnerNumberModel(Byte.MAX_VALUE, (byte) 0, Byte.MAX_VALUE, (byte) 1),
+        new SpinnerNumberModel(Short.MAX_VALUE, (short) 0, Short.MAX_VALUE, (short) 1),
+        new SpinnerNumberModel(Integer.MAX_VALUE, 0, Integer.MAX_VALUE, 1),
+        new SpinnerNumberModel(Long.MAX_VALUE, 0L, Long.MAX_VALUE, 1L));
 
     List<SpinnerNumberModel> list2 = Arrays.asList(
         new SpinnerNumberModel(
@@ -51,9 +36,9 @@ public final class MainPanel extends JPanel {
             Long.valueOf(Integer.MAX_VALUE),
             Long.valueOf(1)),
         new SpinnerNumberModel(
-            Long.valueOf(Long.MAX_VALUE),
+            Long.MAX_VALUE,
             Long.valueOf(0),
-            Long.valueOf(Long.MAX_VALUE),
+            Long.MAX_VALUE,
             Long.valueOf(1)));
 
     Box box = Box.createVerticalBox();
