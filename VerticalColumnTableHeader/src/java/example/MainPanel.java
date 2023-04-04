@@ -217,7 +217,7 @@ class RotateIcon implements Icon {
     icon.paintIcon(null, g, 0, 0);
     g.dispose();
 
-    int numquadrants = (rotate / 90) % 4;
+    int numquadrants = rotate / 90 % 4;
     switch (numquadrants) {
       case 3:
       case -1:
