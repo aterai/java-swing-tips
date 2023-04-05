@@ -138,9 +138,12 @@ class PluginPanel extends JPanel {
     super();
     this.comboBox = comboBox;
     comboBox.setPrototypeDisplayValue("Debug mode x");
-    setOpaque(false);
     add(pluginName);
     add(comboBox);
+  }
+
+  @Override public boolean isOpaque() {
+    return false;
   }
 
   protected PluginNode extractNode(Object value) {
@@ -197,11 +200,11 @@ class PluginCellEditor extends DefaultCellEditor {
 
   @Override public Object getCellEditorValue() {
     Object o = super.getCellEditorValue();
-    return Optional.ofNullable(node).map(n -> {
+    return Optional.ofNullable(node).<Object>map(n -> {
       DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
       PluginNode pn = new PluginNode(panel.pluginName.getText(), n.plugins);
       pn.setSelectedIndex(m.getIndexOf(o));
-      return (Object) pn;
+      return pn;
     }).orElse(o);
   }
 
