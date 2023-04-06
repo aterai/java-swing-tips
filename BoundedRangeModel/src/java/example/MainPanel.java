@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class HighlightBarHandler extends MouseInputAdapter {
+  private final class HighlightBarHandler extends MouseInputAdapter {
     @Override public void mousePressed(MouseEvent e) {
       processHighlightBarMouseEvent(e);
     }
@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private class HighlightIcon implements Icon {
+  private final class HighlightIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
       // JViewport viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, c);
       JViewport viewport = scroll.getViewport();
