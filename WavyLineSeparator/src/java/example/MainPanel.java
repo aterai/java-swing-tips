@@ -63,11 +63,11 @@ class WavyLineSeparator extends JSeparator {
 
   protected WavyLineSeparator(int orientation) {
     super(orientation);
-    if (orientation == HORIZONTAL) {
-      setBorder(BorderFactory.createEmptyBorder(2, 1, 2, 1));
-    } else {
-      setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
-    }
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
   }
 
   @Override protected void paintComponent(Graphics g) {

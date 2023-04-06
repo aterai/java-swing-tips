@@ -70,17 +70,34 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class WatermarkTextField extends JTextField implements FocusListener {
+class WatermarkTextField extends JTextField {
   private final transient Icon icon;
   private boolean showWatermark = true;
+  private transient FocusListener listener;
 
   protected WatermarkTextField() {
     super();
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     icon = Optional.ofNullable(cl.getResource("example/watermark.png"))
-        .map(url -> (Icon) new ImageIcon(url))
-        .orElse(UIManager.getIcon("html.missingImage"));
-    addFocusListener(this);
+            .map(url -> (Icon) new ImageIcon(url))
+            .orElse(UIManager.getIcon("html.missingImage"));
+  }
+
+  @Override public void updateUI() {
+    removeFocusListener(listener);
+    super.updateUI();
+    listener = new FocusListener() {
+      @Override public void focusGained(FocusEvent e) {
+        showWatermark = false;
+        e.getComponent().repaint();
+      }
+
+      @Override public void focusLost(FocusEvent e) {
+        showWatermark = "".equals(getText().trim());
+        e.getComponent().repaint();
+      }
+    };
+    addFocusListener(listener);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -94,16 +111,6 @@ class WatermarkTextField extends JTextField implements FocusListener {
       icon.paintIcon(this, g2, i.left, yy);
       g2.dispose();
     }
-  }
-
-  @Override public void focusGained(FocusEvent e) {
-    showWatermark = false;
-    e.getComponent().repaint();
-  }
-
-  @Override public void focusLost(FocusEvent e) {
-    showWatermark = "".equals(getText().trim());
-    e.getComponent().repaint();
   }
 }
 
