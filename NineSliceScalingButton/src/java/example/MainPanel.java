@@ -124,10 +124,12 @@ class ScalingButton extends JButton {
   private final transient BufferedImage image;
 
   protected ScalingButton(String title, BufferedImage image) {
-    super();
+    super(title, null);
     this.image = image;
-    setModel(new DefaultButtonModel());
-    init(title, null);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setContentAreaFilled(false);
   }
 
@@ -155,10 +157,12 @@ class NineSliceScalingButton extends JButton {
   private final transient BufferedImage image;
 
   protected NineSliceScalingButton(String title, BufferedImage image) {
-    super();
+    super(title, null);
     this.image = image;
-    setModel(new DefaultButtonModel());
-    init(title, null);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setContentAreaFilled(false);
   }
 
