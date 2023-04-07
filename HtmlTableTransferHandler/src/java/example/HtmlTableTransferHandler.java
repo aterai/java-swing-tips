@@ -70,7 +70,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
       }
 
       StringBuilder plainBuf = new StringBuilder();
-      StringBuilder htmlBuf = new StringBuilder(64);
+      StringBuilder htmlBuf = new StringBuilder(1024);
       htmlBuf.append("<html>\n<body>\n<table border='1'>\n");
       for (int row : rows) {
         htmlBuf.append("<tr>\n");
