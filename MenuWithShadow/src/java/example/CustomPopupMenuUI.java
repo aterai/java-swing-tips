@@ -119,7 +119,7 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
     return image;
   }
 
-  private final static class ShadowBorderInPanel extends AbstractBorder {
+  private static final class ShadowBorderInPanel extends AbstractBorder {
     @Override public Insets getBorderInsets(Component c) {
       return new Insets(0, 0, OFF, OFF);
     }
