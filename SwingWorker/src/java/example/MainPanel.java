@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.geom.Ellipse2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -184,30 +185,44 @@ class ProgressListener implements PropertyChangeListener {
 }
 
 class LoadingLabel extends JLabel {
-  private final transient LoadingIcon icon = new LoadingIcon();
   private final Timer animator = new Timer(100, e -> {
-    icon.next();
+    Icon icon = getIcon();
+    if (icon instanceof LoadingIcon) {
+      ((LoadingIcon) icon).next();
+    }
     repaint();
   });
+  private transient HierarchyListener listener;
 
   protected LoadingLabel() {
-    super();
-    setIcon(icon);
-    addHierarchyListener(e -> {
+    super(new LoadingIcon());
+  }
+
+  @Override public void updateUI() {
+    removeHierarchyListener(listener);
+    super.updateUI();
+    listener = e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (b && !e.getComponent().isDisplayable()) {
         animator.stop();
       }
-    });
+    };
+    addHierarchyListener(listener);
   }
 
   public void startAnimation() {
-    icon.setRunning(true);
+    Icon icon = getIcon();
+    if (icon instanceof LoadingIcon) {
+      ((LoadingIcon) icon).setRunning(true);
+    }
     animator.start();
   }
 
   public void stopAnimation() {
-    icon.setRunning(false);
+    Icon icon = getIcon();
+    if (icon instanceof LoadingIcon) {
+      ((LoadingIcon) icon).setRunning(false);
+    }
     animator.stop();
   }
 }

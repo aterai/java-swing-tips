@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
@@ -45,16 +46,11 @@ public final class MainPanel extends JPanel {
 class FontRotateAnimation extends JComponent {
   private int rotate;
   private transient Shape shape;
+  private transient HierarchyListener listener;
   private final Timer animator = new Timer(10, null);
 
   protected FontRotateAnimation(String str) {
     super();
-    addHierarchyListener(e -> {
-      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (b && !e.getComponent().isDisplayable()) {
-        animator.stop();
-      }
-    });
     Font font = new Font(Font.SERIF, Font.PLAIN, 200);
     FontRenderContext frc = new FontRenderContext(null, true, true);
     Shape outline = new TextLayout(str, font, frc).getOutline(null);
@@ -76,6 +72,18 @@ class FontRotateAnimation extends JComponent {
       rotate = (rotate + 2) % 360;
     });
     animator.start();
+  }
+
+  @Override public void updateUI() {
+    removeHierarchyListener(listener);
+    super.updateUI();
+    listener = e -> {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
+        animator.stop();
+      }
+    };
+    addHierarchyListener(listener);
   }
 
   @Override protected void paintComponent(Graphics g) {

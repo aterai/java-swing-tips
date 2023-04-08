@@ -62,29 +62,34 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class Tile1 extends JComponent implements HierarchyListener {
+class Tile1 extends JComponent {
   // java - javax.swing.Timer slowdown in Java7u40 - Stack Overflow
   // https://stackoverflow.com/questions/18933986/javax-swing-timer-slowdown-in-java7u40
   private int red;
-  private final Timer timer;
+  private final Timer timer = new Timer(16, null);
+  private transient HierarchyListener listener;
 
   protected Tile1(Random rnd) {
     super();
-    addHierarchyListener(this);
-    timer = new Timer(16, e -> {
+    timer.addActionListener(e -> {
       red = rnd.nextInt(255);
       repaint();
     });
   }
 
-  @Override public void hierarchyChanged(HierarchyEvent e) {
-    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-      if (e.getComponent().isShowing()) {
-        timer.start();
-      } else {
-        timer.stop();
+  @Override public void updateUI() {
+    removeHierarchyListener(listener);
+    super.updateUI();
+    listener = e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+        if (e.getComponent().isShowing()) {
+          timer.start();
+        } else {
+          timer.stop();
+        }
       }
-    }
+    };
+    addHierarchyListener(listener);
   }
 
   @Override public Dimension getPreferredSize() {
