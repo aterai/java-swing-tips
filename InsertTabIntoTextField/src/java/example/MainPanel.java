@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -17,14 +18,14 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     String txt1 = "\n1\taaa\n12\tbbb\n123\tccc";
-    JTextPane editor = new JTextPane();
-    editor.setText("JTextPane:" + txt1);
+    JTextPane textPane = new JTextPane();
+    textPane.setText("JTextPane:" + txt1);
 
     JTextArea textArea = new JTextArea("JTextArea:" + txt1);
     textArea.setTabSize(4);
 
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-    p.add(new JScrollPane(editor));
+    p.add(new JScrollPane(textPane));
     p.add(new JScrollPane(textArea));
 
     String txt2 = "aaa\tbbb\tccc";
@@ -65,7 +66,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK);
+    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK);
     editor.getInputMap(WHEN_FOCUSED).put(keyStroke, mapKey);
   }
 
