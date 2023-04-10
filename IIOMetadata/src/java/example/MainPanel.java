@@ -49,8 +49,8 @@ public final class MainPanel extends JPanel {
         reader.setInput(iis, true);
 
         // ImageReadParam param = reader.getDefaultReadParam();
-        buf.append(String.format("Width: %d%n", reader.getWidth(0)));
-        buf.append(String.format("Height: %d%n", reader.getHeight(0)));
+        buf.append(String.format("Width: %d%n", reader.getWidth(0)))
+            .append(String.format("Height: %d%n", reader.getHeight(0)));
 
         IIOMetadata meta = reader.getImageMetadata(0);
         for (String s : meta.getMetadataFormatNames()) {
@@ -142,10 +142,7 @@ class XmlTreeNode implements TreeNode {
     if (Objects.nonNull(showAttributes)) {
       return showAttributes;
     }
-    if (Objects.nonNull(parent)) {
-      return parent.isShowAttributes();
-    }
-    return false;
+    return Objects.nonNull(parent) && parent.isShowAttributes();
   }
 
   // public void setShowAttributes(Boolean set) {
