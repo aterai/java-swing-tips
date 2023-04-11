@@ -76,13 +76,24 @@ public final class MainPanel extends JPanel {
       sorter.setRowFilter(null);
     });
 
-    JButton filterButton = new JButton("filter");
-    filterButton.addActionListener(e -> sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+    RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
         return model.isEmpty() || model.contains(o);
       }
-    }));
+    };
+    JButton filterButton = new JButton("filter");
+    filterButton.addActionListener(e -> sorter.setRowFilter(filter));
+
+    // // PMD IllegalArgumentException ???
+    // // <? super javax.swing.table.TableModel> cannot be a wildcard bound
+    // JButton button = new JButton("filter");
+    // button.addActionListener(e -> sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+    //   @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+    //     Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
+    //     return model.isEmpty() || model.contains(o);
+    //   }
+    // }));
 
     Box box = Box.createHorizontalBox();
     box.add(clearButton);
@@ -158,7 +169,7 @@ class CellIconTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return TransferHandler.COPY;
+    return COPY;
   }
 
   @SuppressWarnings("unchecked")
