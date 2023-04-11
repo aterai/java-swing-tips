@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class LineNumberView extends JComponent {
+class LineNumberView extends JPanel {
   private static final int MARGIN = 5;
   private final JTextArea textArea;
 
@@ -120,28 +120,26 @@ class LineNumberView extends JComponent {
         repaint();
       }
     });
-
-    Insets i = textArea.getInsets();
-    setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
-        BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
   }
 
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(true);
-    setBackground(Color.WHITE);
+    EventQueue.invokeLater(() -> {
+      // Insets i = textArea.getInsets();
+      Insets i = textArea.getMargin();
+      setBorder(BorderFactory.createCompoundBorder(
+          BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
+          BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
+      setBackground(textArea.getBackground());
+    });
   }
 
   private int getComponentWidth(FontMetrics fontMetrics) {
-    // Document doc = textArea.getDocument();
-    // Element root = doc.getDefaultRootElement();
-    // int lineCount = root.getElementIndex(doc.getLength());
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
     Insets i = getInsets();
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
-    // return 48;
   }
 
   private int getLineAtPoint(int y) {
@@ -158,7 +156,7 @@ class LineNumberView extends JComponent {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setColor(getBackground());
+    g2.setColor(textArea.getBackground());
     Rectangle clip = g2.getClipBounds();
     g2.fillRect(clip.x, clip.y, clip.width, clip.height);
 
@@ -166,7 +164,6 @@ class LineNumberView extends JComponent {
     g2.setFont(font);
     FontMetrics fontMetrics = g2.getFontMetrics(font);
     int fontAscent = fontMetrics.getAscent();
-    // int fontHeight = fontMetrics.getHeight();
     int fontDescent = fontMetrics.getDescent();
     int fontLeading = fontMetrics.getLeading();
 

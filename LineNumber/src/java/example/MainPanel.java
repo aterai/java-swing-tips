@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Objects;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Element;
@@ -50,7 +51,7 @@ public final class MainPanel extends JPanel {
 // https://community.oracle.com/thread/1479759 Advice for editor gutter implementation...
 // Original author: Alan Moore
 // Modified by: TERAI Atsuhiro
-class LineNumberView extends JComponent {
+class LineNumberView extends JPanel {
   private static final int MARGIN = 5;
   private final JTextArea textArea;
 
@@ -76,17 +77,19 @@ class LineNumberView extends JComponent {
         repaint();
       }
     });
-
-    Insets i = textArea.getInsets();
-    setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
-        BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
   }
 
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(true);
-    setBackground(Color.WHITE);
+    EventQueue.invokeLater(() -> {
+      // Insets i = textArea.getInsets();
+      Insets i = textArea.getMargin();
+      setBorder(BorderFactory.createCompoundBorder(
+          BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
+          BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
+      setBackground(textArea.getBackground());
+    });
   }
 
   private int getComponentWidth(FontMetrics fontMetrics) {
@@ -97,7 +100,6 @@ class LineNumberView extends JComponent {
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
     Insets i = getInsets();
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
-    // return 48;
   }
 
   private int getLineAtPoint(int y) {
@@ -114,7 +116,7 @@ class LineNumberView extends JComponent {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setColor(getBackground());
+    g2.setColor(textArea.getBackground());
     Rectangle clip = g2.getClipBounds();
     g2.fillRect(clip.x, clip.y, clip.width, clip.height);
 

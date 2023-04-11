@@ -80,27 +80,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class LineNumberView extends JComponent {
+class LineNumberView extends JPanel {
   private static final int MARGIN = 5;
   private final JTextArea textArea;
-  private final FontMetrics fontMetrics;
-  // private final int topInset;
-  private final int fontAscent;
-  private final int fontHeight;
-  private final int fontDescent;
-  private final int fontLeading;
 
   protected LineNumberView(JTextArea textArea) {
     super();
     this.textArea = textArea;
-    Font font = textArea.getFont();
-    fontMetrics = getFontMetrics(font);
-    fontHeight = fontMetrics.getHeight();
-    fontAscent = fontMetrics.getAscent();
-    fontDescent = fontMetrics.getDescent();
-    fontLeading = fontMetrics.getLeading();
-    // topInset = textArea.getInsets().top;
-
     textArea.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
         repaint();
@@ -120,24 +106,26 @@ class LineNumberView extends JComponent {
         repaint();
       }
     });
-    Insets i = textArea.getInsets();
-    setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
-        BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
-    setOpaque(true);
-    setBackground(Color.WHITE);
-    setFont(font);
   }
 
-  private int getComponentWidth() {
-    // Document doc = textArea.getDocument();
-    // Element root = doc.getDefaultRootElement();
-    // int lineCount = root.getElementIndex(doc.getLength());
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(true);
+    EventQueue.invokeLater(() -> {
+      // Insets i = textArea.getInsets();
+      Insets i = textArea.getMargin();
+      setBorder(BorderFactory.createCompoundBorder(
+          BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
+          BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
+      setBackground(textArea.getBackground());
+    });
+  }
+
+  private int getComponentWidth(FontMetrics fontMetrics) {
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
     Insets i = getInsets();
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
-    // return 48;
   }
 
   private int getLineAtPoint(int y) {
@@ -148,26 +136,36 @@ class LineNumberView extends JComponent {
   }
 
   @Override public Dimension getPreferredSize() {
-    return new Dimension(getComponentWidth(), textArea.getHeight());
+    FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
+    return new Dimension(getComponentWidth(fontMetrics), textArea.getHeight());
   }
 
   @Override protected void paintComponent(Graphics g) {
-    g.setColor(getBackground());
-    Rectangle clip = g.getClipBounds();
-    g.fillRect(clip.x, clip.y, clip.width, clip.height);
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setColor(textArea.getBackground());
+    Rectangle clip = g2.getClipBounds();
+    g2.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-    g.setColor(getForeground());
+    Font font = textArea.getFont();
+    g2.setFont(font);
+    FontMetrics fontMetrics = g2.getFontMetrics(font);
+    int fontAscent = fontMetrics.getAscent();
+    int fontDescent = fontMetrics.getDescent();
+    int fontLeading = fontMetrics.getLeading();
+
+    g2.setColor(getForeground());
     int base = clip.y;
     int start = getLineAtPoint(base);
     int end = getLineAtPoint(base + clip.height);
-    int y = start * fontHeight;
+    int y = start * fontMetrics.getHeight();
     int rmg = getInsets().right;
     for (int i = start; i <= end; i++) {
       String text = Objects.toString(i + 1);
-      int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
+      int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
       y += fontAscent;
-      g.drawString(text, x, y);
+      g2.drawString(text, x, y);
       y += fontDescent + fontLeading;
     }
+    g2.dispose();
   }
 }

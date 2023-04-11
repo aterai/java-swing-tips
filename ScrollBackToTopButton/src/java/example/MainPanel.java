@@ -199,7 +199,7 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
   }
 }
 
-class LineNumberView extends JComponent {
+class LineNumberView extends JPanel {
   private static final int MARGIN = 5;
   private final JTextArea textArea;
 
@@ -225,24 +225,25 @@ class LineNumberView extends JComponent {
         repaint();
       }
     });
-    Insets i = textArea.getInsets();
-    setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
-        BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
-    setOpaque(true);
-    setFont(textArea.getFont());
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    SwingUtilities.updateComponentTreeUI(textArea);
+    setOpaque(true);
+    EventQueue.invokeLater(() -> {
+      // Insets i = textArea.getInsets();
+      Insets i = textArea.getMargin();
+      setBorder(BorderFactory.createCompoundBorder(
+          BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
+          BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
+      setBackground(textArea.getBackground());
+    });
   }
 
-  private int getComponentWidth() {
+  private int getComponentWidth(FontMetrics fontMetrics) {
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Objects.toString(lineCount).length());
     Insets i = getInsets();
-    FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
   }
 
@@ -254,33 +255,36 @@ class LineNumberView extends JComponent {
   }
 
   @Override public Dimension getPreferredSize() {
-    return new Dimension(getComponentWidth(), textArea.getHeight());
+    FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
+    return new Dimension(getComponentWidth(fontMetrics), textArea.getHeight());
   }
 
   @Override protected void paintComponent(Graphics g) {
-    g.setColor(textArea.getBackground());
-    Rectangle clip = g.getClipBounds();
-    g.fillRect(clip.x, clip.y, clip.width, clip.height);
-    // g.setFont(textArea.getFont());
-    // FontMetrics fontMetrics = g.getFontMetrics();
-    FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
-    int fontHeight = fontMetrics.getHeight();
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setColor(textArea.getBackground());
+    Rectangle clip = g2.getClipBounds();
+    g2.fillRect(clip.x, clip.y, clip.width, clip.height);
+
+    Font font = textArea.getFont();
+    g2.setFont(font);
+    FontMetrics fontMetrics = g2.getFontMetrics(font);
     int fontAscent = fontMetrics.getAscent();
     int fontDescent = fontMetrics.getDescent();
     int fontLeading = fontMetrics.getLeading();
 
-    g.setColor(getForeground());
+    g2.setColor(getForeground());
     int base = clip.y;
     int start = getLineAtPoint(base);
     int end = getLineAtPoint(base + clip.height);
-    int y = start * fontHeight;
+    int y = start * fontMetrics.getHeight();
     int rmg = getInsets().right;
     for (int i = start; i <= end; i++) {
       String text = Objects.toString(i + 1);
-      int x = getComponentWidth() - rmg - fontMetrics.stringWidth(text);
+      int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
       y += fontAscent;
-      g.drawString(text, x, y);
+      g2.drawString(text, x, y);
       y += fontDescent + fontLeading;
     }
+    g2.dispose();
   }
 }
