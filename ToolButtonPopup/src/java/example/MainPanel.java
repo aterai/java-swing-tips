@@ -5,9 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -28,25 +26,19 @@ public final class MainPanel extends JPanel {
     pop2.add("5555555555");
 
     JToolBar toolBar = new JToolBar();
-    toolBar.add(makeButton(pop1, "Text", null));
+    toolBar.add(MenuToggleButton.makePopupButton(pop1, "Text", null));
     Component rigid = Box.createRigidArea(new Dimension(5, 5));
     toolBar.add(rigid);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/ei0021-16.png");
     Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
-    toolBar.add(makeButton(pop2, "", icon));
+    toolBar.add(MenuToggleButton.makePopupButton(pop2, "", icon));
     toolBar.add(rigid);
-    toolBar.add(makeButton(pop2, "Icon+Text", icon));
+    toolBar.add(MenuToggleButton.makePopupButton(pop2, "Icon+Text", icon));
     toolBar.add(Box.createGlue());
 
     add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private AbstractButton makeButton(JPopupMenu pop, String title, Icon icon) {
-    MenuToggleButton b = new MenuToggleButton(title, icon);
-    b.setPopupMenu(pop);
-    return b;
   }
 
   public static void main(String[] args) {
@@ -93,41 +85,18 @@ class MenuArrowIcon implements Icon {
 
 class MenuToggleButton extends JToggleButton {
   private static final Icon ARROW_ICON = new MenuArrowIcon();
-  private JPopupMenu popup;
-
-  protected MenuToggleButton() {
-    this("", null);
-  }
-
-  protected MenuToggleButton(Icon icon) {
-    this("", icon);
-  }
-
-  protected MenuToggleButton(String text) {
-    this(text, null);
-  }
 
   protected MenuToggleButton(String text, Icon icon) {
-    super();
-    Action action = new AbstractAction(text) {
-      @Override public void actionPerformed(ActionEvent e) {
-        Component b = (Component) e.getSource();
-        Optional.ofNullable(getPopupMenu()).ifPresent(p -> p.show(b, 0, b.getHeight()));
-      }
-    };
-    action.putValue(Action.SMALL_ICON, icon);
-    setAction(action);
-    setFocusable(false);
-    setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
+    super(text, icon);
   }
 
-  public JPopupMenu getPopupMenu() {
-    return popup;
-  }
-
-  public void setPopupMenu(JPopupMenu pop) {
-    this.popup = pop;
-    pop.addPopupMenuListener(new PopupMenuListener() {
+  public static AbstractButton makePopupButton(JPopupMenu popup, String title, Icon icon) {
+    AbstractButton button = new MenuToggleButton(title, icon);
+    button.addActionListener(e -> {
+      Component b = (Component) e.getSource();
+      popup.show(b, 0, b.getHeight());
+    });
+    popup.addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuCanceled(PopupMenuEvent e) {
         /* not needed */
       }
@@ -137,17 +106,23 @@ class MenuToggleButton extends JToggleButton {
       }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        setSelected(false);
+        button.setSelected(false);
       }
     });
+    return button;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setFocusable(false);
+    setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4 + ARROW_ICON.getIconWidth()));
   }
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    Dimension dim = getSize();
-    Insets ins = getInsets();
-    int x = dim.width - ins.right;
-    int y = ins.top + (dim.height - ins.top - ins.bottom - ARROW_ICON.getIconHeight()) / 2;
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    int x = r.x + r.width;
+    int y = r.y + (r.height - ARROW_ICON.getIconHeight()) / 2;
     ARROW_ICON.paintIcon(this, g, x, y);
   }
 }
