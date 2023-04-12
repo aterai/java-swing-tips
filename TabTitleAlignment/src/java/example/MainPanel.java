@@ -236,44 +236,50 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
 // How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-  protected final JTabbedPane tabs;
+  protected final JTabbedPane tabbedPane;
 
-  protected ButtonTabComponent(JTabbedPane pane) {
+  protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout()); // FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabs = Objects.requireNonNull(pane, "TabbedPane is null");
-    setOpaque(false);
+    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {
       @Override public String getText() {
-        int i = tabs.indexOfTabComponent(ButtonTabComponent.this);
+        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          return tabs.getTitleAt(i);
+          return tabbedPane.getTitleAt(i);
         }
         return null;
       }
 
       @Override public Icon getIcon() {
-        int i = tabs.indexOfTabComponent(ButtonTabComponent.this);
+        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          return tabs.getIconAt(i);
+          return tabbedPane.getIconAt(i);
         }
         return null;
       }
     };
-    add(label);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+
     JButton button = new TabButton();
     TabButtonHandler handler = new TabButtonHandler();
     button.addActionListener(handler);
     button.addMouseListener(handler);
+
+    add(label);
     add(button, BorderLayout.EAST);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
   }
 
   private final class TabButtonHandler extends MouseAdapter implements ActionListener {
     @Override public void actionPerformed(ActionEvent e) {
-      int i = tabs.indexOfTabComponent(ButtonTabComponent.this);
+      int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
       if (i != -1) {
-        tabs.remove(i);
+        tabbedPane.remove(i);
       }
     }
 
@@ -295,13 +301,9 @@ class ButtonTabComponent extends JPanel {
   }
 }
 
-class TabButton extends JButton {
+final class TabButton extends JButton {
   private static final int SIZE = 17;
   private static final int DELTA = 6;
-
-  @Override public Dimension getPreferredSize() {
-    return new Dimension(SIZE, SIZE);
-  }
 
   @Override public void updateUI() {
     // we don't want to update UI for this button
@@ -313,6 +315,10 @@ class TabButton extends JButton {
     setBorder(BorderFactory.createEtchedBorder());
     setBorderPainted(false);
     setRolloverEnabled(true);
+  }
+
+  @Override public Dimension getPreferredSize() {
+    return new Dimension(SIZE, SIZE);
   }
 
   @Override protected void paintComponent(Graphics g) {

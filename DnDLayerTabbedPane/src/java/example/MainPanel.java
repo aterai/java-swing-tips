@@ -718,7 +718,7 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane is null");
+    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {
       @Override public String getText() {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
@@ -736,13 +736,14 @@ class ButtonTabComponent extends JPanel {
         return null;
       }
     };
-    add(label);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 
     JButton button = new TabButton();
     TabButtonHandler handler = new TabButtonHandler();
     button.addActionListener(handler);
     button.addMouseListener(handler);
+
+    add(label);
     add(button);
   }
 
@@ -778,8 +779,8 @@ class ButtonTabComponent extends JPanel {
   }
 }
 
-class TabButton extends JButton {
-  private static final int SZ = 17;
+final class TabButton extends JButton {
+  private static final int SIZE = 17;
   private static final int DELTA = 6;
 
   @Override public void updateUI() {
@@ -795,7 +796,7 @@ class TabButton extends JButton {
   }
 
   @Override public Dimension getPreferredSize() {
-    return new Dimension(SZ, SZ);
+    return new Dimension(SIZE, SIZE);
   }
 
   @Override protected void paintComponent(Graphics g) {

@@ -203,8 +203,7 @@ class ButtonTabComponent extends JPanel {
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout());
-    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane is null");
-    setOpaque(false);
+    this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {
       @Override public String getText() {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
@@ -222,7 +221,6 @@ class ButtonTabComponent extends JPanel {
         return null;
       }
     };
-    add(label);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
 
     JButton button = new JButton(new CloseTabIcon(Color.BLACK));
@@ -235,7 +233,13 @@ class ButtonTabComponent extends JPanel {
     button.addActionListener(handler);
     button.addMouseListener(handler);
 
+    add(label);
     add(button, BorderLayout.EAST);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
   }
 
