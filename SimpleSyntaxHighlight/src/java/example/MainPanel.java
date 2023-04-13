@@ -14,12 +14,19 @@ import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextPane textPane = new JTextPane(new SimpleSyntaxDocument());
-    textPane.setText("red green, blue. red-green;blue.");
+    StyledDocument doc = new SimpleSyntaxDocument();
+    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+    StyleConstants.setForeground(doc.addStyle("red", def), Color.RED);
+    StyleConstants.setForeground(doc.addStyle("green", def), Color.GREEN);
+    StyleConstants.setForeground(doc.addStyle("blue", def), Color.BLUE);
+    JTextPane textPane = new JTextPane(doc);
+    textPane.setText("red green, blue.\n  red-green;blue.");
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -53,36 +60,12 @@ public final class MainPanel extends JPanel {
 // https://community.oracle.com/thread/2105230
 // modified by aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
-  private static final char LB = '\n';
-  // HashMap<String, AttributeSet> keywords = new HashMap<>();
   private static final String OPERANDS = ".,";
-  private final Style def = getStyle(StyleContext.DEFAULT_STYLE);
-
-  protected SimpleSyntaxDocument() {
-    super();
-    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-    StyleConstants.setForeground(addStyle("red", def), Color.RED);
-    StyleConstants.setForeground(addStyle("green", def), Color.GREEN);
-    StyleConstants.setForeground(addStyle("blue", def), Color.BLUE);
-  }
+  // HashMap<String, AttributeSet> keywords = new HashMap<>();
 
   @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
-    // @see PlainDocument#insertString(...)
-    int length = 0;
-    String str = text;
-    if (Objects.nonNull(str) && str.indexOf(LB) >= 0) {
-      StringBuilder filtered = new StringBuilder(str);
-      int n = filtered.length();
-      for (int i = 0; i < n; i++) {
-        if (filtered.charAt(i) == LB) {
-          filtered.setCharAt(i, ' ');
-        }
-      }
-      str = filtered.toString();
-      length = str.length();
-    }
-    super.insertString(offset, str, a);
-    processChangedLines(offset, length);
+    super.insertString(offset, text, a);
+    processChangedLines(offset, text.length());
   }
 
   @Override public void remove(int offset, int length) throws BadLocationException {
@@ -107,7 +90,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     int lineLength = endOffset - startOffset;
     int contentLength = content.length();
     endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
-    setCharacterAttributes(startOffset, lineLength, def, true);
+    setCharacterAttributes(startOffset, lineLength, getStyle(StyleContext.DEFAULT_STYLE), true);
     checkForTokens(content, startOffset, endOffset);
   }
 
