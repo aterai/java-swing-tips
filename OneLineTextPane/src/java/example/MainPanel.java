@@ -25,35 +25,33 @@ import javax.swing.text.ParagraphView;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
+  private static final String TXT = "red green blue 111111111111111111111111111111111";
+
   private MainPanel() {
     super(new GridLayout(2, 1));
-    String str = "red green blue 111111111111111111111111111111111";
-
     JTextPane textPane = new JTextPane() {
       @Override public void scrollRectToVisible(Rectangle rect) {
         rect.grow(getInsets().right, 0);
         super.scrollRectToVisible(rect);
       }
     };
-
     // @see https://ateraimemo.com/Swing/NoWrapTextPane.html
     textPane.setEditorKit(new NoWrapEditorKit());
-
-    AbstractDocument doc = new SimpleSyntaxDocument();
+    StyledDocument doc = new SimpleSyntaxDocument();
+    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+    StyleConstants.setForeground(doc.addStyle("red", def), Color.RED);
+    StyleConstants.setForeground(doc.addStyle("green", def), Color.GREEN);
+    StyleConstants.setForeground(doc.addStyle("blue", def), Color.BLUE);
     textPane.setDocument(doc);
-    try {
-      doc.insertString(0, str, null);
-    } catch (BadLocationException ex) {
-      // should never happen
-      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-      wrap.initCause(ex);
-      throw wrap;
-    }
+    textPane.setText(TXT);
+
     String key = "Do-Nothing";
     InputMap im = textPane.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), key);
@@ -88,7 +86,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    add(makeTitledPanel("JTextField", new JTextField(str)));
+    add(makeTitledPanel("JTextField", new JTextField(TXT)));
     add(makeTitledPanel("JTextPane+StyledDocument+JScrollPane", scrollPane));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
@@ -127,25 +125,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// This code is taken from: SyntaxDocument.java, MultiSyntaxDocument.java
-// Fast styled JTextPane editor | Oracle Community
-// @author camickr
-// @author David Underhill
-// https://community.oracle.com/thread/2105230
-// modified by aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
-  private static final char LB = '\n';
-  // HashMap<String, AttributeSet> keywords = new HashMap<>();
   private static final String OPERANDS = ".,";
-
-  protected SimpleSyntaxDocument() {
-    super();
-    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-    Style def = getStyle(StyleContext.DEFAULT_STYLE);
-    StyleConstants.setForeground(addStyle("red", def), Color.RED);
-    StyleConstants.setForeground(addStyle("green", def), Color.GREEN);
-    StyleConstants.setForeground(addStyle("blue", def), Color.BLUE);
-  }
+  private static final char LB = '\n';
 
   @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
     // @see PlainDocument#insertString(...)
