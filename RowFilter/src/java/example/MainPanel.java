@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
       @Override public boolean include(Entry<? extends RowDataModel, ? extends Integer> entry) {
         RowDataModel m = entry.getModel();
         RowData rd = m.getRowData(entry.getIdentifier());
-        return !rd.getComment().trim().isEmpty();
+        return !rd.getComment().isEmpty();
       }
     };
     RowFilter<RowDataModel, Integer> filter2 = new RowFilter<RowDataModel, Integer>() {
