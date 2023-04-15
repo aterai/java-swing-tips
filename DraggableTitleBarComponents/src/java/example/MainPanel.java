@@ -283,9 +283,9 @@ enum Side {
     }
   };
 
-  final int cursor;
-  final int width;
-  final int height;
+  /* default */ final int cursor;
+  /* default */ final int width;
+  /* default */ final int height;
 
   Side(int cursor, int width, int height) {
     this.cursor = cursor;
@@ -301,16 +301,16 @@ enum Side {
     return new Dimension(width, height);
   }
 
-  abstract Rectangle getBounds(Rectangle r, Point d);
+  /* default */ abstract Rectangle getBounds(Rectangle rect, Point delta);
 }
 
-class SideLabel extends JLabel {
+final class SideLabel extends JLabel {
   public final Side side;
 
-  protected SideLabel(Side side) {
+  public SideLabel(Side side) {
     super();
     this.side = side;
-    setCursor(side.getCursor());
+    EventQueue.invokeLater(() -> setCursor(side.getCursor()));
   }
 
   @Override public Dimension getPreferredSize() {
