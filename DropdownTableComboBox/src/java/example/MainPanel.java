@@ -8,9 +8,6 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboPopup;
@@ -18,50 +15,41 @@ import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    List<List<Object>> aseries = new ArrayList<>();
-    aseries.add(Arrays.asList("A1", 594, 841));
-    aseries.add(Arrays.asList("A2", 420, 594));
-    aseries.add(Arrays.asList("A3", 297, 420));
-    aseries.add(Arrays.asList("A4", 210, 297));
-    aseries.add(Arrays.asList("A5", 148, 210));
-    aseries.add(Arrays.asList("A6", 105, 148));
-
-    String[] columns = {"A series", "width", "height"};
-
     JTextField wtf = new JTextField(5);
     wtf.setEditable(false);
 
     JTextField htf = new JTextField(5);
     htf.setEditable(false);
 
+    String[] columns = {"A series", "width", "height"};
     DefaultTableModel model = new DefaultTableModel(null, columns) {
       @Override public Class<?> getColumnClass(int column) {
-        return column == 1 || column == 2 ? Integer.class : String.class;
+        return column == 0 ? String.class : Integer.class;
       }
 
       @Override public boolean isCellEditable(int row, int column) {
         return false;
       }
     };
+    for (PaperSize v : PaperSize.values()) {
+      Object[] row = {v.getSeries(), v.getWidth(), v.getHeight()};
+      model.addRow(row);
+    }
 
-    DropdownTableComboBox<List<Object>> combo = new DropdownTableComboBox<>(aseries, model);
-    // combo.addActionListener(e -> {
-    //   List<Object> rowData = combo.getSelectedRow();
-    //   wtf.setText(Objects.toString(rowData.get(1)));
-    //   htf.setText(Objects.toString(rowData.get(2)));
-    // });
+    JComboBox<PaperSize> combo = new DropdownTableComboBox(PaperSize.values(), model);
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        List<Object> rowData = combo.getSelectedRow();
-        wtf.setText(Objects.toString(rowData.get(1)));
-        htf.setText(Objects.toString(rowData.get(2)));
+        PaperSize rowData = combo.getItemAt(combo.getSelectedIndex());
+        wtf.setText(Objects.toString(rowData.getWidth()));
+        htf.setText(Objects.toString(rowData.getHeight()));
       }
     });
-    ListCellRenderer<? super List<Object>> renderer = combo.getRenderer();
+    ListCellRenderer<? super PaperSize> renderer = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = renderer.getListCellRendererComponent(
           list, value, index, isSelected, cellHasFocus);
@@ -75,7 +63,7 @@ public final class MainPanel extends JPanel {
       if (c instanceof JLabel) {
         JLabel l = (JLabel) c;
         l.setOpaque(true);
-        l.setText(Objects.toString(value.get(0), ""));
+        l.setText(Objects.toString(value.getSeries(), ""));
       }
       return c;
     });
@@ -119,7 +107,41 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
+enum PaperSize {
+  A1("A1", 594, 841),
+  A2("A2", 420, 594),
+  A3("A3", 297, 420),
+  A4("A4", 210, 297),
+  A5("A5", 148, 210),
+  A6("A6", 105, 148);
+  private final String series;
+  private final int width;
+  private final int height;
+
+  /* default */ PaperSize(String series, int width, int height) {
+    this.series = series;
+    this.width = width;
+    this.height = height;
+  }
+
+  /* default */ String getSeries() {
+    return series;
+  }
+
+  /* default */ int getWidth() {
+    return width;
+  }
+
+  /* default */ int getHeight() {
+    return height;
+  }
+
+  @Override public String toString() {
+    return String.format("%s(%dx%d)", series, width, height);
+  }
+}
+
+class DropdownTableComboBox extends JComboBox<PaperSize> {
   private final JTable table = new JTable() {
     private transient HighlightListener mouseHandler;
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
@@ -145,19 +167,10 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
       getTableHeader().setReorderingAllowed(false);
     }
   };
-  private final List<E> list = new ArrayList<>();
 
-  protected DropdownTableComboBox(List<E> list, DefaultTableModel model) {
-    super();
-    this.list.addAll(list);
-    table.setModel(model);
-    Object[] a = new Object[0];
-    for (E v : list) {
-      addItem(v);
-      model.addRow(v.toArray(a));
-    }
-    // list.forEach(this::addItem);
-    // list.forEach(v -> model.addRow(v.toArray(a)));
+  protected DropdownTableComboBox(PaperSize[] paperSizes, TableModel tableModel) {
+    super(paperSizes);
+    table.setModel(tableModel);
   }
 
   @Override public void updateUI() {
@@ -170,10 +183,6 @@ class DropdownTableComboBox<E extends List<Object>> extends JComboBox<E> {
       });
       setEditable(false);
     });
-  }
-
-  public List<Object> getSelectedRow() {
-    return list.get(getSelectedIndex());
   }
 }
 
