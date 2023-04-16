@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JTabbedPane makeTabbedPane() {
-    JTabbedPane tabs = new JTabbedPane() {
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       private transient BalloonToolTip tip;
 
       @Override public Point getToolTipLocation(MouseEvent e) {
@@ -80,7 +80,6 @@ public final class MainPanel extends JPanel {
         return tip;
       }
     };
-    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
     tabs.addTab("111", new ColorIcon(Color.GREEN), new JScrollPane(new JSplitPane()), "11111");
     tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "22222");
@@ -149,7 +148,7 @@ class BalloonToolTip extends JToolTip {
     super.paintComponent(g);
   }
 
-  public void updateBalloonShape(int l) {
+  public void updateBalloonShape(int placement) {
     Rectangle r = getVisibleRect();
     r.setSize(getPreferredSize());
     Path2D tail = new Path2D.Double();
@@ -157,7 +156,7 @@ class BalloonToolTip extends JToolTip {
     double h = r.getHeight() - 1d;
     double arc = 10d;
     Shape bubble;
-    switch (l) {
+    switch (placement) {
       case SwingConstants.LEFT:
         setBorder(BorderFactory.createEmptyBorder(2, 2 + SIZE, 2, 2));
         tail.moveTo(r.getMinX() + SIZE, r.getCenterY() - SIZE);
