@@ -8,10 +8,13 @@ import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.*;
 
@@ -19,13 +22,31 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(2, 2));
     JTabbedPane tabbedPane = makeTabbedPane();
-    JComboBox<TabPlacement> cb = new JComboBox<>(TabPlacement.values());
-    cb.addItemListener(e -> {
+    JMenu menu = new JMenu("TabPlacement");
+    ButtonGroup bg = new ButtonGroup();
+    ItemListener handler = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tabbedPane.setTabPlacement(cb.getItemAt(cb.getSelectedIndex()).getPlacement());
+        ButtonModel m = bg.getSelection();
+        TabPlacement tp = TabPlacement.valueOf(m.getActionCommand());
+        tabbedPane.setTabPlacement(tp.getPlacement());
       }
+    };
+    Arrays.asList(TabPlacement.values()).forEach(tp -> {
+      String name = tp.name();
+      boolean selected = tp == TabPlacement.TOP;
+      JMenuItem item = new JRadioButtonMenuItem(name, selected);
+      item.addItemListener(handler);
+      item.setActionCommand(name);
+      menu.add(item);
+      bg.add(item);
     });
-    add(cb, BorderLayout.NORTH);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    mb.add(menu);
+    mb.add(Box.createHorizontalGlue());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     add(tabbedPane);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
@@ -34,6 +55,7 @@ public final class MainPanel extends JPanel {
   private static JTabbedPane makeTabbedPane() {
     JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       private transient BalloonToolTip tip;
+      private final JLabel label = new JLabel(" ", CENTER);
 
       @Override public Point getToolTipLocation(MouseEvent e) {
         int idx = indexAtLocation(e.getX(), e.getY());
@@ -41,6 +63,7 @@ public final class MainPanel extends JPanel {
         return Optional.ofNullable(txt).map(toolTipText -> {
           JToolTip tips = createToolTip();
           tips.setTipText(toolTipText);
+          label.setText(toolTipText);
           if (tips instanceof BalloonToolTip) {
             ((BalloonToolTip) tips).updateBalloonShape(getTabPlacement());
           }
@@ -57,16 +80,16 @@ public final class MainPanel extends JPanel {
             dy = r.getCenterY() - d.getHeight() / 2d;
             break;
           case RIGHT:
-            dx = r.getMinX() - d.width;
+            dx = r.getMinX() - d.getWidth();
             dy = r.getCenterY() - d.getHeight() / 2d;
             break;
           case BOTTOM:
             dx = r.getCenterX() - d.getWidth() / 2d;
-            dy = r.getMinY() - d.height;
+            dy = r.getMinY() - d.getHeight();
             break;
           default: // case TOP:
             dx = r.getCenterX() - d.getWidth() / 2d;
-            dy = r.getMaxY();
+            dy = r.getMaxY() + 8d;
         }
         return new Point((int) (dx + .5), (int) (dy + .5));
       }
@@ -74,18 +97,26 @@ public final class MainPanel extends JPanel {
       @Override public JToolTip createToolTip() {
         if (tip == null) {
           tip = new BalloonToolTip();
+          LookAndFeel.installColorsAndFont(
+              label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+          tip.add(label);
           tip.updateBalloonShape(getTabPlacement());
           tip.setComponent(this);
         }
         return tip;
       }
+
+      @Override public void updateUI() {
+        tip = null;
+        super.updateUI();
+      }
     };
     tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
-    tabs.addTab("111", new ColorIcon(Color.GREEN), new JScrollPane(new JSplitPane()), "11111");
-    tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "22222");
-    tabs.addTab("333", new ColorIcon(Color.ORANGE), new JLabel("6"), "33333");
-    tabs.addTab("444", new ColorIcon(Color.CYAN), new JLabel("7"), "44444");
-    tabs.addTab("555", new ColorIcon(Color.PINK), new JLabel("8"), "55555");
+    tabs.addTab("111", new ColorIcon(Color.GREEN), new JScrollPane(new JSplitPane()), "1111");
+    tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "222");
+    tabs.addTab("333", new ColorIcon(Color.ORANGE), new JLabel("6"), "33333333333333333333");
+    tabs.addTab("444", new ColorIcon(Color.CYAN), new JLabel("7"), "44444444444444444444444");
+    tabs.addTab("555", new ColorIcon(Color.PINK), new JLabel("8"), "5555555555555555555555555");
     return tabs;
   }
 
@@ -113,12 +144,14 @@ public final class MainPanel extends JPanel {
 
 class BalloonToolTip extends JToolTip {
   private static final int SIZE = 4;
+  private static final double ARC = 4d;
   private transient HierarchyListener listener;
   private transient Shape shape;
 
   @Override public void updateUI() {
     removeHierarchyListener(listener);
     super.updateUI();
+    setLayout(new BorderLayout());
     listener = e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
@@ -128,12 +161,19 @@ class BalloonToolTip extends JToolTip {
       }
     };
     addHierarchyListener(listener);
+    // UIDefaults d = new UIDefaults();
+    // d.put("ToolTip[Enabled].backgroundPainter", (Painter<JToolTip>) (g, o, w, h) -> {
+    //   /* empty painter */
+    // });
+    // putClientProperty("Nimbus.Overrides", d);
     setOpaque(false);
+    setBorder(BorderFactory.createEmptyBorder(SIZE, SIZE, SIZE, SIZE));
   }
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    d.height = 24;
+    d.width += SIZE;
+    d.height += SIZE;
     return d;
   }
 
@@ -145,53 +185,42 @@ class BalloonToolTip extends JToolTip {
     g2.setPaint(getForeground());
     g2.draw(shape);
     g2.dispose();
-    super.paintComponent(g);
+    // super.paintComponent(g);
   }
 
   public void updateBalloonShape(int placement) {
-    Rectangle r = getVisibleRect();
-    r.setSize(getPreferredSize());
+    Insets i = getInsets();
+    Dimension d = getPreferredSize();
     Path2D tail = new Path2D.Double();
-    double w = r.getWidth() - 1d;
-    double h = r.getHeight() - 1d;
-    double arc = 10d;
-    Shape bubble;
+    double w = d.getWidth() - i.left - i.right - 1d;
+    double h = d.getHeight() - i.top - i.bottom - 1d;
+    double cx = w / 2d;
+    double cy = h / 2d;
     switch (placement) {
       case SwingConstants.LEFT:
-        setBorder(BorderFactory.createEmptyBorder(2, 2 + SIZE, 2, 2));
-        tail.moveTo(r.getMinX() + SIZE, r.getCenterY() - SIZE);
-        tail.lineTo(r.getMinX(), r.getCenterY());
-        tail.lineTo(r.getMinX() + SIZE, r.getCenterY() + SIZE);
-        w -= SIZE;
-        bubble = new RoundRectangle2D.Double(r.getMinX() + SIZE, r.getMinY(), w, h, arc, arc);
+        tail.moveTo(0, cy - SIZE);
+        tail.lineTo(-SIZE, cy);
+        tail.lineTo(0, cy + SIZE);
         break;
       case SwingConstants.RIGHT:
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2 + SIZE));
-        tail.moveTo(r.getMaxX() - SIZE - 1d, r.getCenterY() - SIZE);
-        tail.lineTo(r.getMaxX(), r.getCenterY());
-        tail.lineTo(r.getMaxX() - SIZE - 1d, r.getCenterY() + SIZE);
-        w -= SIZE;
-        bubble = new RoundRectangle2D.Double(r.getMinX(), r.getMinY(), w, h, arc, arc);
+        tail.moveTo(w, cy - SIZE);
+        tail.lineTo(w + SIZE, cy);
+        tail.lineTo(w, cy + SIZE);
         break;
       case SwingConstants.BOTTOM:
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2 + SIZE, 2));
-        tail.moveTo(r.getCenterX() - SIZE, r.getMaxY() - SIZE - 1d);
-        tail.lineTo(r.getCenterX(), r.getMaxY());
-        tail.lineTo(r.getCenterX() + SIZE, r.getMaxY() - SIZE - 1d);
-        h -= SIZE;
-        bubble = new RoundRectangle2D.Double(r.getMinX(), r.getMinY(), w, h, arc, arc);
+        tail.moveTo(cx - SIZE, h);
+        tail.lineTo(cx, h + SIZE);
+        tail.lineTo(cx + SIZE, h);
         break;
       default: // case SwingConstants.TOP:
-        setBorder(BorderFactory.createEmptyBorder(2 + SIZE, 2, 2, 2));
-        tail.moveTo(r.getCenterX() - SIZE, r.getMinY() + SIZE);
-        tail.lineTo(r.getCenterX(), r.getMinY());
-        tail.lineTo(r.getCenterX() + SIZE, r.getMinY() + SIZE);
-        h -= SIZE;
-        bubble = new RoundRectangle2D.Double(r.getMinX(), r.getMinY() + SIZE, w, h, arc, arc);
+        tail.moveTo(cx - SIZE, 0);
+        tail.lineTo(cx, -SIZE);
+        tail.lineTo(cx + SIZE, 0);
     }
-    Area area = new Area(bubble);
+    Area area = new Area(new RoundRectangle2D.Double(0, 0, w, h, ARC, ARC));
     area.add(new Area(tail));
-    shape = area;
+    AffineTransform at = AffineTransform.getTranslateInstance(i.left, i.top);
+    shape = at.createTransformedShape(area);
   }
 }
 
@@ -221,8 +250,8 @@ class ColorIcon implements Icon {
 
 enum TabPlacement {
   TOP(SwingConstants.TOP),
-  BOTTOM(SwingConstants.BOTTOM),
   LEFT(SwingConstants.LEFT),
+  BOTTOM(SwingConstants.BOTTOM),
   RIGHT(SwingConstants.RIGHT);
 
   private final int placement;
@@ -233,5 +262,61 @@ enum TabPlacement {
 
   public int getPlacement() {
     return placement;
+  }
+}
+
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }
