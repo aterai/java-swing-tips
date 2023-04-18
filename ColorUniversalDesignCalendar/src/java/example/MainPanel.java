@@ -157,7 +157,7 @@ public final class MainPanel extends JPanel {
       }
     }
 
-    protected boolean isJapaneseNationalHoliday(LocalDate d) {
+    public boolean isJapaneseNationalHoliday(LocalDate d) {
       return LocalDate.of(2020, 7, 23).equals(d)
           || LocalDate.of(2020, 7, 24).equals(d);
     }
