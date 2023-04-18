@@ -185,8 +185,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 // public final class MainPanel extends JPanel {
 //   private MainPanel() {
 //     super(new BorderLayout());
-//     JTabbedPane tabs = new JTabbedPane();
-//     tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+//     JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 //     ClassLoader cl = Thread.currentThread().getContextClassLoader();
 //     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
 //     List<TabTitle> titles = Arrays.asList(

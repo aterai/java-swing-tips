@@ -11,8 +11,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabs = new JTabbedPane();
-    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     IntStream.range(0, 100).forEach(i -> tabs.addTab("title" + i, new JLabel("label" + i)));
 
     String key = "TabbedPane.useBasicArrows";

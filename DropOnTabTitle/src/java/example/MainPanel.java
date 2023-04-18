@@ -34,7 +34,6 @@ public final class MainPanel extends JPanel {
     tabs.addTab("11111111", new JScrollPane(makeList(1)));
     tabs.addTab("22222222", new JScrollPane(makeList(2)));
     add(tabs);
-
     new DropTarget(tabs, DnDConstants.ACTION_MOVE, new TabTitleDropTargetListener(), true);
     setPreferredSize(new Dimension(320, 240));
   }

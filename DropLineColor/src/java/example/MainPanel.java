@@ -31,15 +31,12 @@ import javax.swing.tree.TreeSelectionModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.add("JList", makeListPanel());
     tabbedPane.add("JTable", makeTablePanel());
     tabbedPane.add("JTree", makeTreePanel());
-
     // Default drop line color: UIManager.put("List.dropLineColor", null);
     // Hide drop lines: UIManager.put("List.dropLineColor", new Color(0x0, true));
-
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }

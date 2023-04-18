@@ -41,8 +41,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JTabbedPane tab = new JTabbedPane();
-    tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    JTabbedPane tab = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     button.addHierarchyListener(e -> {
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
         printInfo(button, "SHOWING_CHANGED");

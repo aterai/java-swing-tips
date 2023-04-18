@@ -12,12 +12,10 @@ import javax.swing.event.ChangeListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.setComponentPopupMenu(new TabbedPanePopupMenu());
     tabbedPane.addChangeListener(new TabChangeListener());
     tabbedPane.addTab("Title", new JLabel("Tab"));
-
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }

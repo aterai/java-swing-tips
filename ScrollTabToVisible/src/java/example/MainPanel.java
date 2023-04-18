@@ -12,8 +12,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     IntStream.range(0, 100).forEach(i -> tabbedPane.addTab("title" + i, new JLabel("label" + i)));
 
     JCheckBox check = new JCheckBox("setSelectedIndex");

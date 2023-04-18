@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabs = new JTabbedPane() {
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof MetalTabbedPaneUI) {
@@ -34,7 +34,6 @@ public final class MainPanel extends JPanel {
       focusIndex = tabs.getSelectedIndex();
       tabs.repaint();
     });
-    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     String help1 = "SPACE: selectTabWithFocus";
     String help2 = "LEFT: navigateLeft";
     String help3 = "RIGHT: navigateRight";

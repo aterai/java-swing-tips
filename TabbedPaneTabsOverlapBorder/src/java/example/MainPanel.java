@@ -13,9 +13,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabs = makeTabbedPane();
-    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    List<JTabbedPane> list = Arrays.asList(makeTabbedPane(), tabs);
+    JTabbedPane tabs1 = makeTabbedPane();
+    tabs1.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+
+    JTabbedPane tabs2 = makeTabbedPane();
+    tabs2.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+    List<JTabbedPane> list = Arrays.asList(tabs1, tabs2);
 
     String key = "TabbedPane.tabsOverlapBorder";
     JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
