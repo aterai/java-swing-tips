@@ -264,9 +264,8 @@ class LoadingIcon implements Icon {
     g2.fillRect(0, 0, getIconWidth(), getIconHeight());
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(ELLIPSE_COLOR);
-    float size = (float) list.size();
     list.forEach(s -> {
-      float alpha = running ? (list.indexOf(s) + 1) / size : .5f;
+      float alpha = running ? (list.indexOf(s) + 1f) / list.size() : .5f;
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
       g2.fill(s);
     });
