@@ -95,7 +95,7 @@ class CompoundButton extends JButton {
     setIcon(new Icon() {
       private final Color fc = new Color(100, 150, 255, 200);
       private final Color ac = new Color(230, 230, 230);
-      private final Color rc = Color.ORANGE;
+      private final Color rc = new Color(255, 165, 100);
       @Override public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
