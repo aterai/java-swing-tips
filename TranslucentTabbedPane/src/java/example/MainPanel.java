@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("Tab 1", tab1panel);
     tabs.addTab("Tab 2", tab2panel);
-    tabs.addTab("Tab 3", new AlphaContainer(tab3panel));
+    tabs.addTab("Tab 3", makeAlphaContainer(tab3panel));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -91,6 +91,23 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
+  private static Container makeAlphaContainer(JComponent component) {
+    Container c = new JPanel(new BorderLayout()) {
+      @Override public boolean isOpaque() {
+        return false;
+      }
+
+      @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(component.getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+      }
+    };
+    component.setOpaque(false);
+    c.add(component);
+    return c;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -113,27 +130,27 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// https://tips4java.wordpress.com/2009/05/31/backgrounds-with-transparency/
-class AlphaContainer extends JPanel {
-  private final JComponent component;
-
-  protected AlphaContainer(JComponent component) {
-    super(new BorderLayout());
-    this.component = component;
-    component.setOpaque(false);
-    add(component);
-  }
-
-  @Override public boolean isOpaque() {
-    return false;
-  }
-
-  @Override protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    g.setColor(component.getBackground());
-    g.fillRect(0, 0, getWidth(), getHeight());
-  }
-}
+// // https://tips4java.wordpress.com/2009/05/31/backgrounds-with-transparency/
+// class AlphaContainer extends JPanel {
+//   private final JComponent component;
+//
+//   protected AlphaContainer(JComponent component) {
+//     super(new BorderLayout());
+//     this.component = component;
+//     component.setOpaque(false);
+//     add(component);
+//   }
+//
+//   @Override public boolean isOpaque() {
+//     return false;
+//   }
+//
+//   @Override protected void paintComponent(Graphics g) {
+//     super.paintComponent(g);
+//     g.setColor(component.getBackground());
+//     g.fillRect(0, 0, getWidth(), getHeight());
+//   }
+// }
 
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {

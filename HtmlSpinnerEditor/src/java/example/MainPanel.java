@@ -13,7 +13,6 @@ import javax.swing.event.ChangeListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] items = {
       "<html><font color='red'>Sunday</font> <font color='gray'>(Sun.)",
       "<html><font color='black'>Monday</font> <font color='gray'>(Mon.)",
@@ -73,22 +72,23 @@ public final class MainPanel extends JPanel {
 
 class HtmlListEditor extends JLabel implements ChangeListener {
   protected HtmlListEditor(JSpinner spinner) {
-    super();
+    super(Objects.toString(spinner.getValue()));
     if (!(spinner.getModel() instanceof SpinnerListModel)) {
       throw new IllegalArgumentException("model not a SpinnerListModel");
     }
     spinner.addChangeListener(this);
-
-    setText(Objects.toString(spinner.getValue()));
-    setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    setOpaque(true);
-    setBackground(Color.WHITE);
-    setInheritsPopupMenu(true);
-
     String toolTipText = spinner.getToolTipText();
     if (Objects.nonNull(toolTipText)) {
       setToolTipText(toolTipText);
     }
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+    setOpaque(true);
+    setBackground(Color.WHITE);
+    setInheritsPopupMenu(true);
   }
 
   @Override public void stateChanged(ChangeEvent e) {

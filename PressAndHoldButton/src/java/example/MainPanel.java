@@ -35,6 +35,8 @@ public final class MainPanel extends JPanel {
 
     Icon icon = UIManager.getIcon("FileChooser.detailsViewIcon");
     JButton button = new PressAndHoldButton(icon, popupMenu);
+    // button.getAction().putValue(Action.NAME, text);
+    button.getAction().putValue(Action.SMALL_ICON, icon);
     button.addActionListener(e -> {
       String cmd = getCommand(bg);
       log.append(String.format("Selected action command: %s%n", cmd));
@@ -107,8 +109,6 @@ class PressAndHoldButton extends JButton {
 
   protected PressAndHoldButton(Icon icon, JPopupMenu popupMenu) {
     super(icon);
-    // getAction().putValue(Action.NAME, text);
-    getAction().putValue(Action.SMALL_ICON, icon);
     this.popupMenu = popupMenu;
   }
 
