@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +92,14 @@ class ComparableTab { // implements Comparable<ComparableTab> {
 
 class EditableTabbedPane extends JTabbedPane {
   public static final String EDIT_KEY = "rename-tab";
-  protected final Container glassPane = new EditorGlassPane();
+  public static final String START_EDITING = "start-editing";
+  protected final Container glassPane = new JComponent() {
+    @Override public void setVisible(boolean flag) {
+      super.setVisible(flag);
+      setFocusTraversalPolicyProvider(flag);
+      setFocusCycleRoot(flag);
+    }
+  };
   protected final JTextField editor = new JTextField();
   protected final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
@@ -115,10 +123,23 @@ class EditableTabbedPane extends JTabbedPane {
       glassPane.setVisible(false);
     }
   };
+  protected final Action renameTab = new AbstractAction() {
+    @Override public void actionPerformed(ActionEvent e) {
+      String str = editor.getText().trim();
+      if (!str.isEmpty()) {
+        setTitleAt(getSelectedIndex(), str);
+        Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
+            .ifPresent(Component::revalidate);
+      }
+      glassPane.setVisible(false);
+    }
+  };
+  private transient MouseListener listener;
 
   protected EditableTabbedPane() {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
+
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(WHEN_FOCUSED);
     im.put(enterKey, EDIT_KEY);
@@ -126,64 +147,50 @@ class EditableTabbedPane extends JTabbedPane {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelCmd);
 
     ActionMap am = editor.getActionMap();
-    am.put(EDIT_KEY, new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        String str = editor.getText().trim();
-        if (!str.isEmpty()) {
-          setTitleAt(getSelectedIndex(), str);
-          Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
-              .ifPresent(Component::revalidate);
-        }
-        glassPane.setVisible(false);
-      }
-    });
+    am.put(EDIT_KEY, renameTab);
     am.put(cancelCmd, cancelEditing);
 
-    String startCmd = "start-editing";
-    addMouseListener(new MouseAdapter() {
+    getInputMap(WHEN_FOCUSED).put(enterKey, START_EDITING);
+    getActionMap().put(START_EDITING, startEditing);
+
+    glassPane.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+      @Override public boolean accept(Component c) {
+        return Objects.equals(c, getEditor());
+      }
+    });
+    glassPane.addMouseListener(new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        JTextField tabEditor = getEditor();
+        Optional.ofNullable(tabEditor.getActionMap().get(EDIT_KEY))
+            .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
+            .ifPresent(a -> actionPerformed(e.getComponent(), a));
+      }
+    });
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    super.updateUI();
+    listener = new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
-          Component c = e.getComponent();
-          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, startCmd));
+          actionPerformed(e.getComponent(), startEditing);
         }
       }
-    });
-    getInputMap(WHEN_FOCUSED).put(enterKey, startCmd);
-    getActionMap().put(startCmd, startEditing);
+    };
+    addMouseListener(listener);
+    if (editor != null) {
+      SwingUtilities.updateComponentTreeUI(editor);
+    }
+  }
+
+  private static void actionPerformed(Component c, Action a) {
+    a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, EDIT_KEY));
   }
 
   protected JTextField getEditor() {
     return editor;
-  }
-
-  private class EditorGlassPane extends JComponent {
-    protected EditorGlassPane() {
-      super();
-      setOpaque(false);
-      setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-        @Override public boolean accept(Component c) {
-          return Objects.equals(c, getEditor());
-        }
-      });
-      addMouseListener(new MouseAdapter() {
-        @Override public void mouseClicked(MouseEvent e) {
-          JTextField tabEditor = getEditor();
-          Optional.ofNullable(tabEditor.getActionMap().get(EDIT_KEY))
-              .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
-              .ifPresent(a -> {
-                Component c = e.getComponent();
-                a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, EDIT_KEY));
-              });
-        }
-      });
-    }
-
-    @Override public void setVisible(boolean flag) {
-      super.setVisible(flag);
-      setFocusTraversalPolicyProvider(flag);
-      setFocusCycleRoot(flag);
-    }
   }
 }
 

@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
@@ -56,13 +57,23 @@ public final class MainPanel extends JPanel {
 }
 
 class EditableTabbedPane extends JTabbedPane {
-  protected final Container glassPane = new EditorGlassPane();
+  public static final String EDIT_KEY = "rename-tab";
+  public static final String START_EDITING = "start-editing";
+  protected final Container glassPane = new JComponent() {
+    @Override public void setVisible(boolean flag) {
+      super.setVisible(flag);
+      setFocusTraversalPolicyProvider(flag);
+      setFocusCycleRoot(flag);
+    }
+  };
   protected final JTextField editor = new JTextField();
   protected final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       getRootPane().setGlassPane(glassPane);
       Rectangle rect = getBoundsAt(getSelectedIndex());
-      Point p = SwingUtilities.convertPoint(EditableTabbedPane.this, rect.getLocation(), glassPane);
+      Component src = EditableTabbedPane.this;
+      Point p = SwingUtilities.convertPoint(src, rect.getLocation(), glassPane);
+      // rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
       rect.setLocation(p);
       rect.grow(-2, -2);
       editor.setBounds(rect);
@@ -89,60 +100,62 @@ class EditableTabbedPane extends JTabbedPane {
       glassPane.setVisible(false);
     }
   };
+  private transient MouseListener listener;
 
   protected EditableTabbedPane() {
     super();
     editor.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 
-    InputMap im = editor.getInputMap(WHEN_FOCUSED);
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    im.put(enterKey, "rename-tab");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+    InputMap im = editor.getInputMap(WHEN_FOCUSED);
+    im.put(enterKey, EDIT_KEY);
+    String cancelCmd = "cancel-editing";
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelCmd);
 
     ActionMap am = editor.getActionMap();
-    am.put("rename-tab", renameTab);
-    am.put("cancel-editing", cancelEditing);
+    am.put(EDIT_KEY, renameTab);
+    am.put(cancelCmd, cancelEditing);
 
-    addMouseListener(new MouseAdapter() {
+    getInputMap(WHEN_FOCUSED).put(enterKey, START_EDITING);
+    getActionMap().put(START_EDITING, startEditing);
+
+    glassPane.setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+      @Override public boolean accept(Component c) {
+        return Objects.equals(c, getEditor());
+      }
+    });
+    glassPane.addMouseListener(new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        JTextField tabEditor = getEditor();
+        Optional.ofNullable(tabEditor.getActionMap().get(EDIT_KEY))
+            .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
+            .ifPresent(a -> actionPerformed(e.getComponent(), a));
+      }
+    });
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    super.updateUI();
+    listener = new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
-          Component c = e.getComponent();
-          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+          actionPerformed(e.getComponent(), startEditing);
         }
       }
-    });
-    getInputMap(WHEN_FOCUSED).put(enterKey, "start-editing");
-    getActionMap().put("start-editing", startEditing);
+    };
+    addMouseListener(listener);
+    if (editor != null) {
+      SwingUtilities.updateComponentTreeUI(editor);
+    }
   }
 
-  protected JTextField getEditorTextField() {
+  private static void actionPerformed(Component c, Action a) {
+    a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, EDIT_KEY));
+  }
+
+  protected JTextField getEditor() {
     return editor;
-  }
-
-  private class EditorGlassPane extends JComponent {
-    protected EditorGlassPane() {
-      super();
-      setOpaque(false);
-      setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-        @Override public boolean accept(Component c) {
-          return Objects.equals(c, getEditorTextField());
-        }
-      });
-      addMouseListener(new MouseAdapter() {
-        @Override public void mouseClicked(MouseEvent e) {
-          if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-            Component c = e.getComponent();
-            renameTab.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
-          }
-        }
-      });
-    }
-
-    @Override public void setVisible(boolean flag) {
-      super.setVisible(flag);
-      setFocusTraversalPolicyProvider(flag);
-      setFocusCycleRoot(flag);
-    }
   }
 }
