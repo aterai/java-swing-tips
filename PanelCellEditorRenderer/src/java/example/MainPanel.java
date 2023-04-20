@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -70,22 +71,23 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class SpinnerPanel extends JPanel {
+final class SpinnerPanel extends JPanel {
   private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 0, 200, 1));
 
-  protected SpinnerPanel() {
+  public SpinnerPanel() {
     super(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
-
     c.weightx = 1d;
     c.insets = new Insets(0, 10, 0, 10);
     c.fill = GridBagConstraints.HORIZONTAL;
-
-    setOpaque(true);
     add(spinner, c);
   }
 
-  protected JSpinner getSpinner() {
+  @Override public boolean isOpaque() {
+    return true;
+  }
+
+  public JSpinner getSpinner() {
     return spinner;
   }
 }
@@ -230,7 +232,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //   }
 // }
 
-class ButtonsPanel extends JPanel {
+final class ButtonsPanel extends JPanel {
   public final JButton[] buttons = {new JButton("+"), new JButton("-")};
   public final JLabel label = new JLabel(" ", SwingConstants.RIGHT) {
     @Override public Dimension getPreferredSize() {
@@ -239,17 +241,21 @@ class ButtonsPanel extends JPanel {
       return d;
     }
   };
-  protected int counter = -1;
+  // /* default */ int counter = -1;
+  public final AtomicInteger counter = new AtomicInteger(-1);
 
-  protected ButtonsPanel() {
+  public ButtonsPanel() {
     super();
-    setOpaque(true);
     add(label);
     for (JButton b : buttons) {
       b.setFocusable(false);
       b.setRolloverEnabled(false);
       add(b);
     }
+  }
+
+  @Override public boolean isOpaque() {
+    return true;
   }
 }
 
@@ -272,14 +278,14 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   protected ButtonsEditor() {
     super();
     renderer.buttons[0].addActionListener(e -> {
-      renderer.counter++;
-      renderer.label.setText(Integer.toString(renderer.counter));
+      int i = renderer.counter.incrementAndGet();
+      renderer.label.setText(Integer.toString(i));
       fireEditingStopped();
     });
 
     renderer.buttons[1].addActionListener(e -> {
-      renderer.counter--;
-      renderer.label.setText(Integer.toString(renderer.counter));
+      int i = renderer.counter.decrementAndGet();
+      renderer.label.setText(Integer.toString(i));
       fireEditingStopped();
     });
 
@@ -293,13 +299,16 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     renderer.setBackground(table.getSelectionBackground());
     renderer.label.setForeground(table.getSelectionForeground());
-    renderer.counter = (Integer) value;
-    renderer.label.setText(Integer.toString(renderer.counter));
+    if (value instanceof Integer) {
+      int i = (int) value;
+      renderer.counter.set(i);
+      renderer.label.setText(Integer.toString(i));
+    }
     return renderer;
   }
 
   @Override public Object getCellEditorValue() {
-    return renderer.counter;
+    return renderer.counter.intValue();
   }
 
   // // AbstractCellEditor
