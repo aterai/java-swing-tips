@@ -93,6 +93,7 @@ class ComparableTab { // implements Comparable<ComparableTab> {
 class EditableTabbedPane extends JTabbedPane {
   public static final String EDIT_KEY = "rename-tab";
   public static final String START_EDITING = "start-editing";
+  public static final String CANCEL_EDITING = "cancel-editing";
   protected final Container glassPane = new JComponent() {
     @Override public void setVisible(boolean flag) {
       super.setVisible(flag);
@@ -143,12 +144,11 @@ class EditableTabbedPane extends JTabbedPane {
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(WHEN_FOCUSED);
     im.put(enterKey, EDIT_KEY);
-    String cancelCmd = "cancel-editing";
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelCmd);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL_EDITING);
 
     ActionMap am = editor.getActionMap();
     am.put(EDIT_KEY, renameTab);
-    am.put(cancelCmd, cancelEditing);
+    am.put(CANCEL_EDITING, cancelEditing);
 
     getInputMap(WHEN_FOCUSED).put(enterKey, START_EDITING);
     getActionMap().put(START_EDITING, startEditing);
@@ -163,7 +163,7 @@ class EditableTabbedPane extends JTabbedPane {
         JTextField tabEditor = getEditor();
         Optional.ofNullable(tabEditor.getActionMap().get(EDIT_KEY))
             .filter(a -> !tabEditor.getBounds().contains(e.getPoint()))
-            .ifPresent(a -> actionPerformed(e.getComponent(), a));
+            .ifPresent(a -> actionPerformed(e.getComponent(), a, EDIT_KEY));
       }
     });
   }
@@ -175,18 +175,16 @@ class EditableTabbedPane extends JTabbedPane {
       @Override public void mouseClicked(MouseEvent e) {
         boolean isDoubleClick = e.getClickCount() >= 2;
         if (isDoubleClick) {
-          actionPerformed(e.getComponent(), startEditing);
+          actionPerformed(e.getComponent(), startEditing, START_EDITING);
         }
       }
     };
     addMouseListener(listener);
-    if (editor != null) {
-      SwingUtilities.updateComponentTreeUI(editor);
-    }
+    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(editor));
   }
 
-  private static void actionPerformed(Component c, Action a) {
-    a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, EDIT_KEY));
+  private static void actionPerformed(Component c, Action a, String command) {
+    a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, command));
   }
 
   protected JTextField getEditor() {
