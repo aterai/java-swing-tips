@@ -86,11 +86,22 @@ class RadialGradientButton extends JButton {
   private final Point pt = new Point();
   private transient Shape shape;
   private Rectangle base;
+  private transient MouseAdapter listener;
 
   protected RadialGradientButton(String title) {
     super(title);
+  }
 
-    MouseAdapter listener = new MouseAdapter() {
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    removeMouseMotionListener(listener);
+    super.updateUI();
+    setOpaque(false);
+    setContentAreaFilled(false);
+    setFocusPainted(false);
+    setBackground(new Color(0xF7_23_59));
+    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    listener = new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         timer2.stop();
         if (!timer1.isRunning()) {
@@ -120,15 +131,6 @@ class RadialGradientButton extends JButton {
     };
     addMouseListener(listener);
     addMouseMotionListener(listener);
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setOpaque(false);
-    setContentAreaFilled(false);
-    setFocusPainted(false);
-    setBackground(new Color(0xF7_23_59));
-    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     update();
   }
 
@@ -205,11 +207,22 @@ class RadialGradientPaintButton extends JButton {
   private transient Shape shape;
   private Rectangle base;
   private transient BufferedImage buf;
+  private transient MouseAdapter listener;
 
   protected RadialGradientPaintButton(String title) {
     super(title);
+  }
 
-    MouseAdapter listener = new MouseAdapter() {
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    removeMouseMotionListener(listener);
+    super.updateUI();
+    setOpaque(false);
+    setContentAreaFilled(false);
+    setFocusPainted(false);
+    setBackground(new Color(0xF7_23_59));
+    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    listener = new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         timer2.stop();
         if (!timer1.isRunning()) {
@@ -239,15 +252,6 @@ class RadialGradientPaintButton extends JButton {
     };
     addMouseListener(listener);
     addMouseMotionListener(listener);
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setOpaque(false);
-    setContentAreaFilled(false);
-    setFocusPainted(false);
-    setBackground(new Color(0xF7_23_59));
-    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     update();
   }
 
