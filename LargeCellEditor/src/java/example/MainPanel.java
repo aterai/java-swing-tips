@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,8 +28,15 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     ListModel<IconItem> list = makeIconList();
-    TableModel model = makeIconTableModel(list);
-    JTable table = new IconTable(model, list);
+    int ins = 2;
+    Icon icon = list.getElementAt(0).small;
+    int iw = ins + icon.getIconWidth();
+    int ih = ins + icon.getIconHeight();
+    Dimension d = new Dimension(iw * 3 + ins, ih * 3 + ins);
+    JList<IconItem> editor = new EditorFromList<>(list, d);
+    editor.setFixedCellWidth(iw);
+    editor.setFixedCellHeight(ih);
+    JTable table = new IconTable(makeIconTableModel(list), editor);
     JPanel p = new JPanel(new GridBagLayout());
     p.add(table, new GridBagConstraints());
     p.setBackground(Color.WHITE);
@@ -154,18 +162,11 @@ class IconTable extends JTable {
       g.drawImage(buffer, 0, 0, this);
     }
   };
+  private transient MouseListener handler;
 
-  protected IconTable(TableModel model, ListModel<IconItem> list) {
+  protected IconTable(TableModel model, JList<IconItem> editor) {
     super(model);
-    setDefaultRenderer(Object.class, new IconTableCellRenderer());
-    setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    addMouseListener(new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        startEditing();
-      }
-    });
-
-    editor = new EditorFromList<>(list);
+    this.editor = editor;
     KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
     editor.getInputMap(WHEN_FOCUSED).put(key, "cancel-editing");
     editor.getActionMap().put("cancel-editing", new AbstractAction() {
@@ -208,6 +209,7 @@ class IconTable extends JTable {
   }
 
   @Override public void updateUI() {
+    removeMouseListener(handler);
     super.updateUI();
     setRowHeight(CELL_SIZE);
     JTableHeader tableHeader = getTableHeader();
@@ -220,11 +222,20 @@ class IconTable extends JTable {
       col.setMaxWidth(CELL_SIZE);
     }
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    setDefaultRenderer(Object.class, new IconTableCellRenderer());
+    setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    handler = new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+          startEditing();
+        }
+      }
+    };
+    addMouseListener(handler);
   }
 
   public void startEditing() {
     getRootPane().setGlassPane(glassPane);
-
     Dimension d = editor.getPreferredSize();
     editor.setSize(d);
 
@@ -246,20 +257,13 @@ class IconTable extends JTable {
 }
 
 class EditorFromList<E extends IconItem> extends JList<E> {
-  private static final int INS = 2;
   private final Dimension dim;
   private transient RollOverListener handler;
   protected int rollOverRowIndex = -1;
 
-  protected EditorFromList(ListModel<E> model) {
+  protected EditorFromList(ListModel<E> model, Dimension dim) {
     super(model);
-    Icon icon = model.getElementAt(0).small;
-    int iw = INS + icon.getIconWidth();
-    int ih = INS + icon.getIconHeight();
-
-    dim = new Dimension(iw * 3 + INS, ih * 3 + INS);
-    setFixedCellWidth(iw);
-    setFixedCellHeight(ih);
+    this.dim = dim;
   }
 
   @Override public Dimension getPreferredSize() {
