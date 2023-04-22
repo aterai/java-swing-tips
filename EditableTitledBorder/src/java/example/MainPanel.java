@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
@@ -80,10 +81,37 @@ public final class MainPanel extends JPanel {
 }
 
 class EditableTitledBorder extends TitledBorder {
-  protected final Container glassPane = new EditorGlassPane();
   protected final JTextField editor = new JTextField();
   protected final JLabel renderer = new JLabel();
   protected final Rectangle rect = new Rectangle();
+  protected final Container glassPane = new JComponent() {
+    private transient MouseListener listener;
+    @Override public void updateUI() {
+      removeMouseListener(listener);
+      super.updateUI();
+      setOpaque(false);
+      setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+        @Override public boolean accept(Component c) {
+          return Objects.equals(c, editor);
+        }
+      });
+      listener = new MouseAdapter() {
+        @Override public void mouseClicked(MouseEvent e) {
+          if (!editor.getBounds().contains(e.getPoint())) {
+            Component c = e.getComponent();
+            renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+          }
+        }
+      };
+      addMouseListener(listener);
+    }
+
+    @Override public void setVisible(boolean flag) {
+      super.setVisible(flag);
+      setFocusTraversalPolicyProvider(flag);
+      setFocusCycleRoot(flag);
+    }
+  };
   protected Component comp;
 
   protected final Action startEditing = new AbstractAction() {
@@ -293,35 +321,5 @@ class EditableTitledBorder extends TitledBorder {
       insets.set(i.top, i.left, i.bottom, i.right);
     }
     return insets;
-  }
-
-  protected JTextField getEditorTextField() {
-    return editor;
-  }
-
-  private class EditorGlassPane extends JComponent {
-    protected EditorGlassPane() {
-      super();
-      setOpaque(false);
-      setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-        @Override public boolean accept(Component c) {
-          return Objects.equals(c, getEditorTextField());
-        }
-      });
-      addMouseListener(new MouseAdapter() {
-        @Override public void mouseClicked(MouseEvent e) {
-          if (!getEditorTextField().getBounds().contains(e.getPoint())) {
-            Component c = e.getComponent();
-            renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
-          }
-        }
-      });
-    }
-
-    @Override public void setVisible(boolean flag) {
-      super.setVisible(flag);
-      setFocusTraversalPolicyProvider(flag);
-      setFocusCycleRoot(flag);
-    }
   }
 }
