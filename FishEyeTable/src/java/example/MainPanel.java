@@ -121,8 +121,8 @@ class FishEyeTable extends JTable {
   }
 
   private final class FishEyeTableHandler extends MouseAdapter implements ListSelectionListener {
-    protected int prevRow = -1;
-    protected int prevHeight;
+    public int prevRow = -1;
+    public int prevHeight;
 
     @Override public void mouseMoved(MouseEvent e) {
       update(rowAtPoint(e.getPoint()));
