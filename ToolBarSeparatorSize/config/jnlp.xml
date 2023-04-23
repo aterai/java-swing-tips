@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ToolBarSeparatorSize" />
+  <property name="jnlp.Name"     value="ToolBarSeparatorSize" />
+  <property name="jnlp.name"     value="toolbarseparatorsize" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/toolbarseparatorsize/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ToolBarSeparatorSize.html" />
+</project>
