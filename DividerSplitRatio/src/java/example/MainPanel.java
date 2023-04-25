@@ -14,7 +14,10 @@ public final class MainPanel extends JPanel {
     JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     splitPane.setTopComponent(new JScrollPane(new JTextArea()));
     splitPane.setBottomComponent(new JScrollPane(new JTree()));
-    SplitPaneWrapper spw = new SplitPaneWrapper(splitPane);
+    EventQueue.invokeLater(() -> splitPane.setDividerLocation(.5));
+
+    SplitPaneWrapper spw = new SplitPaneWrapper();
+    spw.add(splitPane);
 
     JCheckBox check = new JCheckBox("MAXIMIZED_BOTH: keep the same splitting ratio", true);
     check.addActionListener(e -> spw.setTestFlag(check.isSelected()));
@@ -49,13 +52,9 @@ public final class MainPanel extends JPanel {
 class SplitPaneWrapper extends JPanel {
   private boolean flag = true;
   private int prevState = Frame.NORMAL;
-  private final JSplitPane splitPane;
 
-  protected SplitPaneWrapper(JSplitPane splitPane) {
+  protected SplitPaneWrapper() {
     super(new BorderLayout());
-    this.splitPane = splitPane;
-    add(splitPane);
-    EventQueue.invokeLater(() -> splitPane.setDividerLocation(.5));
   }
 
   public void setTestFlag(boolean f) {
@@ -68,7 +67,9 @@ class SplitPaneWrapper extends JPanel {
   }
 
   @Override public void doLayout() {
-    if (flag) {
+    Component sp = getComponent(0);
+    if (flag && sp instanceof JSplitPane) {
+      JSplitPane splitPane = (JSplitPane) sp;
       int size = getOrientedSize(splitPane);
       float proportionalLoc = splitPane.getDividerLocation() / (float) size;
       super.doLayout();
