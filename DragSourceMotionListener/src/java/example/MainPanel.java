@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 @SuppressWarnings("PMD.ClassNamingConventions")
@@ -202,7 +203,10 @@ class LabelTransferable implements Transferable {
     this.localObjectFlavor = localObjectFlavor;
     this.panel = panel;
     String txt = panel.draggingLabel.getText();
-    this.ss = Objects.nonNull(txt) ? new StringSelection(txt + "\n") : null;
+    // this.ss = Objects.nonNull(txt) ? new StringSelection(txt + "\n") : null;
+    this.ss = Optional.ofNullable(txt)
+        .map(s -> new StringSelection(s + "\n"))
+        .orElse(null);
   }
 
   @Override public DataFlavor[] getTransferDataFlavors() {
