@@ -224,5 +224,5 @@ enum GenerateInputs {
       }
     }
   };
-  abstract void generate(List<Double> array, int n);
+  public abstract void generate(List<Double> array, int n);
 }

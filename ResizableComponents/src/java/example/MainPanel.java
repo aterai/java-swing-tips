@@ -155,17 +155,17 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
 
   private enum Locations {
     NORTH(Cursor.N_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x + r.width / 2 - SIZE / 2, r.y);
       }
     },
     SOUTH(Cursor.S_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x + r.width / 2 - SIZE / 2, r.y + r.height - SIZE);
       }
     },
     WEST(Cursor.W_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x, r.y + r.height / 2 - SIZE / 2);
       }
     },
@@ -175,22 +175,22 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
       }
     },
     NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x, r.y);
       }
     },
     NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x + r.width - SIZE, r.y);
       }
     },
     SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x, r.y + r.height - SIZE);
       }
     },
     SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
-      @Override Point getPoint(Rectangle r) {
+      @Override public Point getPoint(Rectangle r) {
         return new Point(r.x + r.width - SIZE, r.y + r.height - SIZE);
       }
     };
@@ -201,7 +201,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
       this.cursor = cursor;
     }
 
-    abstract Point getPoint(Rectangle r);
+    public abstract Point getPoint(Rectangle r);
 
     public Cursor getCursor() {
       return Cursor.getPredefinedCursor(cursor);

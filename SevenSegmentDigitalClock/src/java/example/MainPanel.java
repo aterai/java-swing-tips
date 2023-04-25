@@ -261,7 +261,7 @@ enum Seg {
     }
   };
 
-  abstract Shape getShape(double x, double y, double w, double h, double i);
+  public abstract Shape getShape(double x, double y, double w, double h, double i);
 
   private static Path2D vert(double height, double isosceles) {
     Path2D path = new Path2D.Double();
