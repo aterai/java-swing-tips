@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
       processMiniMapMouseEvent(e);
     }
 
-    protected final void processMiniMapMouseEvent(MouseEvent e) {
+    public void processMiniMapMouseEvent(MouseEvent e) {
       Point pt = e.getPoint();
       Component c = e.getComponent();
       BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
