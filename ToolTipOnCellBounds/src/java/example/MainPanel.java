@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -46,7 +47,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    Map<String, Component> map = new LinkedHashMap<>();
+    Map<String, Component> map = Collections.synchronizedMap(new LinkedHashMap<>());
     map.put("CellBounds", list1);
     map.put("ListCellRenderer", list2);
     map.put("Default location", list3);

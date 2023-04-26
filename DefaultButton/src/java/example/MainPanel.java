@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
   private Box makeRadioPane() {
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createHorizontalBox();
-    Map<String, JButton> map = new LinkedHashMap<>();
+    Map<String, JButton> map = Collections.synchronizedMap(new LinkedHashMap<>());
     map.put("null", null);
     map.put("Button1", b1);
     map.put("Button2", b2);
