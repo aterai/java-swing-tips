@@ -16,7 +16,6 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel(new GridBagLayout());
     Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
     Border outside = BorderFactory.createTitledBorder("JLabel text-align:justify");
@@ -108,14 +107,13 @@ class JustifiedLabel extends JLabel {
     g2.dispose();
   }
 
-  private static GlyphVector makeJustifiedGlyphVector(GlyphVector gv, int width) {
+  private static GlyphVector makeJustifiedGlyphVector(GlyphVector gv, float width) {
     Rectangle2D r = gv.getVisualBounds();
-    float jw = (float) width;
     float vw = (float) r.getWidth();
-    if (jw > vw) {
+    if (width > vw) {
       int num = gv.getNumGlyphs();
-      float xx = (jw - vw) / (num - 1f);
-      float pos = num == 1 ? (jw - vw) * .5f : 0f;
+      float xx = (width - vw) / (num - 1f);
+      float pos = num == 1 ? (width - vw) * .5f : 0f;
       Point2D gmPos = new Point2D.Float();
       for (int i = 0; i < num; i++) {
         GlyphMetrics gm = gv.getGlyphMetrics(i);

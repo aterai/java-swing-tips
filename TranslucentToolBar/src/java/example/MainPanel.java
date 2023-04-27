@@ -30,147 +30,49 @@ public final class MainPanel extends JPanel {
         return new MissingIcon();
       }
     }).orElseGet(MissingIcon::new);
-    JLabel label = new LabelWithToolBox(icon);
+
+    JToolBar toolBar = makeTranslucentToolBar();
+    JLabel label = new LabelWithToolBox(icon, toolBar);
     label.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(0xDE_DE_DE)),
         BorderFactory.createLineBorder(Color.WHITE, 4)));
+    label.add(toolBar);
+
     add(label);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
+  private JToolBar makeTranslucentToolBar() {
+    JToolBar toolBar = new JToolBar() {
+      private transient MouseListener listener;
 
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
-}
-
-class LabelWithToolBox extends JLabel {
-  public static final int DELAY = 8;
-  protected final Timer animator = new Timer(DELAY, null);
-  private transient ToolBoxHandler handler;
-  protected boolean isHidden;
-  protected int counter;
-  protected int yy;
-  private final JToolBar toolBox = new JToolBar() {
-    private transient MouseListener listener;
-    @Override protected void paintComponent(Graphics g) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setPaint(getBackground());
-      g2.fillRect(0, 0, getWidth(), getHeight());
-      g2.dispose();
-      super.paintComponent(g);
-    }
-
-    @Override public void updateUI() {
-      removeMouseListener(listener);
-      super.updateUI();
-      listener = new ParentDispatchMouseListener();
-      addMouseListener(listener);
-      setFloatable(false);
-      setOpaque(false);
-      setBackground(new Color(0x0, true));
-      setForeground(Color.WHITE);
-      setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
-    }
-  };
-
-  protected LabelWithToolBox(Icon icon) {
-    super(icon);
-
-    animator.addActionListener(e -> {
-      int height = toolBox.getPreferredSize().height;
-      double h = (double) height;
-      if (isHidden) {
-        double a = AnimationUtils.easeInOut(++counter / h);
-        yy = (int) (.5 + a * h);
-        toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-        if (yy >= height) {
-          yy = height;
-          animator.stop();
-        }
-      } else {
-        double a = AnimationUtils.easeInOut(--counter / h);
-        yy = (int) (.5 + a * h);
-        toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-        if (yy <= 0) {
-          yy = 0;
-          animator.stop();
-        }
+      @Override protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setPaint(getBackground());
+        g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.dispose();
+        super.paintComponent(g);
       }
-      toolBox.revalidate();
-    });
-    // toolBox.setLayout(new BoxLayout(toolBox, BoxLayout.X_AXIS));
-    toolBox.add(Box.createGlue());
+
+      @Override public void updateUI() {
+        removeMouseListener(listener);
+        super.updateUI();
+        listener = new ParentDispatchMouseListener();
+        addMouseListener(listener);
+        setFloatable(false);
+        setOpaque(false);
+        setBackground(new Color(0x0, true));
+        setForeground(Color.WHITE);
+        setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
+      }
+    };
+    // toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.X_AXIS));
+    toolBar.add(Box.createGlue());
     // http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
-    toolBox.add(makeToolButton("ATTACHMENT_16x16-32.png"));
-    toolBox.add(Box.createHorizontalStrut(2));
-    toolBox.add(makeToolButton("RECYCLE BIN - EMPTY_16x16-32.png"));
-    add(toolBox);
-  }
-
-  @Override public void updateUI() {
-    removeMouseListener(handler);
-    addHierarchyListener(handler);
-    super.updateUI();
-    setLayout(new OverlayLayout(this) {
-      @Override public void layoutContainer(Container parent) {
-        // Insets insets = parent.getInsets();
-        int ncomponents = parent.getComponentCount();
-        if (ncomponents == 0) {
-          return;
-        }
-        int width = parent.getWidth(); // - insets.left - insets.right;
-        int height = parent.getHeight(); // - insets.left - insets.right;
-        int x = 0; // insets.left; int y = insets.top;
-        // for (int i = 0; i < ncomponents; i++) {
-        Component c = parent.getComponent(0); // = toolBox;
-        c.setBounds(x, height - yy, width, c.getPreferredSize().height);
-        // }
-      }
-    });
-    handler = new ToolBoxHandler();
-    addMouseListener(handler);
-    addHierarchyListener(handler);
-  }
-
-  private final class ToolBoxHandler extends MouseAdapter implements HierarchyListener {
-    @Override public void mouseEntered(MouseEvent e) {
-      if (!animator.isRunning()) { // && yy != toolBox.getPreferredSize().height) {
-        isHidden = true;
-        animator.start();
-      }
-    }
-
-    @Override public void mouseExited(MouseEvent e) {
-      if (!contains(e.getPoint())) { // !animator.isRunning()) {
-        isHidden = false;
-        animator.start();
-      }
-    }
-
-    @Override public void hierarchyChanged(HierarchyEvent e) {
-      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (b && !e.getComponent().isDisplayable()) {
-        animator.stop();
-      }
-    }
+    toolBar.add(makeToolButton("ATTACHMENT_16x16-32.png"));
+    toolBar.add(Box.createHorizontalStrut(2));
+    toolBar.add(makeToolButton("RECYCLE BIN - EMPTY_16x16-32.png"));
+    return toolBar;
   }
 
   private JButton makeToolButton(String name) {
@@ -182,7 +84,7 @@ class LabelWithToolBox extends JLabel {
       } catch (IOException ex) {
         return makeMissingImage();
       }
-    }).orElseGet(LabelWithToolBox::makeMissingImage);
+    }).orElseGet(MainPanel::makeMissingImage);
 
     ImageIcon icon = new ImageIcon(image);
     JButton b = new JButton();
@@ -231,6 +133,110 @@ class LabelWithToolBox extends JLabel {
     g2.dispose();
     return new ImageIcon(op.filter(img, null));
   }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class LabelWithToolBox extends JLabel {
+  public static final int DELAY = 8;
+  protected final Timer animator = new Timer(DELAY, null);
+  private transient ToolBoxHandler handler;
+  protected boolean isHidden;
+  protected int counter;
+  protected int yy;
+
+  protected LabelWithToolBox(Icon icon, JToolBar toolBox) {
+    super(icon);
+    animator.addActionListener(e -> {
+      int height = toolBox.getPreferredSize().height;
+      if (isHidden) {
+        double a = AnimationUtils.easeInOut(++counter / (double) height);
+        yy = (int) (.5 + a * height);
+        toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+        if (yy >= height) {
+          yy = height;
+          animator.stop();
+        }
+      } else {
+        double a = AnimationUtils.easeInOut(--counter / (double) height);
+        yy = (int) (.5 + a * height);
+        toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+        if (yy <= 0) {
+          yy = 0;
+          animator.stop();
+        }
+      }
+      toolBox.revalidate();
+    });
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    addHierarchyListener(handler);
+    super.updateUI();
+    setLayout(new OverlayLayout(this) {
+      @Override public void layoutContainer(Container parent) {
+        // Insets insets = parent.getInsets();
+        int nc = parent.getComponentCount();
+        if (nc == 0) {
+          return;
+        }
+        int width = parent.getWidth(); // - insets.left - insets.right;
+        int height = parent.getHeight(); // - insets.left - insets.right;
+        int x = 0; // insets.left; int y = insets.top;
+        // for (int i = 0; i < nc; i++) {
+        Component c = parent.getComponent(0); // = toolBox;
+        c.setBounds(x, height - yy, width, c.getPreferredSize().height);
+        // }
+      }
+    });
+    handler = new ToolBoxHandler();
+    addMouseListener(handler);
+    addHierarchyListener(handler);
+  }
+
+  private final class ToolBoxHandler extends MouseAdapter implements HierarchyListener {
+    @Override public void mouseEntered(MouseEvent e) {
+      if (!animator.isRunning()) { // && yy != toolBox.getPreferredSize().height) {
+        isHidden = true;
+        animator.start();
+      }
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      if (!contains(e.getPoint())) { // !animator.isRunning()) {
+        isHidden = false;
+        animator.start();
+      }
+    }
+
+    @Override public void hierarchyChanged(HierarchyEvent e) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
+        animator.stop();
+      }
+    }
+  }
 }
 
 class ParentDispatchMouseListener extends MouseAdapter {
@@ -271,18 +277,18 @@ final class AnimationUtils {
     double ret;
     boolean isFirstHalf = t < .5;
     if (isFirstHalf) {
-      ret = .5 * intpow(t * 2d, N);
+      ret = .5 * intPow(t * 2d, N);
     } else {
-      ret = .5 * (intpow(t * 2d - 2d, N) + 2d);
+      ret = .5 * (intPow(t * 2d - 2d, N) + 2d);
     }
     return ret;
   }
 
   // https://wiki.c2.com/?IntegerPowerAlgorithm
-  public static double intpow(double da, int ib) {
+  public static double intPow(double da, int ib) {
     int b = ib;
     if (b < 0) {
-      // return d / intpow(a, -b);
+      // return d / intPow(a, -b);
       throw new IllegalArgumentException("B must be a positive integer or zero");
     }
     double a = da;
