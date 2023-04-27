@@ -41,7 +41,6 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JTabbedPane tab = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     button.addHierarchyListener(e -> {
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
         printInfo(button, "SHOWING_CHANGED");
@@ -58,9 +57,11 @@ public final class MainPanel extends JPanel {
     IntStream.range(0, 15)
         .mapToObj(i -> new JLabel("<html>JLabel<br>&nbsp;idx:" + i))
         .forEach(panel::add);
-    tab.addTab("Main", new JScrollPane(panel));
-    tab.addTab("JTree", new JScrollPane(new JTree()));
-    tab.addTab("JLabel", new JLabel("Test"));
+
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    tabs.addTab("Main", new JScrollPane(panel));
+    tabs.addTab("JTree", new JScrollPane(new JTree()));
+    tabs.addTab("JLabel", new JLabel("Test"));
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p1.add(new JLabel("JButton:"));
@@ -74,7 +75,7 @@ public final class MainPanel extends JPanel {
     p.add(p1);
     p.add(p2);
     add(p, BorderLayout.NORTH);
-    add(tab);
+    add(tabs);
 
     timer.start();
     setPreferredSize(new Dimension(320, 240));
