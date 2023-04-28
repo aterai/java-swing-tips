@@ -101,6 +101,7 @@ public final class MainPanel extends JPanel {
     return new Point2D.Double(nx, ny);
   }
 
+  @SuppressWarnings("PMD.ForLoopCanBeForeach")
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
