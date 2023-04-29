@@ -202,11 +202,11 @@ final class TrayIconPopupMenuUtils {
     }
 
     Dimension size = popup.getPreferredSize();
-
     // Use long variables to prevent overflow
-    long pw = (long) p.x + (long) size.width;
-    long ph = (long) p.y + (long) size.height;
-
+    long px = p.x;
+    long py = p.y;
+    long pw = px + size.width;
+    long ph = py + size.height;
     if (pw > screenBounds.x + screenBounds.width) {
       p.x -= size.width;
     }

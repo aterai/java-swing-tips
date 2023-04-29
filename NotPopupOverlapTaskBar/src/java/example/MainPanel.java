@@ -25,7 +25,8 @@ public final class MainPanel extends JPanel {
         // if (popupPositionFixDisabled || GraphicsEnvironment.isHeadless()) ...
         Rectangle scrBounds = getScreenBounds(c, popupLocation);
         Dimension popupSize = getPreferredSize();
-        long popupBottomY = (long) popupLocation.y + (long) popupSize.height;
+        long ly = popupLocation.y;
+        long popupBottomY = ly + popupSize.height;
         Point p = new Point(x, y);
         removeAll();
         if (popupBottomY > scrBounds.y + scrBounds.height) {
@@ -85,9 +86,9 @@ public final class MainPanel extends JPanel {
 
   // @see JPopupMenu#show(Component invoker, int x, int y)
   // To avoid integer overflow
-  private static Point getInvokerOrigin(int x, int y, Point invokerOrigin) {
-    long lx = (long) invokerOrigin.x + (long) x;
-    long ly = (long) invokerOrigin.y + (long) y;
+  private static Point getInvokerOrigin(long x, long y, Point invokerOrigin) {
+    long lx = invokerOrigin.x + x;
+    long ly = invokerOrigin.y + y;
     if (lx > Integer.MAX_VALUE) {
       lx = Integer.MAX_VALUE;
     }
