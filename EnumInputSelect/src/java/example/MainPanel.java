@@ -33,7 +33,6 @@ public final class MainPanel extends JPanel {
     });
     JMenuBar mb = new JMenuBar();
     mb.add(menu);
-    mb.add(Box.createHorizontalGlue());
     // EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     JTabbedPane tabs2 = makeTabbedPane();
