@@ -94,6 +94,7 @@ class RandomDissolve extends JComponent implements ActionListener {
     animator = new Timer(10, this);
   }
 
+  @SuppressWarnings("PMD.AvoidArrayLoops")
   private boolean nextStage() {
     if (currentStage > 0) {
       currentStage = currentStage - 1;
