@@ -63,13 +63,28 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class WatermarkPasswordField extends JPasswordField implements FocusListener, DocumentListener {
+class WatermarkPasswordField extends JPasswordField implements DocumentListener {
   private boolean showWatermark = true;
+  private transient FocusListener listener;
 
   protected WatermarkPasswordField() {
     super();
-    addFocusListener(this);
     getDocument().addDocumentListener(this);
+  }
+
+  @Override public void updateUI() {
+    removeFocusListener(listener);
+    super.updateUI();
+    listener = new FocusListener() {
+      @Override public void focusGained(FocusEvent e) {
+        repaint();
+      }
+
+      @Override public void focusLost(FocusEvent e) {
+        update();
+      }
+    };
+    addFocusListener(listener);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -85,14 +100,6 @@ class WatermarkPasswordField extends JPasswordField implements FocusListener, Do
       tl.draw(g2, i.left + 1f, baseline);
       g2.dispose();
     }
-  }
-
-  @Override public void focusGained(FocusEvent e) {
-    repaint();
-  }
-
-  @Override public void focusLost(FocusEvent e) {
-    update();
   }
 
   @Override public void insertUpdate(DocumentEvent e) {
