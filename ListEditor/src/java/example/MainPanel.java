@@ -254,23 +254,6 @@ class EditableList<E extends ListItem> extends JList<E> {
     am.put(RENAME, renameTitle);
     am.put(CANCEL, cancelEditing);
 
-    addMouseListener(new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        int idx = getSelectedIndex();
-        Rectangle rect = getCellBounds(idx, idx);
-        if (rect == null) {
-          return;
-        }
-        int h = editor.getPreferredSize().height;
-        rect.y = rect.y + rect.height - h;
-        rect.height = h;
-        boolean isDoubleClick = e.getClickCount() >= 2;
-        if (isDoubleClick && rect.contains(e.getPoint())) {
-          Component c = e.getComponent();
-          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
-        }
-      }
-    });
     getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
     getActionMap().put(EDITING, startEditing);
   }
@@ -288,7 +271,23 @@ class EditableList<E extends ListItem> extends JList<E> {
     setFixedCellHeight(64);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setCellRenderer(new ListItemListCellRenderer<>());
-    handler = new ClearSelectionListener();
+    handler = new ClearSelectionListener() {
+      @Override public void mouseClicked(MouseEvent e) {
+        int idx = getSelectedIndex();
+        Rectangle rect = getCellBounds(idx, idx);
+        if (rect == null) {
+          return;
+        }
+        int h = editor.getPreferredSize().height;
+        rect.y = rect.y + rect.height - h;
+        rect.height = h;
+        boolean isDoubleClick = e.getClickCount() >= 2;
+        if (isDoubleClick && rect.contains(e.getPoint())) {
+          Component c = e.getComponent();
+          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+        }
+      }
+    };
     addMouseListener(handler);
   }
 
@@ -296,8 +295,8 @@ class EditableList<E extends ListItem> extends JList<E> {
     return editor;
   }
 
-  private class EditorGlassPane extends JComponent {
-    protected EditorGlassPane() {
+  private final class EditorGlassPane extends JComponent {
+    public EditorGlassPane() {
       super();
       setOpaque(false);
       setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
