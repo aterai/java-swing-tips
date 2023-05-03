@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check2 = new JCheckBox(title + "(since 1.6): " + MW + "x" + MH2, true);
     check2.addActionListener(e -> {
       Window w = SwingUtilities.getWindowAncestor(getRootPane());
-      w.setMinimumSize(check2.isSelected() ? new Dimension(MW, MH2) : null);
+      w.setMinimumSize(check2.isSelected() ? new Dimension(MW, MH2) : new Dimension());
     });
 
     EventQueue.invokeLater(() -> {
