@@ -35,9 +35,33 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("Timer: 100", c1);
     tabs.addTab("Timer: 1, ActionListener: 100", c2);
-    tabs.addTab("Timer: 1, ActionListener: 1", new TilePanel(random));
+    tabs.addTab("Timer: 1, ActionListener: 1", makeTilePanel(random));
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeTilePanel(Random rnd) {
+    JPanel p = new JPanel(new GridLayout(10, 10));
+    IntStream.range(0, 100).forEach(i -> {
+      JLabel l = new JLabel();
+      l.setOpaque(true);
+      p.add(l);
+    });
+    Timer timer = new Timer(16, e -> IntStream.range(0, 100).forEach(i -> {
+      Component c = p.getComponent(i);
+      int red = rnd.nextInt(256);
+      c.setBackground(new Color(red, 255 - red, 0));
+    }));
+    p.addHierarchyListener(e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+        if (e.getComponent().isShowing()) {
+          timer.start();
+        } else {
+          timer.stop();
+        }
+      }
+    });
+    return p;
   }
 
   public static void main(String[] args) {
@@ -129,30 +153,5 @@ class Tile2 extends JComponent {
     super.paintComponent(g);
     g.setColor(new Color(red, 255 - red, 0));
     g.fillRect(0, 0, getWidth(), getHeight());
-  }
-}
-
-class TilePanel extends JPanel {
-  protected TilePanel(Random rnd) {
-    super(new GridLayout(10, 10));
-    IntStream.range(0, 100).forEach(i -> {
-      JLabel l = new JLabel();
-      l.setOpaque(true);
-      add(l);
-    });
-    Timer timer = new Timer(16, e -> IntStream.range(0, 100).forEach(i -> {
-      Component c = getComponent(i);
-      int red = rnd.nextInt(256);
-      c.setBackground(new Color(red, 255 - red, 0));
-    }));
-    addHierarchyListener(e -> {
-      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-        if (e.getComponent().isShowing()) {
-          timer.start();
-        } else {
-          timer.stop();
-        }
-      }
-    });
   }
 }
