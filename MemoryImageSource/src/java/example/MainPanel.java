@@ -5,9 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageProducer;
@@ -44,7 +43,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
+class PaintPanel extends JPanel {
   private final Point startPoint = new Point();
   private final transient BufferedImage backImage;
   private static final Paint TEXTURE = createCheckerTexture(6, new Color(0x32_C8_96_64, true));
@@ -52,11 +51,10 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
   private final int[] pixels;
   private final transient ImageProducer src;
   private int penColor;
+  private transient MouseAdapter handler;
 
   protected PaintPanel() {
     super();
-    addMouseMotionListener(this);
-    addMouseListener(this);
     pixels = new int[rect.width * rect.height];
     src = new MemoryImageSource(rect.width, rect.height, pixels, 0, rect.width);
     backImage = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
@@ -66,35 +64,49 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     g2.dispose();
   }
 
+  @Override public void updateUI() {
+    removeMouseMotionListener(handler);
+    removeMouseListener(handler);
+    super.updateUI();
+    handler = new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        startPoint.setLocation(e.getPoint());
+        penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF_00_00_00 : 0x0;
+      }
+
+      @Override public void mouseDragged(MouseEvent e) {
+        double dx = e.getX() - startPoint.getX();
+        double dy = e.getY() - startPoint.getY();
+        double delta = Math.max(Math.abs(dx), Math.abs(dy));
+
+        double ix = dx / delta;
+        double iy = dy / delta;
+        double sx = startPoint.x;
+        double sy = startPoint.y;
+        Point2D pt = new Point2D.Double();
+        for (int i = 0; i < delta; i++) {
+          pt.setLocation(sx, sy);
+          if (!rect.contains(pt)) {
+            break;
+          }
+          paintStamp(pt, penColor);
+          // src.newPixels(pt.x - 2, pt.y - 2, 4, 4);
+          sx += ix;
+          sy += iy;
+        }
+        startPoint.setLocation(e.getPoint());
+      }
+    };
+    addMouseMotionListener(handler);
+    addMouseListener(handler);
+  }
+
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
     g2.drawImage(backImage, 0, 0, this);
     g2.drawImage(createImage(src), 0, 0, this);
     g2.dispose();
-  }
-
-  @Override public void mouseDragged(MouseEvent e) {
-    double dx = e.getX() - startPoint.getX();
-    double dy = e.getY() - startPoint.getY();
-    double delta = Math.max(Math.abs(dx), Math.abs(dy));
-
-    double ix = dx / delta;
-    double iy = dy / delta;
-    double sx = startPoint.x;
-    double sy = startPoint.y;
-    Point2D pt = new Point2D.Double();
-    for (int i = 0; i < delta; i++) {
-      pt.setLocation(sx, sy);
-      if (!rect.contains(pt)) {
-        break;
-      }
-      paintStamp(pt, penColor);
-      // src.newPixels(pt.x - 2, pt.y - 2, 4, 4);
-      sx += ix;
-      sy += iy;
-    }
-    startPoint.setLocation(e.getPoint());
   }
 
   private void paintStamp(Point2D pt, int color) {
@@ -129,31 +141,6 @@ class PaintPanel extends JPanel implements MouseMotionListener, MouseListener {
     }
     g2.dispose();
     return new TexturePaint(img, new Rectangle(size, size));
-  }
-
-  @Override public void mousePressed(MouseEvent e) {
-    startPoint.setLocation(e.getPoint());
-    penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF_00_00_00 : 0x0;
-  }
-
-  @Override public void mouseMoved(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseExited(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseEntered(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseReleased(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseClicked(MouseEvent e) {
-    /* not needed */
   }
 }
 
