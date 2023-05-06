@@ -45,6 +45,7 @@ public final class MainPanel extends JPanel {
 
     RowHeaderList<String> rowHeader = new RowHeaderList<>(listModel, table);
     rowHeader.setFixedCellWidth(50);
+    rowHeader.setFixedCellHeight(table.getRowHeight());
 
     JScrollPane scroll = new JScrollPane(table);
     scroll.setRowHeaderView(rowHeader);
@@ -86,32 +87,34 @@ public final class MainPanel extends JPanel {
 class RowHeaderList<E> extends JList<E> {
   protected final JTable table;
   protected final transient ListSelectionModel tableSelection;
-  protected final transient ListSelectionModel listSelection;
+  protected final transient ListSelectionModel listSelection = getSelectionModel();
+  private transient MouseAdapter handler;
   protected int rollOverRowIndex = -1;
   protected int pressedRowIndex = -1;
 
   protected RowHeaderList(ListModel<E> model, JTable table) {
     super(model);
     this.table = table;
-    setFixedCellHeight(table.getRowHeight());
-    setCellRenderer(new RowHeaderRenderer<>(table.getTableHeader()));
     // setSelectionModel(table.getSelectionModel());
-    RollOverListener rol = new RollOverListener();
-    addMouseListener(rol);
-    addMouseMotionListener(rol);
-    // setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.brighter()));
-
     tableSelection = table.getSelectionModel();
-    listSelection = getSelectionModel();
   }
 
-  protected class RowHeaderRenderer<F> implements ListCellRenderer<F> {
-    private final JTableHeader header; // = table.getTableHeader();
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removeMouseMotionListener(handler);
+    super.updateUI();
+    handler = new RollOverListener();
+    addMouseListener(handler);
+    addMouseMotionListener(handler);
+    setCellRenderer(new RowHeaderRenderer<>());
+    // setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.brighter()));
+  }
+
+  public class RowHeaderRenderer<F> implements ListCellRenderer<F> {
     private final JLabel renderer = new JLabel(); // new DefaultListCellRenderer();
 
-    protected RowHeaderRenderer(JTableHeader header) {
+    protected RowHeaderRenderer() {
       super();
-      this.header = header;
       renderer.setOpaque(true);
       // renderer.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
       renderer.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY.brighter()));
@@ -125,6 +128,7 @@ class RowHeaderList<E> extends JList<E> {
       // Component c = renderer.getListCellRendererComponent(
       //     list, value, index, isSelected, cellHasFocus);
       // Component c = renderer;
+      JTableHeader header = table.getTableHeader();
       renderer.setFont(header.getFont());
       if (index == pressedRowIndex) {
         renderer.setBackground(Color.GRAY);
