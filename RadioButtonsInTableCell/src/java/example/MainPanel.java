@@ -6,8 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -99,24 +98,21 @@ enum Answer {
   A, B, C
 }
 
-class RadioButtonsPanel extends JPanel {
-  private final String[] answer = {Answer.A.toString(), Answer.B.toString(), Answer.C.toString()};
-  protected final transient List<JRadioButton> buttons = new ArrayList<>(answer.length);
-  protected ButtonGroup bg = new ButtonGroup();
+final class RadioButtonsPanel extends JPanel {
+  public final ButtonGroup bg = new ButtonGroup();
 
-  protected RadioButtonsPanel() {
+  public RadioButtonsPanel() {
     super();
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     initButtons();
   }
 
   private void initButtons() {
-    buttons.clear();
+    bg.clearSelection();
+    Collections.list(bg.getElements()).forEach(bg::remove);
     removeAll();
-    bg = new ButtonGroup();
-    for (String title : answer) {
-      JRadioButton b = makeButton(title);
-      buttons.add(b);
+    for (Answer a : Answer.values()) {
+      JRadioButton b = makeButton(a.name());
       add(b);
       bg.add(b);
     }
@@ -130,18 +126,18 @@ class RadioButtonsPanel extends JPanel {
     return b;
   }
 
-  protected void updateSelectedButton(Object v) {
+  public void updateSelectedButton(Object v) {
     if (v instanceof Answer) {
       initButtons();
       switch ((Answer) v) {
         case A:
-          buttons.get(0).setSelected(true);
+          ((JRadioButton) getComponent(0)).setSelected(true);
           break;
         case B:
-          buttons.get(1).setSelected(true);
+          ((JRadioButton) getComponent(1)).setSelected(true);
           break;
         case C:
-          buttons.get(2).setSelected(true);
+          ((JRadioButton) getComponent(2)).setSelected(true);
           break;
         default:
           break;
@@ -166,8 +162,8 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   protected RadioButtonsEditor() {
     super();
     ActionListener al = e -> fireEditingStopped();
-    for (AbstractButton b : renderer.buttons) {
-      b.addActionListener(al);
+    for (Component c : renderer.getComponents()) {
+      ((JRadioButton) c).addActionListener(al);
     }
   }
 
