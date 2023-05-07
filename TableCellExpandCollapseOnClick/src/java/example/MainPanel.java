@@ -109,11 +109,16 @@ class TextAreaCellRenderer implements TableCellRenderer {
 final class RowHeader {
   private final String title;
   private final boolean expandable;
-  private boolean selected;
+  private final boolean selected;
 
   public RowHeader(String title, boolean expandable) {
+    this(title, expandable, false);
+  }
+
+  public RowHeader(String title, boolean expandable, boolean selected) {
     this.title = title;
     this.expandable = expandable;
+    this.selected = selected;
   }
 
   public String getTitle() {
@@ -128,17 +133,9 @@ final class RowHeader {
     return selected;
   }
 
-  public void setSelected(boolean selected) {
-    this.selected = selected;
-  }
-
   @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof RowHeader)) {
-      return false;
-    }
+    if (this == o) return true;
+    if (!(o instanceof RowHeader)) return false;
     RowHeader rh = (RowHeader) o;
     return isExpandable() == rh.isExpandable()
         && isSelected() == rh.isSelected()
@@ -193,7 +190,12 @@ class RowHeaderEditor extends AbstractCellEditor implements TableCellEditor {
   protected RowHeaderEditor() {
     super();
     renderer.check.addActionListener(e -> {
-      rowHeader.setSelected(renderer.check.isSelected());
+      if (rowHeader != null) {
+        String title = rowHeader.getTitle();
+        boolean expandable = rowHeader.isExpandable();
+        boolean selected = renderer.check.isSelected();
+        rowHeader = new RowHeader(title, expandable, selected);
+      }
       fireEditingStopped();
     });
     renderer.addMouseListener(new MouseAdapter() {
@@ -206,10 +208,12 @@ class RowHeaderEditor extends AbstractCellEditor implements TableCellEditor {
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     if (value instanceof RowHeader) {
       RowHeader rh = (RowHeader) value;
-      rh.setSelected(rh.isExpandable() && renderer.check.isSelected());
       renderer.check.setVisible(rh.isExpandable());
       renderer.label.setText(rh.getTitle());
-      rowHeader = rh;
+      String title = rh.getTitle();
+      boolean expandable = rh.isExpandable();
+      boolean selected = rh.isExpandable() && renderer.check.isSelected();
+      rowHeader = new RowHeader(title, expandable, selected);
     }
     return renderer;
   }
