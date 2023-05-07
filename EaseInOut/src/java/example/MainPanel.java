@@ -28,8 +28,12 @@ public final class MainPanel extends JPanel {
         return new MissingIcon();
       }
     }).orElseGet(MissingIcon::new);
+
     String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SERIAL NO: 0000";
-    add(new ImageCaptionLabel(txt, icon));
+    ImageCaptionLabel label = new ImageCaptionLabel(icon, txt);
+    label.add(label.getTextArea());
+
+    add(label);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -73,7 +77,6 @@ class ImageCaptionLabel extends JLabel {
       setFont(getFont().deriveFont(11f));
       setOpaque(false);
       setEditable(false);
-      // setFocusable(false);
       setBackground(new Color(0x0, true));
       setForeground(Color.WHITE);
       setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
@@ -88,11 +91,8 @@ class ImageCaptionLabel extends JLabel {
       };
       addMouseListener(listener);
     }
-    // @Override public boolean contains(int x, int y) {
-    //   return false;
-    // }
   };
-  private final transient LabelHandler handler = new LabelHandler(textArea);
+  private transient LabelHandler handler;
 
   protected void dispatchMouseEvent(MouseEvent e) {
     Component src = e.getComponent();
@@ -100,23 +100,32 @@ class ImageCaptionLabel extends JLabel {
     this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));
   }
 
+  public JTextArea getTextArea() {
+    return textArea;
+  }
+
   @Override public void updateUI() {
+    removeMouseListener(handler);
+    removeHierarchyListener(handler);
     super.updateUI();
+    handler = new LabelHandler();
+    addMouseListener(handler);
+    addHierarchyListener(handler);
     setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(0xDE_DE_DE)),
         BorderFactory.createLineBorder(Color.WHITE, 4)));
     setLayout(new OverlayLayout(this) {
       @Override public void layoutContainer(Container parent) {
         // Insets insets = parent.getInsets();
-        int ncomponents = parent.getComponentCount();
-        if (ncomponents == 0) {
+        int num = parent.getComponentCount();
+        if (num == 0) {
           return;
         }
         int width = parent.getWidth(); // - insets.left - insets.right;
         int height = parent.getHeight(); // - insets.left - insets.right;
         int x = 0; // insets.left; int y = insets.top;
         int tah = handler.getTextAreaHeight();
-        // for (int i = 0; i < ncomponents; i++) {
+        // for (int i = 0; i < num; i++) {
         Component c = parent.getComponent(0); // = textArea;
         c.setBounds(x, height - tah, width, c.getPreferredSize().height);
         // }
@@ -124,78 +133,69 @@ class ImageCaptionLabel extends JLabel {
     });
   }
 
-  protected ImageCaptionLabel(String caption, Icon icon) {
+  protected ImageCaptionLabel(Icon icon, String caption) {
     super(icon);
-    // setIcon(icon);
     textArea.setText(caption);
-    add(textArea);
-    addMouseListener(handler);
-    addHierarchyListener(handler);
-  }
-}
-
-class LabelHandler extends MouseAdapter implements HierarchyListener {
-  private final Timer animator = new Timer(5, e -> updateTextAreaLocation());
-  private final Component textArea;
-  private int areaHeight;
-  private int count;
-  private int direction;
-
-  protected LabelHandler(Component textArea) {
-    super();
-    this.textArea = textArea;
   }
 
-  private void updateTextAreaLocation() {
-    double height = textArea.getPreferredSize().getHeight();
-    double a = AnimationUtils.easeInOut(count / height);
-    count += direction;
-    areaHeight = (int) (.5 + a * height);
-    textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-    if (direction > 0) { // show
-      if (areaHeight >= textArea.getPreferredSize().height) {
-        areaHeight = textArea.getPreferredSize().height;
+  private final class LabelHandler extends MouseAdapter implements HierarchyListener {
+    private final Timer animator = new Timer(10, e -> updateTextAreaLocation());
+    // private final Component textArea;
+    private int areaHeight;
+    private int count;
+    private int direction;
+
+    private void updateTextAreaLocation() {
+      double height = textArea.getPreferredSize().getHeight();
+      double a = AnimationUtils.easeInOut(count / height);
+      count += direction;
+      areaHeight = (int) (.5 + a * height);
+      textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+      if (direction > 0) { // show
+        if (areaHeight >= textArea.getPreferredSize().height) {
+          areaHeight = textArea.getPreferredSize().height;
+          animator.stop();
+        }
+      } else { // hide
+        if (areaHeight <= 0) {
+          areaHeight = 0;
+          animator.stop();
+        }
+      }
+      Container p = SwingUtilities.getUnwrappedParent(textArea);
+      p.revalidate();
+      p.repaint();
+    }
+
+    public int getTextAreaHeight() {
+      return areaHeight;
+    }
+
+    @Override public void mouseEntered(MouseEvent e) {
+      if (animator.isRunning() || areaHeight == textArea.getPreferredSize().height) {
+        return;
+      }
+      this.direction = 2;
+      animator.start();
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      if (animator.isRunning()) {
+        return;
+      }
+      Component c = e.getComponent();
+      if (c.contains(e.getPoint()) && areaHeight == textArea.getPreferredSize().height) {
+        return;
+      }
+      this.direction = -2;
+      animator.start();
+    }
+
+    @Override public void hierarchyChanged(HierarchyEvent e) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
         animator.stop();
       }
-    } else { // hide
-      if (areaHeight <= 0) {
-        areaHeight = 0;
-        animator.stop();
-      }
-    }
-    Container p = SwingUtilities.getUnwrappedParent(textArea);
-    p.revalidate();
-    p.repaint();
-  }
-
-  public int getTextAreaHeight() {
-    return areaHeight;
-  }
-
-  @Override public void mouseEntered(MouseEvent e) {
-    if (animator.isRunning() || areaHeight == textArea.getPreferredSize().height) {
-      return;
-    }
-    this.direction = 1;
-    animator.start();
-  }
-
-  @Override public void mouseExited(MouseEvent e) {
-    if (animator.isRunning()) {
-      return;
-    }
-    Component c = e.getComponent();
-    if (c.contains(e.getPoint()) && areaHeight == textArea.getPreferredSize().height) {
-      return;
-    }
-    this.direction = -1;
-    animator.start();
-  }
-
-  @Override public void hierarchyChanged(HierarchyEvent e) {
-    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-    if (b && !e.getComponent().isDisplayable()) {
-      animator.stop();
     }
   }
 }
