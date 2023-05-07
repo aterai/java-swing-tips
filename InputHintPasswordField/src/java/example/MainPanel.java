@@ -22,7 +22,9 @@ public final class MainPanel extends JPanel {
     b.add(new JLabel("Password: "));
     b.add(field1);
     b.add(Box.createHorizontalGlue());
-    JTextComponent field2 = new WatermarkPasswordField();
+
+    WatermarkPasswordField field2 = new WatermarkPasswordField();
+    field2.getDocument().addDocumentListener(field2);
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
@@ -66,11 +68,6 @@ public final class MainPanel extends JPanel {
 class WatermarkPasswordField extends JPasswordField implements DocumentListener {
   private boolean showWatermark = true;
   private transient FocusListener listener;
-
-  protected WatermarkPasswordField() {
-    super();
-    getDocument().addDocumentListener(this);
-  }
 
   @Override public void updateUI() {
     removeFocusListener(listener);
