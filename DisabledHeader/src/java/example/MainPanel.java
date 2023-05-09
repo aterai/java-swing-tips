@@ -41,9 +41,9 @@ public final class MainPanel extends JPanel {
     table.getTableHeader().setReorderingAllowed(false);
 
     JTableHeader header = table.getTableHeader();
-    SortButtonRenderer hrenderer = new SortButtonRenderer(header);
-    hrenderer.setEnabledAt(0, false);
-    header.setDefaultRenderer(hrenderer);
+    SortButtonRenderer headerRenderer = new SortButtonRenderer(header);
+    headerRenderer.setEnabledAt(0, false);
+    header.setDefaultRenderer(headerRenderer);
     header.addMouseListener(new HeaderMouseListener());
 
     TableColumn col = table.getColumnModel().getColumn(0);
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     col.setMaxWidth(80);
 
     JCheckBox check = new JCheckBox("setEnabledAt(2, false)");
-    check.addActionListener(e -> hrenderer.setEnabledAt(2, !check.isSelected()));
+    check.addActionListener(e -> headerRenderer.setEnabledAt(2, !check.isSelected()));
 
     add(new JScrollPane(table));
     add(check, BorderLayout.SOUTH);
@@ -82,9 +82,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends SortableTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true)
   };
   private int number;
 

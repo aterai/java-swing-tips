@@ -44,7 +44,7 @@ class ColumnComparator implements Comparator<Object>, Serializable {
     if (one instanceof List && two instanceof List) {
       Comparable<Object> o1 = (Comparable<Object>) ((List<Object>) one).get(index);
       Comparable<Object> o2 = (Comparable<Object>) ((List<Object>) two).get(index);
-      int c = Objects.compare(o1, o2, nullsFirst(naturalOrder()));
+      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
       return c * (ascending ? 1 : -1);
     }
     return 0;
@@ -69,6 +69,7 @@ class ColumnComparator implements Comparator<Object>, Serializable {
   //   }
   //   return 1;
   // }
+
   // @Override public int compare(Number o1, Number o2) {
   //   return new BigDecimal(o1.toString()).compareTo(new BigDecimal(o2.toString()));
   //   // double n1 = o1.doubleValue();
@@ -93,7 +94,7 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
   private Dimension iconSize;
   private int pushedColumn = -1;
   private final Map<Integer, Integer> state = new ConcurrentHashMap<>();
-  private final Map<Integer, Boolean> dmap = new ConcurrentHashMap<>();
+  private final Map<Integer, Boolean> enabledMap = new ConcurrentHashMap<>();
   private final JTableHeader header;
 
   protected SortButtonRenderer(JTableHeader header) {
@@ -122,11 +123,11 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     }
     getModel().setEnabled(true);
     Integer iv = state.get(modelColumn);
-    if (iv == DOWN) {
+    if (Objects.equals(iv, DOWN)) {
       setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
       // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
       // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-    } else if (iv == UP) {
+    } else if (Objects.equals(iv, UP)) {
       setIcon(UIManager.getIcon("Table.descendingSortIcon"));
       // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
       // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
@@ -142,14 +143,14 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
   }
 
   public void setEnabledAt(int col, boolean b) {
-    dmap.put(col, b);
+    enabledMap.put(col, b);
     header.repaint();
   }
 
   public boolean isEnabledAt(int col) {
-    // return dmap.containsKey(col) ? dmap.get(col) : true;
-    // return !dmap.containsKey(col) ? true : dmap.get(col);
-    return !dmap.containsKey(col) || dmap.get(col);
+    // return enabledMap.containsKey(col) ? enabledMap.get(col) : true;
+    // return !enabledMap.containsKey(col) ? true : enabledMap.get(col);
+    return !enabledMap.containsKey(col) || enabledMap.get(col);
   }
 
   public void setSelectedColumn(int col) {
