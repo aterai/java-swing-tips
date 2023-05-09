@@ -27,52 +27,14 @@ public final class MainPanel extends JPanel {
 
     add(makeTitledPanel("Default", new JSpinner(makeSpinnerNumberModel())));
     add(makeTitledPanel("NumberFormatter#setAllowsInvalid(false)", spinner));
-    add(makeTitledPanel("BackgroundColor", new WarningSpinner(makeSpinnerNumberModel())));
+    add(makeTitledPanel("BackgroundColor", makeWarningSpinner(makeSpinnerNumberModel())));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static SpinnerNumberModel makeSpinnerNumberModel() {
-    return new SpinnerNumberModel(10L, 0L, 99_999L, 1L);
-  }
-
-  private static Component makeTitledPanel(String title, Component cmp) {
-    JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createTitledBorder(title));
-    GridBagConstraints c = new GridBagConstraints();
-    c.weightx = 1d;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.insets = new Insets(5, 5, 5, 5);
-    p.add(cmp, c);
-    return p;
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
-}
-
-class WarningSpinner extends JSpinner {
-  protected WarningSpinner(SpinnerNumberModel model) {
-    super(model);
-    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
+  private JSpinner makeWarningSpinner(SpinnerNumberModel model) {
+    JSpinner spinner = new JSpinner(model);
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFormatterFactory(makeFormatterFactory(model));
     ftf.getDocument().addDocumentListener(new DocumentListener() {
@@ -96,6 +58,7 @@ class WarningSpinner extends JSpinner {
         });
       }
     });
+    return spinner;
   }
 
   private static DefaultFormatterFactory makeFormatterFactory(SpinnerNumberModel m) {
@@ -129,6 +92,54 @@ class WarningSpinner extends JSpinner {
     editFormatter.setValueClass(Long.class);
     NumberFormatter displayFormatter = new NumberFormatter(format);
     return new DefaultFormatterFactory(displayFormatter, displayFormatter, editFormatter);
+  }
+
+  private static SpinnerNumberModel makeSpinnerNumberModel() {
+    // java.lang.ClassCastException: class java.lang.Double cannot be cast to class java.lang.Long
+    // (java.lang.Double and java.lang.Long are in module java.base of loader 'bootstrap')
+    // at example.MainPanel$2.stringToValue(MainPanel.java:80)
+    // at java.desktop/javax.swing.JFormattedTextField.commitEdit(JFormattedTextField.java:563)
+    // return new SpinnerNumberModel(10L, 0L, 99_999L, 1L);
+    Long value = 10L;
+    Long minimum = 0L;
+    Long maximum = 99_999L;
+    Long stepSize = 1L;
+    return new SpinnerNumberModel(value, minimum, maximum, stepSize);
+    // or:
+    // return new SpinnerNumberModel(
+    //   Long.valueOf(10L), Long.valueOf(0L), Long.valueOf(99_999L), Long.valueOf(1L));
+  }
+
+  private static Component makeTitledPanel(String title, Component cmp) {
+    JPanel p = new JPanel(new GridBagLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    GridBagConstraints c = new GridBagConstraints();
+    c.weightx = 1d;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.insets = new Insets(5, 5, 5, 5);
+    p.add(cmp, c);
+    return p;
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
   }
 }
 
