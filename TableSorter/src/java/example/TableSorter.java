@@ -385,7 +385,7 @@ public class TableSorter extends AbstractTableModel {
         // }
         @SuppressWarnings("unchecked")
         Comparator<Object> comparator = getComparator(column);
-        int comparison = Objects.compare(o1, o2, nullsFirst(comparator));
+        int comparison = Objects.compare(o1, o2, Comparator.nullsFirst(comparator));
         if (comparison != 0) {
           return directive.direction == DESCENDING ? ~comparison + 1 : comparison;
         }
