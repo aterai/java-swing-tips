@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     table.setRowSorter(sorter);
 
     RowFilter<? super TableModel, ? super Integer> defFilter = sorter.getRowFilter();
-    RowFilter<TableModel, Integer> filter = new RowFilter<>() {
+    RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         return entry.getIdentifier() % 2 == 0;
       }
