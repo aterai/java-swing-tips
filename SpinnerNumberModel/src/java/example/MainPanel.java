@@ -36,9 +36,9 @@ public final class MainPanel extends JPanel {
             Long.valueOf(Integer.MAX_VALUE),
             Long.valueOf(1)),
         new SpinnerNumberModel(
-            Long.MAX_VALUE,
+            Long.valueOf(Long.MAX_VALUE),
             Long.valueOf(0),
-            Long.MAX_VALUE,
+            Long.valueOf(Long.MAX_VALUE),
             Long.valueOf(1)));
 
     Box box = Box.createVerticalBox();
