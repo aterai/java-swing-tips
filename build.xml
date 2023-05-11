@@ -297,7 +297,7 @@
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" if:set="jdk9orlater" />
-      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="-J--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
     </javac>
   </target>
 
