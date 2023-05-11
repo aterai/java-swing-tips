@@ -147,7 +147,7 @@ final class PinTabPopupMenu extends JPopupMenu {
     });
   }
 
-  protected static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
+  public static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
     int i;
     if (dir) {
       for (i = 0; i < idx; i++) {
