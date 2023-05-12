@@ -14,13 +14,13 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] items = {
-      "<html><font color='red'>Sunday</font> <font color='gray'>(Sun.)",
-      "<html><font color='black'>Monday</font> <font color='gray'>(Mon.)",
-      "<html><font color='black'>Tuesday</font> <font color='gray'>(Tue.)",
-      "<html><font color='black'>Wednesday</font> <font color='gray'>(Wed.)",
-      "<html><font color='black'>Thursday</font> <font color='gray'>(Thu.)",
-      "<html><font color='black'>Friday</font> <font color='gray'>(Fri.)",
-      "<html><font color='blue'>Saturday</font> <font color='gray'>(Sat.)"};
+        "<html><font color='red'>Sunday</font> <font color='gray'>(Sun.)",
+        "<html><font color='black'>Monday</font> <font color='gray'>(Mon.)",
+        "<html><font color='black'>Tuesday</font> <font color='gray'>(Tue.)",
+        "<html><font color='black'>Wednesday</font> <font color='gray'>(Wed.)",
+        "<html><font color='black'>Thursday</font> <font color='gray'>(Thu.)",
+        "<html><font color='black'>Friday</font> <font color='gray'>(Fri.)",
+        "<html><font color='blue'>Saturday</font> <font color='gray'>(Sat.)"};
 
     JPanel p1 = new JPanel(new BorderLayout(5, 5));
     p1.add(new JSpinner(new SpinnerListModel(items)));
@@ -77,10 +77,6 @@ class HtmlListEditor extends JLabel implements ChangeListener {
       throw new IllegalArgumentException("model not a SpinnerListModel");
     }
     spinner.addChangeListener(this);
-    String toolTipText = spinner.getToolTipText();
-    if (Objects.nonNull(toolTipText)) {
-      setToolTipText(toolTipText);
-    }
   }
 
   @Override public void updateUI() {
@@ -93,7 +89,9 @@ class HtmlListEditor extends JLabel implements ChangeListener {
 
   @Override public void stateChanged(ChangeEvent e) {
     JSpinner spinner = (JSpinner) e.getSource();
-    setText(Objects.toString(spinner.getValue()));
+    String txt = Objects.toString(spinner.getValue());
+    setText(txt);
+    setToolTipText(txt);
   }
 
   @Override public Dimension getPreferredSize() {
