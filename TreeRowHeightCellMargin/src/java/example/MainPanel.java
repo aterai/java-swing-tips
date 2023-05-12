@@ -8,7 +8,6 @@ import java.awt.*;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -70,30 +69,47 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
   private final JPanel renderer = new JPanel(new BorderLayout());
   private final JLabel icon = new JLabel();
   private final JLabel text = new JLabel();
-  private final CompoundBorder emptyBorder;
-  private final CompoundBorder focusBorder;
+  private boolean isSynth;
 
   protected CompoundTreeCellRenderer() {
     super();
-    Border insideBorder = BorderFactory.createEmptyBorder(1, 2, 1, 2);
-    Border outsideBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
-    emptyBorder = BorderFactory.createCompoundBorder(outsideBorder, insideBorder);
-
-    Color bsColor = getBorderSelectionColor();
-    Color focusBgsColor = new Color(~getBackgroundSelectionColor().getRGB());
-    Border dotBorder = new DotBorder(focusBgsColor, bsColor);
-    focusBorder = BorderFactory.createCompoundBorder(dotBorder, insideBorder);
-
     icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
-    text.setBorder(emptyBorder);
     text.setOpaque(true);
     renderer.setOpaque(false);
     renderer.add(icon, BorderLayout.WEST);
-
     JPanel wrap = new JPanel(new GridBagLayout());
     wrap.setOpaque(false);
     wrap.add(text);
     renderer.add(wrap);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    isSynth = getUI().getClass().getName().contains("Synth");
+  }
+
+  private Border makeEmptyBorder(Border insideBorder) {
+    Border outsideBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+    return BorderFactory.createCompoundBorder(outsideBorder, insideBorder);
+  }
+
+  private Border makeFocusBorder(Border insideBorder) {
+    Border focusBorder;
+    if (isSynth) {
+      focusBorder = makeEmptyBorder(insideBorder);
+    } else {
+      Color bsColor = getBorderSelectionColor();
+
+      boolean drawDashedFocus = UIManager.getBoolean("Tree.drawDashedFocusIndicator");
+      Border b;
+      if (drawDashedFocus) {
+        b = new DotBorder(new Color(~getBackgroundSelectionColor().getRGB()), bsColor);
+      } else {
+        b = BorderFactory.createLineBorder(bsColor);
+      }
+      focusBorder = BorderFactory.createCompoundBorder(b, insideBorder);
+    }
+    return focusBorder;
   }
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -102,13 +118,17 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
     if (selected) {
       bgc = getBackgroundSelectionColor();
       fgc = getTextSelectionColor();
+      text.setOpaque(!isSynth);
     } else {
       bgc = Optional.ofNullable(getBackgroundNonSelectionColor()).orElse(getBackground());
       fgc = Optional.ofNullable(getTextNonSelectionColor()).orElse(getForeground());
+      text.setOpaque(false);
     }
     text.setForeground(fgc);
     text.setBackground(bgc);
-    text.setBorder(hasFocus ? focusBorder : emptyBorder);
+
+    Border ib = BorderFactory.createEmptyBorder(1, 2, 1, 2);
+    text.setBorder(hasFocus ? makeFocusBorder(ib) : makeEmptyBorder(ib));
 
     Component c = super.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
@@ -117,7 +137,6 @@ class CompoundTreeCellRenderer extends DefaultTreeCellRenderer {
       text.setText(l.getText());
       icon.setIcon(l.getIcon());
     }
-
     return renderer;
   }
 
