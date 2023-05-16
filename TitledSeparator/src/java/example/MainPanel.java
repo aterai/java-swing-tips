@@ -15,13 +15,13 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
-    box.add(new TitledSeparator("TitledBorder", 2, TitledBorder.DEFAULT_POSITION));
+    box.add(new TitledSeparator("TitledBorder", TitledBorder.DEFAULT_POSITION));
     box.add(new JCheckBox("JCheckBox 0"));
     box.add(new JCheckBox("JCheckBox 1"));
     box.add(Box.createVerticalStrut(10));
 
     Color color = new Color(0x64_B4_C8);
-    box.add(new TitledSeparator("TitledBorder ABOVE TOP", color, 2, TitledBorder.ABOVE_TOP));
+    box.add(new TitledSeparator("TitledBorder ABOVE TOP", color, TitledBorder.ABOVE_TOP));
     box.add(new JCheckBox("JCheckBox 2"));
     box.add(new JCheckBox("JCheckBox 3"));
     box.add(Box.createVerticalStrut(10));
@@ -61,26 +61,24 @@ public final class MainPanel extends JPanel {
 class TitledSeparator extends JLabel {
   protected final String title;
   protected final Color target;
-  protected final int separatorHeight;
   protected final int titlePosition;
 
-  protected TitledSeparator(String title, int height, int titlePosition) {
-    this(title, null, height, titlePosition);
+  protected TitledSeparator(String title, int titlePosition) {
+    this(title, null, titlePosition);
   }
 
-  protected TitledSeparator(String title, Color target, int height, int titlePosition) {
+  protected TitledSeparator(String title, Color target, int titlePosition) {
     super();
     this.title = title;
     this.target = target;
-    this.separatorHeight = height;
     this.titlePosition = titlePosition;
-    updateBorder();
   }
 
   private void updateBorder() {
+    // int height = new JSeparator().getPreferredSize().height;
     Icon icon = new TitledSeparatorIcon();
     setBorder(BorderFactory.createTitledBorder(
-        BorderFactory.createMatteBorder(separatorHeight, 0, 0, 0, icon), title,
+        BorderFactory.createMatteBorder(icon.getIconHeight(), 0, 0, 0, icon), title,
         TitledBorder.DEFAULT_JUSTIFICATION, titlePosition));
   }
 
@@ -126,7 +124,7 @@ class TitledSeparator extends JLabel {
     }
 
     @Override public int getIconHeight() {
-      return separatorHeight;
+      return 2;
     }
   }
 }
