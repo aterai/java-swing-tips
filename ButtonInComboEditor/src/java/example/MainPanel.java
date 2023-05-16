@@ -93,13 +93,13 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class SiteItemComboBox extends JComboBox<SiteItem> {
-  protected SiteItemComboBox(DefaultComboBoxModel<SiteItem> model) {
+final class SiteItemComboBox extends JComboBox<SiteItem> {
+  public SiteItemComboBox(DefaultComboBoxModel<SiteItem> model) {
     super(model);
     initComponents(model);
   }
 
-  private final void initComponents(DefaultComboBoxModel<SiteItem> model) {
+  private void initComponents(DefaultComboBoxModel<SiteItem> model) {
     JTextField field = (JTextField) getEditor().getEditorComponent();
     JLabel faviconLabel = makeFaviconLabel(field);
     JButton feedButton = makeRssButton();
@@ -166,7 +166,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     return label;
   }
 
-  protected Optional<SiteItem> getSiteItemFromModel(ComboBoxModel<SiteItem> model, Object o) {
+  private Optional<SiteItem> getSiteItemFromModel(ComboBoxModel<SiteItem> model, Object o) {
     if (o instanceof SiteItem) {
       return Optional.of((SiteItem) o);
     }
