@@ -99,7 +99,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     initComponents(model);
   }
 
-  private void initComponents(DefaultComboBoxModel<SiteItem> model) {
+  private final void initComponents(DefaultComboBoxModel<SiteItem> model) {
     JTextField field = (JTextField) getEditor().getEditorComponent();
     JLabel faviconLabel = makeFaviconLabel(field);
     JButton feedButton = makeRssButton();

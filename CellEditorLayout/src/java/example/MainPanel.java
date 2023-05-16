@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     TableColumnModel cm = table.getColumnModel();
     cm.getColumn(0).setCellEditor(new CustomComponentCellEditor(new JTextField()));
     cm.getColumn(1).setCellEditor(new CustomCellEditor(new JTextField()));
-    cm.getColumn(2).setCellEditor(new CustomComponentCellEditor2(new CustomComponent()));
+    cm.getColumn(2).setCellEditor(new CustomComponentCellEditor2(CustomComponent.getComponent()));
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -142,20 +142,17 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 }
 
 class CustomComponent extends JPanel {
-  // static class CustomTextField extends JTextField {
-  //   @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-  //     return super.processKeyBinding(ks, e, condition, pressed);
-  //   }
-  // }
-  // public final CustomTextField field = new CustomTextField();
   public final JTextField field = new JTextField();
 
   protected CustomComponent() {
     super(new BorderLayout());
-    // this.setFocusable(false);
-    this.add(field);
-    JButton button = new JButton();
-    this.add(button, BorderLayout.EAST);
+  }
+
+  public static CustomComponent getComponent() {
+    CustomComponent p = new CustomComponent();
+    p.add(p.field);
+    p.add(new JButton(), BorderLayout.EAST);
+    return p;
   }
 
   @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
