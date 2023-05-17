@@ -122,7 +122,9 @@ class ComboItem implements Serializable {
   }
 
   @Override public boolean equals(Object o) {
-    return this == o || o instanceof ComboItem && Objects.equals(((ComboItem) o).getText(), text);
+    boolean b1 = this == o;
+    boolean b2 = o instanceof ComboItem && Objects.equals(((ComboItem) o).getText(), text);
+    return b1 || b2;
   }
 
   @Override public String toString() {
