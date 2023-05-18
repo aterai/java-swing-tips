@@ -49,8 +49,12 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  public static String[] makeComboModel() {
+    return new String[] {"11111", "222", "3"};
+  }
+
   public static JComboBox<String> makeComboBox() {
-    JComboBox<String> c = new JComboBox<>(new String[] {"11111", "222", "3"});
+    JComboBox<String> c = new JComboBox<>(makeComboModel());
     c.setEditable(true);
     c.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createEmptyBorder(8, 10, 8, 10), c.getBorder()));
@@ -98,56 +102,36 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ComboBoxPanel extends JPanel {
-  public final JComboBox<String> comboBox = new JComboBox<>(new String[] {"11111", "222", "3"});
+// delegation pattern
+class ComboBoxCellRenderer implements TableCellRenderer {
+  private final JComboBox<String> comboBox = new JComboBox<String>(MainPanel.makeComboModel()) {
+    @Override public void updateUI() {
+      super.updateUI();
+      setEditable(true);
+    }
+  };
+  private final JPanel panel = new JPanel(new GridBagLayout());
 
-  protected ComboBoxPanel() {
-    super(new GridBagLayout());
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     GridBagConstraints c = new GridBagConstraints();
-
     c.weightx = 1d;
     c.insets = new Insets(0, 10, 0, 10);
     c.fill = GridBagConstraints.HORIZONTAL;
-
-    comboBox.setEditable(true);
-    setOpaque(true);
-    add(comboBox, c);
-    comboBox.setSelectedIndex(0);
-  }
-}
-
-// TEST:
-// class ComboBoxPanel extends JPanel {
-//   private String[] m = {"a", "b", "c"};
-//   protected JComboBox<String> comboBox = new JComboBox<String>(m) {
-//     @Override public Dimension getPreferredSize() {
-//       Dimension d = super.getPreferredSize();
-//       d.width = 40;
-//       return d;
-//     }
-//   };
-//
-//   protected ComboBoxPanel() {
-//     super();
-//     setOpaque(true);
-//     comboBox.setEditable(true);
-//     add(comboBox);
-//   }
-// }
-
-// delegation pattern
-class ComboBoxCellRenderer implements TableCellRenderer {
-  private final ComboBoxPanel panel = new ComboBoxPanel();
-
-  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    panel.add(comboBox, c);
     panel.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-    Optional.ofNullable(value).ifPresent(panel.comboBox::setSelectedItem);
+    Optional.ofNullable(value).ifPresent(comboBox::setSelectedItem);
     return panel;
   }
 }
 
 class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
-  private final ComboBoxPanel panel = new ComboBoxPanel() {
+  private final JComboBox<String> comboBox = new JComboBox<String>(MainPanel.makeComboModel()) {
+    @Override public void updateUI() {
+      super.updateUI();
+      setEditable(true);
+    }
+  };
+  private final JPanel panel = new JPanel(new GridBagLayout()) {
     @Override public void updateUI() {
       super.updateUI();
       EventQueue.invokeLater(() -> comboBox.addActionListener(e -> fireEditingStopped()));
@@ -166,13 +150,18 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+    GridBagConstraints c = new GridBagConstraints();
+    c.weightx = 1d;
+    c.insets = new Insets(0, 10, 0, 10);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    panel.add(comboBox, c);
     panel.setBackground(table.getSelectionBackground());
-    panel.comboBox.setSelectedItem(value);
+    comboBox.setSelectedItem(value);
     return panel;
   }
 
   @Override public Object getCellEditorValue() {
-    return panel.comboBox.getSelectedItem();
+    return comboBox.getSelectedItem();
   }
 
   @Override public boolean shouldSelectCell(EventObject anEvent) {
@@ -184,8 +173,8 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public boolean stopCellEditing() {
-    if (panel.comboBox.isEditable()) {
-      panel.comboBox.actionPerformed(new ActionEvent(this, 0, ""));
+    if (comboBox.isEditable()) {
+      comboBox.actionPerformed(new ActionEvent(this, 0, ""));
     }
     fireEditingStopped();
     return true;
