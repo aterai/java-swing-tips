@@ -169,7 +169,7 @@ final class PinTabPopupMenu extends JPopupMenu {
     return idx >= 0 && idx == t.getSelectedIndex() && isEmpty(t.getTitleAt(idx));
   }
 
-  protected static boolean isEmpty(String s) {
+  private static boolean isEmpty(String s) {
     return Objects.isNull(s) || s.isEmpty();
   }
 
