@@ -106,8 +106,6 @@ class TabPanel extends JPanel {
 
   protected TabPanel(JTabbedPane pane, String title, Component content) {
     super(new BorderLayout());
-    setOpaque(false);
-
     JLabel label = new JLabel() {
       @Override public Dimension getPreferredSize() {
         Dimension dim = super.getPreferredSize();
@@ -131,6 +129,19 @@ class TabPanel extends JPanel {
     });
     add(label);
     add(button, BorderLayout.EAST);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
   }
 
   public void setButtonVisible(boolean flag) {

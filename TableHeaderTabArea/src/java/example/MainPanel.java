@@ -94,6 +94,14 @@ class TableHeaderTabbedPane extends JPanel {
     add(contentsPanel);
   }
 
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
   public void addTab(String title, Component comp) {
     contentsPanel.add(comp, title);
     TableColumnModel m = header.getColumnModel();

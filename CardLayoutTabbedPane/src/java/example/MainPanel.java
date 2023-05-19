@@ -87,6 +87,15 @@ class CardLayoutTabbedPane extends JPanel {
     add(contentsPanel);
   }
 
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
+
   protected Component createTabComponent(String title, Component comp) {
     TabButton tab = new TabButton(title);
     tab.addMouseListener(new MouseAdapter() {

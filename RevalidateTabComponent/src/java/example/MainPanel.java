@@ -92,6 +92,10 @@ class ButtonTabComponent extends JPanel {
     add(button);
   }
 
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(false);
