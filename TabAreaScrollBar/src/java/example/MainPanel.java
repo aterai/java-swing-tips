@@ -100,8 +100,6 @@ class CardLayoutTabbedPane extends JPanel {
 
   protected CardLayoutTabbedPane() {
     super(new BorderLayout());
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    setBackground(new Color(16, 16, 16));
     tabPanel.setInheritsPopupMenu(true);
     hiddenTabs.setFont(hiddenTabs.getFont().deriveFont(8f));
     hiddenTabs.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
@@ -113,6 +111,20 @@ class CardLayoutTabbedPane extends JPanel {
     header.add(hiddenTabs, BorderLayout.EAST);
     add(header, BorderLayout.NORTH);
     add(contentsPanel);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    setBackground(new Color(16, 16, 16));
   }
 
   protected JComponent createTabComponent(String title, Icon icon, Component comp) {

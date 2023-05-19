@@ -231,8 +231,6 @@ class CardLayoutTabbedPane extends JPanel {
 
   protected CardLayoutTabbedPane() {
     super(new BorderLayout());
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    setBackground(new Color(16, 16, 16));
     tabPanel.setInheritsPopupMenu(true);
     hiddenTabs.addActionListener(e -> {
       JButton b = (JButton) e.getSource();
@@ -255,6 +253,20 @@ class CardLayoutTabbedPane extends JPanel {
     header.add(buttons, BorderLayout.EAST);
     add(header, BorderLayout.NORTH);
     add(contentsPanel);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    setBackground(new Color(16, 16, 16));
   }
 
   private JMenuItem makeRadioMenuItem(Container c, int i) {
