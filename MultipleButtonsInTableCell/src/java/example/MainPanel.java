@@ -20,7 +20,6 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String empty = "";
     String[] columnNames = {"String", "Button"};
     Object[][] data = {
@@ -69,6 +68,7 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 }
+
 // class CellButtonsMouseListener extends MouseAdapter {
 //   @Override public void mouseReleased(MouseEvent e) {
 //     JTable t = (JTable) e.getComponent();
@@ -93,12 +93,20 @@ class ButtonsPanel extends JPanel {
 
   protected ButtonsPanel() {
     super();
-    setOpaque(true);
     for (JButton b : buttons) {
       b.setFocusable(false);
       b.setRolloverEnabled(false);
       add(b);
     }
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(true);
   }
 
   protected List<JButton> getButtons() {
@@ -172,7 +180,11 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      EventQueue.invokeLater(ButtonsEditor.this::fireEditingStopped);
+      EventQueue.invokeLater(() -> fireEditingStopped());
+      // https://bugs.openjdk.org/browse/JDK-8138667
+      // java.lang.IllegalAccessError: tried to access method (for a protected method)
+      // Fix Version/s: 9
+      // EventQueue.invokeLater(ButtonsEditor.this::fireEditingStopped);
     }
   }
 
