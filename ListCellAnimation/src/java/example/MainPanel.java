@@ -96,6 +96,14 @@ class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, Hi
     // animator.start();
   }
 
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
   @Override public void hierarchyChanged(HierarchyEvent e) {
     if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
       if (e.getComponent().isDisplayable()) {

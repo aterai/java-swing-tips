@@ -142,6 +142,10 @@ class PluginPanel extends JPanel {
     add(comboBox);
   }
 
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
   @Override public boolean isOpaque() {
     return false;
   }

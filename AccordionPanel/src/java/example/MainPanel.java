@@ -154,6 +154,14 @@ abstract class AbstractExpansionPanel extends JPanel {
     add(panel);
   }
 
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
   @Override public Dimension getPreferredSize() {
     Dimension d = label.getPreferredSize();
     if (panel.isVisible()) {
