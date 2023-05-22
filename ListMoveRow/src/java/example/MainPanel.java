@@ -145,11 +145,12 @@ class ListItemTransferHandler extends TransferHandler {
   // }
 
   @Override protected Transferable createTransferable(JComponent c) {
-    JList<?> src = (JList<?>) c;
-    for (int i : src.getSelectedIndices()) {
+    JList<?> source = (JList<?>) c;
+    for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
-    // return new DataHandler(source.getSelectedValuesList().toArray(new Object[0]), mimeType);
+    List<?> selectedValues = source.getSelectedValuesList();
+    // return new DataHandler(selectedValues.toArray(new Object[0]), mimeType);
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -161,8 +162,7 @@ class ListItemTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          // JList<?> src = (JList<?>) c;
-          return src.getSelectedValuesList();
+          return selectedValues;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -213,7 +213,7 @@ class ListItemTransferHandler extends TransferHandler {
         listModel.add(i, o);
         target.addSelectionInterval(i, i);
       }
-      addCount = values.size();
+      addCount = info.isDrop() ? values.size() : 0;
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
       return false;
