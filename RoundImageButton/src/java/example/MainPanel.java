@@ -167,6 +167,14 @@ class RoundButton extends JButton {
     initShape();
   }
 
+  @Override public final void setPressedIcon(Icon pressedIcon) {
+    super.setPressedIcon(pressedIcon);
+  }
+
+  @Override public final void setRolloverIcon(Icon rolloverIcon) {
+    super.setRolloverIcon(rolloverIcon);
+  }
+
   @Override public Dimension getPreferredSize() {
     Icon icon = getIcon();
     Insets i = getInsets();
