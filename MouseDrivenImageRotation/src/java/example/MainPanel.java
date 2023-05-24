@@ -101,7 +101,7 @@ class DraggableImageMouseListener extends MouseAdapter {
   private final Point2D centerPt = new Point2D.Double(100d, 100d); // center of Image
   private final Dimension imageSz;
   private final Image image;
-  private double radian = 45d * (Math.PI / 180d);
+  private double radian = Math.toRadians(45d); // 45d / 180d * Math.PI;
   private double startRadian; // drag start radian
   private boolean moverHover;
   private boolean rotatorHover;
