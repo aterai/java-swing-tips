@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +20,27 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridLayout(1, 2, 10, 0));
     TransferHandler h = new ListItemTransferHandler();
     p.setBorder(BorderFactory.createTitledBorder("Drag & Drop between JLists"));
-    p.add(new JScrollPane(makeList(h)));
-    p.add(new JScrollPane(makeList(h)));
+    p.add(new JScrollPane(makeList(makeModel(), h)));
+    p.add(new JScrollPane(makeList(makeModel(), h)));
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JList<Color> makeList(TransferHandler handler) {
-    DefaultListModel<Color> listModel = new DefaultListModel<>();
-    listModel.addElement(Color.RED);
-    listModel.addElement(Color.BLUE);
-    listModel.addElement(Color.GREEN);
-    listModel.addElement(Color.CYAN);
-    listModel.addElement(Color.ORANGE);
-    listModel.addElement(Color.PINK);
-    listModel.addElement(Color.MAGENTA);
-    JList<Color> list = new JList<Color>(listModel) {
+  private static ListModel<Color> makeModel() {
+    DefaultListModel<Color> model = new DefaultListModel<>();
+    model.addElement(Color.RED);
+    model.addElement(Color.BLUE);
+    model.addElement(Color.GREEN);
+    model.addElement(Color.CYAN);
+    model.addElement(Color.ORANGE);
+    model.addElement(Color.PINK);
+    model.addElement(Color.MAGENTA);
+    return model;
+  }
+
+  private static JList<Color> makeList(ListModel<Color> model, TransferHandler handler) {
+    return new JList<Color>(model) {
       @Override public void updateUI() {
         setSelectionBackground(null); // Nimbus
         setCellRenderer(null);
@@ -55,19 +58,17 @@ public final class MainPanel extends JPanel {
         setTransferHandler(handler);
       }
     };
-
-    // Disable row Cut, Copy, Paste
-    ActionMap map = list.getActionMap();
-    Action dummy = new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        /* Dummy action */
-      }
-    };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
-
-    return list;
+    // // Disable row Cut, Copy, Paste
+    // ActionMap map = list.getActionMap();
+    // Action dummy = new AbstractAction() {
+    //   @Override public void actionPerformed(ActionEvent e) {
+    //     /* Dummy action */
+    //   }
+    // };
+    // map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    // map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
+    // map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    // return list;
   }
 
   public static void main(String[] args) {
@@ -110,9 +111,11 @@ class ListItemTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JList<?>) c;
-    // Object[] transferredObjects = source.getSelectedValuesList().toArray(new Object[0]);
-    // List<?> transferredObjects = source.getSelectedValuesList();
-    // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
+    for (int i : source.getSelectedIndices()) {
+      indices.add(i);
+    }
+    List<?> selectedValues = source.getSelectedValuesList();
+    // return new DataHandler(selectedValues.toArray(new Object[0]), mimeType);
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -124,11 +127,7 @@ class ListItemTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          JList<?> src = (JList<?>) c;
-          for (int i : src.getSelectedIndices()) {
-            indices.add(i);
-          }
-          return src.getSelectedValuesList();
+          return selectedValues;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -137,42 +136,58 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    return info.isDrop() && info.isDataFlavorSupported(FLAVOR);
+    return info.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return MOVE; // TransferHandler.COPY_OR_MOVE;
+    return COPY_OR_MOVE;
+  }
+
+  private static int getIndex(TransferHandler.TransferSupport info) {
+    JList<?> target = (JList<?>) info.getComponent();
+    int index; // = dl.getIndex();
+    if (info.isDrop()) { // Mouse Drag & Drop
+      TransferHandler.DropLocation tdl = info.getDropLocation();
+      if (tdl instanceof JList.DropLocation) {
+        index = ((JList.DropLocation) tdl).getIndex();
+      } else {
+        index = target.getSelectedIndex();
+      }
+    } else { // Keyboard Copy & Paste
+      index = target.getSelectedIndex();
+    }
+    DefaultListModel<?> listModel = (DefaultListModel<?>) target.getModel();
+    // boolean insert = dl.isInsert();
+    int max = listModel.getSize();
+    // int index = dl.getIndex();
+    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+    index = Math.min(index, max);
+    return index;
   }
 
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!(tdl instanceof JList.DropLocation)) {
-      return false;
-    }
-    JList.DropLocation dl = (JList.DropLocation) tdl;
     JList<?> target = (JList<?>) info.getComponent();
     DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = listModel.getSize();
-    int index = dl.getIndex();
-    // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    // index = Math.min(index, max);
-    index = index >= 0 && index < max ? index : max;
+    int index = getIndex(info);
     addIndex = index;
     try {
-      // Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
       for (Object o : values) {
         int i = index++;
         listModel.add(i, o);
         target.addSelectionInterval(i, i);
       }
-      addCount = target.equals(source) ? values.size() : 0;
+      addCount = info.isDrop() && target.equals(source) ? values.size() : 0;
+      target.requestFocusInWindow();
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
       return false;
     }
+  }
+
+  @Override public boolean importData(JComponent comp, Transferable t) {
+    return importData(new TransferHandler.TransferSupport(comp, t));
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
