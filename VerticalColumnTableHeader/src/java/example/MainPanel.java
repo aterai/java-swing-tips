@@ -236,7 +236,10 @@ class RotateIcon implements Icon {
         trans = AffineTransform.getTranslateInstance(0, 0);
         break;
     }
-    trans.rotate(Math.toRadians(90d * numquadrants));
+    trans.quadrantRotate(numquadrants);
+    // or: trans.concatenate(AffineTransform.getQuadrantRotateInstance(numquadrants));
+    // or: trans.rotate(Math.PI / 2.0 * numquadrants);
+    // or: trans.rotate(Math.toRadians(90d * numquadrants));
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {

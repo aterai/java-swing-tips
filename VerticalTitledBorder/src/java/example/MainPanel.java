@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -96,9 +97,10 @@ class VerticalTitledBorder extends TitledBorder {
       border.paintBorder(c, g, borderX, borderY, borderW, borderH);
 
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.translate(0, (height + labelW) / 2);
-      g2.rotate(Math.toRadians(-90));
-      // or: g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
+      g2.translate(0d, (height + labelW) / 2d);
+      g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
+      // or: g2.rotate(-Math.PI / 2d);
+      // or: g2.rotate(Math.toRadians(-90));
       lbl.setSize(labelW, labelH);
       lbl.paint(g2);
       g2.dispose();
