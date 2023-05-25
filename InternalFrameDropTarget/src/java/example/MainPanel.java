@@ -9,7 +9,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,16 +83,16 @@ public final class MainPanel extends JPanel {
     // table.getTableHeader().addMouseListener(h);
     // table.getTableHeader().addMouseMotionListener(h);
 
-    // Disable row Cut, Copy, Paste
-    ActionMap am = table.getActionMap();
-    Action dummy = new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        /* Dummy action */
-      }
-    };
-    am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    // // Disable row Cut, Copy, Paste
+    // ActionMap am = table.getActionMap();
+    // Action dummy = new AbstractAction() {
+    //   @Override public void actionPerformed(ActionEvent e) {
+    //     /* Dummy action */
+    //   }
+    // };
+    // am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
+    // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
     return table;
   }
 
@@ -237,9 +236,9 @@ class TableRowTransferHandler extends TransferHandler {
     for (int i : table.getSelectedRows()) {
       indices.add(i);
     }
-    // List<?> transferredObjects = Arrays.stream(indices)
-    //     .mapToObj(model.getDataVector()::get)
-    //     .collect(Collectors.toList());
+    List<?> transferredObjects = indices.stream()
+        .map(model.getDataVector()::get)
+        .collect(Collectors.toList());
     // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
@@ -253,7 +252,7 @@ class TableRowTransferHandler extends TransferHandler {
       @SuppressWarnings("JdkObsolete")
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return indices.stream().map(model.getDataVector()::get).collect(Collectors.toList());
+          return transferredObjects;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -314,20 +313,19 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return MOVE; // TransferHandler.COPY_OR_MOVE;
+    return COPY_OR_MOVE;
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!(tdl instanceof JTable.DropLocation)) {
-      return false;
-    }
-    JTable.DropLocation dl = (JTable.DropLocation) tdl;
     JTable target = (JTable) info.getComponent();
     DefaultTableModel model = (DefaultTableModel) target.getModel();
-    // boolean insert = dl.isInsert();
     int max = model.getRowCount();
-    int index = dl.getRow();
+    int index;
+    if (info.isDrop()) {
+      index = ((JTable.DropLocation) info.getDropLocation()).getRow();
+    } else { // dl.isInsert()) {
+      index = target.getSelectedRow();
+    }
     // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
     // index = Math.min(index, max);
     index = index >= 0 && index < max ? index : max;
@@ -335,15 +333,16 @@ class TableRowTransferHandler extends TransferHandler {
     // target.setCursor(Cursor.getDefaultCursor());
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      if (Objects.equals(source, target)) {
-        addCount = values.size();
-      }
       Object[] type = new Object[0];
       for (Object o : values) {
         int row = index++;
         // model.insertRow(row, (Vector<?>) o);
         model.insertRow(row, ((List<?>) o).toArray(type));
         target.getSelectionModel().addSelectionInterval(row, row);
+      }
+      target.requestFocusInWindow();
+      if (Objects.equals(source, target) && info.isDrop()) {
+        addCount = values.size();
       }
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
@@ -372,7 +371,6 @@ class TableRowTransferHandler extends TransferHandler {
         model.removeRow(indices.get(i));
       }
     }
-    // indices = null;
     indices.clear();
     addCount = 0;
     addIndex = -1;
