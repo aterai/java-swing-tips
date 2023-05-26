@@ -14,11 +14,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  // private final Box box = Box.createVerticalBox();
-  // private final Component glue = Box.createVerticalGlue();
   private MainPanel() {
     super(new BorderLayout());
-
     Box accordion = Box.createVerticalBox();
     accordion.setOpaque(true);
     accordion.setBackground(new Color(0xB4_B4_FF));
@@ -116,7 +113,7 @@ public final class MainPanel extends JPanel {
 abstract class AbstractExpansionPanel extends JPanel {
   private final String title;
   private final JLabel label;
-  private final JPanel panel;
+  private final JPanel panel = makePanel();
 
   public abstract JPanel makePanel();
 
@@ -143,7 +140,6 @@ abstract class AbstractExpansionPanel extends JPanel {
     label.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
     add(label, BorderLayout.NORTH);
 
-    panel = makePanel();
     panel.setVisible(false);
     panel.setOpaque(true);
     panel.setBackground(new Color(0xF0_F0_FF));
@@ -185,14 +181,17 @@ abstract class AbstractExpansionPanel extends JPanel {
   }
 
   // protected Vector<ExpansionListener> expansionListenerList = new Vector<>();
+
   // public void addExpansionListener(ExpansionListener listener) {
   //   if (!expansionListenerList.contains(listener)) {
   //     expansionListenerList.add(listener);
   //   }
   // }
+
   // public void removeExpansionListener(ExpansionListener listener) {
   //   expansionListenerList.remove(listener);
   // }
+
   // public void fireExpansionEvent() {
   //   Vector list = (Vector) expansionListenerList.clone();
   //   Enumeration enm = list.elements();

@@ -17,7 +17,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Box northBox = Box.createVerticalBox();
     Box centerBox = Box.createVerticalBox();
     Box southBox = Box.createVerticalBox();
@@ -140,22 +139,27 @@ abstract class AbstractExpansionPanel extends JPanel {
   private ExpansionEvent expansionEvent;
   private boolean openFlag;
   private final JScrollPane scroll = new JScrollPane();
-  private final JButton button;
+  private final JButton button = new JButton();
+  private final Container panel = makePanel();
 
   protected AbstractExpansionPanel(String title) {
     super(new BorderLayout());
-    button = new JButton(title);
+    button.setText(title);
     init();
   }
 
   private void init() {
-    scroll.setViewportView(makePanel());
+    scroll.setViewportView(panel);
     scroll.getVerticalScrollBar().setUnitIncrement(25);
     button.addActionListener(e -> {
       setExpanded(!isExpanded());
       fireExpansionEvent();
     });
     add(button, BorderLayout.NORTH);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
   }
 
   public abstract Container makePanel();
