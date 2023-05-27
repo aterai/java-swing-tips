@@ -121,28 +121,41 @@ class CompoundButton extends JButton {
         return dim.height;
       }
     });
+    initShape();
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
     setFocusPainted(false);
     setContentAreaFilled(false);
     setBackground(new Color(0xFA_FA_FA));
-    initShape();
   }
 
   @Override public Dimension getPreferredSize() {
     return dim;
   }
 
+  @Override public final void setIcon(Icon defaultIcon) {
+    super.setIcon(defaultIcon);
+  }
+
+  @Override public final Rectangle getBounds() {
+    return super.getBounds();
+  }
+
   private void initShape() {
-    if (!getBounds().equals(base)) {
-      base = getBounds();
-      double ww = getWidth() * .5;
+    Rectangle rect = getBounds();
+    if (!rect.equals(base)) {
+      base = rect;
+      double ww = rect.width * .5;
       double xx = ww * .5;
       Shape inner = new Ellipse2D.Double(xx, xx, ww, ww);
       if (ButtonLocation.CENTER == bl) {
         shape = inner;
       } else {
         // TEST: parent.isOptimizedDrawingEnabled: false
-        double dw = getWidth() - 2d;
-        double dh = getHeight() - 2d;
+        double dw = rect.width - 2d;
+        double dh = rect.height - 2d;
         Shape outer = new Arc2D.Double(1d, 1d, dw, dh, bl.getStartAngle(), 90d, Arc2D.PIE);
         Area area = new Area(outer);
         area.subtract(new Area(inner));
