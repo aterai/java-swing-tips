@@ -42,7 +42,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
 
   private boolean checkRepaint(DefaultTableModel m, TableColumn column, Object status) {
     if (status == Status.INDETERMINATE) {
-      List<?> data =  m.getDataVector();
+      List<?> data = m.getDataVector();
       List<Boolean> l = data.stream()
           .map(v -> (Boolean) ((List<?>) v).get(targetColumnIndex))
           .distinct()

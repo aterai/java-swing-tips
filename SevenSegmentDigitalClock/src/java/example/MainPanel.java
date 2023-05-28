@@ -326,7 +326,7 @@ class HelpPanel extends JPanel {
     g2.drawString("D", r.x + fw * .5f, r.y + fh);
     g2.drawString("E", r.x, r.y + fh * .75f);
     g2.drawString("F", r.x, r.y + fh * .25f);
-    g2.drawString("G", r.x + fw * .5f,  r.y + fh * .5f);
+    g2.drawString("G", r.x + fw * .5f, r.y + fh * .5f);
     g2.dispose();
   }
 }

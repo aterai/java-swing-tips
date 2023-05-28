@@ -17,7 +17,6 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
   private MainPanel() {
     super(new BorderLayout());
-
     UIDefaults def = UIManager.getLookAndFeelDefaults(); // new UIDefaults();
     def.put("nimbusOrange", new Color(255, 220, 35, 200));
 

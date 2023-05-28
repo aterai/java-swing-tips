@@ -10,7 +10,7 @@ import java.awt.im.InputContext;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private  MainPanel() {
+  private MainPanel() {
     super(new BorderLayout());
     JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
 

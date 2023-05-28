@@ -58,16 +58,16 @@ class SimpleCloseTabIcon implements Icon {
     g2.translate(x, y + 2);
     g2.setPaint(Color.BLACK);
 
-    g2.drawLine(1,  0, 12,  0);
+    g2.drawLine(1, 0, 12, 0);
     g2.drawLine(1, 13, 12, 13);
-    g2.drawLine(0,  1,  0, 12);
+    g2.drawLine(0, 1, 0, 12);
     g2.drawLine(13, 1, 13, 12);
-    g2.drawLine(3,  3, 10, 10);
-    g2.drawLine(3,  4,  9, 10);
-    g2.drawLine(4,  3, 10,  9);
-    g2.drawLine(10, 3,  3, 10);
-    g2.drawLine(10, 4,  4, 10);
-    g2.drawLine(9,  3,  3,  9);
+    g2.drawLine(3, 3, 10, 10);
+    g2.drawLine(3, 4, 9, 10);
+    g2.drawLine(4, 3, 10, 9);
+    g2.drawLine(10, 3, 3, 10);
+    g2.drawLine(10, 4, 4, 10);
+    g2.drawLine(9, 3, 3, 9);
 
     if (Objects.nonNull(fileIcon)) {
       fileIcon.paintIcon(c, g2, dim.width, 0);

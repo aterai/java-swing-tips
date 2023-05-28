@@ -186,18 +186,18 @@ class ProgressListener implements PropertyChangeListener {
 class IndeterminateRegionPainter extends AbstractRegionPainter {
   // Copied from javax.swing.plaf.nimbus.ProgressBarPainter.java
   private static final String KEY = "nimbusOrange";
-  private final Color color17 = decodeColor(KEY,  .0000000000f,  .00000000f,  .0000000000f, -156);
-  private final Color color18 = decodeColor(KEY, -.0157965120f,  .02094239f, -.1529411700f, 0);
-  private final Color color19 = decodeColor(KEY, -.0043216050f,  .02094239f, -.0745098000f, 0);
-  private final Color color20 = decodeColor(KEY, -.0080213990f,  .02094239f, -.1019607800f, 0);
+  private final Color color17 = decodeColor(KEY, .0000000000f, .00000000f, .0000000000f, -156);
+  private final Color color18 = decodeColor(KEY, -.0157965120f, .02094239f, -.1529411700f, 0);
+  private final Color color19 = decodeColor(KEY, -.0043216050f, .02094239f, -.0745098000f, 0);
+  private final Color color20 = decodeColor(KEY, -.0080213990f, .02094239f, -.1019607800f, 0);
   private final Color color21 = decodeColor(KEY, -.0117069040f, -.17905760f, -.0235294100f, 0);
-  private final Color color22 = decodeColor(KEY, -.0486912540f,  .02094239f, -.3019608000f, 0);
-  private final Color color23 = decodeColor(KEY,  .0039403290f, -.73753220f,  .1764705800f, 0);
-  private final Color color24 = decodeColor(KEY,  .0055067390f, -.46764207f,  .1098039150f, 0);
-  private final Color color25 = decodeColor(KEY,  .0042127445f, -.18595415f,  .0470588200f, 0);
-  private final Color color26 = decodeColor(KEY,  .0047626942f,  .02094239f,  .0039215684f, 0);
-  private final Color color27 = decodeColor(KEY,  .0047626942f, -.15147138f,  .1607843000f, 0);
-  private final Color color28 = decodeColor(KEY,  .0106654760f, -.27317524f,  .2509803800f, 0);
+  private final Color color22 = decodeColor(KEY, -.0486912540f, .02094239f, -.3019608000f, 0);
+  private final Color color23 = decodeColor(KEY, .0039403290f, -.73753220f, .1764705800f, 0);
+  private final Color color24 = decodeColor(KEY, .0055067390f, -.46764207f, .1098039150f, 0);
+  private final Color color25 = decodeColor(KEY, .0042127445f, -.18595415f, .0470588200f, 0);
+  private final Color color26 = decodeColor(KEY, .0047626942f, .02094239f, .0039215684f, 0);
+  private final Color color27 = decodeColor(KEY, .0047626942f, -.15147138f, .1607843000f, 0);
+  private final Color color28 = decodeColor(KEY, .0106654760f, -.27317524f, .2509803800f, 0);
   private final Insets ins = new Insets(5, 5, 5, 5);
   private final PaintContext ctx = new PaintContext(ins, new Dimension(29, 19), false);
   private Rectangle2D rect = new Rectangle2D.Float();

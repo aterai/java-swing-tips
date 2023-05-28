@@ -21,12 +21,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Object[][] data = {
-        {1, 11, "A",  ES,  ES,  ES,  ES,  ES},
-        {2, 22,  ES, "B",  ES,  ES,  ES,  ES},
-        {3, 33,  ES,  ES, "C",  ES,  ES,  ES},
-        {4,  1,  ES,  ES,  ES, "D",  ES,  ES},
-        {5, 55,  ES,  ES,  ES,  ES, "E",  ES},
-        {6, 66,  ES,  ES,  ES,  ES,  ES, "F"}
+        {1, 11, "A", ES, ES, ES, ES, ES},
+        {2, 22, ES, "B", ES, ES, ES, ES},
+        {3, 33, ES, ES, "C", ES, ES, ES},
+        {4, 1, ES, ES, ES, "D", ES, ES},
+        {5, 55, ES, ES, ES, ES, "E", ES},
+        {6, 66, ES, ES, ES, ES, ES, "F"}
     };
     String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
