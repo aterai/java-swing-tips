@@ -109,10 +109,7 @@ class BasicComboPopup2 extends BasicComboPopup {
 
   private final class Handler2 extends MouseAdapter {
     @Override public void mouseReleased(MouseEvent e) {
-      if (!Objects.equals(e.getSource(), list)) {
-        return;
-      }
-      if (list.getModel().getSize() > 0) {
+      if (Objects.equals(e.getSource(), list) && list.getModel().getSize() > 0) {
         // <ins>
         if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
           return;
