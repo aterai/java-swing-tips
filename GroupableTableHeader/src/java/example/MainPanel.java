@@ -83,10 +83,10 @@ public final class MainPanel extends JPanel {
 /**
  * GroupableTableHeader.
  *
- * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeader</a>
- * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
  * @author aterai aterai@outlook.com
+ * @version 1.0 10/20/98
+ * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeader</a>
  */
 class GroupableTableHeader extends JTableHeader {
   private final List<ColumnGroup> columnGroups = new ArrayList<>();
@@ -140,10 +140,10 @@ class GroupableTableHeader extends JTableHeader {
 /**
  * GroupableTableHeaderUI.
  *
- * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeaderUI</a>
- * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
  * @author aterai aterai@outlook.com
+ * @version 1.0 10/20/98
+ * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">GroupableTableHeaderUI</a>
  */
 class GroupableTableHeaderUI extends BasicTableHeaderUI {
   @Override public void paint(Graphics g, JComponent c) {
@@ -254,10 +254,10 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
 /**
  * ColumnGroup.
  *
- * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">ColumnGroup</a>
- * @version 1.0 10/20/98
  * @author Nobuo Tamemasa
  * @author aterai aterai@outlook.com
+ * @version 1.0 10/20/98
+ * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">ColumnGroup</a>
  */
 class ColumnGroup {
   protected final List<Object> list = new ArrayList<>();
