@@ -120,6 +120,10 @@ class FishEyeTable extends JTable {
     getSelectionModel().addListSelectionListener(handler);
   }
 
+  @Override public final Foot getFont() {
+    return super.getFont();
+  }
+
   private final class FishEyeTableHandler extends MouseAdapter implements ListSelectionListener {
     public int prevRow = -1;
     public int prevHeight;
