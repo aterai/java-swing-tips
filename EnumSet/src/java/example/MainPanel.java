@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,7 +56,7 @@ public final class MainPanel extends JPanel {
     //   });
     // }
 
-    Map<Permissions, Integer> map = new EnumMap<>(Permissions.class);
+    EnumMap<Permissions, Integer> map = new EnumMap<>(Permissions.class);
     map.put(Permissions.READ, 1 << 2);
     map.put(Permissions.WRITE, 1 << 1);
     map.put(Permissions.EXECUTE, 1);
