@@ -120,7 +120,7 @@ class FishEyeTable extends JTable {
     getSelectionModel().addListSelectionListener(handler);
   }
 
-  @Override public final Foot getFont() {
+  @Override public final Font getFont() {
     return super.getFont();
   }
 

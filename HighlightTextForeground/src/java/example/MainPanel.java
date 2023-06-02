@@ -41,8 +41,7 @@ public final class MainPanel extends JPanel {
       " The handling of events is also discussed,",
       " as are layout management and accessibility.",
       " This lesson ends with a set of questions and exercises",
-      " so you can test yourself on what you've learned.",
-      "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html");
+      " so you can test yourself on what you've learned.");
   private static final Color WARNING = new Color(0xFF_C8_C8);
   private static final Color CURRENT = new Color(0xAA_00_64_00, true);
   private static final Color MATCHED = new Color(0x64_DD_DD_00, true);
