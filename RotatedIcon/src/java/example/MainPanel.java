@@ -99,6 +99,10 @@ class RotateIcon implements Icon {
         break;
     }
     trans.rotate(Math.toRadians(90d * numquadrants));
+    // or: trans.rotate(Math.toRadians(degrees));
+    // https://ateraimemo.com/Swing/QuadrantRotateIcon.html
+    // or: trans.quadrantRotate(numquadrants);
+    // or: trans.concatenate(AffineTransform.getQuadrantRotateInstance(numquadrants));
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
