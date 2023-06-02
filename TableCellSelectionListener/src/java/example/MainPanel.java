@@ -22,12 +22,9 @@ public final class MainPanel extends JPanel {
     table0.setCellSelectionEnabled(true);
     ListSelectionListener lsl0 = new AbstractTableCellSelectionListener() {
       @Override public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting()) {
-          return;
-        }
         int sr = table0.getSelectedRow();
         int sc = table0.getSelectedColumn();
-        if (getRowColumnAdjusting(sr, sc)) {
+        if (e.getValueIsAdjusting() || getRowColumnAdjusting(sr, sc)) {
           return;
         }
         Object o = table0.getValueAt(sr, sc);
@@ -42,12 +39,9 @@ public final class MainPanel extends JPanel {
     table1.setCellSelectionEnabled(true);
     ListSelectionListener lsl1 = new AbstractTableCellSelectionListener() {
       @Override public void valueChanged(ListSelectionEvent e) {
-        if (e.getValueIsAdjusting()) {
-          return;
-        }
         int sr = table1.getSelectionModel().getLeadSelectionIndex();
         int sc = table1.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-        if (getRowColumnAdjusting(sr, sc)) {
+        if (e.getValueIsAdjusting() || getRowColumnAdjusting(sr, sc)) {
           return;
         }
         Object o = table1.getValueAt(sr, sc);
