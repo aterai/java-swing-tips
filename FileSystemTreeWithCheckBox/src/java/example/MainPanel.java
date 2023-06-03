@@ -340,13 +340,11 @@ class FolderSelectionListener implements TreeSelectionListener {
 
   @Override public void valueChanged(TreeSelectionEvent e) {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    if (!node.isLeaf()) {
+    Object uo = node.getUserObject();
+    if (!node.isLeaf() || !(uo instanceof CheckBoxNode)) {
       return;
     }
-    CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-    if (Objects.isNull(check)) {
-      return;
-    }
+    CheckBoxNode check = (CheckBoxNode) uo;
     File parent = check.getFile();
     if (!parent.isDirectory()) {
       return;
