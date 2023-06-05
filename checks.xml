@@ -17,7 +17,7 @@
  -->
 
 <module name="Checker">
-  <module name="SuppressWarningsFilter"/>
+  <property name="localeLanguage" value="en"/>
 
   <property name="charset" value="UTF-8"/>
 
@@ -32,9 +32,10 @@
   <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
   <module name="SuppressionFilter">
     <property name="file" value="${org.checkstyle.google.suppressionfilter.config}"
-           default="checkstyle-suppressions.xml" />
+           default="checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
   </module>
+  <module name="SuppressWarningsFilter"/>
 
   <!-- Checks for whitespace                            -->
   <!-- See http://checkstyle.org/config_whitespace.html -->
