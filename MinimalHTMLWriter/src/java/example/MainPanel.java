@@ -13,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import javax.swing.*;
@@ -27,9 +26,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.MinimalHTMLWriter;
-import javax.swing.text.html.parser.ParserDelegator;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -176,22 +173,22 @@ final class TextComponentPopupMenu extends JPopupMenu {
     int start = textPane.getSelectionStart();
     int end = textPane.getSelectionEnd();
     int length = end - start;
-    StyledDocument styledDocument = textPane.getStyledDocument();
+    StyledDocument doc = textPane.getStyledDocument();
     try (OutputStream os = new ByteArrayOutputStream();
          OutputStreamWriter writer = new OutputStreamWriter(os, StandardCharsets.UTF_8)) {
-      MinimalHTMLWriter w = new MinimalHTMLWriter(writer, styledDocument, start, length);
+      MinimalHTMLWriter w = new MinimalHTMLWriter(writer, doc, start, length);
       w.write();
       writer.flush();
       String contents = os.toString();
-      ParserDelegator delegator = new ParserDelegator();
-      StringBuilder plainBuf = new StringBuilder();
-      delegator.parse(new StringReader(contents), new HTMLEditorKit.ParserCallback() {
-        @Override public void handleText(char[] text, int pos) {
-          plainBuf.append(text);
-        }
-      }, Boolean.TRUE);
-
-      Transferable transferable = new BasicTransferable(plainBuf.toString(), contents);
+      // ParserDelegator delegator = new ParserDelegator();
+      // StringBuilder plainBuf = new StringBuilder();
+      // delegator.parse(new StringReader(contents), new HTMLEditorKit.ParserCallback() {
+      //   @Override public void handleText(char[] text, int pos) {
+      //     plainBuf.append(text);
+      //   }
+      // }, Boolean.TRUE);
+      String str = doc.getText(start, length);
+      Transferable transferable = new BasicTransferable(str, contents);
       clipboard.setContents(transferable, null);
     } catch (IOException | BadLocationException e) {
       UIManager.getLookAndFeel().provideErrorFeedback(textPane);
