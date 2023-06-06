@@ -62,19 +62,19 @@ public class BasicTransferable implements Transferable {
    * @return an array of data flavors in which this data can be transferred
    */
   @Override public DataFlavor[] getTransferDataFlavors() {
-    DataFlavor[] richerFlavors = getRicherFlavors();
-    int numRicher = richerFlavors.length;
+    // DataFlavor[] richerFlavors = getRicherFlavors();
+    // int numRicher = richerFlavors.length;
     int numHtml = isHtmlSupported() ? htmlFlavors.length : 0;
     int numPlain = isPlainSupported() ? plainFlavors.length : 0;
     int numString = isPlainSupported() ? stringFlavors.length : 0;
-    int numFlavors = numRicher + numHtml + numPlain + numString;
+    int numFlavors = numHtml + numPlain + numString; // + numRicher;
     DataFlavor[] flavors = new DataFlavor[numFlavors];
 
     // fill in the array
     int numDone = 0;
     // if (numRicher > 0) {
-    System.arraycopy(richerFlavors, 0, flavors, numDone, numRicher);
-    numDone += numRicher;
+    //  System.arraycopy(richerFlavors, 0, flavors, numDone, numRicher);
+    //  numDone += numRicher;
     // }
     // if (numHtml > 0) {
     System.arraycopy(htmlFlavors, 0, flavors, numDone, numHtml);
@@ -120,10 +120,11 @@ public class BasicTransferable implements Transferable {
    */
   @Override public Object getTransferData(DataFlavor flavor)
       throws UnsupportedFlavorException, IOException {
-    // ???: DataFlavor[] richerFlavors = getRicherFlavors();
-    if (isRicherFlavor(flavor)) {
-      return null; // getRicherData(flavor);
-    } else if (isHtmlFlavor(flavor)) {
+    // DataFlavor[] richerFlavors = getRicherFlavors();
+    // if (isRicherFlavor(flavor)) {
+    //   return getRicherData(flavor);
+    // } else
+    if (isHtmlFlavor(flavor)) {
       return getHtmlTransferData(flavor);
     } else if (isPlainFlavor(flavor)) {
       return getPlaneTransferData(flavor);
@@ -153,26 +154,26 @@ public class BasicTransferable implements Transferable {
 
   // --- richer subclass flavors ----------------------------------------------
 
-  private boolean isRicherFlavor(DataFlavor flavor) {
-    // DataFlavor[] richerFlavors = getRicherFlavors();
-    // int numFlavors = richerFlavors.length;
-    // for (int i = 0; i < numFlavors; i++) {
-    //   if (richerFlavors[i].equals(flavor)) {
-    //     return true;
-    //   }
-    // }
-    // return false;
-    return Stream.of(getRicherFlavors()).anyMatch(f -> f.equals(flavor));
-  }
+  // private boolean isRicherFlavor(DataFlavor flavor) {
+  //   DataFlavor[] richerFlavors = getRicherFlavors();
+  //   int numFlavors = richerFlavors.length;
+  //   for (int i = 0; i < numFlavors; i++) {
+  //     if (richerFlavors[i].equals(flavor)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  //   // return Stream.of(getRicherFlavors()).anyMatch(f -> f.equals(flavor));
+  // }
 
-  /**
-   * Some subclasses will have flavors that are more descriptive than HTML
-   * or plain text.  If this method returns a non-null value, it will be
-   * placed at the start of the array of supported flavors.
-   */
-  private DataFlavor[] getRicherFlavors() {
-    return new DataFlavor[0]; // null;
-  }
+  // /**
+  //  * Some subclasses will have flavors that are more descriptive than HTML
+  //  * or plain text.  If this method returns a non-null value, it will be
+  //  * placed at the start of the array of supported flavors.
+  //  */
+  // private DataFlavor[] getRicherFlavors() {
+  //   return new DataFlavor[0]; // null;
+  // }
 
   // private Object getRicherData(DataFlavor flavor) throws UnsupportedFlavorException {
   //   return null;
