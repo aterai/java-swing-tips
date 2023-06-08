@@ -241,7 +241,9 @@ class HtmlTransferable implements Transferable {
   }
 
   @Override public DataFlavor[] getTransferDataFlavors() {
-    return new DataFlavor[] { DataFlavor.allHtmlFlavor };
+    return new DataFlavor[] {
+      DataFlavor.allHtmlFlavor
+    };
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
