@@ -8,28 +8,28 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class WindowState implements Serializable {
+public final class WindowState implements Serializable {
   private static final long serialVersionUID = 1415435143L;
   private static final Dimension MIN = new Dimension(10, 10);
   private final Point location = new Point();
   private final Dimension size = new Dimension(320, 240);
   // public WindowState() {}
 
-  public final Point getLocation() {
+  public Point getLocation() {
     return location;
   }
 
-  public final void setLocation(Point pt) {
+  public void setLocation(Point pt) {
     if (pt.x >= 0 && pt.y >= 0) {
       this.location.setLocation(pt);
     }
   }
 
-  public final Dimension getSize() {
+  public Dimension getSize() {
     return size;
   }
 
-  public final void setSize(Dimension size) {
+  public void setSize(Dimension size) {
     this.size.setSize(Math.max(MIN.width, size.width), Math.max(MIN.height, size.height));
   }
 
