@@ -63,17 +63,6 @@ public final class MainPanel extends JPanel {
     list.setDropMode(DropMode.INSERT);
     list.setDragEnabled(true);
 
-    // Disable row Cut, Copy, Paste
-    ActionMap map = list.getActionMap();
-    Action dummy = new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        /* Dummy action */
-      }
-    };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
-
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(makeColorChooserButton("List.dropLineColor"));
@@ -88,13 +77,13 @@ public final class MainPanel extends JPanel {
     TransferHandler handler = new TableRowTransferHandler();
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"AAA", 12, true}, {"aaa", 1, false},
-      {"BBB", 13, true}, {"bbb", 2, false},
-      {"CCC", 15, true}, {"ccc", 3, false},
-      {"DDD", 17, true}, {"ddd", 4, false},
-      {"EEE", 18, true}, {"eee", 5, false},
-      {"FFF", 19, true}, {"fff", 6, false},
-      {"GGG", 92, true}, {"ggg", 0, false}
+        {"AAA", 12, true}, {"aaa", 1, false},
+        {"BBB", 13, true}, {"bbb", 2, false},
+        {"CCC", 15, true}, {"ccc", 3, false},
+        {"DDD", 17, true}, {"ddd", 4, false},
+        {"EEE", 18, true}, {"eee", 5, false},
+        {"FFF", 19, true}, {"fff", 6, false},
+        {"GGG", 92, true}, {"ggg", 0, false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -112,17 +101,7 @@ public final class MainPanel extends JPanel {
     table.setDropMode(DropMode.INSERT_ROWS);
     table.setDragEnabled(true);
     table.setFillsViewportHeight(true);
-
-    // Disable row Cut, Copy, Paste
-    ActionMap am = table.getActionMap();
-    Action dummy = new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        /* Dummy action */
-      }
-    };
-    am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    // table.setAutoCreateRowSorter(true); // XXX
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -207,6 +186,7 @@ class ListItemTransferHandler extends TransferHandler {
     for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
+    List<?> selectedValues = source.getSelectedValuesList();
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -218,7 +198,7 @@ class ListItemTransferHandler extends TransferHandler {
 
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return source.getSelectedValuesList();
+          return selectedValues;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -227,25 +207,40 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    return info.isDrop() && info.isDataFlavorSupported(FLAVOR);
+    return info.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return MOVE;
+    return COPY_OR_MOVE;
+  }
+
+  private static int getIndex(TransferHandler.TransferSupport info) {
+    JList<?> target = (JList<?>) info.getComponent();
+    int index; // = dl.getIndex();
+    if (info.isDrop()) { // Mouse Drag & Drop
+      TransferHandler.DropLocation tdl = info.getDropLocation();
+      if (tdl instanceof JList.DropLocation) {
+        index = ((JList.DropLocation) tdl).getIndex();
+      } else {
+        index = target.getSelectedIndex();
+      }
+    } else { // Keyboard Copy & Paste
+      index = target.getSelectedIndex();
+    }
+    DefaultListModel<?> listModel = (DefaultListModel<?>) target.getModel();
+    // boolean insert = dl.isInsert();
+    int max = listModel.getSize();
+    // int index = dl.getIndex();
+    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+    index = Math.min(index, max);
+    return index;
   }
 
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!(tdl instanceof JList.DropLocation)) {
-      return false;
-    }
-    JList.DropLocation dl = (JList.DropLocation) tdl;
     JList<?> target = (JList<?>) info.getComponent();
     DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
-    int max = listModel.getSize();
-    int index = dl.getIndex();
-    index = index >= 0 && index < max ? index : max;
+    int index = getIndex(info);
     addIndex = index;
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
@@ -254,7 +249,8 @@ class ListItemTransferHandler extends TransferHandler {
         listModel.add(i, o);
         target.addSelectionInterval(i, i);
       }
-      addCount = values.size();
+      addCount = info.isDrop() ? values.size() : 0;
+      // target.requestFocusInWindow();
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
       return false;
@@ -299,6 +295,9 @@ class TableRowTransferHandler extends TransferHandler {
     for (int i : table.getSelectedRows()) {
       indices.add(i);
     }
+    List<?> transferredRows = indices.stream()
+        .map(model.getDataVector()::get)
+        .collect(Collectors.toList());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -311,7 +310,7 @@ class TableRowTransferHandler extends TransferHandler {
       @SuppressWarnings("JdkObsolete")
       @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
         if (isDataFlavorSupported(flavor)) {
-          return indices.stream().map(model.getDataVector()::get).collect(Collectors.toList());
+          return transferredRows;
         } else {
           throw new UnsupportedFlavorException(flavor);
         }
@@ -327,29 +326,32 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    return MOVE; // TransferHandler.COPY_OR_MOVE;
+    return COPY_OR_MOVE;
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!(tdl instanceof JTable.DropLocation)) {
-      return false;
-    }
-    JTable.DropLocation dl = (JTable.DropLocation) tdl;
     JTable target = (JTable) info.getComponent();
     DefaultTableModel model = (DefaultTableModel) target.getModel();
     int max = model.getRowCount();
-    int index = dl.getRow();
+    int index;
+    if (info.isDrop()) {
+      index = ((JTable.DropLocation) info.getDropLocation()).getRow();
+    } else {
+      index = target.getSelectedRow();
+    }
     index = index >= 0 && index < max ? index : max;
     addIndex = index;
     try {
       List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      addCount = values.size();
       Object[] type = new Object[0];
       for (Object o : values) {
         int row = index++;
         model.insertRow(row, ((List<?>) o).toArray(type));
         target.getSelectionModel().addSelectionInterval(row, row);
+      }
+      target.requestFocusInWindow();
+      if (info.isDrop()) {
+        addCount = values.size();
       }
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
