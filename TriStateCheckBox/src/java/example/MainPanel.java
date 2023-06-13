@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
         // https://bugs.openjdk.org/browse/JDK-6788475
-        // XXX: set dummy ColorUIResource
+        // Set a temporary ColorUIResource to avoid this issue
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));
         getTableHeader().removeMouseListener(handler);
