@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Objects;
 import javax.swing.*;
@@ -25,12 +24,12 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"String", "Icon", "Boolean"};
     Object[][] data = {
-      {"aaa", new ColorIcon(Color.RED), true},
-      {"bbb", new ColorIcon(Color.GREEN), false},
-      {"ccc", new ColorIcon(Color.BLUE), true},
-      {"ddd", new ColorIcon(Color.ORANGE), true},
-      {"eee", new ColorIcon(Color.PINK), false},
-      {"fff", new ColorIcon(Color.CYAN), true},
+        {"aaa", new ColorIcon(Color.RED), true},
+        {"bbb", new ColorIcon(Color.GREEN), false},
+        {"ccc", new ColorIcon(Color.BLUE), true},
+        {"ddd", new ColorIcon(Color.ORANGE), true},
+        {"eee", new ColorIcon(Color.PINK), false},
+        {"fff", new ColorIcon(Color.CYAN), true},
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -50,16 +49,16 @@ public final class MainPanel extends JPanel {
     TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
     table.setRowSorter(sorter);
 
-    // Disable row Cut, Copy, Paste
-    ActionMap map = table.getActionMap();
-    Action dummy = new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        /* Dummy action */
-      }
-    };
-    map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    // // Disable JTable rows Cut, Copy, Paste
+    // ActionMap am = table.getActionMap();
+    // Action empty = new AbstractAction() {
+    //   @Override public void actionPerformed(ActionEvent e) {
+    //     /* do nothing */
+    //   }
+    // };
+    // am.put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
+    // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), empty);
+    // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
 
     DefaultListModel<Icon> model = new DefaultListModel<>();
     JList<Icon> list = new JList<>(model);
@@ -135,37 +134,38 @@ class CellIconTransferHandler extends TransferHandler {
   public static final DataFlavor ICON_FLAVOR = new DataFlavor(Icon.class, "Icon");
 
   @Override protected Transferable createTransferable(JComponent c) {
+    Object o = null;
     if (c instanceof JTable) {
       JTable table = (JTable) c;
       int row = table.getSelectedRow();
       int col = table.getSelectedColumn();
       if (Icon.class.isAssignableFrom(table.getColumnClass(col))) {
-        // return new DataHandler(table, ICON_FLAVOR.getMimeType());
-        return new Transferable() {
-          @Override public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[] {ICON_FLAVOR};
-          }
-
-          @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return Objects.equals(ICON_FLAVOR, flavor);
-          }
-
-          @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
-            if (isDataFlavorSupported(flavor)) {
-              return table.getValueAt(row, col);
-            } else {
-              throw new UnsupportedFlavorException(flavor);
-            }
-          }
-        };
+        o = table.getValueAt(row, col);
       }
     }
-    return null;
+    Object transferData = o;
+    return new Transferable() {
+      @Override public DataFlavor[] getTransferDataFlavors() {
+        return new DataFlavor[]{ICON_FLAVOR};
+      }
+
+      @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+        return Objects.equals(ICON_FLAVOR, flavor);
+      }
+
+      @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
+        if (isDataFlavorSupported(flavor) && transferData != null) {
+          return transferData;
+        } else {
+          throw new UnsupportedFlavorException(flavor);
+        }
+      }
+    };
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
     Component c = info.getComponent();
-    return c instanceof JList && info.isDrop() && info.isDataFlavorSupported(ICON_FLAVOR);
+    return c instanceof JList && info.isDataFlavorSupported(ICON_FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
@@ -174,11 +174,11 @@ class CellIconTransferHandler extends TransferHandler {
 
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    JList<?> l = (JList<?>) info.getComponent();
+    Component c = info.getComponent();
     try {
       Object o = info.getTransferable().getTransferData(ICON_FLAVOR);
-      if (o instanceof Icon) {
-        ((DefaultListModel<Object>) l.getModel()).addElement(o);
+      if (c instanceof JList && o instanceof Icon) {
+        ((DefaultListModel<Object>) ((JList<?>) c).getModel()).addElement(o);
       }
       return true;
     } catch (UnsupportedFlavorException | IOException ex) {
