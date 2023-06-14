@@ -58,16 +58,16 @@ public final class MainPanel extends JPanel {
         setTransferHandler(handler);
       }
     };
-    // // Disable row Cut, Copy, Paste
-    // ActionMap map = list.getActionMap();
-    // Action dummy = new AbstractAction() {
+    // // Disable JList item Cut, Copy, Paste
+    // ActionMap am = list.getActionMap();
+    // Action empty = new AbstractAction() {
     //   @Override public void actionPerformed(ActionEvent e) {
-    //     /* Dummy action */
+    //     /* do nothing */
     //   }
     // };
-    // map.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    // map.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    // map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    // am.put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
+    // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), empty);
+    // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
     // return list;
   }
 

@@ -83,16 +83,16 @@ public final class MainPanel extends JPanel {
     // table.getTableHeader().addMouseListener(h);
     // table.getTableHeader().addMouseMotionListener(h);
 
-    // // Disable row Cut, Copy, Paste
+    // // Disable JTable rows Cut, Copy, Paste
     // ActionMap am = table.getActionMap();
-    // Action dummy = new AbstractAction() {
+    // Action empty = new AbstractAction() {
     //   @Override public void actionPerformed(ActionEvent e) {
-    //     /* Dummy action */
+    //     /* do nothing */
     //   }
     // };
-    // am.put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
-    // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), dummy);
-    // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
+    // am.put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
+    // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), empty);
+    // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
     return table;
   }
 
