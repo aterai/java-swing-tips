@@ -124,12 +124,12 @@ public final class MainPanel extends JPanel {
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
     // Disable node Cut action
-    Action dummy = new AbstractAction() {
+    Action empty = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
-        /* Dummy action */
+        /* do nothing */
       }
     };
-    tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), dummy);
+    tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
 
     for (int i = 0; i < tree.getRowCount(); i++) {
       tree.expandRow(i);

@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     panel.add(Box.createVerticalStrut(5));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(panel, BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea("Dummy")));
+    add(new JScrollPane(new JTextArea("JTextArea")));
     setPreferredSize(new Dimension(320, 240));
   }
 

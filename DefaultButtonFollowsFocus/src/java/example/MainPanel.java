@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
 
   private static Component makeDummyTextComponent() {
     JPanel p = new JPanel(new BorderLayout(2, 2));
-    p.setBorder(BorderFactory.createTitledBorder("Dummy TextComponent"));
+    p.setBorder(BorderFactory.createTitledBorder("JTextComponent"));
     p.add(new JTextField(), BorderLayout.NORTH);
     p.add(new JScrollPane(new JTextArea()));
     return p;

@@ -68,11 +68,10 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
-    MyButton button = new MyButton("dummy");
+    MyButton button = new MyButton("JButton");
     addFontChangeListener(button);
     // addFontChangeListener(combo);
-    MyLabel label = new MyLabel("test");
+    MyLabel label = new MyLabel("JLabel");
     addFontChangeListener(label);
 
     JMenu menu = new JMenu("Font");

@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("dummy model");
+    model.addElement("sample model");
     model.addElement("123456");
     model.addElement("0987654321");
     model.addElement("41234123");

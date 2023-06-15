@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     p.add(label);
 
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea("dummy")));
+    add(new JScrollPane(new JTextArea("JTextArea")));
     setPreferredSize(new Dimension(320, 240));
   }
 

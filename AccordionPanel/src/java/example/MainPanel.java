@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     split.setResizeWeight(.5);
     split.setDividerSize(2);
     split.setLeftComponent(scroll);
-    split.setRightComponent(new JLabel("Dummy"));
+    split.setRightComponent(new JLabel("JLabel"));
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }

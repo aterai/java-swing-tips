@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
   private static JMenuBar createMenuBar() {
     JMenuBar menubar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
-    fileMenu.add("dummy");
+    fileMenu.add("JMenuItem");
     menubar.add(fileMenu);
     return menubar;
   }

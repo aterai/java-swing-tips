@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     c.insets = new Insets(2, 0, 2, 2);
     c.weightx = 0d;
     c.fill = GridBagConstraints.NONE;
-    p.add(new JButton("dummy"), c);
+    p.add(new JButton("JButton"), c);
 
     return p;
   }

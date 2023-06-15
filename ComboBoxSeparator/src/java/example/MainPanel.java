@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     box.add(makeComboBox(makeModel()));
     box.setBorder(BorderFactory.createTitledBorder("ComboBoxSeparator"));
     add(box, BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea("dummy")));
+    add(new JScrollPane(new JTextArea("JTextArea")));
     setPreferredSize(new Dimension(320, 240));
   }
 

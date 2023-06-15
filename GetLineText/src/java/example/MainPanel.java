@@ -21,10 +21,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     StringBuilder sb = new StringBuilder();
-    String dummy = "1111111111111111\n";
+    String txt = "1111111111111111\n";
     String comment = "#comment\n";
     IntStream.range(0, 200).forEach(i -> {
-      sb.append(dummy);
+      sb.append(txt);
       if (i % 16 == 0) {
         sb.append(comment);
       }

@@ -17,7 +17,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
     box.add(makeExpandingTextArea1());
@@ -25,7 +24,7 @@ public final class MainPanel extends JPanel {
     box.add(makeExpandingTextArea2());
 
     add(box, BorderLayout.NORTH);
-    add(new JButton("focus dummy"), BorderLayout.SOUTH);
+    add(new JButton("focus test"), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 

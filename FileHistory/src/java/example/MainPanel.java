@@ -137,7 +137,7 @@ public final class MainPanel extends JPanel {
       };
       String title = VersionAction.APP_NAME;
       JOptionPane.showMessageDialog(c, msg, title, JOptionPane.INFORMATION_MESSAGE);
-      String fileName = "C:/tmp/dummy.jpg." + counter + "~";
+      String fileName = "C:/tmp/sample.jpg." + counter + "~";
       updateHistory(Paths.get(fileName));
       counter++;
     }

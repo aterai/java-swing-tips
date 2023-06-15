@@ -41,13 +41,13 @@ public final class MainPanel extends JPanel {
     }
     // GridBagLayout to create a board
     // https://community.oracle.com/thread/1357310
-    // <dummy-row>
+    // <guide-row>
     c.gridwidth = 1;
     // c.gridy = GridBagConstraints.REMAINDER;
     for (c.gridx = 0; c.gridx <= WIDTH * XSIZE; c.gridx++) {
       panel.add(Box.createHorizontalStrut(24), c);
     }
-    // </dummy-row>
+    // </guide-row>
 
     add(panel);
     setPreferredSize(new Dimension(320, 240));

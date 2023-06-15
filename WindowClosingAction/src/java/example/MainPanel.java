@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
 
   private static void initMenu(JComponent p) {
     Stream.of(
-        new JMenuItem("Open(dummy)"), new JMenuItem("Save(dummy)"),
+        new JMenuItem("Open(sample)"), new JMenuItem("Save(sample)"),
         new JSeparator(), new JMenuItem(new ExitAction())).forEach(p::add);
   }
 
