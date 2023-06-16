@@ -120,7 +120,7 @@ class TitledSeparator extends JLabel {
     }
 
     @Override public int getIconWidth() {
-      return 200; // dummy width
+      return 200; // sample width
     }
 
     @Override public int getIconHeight() {

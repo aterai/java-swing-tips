@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     }).orElseGet(MainPanel::makeMissingImage);
     JScrollPane scroll = new JScrollPane(new JLabel(new ImageIcon(img)));
     File f = new File(path);
-    tabbedPane.addTab(f.getName(), null, scroll, "dummy");
+    tabbedPane.addTab(f.getName(), null, scroll, "tooltip");
   }
 
   private static Image makeMissingImage() {

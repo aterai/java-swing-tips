@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    box.add(new JTextField("dummy"));
+    box.add(new JTextField("JTextField"));
     box.add(Box.createVerticalStrut(10));
     box.add(textField1);
     box.add(Box.createVerticalStrut(10));

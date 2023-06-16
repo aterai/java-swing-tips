@@ -88,9 +88,9 @@ public final class MainPanel extends JPanel {
 
   private static JMenu createMenu(String key) {
     JMenu menu = new JMenu(key);
-    menu.add("dummy1");
-    menu.add("dummy2");
-    menu.add("dummy3");
+    menu.add("JMenuItem1");
+    menu.add("JMenuItem2");
+    menu.add("JMenuItem3");
     return menu;
   }
 

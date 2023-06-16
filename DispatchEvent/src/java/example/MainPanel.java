@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     p.add(button, BorderLayout.EAST);
 
     JPanel panel = new JPanel(new BorderLayout(5, 5));
-    panel.setBorder(BorderFactory.createTitledBorder("Dummy"));
+    panel.setBorder(BorderFactory.createTitledBorder("AWTEventListener"));
     JPanel box = new JPanel(new BorderLayout(5, 5));
     box.add(textField);
     box.add(combo, BorderLayout.EAST);
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
 
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("sample model");
+    model.addElement("000");
     model.addElement("123456");
     model.addElement("0987654321");
     model.addElement("41234123");

@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check2 = new JCheckBox("sub.FocusCycleRoot", true);
     check2.addActionListener(e -> sub.setFocusCycleRoot(((JCheckBox) e.getSource()).isSelected()));
     sub.setFocusCycleRoot(true);
-    sub.add(new JScrollPane(new JTextArea("dummy")));
+    sub.add(new JScrollPane(new JTextArea("JTextArea")));
     sub.add(check2, BorderLayout.SOUTH);
 
     Box box = Box.createHorizontalBox();

@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     });
 
     add(new JScrollPane(editor));
-    add(new JScrollPane(new JTextArea("dummy")));
+    add(new JScrollPane(new JTextArea(HTML_TEXT)));
     setPreferredSize(new Dimension(320, 240));
   }
 

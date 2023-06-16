@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
     });
     add(check);
 
-    JButton button = new JButton("Dummy");
-    button.setMnemonic(KeyEvent.VK_D);
+    JButton button = new JButton("JButton");
+    button.setMnemonic(KeyEvent.VK_J);
     add(button);
 
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(createMenuBar()));

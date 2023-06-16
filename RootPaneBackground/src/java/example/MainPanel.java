@@ -150,8 +150,8 @@ final class ImageUtils {
     sub.add("JMenuItem");
     sub.add("Looooooooooooooooooooong");
     menu.add(sub);
-    menu.add("dummy1");
-    menu.add("dummy2");
+    menu.add("JMenuItem1");
+    menu.add("JMenuItem2");
     return menu;
   }
 

@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
       }
     };
     panel1.setBorder(BorderFactory.createTitledBorder("Override JPanel#getToolTipText(...)"));
-    panel1.setToolTipText("JPanel: dummy");
+    panel1.setToolTipText("JPanel: ToolTipText");
 
     JPanel panel2 = new JPanel();
     panel2.setBorder(BorderFactory.createTitledBorder("Default TitledBorder on JPanel"));

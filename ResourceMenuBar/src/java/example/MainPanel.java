@@ -127,7 +127,7 @@ class HelpAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    // dummy
+    // help
   }
 }
 

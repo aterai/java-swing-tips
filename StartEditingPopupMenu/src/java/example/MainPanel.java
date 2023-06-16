@@ -113,7 +113,7 @@ final class TreePopupMenu extends JPopupMenu {
         }
       }
     });
-    add("dummy");
+    add("JMenuItem");
   }
 
   @Override public void show(Component c, int x, int y) {

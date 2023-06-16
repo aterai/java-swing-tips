@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     label2.setLabelFor(textField2);
     addRow(label2, textField2, p, c);
 
-    JLabel label3 = new JLabel("Dummy:", SwingConstants.RIGHT);
+    JLabel label3 = new JLabel("JLabel:", SwingConstants.RIGHT);
     Component textField3 = new JTextField(12);
     addRow(label3, textField3, p, c);
 

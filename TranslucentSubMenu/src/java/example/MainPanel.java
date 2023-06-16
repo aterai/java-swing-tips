@@ -47,12 +47,12 @@ public final class MainPanel extends JPanel {
     JMenu menu = new TransparentMenu(key);
     // menu.setForeground(new Color(200, 200, 200));
     menu.setOpaque(false); // Motif lnf
-    JMenu sub = new TransparentMenu("Submenu");
+    JMenu sub = new TransparentMenu("JMenu");
     sub.add("JMenuItem");
     sub.add("Looooooooooooooooooooong");
     menu.add(sub);
-    menu.add("dummy1");
-    menu.add("dummy2");
+    menu.add("JMenuItem1");
+    menu.add("JMenuItem2");
     return menu;
   }
 

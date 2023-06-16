@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JButton button = new JButton("Find Next(dummy)");
+    JButton button = new JButton("Find Next(test)");
     button.setFocusable(false);
     JTextField field = new JTextField("", 10);
 

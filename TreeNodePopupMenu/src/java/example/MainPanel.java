@@ -55,7 +55,7 @@ final class TreePopupMenu extends JPopupMenu {
         JOptionPane.showMessageDialog(tree, path, "path", JOptionPane.INFORMATION_MESSAGE);
       }
     });
-    add("dummy");
+    add("JMenuItem");
   }
 
   @Override public void show(Component c, int x, int y) {
