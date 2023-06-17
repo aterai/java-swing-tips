@@ -146,7 +146,7 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
         options[0]);
     if (retValue == JOptionPane.YES_OPTION) {
       LOGGER.info(() -> "exit");
-      // boolean ret = dummyDocumentSaveMethod();
+      // boolean ret = sampleDocumentSaveMethod();
       // if (ret) { // saved and exit
       //   frame.dispose();
       // } else { // error and cancel exit

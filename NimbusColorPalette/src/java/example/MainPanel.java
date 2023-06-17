@@ -109,7 +109,7 @@ class BackgroundTask extends SwingWorker<String, Void> {
   }
 
   protected void doSomething() throws InterruptedException {
-    Thread.sleep(50); // dummy task
+    Thread.sleep(50);
   }
 }
 

@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
     p.add(box);
 
     add(p, BorderLayout.NORTH);
-    add(makeDummyTextComponent());
+    add(makeSampleTextComponent());
     add(makeDefaultButtonPanel(), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private static Component makeDummyTextComponent() {
+  private static Component makeSampleTextComponent() {
     JPanel p = new JPanel(new BorderLayout(2, 2));
     p.setBorder(BorderFactory.createTitledBorder("JTextComponent"));
     p.add(new JTextField(), BorderLayout.NORTH);

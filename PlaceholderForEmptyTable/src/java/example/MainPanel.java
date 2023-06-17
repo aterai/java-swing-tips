@@ -13,7 +13,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String placeholder = "<html>No data! <a href='dummy'>Input hint(beep)</a>";
+    String placeholder = "<html>No data! <a href='#placeholder'>Input hint(beep)</a>";
     JEditorPane editor = new JEditorPane("text/html", placeholder);
     editor.setOpaque(false);
     editor.setEditable(false);

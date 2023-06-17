@@ -148,7 +148,7 @@ public final class MainPanel extends JPanel {
 
 class BackgroundTask extends SwingWorker<String, Void> {
   @Override protected String doInBackground() throws InterruptedException {
-    Thread.sleep(5000); // dummy task
+    Thread.sleep(5000);
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
@@ -160,7 +160,7 @@ class BackgroundTask extends SwingWorker<String, Void> {
   }
 
   protected void doSomething() throws InterruptedException {
-    Thread.sleep(50); // dummy task
+    Thread.sleep(50);
   }
 }
 

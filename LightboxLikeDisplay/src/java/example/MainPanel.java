@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     });
     JButton button = new JButton("Open");
     button.addActionListener(e -> getRootPane().getGlassPane().setVisible(true));
-    add(makeDummyPanel());
+    add(makeSamplePanel());
     add(button);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  private JPanel makeDummyPanel() {
+  private JPanel makeSamplePanel() {
     JButton b = new JButton("Button & Mnemonic");
     b.setMnemonic(KeyEvent.VK_B);
     JTextField t = new JTextField("TextField & ToolTip");

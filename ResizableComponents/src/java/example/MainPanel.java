@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     layeredPane.setComponentPopupMenu(popup);
     // ??? for 1.5.0
     // layeredPane.addMouseListener(new MouseAdapter() {
-    //   /* Dummy listener */
+    //   /* do nothing listener */
     // });
     add(layeredPane);
 

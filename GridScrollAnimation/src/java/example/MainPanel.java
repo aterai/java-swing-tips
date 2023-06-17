@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     GridPanel gp = new GridPanel(4, 3);
     for (int i = 0; i < gp.getColumns() * gp.getRows(); i++) {
-      gp.add(makeDummyComponent(i));
+      gp.add(makeSampleComponent(i));
     }
     JScrollPane scrollPane = new JScrollPane(gp);
     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     add(new JButton(new ScrollAction("top", scrollPane, new Point(0, -1))), BorderLayout.NORTH);
   }
 
-  private static Component makeDummyComponent(int idx) {
+  private static Component makeSampleComponent(int idx) {
     return idx % 2 == 0 ? new JButton("button" + idx) : new JScrollPane(new JTree());
   }
 

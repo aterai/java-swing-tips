@@ -77,7 +77,7 @@ class ProgressTabbedPane extends JTabbedPane {
     // bar.setUI(new BasicProgressBarUI());
     setTabComponentAt(currentIndex, bar);
     SwingWorker<String, Integer> worker = new BackgroundTask() {
-      @Override protected void process(List<Integer> dummy) {
+      @Override protected void process(List<Integer> chunks) {
         if (!isDisplayable()) {
           // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);

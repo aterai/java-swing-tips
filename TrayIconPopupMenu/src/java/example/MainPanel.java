@@ -59,10 +59,10 @@ public final class MainPanel extends JPanel {
     // https://web.archive.org/web/20090327054056/http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
     // https://github.com/floscher/swinghelper/blob/master/src/java/org/jdesktop/swinghelper/tray/JXTrayIcon.java
 
-    // JWindow dummy = new JWindow(); // Ubuntu?
-    JDialog dummy = new JDialog();
-    dummy.setUndecorated(true);
-    // dummy.setAlwaysOnTop(true);
+    // JWindow tmp = new JWindow(); // Ubuntu?
+    JDialog tmp = new JDialog();
+    tmp.setUndecorated(true);
+    // tmp.setAlwaysOnTop(true);
 
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource("example/16x16.png")).map(u -> {
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(MainPanel::makeDefaultTrayImage);
     TrayIcon icon = new TrayIcon(image, "TRAY", null);
-    icon.addMouseListener(new TrayIconPopupMenuHandler(popup, dummy));
+    icon.addMouseListener(new TrayIconPopupMenuHandler(popup, tmp));
     try {
       SystemTray.getSystemTray().add(icon);
     } catch (AWTException ex) {
@@ -87,11 +87,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        dummy.setVisible(false);
+        tmp.setVisible(false);
       }
 
       @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        dummy.setVisible(false);
+        tmp.setVisible(false);
       }
     });
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
       }
       // tray.remove(icon);
       // frame.dispose();
-      // dummy.dispose();
+      // tmp.dispose();
     });
   }
 
@@ -224,21 +224,21 @@ final class TrayIconPopupMenuUtils {
 
 class TrayIconPopupMenuHandler extends MouseAdapter {
   private final JPopupMenu popup;
-  private final Window dummy;
+  private final Window tmp;
 
-  protected TrayIconPopupMenuHandler(JPopupMenu popup, Window dummy) {
+  protected TrayIconPopupMenuHandler(JPopupMenu popup, Window tmp) {
     super();
     this.popup = popup;
-    this.dummy = dummy;
+    this.tmp = tmp;
   }
 
   private void showPopupMenu(MouseEvent e) {
     if (e.isPopupTrigger()) {
       Point p = TrayIconPopupMenuUtils.adjustPopupLocation(popup, e.getPoint());
-      dummy.setLocation(p);
-      dummy.setVisible(true);
-      // dummy.toFront();
-      popup.show(dummy, 0, 0);
+      tmp.setLocation(p);
+      tmp.setVisible(true);
+      // tmp.toFront();
+      popup.show(tmp, 0, 0);
     }
   }
 

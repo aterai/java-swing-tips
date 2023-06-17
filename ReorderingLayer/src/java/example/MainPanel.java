@@ -109,7 +109,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
         break;
       case MouseEvent.MOUSE_RELEASED:
         if (Objects.nonNull(draggingComponent)) {
-          // swap the dragging panel and the dummy filler
+          // swap the dragging panel and the temporary filler
           int idx = parent.getComponentZOrder(fillerComponent);
           replaceComponents(parent, fillerComponent, draggingComponent, idx);
           draggingComponent = null;
@@ -171,7 +171,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   }
 
   private static void updateFillerLocation(Container parent, Component filler, Point pt) {
-    // change the dummy filler location
+    // change the temporary filler location
     for (int i = 0; i < parent.getComponentCount(); i++) {
       Component c = parent.getComponent(i);
       Rectangle r = c.getBounds();

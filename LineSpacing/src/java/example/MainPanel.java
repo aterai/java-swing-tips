@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     // StyleConstants.setRightIndent(a, 5f);
     JTextPane editor1 = new JTextPane();
     editor1.setParagraphAttributes(a, false);
-    setDummyText(editor1, attr);
+    setSampleText(editor1, attr);
 
     // StyleSheet styleSheet = new StyleSheet();
     // styleSheet.addRule("body {font-size: 24pt; line-height: 2.0}"); // XXX
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
     JTextPane editor2 = new JTextPane();
     editor2.setEditorKit(new BottomInsetEditorKit());
-    setDummyText(editor2, attr);
+    setSampleText(editor2, attr);
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     sp.setTopComponent(new JScrollPane(editor1));
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setDummyText(JTextPane textPane, MutableAttributeSet attr) {
+  private static void setSampleText(JTextPane textPane, MutableAttributeSet attr) {
     textPane.setText("12341234\n1234 567890 5555 66666 77777\n88 999999 ");
     try {
       StyledDocument doc = textPane.getStyledDocument();

@@ -76,9 +76,9 @@ public final class MainPanel extends JPanel {
     //   c.setVisible(false);
     //   // layeredPane.remove(c);
     // }
-    // JComponent dummyTitlePane = new JLabel();
-    // layeredPane.add(dummyTitlePane, JLayeredPane.FRAME_CONTENT_LAYER);
-    // dummyTitlePane.setVisible(true);
+    // JComponent sampleTitlePane = new JLabel();
+    // layeredPane.add(sampleTitlePane, JLayeredPane.FRAME_CONTENT_LAYER);
+    // sampleTitlePane.setVisible(true);
 
     frame.setMinimumSize(new Dimension(300, 120));
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(new BorderLayout());
     panel.setBorder(BorderFactory.createTitledBorder("ToolTip Test"));
     panel.add(p, BorderLayout.NORTH);
-    panel.add(new JScrollPane(new JTextArea("dummy")));
+    panel.add(new JScrollPane(new JTextArea("JTextArea")));
     add(makeToolPanel(), BorderLayout.NORTH);
     add(panel);
     setPreferredSize(new Dimension(320, 240));

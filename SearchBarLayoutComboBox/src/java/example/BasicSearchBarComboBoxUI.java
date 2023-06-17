@@ -93,13 +93,13 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   }
 
   // // NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
-  // private static class DummyKeyAdapter extends KeyAdapter {
-  //   /* dummy */
+  // private static class EmptyKeyAdapter extends KeyAdapter {
+  //   /* do nothing */
   // }
   //
   // @Override protected KeyListener createKeyListener() {
   //   if (Objects.isNull(keyListener)) {
-  //     keyListener = new DummyKeyAdapter();
+  //     keyListener = new EmptyKeyAdapter();
   //   }
   //   return keyListener;
   // }
