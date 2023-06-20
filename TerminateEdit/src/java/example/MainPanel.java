@@ -58,8 +58,8 @@ public final class MainPanel extends JPanel {
 
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-    JComboBox<? extends Enum<?>> combobox = new JComboBox<>(AutoResizeMode.values());
-    combobox.addItemListener(e -> {
+    JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(AutoResizeMode.values());
+    comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         table.setAutoResizeMode(((AutoResizeMode) e.getItem()).getAutoResizeMode());
       }
@@ -67,8 +67,8 @@ public final class MainPanel extends JPanel {
 
     JCheckBox teoflCheck = new JCheckBox("terminateEditOnFocusLost", true);
     teoflCheck.addActionListener(e -> {
-      boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
-      table.putClientProperty("terminateEditOnFocusLost", isSelected);
+      JCheckBox c = (JCheckBox) e.getSource();
+      table.putClientProperty(c.getText(), c.isSelected());
     });
 
     JPanel box = new JPanel(new GridLayout(4, 0));
@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
     box.add(teoflCheck);
     box.add(focusCheck);
     box.add(headerCheck);
-    box.add(combobox);
+    box.add(comboBox);
 
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(table));
@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
   private static JTable makeTable() {
     String[] columnNames = {"String", "Integer"};
     Object[][] data = {
-      {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
+        {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -144,8 +144,7 @@ public final class MainPanel extends JPanel {
 }
 
 enum AutoResizeMode {
-  AUTO_RESIZE_OFF(JTable.AUTO_RESIZE_OFF),
-  AUTO_RESIZE_ALL_COLUMNS(JTable.AUTO_RESIZE_ALL_COLUMNS);
+  OFF(JTable.AUTO_RESIZE_OFF), ALL_COLUMNS(JTable.AUTO_RESIZE_ALL_COLUMNS);
   private final int mode;
 
   AutoResizeMode(int mode) {
@@ -154,5 +153,10 @@ enum AutoResizeMode {
 
   public int getAutoResizeMode() {
     return mode;
+  }
+
+
+  @Override public String toString() {
+    return "AUTO_RESIZE_" + super.toString();
   }
 }
