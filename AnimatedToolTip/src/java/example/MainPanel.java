@@ -88,17 +88,25 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class AnimatedToolTip extends JToolTip {
+class AnimatedToolTip extends JToolTip {
   private final JLabel iconLabel;
 
-  public AnimatedToolTip(JLabel label) {
+  protected AnimatedToolTip(JLabel label) {
     super();
     this.iconLabel = label;
     LookAndFeel.installColorsAndFont(
-            iconLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+        iconLabel, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
     iconLabel.setOpaque(true);
     setLayout(new BorderLayout());
     add(iconLabel);
+  }
+
+  @Override public final void setLayout(LayoutManager mgr) {
+    super.setLayout(mgr);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
   }
 
   @Override public Dimension getPreferredSize() {
