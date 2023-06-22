@@ -7,8 +7,8 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.font.TextAttribute;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     Font font = textField2.getFont();
     textField2.setFont(font.deriveFont(16f));
     // TEST:
-    // Map<TextAttribute, Object> attrs = new ConcurrentHashMap<>(font.getAttributes());
+    // Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
     // attrs.put(TextAttribute.SIZE, 32);
     // attrs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
     // textField.setFont(font.deriveFont(attrs));
@@ -52,9 +52,12 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("PMD.UseConcurrentHashMap")
   private static void initUnderline(JTextComponent tc, Object style) {
     Font font = tc.getFont();
-    Map<TextAttribute, Object> attrs = new ConcurrentHashMap<>(font.getAttributes());
+    // ConcurrentHashMap does not allow null to be used as a key or value
+    // NullPointerException transform=null*
+    Map<TextAttribute, Object> attrs = new HashMap<>(font.getAttributes());
     attrs.put(TextAttribute.UNDERLINE, style);
     tc.setFont(font.deriveFont(attrs));
   }
@@ -82,13 +85,13 @@ public final class MainPanel extends JPanel {
 }
 
 enum UnderlineStyle {
-  UNDERLINE_OFF(-1),
-  UNDERLINE_LOW_DASHED(TextAttribute.UNDERLINE_LOW_DASHED),
-  UNDERLINE_LOW_DOTTED(TextAttribute.UNDERLINE_LOW_DOTTED),
-  UNDERLINE_LOW_GRAY(TextAttribute.UNDERLINE_LOW_GRAY),
-  UNDERLINE_LOW_ONE_PIXEL(TextAttribute.UNDERLINE_LOW_ONE_PIXEL),
-  UNDERLINE_LOW_TWO_PIXEL(TextAttribute.UNDERLINE_LOW_TWO_PIXEL),
-  UNDERLINE_ON(TextAttribute.UNDERLINE_ON);
+  OFF(-1),
+  LOW_DASHED(TextAttribute.UNDERLINE_LOW_DASHED),
+  LOW_DOTTED(TextAttribute.UNDERLINE_LOW_DOTTED),
+  LOW_GRAY(TextAttribute.UNDERLINE_LOW_GRAY),
+  LOW_ONE_PIXEL(TextAttribute.UNDERLINE_LOW_ONE_PIXEL),
+  LOW_TWO_PIXEL(TextAttribute.UNDERLINE_LOW_TWO_PIXEL),
+  ON(TextAttribute.UNDERLINE_ON);
   private final int style;
 
   UnderlineStyle(int style) {
@@ -97,5 +100,9 @@ enum UnderlineStyle {
 
   public int getStyle() {
     return style;
+  }
+
+  @Override public String toString() {
+    return "UNDERLINE_" + super.toString();
   }
 }
