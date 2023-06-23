@@ -296,7 +296,7 @@ class EditableList<E extends ListItem> extends JList<E> {
   }
 
   private final class EditorGlassPane extends JComponent {
-    public EditorGlassPane() {
+    /* default */ EditorGlassPane() {
       super();
       setOpaque(false);
       setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {

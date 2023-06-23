@@ -105,15 +105,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class KeyButton extends JButton {
+class KeyButton extends JButton {
   public static final int SIZE = 10;
   private final boolean square;
 
-  // public KeyButton(String str) {
+  // protected KeyButton(String str) {
   //   this(str, true);
   // }
 
-  public KeyButton(String str, boolean square) {
+  protected KeyButton(String str, boolean square) {
     super(str);
     this.square = square;
   }
