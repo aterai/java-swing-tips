@@ -159,8 +159,8 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 }
 
-final class ColorButton extends JButton {
-  public ColorButton(ColorIcon icon) {
+class ColorButton extends JButton {
+  protected ColorButton(ColorIcon icon) {
     super(icon);
     setPressedIcon(new ColorIcon(icon.color.darker()));
   }
@@ -172,6 +172,10 @@ final class ColorButton extends JButton {
     setBorderPainted(false);
     setContentAreaFilled(false);
     setBorder(BorderFactory.createEmptyBorder());
+  }
+
+  @Override public final void setPressedIcon(Icon pressedIcon) {
+    super.setPressedIcon(pressedIcon);
   }
 
   // @Override public Dimension getPreferredSize() {

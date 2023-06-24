@@ -236,7 +236,7 @@ final class TextComponentPopupMenu extends JPopupMenu {
 class HtmlTransferable implements Transferable {
   private final String htmlFormattedText;
 
-  public HtmlTransferable(String htmlFormattedText) {
+  protected HtmlTransferable(String htmlFormattedText) {
     this.htmlFormattedText = htmlFormattedText;
   }
 
