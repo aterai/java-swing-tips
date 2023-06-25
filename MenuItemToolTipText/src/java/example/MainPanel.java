@@ -97,6 +97,7 @@ final class LookAndFeelUtils {
     String cmd = info.getClassName();
     b.setText(info.getName());
     b.setActionCommand(cmd);
+    b.setToolTipText(cmd);
     b.setHideActionText(true);
     b.addActionListener(e -> setLookAndFeel(cmd));
   }
