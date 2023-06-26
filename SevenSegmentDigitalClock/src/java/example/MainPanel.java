@@ -83,7 +83,7 @@ class DigitalClock extends JPanel {
     setBackground(DigitalNumber.BGC);
   }
 
-  public DigitalClock() {
+  protected DigitalClock() {
     super();
     double x = SIZE * 3d;
     double y = SIZE * 8d;
@@ -301,7 +301,7 @@ class HelpPanel extends JPanel {
   private static final double SIZE = 16d;
   private final transient DigitalNumber help = new DigitalNumber(SIZE * 3d, SIZE * 8d, SIZE);
 
-  public HelpPanel() {
+  protected HelpPanel() {
     super();
     help.setNumber(8);
   }
