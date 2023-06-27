@@ -175,8 +175,8 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
   }
 }
 
-final class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
-  public RolloverNumberRenderer(HighlightListener highlighter) {
+class RolloverNumberRenderer extends RolloverDefaultTableCellRenderer {
+  protected RolloverNumberRenderer(HighlightListener highlighter) {
     super(highlighter);
   }
 

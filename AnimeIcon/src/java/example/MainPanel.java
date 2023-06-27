@@ -171,7 +171,7 @@ class LoadingLabel extends JLabel {
   private transient HierarchyListener listener;
   private final Timer animator = new Timer(100, null);
 
-  public LoadingLabel() {
+  protected LoadingLabel() {
     super(new AnimeIcon());
     animator.addActionListener(e -> {
       Icon icon = getIcon();

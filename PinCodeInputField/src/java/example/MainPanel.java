@@ -114,7 +114,7 @@ class PinCodeDocumentFilter extends DocumentFilter {
 }
 
 class PasswordView2 extends PasswordView {
-  public PasswordView2(Element elem) {
+  protected PasswordView2(Element elem) {
     super(elem);
   }
 
