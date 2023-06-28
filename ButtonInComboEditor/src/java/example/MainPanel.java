@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -93,8 +94,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class SiteItemComboBox extends JComboBox<SiteItem> {
-  public SiteItemComboBox(DefaultComboBoxModel<SiteItem> model) {
+class SiteItemComboBox extends JComboBox<SiteItem> {
+  protected SiteItemComboBox(DefaultComboBoxModel<SiteItem> model) {
     super(model);
     initComponents(model);
   }
@@ -129,6 +130,22 @@ final class SiteItemComboBox extends JComboBox<SiteItem> {
       }
     });
     EventQueue.invokeLater(() -> updateFavicon(model, faviconLabel));
+  }
+
+  @Override public final ComboBoxEditor getEditor() {
+    return super.getEditor();
+  }
+
+  @Override public final void setLayout(LayoutManager mgr) {
+    super.setLayout(mgr);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void addItemListener(ItemListener listener) {
+    super.addItemListener(listener);
   }
 
   private void updateFavicon(ComboBoxModel<SiteItem> model, JLabel l) {

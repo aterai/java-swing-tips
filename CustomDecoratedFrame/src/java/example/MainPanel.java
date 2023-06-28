@@ -85,8 +85,8 @@ public final class MainPanel extends JPanel {
     return contentPanel;
   }
 
-  private JFrame makeFrame(String str) {
-    JFrame frame = new JFrame(str) {
+  public JFrame makeFrame(String title) {
+    JFrame frame = new JFrame(title) {
       @Override public Container getContentPane() {
         return getMainContentPane();
       }
@@ -94,17 +94,17 @@ public final class MainPanel extends JPanel {
     frame.setUndecorated(true);
     frame.setBackground(new Color(0x0, true));
 
-    JPanel title = new JPanel(new BorderLayout());
+    JPanel titlePane = new JPanel(new BorderLayout());
     MouseInputListener dwl = new DragWindowListener();
-    title.addMouseListener(dwl);
-    title.addMouseMotionListener(dwl);
-    title.setOpaque(false);
-    // title.setBackground(Color.ORANGE);
-    title.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
+    titlePane.addMouseListener(dwl);
+    titlePane.addMouseMotionListener(dwl);
+    titlePane.setOpaque(false);
+    // titlePane.setBackground(Color.ORANGE);
+    titlePane.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
 
-    title.add(new JLabel(str, SwingConstants.CENTER));
-    title.add(makeCloseButton(), BorderLayout.EAST);
-    // title.add(iconify, BorderLayout.WEST);
+    titlePane.add(new JLabel(title, SwingConstants.CENTER));
+    titlePane.add(makeCloseButton(), BorderLayout.EAST);
+    // titlePane.add(iconify, BorderLayout.WEST);
 
     MouseInputListener rwl = new ResizeWindowListener();
     Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight).forEach(c -> {
@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
 
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(title, BorderLayout.CENTER);
+    titlePanel.add(titlePane, BorderLayout.CENTER);
 
     JPanel northPanel = new JPanel(new BorderLayout());
     northPanel.add(topLeft, BorderLayout.WEST);
@@ -251,13 +251,17 @@ enum Side {
   // }
 }
 
-final class SideLabel extends JLabel {
+class SideLabel extends JLabel {
   public final Side side;
 
-  public SideLabel(Side side) {
+  protected SideLabel(Side side) {
     super();
     this.side = side;
     EventQueue.invokeLater(() -> setCursor(side.getCursor()));
+  }
+
+  @Override public final void setCursor(Cursor cursor) {
+    super.setCursor(cursor);
   }
 
   @Override public Dimension getPreferredSize() {

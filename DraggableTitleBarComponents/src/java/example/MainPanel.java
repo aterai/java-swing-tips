@@ -124,8 +124,8 @@ public final class MainPanel extends JPanel {
     return combo;
   }
 
-  public JFrame makeFrame(String str) {
-    JFrame frame = new JFrame(str) {
+  public JFrame makeFrame(String title) {
+    JFrame frame = new JFrame(title) {
       @Override public Container getContentPane() {
         return getMainContentPane();
       }
@@ -133,24 +133,24 @@ public final class MainPanel extends JPanel {
     frame.setUndecorated(true);
     frame.setBackground(new Color(0x0, true));
 
-    JPanel title = new JPanel(new BorderLayout(W, W));
-    title.setOpaque(false);
-    title.setBackground(Color.ORANGE);
-    title.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
+    JPanel titlePane = new JPanel(new BorderLayout(W, W));
+    titlePane.setOpaque(false);
+    titlePane.setBackground(Color.ORANGE);
+    titlePane.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
 
     JCheckBox check = new JCheckBox("check");
     check.setOpaque(false);
     check.setFocusable(false);
 
     Box titleBox = Box.createHorizontalBox();
-    titleBox.add(makeComboBox(str));
+    titleBox.add(makeComboBox(title));
     titleBox.add(Box.createHorizontalGlue());
     titleBox.add(check);
 
     JButton button = makeTitleButton(new ApplicationIcon());
     button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
-    title.add(button, BorderLayout.WEST);
-    title.add(titleBox);
+    titlePane.add(button, BorderLayout.WEST);
+    titlePane.add(titleBox);
 
     JButton close = makeTitleButton(new CloseIcon());
     close.addActionListener(e -> {
@@ -161,7 +161,7 @@ public final class MainPanel extends JPanel {
         w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
       }
     });
-    title.add(close, BorderLayout.EAST);
+    titlePane.add(close, BorderLayout.EAST);
 
     MouseInputListener rwl = new ResizeWindowListener();
     Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight).forEach(c -> {
@@ -171,7 +171,7 @@ public final class MainPanel extends JPanel {
 
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(new JLayer<>(title, new TitleBarDragLayerUI()), BorderLayout.CENTER);
+    titlePanel.add(new JLayer<>(titlePane, new TitleBarDragLayerUI()), BorderLayout.CENTER);
 
     JPanel northPanel = new JPanel(new BorderLayout());
     northPanel.add(topLeft, BorderLayout.WEST);
@@ -304,13 +304,17 @@ enum Side {
   /* default */ abstract Rectangle getBounds(Rectangle rect, Point delta);
 }
 
-final class SideLabel extends JLabel {
+class SideLabel extends JLabel {
   public final Side side;
 
-  public SideLabel(Side side) {
+  protected SideLabel(Side side) {
     super();
     this.side = side;
     EventQueue.invokeLater(() -> setCursor(side.getCursor()));
+  }
+
+  @Override public final void setCursor(Cursor cursor) {
+    super.setCursor(cursor);
   }
 
   @Override public Dimension getPreferredSize() {
