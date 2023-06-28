@@ -71,10 +71,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-final class SpinnerPanel extends JPanel {
+class SpinnerPanel extends JPanel {
   private final JSpinner spinner = new JSpinner(new SpinnerNumberModel(100, 0, 200, 1));
 
-  public SpinnerPanel() {
+  protected SpinnerPanel() {
     super(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.weightx = 1d;
@@ -83,9 +83,13 @@ final class SpinnerPanel extends JPanel {
     add(spinner, c);
   }
 
-  @Override public boolean isOpaque() {
-    return true;
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
   }
+
+  // @Override public boolean isOpaque() {
+  //   return true;
+  // }
 
   public JSpinner getSpinner() {
     return spinner;
@@ -232,7 +236,7 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 //   }
 // }
 
-final class ButtonsPanel extends JPanel {
+class ButtonsPanel extends JPanel {
   public final JButton[] buttons = {new JButton("+"), new JButton("-")};
   public final JLabel label = new JLabel(" ", SwingConstants.RIGHT) {
     @Override public Dimension getPreferredSize() {
@@ -244,7 +248,7 @@ final class ButtonsPanel extends JPanel {
   // /* default */ int counter = -1;
   public final AtomicInteger counter = new AtomicInteger(-1);
 
-  public ButtonsPanel() {
+  protected ButtonsPanel() {
     super();
     add(label);
     for (JButton b : buttons) {
@@ -254,9 +258,13 @@ final class ButtonsPanel extends JPanel {
     }
   }
 
-  @Override public boolean isOpaque() {
-    return true;
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
   }
+
+  // @Override public boolean isOpaque() {
+  //   return true;
+  // }
 }
 
 class ButtonsRenderer implements TableCellRenderer {

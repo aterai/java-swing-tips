@@ -98,10 +98,10 @@ enum Answer {
   A, B, C
 }
 
-final class RadioButtonsPanel extends JPanel {
+class RadioButtonsPanel extends JPanel {
   public final ButtonGroup bg = new ButtonGroup();
 
-  public RadioButtonsPanel() {
+  protected RadioButtonsPanel() {
     super();
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     initButtons();
@@ -143,6 +143,14 @@ final class RadioButtonsPanel extends JPanel {
           break;
       }
     }
+  }
+
+  @Override public final void setLayout(LayoutManager mgr) {
+    super.setLayout(mgr);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
   }
 }
 

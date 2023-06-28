@@ -235,10 +235,10 @@ class LeftAlignmentTabbedPaneUI extends MetalTabbedPaneUI {
 
 // How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
-final class ButtonTabComponent extends JPanel {
+class ButtonTabComponent extends JPanel {
   private final JTabbedPane tabbedPane;
 
-  public ButtonTabComponent(JTabbedPane tabbedPane) {
+  protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout()); // FlowLayout(FlowLayout.LEFT, 0, 0));
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {
@@ -267,6 +267,14 @@ final class ButtonTabComponent extends JPanel {
 
     add(label);
     add(button, BorderLayout.EAST);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
   }
 
   @Override public void updateUI() {

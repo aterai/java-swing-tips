@@ -106,16 +106,16 @@ class TextAreaCellRenderer implements TableCellRenderer {
   }
 }
 
-final class RowHeader {
+class RowHeader {
   private final String title;
   private final boolean expandable;
   private final boolean selected;
 
-  public RowHeader(String title, boolean expandable) {
+  protected RowHeader(String title, boolean expandable) {
     this(title, expandable, false);
   }
 
-  public RowHeader(String title, boolean expandable, boolean selected) {
+  protected RowHeader(String title, boolean expandable, boolean selected) {
     this.title = title;
     this.expandable = expandable;
     this.selected = selected;
@@ -151,11 +151,11 @@ final class RowHeader {
   }
 }
 
-final class RowHeaderPanel extends JPanel {
+class RowHeaderPanel extends JPanel {
   public final JLabel label = new JLabel(" ");
   public final JCheckBox check = new JCheckBox();
 
-  public RowHeaderPanel() {
+  protected RowHeaderPanel() {
     super(new BorderLayout());
     label.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 0));
     check.setOpaque(false);
@@ -168,9 +168,18 @@ final class RowHeaderPanel extends JPanel {
     add(box, BorderLayout.NORTH);
   }
 
-  @Override public boolean isOpaque() {
-    return true;
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
   }
+
+  // @Override public void updateUI() {
+  //   super.updateUI();
+  //   setOpaque(true);
+  // }
+
+  // @Override public boolean isOpaque() {
+  //   return true;
+  // }
 }
 
 class RowHeaderRenderer implements TableCellRenderer {
