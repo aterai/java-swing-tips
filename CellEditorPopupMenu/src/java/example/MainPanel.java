@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class TextComponentPopupMenu extends JPopupMenu {
-  public TextComponentPopupMenu(JTextComponent tc) {
+  /* default */ TextComponentPopupMenu(JTextComponent tc) {
     super();
     Action cutAction = new DefaultEditorKit.CutAction();
     add(cutAction);

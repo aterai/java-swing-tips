@@ -124,7 +124,7 @@ class TextComponentMouseHandler extends MouseAdapter {
 }
 
 final class TextFieldPopupMenu extends JPopupMenu {
-  public TextFieldPopupMenu() {
+  /* default */ TextFieldPopupMenu() {
     super();
     add(new DefaultEditorKit.CutAction());
     add(new DefaultEditorKit.CopyAction());

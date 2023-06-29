@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 final class TreePopupMenu extends JPopupMenu {
   private TreePath path;
 
-  public TreePopupMenu() {
+  /* default */ TreePopupMenu() {
     super();
     JTextField textField = new JTextField(24) {
       private transient AncestorListener listener;

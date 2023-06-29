@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class InternalFramePopupMenu extends JPopupMenu {
-  public InternalFramePopupMenu() {
+  /* default */ InternalFramePopupMenu() {
     super();
     JTextField field = new JTextField(24) {
       private transient AncestorListener listener;

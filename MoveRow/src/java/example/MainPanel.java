@@ -95,7 +95,7 @@ final class TablePopupMenu extends JPopupMenu {
   private final transient Action downAction;
   private final JTable table;
 
-  public TablePopupMenu(JTable table) {
+  /* default */ TablePopupMenu(JTable table) {
     super();
     this.table = table;
 

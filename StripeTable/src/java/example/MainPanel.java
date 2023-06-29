@@ -165,7 +165,7 @@ class RowData {
 final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  public TablePopupMenu() {
+  /* default */ TablePopupMenu() {
     super();
     add("add").addActionListener(e -> {
       JTable table = (JTable) getInvoker();

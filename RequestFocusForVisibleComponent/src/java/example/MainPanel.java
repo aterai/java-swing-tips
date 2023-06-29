@@ -134,7 +134,7 @@ final class TabbedPanePopupMenu extends JPopupMenu {
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
 
-  public TabbedPanePopupMenu() {
+  /* default */ TabbedPanePopupMenu() {
     super();
     add("New tab").addActionListener(e -> {
       JTabbedPane t = (JTabbedPane) getInvoker();

@@ -45,7 +45,7 @@ final class TabbedPanePopupMenu extends JPopupMenu {
   private final JMenuItem closeAll;
   private final JMenuItem closeAllButActive;
 
-  public TabbedPanePopupMenu() {
+  /* default */ TabbedPanePopupMenu() {
     super();
     AtomicInteger counter = new AtomicInteger();
     add("New tab").addActionListener(e -> {

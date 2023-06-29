@@ -108,7 +108,7 @@ final class TextComponentPopupMenu extends JPopupMenu {
     }
   };
 
-  public TextComponentPopupMenu(JTextComponent textComponent) {
+  /* default */ TextComponentPopupMenu(JTextComponent textComponent) {
     super();
     add(cutAction);
     add(copyAction);

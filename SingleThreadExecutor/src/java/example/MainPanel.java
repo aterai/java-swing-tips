@@ -145,7 +145,7 @@ public final class MainPanel extends JPanel {
     private final JMenuItem cancelMenuItem;
     private final JMenuItem deleteMenuItem;
 
-    public TablePopupMenu(ExecutorService executor) {
+    /* default */ TablePopupMenu(ExecutorService executor) {
       super();
       add("add").addActionListener(e -> addActionPerformed(executor));
       addSeparator();

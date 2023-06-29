@@ -80,7 +80,7 @@ final class TreePopupMenu extends JPopupMenu {
   private final JMenuItem editItem;
   private final JMenuItem editDialogItem;
 
-  public TreePopupMenu() {
+  /* default */ TreePopupMenu() {
     super();
     JTextField field = new JTextField();
     field.addAncestorListener(new FocusAncestorListener());

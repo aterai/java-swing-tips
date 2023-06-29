@@ -174,7 +174,7 @@ enum Status {
 final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  public TablePopupMenu() {
+  /* default */ TablePopupMenu() {
     super();
     add("add(true)").addActionListener(e -> addRowActionPerformed(true));
     add("add(false)").addActionListener(e -> addRowActionPerformed(false));

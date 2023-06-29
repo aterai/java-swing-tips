@@ -85,7 +85,7 @@ final class TextComponentPopupMenu extends JPopupMenu {
   private final Action copyAction = new DefaultEditorKit.CopyAction();
   private final JMenuItem deleteItem;
 
-  public TextComponentPopupMenu() {
+  /* default */ TextComponentPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);

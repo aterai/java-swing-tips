@@ -125,7 +125,7 @@ final class TextFieldPopupMenu extends JPopupMenu {
     }
   };
 
-  public TextFieldPopupMenu() {
+  /* default */ TextFieldPopupMenu() {
     super();
     add(cutAction);
     add(copyAction);

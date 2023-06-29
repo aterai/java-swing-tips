@@ -63,7 +63,7 @@ final class TablePopupMenu extends JPopupMenu {
   private final String[] columnNames;
   private int index = -1;
 
-  public TablePopupMenu(String... arrays) {
+  /* default */ TablePopupMenu(String... arrays) {
     super();
     columnNames = new String[arrays.length];
     System.arraycopy(arrays, 0, columnNames, 0, arrays.length);

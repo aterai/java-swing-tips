@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
   public final class TreePopupMenu extends JPopupMenu {
     private static final int MAX_NODE_LEVELS = 2;
 
-    public TreePopupMenu() {
+    /* default */ TreePopupMenu() {
       super();
       add("path").addActionListener(e -> {
         JTree tree = (JTree) getInvoker();

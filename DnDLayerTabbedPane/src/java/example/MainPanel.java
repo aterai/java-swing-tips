@@ -716,7 +716,7 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 final class ButtonTabComponent extends JPanel {
   public final JTabbedPane tabbedPane;
 
-  public ButtonTabComponent(JTabbedPane tabbedPane) {
+  /* default */ ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {

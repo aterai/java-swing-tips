@@ -114,7 +114,7 @@ final class TreePopupMenu extends JPopupMenu {
   private final JMenuItem addNodeItem;
   private TreePath path;
 
-  public TreePopupMenu() {
+  /* default */ TreePopupMenu() {
     super();
     addFolderItem = add("add folder");
     addFolderItem.addActionListener(e -> {

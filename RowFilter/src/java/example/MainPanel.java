@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     private final JMenuItem addMenuItem;
     private final JMenuItem deleteMenuItem;
 
-    public TablePopupMenu() {
+    /* default */ TablePopupMenu() {
       super();
       addMenuItem = add("add");
       addMenuItem.addActionListener(e -> {

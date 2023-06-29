@@ -104,7 +104,7 @@ final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem clear;
   private final JMenuItem toggle;
 
-  public TablePopupMenu() {
+  /* default */ TablePopupMenu() {
     super();
     select = add("select");
     select.addActionListener(e -> initAllTableValue((JTable) getInvoker(), true));

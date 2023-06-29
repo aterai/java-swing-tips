@@ -88,7 +88,7 @@ final class ListPopupMenu extends JPopupMenu {
   private final JMenuItem cut;
   private final JMenuItem copy;
 
-  public ListPopupMenu(JList<?> list) {
+  /* default */ ListPopupMenu(JList<?> list) {
     super();
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     TransferHandler handler = list.getTransferHandler();

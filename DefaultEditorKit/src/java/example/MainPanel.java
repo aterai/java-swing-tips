@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class TextFieldPopupMenu extends JPopupMenu {
-  public TextFieldPopupMenu() {
+  /* default */ TextFieldPopupMenu() {
     super();
     add(new DefaultEditorKit.CutAction());
     add(new DefaultEditorKit.CopyAction());

@@ -368,7 +368,7 @@ class EditableList<E extends ListItem> extends JList<E> {
 }
 
 final class TextComponentPopupMenu extends JPopupMenu {
-  public TextComponentPopupMenu() {
+  /* default */ TextComponentPopupMenu() {
     super();
     add(new DefaultEditorKit.CutAction());
     add(new DefaultEditorKit.CopyAction());

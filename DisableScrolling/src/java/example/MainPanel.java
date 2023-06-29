@@ -94,7 +94,7 @@ final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem createMenuItem;
   private final JMenuItem deleteMenuItem;
 
-  public TablePopupMenu() {
+  /* default */ TablePopupMenu() {
     super();
     createMenuItem = add("add");
     createMenuItem.addActionListener(e -> {

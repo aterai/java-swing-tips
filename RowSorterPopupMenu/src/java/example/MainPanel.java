@@ -97,7 +97,7 @@ final class TableHeaderPopupMenu extends JPopupMenu {
       new SortAction(SortOrder.ASCENDING),
       new SortAction(SortOrder.DESCENDING)); // new SortAction(SortOrder.UNSORTED));
 
-  public TableHeaderPopupMenu() {
+  /* default */ TableHeaderPopupMenu() {
     super();
     actions.forEach(this::add);
   }

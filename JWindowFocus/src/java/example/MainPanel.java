@@ -193,7 +193,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class TextComponentPopupMenu extends JPopupMenu {
-  public TextComponentPopupMenu() {
+  /* default */ TextComponentPopupMenu() {
     super();
     add(new DefaultEditorKit.CutAction());
     add(new DefaultEditorKit.CopyAction());

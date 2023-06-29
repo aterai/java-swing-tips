@@ -121,7 +121,7 @@ public final class MainPanel extends JPanel {
 final class ColorPanel extends JPanel {
   private final Color color;
 
-  public ColorPanel(Color color) {
+  /* default */ ColorPanel(Color color) {
     super();
     this.color = color;
   }

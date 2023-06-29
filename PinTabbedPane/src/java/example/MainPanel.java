@@ -116,7 +116,7 @@ final class PinTabPopupMenu extends JPopupMenu {
   //   }
   // };
 
-  public PinTabPopupMenu() {
+  /* default */ PinTabPopupMenu() {
     super();
     add(pinTabMenuItem).addActionListener(e -> {
       JTabbedPane t = (JTabbedPane) getInvoker();

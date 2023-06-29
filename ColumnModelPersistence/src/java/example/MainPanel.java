@@ -176,7 +176,7 @@ class DefaultTableColumnModelPersistenceDelegate extends DefaultPersistenceDeleg
 final class TableHeaderPopupMenu extends JPopupMenu {
   private int index = -1;
 
-  public TableHeaderPopupMenu() {
+  /* default */ TableHeaderPopupMenu() {
     super();
     JTextField textField = new JTextField();
     textField.addAncestorListener(new FocusAncestorListener());

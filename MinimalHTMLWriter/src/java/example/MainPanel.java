@@ -142,7 +142,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
 }
 
 final class TextComponentPopupMenu extends JPopupMenu {
-  public TextComponentPopupMenu() {
+  /* default */ TextComponentPopupMenu() {
     super();
     add(new DefaultEditorKit.CutAction());
     add(new DefaultEditorKit.CopyAction());

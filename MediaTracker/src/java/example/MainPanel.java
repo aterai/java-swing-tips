@@ -239,7 +239,7 @@ class RowData {
 final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
 
-  public TablePopupMenu() {
+  /* default */ TablePopupMenu() {
     super();
     delete = add("Remove from list");
     delete.addActionListener(e -> deleteActionPerformed());

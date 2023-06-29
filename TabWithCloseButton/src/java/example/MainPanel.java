@@ -89,7 +89,7 @@ final class TabbedPanePopupMenu extends JPopupMenu {
   private transient int count;
   private final JMenuItem closeAll;
 
-  public TabbedPanePopupMenu() {
+  /* default */ TabbedPanePopupMenu() {
     super();
     add("Add").addActionListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
