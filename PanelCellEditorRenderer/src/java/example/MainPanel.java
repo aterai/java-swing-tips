@@ -83,8 +83,8 @@ class SpinnerPanel extends JPanel {
     add(spinner, c);
   }
 
-  @Override public final Component add(Component comp) {
-    return super.add(comp);
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
   }
 
   // @Override public boolean isOpaque() {

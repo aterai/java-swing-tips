@@ -152,6 +152,10 @@ class RadioButtonsPanel extends JPanel {
   @Override public final Component add(Component comp) {
     return super.add(comp);
   }
+
+  @Override public final void removeAll() {
+    super.removeAll();
+  }
 }
 
 // delegation pattern
