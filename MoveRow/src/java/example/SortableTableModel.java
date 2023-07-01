@@ -148,23 +148,22 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
 
 class HeaderMouseListener extends MouseAdapter {
   @Override public void mousePressed(MouseEvent e) {
-    JTableHeader h = (JTableHeader) e.getComponent();
-    TableColumnModel columnModel = h.getColumnModel();
-    int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-    if (viewColumn < 0) {
-      return;
+    JTableHeader header = (JTableHeader) e.getComponent();
+    JTable table = header.getTable();
+    if (table.isEditing()) {
+      table.getCellEditor().stopCellEditing();
     }
-    TableCellRenderer tcr = h.getDefaultRenderer();
-    int column = columnModel.getColumn(viewColumn).getModelIndex();
-    if (column != -1 && tcr instanceof SortButtonRenderer) {
-      SortButtonRenderer sbr = (SortButtonRenderer) tcr;
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    // TableColumnModel columnModel = header.getColumnModel();
+    // int viewColumn = columnModel.getColumnIndexAtX(e.getX());
+    int viewColumn = table.columnAtPoint(e.getPoint());
+    if (viewColumn >= 0 && renderer instanceof SortButtonRenderer) {
+      SortButtonRenderer sbr = (SortButtonRenderer) renderer;
+      // int column = columnModel.getColumn(viewColumn).getModelIndex();
+      int column = table.convertColumnIndexToModel(viewColumn);
       sbr.setPressedColumn(column);
       sbr.setSelectedColumn(column);
-      h.repaint();
-      JTable table = h.getTable();
-      if (table.isEditing()) {
-        table.getCellEditor().stopCellEditing();
-      }
+      header.repaint();
       SortableTableModel model = (SortableTableModel) table.getModel();
       model.sortByColumn(column, SortButtonRenderer.DOWN == sbr.getState(column));
     }
