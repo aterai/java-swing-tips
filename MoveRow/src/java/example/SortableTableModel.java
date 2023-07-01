@@ -16,7 +16,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 
 // @version 1.0 02/25/99
 // @author Nobuo Tamemasa
