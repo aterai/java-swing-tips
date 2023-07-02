@@ -18,6 +18,12 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree();
     tree.putClientProperty("Nimbus.Overrides", d);
 
+    // https://ateraimemo.com/Swing/TreeLineStyle.html
+    // "Tree.linesStyle" and "JTree.lineStyle" have completely different effects
+    // tree.putClientProperty("JTree.lineStyle", "Angled");
+    // tree.putClientProperty("JTree.lineStyle", "Horizontal");
+    // tree.putClientProperty("JTree.lineStyle", "None");
+
     add(makeTitledPanel("Default", new JScrollPane(new JTree())));
     add(makeTitledPanel("linesStyle: dashed", new JScrollPane(tree)));
     setPreferredSize(new Dimension(320, 240));
