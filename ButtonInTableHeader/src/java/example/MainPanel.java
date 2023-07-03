@@ -15,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -102,8 +101,9 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     @Override public void mouseClicked(MouseEvent e) {
       JTableHeader header = (JTableHeader) e.getComponent();
       JTable table = header.getTable();
-      TableColumnModel columnModel = table.getColumnModel();
-      int vci = columnModel.getColumnIndexAtX(e.getX());
+      // TableColumnModel columnModel = table.getColumnModel();
+      // int vci = columnModel.getColumnIndexAtX(e.getX());
+      int vci = table.columnAtPoint(e.getPoint());
       // int mci = table.convertColumnIndexToModel(vci);
       // TableColumn column = table.getColumnModel().getColumn(mci);
       // int w = column.getWidth(); // Nimbus???
@@ -132,8 +132,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     @Override public void mouseMoved(MouseEvent e) {
       JTableHeader header = (JTableHeader) e.getComponent();
       JTable table = header.getTable();
-      TableColumnModel columnModel = table.getColumnModel();
-      int vci = columnModel.getColumnIndexAtX(e.getX());
+      int vci = table.columnAtPoint(e.getPoint());
       rolloverIndex = table.convertColumnIndexToModel(vci);
     }
   };
