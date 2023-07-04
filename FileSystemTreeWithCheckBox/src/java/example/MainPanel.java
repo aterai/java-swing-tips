@@ -21,6 +21,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -339,36 +340,27 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
+    TreeModel m = ((JTree) e.getSource()).getModel();
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
     Object uo = node.getUserObject();
-    if (!node.isLeaf() || !(uo instanceof CheckBoxNode)) {
-      return;
+    if (node.isLeaf() && uo instanceof CheckBoxNode && m instanceof DefaultTreeModel) {
+      DefaultTreeModel model = (DefaultTreeModel) m;
+      CheckBoxNode check = (CheckBoxNode) uo;
+      File parent = check.getFile();
+      // if (!parent.isDirectory()) {
+      //   return;
+      // }
+      Status status = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
+      BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
+        @Override protected void process(List<File> chunks) {
+          chunks.stream().map(file -> new CheckBoxNode(file, status))
+              .map(DefaultMutableTreeNode::new)
+              .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
+          // model.reload(parent); // = model.nodeStructureChanged(parent);
+        }
+      };
+      worker.execute();
     }
-    CheckBoxNode check = (CheckBoxNode) uo;
-    File parent = check.getFile();
-    if (!parent.isDirectory()) {
-      return;
-    }
-
-    Status status = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
-    DefaultTreeModel model = (DefaultTreeModel) ((JTree) e.getSource()).getModel();
-    BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
-      @Override protected void process(List<File> chunks) {
-        // if (isCancelled()) {
-        //   return;
-        // }
-        // if (!tree.isDisplayable()) {
-        //   System.out.println("process: DISPOSE_ON_CLOSE");
-        //   cancel(true);
-        //   return;
-        // }
-        chunks.stream().map(file -> new CheckBoxNode(file, status))
-            .map(DefaultMutableTreeNode::new)
-            .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
-        // model.reload(parent); // = model.nodeStructureChanged(parent);
-      }
-    };
-    worker.execute();
   }
 }
 
