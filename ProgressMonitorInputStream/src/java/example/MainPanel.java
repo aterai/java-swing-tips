@@ -118,14 +118,11 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void process(List<Chunk> chunks) {
-      if (isCancelled()) {
-        return;
-      }
       if (!isDisplayable()) {
         cancel(true);
-        return;
+      } else { // if (!isCancelled()) {
+        chunks.forEach(MainPanel.this::update);
       }
-      chunks.forEach(MainPanel.this::update);
     }
 
     @Override protected void done() {
@@ -175,8 +172,8 @@ public final class MainPanel extends JPanel {
       return;
     }
     JFrame frame = new JFrame("@title@");
-    // frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
