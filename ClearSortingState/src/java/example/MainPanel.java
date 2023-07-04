@@ -7,18 +7,15 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
@@ -32,22 +29,12 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     table.getTableHeader().addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        RowSorter<? extends TableModel> sorter = table.getRowSorter();
-        if (Objects.isNull(sorter) || sorter.getSortKeys().isEmpty()) {
-          return;
-        }
-        JTableHeader h = (JTableHeader) e.getComponent();
-        TableColumnModel columnModel = h.getColumnModel();
-        int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-        // ArrayIndexOutOfBoundsException: -1
-        if (viewColumn < 0) {
-          return;
-        }
-        int column = columnModel.getColumn(viewColumn).getModelIndex();
-
-        if (column != -1 && e.isShiftDown()) {
-          // if (column != -1 && e.isControlDown()) {
-          EventQueue.invokeLater(() -> sorter.setSortKeys(null));
+        JTableHeader header = (JTableHeader) e.getComponent();
+        JTable tbl = header.getTable();
+        int column = tbl.convertColumnIndexToModel(tbl.columnAtPoint(e.getPoint()));
+        RowSorter<? extends TableModel> sorter = tbl.getRowSorter();
+        if (sorter != null && column >= 0 && e.isShiftDown()) {
+          sorter.setSortKeys(null);
         }
       }
     });
