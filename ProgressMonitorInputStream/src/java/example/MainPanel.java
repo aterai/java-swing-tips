@@ -118,10 +118,10 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void process(List<Chunk> chunks) {
-      if (!isDisplayable()) {
-        cancel(true);
-      } else { // if (!isCancelled()) {
+      if (isDisplayable()) { // && !isCancelled()) {
         chunks.forEach(MainPanel.this::update);
+      } else {
+        cancel(true);
       }
     }
 
