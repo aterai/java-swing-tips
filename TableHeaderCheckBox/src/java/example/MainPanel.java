@@ -27,10 +27,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
-        {true, 1, "BBB"}, {false, 12, "AAA"},
-        {true, 2, "DDD"}, {false, 5, "CCC"},
-        {true, 3, "EEE"}, {false, 6, "GGG"},
-        {true, 4, "FFF"}, {false, 7, "HHH"}
+        {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -38,7 +36,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      protected static final int MODEL_COLUMN_IDX = 0;
+      private static final int MODEL_COLUMN_IDX = 0;
       private transient HeaderCheckBoxHandler handler;
 
       @Override public void updateUI() {
@@ -228,11 +226,11 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
     JTable tbl = header.getTable();
-    TableColumnModel columnModel = tbl.getColumnModel();
     TableModel m = tbl.getModel();
-    int vci = columnModel.getColumnIndexAtX(e.getX());
+    int vci = tbl.columnAtPoint(e.getPoint());
     int mci = tbl.convertColumnIndexToModel(vci);
     if (mci == targetColumnIndex && m.getRowCount() > 0) {
+      TableColumnModel columnModel = tbl.getColumnModel();
       TableColumn column = columnModel.getColumn(vci);
       boolean b = column.getHeaderValue() == Status.DESELECTED;
       for (int i = 0; i < m.getRowCount(); i++) {
