@@ -123,23 +123,20 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void process(List<List<Object[]>> chunks) {
-      if (isCancelled()) {
-        return;
-      }
-      if (!isDisplayable()) {
+      if (isDisplayable()) {
+        // for (List<Object[]> list : chunks) {
+        //   for (Object[] o : list) {
+        //     model.addRow(o);
+        //   }
+        // }
+        chunks.forEach(l -> l.forEach(model::addRow));
+        int rowCount = model.getRowCount();
+        setMaxPageIndex(rowCount / itemsPerPage + (rowCount % itemsPerPage == 0 ? 0 : 1));
+        initFilterAndButtons();
+      } else {
         // System.out.println("process: DISPOSE_ON_CLOSE");
         cancel(true);
-        return;
       }
-      // for (List<Object[]> list : chunks) {
-      //   for (Object[] o : list) {
-      //     model.addRow(o);
-      //   }
-      // }
-      chunks.forEach(l -> l.forEach(model::addRow));
-      int rowCount = model.getRowCount();
-      setMaxPageIndex(rowCount / itemsPerPage + (rowCount % itemsPerPage == 0 ? 0 : 1));
-      initFilterAndButtons();
     }
 
     @Override protected void done() {
