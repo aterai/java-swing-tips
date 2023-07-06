@@ -202,11 +202,11 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
     JTable tbl = header.getTable();
-    TableColumnModel columnModel = tbl.getColumnModel();
     TableModel m = tbl.getModel();
-    int vci = columnModel.getColumnIndexAtX(e.getX());
+    int vci = tbl.columnAtPoint(e.getPoint());
     int mci = tbl.convertColumnIndexToModel(vci);
     if (mci == targetColumnIndex && m.getRowCount() > 0) {
+      TableColumnModel columnModel = tbl.getColumnModel();
       TableColumn column = columnModel.getColumn(vci);
       boolean b = column.getHeaderValue() == Status.DESELECTED;
       for (int i = 0; i < m.getRowCount(); i++) {
