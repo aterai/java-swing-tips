@@ -24,12 +24,11 @@ public final class MainPanel extends JPanel {
       @Override public void valueChanged(ListSelectionEvent e) {
         int sr = table0.getSelectedRow();
         int sc = table0.getSelectedColumn();
-        if (e.getValueIsAdjusting() || getRowColumnAdjusting(sr, sc)) {
-          return;
+        if (!e.getValueIsAdjusting() && updateRowColumnInfo(sr, sc)) {
+          Object o = table0.getValueAt(sr, sc);
+          textArea.append(String.format("(%d, %d) %s%n", sr, sc, o));
+          textArea.setCaretPosition(textArea.getDocument().getLength());
         }
-        Object o = table0.getValueAt(sr, sc);
-        textArea.append(String.format("(%d, %d) %s%n", sr, sc, o));
-        textArea.setCaretPosition(textArea.getDocument().getLength());
       }
     };
     table0.getSelectionModel().addListSelectionListener(lsl0);
@@ -41,12 +40,11 @@ public final class MainPanel extends JPanel {
       @Override public void valueChanged(ListSelectionEvent e) {
         int sr = table1.getSelectionModel().getLeadSelectionIndex();
         int sc = table1.getColumnModel().getSelectionModel().getLeadSelectionIndex();
-        if (e.getValueIsAdjusting() || getRowColumnAdjusting(sr, sc)) {
-          return;
+        if (!e.getValueIsAdjusting() && updateRowColumnInfo(sr, sc)) {
+          Object o = table1.getValueAt(sr, sc);
+          textArea.append(String.format("(%d, %d) %s%n", sr, sc, o));
+          textArea.setCaretPosition(textArea.getDocument().getLength());
         }
-        Object o = table1.getValueAt(sr, sc);
-        textArea.append(String.format("(%d, %d) %s%n", sr, sc, o));
-        textArea.setCaretPosition(textArea.getDocument().getLength());
       }
     };
     table1.getSelectionModel().addListSelectionListener(lsl1);
@@ -55,30 +53,28 @@ public final class MainPanel extends JPanel {
     JTable table2 = new JTable(model);
     table2.setCellSelectionEnabled(true);
     table2.getSelectionModel().addListSelectionListener(e -> {
-      if (e.getValueIsAdjusting()) {
-        return;
+      if (!e.getValueIsAdjusting()) {
+        int firstIndex = e.getFirstIndex();
+        int lastIndex = e.getLastIndex();
+        textArea.append(String.format("row first, last: %d, %d%n", firstIndex, lastIndex));
+        ListSelectionModel m = (ListSelectionModel) e.getSource();
+        int asi = m.getAnchorSelectionIndex();
+        int lsi = m.getLeadSelectionIndex();
+        textArea.append(String.format("row anchor->lead: %d->%d%n", asi, lsi));
+        textArea.setCaretPosition(textArea.getDocument().getLength());
       }
-      int firstIndex = e.getFirstIndex();
-      int lastIndex = e.getLastIndex();
-      textArea.append(String.format("row first, last: %d, %d%n", firstIndex, lastIndex));
-      ListSelectionModel m = (ListSelectionModel) e.getSource();
-      int asi = m.getAnchorSelectionIndex();
-      int lsi = m.getLeadSelectionIndex();
-      textArea.append(String.format("row anchor->lead: %d->%d%n", asi, lsi));
-      textArea.setCaretPosition(textArea.getDocument().getLength());
     });
     table2.getColumnModel().getSelectionModel().addListSelectionListener(e -> {
-      if (e.getValueIsAdjusting()) {
-        return;
+      if (!e.getValueIsAdjusting()) {
+        int firstIndex = e.getFirstIndex();
+        int lastIndex = e.getLastIndex();
+        textArea.append(String.format("column first, last: %d, %d%n", firstIndex, lastIndex));
+        ListSelectionModel m = (ListSelectionModel) e.getSource();
+        int asi = m.getAnchorSelectionIndex();
+        int lsi = m.getLeadSelectionIndex();
+        textArea.append(String.format("column anchor->lead: %d->%d%n", asi, lsi));
+        textArea.setCaretPosition(textArea.getDocument().getLength());
       }
-      int firstIndex = e.getFirstIndex();
-      int lastIndex = e.getLastIndex();
-      textArea.append(String.format("column first, last: %d, %d%n", firstIndex, lastIndex));
-      ListSelectionModel m = (ListSelectionModel) e.getSource();
-      int asi = m.getAnchorSelectionIndex();
-      int lsi = m.getLeadSelectionIndex();
-      textArea.append(String.format("column anchor->lead: %d->%d%n", asi, lsi));
-      textArea.setCaretPosition(textArea.getDocument().getLength());
     });
 
     JTable table3 = new JTable(model) {
@@ -151,10 +147,10 @@ abstract class AbstractTableCellSelectionListener implements ListSelectionListen
   private int prevRow = -1;
   private int prevCol = -1;
 
-  protected boolean getRowColumnAdjusting(int sr, int sc) {
+  protected boolean updateRowColumnInfo(int sr, int sc) {
     boolean flg = prevRow == sr && prevCol == sc;
     prevRow = sr;
     prevCol = sc;
-    return flg;
+    return !flg;
   }
 }
