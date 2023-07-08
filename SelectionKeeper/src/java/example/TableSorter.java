@@ -52,7 +52,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -451,15 +450,17 @@ public class TableSorter extends AbstractTableModel {
   private final class MouseHandler extends MouseAdapter {
     @Override public void mouseClicked(MouseEvent e) {
       JTableHeader h = (JTableHeader) e.getComponent();
-      TableColumnModel columnModel = h.getColumnModel();
-      int viewColumn = columnModel.getColumnIndexAtX(e.getX());
+      // TableColumnModel columnModel = h.getColumnModel();
+      // int viewColumn = columnModel.getColumnIndexAtX(e.getX());
       // ArrayIndexOutOfBoundsException: -1
-      if (viewColumn < 0) {
-        return;
-      }
-      int column = columnModel.getColumn(viewColumn).getModelIndex();
+      // if (viewColumn < 0) {
+      //   return;
+      // }
+      // int column = columnModel.getColumn(viewColumn).getModelIndex();
+      JTable t = h.getTable();
+      int viewColumn = t.columnAtPoint(e.getPoint());
+      int column = t.convertColumnIndexToModel(viewColumn);
       if (column != -1) {
-        JTable t = h.getTable();
         int keyCol = 0;
         // List<?> list = saveSelectedRow(t, keyCol);
         List<Object> list = new ArrayList<>();
