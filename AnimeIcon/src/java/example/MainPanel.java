@@ -31,10 +31,9 @@ public final class MainPanel extends JPanel {
     area.setEditable(false);
     area.setLineWrap(true);
     runButton.addActionListener(e -> executeWorker());
-    cancelButton.addActionListener(e -> {
-      Optional.ofNullable(worker).filter(w -> !w.isDone()).ifPresent(w -> w.cancel(true));
-      // worker = null;
-    });
+    cancelButton.addActionListener(e -> Optional.ofNullable(worker)
+        .filter(w -> !w.isDone())
+        .ifPresent(w -> w.cancel(true)));
 
     Box box = Box.createHorizontalBox();
     box.add(loadingLabel);
@@ -58,14 +57,11 @@ public final class MainPanel extends JPanel {
     worker = new BackgroundTask() {
       @Override protected void process(List<String> chunks) {
         // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-        if (isCancelled()) {
-          return;
-        }
-        if (!isDisplayable()) {
+        if (isDisplayable() && !isCancelled()) {
+          chunks.forEach(MainPanel.this::appendLine);
+        } else {
           cancel(true);
-          return;
         }
-        chunks.forEach(MainPanel.this::appendLine);
       }
 
       @Override protected void done() {
