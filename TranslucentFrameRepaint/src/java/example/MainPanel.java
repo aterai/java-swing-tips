@@ -168,7 +168,7 @@ enum TexturePaints {
       case IMAGE: return TextureUtils.makeImageTexture();
       case CHECKER: return TextureUtils.makeCheckerTexture();
       case NULL: return null;
-      default: throw new AssertionError();
+      default: throw new AssertionError("Cannot happen");
     }
   }
 
