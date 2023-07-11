@@ -155,22 +155,6 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
   }
 
-  private static <E> Optional<AbstractButton> getItemCheckBox(JList<E> list, MouseEvent e, int index) {
-    if (e.isShiftDown() || e.isControlDown() || e.isAltDown()) {
-      return Optional.empty();
-    }
-    E proto = list.getPrototypeCellValue();
-    ListCellRenderer<? super E> cr = list.getCellRenderer();
-    Component c = cr.getListCellRendererComponent(list, proto, index, false, false);
-    Rectangle r = list.getCellBounds(index, index);
-    c.setBounds(r);
-    // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout)
-    Point pt = e.getPoint();
-    pt.translate(-r.x, -r.y);
-    return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-        .filter(AbstractButton.class::isInstance).map(AbstractButton.class::cast);
-  }
-
   private static Color makeRubberBandColor(Color c) {
     int r = c.getRed();
     int g = c.getGreen();
@@ -239,7 +223,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       int index = l.locationToIndex(e.getPoint());
       if (l.getCellBounds(index, index).contains(e.getPoint())) {
         l.setFocusable(true);
-        cellPressed(l, e, index);
+        cellPressed(e, index);
       } else {
         l.setFocusable(false);
         l.clearSelection();
@@ -250,22 +234,39 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       l.repaint();
     }
 
-    private void cellPressed(JList<?> l, MouseEvent e, int index) {
+    private void cellPressed(MouseEvent e, int index) {
       if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() > 1) {
         ListItem item = getModel().getElementAt(index);
-        JOptionPane.showMessageDialog(l.getRootPane(), item.title);
+        JOptionPane.showMessageDialog(getRootPane(), item.title);
       } else {
         checkedIndex = -1;
-        getItemCheckBox(l, e, index).ifPresent(rb -> {
+        getCheckBox(e, index).ifPresent(rb -> {
           checkedIndex = index;
-          if (l.isSelectedIndex(index)) {
-            l.setFocusable(false);
+          if (isSelectedIndex(index)) {
+            setFocusable(false);
             removeSelectionInterval(index, index);
           } else {
             setSelectionInterval(index, index);
           }
         });
       }
+    }
+
+    private Optional<AbstractButton> getCheckBox(MouseEvent e, int index) {
+      if (e.isShiftDown() || e.isControlDown() || e.isAltDown()) {
+        return Optional.empty();
+      }
+      JList<E> list = RubberBandSelectionList.this;
+      E proto = list.getPrototypeCellValue();
+      ListCellRenderer<? super E> cr = list.getCellRenderer();
+      Component c = cr.getListCellRendererComponent(list, proto, index, false, false);
+      Rectangle r = list.getCellBounds(index, index);
+      c.setBounds(r);
+      // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout)
+      Point pt = e.getPoint();
+      pt.translate(-r.x, -r.y);
+      return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
+          .filter(AbstractButton.class::isInstance).map(AbstractButton.class::cast);
     }
   }
 
