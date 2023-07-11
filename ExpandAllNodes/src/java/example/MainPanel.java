@@ -73,9 +73,9 @@ public final class MainPanel extends JPanel {
     TreeNode node = (TreeNode) parent.getLastPathComponent();
     // Java 9: Collections.list(node.children()).stream()
     Collections.list((Enumeration<?>) node.children()).stream()
-      .filter(TreeNode.class::isInstance)
-      .map(TreeNode.class::cast)
-      .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
+        .filter(TreeNode.class::isInstance)
+        .map(TreeNode.class::cast)
+        .forEach(n -> visitAll(tree, parent.pathByAddingChild(n), expand));
     // if (!node.isLeaf()) {
     //   // Java 9: Enumeration<TreeNode> e = node.children();
     //   Enumeration<?> e = node.children();

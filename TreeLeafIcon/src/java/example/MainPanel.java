@@ -93,8 +93,8 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-      .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
-      .forEach(model::nodeChanged);
+        .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
+        .forEach(model::nodeChanged);
   }
 
   public static void main(String[] args) {

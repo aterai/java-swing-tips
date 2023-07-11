@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       setViewTypeDetails(fileChooser1);
       descendants(fileChooser1)
-        .filter(JTable.class::isInstance).map(JTable.class::cast)
-        // debugging: .peek(table -> append(log, "isEditing: " + table.isEditing()))
-        .findFirst()
-        .filter(JTable::isEditing).ifPresent(JTable::removeEditor);
+          .filter(JTable.class::isInstance).map(JTable.class::cast)
+          // debugging: .peek(table -> append(log, "isEditing: " + table.isEditing()))
+          .findFirst()
+          .filter(JTable::isEditing).ifPresent(JTable::removeEditor);
       int retValue = fileChooser1.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         append(log, fileChooser1.getSelectedFile().getAbsolutePath());

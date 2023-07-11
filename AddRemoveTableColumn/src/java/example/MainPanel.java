@@ -117,6 +117,6 @@ final class TableHeaderPopupMenu extends JPopupMenu {
 
   private static Stream<MenuElement> descendants(MenuElement me) {
     return Stream.of(me.getSubElements())
-      .flatMap(m -> Stream.concat(Stream.of(m), descendants(m)));
+        .flatMap(m -> Stream.concat(Stream.of(m), descendants(m)));
   }
 }

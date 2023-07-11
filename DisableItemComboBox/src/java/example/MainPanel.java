@@ -51,10 +51,10 @@ public final class MainPanel extends JPanel {
   private static Set<Integer> getDisableIndexFromTextField(JTextField field) {
     try {
       return Stream.of(field.getText().split(","))
-        .map(String::trim)
-        .filter(s -> !s.isEmpty())
-        .map(Integer::valueOf)
-        .collect(Collectors.toSet());
+          .map(String::trim)
+          .filter(s -> !s.isEmpty())
+          .map(Integer::valueOf)
+          .collect(Collectors.toSet());
     } catch (NumberFormatException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
       String msg = "invalid value.\n" + ex.getMessage();

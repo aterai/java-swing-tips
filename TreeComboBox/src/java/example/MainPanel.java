@@ -53,8 +53,8 @@ public final class MainPanel extends JPanel {
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children()).stream()
       Collections.list((Enumeration<?>) node.children()).stream()
-        .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
-        .forEach(n -> makeComboBoxModel(model, n));
+          .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
+          .forEach(n -> makeComboBoxModel(model, n));
     }
   }
 

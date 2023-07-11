@@ -36,9 +36,9 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
     // Java 9: Collections.list(root.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-      .filter(DefaultMutableTreeNode.class::isInstance)
-      .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
-      .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(node -> new TreePath(((DefaultMutableTreeNode) node).getPath()))
+        .forEach(path -> tree.expandRow(tree.getRowForPath(path)));
   }
 
   private static Component makeTitledPanel(String title, Component c) {
