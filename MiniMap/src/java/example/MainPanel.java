@@ -198,8 +198,8 @@ public final class MainPanel extends JPanel {
     ScriptEngine engine = createEngine();
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines.map(s -> s.replace("&", "&amp;")
-              .replace("<", "&lt;")
-              .replace(">", "&gt;"))
+          .replace("<", "&lt;")
+          .replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
       String html = "<pre>" + prettify(engine, txt) + "\n</pre>";
       editor.setText(html);
