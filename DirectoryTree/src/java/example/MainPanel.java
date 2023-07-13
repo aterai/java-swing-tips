@@ -126,17 +126,14 @@ class FolderSelectionListener implements TreeSelectionListener {
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
-        if (isCancelled()) {
-          return;
-        }
-        if (!tree.isDisplayable()) {
+        if (tree.isDisplayable() && !isCancelled()) {
+          chunks.stream().map(DefaultMutableTreeNode::new)
+              .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
+          // model.reload(parent); // = model.nodeStructureChanged(parent);
+          // tree.expandPath(path);
+        } else {
           cancel(true);
-          return;
         }
-        chunks.stream().map(DefaultMutableTreeNode::new)
-            .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
-        // model.reload(parent); // = model.nodeStructureChanged(parent);
-        // tree.expandPath(path);
       }
     }.execute();
   }
