@@ -108,21 +108,11 @@ class FolderSelectionListener implements TreeSelectionListener {
 
   @Override public void valueChanged(TreeSelectionEvent e) {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    if (!node.isLeaf()) {
-      return;
-    }
     File parent = (File) node.getUserObject();
-    if (!parent.isDirectory()) {
+    if (!node.isLeaf() || !parent.isDirectory()) {
       return;
     }
-
     JTree tree = (JTree) e.getSource();
-    // if (frame == null) {
-    //   frame = (JFrame) SwingUtilities.getWindowAncestor(tree);
-    //   frame.setGlassPane(new LockingGlassPane());
-    // }
-    // frame.getGlassPane().setVisible(true);
-
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
