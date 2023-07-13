@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     int lengthOfTask = rnd.nextInt(100) + 100;
     SwingWorker<Integer, ProgressValue> worker = new BackgroundTask(lengthOfTask) {
       @Override protected void process(List<ProgressValue> c) {
-        if (isDisplayable()) {
+        if (isDisplayable() && !isCancelled()) {
           c.forEach(v -> model.setValueAt(v, key, 2));
         } else {
           // System.out.println("process: DISPOSE_ON_CLOSE");

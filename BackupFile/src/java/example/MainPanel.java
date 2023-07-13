@@ -84,14 +84,11 @@ public final class MainPanel extends JPanel {
     File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
     new BackgroundTask(file, model1.getNumber().intValue(), model2.getNumber().intValue()) {
       @Override protected void process(List<Message> chunks) {
-        if (isCancelled()) {
-          return;
-        }
-        if (!isDisplayable()) {
+        if (isDisplayable() && !isCancelled()) {
+          chunks.forEach(MainPanel.this::append);
+        } else {
           cancel(true);
-          return;
         }
-        chunks.forEach(MainPanel.this::append);
       }
 
       @Override protected void done() {

@@ -123,7 +123,7 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void process(List<List<Object[]>> chunks) {
-      if (isDisplayable()) {
+      if (isDisplayable() && !isCancelled()) {
         // for (List<Object[]> list : chunks) {
         //   for (Object[] o : list) {
         //     model.addRow(o);
