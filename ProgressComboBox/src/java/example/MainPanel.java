@@ -54,17 +54,14 @@ public final class MainPanel extends JPanel {
 
   private final class ComboTask extends BackgroundTask {
     @Override protected void process(List<Integer> chunks) {
-      if (isCancelled()) {
-        return;
-      }
-      if (!isDisplayable()) {
+      if (isDisplayable() && !isCancelled()) {
+        chunks.forEach(this::setProgress);
+        combo.setSelectedIndex(-1);
+        combo.repaint();
+      } else {
         // System.out.println("process: DISPOSE_ON_CLOSE");
         cancel(true);
-        return;
       }
-      chunks.forEach(this::setProgress);
-      combo.setSelectedIndex(-1);
-      combo.repaint();
     }
 
     @Override protected void done() {

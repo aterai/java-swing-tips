@@ -106,15 +106,12 @@ public final class MainPanel extends JPanel {
 
     @Override protected void process(List<Message> chunks) {
       // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-      if (isCancelled()) {
-        return;
-      }
-      if (!isDisplayable()) {
+      if (isDisplayable() && !isCancelled()) {
+        chunks.forEach(MainPanel.this::updateMessage);
+      } else {
         // System.out.println("process: DISPOSE_ON_CLOSE");
         cancel(true);
-        return;
       }
-      chunks.forEach(MainPanel.this::updateMessage);
     }
 
     @Override protected void done() {
