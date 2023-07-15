@@ -84,7 +84,7 @@ class EditableTitledBorder extends TitledBorder {
   protected final JTextField editor = new JTextField();
   protected final JLabel renderer = new JLabel();
   protected final Rectangle rect = new Rectangle();
-  protected final Container glassPane = new JComponent() {
+  protected final Container glassPane = new JLabel() { // NG? : JComponent() {
     private transient MouseListener listener;
     @Override public void updateUI() {
       removeMouseListener(listener);
@@ -226,10 +226,9 @@ class EditableTitledBorder extends TitledBorder {
   private int getJustification2(Component c) {
     int justification = getTitleJustification();
     if (justification == LEADING || justification == DEFAULT_JUSTIFICATION) {
-      return c.getComponentOrientation().isLeftToRight() ? LEFT : RIGHT;
-    }
-    if (justification == TRAILING) {
-      return c.getComponentOrientation().isLeftToRight() ? RIGHT : LEFT;
+      justification = c.getComponentOrientation().isLeftToRight() ? LEFT : RIGHT;
+    } else if (justification == TRAILING) {
+      justification = c.getComponentOrientation().isLeftToRight() ? RIGHT : LEFT;
     }
     return justification;
   }
