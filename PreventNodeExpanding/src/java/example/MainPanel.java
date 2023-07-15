@@ -138,11 +138,8 @@ class FolderSelectionListener implements TreeSelectionListener {
 
   @Override public void valueChanged(TreeSelectionEvent e) {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    if (!node.isLeaf()) {
-      return;
-    }
     File parent = (File) node.getUserObject();
-    if (!parent.isDirectory()) {
+    if (!node.isLeaf() || !parent.isDirectory()) {
       return;
     }
 
@@ -150,16 +147,13 @@ class FolderSelectionListener implements TreeSelectionListener {
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
-        if (isCancelled()) {
-          return;
-        }
-        if (!tree.isDisplayable()) {
+        if (tree.isDisplayable() && !isCancelled()) {
+          chunks.stream().map(DefaultMutableTreeNode::new)
+              .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
+          // model.reload(node);
+        } else {
           cancel(true);
-          return;
         }
-        chunks.stream().map(DefaultMutableTreeNode::new)
-            .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
-        // model.reload(node);
       }
     }.execute();
   }
