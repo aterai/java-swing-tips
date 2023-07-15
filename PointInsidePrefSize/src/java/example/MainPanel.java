@@ -181,24 +181,27 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   @Override public void mouseMoved(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
-    final int prevRow = viewRowIndex;
-    final int prevCol = viewColumnIndex;
-    final boolean prevRollover = isRollover;
+    int prevRow = viewRowIndex;
+    int prevCol = viewColumnIndex;
     viewRowIndex = table.rowAtPoint(pt);
     viewColumnIndex = table.columnAtPoint(pt);
+    boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
+
+    boolean prevRollover = isRollover;
     isRollover = isUrlColumn(table, viewColumnIndex) && pointInsidePrefSize(table, pt);
-    boolean isSameRow = viewRowIndex == prevRow;
-    boolean isSameCol = viewColumnIndex == prevCol;
-    boolean isSameRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
-    if (isSameRow && isSameCol && isSameRollover) {
+    boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
+
+    if (isSameCell && isNotRollover) {
       return;
     }
+
     // if (viewRowIndex == prevRow && viewColumnIndex == prevCol && isRollover == prevRollover) {
     //   return;
     // }
     // if (!isRollover && !prevRollover) {
     //   return;
     // }
+
     // >>>> HyperlinkCellRenderer.java
     // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
     Rectangle repaintRect;
