@@ -125,15 +125,12 @@ public final class MainPanel extends JPanel {
     Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
     worker = new SortingTask(sa, number, array, paintArea, factorx, factory) {
       @Override protected void process(List<Rectangle> chunks) {
-        if (isCancelled()) {
-          return;
-        }
-        if (!isDisplayable()) {
+        if (isDisplayable() && !isCancelled()) {
+          chunks.forEach(panel::repaint);
+        } else {
           // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
-          return;
         }
-        chunks.forEach(panel::repaint);
       }
 
       @Override protected void done() {
