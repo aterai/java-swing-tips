@@ -55,15 +55,12 @@ public final class MainPanel extends JPanel {
   private final class AnimationTask extends BackgroundTask {
     @Override protected void process(List<String> chunks) {
       // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-      if (isCancelled()) {
-        return;
-      }
-      if (!isDisplayable()) {
+      if (isDisplayable() && !isCancelled()) {
+        chunks.forEach(MainPanel.this::appendText);
+      } else {
         // System.out.println("process: DISPOSE_ON_CLOSE");
         cancel(true);
-        return;
       }
-      chunks.forEach(MainPanel.this::appendText);
     }
 
     @Override protected void done() {
