@@ -248,13 +248,14 @@ class CloseableTabIconHandler extends MouseAdapter {
    * @param e  the <code>MouseEvent</code>
    */
   @Override public void mouseClicked(MouseEvent e) {
+    CloseableTabbedPane tabbedPane = null;
+    CloseTabIcon icon = null;
     Component c = e.getComponent();
-    if (!(c instanceof CloseableTabbedPane)) {
-      return;
+    if (c instanceof CloseableTabbedPane) {
+      tabbedPane = (CloseableTabbedPane) c;
+      icon = getCloseTabIcon((CloseableTabbedPane) c, e.getPoint());
     }
-    CloseableTabbedPane tabbedPane = (CloseableTabbedPane) c;
-    CloseTabIcon icon = getCloseTabIcon(tabbedPane, e.getPoint());
-    if (Objects.isNull(icon)) {
+    if (Objects.isNull(tabbedPane) || Objects.isNull(icon)) {
       return;
     }
     if (isCloseTabIconRollover(tabbedPane, icon, e)) {
