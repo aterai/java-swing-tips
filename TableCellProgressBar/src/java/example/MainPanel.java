@@ -96,16 +96,13 @@ public final class MainPanel extends JPanel {
     int key = model.getRowCount();
     SwingWorker<Integer, Integer> worker = new BackgroundTask() {
       @Override protected void process(List<Integer> c) {
-        if (isCancelled()) {
-          return;
-        }
-        if (!isDisplayable()) {
+        if (isDisplayable() && !isCancelled()) {
+          c.forEach(v -> model.setValueAt(v, key, 2));
+        } else {
           // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
           // executor.shutdown();
-          return;
         }
-        c.forEach(v -> model.setValueAt(v, key, 2));
       }
 
       @Override protected void done() {
