@@ -251,10 +251,9 @@ public class TitledBorder2 extends TitledBorder {
   private int getJustification2(Component c) {
     int justification = getTitleJustification();
     if (justification == LEADING || justification == DEFAULT_JUSTIFICATION) {
-      return c.getComponentOrientation().isLeftToRight() ? LEFT : RIGHT;
-    }
-    if (justification == TRAILING) {
-      return c.getComponentOrientation().isLeftToRight() ? RIGHT : LEFT;
+      justification = c.getComponentOrientation().isLeftToRight() ? LEFT : RIGHT;
+    } else if (justification == TRAILING) {
+      justification = c.getComponentOrientation().isLeftToRight() ? RIGHT : LEFT;
     }
     return justification;
   }
