@@ -129,13 +129,15 @@ public final class MainPanel extends JPanel {
   }
 
   private static Color getTabTabForeground(int i, int selected, int cursor) {
+    Color color;
     if (i == selected) {
-      return Color.BLACK;
+      color = Color.BLACK;
     } else if (i == cursor) {
-      return Color.ORANGE;
+      color = Color.ORANGE;
     } else {
-      return Color.WHITE;
+      color = Color.WHITE;
     }
+    return color;
   }
 
   private static JComboBox<String> makeComboBox(Map<String, Color> map) {
