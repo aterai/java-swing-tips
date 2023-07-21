@@ -346,24 +346,30 @@ final class TitledBorderUtils {
 
   public static Integer getPositionByString(Object value) {
     String s = Objects.toString(value).toUpperCase(Locale.ENGLISH);
-    if (Objects.equals("ABOVE_TOP", s)) {
-      return TitledBorder.ABOVE_TOP;
+    Integer ret;
+    switch (s) {
+      case "ABOVE_TOP":
+        ret = TitledBorder.ABOVE_TOP;
+        break;
+      case "TOP":
+        ret = TitledBorder.TOP;
+        break;
+      case "BELOW_TOP":
+        ret = TitledBorder.BELOW_TOP;
+        break;
+      case "ABOVE_BOTTOM":
+        ret = TitledBorder.ABOVE_BOTTOM;
+        break;
+      case "BOTTOM":
+        ret = TitledBorder.BOTTOM;
+        break;
+      case "BELOW_BOTTOM":
+        ret = TitledBorder.BELOW_BOTTOM;
+        break;
+      default:
+        ret = null;
+        break;
     }
-    if (Objects.equals("TOP", s)) {
-      return TitledBorder.TOP;
-    }
-    if (Objects.equals("BELOW_TOP", s)) {
-      return TitledBorder.BELOW_TOP;
-    }
-    if (Objects.equals("ABOVE_BOTTOM", s)) {
-      return TitledBorder.ABOVE_BOTTOM;
-    }
-    if (Objects.equals("BOTTOM", s)) {
-      return TitledBorder.BOTTOM;
-    }
-    if (Objects.equals("BELOW_BOTTOM", s)) {
-      return TitledBorder.BELOW_BOTTOM;
-    }
-    return null;
+    return ret;
   }
 }
