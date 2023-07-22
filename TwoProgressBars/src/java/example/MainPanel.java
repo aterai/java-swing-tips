@@ -70,14 +70,11 @@ public final class MainPanel extends JPanel {
 
   private final class ProgressTask extends BackgroundTask {
     @Override protected void process(List<Progress> chunks) {
-      if (isCancelled()) {
-        return;
-      }
-      if (!isDisplayable()) {
+      if (isDisplayable() && !isCancelled()) {
+        chunks.forEach(MainPanel.this::updateProgress);
+      } else {
         cancel(true);
-        return;
       }
-      chunks.forEach(MainPanel.this::updateProgress);
     }
 
     @Override protected void done() {
