@@ -111,9 +111,6 @@ public final class MainPanel extends JPanel {
 }
 
 class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
-  // private static final Rectangle CELL_RECT = new Rectangle();
-  // private static final Rectangle ICON_RECT = new Rectangle();
-  // private static final Rectangle TEXT_RECT = new Rectangle();
   private int viewRowIndex = -1;
   private int viewColumnIndex = -1;
   private boolean isRollover;
@@ -141,21 +138,6 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isRollover;
   }
 
-  // @see SwingUtilities2.pointOutsidePrefSize(...)
-  // private static boolean pointInsidePrefSize(JTable table, Point p) {
-  //   int row = table.rowAtPoint(p);
-  //   int col = table.columnAtPoint(p);
-  //   TableCellRenderer tcr = table.getCellRenderer(row, col);
-  //   Object value = table.getValueAt(row, col);
-  //   Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
-  //   Dimension itemSize = cell.getPreferredSize();
-  //   Insets i = ((JComponent) cell).getInsets();
-  //   Rectangle cellBounds = table.getCellRect(row, col, false);
-  //   cellBounds.width = itemSize.width - i.right - i.left;
-  //   cellBounds.translate(i.left, i.top);
-  //   return cellBounds.contains(p);
-  // }
-
   private static boolean isUrlColumn(JTable table, int column) {
     return column >= 0 && table.getColumnClass(column).equals(URL.class);
   }
@@ -163,18 +145,20 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   @Override public void mouseMoved(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
-    final int prevRow = viewRowIndex;
-    final int prevCol = viewColumnIndex;
-    final boolean prevRollover = isRollover;
+    int prevRow = viewRowIndex;
+    int prevCol = viewColumnIndex;
     viewRowIndex = table.rowAtPoint(pt);
     viewColumnIndex = table.columnAtPoint(pt);
-    isRollover = isUrlColumn(table, viewColumnIndex); // && pointInsidePrefSize(table, pt);
-    if (viewRowIndex == prevRow && viewColumnIndex == prevCol && isRollover == prevRollover) {
+    boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
+
+    boolean prevRollover = isRollover;
+    isRollover = isUrlColumn(table, viewColumnIndex);
+    boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
+
+    if (isSameCell && isNotRollover) {
       return;
     }
-    if (!isRollover && !prevRollover) {
-      return;
-    }
+
     // >>>> HyperlinkCellRenderer.java
     // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
     Rectangle repaintRect;
@@ -203,7 +187,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
     int col = table.columnAtPoint(pt);
-    if (isUrlColumn(table, col)) { // && pointInsidePrefSize(table, pt)) {
+    if (isUrlColumn(table, col)) {
       int crow = table.rowAtPoint(pt);
       URL url = (URL) table.getValueAt(crow, col);
       // System.out.println(url);
