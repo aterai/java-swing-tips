@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST FileChooserNewFolder" />
+  <property name="jnlp.Name"     value="FileChooserNewFolder" />
+  <property name="jnlp.name"     value="filechoosernewfolder" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/filechoosernewfolder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/FileChooserNewFolder.html" />
+</project>
