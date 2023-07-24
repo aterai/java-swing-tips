@@ -80,7 +80,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     super();
     new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new ItemDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-        (Component) this, DnDConstants.ACTION_COPY_OR_MOVE, (DragGestureListener) this);
+        this, DnDConstants.ACTION_COPY_OR_MOVE, this);
   }
 
   @Override public void updateUI() {
@@ -135,15 +135,12 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
     boolean oneOrMore = getSelectedIndices().length > 1;
-    if (oneOrMore) {
-      return;
-    }
     draggedIndex = locationToIndex(e.getDragOrigin());
-    if (draggedIndex < 0) {
+    if (oneOrMore || draggedIndex < 0) {
       return;
     }
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, (DragSourceListener) this);
+      e.startDrag(DragSource.DefaultMoveDrop, this, this);
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }
@@ -258,24 +255,24 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
   }
 }
 
-class ListDragSourceListener implements DragSourceListener {
-  @Override public void dragEnter(DragSourceDragEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-  }
-
-  @Override public void dragExit(DragSourceEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-  }
-
-  @Override public void dragOver(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dropActionChanged(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dragDropEnd(DragSourceDropEvent e) {
-    /* not needed */
-  }
-}
+// class ListDragSourceListener implements DragSourceListener {
+//   @Override public void dragEnter(DragSourceDragEvent e) {
+//     e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+//   }
+//
+//   @Override public void dragExit(DragSourceEvent e) {
+//     e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+//   }
+//
+//   @Override public void dragOver(DragSourceDragEvent e) {
+//     /* not needed */
+//   }
+//
+//   @Override public void dropActionChanged(DragSourceDragEvent e) {
+//     /* not needed */
+//   }
+//
+//   @Override public void dragDropEnd(DragSourceDropEvent e) {
+//     /* not needed */
+//   }
+// }
