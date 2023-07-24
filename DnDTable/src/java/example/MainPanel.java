@@ -172,11 +172,8 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
     boolean oneOrMore = getSelectedRowCount() > 1;
-    if (oneOrMore) {
-      return;
-    }
     draggedIndex = rowAtPoint(e.getDragOrigin());
-    if (draggedIndex < 0) {
+    if (oneOrMore || draggedIndex < 0) {
       return;
     }
     try {
