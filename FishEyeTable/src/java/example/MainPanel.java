@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-      {"aaa", -1, true}
+        {"aaa", -1, true}
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -125,8 +125,8 @@ class FishEyeTable extends JTable {
   }
 
   private final class FishEyeTableHandler extends MouseAdapter implements ListSelectionListener {
-    public int prevRow = -1;
-    public int prevHeight;
+    private int prevRow = -1;
+    private int prevHeight;
 
     @Override public void mouseMoved(MouseEvent e) {
       update(rowAtPoint(e.getPoint()));
@@ -141,33 +141,29 @@ class FishEyeTable extends JTable {
     }
 
     @Override public void valueChanged(ListSelectionEvent e) {
-      if (e.getValueIsAdjusting()) {
-        return;
+      if (!e.getValueIsAdjusting()) {
+        update(getSelectedRow());
       }
-      update(getSelectedRow());
     }
 
     private void update(int row) {
-      if (prevRow == row) {
-        return;
+      if (prevRow != row) {
+        initRowHeight(prevHeight, row);
+        prevRow = row;
       }
-      initRowHeight(prevHeight, row);
-      prevRow = row;
     }
   }
 
   @Override public void doLayout() {
     super.doLayout();
     Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
-    if (!(p instanceof JViewport)) {
-      return;
+    if (p instanceof JViewport) {
+      int h = ((JViewport) p).getExtentSize().height;
+      if (h != handler.prevHeight) {
+        initRowHeight(h, getSelectedRow());
+        handler.prevHeight = h;
+      }
     }
-    int h = ((JViewport) p).getExtentSize().height;
-    if (h == handler.prevHeight) {
-      return;
-    }
-    initRowHeight(h, getSelectedRow());
-    handler.prevHeight = h;
   }
 
   @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
