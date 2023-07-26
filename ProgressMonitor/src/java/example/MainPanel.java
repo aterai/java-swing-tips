@@ -26,13 +26,10 @@ public final class MainPanel extends JPanel {
       monitor.setProgress(0);
       SwingWorker<String, String> worker = new BackgroundTask() {
         @Override protected void process(List<String> chunks) {
-          // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-          // if (isCancelled()) {
-          //   return;
-          // }
-          // if (!isDisplayable()) {
+          // if (isDisplayable() && !isCancelled()) {
+          //   chunks.forEach(monitor::setNote);
+          // } else {
           //   cancel(true);
-          //   return;
           // }
           chunks.forEach(monitor::setNote);
         }
