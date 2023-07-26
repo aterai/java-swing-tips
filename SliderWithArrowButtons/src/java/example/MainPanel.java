@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -129,10 +130,10 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   @Override public void actionPerformed(ActionEvent e) {
     Object o = e.getSource();
     if (o instanceof Timer) {
-      boolean isPressed = arrowButton != null && !arrowButton.getModel().isPressed();
+      boolean isPressed = Objects.nonNull(arrowButton) && !arrowButton.getModel().isPressed();
       if (isPressed && autoRepeatTimer.isRunning()) {
         autoRepeatTimer.stop();
-        arrowButton = null;
+        // arrowButton = null;
       }
     } else if (o instanceof JButton) {
       arrowButton = (JButton) o;
@@ -157,7 +158,7 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
 
   @Override public void mouseReleased(MouseEvent e) {
     autoRepeatTimer.stop();
-    arrowButton = null;
+    // arrowButton = null;
   }
 
   @Override public void mouseExited(MouseEvent e) {
