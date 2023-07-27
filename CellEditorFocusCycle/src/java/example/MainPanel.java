@@ -248,24 +248,26 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
 
   public static Component getEditorFocusCycleAfter(Component editor) {
     Component fo = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-    if (fo == null || !(editor instanceof Container)) {
-      return null;
-    }
-    Container root = (Container) editor;
-    if (!root.isFocusCycleRoot()) {
-      root = root.getFocusCycleRootAncestor();
-    }
-    if (root == null) {
-      return null;
-    }
-    // System.out.println("FocusCycleRoot: " + root.getClass().getName());
-    FocusTraversalPolicy ftp = root.getFocusTraversalPolicy();
-    Component child = ftp.getComponentAfter(root, fo);
-    if (child != null && SwingUtilities.isDescendingFrom(child, editor)) {
-      // System.out.println("requestFocus: " + child.getClass().getName());
-      // child.requestFocus();
-      return child;
+    Component cycleRoot = getFocusCycleRoot(editor);
+    if (fo != null && cycleRoot instanceof Container) {
+      // System.out.println("FocusCycleRoot: " + cycleRoot.getClass().getName());
+      Container root = (Container) cycleRoot;
+      FocusTraversalPolicy ftp = root.getFocusTraversalPolicy();
+      Component child = ftp.getComponentAfter(root, fo);
+      if (child != null && SwingUtilities.isDescendingFrom(child, editor)) {
+        // System.out.println("requestFocus: " + child.getClass().getName());
+        // child.requestFocus();
+        return child;
+      }
     }
     return null;
+  }
+
+  public static Component getFocusCycleRoot(Component c) {
+    Component root = c;
+    if (c instanceof Container && !((Container) c).isFocusCycleRoot()) {
+      root = c.getFocusCycleRootAncestor();
+    }
+    return root;
   }
 }
