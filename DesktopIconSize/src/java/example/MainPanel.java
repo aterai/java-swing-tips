@@ -55,12 +55,9 @@ public final class MainPanel extends JPanel {
           return super.getPreferredSize();
         }
         // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
-        // if (getUI() instanceof MotifDesktopIconUI) {
-        if (getUI().getClass().getName().contains("MotifDesktopIconUI")) {
-          return new Dimension(64, 64 + 32);
-        } else {
-          return ICON_SZ;
-        }
+        // boolean isMotif = getUI() instanceof MotifDesktopIconUI;
+        boolean isMotif = getUI().getClass().getName().contains("MotifDesktopIconUI");
+        return isMotif ? new Dimension(64, 64 + 32) : ICON_SZ;
       }
     });
     f.setSize(200, 100);
