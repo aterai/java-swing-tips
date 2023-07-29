@@ -172,7 +172,7 @@ class ImageCaptionLabel extends JLabel {
     }
 
     @Override public void mouseEntered(MouseEvent e) {
-      if (animator.isRunning() || areaHeight == textArea.getPreferredSize().height) {
+      if (animator.isRunning() || isMaxHeight()) {
         return;
       }
       this.direction = 2;
@@ -180,15 +180,16 @@ class ImageCaptionLabel extends JLabel {
     }
 
     @Override public void mouseExited(MouseEvent e) {
-      if (animator.isRunning()) {
-        return;
-      }
       Component c = e.getComponent();
-      if (c.contains(e.getPoint()) && areaHeight == textArea.getPreferredSize().height) {
+      if (animator.isRunning() || (c.contains(e.getPoint()) && isMaxHeight())) {
         return;
       }
       this.direction = -2;
       animator.start();
+    }
+
+    private boolean isMaxHeight() {
+      return areaHeight == textArea.getPreferredSize().height;
     }
 
     @Override public void hierarchyChanged(HierarchyEvent e) {
@@ -208,15 +209,15 @@ final class AnimationUtils {
   }
 
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
-  // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
-  public static double easeIn(double t) {
-    // range: 0.0 <= t <= 1.0
-    return Math.pow(t, N);
-  }
+  // Math: EaseIn EaseOut, EaseInOut and Bézier curves | Anima Entertainment GmbH
+  // public static double easeIn(double t) {
+  //   // range: 0.0 <= t <= 1.0
+  //   return Math.pow(t, N);
+  // }
 
-  public static double easeOut(double t) {
-    return Math.pow(t - 1d, N) + 1d;
-  }
+  // public static double easeOut(double t) {
+  //   return Math.pow(t - 1d, N) + 1d;
+  // }
 
   // public static double easeInOut(double t) {
   //   boolean isFirstHalf = t < .5;
@@ -262,7 +263,6 @@ final class AnimationUtils {
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-
     int w = getIconWidth();
     int h = getIconHeight();
     int gap = w / 5;
