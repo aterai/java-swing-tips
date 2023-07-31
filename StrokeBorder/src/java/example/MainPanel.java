@@ -9,29 +9,29 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final float[] DEFAULT_DASHARRAY = {1f};
+  private static final float[] DEFAULT_DASH = {1f};
   private final JComboBox<JoinStyle> joinCombo = new JComboBox<>(JoinStyle.values());
-  private final JComboBox<EndCapStyle> endcapCombo = new JComboBox<>(EndCapStyle.values());
+  private final JComboBox<EndCapStyle> endCapCombo = new JComboBox<>(EndCapStyle.values());
   private final JTextField field = new JTextField("10, 20");
   private final JLabel label = new JLabel();
   private final JButton button = new JButton("Change");
 
   private float[] getDashArray() {
-    // String[] slist = field.getText().split(","); // ErrorProne: StringSplitter
-    String[] slist = Stream.of(field.getText().split(","))
+    // String[] list = field.getText().split(","); // ErrorProne: StringSplitter
+    String[] list = Stream.of(field.getText().split(","))
         .map(String::trim)
         .filter(s -> !s.isEmpty())
         .toArray(String[]::new);
-    if (slist.length == 0) {
-      return DEFAULT_DASHARRAY;
+    if (list.length == 0) {
+      return DEFAULT_DASH;
     }
-    float[] list = new float[slist.length];
+    float[] ary = new float[list.length];
     int i = 0;
     try {
-      for (String s : slist) {
+      for (String s : list) {
         String ss = s.trim();
         if (!ss.isEmpty()) {
-          list[i++] = Float.parseFloat(ss);
+          ary[i++] = Float.parseFloat(ss);
         }
       }
     } catch (NumberFormatException ex) {
@@ -40,16 +40,16 @@ public final class MainPanel extends JPanel {
         String msg = "Invalid input.\n" + ex.getMessage();
         JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
       });
-      return DEFAULT_DASHARRAY;
+      return DEFAULT_DASH;
     }
-    return i == 0 ? DEFAULT_DASHARRAY : list;
+    return i == 0 ? DEFAULT_DASH : ary;
   }
 
   private MainPanel() {
     super(new BorderLayout());
     button.addActionListener(e -> {
-      int ecs = endcapCombo.getItemAt(endcapCombo.getSelectedIndex()).style;
-      int js = joinCombo.getItemAt(joinCombo.getSelectedIndex()).style;
+      int ecs = endCapCombo.getItemAt(endCapCombo.getSelectedIndex()).getStyle();
+      int js = joinCombo.getItemAt(joinCombo.getSelectedIndex()).getStyle();
       BasicStroke dashedStroke = new BasicStroke(5f, ecs, js, 5f, getDashArray(), 0f);
       label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
     });
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder("Comma Separated Values"));
 
     JPanel p1 = new JPanel(new GridLayout(2, 1));
-    p1.add(endcapCombo);
+    p1.add(endCapCombo);
     p1.add(joinCombo);
 
     p.add(p1, BorderLayout.NORTH);
@@ -102,10 +102,14 @@ enum JoinStyle {
   JOIN_BEVEL(BasicStroke.JOIN_BEVEL),
   JOIN_MITER(BasicStroke.JOIN_MITER),
   JOIN_ROUND(BasicStroke.JOIN_ROUND);
-  public final int style;
+  private final int style;
 
   JoinStyle(int style) {
     this.style = style;
+  }
+
+  public int getStyle() {
+    return style;
   }
 }
 
@@ -113,9 +117,13 @@ enum EndCapStyle {
   CAP_BUTT(BasicStroke.CAP_BUTT),
   CAP_ROUND(BasicStroke.CAP_ROUND),
   CAP_SQUARE(BasicStroke.CAP_SQUARE);
-  public final int style;
+  private final int style;
 
   EndCapStyle(int style) {
     this.style = style;
+  }
+
+  public int getStyle() {
+    return style;
   }
 }
