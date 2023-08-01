@@ -175,7 +175,7 @@ class FileTransferHandler extends TransferHandler {
 
 class DefaultFileComparator implements Comparator<File>, Serializable {
   private static final long serialVersionUID = 1L;
-  protected final int column;
+  private final int column;
 
   protected DefaultFileComparator(int column) {
     this.column = column;
@@ -187,6 +187,10 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
       case 1: return Long.compare(a.length(), b.length());
       default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());
     }
+  }
+
+  public int getColumn() {
+    return column;
   }
 }
 
@@ -224,7 +228,7 @@ class FileGroupComparator extends DefaultFileComparator {
     List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
     if (!keys.isEmpty()) {
       RowSorter.SortKey sortKey = keys.get(0);
-      if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+      if (sortKey.getColumn() == getColumn() && sortKey.getSortOrder() == SortOrder.DESCENDING) {
         flag = -1;
       }
     }
@@ -241,34 +245,44 @@ class FileGroupComparator extends DefaultFileComparator {
 // class FileTableModel extends AbstractTableModel {
 //   private final String[] columnNames = {"Name", "Size", "Full Path"};
 //   private File[] files;
+//
 //   protected FileTableModel() {
 //     this(new File[0]);
 //   }
+//
 //   protected FileTableModel(File[] files) {
 //     this.files = files;
 //   }
+//
 //   @Override public Object getValueAt(int row, int column) {
 //     return files[row];
 //   }
+//
 //   @Override public int getColumnCount() {
 //     return columnNames.length;
 //   }
+//
 //   @Override public Class<?> getColumnClass(int column) {
 //     return File.class;
 //   }
+//
 //   @Override public String getColumnName(int column) {
 //     return columnNames[column];
 //   }
+//
 //   @Override public int getRowCount() {
 //     return files.length;
 //   }
+//
 //   public File getFile(int row) {
 //     return files[row];
 //   }
+//
 //   public void setFiles(File[] files) {
 //     this.files = files;
 //     fireTableDataChanged();
 //   }
+//
 //   // public void removeRow(int row) {
 //   //   files.removeElementAt(row);
 //   //   fireTableRowsDeleted(row, row);
