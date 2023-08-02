@@ -60,7 +60,7 @@ class DigitalClock extends JPanel {
   private final transient Shape dot1;
   private final transient Shape dot2;
   private boolean pulse;
-  protected final Timer timer = new Timer(250, e -> {
+  private final Timer timer = new Timer(250, e -> {
     updateTime();
     pulse = !pulse;
     repaint();
