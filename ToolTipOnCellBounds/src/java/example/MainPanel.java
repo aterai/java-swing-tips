@@ -111,13 +111,18 @@ class TooltipList<E> extends JList<E> {
 }
 
 class CellRendererTooltipList<E> extends JList<E> {
-  protected final JLabel label = new JLabel();
+  private final JLabel label = new JLabel();
 
   protected CellRendererTooltipList(ListModel<E> m) {
     super(m);
     // TEST: label.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
     label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
   }
+
+  // @Override public void updateUI() {
+  //   super.updateUI();
+  //   SwingUtilities.updateComponentTreeUI(label); // XXX: Nimbus?
+  // }
 
   @Override public Point getToolTipLocation(MouseEvent e) {
     Point p = e.getPoint();
