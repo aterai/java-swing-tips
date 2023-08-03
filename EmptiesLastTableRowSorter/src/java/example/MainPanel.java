@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 
 class RowComparator implements Comparator<String>, Serializable {
   private static final long serialVersionUID = 1L;
-  protected final int column;
+  private final int column;
   private final JTable table;
 
   protected RowComparator(JTable table, int column) {
