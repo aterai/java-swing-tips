@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).tabPlacement);
+        tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).getTabPlacement());
       }
     });
     Box box = Box.createHorizontalBox();
@@ -139,9 +139,13 @@ enum TabPlacements {
   BOTTOM(SwingConstants.BOTTOM),
   LEFT(SwingConstants.LEFT),
   RIGHT(SwingConstants.RIGHT);
-  public final int tabPlacement;
+  private final int tabPlacement;
 
   TabPlacements(int tabPlacement) {
     this.tabPlacement = tabPlacement;
+  }
+
+  public int getTabPlacement() {
+    return tabPlacement;
   }
 }
