@@ -78,7 +78,7 @@ class AnimatedBorder extends EmptyBorder {
   private final transient Stroke bottomStroke = new BasicStroke(BORDER / 2f);
   private long startTime = -1L;
   private final transient List<Point2D> points = new ArrayList<>();
-  protected final Path2D borderPath = new Path2D.Double();
+  private final Path2D borderPath = new Path2D.Double();
 
   protected AnimatedBorder(JComponent c) {
     super(BORDER, BORDER, BORDER + BOTTOM_SPACE, BORDER);
