@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
   private void executeWorker(ProgressMonitor monitor, JButton button, JTextArea area) {
     SwingWorker<String, String> worker = new BackgroundTask() {
       @Override protected void process(List<String> chunks) {
-        if (isDisplayable() && !isCancelled()) {
+        if (isDisplayable()) { //  && !isCancelled()) {
           chunks.forEach(monitor::setNote);
         } else {
           // System.out.println("process: DISPOSE_ON_CLOSE");
