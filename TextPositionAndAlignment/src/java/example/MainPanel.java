@@ -33,10 +33,10 @@ public final class MainPanel extends JPanel {
 
     ItemListener listener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        label.setVerticalAlignment(getSelectedItem(vertAlignment).alignment);
-        label.setVerticalTextPosition(getSelectedItem(vertTextPosition).alignment);
-        label.setHorizontalAlignment(getSelectedItem(horizAlignment).alignment);
-        label.setHorizontalTextPosition(getSelectedItem(horizTextPosition).alignment);
+        label.setVerticalAlignment(getSelectedItem(vertAlignment).getAlignment());
+        label.setVerticalTextPosition(getSelectedItem(vertTextPosition).getAlignment());
+        label.setHorizontalAlignment(getSelectedItem(horizAlignment).getAlignment());
+        label.setHorizontalTextPosition(getSelectedItem(horizTextPosition).getAlignment());
         label.repaint();
       }
     };
@@ -102,10 +102,14 @@ enum Vertical {
   TOP(SwingConstants.TOP),
   CENTER(SwingConstants.CENTER),
   BOTTOM(SwingConstants.BOTTOM);
-  public final int alignment;
+  private final int alignment;
 
   Vertical(int alignment) {
     this.alignment = alignment;
+  }
+
+  public int getAlignment() {
+    return alignment;
   }
 }
 
@@ -115,10 +119,14 @@ enum Horizontal {
   RIGHT(SwingConstants.RIGHT),
   LEADING(SwingConstants.LEADING),
   TRAILING(SwingConstants.TRAILING);
-  public final int alignment;
+  private final int alignment;
 
   Horizontal(int alignment) {
     this.alignment = alignment;
+  }
+
+  public int getAlignment() {
+    return alignment;
   }
 }
 
