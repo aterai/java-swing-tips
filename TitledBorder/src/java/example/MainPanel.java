@@ -12,14 +12,14 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    TitledBorder border = BorderFactory.createTitledBorder("Test Test");
+    TitledBorder border = BorderFactory.createTitledBorder("TitledBorder test");
     JPanel panel = new JPanel();
     panel.setBorder(border);
 
     JComboBox<VerticalOrientation> combo1 = new JComboBox<>(VerticalOrientation.values());
     combo1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        border.setTitlePosition(((VerticalOrientation) e.getItem()).mode);
+        border.setTitlePosition(((VerticalOrientation) e.getItem()).getMode());
         panel.repaint();
       }
     });
@@ -82,12 +82,16 @@ enum VerticalOrientation {
   ABOVE_BOTTOM(TitledBorder.ABOVE_BOTTOM, "Above Bottom"),
   BOTTOM(TitledBorder.BOTTOM, "Bottom"),
   BELOW_BOTTOM(TitledBorder.BELOW_BOTTOM, "Below Bottom");
-  public final int mode;
+  private final int mode;
   private final String description;
 
   VerticalOrientation(int mode, String description) {
     this.mode = mode;
     this.description = description;
+  }
+
+  public int getMode() {
+    return mode;
   }
 
   @Override public String toString() {
