@@ -33,21 +33,25 @@ public final class MainPanel extends JPanel {
             textRect,
             this.getIconTextGap());
         String tip = super.getToolTipText(e);
-        if (tip == null) {
-          return null;
-        } else if (iconRect.contains(e.getPoint())) {
-          return "Icon: " + tip;
-        } else if (textRect.contains(e.getPoint())) {
-          return "Text: " + tip;
-        } else {
-          return "Border: " + tip;
+        Point pt = e.getPoint();
+        if (tip != null) {
+          if (iconRect.contains(pt)) {
+            tip = "Icon: " + tip;
+          } else if (textRect.contains(pt)) {
+            tip = "Text: " + tip;
+          } else if (viewRect.contains(pt)) {
+            tip = "InnerArea: " + tip;
+          } else {
+            tip = "Border: " + tip;
+          }
         }
+        return tip;
       }
     };
     label.setOpaque(true);
     label.setBackground(Color.GREEN);
     label.setBorder(BorderFactory.createMatteBorder(20, 10, 50, 30, Color.RED));
-    label.setToolTipText("ToolTipText ToolTipText");
+    label.setToolTipText("ToolTipText");
 
     JMenuItem item = new IconTooltipItem("Information", icon);
     item.setToolTipText("Information item");
