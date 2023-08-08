@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     JLabel label = new JLabel(new ImageIcon(image));
     label.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        updateViewRect(label);
+        updateLabelRect(label);
         Point pt = e.getPoint();
         if (iconRect.contains(pt)) {
           int argb = image.getRGB(pt.x - iconRect.x, pt.y - iconRect.y);
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void updateViewRect(JLabel c) {
+  public void updateLabelRect(JLabel c) {
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
     SwingUtilities.calculateInnerArea(c, viewRect);
