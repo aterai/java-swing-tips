@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     JComboBox<Justification> combo2 = new JComboBox<>(Justification.values());
     combo2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        border.setTitleJustification(((Justification) e.getItem()).mode);
+        border.setTitleJustification(((Justification) e.getItem()).getMode());
         panel.repaint();
       }
     });
@@ -102,12 +102,16 @@ enum Justification {
   RIGHT(TitledBorder.RIGHT, "Right"),
   LEADING(TitledBorder.LEADING, "Leading"),
   TRAILING(TitledBorder.TRAILING, "Trailing");
-  public final int mode;
+  private final int mode;
   private final String description;
 
   Justification(int mode, String description) {
     this.mode = mode;
     this.description = description;
+  }
+
+  public int getMode() {
+    return mode;
   }
 
   @Override public String toString() {
