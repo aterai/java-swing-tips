@@ -86,11 +86,12 @@ public final class MainPanel extends JPanel {
     Rectangle viewR = new Rectangle();
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle();
+    SwingUtilities.calculateInnerArea(label, viewR);
     SwingUtilities.layoutCompoundLabel(
         label,
         label.getFontMetrics(label.getFont()),
         label.getText(),
-        null, // icon,
+        null, // label.getIcon(),
         label.getVerticalAlignment(),
         label.getHorizontalAlignment(),
         label.getVerticalTextPosition(),
