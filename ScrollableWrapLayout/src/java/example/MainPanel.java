@@ -34,8 +34,8 @@ public final class MainPanel extends JPanel {
         new ListItem("white", new ColorIcon(Color.WHITE)));
 
     model.forEach(item -> {
-      JButton button = new JButton(item.icon);
-      JLabel label = new JLabel(item.title, SwingConstants.CENTER);
+      JButton button = new JButton(item.getIcon());
+      JLabel label = new JLabel(item.getTitle(), SwingConstants.CENTER);
       JPanel p = new JPanel(new BorderLayout());
       p.add(button);
       p.add(label, BorderLayout.SOUTH);
@@ -123,7 +123,7 @@ class ScrollableWrapLayout extends FlowLayout {
         width -= d.width + fixedHorizGap;
       }
     }
-    return fixedHorizGap + width / columns;
+    return fixedHorizGap + (columns == 0 ? 0 : width / columns);
   }
 
   @Override public void layoutContainer(Container target) {
@@ -150,12 +150,20 @@ class ScrollableWrapLayout extends FlowLayout {
 }
 
 class ListItem {
-  public final Icon icon;
-  public final String title;
+  private final Icon icon;
+  private final String title;
 
   protected ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
+  }
+
+  public Icon getIcon() {
+    return icon;
+  }
+
+  public String getTitle() {
+    return title;
   }
 }
 
