@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
@@ -101,18 +102,23 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
 
   @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
     Rectangle tabRect = rects[tabIndex];
-    int x = textRect.x + tabInsets.left;
+    int x = tabRect.x + tabInsets.left;
     int y = textRect.y;
     int w = tabRect.width - tabInsets.left - tabInsets.right;
     int h = textRect.height;
     Rectangle viewR = new Rectangle(x, y, w, h);
     Rectangle iconR = new Rectangle();
-    Rectangle textR = new Rectangle(x, y, w, h);
+    Rectangle textR = new Rectangle();
     String clippedText = SwingUtilities.layoutCompoundLabel(
         metrics, title, null,
         CENTER, CENTER, CENTER, TRAILING,
         viewR, iconR, textR, 0);
-    super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, textRect, isSelected);
+    if (Objects.equals(title, clippedText)) {
+      super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
+    } else {
+      textR.x = textRect.x + tabInsets.left;
+      super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, textR, isSelected);
+    }
   }
 }
 
@@ -134,17 +140,22 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
 
   @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
     Rectangle tabRect = rects[tabIndex];
-    int x = textRect.x + tabInsets.left;
+    int x = tabRect.x + tabInsets.left;
     int y = textRect.y;
     int w = tabRect.width - tabInsets.left - tabInsets.right;
     int h = textRect.height;
     Rectangle viewR = new Rectangle(x, y, w, h);
     Rectangle iconR = new Rectangle();
-    Rectangle textR = new Rectangle(x, y, w, h);
+    Rectangle textR = new Rectangle();
     String clippedText = SwingUtilities.layoutCompoundLabel(
         metrics, title, null,
         CENTER, CENTER, CENTER, TRAILING,
         viewR, iconR, textR, 0);
-    super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, textRect, isSelected);
+    if (Objects.equals(title, clippedText)) {
+      super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
+    } else {
+      textR.x = textRect.x + tabInsets.left;
+      super.paintText(g, tabPlacement, font, metrics, tabIndex, clippedText, textR, isSelected);
+    }
   }
 }
