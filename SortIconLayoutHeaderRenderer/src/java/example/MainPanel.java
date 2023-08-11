@@ -129,7 +129,7 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       // l.setHorizontalAlignment(SwingConstants.RIGHT);
-      URI sortUri = null;
+      URI sortUri;
       SortOrder sortOrder = getColumnSortOrder(table, column);
       switch (sortOrder) {
         case ASCENDING:
