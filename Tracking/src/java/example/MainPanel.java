@@ -85,9 +85,9 @@ public final class MainPanel extends JPanel {
 }
 
 class BadgeIcon implements Icon {
-  protected final Color badgeBgc;
-  protected final Color badgeFgc;
-  protected final int value;
+  private final Color badgeBgc;
+  private final Color badgeFgc;
+  private final int value;
 
   protected BadgeIcon(int value, Color fgc, Color bgc) {
     this.value = value;
@@ -95,15 +95,15 @@ class BadgeIcon implements Icon {
     this.badgeBgc = bgc;
   }
 
-  protected String getText() {
+  public String getText() {
     return value > 999 ? "1K+" : Objects.toString(value);
   }
 
-  protected Shape getBadgeShape() {
+  public Shape getBadgeShape() {
     return new Ellipse2D.Double(0d, 0d, getIconWidth(), getIconHeight());
   }
 
-  protected Shape getTextShape(Graphics2D g2) {
+  public Shape getTextShape(Graphics2D g2) {
     String txt = getText();
     Map<TextAttribute, Object> attr = new ConcurrentHashMap<>();
     attr.put(TextAttribute.TRACKING, -.1f);
@@ -149,7 +149,7 @@ class BadgeIcon2 extends BadgeIcon {
     super(value, fgc, bgc);
   }
 
-  @Override protected Shape getTextShape(Graphics2D g2) {
+  @Override public Shape getTextShape(Graphics2D g2) {
     String txt = getText();
     AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.95, 1d);
     Font font = g2.getFont().deriveFont(at);
