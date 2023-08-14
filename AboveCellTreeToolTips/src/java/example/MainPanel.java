@@ -50,13 +50,11 @@ public final class MainPanel extends JPanel {
     p.add(makeTitledPanel("Default location", tree0));
     p.add(makeTitledPanel("Draw directly above the cell", tree1));
 
-    JSplitPane sp = new JSplitPane();
-    sp.setResizeWeight(.5);
-    sp.setDividerLocation(160);
-    sp.setLeftComponent(p);
-    sp.setRightComponent(new JLabel("JLabel"));
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, p, new JPanel());
+    split.setResizeWeight(.5);
+    split.setDividerLocation(160);
 
-    add(sp);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 

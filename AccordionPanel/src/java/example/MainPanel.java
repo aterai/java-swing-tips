@@ -30,11 +30,11 @@ public final class MainPanel extends JPanel {
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.getVerticalScrollBar().setUnitIncrement(25);
 
-    JSplitPane split = new JSplitPane();
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll, new JPanel());
     split.setResizeWeight(.5);
+    split.setDividerLocation(160);
     split.setDividerSize(2);
-    split.setLeftComponent(scroll);
-    split.setRightComponent(new JLabel("JLabel"));
+
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
