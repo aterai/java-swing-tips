@@ -26,7 +26,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + TEXT);
     textArea1.setMargin(new Insets(5, 5, 5, 5));
     JScrollPane scroll1 = new JScrollPane(textArea1);
@@ -45,11 +44,9 @@ public final class MainPanel extends JPanel {
     };
     // scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));
 
-    JSplitPane splitPane = new JSplitPane();
-    splitPane.setResizeWeight(.5);
-    splitPane.setLeftComponent(scroll1);
-    splitPane.setRightComponent(scroll2);
-    add(splitPane);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll1, scroll2);
+    split.setResizeWeight(.5);
+    add(split);
 
     setPreferredSize(new Dimension(320, 240));
   }
