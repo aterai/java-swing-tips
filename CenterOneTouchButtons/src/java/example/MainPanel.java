@@ -10,11 +10,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSplitPane splitPane = new JSplitPane();
-    splitPane.setTopComponent(new JScrollPane(new JTable(8, 3)));
-    splitPane.setBottomComponent(new JScrollPane(new JTree()));
-    splitPane.setOneTouchExpandable(true);
-    splitPane.setDividerSize(32);
+    JScrollPane s1 = new JScrollPane(new JTable(8, 3));
+    JScrollPane s2 = new JScrollPane(new JTree());
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+    split.setOneTouchExpandable(true);
+    split.setDividerSize(32);
 
     String key = "SplitPane.centerOneTouchButtons";
     JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
@@ -23,14 +24,14 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(() -> {
           boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
           setSelected(b);
-          updateCenterOneTouchButtons(splitPane, b);
+          updateCenterOneTouchButtons(split, b);
         });
       }
     };
     check.setOpaque(false);
     check.addActionListener(e -> {
       JCheckBox cb = (JCheckBox) e.getSource();
-      updateCenterOneTouchButtons(splitPane, cb.isSelected());
+      updateCenterOneTouchButtons(split, cb.isSelected());
     });
 
     JMenuBar mb = new JMenuBar();
@@ -39,7 +40,7 @@ public final class MainPanel extends JPanel {
     mb.add(check);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
-    add(splitPane);
+    add(split);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
