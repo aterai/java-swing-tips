@@ -19,11 +19,11 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSplitPane splitPane = new JSplitPane();
-    splitPane.setResizeWeight(.5);
-    splitPane.setLeftComponent(makeTabbedPane());
-    splitPane.setRightComponent(makeTabbedPane());
-    add(splitPane);
+    Component c1 = makeTabbedPane();
+    Component c2 = makeTabbedPane();
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
+    split.setResizeWeight(.5);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
