@@ -67,11 +67,11 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JSplitPane sp = new JSplitPane();
-    sp.setLeftComponent(new JScrollPane(tree));
-    sp.setRightComponent(new JScrollPane(p));
-    sp.setResizeWeight(.5);
-    add(sp);
+    JScrollPane s1 = new JScrollPane(tree);
+    JScrollPane s2 = new JScrollPane(p);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
