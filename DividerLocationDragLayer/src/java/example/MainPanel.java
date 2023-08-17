@@ -13,24 +13,22 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSplitPane splitPane = new JSplitPane();
-    splitPane.setDividerSize(1);
-    splitPane.setResizeWeight(.5);
-    splitPane.setLeftComponent(makeTestBox());
-    splitPane.setRightComponent(makeTestBox());
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, makeBox(), makeBox());
+    split.setDividerSize(1);
+    split.setResizeWeight(.5);
 
     JCheckBox check = new JCheckBox("VERTICAL");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
-      splitPane.setOrientation(b ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
+      split.setOrientation(b ? JSplitPane.VERTICAL_SPLIT : JSplitPane.HORIZONTAL_SPLIT);
     });
 
     add(check, BorderLayout.NORTH);
-    add(new JLayer<>(splitPane, new DividerLocationDragLayerUI()));
+    add(new JLayer<>(split, new DividerLocationDragLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTestBox() {
+  private static Component makeBox() {
     JTree tree = new JTree();
     tree.setVisibleRowCount(3);
 
