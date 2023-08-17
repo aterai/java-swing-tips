@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     IntStream.range(0, 1000).forEach(i -> buf.append(i).append(LF));
     String txt = buf.toString();
 
-    // JScrollPane scroll = new JScrollPane(new JTextArea(txt)) {
+    // JScrollPane s1 = new JScrollPane(new JTextArea(txt)) {
     //   @Override public void updateUI() {
     //     super.updateUI();
     //     JScrollPane c = this;
@@ -47,15 +47,15 @@ public final class MainPanel extends JPanel {
     //   }
     // };
 
-    JScrollPane scroll = new JScrollPane(new JTextArea("override\ngetMinimumThumbSize()\n" + txt));
-    scroll.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {
+    JScrollPane s1 = new JScrollPane(new JTextArea("override\ngetMinimumThumbSize()\n" + txt));
+    s1.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsScrollBarUI) {
           setUI(new WindowsScrollBarUI() {
             @Override protected Dimension getMinimumThumbSize() {
               Dimension d = super.getMinimumThumbSize();
-              Rectangle r = SwingUtilities.calculateInnerArea(scroll, null);
+              Rectangle r = SwingUtilities.calculateInnerArea(s1, null);
               return new Dimension(d.width, Math.max(d.height, r.height / 12));
             }
           });
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
           setUI(new MetalScrollBarUI() {
             @Override protected Dimension getMinimumThumbSize() {
               Dimension d = super.getMinimumThumbSize();
-              Rectangle r = SwingUtilities.calculateInnerArea(scroll, null);
+              Rectangle r = SwingUtilities.calculateInnerArea(s1, null);
               d.height = Math.max(d.height, r.height / 12);
               return d;
             }
@@ -73,11 +73,11 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JSplitPane sp = new JSplitPane();
-    sp.setLeftComponent(new JScrollPane(new JTextArea("default\n\n" + txt)));
-    sp.setRightComponent(scroll);
-    sp.setResizeWeight(.5);
-    add(sp);
+    JScrollPane s0 = new JScrollPane(new JTextArea("default\n\n" + txt));
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s0, s1);
+    split.setResizeWeight(.5);
+    split.setDividerLocation(160);
+    add(split);
   }
 
   @Override public Dimension getPreferredSize() {
