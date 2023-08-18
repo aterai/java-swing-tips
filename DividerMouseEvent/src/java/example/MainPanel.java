@@ -14,13 +14,13 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSplitPane splitPane = new JSplitPane();
-    splitPane.setOneTouchExpandable(true);
-    splitPane.setContinuousLayout(true);
-    splitPane.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, Color.WHITE));
-    splitPane.setLeftComponent(new JScrollPane(new JTree()));
-    splitPane.setRightComponent(new JScrollPane(new JTable(2, 3)));
-    EventQueue.invokeLater(() -> splitPane.setDividerLocation(.3));
+    JScrollPane s1 = new JScrollPane(new JTree());
+    JScrollPane s2 = new JScrollPane(new JTable(2, 3));
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setOneTouchExpandable(true);
+    split.setContinuousLayout(true);
+    split.setBorder(BorderFactory.createMatteBorder(8, 8, 8, 8, Color.WHITE));
+    EventQueue.invokeLater(() -> split.setDividerLocation(.3));
 
     JCheckBox check = new JCheckBox("Show JPopupMenu only on Divider", true);
     JPopupMenu popup = new JPopupMenu() {
@@ -35,17 +35,17 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    popup.add("center").addActionListener(e -> splitPane.setDividerLocation(.5));
-    popup.add("selectMin").addActionListener(e -> selectMinMax(splitPane, "selectMin"));
-    popup.add("selectMax").addActionListener(e -> selectMinMax(splitPane, "selectMax"));
-    splitPane.setComponentPopupMenu(popup);
+    popup.add("center").addActionListener(e -> split.setDividerLocation(.5));
+    popup.add("selectMin").addActionListener(e -> selectMinMax(split, "selectMin"));
+    popup.add("selectMax").addActionListener(e -> selectMinMax(split, "selectMax"));
+    split.setComponentPopupMenu(popup);
 
-    BasicSplitPaneUI ui = (BasicSplitPaneUI) splitPane.getUI();
+    BasicSplitPaneUI ui = (BasicSplitPaneUI) split.getUI();
     Container divider = ui.getDivider();
     divider.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2) {
-          splitPane.setDividerLocation(.5);
+          split.setDividerLocation(.5);
         }
       }
 
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     });
 
     add(check, BorderLayout.NORTH);
-    add(splitPane);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
