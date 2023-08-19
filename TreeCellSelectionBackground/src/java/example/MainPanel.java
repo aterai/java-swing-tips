@@ -58,10 +58,11 @@ public final class MainPanel extends JPanel {
     tree.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
     tree.setBackground(Color.WHITE);
 
-    JSplitPane split = new JSplitPane();
+    JScrollPane s1 = new JScrollPane(new JTree());
+    JScrollPane s2 = new JScrollPane(tree);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
     split.setResizeWeight(.5);
-    split.setLeftComponent(new JScrollPane(new JTree()));
-    split.setRightComponent(new JScrollPane(tree));
+
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
