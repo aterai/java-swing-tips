@@ -61,10 +61,7 @@ public final class MainPanel extends JPanel {
     panel.add(centerBox);
     panel.add(southBox, BorderLayout.SOUTH);
 
-    JSplitPane sp = new JSplitPane();
-    sp.setLeftComponent(panel);
-    sp.setRightComponent(new JScrollPane(new JTree()));
-    add(sp);
+    add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, new JScrollPane(new JTree())));
     setPreferredSize(new Dimension(320, 240));
   }
 
