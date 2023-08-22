@@ -22,11 +22,9 @@ public final class MainPanel extends JPanel {
       JLabel c2 = new JLabel(title, icon, SwingConstants.CENTER);
       tabs2.addTab(null, makeVerticalTabIcon(title, icon, true), c2);
     });
-    JSplitPane sp = new JSplitPane();
-    sp.setResizeWeight(.5);
-    sp.setLeftComponent(tabs1);
-    sp.setRightComponent(tabs2);
-    add(sp);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabs1, tabs2);
+    split.setResizeWeight(.5);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
