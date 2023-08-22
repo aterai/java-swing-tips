@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
     textArea.addMouseListener(handler);
     textArea.addMouseMotionListener(handler);
 
-    JSplitPane split = new JSplitPane();
+    Component c1 = makeTitledPanel("Default", makeTextArea());
+    Component c2 = makeTitledPanel("MouseListener", textArea);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
     split.setResizeWeight(.5);
-    split.setLeftComponent(makeTitledPanel("Default", makeTextArea()));
-    split.setRightComponent(makeTitledPanel("MouseListener", textArea));
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
