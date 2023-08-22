@@ -24,11 +24,6 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSplitPane split = new JSplitPane();
-    split.setContinuousLayout(true);
-    split.setResizeWeight(.5);
-    split.setDividerSize(0);
-
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     BufferedImage source = Optional.ofNullable(cl.getResource(path)).map(url -> {
@@ -44,37 +39,14 @@ public final class MainPanel extends JPanel {
     g.dispose();
     ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
     ColorConvertOp colorConvert = new ColorConvertOp(colorSpace, null);
-    BufferedImage destination = colorConvert.filter(source, null);
+    Image destination = colorConvert.filter(source, null);
 
-    Component beforeCanvas = new JComponent() {
-      @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int iw = source.getWidth();
-        int ih = source.getHeight();
-        Dimension dim = split.getSize();
-        int x = (dim.width - iw) / 2;
-        int y = (dim.height - ih) / 2;
-        g.drawImage(source, x, y, iw, ih, this);
-      }
-    };
-    split.setLeftComponent(beforeCanvas);
-
-    Component afterCanvas = new JComponent() {
-      @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.translate(-getLocation().x + split.getInsets().left, 0);
-
-        int iw = destination.getWidth(this);
-        int ih = destination.getHeight(this);
-        Dimension dim = split.getSize();
-        int x = (dim.width - iw) / 2;
-        int y = (dim.height - ih) / 2;
-        g2.drawImage(destination, x, y, iw, ih, this);
-        g2.dispose();
-      }
-    };
-    split.setRightComponent(afterCanvas);
+    Component before = makeBeforeCanvas(source);
+    Component after = makeAfterCanvas(destination);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, before, after);
+    split.setContinuousLayout(true);
+    split.setResizeWeight(.5);
+    split.setDividerSize(0);
 
     DividerLocationDragLayerUI layerUI = new DividerLocationDragLayerUI();
     JCheckBox check = new JCheckBox("Paint divider");
@@ -84,6 +56,42 @@ public final class MainPanel extends JPanel {
     add(check, BorderLayout.SOUTH);
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private Component makeBeforeCanvas(Image source) {
+    return new JComponent() {
+      @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int iw = source.getWidth(this);
+        int ih = source.getHeight(this);
+        Component p = SwingUtilities.getUnwrappedParent(this);
+        Dimension dim = p.getSize();
+        int x = (dim.width - iw) / 2;
+        int y = (dim.height - ih) / 2;
+        g.drawImage(source, x, y, iw, ih, this);
+      }
+    };
+  }
+
+  private Component makeAfterCanvas(Image destination) {
+    return new JComponent() {
+      @Override protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Component c = SwingUtilities.getUnwrappedParent(this);
+        if (c instanceof JComponent) {
+          Graphics2D g2 = (Graphics2D) g.create();
+          JComponent p = (JComponent) c;
+          g2.translate(-getLocation().x + p.getInsets().left, 0);
+          int iw = destination.getWidth(this);
+          int ih = destination.getHeight(this);
+          Dimension dim = p.getSize();
+          int x = (dim.width - iw) / 2;
+          int y = (dim.height - ih) / 2;
+          g2.drawImage(destination, x, y, iw, ih, this);
+          g2.dispose();
+        }
+      }
+    };
   }
 
   private static BufferedImage makeMissingImage() {
