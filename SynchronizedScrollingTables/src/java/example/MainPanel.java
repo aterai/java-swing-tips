@@ -57,11 +57,9 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll2 = new JScrollPane(table);
     scroll2.getVerticalScrollBar().setModel(scroll1.getVerticalScrollBar().getModel());
 
-    JSplitPane split = new JSplitPane();
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll1, scroll2);
     split.setResizeWeight(.3);
     // split.setDividerSize(0);
-    split.setLeftComponent(scroll1);
-    split.setRightComponent(scroll2);
 
     JButton button = new JButton("add");
     button.addActionListener(e -> {
