@@ -17,7 +17,7 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTree tree = new JTree(makeModel()) {
+    JTree tree1 = new JTree(makeModel()) {
       @Override public boolean getScrollableTracksViewportWidth() {
         return true;
       }
@@ -28,19 +28,19 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createTitledBorder("TreeCellRenderer"));
       }
     };
-    tree.setRootVisible(false);
-    // TEST: tree.setRowHeight(40);
+    tree1.setRootVisible(false);
+    // TEST: tree1.setRowHeight(40);
 
     JTree tree2 = new TableOfContentsTree(makeModel());
     tree2.setRootVisible(false);
     // tree2.setLargeModel(false);
     // TEST: tree2.setRowHeight(40);
 
-    JSplitPane sp = new JSplitPane();
-    sp.setResizeWeight(.5);
-    sp.setLeftComponent(new JScrollPane(tree));
-    sp.setRightComponent(new JScrollPane(tree2));
-    add(sp);
+    JScrollPane s1 = new JScrollPane(tree1);
+    JScrollPane s2 = new JScrollPane(tree2);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
