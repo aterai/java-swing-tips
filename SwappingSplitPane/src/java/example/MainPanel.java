@@ -10,33 +10,33 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JScrollPane s1 = new JScrollPane(new JTree());
+    JScrollPane s2 = new JScrollPane(new JTable(6, 3));
 
-    JSplitPane sp = new JSplitPane();
-    sp.setLeftComponent(new JScrollPane(new JTree()));
-    sp.setRightComponent(new JScrollPane(new JTable(6, 3)));
-    sp.setResizeWeight(.4);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.4);
 
     JCheckBox check = new JCheckBox("Keep DividerLocation", true);
 
     JButton button = new JButton("swap");
     button.setFocusable(false);
     button.addActionListener(e -> {
-      Component left = sp.getLeftComponent();
-      Component right = sp.getRightComponent();
+      Component left = split.getLeftComponent();
+      Component right = split.getRightComponent();
 
-      // sp.removeAll(); // Divider is also removed
-      sp.remove(left);
-      sp.remove(right);
+      // split.removeAll(); // Divider is also removed
+      split.remove(left);
+      split.remove(right);
       // or:
-      // sp.setLeftComponent(null);
-      // sp.setRightComponent(null);
+      // split.setLeftComponent(null);
+      // split.setRightComponent(null);
 
-      sp.setLeftComponent(right);
-      sp.setRightComponent(left);
+      split.setLeftComponent(right);
+      split.setRightComponent(left);
 
-      sp.setResizeWeight(1d - sp.getResizeWeight());
+      split.setResizeWeight(1d - split.getResizeWeight());
       if (check.isSelected()) {
-        sp.setDividerLocation(sp.getDividerLocation());
+        split.setDividerLocation(split.getDividerLocation());
       }
     });
 
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalGlue());
     box.add(button);
 
-    add(sp);
+    add(split);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
