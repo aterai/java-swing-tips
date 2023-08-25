@@ -41,10 +41,10 @@ public final class MainPanel extends JPanel {
     };
     JTextArea textArea = new JTextArea(TEXT);
     textArea.getActionMap().put(DefaultEditorKit.selectWordAction, a);
-    JSplitPane split = new JSplitPane();
+    Component c1 = makeTitledPanel("Default", new JTextArea(TEXT));
+    Component c2 = makeTitledPanel("Break words: _ and -", textArea);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
     split.setResizeWeight(.5);
-    split.setLeftComponent(makeTitledPanel("Default", new JTextArea(TEXT)));
-    split.setRightComponent(makeTitledPanel("Break words: _ and -", textArea));
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
