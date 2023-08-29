@@ -93,11 +93,11 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> scrollToId(editor, "bottom"));
     EventQueue.invokeLater(() -> scrollToId(editor, "main"));
 
-    JSplitPane sp = new JSplitPane();
-    sp.setLeftComponent(new JScrollPane(tree));
-    sp.setRightComponent(new JScrollPane(editor));
-    sp.setResizeWeight(.5);
-    add(sp);
+    JScrollPane s1 = new JScrollPane(tree);
+    JScrollPane s2 = new JScrollPane(editor);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+    add(split);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
