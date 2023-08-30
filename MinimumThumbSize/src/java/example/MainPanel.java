@@ -15,14 +15,14 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     StringBuilder buf = new StringBuilder();
     IntStream.range(0, 1000).forEach(i -> buf.append(i).append(LF));
-
-    JSplitPane sp = new JSplitPane();
-    sp.setLeftComponent(new JScrollPane(new JTextArea(buf.toString())));
+    JScrollPane s1 = new JScrollPane(new JTextArea(buf.toString()));
 
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(32, 32));
-    sp.setRightComponent(new JScrollPane(new JTextArea(buf.toString())));
-    sp.setResizeWeight(.5);
-    add(sp);
+    JScrollPane s2 = new JScrollPane(new JTextArea(buf.toString()));
+
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+    add(split);
   }
 
   @Override public Dimension getPreferredSize() {
