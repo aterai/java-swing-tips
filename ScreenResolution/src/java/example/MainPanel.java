@@ -68,10 +68,12 @@ public final class MainPanel extends JPanel {
       }
     };
     // tree.setRowHeight(0);
+    JScrollPane s1 = new JScrollPane(table);
+    JScrollPane s2 = new JScrollPane(tree);
 
-    JSplitPane sp = new JSplitPane();
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
     // // TEST:
-    // JSplitPane sp = new JSplitPane() {
+    // JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2) {
     //   @Override protected void paintComponent(Graphics g) {
     //     Graphics2D g2 = (Graphics2D) g.create();
     //     GraphicsConfiguration gc = g2.getDeviceConfiguration();
@@ -82,10 +84,8 @@ public final class MainPanel extends JPanel {
     //     super.paintComponent(g2);
     //   }
     // };
-    sp.setLeftComponent(new JScrollPane(table));
-    sp.setRightComponent(new JScrollPane(tree));
-    sp.setResizeWeight(.5);
-    add(sp);
+    split.setResizeWeight(.5);
+    add(split);
   }
 
   public static void main(String[] args) {
