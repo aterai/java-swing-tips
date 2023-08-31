@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("setXORMode(Color.BLUE)", true);
     check.addActionListener(e -> repaint());
 
-    JSplitPane split = new JSplitPane();
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
     split.setContinuousLayout(true);
     split.setResizeWeight(.5);
 
