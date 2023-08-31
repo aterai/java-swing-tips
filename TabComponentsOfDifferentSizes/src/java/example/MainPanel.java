@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JSplitPane splitPane = new JSplitPane();
+  private final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
   private final Dimension tabAreaSize = new Dimension(40, 40);
 
   private MainPanel() {
