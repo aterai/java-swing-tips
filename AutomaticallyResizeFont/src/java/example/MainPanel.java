@@ -34,13 +34,11 @@ public final class MainPanel extends JPanel {
     editor2.setFont(font);
     editor2.setText("doLayout + deriveFont\n" + TEST);
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(editor1);
-    sp.setBottomComponent(editor2);
-    sp.setResizeWeight(.5);
-    add(sp);
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, editor1, editor2);
+    split.setResizeWeight(.5);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
-    EventQueue.invokeLater(() -> sp.setDividerLocation(.5));
+    EventQueue.invokeLater(() -> split.setDividerLocation(.5));
   }
 
   public static void main(String[] args) {

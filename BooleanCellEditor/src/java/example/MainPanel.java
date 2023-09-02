@@ -26,19 +26,20 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table0 = new JTable(model);
-    table0.setAutoCreateRowSorter(true);
-    table0.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
-    JTable table1 = makeTable(model);
+    JTable table1 = new JTable(model);
     table1.setAutoCreateRowSorter(true);
     table1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(new JScrollPane(table0));
-    sp.setBottomComponent(new JScrollPane(table1));
-    sp.setResizeWeight(.5);
-    add(sp);
+    JTable table2 = makeTable(model);
+    table2.setAutoCreateRowSorter(true);
+    table2.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+    JScrollPane s1 = new JScrollPane(table1);
+    JScrollPane s2 = new JScrollPane(table2);
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
