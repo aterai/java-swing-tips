@@ -161,7 +161,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
     Component c = cr.getListCellRendererComponent(list, proto, index, false, false);
     Rectangle r = list.getCellBounds(index, index);
     c.setBounds(r);
-    // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout) // *1
+    // c.doLayout(); // may be needed for other layout managers (e.g. FlowLayout) // *1
     pt.translate(-r.x, -r.y);
     // Component b = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
     // if (b instanceof JButton) {

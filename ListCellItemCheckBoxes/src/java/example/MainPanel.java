@@ -284,7 +284,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       Component c = cr.getListCellRendererComponent(list, proto, index, false, false);
       Rectangle r = list.getCellBounds(index, index);
       c.setBounds(r);
-      // c.doLayout(); // may be needed for other layout managers (eg. FlowLayout)
+      // c.doLayout(); // may be needed for other layout managers (e.g. FlowLayout)
       Point pt = e.getPoint();
       pt.translate(-r.x, -r.y);
       return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
