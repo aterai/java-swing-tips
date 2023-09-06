@@ -17,7 +17,6 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     TableHeaderTabbedPane tabs = new TableHeaderTabbedPane();
     tabs.setBorder(BorderFactory.createTitledBorder("CardLayout+JTableHeader"));
     tabs.addTab("111", new JScrollPane(new JTree()));
@@ -78,19 +77,19 @@ class TableHeaderTabbedPane extends JPanel {
       return l;
     });
 
-    JScrollPane sp = new JScrollPane();
-    JViewport vp = new JViewport() {
+    JScrollPane scroll = new JScrollPane();
+    JViewport viewport = new JViewport() {
       @Override public Dimension getPreferredSize() {
         return new Dimension();
       }
     };
-    vp.setView(table);
-    sp.setViewport(vp);
+    viewport.setView(table);
+    scroll.setViewport(viewport);
 
     // JPanel wrapPanel = new JPanel(new BorderLayout());
-    // wrapPanel.add(sp);
+    // wrapPanel.add(scroll);
     // add(wrapPanel, BorderLayout.NORTH);
-    add(sp, BorderLayout.NORTH);
+    add(scroll, BorderLayout.NORTH);
     add(contentsPanel);
   }
 
