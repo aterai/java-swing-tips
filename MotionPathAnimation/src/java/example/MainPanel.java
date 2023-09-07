@@ -106,8 +106,9 @@ public final class MainPanel extends JPanel {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
     applyQualityRenderingHints(g2);
-    int x = (getWidth() - shape.getBounds().width) / 2;
-    int y = (getHeight() - shape.getBounds().height) / 2;
+    Rectangle r = shape.getBounds();
+    int x = (getWidth() - r.width) / 2;
+    int y = (getHeight() - r.height) / 2;
     g2.translate(x, y);
     g2.draw(shape);
     Ellipse2D ellipse = new Ellipse2D.Double();
