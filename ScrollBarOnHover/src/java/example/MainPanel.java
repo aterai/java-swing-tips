@@ -21,16 +21,16 @@ public final class MainPanel extends JPanel {
       @Override public void mouseEntered(MouseEvent e) {
         Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
         if (c instanceof JScrollPane) {
-          ((JScrollPane) c).setVerticalScrollBarPolicy(
-              ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+          JScrollPane scroll = (JScrollPane) c;
+          scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         }
       }
 
       @Override public void mouseExited(MouseEvent e) {
         Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
         if (c instanceof JScrollPane) {
-          ((JScrollPane) c).setVerticalScrollBarPolicy(
-              ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+          JScrollPane scroll = (JScrollPane) c;
+          scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         }
       }
     });
