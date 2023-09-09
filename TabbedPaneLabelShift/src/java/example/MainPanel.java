@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(5, 5));
     JTextArea log = new JTextArea();
     String key1 = "TabbedPane.selectedLabelShift";
-    log.append(key1 + ": " + UIManager.getLookAndFeelDefaults().get(key1) + "\n");
+    log.append(getDefaultsText(key1));
     String key2 = "TabbedPane.labelShift";
-    log.append(key2 + ": " + UIManager.getLookAndFeelDefaults().get(key2) + "\n");
+    log.append(getDefaultsText(key2));
 
     int iv1 = UIManager.getLookAndFeelDefaults().getInt(key1);
     SpinnerNumberModel slsModel = new SpinnerNumberModel(iv1, -5, 5, 1);
@@ -62,6 +62,10 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getDefaultsText(String key) {
+    return String.format("%s: %s%n", key, UIManager.getLookAndFeelDefaults().get(key));
   }
 
   public static void main(String[] args) {
