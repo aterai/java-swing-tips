@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ColorChooserRgbaHexCode" />
+  <property name="jnlp.Name"     value="ColorChooserRgbaHexCode" />
+  <property name="jnlp.name"     value="colorchooserrgbahexcode" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/colorchooserrgbahexcode/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ColorChooserRgbaHexCode.html" />
+</project>
