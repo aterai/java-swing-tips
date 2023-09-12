@@ -32,13 +32,13 @@ public final class MainPanel extends JPanel {
       }
     };
     label.setOpaque(true);
-    label.setBackground(Color.RED);
+    label.setBackground(new Color(0xFF_FF_00_00, true));
 
     UIManager.put("ColorChooser.rgbHexCodeText", "#RGBA:");
     JButton button = new JButton("open JColorChooser");
     button.addActionListener(e -> {
       JColorChooser cc = new JColorChooser();
-      cc.setColor(new Color(0xFF_FF_00_00, true));
+      cc.setColor(label.getBackground());
       AbstractColorChooserPanel[] panels = cc.getChooserPanels();
       List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
       AbstractColorChooserPanel ccp = choosers.get(3);
@@ -178,13 +178,13 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
 
   @Override public Object stringToValue(String text) throws ParseException {
     try {
+      // return Integer.valueOf(rgbaToArgb(text), 16); // <- NumberFormatException
+      return Integer.parseUnsignedInt(rgbaToArgb(text), 16);
       // int r = Integer.parseInt(text.substring(0, 2), 16);
       // int g = Integer.parseInt(text.substring(2, 4), 16);
       // int b = Integer.parseInt(text.substring(4, 6), 16);
       // int a = Integer.parseInt(text.substring(6), 16);
       // return (a << 24) | (r << 16) | (g << 8) | b;
-      // return Integer.valueOf(rgbaToArgb(text), 16); // <- NumberFormatException
-      return Integer.parseUnsignedInt(rgbaToArgb(text), 16);
     } catch (NumberFormatException nfe) {
       ParseException pe = new ParseException("illegal format", 0);
       pe.initCause(nfe);
