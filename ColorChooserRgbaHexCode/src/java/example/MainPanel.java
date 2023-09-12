@@ -178,12 +178,13 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
 
   @Override public Object stringToValue(String text) throws ParseException {
     try {
-      int r = Integer.parseInt(text.substring(0, 2), 16);
-      int g = Integer.parseInt(text.substring(2, 4), 16);
-      int b = Integer.parseInt(text.substring(4, 6), 16);
-      int a = Integer.parseInt(text.substring(6), 16);
-      return (a << 24) | (r << 16) | (g << 8) | b;
-      // return Integer.valueOf(argb, 16); // <- NumberFormatException
+      // int r = Integer.parseInt(text.substring(0, 2), 16);
+      // int g = Integer.parseInt(text.substring(2, 4), 16);
+      // int b = Integer.parseInt(text.substring(4, 6), 16);
+      // int a = Integer.parseInt(text.substring(6), 16);
+      // return (a << 24) | (r << 16) | (g << 8) | b;
+      // return Integer.valueOf(rgbaToArgb(text), 16); // <- NumberFormatException
+      return Integer.parseUnsignedInt(rgbaToArgb(text), 16);
     } catch (NumberFormatException nfe) {
       ParseException pe = new ParseException("illegal format", 0);
       pe.initCause(nfe);
@@ -205,9 +206,17 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
       //   value >>= 4;
       // }
       String argb = String.valueOf(array).toUpperCase(Locale.ENGLISH);
-      return argb.substring(2) + argb.substring(0, 2);
+      return argbToRgba(argb);
     }
     throw new ParseException("illegal object", 0);
+  }
+
+  private String argbToRgba(String argb) {
+    return argb.substring(2) + argb.substring(0, 2);
+  }
+
+  private String rgbaToArgb(String rgba) {
+    return rgba.substring(6) + rgba.substring(0, 6);
   }
 
   @Override protected DocumentFilter getDocumentFilter() {
