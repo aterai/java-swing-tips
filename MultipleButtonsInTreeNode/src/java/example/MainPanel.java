@@ -162,7 +162,7 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
 class ColorButton extends JButton {
   protected ColorButton(ColorIcon icon) {
     super(icon);
-    setPressedIcon(new ColorIcon(icon.color.darker()));
+    setPressedIcon(new ColorIcon(icon.getColor().darker()));
   }
 
   @Override public void updateUI() {
@@ -185,7 +185,7 @@ class ColorButton extends JButton {
 }
 
 class ColorIcon implements Icon {
-  protected final Color color;
+  private final Color color;
 
   protected ColorIcon(Color color) {
     this.color = color;
@@ -205,5 +205,9 @@ class ColorIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 8;
+  }
+
+  public Color getColor() {
+    return color;
   }
 }
