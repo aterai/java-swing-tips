@@ -60,9 +60,9 @@ public final class MainPanel extends JPanel {
   }
 
   private static AbstractButton makeMenuButton(MenuContext m) {
-    AbstractButton b = new JRadioButton(m.command);
-    b.setActionCommand(m.command);
-    b.setForeground(m.color);
+    AbstractButton b = new JRadioButton(m.getCommand());
+    b.setActionCommand(m.getCommand());
+    b.setForeground(m.getColor());
     b.setBorder(BorderFactory.createEmptyBorder());
     return b;
   }
@@ -186,12 +186,20 @@ class PressAndHoldButton extends JButton {
 }
 
 class MenuContext {
-  public final String command;
-  public final Color color;
+  private final String command;
+  private final Color color;
 
   protected MenuContext(String cmd, Color c) {
     command = cmd;
     color = c;
+  }
+
+  public String getCommand() {
+    return command;
+  }
+
+  public Color getColor() {
+    return color;
   }
 }
 
