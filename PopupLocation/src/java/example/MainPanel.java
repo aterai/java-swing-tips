@@ -23,13 +23,13 @@ public final class MainPanel extends JPanel {
     field1.setComponentPopupMenu(popup);
 
     JTextField field2 = new JTextField("override JTextField#getPopupLocation(MouseEvent)") {
-      @Override public Point getPopupLocation(MouseEvent event) {
-        Point pt = super.getPopupLocation(event);
+      @Override public Point getPopupLocation(MouseEvent e) {
+        Point pt = super.getPopupLocation(e);
         try {
           Rectangle r = modelToView(getCaretPosition());
           // Java 9: Rectangle r = modelToView2D(getCaretPosition()).getBounds();
-          if (event == null && r != null) {
-            pt.setLocation(r.getLocation());
+          if (e == null && r != null) { // e == null <- Menu Key pressed
+            pt = r.getLocation();
             pt.translate(0, r.height);
           }
         } catch (BadLocationException ex) {
@@ -127,8 +127,8 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    icon.setIcon(value.icon);
-    label.setText(value.title);
+    icon.setIcon(value.getIcon());
+    label.setText(value.getTitle());
     renderer.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
       label.setForeground(list.getSelectionForeground());
@@ -142,12 +142,20 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 }
 
 class ListItem {
-  public final Icon icon;
-  public final String title;
+  private final Icon icon;
+  private final String title;
 
   protected ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
+  }
+
+  public Icon getIcon() {
+    return icon;
+  }
+
+  public String getTitle() {
+    return title;
   }
 }
 
