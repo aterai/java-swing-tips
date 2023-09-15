@@ -149,8 +149,8 @@ public final class MainPanel extends JPanel {
   }
 
   public void update(Chunk c) {
-    append(c.line);
-    monitor.setNote(c.note);
+    append(c.getLine());
+    monitor.setNote(c.getNote());
   }
 
   public void append(String str) {
@@ -182,12 +182,20 @@ public final class MainPanel extends JPanel {
 }
 
 class Chunk {
-  public final String line;
-  public final String note;
+  private final String line;
+  private final String note;
 
   protected Chunk(String line, String note) {
     this.line = line;
     this.note = note;
+  }
+
+  public String getLine() {
+    return line;
+  }
+
+  public String getNote() {
+    return note;
   }
 }
 
