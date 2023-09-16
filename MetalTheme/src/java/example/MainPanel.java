@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void createAndShowGui() {
-    // BasicLookAndFeel, WidowsLookAndFeel
+    // BasicLookAndFeel, WindowsLookAndFeel
     UIManager.put("InternalFrame.activeTitleForeground", Color.RED);
     UIManager.put("InternalFrame.inactiveTitleForeground", Color.WHITE);
     // MetalLookAndFeel
