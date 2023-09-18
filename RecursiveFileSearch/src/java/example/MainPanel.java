@@ -180,10 +180,10 @@ public final class MainPanel extends JPanel {
   }
 
   public void updateMessage(Message m) {
-    if (m.append) {
-      appendLine(m.text);
+    if (m.isAppend()) {
+      appendLine(m.getText());
     } else {
-      textArea.setText(m.text + "\n");
+      textArea.setText(m.getText() + "\n");
     }
   }
 
@@ -370,11 +370,19 @@ class ProgressListener implements PropertyChangeListener {
 }
 
 class Message {
-  public final String text;
-  public final boolean append;
+  private final String text;
+  private final boolean append;
 
   protected Message(String text, boolean append) {
     this.text = text;
     this.append = append;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public boolean isAppend() {
+    return append;
   }
 }
