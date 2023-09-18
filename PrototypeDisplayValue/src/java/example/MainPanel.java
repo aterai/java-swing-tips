@@ -5,11 +5,12 @@
 package example;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String TITLE = "MMMMMMMMMMMMMMMMMMMM";
+  private static final String PROTOTYPE = String.join("", Collections.nCopies(20, "M"));
 
   private MainPanel() {
     super();
@@ -25,13 +26,13 @@ public final class MainPanel extends JPanel {
     add(combo1);
 
     JComboBox<String> combo2 = new JComboBox<>(model1);
-    combo2.setPrototypeDisplayValue(TITLE);
+    combo2.setPrototypeDisplayValue(PROTOTYPE);
     add(combo2);
     layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, this);
     layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
 
     JComboBox<String> combo3 = new JComboBox<>(model1);
-    combo3.setPrototypeDisplayValue(TITLE);
+    combo3.setPrototypeDisplayValue(PROTOTYPE);
     combo3.setEditable(true);
     layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, this);
     layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         setRenderer(new SiteListCellRenderer<>());
-        setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+        setPrototypeDisplayValue(new WebSite(PROTOTYPE, new ColorIcon(Color.GRAY)));
       }
     };
     layout.putConstraint(SpringLayout.WEST, combo5, 10, SpringLayout.WEST, this);
@@ -69,7 +70,7 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         setRenderer(new SiteListCellRenderer<>());
-        setPrototypeDisplayValue(new WebSite(TITLE, new ColorIcon(Color.GRAY)));
+        setPrototypeDisplayValue(new WebSite(PROTOTYPE, new ColorIcon(Color.GRAY)));
       }
     };
     layout.putConstraint(SpringLayout.WEST, combo6, 10, SpringLayout.WEST, this);
@@ -102,12 +103,20 @@ public final class MainPanel extends JPanel {
 }
 
 class WebSite {
-  public final Icon favicon;
-  public final String title;
+  private final Icon favicon;
+  private final String title;
 
   protected WebSite(String title, Icon favicon) {
     this.title = title;
     this.favicon = favicon;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getFavicon() {
+    return favicon;
   }
 }
 
@@ -146,8 +155,8 @@ class SiteListCellRenderer<E extends WebSite> implements ListCellRenderer<E> {
     if (c instanceof JLabel && Objects.nonNull(value)) {
       JLabel l = (JLabel) c;
       l.setOpaque(index >= 0);
-      l.setText(value.title);
-      l.setIcon(value.favicon);
+      l.setText(value.getTitle());
+      l.setIcon(value.getFavicon());
     }
     if (isSelected) {
       c.setBackground(list.getSelectionBackground());
