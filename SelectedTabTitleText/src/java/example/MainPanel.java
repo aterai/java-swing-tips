@@ -58,8 +58,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addTab(JTabbedPane tabbedPane, TabTitle tt, Component c) {
-    tabbedPane.addTab(tt.title, c);
-    URL url = tt.url;
+    tabbedPane.addTab(tt.getTitle(), c);
+    URL url = tt.getUrl();
     Icon icon = Objects.nonNull(url) ? new ImageIcon(url) : UIManager.getIcon("html.missingImage");
     JLabel label = new JLabel(null, icon, SwingConstants.CENTER) {
       @Override public Dimension getPreferredSize() {
@@ -103,12 +103,20 @@ public final class MainPanel extends JPanel {
 }
 
 class TabTitle {
-  public final String title;
-  public final URL url;
+  private final String title;
+  private final URL url;
 
   protected TabTitle(String title, URL url) {
     this.title = title;
     this.url = url;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public URL getUrl() {
+    return url;
   }
 }
 
