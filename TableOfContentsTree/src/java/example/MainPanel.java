@@ -86,12 +86,20 @@ public final class MainPanel extends JPanel {
 }
 
 class TableOfContents {
-  public final String title;
-  public final Integer page;
+  private final String title;
+  private final Integer page;
 
   protected TableOfContents(String title, int page) {
     this.title = title;
     this.page = page;
+  }
+
+  // public String getTitle() {
+  //   return title;
+  // }
+
+  public Integer getPage() {
+    return page;
   }
 
   @Override public String toString() {
@@ -158,7 +166,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
           Dimension d = c.getPreferredSize();
           d.height = tree.isFixedRowHeight() ? tree.getRowHeight() : d.height;
           pnPt.setLocation(tree.getWidth() - gap, c.getBaseline(d.width, d.height));
-          pn = toc.page;
+          pn = toc.getPage();
           rxs = d.width + gap;
           rxe = tree.getWidth() - tree.getInsets().right - gap;
 
@@ -341,7 +349,7 @@ class TableOfContentsTree extends JTree {
     Object o = node.getUserObject();
     if (o instanceof TableOfContents) {
       TableOfContents toc = (TableOfContents) o;
-      String pn = Integer.toString(toc.page);
+      String pn = Integer.toString(toc.getPage());
       TreeCellRenderer tcr = getCellRenderer();
       g2.setPaint(getTextSelectionColor(i, tcr));
 
