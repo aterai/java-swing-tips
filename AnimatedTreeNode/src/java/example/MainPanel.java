@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
             Object v = ((DefaultMutableTreeNode) value).getUserObject();
             if (v instanceof NodeObject) {
               NodeObject uo = (NodeObject) v;
-              l.setText(Objects.toString(uo.title, ""));
-              l.setIcon(uo.icon);
+              l.setText(Objects.toString(uo.getTitle(), ""));
+              l.setIcon(uo.getIcon());
             } else {
               l.setText(Objects.toString(value, ""));
               l.setIcon(null);
@@ -107,8 +107,8 @@ public final class MainPanel extends JPanel {
 }
 
 class NodeObject {
-  public final Icon icon;
-  public final String title;
+  private final String title;
+  private final Icon icon;
 
   // protected NodeObject(String title) {
   //   this(title, null);
@@ -117,5 +117,13 @@ class NodeObject {
   protected NodeObject(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getIcon() {
+    return icon;
   }
 }
