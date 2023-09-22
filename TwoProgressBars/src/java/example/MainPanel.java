@@ -95,15 +95,15 @@ public final class MainPanel extends JPanel {
   }
 
   public void updateProgress(Progress s) {
-    switch (s.componentType) {
+    switch (s.getComponentType()) {
       case TOTAL:
-        bar1.setValue((Integer) s.value);
+        bar1.setValue((Integer) s.getValue());
         break;
       case FILE:
-        bar2.setValue((Integer) s.value);
+        bar2.setValue((Integer) s.getValue());
         break;
       case LOG:
-        area.append(Objects.toString(s.value));
+        area.append(Objects.toString(s.getValue()));
         break;
       default:
         throw new AssertionError("Unknown Progress");
@@ -143,12 +143,20 @@ enum ComponentType {
 }
 
 class Progress {
-  public final Object value;
-  public final ComponentType componentType;
+  private final Object value;
+  private final ComponentType componentType;
 
   protected Progress(ComponentType componentType, Object value) {
     this.componentType = componentType;
     this.value = value;
+  }
+
+  public Object getValue() {
+    return value;
+  }
+
+  public ComponentType getComponentType() {
+    return componentType;
   }
 }
 
