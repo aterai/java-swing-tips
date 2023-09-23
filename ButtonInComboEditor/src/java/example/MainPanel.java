@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       if (c instanceof JLabel) {
-        ((JLabel) c).setIcon(value.favicon);
+        ((JLabel) c).setIcon(value.getFavicon());
       }
       return c;
     });
@@ -118,8 +118,8 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
         getSiteItemFromModel(model, field.getText()).ifPresent(item -> {
           model.removeElement(item);
           model.insertElementAt(item, 0);
-          faviconLabel.setIcon(item.favicon);
-          feedButton.setVisible(item.hasRss);
+          faviconLabel.setIcon(item.getFavicon());
+          feedButton.setVisible(item.hasRss());
           setSelectedIndex(0);
         });
       }
@@ -149,7 +149,9 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   }
 
   private void updateFavicon(ComboBoxModel<SiteItem> model, JLabel l) {
-    getSiteItemFromModel(model, getSelectedItem()).map(i -> i.favicon).ifPresent(l::setIcon);
+    getSiteItemFromModel(model, getSelectedItem())
+        .map(SiteItem::getFavicon)
+        .ifPresent(l::setIcon);
   }
 
   private static JButton makeRssButton() {
@@ -190,7 +192,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
     String str = Objects.toString(o, "");
     return IntStream.range(0, model.getSize())
         .mapToObj(model::getElementAt)
-        .filter(ui -> ui.url.equals(str))
+        .filter(ui -> str.equals(ui.getUrl()))
         .findFirst();
     // DefaultComboBoxModel<SiteItem> model = (DefaultComboBoxModel<SiteItem>) getModel();
     // SiteItem item = null;
@@ -307,14 +309,26 @@ class SiteComboBoxLayout implements LayoutManager {
 }
 
 class SiteItem {
-  public final String url;
-  public final Icon favicon;
-  public final boolean hasRss;
+  private final String url;
+  private final Icon favicon;
+  private final boolean rss;
 
-  protected SiteItem(String url, Image image, boolean hasRss) {
+  protected SiteItem(String url, Image image, boolean rss) {
     this.url = url;
     this.favicon = new ImageIcon(image);
-    this.hasRss = hasRss;
+    this.rss = rss;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public Icon getFavicon() {
+    return favicon;
+  }
+
+  public boolean hasRss() {
+    return rss;
   }
 
   @Override public String toString() {
