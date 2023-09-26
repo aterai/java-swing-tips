@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
   public void append(Message m) {
     StyledDocument doc = jtp.getStyledDocument();
     try {
-      doc.insertString(doc.getLength(), m.text + "\n", doc.getStyle(m.type.toString()));
+      doc.insertString(doc.getLength(), m.getText() + "\n", doc.getStyle(m.getType().toString()));
     } catch (BadLocationException ex) {
       // should never happen
       RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
@@ -163,12 +163,20 @@ enum MessageType {
 }
 
 class Message {
-  public final String text;
-  public final MessageType type;
+  private final String text;
+  private final MessageType type;
 
   protected Message(String text, MessageType type) {
     this.text = text;
     this.type = type;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public MessageType getType() {
+    return type;
   }
 }
 
