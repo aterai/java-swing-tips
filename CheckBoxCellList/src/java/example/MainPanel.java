@@ -91,12 +91,20 @@ public final class MainPanel extends JPanel {
 }
 
 final class CheckBoxNode {
-  public final String text;
-  public final boolean selected;
+  private final String text;
+  private final boolean selected;
 
   /* default */ CheckBoxNode(String text, boolean selected) {
     this.text = text;
     this.selected = selected;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public boolean isSelected() {
+    return selected;
   }
 
   @Override public String toString() {
@@ -127,7 +135,7 @@ class CheckBoxList extends JList<CheckBoxNode> {
         if (e.getButton() == MouseEvent.BUTTON1 && index >= 0) {
           DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>) getModel();
           CheckBoxNode n = m.get(index);
-          m.set(index, new CheckBoxNode(n.text, !n.selected));
+          m.set(index, new CheckBoxNode(n.getText(), !n.isSelected()));
           repaint(getCellBounds(index, index));
         }
       }
@@ -182,9 +190,9 @@ class CheckBoxCellRenderer extends MouseAdapter implements ListCellRenderer<Chec
       checkBox.setBackground(list.getBackground());
       checkBox.setForeground(list.getForeground());
     }
-    checkBox.setSelected(value.selected);
+    checkBox.setSelected(value.isSelected());
     checkBox.getModel().setRollover(index == rollOverRowIndex);
-    checkBox.setText(value.text);
+    checkBox.setText(value.getText());
     return checkBox;
   }
 
@@ -216,8 +224,8 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;
-        checkBox.setText(node.text);
-        checkBox.setSelected(node.selected);
+        checkBox.setText(node.getText());
+        checkBox.setSelected(node.isSelected());
       }
       return checkBox;
     }
@@ -244,7 +252,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     if (leaf && value instanceof DefaultMutableTreeNode) {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
-        checkBox.setSelected(((CheckBoxNode) userObject).selected);
+        checkBox.setSelected(((CheckBoxNode) userObject).isSelected());
       } else {
         checkBox.setSelected(false);
       }
