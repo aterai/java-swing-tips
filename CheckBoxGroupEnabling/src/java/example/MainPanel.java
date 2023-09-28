@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
                     .map(DefaultMutableTreeNode.class::cast)
                     .forEach(child -> {
                       CheckBoxNode cn = (CheckBoxNode) child.getUserObject();
-                      map.get(cn.text).setEnabled(selected);
+                      map.get(cn.getText()).setEnabled(selected);
                     });
               });
             }
@@ -130,14 +130,26 @@ public final class MainPanel extends JPanel {
 }
 
 class CheckBoxNode {
-  public final String text;
-  public final boolean selected;
-  public final boolean enabled;
+  private final String text;
+  private final boolean selected;
+  private final boolean enabled;
 
   protected CheckBoxNode(String text, boolean selected, boolean enabled) {
     this.text = text;
     this.selected = selected;
     this.enabled = enabled;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public boolean isSelected() {
+    return selected;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
   }
 
   @Override public String toString() {
@@ -156,9 +168,9 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;
-        checkBox.setText(node.text);
-        checkBox.setSelected(node.selected);
-        checkBox.setEnabled(node.enabled);
+        checkBox.setText(node.getText());
+        checkBox.setSelected(node.isSelected());
+        checkBox.setEnabled(node.isEnabled());
       }
       return checkBox;
     }
@@ -186,8 +198,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;
-        checkBox.setEnabled(node.enabled);
-        checkBox.setSelected(node.selected);
+        checkBox.setEnabled(node.isEnabled());
+        checkBox.setSelected(node.isSelected());
       } else {
         checkBox.setSelected(false);
       }
@@ -222,7 +234,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
       CheckBoxNode c = (CheckBoxNode) node.getUserObject();
       for (Object child : e.getChildren()) {
-        updateAllChildrenUserObject((DefaultMutableTreeNode) child, c.selected);
+        updateAllChildrenUserObject((DefaultMutableTreeNode) child, c.isSelected());
       }
       model.nodeChanged((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());
     }
@@ -237,7 +249,7 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
         .filter(node -> !Objects.equals(parent, node))
         .forEach(node -> {
           CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-          node.setUserObject(new CheckBoxNode(check.text, check.selected, enabled));
+          node.setUserObject(new CheckBoxNode(check.getText(), check.isSelected(), enabled));
         });
   }
 
