@@ -120,8 +120,8 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;
-        checkBox.setText(node.text);
-        checkBox.setSelected(node.selected);
+        checkBox.setText(node.getText());
+        checkBox.setSelected(node.isSelected());
       }
       return checkBox;
     }
@@ -148,7 +148,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     if (leaf && value instanceof DefaultMutableTreeNode) {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
-        checkBox.setSelected(((CheckBoxNode) userObject).selected);
+        checkBox.setSelected(((CheckBoxNode) userObject).isSelected());
       } else {
         checkBox.setSelected(false);
       }
@@ -280,12 +280,20 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 // }
 
 class CheckBoxNode {
-  public final String text;
-  public final boolean selected;
+  private final String text;
+  private final boolean selected;
 
   protected CheckBoxNode(String text, boolean selected) {
     this.text = text;
     this.selected = selected;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public boolean isSelected() {
+    return selected;
   }
 
   @Override public String toString() {
