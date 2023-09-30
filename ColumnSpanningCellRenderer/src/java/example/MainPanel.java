@@ -137,15 +137,15 @@ class ColumnSpanningCellRenderer implements TableCellRenderer {
       Object o = table.getModel().getValueAt(mri, 0);
       if (o instanceof OptionPaneDescription) {
         OptionPaneDescription t = (OptionPaneDescription) o;
-        d = new OptionPaneDescription(title, t.icon, t.text);
+        d = new OptionPaneDescription(title, t.getIcon(), t.getText());
       } else {
         d = new OptionPaneDescription(title, null, "");
       }
       renderer.remove(iconLabel);
     }
-    label.setText(d.title);
-    textArea.setText(d.text);
-    iconLabel.setIcon(d.icon);
+    label.setText(d.getTitle());
+    textArea.setText(d.getText());
+    iconLabel.setIcon(d.getIcon());
 
     Rectangle cr = table.getCellRect(row, column, false);
     // // Flickering on first visible row ?
@@ -168,13 +168,25 @@ class ColumnSpanningCellRenderer implements TableCellRenderer {
 }
 
 class OptionPaneDescription {
-  public final String title;
-  public final Icon icon;
-  public final String text;
+  private final String title;
+  private final Icon icon;
+  private final String text;
 
   protected OptionPaneDescription(String title, Icon icon, String text) {
     this.title = title;
     this.icon = icon;
     this.text = text;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getIcon() {
+    return icon;
+  }
+
+  public String getText() {
+    return text;
   }
 }
