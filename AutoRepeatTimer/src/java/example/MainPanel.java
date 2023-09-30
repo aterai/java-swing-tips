@@ -17,7 +17,6 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridBagLayout());
-
     JTextField field = new JTextField("0") {
       @Override public Dimension getMaximumSize() {
         return getPreferredSize();
@@ -96,8 +95,8 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   @Override public void actionPerformed(ActionEvent e) {
     Object o = e.getSource();
     if (o instanceof Timer) {
-      boolean isPressed = Objects.nonNull(arrowButton) && !arrowButton.getModel().isPressed();
-      if (isPressed && autoRepeatTimer.isRunning()) {
+      boolean released = Objects.nonNull(arrowButton) && !arrowButton.getModel().isPressed();
+      if (released && autoRepeatTimer.isRunning()) {
         autoRepeatTimer.stop();
         // arrowButton = null;
       }
