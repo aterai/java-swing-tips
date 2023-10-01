@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST SelectFileNameWithoutExtension" />
+  <property name="jnlp.Name"     value="SelectFileNameWithoutExtension" />
+  <property name="jnlp.name"     value="selectfilenamewithoutextension" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/selectfilenamewithoutextension/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/SelectFileNameWithoutExtension.html" />
+</project>
