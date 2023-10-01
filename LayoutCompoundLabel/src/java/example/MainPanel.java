@@ -35,17 +35,20 @@ public final class MainPanel extends JPanel {
         String tip = super.getToolTipText(e);
         Point pt = e.getPoint();
         if (tip != null) {
+          String type;
           if (iconRect.contains(pt)) {
-            tip = "Icon: " + tip;
+            type = "Icon";
           } else if (textRect.contains(pt)) {
-            tip = "Text: " + tip;
+            type = "Text";
           } else if (viewRect.contains(pt)) {
-            tip = "InnerArea: " + tip;
+            type = "InnerArea";
           } else {
-            tip = "Border: " + tip;
+            type = "Border";
           }
+          return String.format("%s: %s", type, tip);
+        } else {
+          return null;
         }
-        return tip;
       }
     };
     label.setOpaque(true);
