@@ -8,7 +8,7 @@
     that can be found at https://google.github.io/styleguide/javaguide.html
 
     Checkstyle is very configurable. Be sure to read the documentation at
-    http://checkstyle.org (or in your downloaded distribution).
+    https://checkstyle.org (or in your downloaded distribution).
 
     To completely disable a check, just comment it out or delete it from the file.
     To suppress certain violations please review suppression filters.
@@ -17,6 +17,8 @@
  -->
 
 <module name="Checker">
+  <module name="SuppressWarningsFilter"/>
+
   <property name="localeLanguage" value="en"/>
 
   <property name="charset" value="UTF-8"/>
@@ -24,21 +26,20 @@
   <property name="severity" value="warning"/>
 
   <property name="fileExtensions" value="java, properties, xml"/>
-  <!-- Excludes all 'module-info.java' files              -->
-  <!-- See https://checkstyle.org/config_filefilters.html -->
+  <!-- Excludes all 'module-info.java' files             -->
+  <!-- See https://checkstyle.org/filefilters/index.html -->
   <module name="BeforeExecutionExclusionFileFilter">
     <property name="fileNamePattern" value="module\-info\.java$"/>
   </module>
-  <!-- https://checkstyle.org/config_filters.html#SuppressionFilter -->
+  <!-- https://checkstyle.org/filters/suppressionfilter.html -->
   <module name="SuppressionFilter">
     <property name="file" value="${org.checkstyle.google.suppressionfilter.config}"
            default="checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
   </module>
-  <module name="SuppressWarningsFilter"/>
 
-  <!-- Checks for whitespace                            -->
-  <!-- See http://checkstyle.org/config_whitespace.html -->
+  <!-- Checks for whitespace                                   -->
+  <!-- See https://checkstyle.org/checks/whitespace/index.html -->
   <module name="FileTabCharacter">
     <property name="eachLine" value="true"/>
   </module>
@@ -301,7 +302,7 @@
       <property name="tokens"
                value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
                     LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF,
-                    TYPE_EXTENSION_AND "/>
+                    TYPE_EXTENSION_AND"/>
     </module>
     <module name="AnnotationLocation">
       <property name="id" value="AnnotationLocationMostCases"/>
@@ -363,17 +364,17 @@
     <module name="CommentsIndentation">
       <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
     </module>
-    <!-- https://checkstyle.org/config_filters.html#SuppressionXpathFilter -->
+    <!-- https://checkstyle.org/filters/suppressionxpathfilter.html -->
     <module name="SuppressionXpathFilter">
       <property name="file" value="${org.checkstyle.google.suppressionxpathfilter.config}"
-             default="checkstyle-xpath-suppressions.xml" />
+             default="checkstyle-xpath-suppressions.xml"/>
       <property name="optional" value="true"/>
     </module>
-    <module name="SuppressWarningsHolder" />
+    <module name="SuppressWarningsHolder"/>
     <module name="SuppressionCommentFilter">
-      <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)" />
-      <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)" />
-      <property name="checkFormat" value="$1" />
+      <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)"/>
+      <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)"/>
+      <property name="checkFormat" value="$1"/>
     </module>
     <module name="SuppressWithNearbyCommentFilter">
       <property name="commentFormat" value="CHECKSTYLE.SUPPRESS\: ([\w\|]+)"/>
