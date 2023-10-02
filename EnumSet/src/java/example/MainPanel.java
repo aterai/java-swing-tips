@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +24,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
         {"owner", EnumSet.allOf(Permissions.class)},
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     //   });
     // }
 
-    EnumMap<Permissions, Integer> map = new EnumMap<>(Permissions.class);
+    Map<Permissions, Integer> map = new EnumMap<>(Permissions.class);
     map.put(Permissions.READ, 1 << 2);
     map.put(Permissions.WRITE, 1 << 1);
     map.put(Permissions.EXECUTE, 1);
