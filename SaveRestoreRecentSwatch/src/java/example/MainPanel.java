@@ -135,7 +135,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
   private transient KeyListener mainSwatchKeyListener;
   private transient KeyListener recentSwatchKeyListener;
 
-  public MySwatchChooserPanel() {
+  protected MySwatchChooserPanel() {
     super();
     setInheritsPopupMenu(true);
   }
@@ -298,7 +298,7 @@ class SwatchPanel extends JPanel {
     "PMD.CyclomaticComplexity",
     "PMD.CognitiveComplexity"
   })
-  public SwatchPanel() {
+  protected SwatchPanel() {
     super();
     initValues();
     initColors();
@@ -505,6 +505,7 @@ class MainSwatchPanel extends SwatchPanel {
     }
   }
 
+  @SuppressWarnings("MethodLength")
   private int[] initRawValues() {
     return new int[] {
       255, 255, 255, // first row.
