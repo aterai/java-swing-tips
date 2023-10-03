@@ -8,6 +8,12 @@
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="AvoidPrintStackTrace" />
+    <exclude name="ReplaceHashtableWithMap" />
+  </rule>
+  <rule ref="category/java/bestpractices.xml/LooseCoupling">
+    <properties>
+      <property name="allowedTypes" value="javax.swing.UIDefaults" />
+    </properties>
   </rule>
   <rule ref="category/java/codestyle.xml">
     <exclude name="AtLeastOneConstructor" />
@@ -15,10 +21,13 @@
     <exclude name="MethodArgumentCouldBeFinal" />
     <exclude name="OnlyOneReturn" />
     <exclude name="ShortVariable" />
+    <exclude name="LongVariable" />
+    <exclude name="UseDiamondOperator" />
   </rule>
   <rule ref="category/java/design.xml">
     <exclude name="LawOfDemeter" />
     <exclude name="LoosePackageCoupling" />
+    <exclude name="CouplingBetweenObjects" />
   </rule>
   <rule ref="category/java/documentation.xml">
     <exclude name="CommentRequired" />
