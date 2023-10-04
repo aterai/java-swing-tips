@@ -253,15 +253,15 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    label.setText(value.title);
+    label.setText(value.getTitle());
     label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
-      icon.setIcon(value.selectedIcon);
+      icon.setIcon(value.getSelectedIcon());
       label.setForeground(list.getSelectionForeground());
       label.setBackground(list.getSelectionBackground());
       label.setOpaque(true);
     } else {
-      icon.setIcon(value.icon);
+      icon.setIcon(value.getIcon());
       label.setForeground(list.getForeground());
       label.setBackground(list.getBackground());
       label.setOpaque(false);
@@ -271,9 +271,9 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 }
 
 class ListItem {
-  public final ImageIcon icon;
-  public final ImageIcon selectedIcon;
-  public final String title;
+  private final ImageIcon icon;
+  private final ImageIcon selectedIcon;
+  private final String title;
 
   protected ListItem(String title, String path) {
     this.title = title;
@@ -303,5 +303,17 @@ class ListItem {
     missingIcon.paintIcon(null, g2, (32 - iw) / 2, (32 - ih) / 2);
     g2.dispose();
     return bi;
+  }
+
+  public ImageIcon getIcon() {
+    return icon;
+  }
+
+  public ImageIcon getSelectedIcon() {
+    return selectedIcon;
+  }
+
+  public String getTitle() {
+    return title;
   }
 }
