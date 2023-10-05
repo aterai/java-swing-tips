@@ -95,10 +95,10 @@ public final class MainPanel extends JPanel {
       }
 
       private Icon getActivityIcon(Contribution value) {
-        if (value.date.isAfter(currentLocalDate)) {
+        if (value.getDate().isAfter(currentLocalDate)) {
           return new ContributionIcon(Color.WHITE);
         } else {
-          return activityIcons.get(value.activity);
+          return activityIcons.get(value.getActivity());
         }
       }
 
@@ -110,8 +110,8 @@ public final class MainPanel extends JPanel {
           return null;
         }
         Contribution value = getModel().getElementAt(idx);
-        String actTxt = value.activity == 0 ? "No" : Objects.toString(value.activity);
-        return actTxt + " contribution on " + value.date.toString();
+        String actTxt = value.getActivity() == 0 ? "No" : Objects.toString(value.getActivity());
+        return String.format("%s contribution on %s", actTxt, value.getDate());
       }
 
       @Override public Point getToolTipLocation(MouseEvent e) {
@@ -168,7 +168,9 @@ public final class MainPanel extends JPanel {
     c.gridy = 1;
     c.gridwidth = 3; // use 3 columns to display the name of the month
     for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW - c.gridwidth + 1; c.gridx++) {
-      LocalDate date = weekList.getModel().getElementAt(c.gridx * DayOfWeek.values().length).date;
+      int index = c.gridx * DayOfWeek.values().length;
+      Contribution contribution = weekList.getModel().getElementAt(index);
+      LocalDate date = contribution.getDate();
       boolean isFirst = date.getMonth() != date.minusWeeks(1L).getMonth();
       if (isFirst) {
         colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
@@ -235,12 +237,20 @@ public final class MainPanel extends JPanel {
 }
 
 class Contribution {
-  public final LocalDate date;
-  public final int activity;
+  private final LocalDate date;
+  private final int activity;
 
   protected Contribution(LocalDate date, int activity) {
     this.date = date;
     this.activity = activity;
+  }
+
+  public LocalDate getDate() {
+    return date;
+  }
+
+  public int getActivity() {
+    return activity;
   }
 }
 
