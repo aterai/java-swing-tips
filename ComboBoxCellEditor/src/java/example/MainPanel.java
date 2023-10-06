@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
             .map(DefaultMutableTreeNode::getUserObject)
             .filter(PluginNode.class::isInstance)
             .map(PluginNode.class::cast)
-            .map(uo -> String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex())))
+            .map(uo -> String.format("%s %s%n", uo, uo.getPlugins().get(uo.getSelectedIndex())))
             .ifPresent(textArea::append);
         // Object[] children = e.getChildren();
         // boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children)
@@ -104,8 +104,8 @@ public final class MainPanel extends JPanel {
 }
 
 class PluginNode {
-  protected final String name;
-  protected final List<String> plugins;
+  private final String name;
+  private final List<String> plugins;
   private int selectedIndex;
 
   protected PluginNode(String name, List<String> plugins) {
@@ -115,6 +115,14 @@ class PluginNode {
 
   protected PluginNode(String name) {
     this(name, Collections.emptyList());
+  }
+
+  // public String getName() {
+  //   return name;
+  // }
+
+  public List<String> getPlugins() {
+    return plugins;
   }
 
   public int getSelectedIndex() {
@@ -158,11 +166,12 @@ class PluginPanel extends JPanel {
         pluginName.setText(node.toString());
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
         model.removeAllElements();
-        if (node.plugins.isEmpty()) {
+        List<String> plugins = node.getPlugins();
+        if (plugins.isEmpty()) {
           remove(comboBox);
         } else {
           add(comboBox);
-          for (String s : node.plugins) {
+          for (String s : plugins) {
             model.addElement(s);
           }
           comboBox.setSelectedIndex(node.getSelectedIndex());
@@ -206,7 +215,7 @@ class PluginCellEditor extends DefaultCellEditor {
     Object o = super.getCellEditorValue();
     return Optional.ofNullable(node).<Object>map(n -> {
       DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
-      PluginNode pn = new PluginNode(panel.pluginName.getText(), n.plugins);
+      PluginNode pn = new PluginNode(panel.pluginName.getText(), n.getPlugins());
       pn.setSelectedIndex(m.getIndexOf(o));
       return pn;
     }).orElse(o);
