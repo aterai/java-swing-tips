@@ -24,10 +24,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   public static final Dimension CELL_SIZE = new Dimension(10, 10);
   public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
-  public final Color color = new Color(0x32_C8_32);
 
   private MainPanel() {
     super(new BorderLayout());
+    Color color = new Color(0x32_C8_32);
     List<Icon> activityIcons = Arrays.asList(
         new ContributionIcon(new Color(0xC8_C8_C8)),
         new ContributionIcon(color.brighter()),
