@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST StandingsTablesComparator" />
+  <property name="jnlp.Name"     value="StandingsTablesComparator" />
+  <property name="jnlp.name"     value="standingstablescomparator" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/standingstablescomparator/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/StandingsTablesComparator.html" />
+</project>
