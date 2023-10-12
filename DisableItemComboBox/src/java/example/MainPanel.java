@@ -87,8 +87,8 @@ public final class MainPanel extends JPanel {
 
 class DisableItemComboBox<E> extends JComboBox<E> {
   private final Set<Integer> disableIndexSet = new HashSet<>();
-  protected boolean isDisableIndex;
-  protected final Action up = new AbstractAction() {
+  private boolean isDisableIndex;
+  private final Action up = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       int si = getSelectedIndex();
       for (int i = si - 1; i >= 0; i--) {
@@ -99,7 +99,7 @@ class DisableItemComboBox<E> extends JComboBox<E> {
       }
     }
   };
-  protected final Action down = new AbstractAction() {
+  private final Action down = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       int si = getSelectedIndex();
       for (int i = si + 1; i < getModel().getSize(); i++) {
