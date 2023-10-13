@@ -59,9 +59,9 @@ public final class MainPanel extends JPanel {
 }
 
 class TitledSeparator extends JLabel {
-  protected final String title;
-  protected final Color target;
-  protected final int titlePosition;
+  private final String title;
+  private final Color target;
+  private final int titlePosition;
 
   protected TitledSeparator(String title, int titlePosition) {
     this(title, null, titlePosition);
