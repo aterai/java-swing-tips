@@ -164,28 +164,28 @@ public final class MainPanel extends JPanel {
         return RowData.class;
       }
     };
-    addRow(model, new RowData(1, "Machida", 33, 20, 7, 6, 57, 27));
-    addRow(model, new RowData(2, "Iwata", 35, 17, 11, 7, 61, 39));
-    addRow(model, new RowData(3, "Shimizu", 34, 16, 12, 6, 61, 27));
-    addRow(model, new RowData(4, "Tokyo", 35, 17, 9, 9, 47, 26));
-    addRow(model, new RowData(5, "Nagasaki", 35, 15, 10, 10, 58, 43));
-    addRow(model, new RowData(6, "Chiba", 35, 15, 9, 11, 46, 44));
-    addRow(model, new RowData(7, "Kofu", 35, 15, 7, 13, 49, 43));
-    addRow(model, new RowData(8, "Okayama", 35, 12, 15, 8, 43, 37));
-    addRow(model, new RowData(9, "Yamagata", 35, 16, 3, 16, 53, 49));
-    addRow(model, new RowData(10, "Oita", 35, 14, 9, 12, 46, 49));
-    addRow(model, new RowData(11, "Gunma", 32, 12, 12, 8, 36, 30));
-    addRow(model, new RowData(12, "Mito", 35, 11, 12, 12, 45, 53));
-    addRow(model, new RowData(13, "Tochigi", 35, 10, 12, 13, 35, 35));
-    addRow(model, new RowData(14, "Tokushima", 35, 8, 17, 10, 39, 46));
-    addRow(model, new RowData(15, "Akita", 34, 9, 13, 12, 27, 36));
-    addRow(model, new RowData(16, "Sendai", 35, 10, 10, 15, 40, 50));
-    addRow(model, new RowData(17, "Fujieda", 33, 11, 7, 15, 46, 57));
-    addRow(model, new RowData(18, "Kumamoto", 35, 9, 10, 16, 42, 45));
-    addRow(model, new RowData(19, "Iwaki", 34, 9, 10, 15, 33, 51));
-    addRow(model, new RowData(20, "Yamaguchi", 35, 8, 12, 15, 28, 55));
-    addRow(model, new RowData(21, "Kanazawa", 33, 9, 5, 19, 35, 55));
-    addRow(model, new RowData(22, "Omiya", 35, 7, 6, 22, 30, 60));
+    addRow(model, new RowData(1, "Machida", 20, 7, 6, 57, 27));
+    addRow(model, new RowData(2, "Iwata", 17, 11, 7, 61, 39));
+    addRow(model, new RowData(3, "Shimizu", 16, 12, 6, 61, 27));
+    addRow(model, new RowData(4, "Tokyo", 17, 9, 9, 47, 26));
+    addRow(model, new RowData(5, "Nagasaki", 15, 10, 10, 58, 43));
+    addRow(model, new RowData(6, "Chiba", 15, 9, 11, 46, 44));
+    addRow(model, new RowData(7, "Kofu", 15, 7, 13, 49, 43));
+    addRow(model, new RowData(8, "Okayama", 12, 15, 8, 43, 37));
+    addRow(model, new RowData(9, "Yamagata", 16, 3, 16, 53, 49));
+    addRow(model, new RowData(10, "Oita", 14, 9, 12, 46, 49));
+    addRow(model, new RowData(11, "Gunma", 12, 12, 8, 36, 30));
+    addRow(model, new RowData(12, "Mito", 11, 12, 12, 45, 53));
+    addRow(model, new RowData(13, "Tochigi", 10, 12, 13, 35, 35));
+    addRow(model, new RowData(14, "Tokushima", 8, 17, 10, 39, 46));
+    addRow(model, new RowData(15, "Akita", 9, 13, 12, 27, 36));
+    addRow(model, new RowData(16, "Sendai", 10, 10, 15, 40, 50));
+    addRow(model, new RowData(17, "Fujieda", 11, 7, 15, 46, 57));
+    addRow(model, new RowData(18, "Kumamoto", 9, 10, 16, 42, 45));
+    addRow(model, new RowData(19, "Iwaki", 9, 10, 15, 33, 51));
+    addRow(model, new RowData(20, "Yamaguchi", 8, 12, 15, 28, 55));
+    addRow(model, new RowData(21, "Kanazawa", 9, 5, 19, 35, 55));
+    addRow(model, new RowData(22, "Omiya", 7, 6, 22, 30, 60));
     return model;
   }
 
@@ -215,11 +215,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings({"ParameterNumber", "PMD.DataClass"})
+@SuppressWarnings("PMD.DataClass")
 class RowData {
   private final int position;
   private final String team;
-  private final int matches;
   private final int wins;
   private final int draws;
   private final int losses;
@@ -229,7 +228,6 @@ class RowData {
   protected RowData(
       int position,
       String team,
-      int matches,
       int wins,
       int draws,
       int looses,
@@ -237,7 +235,6 @@ class RowData {
       int goalsAgainst) {
     this.position = position;
     this.team = team;
-    this.matches = matches;
     this.wins = wins;
     this.draws = draws;
     this.losses = looses;
@@ -254,7 +251,7 @@ class RowData {
   }
 
   public int getMatches() {
-    return matches;
+    return wins + draws + losses;
   }
 
   public int getWins() {
