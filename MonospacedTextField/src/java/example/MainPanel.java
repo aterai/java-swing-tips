@@ -32,14 +32,14 @@ public final class MainPanel extends JPanel {
     JFormattedTextField field2 = new JFormattedTextField(code);
     field2.setHorizontalAlignment(SwingConstants.RIGHT);
     Map<TextAttribute, Object> attr = new ConcurrentHashMap<>();
-    attr.put(TextAttribute.TRACKING, -.021f);
+    attr.put(TextAttribute.TRACKING, -.011f);
     field2.setFont(mono.deriveFont(attr));
     field2.setColumns(8);
 
     JFormattedTextField field3 = new JFormattedTextField(code) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.width += 2;
+        d.width += 1;
         return d;
       }
     };

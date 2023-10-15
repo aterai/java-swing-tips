@@ -169,7 +169,8 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
 
   public static void init(JFormattedTextField text) {
     ValueFormatter formatter = new ValueFormatter();
-    text.setColumns(8);
+    text.setColumns(9);
+    text.setFont(new Font(Font.MONOSPACED, Font.PLAIN, text.getFont().getSize()));
     text.setFormatterFactory(new DefaultFormatterFactory(formatter));
     text.setHorizontalAlignment(SwingConstants.RIGHT);
     text.setMinimumSize(text.getPreferredSize());
