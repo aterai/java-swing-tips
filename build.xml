@@ -419,7 +419,7 @@
     <property name="ssh.inkey" value="${env.SSH_INKEY}" />
     <property name="ssh.in" value="${env.SSH_IN}" />
     <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
-      <arg value="rsautl" />
+      <arg value="pkeyutl" />
       <arg value="-decrypt" />
       <arg value="-inkey" />
       <arg value="${ssh.inkey}" />
