@@ -65,14 +65,26 @@ public final class MainPanel extends JPanel {
 
 class FishEyeRowContext implements Serializable {
   private static final long serialVersionUID = 1L;
-  public final int height;
-  public final Font font;
-  public final Color color;
+  private final int height;
+  private final Font font;
+  private final Color color;
 
   protected FishEyeRowContext(int height, Font font, Color color) {
     this.height = height;
     this.font = font;
     this.color = color;
+  }
+
+  public int getHeight() {
+    return height;
+  }
+
+  public Font getFont() {
+    return font;
+  }
+
+  public Color getColor() {
+    return color;
   }
 }
 
@@ -177,8 +189,8 @@ class FishEyeTable extends JTable {
     for (int i = -rd2; i < rowCount; i++) {
       if (ccRow - rd2 <= i && i <= ccRow + rd2) {
         if (i == row) {
-          color = fishEyeRowList.get(index).color;
-          font = fishEyeRowList.get(index).font;
+          color = fishEyeRowList.get(index).getColor();
+          font = fishEyeRowList.get(index).getFont();
           break;
         }
         index++;
@@ -221,7 +233,7 @@ class FishEyeTable extends JTable {
         if (i < 0) {
           continue;
         }
-        crh = fishEyeRowList.get(index).height;
+        crh = fishEyeRowList.get(index).getHeight();
       } else {
         if (i < 0) {
           continue;
@@ -236,7 +248,7 @@ class FishEyeTable extends JTable {
   private int getViewHeight(int count) {
     int h = 0;
     for (int i = 0; i < count; i++) {
-      h += fishEyeRowList.get(i).height;
+      h += fishEyeRowList.get(i).getHeight();
     }
     return h;
   }
