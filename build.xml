@@ -273,14 +273,10 @@
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
            encoding="${compile.encoding}"
-           debug="${compile.debug}"
-           optimize="${compile.optimize}"
-           deprecation="${compile.deprecation}"
            fork="yes"
-           includeAntRuntime="no"
-           classpathref="project.class.path">
+           includeAntRuntime="no">
       <include name="**/*.java" />
-      <exclude name="**/module-info.java" if:set="jdk9orlater" />
+      <exclude name="**/module-info.java" unless:set="jdk9orlater" />
       <compilerarg value="-J-Xbootclasspath/p:${javac.jar}" unless:set="jdk9orlater"/>
       <compilerarg value="-XDcompilePolicy=simple"/>
       <compilerarg value="-processorpath"/>
