@@ -82,12 +82,20 @@ public final class MainPanel extends JPanel {
 }
 
 class SiteItem {
-  public final String name;
-  public final List<String> link;
+  private final String name;
+  private final List<String> link;
 
   protected SiteItem(String name, List<String> link) {
     this.name = name;
     this.link = link;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public List<String> getLink() {
+    return link;
   }
 }
 
@@ -111,8 +119,8 @@ class SiteListItemRenderer implements ListCellRenderer<SiteItem> {
 
   @Override public Component getListCellRendererComponent(JList<? extends SiteItem> list, SiteItem item, int index, boolean isSelected, boolean cellHasFocus) {
     StringBuilder buf = new StringBuilder(100);
-    buf.append("<html><h1>").append(item.name).append("</h1><table>");
-    for (String url : item.link) {
+    buf.append("<html><h1>").append(item.getName()).append("</h1><table>");
+    for (String url : item.getLink()) {
       buf.append("<tr><td><a href='").append(url).append("'>").append(url);
       // .append("</a></td></tr>");
     }
