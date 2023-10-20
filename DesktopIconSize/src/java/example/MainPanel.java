@@ -12,7 +12,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private static final Dimension ICON_SZ = new Dimension(150, 40);
   private final String info = String.format("JDesktopIcon: %dx%d", ICON_SZ.width, ICON_SZ.height);
-  public final JCheckBox check = new JCheckBox(info);
+  private final JCheckBox check = new JCheckBox(info);
 
   private MainPanel() {
     super(new BorderLayout());
