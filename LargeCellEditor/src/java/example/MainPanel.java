@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     ListModel<IconItem> list = makeIconList();
     int ins = 2;
-    Icon icon = list.getElementAt(0).small;
+    Icon icon = list.getElementAt(0).getSmallIcon();
     int iw = ins + icon.getIconWidth();
     int ih = ins + icon.getIconHeight();
     Dimension d = new Dimension(iw * 3 + ins, ih * 3 + ins);
@@ -99,12 +99,20 @@ public final class MainPanel extends JPanel {
 }
 
 class IconItem {
-  public final Icon large;
-  public final Icon small;
+  private final Icon large;
+  private final Icon small;
 
   protected IconItem(String str) {
     large = makeIcon("example/" + str + "-48.png");
     small = makeIcon("example/" + str + "-24.png");
+  }
+
+  public Icon getLargeIcon() {
+    return large;
+  }
+
+  public Icon getSmallIcon() {
+    return small;
   }
 
   private static Icon makeIcon(String path) {
@@ -125,7 +133,7 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel && value instanceof IconItem) {
       JLabel l = (JLabel) c;
-      l.setIcon(((IconItem) value).large);
+      l.setIcon(((IconItem) value).getLargeIcon());
       l.setText(null);
       l.setHorizontalAlignment(CENTER);
     }
@@ -292,7 +300,7 @@ class EditorFromList<E extends IconItem> extends JList<E> {
       } else {
         renderer.setBackground(getBackground());
       }
-      renderer.setIcon(value.small);
+      renderer.setIcon(value.getSmallIcon());
       return renderer;
     });
   }
