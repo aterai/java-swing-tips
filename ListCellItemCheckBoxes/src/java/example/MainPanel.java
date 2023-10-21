@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     JPopupMenu popup = new JPopupMenu("JList JPopupMenu");
     popup.add("info").addActionListener(e -> {
       String msg = list.getSelectedValuesList().stream()
-          .map(i -> i.title)
+          .map(ListItem::getTitle)
           .collect(Collectors.joining(", "));
       JOptionPane.showMessageDialog(list.getRootPane(), msg);
     });
@@ -259,7 +259,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     private void cellPressed(MouseEvent e, int index) {
       if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() > 1) {
         ListItem item = getModel().getElementAt(index);
-        JOptionPane.showMessageDialog(getRootPane(), item.title);
+        JOptionPane.showMessageDialog(getRootPane(), item.getTitle());
       } else {
         checkedIndex = -1;
         getCheckBox(e, index).ifPresent(rb -> {
@@ -352,9 +352,9 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
 
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-      label.setText(value.title);
+      label.setText(value.getTitle());
       itemPanel.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
-      icon.setIcon(value.icon);
+      icon.setIcon(value.getIcon());
       check.setSelected(isSelected);
       check.getModel().setRollover(index == rollOverIndex);
       if (isSelected) {
@@ -377,12 +377,20 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
 }
 
 class ListItem {
-  public final Icon icon;
-  public final String title;
+  private final Icon icon;
+  private final String title;
 
   protected ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getIcon() {
+    return icon;
   }
 }
 
