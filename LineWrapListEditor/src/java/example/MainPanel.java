@@ -101,8 +101,8 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    icon.setIcon(value.icon);
-    label.setText(value.title);
+    icon.setIcon(value.getIcon());
+    label.setText(value.getTitle());
     renderer.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
     if (isSelected) {
       label.setForeground(list.getSelectionForeground());
@@ -116,12 +116,20 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 }
 
 class ListItem {
-  public final Icon icon;
-  public final String title;
+  private final Icon icon;
+  private final String title;
 
   protected ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getIcon() {
+    return icon;
   }
 }
 
@@ -210,7 +218,7 @@ class EditableList<E extends ListItem> extends JList<E> {
       Rectangle rect = getCellBounds(idx, idx);
       // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
       // rect.setLocation(p);
-      editor.setText(getSelectedValue().title);
+      editor.setText(getSelectedValue().getTitle());
       int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
       rect.y += rect.height - rowHeight - 2 - 1;
       rect.height = editor.getPreferredSize().height;
@@ -245,7 +253,7 @@ class EditableList<E extends ListItem> extends JList<E> {
         DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
         ListItem item = m.getElementAt(index);
         model.remove(index);
-        model.add(index, new ListItem(editor.getText().trim(), item.icon));
+        model.add(index, new ListItem(editor.getText().trim(), item.getIcon()));
         setSelectedIndex(index); // 1. Both must be run
         EventQueue.invokeLater(() -> setSelectedIndex(index)); // 2. Both must be run
       }
