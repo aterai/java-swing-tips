@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
@@ -20,11 +21,15 @@ public final class MainPanel extends JPanel {
         ColorUIResource reset = new ColorUIResource(Color.RED);
         setSelectionForeground(reset);
         setSelectionBackground(reset);
-        // setSelectionForeground(null);
-        // setSelectionBackground(null);
         super.updateUI();
-        Object showGrid = UIManager.getLookAndFeelDefaults().get("Table.showGrid");
-        setShowGrid(showGrid == null || (Boolean) showGrid);
+        UIDefaults def = UIManager.getLookAndFeelDefaults();
+        Object showGrid = def.get("Table.showGrid");
+        Color gridColor = def.getColor("Table.gridColor");
+        if (showGrid == null && gridColor != null) {
+          setShowGrid(true);
+          setIntercellSpacing(new DimensionUIResource(1, 1));
+          createDefaultRenderers();
+        }
       }
     };
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

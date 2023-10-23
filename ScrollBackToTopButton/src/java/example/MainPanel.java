@@ -29,16 +29,7 @@ public final class MainPanel extends JPanel {
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
     // textArea.setEditable(false);
 
-    JTable table = new JTable(500, 3) {
-      @Override public void updateUI() {
-        ColorUIResource reset = new ColorUIResource(Color.RED);
-        setSelectionForeground(reset);
-        setSelectionBackground(reset);
-        super.updateUI();
-        Object showGrid = UIManager.getLookAndFeelDefaults().get("Table.showGrid");
-        setShowGrid(showGrid == null || (Boolean) showGrid);
-      }
-    };
+    JTable table = new JTable(500, 3);
     JScrollPane scroll2 = new JScrollPane(table);
     SwingUtilities.invokeLater(() -> table.scrollRectToVisible(table.getCellRect(500, 0, true)));
 
