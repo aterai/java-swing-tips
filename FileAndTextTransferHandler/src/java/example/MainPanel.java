@@ -127,6 +127,7 @@ public final class MainPanel extends JPanel {
 
   private final class FileDropTargetListener extends DropTargetAdapter {
     @Override public void drop(DropTargetDropEvent e) {
+      Object src = e.getSource();
       Transferable transferable = e.getTransferable();
       if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
         e.acceptDrop(DnDConstants.ACTION_COPY);
@@ -136,8 +137,17 @@ public final class MainPanel extends JPanel {
         } catch (UnsupportedFlavorException | IOException ex) {
           e.dropComplete(false);
         }
-      } else {
-        JTextComponent textArea = (JTextComponent) e.getSource();
+      } else if (src instanceof DropTarget) {
+        Component c = ((DropTarget) src).getComponent();
+        if (c instanceof JTextComponent) {
+          JTextComponent textArea = (JTextComponent) c;
+          TransferHandler textHandler = textArea.getTransferHandler();
+          if (textHandler != null) {
+            textHandler.importData(textArea, transferable);
+          }
+        }
+      } else if (src instanceof JTextComponent) {
+        JTextComponent textArea = (JTextComponent) src;
         TransferHandler textHandler = textArea.getTransferHandler();
         if (textHandler != null) {
           textHandler.importData(textArea, transferable);
