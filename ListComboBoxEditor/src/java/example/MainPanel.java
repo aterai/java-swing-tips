@@ -284,9 +284,9 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    label.setText(value.title);
+    label.setText(value.getTitle());
     label.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
-    label.setIcon(value.icon);
+    label.setIcon(value.getIcon());
     if (isSelected) {
       label.setForeground(list.getSelectionForeground());
       label.setBackground(SELECTED_COLOR);
@@ -299,12 +299,20 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 }
 
 class ListItem {
-  public final Icon icon;
-  public final String title;
+  private final Icon icon;
+  private final String title;
 
   protected ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getIcon() {
+    return icon;
   }
 }
 
