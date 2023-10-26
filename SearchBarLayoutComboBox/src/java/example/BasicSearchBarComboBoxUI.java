@@ -78,8 +78,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
           Object o = listBox.getSelectedValue();
           if (o instanceof SearchEngine) {
             SearchEngine se = (SearchEngine) o;
-            arrowButton.setIcon(se.favicon);
-            arrowButton.setRolloverIcon(makeRolloverIcon(se.favicon));
+            arrowButton.setIcon(se.getFavicon());
+            arrowButton.setRolloverIcon(makeRolloverIcon(se.getFavicon()));
           }
           combo.getEditor().setItem(str);
         }
@@ -255,8 +255,8 @@ class SearchEngineListCellRenderer implements ListCellRenderer<Object> {
     if (value instanceof SearchEngine && c instanceof JLabel) {
       JLabel l = (JLabel) c;
       SearchEngine se = (SearchEngine) value;
-      l.setIcon(se.favicon);
-      l.setToolTipText(se.url);
+      l.setIcon(se.getFavicon());
+      l.setToolTipText(se.getUrl());
     }
     return c;
   }

@@ -92,9 +92,9 @@ public final class MainPanel extends JPanel {
 }
 
 class SearchEngine {
-  public final String name;
-  public final String url;
-  public final ImageIcon favicon;
+  private final String name;
+  private final String url;
+  private final ImageIcon favicon;
 
   protected SearchEngine(String name, String url, ImageIcon icon) {
     this.name = name;
@@ -102,8 +102,20 @@ class SearchEngine {
     this.favicon = icon;
   }
 
-  @Override public String toString() {
+  public String getName() {
     return name;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public ImageIcon getFavicon() {
+    return favicon;
+  }
+
+  @Override public String toString() {
+    return getName();
   }
 }
 
@@ -139,7 +151,7 @@ class SearchBarComboBox<E extends SearchEngine> extends JComboBox<E> {
     JButton arrowButton = (JButton) getComponent(0);
     SearchEngine se = getItemAt(0);
     if (Objects.nonNull(se)) {
-      arrowButton.setIcon(se.favicon);
+      arrowButton.setIcon(se.getFavicon());
     }
     // ListCellRenderer<? super SearchEngine> renderer = getRenderer();
     // if (renderer instanceof Component) {
