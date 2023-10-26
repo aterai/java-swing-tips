@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
   };
   private final JScrollPane scroll = new JScrollPane(table);
   private final JLabel label = new JLabel();
-  public final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
+  private final JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
 
   private MainPanel() {
     super(new BorderLayout());
