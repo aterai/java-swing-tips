@@ -713,10 +713,10 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
 
 // How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
-final class ButtonTabComponent extends JPanel {
-  public final JTabbedPane tabbedPane;
+class ButtonTabComponent extends JPanel {
+  private final JTabbedPane tabbedPane;
 
-  /* default */ ButtonTabComponent(JTabbedPane tabbedPane) {
+  protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {
@@ -745,6 +745,10 @@ final class ButtonTabComponent extends JPanel {
 
     add(label);
     add(button);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
   }
 
   @Override public void updateUI() {

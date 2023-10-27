@@ -690,7 +690,7 @@ class GhostGlassPane extends JComponent {
 // How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-  protected final JTabbedPane tabbedPane;
+  private final JTabbedPane tabbedPane;
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -721,6 +721,10 @@ class ButtonTabComponent extends JPanel {
 
     add(label);
     add(button);
+  }
+
+  @Override public final Component add(Component comp) {
+    return super.add(comp);
   }
 
   @Override public void updateUI() {

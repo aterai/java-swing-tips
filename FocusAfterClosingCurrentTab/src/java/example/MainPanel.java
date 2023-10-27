@@ -199,7 +199,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 // How to Use Tabbed Panes (The Java™ Tutorials > ... > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
 class ButtonTabComponent extends JPanel {
-  public final JTabbedPane tabbedPane;
+  private final JTabbedPane tabbedPane;
 
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout());
