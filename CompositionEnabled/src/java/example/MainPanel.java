@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
           return super.processKeyBinding(ks, e, condition, pressed);
         }
         InputContext ic = getInputContext();
-        if (ic.isCompositionEnabled() && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
+        boolean isCompositionEnabled = ic != null && ic.isCompositionEnabled();
+        if (isCompositionEnabled && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
           int selectedRow = getSelectedRow();
           int selectedColumn = getSelectedColumn();
           if (selectedRow != -1 && selectedColumn != -1) {
