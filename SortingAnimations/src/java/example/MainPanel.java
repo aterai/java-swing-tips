@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
   private final JSpinner spinner = new JSpinner(model);
   private final JButton startButton = new JButton("Start");
   private final JButton cancelButton = new JButton("Cancel");
-  public final JPanel panel = new JPanel() {
+  private final JPanel panel = new JPanel() {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       drawAllOval(g);
