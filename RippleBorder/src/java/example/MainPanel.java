@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RippleBorder extends EmptyBorder {
-  protected final Timer animator;
+  private final Timer animator;
   private float count = 1f;
 
   protected RippleBorder(Component c, int size) {
