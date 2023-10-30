@@ -142,10 +142,14 @@ class CustomComponentCellEditor extends DefaultCellEditor {
 }
 
 class CustomComponent extends JPanel {
-  public final JTextField field = new JTextField();
+  private final JTextField field = new JTextField();
 
   protected CustomComponent() {
     super(new BorderLayout());
+  }
+
+  public JTextField getEditor() {
+    return field;
   }
 
   public static CustomComponent getComponent() {
@@ -171,12 +175,12 @@ class CustomComponentCellEditor2 extends DefaultCellEditor {
   private final CustomComponent component;
 
   protected CustomComponentCellEditor2(CustomComponent component) {
-    super(component.field);
+    super(component.getEditor());
     this.component = component;
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    component.field.setText(Objects.toString(value, ""));
+    component.getEditor().setText(Objects.toString(value, ""));
     return this.component;
   }
 
