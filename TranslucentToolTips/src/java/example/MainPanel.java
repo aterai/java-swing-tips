@@ -29,7 +29,6 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   public static final Dimension CELL_SIZE = new Dimension(10, 10);
-  public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
 
   private MainPanel() {
     super(new BorderLayout());
@@ -71,6 +70,7 @@ public final class MainPanel extends JPanel {
   }
 
   private JList<Contribution> makeWeekList(List<Icon> activityIcons) {
+    LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
     return new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
       private transient JToolTip tip;
 

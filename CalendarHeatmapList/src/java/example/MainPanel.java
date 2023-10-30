@@ -23,7 +23,6 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   public static final Dimension CELL_SIZE = new Dimension(10, 10);
-  public final LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
 
   private MainPanel() {
     super(new BorderLayout());
@@ -66,6 +65,7 @@ public final class MainPanel extends JPanel {
   }
 
   private JList<Contribution> makeContributionHeatmap(List<Icon> activityIcons) {
+    LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
     ListModel<Contribution> model = new CalendarViewListModel(currentLocalDate);
     return new JList<Contribution>(model) {
       @Override public void updateUI() {
