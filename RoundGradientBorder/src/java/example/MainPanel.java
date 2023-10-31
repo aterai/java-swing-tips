@@ -99,7 +99,7 @@ class RoundGradientBorder extends EmptyBorder {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     Point2D start = new Point2D.Float(0f, 0f);
-    Point2D end = new Point2D.Float((float) width, 0f);
+    Point2D end = new Point2D.Float(width, 0f);
     g2.setPaint(new LinearGradientPaint(start, end, fractions, colors));
     float stroke = 2f;
     float arc = 12f;
