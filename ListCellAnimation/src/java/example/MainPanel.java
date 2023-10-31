@@ -29,17 +29,17 @@ public final class MainPanel extends JPanel {
 
   private static JList<String> makeList() {
     DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("asdfasdfasdfsadfas");
-    model.addElement("qwerqwerqwerqwerweqr");
-    model.addElement("zxcvzxcbzxcvzxcbzxcbzxcbzxcvzxcbzxbzxcvzxcbzcvbzxcvzxcvzx");
-    model.addElement("tryurtirtiriu");
-    model.addElement("jhkghjkfhjkghjkhjk");
-    model.addElement("bnm, bnmvmvbm, vbmfmvbmn");
+    model.addElement("123412354151434");
+    model.addElement("5678474567356723456245624");
+    model.addElement("123412354151435467769780896786789567847456735672245624");
+    model.addElement("7808967867895678474624");
+    model.addElement("1234541956723624");
+    model.addElement("abc, 12345, 4567890");
     model.addElement("1234123541514354677697808967867895678474567356723456245624");
-    model.addElement("qwerqwerrqwettrtrytru");
-    model.addElement("tiutyityityoiuo");
-    model.addElement("hjklgkghkghk");
-    model.addElement("zxcvzxcvbvnvbmvbmbm");
+    model.addElement("abc def ghi jkl mno pqr stu");
+    model.addElement("145689074");
+    model.addElement("26543654365437");
+    model.addElement("54645762465");
     JList<String> list = new JList<>(model);
     list.setCellRenderer(new AnimeListCellRenderer<>(list));
     return list;
@@ -70,10 +70,10 @@ public final class MainPanel extends JPanel {
 
 class AnimeListCellRenderer<E> extends JPanel implements ListCellRenderer<E>, HierarchyListener {
   private static final Color SELECTEDCOLOR = new Color(0xE6_E6_FF);
-  protected final AnimeIcon icon = new AnimeIcon();
+  private final AnimeIcon icon = new AnimeIcon();
   private final MarqueeLabel label = new MarqueeLabel();
   private final Timer animator;
-  protected final JList<E> list;
+  private final JList<E> list;
   private boolean running;
   private int animateIndex = -1;
 
