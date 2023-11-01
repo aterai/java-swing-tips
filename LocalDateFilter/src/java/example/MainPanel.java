@@ -22,7 +22,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
+  private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JComboBox<String> combo = new JComboBox<>();
   private final JTable monthTable = new JTable();
   private LocalDate currentLocalDate;
