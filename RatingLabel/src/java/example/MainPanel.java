@@ -22,9 +22,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 2, 4, 4));
-    // PI Diagona Icons Pack 1.0
-    //   Download Royalty Free Icons and Stock Images For Web & Graphics Design
-    // http://www.freeiconsdownload.com/Free_Downloads.asp?id=60
     String path = "example/31g.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
@@ -132,8 +129,8 @@ class LevelBar extends JPanel {
   private final List<JLabel> labelList = Arrays.asList(
       new JLabel(), new JLabel(), new JLabel(), new JLabel(), new JLabel()
   );
-  protected final ImageIcon defaultIcon;
-  protected int clicked = -1;
+  private final ImageIcon defaultIcon;
+  private int clicked = -1;
   private transient MouseAdapter handler;
 
   protected LevelBar(ImageIcon defaultIcon, List<ImageIcon> list, int gap) {
