@@ -14,8 +14,8 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public final JProgressBar bar = new JProgressBar();
-  public final JComboBox<String> combo = new JComboBox<String>() {
+  private final JProgressBar bar = new JProgressBar();
+  private final JComboBox<String> combo = new JComboBox<String>() {
     @Override public void updateUI() {
       setRenderer(null);
       super.updateUI();
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
       });
     }
   };
-  public final JButton button = new JButton("load");
+  private final JButton button = new JButton("load");
   private transient SwingWorker<String[], Integer> worker;
 
   private MainPanel() {
