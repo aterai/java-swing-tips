@@ -95,51 +95,61 @@ public final class MainPanel extends JPanel {
 class HeaderRenderer extends JButton implements TableCellRenderer {
   protected static final int BUTTON_WIDTH = 16;
   protected static final Color BUTTON_BGC = new Color(0x64_C8_C8_C8, true);
-  protected final JPopupMenu pop;
-  protected int rolloverIndex = -1;
-  protected final transient MouseInputListener handler = new MouseInputAdapter() {
-    @Override public void mouseClicked(MouseEvent e) {
-      JTableHeader header = (JTableHeader) e.getComponent();
-      JTable table = header.getTable();
-      // TableColumnModel columnModel = table.getColumnModel();
-      // int vci = columnModel.getColumnIndexAtX(e.getX());
-      int vci = table.columnAtPoint(e.getPoint());
-      // int mci = table.convertColumnIndexToModel(vci);
-      // TableColumn column = table.getColumnModel().getColumn(mci);
-      // int w = column.getWidth(); // Nimbus???
-      // int h = header.getHeight();
-      Rectangle r = header.getHeaderRect(vci);
-      Container c = (Container) getTableCellRendererComponent(table, "", true, true, -1, vci);
-      // if (!isNimbus) {
-      //   Insets i = c.getInsets();
-      //   r.translate(r.width - i.right, 0);
-      // } else {
-      r.translate(r.width - BUTTON_WIDTH, 0);
-      r.setSize(BUTTON_WIDTH, r.height);
-      Point pt = e.getPoint();
-      if (c.getComponentCount() > 0 && r.contains(pt)) {
-        pop.show(header, r.x, r.height);
-        JButton b = (JButton) c.getComponent(0);
-        b.doClick();
-        e.consume();
-      }
-    }
+  private final JPopupMenu popup;
+  private int rolloverIndex = -1;
 
-    @Override public void mouseExited(MouseEvent e) {
-      rolloverIndex = -1;
-    }
-
-    @Override public void mouseMoved(MouseEvent e) {
-      JTableHeader header = (JTableHeader) e.getComponent();
-      JTable table = header.getTable();
-      int vci = table.columnAtPoint(e.getPoint());
-      rolloverIndex = table.convertColumnIndexToModel(vci);
-    }
-  };
-
-  protected HeaderRenderer(JTableHeader header, JPopupMenu pop) {
+  protected HeaderRenderer(JTableHeader header, JPopupMenu popup) {
     super();
-    this.pop = pop;
+    this.popup = popup;
+    // TableColumnModel columnModel = table.getColumnModel();
+    // int vci = columnModel.getColumnIndexAtX(e.getX());
+    // int mci = table.convertColumnIndexToModel(vci);
+    // TableColumn column = table.getColumnModel().getColumn(mci);
+    // int w = column.getWidth(); // Nimbus???
+    // int h = header.getHeight();
+    // if (!isNimbus) {
+    //   Insets i = c.getInsets();
+    //   r.translate(r.width - i.right, 0);
+    // } else {
+    MouseInputListener handler = new MouseInputAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        JTableHeader header = (JTableHeader) e.getComponent();
+        JTable table = header.getTable();
+        // TableColumnModel columnModel = table.getColumnModel();
+        // int vci = columnModel.getColumnIndexAtX(e.getX());
+        int vci = table.columnAtPoint(e.getPoint());
+        // int mci = table.convertColumnIndexToModel(vci);
+        // TableColumn column = table.getColumnModel().getColumn(mci);
+        // int w = column.getWidth(); // Nimbus???
+        // int h = header.getHeight();
+        Rectangle r = header.getHeaderRect(vci);
+        Container c = (Container) getTableCellRendererComponent(table, "", true, true, -1, vci);
+        // if (!isNimbus) {
+        //   Insets i = c.getInsets();
+        //   r.translate(r.width - i.right, 0);
+        // } else {
+        r.translate(r.width - BUTTON_WIDTH, 0);
+        r.setSize(BUTTON_WIDTH, r.height);
+        Point pt = e.getPoint();
+        if (c.getComponentCount() > 0 && r.contains(pt)) {
+          popup.show(header, r.x, r.height);
+          JButton b = (JButton) c.getComponent(0);
+          b.doClick();
+          e.consume();
+        }
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        rolloverIndex = -1;
+      }
+
+      @Override public void mouseMoved(MouseEvent e) {
+        JTableHeader header = (JTableHeader) e.getComponent();
+        JTable table = header.getTable();
+        int vci = table.columnAtPoint(e.getPoint());
+        rolloverIndex = table.convertColumnIndexToModel(vci);
+      }
+    };
     header.addMouseListener(handler);
     header.addMouseMotionListener(handler);
   }
@@ -150,7 +160,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     // setFont(header.getFont());
     setBorder(BorderFactory.createEmptyBorder());
     setContentAreaFilled(false);
-    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(pop));
+    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(popup));
   }
 
   // JButton button = new JButton(new AbstractAction() {
