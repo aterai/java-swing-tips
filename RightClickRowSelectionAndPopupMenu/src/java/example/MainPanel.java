@@ -44,6 +44,8 @@ public final class MainPanel extends JPanel {
           JTable table = (JTable) c;
           if (table.isEditing()) {
             table.removeEditor();
+            // table.editingCanceled(null);
+            // table.editingStopped(null);
             // table.getCellEditor().cancelCellEditing();
             // table.getCellEditor().stopCellEditing();
           }
@@ -70,12 +72,8 @@ public final class MainPanel extends JPanel {
     JPopupMenu popup = makePopupMenu();
     popup.addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        // table.editingCanceled(null);
-        // table.editingStopped(null);
         if (table.isEditing()) {
           table.removeEditor();
-          // table.getCellEditor().cancelCellEditing();
-          // table.getCellEditor().stopCellEditing();
         }
         SwingUtilities.invokeLater(() -> {
           Point pt = SwingUtilities.convertPoint(popup, new Point(), table);
@@ -93,11 +91,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        // not need
+        /* not needed */
       }
 
       @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        // not need
+        /* not needed */
       }
     });
     table.setComponentPopupMenu(popup);
