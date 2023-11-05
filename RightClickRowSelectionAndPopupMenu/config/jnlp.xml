@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RightClickRowSelectionAndPopupMenu" />
+  <property name="jnlp.Name"     value="RightClickRowSelectionAndPopupMenu" />
+  <property name="jnlp.name"     value="rightclickrowselectionandpopupmenu" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/rightclickrowselectionandpopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RightClickRowSelectionAndPopupMenu.html" />
+</project>
