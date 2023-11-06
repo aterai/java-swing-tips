@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.text.AttributeSet;
@@ -39,20 +40,22 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       JColorChooser cc = new JColorChooser();
       cc.setColor(label.getBackground());
-      AbstractColorChooserPanel[] panels = cc.getChooserPanels();
-      List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
-      AbstractColorChooserPanel ccp = choosers.get(3);
-      // Java 9: if (ccp.isColorTransparencySelectionEnabled()) {
-      for (Component c : ccp.getComponents()) {
-        if (c instanceof JFormattedTextField) {
-          removeFocusListeners(c);
-          // c.removePropertyChangeListener("value", (PropertyChangeListener) ccp);
-          // javax.swing.colorchooser.ValueFormatter.init(8, true, (JFormattedTextField) c);
-          ValueFormatter.init((JFormattedTextField) c);
+      AbstractColorChooserPanel rgbChooser = getRgbChooser(cc);
+      if (rgbChooser != null) {
+        AbstractColorChooserPanel[] panels = cc.getChooserPanels();
+        List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
+        // AbstractColorChooserPanel rgbChooser = choosers.get(3);
+        // Java 9: if (rgbChooser.isColorTransparencySelectionEnabled()) {
+        for (Component c : rgbChooser.getComponents()) {
+          if (c instanceof JFormattedTextField) {
+            removeFocusListeners(c);
+            // c.removePropertyChangeListener("value", (PropertyChangeListener) rgbChooser);
+            // javax.swing.colorchooser.ValueFormatter.init(8, true, (JFormattedTextField) c);
+            ValueFormatter.init((JFormattedTextField) c);
+          }
         }
+        cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
       }
-      cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
-
       ColorTracker ok = new ColorTracker(cc);
       Component parent = getRootPane();
       String title = "JColorChooser";
@@ -73,6 +76,17 @@ public final class MainPanel extends JPanel {
     add(button);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static AbstractColorChooserPanel getRgbChooser(JColorChooser colorChooser) {
+    String rgbName = UIManager.getString("ColorChooser.rgbNameText", Locale.getDefault());
+    AbstractColorChooserPanel rgbChooser = null;
+    for (AbstractColorChooserPanel p : colorChooser.getChooserPanels()) {
+      if (Objects.equals(rgbName, p.getDisplayName())) {
+        rgbChooser = p;
+      }
+    }
+    return rgbChooser;
   }
 
   private static void removeFocusListeners(Component c) {
