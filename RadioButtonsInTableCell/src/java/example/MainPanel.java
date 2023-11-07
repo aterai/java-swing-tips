@@ -18,7 +18,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Integer", "Answer"};
     Object[][] data = {
         {1, Answer.A}, {2, Answer.B}, {3, Answer.C}, {4, Answer.C}, {5, Answer.A}
@@ -99,7 +98,7 @@ enum Answer {
 }
 
 class RadioButtonsPanel extends JPanel {
-  public final ButtonGroup bg = new ButtonGroup();
+  private final ButtonGroup group = new ButtonGroup();
 
   protected RadioButtonsPanel() {
     super();
@@ -107,14 +106,18 @@ class RadioButtonsPanel extends JPanel {
     initButtons();
   }
 
+  public String getSelectedActionCommand() {
+    return group.getSelection().getActionCommand();
+  }
+
   private void initButtons() {
-    bg.clearSelection();
-    Collections.list(bg.getElements()).forEach(bg::remove);
+    group.clearSelection();
+    Collections.list(group.getElements()).forEach(group::remove);
     removeAll();
     for (Answer a : Answer.values()) {
       JRadioButton b = makeButton(a.name());
       add(b);
-      bg.add(b);
+      group.add(b);
     }
   }
 
@@ -185,7 +188,7 @@ class RadioButtonsEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public Object getCellEditorValue() {
-    return Answer.valueOf(renderer.bg.getSelection().getActionCommand());
+    return Answer.valueOf(renderer.getSelectedActionCommand());
   }
 }
 
