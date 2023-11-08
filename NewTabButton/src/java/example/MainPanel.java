@@ -60,11 +60,10 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
-  protected final CardLayout cardLayout = new CardLayout();
-  protected final JPanel tabPanel = new JPanel(new TabLayout());
-  protected final JPanel wrapPanel = new JPanel(new BorderLayout());
-  protected final JPanel contentsPanel = new JPanel(cardLayout);
-  protected final ButtonGroup bg = new ButtonGroup();
+  private final CardLayout cardLayout = new CardLayout();
+  private final JPanel tabPanel = new JPanel(new TabLayout());
+  private final JPanel contentsPanel = new JPanel(cardLayout);
+  private final ButtonGroup group = new ButtonGroup();
   private final JButton button = new JButton(new PlusIcon());
   private final Random rnd = new Random();
   // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
@@ -91,6 +90,7 @@ class CardLayoutTabbedPane extends JPanel {
     tabPanel.setOpaque(true);
     tabPanel.setBackground(new Color(0x14_1E_32));
 
+    JPanel wrapPanel = new JPanel(new BorderLayout());
     wrapPanel.setOpaque(true);
     wrapPanel.setBackground(new Color(0x14_1E_32));
 
@@ -164,7 +164,7 @@ class CardLayoutTabbedPane extends JPanel {
     p.setOpaque(false);
     p.add(close, BorderLayout.NORTH);
     tab.add(p, BorderLayout.EAST);
-    bg.add(tab);
+    group.add(tab);
     tab.setSelected(true);
     return tab;
   }
@@ -357,23 +357,24 @@ class TabLayout implements LayoutManager, Serializable {
 
   @Override public void layoutContainer(Container parent) {
     synchronized (parent.getTreeLock()) {
-      int ncomponents = parent.getComponentCount();
-      if (ncomponents == 0) {
+      int count = parent.getComponentCount();
+      if (count == 0) {
         return;
       }
-      // int nrows = 1;
+      // int rowCount = 1;
       // boolean ltr = parent.getComponentOrientation().isLeftToRight();
       Insets insets = parent.getInsets();
-      int ncols = ncomponents - 1;
-      int lastw = parent.getComponent(ncomponents - 1).getPreferredSize().width;
-      int width = parent.getWidth() - insets.left - insets.right - lastw;
+      int colCount = count - 1;
+      int lastWidth = parent.getComponent(count - 1).getPreferredSize().width;
+      int width = parent.getWidth() - insets.left - insets.right - lastWidth;
       int h = parent.getHeight() - insets.top - insets.bottom;
-      int w = width > TAB_WIDTH * ncols ? TAB_WIDTH : width / ncols;
-      int gap = width - w * ncols;
+      int w = width > TAB_WIDTH * colCount ? TAB_WIDTH : width / colCount;
+      int gap = width - w * colCount;
       int x = insets.left;
       int y = insets.top;
-      for (int i = 0; i < ncomponents; i++) {
-        int cw = i == ncols ? lastw : w + (gap > 0 ? 1 : 0);
+      for (int i = 0; i < count; i++) {
+        int a = gap > 0 ? 1 : 0;
+        int cw = i == colCount ? lastWidth : w + a;
         parent.getComponent(i).setBounds(x, y, cw, h);
         x += cw;
         gap--;
