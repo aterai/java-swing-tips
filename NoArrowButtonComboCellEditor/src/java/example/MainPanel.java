@@ -102,7 +102,7 @@ class ZeroSizeButtonUI extends BasicComboBoxUI {
 }
 
 class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final JComboBox<LocalDateTime> comboBox = new JComboBox<LocalDateTime>() {
+  private final JComboBox<LocalDateTime> comboBox = new JComboBox<LocalDateTime>() {
     @Override public void updateUI() {
       super.updateUI();
       UIManager.put("ComboBox.squareButton", Boolean.FALSE);
@@ -113,7 +113,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
       setUI(new ZeroSizeButtonUI());
     }
   };
-  protected LocalDateTime selectedDate;
+  private LocalDateTime selectedDate;
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     if (value instanceof LocalDateTime) {
@@ -161,9 +161,9 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
     return super.stopCellEditing();
   }
 
-  @Override public boolean isCellEditable(EventObject e) {
-    return true;
-  }
+  // @Override public boolean isCellEditable(EventObject e) {
+  //   return true;
+  // }
 }
 
 class LocalDateTimeCellRenderer implements ListCellRenderer<LocalDateTime> {
