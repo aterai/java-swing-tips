@@ -50,8 +50,10 @@ public final class MainPanel extends JPanel {
     spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
 
     LocalDateTime d = LocalDateTime.now(ZoneId.systemDefault());
-    LocalDateTime s = d.minus(2, ChronoUnit.DAYS);
-    LocalDateTime e = d.plus(7, ChronoUnit.DAYS);
+    // LocalDateTime s = d.minus(2, ChronoUnit.DAYS);
+    LocalDateTime s = d.minusDays(2);
+    // LocalDateTime e = d.plus(7, ChronoUnit.DAYS);
+    LocalDateTime e = d.plusDays(7);
 
     info.append(d + "\n");
     info.append(s + "\n");
@@ -219,7 +221,7 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
 }
 
 class LocalDateTimeEditor extends JSpinner.DefaultEditor {
-  protected final transient DateTimeFormatter dateTimeFormatter;
+  private final transient DateTimeFormatter dateTimeFormatter;
   private final SpinnerLocalDateTimeModel model;
 
   protected LocalDateTimeEditor(JSpinner spinner, String dateFormatPattern) {
