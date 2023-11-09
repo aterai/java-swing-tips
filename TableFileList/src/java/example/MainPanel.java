@@ -106,7 +106,7 @@ class SelectedImageFilter extends RGBImageFilter {
 }
 
 class FileNameRenderer implements TableCellRenderer {
-  protected final Dimension dim = new Dimension();
+  private final Dimension dim = new Dimension();
   private final JPanel renderer = new JPanel(new BorderLayout());
   private final JLabel textLabel = new JLabel(" ");
   private final JLabel iconLabel;
