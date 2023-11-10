@@ -120,9 +120,9 @@ class LinkViewButtonUI extends BasicButtonUI {
   // protected static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
   protected static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
   // protected final Dimension size = new Dimension();
-  protected final Rectangle viewRect = new Rectangle();
-  protected final Rectangle iconRect = new Rectangle();
-  protected final Rectangle textRect = new Rectangle();
+  private final Rectangle viewRect = new Rectangle();
+  private final Rectangle iconRect = new Rectangle();
+  private final Rectangle textRect = new Rectangle();
 
   public static ButtonUI createUI(JButton b, String href) {
     b.setForeground(Color.BLUE);
