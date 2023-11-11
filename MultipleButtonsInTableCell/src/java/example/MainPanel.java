@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     String empty = "";
     String[] columnNames = {"String", "Button"};
     Object[][] data = {
-      {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty}
+        {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty}
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -159,8 +159,8 @@ class EditAction extends AbstractAction {
 
 // delegation pattern
 class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final ButtonsPanel panel = new ButtonsPanel();
-  protected final JTable table;
+  private final ButtonsPanel panel = new ButtonsPanel();
+  private final JTable table;
 
   private final class EditingStopHandler extends MouseAdapter implements ActionListener {
     @Override public void mousePressed(MouseEvent e) {
