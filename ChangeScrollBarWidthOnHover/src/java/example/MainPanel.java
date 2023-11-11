@@ -16,9 +16,9 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public final class MainPanel extends JPanel {
-  public final JPanel scrollBar = new JPanel();
-  public final Timer expand = new Timer(10, e -> scrollBar.revalidate());
-  public final Timer collapse = new Timer(10, e -> scrollBar.revalidate());
+  private final JPanel scrollBar = new JPanel();
+  private final Timer expand = new Timer(10, e -> scrollBar.revalidate());
+  private final Timer collapse = new Timer(10, e -> scrollBar.revalidate());
 
   private MainPanel() {
     super(new GridLayout(1, 2));
@@ -72,13 +72,13 @@ public final class MainPanel extends JPanel {
       }
       switch (e.getID()) {
         case MouseEvent.MOUSE_ENTERED:
-          expandStart(isDragging);
+          expandStart(isDragging());
           break;
         case MouseEvent.MOUSE_EXITED:
-          collapseStart(isDragging);
+          collapseStart(isDragging());
           break;
         case MouseEvent.MOUSE_RELEASED:
-          isDragging = false;
+          setDragging(false);
           collapseStart(!e.getComponent().getBounds().contains(e.getPoint()));
           break;
         default:
@@ -155,7 +155,15 @@ public final class MainPanel extends JPanel {
 }
 
 class ScrollBarLayerUI extends LayerUI<JPanel> {
-  protected boolean isDragging;
+  private boolean dragging;
+
+  public void setDragging(boolean dragging) {
+    this.dragging = dragging;
+  }
+
+  public boolean isDragging() {
+    return dragging;
+  }
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -176,7 +184,7 @@ class ScrollBarLayerUI extends LayerUI<JPanel> {
     int id = e.getID();
     Component c = e.getComponent();
     if (c instanceof JScrollBar && id == MouseEvent.MOUSE_DRAGGED) {
-      isDragging = true;
+      dragging = true;
     }
   }
 }
