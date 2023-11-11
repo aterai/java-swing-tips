@@ -101,7 +101,7 @@ class EditableTabbedPane extends JTabbedPane {
       setFocusCycleRoot(flag);
     }
   };
-  protected final JTextField editor = new JTextField();
+  private final JTextField editor = new JTextField();
   protected final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       getRootPane().setGlassPane(glassPane);
@@ -111,12 +111,13 @@ class EditableTabbedPane extends JTabbedPane {
       // rect.setBounds(p.x + 2, p.y + 2, rect.width - 4, rect.height - 4);
       rect.setLocation(p);
       rect.grow(-2, -2);
-      editor.setBounds(rect);
-      editor.setText(getTitleAt(getSelectedIndex()));
-      editor.selectAll();
-      glassPane.add(editor);
+      JTextField field = getEditor();
+      field.setBounds(rect);
+      field.setText(getTitleAt(getSelectedIndex()));
+      field.selectAll();
+      glassPane.add(field);
       glassPane.setVisible(true);
-      editor.requestFocusInWindow();
+      field.requestFocusInWindow();
     }
   };
   protected final Action cancelEditing = new AbstractAction() {
@@ -126,7 +127,7 @@ class EditableTabbedPane extends JTabbedPane {
   };
   protected final Action renameTab = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
-      String str = editor.getText().trim();
+      String str = getEditor().getText().trim();
       if (!str.isEmpty()) {
         setTitleAt(getSelectedIndex(), str);
         Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
