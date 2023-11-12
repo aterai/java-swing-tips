@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST MenuItemAcceleratorFont" />
+  <property name="jnlp.Name"     value="MenuItemAcceleratorFont" />
+  <property name="jnlp.name"     value="menuitemacceleratorfont" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/menuitemacceleratorfont" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MenuItemAcceleratorFont.html" />
+</project>
