@@ -11,8 +11,8 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public Timer animator;
-  public boolean isHidden = true;
+  private Timer animator;
+  private boolean isHidden = true;
   private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
     private int controlsHeight;
     @Override public Dimension preferredLayoutSize(Container target) {
