@@ -205,12 +205,12 @@ class EditableList<E extends ListItem> extends JList<E> {
   public static final String CANCEL = "cancel-editing";
   public static final String EDITING = "start-editing";
   private transient MouseAdapter handler;
-  protected int editingIndex = -1;
-  // protected final Container glassPane = new EditorGlassPane();
-  // protected final JPopupMenu popup = new JPopupMenu();
-  protected final JFrame window = new JFrame();
-  protected final JTextArea editor = new JTextArea();
-  protected final Action startEditing = new AbstractAction() {
+  private int editingIndex = -1;
+  // private final Container glassPane = new EditorGlassPane();
+  // private final JPopupMenu popup = new JPopupMenu();
+  private final JFrame window = new JFrame();
+  private final JTextArea editor = new JTextArea();
+  private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       // getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
