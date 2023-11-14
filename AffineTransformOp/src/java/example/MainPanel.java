@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public Flip getMode() {
+  private Flip getMode() {
     return mode;
   }
 
