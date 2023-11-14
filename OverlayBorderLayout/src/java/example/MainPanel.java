@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     am.put("open-searchbox", new AbstractAction("Show/Hide Search Box") {
       @Override public void actionPerformed(ActionEvent e) {
         if (!animator.isRunning()) {
-          handler.isShowing = !searchBox.isVisible();
+          handler.setShowing(!searchBox.isVisible());
           searchBox.setVisible(true);
           animator.start();
         }
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     am.put("close-searchbox", new AbstractAction("Hide Search Box") {
       @Override public void actionPerformed(ActionEvent e) {
         if (!animator.isRunning()) {
-          handler.isShowing = false;
+          handler.setShowing(false);
           animator.start();
         }
       }
@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LayoutAnimator extends BorderLayout implements ActionListener {
-  protected boolean isShowing = true;
+  private boolean showing = true;
   private final JComponent component;
   private int yy;
   private int counter;
@@ -126,10 +126,14 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
     this.component = c;
   }
 
+  public void setShowing(boolean showing) {
+    this.showing = showing;
+  }
+
   @Override public void actionPerformed(ActionEvent e) {
     Timer animator = (Timer) e.getSource();
     int height = component.getPreferredSize().height;
-    if (isShowing) {
+    if (showing) {
       yy = (int) (.5 + AnimationUtils.easeInOut(++counter / (double) height) * height);
       if (yy >= height) {
         yy = height;
