@@ -14,7 +14,6 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.Element;
 
