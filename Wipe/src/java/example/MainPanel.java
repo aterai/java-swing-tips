@@ -75,11 +75,11 @@ public final class MainPanel extends JPanel {
     animator.start();
   }
 
-  public void setWipeMode(Wipe wipeMode) {
+  private void setWipeMode(Wipe wipeMode) {
     this.mode = wipeMode;
   }
 
-  public Wipe getWipeMode() {
+  private Wipe getWipeMode() {
     return mode;
   }
 
