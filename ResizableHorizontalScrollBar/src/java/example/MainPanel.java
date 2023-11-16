@@ -61,14 +61,14 @@ public final class MainPanel extends JPanel {
 
     JLabel tripleColon = new JLabel("⫶");
     tripleColon.setForeground(Color.GRAY);
-    tripleColon.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
+    tripleColon.setBorder(BorderFactory.createEmptyBorder(3, 2, 0, 4));
 
     BasicSplitPaneDivider divider = ((BasicSplitPaneUI) horizontalBox.getUI()).getDivider();
     divider.setLayout(new BorderLayout());
     divider.setBorder(BorderFactory.createEmptyBorder());
     divider.setBackground(Color.WHITE);
     divider.add(tripleColon);
-    divider.setDividerSize(8);
+    divider.setDividerSize(tripleColon.getPreferredSize().width);
 
     add(scroll);
     add(horizontalBox, BorderLayout.SOUTH);
