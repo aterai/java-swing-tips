@@ -93,7 +93,8 @@ class WatermarkTextField extends JTextField {
       }
 
       @Override public void focusLost(FocusEvent e) {
-        showWatermark = "".equals(getText().trim());
+        // showWatermark = getText().trim().isEmpty();
+        showWatermark = getText().isEmpty();
         e.getComponent().repaint();
       }
     };
