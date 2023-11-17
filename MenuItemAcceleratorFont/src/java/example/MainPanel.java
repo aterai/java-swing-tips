@@ -79,7 +79,10 @@ public final class MainPanel extends JPanel {
       if (selected) {
         color1 = AFC;
         color2 = Color.WHITE;
-        font = UIManager.getFont(key3).deriveFont(10f);
+        font = UIManager.getFont(key3);
+        if (font != null) {
+          font = font.deriveFont(10f);
+        }
       } else {
         UIDefaults def = UIManager.getLookAndFeelDefaults();
         color1 = def.getColor(key1);
