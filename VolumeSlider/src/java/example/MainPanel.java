@@ -11,29 +11,37 @@ import javax.swing.plaf.basic.BasicSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    JSlider slider1 = new JSlider(0, 100, 0);
-    slider1.setUI(new TriSliderUI(slider1));
-    slider1.setMajorTickSpacing(10);
-    slider1.setMinorTickSpacing(5);
-    slider1.setPaintTicks(true);
-    slider1.setPaintLabels(true);
-
-    JSlider slider2 = new JSlider(0, 100, 0);
-    slider2.setUI(new BasicSliderUI(slider2) {
-      @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
-        // [JDK-5099681]
-        // Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
-        // https://bugs.openjdk.org/browse/JDK-5099681
-        label.setForeground(Color.GREEN);
-        super.paintHorizontalLabel(g, value, label);
+    JSlider slider1 = new JSlider(0, 100, 0) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new TriSliderUI(this));
+        setMajorTickSpacing(10);
+        setMinorTickSpacing(5);
+        setPaintTicks(true);
+        setPaintLabels(true);
       }
-    });
-    // slider2.setBackground(Color.BLACK);
-    slider2.setForeground(Color.BLUE);
-    slider2.setMajorTickSpacing(10);
-    slider2.setMinorTickSpacing(5);
-    slider2.setPaintTicks(true);
-    slider2.setPaintLabels(true);
+    };
+
+    JSlider slider2 = new JSlider(0, 100, 0) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new BasicSliderUI(this) {
+          @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
+            // [JDK-5099681]
+            // Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
+            // https://bugs.openjdk.org/browse/JDK-5099681
+            label.setForeground(Color.GREEN);
+            super.paintHorizontalLabel(g, value, label);
+          }
+        });
+        // setBackground(Color.BLACK);
+        setForeground(Color.BLUE);
+        setMajorTickSpacing(10);
+        setMinorTickSpacing(5);
+        setPaintTicks(true);
+        setPaintLabels(true);
+      }
+    };
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
