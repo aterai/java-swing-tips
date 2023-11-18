@@ -39,11 +39,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTextPane editor = new JTextPane();
-
     editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
     editor.setEditorKit(new CustomEditorKit());
     editor.setText(IDEOGRAPHIC_SPACE + TAB_TXT);
-
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
   }

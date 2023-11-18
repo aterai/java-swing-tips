@@ -30,7 +30,6 @@ import javax.swing.text.ViewFactory;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-
     JEditorPane editor0 = makeEditorPane("DefaultHighlightPainter");
     Caret caret0 = new FocusCaret(
         new DefaultHighlightPainter(new Color(0xAA_CC_DD_FF, true)),

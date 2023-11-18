@@ -33,7 +33,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JTable table = new JTable(model);
     table.setRowSorter(sorter);
     table.setFillsViewportHeight(true);
