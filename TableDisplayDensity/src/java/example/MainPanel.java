@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component c = super.prepareRenderer(renderer, row, column);
-        c.setFont(getFont());
+        // c.setFont(getFont());
         if (c instanceof JCheckBox) {
           JCheckBox cb = (JCheckBox) c;
           cb.setBorderPainted(false);
@@ -87,11 +87,11 @@ public final class MainPanel extends JPanel {
     float fontSize = font.getSize2D();
     int rowHeight = table.getRowHeight();
     JToggleButton b1 = new JToggleButton("*1");
-    b1.addActionListener(e -> extracted(table, font, fontSize, rowHeight, 1f));
+    b1.addActionListener(e -> scaling(table, font, fontSize, rowHeight, 1f));
     JToggleButton b2 = new JToggleButton("*1.5");
-    b2.addActionListener(e -> extracted(table, font, fontSize, rowHeight, 1.5f));
+    b2.addActionListener(e -> scaling(table, font, fontSize, rowHeight, 1.5f));
     JToggleButton b3 = new JToggleButton("*2");
-    b3.addActionListener(e -> extracted(table, font, fontSize, rowHeight, 2f));
+    b3.addActionListener(e -> scaling(table, font, fontSize, rowHeight, 2f));
     JToolBar toolBar = new JToolBar();
     ButtonGroup group = new ButtonGroup();
     for (AbstractButton b : Arrays.asList(b1, b2, b3)) {
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
     return toolBar;
   }
 
-  private static void extracted(JTable table, Font font, float fontSize, int rowHeight, float x) {
+  private static void scaling(JTable table, Font font, float fontSize, int rowHeight, float x) {
     table.removeEditor();
     Font f = font.deriveFont(fontSize * x);
     table.setFont(f);
