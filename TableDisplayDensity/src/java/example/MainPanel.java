@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
     Font font = table.getFont();
     float fontSize = font.getSize2D();
     int rowHeight = table.getRowHeight();
-    JToggleButton b1 = new JToggleButton("*1");
+    JToggleButton b1 = new JToggleButton("*1", true);
     b1.addActionListener(e -> scaling(table, font, fontSize, rowHeight, 1f));
     JToggleButton b2 = new JToggleButton("*1.5");
     b2.addActionListener(e -> scaling(table, font, fontSize, rowHeight, 1.5f));
