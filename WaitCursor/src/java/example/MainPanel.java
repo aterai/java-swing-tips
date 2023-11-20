@@ -17,43 +17,48 @@ public final class MainPanel extends JPanel {
       gp.setVisible(false);
       getRootPane().setGlassPane(gp);
     });
+    add(makeTestBox(), BorderLayout.NORTH);
+    add(makeStopButton(), BorderLayout.SOUTH);
+    add(new JScrollPane(new JTree()));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JButton makeStopButton() {
     JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
       // System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
-      getRootPane().getGlassPane().setVisible(true);
-      Component c = (Component) e.getSource();
+      JComponent c = (JComponent) e.getSource();
+      c.getRootPane().getGlassPane().setVisible(true);
       c.setEnabled(false);
       new BackgroundTask() {
         @Override protected void done() {
-          if (!isDisplayable()) {
+          if (!c.isDisplayable()) {
             // System.out.println("done: DISPOSE_ON_CLOSE");
             cancel(true);
             return;
           }
-          getRootPane().getGlassPane().setVisible(false);
+          c.getRootPane().getGlassPane().setVisible(false);
           c.setEnabled(true);
         }
       }.execute();
     });
-    Box box = Box.createHorizontalBox();
-    box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    return button;
+  }
 
-    JButton b = new JButton("Button&Mnemonic");
+  private static Box makeTestBox() {
+    JButton b = new JButton("Button & Mnemonic");
     b.setMnemonic(KeyEvent.VK_B);
 
-    JTextField t = new JTextField("TextField&ToolTip");
+    JTextField t = new JTextField("TextField & ToolTip");
     t.setToolTipText("ToolTip");
 
+    Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     box.add(b);
     box.add(Box.createHorizontalStrut(5));
     box.add(t);
     box.add(Box.createHorizontalStrut(5));
-
-    add(box, BorderLayout.NORTH);
-    add(button, BorderLayout.SOUTH);
-    add(new JScrollPane(new JTree()));
-    setPreferredSize(new Dimension(320, 240));
+    return box;
   }
 
   public static void main(String[] args) {
@@ -118,25 +123,25 @@ class LockingGlassPane extends JPanel {
   }
 }
 
-//   class LockingGlassPane_ extends JComponent {
-//     public LockingGlassPane_() {
-//       setOpaque(false);
-//       setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-//         @Override public boolean accept(Component c) {
-//           return false;
-//         }
-//       });
-// //       Set<AWTKeyStroke> s = Collections.emptySet();
-// //       setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, s);
-// //       setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, s);
-//       // addKeyListener(new KeyAdapter() {});
-//       addMouseListener(new MouseAdapter() {});
-//       requestFocusInWindow();
-//       super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//     }
-//
-//     @Override public void setVisible(boolean flag) {
-//       super.setVisible(flag);
-//       setFocusTraversalPolicyProvider(flag);
-//     }
+// class LockingGlassPane_ extends JComponent {
+//   public LockingGlassPane_() {
+//     setOpaque(false);
+//     setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+//       @Override public boolean accept(Component c) {
+//         return false;
+//       }
+//     });
+// //     Set<AWTKeyStroke> s = Collections.emptySet();
+// //     setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, s);
+// //     setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, s);
+//     // addKeyListener(new KeyAdapter() {});
+//     addMouseListener(new MouseAdapter() {});
+//     requestFocusInWindow();
+//     super.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //   }
+//
+//   @Override public void setVisible(boolean flag) {
+//     super.setVisible(flag);
+//     setFocusTraversalPolicyProvider(flag);
+//   }
+// }
