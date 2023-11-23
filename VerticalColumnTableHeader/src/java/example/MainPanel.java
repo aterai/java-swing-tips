@@ -9,6 +9,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -30,7 +32,18 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new JTable(model) {
       @Override public void updateUI() {
+        ColorUIResource reset = new ColorUIResource(Color.RED);
+        setSelectionForeground(reset);
+        setSelectionBackground(reset);
         super.updateUI();
+        UIDefaults def = UIManager.getLookAndFeelDefaults();
+        Object showGrid = def.get("Table.showGrid");
+        Color gridColor = def.getColor("Table.gridColor");
+        if (showGrid == null && gridColor != null) {
+          setShowGrid(true);
+          setIntercellSpacing(new DimensionUIResource(1, 1));
+          createDefaultRenderers();
+        }
         TableCellRenderer hr = new VerticalTableHeaderRenderer();
         TableColumnModel cm = getColumnModel();
         for (int i = 0; i < cm.getColumnCount(); i++) {
