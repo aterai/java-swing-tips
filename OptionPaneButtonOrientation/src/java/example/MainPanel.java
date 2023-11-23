@@ -10,12 +10,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea log = new JTextArea();
     // TEST: UIManager.put("OptionPane.isYesLast", Boolean.TRUE);
-
     String key = "OptionPane.buttonOrientation";
-
     JButton defaultButton = new JButton("Default");
     defaultButton.addActionListener(e -> {
       Integer iv = UIManager.getLookAndFeelDefaults().getInt(key);

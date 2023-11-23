@@ -15,7 +15,6 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JScrollPane s1 = new JScrollPane(new JTable(6, 3)) {
       @Override public Dimension getMinimumSize() {
         return new Dimension(0, 100);
