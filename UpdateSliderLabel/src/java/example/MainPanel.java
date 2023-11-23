@@ -12,10 +12,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     JSlider slider = makeSlider();
-    // slider.updateUI();
-    // @see JSlider#updateUI()
+    // // slider.updateUI();
+    // // @see JSlider#updateUI()
     // public void updateUI() {
     //   setUI((SliderUI) UIManager.getUI(this));
     //   // The labels preferred size may be derived from the font
@@ -24,7 +23,8 @@ public final class MainPanel extends JPanel {
     //   // font is used.
     //   updateLabelUIs();
     // }
-    // @see JSlider#updateLabelUIs()
+    //
+    // // @see JSlider#updateLabelUIs()
     // protected void updateLabelUIs() {
     //   Dictionary<?, ?> labelTable = getLabelTable();
     //   if (labelTable == null) {
