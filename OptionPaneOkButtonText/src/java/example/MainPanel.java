@@ -46,11 +46,13 @@ public final class MainPanel extends JPanel {
     JButton button3 = new JButton("showOptionDialog");
     button3.addActionListener(e -> {
       Object[] options = {"Yes, please"}; // {"Yes, please", "No way!"};
-      JOptionPane.showOptionDialog(((JComponent) e.getSource()).getRootPane(),
-                                   "Would you like green eggs and ham?",
-                                   "A Silly Question",
-                                   JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE,
-                                   null, options, options[0]);
+      JOptionPane.showOptionDialog(
+          ((JComponent) e.getSource()).getRootPane(),
+          "Would you like green eggs and ham?",
+          "A Silly Question",
+          JOptionPane.DEFAULT_OPTION,
+          JOptionPane.PLAIN_MESSAGE,
+          null, options, options[0]);
     });
 
     Stream.of(button1, button2, button3).forEach(this::add);
