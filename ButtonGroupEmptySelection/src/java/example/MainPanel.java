@@ -13,7 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     ButtonGroup bg = new ToggleButtonGroup();
     JPanel p = new JPanel();
     Stream.of("A", "B", "C").map(JToggleButton::new).forEach(r -> {
@@ -23,6 +22,19 @@ public final class MainPanel extends JPanel {
     });
 
     JLabel label = new JLabel();
+    Box box = Box.createHorizontalBox();
+    box.add(label);
+    box.add(Box.createHorizontalGlue());
+    box.add(makeButton(bg, label), BorderLayout.WEST);
+    box.add(Box.createHorizontalStrut(5));
+
+    add(p);
+    add(box, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JButton makeButton(ButtonGroup bg, JLabel label) {
     JButton button = new JButton("check");
     button.addActionListener(e -> {
       String txt = Optional.ofNullable(bg.getSelection())
@@ -36,17 +48,7 @@ public final class MainPanel extends JPanel {
       //   label.setText("Please select one of the option above.");
       // }
     });
-
-    Box box = Box.createHorizontalBox();
-    box.add(label);
-    box.add(Box.createHorizontalGlue());
-    box.add(button, BorderLayout.WEST);
-    box.add(Box.createHorizontalStrut(5));
-
-    add(p);
-    add(box, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static void main(String[] args) {
@@ -72,11 +74,10 @@ public final class MainPanel extends JPanel {
 }
 
 class ToggleButtonGroup extends ButtonGroup {
-  private ButtonModel prevModel;
+  private transient ButtonModel prevModel;
   private final AtomicBoolean isAdjusting = new AtomicBoolean();
 
-  @Override
-  public void setSelected(ButtonModel m, boolean b) {
+  @Override public void setSelected(ButtonModel m, boolean b) {
     if (isAdjusting.get()) {
       return;
     }
