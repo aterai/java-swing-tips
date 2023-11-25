@@ -10,13 +10,26 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox check = new JCheckBox("Adjust JPopupMenu location", true);
     check.setFocusPainted(false);
+    JPopupMenu popup = makePopupMenu(check);
+    // setComponentPopupMenu(popup);
 
+    JLabel label = new JLabel("JLabel: 1234567890");
+    label.setOpaque(true);
+    // label.setInheritsPopupMenu(true);
+    // check.setInheritsPopupMenu(true);
+    label.setComponentPopupMenu(popup);
+
+    add(check, BorderLayout.NORTH);
+    add(label);
+    setBorder(BorderFactory.createLineBorder(Color.RED, 10));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPopupMenu makePopupMenu(JCheckBox check) {
     JPopupMenu popup = new JPopupMenu() {
       @Override public void show(Component c, int x, int y) {
-        // System.out.println(c.getClass().getName());
         if (check.isSelected()) {
           Point p = new Point(x, y);
           Rectangle r = c.getBounds();
@@ -36,18 +49,7 @@ public final class MainPanel extends JPanel {
     popup.add("JMenuItem: 11111");
     popup.add("JMenuItem: 222");
     popup.add("JMenuItem: 3");
-    // setComponentPopupMenu(popup);
-
-    JLabel label = new JLabel("JLabel: 1234567890");
-    label.setOpaque(true);
-    // label.setInheritsPopupMenu(true);
-    // check.setInheritsPopupMenu(true);
-    label.setComponentPopupMenu(popup);
-
-    add(check, BorderLayout.NORTH);
-    add(label);
-    setBorder(BorderFactory.createLineBorder(Color.RED, 10));
-    setPreferredSize(new Dimension(320, 240));
+    return popup;
   }
 
   public static void main(String[] args) {
