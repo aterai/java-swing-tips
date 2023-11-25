@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
   //     "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘",
   //     "㉙", "㉚", "㉛"
   // };
-  // public static final String CIRCLED_IDEOGRAPH_CONGRATULATION = "㊗"; // "\u3297";
+  // public static final String CIRCLED_IDEOGRAPH_CONGRATULATION = "㊗"; // U+3297
   public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {

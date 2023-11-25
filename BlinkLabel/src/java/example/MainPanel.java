@@ -9,12 +9,11 @@ import java.awt.event.HierarchyEvent;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final String BLACK_CIRCLE = "●"; // "\u25CF";
-  private static final String WHITE_CIRCLE = "○"; // "\u25CB";
+  private static final String BLACK_CIRCLE = "●"; // U+25CF
+  private static final String WHITE_CIRCLE = "○"; // U+25CB
 
   private MainPanel() {
     super(new BorderLayout());
-
     JLabel label1 = new JLabel(BLACK_CIRCLE, SwingConstants.CENTER);
     JLabel label2 = new JLabel("", SwingConstants.CENTER);
 
