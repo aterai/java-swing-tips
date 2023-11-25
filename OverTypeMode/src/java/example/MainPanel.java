@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     OvertypeTextArea textArea = new OvertypeTextArea();
     textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-    textArea.setText("Press the INSERT key to toggle the overwrite mode.\nあああ\naaaaaaaaaaafasdfas");
+    textArea.setText("Press the INSERT key to toggle the overwrite mode.\nあああ\n1234567890");
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
