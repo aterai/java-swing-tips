@@ -12,6 +12,40 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Rectangle rubberBand = new Rectangle();
+    JDesktopPane desktop = makeDesktopPane(rubberBand);
+    add(new JLayer<>(desktop, new LayerUI<JDesktopPane>() {
+      @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        if (c instanceof JLayer) {
+          JDesktopPane desktop = (JDesktopPane) ((JLayer<?>) c).getView();
+          if (desktop.getDragMode() == JDesktopPane.OUTLINE_DRAG_MODE) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            // Paint color = UIManager.getColor("InternalFrame.borderColor");
+            g2.setPaint(Color.GRAY);
+            g2.setStroke(makeDotStroke());
+            g2.draw(rubberBand);
+            g2.dispose();
+          }
+        }
+      }
+    }));
+
+    JInternalFrame frame1 = createFrame("Frame1");
+    desktop.add(frame1);
+    frame1.setLocation(30, 10);
+
+    JInternalFrame frame2 = createFrame("Frame2");
+    desktop.add(frame2);
+    frame2.setLocation(50, 30);
+
+    EventQueue.invokeLater(() -> {
+      frame1.setVisible(true);
+      frame2.setVisible(true);
+    });
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JDesktopPane makeDesktopPane(Rectangle rubberBand) {
     JDesktopPane desktop = new JDesktopPane();
     desktop.setDesktopManager(new DefaultDesktopManager() {
       @Override public void beginResizingFrame(JComponent f, int direction) {
@@ -44,37 +78,7 @@ public final class MainPanel extends JPanel {
         super.endResizingFrame(f);
       }
     });
-
-    JInternalFrame frame1 = createFrame("Frame1");
-    desktop.add(frame1);
-    frame1.setLocation(30, 10);
-
-    JInternalFrame frame2 = createFrame("Frame2");
-    desktop.add(frame2);
-    frame2.setLocation(50, 30);
-
-    EventQueue.invokeLater(() -> {
-      frame1.setVisible(true);
-      frame2.setVisible(true);
-    });
-
-    add(new JLayer<>(desktop, new LayerUI<JDesktopPane>() {
-      @Override public void paint(Graphics g, JComponent c) {
-        super.paint(g, c);
-        if (c instanceof JLayer) {
-          JDesktopPane desktop = (JDesktopPane) ((JLayer<?>) c).getView();
-          if (desktop.getDragMode() == JDesktopPane.OUTLINE_DRAG_MODE) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            // Paint color = UIManager.getColor("InternalFrame.borderColor");
-            g2.setPaint(Color.GRAY);
-            g2.setStroke(makeDotStroke());
-            g2.draw(rubberBand);
-            g2.dispose();
-          }
-        }
-      }
-    }));
-    setPreferredSize(new Dimension(320, 240));
+    return desktop;
   }
 
   public static Stroke makeDotStroke() {
