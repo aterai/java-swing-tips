@@ -14,7 +14,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Box b1 = Box.createHorizontalBox();
     b1.add(Box.createHorizontalGlue());
     b1.add(new JButton("default"));

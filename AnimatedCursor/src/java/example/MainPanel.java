@@ -16,7 +16,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Point pt = new Point();
     Class<?> clz = getClass();
     Toolkit tk = getToolkit();

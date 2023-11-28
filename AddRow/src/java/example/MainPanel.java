@@ -13,7 +13,6 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     RowDataModel model = new RowDataModel();
     JTable table = new JTable(model) {
       private final Color evenColor = new Color(0xFA_FA_FA);

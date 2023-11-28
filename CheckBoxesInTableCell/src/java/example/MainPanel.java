@@ -20,7 +20,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
         {"owner", 7}, {"group", 6}, {"other", 5}

@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JTextField textField = new JTextField();
     textField.getCaret().setBlinkRate(0);
 

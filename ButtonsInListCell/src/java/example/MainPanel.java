@@ -17,7 +17,6 @@ import javax.swing.event.MouseInputListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("11\n1");
     model.addElement("222222222222222\n222222222222222");

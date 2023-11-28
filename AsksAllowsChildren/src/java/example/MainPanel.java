@@ -16,7 +16,6 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-
     JTree t = new JTree(makeDefaultTreeModel());
     t.setComponentPopupMenu(new TreePopupMenu());
     add(makeTitledPanel("Default", new JScrollPane(t)));

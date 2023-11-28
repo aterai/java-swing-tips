@@ -11,7 +11,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> combo = new JComboBox<>(new String[] {"AAAAA", "BBBB", "CCC", "DD", "E"});
     combo.setSelectedIndex(-1);
 

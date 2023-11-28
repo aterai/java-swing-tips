@@ -24,7 +24,6 @@ import javax.swing.undo.UndoManager;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     ClipboardService cs = getClipboardService();
     JTextArea textArea = new JTextArea() {
       @Override public void copy() {

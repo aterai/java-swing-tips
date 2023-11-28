@@ -11,7 +11,6 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     UIManager.put("ComboBox.selectionBackground", Color.PINK);
     UIManager.put("ComboBox.selectionForeground", Color.CYAN);
 

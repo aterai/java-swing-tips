@@ -27,13 +27,8 @@ public final class MainPanel extends JPanel {
   private final JTable monthTable = new JTable();
   private LocalDate currentLocalDate;
 
-  public LocalDate getCurrentLocalDate() {
-    return currentLocalDate;
-  }
-
   private MainPanel() {
     super(new BorderLayout());
-
     monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
     monthTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     monthTable.setCellSelectionEnabled(true);
@@ -74,6 +69,10 @@ public final class MainPanel extends JPanel {
     add(dateLabel, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public LocalDate getCurrentLocalDate() {
+    return currentLocalDate;
   }
 
   public void updateMonthView(LocalDate localDate) {

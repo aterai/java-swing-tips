@@ -12,7 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JSplitPane leftPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     leftPane.setTopComponent(new JScrollPane(new JTextArea("1111111")));
     leftPane.setBottomComponent(new JScrollPane(new JTextArea("2222")));

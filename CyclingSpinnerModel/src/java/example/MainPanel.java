@@ -19,7 +19,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     // List<String> weeks = Arrays.asList("Sun", "Mon", "Tue", "Wed", "Thu", "Sat");
     Locale locale = Locale.ENGLISH; // Locale.getDefault();
     DayOfWeek firstDayOfWeek = WeekFields.of(locale).getFirstDayOfWeek();

@@ -14,9 +14,7 @@ import javax.swing.event.PopupMenuListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] model = {"123456", "7890", "a"};
-
     JComboBox<String> comboBox0 = new JComboBox<>(model);
     comboBox0.setEditable(true);
 

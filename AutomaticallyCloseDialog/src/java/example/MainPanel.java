@@ -15,7 +15,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea textArea = new JTextArea();
 
     JLabel label = new JLabel();

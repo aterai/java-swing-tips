@@ -13,7 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<ComboItem> combo0 = new JComboBox<ComboItem>(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();

@@ -18,7 +18,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Number", "Boolean"};
     Object[][] data = {
         {"aaa", 1, false}, {"bbb", 20, false},

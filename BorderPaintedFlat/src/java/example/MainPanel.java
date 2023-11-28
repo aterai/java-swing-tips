@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     Box box1 = Box.createVerticalBox();
     box1.setBorder(BorderFactory.createTitledBorder("setBorderPainted: false"));
 

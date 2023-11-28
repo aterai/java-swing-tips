@@ -18,7 +18,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea textArea = new JTextArea();
     textArea.setEditable(false);
     textArea.setLineWrap(true);

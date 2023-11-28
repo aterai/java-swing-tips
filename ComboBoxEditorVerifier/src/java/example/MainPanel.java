@@ -18,7 +18,6 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] model = {"123456", "7890"};
     JComboBox<String> combo = new JComboBox<>(model);
     combo.setEditable(true);

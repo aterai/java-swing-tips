@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-
     JFrame frame = new JFrame("Test - JFrame");
     frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     frame.setSize(240, 240);

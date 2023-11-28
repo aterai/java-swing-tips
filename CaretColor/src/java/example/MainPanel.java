@@ -14,7 +14,6 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     // UIManager.put("TextPane.caretForeground", Color.ORANGE);
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule("body {font-size: 12pt}");

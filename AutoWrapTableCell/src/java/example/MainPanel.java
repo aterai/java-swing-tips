@@ -18,7 +18,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Default", "AutoWrap"};
     Object[][] data = {
         {"123456789012345678901234567890", "123456789012345678901234567890"},

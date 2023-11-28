@@ -16,7 +16,6 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-
     String[] columnNames = {"#", "String", "Integer"};
     Object[][] data = {
         {false, "aaa", 12}, {false, "bbb", 5},

@@ -12,7 +12,6 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 0));
-
     UIManager.put("ScrollBar.width", 10);
     UIManager.put("ScrollBar.thumbHeight", 20); // SynthLookAndFeel(GTK, Nimbus)
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));
@@ -31,7 +30,7 @@ public final class MainPanel extends JPanel {
     Color trackColor = new Color(0xF0_F0_F0);
     UIManager.put("ScrollBar.track", trackColor);
 
-    String txt = String.join("\n", Collections.nCopies(100, "aaaaaaaaaaaaaaaaaaa"));
+    String txt = String.join("\n", Collections.nCopies(100, "12345678900000"));
 
     // JScrollPane scrollPane = new JScrollPane(new JTextArea(txt));
     // scrollPane.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {

@@ -15,7 +15,6 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane0 = new CloseableTabbedPane();
     JTabbedPane tabbedPane1 = new JTabbedPane();
     Stream.of(tabbedPane0, tabbedPane1).forEach(t -> {

@@ -11,7 +11,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Box box = Box.createVerticalBox();
     box.add(new JLabel("SpinnerNumberModel(double, ...)"));
     box.add(Box.createVerticalStrut(2));

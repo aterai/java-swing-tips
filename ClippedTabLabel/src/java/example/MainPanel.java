@@ -19,7 +19,6 @@ import javax.swing.plaf.synth.SynthStyle;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     List<? extends JTabbedPane> list = Arrays.asList(
         makeTestTabbedPane(new JTabbedPane()),
         makeTestTabbedPane(new ClippedTitleTabbedPane()));

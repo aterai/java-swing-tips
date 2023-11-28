@@ -24,7 +24,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JTable table = makeTable();
     ActionMap am = table.getActionMap();
     Action action = am.get("selectNextColumnCell");

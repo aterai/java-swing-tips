@@ -11,7 +11,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     UIManager.put("Button.disabledToolBarBorderBackground", Color.RED);
     UIManager.put("Button.toolBarBorderBackground", Color.GREEN);
 

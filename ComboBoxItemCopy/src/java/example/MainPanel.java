@@ -23,7 +23,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> combo1 = new JComboBox<>(makeModel(5));
     Action copy = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -48,10 +47,10 @@ public final class MainPanel extends JPanel {
       Component c = clz.isInstance(o) ? o : SwingUtilities.getAncestorOfClass(clz, o);
       if (c instanceof JComboBox) {
         JComboBox<?> combo = (JComboBox<?>) c;
-        Action a = combo.getActionMap().get(COPY_KEY);
-        a.actionPerformed(new ActionEvent(combo, e.getID(), e.getActionCommand()));
-        // KeyEvent keyEvent = new KeyEvent(combo, 0, 0, 0, 0, 'C');
-        // SwingUtilities.notifyAction(a, keyStroke, keyEvent, combo, modifiers);
+        Action act = combo.getActionMap().get(COPY_KEY);
+        act.actionPerformed(new ActionEvent(combo, e.getID(), e.getActionCommand()));
+        // SwingUtilities.notifyAction(
+        //     act, keyStroke, new KeyEvent(combo, 0, 0, 0, 0, 'C'), combo, modifiers);
       }
     });
     combo1.setComponentPopupMenu(popup);

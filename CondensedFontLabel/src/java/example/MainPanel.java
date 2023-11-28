@@ -25,7 +25,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(0, 1));
-
     JTextArea textArea = new JTextArea(TEXT) {
       @Override public void updateUI() {
         super.updateUI();

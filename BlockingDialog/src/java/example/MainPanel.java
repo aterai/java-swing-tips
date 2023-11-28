@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox check = new JCheckBox("0x22_FF_00_00");
     JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
