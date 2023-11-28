@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  // // TEST: bit count
+  // // TEST: bits count
   // BigInteger M1 = new BigInteger("5555555555555555", 16); // binary: 0101...
   // BigInteger M2 = new BigInteger("3333333333333333", 16); // binary: 00110011..
   // BigInteger M4 = new BigInteger("0F0F0F0F0F0F0F0F", 16); // binary: 4 zeros, 4 ones ...
@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
   // BigInteger M16 = new BigInteger("0000FFFF0000FFFF", 16); // binary: 16 zeros, 16 ones ...
   // BigInteger M32 = new BigInteger("00000000FFFFFFFF", 16); // binary: 32 zeros, 32 ones
   //
-  // private static int numofbits(BigInteger bits) {
+  // private static int numOfBits(BigInteger bits) {
   //   bits = bits.and(M1).add(bits.shiftRight(1).and(M1));
   //   bits = bits.and(M2).add(bits.shiftRight(2).and(M2));
   //   bits = bits.and(M4).add(bits.shiftRight(4).and(M4));
