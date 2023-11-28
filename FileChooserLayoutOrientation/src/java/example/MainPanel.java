@@ -10,22 +10,37 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
+    p.add(makeButton1());
+    p.add(makeButton2());
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JTextArea log = new JTextArea();
-
-    JButton button1 = new JButton("Default");
-    button1.addActionListener(e -> {
+  private JButton makeButton1() {
+    JButton button = new JButton("Default");
+    button.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       int retValue = chooser.showOpenDialog(log.getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
+    return button;
+  }
 
-    JButton button2 = new JButton("LayoutOrientation: VERTICAL");
-    button2.addActionListener(e -> {
+  private JButton makeButton2() {
+    JButton button = new JButton("LayoutOrientation: VERTICAL");
+    button.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       descendants(chooser)
           .filter(JList.class::isInstance)
@@ -37,18 +52,7 @@ public final class MainPanel extends JPanel {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    JPanel p = new JPanel();
-    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-    p.add(button1);
-    p.add(button2);
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static Stream<Component> descendants(Container parent) {

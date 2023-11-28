@@ -14,22 +14,35 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
+    p.add(makeButton1());
+    p.add(makeButton2());
+    p.add(makeButton3());
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JTextArea log = new JTextArea();
-
-    JButton button1 = new JButton("Default");
-    button1.addActionListener(e -> {
+  private JButton makeButton1() {
+    JButton button = new JButton("Default");
+    button.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       int retValue = chooser.showOpenDialog(log.getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
+    return button;
+  }
 
-    JButton button2 = new JButton("JList tooltips");
-    button2.addActionListener(e -> {
+  private JButton makeButton2() {
+    JButton button = new JButton("JList tooltips");
+    button.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       descendants(chooser)
           .filter(JList.class::isInstance)
@@ -40,9 +53,12 @@ public final class MainPanel extends JPanel {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
+    return button;
+  }
 
-    JButton button3 = new JButton("JTable tooltips");
-    button3.addActionListener(e -> {
+  private JButton makeButton3() {
+    JButton button = new JButton("JTable tooltips");
+    button.addActionListener(e -> {
       String key = "viewTypeDetails";
       JFileChooser chooser = new JFileChooser();
       Optional.ofNullable(chooser.getActionMap().get(key)).ifPresent(a -> {
@@ -59,15 +75,7 @@ public final class MainPanel extends JPanel {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
-
-    JPanel p = new JPanel();
-    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-    p.add(button1);
-    p.add(button2);
-    p.add(button3);
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static Stream<Component> descendants(Container parent) {

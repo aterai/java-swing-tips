@@ -16,7 +16,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("FileDialog"));
+    p.add(makeButton1());
+    p.add(makeButton2());
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private JButton makeButton1() {
     JButton button1 = new JButton("FileDialog(Frame)");
     button1.addActionListener(e -> {
       // Window w = SwingUtilities.getWindowAncestor(this);
@@ -52,7 +61,10 @@ public final class MainPanel extends JPanel {
         append(file.getAbsolutePath());
       }
     });
+    return button1;
+  }
 
+  private JButton makeButton2() {
     JButton button2 = new JButton("FileDialog(Dialog)");
     button2.addActionListener(e -> {
       Dialog dialog = new Dialog(SwingUtilities.getWindowAncestor(this));
@@ -64,14 +76,7 @@ public final class MainPanel extends JPanel {
         append(file.getAbsolutePath());
       }
     });
-
-    JPanel p = new JPanel();
-    p.setBorder(BorderFactory.createTitledBorder("FileDialog"));
-    p.add(button1);
-    p.add(button2);
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-    setPreferredSize(new Dimension(320, 240));
+    return button2;
   }
 
   public void append(String str) {

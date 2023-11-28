@@ -9,22 +9,34 @@ import java.io.File;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
+    p.add(makeButton1());
+    p.add(makeButton2());
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JTextArea log = new JTextArea();
-
-    JButton button1 = new JButton("Default");
-    button1.addActionListener(e -> {
+  private JButton makeButton1() {
+    JButton button = new JButton("Default");
+    button.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
+    return button;
+  }
 
-    JButton button2 = new JButton("setMultiSelectionEnabled(true)");
-    button2.addActionListener(e -> {
+  private JButton makeButton2() {
+    JButton button = new JButton("setMultiSelectionEnabled(true)");
+    button.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       // fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       // fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -38,14 +50,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-
-    JPanel p = new JPanel();
-    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-    p.add(button1);
-    p.add(button2);
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static void main(String[] args) {
