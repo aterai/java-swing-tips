@@ -12,18 +12,20 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JLabel label = new JLabel("", SwingConstants.CENTER);
     label.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
-        label.setText(label.getSize().toString());
+        JLabel l = (JLabel) e.getComponent();
+        l.setText(l.getSize().toString());
       }
     });
 
     Toolkit.getDefaultToolkit().setDynamicLayout(true);
     JCheckBox check = new JCheckBox("DynamicLayout", true);
-    check.addActionListener(e ->
-        Toolkit.getDefaultToolkit().setDynamicLayout(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      Toolkit.getDefaultToolkit().setDynamicLayout(b);
+    });
 
     add(label);
     add(check, BorderLayout.NORTH);
