@@ -26,35 +26,11 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    String[] columnNames = {"Name", "Size", "Full Path"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return File.class;
-        // switch (column) {
-        //   case 0: return File.class;
-        //   case 1: return Long.class;
-        //   case 2: return String.class;
-        //   default: return Object.class;
-        // }
-      }
-    };
-    JTable table = new JTable(model);
-    table.putClientProperty("Table.isFileList", Boolean.TRUE);
-    table.setCellSelectionEnabled(true);
-    table.setIntercellSpacing(new Dimension());
-    table.setComponentPopupMenu(new TablePopupMenu());
-    table.setShowGrid(false);
-    table.setFillsViewportHeight(true);
-    table.setAutoCreateRowSorter(true);
-    table.setDropMode(DropMode.INSERT_ROWS);
-    table.setTransferHandler(new FileTransferHandler());
-    table.setDefaultRenderer(Object.class, new FileIconCellRenderer());
-
     JRadioButton check1 = new JRadioButton("Default", true);
     JRadioButton check2 = new JRadioButton("Directory < File", false);
     JRadioButton check3 = new JRadioButton("Group Sorting", false);
 
+    JTable table = makeTable();
     RowSorter<? extends TableModel> sorter = table.getRowSorter();
     if (sorter instanceof TableRowSorter) {
       TableRowSorter<? extends TableModel> rs = (TableRowSorter<? extends TableModel>) sorter;
@@ -88,6 +64,36 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTable makeTable() {
+    String[] columnNames = {"Name", "Size", "Full Path"};
+    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return File.class;
+        // switch (column) {
+        //   case 0: return File.class;
+        //   case 1: return Long.class;
+        //   case 2: return String.class;
+        //   default: return Object.class;
+        // }
+      }
+    };
+    return new JTable(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        putClientProperty("Table.isFileList", Boolean.TRUE);
+        setCellSelectionEnabled(true);
+        setIntercellSpacing(new Dimension());
+        setComponentPopupMenu(new TablePopupMenu());
+        setShowGrid(false);
+        setFillsViewportHeight(true);
+        setAutoCreateRowSorter(true);
+        setDropMode(DropMode.INSERT_ROWS);
+        setTransferHandler(new FileTransferHandler());
+        setDefaultRenderer(Object.class, new FileIconCellRenderer());
+      }
+    };
   }
 
   public static void main(String[] args) {
