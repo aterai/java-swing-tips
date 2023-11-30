@@ -14,19 +14,23 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JScrollPane scroll = new JScrollPane(makeTable());
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     DefaultTableModel model = new DefaultTableModel(null, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-
     IntStream.range(0, 1000)
         .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
         .forEach(model::addRow);
-
-    JTable table = new JTable(model) {
+    return new JTable(model) {
       private transient MouseAdapter handler;
       @Override public void updateUI() {
         removeMouseMotionListener(handler);
@@ -41,10 +45,6 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    JScrollPane scroll = new JScrollPane(table);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
