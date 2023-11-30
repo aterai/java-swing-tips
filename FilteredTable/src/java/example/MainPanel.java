@@ -17,7 +17,42 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    RowDataModel model = makeModel();
+    JTable table = new JTable(model) {
+      private final Color evenColor = new Color(0xFA_FA_FA);
 
+      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+        Component c = super.prepareRenderer(tcr, row, column);
+        if (isRowSelected(row)) {
+          c.setForeground(getSelectionForeground());
+          c.setBackground(getSelectionBackground());
+        } else {
+          c.setForeground(getForeground());
+          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+        }
+        return c;
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setRowSelectionAllowed(true);
+        setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        getTableHeader().setReorderingAllowed(false);
+        TableColumn col = getColumnModel().getColumn(0);
+        col.setMinWidth(60);
+        col.setMaxWidth(60);
+        col.setResizable(false);
+      }
+    };
+
+    JCheckBox check = new JCheckBox("display an odd number of rows");
+    check.addActionListener(e -> model.filterRows(check.isSelected()));
+    add(new JScrollPane(table));
+    add(check, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static RowDataModel makeModel() {
     RowDataModel model = new RowDataModel();
     model.addRowData(new RowData("Name 1", "comment..."));
     model.addRowData(new RowData("Name 2", "Test"));
@@ -33,38 +68,7 @@ public final class MainPanel extends JPanel {
     model.addRowData(new RowData("Name b", "Test bb"));
     model.addRowData(new RowData("Name a", "hh"));
     model.addRowData(new RowData("Name 0", "Test aa"));
-
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isRowSelected(row)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
-
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-
-    JTableHeader tableHeader = table.getTableHeader();
-    tableHeader.setReorderingAllowed(false);
-
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(60);
-    col.setMaxWidth(60);
-    col.setResizable(false);
-
-    JCheckBox check = new JCheckBox("display an odd number of rows");
-    check.addActionListener(e -> model.filterRows(check.isSelected()));
-    add(new JScrollPane(table));
-    add(check, BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
   public static void main(String[] args) {
@@ -91,9 +95,9 @@ public final class MainPanel extends JPanel {
 
 class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true)
   };
   private final List<RowData> list = new ArrayList<>();
   private int number;
