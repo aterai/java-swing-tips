@@ -29,7 +29,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new ClippedTitleTabbedPane() {
       private final List<Component> history = new ArrayList<>(5);
       @Override public void setSelectedIndex(int index) {
@@ -204,7 +203,12 @@ class ButtonTabComponent extends JPanel {
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout());
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
-    JLabel label = new JLabel() {
+    add(makeTitleLabel(tabbedPane));
+    add(makeCloseButton(), BorderLayout.EAST);
+  }
+
+  private JLabel makeTitleLabel(JTabbedPane tabbedPane) {
+    return new JLabel() {
       @Override public String getText() {
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
@@ -220,9 +224,15 @@ class ButtonTabComponent extends JPanel {
         }
         return null;
       }
-    };
-    label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
 
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
+      }
+    };
+  }
+
+  private JButton makeCloseButton() {
     JButton button = new JButton(new CloseTabIcon(Color.BLACK));
     button.setRolloverIcon(new CloseTabIcon(Color.ORANGE));
     button.setBorder(BorderFactory.createEmptyBorder());
@@ -232,9 +242,7 @@ class ButtonTabComponent extends JPanel {
     TabButtonHandler handler = new TabButtonHandler();
     button.addActionListener(handler);
     button.addMouseListener(handler);
-
-    add(label);
-    add(button, BorderLayout.EAST);
+    return button;
   }
 
   @Override public final Component add(Component comp) {
