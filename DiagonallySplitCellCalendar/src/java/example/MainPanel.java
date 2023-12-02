@@ -50,7 +50,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
     monthTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     monthTable.setCellSelectionEnabled(true);

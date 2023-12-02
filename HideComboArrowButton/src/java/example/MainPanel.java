@@ -11,7 +11,6 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel(new BorderLayout(5, 5));
     p.add(new JLabel("JLabel:"), BorderLayout.WEST);
     p.add(new JTextField("JTextField"));

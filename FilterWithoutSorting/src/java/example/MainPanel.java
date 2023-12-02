@@ -13,7 +13,6 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"AAA", 0, true}, {"BBB", 1, false},

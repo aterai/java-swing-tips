@@ -16,7 +16,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Integer", "String", "Date"};
     @SuppressWarnings("JavaUtilDate")
     Object[][] data = {

@@ -25,36 +25,35 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     FileModel model = new FileModel();
     JTable table = new JTable(model);
 
     DropTargetListener dtl = new DropTargetAdapter() {
-      @Override public void dragOver(DropTargetDragEvent dtde) {
-        if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          dtde.acceptDrag(DnDConstants.ACTION_COPY);
+      @Override public void dragOver(DropTargetDragEvent e) {
+        if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+          e.acceptDrag(DnDConstants.ACTION_COPY);
           return;
         }
-        dtde.rejectDrag();
+        e.rejectDrag();
       }
 
-      @Override public void drop(DropTargetDropEvent dtde) {
+      @Override public void drop(DropTargetDropEvent e) {
         try {
-          if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-            dtde.acceptDrop(DnDConstants.ACTION_COPY);
-            Transferable transferable = dtde.getTransferable();
+          if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+            e.acceptDrop(DnDConstants.ACTION_COPY);
+            Transferable transferable = e.getTransferable();
             List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
             for (Object o : list) {
               if (o instanceof File) {
                 model.addPath(((File) o).toPath());
               }
             }
-            dtde.dropComplete(true);
+            e.dropComplete(true);
           } else {
-            dtde.rejectDrop();
+            e.rejectDrop();
           }
         } catch (UnsupportedFlavorException | IOException ex) {
-          dtde.rejectDrop();
+          e.rejectDrop();
         }
       }
     };
@@ -136,9 +135,9 @@ public final class MainPanel extends JPanel {
 
 class FileModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Full Path", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Full Path", String.class, true)
   };
   private int number;
 

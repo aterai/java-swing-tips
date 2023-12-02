@@ -15,11 +15,10 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"AAA", "BBB", "CCC"};
     Object[][] data = {
-      {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
-      {"CCC", "g", "hh"}, {"DDD", "iiii", "j"}
+        {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
+        {"CCC", "g", "hh"}, {"DDD", "ii", "j"}
     };
     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

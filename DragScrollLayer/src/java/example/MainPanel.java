@@ -14,7 +14,6 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2, 5, 5));
-
     Box box1 = makeTestBox();
     box1.setBorder(BorderFactory.createTitledBorder("DragScrollListener"));
     MouseInputListener l = new DragScrollListener();
@@ -25,7 +24,6 @@ public final class MainPanel extends JPanel {
     Box box2 = makeTestBox();
     box2.setBorder(BorderFactory.createTitledBorder("DragScrollLayerUI"));
     add(new JLayer<>(new JScrollPane(box2), new DragScrollLayerUI()));
-
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -56,7 +54,6 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
     box.add(new JButton("ccc ccc"));
     box.add(Box.createVerticalGlue());
-
     return box;
   }
 

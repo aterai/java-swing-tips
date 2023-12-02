@@ -17,7 +17,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JToggleButton tgb12 = new JToggleButton("12");
     tgb12.addActionListener(e -> updateFont(FONT12));
 

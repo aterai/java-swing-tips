@@ -15,7 +15,6 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
     // tree.setModel(makeModel());
 
@@ -56,11 +55,11 @@ public final class MainPanel extends JPanel {
   //   set1.add(new DefaultMutableTreeNode("111111111"));
   //   set1.add(new DefaultMutableTreeNode("22222222222"));
   //   set1.add(new DefaultMutableTreeNode("33333"));
-  //   set2.add(new DefaultMutableTreeNode("asdfasdfas"));
-  //   set2.add(new DefaultMutableTreeNode("asdf"));
-  //   set3.add(new DefaultMutableTreeNode("asdfasdfasdf"));
-  //   set3.add(new DefaultMutableTreeNode("zxcvzxcvzx"));
-  //   set3.add(new DefaultMutableTreeNode("qwerqwerqwerqwerqwer"));
+  //   set2.add(new DefaultMutableTreeNode("44444444444"));
+  //   set2.add(new DefaultMutableTreeNode("5555"));
+  //   set3.add(new DefaultMutableTreeNode("6666666666"));
+  //   set3.add(new DefaultMutableTreeNode("7777777"));
+  //   set3.add(new DefaultMutableTreeNode("88888888888888"));
   //   root.add(set1);
   //   root.add(set2);
   //   set2.add(set3);

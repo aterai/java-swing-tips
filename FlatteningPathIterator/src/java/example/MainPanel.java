@@ -13,7 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Ellipse2D circle = new Ellipse2D.Double(0d, 0d, 100d, 100d);
     Ellipse2D ellipse = new Ellipse2D.Double(0d, 0d, 128d, 100d);
 
@@ -23,7 +22,6 @@ public final class MainPanel extends JPanel {
     p.add(makeLabel("Polygon", convertEllipse2Polygon(circle)));
     p.add(makeLabel("FlatteningPathIterator", convertEllipse2Polygon(ellipse)));
     // TEST: p.add(makeLabel("convertShape2Polygon", convertShape2Polygon(ellipse)));
-
     add(p);
     setPreferredSize(new Dimension(320, 240));
   }

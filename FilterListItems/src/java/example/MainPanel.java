@@ -56,7 +56,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
-
     for (ListItem item : defaultModel) {
       model.addElement(item);
     }

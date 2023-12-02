@@ -14,7 +14,6 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree1 = new JTree();
     tree1.setExpandsSelectedPaths(false);
 

@@ -33,7 +33,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JButton button1 = new JButton("default icon");
     button1.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();

@@ -37,28 +37,27 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
-    JTextArea jta = new JTextArea();
-    jta.setLineWrap(true);
-    jta.setText(TEXT);
+    JTextArea textArea = new JTextArea();
+    textArea.setLineWrap(true);
+    textArea.setText(TEXT);
 
     JButton highlight = new JButton("highlight: " + PATTERN);
     highlight.addActionListener(e -> {
-      jta.setEditable(false);
-      setHighlight(jta, PATTERN);
+      textArea.setEditable(false);
+      setHighlight(textArea, PATTERN);
     });
 
     JButton clear = new JButton("clear");
     clear.addActionListener(e -> {
-      jta.setEditable(true);
-      jta.getHighlighter().removeAllHighlights();
+      textArea.setEditable(true);
+      textArea.getHighlighter().removeAllHighlights();
     });
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(highlight);
     box.add(clear);
-    add(new JScrollPane(jta));
+    add(new JScrollPane(textArea));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }

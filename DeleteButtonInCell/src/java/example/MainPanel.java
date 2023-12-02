@@ -18,7 +18,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     RowDataModel model = new RowDataModel();
     model.addRowData(new RowData("Name 1", "Comment..."));
     model.addRowData(new RowData("Name 2", "Test"));
@@ -56,7 +55,7 @@ public final class MainPanel extends JPanel {
     sorter.setSortable(BUTTON_COLUMN, false);
 
     JButton button = new JButton("add");
-    button.addActionListener(e -> model.addRowData(new RowData("Test", "aaaaaaaaaaa")));
+    button.addActionListener(e -> model.addRowData(new RowData("Test", "comment")));
 
     add(button, BorderLayout.SOUTH);
     add(new JScrollPane(table));

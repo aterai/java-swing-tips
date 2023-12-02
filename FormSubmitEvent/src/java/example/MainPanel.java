@@ -15,7 +15,6 @@ import javax.swing.text.html.HTMLEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-
     JTextArea logger = new JTextArea();
     logger.setEditable(false);
 
@@ -39,7 +38,7 @@ public final class MainPanel extends JPanel {
           String txt = URLDecoder.decode(data, charset);
           logger.append(txt + "\n");
         } catch (UnsupportedEncodingException ex) {
-          ex.printStackTrace();
+          // ex.printStackTrace();
           logger.append(ex.getMessage() + "\n");
         }
       }

@@ -16,7 +16,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel(new GridLayout(3, 1));
     p.add(makeUI());
     p.add(makeUI());
@@ -142,7 +141,7 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
       Thread.currentThread().interrupt();
     }

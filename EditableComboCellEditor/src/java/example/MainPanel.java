@@ -16,12 +16,11 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Column1", "Column2"};
     Object[][] data = {
-      {"colors", makeModel("blue", "violet", "red", "yellow")},
-      {"sports", makeModel("basketball", "soccer", "football", "hockey")},
-      {"food", makeModel("hot dogs", "pizza", "ravioli", "bananas")},
+        {"colors", makeModel("blue", "violet", "red", "yellow")},
+        {"sports", makeModel("basketball", "soccer", "football", "hockey")},
+        {"food", makeModel("hot dogs", "pizza", "ravioli", "bananas")},
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

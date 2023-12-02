@@ -11,7 +11,6 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JToolBar toolBar = new JToolBar("ToolBar");
     toolBar.add(new JCheckBox("JCheckBox"));
     toolBar.add(new JTextField(10));
