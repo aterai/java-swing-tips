@@ -25,56 +25,52 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridBagLayout());
+    JScrollPane scroll = new JScrollPane(makeTable());
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private JTable makeTable() {
     String[] columnNames = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
     Boolean[][] data = {
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true},
-      {true, false, true, false, true, true, false, true, true}
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true},
+        {true, false, true, false, true, true, false, true, true}
     };
-
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return Boolean.class;
       }
     };
-
-    JTable table = new JTable(model) {
+    return new JTable(model) {
       @Override public void updateUI() {
         setDefaultEditor(Boolean.class, null);
         super.updateUI();
         setDefaultEditor(Boolean.class, new BooleanEditor());
+        setCellSelectionEnabled(true);
+        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        setAutoCreateRowSorter(true);
+        setComponentPopupMenu(new TablePopupMenu());
+        TableColumnModel m = getColumnModel();
+        for (int i = 0; i < m.getColumnCount(); i++) {
+          TableColumn col = m.getColumn(i);
+          col.setPreferredWidth(CELL_SIZE);
+          col.setResizable(false);
+        }
       }
 
       @Override public Dimension getPreferredScrollableViewportSize() {
         return super.getPreferredSize();
       }
     };
-
-    table.setCellSelectionEnabled(true);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    table.setAutoCreateRowSorter(true);
-    table.setComponentPopupMenu(new TablePopupMenu());
-
-    TableColumnModel m = table.getColumnModel();
-    for (int i = 0; i < m.getColumnCount(); i++) {
-      TableColumn col = m.getColumn(i);
-      col.setPreferredWidth(CELL_SIZE);
-      col.setResizable(false);
-    }
-
-    JScrollPane scroll = new JScrollPane(table);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
