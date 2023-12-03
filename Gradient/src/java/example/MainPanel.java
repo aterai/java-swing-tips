@@ -13,11 +13,15 @@ import javax.swing.plaf.basic.BasicSeparatorUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(makeIndentPanel("JSeparator", new JSeparator(), 10));
     p.add(makeIndentPanel("GradientSeparator", new GradientSeparator(), 10));
+    add(p);
+    add(makeBox(), BorderLayout.EAST);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static Box makeBox() {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     box.add(Box.createHorizontalStrut(10));
@@ -25,10 +29,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(10));
     box.add(new GradientSeparator(SwingConstants.VERTICAL));
     box.add(Box.createHorizontalStrut(10));
-
-    add(p);
-    add(box, BorderLayout.EAST);
-    setPreferredSize(new Dimension(320, 240));
+    return box;
   }
 
   public static Component makeIndentPanel(String title, JSeparator sp, int indent) {
