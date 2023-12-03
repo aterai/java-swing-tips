@@ -15,42 +15,18 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = makeTable();
+    table.setComponentPopupMenu(makePopupMenu());
 
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-      {"prev1: Ctrl+1", 1, true}, {"next1: Ctrl+2", 2, false},
-      {"prev2: Ctrl+3", 3, true}, {"next2: Ctrl+4", 4, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
-    table.setFillsViewportHeight(true);
-    table.setAutoCreateRowSorter(true);
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("JTable", new JScrollPane(table));
     tabs.addTab("JTree", new JScrollPane(new JTree()));
     tabs.addTab("JSplitPane", new JSplitPane());
     tabs.addTab("JButton", new JButton("button"));
 
-    JMenu menu = new JMenu("Sub");
-    menu.add("Item 1");
-    menu.add("Item 2");
-
-    JPopupMenu popup = new JPopupMenu();
-    popup.add(menu);
-    popup.add("Table Item 1");
-    popup.add("Table Item 2");
-    popup.add("Table Item 3");
-
-    table.setComponentPopupMenu(popup);
-
     EventQueue.invokeLater(() -> {
       int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
       // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-
       KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, modifiers);
       tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks1, "prev1");
       tabs.getActionMap().put("prev1", new AbstractAction() {
@@ -94,6 +70,38 @@ public final class MainPanel extends JPanel {
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTable makeTable() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"prev1: Ctrl+1", 1, true}, {"next1: Ctrl+2", 2, false},
+        {"prev2: Ctrl+3", 3, true}, {"next2: Ctrl+4", 4, false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    return new JTable(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setFillsViewportHeight(true);
+        setAutoCreateRowSorter(true);
+      }
+    };
+  }
+
+  private static JPopupMenu makePopupMenu() {
+    JMenu menu = new JMenu("Sub");
+    menu.add("Item 1");
+    menu.add("Item 2");
+    JPopupMenu popup = new JPopupMenu();
+    popup.add(menu);
+    popup.add("Table Item 1");
+    popup.add("Table Item 2");
+    popup.add("Table Item 3");
+    return popup;
   }
 
   public static void main(String[] args) {
