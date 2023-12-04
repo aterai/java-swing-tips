@@ -12,58 +12,36 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
-
-    JTabbedPane tabbedPane1 = new JTabbedPane() {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsTabbedPaneUI) {
-          setUI(new WindowsTabbedPaneUI() {
-            @Override protected boolean shouldPadTabRun(int tabPlacement, int run) {
-              return false;
-            }
-          });
-        } else {
-          setUI(new MetalTabbedPaneUI() {
-            @Override protected boolean shouldPadTabRun(int tabPlacement, int run) {
-              // BasicTabbedPaneUI: return runCount > 1;
-              // MetalTabbedPaneUI: return runCount > 1 && run < runCount - 1;
-              return false;
-            }
-          });
-        }
-      }
-    };
-
-    JTabbedPane tabbedPane2 = new JTabbedPane() {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsTabbedPaneUI) {
-          setUI(new WindowsTabbedPaneUI() {
-            @Override protected boolean shouldPadTabRun(int tabPlacement, int run) {
-              return true;
-            }
-          });
-        } else {
-          setUI(new MetalTabbedPaneUI() {
-            @Override protected boolean shouldPadTabRun(int tabPlacement, int run) {
-              // BasicTabbedPaneUI: return runCount > 1;
-              // MetalTabbedPaneUI: return runCount > 1 && run < runCount - 1;
-              return true;
-            }
-          });
-        }
-      }
-    };
-
     add(makeTabbedPane("default", new JTabbedPane()));
-    add(makeTabbedPane("shouldPadTabRun: false", tabbedPane1));
-    add(makeTabbedPane("shouldPadTabRun: true", tabbedPane2));
-
+    add(makeTabbedPane("shouldPadTabRun: false", makeTabbedPane(false)));
+    add(makeTabbedPane("shouldPadTabRun: true", makeTabbedPane(true)));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTabbedPane makeTabbedPane(boolean shouldPadTabRun) {
+    return new JTabbedPane() {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsTabbedPaneUI) {
+          setUI(new WindowsTabbedPaneUI() {
+            @Override protected boolean shouldPadTabRun(int tabPlacement, int run) {
+              return shouldPadTabRun;
+            }
+          });
+        } else {
+          setUI(new MetalTabbedPaneUI() {
+            @Override protected boolean shouldPadTabRun(int tabPlacement, int run) {
+              // BasicTabbedPaneUI: return runCount > 1;
+              // MetalTabbedPaneUI: return runCount > 1 && run < runCount - 1;
+              return shouldPadTabRun;
+            }
+          });
+        }
+      }
+    };
   }
 
   private static JTabbedPane makeTabbedPane(String title, JTabbedPane tabbedPane) {
