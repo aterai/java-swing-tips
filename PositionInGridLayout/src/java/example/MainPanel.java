@@ -12,7 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     GridLayout gl = new GridLayout(5, 7, 5, 5);
     JPanel p = new JPanel(gl);
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

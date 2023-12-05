@@ -12,7 +12,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
     JSlider slider1 = new JSlider(SwingConstants.VERTICAL);

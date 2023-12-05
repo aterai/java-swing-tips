@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(htmlEditorKit);

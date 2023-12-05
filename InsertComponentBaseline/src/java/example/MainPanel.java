@@ -10,13 +10,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextPane textPane = new JTextPane();
-    // textPane.setEditable(false);
     textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-
     textPane.replaceSelection(" Default: ");
     textPane.insertComponent(new JCheckBox("CheckBox"));
+    // textPane.setEditable(false);
 
     JCheckBox check1 = new JCheckBox("JComponent#setAlignmentY(...)");
     Dimension d = check1.getPreferredSize();

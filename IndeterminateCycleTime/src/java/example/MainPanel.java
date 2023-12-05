@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JProgressBar progressBar = new JProgressBar();
     progressBar.setIndeterminate(true);
     JPanel p = new JPanel(new GridBagLayout());
@@ -42,7 +41,6 @@ public final class MainPanel extends JPanel {
     sp.add(new JSpinner(repaintInterval));
     sp.add(Box.createHorizontalStrut(5));
     sp.add(box);
-
     add(sp, BorderLayout.NORTH);
     add(p);
     // add(box, BorderLayout.SOUTH);

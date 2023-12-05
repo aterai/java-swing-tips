@@ -17,7 +17,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     BoundedRangeModel model = new DefaultBoundedRangeModel();
     JProgressBar progressBar0 = new JProgressBar(model);
     progressBar0.setStringPainted(true);

@@ -15,7 +15,6 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree1 = new JTree();
     JTree tree2 = new JTree();
 
@@ -32,7 +31,6 @@ public final class MainPanel extends JPanel {
     JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
       LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
-
       DefaultTreeModel model1 = (DefaultTreeModel) tree1.getModel();
       DefaultMutableTreeNode parent1 = (DefaultMutableTreeNode) model1.getRoot();
       DefaultMutableTreeNode child1 = new DefaultMutableTreeNode(date);

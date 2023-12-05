@@ -13,7 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JCheckBox check = new JCheckBox("JMenu: hover(show popup automatically) on cursor", true);
     JMenuBar bar = makeMenuBar();
     addListenerToMenu(bar, new MouseAdapter() {

@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JButton clearButton = new JButton("Preferences#clear() and JFrame#dispose()");
     clearButton.addActionListener(e -> {
       try {

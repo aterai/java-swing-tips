@@ -20,7 +20,6 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JProgressBar progress = new JProgressBar() {
       @Override public void updateUI() {
         super.updateUI();
