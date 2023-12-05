@@ -21,31 +21,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JScrollPane scroll = new JScrollPane();
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    AtomicBoolean adjusting = new AtomicBoolean();
-    JViewport viewport = new JViewport() {
-      private static final boolean MIDDLEWEIGHT = false;
-      @Override public void revalidate() {
-        if (!MIDDLEWEIGHT && adjusting.get()) {
-          return;
-        }
-        super.revalidate();
-      }
-
-      @Override public void setViewPosition(Point p) {
-        if (MIDDLEWEIGHT) {
-          super.setViewPosition(p);
-        } else {
-          adjusting.set(true);
-          super.setViewPosition(p);
-          adjusting.set(false);
-        }
-      }
-    };
+    JViewport viewport = new ViewPositionViewport();
     scroll.setViewport(viewport);
     // JViewport viewport = scroll.getViewport(); // JDK 1.6.0
 
@@ -125,6 +105,28 @@ public final class MainPanel extends JPanel {
     // frame.setResizable(false);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ViewPositionViewport extends JViewport {
+  private static final boolean MIDDLEWEIGHT = false;
+  private final AtomicBoolean adjusting = new AtomicBoolean();
+
+  @Override public void revalidate() {
+    if (!MIDDLEWEIGHT && adjusting.get()) {
+      return;
+    }
+    super.revalidate();
+  }
+
+  @Override public void setViewPosition(Point p) {
+    if (MIDDLEWEIGHT) {
+      super.setViewPosition(p);
+    } else {
+      adjusting.set(true);
+      super.setViewPosition(p);
+      adjusting.set(false);
+    }
   }
 }
 
