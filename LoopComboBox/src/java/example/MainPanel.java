@@ -13,7 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> combo = new JComboBox<>(makeModel());
     Action up = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -30,12 +29,12 @@ public final class MainPanel extends JPanel {
       }
     };
     ActionMap am = combo.getActionMap();
-    am.put("myUp", up);
-    am.put("myDown", down);
+    am.put("loopUp", up);
+    am.put("loopDown", down);
 
     InputMap im = combo.getInputMap();
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "myUp");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "loopUp");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "loopDown");
 
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("default:", new JComboBox<>(makeModel())));
