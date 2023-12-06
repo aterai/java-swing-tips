@@ -16,15 +16,13 @@ import javax.swing.text.View;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JPasswordField pf1 = new JPasswordField();
-    // pf1.setEchoChar('\u2605');
-    pf1.setEchoChar('★');
+    pf1.setEchoChar('★'); // U+2605
 
     JPasswordField pf2 = new JPasswordField() {
       @Override public void updateUI() {
         super.updateUI();
-        setUI(MyPasswordFieldUI.createUI(this));
+        setUI(IconPasswordFieldUI.createUI(this));
       }
     };
 
@@ -68,19 +66,19 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MyPasswordFieldUI extends BasicPasswordFieldUI {
+class IconPasswordFieldUI extends BasicPasswordFieldUI {
   protected static final StarIcon ICON = new StarIcon();
 
-  public static MyPasswordFieldUI createUI(JPasswordField c) {
-    c.setEchoChar('\u25A0'); // As wide as a CJK character cell (full width)
-    return new MyPasswordFieldUI();
+  public static IconPasswordFieldUI createUI(JPasswordField c) {
+    c.setEchoChar('■'); // U+25A0: As wide as a CJK character cell (full width)
+    return new IconPasswordFieldUI();
   }
 
   @Override public View create(Element elem) {
-    return new MyPasswordView(elem);
+    return new IconPasswordView(elem);
   }
 
-  private static class MyPasswordView extends PasswordView {
+  private static class IconPasswordView extends PasswordView {
     @Override protected int drawEchoCharacter(Graphics g, int x, int y, char c) {
       // Graphics2D g2 = (Graphics2D) g.create();
       // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -109,7 +107,7 @@ class MyPasswordFieldUI extends BasicPasswordFieldUI {
     //   return x + ICON.getIconWidth();
     // }
 
-    protected MyPasswordView(Element element) {
+    protected IconPasswordView(Element element) {
       super(element);
     }
   }
