@@ -8,23 +8,22 @@ import java.awt.*;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
+    p.add(makeButton1());
+    p.add(makeButton2());
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JTextArea log = new JTextArea();
-
-    JButton button1 = new JButton("noPlacesBar");
-    button1.addActionListener(e -> {
-      UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
-      JFileChooser fileChooser = new JFileChooser();
-      int retValue = fileChooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-      }
-    });
-
-    JButton button2 = new JButton("Default");
-    button2.addActionListener(e -> {
+  private JButton makeButton1() {
+    JButton button = new JButton("Default");
+    button.addActionListener(e -> {
       UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
@@ -32,14 +31,20 @@ public final class MainPanel extends JPanel {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
+    return button;
+  }
 
-    JPanel p = new JPanel();
-    p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
-    p.add(button1);
-    p.add(button2);
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-    setPreferredSize(new Dimension(320, 240));
+  private JButton makeButton2() {
+    JButton button = new JButton("noPlacesBar");
+    button.addActionListener(e -> {
+      UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
+      JFileChooser fileChooser = new JFileChooser();
+      int retValue = fileChooser.showOpenDialog(getRootPane());
+      if (retValue == JFileChooser.APPROVE_OPTION) {
+        log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+      }
+    });
+    return button;
   }
 
   public static void main(String[] args) {
