@@ -10,13 +10,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JTabbedPane tabbedPane = makeTabbedPane();
     UIDefaults d = new UIDefaults();
     d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 30, 4, 30));
     tabbedPane.putClientProperty("Nimbus.Overrides", d);
     tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
-
     add(makeTabbedPane());
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
@@ -39,14 +37,14 @@ public final class MainPanel extends JPanel {
     try {
       // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       // UIManager.put("TabbedPane.tabAreaInsets", new Insets(10, 10, 2, 10));
-
       UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
       UIDefaults d = UIManager.getLookAndFeelDefaults();
       // d.put("TabbedPane:TabbedPaneContent.contentMargins", new Insets(0, 5, 5, 5));
       // d.put("TabbedPane:TabbedPaneTab.contentMargins", new Insets(2, 8, 3, 8));
       // d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 10, 4, 10));
-      Insets i = d.getInsets("TabbedPane:TabbedPaneTabArea.contentMargins");
-      d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(i.top, 0, i.bottom, 0));
+      String key = "TabbedPane:TabbedPaneTabArea.contentMargins";
+      Insets i = d.getInsets(key);
+      d.put(key, new Insets(i.top, 0, i.bottom, 0));
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
