@@ -17,23 +17,7 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    DefaultListModel<ListItem> model = new DefaultListModel<>();
-    model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
-    model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
-    model.addElement(new ListItem("blue", new ColorIcon(Color.BLUE)));
-    model.addElement(new ListItem("cyan", new ColorIcon(Color.CYAN)));
-    model.addElement(new ListItem("darkGray", new ColorIcon(Color.DARK_GRAY)));
-    model.addElement(new ListItem("gray", new ColorIcon(Color.GRAY)));
-    model.addElement(new ListItem("lightGray", new ColorIcon(Color.LIGHT_GRAY)));
-    model.addElement(new ListItem("magenta", new ColorIcon(Color.MAGENTA)));
-    model.addElement(new ListItem("orange", new ColorIcon(Color.ORANGE)));
-    model.addElement(new ListItem("pink", new ColorIcon(Color.PINK)));
-    model.addElement(new ListItem("yellow", new ColorIcon(Color.YELLOW)));
-    model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
-    model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
-
-    JList<ListItem> list = new RubberBandSelectionList<>(model);
+    JList<ListItem> list = new RubberBandSelectionList<>(makeModel());
     list.setOpaque(false);
     list.setBackground(new Color(0x0, true));
     list.setForeground(Color.WHITE);
@@ -52,6 +36,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         texture = TextureUtils.createCheckerTexture(6);
+        setOpaque(false);
       }
 
       @Override protected void paintComponent(Graphics g) {
@@ -62,11 +47,27 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
       }
     };
-    panel.setOpaque(false);
     panel.add(scroll);
-
     add(panel);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ListModel<ListItem> makeModel() {
+    DefaultListModel<ListItem> model = new DefaultListModel<>();
+    model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
+    model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
+    model.addElement(new ListItem("blue", new ColorIcon(Color.BLUE)));
+    model.addElement(new ListItem("cyan", new ColorIcon(Color.CYAN)));
+    model.addElement(new ListItem("darkGray", new ColorIcon(Color.DARK_GRAY)));
+    model.addElement(new ListItem("gray", new ColorIcon(Color.GRAY)));
+    model.addElement(new ListItem("lightGray", new ColorIcon(Color.LIGHT_GRAY)));
+    model.addElement(new ListItem("magenta", new ColorIcon(Color.MAGENTA)));
+    model.addElement(new ListItem("orange", new ColorIcon(Color.ORANGE)));
+    model.addElement(new ListItem("pink", new ColorIcon(Color.PINK)));
+    model.addElement(new ListItem("yellow", new ColorIcon(Color.YELLOW)));
+    model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
+    model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
+    return model;
   }
 
   public static void main(String[] args) {
