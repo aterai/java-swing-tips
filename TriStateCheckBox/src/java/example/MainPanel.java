@@ -19,7 +19,6 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
@@ -31,8 +30,9 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      protected static final int CHECKBOX_COLUMN = 0;
+      private static final int CHECKBOX_COLUMN = 0;
       private transient HeaderCheckBoxHandler handler;
+
       @Override public void updateUI() {
         // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
         // https://bugs.openjdk.org/browse/JDK-6788475
