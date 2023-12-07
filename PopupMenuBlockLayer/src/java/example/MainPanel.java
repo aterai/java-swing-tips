@@ -19,7 +19,15 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
+    JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
+    check.addActionListener(e -> layerUI.setLocked(((JCheckBox) e.getSource()).isSelected()));
+    add(new JLayer<>(new JScrollPane(makeTable()), layerUI));
+    add(check, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     DefaultTableModel model = new DefaultTableModel(null, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -46,16 +54,7 @@ public final class MainPanel extends JPanel {
     };
     table.setAutoCreateRowSorter(true);
     table.setComponentPopupMenu(new TablePopupMenu());
-
-    DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
-    JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
-    check.addActionListener(e -> layerUI.setLocked(((JCheckBox) e.getSource()).isSelected()));
-
-    JScrollPane scroll = new JScrollPane(table);
-
-    add(new JLayer<>(scroll, layerUI));
-    add(check, BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
+    return table;
   }
 
   public static void main(String[] args) {
