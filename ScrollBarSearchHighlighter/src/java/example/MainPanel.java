@@ -11,7 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
+import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.metal.MetalScrollBarUI;
+import javax.swing.plaf.synth.SynthScrollBarUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
@@ -39,45 +41,15 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea textArea = new JTextArea();
     textArea.setEditable(false);
     textArea.setText(TEXT + TEXT + TEXT);
 
-    JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL);
-    // JScrollBar scrollbar = new JScrollBar(Adjustable.VERTICAL) {
-    //   @Override public Dimension getPreferredSize() {
-    //     Dimension d = super.getPreferredSize();
-    //     d.width += 4; // getInsets().left;
-    //     return d;
-    //   }
-    // };
-    if (scrollbar.getUI() instanceof WindowsScrollBarUI) {
-      scrollbar.setUI(new WindowsHighlightScrollBarUI(textArea));
-    } else {
-      scrollbar.setUI(new MetalHighlightScrollBarUI(textArea));
-    }
-    scrollbar.setUnitIncrement(10);
-
     JScrollPane scroll = new JScrollPane(textArea);
-    scroll.setVerticalScrollBar(scrollbar);
+    scroll.setVerticalScrollBar(makeVerticalScrollBar());
 
-    JLabel label = new JLabel(new HighlightIcon(textArea, scrollbar));
-    // label.setBorder(BorderFactory.createLineBorder(Color.RED));
+    JLabel label = new JLabel(new HighlightIcon(textArea, scroll.getHorizontalScrollBar()));
     scroll.setRowHeaderView(label);
-
-    // // [JDK-6826074] JScrollPane does not revalidate the component hierarchy after scrolling
-    // // https://bugs.openjdk.org/browse/JDK-6826074
-    // // Affected Versions: 6u12, 6u16, 7
-    // // Fixed Versions: 7 (b134)
-    // JViewport vp = new JViewport() {
-    //   @Override public void setViewPosition(Point p) {
-    //     super.setViewPosition(p);
-    //     revalidate();
-    //   }
-    // };
-    // vp.setView(new JLabel(new HighlightIcon(textArea, scrollbar)));
-    // scroll.setRowHeader(vp);
 
     JCheckBox check = new JCheckBox("LineWrap");
     check.addActionListener(e -> textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected()));
@@ -104,6 +76,26 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.SOUTH);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JScrollBar makeVerticalScrollBar() {
+    return new JScrollBar(Adjustable.VERTICAL) {
+      @Override public void updateUI() {
+        super.updateUI();
+        ScrollBarUI ui = getUI();
+        if (ui instanceof WindowsScrollBarUI) {
+          setUI(new WindowsHighlightScrollBarUI());
+        } else if (!(ui instanceof SynthScrollBarUI)) {
+          setUI(new MetalHighlightScrollBarUI());
+        }
+        setUnitIncrement(10);
+      }
+      //   @Override public Dimension getPreferredSize() {
+      //     Dimension d = super.getPreferredSize();
+      //     d.width += 4; // getInsets().left;
+      //     return d;
+      //   }
+    };
   }
 
   public static void setHighlight(JTextComponent jtc, String pattern) {
@@ -217,67 +209,61 @@ class HighlightIcon implements Icon {
 }
 
 class WindowsHighlightScrollBarUI extends WindowsScrollBarUI {
-  private final JTextComponent textArea;
-
-  protected WindowsHighlightScrollBarUI(JTextComponent textArea) {
-    super();
-    this.textArea = textArea;
-  }
-
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
     super.paintTrack(g, c, trackBounds);
-
-    Rectangle rect = textArea.getBounds();
-    double sy = trackBounds.getHeight() / rect.getHeight();
-    AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
-    Highlighter highlighter = textArea.getHighlighter();
-    g.setColor(Color.YELLOW);
-    try {
-      for (Highlighter.Highlight hh : highlighter.getHighlights()) {
-        Rectangle r = textArea.modelToView(hh.getStartOffset());
-        // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
-        Rectangle s = at.createTransformedShape(r).getBounds();
-        int h = 2; // Math.max(2, s.height - 2);
-        g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
+    JScrollPane s = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
+    Component v = s.getViewport().getView();
+    if (v instanceof JTextComponent) {
+      JTextComponent textArea = (JTextComponent) v;
+      Rectangle rect = textArea.getBounds();
+      double sy = trackBounds.getHeight() / rect.getHeight();
+      AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
+      Highlighter highlighter = textArea.getHighlighter();
+      g.setColor(Color.YELLOW);
+      try {
+        for (Highlighter.Highlight hh : highlighter.getHighlights()) {
+          Rectangle r = textArea.modelToView(hh.getStartOffset());
+          // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
+          int by = at.createTransformedShape(r).getBounds().y;
+          int h = 2; // Math.max(2, s.height - 2);
+          g.fillRect(trackBounds.x, trackBounds.y + by, trackBounds.width, h);
+        }
+      } catch (BadLocationException ex) {
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
       }
-    } catch (BadLocationException ex) {
-      // should never happen
-      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-      wrap.initCause(ex);
-      throw wrap;
     }
   }
 }
 
 class MetalHighlightScrollBarUI extends MetalScrollBarUI {
-  private final JTextComponent textArea;
-
-  protected MetalHighlightScrollBarUI(JTextComponent textArea) {
-    super();
-    this.textArea = textArea;
-  }
-
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
     super.paintTrack(g, c, trackBounds);
-
-    Rectangle rect = textArea.getBounds();
-    double sy = trackBounds.getHeight() / rect.getHeight();
-    AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
-    Highlighter highlighter = textArea.getHighlighter();
-    g.setColor(Color.YELLOW);
-    try {
-      for (Highlighter.Highlight hh : highlighter.getHighlights()) {
-        Rectangle r = textArea.modelToView(hh.getStartOffset());
-        // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
-        Rectangle s = at.createTransformedShape(r).getBounds();
-        int h = 2; // Math.max(2, s.height - 2);
-        g.fillRect(trackBounds.x, trackBounds.y + s.y, trackBounds.width, h);
+    JScrollPane s = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
+    Component v = s.getViewport().getView();
+    if (v instanceof JTextComponent) {
+      JTextComponent textArea = (JTextComponent) v;
+      Rectangle rect = textArea.getBounds();
+      double sy = trackBounds.getHeight() / rect.getHeight();
+      AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
+      Highlighter highlighter = textArea.getHighlighter();
+      g.setColor(Color.YELLOW);
+      try {
+        for (Highlighter.Highlight hh : highlighter.getHighlights()) {
+          Rectangle r = textArea.modelToView(hh.getStartOffset());
+          // Java 9: Rectangle r = textArea.modelToView2D(hh.getStartOffset()).getBounds();
+          int by = at.createTransformedShape(r).getBounds().y;
+          int h = 2; // Math.max(2, s.height - 2);
+          g.fillRect(trackBounds.x, trackBounds.y + by, trackBounds.width, h);
+        }
+      } catch (BadLocationException ex) {
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
       }
-    } catch (BadLocationException ex) {
-      // should never happen
-      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-      wrap.initCause(ex);
-      throw wrap;
     }
   }
 }
