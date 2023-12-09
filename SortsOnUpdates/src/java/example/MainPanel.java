@@ -13,13 +13,26 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = makeTable();
+    JCheckBox check = new JCheckBox("DefaultRowSorter#setSortsOnUpdates");
+    check.addActionListener(e -> {
+      RowSorter<? extends TableModel> rs = table.getRowSorter();
+      if (rs instanceof DefaultRowSorter) {
+        ((DefaultRowSorter<?, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
+      }
+    });
+    add(check, BorderLayout.NORTH);
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static TableModel makeModel() {
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
-      {0, "", true}, {1, "", false},
-      {2, "", true}, {3, "", false}
+        {0, "", true}, {1, "", false},
+        {2, "", true}, {3, "", false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return Integer.class;
@@ -29,7 +42,10 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    JTable table = new JTable(model) {
+  }
+
+  private JTable makeTable() {
+    JTable table = new JTable(makeModel()) {
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (isRowSelected(row)) {
@@ -48,18 +64,7 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
-
-    JCheckBox check = new JCheckBox("DefaultRowSorter#setSortsOnUpdates");
-    check.addActionListener(e -> {
-      RowSorter<? extends TableModel> rs = table.getRowSorter();
-      if (rs instanceof DefaultRowSorter) {
-        ((DefaultRowSorter<?, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
-      }
-    });
-
-    add(check, BorderLayout.NORTH);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
+    return table;
   }
 
   public static void main(String[] args) {
