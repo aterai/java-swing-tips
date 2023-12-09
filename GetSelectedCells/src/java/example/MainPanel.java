@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setDefaultEditor(Boolean.class, new BooleanEditor());
         setCellSelectionEnabled(true);
-        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        setAutoResizeMode(AUTO_RESIZE_OFF);
         setAutoCreateRowSorter(true);
         setComponentPopupMenu(new TablePopupMenu());
         TableColumnModel m = getColumnModel();
