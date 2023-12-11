@@ -14,13 +14,11 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     // [JDK-4403182] InputVerifier failed on JTabbedPane & JMenuBar - Java Bug System
     // https://bugs.openjdk.org/browse/JDK-4403182
     // JTabbedPane tabbedPane0 = makeTestTabbedPane();
     // TEST: tabbedPane0.setVerifyInputWhenFocusTarget(true);
     // TEST: tabbedPane0.setFocusCycleRoot(false);
-
     JTextField field0 = new JTextField("---");
     JTextField field1 = new JTextField("100");
     List<JTextField> list = Arrays.asList(field0, field1);
@@ -64,6 +62,12 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("JSplitPane", new JSplitPane());
     tabbedPane.setSelectedIndex(0);
 
+    add(makeCheckBox(tabbedPane, p), BorderLayout.NORTH);
+    add(tabbedPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JCheckBox makeCheckBox(JTabbedPane tabbedPane, JPanel p) {
     JCheckBox check = new JCheckBox("override SingleSelectionModel#setSelectedIndex(int)");
     SingleSelectionModel ssm = tabbedPane.getModel();
     check.addActionListener(e -> {
@@ -85,9 +89,7 @@ public final class MainPanel extends JPanel {
         tabbedPane.setModel(ssm);
       }
     });
-    add(check, BorderLayout.NORTH);
-    add(tabbedPane);
-    setPreferredSize(new Dimension(320, 240));
+    return check;
   }
 
   public static void main(String[] args) {
