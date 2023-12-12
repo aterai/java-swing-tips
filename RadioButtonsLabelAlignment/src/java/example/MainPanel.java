@@ -17,7 +17,8 @@ public final class MainPanel extends JPanel {
     p.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy());
     p.setFocusTraversalPolicyProvider(true);
     p.setFocusable(false);
-
+    // p.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    boolean leftToRightParent = p.getComponentOrientation().isLeftToRight();
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 1;
@@ -31,33 +32,50 @@ public final class MainPanel extends JPanel {
         new JLabel("JLabel2"),
         new JCheckBox("JCheckBox1"),
         new JCheckBox("JCheckBox2"));
-    Icon icon = UIManager.getIcon("RadioButton.icon");
-    int iconWidth = icon == null ? 0 : icon.getIconWidth();
-    int left = 0;
+    int gap = 0;
     for (JComponent c : list) {
+      // c.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
       gbc.insets.left = 0;
+      gbc.insets.right = 0;
       if (c instanceof JRadioButton) {
         JRadioButton button = (JRadioButton) c;
-        if (left == 0) {
+        if (gap == 0) {
+          gap = getIconSpace(button);
           button.setSelected(true);
-          Insets insets = button.getInsets();
-          left = insets.left + iconWidth + button.getIconTextGap();
         }
         group.add(button);
       } else if (c instanceof JLabel) {
-        gbc.insets.left = left;
+        boolean leftToRight = c.getComponentOrientation().isLeftToRight();
+        if (leftToRight && leftToRightParent) {
+          gbc.insets.left = gap;
+        } else if (leftToRight) {
+          gbc.insets.right = gap;
+        } else if (leftToRightParent) {
+          gbc.insets.right = gap;
+        } else {
+          gbc.insets.left = gap;
+        }
       }
       p.add(c, gbc);
     }
     gbc.gridx = 2;
     gbc.weightx = 1.0;
     gbc.insets.left = 5;
+    gbc.insets.right = 5;
     list.forEach(c -> p.add(new JTextField(), gbc));
     add(p, BorderLayout.NORTH);
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static int getIconSpace(JRadioButton button) {
+    Icon icon = UIManager.getIcon("RadioButton.icon");
+    int iconWidth = icon == null ? 0 : icon.getIconWidth();
+    boolean leftToRight = button.getComponentOrientation().isLeftToRight();
+    Insets i = button.getInsets();
+    return (leftToRight ? i.left : i.right) + iconWidth + button.getIconTextGap();
   }
 
   public static void main(String[] args) {
