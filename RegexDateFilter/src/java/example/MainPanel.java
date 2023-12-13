@@ -48,9 +48,9 @@ public final class MainPanel extends JPanel {
     // // LocalDateTime test:
     // LocalDateTime d = LocalDateTime.of(2002, 12, 31, 0, 0);
     // Object[][] data = {
-    //   {date, d},
-    //   {start, d.minus(2, ChronoUnit.DAYS)},
-    //   {end, d.plus(7, ChronoUnit.DAYS)}
+    //     {date, d},
+    //     {start, d.minus(2, ChronoUnit.DAYS)},
+    //     {end, d.plus(7, ChronoUnit.DAYS)}
     // };
     // String[] columnNames = {"Date", "LocalDateTime"};
     // DefaultTableModel model = new DefaultTableModel(data, columnNames) {

@@ -26,11 +26,11 @@ public final class MainPanel extends JPanel {
     Icon questionIcon = getOptionPaneIcon("OptionPane.questionIcon");
     Icon warningIcon = getOptionPaneIcon("OptionPane.warningIcon");
     Object[][] data = {
-      {"aa", Arrays.asList(informationIcon, errorIcon)},
-      {"bb", Arrays.asList(errorIcon, informationIcon, warningIcon, questionIcon)},
-      {"cc", Arrays.asList(questionIcon, errorIcon, warningIcon)},
-      {"dd", Collections.singletonList(informationIcon)},
-      {"ee", Arrays.asList(warningIcon, questionIcon)}
+        {"aa", Arrays.asList(informationIcon, errorIcon)},
+        {"bb", Arrays.asList(errorIcon, informationIcon, warningIcon, questionIcon)},
+        {"cc", Arrays.asList(questionIcon, errorIcon, warningIcon)},
+        {"dd", Collections.singletonList(informationIcon)},
+        {"ee", Arrays.asList(warningIcon, questionIcon)}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

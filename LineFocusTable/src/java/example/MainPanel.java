@@ -290,7 +290,7 @@ final class TablePopupMenu extends JPopupMenu {
 //
 //     String[] columnNames = {"String", "Integer", "Boolean"};
 //     Object[][] data = {
-//       {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}
+//         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}
 //     };
 //     DefaultTableModel model = new DefaultTableModel(data, columnNames) {
 //       @Override public Class<?> getColumnClass(int column) {

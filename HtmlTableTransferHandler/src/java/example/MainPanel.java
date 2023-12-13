@@ -25,12 +25,12 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"Type", "Value"};
     @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
-      {"String", "text"},
-      {"Date", new Date()},
-      {"Integer", 12},
-      {"Double", 3.45},
-      {"Boolean", Boolean.TRUE},
-      {"Color", Color.RED}
+        {"String", "text"},
+        {"Date", new Date()},
+        {"Integer", 12},
+        {"Double", 3.45},
+        {"Boolean", Boolean.TRUE},
+        {"Color", Color.RED}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

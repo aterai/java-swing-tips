@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(2, 1));
     String[] columnNames = {"A", "B", "C"};
     Object[][] data = {
-      {"aaa", "bb bb bb bb", "ccc ccc"}, {"bbb", "ff", "ggg oo pp"},
-      {"CCC", "kkk", "jj"}, {"DDD", "ii mm nn", "hhh hhh lll"}
+        {"aaa", "bb bb bb bb", "ccc ccc"}, {"bbb", "ff", "ggg oo pp"},
+        {"CCC", "kkk", "jj"}, {"DDD", "ii mm nn", "hhh hhh lll"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

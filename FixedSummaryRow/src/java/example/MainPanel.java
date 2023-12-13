@@ -18,12 +18,12 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"aaa", "bbb"};
+    String[] columnNames = {"A", "B"};
     Object[][] data = {
-      {Integer.MIN_VALUE, Integer.MIN_VALUE},
-      {1, 1}, {1, 2}, {1, -1}, {1, 3}, {1, 0},
-      {1, 5}, {1, 4}, {1, -5}, {1, 0}, {1, 6},
-      {Integer.MAX_VALUE, Integer.MAX_VALUE}
+        {Integer.MIN_VALUE, Integer.MIN_VALUE},
+        {1, 1}, {1, 2}, {1, -1}, {1, 3}, {1, 0},
+        {1, 5}, {1, 4}, {1, -5}, {1, 0}, {1, 6},
+        {Integer.MAX_VALUE, Integer.MAX_VALUE}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

@@ -29,7 +29,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"A", "B"};
-    Object[][] data = {{"aaa", "1234567890"}, {"bbb", "☀☁☂☃"}};
+    Object[][] data = {
+        {"aaa", "1234567890"},
+        {"bbb", "☀☁☂☃"}
+    };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setAutoCreateRowSorter(true);
 

@@ -20,7 +20,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Object[] columnNames = {"String0", "String111", "String22222"};
-    Object[][] data = {{"a", "bb", "ccc"}, {"dd", "ee", "ff"}, {"aa", "aaa", "a"}};
+    Object[][] data = {
+        {"a", "bb", "ccc"}, {"dd", "ee", "ff"}, {"aa", "aaa", "a"}
+    };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();

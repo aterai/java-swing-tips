@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
-      {1, "D", true}, {2, "B", false}, {3, "C", false},
-      {4, "E", false}, {5, "A", false}
+        {1, "D", true}, {2, "B", false}, {3, "C", false},
+        {4, "E", false}, {5, "A", false}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
