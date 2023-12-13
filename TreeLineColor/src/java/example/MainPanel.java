@@ -12,13 +12,10 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-
     UIManager.put("Tree.paintLines", Boolean.TRUE);
     UIManager.put("Tree.lineTypeDashed", Boolean.TRUE);
     UIManager.put("Tree.line", Color.GREEN);
     UIManager.put("Tree.hash", Color.RED);
-
-    JTree tree0 = new JTree();
 
     JTree tree1 = new JTree();
     // tree1.putClientProperty("JTree.lineStyle", "Angled");
@@ -33,7 +30,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    add(makeTitledPanel("lineTypeDashed", new JScrollPane(tree0)));
+    add(makeTitledPanel("lineTypeDashed", new JScrollPane(new JTree())));
     add(makeTitledPanel("lineStyle", new JScrollPane(tree1)));
     add(makeTitledPanel("BasicTreeUI", new JScrollPane(tree2)));
     setPreferredSize(new Dimension(320, 240));

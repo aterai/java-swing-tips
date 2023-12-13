@@ -14,7 +14,6 @@ import javax.swing.tree.TreeModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
     JTextArea textArea = new JTextArea();
     TreeModel model = tree.getModel();

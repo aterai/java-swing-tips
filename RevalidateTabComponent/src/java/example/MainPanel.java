@@ -19,7 +19,6 @@ import javax.swing.plaf.basic.BasicButtonUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTabbedPane tabbedPane = new JTabbedPane();
     // TabTitleEditListener l = new TabTitleEditListener(tabbedPane);
     // tabbedPane.addChangeListener(l);

@@ -20,7 +20,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridBagLayout());
-
     JTextField field0 = new JTextField("000000000000");
     field0.setBackground(BG_COLOR);
 

@@ -16,18 +16,15 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"String", "Integer", "Boolean"};
     DefaultTableModel model = new DefaultTableModel(null, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-
     IntStream.range(0, 1000)
         .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
         .forEach(model::addRow);
-
     JTable table = new JTable(model) {
       private transient TableTouchScreenHandler handler;
       @Override public void updateUI() {
@@ -43,8 +40,7 @@ public final class MainPanel extends JPanel {
       }
     };
     UIManager.put("ScrollBar.width", 30);
-    JScrollPane scroll = new JScrollPane(table);
-    add(scroll);
+    add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -135,7 +131,7 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   }
 
   @Override public void valueChanged(ListSelectionEvent e) {
-    // System.out.println("\nvalueChanged: " + e.getValueIsAdjusting());
+    // System.out.println("\n  valueChanged: " + e.getValueIsAdjusting());
     if (scroller.isRunning()) {
       // System.out.println("isRunning");
       delta.setLocation(0, 0);

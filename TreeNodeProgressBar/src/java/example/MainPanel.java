@@ -25,7 +25,6 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree(new DefaultTreeModel(makeTreeRoot())) {
       @Override public void updateUI() {
         super.updateUI();

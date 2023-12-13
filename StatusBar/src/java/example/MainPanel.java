@@ -13,7 +13,6 @@ import javax.swing.event.MouseInputListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     add(new JScrollPane(new JTextArea()));
     add(new StatusBar(), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));

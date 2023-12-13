@@ -20,9 +20,7 @@ import javax.swing.text.StyledEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    // String faceMark = "\uD83D\uDE10";
-    String faceMark = ":)";
+    String faceMark = ":)"; // "\uD83D\uDE10";
 
     JTextPane textPane = new JTextPane();
     textPane.setEditorKit(new StyledEditorKit());
@@ -78,8 +76,8 @@ public final class MainPanel extends JPanel {
     StyleConstants.setIcon(face, new FaceIcon());
     // StyleConstants.setForeground(face, Color.RED);
 
-    // textPane.setText("aaaa \uD83D\uDE42 aaaaaa :) asdfa :-) aaaa\n");
-    textPane.setText("aaaa 🙂 aaaaaa :) asdfa :-) aaaa\n");
+    // textPane.setText("123 \uD83D\uDE42 456 :) 789 :-) 000\n");
+    textPane.setText("123 🙂 456 :) 789 :-) 000\n");
 
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));

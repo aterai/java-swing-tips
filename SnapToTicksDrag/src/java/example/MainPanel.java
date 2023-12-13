@@ -17,21 +17,20 @@ import javax.swing.plaf.metal.MetalSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
-    JSlider s = makeSlider("Custom SnapToTicks");
-    initSlider(s);
-    List<JSlider> list = Arrays.asList(makeSlider("Default SnapToTicks"), s);
+    JSlider slider = makeSlider("Custom SnapToTicks");
+    initSlider(slider);
+    List<JSlider> list = Arrays.asList(makeSlider("Default SnapToTicks"), slider);
 
     JCheckBox check = new JCheckBox("JSlider.setMinorTickSpacing(5)");
     check.addActionListener(e -> {
       int mts = ((JCheckBox) e.getSource()).isSelected() ? 5 : 0;
-      list.forEach(slider -> slider.setMinorTickSpacing(mts));
+      list.forEach(s -> s.setMinorTickSpacing(mts));
     });
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    for (JSlider slider : list) {
-      box.add(slider);
+    for (JSlider s : list) {
+      box.add(s);
       box.add(Box.createVerticalStrut(10));
     }
     box.add(check);

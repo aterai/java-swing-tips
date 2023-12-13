@@ -13,7 +13,6 @@ import javax.swing.tree.TreeSelectionModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
 
     JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION", true);

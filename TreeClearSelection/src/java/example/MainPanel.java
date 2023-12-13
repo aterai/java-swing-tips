@@ -13,9 +13,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
-    MouseListener ml = new MouseAdapter() {
+    MouseListener handler = new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         JTree tree = (JTree) e.getComponent();
         if (tree.getRowForLocation(e.getX(), e.getY()) < 0) {
@@ -26,9 +25,9 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("JTree#clearSelection: when user clicks empty surface");
     check.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
-        tree.addMouseListener(ml);
+        tree.addMouseListener(handler);
       } else {
-        tree.removeMouseListener(ml);
+        tree.removeMouseListener(handler);
       }
     });
 

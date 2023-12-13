@@ -15,7 +15,6 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea log = new JTextArea();
 
     JButton readOnlyButton = new JButton("readOnly");

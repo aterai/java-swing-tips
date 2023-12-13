@@ -14,7 +14,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(2, 2));
-
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 

@@ -18,7 +18,6 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"Group", "Name", "Count"};
     DefaultTableModel model = new DefaultTableModel(null, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

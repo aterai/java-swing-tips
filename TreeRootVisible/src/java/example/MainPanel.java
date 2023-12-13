@@ -10,7 +10,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     tree.setRootVisible(false);

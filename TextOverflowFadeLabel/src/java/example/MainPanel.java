@@ -14,7 +14,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String text = "012345678901234567890123456789012345678901234567890123456789";
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -26,7 +25,6 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("JLabel BufferedImage fade out", new FadingOutLabel(text)));
     box.add(Box.createVerticalGlue());
-
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }

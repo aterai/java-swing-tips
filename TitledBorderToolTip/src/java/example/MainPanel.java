@@ -13,7 +13,6 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2, 5, 5));
-
     JPanel panel1 = new JPanel() {
       private final JLabel label = new JLabel();
       @Override public String getToolTipText(MouseEvent e) {

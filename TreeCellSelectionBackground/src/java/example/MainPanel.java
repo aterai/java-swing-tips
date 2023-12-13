@@ -11,7 +11,6 @@ import javax.swing.tree.TreeCellRenderer;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     UIDefaults def = new UIDefaults();
     // def.put("Tree.selectionBackground", Color.WHITE);
     // def.put("Tree.selectionForeground", Color.GREEN);

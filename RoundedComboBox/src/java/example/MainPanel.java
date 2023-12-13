@@ -27,7 +27,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JComboBox<String> combo0 = new JComboBox<>(makeModel());
     JComboBox<String> combo1 = new JComboBox<>(makeModel());
     JComboBox<String> combo2 = new JComboBox<>(makeModel());

@@ -15,7 +15,6 @@ import javax.swing.text.html.HTMLEditorKit;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     HTMLEditorKit kit = new HTMLEditorKit();
     HTMLDocument doc = new HTMLDocument();
     JTextPane textPane = new JTextPane();

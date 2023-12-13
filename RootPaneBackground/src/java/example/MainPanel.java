@@ -26,7 +26,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JPanel p = new JPanel() {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -36,8 +35,8 @@ public final class MainPanel extends JPanel {
         g2.dispose();
       }
     };
-
     p.add(new JButton("button"));
+
     JInternalFrame frame = new JInternalFrame("InternalFrame", true, true, true, true);
     frame.setContentPane(p);
     frame.setSize(160, 80);

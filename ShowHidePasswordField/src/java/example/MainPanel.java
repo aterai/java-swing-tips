@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 2));
-
     JPasswordField pf1 = makePasswordField();
     AbstractButton b1 = new JCheckBox("show passwords");
     b1.addActionListener(e -> {

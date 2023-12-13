@@ -18,13 +18,10 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     RowDataModel model = makeModel();
-    JTable table = new JTable(model);
-
     TableRowSorter<? extends RowDataModel> sorter = new TableRowSorter<>(model);
+    JTable table = new JTable(model);
     table.setRowSorter(sorter);
-
     table.setComponentPopupMenu(new TablePopupMenu());
     table.setFillsViewportHeight(true);
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);

@@ -20,11 +20,10 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     String[] columnNames = {"JTextField", "JTextArea"};
     Object[][] data = {
-      {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
-      {"bbb", "ccc"}, {"11112222", "333\n444\n555"}
+        {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
+        {"bbb", "ccc"}, {"11112222", "333\n444\n555"}
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

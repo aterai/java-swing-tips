@@ -11,7 +11,6 @@ import javax.swing.plaf.IconUIResource;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     Icon emptyIcon = new EmptyIcon();
     UIManager.put("Tree.expandedIcon", new IconUIResource(emptyIcon));
     UIManager.put("Tree.collapsedIcon", new IconUIResource(emptyIcon));
@@ -26,9 +25,9 @@ public final class MainPanel extends JPanel {
       Icon ei;
       Icon ci;
       if (((JCheckBox) e.getSource()).isSelected()) {
-        UIDefaults lnfdef = UIManager.getLookAndFeelDefaults();
-        ei = lnfdef.getIcon("Tree.expandedIcon");
-        ci = lnfdef.getIcon("Tree.collapsedIcon");
+        UIDefaults lnfDef = UIManager.getLookAndFeelDefaults();
+        ei = lnfDef.getIcon("Tree.expandedIcon");
+        ci = lnfDef.getIcon("Tree.collapsedIcon");
       } else {
         ei = emptyIcon;
         ci = emptyIcon;

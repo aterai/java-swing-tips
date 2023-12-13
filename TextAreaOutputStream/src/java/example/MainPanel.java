@@ -26,7 +26,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JTextArea textArea = new JTextArea();
     // TEST: textArea.getDocument().addDocumentListener(new FIFODocumentListener(textArea));
     textArea.setEditable(false);

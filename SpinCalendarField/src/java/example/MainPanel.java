@@ -16,7 +16,6 @@ import javax.swing.text.DefaultFormatterFactory;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     Calendar c = Calendar.getInstance();
     // c.clear(Calendar.HOUR_OF_DAY);
     // c.clear(Calendar.AM_PM);

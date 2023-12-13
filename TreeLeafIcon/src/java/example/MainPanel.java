@@ -16,7 +16,6 @@ import javax.swing.tree.TreeNode;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree();
     for (int i = 0; i < tree.getRowCount(); i++) {
       tree.expandRow(i);

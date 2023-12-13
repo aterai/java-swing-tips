@@ -17,7 +17,6 @@ import javax.swing.tree.TreeModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTree tree = new JTree(makeModel()) {
       private final Color rolloverRowColor = new Color(0xDC_F0_FF);
       private int rollOverRowIndex = -1;

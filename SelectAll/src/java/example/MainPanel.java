@@ -13,8 +13,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
-    JTextField field = new JTextField("aaaaaaaaa");
+    JTextField field = new JTextField("focusGained: selectAll");
     field.addFocusListener(new FocusAdapter() {
       @Override public void focusGained(FocusEvent e) {
         ((JTextComponent) e.getComponent()).selectAll();
@@ -22,7 +21,7 @@ public final class MainPanel extends JPanel {
     });
 
     add(makeTitledPanel("focusGained: selectAll", field));
-    add(makeTitledPanel("default", new JTextField("bbbbbbbbb")));
+    add(makeTitledPanel("Default", new JTextField("Default")));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }

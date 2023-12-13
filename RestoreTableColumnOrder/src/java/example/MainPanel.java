@@ -16,7 +16,6 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTable table = new JTable(new DefaultTableModel(8, 6)) {
       @Override protected TableColumnModel createDefaultColumnModel() {
         return new SortableTableColumnModel();

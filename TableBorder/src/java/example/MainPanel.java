@@ -11,10 +11,8 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-
     JTable table = new JTable(new DefaultTableModel(15, 3));
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
     table.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 5, 0, 5, Color.ORANGE));
     table.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 

@@ -21,7 +21,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridBagLayout());
-
     String[] columnNames = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     Integer[][] data = {
         {5, 3, 0, 0, 7, 0, 0, 0, 0},

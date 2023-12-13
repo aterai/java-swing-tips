@@ -14,9 +14,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     JButton button = new JButton("JButton");
     button.addActionListener(e -> append("JButton clicked"));
+
     JCheckBox check = new JCheckBox("setDefaultButton");
     check.addActionListener(e -> button.getRootPane().setDefaultButton(button));
 
