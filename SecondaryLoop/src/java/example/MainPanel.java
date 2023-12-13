@@ -18,7 +18,6 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-
     cancel.setEnabled(false);
     cancel.addActionListener(e -> {
       if (worker != null) {
@@ -26,6 +25,17 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JPanel p = new JPanel();
+    p.add(new JCheckBox());
+    p.add(new JTextField(10));
+    p.add(makeButton());
+    add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
+    add(new JScrollPane(logger));
+    add(cancel, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JButton makeButton() {
     JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
       setInputBlock(true);
@@ -47,15 +57,7 @@ public final class MainPanel extends JPanel {
         append("Error");
       }
     });
-
-    JPanel p = new JPanel();
-    p.add(new JCheckBox());
-    p.add(new JTextField(10));
-    p.add(button);
-    add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
-    add(new JScrollPane(logger));
-    add(cancel, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public void setInputBlock(boolean flg) {
