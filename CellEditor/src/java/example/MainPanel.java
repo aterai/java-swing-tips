@@ -10,28 +10,13 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JCheckBox modelCheck = new JCheckBox("isCellEditable return false");
-
-    String[] columnNames = {"No.", "Name", "Comment"};
-    Object[][] data = {
-        {0, "Name 0", "comment..."}, {1, "Name 1", "Test"},
-        {2, "Name d", "ee"}, {3, "Name c", "Test cc"},
-        {4, "Name b", "Test bb"}, {5, "Name a", "ff"}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int col) {
-        return col != 0 && !modelCheck.isSelected();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel(modelCheck));
     TableColumn col = table.getColumnModel().getColumn(0);
     col.setMinWidth(50);
     col.setMaxWidth(50);
@@ -56,6 +41,24 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel(JCheckBox modelCheck) {
+    String[] columnNames = {"No.", "Name", "Comment"};
+    Object[][] data = {
+        {0, "Name 0", "comment..."}, {1, "Name 1", "Test"},
+        {2, "Name d", "ee"}, {3, "Name c", "Test cc"},
+        {4, "Name b", "Test bb"}, {5, "Name a", "ff"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int col) {
+        return col != 0 && !modelCheck.isSelected();
+      }
+    };
   }
 
   public static void main(String[] args) {
