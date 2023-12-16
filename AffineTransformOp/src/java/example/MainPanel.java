@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private Flip mode;
+  private Flip mode = Flip.NONE;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -47,19 +47,25 @@ public final class MainPanel extends JPanel {
         g.fillRect(0, 0, getWidth(), getHeight());
         int w = img.getWidth(this);
         int h = img.getHeight(this);
-        if (getMode() == Flip.VERTICAL) {
-          AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
-          at.translate(0, -h);
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.drawImage(img, at, this);
-          g2.dispose();
-        } else if (getMode() == Flip.HORIZONTAL) {
-          AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
-          at.translate(-w, 0);
-          AffineTransformOp atOp = new AffineTransformOp(at, null);
-          g.drawImage(atOp.filter(img, null), 0, 0, w, h, this);
-        } else { // if (getMode() == Flip.NONE) {
-          g.drawImage(img, 0, 0, w, h, this);
+        switch (getMode()) {
+          case VERTICAL: {
+            AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
+            at.translate(0, -h);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.drawImage(img, at, this);
+            g2.dispose();
+            break;
+          }
+          case HORIZONTAL: {
+            AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
+            at.translate(-w, 0);
+            AffineTransformOp atOp = new AffineTransformOp(at, null);
+            g.drawImage(atOp.filter(img, null), 0, 0, w, h, this);
+            break;
+          }
+          default: {
+            g.drawImage(img, 0, 0, w, h, this);
+          }
         }
       }
     };
