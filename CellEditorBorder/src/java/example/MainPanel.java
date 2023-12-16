@@ -8,29 +8,12 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        // ArrayIndexOutOfBoundsException: 0 >= 0
-        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-        // https://bugs.openjdk.org/browse/JDK-6967479
-        // return getValueAt(0, column).getClass();
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Integer.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
         if (c instanceof JCheckBox) {
@@ -76,6 +59,27 @@ public final class MainPanel extends JPanel {
     table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        // ArrayIndexOutOfBoundsException: 0 >= 0
+        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+        // https://bugs.openjdk.org/browse/JDK-6967479
+        // return getValueAt(0, column).getClass();
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Integer.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
   }
 
   public static void main(String[] args) {
