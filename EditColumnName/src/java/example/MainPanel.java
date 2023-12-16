@@ -11,6 +11,7 @@ import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -20,7 +21,7 @@ public final class MainPanel extends JPanel {
         {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
         {"CCC", "g", "hh"}, {"DDD", "ii", "j"}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return String.class;
       }
