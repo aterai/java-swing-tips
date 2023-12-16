@@ -22,6 +22,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
     Object[][] data = {
         {"119", "foo", "bar", "ja", "ko", "zh"}, {"911", "bar", "foo", "en", "fr", "pt"}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames);
+    TableModel model = new DefaultTableModel(data, columnNames);
     JTable table = new JTable(model) {
       @Override protected JTableHeader createDefaultTableHeader() {
         TableColumnModel cm = getColumnModel();

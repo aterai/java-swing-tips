@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -74,7 +75,7 @@ public final class MainPanel extends JPanel {
         {"aa", 12, true}, {"bb", 5, false},
         {"CC", 92, true}, {"DD", 0, false}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
