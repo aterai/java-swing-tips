@@ -26,9 +26,9 @@ public final class MainPanel extends JPanel {
     JButton button2 = makeButton(html);
 
     JPanel p = new JPanel(new GridLayout(0, 1, 8, 8));
-    p.add(makeTitledPanel(button0, "Default"));
-    p.add(makeTitledPanel(new JLayer<>(makeButton(html), layer1), "JLayer1"));
-    p.add(makeTitledPanel(new JLayer<>(button2, new DisabledHtmlTextLayerUI<>()), "JLayer2"));
+    p.add(makeTitledPanel("Default", button0));
+    p.add(makeTitledPanel("JLayer1", new JLayer<>(makeButton(html), layer1)));
+    p.add(makeTitledPanel("JLayer2", new JLayer<>(button2, new DisabledHtmlTextLayerUI<>())));
 
     JCheckBox check = new JCheckBox("setEnabled", true);
     check.addActionListener(e -> {
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     return button;
   }
 
-  private static Container makeTitledPanel(Component c, String title) {
+  private static Component makeTitledPanel(String title, Component c) {
     Box box = Box.createHorizontalBox();
     box.add(new JLabel(title + ": "));
     box.add(c);
