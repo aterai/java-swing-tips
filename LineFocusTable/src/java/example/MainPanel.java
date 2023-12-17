@@ -21,26 +21,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("Table.focusCellHighlightBorder", new DotBorder(2, 2, 2, 2));
-
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        // ArrayIndexOutOfBoundsException: 0 >= 0
-        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-        // https://bugs.openjdk.org/browse/JDK-6967479
-        // return getValueAt(0, column).getClass();
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    };
-    JTable table = new LineFocusTable(model);
+    JTable table = new LineFocusTable(makeModel());
     // TableColumnModel columns = table.getColumnModel();
     // for (int i = 0; i < columns.getColumnCount(); i++) {
     //   columns.getColumn(i).setCellRenderer(new TestRenderer());
@@ -55,6 +36,27 @@ public final class MainPanel extends JPanel {
     table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        // ArrayIndexOutOfBoundsException: 0 >= 0
+        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
+        // https://bugs.openjdk.org/browse/JDK-6967479
+        // return getValueAt(0, column).getClass();
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
   }
 
   public static void main(String[] args) {
