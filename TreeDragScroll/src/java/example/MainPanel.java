@@ -17,17 +17,23 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-
     JTree tree1 = new JTree();
-    JTree tree2 = new JTree();
     expandTree(tree1);
-    expandTree(tree2);
-
-    MouseAdapter ma = new DragScrollListener();
-    tree2.addMouseMotionListener(ma);
-    tree2.addMouseListener(ma);
-
     add(makeTitledPanel("Default", tree1));
+
+    JTree tree2 = new JTree() {
+      private transient MouseAdapter handler;
+
+      @Override public void updateUI() {
+        removeMouseMotionListener(handler);
+        removeMouseListener(handler);
+        super.updateUI();
+        handler = new DragScrollListener();
+        addMouseMotionListener(handler);
+        addMouseListener(handler);
+      }
+    };
+    expandTree(tree2);
     add(makeTitledPanel("Drag scroll", tree2));
     setPreferredSize(new Dimension(320, 240));
   }
