@@ -11,11 +11,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultTableModel model = new DefaultTableModel(4, 3) {
+    TableModel model = new DefaultTableModel(4, 3) {
       @Override public Class<?> getColumnClass(int column) {
         return Boolean.class;
       }
