@@ -33,39 +33,15 @@ public final class MainPanel extends JPanel {
     Date start = cal.getTime();
     cal.add(Calendar.DATE, 9);
     Date end = cal.getTime();
-
     log.append(date + "\n"); // -> Tue Dec 31 10:30:15 JST 2002
 
-    Object[][] data = {
-        {date}, {start}, {end}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, new String[] {"Date"}) {
-      @Override public Class<?> getColumnClass(int column) {
-        return Date.class;
-      }
-    };
-
-    // // LocalDateTime test:
-    // LocalDateTime d = LocalDateTime.of(2002, 12, 31, 0, 0);
-    // Object[][] data = {
-    //     {date, d},
-    //     {start, d.minus(2, ChronoUnit.DAYS)},
-    //     {end, d.plus(7, ChronoUnit.DAYS)}
-    // };
-    // String[] columnNames = {"Date", "LocalDateTime"};
-    // DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-    //   @Override public Class<?> getColumnClass(int column) {
-    //     return column == 0 ? Date.class : column == 1 ? LocalDateTime.class : Object.class;
-    //   }
-    // };
-
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel(date, start, end)) {
       @Override public String getToolTipText(MouseEvent e) {
         int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
         return getModel().getValueAt(row, 0).toString();
       }
     };
-    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(table.getModel());
     table.setRowSorter(sorter);
 
     // RowFilter.regexFilter
@@ -109,6 +85,30 @@ public final class MainPanel extends JPanel {
     add(makeRegexBox(field, r0, r1, r2), BorderLayout.NORTH);
     add(p);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel(Date date, Date start, Date end) {
+    Object[][] data = {
+        {date}, {start}, {end}
+    };
+    return new DefaultTableModel(data, new String[] {"Date"}) {
+      @Override public Class<?> getColumnClass(int column) {
+        return Date.class;
+      }
+    };
+    // // LocalDateTime test:
+    // LocalDateTime d = LocalDateTime.of(2002, 12, 31, 0, 0);
+    // Object[][] data = {
+    //     {date, d},
+    //     {start, d.minus(2, ChronoUnit.DAYS)},
+    //     {end, d.plus(7, ChronoUnit.DAYS)}
+    // };
+    // String[] columnNames = {"Date", "LocalDateTime"};
+    // return new DefaultTableModel(data, columnNames) {
+    //   @Override public Class<?> getColumnClass(int column) {
+    //     return column == 0 ? Date.class : column == 1 ? LocalDateTime.class : Object.class;
+    //   }
+    // };
   }
 
   private static Box makeRegexBox(JTextField field, JRadioButton... buttons) {

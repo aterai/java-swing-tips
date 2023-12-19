@@ -16,35 +16,37 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String empty = "";
-    String[] columnNames = {"String", "Button"};
-    Object[][] data = {
-        {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setRowHeight(36);
         setAutoCreateRowSorter(true);
-
         TableColumn column = getColumnModel().getColumn(1);
         column.setCellRenderer(new ButtonsRenderer());
         column.setCellEditor(new ButtonsEditor(this));
       }
     };
-
     add(new JScrollPane(table));
     setBorder(BorderFactory.createTitledBorder("Multiple Buttons in a Table Cell"));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String empty = "";
+    String[] columnNames = {"String", "Button"};
+    Object[][] data = {
+        {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
