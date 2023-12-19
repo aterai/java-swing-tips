@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private final Dimension defaultSize = new Dimension(320, 240);
@@ -32,16 +33,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         /* @see BasicTableUI#installDefaults()
@@ -70,7 +62,6 @@ public final class MainPanel extends JPanel {
     // tree.setRowHeight(0);
     JScrollPane s1 = new JScrollPane(table);
     JScrollPane s2 = new JScrollPane(tree);
-
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
     // // TEST:
     // JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2) {
@@ -86,6 +77,18 @@ public final class MainPanel extends JPanel {
     // };
     split.setResizeWeight(.5);
     add(split);
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
