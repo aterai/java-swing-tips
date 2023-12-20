@@ -9,6 +9,7 @@ import java.awt.event.MouseWheelEvent;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -18,22 +19,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"zzz", 6, false}, {"bbb", 22, true}, {"nnn", 9, false},
-        {"ccc", 32, true}, {"ooo", 8, false}, {"ddd", 42, true}, {"ppp", 9, false},
-        {"eee", 52, true}, {"qqq", 8, false}, {"fff", 62, true}, {"rrr", 7, false},
-        {"ggg", 51, true}, {"sss", 6, false}, {"hhh", 41, true}, {"ttt", 5, false},
-        {"iii", 51, true}, {"uuu", 4, false}, {"jjj", 61, true}, {"vvv", 3, false},
-        {"kkk", 72, true}, {"www", 2, false}, {"lll", 82, true}, {"xxx", 1, false},
-        {"mmm", 92, true}, {"yyy", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
 
     JTextPane textPane = new JTextPane();
@@ -66,6 +52,24 @@ public final class MainPanel extends JPanel {
     add(new JLayer<>(new JScrollPane(textPane), new WheelScrollLayerUI()));
     // add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"zzz", 6, false}, {"bbb", 22, true}, {"nnn", 9, false},
+        {"ccc", 32, true}, {"ooo", 8, false}, {"ddd", 42, true}, {"ppp", 9, false},
+        {"eee", 52, true}, {"qqq", 8, false}, {"fff", 62, true}, {"rrr", 7, false},
+        {"ggg", 51, true}, {"sss", 6, false}, {"hhh", 41, true}, {"ttt", 5, false},
+        {"iii", 51, true}, {"uuu", 4, false}, {"jjj", 61, true}, {"vvv", 3, false},
+        {"kkk", 72, true}, {"www", 2, false}, {"lll", 82, true}, {"xxx", 1, false},
+        {"mmm", 92, true}, {"yyy", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static JScrollPane createChildScrollPane(Component view) {
