@@ -53,18 +53,19 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    Component c1 = makeTitledPanel(new JTree(), "Default");
-    Component c2 = makeTitledPanel(tree, "Paint the lines that connect the nodes during rollover");
+    Component c1 = makeTitledPanel("Default", new JTree());
+    Component c2 = makeTitledPanel("Paint the lines that connect the nodes during rollover", tree);
     JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
     sp.setResizeWeight(.5);
     add(sp);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JScrollPane makeTitledPanel(Component view, String title) {
-    JScrollPane scroll = new JScrollPane(view);
-    scroll.setBorder(BorderFactory.createTitledBorder(title));
-    return scroll;
+  private static Component makeTitledPanel(String title, Component c) {
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    p.add(new JScrollPane(c));
+    return p;
   }
 
   public static void main(String[] args) {
