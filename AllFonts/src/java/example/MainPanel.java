@@ -8,10 +8,18 @@ import java.awt.*;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"family", "name", "postscript name"};
     DefaultTableModel model = new DefaultTableModel(null, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
@@ -22,13 +30,10 @@ public final class MainPanel extends JPanel {
         return String.class;
       }
     };
-    JTable table = new JTable(model);
-    table.setAutoCreateRowSorter(true);
     Stream.of(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
         .map(f -> new String[] {f.getFamily(), f.getName(), f.getPSName()})
         .forEach(model::addRow);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
   public static void main(String[] args) {
