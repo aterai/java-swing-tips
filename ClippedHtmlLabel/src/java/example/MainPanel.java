@@ -19,31 +19,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"No.", "Name", "URL"};
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return Integer.class;
-          case 1: return String.class;
-          case 2: return URL.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-
-      @Override public boolean isCellEditable(int row, int col) {
-        return false;
-      }
-    };
-
-    model.addRow(new Object[] {0, "FrontPage", makeUrl("https://ateraimemo.com/")});
-    model.addRow(new Object[] {1, "Java Swing Tips", makeUrl("https://ateraimemo.com/Swing.html")});
-    model.addRow(new Object[] {2, "Example", makeUrl("http://www.example.com/")});
-    model.addRow(new Object[] {3, "Example.jp", makeUrl("http://www.example.jp/")});
-
+    TableModel model = makeModel();
     JTable table1 = makeTable(model);
     UrlRenderer1 renderer1 = new UrlRenderer1();
     table1.setDefaultRenderer(URL.class, renderer1);
@@ -64,16 +45,40 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static TableModel makeModel() {
+    String[] columnNames = {"No.", "Name", "URL"};
+    Object[][] data = {
+        {0, "FrontPage", makeUrl("https://ateraimemo.com/")},
+        {1, "Java Swing Tips", makeUrl("https://ateraimemo.com/Swing.html")},
+        {2, "Example", makeUrl("http://www.example.com/")},
+        {3, "example.jp", makeUrl("http://www.example.jp/")}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+        // switch (column) {
+        //   case 0: return Integer.class;
+        //   case 1: return String.class;
+        //   case 2: return URL.class;
+        //   default: return super.getColumnClass(column);
+        // }
+      }
+
+      @Override public boolean isCellEditable(int row, int col) {
+        return false;
+      }
+    };
+  }
+
   private static URL makeUrl(String path) {
     try {
       return new URL(path);
     } catch (MalformedURLException ex) {
-      ex.printStackTrace();
       return null;
     }
   }
 
-  private static JTable makeTable(DefaultTableModel model) {
+  private static JTable makeTable(TableModel model) {
     JTable table = new JTable(model) {
       private final Color evenColor = new Color(0xFA_FA_FA);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -264,7 +269,6 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
           Desktop.getDesktop().browse(url.toURI());
         }
       } catch (URISyntaxException | IOException ex) {
-        ex.printStackTrace();
         UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }
