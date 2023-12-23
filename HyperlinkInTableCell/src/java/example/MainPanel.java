@@ -19,73 +19,85 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"No.", "Name", "URL"};
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return Integer.class;
-          case 1: return String.class;
-          case 2: return URL.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-
-      @Override public boolean isCellEditable(int row, int col) {
-        return false;
-      }
-    };
-    model.addRow(new Object[] {0, "FrontPage", mkUrl("https://ateraimemo.com/")});
-    model.addRow(new Object[] {1, "Java Swing Tips", mkUrl("https://ateraimemo.com/Swing.html")});
-    model.addRow(new Object[] {2, "Example", mkUrl("https://www.example.com/")});
-    model.addRow(new Object[] {3, "Example.jp", mkUrl("https://www.example.jp/")});
-
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       private final Color evenColor = new Color(0xFA_FA_FA);
+      private transient UrlRenderer handler;
+
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         c.setForeground(getForeground());
         c.setBackground(row % 2 == 0 ? evenColor : getBackground());
         return c;
       }
+
+      @Override public void updateUI() {
+        removeMouseListener(handler);
+        removeMouseMotionListener(handler);
+        super.updateUI();
+        setRowSelectionAllowed(true);
+        setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setIntercellSpacing(new Dimension());
+        setShowGrid(false);
+        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        setAutoCreateRowSorter(true);
+
+        TableColumnModel cm = getColumnModel();
+        TableColumn col = cm.getColumn(0);
+        col.setMinWidth(50);
+        col.setMaxWidth(50);
+        col.setResizable(false);
+        cm.getColumn(1).setPreferredWidth(1000);
+        cm.getColumn(2).setPreferredWidth(2000);
+
+        handler = new UrlRenderer();
+        setDefaultRenderer(URL.class, handler);
+        addMouseListener(handler);
+        addMouseMotionListener(handler);
+      }
     };
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    table.setIntercellSpacing(new Dimension());
-    table.setShowGrid(false);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-    table.setAutoCreateRowSorter(true);
-
-    TableColumnModel cm = table.getColumnModel();
-    TableColumn col = cm.getColumn(0);
-    col.setMinWidth(50);
-    col.setMaxWidth(50);
-    col.setResizable(false);
-
-    cm.getColumn(1).setPreferredWidth(1000);
-    cm.getColumn(2).setPreferredWidth(2000);
-
-    UrlRenderer renderer = new UrlRenderer();
-    table.setDefaultRenderer(URL.class, renderer);
-    table.addMouseListener(renderer);
-    table.addMouseMotionListener(renderer);
-
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.getViewport().setBackground(Color.WHITE);
     add(scrollPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static URL mkUrl(String path) {
+  private static URL makeUrl(String path) {
     try {
       return new URL(path);
     } catch (MalformedURLException ex) {
       ex.printStackTrace();
       return null;
     }
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"No.", "Name", "URL"};
+    Object[][] data = {
+        {0, "FrontPage", makeUrl("https://ateraimemo.com/")},
+        {1, "Java Swing Tips", makeUrl("https://ateraimemo.com/Swing.html")},
+        {2, "Example", makeUrl("http://www.example.com/")},
+        {3, "example.jp", makeUrl("http://www.example.jp/")}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+        // switch (column) {
+        //   case 0: return Integer.class;
+        //   case 1: return String.class;
+        //   case 2: return URL.class;
+        //   default: return super.getColumnClass(column);
+        // }
+      }
+
+      @Override public boolean isCellEditable(int row, int col) {
+        return false;
+      }
+    };
   }
 
   public static void main(String[] args) {
