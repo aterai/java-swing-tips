@@ -26,21 +26,7 @@ public final class MainPanel extends JPanel {
     JTextField htf = new JTextField(5);
     htf.setEditable(false);
 
-    String[] columns = {"A series", "width", "height"};
-    DefaultTableModel model = new DefaultTableModel(null, columns) {
-      @Override public Class<?> getColumnClass(int column) {
-        return column == 0 ? String.class : Integer.class;
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-    };
-    for (PaperSize v : PaperSize.values()) {
-      Object[] row = {v.getSeries(), v.getWidth(), v.getHeight()};
-      model.addRow(row);
-    }
-
+    TableModel model = makeTableModel();
     JComboBox<PaperSize> combo = new DropdownTableComboBox(PaperSize.values(), model);
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -83,6 +69,24 @@ public final class MainPanel extends JPanel {
 
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeTableModel() {
+    String[] columnNames = {"A series", "width", "height"};
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column == 0 ? String.class : Integer.class;
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+    for (PaperSize v : PaperSize.values()) {
+      Object[] row = {v.getSeries(), v.getWidth(), v.getHeight()};
+      model.addRow(row);
+    }
+    return model;
   }
 
   public static void main(String[] args) {
