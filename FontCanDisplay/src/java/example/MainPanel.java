@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     label.setVerticalAlignment(SwingConstants.CENTER);
 
     String[] columnNames = {"family", "name", "postscript name", "canDisplay", "isEmpty"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public boolean isCellEditable(int row, int column) {
         return false;
       }

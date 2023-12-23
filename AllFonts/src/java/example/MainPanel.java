@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
   private static TableModel makeModel() {
     String[] columnNames = {"family", "name", "postscript name"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public boolean isCellEditable(int row, int column) {
         return false;
       }
