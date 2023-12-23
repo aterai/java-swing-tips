@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"Name", "Class", "Value"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames);
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0);
     JTable table = new JTable(model) {
       @Override public boolean isCellEditable(int row, int column) {
         return false;

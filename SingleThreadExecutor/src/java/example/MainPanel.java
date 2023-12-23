@@ -24,7 +24,7 @@ import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
   private final String[] columnNames = {"No.", "Name", "Progress", ""};
-  private final DefaultTableModel model = new DefaultTableModel(null, columnNames);
+  private final DefaultTableModel model = new DefaultTableModel(columnNames, 0);
   private final JTable table = new JTable(model) {
     @Override public void updateUI() {
       super.updateUI();

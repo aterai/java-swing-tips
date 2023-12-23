@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
 
   private static JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
         // ArrayIndexOutOfBoundsException: 0 >= 0
         // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System

@@ -68,15 +68,9 @@ public final class MainPanel extends JPanel {
 
   private static JTable makeTable() {
     String[] columnNames = {"Name", "Size", "Full Path"};
-    TableModel model = new DefaultTableModel(null, columnNames) {
+    TableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
         return File.class;
-        // switch (column) {
-        //   case 0: return File.class;
-        //   case 1: return Long.class;
-        //   case 2: return String.class;
-        //   default: return Object.class;
-        // }
       }
     };
     return new JTable(model) {

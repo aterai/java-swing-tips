@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
   private static final int LR_PAGE_SIZE = 5;
   private final Box box = Box.createHorizontalBox();
   private final String[] columnNames = {"Year", "String", "Comment"};
-  private final DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+  private final DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
     @Override public Class<?> getColumnClass(int column) {
       return column == 0 ? Integer.class : Object.class;
     }

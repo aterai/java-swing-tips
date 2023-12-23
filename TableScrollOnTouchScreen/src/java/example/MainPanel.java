@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"String", "Integer", "Boolean"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }

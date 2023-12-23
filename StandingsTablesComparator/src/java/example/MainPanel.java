@@ -159,7 +159,7 @@ public final class MainPanel extends JPanel {
 
   private static TableModel makeModel() {
     String[] columnNames = {"#", "Team", "MP", "W", "D", "L", "F", "A", "GD", "P"};
-    DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
         return RowData.class;
       }
