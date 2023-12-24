@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST PlaqueBorder" />
+  <property name="jnlp.Name"     value="PlaqueBorder" />
+  <property name="jnlp.name"     value="plaqueborder" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/plaqueborder/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PlaqueBorder.html" />
+</project>
