@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -52,7 +51,7 @@ public final class MainPanel extends JPanel {
 class TableHeaderTabbedPane extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel contentsPanel = new JPanel(cardLayout);
-  private final JTable table = new JTable(new DefaultTableModel(null, new String[] {}));
+  private final JTable table = new JTable(0, 0);
   private final JTableHeader header = table.getTableHeader();
   protected transient Object selectedColumn;
   protected int rolloverColumn = -1;
