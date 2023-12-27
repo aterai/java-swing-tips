@@ -56,6 +56,7 @@ public final class MainPanel extends JPanel {
     //   });
     // }
 
+    @SuppressWarnings("PMD.UseConcurrentHashMap")
     Map<Permissions, Integer> map = new EnumMap<>(Permissions.class);
     map.put(Permissions.READ, 1 << 2);
     map.put(Permissions.WRITE, 1 << 1);
