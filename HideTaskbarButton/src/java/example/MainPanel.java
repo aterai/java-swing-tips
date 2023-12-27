@@ -12,7 +12,8 @@ import java.util.Arrays;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox check = new JCheckBox("Hide the TaskBar button when JFrame is minimized");
+  private static final String HELP = "Hide the TaskBar button when JFrame is minimized";
+  private final JCheckBox check = new JCheckBox(HELP);
 
   private MainPanel() {
     super();

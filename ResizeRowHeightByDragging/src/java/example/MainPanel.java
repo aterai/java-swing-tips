@@ -114,7 +114,7 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
 // // java - Adjusting individual row height using cursor on JTable - Stack Overflow
 // // https://stackoverflow.com/questions/4387995/adjusting-individual-row-height-using-cursor-on-jtable
 // class RowHeightResizer extends MouseAdapter {
-//   private static final Cursor RESIZE_CURSOR = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+//   private static Cursor RESIZE_CURSOR = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
 //   private int mouseOffsetY;
 //   private int resizingRow;
 //   private Cursor otherCursor = RESIZE_CURSOR;

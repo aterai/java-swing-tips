@@ -13,7 +13,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea("ComponentPopupMenu Test\n111111111111\n22222222\n33333333");
+    JTextArea textArea = new JTextArea("ComponentPopupMenu Test\n11111111\n222222\n333");
     textArea.setComponentPopupMenu(new TextComponentPopupMenu());
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));

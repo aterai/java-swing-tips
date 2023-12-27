@@ -64,7 +64,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
       JTable table = (JTable) c;
       int[] rows = getSelectedRows(table);
       int[] cols = getSelectedColumns(table);
-      // if (Objects.isNull(rows) || Objects.isNull(cols) || rows.length == 0 || cols.length == 0) {
+      // if (rows == null || cols == null || rows.length == 0 || cols.length == 0) {
       if (rows.length == 0 || cols.length == 0) {
         return null;
       }

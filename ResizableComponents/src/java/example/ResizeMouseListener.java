@@ -54,7 +54,9 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     int deltaX = startPos.x - p.x;
     int deltaY = startPos.y - p.y;
     Container parent = SwingUtilities.getUnwrappedParent(c);
-    int cursorType = Optional.ofNullable(cursor).map(Cursor::getType).orElse(Cursor.DEFAULT_CURSOR);
+    int cursorType = Optional.ofNullable(cursor)
+        .map(Cursor::getType)
+        .orElse(Cursor.DEFAULT_CURSOR);
     Directions.getByCursorType(cursorType).ifPresent(dir -> {
       Point delta = getLimitedDelta(cursorType, parent.getBounds(), deltaX, deltaY);
       c.setBounds(dir.getBounds(startRect, delta));

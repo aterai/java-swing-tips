@@ -204,7 +204,8 @@ class BasicComboPopup3 extends BasicComboPopup {
           ev = new MouseEvent(
             e.getComponent(), e.getID(), e.getWhen(),
             // e.getModifiers() ^ InputEvent.CTRL_MASK,
-            // Java 10: e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
+            // Java 10:
+            // e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
             e.getModifiersEx() ^ InputEvent.CTRL_DOWN_MASK,
             e.getX(), e.getY(),
             e.getXOnScreen(), e.getYOnScreen(),

@@ -124,7 +124,8 @@ class HeaderRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer hr = table.getTableHeader().getDefaultRenderer();
-    Component c = hr.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = hr.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     c.setFont(FONT);
     if (c instanceof JLabel) {
       ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);

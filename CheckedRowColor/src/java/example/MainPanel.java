@@ -83,9 +83,9 @@ public final class MainPanel extends JPanel {
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component c = super.prepareRenderer(renderer, row, column);
-        boolean isChecked = (boolean) model.getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
+        boolean b = (boolean) model.getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
         c.setForeground(getForeground());
-        c.setBackground(isChecked ? Color.ORANGE : getBackground());
+        c.setBackground(b ? Color.ORANGE : getBackground());
         return c;
       }
     };

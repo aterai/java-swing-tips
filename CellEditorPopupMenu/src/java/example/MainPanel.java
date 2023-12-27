@@ -172,7 +172,7 @@ class DeleteAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    // Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
+    // Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, src);
     Container c = SwingUtilities.getUnwrappedParent((Component) e.getSource());
     if (c instanceof JPopupMenu) {
       JPopupMenu pop = (JPopupMenu) c;
