@@ -186,7 +186,7 @@ class CheckBoxesRenderer implements TableCellRenderer {
 }
 
 class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final CheckBoxesPanel renderer = new CheckBoxesPanel();
+  private final CheckBoxesPanel renderer = new CheckBoxesPanel();
 
   protected CheckBoxesEditor() {
     super();
