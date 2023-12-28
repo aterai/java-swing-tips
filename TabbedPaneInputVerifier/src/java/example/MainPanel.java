@@ -76,7 +76,8 @@ public final class MainPanel extends JPanel {
         tabbedPane.setModel(new DefaultSingleSelectionModel() {
           @Override public void setSelectedIndex(int index) {
             InputVerifier verifier = p.getInputVerifier();
-            // Java 9: if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p, tabbedPane)) {
+            // Java 9:
+            // if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p, tabbedPane)) {
             if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p)) {
               UIManager.getLookAndFeel().provideErrorFeedback(p);
               JOptionPane.showMessageDialog(p, "InputVerifier#verify(...): false");

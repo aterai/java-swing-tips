@@ -44,7 +44,8 @@ public final class MainPanel extends JPanel {
         } else {
           text = Objects.toString(value);
         }
-        return renderer.getTableCellRendererComponent(tbl, text, isSelected, hasFocus, row, column);
+        return renderer.getTableCellRendererComponent(
+            tbl, text, isSelected, hasFocus, row, column);
       });
     }
   };

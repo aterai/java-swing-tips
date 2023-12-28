@@ -64,7 +64,9 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("add");
     button.addActionListener(e -> {
       table.getRowSorter().setSortKeys(null);
-      IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
+      IntStream.range(0, 100)
+          .mapToObj(i -> new Object[] {i, i + 1, "A" + i, "B" + i})
+          .forEach(model::addRow);
     });
 
     add(split);

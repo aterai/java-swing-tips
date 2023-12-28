@@ -155,17 +155,17 @@ class MissingIcon implements Icon {
 //     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //     new SwingWorker() {
 //       @Override protected Object doInBackground() {
-//         System.out.println("frame make start / EDT: " + EventQueue.isDispatchThread());
+//         System.out.println("frame make start/EDT: " + EventQueue.isDispatchThread());
 //         frame.getContentPane().add(new MainPanel()); // new MainPanel() take long time
 //         System.out.println("frame make end");
 //         return "Done";
 //       }
 //
 //       @Override protected void done() {
-//         System.out.println("splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
+//         System.out.println("splashScreen dispose start/EDT: " + EventQueue.isDispatchThread());
 //         splashScreen.dispose();
 //         System.out.println("splashScreen dispose end");
-//         System.out.println("frame show start / EDT: " + EventQueue.isDispatchThread());
+//         System.out.println("frame show start/EDT: " + EventQueue.isDispatchThread());
 //         frame.pack();
 //         frame.setLocationRelativeTo(null);
 //         frame.setVisible(true);

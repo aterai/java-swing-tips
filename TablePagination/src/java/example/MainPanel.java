@@ -224,9 +224,16 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
     TEXT_RECT.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
-        c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
-        b.getVerticalAlignment(), b.getHorizontalAlignment(),
-        b.getVerticalTextPosition(), b.getHorizontalTextPosition(), VIEW_RECT, ICON_RECT, TEXT_RECT,
+        c, c.getFontMetrics(f),
+        b.getText(),
+        null, // altIcon != null ? altIcon : getDefaultIcon(),
+        b.getVerticalAlignment(),
+        b.getHorizontalAlignment(),
+        b.getVerticalTextPosition(),
+        b.getHorizontalTextPosition(),
+        VIEW_RECT,
+        ICON_RECT,
+        TEXT_RECT,
         0); // b.getText() == null ? 0 : b.getIconTextGap());
 
     // // Changing Component State During Painting (an infinite repaint loop)
