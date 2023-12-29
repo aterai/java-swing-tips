@@ -60,8 +60,8 @@ public final class MainPanel extends JPanel {
           return executor.awaitTermination(1, TimeUnit.MINUTES);
         }
 
-        private SwingWorker<TreeNode, Integer> makeWorker(JTree tree, DefaultMutableTreeNode node) {
-          return new NodeProgressWorker(tree, node);
+        private SwingWorker<TreeNode, Integer> makeWorker(JTree t, DefaultMutableTreeNode n) {
+          return new NodeProgressWorker(t, n);
         }
 
         @Override protected void done() {
@@ -229,7 +229,8 @@ class ProgressBarRenderer extends DefaultTreeCellRenderer {
       if (i < progress.getMaximum()) {
         renderer.add(progress, BorderLayout.SOUTH);
       }
-      // renderer.add(i < max ? progress : Box.createVerticalStrut(BAR_HEIGHT), BorderLayout.SOUTH);
+      // Component cmp = i < max ? progress : Box.createVerticalStrut(BAR_HEIGHT);
+      // renderer.add(cmp, BorderLayout.SOUTH);
       c = renderer;
     }
     return c;

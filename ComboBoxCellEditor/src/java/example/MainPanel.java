@@ -53,13 +53,14 @@ public final class MainPanel extends JPanel {
             .ifPresent(textArea::append);
         // Object[] children = e.getChildren();
         // boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children)
-        //   && children.length == 1 && children[0] instanceof DefaultMutableTreeNode;
+        //     && children.length == 1 && children[0] instanceof DefaultMutableTreeNode;
         // if (isNotRootAndOnlyOneNodeChanged) {
         //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) children[0];
         //   Object userObject = node.getUserObject();
         //   if (userObject instanceof PluginNode) {
         //     PluginNode uo = (PluginNode) userObject;
-        //     textArea.append(String.format("%s %s%n", uo, uo.plugins.get(uo.getSelectedIndex())));
+        //     String v = uo.getPlugins().get(uo.getSelectedIndex());
+        //     textArea.append(String.format("%s %s%n", uo, v));
         //   }
         // }
       }

@@ -84,7 +84,8 @@ public final class MainPanel extends JPanel {
 
   private static void loadFile(String path, ScriptEngine engine, JEditorPane editor) {
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
-      String txt = lines.map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+      String txt = lines
+          .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
       editor.setText("<pre>" + prettify(engine, txt) + "\n</pre>");
     } catch (IOException ex) {
