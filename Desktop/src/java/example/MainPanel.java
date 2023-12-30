@@ -17,14 +17,24 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTextArea textArea = new JTextArea();
-
     String html = String.format("<html><a href='%s'>%s</a>", SITE, SITE);
+    JEditorPane editor = makeEditorPane(html, textArea);
+    JPanel p = new JPanel();
+    p.add(editor);
+    p.setBorder(BorderFactory.createTitledBorder("Desktop.getDesktop().browse(URI)"));
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(textArea));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JEditorPane makeEditorPane(String html, JTextArea textArea) {
     JEditorPane editor = new JEditorPane("text/html", html);
     editor.setOpaque(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setEditable(false);
     editor.addHyperlinkListener(e -> {
-      if (Desktop.isDesktopSupported() && e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+      boolean activated = e.getEventType() == HyperlinkEvent.EventType.ACTIVATED;
+      if (Desktop.isDesktopSupported() && activated) {
         try {
           Desktop.getDesktop().browse(new URI(SITE));
         } catch (IOException | URISyntaxException ex) {
@@ -34,13 +44,7 @@ public final class MainPanel extends JPanel {
         textArea.setText(e.toString());
       }
     });
-
-    JPanel p = new JPanel();
-    p.add(editor);
-    p.setBorder(BorderFactory.createTitledBorder("Desktop.getDesktop().browse(URI)"));
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(textArea));
-    setPreferredSize(new Dimension(320, 240));
+    return editor;
   }
 
   public static void main(String[] args) {
