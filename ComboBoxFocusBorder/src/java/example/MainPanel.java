@@ -86,9 +86,10 @@ class FocusComboBox<E> extends JComboBox<E> {
     setRenderer(null);
     super.updateUI();
     if (isWindowsLnF()) {
-      ListCellRenderer<? super E> r = getRenderer();
+      ListCellRenderer<? super E> renderer = getRenderer();
       setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-        Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        Component c = renderer.getListCellRendererComponent(
+            list, value, index, isSelected, cellHasFocus);
         if (index < 0 && c instanceof JComponent) {
           ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }

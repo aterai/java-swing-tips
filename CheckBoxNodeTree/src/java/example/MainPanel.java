@@ -370,7 +370,8 @@ class CheckBoxNode {
 //     //       DefaultLookup.getColor(this, ui, "Tree.textBackground"));
 //     // }
 //     // if (getBorderSelectionColor() instanceof UIResource) {
-//     //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
+//     //   setBorderSelectionColor(
+//     //       DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
 //     // }
 //     // // drawsFocusBorderAroundIcon = DefaultLookup.getBoolean(
 //     // //     this, ui, "Tree.drawsFocusBorderAroundIcon", false);

@@ -171,7 +171,8 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = r.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       setIcon(new MenuArrowIcon());

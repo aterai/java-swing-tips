@@ -323,7 +323,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       if (c != null) {
         c.addMouseWheelListener(e -> {
           if (window != null && window.isVisible() && editingIndex >= 0) {
-            renameTitle.actionPerformed(new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, ""));
+            ActionEvent ev = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, "");
+            renameTitle.actionPerformed(ev);
           }
         });
       }
@@ -371,7 +372,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       boolean isDoubleClick = e.getClickCount() >= 2;
       if (isDoubleClick && rect.contains(e.getPoint())) {
         Component c = e.getComponent();
-        startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+        ActionEvent ev = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
+        startEditing.actionPerformed(ev);
       }
     }
 
@@ -379,7 +381,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       JList<?> list = (JList<?>) e.getComponent();
       startOutside = !contains(list, e.getPoint());
       if (window != null && window.isVisible() && editingIndex >= 0) {
-        renameTitle.actionPerformed(new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, ""));
+        ActionEvent ev = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, "");
+        renameTitle.actionPerformed(ev);
       } else if (startOutside) {
         clearSelectionAndFocus(list);
       }

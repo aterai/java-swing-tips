@@ -61,10 +61,17 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     Icon icon = b.getIcon();
     viewRect.width -= CLOSE_ICON_WIDTH;
     String text = SwingUtilities.layoutCompoundLabel(
-        c, c.getFontMetrics(f), b.getText(), icon, // altIcon != null ? altIcon : getDefaultIcon(),
-        b.getVerticalAlignment(), b.getHorizontalAlignment(),
-        b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
-        viewRect, iconRect, textRect,
+        c,
+        c.getFontMetrics(f),
+        b.getText(),
+        icon, // altIcon != null ? altIcon : getDefaultIcon(),
+        b.getVerticalAlignment(),
+        b.getHorizontalAlignment(),
+        b.getVerticalTextPosition(),
+        b.getHorizontalTextPosition(),
+        viewRect,
+        iconRect,
+        textRect,
         Objects.nonNull(b.getText()) ? b.getIconTextGap() : 0);
 
     Object o = c.getClientProperty(BasicHTML.propertyKey);

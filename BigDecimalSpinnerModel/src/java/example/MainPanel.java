@@ -63,8 +63,8 @@ public final class MainPanel extends JPanel {
 }
 
 class BigDecimalSpinnerModel extends SpinnerNumberModel {
-  protected BigDecimalSpinnerModel(double value, double minimum, double maximum, double stepSize) {
-    super(value, minimum, maximum, stepSize);
+  protected BigDecimalSpinnerModel(double value, double min, double max, double stepSize) {
+    super(value, min, max, stepSize);
   }
 
   @Override public Object getPreviousValue() {

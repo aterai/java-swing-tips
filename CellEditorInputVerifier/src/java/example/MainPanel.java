@@ -151,12 +151,12 @@ class IntegerDocumentFilter extends DocumentFilter {
     fb.replace(offset, length, text, attrs);
   }
 
-  private static void checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (!proposedValue.isEmpty()) {
+  private static void checkInput(String value, int offset) throws BadLocationException {
+    if (!value.isEmpty()) {
       try {
-        Integer.parseInt(proposedValue);
+        Integer.parseInt(value);
       } catch (NumberFormatException ex) {
-        throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
+        throw (BadLocationException) new BadLocationException(value, offset).initCause(ex);
       }
     }
   }
