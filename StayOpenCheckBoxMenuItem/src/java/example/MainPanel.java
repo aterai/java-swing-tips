@@ -48,7 +48,8 @@ public final class MainPanel extends JPanel {
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
     popup.add(new JCheckBoxMenuItem("keeping open #1")).addActionListener(e -> {
       // System.out.println("ActionListener");
-      Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, (Component) e.getSource());
+      Component src = (Component) e.getSource();
+      Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, src);
       if (c instanceof JPopupMenu) {
         c.setVisible(true);
       }

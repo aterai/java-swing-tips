@@ -80,7 +80,8 @@ public final class MainPanel extends JPanel {
 
   private void loadFile(String path) {
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
-      String txt = lines.map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+      String txt = lines
+          .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
       String html = "<pre>" + prettify(engine, txt) + "\n</pre>";
       editor1.setText(html);

@@ -123,7 +123,8 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     UIManager.put(ASCENDING, emptyIcon);
     UIManager.put(DESCENDING, emptyIcon);
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = r.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     UIManager.put(ASCENDING, ascendingIcon);
     UIManager.put(DESCENDING, descendingIcon);
     if (c instanceof JLabel) {
