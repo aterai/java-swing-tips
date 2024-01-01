@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicColorChooserUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -38,8 +37,6 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("Layout", makeUI(new ButtonGroup()));
     tabbedPane.addTab("ContainerOrder", p1);
     tabbedPane.addTab("ContainerOrder + ButtonGroup", p2);
-    new JColorChooser();
-    new BasicColorChooserUI();
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
