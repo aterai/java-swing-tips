@@ -107,7 +107,8 @@ public final class MainPanel extends JPanel {
   //     Component c = super.getTableCellRendererComponent(
   //         table, value, isSelected, hasFocus, row, column);
   //     TableModel model = table.getModel();
-  //     Boolean b = (Boolean) model.getValueAt(table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
+  //     Boolean b = (Boolean) model.getValueAt(
+  //         table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
   //     c.setForeground(table.getForeground());
   //     c.setBackground(b ? Color.ORANGE : table.getBackground());
   //     return c;

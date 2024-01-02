@@ -73,7 +73,8 @@ public final class MainPanel extends JPanel {
         setBackground(UIManager.getColor("TextField.background"));
         setForeground(UIManager.getColor("TextField.foreground"));
         setBorder(BorderFactory.createCompoundBorder(
-            UIManager.getBorder("TextField.border"), BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+            UIManager.getBorder("TextField.border"),
+            BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         setFont(UIManager.getFont("TextArea.font"));
       }
     };

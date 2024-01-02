@@ -126,7 +126,9 @@ final class MenuBarUtils {
     mb.add(file);
 
     JMenu edit = new JMenu("Edit");
-    Stream.of("Cut", "Copy", "Paste", "Delete").map(edit::add).forEach(mi -> mi.setEnabled(false));
+    Stream.of("Cut", "Copy", "Paste", "Delete")
+        .map(edit::add)
+        .forEach(mi -> mi.setEnabled(false));
     mb.add(edit);
 
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());

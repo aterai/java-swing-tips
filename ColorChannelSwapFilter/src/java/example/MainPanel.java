@@ -36,16 +36,16 @@ public final class MainPanel extends JPanel {
     JProgressBar progress4 = new JProgressBar(model);
     progress4.setOpaque(true); // for NimbusLookAndFeel
 
-    BlockedColorLayerUI<Component> layerUI = new BlockedColorLayerUI<>();
+    BlockedColorLayerUI<Component> layer = new BlockedColorLayerUI<>();
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(makeTitledPanel("setStringPainted(true)", progress1, progress2));
-    p.add(makeTitledPanel("setStringPainted(false)", progress3, new JLayer<>(progress4, layerUI)));
+    p.add(makeTitledPanel("setStringPainted(false)", progress3, new JLayer<>(progress4, layer)));
 
     JCheckBox check = new JCheckBox("Turn the progress bar red");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
       progress2.setForeground(b ? new Color(0x64_FF_00_00, true) : progress1.getForeground());
-      layerUI.setBlocking(b);
+      layer.setBlocking(b);
       p.repaint();
     });
 

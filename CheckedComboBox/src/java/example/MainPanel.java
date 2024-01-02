@@ -139,7 +139,8 @@ class CheckableItem {
 //     //   }
 //     // }
 //     // if (sl.isEmpty()) {
-//     //   // When returning the empty string, the height of JComboBox may become 0 in some cases.
+//     //   // When returning the empty string, the height of JComboBox
+//     //   // may become 0 in some cases.
 //     //   return " ";
 //     // } else {
 //     //   return sl.stream().sorted().collect(Collectors.joining(", "));
