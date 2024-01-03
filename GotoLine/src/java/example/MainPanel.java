@@ -23,7 +23,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     SpinnerNumberModel model = new SpinnerNumberModel(100, MIN, MAX, 1);
-    JTextArea textArea = new JTextArea(String.join("\n", Collections.nCopies(MAX, "11111111111")));
+    String text = String.join("\n", Collections.nCopies(MAX, "1234567890"));
+    JTextArea textArea = new JTextArea(text);
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.setRowHeaderView(new LineNumberView(textArea));

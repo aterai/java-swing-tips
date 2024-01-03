@@ -168,7 +168,7 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     JViewport viewport = (JViewport) e.getComponent(); // label.getParent();
-    Point vp = viewport.getViewPosition(); // = SwingUtilities.convertPoint(viewport, 0, 0, label);
+    Point vp = viewport.getViewPosition(); // SwingUtilities.convertPoint(viewport, 0, 0, label);
     vp.translate(startPt.x - pt.x, startPt.y - pt.y);
     delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
     label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));

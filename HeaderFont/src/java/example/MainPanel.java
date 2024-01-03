@@ -31,7 +31,8 @@ public final class MainPanel extends JPanel {
     Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
     tableColumn.setHeaderRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
       TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-      Component c = r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+      Component c = r.getTableCellRendererComponent(
+          tbl, value, isSelected, hasFocus, row, column);
       c.setFont(font);
       return c;
     });
