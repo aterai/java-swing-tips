@@ -110,9 +110,17 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle();
     String clippedText = SwingUtilities.layoutCompoundLabel(
-        metrics, title, null,
-        CENTER, CENTER, CENTER, TRAILING,
-        viewR, iconR, textR, 0);
+        metrics,
+        title,
+        null,
+        CENTER,
+        CENTER,
+        CENTER,
+        TRAILING,
+        viewR,
+        iconR,
+        textR,
+        0);
     if (Objects.equals(title, clippedText)) {
       super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
     } else {
@@ -148,9 +156,17 @@ class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
     Rectangle iconR = new Rectangle();
     Rectangle textR = new Rectangle();
     String clippedText = SwingUtilities.layoutCompoundLabel(
-        metrics, title, null,
-        CENTER, CENTER, CENTER, TRAILING,
-        viewR, iconR, textR, 0);
+        metrics,
+        title,
+        null,
+        CENTER,
+        CENTER,
+        CENTER,
+        TRAILING,
+        viewR,
+        iconR,
+        textR,
+        0);
     if (Objects.equals(title, clippedText)) {
       super.paintText(g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected);
     } else {

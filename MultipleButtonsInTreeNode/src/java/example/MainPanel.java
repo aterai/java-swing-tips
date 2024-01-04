@@ -147,7 +147,8 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
       TreeNode node = (TreeNode) path.getLastPathComponent();
       int row = tree.getRowForLocation(pt.x, pt.y);
       TreeCellRenderer r = tree.getCellRenderer();
-      Component c = r.getTreeCellRendererComponent(tree, " ", true, true, node.isLeaf(), row, true);
+      boolean leaf = node.isLeaf();
+      Component c = r.getTreeCellRendererComponent(tree, " ", true, true, leaf, row, true);
       c.setBounds(rect);
       c.setLocation(0, 0);
       // tree.doLayout();

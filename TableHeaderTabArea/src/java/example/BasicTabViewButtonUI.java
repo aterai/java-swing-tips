@@ -68,10 +68,17 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     textRect.setBounds(0, 0, 0, 0);
 
     String text = SwingUtilities.layoutCompoundLabel(
-        c, c.getFontMetrics(f), b.getText(), null, // altIcon != null ? altIcon : getDefaultIcon(),
-        b.getVerticalAlignment(), b.getHorizontalAlignment(),
-        b.getVerticalTextPosition(), b.getHorizontalTextPosition(),
-        viewRect, iconRect, textRect,
+        c,
+        c.getFontMetrics(f),
+        b.getText(),
+        null, // altIcon != null ? altIcon : getDefaultIcon(),
+        b.getVerticalAlignment(),
+        b.getHorizontalAlignment(),
+        b.getVerticalTextPosition(),
+        b.getHorizontalTextPosition(),
+        viewRect,
+        iconRect,
+        textRect,
         0); // b.getText() == null ? 0 : b.getIconTextGap());
 
     g.setColor(b.getBackground());
