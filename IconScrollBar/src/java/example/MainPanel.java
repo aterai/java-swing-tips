@@ -12,17 +12,23 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JLabel l = new JLabel("aaaaaaaaaaaaaaaaaaaaaaaaaa") {
+    JLabel label = new JLabel("JLabel") {
       @Override public Dimension getPreferredSize() {
         return new Dimension(1000, 1000);
       }
     };
-    JScrollPane scrollPane = new JScrollPane(l);
-    if (scrollPane.getVerticalScrollBar().getUI() instanceof WindowsScrollBarUI) {
-      scrollPane.getVerticalScrollBar().setUI(new BasicIconScrollBarUI());
-    } else {
-      scrollPane.getVerticalScrollBar().setUI(new WindowsIconScrollBarUI());
-    }
+    JScrollBar scrollBar = new JScrollBar(Adjustable.VERTICAL) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsScrollBarUI) {
+          setUI(new WindowsIconScrollBarUI());
+        } else {
+          setUI(new BasicIconScrollBarUI());
+        }
+      }
+    };
+    JScrollPane scrollPane = new JScrollPane(label);
+    scrollPane.setVerticalScrollBar(scrollBar);
     add(scrollPane);
     setPreferredSize(new Dimension(320, 240));
   }

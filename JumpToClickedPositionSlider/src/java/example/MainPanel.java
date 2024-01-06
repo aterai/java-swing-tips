@@ -8,52 +8,62 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import javax.swing.plaf.SliderUI;
+import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.plaf.metal.MetalSliderUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSlider slider1 = new JSlider(SwingConstants.VERTICAL, 0, 1000, 500);
-    setSliderUI(slider1);
-
-    JSlider slider2 = new JSlider(0, 1000, 500);
-    setSliderUI(slider2);
-
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     box1.add(new JSlider(SwingConstants.VERTICAL, 0, 1000, 100));
     box1.add(Box.createHorizontalStrut(20));
-    box1.add(slider1);
+    box1.add(makeSlider(true));
     box1.add(Box.createHorizontalGlue());
+    add(box1, BorderLayout.WEST);
 
     Box box2 = Box.createVerticalBox();
     box2.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 20));
     box2.add(makeTitledPanel("Default", new JSlider(0, 1000, 100)));
     box2.add(Box.createVerticalStrut(20));
-    box2.add(makeTitledPanel("Jump to clicked position", slider2));
+    box2.add(makeTitledPanel("Jump to clicked position", makeSlider(false)));
     box2.add(Box.createVerticalGlue());
-
-    add(box1, BorderLayout.WEST);
     add(box2);
-    // setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 10));
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setSliderUI(JSlider slider) {
-    if (slider.getUI() instanceof WindowsSliderUI) {
-      slider.setUI(new WindowsJumpToClickedPositionSliderUI(slider));
-    } else {
-      // NullPointerException ???
-      UIManager.put("Slider.trackWidth", 0); // Meaningless settings that are not used?
-      UIManager.put("Slider.majorTickLength", 8); // BasicSliderUI#getTickLength(): 8
-      Icon missingIcon = UIManager.getIcon("html.missingImage");
-      UIManager.put("Slider.verticalThumbIcon", missingIcon);
-      UIManager.put("Slider.horizontalThumbIcon", missingIcon);
-      slider.setUI(new MetalJumpToClickedPositionSliderUI());
-    }
-    // slider.setSnapToTicks(false);
-    // slider.setPaintTicks(true);
-    // slider.setPaintLabels(true);
+  private static JSlider makeSlider(boolean vertical) {
+    int orientation = vertical ? SwingConstants.VERTICAL : SwingConstants.HORIZONTAL;
+    return new JSlider(orientation, 0, 1000, 500) {
+      @Override public void updateUI() {
+        super.updateUI();
+        SliderUI ui = getUI();
+        if (ui instanceof WindowsSliderUI) {
+          setUI(new WindowsJumpToClickedPositionSliderUI(this));
+        } else if (ui instanceof MetalSliderUI) {
+          setUI(new MetalJumpToClickedPositionSliderUI());
+        } else {
+          setUI(new BasicJumpToClickedPositionSliderUI(this));
+        }
+        // } else {
+        //   // NullPointerException ???
+        //   UIManager.put("Slider.trackWidth", 0); // Meaningless settings that are not used?
+        //   UIManager.put("Slider.majorTickLength", 8); // BasicSliderUI#getTickLength(): 8
+        //   Icon missingIcon = UIManager.getIcon("html.missingImage");
+        //   UIManager.put("Slider.verticalThumbIcon", missingIcon);
+        //   UIManager.put("Slider.horizontalThumbIcon", missingIcon);
+        //   setUI(new MetalJumpToClickedPositionSliderUI());
+        // }
+        // setSnapToTicks(false);
+        // setPaintTicks(true);
+        // setPaintLabels(true);
+      }
+    };
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -163,5 +173,97 @@ class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
         return false;
       }
     };
+  }
+}
+
+class BasicJumpToClickedPositionSliderUI extends BasicSliderUI {
+  protected BasicJumpToClickedPositionSliderUI(JSlider slider) {
+    super(slider);
+  }
+
+  @Override protected TrackListener createTrackListener(JSlider slider) {
+    return new TrackListener() {
+      @Override public void mousePressed(MouseEvent e) {
+        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
+        if (SwingUtilities.isLeftMouseButton(e)) {
+          JSlider slider = (JSlider) e.getComponent();
+          switch (slider.getOrientation()) {
+            case SwingConstants.VERTICAL:
+              slider.setValue(valueForYPosition(e.getY()));
+              break;
+            case SwingConstants.HORIZONTAL:
+              slider.setValue(valueForXPosition(e.getX()));
+              break;
+            default:
+              String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
+              throw new IllegalArgumentException(msg);
+          }
+          super.mousePressed(e); // isDragging = true;
+          super.mouseDragged(e);
+        } else {
+          super.mousePressed(e);
+        }
+      }
+
+      @Override public boolean shouldScroll(int direction) {
+        return false;
+      }
+    };
+  }
+}
+
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }

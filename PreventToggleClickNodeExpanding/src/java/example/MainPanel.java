@@ -13,6 +13,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
+import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.metal.MetalTreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -31,13 +32,17 @@ public final class MainPanel extends JPanel {
     JTree tree1 = new JTree(treeModel);
     tree1.addTreeWillExpandListener(new FileExpandVetoListener());
 
-    JTree tree2 = new JTree(treeModel);
-    tree2.setUI(new MetalTreeUI() {
-      @Override protected boolean isToggleEvent(MouseEvent e) {
-        File file = getFileFromTreePath(tree.getSelectionPath());
-        return file == null && super.isToggleEvent(e);
+    JTree tree2 = new JTree(treeModel) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new MetalTreeUI() {
+          @Override protected boolean isToggleEvent(MouseEvent e) {
+            File file = getFileFromTreePath(tree.getSelectionPath());
+            return file == null && super.isToggleEvent(e);
+          }
+        });
       }
-    });
+    };
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(new JScrollPane(initTree(tree1)));

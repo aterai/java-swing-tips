@@ -14,20 +14,29 @@ import javax.swing.plaf.metal.MetalSliderUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSlider slider1 = makeSlider();
-    JSlider slider2 = makeSlider();
-    slider2.setModel(slider1.getModel());
-    setSliderUI(slider2);
+    JSlider slider = new JSlider(0, 100, 50) {
+      private transient MouseAdapter handler;
 
-    MouseAdapter ma = new SliderPopupListener();
-    slider2.addMouseMotionListener(ma);
-    slider2.addMouseListener(ma);
+      @Override public void updateUI() {
+        removeMouseMotionListener(handler);
+        removeMouseListener(handler);
+        super.updateUI();
+        if (getUI() instanceof WindowsSliderUI) {
+          setUI(new WindowsTooltipSliderUI(this));
+        } else {
+          setUI(new MetalTooltipSliderUI());
+        }
+        handler = new SliderPopupListener();
+        addMouseMotionListener(handler);
+        addMouseListener(handler);
+      }
+    };
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Default", slider1));
+    box.add(makeTitledPanel("Default", initSlider(new JSlider(0, 100, 50))));
     box.add(Box.createVerticalStrut(25));
-    box.add(makeTitledPanel("Show ToolTip", slider2));
+    box.add(makeTitledPanel("Show ToolTip", initSlider(slider)));
     box.add(Box.createVerticalGlue());
 
     add(box, BorderLayout.NORTH);
@@ -35,8 +44,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider makeSlider() {
-    JSlider slider = new JSlider(0, 100, 0);
+  private static JSlider initSlider(JSlider slider) {
     slider.setPaintTicks(true);
     slider.setMajorTickSpacing(10);
     slider.setMinorTickSpacing(5);
@@ -52,14 +60,6 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
     return p;
-  }
-
-  private static void setSliderUI(JSlider slider) {
-    if (slider.getUI() instanceof WindowsSliderUI) {
-      slider.setUI(new WindowsTooltipSliderUI(slider));
-    } else {
-      slider.setUI(new MetalTooltipSliderUI());
-    }
   }
 
   public static void main(String[] args) {
