@@ -20,7 +20,18 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JButton label = new JButton(SITE);
+    JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
+    p.setBorder(BorderFactory.createTitledBorder("Draggable Hyperlink"));
+    p.add(new JLabel("D&D->Browser:"));
+
+    JButton label = new JButton(SITE) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(LinkViewButtonUI.createUI(this, SITE));
+      }
+    };
+    p.add(label);
+
     // label.addActionListener(e -> {
     //   System.out.println(e);
     //   if (Desktop.isDesktopSupported()) {
@@ -32,12 +43,6 @@ public final class MainPanel extends JPanel {
     //     }
     //   }
     // });
-    label.setUI(LinkViewButtonUI.createUI(label, SITE));
-
-    JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
-    p.setBorder(BorderFactory.createTitledBorder("Draggable Hyperlink"));
-    p.add(new JLabel("D&D->Browser:"));
-    p.add(label);
 
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea("JTextArea")));
@@ -83,9 +88,11 @@ public final class MainPanel extends JPanel {
   //       @Override public Object getTransferData(DataFlavor flavor) {
   //         return SITE;
   //       }
+  //
   //       @Override public DataFlavor[] getTransferDataFlavors() {
   //         return new DataFlavor[] {uriFlavor};
   //       }
+  //
   //       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
   //         return flavor.equals(uriFlavor);
   //       }

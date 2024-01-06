@@ -25,9 +25,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeUI() {
-    JProgressBar progressBar = new JProgressBar();
-    progressBar.setOpaque(false);
-    progressBar.setUI(new GradientPalletProgressBarUI());
+    JProgressBar progressBar = new JProgressBar() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new GradientPalletProgressBarUI());
+        setOpaque(false);
+      }
+    };
 
     JButton button = new JButton("Start");
     button.addActionListener(e -> {
