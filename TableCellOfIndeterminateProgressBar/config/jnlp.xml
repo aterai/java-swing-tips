@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST TableCellOfIndeterminateProgressBar" />
+  <property name="jnlp.Name"     value="TableCellOfIndeterminateProgressBar" />
+  <property name="jnlp.name"     value="tablecellofindeterminateprogressbar" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/tablecellofindeterminateprogressbar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/TableCellOfIndeterminateProgressBar.html" />
+</project>
