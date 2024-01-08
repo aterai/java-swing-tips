@@ -25,19 +25,34 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     super(new BorderLayout());
     UIManager.put("ProgressBar.cycleTime", 1000);
     UIManager.put("ProgressBar.repaintInterval", 10);
-
     BoundedRangeModel model = new DefaultBoundedRangeModel();
-    JProgressBar progress1 = new JProgressBar(model);
-    progress1.setUI(new StripedProgressBarUI(true, true));
+    JProgressBar progress1 = new JProgressBar(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new StripedProgressBarUI(true, true));
+      }
+    };
 
-    JProgressBar progress2 = new JProgressBar(model);
-    progress2.setUI(new StripedProgressBarUI(true, false));
+    JProgressBar progress2 = new JProgressBar(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new StripedProgressBarUI(true, false));
+      }
+    };
 
-    JProgressBar progress3 = new JProgressBar(model);
-    progress3.setUI(new StripedProgressBarUI(false, true));
+    JProgressBar progress3 = new JProgressBar(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new StripedProgressBarUI(false, true));
+      }
+    };
 
-    JProgressBar progress4 = new JProgressBar(model);
-    progress4.setUI(new StripedProgressBarUI(false, false));
+    JProgressBar progress4 = new JProgressBar(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new StripedProgressBarUI(false, false));
+      }
+    };
 
     List<JProgressBar> list = Arrays.asList(
         new JProgressBar(model), progress1, progress2, progress3, progress4);
