@@ -17,9 +17,12 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel(new GridLayout(5, 1));
+
     BoundedRangeModel model = new DefaultBoundedRangeModel();
     JProgressBar progressBar0 = new JProgressBar(model);
     progressBar0.setStringPainted(true);
+    p.add(makePanel(progressBar0));
 
     UIManager.put("ProgressBar.foreground", Color.RED);
     UIManager.put("ProgressBar.selectionForeground", Color.ORANGE);
@@ -27,24 +30,25 @@ public final class MainPanel extends JPanel {
     UIManager.put("ProgressBar.selectionBackground", Color.RED);
     JProgressBar progressBar1 = new JProgressBar(model);
     progressBar1.setStringPainted(true);
-
-    JProgressBar progressBar2 = new JProgressBar(model);
-    progressBar2.setStringPainted(true);
-    progressBar2.setForeground(Color.BLUE);
-    progressBar2.setBackground(Color.CYAN.brighter());
-    progressBar2.setUI(new BasicProgressBarUI() {
-      @Override protected Color getSelectionForeground() {
-        return Color.PINK;
-      }
-
-      @Override protected Color getSelectionBackground() {
-        return Color.BLUE;
-      }
-    });
-
-    JPanel p = new JPanel(new GridLayout(5, 1));
-    p.add(makePanel(progressBar0));
     p.add(makePanel(progressBar1));
+
+    JProgressBar progressBar2 = new JProgressBar(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new BasicProgressBarUI() {
+          @Override protected Color getSelectionForeground() {
+            return Color.PINK;
+          }
+
+          @Override protected Color getSelectionBackground() {
+            return Color.BLUE;
+          }
+        });
+        setForeground(Color.BLUE);
+        setBackground(Color.CYAN.brighter());
+      }
+    };
+    progressBar2.setStringPainted(true);
     p.add(makePanel(progressBar2));
 
     JButton button = new JButton("Test start");

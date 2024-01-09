@@ -40,19 +40,45 @@ public final class MainPanel extends JPanel {
     UIManager.put("Slider.trackWidth", 64);
     UIManager.put("Slider.majorTickLength", 6);
 
-    JSlider slider0 = makeSlider();
-    JSlider slider1 = makeSlider();
-    slider1.setUI(new GradientPalletSliderUI());
-    slider1.setModel(slider0.getModel());
+    JSlider slider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 50);
+    slider.setBackground(Color.GRAY);
+    slider.setOpaque(false);
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("Default:", slider0));
+    box.add(makeTitledPanel("Default:", slider));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Gradient translucent track JSlider:", slider1));
+    box.add(makeTitledPanel("Gradient translucent track JSlider:", makeSlider()));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(box, BorderLayout.NORTH);
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JSlider makeSlider() {
+    return new JSlider(SwingConstants.HORIZONTAL, 0, 100, 50) {
+      private transient MouseAdapter handler;
+
+      @Override public void updateUI() {
+        removeMouseMotionListener(handler);
+        removeMouseWheelListener(handler);
+        super.updateUI();
+        setUI(new GradientPalletSliderUI());
+        setBackground(Color.GRAY);
+        setOpaque(false);
+        handler = new MouseAdapter() {
+          @Override public void mouseDragged(MouseEvent e) {
+            e.getComponent().repaint();
+          }
+
+          @Override public void mouseWheelMoved(MouseWheelEvent e) {
+            BoundedRangeModel m = ((JSlider) e.getComponent()).getModel();
+            m.setValue(m.getValue() - e.getWheelRotation());
+          }
+        };
+        addMouseMotionListener(handler);
+        addMouseWheelListener(handler);
+      }
+    };
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -61,25 +87,6 @@ public final class MainPanel extends JPanel {
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
     super.paintComponent(g);
-  }
-
-  private static JSlider makeSlider() {
-    JSlider slider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 50);
-    slider.setBackground(Color.GRAY);
-    slider.setOpaque(false);
-    MouseAdapter ma = new MouseAdapter() {
-      @Override public void mouseDragged(MouseEvent e) {
-        e.getComponent().repaint();
-      }
-
-      @Override public void mouseWheelMoved(MouseWheelEvent e) {
-        BoundedRangeModel m = ((JSlider) e.getComponent()).getModel();
-        m.setValue(m.getValue() - e.getWheelRotation());
-      }
-    };
-    slider.addMouseMotionListener(ma);
-    slider.addMouseWheelListener(ma);
-    return slider;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
