@@ -17,21 +17,28 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-    JSlider slider1 = makeSlider("ChangeListener");
-    JSlider slider2 = makeSlider("TrackListener");
-    if (slider2.getUI() instanceof WindowsSliderUI) {
-      slider2.setUI(new WindowsDragLimitedSliderUI(slider2));
-    } else {
-      slider2.setUI(new BasicDragLimitedSliderUI(slider2));
-    }
+    JSlider slider1 = initSlider(new JSlider(0, 100, 40));
+    slider1.setBorder(BorderFactory.createTitledBorder("ChangeListener"));
     add(slider1);
+
+    JSlider slider = new JSlider(0, 100, 40) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsSliderUI) {
+          setUI(new WindowsDragLimitedSliderUI(this));
+        } else {
+          setUI(new BasicDragLimitedSliderUI(this));
+        }
+      }
+    };
+    JSlider slider2 = initSlider(slider);
+    slider2.setBorder(BorderFactory.createTitledBorder("TrackListener"));
     add(slider2);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider makeSlider(String title) {
-    JSlider slider = new JSlider(0, 100, 40);
-    slider.setBorder(BorderFactory.createTitledBorder(title));
+  private static JSlider initSlider(JSlider slider) {
+    // JSlider slider = new JSlider(0, 100, 40);
     slider.setMajorTickSpacing(10);
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
