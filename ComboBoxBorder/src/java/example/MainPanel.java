@@ -29,58 +29,45 @@ public final class MainPanel extends JPanel {
     UIManager.put("TitledBorder.titleColor", Color.WHITE);
     UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
-    JComboBox<String> combo00 = makeComboBox();
-    Object o00 = combo00.getAccessibleContext().getAccessibleChild(0);
-    ((JComponent) o00).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
+    JComboBox<String> combo0 = new JComboBox<>(makeComboBoxModel());
+    initBorder(combo0.getAccessibleContext().getAccessibleChild(0));
 
-    JComboBox<String> combo01 = makeComboBox();
-    combo01.setUI(new BasicComboBoxUI());
-    Object o01 = combo01.getAccessibleContext().getAccessibleChild(0);
-    ((JComponent) o01).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
+    JComboBox<String> combo1 = new JComboBox<String>(makeComboBoxModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new BasicComboBoxUI());
+        initBorder(getAccessibleContext().getAccessibleChild(0));
+      }
+    };
 
-    JComboBox<String> combo02 = makeComboBox();
-    combo02.setUI(new BasicComboBoxUI() {
-      @Override protected JButton createArrowButton() {
-        JButton b = new JButton(new ArrowIcon()); // .createArrowButton();
-        b.setBackground(Color.BLACK);
-        b.setContentAreaFilled(false);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder());
-        return b;
-      }
-    });
-    combo02.addMouseListener(new MouseAdapter() {
-      private ButtonModel getButtonModel(MouseEvent e) {
-        JComboBox<?> cb = (JComboBox<?>) e.getComponent();
-        JButton b = (JButton) cb.getComponent(0);
-        return b.getModel();
-      }
+    JComboBox<String> combo2 = new JComboBox<String>(makeComboBoxModel()) {
+      private transient MouseAdapter handler;
 
-      @Override public void mouseEntered(MouseEvent e) {
-        getButtonModel(e).setRollover(true);
+      @Override public void updateUI() {
+        removeMouseListener(handler);
+        super.updateUI();
+        setUI(new BasicComboBoxUI() {
+          @Override protected JButton createArrowButton() {
+            JButton b = new JButton(new ArrowIcon()); // .createArrowButton();
+            b.setBackground(Color.BLACK);
+            b.setContentAreaFilled(false);
+            b.setFocusPainted(false);
+            b.setBorder(BorderFactory.createEmptyBorder());
+            return b;
+          }
+        });
+        handler = new RolloverListener();
+        addMouseListener(handler);
+        initBorder(getAccessibleContext().getAccessibleChild(0));
       }
-
-      @Override public void mouseExited(MouseEvent e) {
-        getButtonModel(e).setRollover(false);
-      }
-
-      @Override public void mousePressed(MouseEvent e) {
-        getButtonModel(e).setPressed(true);
-      }
-
-      @Override public void mouseReleased(MouseEvent e) {
-        getButtonModel(e).setPressed(false);
-      }
-    });
-    Object o02 = combo02.getAccessibleContext().getAccessibleChild(0);
-    ((JComponent) o02).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
+    };
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("MetalComboBoxUI:", combo00));
+    box.add(makeTitledPanel("MetalComboBoxUI:", combo0));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("BasicComboBoxUI:", combo01));
+    box.add(makeTitledPanel("BasicComboBoxUI:", combo1));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo02));
+    box.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo2));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     add(box, BorderLayout.NORTH);
@@ -98,12 +85,18 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JComboBox<String> makeComboBox() {
+  private static void initBorder(Object o) {
+    if (o instanceof JComponent) {
+      ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.WHITE));
+    }
+  }
+
+  private static ComboBoxModel<String> makeComboBoxModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("1234");
     model.addElement("5555555555555555555555");
     model.addElement("6789000000000");
-    return new JComboBox<>(model);
+    return model;
   }
 
   public static void main(String[] args) {
@@ -150,5 +143,29 @@ class ArrowIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 9;
+  }
+}
+
+class RolloverListener extends MouseAdapter {
+  private ButtonModel getButtonModel(MouseEvent e) {
+    JComboBox<?> cb = (JComboBox<?>) e.getComponent();
+    JButton b = (JButton) cb.getComponent(0);
+    return b.getModel();
+  }
+
+  @Override public void mouseEntered(MouseEvent e) {
+    getButtonModel(e).setRollover(true);
+  }
+
+  @Override public void mouseExited(MouseEvent e) {
+    getButtonModel(e).setRollover(false);
+  }
+
+  @Override public void mousePressed(MouseEvent e) {
+    getButtonModel(e).setPressed(true);
+  }
+
+  @Override public void mouseReleased(MouseEvent e) {
+    getButtonModel(e).setPressed(false);
   }
 }
