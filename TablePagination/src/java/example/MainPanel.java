@@ -17,7 +17,6 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
-  private static final LinkViewRadioButtonUI LINK_VIEW = new LinkViewRadioButtonUI();
   private static final int LR_PAGE_SIZE = 5;
   private final Box box = Box.createHorizontalBox();
   private final String[] columnNames = {"Year", "String", "Comment"};
@@ -134,9 +133,14 @@ public final class MainPanel extends JPanel {
         }
         super.fireStateChanged();
       }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new LinkViewRadioButtonUI());
+        setForeground(Color.BLUE);
+        fireStateChanged();
+      }
     };
-    radio.setForeground(Color.BLUE);
-    radio.setUI(LINK_VIEW);
     if (target == current) {
       radio.setSelected(true);
     }
@@ -145,9 +149,13 @@ public final class MainPanel extends JPanel {
   }
 
   private JRadioButton makePrevNextButton(int itemsPerPage, int tgt, String txt, boolean flg) {
-    JRadioButton radio = new JRadioButton(txt);
-    radio.setForeground(Color.BLUE);
-    radio.setUI(LINK_VIEW);
+    JRadioButton radio = new JRadioButton(txt) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new LinkViewRadioButtonUI());
+        setForeground(Color.BLUE);
+      }
+    };
     radio.setEnabled(flg);
     radio.addActionListener(e -> initLinkBox(itemsPerPage, tgt));
     return radio;
