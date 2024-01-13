@@ -24,41 +24,47 @@ public final class MainPanel extends JPanel {
     JTextField field = new JTextField();
     field.setInputVerifier(new LengthInputVerifier());
 
-    JComboBox<String> combo1 = makeComboBox(10);
-    combo1.setEditable(true);
-    if (combo1.getUI() instanceof WindowsComboBoxUI) {
-      combo1.setUI(new WindowsComboBoxUI() {
-        @Override protected ComboPopup createPopup() {
-          return new BasicComboPopup2(comboBox);
-        }
-      });
-    } else {
-      combo1.setUI(new BasicComboBoxUI() {
-        @Override protected ComboPopup createPopup() {
-          return new BasicComboPopup2(comboBox);
-        }
-      });
-    }
-
-    JComboBox<String> combo2 = makeComboBox(20);
+    JComboBox<String> combo2 = new JComboBox<>(makeModel(20));
     combo2.setFocusable(false);
 
-    JComboBox<String> combo3 = makeComboBox(15);
+    JComboBox<String> combo3 = new JComboBox<>(makeModel(15));
     combo3.setEditable(true);
 
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("InputVerifier:", field));
     box.add(Box.createVerticalStrut(4));
-    box.add(makeTitledPanel("Default:", makeComboBox(5)));
+    box.add(makeTitledPanel("Default:", new JComboBox<>(makeModel(5))));
     box.add(Box.createVerticalStrut(4));
     box.add(makeTitledPanel("setFocusable(false):", combo2));
     box.add(Box.createVerticalStrut(4));
     box.add(makeTitledPanel("setEditable(true):", combo3));
     box.add(Box.createVerticalStrut(4));
-    box.add(makeTitledPanel("Override BasicComboPopup:", combo1));
+    box.add(makeTitledPanel("Override BasicComboPopup:", makeComboBox()));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JComboBox<String> makeComboBox() {
+    return new JComboBox<String>(makeModel(10)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsComboBoxUI) {
+          setUI(new WindowsComboBoxUI() {
+            @Override protected ComboPopup createPopup() {
+              return new BasicComboPopup2(comboBox);
+            }
+          });
+        } else {
+          setUI(new BasicComboBoxUI() {
+            @Override protected ComboPopup createPopup() {
+              return new BasicComboPopup2(comboBox);
+            }
+          });
+        }
+        setEditable(true);
+      }
+    };
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -68,10 +74,10 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JComboBox<String> makeComboBox(int size) {
+  private static ComboBoxModel<String> makeModel(int size) {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     IntStream.range(0, size).forEach(i -> model.addElement("No." + i));
-    return new JComboBox<>(model);
+    return model;
   }
 
   public static void main(String[] args) {

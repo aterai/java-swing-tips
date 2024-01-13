@@ -33,40 +33,48 @@ public final class MainPanel extends JPanel {
     //   }
     // }, AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 
-    JComboBox<String> combo1 = makeComboBox(5);
-    if (combo1.getUI() instanceof WindowsComboBoxUI) {
-      combo1.setUI(new WindowsComboBoxUI() {
-        @Override protected ComboPopup createPopup() {
-          return new BasicComboPopup2(comboBox);
+    JComboBox<String> combo1 = new JComboBox<String>(makeModel(5)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsComboBoxUI) {
+          setUI(new WindowsComboBoxUI() {
+            @Override protected ComboPopup createPopup() {
+              return new BasicComboPopup2(comboBox);
+            }
+          });
+        } else {
+          setUI(new BasicComboBoxUI() {
+            @Override protected ComboPopup createPopup() {
+              return new BasicComboPopup2(comboBox);
+            }
+          });
         }
-      });
-    } else {
-      combo1.setUI(new BasicComboBoxUI() {
-        @Override protected ComboPopup createPopup() {
-          return new BasicComboPopup2(comboBox);
-        }
-      });
-    }
+      }
+    };
 
-    JComboBox<String> combo2 = makeComboBox(20);
-    if (combo2.getUI() instanceof WindowsComboBoxUI) {
-      combo2.setUI(new WindowsComboBoxUI() {
-        @Override protected ComboPopup createPopup() {
-          return new BasicComboPopup3(comboBox);
+    JComboBox<String> combo2 = new JComboBox<String>(makeModel(20)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        if (getUI() instanceof WindowsComboBoxUI) {
+          setUI(new WindowsComboBoxUI() {
+            @Override protected ComboPopup createPopup() {
+              return new BasicComboPopup3(comboBox);
+            }
+          });
+        } else {
+          setUI(new BasicComboBoxUI() {
+            @Override protected ComboPopup createPopup() {
+              return new BasicComboPopup3(comboBox);
+            }
+          });
         }
-      });
-    } else {
-      combo2.setUI(new BasicComboBoxUI() {
-        @Override protected ComboPopup createPopup() {
-          return new BasicComboPopup3(comboBox);
-        }
-      });
-    }
+      }
+    };
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("default:", makeComboBox(5)));
+    box.add(makeTitledPanel("default:", new JComboBox<>(makeModel(5))));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("default:", makeComboBox(20)));
+    box.add(makeTitledPanel("default:", new JComboBox<>(makeModel(20))));
     box.add(Box.createVerticalStrut(5));
     box.add(makeTitledPanel("disable right click in drop-down list:", combo1));
     box.add(Box.createVerticalStrut(5));
@@ -87,6 +95,11 @@ public final class MainPanel extends JPanel {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     IntStream.range(0, size).forEach(i -> model.addElement("No." + i));
     return new JComboBox<>(model);
+  }
+  private static ComboBoxModel<String> makeModel(int size) {
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+    IntStream.range(0, size).forEach(i -> model.addElement("No." + i));
+    return model;
   }
 
   public static void main(String[] args) {
@@ -200,18 +213,18 @@ class BasicComboPopup3 extends BasicComboPopup {
         MouseEvent ev = e;
         if (e.isControlDown()) {
           // Fix for 4234053. Filter out the Control Key from the list.
-          // ie., don't allow CTRL key deselection.
+          // i.e., don't allow CTRL key deselection.
           ev = new MouseEvent(
-            e.getComponent(), e.getID(), e.getWhen(),
-            // e.getModifiers() ^ InputEvent.CTRL_MASK,
-            // Java 10:
-            // e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
-            e.getModifiersEx() ^ InputEvent.CTRL_DOWN_MASK,
-            e.getX(), e.getY(),
-            e.getXOnScreen(), e.getYOnScreen(),
-            e.getClickCount(),
-            e.isPopupTrigger(),
-            MouseEvent.NOBUTTON);
+              e.getComponent(), e.getID(), e.getWhen(),
+              // e.getModifiers() ^ InputEvent.CTRL_MASK,
+              // Java 10:
+              // e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
+              e.getModifiersEx() ^ InputEvent.CTRL_DOWN_MASK,
+              e.getX(), e.getY(),
+              e.getXOnScreen(), e.getYOnScreen(),
+              e.getClickCount(),
+              e.isPopupTrigger(),
+              MouseEvent.NOBUTTON);
         }
         super.processMouseEvent(ev);
       }
