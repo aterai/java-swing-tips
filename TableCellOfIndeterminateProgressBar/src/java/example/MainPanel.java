@@ -49,6 +49,10 @@ public final class MainPanel extends JPanel {
         return c;
       });
     }
+
+    @Override public boolean isCellEditable(int row, int column) {
+      return false;
+    }
   };
   private final Set<Integer> deletedRowSet = new TreeSet<>();
   private int number;
@@ -250,15 +254,18 @@ class BackgroundTask extends SwingWorker<Integer, Object> {
 
   private int calculateTaskSize() throws InterruptedException {
     int total = 0;
-    IndeterminateProgressBarUI ui = new IndeterminateProgressBarUI();
-    JProgressBar indeterminate = new JProgressBar();
-    indeterminate.setUI(ui);
+    JProgressBar indeterminate = new JProgressBar() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new IndeterminateProgressBarUI());
+      }
+    };
     indeterminate.setIndeterminate(true);
     // Indeterminate loop:
     for (int i = 0; i < 200; i++) {
       int iv = rnd.nextInt(50) + 1;
       Thread.sleep(iv);
-      ui.incrementAnimationIndex();
+      ((IndeterminateProgressBarUI) indeterminate.getUI()).incrementAnimationIndex();
       publish(indeterminate);
       total += iv;
     }

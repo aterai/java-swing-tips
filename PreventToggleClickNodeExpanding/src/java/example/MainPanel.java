@@ -13,7 +13,6 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.metal.MetalTreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
