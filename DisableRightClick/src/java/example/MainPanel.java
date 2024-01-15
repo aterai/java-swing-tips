@@ -91,11 +91,6 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JComboBox<String> makeComboBox(int size) {
-    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    IntStream.range(0, size).forEach(i -> model.addElement("No." + i));
-    return new JComboBox<>(model);
-  }
   private static ComboBoxModel<String> makeModel(int size) {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     IntStream.range(0, size).forEach(i -> model.addElement("No." + i));

@@ -17,6 +17,12 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JList<ListItem> list = new EditableList<>(makeModel());
+    add(new JScrollPane(list));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ListModel<ListItem> makeModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
@@ -31,10 +37,7 @@ public final class MainPanel extends JPanel {
     model.addElement(new ListItem("yellow", new ColorIcon(Color.YELLOW)));
     model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
     model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
-
-    JList<ListItem> list = new EditableList<>(model);
-    add(new JScrollPane(list));
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
   public static void main(String[] args) {
@@ -243,7 +246,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     }
   };
 
-  protected EditableList(DefaultListModel<E> model) {
+  protected EditableList(ListModel<E> model) {
     super(model);
     editor.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(Color.BLACK),
