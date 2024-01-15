@@ -15,28 +15,37 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JToolBar toolBar = makeToolBar("Override createDockingListener()");
-    toolBar.setUI(new BasicToolBarUI() {
-      @Override protected MouseInputListener createDockingListener() {
-        return new DockingListener2(toolBar, super.createDockingListener());
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+    JToolBar t0 = new JToolBar("Default");
+    tabs.addTab(t0.getName(), makePanel(t0));
+
+    JToolBar t1 = new JToolBar("Override createDockingListener()") {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new BasicToolBarUI() {
+          @Override protected MouseInputListener createDockingListener() {
+            return new DockingListener2(toolBar, super.createDockingListener());
+          }
+        });
       }
-    });
+    };
+    tabs.addTab(t1.getName(), makePanel(t1));
 
-    JPanel p = new JPanel(new BorderLayout());
-    p.add(new JScrollPane(new JTree()));
-    p.add(toolBar, BorderLayout.NORTH);
-    p.add(makeToolBar("DisableRightButtonDraggedOut"), BorderLayout.SOUTH);
-    p.add(makeToolBar("Default"), BorderLayout.WEST);
+    JToolBar t2 = new JToolBar("DisableRightButtonDraggedOut");
+    LayerUI<Container> l2 = new DisableRightButtonDragOutLayerUI();
+    tabs.addTab(t2.getName(), new JLayer<>(makePanel(t2), l2));
 
-    add(new JLayer<>(p, new DisableRightButtonDragOutLayerUI()));
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JToolBar makeToolBar(String title) {
-    JToolBar toolBar = new JToolBar(title);
-    toolBar.add(new JLabel(title));
+  private static JToolBar initToolBar(JToolBar toolBar) {
+    toolBar.add(new JLabel(toolBar.getName()));
     toolBar.add(Box.createRigidArea(new Dimension(5, 5)));
-    toolBar.add(new JButton("Button"));
+    toolBar.add(new JButton("JButton"));
+    toolBar.add(new JCheckBox("JCheckBox"));
     toolBar.add(Box.createGlue());
 
     JPopupMenu popup = new JPopupMenu();
@@ -45,6 +54,13 @@ public final class MainPanel extends JPanel {
     popup.add("Item 3");
     toolBar.setComponentPopupMenu(popup);
     return toolBar;
+  }
+
+  private static JPanel makePanel(JToolBar toolBar) {
+    JPanel p = new JPanel(new BorderLayout());
+    p.add(initToolBar(toolBar), BorderLayout.NORTH);
+    p.add(new JScrollPane(new JTree()));
+    return p;
   }
 
   public static void main(String[] args) {
@@ -105,7 +121,7 @@ class DockingListener2 extends MouseInputAdapter {
   }
 }
 
-class DisableRightButtonDragOutLayerUI extends LayerUI<JPanel> {
+class DisableRightButtonDragOutLayerUI extends LayerUI<Container> {
   @Override public void installUI(JComponent c) {
     super.installUI(c);
     if (c instanceof JLayer) {
@@ -120,7 +136,7 @@ class DisableRightButtonDragOutLayerUI extends LayerUI<JPanel> {
     super.uninstallUI(c);
   }
 
-  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JPanel> l) {
+  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends Container> l) {
     Component c = e.getComponent();
     if (c instanceof JToolBar) {
       boolean dragEvent = e.getID() == MouseEvent.MOUSE_DRAGGED;
