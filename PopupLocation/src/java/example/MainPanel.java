@@ -40,6 +40,20 @@ public final class MainPanel extends JPanel {
     };
     field2.setComponentPopupMenu(popup);
 
+    JList<ListItem> list = new NewspaperStyleList(makeModel());
+    list.setComponentPopupMenu(popup);
+
+    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    p.add(field1);
+    p.add(field2);
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(list));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ListModel<ListItem> makeModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
@@ -54,18 +68,7 @@ public final class MainPanel extends JPanel {
     model.addElement(new ListItem("yellow", new ColorIcon(Color.YELLOW)));
     model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
     model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
-
-    JList<ListItem> list = new NewspaperStyleList<>(model);
-    list.setComponentPopupMenu(popup);
-
-    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    p.add(field1);
-    p.add(field2);
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(list));
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
   public static void main(String[] args) {
@@ -90,7 +93,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
+class ListItemListCellRenderer implements ListCellRenderer<ListItem> {
   protected static final Color SELECTED_COLOR = new Color(0xAE_16_64_FF, true);
   private final JLabel icon = new JLabel(null, null, SwingConstants.CENTER);
   private final JLabel label = new JLabel(" ", SwingConstants.CENTER);
@@ -126,7 +129,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     renderer.add(label, BorderLayout.SOUTH);
   }
 
-  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+  @Override public Component getListCellRendererComponent(JList<? extends ListItem> list, ListItem value, int index, boolean isSelected, boolean cellHasFocus) {
     icon.setIcon(value.getIcon());
     label.setText(value.getTitle());
     renderer.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
@@ -141,11 +144,11 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
   }
 }
 
-class ListItem {
+final class ListItem {
   private final Icon icon;
   private final String title;
 
-  protected ListItem(String title, Icon icon) {
+  public ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
   }
@@ -185,8 +188,8 @@ class ColorIcon implements Icon {
   }
 }
 
-class NewspaperStyleList<E extends ListItem> extends JList<E> {
-  protected NewspaperStyleList(DefaultListModel<E> model) {
+class NewspaperStyleList extends JList<ListItem> {
+  protected NewspaperStyleList(ListModel<ListItem> model) {
     super(model);
   }
 
@@ -201,7 +204,7 @@ class NewspaperStyleList<E extends ListItem> extends JList<E> {
     setFixedCellWidth(64);
     setFixedCellHeight(64);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setCellRenderer(new ListItemListCellRenderer<>());
+    setCellRenderer(new ListItemListCellRenderer());
   }
 
   @Override public Point getPopupLocation(MouseEvent event) {
