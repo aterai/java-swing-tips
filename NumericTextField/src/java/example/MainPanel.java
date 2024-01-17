@@ -146,12 +146,12 @@ class IntegerDocument extends PlainDocument {
     super.remove(offset, length);
   }
 
-  private void checkInput(String proposedValue, int offset) throws BadLocationException {
-    if (!proposedValue.isEmpty()) {
+  private void checkInput(String value, int offset) throws BadLocationException {
+    if (!value.isEmpty()) {
       try {
-        Integer.parseInt(proposedValue);
+        Integer.parseInt(value);
       } catch (NumberFormatException ex) {
-        throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
+        throw (BadLocationException) new BadLocationException(value, offset).initCause(ex);
       }
     }
   }

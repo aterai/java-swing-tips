@@ -125,7 +125,11 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeTitle(Color bgc) {
-    String txt = "Wolfgang Amadeus Mozart\nPiano Sonata No. 11 in A major, K 331\n(Turkish Rondo)";
+    String txt = String.join(
+        "\n",
+        "Wolfgang Amadeus Mozart",
+        "Piano Sonata No. 11 in A major, K 331",
+        "(Turkish Rondo)");
     JTextArea label = new JTextArea(txt);
     label.setBorder(BorderFactory.createTitledBorder("MIDI"));
     label.setEditable(false);

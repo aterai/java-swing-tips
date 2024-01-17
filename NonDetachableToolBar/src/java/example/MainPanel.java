@@ -51,7 +51,10 @@ public final class MainPanel extends JPanel {
     toolBar.add(Box.createGlue());
 
     JCheckBox movable = new JCheckBox("Floatable(movable)", true);
-    movable.addActionListener(e -> toolBar.setFloatable(((JCheckBox) e.getSource()).isSelected()));
+    movable.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      toolBar.setFloatable(b);
+    });
 
     JPanel p = new JPanel();
     p.add(movable);
