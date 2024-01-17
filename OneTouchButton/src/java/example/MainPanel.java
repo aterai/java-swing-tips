@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 public final class MainPanel extends JPanel {
@@ -21,7 +20,10 @@ public final class MainPanel extends JPanel {
     JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT) {
       @Override public void updateUI() {
         super.updateUI();
-        EventQueue.invokeLater(() -> updateDividerColor(((BasicSplitPaneUI) getUI()).getDivider()));
+        EventQueue.invokeLater(() -> {
+          Container divider = ((BasicSplitPaneUI) getUI()).getDivider();
+          updateDividerColor(divider);
+        });
       }
     };
     splitPane.setTopComponent(new JScrollPane(new JTable(8, 3)));
@@ -36,7 +38,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void updateDividerColor(BasicSplitPaneDivider divider) {
+  public static void updateDividerColor(Container divider) {
     // divider.setBorder(BorderFactory.createMatteBorder(20, 0, 5, 0, Color.RED)); // bug?
     // divider.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
     divider.setBackground(Color.ORANGE);
