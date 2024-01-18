@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,13 +19,25 @@ public final class MainPanel extends JPanel {
     log.setText("awt.file.showHiddenFiles: " + showHiddenFiles + "\n");
 
     JFileChooser chooser = new JFileChooser();
-    Optional.ofNullable(searchPopupMenu(chooser)).ifPresent(pop -> {
-      pop.addSeparator();
-      JCheckBoxMenuItem mi = new JCheckBoxMenuItem("isFileHidingEnabled");
-      mi.addActionListener(e -> chooser.setFileHidingEnabled(mi.isSelected()));
-      mi.setSelected(chooser.isFileHidingEnabled());
-      pop.add(mi);
-    });
+    // Optional.ofNullable(searchPopupMenu(chooser)).ifPresent(pop -> {
+    //   pop.addSeparator();
+    //   JCheckBoxMenuItem item = new JCheckBoxMenuItem("isFileHidingEnabled");
+    //   item.addActionListener(e -> chooser.setFileHidingEnabled(item.isSelected()));
+    //   item.setSelected(chooser.isFileHidingEnabled());
+    //   pop.add(item);
+    // });
+    SwingUtils.descendants(chooser)
+        .filter(JComponent.class::isInstance)
+        .map(c -> ((JComponent) c).getComponentPopupMenu())
+        .filter(Objects::nonNull)
+        .findFirst()
+        .ifPresent(pop -> {
+          pop.addSeparator();
+          JCheckBoxMenuItem item = new JCheckBoxMenuItem("isFileHidingEnabled");
+          item.addActionListener(e -> chooser.setFileHidingEnabled(item.isSelected()));
+          item.setSelected(chooser.isFileHidingEnabled());
+          pop.add(item);
+        });
 
     JButton button = new JButton("showOpenDialog");
     button.addActionListener(e -> {
@@ -43,19 +55,20 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPopupMenu searchPopupMenu(Container parent) {
-    for (Component c : parent.getComponents()) {
-      if (c instanceof JComponent && Objects.nonNull(((JComponent) c).getComponentPopupMenu())) {
-        return ((JComponent) c).getComponentPopupMenu();
-      } else {
-        JPopupMenu pop = searchPopupMenu((Container) c);
-        if (Objects.nonNull(pop)) {
-          return pop;
-        }
-      }
-    }
-    return null;
-  }
+  // private static JPopupMenu searchPopupMenu(Container parent) {
+  //   for (Component c : parent.getComponents()) {
+  //     if (c instanceof JComponent &&
+  //         Objects.nonNull(((JComponent) c).getComponentPopupMenu())) {
+  //       return ((JComponent) c).getComponentPopupMenu();
+  //     } else {
+  //       JPopupMenu pop = searchPopupMenu((Container) c);
+  //       if (Objects.nonNull(pop)) {
+  //         return pop;
+  //       }
+  //     }
+  //   }
+  //   return null;
+  // }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
@@ -76,5 +89,17 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+final class SwingUtils {
+  private SwingUtils() {
+    /* Singleton */
+  }
+
+  public static Stream<Component> descendants(Container parent) {
+    return Stream.of(parent.getComponents())
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }
