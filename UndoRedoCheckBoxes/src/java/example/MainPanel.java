@@ -79,8 +79,8 @@ public final class MainPanel extends JPanel {
 
   private JCheckBox makeCheckBox(int idx) {
     BigInteger l = BigInteger.ONE.shiftLeft(idx);
-    JCheckBox c = new JCheckBox(Integer.toString(idx + 1), !status.and(l).equals(BigInteger.ZERO));
-    // c.setSelected(!status.and(l).equals(BigInteger.ZERO));
+    boolean selected = !status.and(l).equals(BigInteger.ZERO);
+    JCheckBox c = new JCheckBox(Integer.toString(idx + 1), selected);
     c.addActionListener(e -> {
       JCheckBox cb = (JCheckBox) e.getSource();
       BigInteger newValue = cb.isSelected() ? status.or(l) : status.xor(l);

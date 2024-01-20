@@ -50,7 +50,8 @@ public final class MainPanel extends JPanel {
       String cmd = "viewTypeDetails";
       Action detailsAction = chooser.getActionMap().get(cmd);
       if (Objects.nonNull(detailsAction)) {
-        detailsAction.actionPerformed(new ActionEvent(chooser, ActionEvent.ACTION_PERFORMED, cmd));
+        ActionEvent ae = new ActionEvent(chooser, ActionEvent.ACTION_PERFORMED, cmd);
+        detailsAction.actionPerformed(ae);
       }
       descendants(chooser)
           .filter(JTable.class::isInstance)
