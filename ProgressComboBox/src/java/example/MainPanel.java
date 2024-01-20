@@ -25,7 +25,8 @@ public final class MainPanel extends JPanel {
         if (index < 0 && isWorking()) {
           return bar;
         }
-        return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        return renderer.getListCellRendererComponent(
+            list, value, index, isSelected, cellHasFocus);
       });
     }
   };
@@ -96,7 +97,8 @@ public final class MainPanel extends JPanel {
   //       bar.setValue(counter);
   //       return bar;
   //     }
-  //     return renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+  //     return renderer.getListCellRendererComponent(
+  //         list, value, index, isSelected, cellHasFocus);
   //   }
   // }
 

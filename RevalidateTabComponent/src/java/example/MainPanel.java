@@ -226,6 +226,11 @@ class FocusAncestorListener implements AncestorListener {
 // class TabTitleEditListener extends MouseAdapter implements ChangeListener {
 //   protected final JTextField editor = new JTextField();
 //   protected final JTabbedPane tabbedPane;
+//   private int editing_idx = -1;
+//   private int len = -1;
+//   private Dimension dim;
+//   private Component tabComponent = null; // <----add----
+//
 //   protected TabTitleEditListener(JTabbedPane tabbedPane) {
 //     super();
 //     this.tabbedPane = tabbedPane;
@@ -255,21 +260,21 @@ class FocusAncestorListener implements AncestorListener {
 //       }
 //     });
 //   }
+//
 //   @Override public void stateChanged(ChangeEvent e) {
 //     renameTabTitle();
 //   }
+//
 //   @Override public void mouseClicked(MouseEvent e) {
-//     Rectangle rect = tabbedPane.getUI().getTabBounds(tabbedPane, tabbedPane.getSelectedIndex());
-//     if (Objects.nonNull(rect) && rect.contains(e.getPoint()) && e.getClickCount() - 2 >= 0) {
+//     int i = tabbedPane.getSelectedIndex();
+//     Rectangle r = tabbedPane.getUI().getTabBounds(tabbedPane, i);
+//     if (Objects.nonNull(r) && rect.contains(e.getPoint()) && e.getClickCount() - 2 >= 0) {
 //       startEditing();
 //     } else {
 //       renameTabTitle();
 //     }
 //   }
-//   private int editing_idx = -1;
-//   private int len = -1;
-//   private Dimension dim;
-//   private Component tabComponent = null; // <----add----
+//
 //   private void startEditing() {
 //     editing_idx = tabbedPane.getSelectedIndex();
 //     tabComponent = tabbedPane.getTabComponentAt(editing_idx); // <----add----
@@ -282,6 +287,7 @@ class FocusAncestorListener implements AncestorListener {
 //     dim = editor.getPreferredSize();
 //     editor.setMinimumSize(dim);
 //   }
+//
 //   private void cancelEditing() {
 //     if (editing_idx >= 0) {
 //       tabbedPane.setTabComponentAt(editing_idx, tabComponent); // <----add----
@@ -292,6 +298,7 @@ class FocusAncestorListener implements AncestorListener {
 //       tabbedPane.requestFocusInWindow();
 //     }
 //   }
+//
 //   private void renameTabTitle() {
 //     String title = editor.getText().trim();
 //     if (editing_idx >= 0 && !title.isEmpty()) {

@@ -134,7 +134,8 @@ class HeaderRenderer implements TableCellRenderer {
     check.setOpaque(false);
     check.setFont(table.getFont());
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    Component c = r.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    Component c = r.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       label.setIcon(new ComponentIcon(check));

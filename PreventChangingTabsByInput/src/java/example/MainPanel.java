@@ -61,7 +61,9 @@ public final class MainPanel extends JPanel {
         return d;
       }
     };
-    IntStream.range(0, 4).mapToObj(i -> "Step" + i).forEach(t -> tabs.addTab(t, new JTextField(t)));
+    IntStream.range(0, 4)
+        .mapToObj(i -> "Step" + i)
+        .forEach(t -> tabs.addTab(t, new JTextField(t)));
     tabs.setFocusable(false);
     return tabs;
   }

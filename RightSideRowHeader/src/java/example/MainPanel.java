@@ -85,7 +85,8 @@ public final class MainPanel extends JPanel {
     JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
       sorter.setSortKeys(null);
-      IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
+      IntStream.range(0, 100)
+          .forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
     });
 
     add(scroll);
@@ -166,12 +167,12 @@ public final class MainPanel extends JPanel {
 @SuppressWarnings("PMD.GodClass")
 class RightFixedScrollPaneLayout extends ScrollPaneLayout {
   @SuppressWarnings({
-    "PMD.CognitiveComplexity",
-    "PMD.CyclomaticComplexity",
-    "PMD.ExcessiveMethodLength",
-    "PMD.NcssCount",
-    "PMD.NPathComplexity",
-    "checkstyle:methodlength"
+      "PMD.CognitiveComplexity",
+      "PMD.CyclomaticComplexity",
+      "PMD.ExcessiveMethodLength",
+      "PMD.NcssCount",
+      "PMD.NPathComplexity",
+      "checkstyle:methodlength"
   })
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JScrollPane)) {

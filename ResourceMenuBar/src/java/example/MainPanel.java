@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
 
   private Action[] getActions() {
     return new Action[] {
-      new NewAction(),
-      new ExitAction(),
-      new HelpAction(),
-      new VersionAction()
+        new NewAction(),
+        new ExitAction(),
+        new HelpAction(),
+        new VersionAction()
     };
     // return defaultActions;
   }
@@ -142,8 +142,8 @@ class VersionAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    JComponent c = (JComponent) e.getSource();
+    Component c = ((JComponent) e.getSource()).getRootPane();
     Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
-    JOptionPane.showMessageDialog(c.getRootPane(), obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(c, obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
   }
 }

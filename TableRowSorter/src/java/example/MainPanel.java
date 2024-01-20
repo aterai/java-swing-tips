@@ -33,7 +33,8 @@ public final class MainPanel extends JPanel {
 
     TableCellRenderer renderer = (tbl, value, isSelected, hasFocus, row, column) -> {
       TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
-      Component c = r.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+      Component c = r.getTableCellRendererComponent(
+          tbl, value, isSelected, hasFocus, row, column);
       RowSorter<? extends TableModel> rs = tbl.getRowSorter();
       if (rs instanceof DefaultRowSorter) {
         int cmi = tbl.convertColumnIndexToModel(column);
