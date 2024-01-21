@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RoundedCornerPopupMenu" />
+  <property name="jnlp.Name"     value="RoundedCornerPopupMenu" />
+  <property name="jnlp.name"     value="roundedcornerpopupmenu" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/roundedcornerpopupmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RoundedCornerPopupMenu.html" />
+</project>
