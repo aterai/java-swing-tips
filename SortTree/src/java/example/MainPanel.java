@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
       } else {
         TreeUtils.COMPARE_COUNTER.set(0);
         TreeUtils.SWAP_COUNTER.set(0);
-        DefaultMutableTreeNode r = TreeUtils.deepCopy(root, (DefaultMutableTreeNode) root.clone());
+        DefaultMutableTreeNode clone = (DefaultMutableTreeNode) root.clone();
+        DefaultMutableTreeNode r = TreeUtils.deepCopy(root, clone);
         if (check.equals(sort1)) {
           TreeUtils.sortTree1(r);
         } else if (check.equals(sort2)) {

@@ -64,7 +64,8 @@ public final class MainPanel extends JPanel {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       Insets m = UIManager.getInsets("TextField.margin");
-      UIManager.put("TextField.margin", new InsetsUIResource(m.top, m.left + 5, m.bottom, m.right));
+      Insets ins = new InsetsUIResource(m.top, m.left + 5, m.bottom, m.right);
+      UIManager.put("TextField.margin", ins);
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
