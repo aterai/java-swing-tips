@@ -18,21 +18,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 0));
-    String[] columnNames = {"A", "B", "C"};
-    Object[][] data = {
-        {"A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1"},
-        {"A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1"},
-        {"A2, Line1", "B2, Line1", "C2, Line1"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-    };
+    TableModel model = makeModel();
     JTable table1 = new JTable(model);
     table1.setAutoCreateRowSorter(true);
     table1.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
@@ -71,6 +57,24 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table1));
     add(new JScrollPane(table2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B", "C"};
+    Object[][] data = {
+        {"A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1"},
+        {"A1, Line1", "B1, Line1\nB1, Line2", "C1, Line1"},
+        {"A2, Line1", "B2, Line1", "C2, Line1"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
   }
 
   private JCheckBoxMenuItem makeCheckBoxMenuItem(String title, UIDefaults d) {
@@ -147,7 +151,9 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
   protected MyCheckBoxMenuItemPainter(CheckIcon state) {
     super();
     this.state = state;
-    this.ctx = new PaintContext(new Insets(5, 5, 5, 5), new Dimension(9, 10), false, null, 1d, 1d);
+    Insets ins = new Insets(5, 5, 5, 5);
+    Dimension dim = new Dimension(9, 10);
+    this.ctx = new PaintContext(ins, dim, false, null, 1d, 1d);
   }
 
   @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] keys) {
