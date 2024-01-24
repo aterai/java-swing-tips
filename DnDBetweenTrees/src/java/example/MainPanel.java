@@ -122,8 +122,8 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport support) {
-    Component c = support.getComponent();
-    return support.isDrop() && support.isDataFlavorSupported(FLAVOR) && !Objects.equals(source, c);
+    boolean equals = Objects.equals(source, support.getComponent());
+    return !equals && support.isDrop() && support.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
