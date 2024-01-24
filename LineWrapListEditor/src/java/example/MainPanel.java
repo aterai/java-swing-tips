@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.stream.IntStream;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -173,12 +174,9 @@ class ClearSelectionListener extends MouseAdapter {
   }
 
   private static <E> boolean contains(JList<E> list, Point pt) {
-    for (int i = 0; i < list.getModel().getSize(); i++) {
-      if (list.getCellBounds(i, i).contains(pt)) {
-        return true;
-      }
-    }
-    return false;
+    return IntStream.range(0, list.getModel().getSize())
+        .mapToObj(i -> list.getCellBounds(i, i))
+        .anyMatch(r -> r != null && r.contains(pt));
   }
 
   @Override public void mousePressed(MouseEvent e) {

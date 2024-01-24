@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -91,14 +92,20 @@ class ClearSelectionListener extends MouseInputAdapter {
   }
 
   private static <E> boolean contains(JList<E> list, Point pt) {
-    for (int i = 0; i < list.getModel().getSize(); i++) {
-      Rectangle r = list.getCellBounds(i, i);
-      if (r != null && r.contains(pt)) {
-        return true;
-      }
-    }
-    return false;
+    return IntStream.range(0, list.getModel().getSize())
+        .mapToObj(i -> list.getCellBounds(i, i))
+        .anyMatch(r -> r != null && r.contains(pt));
   }
+
+  // private static <E> boolean contains(JList<E> list, Point pt) {
+  //   for (int i = 0; i < list.getModel().getSize(); i++) {
+  //     Rectangle r = list.getCellBounds(i, i);
+  //     if (r != null && r.contains(pt)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   @Override public void mousePressed(MouseEvent e) {
     JList<?> list = (JList<?>) e.getComponent();

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -284,13 +285,9 @@ class ClearSelectionListener extends MouseInputAdapter {
   }
 
   private static <E> boolean contains(JList<E> list, Point pt) {
-    for (int i = 0; i < list.getModel().getSize(); i++) {
-      Rectangle r = list.getCellBounds(i, i);
-      if (r != null && r.contains(pt)) {
-        return true;
-      }
-    }
-    return false;
+    return IntStream.range(0, list.getModel().getSize())
+        .mapToObj(i -> list.getCellBounds(i, i))
+        .anyMatch(r -> r != null && r.contains(pt));
   }
 
   @Override public void mousePressed(MouseEvent e) {
