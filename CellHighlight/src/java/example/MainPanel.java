@@ -65,14 +65,13 @@ class HighlightListener extends MouseAdapter {
   private int viewColumnIndex = -1;
 
   public Optional<Color> getCellHighlightColor(int row, int column) {
-    if (this.viewRowIndex == row || this.viewColumnIndex == column) {
-      if (this.viewRowIndex == row && this.viewColumnIndex == column) {
-        return Optional.of(HIGHLIGHT1);
-      } else {
-        return Optional.of(HIGHLIGHT2);
-      }
+    Optional<Color> op = Optional.empty();
+    boolean ri = this.viewRowIndex == row;
+    boolean ci = this.viewColumnIndex == column;
+    if (ri || ci) {
+      op = Optional.of(ri && ci ? HIGHLIGHT1 : HIGHLIGHT2);
     }
-    return Optional.empty();
+    return op;
   }
 
   private void setHighlightTableCell(MouseEvent e) {
