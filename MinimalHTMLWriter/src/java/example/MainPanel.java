@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -242,17 +243,12 @@ class HtmlTransferable implements Transferable {
 
   @Override public DataFlavor[] getTransferDataFlavors() {
     return new DataFlavor[] {
-      DataFlavor.allHtmlFlavor
+        DataFlavor.allHtmlFlavor
     };
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    for (DataFlavor supportedFlavor : getTransferDataFlavors()) {
-      if (supportedFlavor.equals(flavor)) {
-        return true;
-      }
-    }
-    return false;
+    return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
   }
 
   @Override public Object getTransferData(DataFlavor flavor)

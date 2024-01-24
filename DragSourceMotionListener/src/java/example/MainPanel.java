@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 @SuppressWarnings("PMD.ClassNamingConventions")
@@ -220,12 +221,7 @@ class LabelTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    for (DataFlavor f : getTransferDataFlavors()) {
-      if (flavor.equals(f)) {
-        return true;
-      }
-    }
-    return false;
+    return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
   }
 
   @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {

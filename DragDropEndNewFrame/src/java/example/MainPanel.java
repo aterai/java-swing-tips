@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
@@ -290,13 +291,7 @@ class TabTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    DataFlavor[] flavors = getTransferDataFlavors();
-    for (DataFlavor dataFlavor : flavors) {
-      if (dataFlavor.equals(flavor)) {
-        return true;
-      }
-    }
-    return false;
+    return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
   }
 }
 

@@ -99,13 +99,6 @@ public class BasicTransferable implements Transferable {
    * @return boolean indicating whether or not the data flavor is supported
    */
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    // DataFlavor[] flavors = getTransferDataFlavors();
-    // for (int i = 0; i < flavors.length; i++) {
-    //   if (flavors[i].equals(flavor)) {
-    //     return true;
-    //   }
-    // }
-    // return false;
     return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
   }
 
