@@ -83,14 +83,19 @@ public final class MainPanel extends JPanel {
   private static AbstractButton makeButton(JTree tree, TreePath path, Color color) {
     AbstractButton b = new JRadioButton(path.getLastPathComponent().toString()) {
       @Override public boolean contains(int x, int y) {
-        Icon i = getIcon();
-        if (i instanceof ArrowToggleButtonBarCellIcon) {
-          Shape s = ((ArrowToggleButtonBarCellIcon) i).getShape();
-          if (Objects.nonNull(s)) {
-            return s.contains(x, y);
-          }
-        }
-        return super.contains(x, y);
+        return Optional.ofNullable(getIcon())
+            .filter(ArrowToggleButtonBarCellIcon.class::isInstance)
+            .map(i -> ((ArrowToggleButtonBarCellIcon) i).getShape())
+            .map(s -> s.contains(x, y))
+            .orElseGet(() -> super.contains(x, y));
+        // Icon i = getIcon();
+        // if (i instanceof ArrowToggleButtonBarCellIcon) {
+        //   Shape s = ((ArrowToggleButtonBarCellIcon) i).getShape();
+        //   if (Objects.nonNull(s)) {
+        //     return s.contains(x, y);
+        //   }
+        // }
+        // return super.contains(x, y);
       }
     };
     if (Objects.nonNull(tree)) {
