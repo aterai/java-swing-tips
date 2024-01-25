@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -90,8 +91,13 @@ class ToolTipComboBox<E> extends JComboBox<E> {
         // @see BasicComboBoxUI#rectangleForCurrentValue
         // System.out.println(UIManager.getBoolean("ComboBox.squareButton"));
         // int buttonSize = getHeight() - i1.top - i1.bottom; // - ins.top - ins.bottom;
-        JButton arrowButton = getArrowButton(this);
-        int buttonSize = Objects.nonNull(arrowButton) ? arrowButton.getWidth() : rect.height;
+        // JButton arrowButton = getArrowButton(this);
+        // int buttonSize = arrowButton != null ? arrowButton.getWidth() : rect.height;
+        int buttonSize = Stream.of(getComponents())
+            .filter(JButton.class::isInstance)
+            .findFirst()
+            .map(Component::getWidth)
+            .orElse(rect.height);
         availableWidth -= buttonSize;
         JTextField tf = (JTextField) getEditor().getEditorComponent();
         availableWidth -= tf.getMargin().left + tf.getMargin().right;
@@ -99,14 +105,5 @@ class ToolTipComboBox<E> extends JComboBox<E> {
       }
       return c;
     });
-  }
-
-  private static JButton getArrowButton(Container combo) {
-    for (Component c : combo.getComponents()) {
-      if (c instanceof JButton) {
-        return (JButton) c;
-      }
-    }
-    return null;
   }
 }
