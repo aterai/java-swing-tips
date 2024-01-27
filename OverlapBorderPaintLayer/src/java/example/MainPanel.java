@@ -12,6 +12,7 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -89,14 +90,11 @@ public final class MainPanel extends JPanel {
   private static AbstractButton makeButton(String title, Icon icon, Color color) {
     AbstractButton b = new JRadioButton(title) {
       @Override public boolean contains(int x, int y) {
-        Icon i = getIcon();
-        if (i instanceof ArrowToggleButtonIcon) {
-          ArrowToggleButtonIcon icon = (ArrowToggleButtonIcon) i;
-          if (Objects.nonNull(icon.getShape())) {
-            return icon.getShape().contains(x, y);
-          }
-        }
-        return super.contains(x, y);
+        return Optional.ofNullable(getIcon())
+            .filter(ArrowToggleButtonIcon.class::isInstance)
+            .map(i -> ((ArrowToggleButtonIcon) i).getShape())
+            .map(s -> s.contains(x, y))
+            .orElseGet(() -> super.contains(x, y));
       }
     };
     b.setIcon(icon);
