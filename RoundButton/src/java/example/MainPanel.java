@@ -175,8 +175,9 @@ class RoundedCornerButton extends JButton {
   @Override public boolean contains(int x, int y) {
     initShape();
     // return shape != null && shape.contains(x, y);
-    // return Optional.ofNullable(shape).filter(s -> s.contains(x, y)).isPresent();
-    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
+    return Optional.ofNullable(shape)
+        .map(s -> s.contains(x, y))
+        .orElseGet(() -> super.contains(x, y));
   }
 }
 
@@ -280,8 +281,12 @@ class ShapeButton extends JButton {
   }
 
   @Override public boolean contains(int x, int y) {
-    return shape.contains(x, y);
+    // return shape != null && shape.contains(x, y);
+    return Optional.ofNullable(shape)
+        .map(s -> s.contains(x, y))
+        .orElseGet(() -> super.contains(x, y));
   }
+
   // // TEST:
   // @Override public Dimension getPreferredSize() {
   //   Rectangle r = shape.getBounds();
