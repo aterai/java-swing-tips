@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -194,6 +194,9 @@ class CompoundButton extends JButton {
   }
 
   @Override public boolean contains(int x, int y) {
-    return Objects.nonNull(shape) && shape.contains(x, y);
+    // return shape != null && shape.contains(x, y);
+    return Optional.ofNullable(shape)
+        .map(s -> s.contains(x, y))
+        .orElseGet(() -> super.contains(x, y));
   }
 }

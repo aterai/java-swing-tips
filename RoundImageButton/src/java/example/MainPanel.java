@@ -9,30 +9,12 @@ import java.awt.event.ItemEvent;
 import java.awt.geom.Ellipse2D;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Box box = Box.createHorizontalBox();
-    // JDK 5
-    // new Box(BoxLayout.X_AXIS) {
-    //   @Override protected void paintComponent(Graphics g) {
-    //     if (Objects.nonNull(ui)) {
-    //       super.paintComponent(g);
-    //     } else if (isOpaque()) {
-    //       g.setColor(getBackground());
-    //       g.fillRect(0, 0, getWidth(), getHeight());
-    //     }
-    //   }
-    // };
-    box.setOpaque(true);
-    box.setBackground(new Color(0x78_78_A0));
-    box.add(Box.createHorizontalGlue());
-    box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
-
     List<? extends JButton> buttons = Arrays.asList(
         new RoundButton("005.png", "005d.png", "005g.png"),
         new RoundButton("003.png", "003d.png", "003g.png"),
@@ -40,11 +22,7 @@ public final class MainPanel extends JPanel {
         new RoundButton("002.png", "002d.png", "002g.png"),
         new RoundButton("004.png", "004d.png", "004g.png"));
     // TEST: buttons = makeButtonArray2(getClass()); // Set ButtonUI
-    buttons.forEach(b -> {
-      box.add(b);
-      box.add(Box.createHorizontalStrut(5));
-    });
-    box.add(Box.createHorizontalGlue());
+    Box box = makeBox(buttons);
     add(box, BorderLayout.NORTH);
 
     JCheckBox check = new JCheckBox("ButtonBorder Color");
@@ -53,7 +31,6 @@ public final class MainPanel extends JPanel {
       buttons.forEach(b -> b.setBackground(bgc));
       box.repaint();
     });
-
     JPanel p = new JPanel();
     p.add(check);
 
@@ -70,6 +47,31 @@ public final class MainPanel extends JPanel {
     p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Box makeBox(List<? extends JButton> buttons) {
+    Box box = Box.createHorizontalBox();
+    // JDK 5
+    // new Box(BoxLayout.X_AXIS) {
+    //   @Override protected void paintComponent(Graphics g) {
+    //     if (Objects.nonNull(ui)) {
+    //       super.paintComponent(g);
+    //     } else if (isOpaque()) {
+    //       g.setColor(getBackground());
+    //       g.fillRect(0, 0, getWidth(), getHeight());
+    //     }
+    //   }
+    // };
+    box.setOpaque(true);
+    box.setBackground(new Color(0x78_78_A0));
+    box.add(Box.createHorizontalGlue());
+    box.setBorder(BorderFactory.createEmptyBorder(60, 10, 60, 10));
+    buttons.forEach(b -> {
+      box.add(b);
+      box.add(Box.createHorizontalStrut(5));
+    });
+    box.add(Box.createHorizontalGlue());
+    return box;
   }
 
   // // TEST:
@@ -209,7 +211,10 @@ class RoundButton extends JButton {
 
   @Override public boolean contains(int x, int y) {
     initShape();
-    return Objects.nonNull(shape) && shape.contains(x, y);
+    // return shape != null && shape.contains(x, y);
+    return Optional.ofNullable(shape)
+        .map(s -> s.contains(x, y))
+        .orElseGet(() -> super.contains(x, y));
   }
 }
 

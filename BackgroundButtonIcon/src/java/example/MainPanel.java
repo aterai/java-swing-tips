@@ -10,6 +10,7 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -30,9 +31,13 @@ public final class MainPanel extends JPanel {
     // https://java-swing-tips.blogspot.com/2008/11/rounded-corner-jbutton.html
     AbstractButton b = new JToggleButton(title) {
       private final transient ArrowToggleButtonCellIcon icon = new ArrowToggleButtonCellIcon();
+
       @Override public boolean contains(int x, int y) {
-        Shape s = icon.getShape();
-        return Objects.nonNull(s) && s.contains(x, y);
+        // Shape shape = icon.getShape();
+        // return shape != null && shape.contains(x, y);
+        return Optional.ofNullable(icon.getShape())
+            .map(s -> s.contains(x, y))
+            .orElseGet(() -> super.contains(x, y));
       }
 
       @Override public Dimension getPreferredSize() {
