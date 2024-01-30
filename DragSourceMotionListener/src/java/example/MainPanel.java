@@ -15,11 +15,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 import javax.swing.*;
 
 @SuppressWarnings("PMD.ClassNamingConventions")
@@ -221,7 +221,8 @@ class LabelTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
+    // return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
+    return Arrays.asList(getTransferDataFlavors()).contains(flavor);
   }
 
   @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {

@@ -23,11 +23,11 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
@@ -291,7 +291,7 @@ class TabTransferable implements Transferable {
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return Stream.of(getTransferDataFlavors()).anyMatch(f -> f.equals(flavor));
+    return Arrays.asList(getTransferDataFlavors()).contains(flavor);
   }
 }
 
