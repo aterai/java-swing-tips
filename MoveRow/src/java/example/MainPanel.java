@@ -127,6 +127,7 @@ final class TablePopupMenu extends JPopupMenu {
     //   table.setRowSelectionInterval(row, row);
     // }
     boolean flg = Arrays.stream(table.getSelectedRows()).anyMatch(i -> i == row);
+    // Java 9: boolean flg = List.of(table.getSelectedRows()).contains(row);
     if (row > 0 && !flg) {
       table.setRowSelectionInterval(row, row);
     }
