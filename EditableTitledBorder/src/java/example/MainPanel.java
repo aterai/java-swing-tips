@@ -233,21 +233,24 @@ class EditableTitledBorder extends TitledBorder {
     return justification;
   }
 
-  // @see public void paintBorder(Component c, Graphics g, int x, int y, int width, int height)
+  private Rectangle getLabelBounds(Component c) {
+    // @see public void paintBorder(Component c, Graphics g, int x, int y, int w, int h)
+    Border border = getBorder();
+    int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
+    Insets i = getBorderInsets(border, c);
+    JLabel label = getLabel2(c);
+    Dimension size = label.getPreferredSize();
+    Rectangle r = new Rectangle(c.getWidth() - i.left - i.right, size.height);
+    calcLabelPosition(c, edge, i, r);
+    calcLabelJustification(c, size, i, r);
+    return r;
+  }
+
   protected Rectangle getTitleBounds(Component c) {
-    String title = getTitle();
-    if (Objects.nonNull(title) && !title.isEmpty()) {
-      Border border = getBorder();
-      int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-      Insets i = getBorderInsets(border, c);
-      JLabel label = getLabel2(c);
-      Dimension size = label.getPreferredSize();
-      Rectangle r = new Rectangle(c.getWidth() - i.left - i.right, size.height);
-      calcLabelPosition(c, edge, i, r);
-      calcLabelJustification(c, size, i, r);
-      return r;
-    }
-    return new Rectangle();
+    return Optional.ofNullable(getTitle())
+        .filter(s -> !s.isEmpty())
+        .map(s -> getLabelBounds(c))
+        .orElseGet(Rectangle::new);
   }
 
   private void calcLabelPosition(Component c, int edge, Insets insets, Rectangle lblR) {
