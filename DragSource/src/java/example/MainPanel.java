@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -58,12 +57,9 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected Transferable createTransferable(JComponent c) {
-        File tmpFile = getFile();
-        if (Objects.nonNull(tmpFile)) {
-          return new TempFileTransferable(tmpFile);
-        } else {
-          return null;
-        }
+        return Optional.ofNullable(getFile())
+            .map(TempFileTransferable::new)
+            .orElse(null);
       }
 
       @Override protected void exportDone(JComponent c, Transferable data, int action) {
@@ -88,8 +84,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       File outfile;
       try {
-        outfile = File.createTempFile("test", ".tmp");
-        outfile.deleteOnExit();
+        outfile = createTempFile();
       } catch (IOException ex) {
         JComponent c = (JComponent) e.getSource();
         UIManager.getLookAndFeel().provideErrorFeedback(c);
@@ -117,7 +112,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public File getFile() {
+  private File createTempFile() throws IOException {
+    File tempFile = File.createTempFile("test", ".tmp");
+    tempFile.deleteOnExit();
+    return tempFile;
+  }
+
+  private File getFile() {
     return file;
   }
 
