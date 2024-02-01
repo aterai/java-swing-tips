@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -91,18 +92,18 @@ class SingleMouseClickSelectList<E> extends JList<E> {
     // JList where mouse click acts like ctrl-mouse click
     // https://community.oracle.com/thread/1351452
     return new MouseEvent(
-      e.getComponent(),
-      e.getID(), e.getWhen(),
-      // e.getModifiers() | InputEvent.CTRL_DOWN_MASK,
-      // select multiple objects in OS X: Command + click
-      // pointed out by nsby
-      e.getModifiersEx() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
-      // Java 10: e.getModifiersEx() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
-      e.getX(), e.getY(),
-      e.getXOnScreen(), e.getYOnScreen(),
-      e.getClickCount(),
-      e.isPopupTrigger(),
-      e.getButton());
+        e.getComponent(),
+        e.getID(), e.getWhen(),
+        // e.getModifiers() | InputEvent.CTRL_DOWN_MASK,
+        // select multiple objects in OS X: Command + click
+        // pointed out by nsby
+        e.getModifiersEx() | Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
+        // Java 10: ... | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
+        e.getX(), e.getY(),
+        e.getXOnScreen(), e.getYOnScreen(),
+        e.getClickCount(),
+        e.isPopupTrigger(),
+        e.getButton());
   }
 }
 
@@ -154,13 +155,16 @@ class SingleClickSelectList<E> extends JList<E> {
   }
 
   protected boolean cellsContains(Point pt) {
-    for (int i = 0; i < getModel().getSize(); i++) {
-      Rectangle r = getCellBounds(i, i);
-      if (r != null && r.contains(pt)) {
-        return true;
-      }
-    }
-    return false;
+    // for (int i = 0; i < getModel().getSize(); i++) {
+    //   Rectangle r = getCellBounds(i, i);
+    //   if (r != null && r.contains(pt)) {
+    //     return true;
+    //   }
+    // }
+    // return false;
+    return IntStream.range(0, getModel().getSize())
+        .mapToObj(i -> getCellBounds(i, i))
+        .anyMatch(r -> r != null && r.contains(pt));
   }
 
   protected class SelectionHandler extends MouseAdapter {
