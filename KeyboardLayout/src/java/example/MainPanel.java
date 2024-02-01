@@ -128,10 +128,12 @@ class KeyButton extends JButton {
   }
 
   @Override public Dimension getPreferredSize() {
+    Dimension d;
     if (square) {
-      return new Dimension(SIZE * 2, SIZE * 2);
+      d = new Dimension(SIZE * 2, SIZE * 2);
     } else {
-      return super.getPreferredSize();
+      d = super.getPreferredSize();
     }
+    return d;
   }
 }

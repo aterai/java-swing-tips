@@ -115,10 +115,9 @@ class IconTooltipItem extends JMenuItem {
         TEXT_RECT,
         this.getIconTextGap());
     String tip = super.getToolTipText(e);
-    if (tip == null) {
-      return null;
-    } else {
-      return (ICON_RECT.contains(e.getPoint()) ? "Icon: " : "Text: ") + tip;
+    if (tip != null) {
+      tip = (ICON_RECT.contains(e.getPoint()) ? "Icon: " : "Text: ") + tip;
     }
+    return tip;
   }
 }
