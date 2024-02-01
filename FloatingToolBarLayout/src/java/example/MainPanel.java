@@ -42,13 +42,15 @@ public final class MainPanel extends JPanel {
 
     JPanel panel = new JPanel() {
       @Override public Dimension getPreferredSize() {
+        Dimension dim;
         if (((BasicToolBarUI) toolBar.getUI()).isFloating()) {
           setLayout(new GridLayout(0, 3));
-          return new Dimension(ICON_SIZE * 3, ICON_SIZE * 2);
+          dim = new Dimension(ICON_SIZE * 3, ICON_SIZE * 2);
         } else {
           setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-          return super.getPreferredSize();
+          dim = super.getPreferredSize();
         }
+        return dim;
       }
 
       @Override public Dimension getMinimumSize() {

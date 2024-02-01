@@ -210,19 +210,21 @@ class ButtonTabComponent extends JPanel {
   private JLabel makeTitleLabel(JTabbedPane tabbedPane) {
     return new JLabel() {
       @Override public String getText() {
+        String txt = null;
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          return tabbedPane.getTitleAt(i);
+          txt = tabbedPane.getTitleAt(i);
         }
-        return null;
+        return txt;
       }
 
       @Override public Icon getIcon() {
+        Icon icn = null;
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          return tabbedPane.getIconAt(i);
+          icn = tabbedPane.getIconAt(i);
         }
-        return null;
+        return icn;
       }
 
       @Override public void updateUI() {
