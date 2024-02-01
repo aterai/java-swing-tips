@@ -19,26 +19,20 @@ public final class MainPanel extends JPanel {
     JTextArea textarea = new JTextArea("F2: startEditing\nF8: focusHeader\nF3: beep");
     textarea.setEditable(false);
 
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       // JTable starts editing when F3 is pressed - howto disable?
       // https://community.oracle.com/thread/1350192
       @Override public boolean editCellAt(int row, int column, EventObject e) {
+        return !isFunctionKey(e) && super.editCellAt(row, column, e);
+      }
+
+      private boolean isFunctionKey(EventObject e) {
+        boolean b = false;
         if (check.isSelected() && e instanceof KeyEvent) {
           int c = ((KeyEvent) e).getKeyCode();
-          if (KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21) {
-            return false;
-          }
+          b = KeyEvent.VK_F1 <= c && c <= KeyEvent.VK_F21;
         }
-        return super.editCellAt(row, column, e);
+        return b;
       }
       // private List<Integer> ignoreKeyList = Arrays.asList(
       //   KeyEvent.VK_F1, KeyEvent.VK_F4, KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7,
@@ -88,6 +82,18 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
