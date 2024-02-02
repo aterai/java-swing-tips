@@ -262,18 +262,20 @@ class TableRowTransferHandler extends TransferHandler {
 
   private static Optional<Component> getRootGlassPane(Component c) {
     Container dp = SwingUtilities.getAncestorOfClass(JDesktopPane.class, c);
+    Component glass = null;
     if (dp instanceof JDesktopPane) {
-      return Optional.ofNullable(((JComponent) dp).getRootPane().getGlassPane());
+      glass = ((JComponent) dp).getRootPane().getGlassPane();
     }
-    return Optional.empty();
+    return Optional.ofNullable(glass);
   }
 
   private static JInternalFrame getInternalFrame(Component c) {
     Container cn = SwingUtilities.getAncestorOfClass(JInternalFrame.class, c);
+    JInternalFrame frame = null;
     if (cn instanceof JInternalFrame) {
-      return (JInternalFrame) cn;
+      frame = (JInternalFrame) cn;
     }
-    return null;
+    return frame;
   }
 
   private boolean canDropTableIntersection(TransferHandler.TransferSupport info) {
