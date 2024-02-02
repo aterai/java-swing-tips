@@ -63,12 +63,12 @@ public final class MainPanel extends JPanel {
     JTextField textField = new JTextField(24);
     textField.setInputVerifier(new InputVerifier() {
       @Override public boolean verify(JComponent c) {
-        if (c instanceof JTextComponent) {
-          JTextComponent tc = (JTextComponent) c;
-          String str = tc.getText().trim();
-          return !str.isEmpty() && MAX_LEN - str.length() >= 0;
-        }
-        return false;
+        return c instanceof JTextComponent && checkLength((JTextComponent) c);
+      }
+
+      private boolean checkLength(JTextComponent tc) {
+        String str = tc.getText().trim();
+        return !str.isEmpty() && MAX_LEN - str.length() >= 0;
       }
 
       @Override public boolean shouldYieldFocus(JComponent input) {
