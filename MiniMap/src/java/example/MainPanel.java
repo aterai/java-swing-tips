@@ -94,21 +94,8 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule(".str {color:#008800}");
-    styleSheet.addRule(".kwd {color:#000088}");
-    styleSheet.addRule(".com {color:#880000}");
-    styleSheet.addRule(".typ {color:#660066}");
-    styleSheet.addRule(".lit {color:#006666}");
-    styleSheet.addRule(".pun {color:#666600}");
-    styleSheet.addRule(".pln {color:#000000}");
-    styleSheet.addRule(".tag {color:#000088}");
-    styleSheet.addRule(".atn {color:#660066}");
-    styleSheet.addRule(".atv {color:#008800}");
-    styleSheet.addRule(".dec {color:#660066}");
-
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(styleSheet);
+    htmlEditorKit.setStyleSheet(makeStyleSheet());
 
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
@@ -180,6 +167,22 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static StyleSheet makeStyleSheet() {
+    StyleSheet styleSheet = new StyleSheet();
+    styleSheet.addRule(".str {color:#008800}");
+    styleSheet.addRule(".kwd {color:#000088}");
+    styleSheet.addRule(".com {color:#880000}");
+    styleSheet.addRule(".typ {color:#660066}");
+    styleSheet.addRule(".lit {color:#006666}");
+    styleSheet.addRule(".pun {color:#666600}");
+    styleSheet.addRule(".pln {color:#000000}");
+    styleSheet.addRule(".tag {color:#000088}");
+    styleSheet.addRule(".atn {color:#660066}");
+    styleSheet.addRule(".atv {color:#008800}");
+    styleSheet.addRule(".dec {color:#660066}");
+    return styleSheet;
+  }
+
   private static Icon makeMiniMap(Component c) {
     Dimension d = c.getSize();
     int newW = Math.round(d.width * SCALE);
@@ -198,14 +201,14 @@ public final class MainPanel extends JPanel {
     ScriptEngine engine = createEngine();
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines.map(s -> s.replace("&", "&amp;")
-          .replace("<", "&lt;")
-          .replace(">", "&gt;"))
+              .replace("<", "&lt;")
+              .replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
       String html = "<pre>" + prettify(engine, txt) + "\n</pre>";
       editor.setText(html);
       editor.setCaretPosition(0);
     } catch (IOException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       editor.setText(ex.getMessage());
     }
   }
@@ -222,20 +225,22 @@ public final class MainPanel extends JPanel {
         engine.eval(reader);
       }
     } catch (IOException | ScriptException | URISyntaxException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
     return engine;
   }
 
   private static String prettify(ScriptEngine engine, String src) {
+    String printTxt;
     try {
       Object w = engine.get("window");
-      return (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
+      printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
     } catch (ScriptException | NoSuchMethodException ex) {
-      ex.printStackTrace();
-      return "";
+      // ex.printStackTrace();
+      printTxt = ex.getMessage();
     }
+    return printTxt;
   }
 
   public static void main(String[] args) {
