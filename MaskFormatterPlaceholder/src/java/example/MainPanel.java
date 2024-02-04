@@ -55,12 +55,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static Optional<MaskFormatter> createFormatter(String s) {
+    MaskFormatter mask;
     try {
-      return Optional.of(new MaskFormatter(s));
+      mask = new MaskFormatter(s);
     } catch (ParseException ex) {
-      // System.err.println("formatter is bad: " + ex.getMessage());
-      return Optional.empty();
+      mask = null;
     }
+    return Optional.ofNullable(mask);
   }
 
   private static Component makeTitledPanel(String title, Component c) {
