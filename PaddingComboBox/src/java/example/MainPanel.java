@@ -134,11 +134,13 @@ public final class MainPanel extends JPanel {
   }
 
   public static Border getPaddingBorder(boolean isColor) {
+    Border b;
     if (isColor) {
-      return BorderFactory.createMatteBorder(0, 5, 0, 0, new Color(1f, .8f, .8f, .5f));
+      b = BorderFactory.createMatteBorder(0, 5, 0, 0, new Color(1f, .8f, .8f, .5f));
     } else {
-      return BorderFactory.createEmptyBorder(0, 5, 0, 0);
+      b = BorderFactory.createEmptyBorder(0, 5, 0, 0);
     }
+    return b;
   }
 
   private static JComboBox<String> makeComboBox() {

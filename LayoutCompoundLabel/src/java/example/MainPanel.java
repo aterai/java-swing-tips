@@ -45,10 +45,9 @@ public final class MainPanel extends JPanel {
           } else {
             type = "Border";
           }
-          return String.format("%s: %s", type, tip);
-        } else {
-          return null;
+          tip = String.format("%s: %s", type, tip);
         }
+        return tip;
       }
     };
     label.setOpaque(true);
