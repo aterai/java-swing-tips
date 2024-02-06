@@ -80,12 +80,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static URL mkUrl(String path) {
+    URL url;
     try {
-      return new URL(path);
+      url = new URL(path);
     } catch (MalformedURLException ex) {
-      ex.printStackTrace();
-      return null;
+      url = null;
     }
+    return url;
   }
 
   public static void main(String[] args) {

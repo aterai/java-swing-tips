@@ -86,15 +86,16 @@ public final class MainPanel extends JPanel {
   }
 
   public static File getFileFromTreePath(TreePath path) {
+    File file = null;
     Object o = Objects.nonNull(path) ? path.getLastPathComponent() : null;
     if (o instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
       Object uo = node.getUserObject();
       if (uo instanceof File && ((File) uo).isFile()) {
-        return (File) uo;
+        file = (File) uo;
       }
     }
-    return null;
+    return file;
   }
 
   public static void main(String[] args) {
