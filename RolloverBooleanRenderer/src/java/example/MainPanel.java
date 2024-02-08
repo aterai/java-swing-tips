@@ -95,16 +95,16 @@ class HighlightListener extends MouseAdapter {
     return viewRowIndex == row && viewColumnIndex == column;
   }
 
-  private static Optional<JTable> getTable(MouseEvent e) {
-    Component c = e.getComponent();
+  private static Optional<JTable> getTable(Component c) {
+    JTable table = null;
     if (c instanceof JTable) {
-      return Optional.of((JTable) c);
+      table = (JTable) c;
     }
-    return Optional.empty();
+    return Optional.ofNullable(table);
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    getTable(e).ifPresent(table -> {
+    getTable(e.getComponent()).ifPresent(table -> {
       Point pt = e.getPoint();
       final int prevRow = viewRowIndex;
       final int prevCol = viewColumnIndex;
@@ -137,7 +137,7 @@ class HighlightListener extends MouseAdapter {
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    getTable(e).ifPresent(table -> {
+    getTable(e.getComponent()).ifPresent(table -> {
       if (viewRowIndex >= 0 && viewColumnIndex >= 0) {
         table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       }
@@ -200,15 +200,14 @@ class RolloverBooleanRenderer implements TableCellRenderer, UIResource {
 
     // Overridden for performance reasons. ---->
     @Override public boolean isOpaque() {
-      Color back = getBackground();
       Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
-      if (o instanceof JTable) {
-        JTable t = (JTable) o;
-        boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
-        return !colorMatch && super.isOpaque();
-      } else {
-        return super.isOpaque();
-      }
+      return o instanceof JTable ? colorNotMatch((JTable) o) : super.isOpaque();
+    }
+
+    private boolean colorNotMatch(JTable t) {
+      Color bgc = getBackground();
+      boolean colorMatch = bgc != null && bgc.equals(t.getBackground()) && t.isOpaque();
+      return !colorMatch && super.isOpaque();
     }
 
     @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
