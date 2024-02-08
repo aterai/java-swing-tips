@@ -194,11 +194,11 @@ class LocalDateFilter extends RowFilter<TableModel, Integer> {
 
   @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
     Object v = entry.getModel().getValueAt(entry.getIdentifier(), column);
-    if (v instanceof LocalDate) {
-      LocalDate date = (LocalDate) v;
-      return !(startDate.isAfter(date) || endDate.isBefore(date));
-    }
-    return false;
+    return v instanceof LocalDate && between((LocalDate) v);
+  }
+
+  private boolean between(LocalDate date) {
+    return !(startDate.isAfter(date) || endDate.isBefore(date));
   }
 
   // // @see RowFilter.GeneralFilter
