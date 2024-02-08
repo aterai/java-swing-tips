@@ -145,12 +145,12 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
     return comboBox.getSelectedItem();
   }
 
-  @Override public boolean shouldSelectCell(EventObject anEvent) {
-    if (anEvent instanceof MouseEvent) {
-      MouseEvent e = (MouseEvent) anEvent;
-      return e.getID() != MouseEvent.MOUSE_DRAGGED;
-    }
-    return true;
+  @Override public boolean shouldSelectCell(EventObject e) {
+    // if (e instanceof MouseEvent) {
+    //   return notMouseDrag((MouseEvent) e);
+    // }
+    // return true;
+    return !(e instanceof MouseEvent) || ((MouseEvent) e).getID() != MouseEvent.MOUSE_DRAGGED;
   }
 
   @Override public boolean stopCellEditing() {
