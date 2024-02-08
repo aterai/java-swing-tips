@@ -73,10 +73,7 @@ class ScrollableWrapPanel extends JPanel implements Scrollable {
 
   @Override public Dimension getPreferredScrollableViewportSize() {
     Container c = SwingUtilities.getUnwrappedParent(this);
-    if (c instanceof JViewport) {
-      return c.getSize();
-    }
-    return super.getPreferredSize();
+    return  c instanceof JViewport ? c.getSize() : super.getPreferredSize();
   }
 
   @Override public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
