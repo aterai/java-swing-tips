@@ -16,7 +16,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
 
-@SuppressWarnings("PMD.TooManyMethods") // This class has too many methods, consider refactoring it.
+@SuppressWarnings("PMD.TooManyMethods")
 public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   private static final String LOUPE = "loupe";
   protected PopupMenuListener popupMenuListener;

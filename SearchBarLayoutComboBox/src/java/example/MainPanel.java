@@ -9,6 +9,7 @@ import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -49,14 +50,12 @@ public final class MainPanel extends JPanel {
     String path = "example/" + name + ".png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource(path);
-    if (url == null) {
-      return new ImageIcon(makeMissingImage());
-    } else {
-      return new ImageIcon(url);
-    }
+    return Optional.ofNullable(url)
+        .map(ImageIcon::new)
+        .orElseGet(MainPanel::makeMissingImage);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static ImageIcon makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
@@ -64,7 +63,7 @@ public final class MainPanel extends JPanel {
     Graphics2D g2 = bi.createGraphics();
     missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
     g2.dispose();
-    return bi;
+    return new ImageIcon(bi);
   }
 
   public static void main(String[] args) {
