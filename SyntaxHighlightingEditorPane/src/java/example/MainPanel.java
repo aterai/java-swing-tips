@@ -127,13 +127,15 @@ public final class MainPanel extends JPanel {
   }
 
   private static String prettify(ScriptEngine engine, String src) {
+    String printTxt;
     try {
       Object w = engine.get("window");
-      return (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
+      printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
     } catch (ScriptException | NoSuchMethodException ex) {
-      ex.printStackTrace();
-      return "";
+      // ex.printStackTrace();
+      printTxt = ex.getMessage();
     }
+    return printTxt;
   }
 
   public static void main(String[] args) {
