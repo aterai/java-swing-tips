@@ -65,21 +65,21 @@ class ButtonTabComponent extends JPanel {
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     JLabel label = new JLabel() {
       @Override public String getText() {
-        String title = null;
+        String txt = null;
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          title = tabbedPane.getTitleAt(i);
+          txt = tabbedPane.getTitleAt(i);
         }
-        return title;
+        return txt;
       }
 
       @Override public Icon getIcon() {
-        Icon icon = null;
+        Icon icn = null;
         int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
         if (i != -1) {
-          icon = tabbedPane.getIconAt(i);
+          icn = tabbedPane.getIconAt(i);
         }
-        return icon;
+        return icn;
       }
     };
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
