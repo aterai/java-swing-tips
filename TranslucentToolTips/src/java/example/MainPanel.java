@@ -94,24 +94,11 @@ public final class MainPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
       }
 
-      private Icon getActivityIcon(Contribution value) {
-        if (value.getDate().isAfter(currentLocalDate)) {
-          return new ContributionIcon(Color.WHITE);
-        } else {
-          return activityIcons.get(value.getActivity());
-        }
-      }
-
       @Override public String getToolTipText(MouseEvent e) {
         Point p = e.getPoint();
-        int idx = locationToIndex(p);
-        Rectangle rect = getCellBounds(idx, idx);
-        if (rect == null || !rect.contains(p)) {
-          return null;
-        }
-        Contribution value = getModel().getElementAt(idx);
-        String actTxt = value.getActivity() == 0 ? "No" : Objects.toString(value.getActivity());
-        return String.format("%s contribution on %s", actTxt, value.getDate());
+        int i = locationToIndex(p);
+        Rectangle r = getCellBounds(i, i);
+        return r != null && r.contains(p) ? getActivityText(i) : null;
       }
 
       @Override public Point getToolTipLocation(MouseEvent e) {
@@ -133,6 +120,18 @@ public final class MainPanel extends JPanel {
           tip.setComponent(this);
         }
         return tip;
+      }
+
+      private Icon getActivityIcon(Contribution value) {
+        return value.getDate().isAfter(currentLocalDate)
+            ? new ContributionIcon(Color.WHITE)
+            : activityIcons.get(value.getActivity());
+      }
+
+      private String getActivityText(int idx) {
+        Contribution c = getModel().getElementAt(idx);
+        String actTxt = c.getActivity() == 0 ? "No" : Objects.toString(c.getActivity());
+        return String.format("%s contribution on %s", actTxt, c.getDate());
       }
     };
   }
