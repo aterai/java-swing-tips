@@ -254,14 +254,14 @@ class ArrowIcon implements Icon {
 }
 
 class RoundedCornerBorder extends AbstractBorder {
-  protected static final int ARC = 12;
+  protected static final int ARC = 6;
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    int r = ARC;
-    int w = width - 1;
-    int h = height - 1;
+    double r = ARC * 2d;
+    double w = width - 1d;
+    double h = height - 1d;
 
     Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
     if (c instanceof JPopupMenu) {
@@ -299,13 +299,13 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
     if (c instanceof JPopupMenu) {
       g2.clearRect(x, y, width, height);
     }
-    double r = ARC;
+    double r = ARC * 2d;
     double w = width - 1d;
     double h = height - 1d;
 
     Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
     Rectangle b = round.getBounds();
-    b.setBounds(b.x, b.y + ARC, b.width, b.height - ARC);
+    b.setBounds(b.x, b.y + ARC * 2, b.width, b.height - ARC * 2);
     round.add(new Area(b));
 
     Container parent = c.getParent();
@@ -340,15 +340,16 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     // }
 
     double r = ARC;
+    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
     double w = width - 1d;
     double h = height - 1d;
 
     Path2D p = new Path2D.Double();
     p.moveTo(x, y);
     p.lineTo(x, y + h - r);
-    p.quadTo(x, y + h, x + r, y + h);
+    p.curveTo(x, y + h - r + rr, x + r - rr, y + h, x + r, y + h);
     p.lineTo(x + w - r, y + h);
-    p.quadTo(x + w, y + h, x + w, y + h - r);
+    p.curveTo(x + w - r + rr, y + h, x + w, y + h - r + rr, x + w, y + h - r);
     p.lineTo(x + w, y);
     p.closePath();
     // Area round = new Area(p);

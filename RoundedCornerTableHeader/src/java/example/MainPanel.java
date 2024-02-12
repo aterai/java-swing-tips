@@ -156,7 +156,7 @@ public final class MainPanel extends JPanel {
           l.setHorizontalAlignment(LEFT);
 
           updateCellWeekColor(d, sub);
-          return new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+          c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
         }
       }
       return c;
@@ -211,18 +211,19 @@ class RoundedHeaderRenderer extends DefaultTableCellRenderer {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(getBackground());
-      float r = 8f;
-      float x = 0f;
-      float y = 0f;
-      float w = getWidth();
-      float h = getHeight();
-      Path2D p = new Path2D.Float();
+      double r = 8d;
+      double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
+      double x = 0d;
+      double y = 0d;
+      double w = getWidth();
+      double h = getHeight();
+      Path2D p = new Path2D.Double();
       p.moveTo(x, y + r);
-      p.quadTo(x, y, x + r, y);
+      p.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
       p.lineTo(x + w, y);
       p.lineTo(x + w, y + h);
       p.lineTo(x + r, y + h);
-      p.quadTo(x, y + h, x, y + h - r);
+      p.curveTo(x + r - rr, y + h, x, y + h - r + rr, x, y + h - r);
       p.closePath();
       g2.fill(p);
       g2.dispose();
@@ -234,17 +235,18 @@ class RoundedHeaderRenderer extends DefaultTableCellRenderer {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(getBackground());
-      float r = 8f;
-      float x = 0f;
-      float y = 0f;
-      float w = getWidth();
-      float h = getHeight();
-      Path2D p = new Path2D.Float();
+      double r = 8d;
+      double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
+      double x = 0d;
+      double y = 0d;
+      double w = getWidth();
+      double h = getHeight();
+      Path2D p = new Path2D.Double();
       p.moveTo(x, y);
       p.lineTo(x + w - r, y);
-      p.quadTo(x + w, y, x + w, y + r);
+      p.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
       p.lineTo(x + w, y + h - r);
-      p.quadTo(x + w, y + h, x + w - r, y + h);
+      p.curveTo(x + w, y + h - r + rr, x + w - r + rr, y + h, x + w - r, y + h);
       p.lineTo(x, y + h);
       p.closePath();
       g2.fill(p);

@@ -245,12 +245,12 @@ class ArrowIcon implements Icon {
 }
 
 class RoundedCornerBorder extends AbstractBorder {
-  protected static final int ARC = 12;
+  protected static final int ARC = 6;
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    int r = ARC;
+    int r = ARC * 2;
     int w = width - 1;
     int h = height - 1;
 
@@ -290,7 +290,7 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
     if (c instanceof JPopupMenu) {
       g2.clearRect(x, y, width, height);
     }
-    double r = ARC;
+    double r = ARC * 2d;
     double w = width - 1d;
     double h = height - 1d;
 
@@ -334,12 +334,13 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     double w = width - 1d;
     double h = height - 1d;
 
+    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
     Path2D p = new Path2D.Double();
     p.moveTo(x, y);
     p.lineTo(x, y + h - r);
-    p.quadTo(x, y + h, x + r, y + h);
+    p.curveTo(x, y + h - r + rr, x + r - rr, y + h, x + r, y + h);
     p.lineTo(x + w - r, y + h);
-    p.quadTo(x + w, y + h, x + w, y + h - r);
+    p.curveTo(x + w - r + rr, y + h, x + w, y + h - r + rr, x + w, y + h - r);
     p.lineTo(x + w, y);
     p.closePath();
     // Area round = new Area(p);

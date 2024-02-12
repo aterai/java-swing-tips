@@ -323,16 +323,17 @@ class KamabokoBorder extends RoundedCornerBorder {
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    double r = 12d;
+    double r = 12d / 2d;
+    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
     double w = width - 1d;
     double h = height - 1d;
 
     Path2D p = new Path2D.Double();
     p.moveTo(x, y + h);
     p.lineTo(x, y + r);
-    p.quadTo(x, y, x + r, y);
+    p.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
     p.lineTo(x + w - r, y);
-    p.quadTo(x + w, y, x + w, y + r);
+    p.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
     p.lineTo(x + w, y + h);
     p.closePath();
     Area round = new Area(p);

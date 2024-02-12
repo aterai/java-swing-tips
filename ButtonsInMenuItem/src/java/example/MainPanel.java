@@ -140,7 +140,8 @@ class ToggleButtonBarCellIcon implements Icon {
     if (Objects.isNull(parent)) {
       return;
     }
-    double r = 8d;
+    double r = 4d;
+    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
     double w = c.getWidth();
     double h = c.getHeight() - 1d;
 
@@ -151,19 +152,19 @@ class ToggleButtonBarCellIcon implements Icon {
     if (Objects.equals(c, parent.getComponent(0))) {
       // :first-child
       p.moveTo(x, y + r);
-      p.quadTo(x, y, x + r, y);
+      p.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
       p.lineTo(x + w, y);
       p.lineTo(x + w, y + h);
       p.lineTo(x + r, y + h);
-      p.quadTo(x, y + h, x, y + h - r);
+      p.curveTo(x + r - rr, y + h, x, y + h - r + rr, x, y + h - r);
     } else if (Objects.equals(c, parent.getComponent(parent.getComponentCount() - 1))) {
       // :last-child
       w--;
       p.moveTo(x, y);
       p.lineTo(x + w - r, y);
-      p.quadTo(x + w, y, x + w, y + r);
+      p.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
       p.lineTo(x + w, y + h - r);
-      p.quadTo(x + w, y + h, x + w - r, y + h);
+      p.curveTo(x + w, y + h - r + rr, x + w - r + rr, y + h, x + w - r, y + h);
       p.lineTo(x, y + h);
     } else {
       p.moveTo(x, y);
