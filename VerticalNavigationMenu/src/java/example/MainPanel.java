@@ -152,10 +152,11 @@ class RowSelectionTree extends JTree {
     super.updateUI();
     setUI(new BasicTreeUI() {
       @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
+        Rectangle r = null;
         if (Objects.nonNull(tree) && Objects.nonNull(treeState)) {
-          return getTreePathBounds(path, tree.getInsets(), new Rectangle());
+          r = getTreePathBounds(path, tree.getInsets(), new Rectangle());
         }
-        return null;
+        return r;
       }
 
       private Rectangle getTreePathBounds(TreePath path, Insets insets, Rectangle bounds) {
