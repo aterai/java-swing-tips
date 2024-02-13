@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -38,13 +39,14 @@ public final class MainPanel extends JPanel {
         return c;
       }
 
-      protected boolean isSortingColumn(int column) {
+      private boolean isSortingColumn(int column) {
         RowSorter<? extends TableModel> sorter = getRowSorter();
-        if (Objects.nonNull(sorter)) {
-          List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
-          return !keys.isEmpty() && column == convertColumnIndexToView(keys.get(0).getColumn());
-        }
-        return false;
+        return sorter != null && sortingColumn(sorter, column);
+      }
+
+      private boolean sortingColumn(RowSorter<? extends TableModel> sorter, int col) {
+        List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
+        return !keys.isEmpty() && col == convertColumnIndexToView(keys.get(0).getColumn());
       }
     };
     table.setAutoCreateRowSorter(true);
