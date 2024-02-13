@@ -171,16 +171,17 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     Graphics2D g2 = img.createGraphics();
     icon.paintIcon(null, g2, 0, 0);
     g2.dispose();
+    URI uri;
     try {
       File tmp = File.createTempFile("icon", ".png");
       tmp.deleteOnExit();
       ImageIO.write(img, "png", tmp);
-      return tmp.toURI();
+      uri = tmp.toURI();
     } catch (IOException ex) {
-      UIManager.getLookAndFeel().provideErrorFeedback(null);
-      ex.printStackTrace();
+      // ex.printStackTrace();
+      uri = null;
     }
-    return null;
+    return uri;
   }
 }
 
