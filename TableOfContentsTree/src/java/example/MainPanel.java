@@ -367,12 +367,13 @@ class TableOfContentsTree extends JTree {
     }
   }
 
-  private Paint getTextSelectionColor(int i, TreeCellRenderer tcr) {
-    if (isSynth && isRowSelected(i) && tcr instanceof DefaultTreeCellRenderer) {
-      DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tcr;
-      return renderer.getTextSelectionColor();
+  private Paint getTextSelectionColor(int i, TreeCellRenderer renderer) {
+    Paint paint;
+    if (isSynth && isRowSelected(i) && renderer instanceof DefaultTreeCellRenderer) {
+      paint = ((DefaultTreeCellRenderer) renderer).getTextSelectionColor();
     } else {
-      return getForeground();
+      paint = getForeground();
     }
+    return paint;
   }
 }
