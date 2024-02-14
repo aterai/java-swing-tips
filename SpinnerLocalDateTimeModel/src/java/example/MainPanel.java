@@ -262,12 +262,12 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
 
     @Override public String valueToString(Object value) {
       // System.out.println(value.getClass().getName());
+      String str = "";
       if (value instanceof TemporalAccessor) {
-        // return ((LocalDateTime) value).format(dateTimeFormatter);
-        return dateTimeFormatter.format((TemporalAccessor) value);
-      } else {
-        return "";
+        // str = ((LocalDateTime) value).format(dateTimeFormatter);
+        str = dateTimeFormatter.format((TemporalAccessor) value);
       }
+      return str;
     }
 
     @Override public Object stringToValue(String text) throws ParseException {
