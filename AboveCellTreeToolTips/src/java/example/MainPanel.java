@@ -153,10 +153,10 @@ class TooltipTree extends JTree {
   }
 
   @Override public Point getToolTipLocation(MouseEvent e) {
-    Point p = e.getPoint();
-    int i = getRowForLocation(p.x, p.y);
+    int i = getRowForLocation(e.getX(), e.getY());
     Rectangle cellBounds = getRowBounds(i);
-    if (Objects.nonNull(cellBounds) && cellBounds.contains(p)) {
+    Point pt = null;
+    if (Objects.nonNull(cellBounds) && cellBounds.contains(e.getPoint())) {
       TreeSelectionModel tsm = getSelectionModel();
       Object node = getPathForRow(i).getLastPathComponent();
       // System.out.println(node);
@@ -167,16 +167,15 @@ class TooltipTree extends JTree {
           this, node, isRowSelected(i), isExpanded(i), isLeaf, i, hasFocus);
       if (tcr instanceof JComponent && Objects.nonNull(((JComponent) tcr).getToolTipText())) {
         // System.out.println(((JComponent) tcr).getToolTipText());
-        Point pt = cellBounds.getLocation();
+        Point p = cellBounds.getLocation();
         // label.setBorder(BorderFactory.createLineBorder(Color.RED));
         Insets ins = label.getInsets();
-        pt.translate(-ins.left, -ins.top);
+        p.translate(-ins.left, -ins.top);
         label.setIcon(new RendererIcon(tcr, cellBounds));
-        // System.out.println(pt);
-        return pt;
+        pt = p;
       }
     }
-    return null;
+    return pt;
   }
 
   // @Override public String getToolTipText(MouseEvent e) {
