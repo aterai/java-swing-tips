@@ -17,24 +17,26 @@ public final class MainPanel extends JPanel {
       private final JLabel label = new JLabel();
       @Override public String getToolTipText(MouseEvent e) {
         Border b = getBorder();
-        if (b instanceof TitledBorder) {
-          // int edge = 2; // EDGE_SPACING;
-          TitledBorder titledBorder = (TitledBorder) b;
-          Insets i = titledBorder.getBorderInsets(this);
-          String title = titledBorder.getTitle();
-          label.setFont(titledBorder.getTitleFont());
-          label.setText(title);
-          Dimension size = label.getPreferredSize();
-          int labelX = i.left;
-          int labelY = 0;
-          int labelW = getSize().width - i.left - i.right;
-          int labelH = i.top;
-          if (size.width > labelW) {
-            Rectangle r = new Rectangle(labelX, labelY, labelW, labelH);
-            return r.contains(e.getPoint()) ? title : null;
-          }
+        return b instanceof TitledBorder ? getString(e, (TitledBorder) b) : null;
+      }
+
+      private String getString(MouseEvent e, TitledBorder titledBorder) {
+        // int edge = 2; // EDGE_SPACING;
+        Insets i = titledBorder.getBorderInsets(this);
+        String title = titledBorder.getTitle();
+        label.setFont(titledBorder.getTitleFont());
+        label.setText(title);
+        Dimension size = label.getPreferredSize();
+        int labelX = i.left;
+        int labelY = 0;
+        int labelW = getSize().width - i.left - i.right;
+        int labelH = i.top;
+        String tipText = null;
+        if (size.width > labelW) {
+          Rectangle r = new Rectangle(labelX, labelY, labelW, labelH);
+          tipText = r.contains(e.getPoint()) ? title : null;
         }
-        return null; // super.getToolTipText(e);
+        return tipText;
       }
     };
     panel1.setBorder(BorderFactory.createTitledBorder("Override JPanel#getToolTipText(...)"));
