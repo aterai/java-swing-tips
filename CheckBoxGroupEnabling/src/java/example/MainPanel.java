@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.*;
@@ -26,39 +27,14 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    JTree tree = new JTree() {
-      @Override public void updateUI() {
-        setCellRenderer(null);
-        setCellEditor(null);
-        super.updateUI();
-        setEditable(true);
-        setRootVisible(false);
-        setShowsRootHandles(false);
-        setCellRenderer(new CheckBoxNodeRenderer());
-        setCellEditor(new CheckBoxNodeEditor());
-      }
-    };
-    int row = 0;
-    while (row < tree.getRowCount()) {
-      tree.expandRow(row++);
-    }
-    tree.getModel().addTreeModelListener(new CheckBoxStatusUpdateListener());
-    tree.addTreeWillExpandListener(new TreeWillExpandListener() {
-      @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
-        throw new ExpandVetoException(e, "Tree expansion cancelled");
-      }
-
-      @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
-        throw new ExpandVetoException(e, "Tree collapse cancelled");
-      }
-    });
-
     Box verticalBox = Box.createVerticalBox();
     Map<String, Component> map = new ConcurrentHashMap<>();
+    JTree tree = makeTree();
     TreeModel model = tree.getModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.preorderEnumeration()).stream()
@@ -98,6 +74,45 @@ public final class MainPanel extends JPanel {
     add(makeTitledPanel("Box", new JScrollPane(p)));
     add(makeTitledPanel("JTree", new JScrollPane(tree)));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTree makeTree() {
+    JTree tree = new JTree() {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        setCellEditor(null);
+        super.updateUI();
+        setEditable(true);
+        setRootVisible(false);
+        setShowsRootHandles(false);
+        setCellRenderer(new CheckBoxNodeRenderer());
+        setCellEditor(new CheckBoxNodeEditor());
+      }
+
+      @Override public boolean isPathEditable(TreePath path) {
+        return Optional.ofNullable(path.getLastPathComponent())
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(n -> ((DefaultMutableTreeNode) n).getUserObject())
+            .filter(CheckBoxNode.class::isInstance)
+            .map(uo -> ((CheckBoxNode) uo).isEnabled())
+            .orElse(false);
+      }
+    };
+    int row = 0;
+    while (row < tree.getRowCount()) {
+      tree.expandRow(row++);
+    }
+    tree.getModel().addTreeModelListener(new CheckBoxStatusUpdateListener());
+    tree.addTreeWillExpandListener(new TreeWillExpandListener() {
+      @Override public void treeWillExpand(TreeExpansionEvent e) throws ExpandVetoException {
+        throw new ExpandVetoException(e, "Tree expansion cancelled");
+      }
+
+      @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
+        throw new ExpandVetoException(e, "Tree collapse cancelled");
+      }
+    });
+    return tree;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -162,20 +177,24 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    checkBox.setText(Objects.toString(value));
+    Component c;
     if (value instanceof DefaultMutableTreeNode) {
       checkBox.setOpaque(false);
-      Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-      if (userObject instanceof CheckBoxNode) {
-        CheckBoxNode node = (CheckBoxNode) userObject;
+      Object uo = ((DefaultMutableTreeNode) value).getUserObject();
+      if (uo instanceof CheckBoxNode) {
+        CheckBoxNode node = (CheckBoxNode) uo;
         checkBox.setText(node.getText());
         checkBox.setSelected(node.isSelected());
         checkBox.setEnabled(node.isEnabled());
+      } else {
+        checkBox.setText(Objects.toString(value));
       }
-      return checkBox;
+      c = checkBox;
+    } else {
+      c = renderer.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
     }
-    return renderer.getTreeCellRendererComponent(
-        tree, value, selected, expanded, leaf, row, hasFocus);
+    return c;
   }
 }
 
@@ -214,6 +233,20 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 
   @Override public boolean isCellEditable(EventObject e) {
     return e instanceof MouseEvent;
+    // boolean b = e instanceof MouseEvent;
+    // if (b) {
+    //   MouseEvent me = (MouseEvent) e;
+    //   b = Optional.ofNullable(me.getComponent())
+    //       .filter(JTree.class::isInstance)
+    //       .map(c -> ((JTree) c).getPathForLocation(me.getX(), me.getY()))
+    //       .map(TreePath::getLastPathComponent)
+    //       .filter(DefaultMutableTreeNode.class::isInstance)
+    //       .map(node -> ((DefaultMutableTreeNode) node).getUserObject())
+    //       .filter(CheckBoxNode.class::isInstance)
+    //       .map(uo -> ((CheckBoxNode) uo).isEnabled())
+    //       .orElse(false);
+    // }
+    // return b;
   }
 }
 
