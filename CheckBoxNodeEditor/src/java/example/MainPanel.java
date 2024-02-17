@@ -23,6 +23,8 @@ public final class MainPanel extends JPanel {
         // ???#1: JDK 1.6.0 bug??? Nimbus LnF
         setCellRenderer(new CheckBoxNodeRenderer());
         setCellEditor(new CheckBoxNodeEditor());
+        setEditable(true);
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
       }
     };
     TreeModel model = tree.getModel();
@@ -36,9 +38,6 @@ public final class MainPanel extends JPanel {
           n.setUserObject(new CheckBoxNode(title, Status.DESELECTED));
         });
     model.addTreeModelListener(new CheckBoxStatusUpdateListener());
-
-    tree.setEditable(true);
-    tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
     tree.expandRow(0);
     // tree.setToggleClickCount(1);

@@ -122,7 +122,6 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     Component c = renderer.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
-    c.setFont(tree.getFont());
     if (value instanceof DefaultMutableTreeNode) {
       panel.setFocusable(false);
       panel.setRequestFocusEnabled(false);
@@ -144,8 +143,9 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       }
       panel.add(checkBox, BorderLayout.WEST);
       panel.add(c);
-      return panel;
+      c = panel;
     }
+    c.setFont(tree.getFont());
     return c;
   }
 }
@@ -169,7 +169,6 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
     Component c = renderer.getTreeCellRendererComponent(
         tree, value, true, expanded, leaf, row, true);
-    c.setFont(tree.getFont());
     if (value instanceof DefaultMutableTreeNode) {
       panel.setFocusable(false);
       panel.setRequestFocusEnabled(false);
@@ -192,8 +191,9 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
       }
       panel.add(checkBox, BorderLayout.WEST);
       panel.add(c);
-      return panel;
+      c = panel;
     }
+    c.setFont(tree.getFont());
     return c;
   }
 
@@ -202,28 +202,20 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   @Override public boolean isCellEditable(EventObject e) {
-    if (e instanceof MouseEvent && e.getSource() instanceof JTree) {
-      Point p = ((MouseEvent) e).getPoint();
-      JTree tree = (JTree) e.getSource();
-      TreePath path = tree.getPathForLocation(p.x, p.y);
-      return Optional.ofNullable(tree.getPathBounds(path)).map(r -> {
-        r.width = checkBox.getPreferredSize().width;
-        return r.contains(p);
-      }).orElse(false);
-      // MouseEvent me = (MouseEvent) e;
-      // JTree tree = (JTree) me.getComponent();
-      // TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-      // Rectangle r = tree.getPathBounds(path);
-      // if (Objects.isNull(r)) {
-      //   return false;
-      // }
-      // Dimension d = checkBox.getPreferredSize();
-      // r.setSize(new Dimension(d.width, r.height));
-      // if (r.contains(me.getPoint())) {
-      //   return true;
-      // }
+    boolean editable = false;
+    if (e instanceof MouseEvent) {
+      MouseEvent me = (MouseEvent) e;
+      editable = Optional.ofNullable(me.getComponent())
+          .filter(JTree.class::isInstance)
+          .map(JTree.class::cast)
+          .map(t -> t.getPathBounds(t.getPathForLocation(me.getX(), me.getY())))
+          .map(r -> {
+            r.width = checkBox.getPreferredSize().width;
+            return r.contains(me.getPoint());
+          })
+          .orElse(false);
     }
-    return false;
+    return editable;
   }
 
   // // AbstractCellEditor

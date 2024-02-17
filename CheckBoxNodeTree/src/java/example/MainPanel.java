@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -31,6 +32,15 @@ public final class MainPanel extends JPanel {
         // ???#1: JDK 1.6.0 bug??? Nimbus LnF
         setCellRenderer(new CheckBoxNodeRenderer());
         setCellEditor(new CheckBoxNodeEditor());
+        setEditable(true);
+        setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+      }
+
+      @Override public boolean isPathEditable(TreePath path) {
+        return Optional.ofNullable(path.getLastPathComponent())
+            .filter(TreeNode.class::isInstance)
+            .map(node -> ((TreeNode) node).isLeaf())
+            .orElse(false);
       }
     };
     TreeModel model = tree.getModel();
@@ -45,9 +55,6 @@ public final class MainPanel extends JPanel {
           String title = Objects.toString(node.getUserObject(), "");
           node.setUserObject(new CheckBoxNode(title, isEven));
         });
-
-    tree.setEditable(true);
-    tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
     for (int i = 0; i < tree.getRowCount(); i++) {
       tree.expandRow(i);
@@ -112,6 +119,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    Component c;
     if (leaf && value instanceof DefaultMutableTreeNode) {
       checkBox.setEnabled(tree.isEnabled());
       checkBox.setFont(tree.getFont());
@@ -123,10 +131,12 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
         checkBox.setText(node.getText());
         checkBox.setSelected(node.isSelected());
       }
-      return checkBox;
+      c = checkBox;
+    } else {
+      c = renderer.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
     }
-    return renderer.getTreeCellRendererComponent(
-        tree, value, selected, expanded, leaf, row, hasFocus);
+    return c;
   }
 }
 
@@ -162,15 +172,19 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   @Override public boolean isCellEditable(EventObject e) {
-    if (e instanceof MouseEvent && e.getSource() instanceof JTree) {
-      MouseEvent me = (MouseEvent) e;
-      JTree tree = (JTree) me.getComponent();
-      TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-      if (path != null && path.getLastPathComponent() instanceof TreeNode) {
-        return ((TreeNode) path.getLastPathComponent()).isLeaf();
-      }
-    }
-    return false;
+    return e instanceof MouseEvent;
+    // boolean editable = false;
+    // if (e instanceof MouseEvent) {
+    //   MouseEvent me = (MouseEvent) e;
+    //   editable = Optional.ofNullable(me.getComponent())
+    //       .filter(JTree.class::isInstance)
+    //       .map(c -> ((JTree) c).getPathForLocation(me.getX(), me.getY()))
+    //       .map(TreePath::getLastPathComponent)
+    //       .filter(TreeNode.class::isInstance)
+    //       .map(node -> ((TreeNode) node).isLeaf())
+    //       .orElse(false);
+    // }
+    // return editable;
   }
 }
 
