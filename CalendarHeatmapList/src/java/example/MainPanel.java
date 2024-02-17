@@ -92,14 +92,16 @@ public final class MainPanel extends JPanel {
 
       @Override public String getToolTipText(MouseEvent e) {
         Point p = e.getPoint();
-        int idx = locationToIndex(p);
-        Rectangle rect = getCellBounds(idx, idx);
-        if (rect == null || !rect.contains(p)) {
-          return null;
-        }
-        Contribution value = getModel().getElementAt(idx);
-        String txt = value.getActivity() == 0 ? "No" : Objects.toString(value.getActivity());
-        return txt + " contribution on " + value.getDate().toString();
+        int i = locationToIndex(p);
+        Rectangle r = getCellBounds(i, i);
+        return r != null && r.contains(p) ? getActivityText(i) : null;
+      }
+
+      private String getActivityText(int idx) {
+        Contribution c = getModel().getElementAt(idx);
+        int activity = c.getActivity();
+        String actTxt = activity == 0 ? "No" : Objects.toString(activity);
+        return String.format("%s contribution on %s", actTxt, c.getDate());
       }
     };
   }
