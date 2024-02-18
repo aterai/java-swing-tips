@@ -71,11 +71,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static URL makeUrl(String path) {
+    URL url;
     try {
-      return new URL(path);
+      url = new URL(path);
     } catch (MalformedURLException ex) {
-      return null;
+      url = null;
     }
+    return url;
   }
 
   private static JTable makeTable(TableModel model) {
