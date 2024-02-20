@@ -140,8 +140,9 @@ class DnDTabbedPane extends JTabbedPane {
       if (c instanceof JButton) {
         if (Objects.isNull(forwardButton)) {
           forwardButton = (JButton) c;
-        } else if (Objects.isNull(backwardButton)) {
+        } else {
           backwardButton = (JButton) c;
+          break;
         }
       }
     }
@@ -192,27 +193,37 @@ class DnDTabbedPane extends JTabbedPane {
 
   protected int getTargetTabIndex(Point glassPt) {
     Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
-    Point d = isTopBottomTabPlacement(getTabPlacement()) ? new Point(1, 0) : new Point(0, 1);
-    return IntStream.range(0, getTabCount()).filter(i -> {
+    boolean isHorizontal = isTopBottomTabPlacement(getTabPlacement());
+    for (int i = 0; i < getTabCount(); ++i) {
       Rectangle r = getBoundsAt(i);
-      r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
-      return r.contains(tabPt);
-    }).findFirst().orElseGet(() -> {
-      int count = getTabCount();
-      Rectangle r = getBoundsAt(count - 1);
-      r.translate(r.width * d.x / 2, r.height * d.y / 2);
-      return r.contains(tabPt) ? count : -1;
-    });
-    // for (int i = 0; i < getTabCount(); i++) {
-    //   Rectangle r = getBoundsAt(i);
-    //   r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
-    //   if (r.contains(tabPt)) {
-    //     return i;
-    //   }
-    // }
-    // Rectangle r = getBoundsAt(getTabCount() - 1);
-    // r.translate(r.width * d.x / 2, r.height * d.y / 2);
-    // return r.contains(tabPt) ? getTabCount() : -1;
+
+      // First half.
+      if (isHorizontal) {
+        r.width = r.width / 2 + 1;
+      } else {
+        r.height = r.height / 2 + 1;
+      }
+      if (r.contains(tabPt)) {
+        return i;
+      }
+
+      // Second half.
+      if (isHorizontal) {
+        r.x = r.x + r.width;
+      } else {
+        r.y = r.y + r.height;
+      }
+      if (r.contains(tabPt)) {
+        return i + 1;
+      }
+    }
+
+    int count = getTabCount();
+    if (count == 0) return -1;
+    Rectangle lastRect = getBoundsAt(count - 1);
+    Point d = isHorizontal ? new Point(1, 0) : new Point(0, 1);
+    lastRect.translate(lastRect.width * d.x, lastRect.height * d.y);
+    return lastRect.contains(tabPt) ? count : -1;
   }
 
   protected void convertTab(int prev, int next) {
