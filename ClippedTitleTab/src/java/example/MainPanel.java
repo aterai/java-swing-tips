@@ -92,12 +92,14 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
   @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
     Insets i = tabPane.getInsets();
     // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
+    int tabWidth;
+    int w = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      return width / 4;
+      tabWidth = w / 4;
     } else { // TOP || BOTTOM
-      return width / tabPane.getTabCount();
+      tabWidth = w / tabPane.getTabCount();
     }
+    return tabWidth;
   }
 
   @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
@@ -131,19 +133,16 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
 }
 
 class WindowsClippedTitleTabbedPaneUI extends WindowsTabbedPaneUI {
-  // protected Insets tabInsets;
-  // protected Insets selectedTabPadInsets;
-  // protected Insets tabAreaInsets;
-  // protected Insets contentBorderInsets;
   @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
     Insets i = tabPane.getInsets();
-    // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-    int width = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
+    int tabWidth;
+    int w = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      return width / 4;
+      tabWidth = w / 4;
     } else { // TOP || BOTTOM
-      return width / tabPane.getTabCount();
+      tabWidth = w / tabPane.getTabCount();
     }
+    return tabWidth;
   }
 
   @Override protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
