@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
           l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
           updateCellWeekColor(d, sub, panel);
-          return new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+          c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
         }
       }
       return c;

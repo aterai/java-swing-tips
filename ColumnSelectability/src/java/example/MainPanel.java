@@ -39,12 +39,18 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        // return isColumnSelectable(column)
+        //     ? super.prepareRenderer(renderer, row, column)
+        //     : renderer.getTableCellRendererComponent(
+        //         this, getValueAt(row, column), false, false, row, column);
+        Component c;
         if (isColumnSelectable(column)) {
-          return super.prepareRenderer(renderer, row, column);
+          c = super.prepareRenderer(renderer, row, column);
         } else {
           Object o = getValueAt(row, column);
-          return renderer.getTableCellRendererComponent(this, o, false, false, row, column);
+          c = renderer.getTableCellRendererComponent(this, o, false, false, row, column);
         }
+        return c;
       }
     };
     table.setCellSelectionEnabled(true);

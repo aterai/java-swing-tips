@@ -38,11 +38,14 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        if (convertColumnIndexToModel(column) != targetColIdx) {
+        Component c;
+        if (convertColumnIndexToModel(column) == targetColIdx) {
+          c = super.prepareRenderer(renderer, row, column);
+        } else {
           Object value = getValueAt(row, column);
-          return renderer.getTableCellRendererComponent(this, value, false, false, row, column);
+          c = renderer.getTableCellRendererComponent(this, value, false, false, row, column);
         }
-        return super.prepareRenderer(renderer, row, column);
+        return c;
       }
     };
 
