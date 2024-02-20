@@ -52,7 +52,6 @@ public final class MainPanel extends JPanel {
       getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
   };
-  private final JTextField field = new JTextField(15);
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
@@ -60,13 +59,14 @@ public final class MainPanel extends JPanel {
       model.addElement(item);
     }
 
+    JTextField field = new JTextField(15);
     field.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
-        filter();
+        filter(field.getText());
       }
 
       @Override public void removeUpdate(DocumentEvent e) {
-        filter();
+        filter(field.getText());
       }
 
       @Override public void changedUpdate(DocumentEvent e) {
@@ -80,33 +80,29 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Optional<Pattern> getPattern() {
-    try {
-      return Optional.ofNullable(field.getText()).filter(s -> !s.isEmpty()).map(Pattern::compile);
-    } catch (PatternSyntaxException ex) {
-      return Optional.empty();
-    }
-  }
-
-  public void filter() {
-    getPattern().ifPresent(pattern -> {
-      List<ListItem> selected = list.getSelectedValuesList();
-      model.clear();
-      Stream.of(defaultModel)
-          .filter(item -> pattern.matcher(item.getTitle()).find())
-          .forEach(model::addElement);
-      // for (ListItem item : defaultModel) {
-      //   if (!pattern.matcher(item.getTitle()).find()) {
-      //     model.removeElement(item);
-      //   } else if (!model.contains(item)) {
-      //     model.addElement(item);
-      //   }
-      // }
-      for (ListItem item : selected) {
-        int i = model.indexOf(item);
-        list.addSelectionInterval(i, i);
-      }
-    });
+  public void filter(String txt) {
+    Optional.ofNullable(txt)
+        .filter(regex -> !regex.isEmpty())
+        .map(regex -> {
+          Pattern pattern;
+          try {
+            pattern = Pattern.compile(regex);
+          } catch (PatternSyntaxException ex) {
+            pattern = null;
+          }
+          return pattern;
+        })
+        .ifPresent(pattern -> {
+          List<ListItem> selected = list.getSelectedValuesList();
+          model.clear();
+          Stream.of(defaultModel)
+              .filter(item -> pattern.matcher(item.getTitle()).find())
+              .forEach(model::addElement);
+          selected.forEach(item -> {
+            int i = model.indexOf(item);
+            list.addSelectionInterval(i, i);
+          });
+        });
   }
 
   public static void main(String[] args) {

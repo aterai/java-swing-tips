@@ -129,15 +129,14 @@ class ComboCellRenderer implements TableCellRenderer {
     }
 
     @Override public boolean isOpaque() {
-      Color back = getBackground();
       Object o = SwingUtilities.getAncestorOfClass(JTable.class, this);
-      if (o instanceof JTable) {
-        JTable t = (JTable) o;
-        boolean colorMatch = back != null && back.equals(t.getBackground()) && t.isOpaque();
-        return !colorMatch && super.isOpaque();
-      } else {
-        return super.isOpaque();
-      }
+      return o instanceof JTable ? opaqueCheck((JTable) o) : super.isOpaque();
+    }
+
+    private boolean opaqueCheck(JTable t) {
+      Color bgc = getBackground();
+      boolean colorMatch = bgc != null && bgc.equals(t.getBackground()) && t.isOpaque();
+      return !colorMatch && super.isOpaque();
     }
   };
 

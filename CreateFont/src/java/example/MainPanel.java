@@ -24,18 +24,18 @@ public final class MainPanel extends JPanel {
     makeFont(cl.getResource("example/mona.ttf"))
         .ifPresent(font -> textPane.setFont(font.deriveFont(10f)));
 
-    URL url = cl.getResource("example/bar.utf8.txt");
-    try {
-      assert url != null;
-      // try (Reader br = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)) {
-      try (Reader br = Files.newBufferedReader(Paths.get(url.toURI()))) {
-        textPane.read(br, "text");
-      }
-    } catch (IOException | URISyntaxException ex) {
-      ex.printStackTrace();
-      textPane.setText(ex.getMessage());
-      UIManager.getLookAndFeel().provideErrorFeedback(textPane);
-    }
+    Optional.ofNullable(cl.getResource("example/bar.utf8.txt"))
+        .ifPresent(url -> {
+          try {
+            // try (Reader br = new InputStreamReader(url.openStream(), UTF_8)) {
+            try (Reader br = Files.newBufferedReader(Paths.get(url.toURI()))) {
+              textPane.read(br, "text");
+            }
+          } catch (IOException | URISyntaxException ex) {
+            UIManager.getLookAndFeel().provideErrorFeedback(textPane);
+            textPane.setText(ex.getMessage());
+          }
+        });
 
     // TreeMap fontMap = new TreeMap();
     // fontMap.put(font.getFamily(), font);
@@ -50,6 +50,7 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
   }
+
   // private static Font makeFontOld(URL url) {
   //   Font font = null;
   //   InputStream is = null;
@@ -72,12 +73,16 @@ public final class MainPanel extends JPanel {
   // }
 
   private static Optional<Font> makeFont(URL url) {
-    try (InputStream is = url.openStream()) {
-      return Optional.of(Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f));
-    } catch (IOException | FontFormatException ex) {
-      ex.printStackTrace();
-      return Optional.empty();
-    }
+    return Optional.ofNullable(url)
+        .map(u -> {
+          Font font;
+          try (InputStream is = url.openStream()) {
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
+          } catch (IOException | FontFormatException ex) {
+            font = null;
+          }
+          return font;
+        });
   }
 
   // private static Document makeDocument(URL url, String encoding) {

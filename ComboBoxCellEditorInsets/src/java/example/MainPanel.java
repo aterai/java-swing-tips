@@ -164,12 +164,12 @@ class ComboBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
     return comboBox.getSelectedItem();
   }
 
-  @Override public boolean shouldSelectCell(EventObject anEvent) {
-    if (anEvent instanceof MouseEvent) {
-      MouseEvent e = (MouseEvent) anEvent;
-      return e.getID() != MouseEvent.MOUSE_DRAGGED;
-    }
-    return true;
+  @Override public boolean shouldSelectCell(EventObject e) {
+    // if (e instanceof MouseEvent) {
+    //   return ((MouseEvent) e).getID() != MouseEvent.MOUSE_DRAGGED;
+    // }
+    // return true;
+    return !(e instanceof MouseEvent) || ((MouseEvent) e).getID() != MouseEvent.MOUSE_DRAGGED;
   }
 
   @Override public boolean stopCellEditing() {
