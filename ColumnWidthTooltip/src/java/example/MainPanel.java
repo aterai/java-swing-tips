@@ -99,10 +99,7 @@ class ColumnWidthResizeHandler extends MouseInputAdapter {
 
   private static TableColumn getResizingColumn(MouseEvent e) {
     Component c = e.getComponent();
-    if (c instanceof JTableHeader) {
-      return ((JTableHeader) c).getResizingColumn();
-    }
-    return null;
+    return c instanceof JTableHeader ? ((JTableHeader) c).getResizingColumn() : null;
   }
 
   private void updateTooltipText(MouseEvent e) {

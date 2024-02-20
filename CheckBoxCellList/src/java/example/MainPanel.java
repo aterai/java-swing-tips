@@ -219,6 +219,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   private final TreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    Component c;
     if (leaf && value instanceof DefaultMutableTreeNode) {
       checkBox.setOpaque(false);
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
@@ -227,10 +228,12 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
         checkBox.setText(node.getText());
         checkBox.setSelected(node.isSelected());
       }
-      return checkBox;
+      c = checkBox;
+    } else {
+      c = renderer.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
     }
-    return renderer.getTreeCellRendererComponent(
-        tree, value, selected, expanded, leaf, row, hasFocus);
+    return c;
   }
 }
 

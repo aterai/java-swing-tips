@@ -220,12 +220,11 @@ class EnclosedLabel extends JLabel {
   }
 
   protected Shape getShape() {
-    Dimension d = getSize();
-    if (Objects.equals(getBackground(), Color.BLUE)) {
-      return new Ellipse2D.Double(0d, 0d, d.width - 1d, d.height - 1d);
-    } else {
-      return new RoundRectangle2D.Double(0d, 0d, d.width - 1d, d.height - 1d, 5d, 5d);
-    }
+    double w = getWidth() - 1d;
+    double h = getHeight() - 1d;
+    return Objects.equals(getBackground(), Color.BLUE)
+        ? new Ellipse2D.Double(0d, 0d, w, h)
+        : new RoundRectangle2D.Double(0d, 0d, w, h, 8d, 8d);
   }
 }
 

@@ -160,27 +160,29 @@ class PluginPanel extends JPanel {
   }
 
   protected PluginNode extractNode(Object value) {
-    if (value instanceof DefaultMutableTreeNode) {
-      Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
-      if (userObject instanceof PluginNode) {
-        PluginNode node = (PluginNode) userObject;
-        pluginName.setText(node.toString());
-        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
-        model.removeAllElements();
-        List<String> plugins = node.getPlugins();
-        if (plugins.isEmpty()) {
-          remove(comboBox);
-        } else {
-          add(comboBox);
-          for (String s : plugins) {
-            model.addElement(s);
+    return Optional.ofNullable(value)
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .map(DefaultMutableTreeNode::getUserObject)
+        .filter(PluginNode.class::isInstance)
+        .map(userObject -> {
+          PluginNode node = (PluginNode) userObject;
+          pluginName.setText(node.toString());
+          DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
+          model.removeAllElements();
+          List<String> plugins = node.getPlugins();
+          if (plugins.isEmpty()) {
+            remove(comboBox);
+          } else {
+            add(comboBox);
+            for (String s : plugins) {
+              model.addElement(s);
+            }
+            comboBox.setSelectedIndex(node.getSelectedIndex());
           }
-          comboBox.setSelectedIndex(node.getSelectedIndex());
-        }
-        return node;
-      }
-    }
-    return null;
+          return node;
+        })
+        .orElse(null);
   }
 }
 

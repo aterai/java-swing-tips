@@ -168,7 +168,7 @@ class CustomTooltipEditorPane extends JEditorPane {
       }
       Document doc = editor.getDocument();
       if (pos >= 0 && doc instanceof HTMLDocument) {
-        return getSpanTitleAttribute((HTMLDocument) doc, pos).orElse(title);
+        title = getSpanTitleAttribute((HTMLDocument) doc, pos).orElse(title);
       }
     }
     return title;
