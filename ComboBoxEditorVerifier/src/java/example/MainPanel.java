@@ -159,14 +159,14 @@ class ValidationLayerUI<V extends JTextComponent> extends LayerUI<V> {
 }
 
 class LengthInputVerifier extends InputVerifier {
-  private static final int MAX_LEN = 6;
+  public static final int MAX_LEN = 6;
 
   @Override public boolean verify(JComponent c) {
-    if (c instanceof JComboBox) {
-      JComboBox<?> cb = (JComboBox<?>) c;
-      String str = Objects.toString(cb.getEditor().getItem(), "");
-      return MAX_LEN - str.length() >= 0;
-    }
-    return false;
+    return c instanceof JComboBox && maxLengthCheck((JComboBox<?>) c, MAX_LEN);
+  }
+
+  public static boolean maxLengthCheck(JComboBox<?> comboBox, int max) {
+    String str = Objects.toString(comboBox.getEditor().getItem(), "");
+    return max - str.length() >= 0;
   }
 }
