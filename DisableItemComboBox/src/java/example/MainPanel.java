@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,18 +48,24 @@ public final class MainPanel extends JPanel {
   }
 
   private static Set<Integer> getDisableIndexFromTextField(JTextField field) {
+    return Stream.of(getPara(field))
+        .map(String::trim)
+        .filter(s -> !s.isEmpty())
+        .map(Integer::valueOf)
+        .collect(Collectors.toSet());
+  }
+
+  private static String[] getPara(JTextField field) {
+    String[] list;
     try {
-      return Stream.of(field.getText().split(","))
-          .map(String::trim)
-          .filter(s -> !s.isEmpty())
-          .map(Integer::valueOf)
-          .collect(Collectors.toSet());
+      list = field.getText().split(",");
     } catch (NumberFormatException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
       String msg = "invalid value.\n" + ex.getMessage();
       JOptionPane.showMessageDialog(field, msg, "Error", JOptionPane.ERROR_MESSAGE);
-      return Collections.emptySet();
+      list = new String[0];
     }
+    return list;
   }
 
   public static void main(String[] args) {
