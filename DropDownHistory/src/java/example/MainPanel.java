@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -72,26 +73,28 @@ public final class MainPanel extends JPanel {
   }
 
   public static boolean addItem(JComboBox<String> combo, String str, int max) {
-    if (Objects.isNull(str) || str.isEmpty()) {
-      return false;
-    }
-    combo.setVisible(false);
     DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) combo.getModel();
-    model.removeElement(str);
-    model.insertElementAt(str, 0);
-    if (model.getSize() > max) {
-      model.removeElementAt(max);
-    }
-    combo.setSelectedIndex(0);
-    combo.setVisible(true);
-    return true;
+    return Optional.ofNullable(str)
+        .filter(s -> !s.isEmpty())
+        .map(item -> {
+          combo.setVisible(false);
+          model.removeElement(item);
+          model.insertElementAt(item, 0);
+          if (model.getSize() > max) {
+            model.removeElementAt(max);
+          }
+          combo.setSelectedIndex(0);
+          combo.setVisible(true);
+          return true;
+        })
+        .orElse(false);
   }
 
-  private static void setHighlight(JTextComponent jtc, String pattern) {
-    Highlighter highlighter = jtc.getHighlighter();
+  private static void setHighlight(JTextComponent textArea, String pattern) {
+    Highlighter highlighter = textArea.getHighlighter();
     highlighter.removeAllHighlights();
     try {
-      Document doc = jtc.getDocument();
+      Document doc = textArea.getDocument();
       String text = doc.getText(0, doc.getLength());
       Matcher matcher = Pattern.compile(pattern).matcher(text);
       int pos = 0;
@@ -104,7 +107,7 @@ public final class MainPanel extends JPanel {
       //   pos += pattern.length();
       // }
     } catch (BadLocationException | PatternSyntaxException ex) {
-      UIManager.getLookAndFeel().provideErrorFeedback(jtc);
+      UIManager.getLookAndFeel().provideErrorFeedback(textArea);
     }
   }
 
