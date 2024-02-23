@@ -226,11 +226,7 @@ class LabelTransferable implements Transferable {
   }
 
   @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-    if (flavor.equals(localObjectFlavor)) {
-      return panel;
-    } else {
-      return ss.getTransferData(flavor);
-    }
+    return Objects.equals(flavor, localObjectFlavor) ? panel : ss.getTransferData(flavor);
     // if (flavor.equals(DataFlavor.stringFlavor)) {
     //   return ss.getTransferData(flavor);
     // } else if (flavor.equals(DataFlavor.plainTextFlavor)) {

@@ -276,11 +276,7 @@ class TabTransferable implements Transferable {
 
   @Override public Object getTransferData(DataFlavor flavor) {
     DataFlavor[] flavors = getTransferDataFlavors();
-    if (flavor.equals(flavors[0])) {
-      return tabbedPane;
-    } else {
-      return Collections.<File>emptyList();
-    }
+    return flavor.equals(flavors[0]) ? tabbedPane : Collections.<File>emptyList();
   }
 
   @Override public DataFlavor[] getTransferDataFlavors() {
