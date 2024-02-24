@@ -91,22 +91,22 @@ class RandomDissolve extends JComponent implements ActionListener {
     this.image1 = i1;
     this.image2 = i2;
     this.buf = copyImage(mode ? image2 : image1);
-    animator = new Timer(10, this);
+    animator = new Timer(50, this);
+  }
+
+  private boolean nextStage() {
+    return currentStage > 0 && copyNextStage();
   }
 
   @SuppressWarnings("PMD.AvoidArrayLoops")
-  private boolean nextStage() {
-    if (currentStage > 0) {
-      currentStage = currentStage - 1;
-      for (int i = 0; i < step.length; i++) {
-        if (step[i] == currentStage) {
-          src[i] = dst[i];
-        }
+  private boolean copyNextStage() {
+    currentStage -= 1;
+    for (int i = 0; i < step.length; i++) {
+      if (step[i] == currentStage) {
+        src[i] = dst[i];
       }
-      return true;
-    } else {
-      return false;
     }
+    return true;
   }
 
   private static BufferedImage copyImage(BufferedImage image) {
