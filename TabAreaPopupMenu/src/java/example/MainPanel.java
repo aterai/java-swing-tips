@@ -13,10 +13,13 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Optional;
 import javax.swing.*;
+import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    // UIManager.put("TabbedPane.tabAreaInsets", new Insets(5, 10, 15, 20));
+    // UIManager.put("TabbedPane.contentBorderInsets", new Insets(5, 10, 15, 20));
     JTabbedPane tabbedPane = new JTabbedPane() {
       private final JPopupMenu popup1 = makeTabPopupMenu();
       private final JPopupMenu popup2 = makeTabAreaPopupMenu();
@@ -32,36 +35,12 @@ public final class MainPanel extends JPanel {
 
       @Override public Point getPopupLocation(MouseEvent e) {
         int idx = indexAtLocation(e.getX(), e.getY());
-        if (idx < 0 && getTabAreaBounds().contains(e.getPoint())) {
+        if (idx < 0 && getTabAreaBounds(this).contains(e.getPoint())) {
           setComponentPopupMenu(popup2);
         } else {
           setComponentPopupMenu(popup1);
         }
         return super.getPopupLocation(e);
-      }
-
-      private Rectangle getTabAreaBounds() {
-        Rectangle tabbedRect = getBounds();
-        Rectangle compRect = Optional.ofNullable(getSelectedComponent())
-            .map(Component::getBounds)
-            .orElseGet(Rectangle::new);
-        int tabPlacement = getTabPlacement();
-        if (isTopBottomTabPlacement(tabPlacement)) {
-          tabbedRect.height = tabbedRect.height - compRect.height;
-          if (tabPlacement == BOTTOM) {
-            tabbedRect.y += compRect.y + compRect.height;
-          }
-        } else {
-          tabbedRect.width = tabbedRect.width - compRect.width;
-          if (tabPlacement == RIGHT) {
-            tabbedRect.x += compRect.x + compRect.width;
-          }
-        }
-        return tabbedRect;
-      }
-
-      private boolean isTopBottomTabPlacement(int tabPlacement) {
-        return tabPlacement == TOP || tabPlacement == BOTTOM;
       }
 
       // @Override public JPopupMenu getComponentPopupMenu() {
@@ -78,12 +57,49 @@ public final class MainPanel extends JPanel {
     };
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabbedPane.addTab("Title: 0", new JScrollPane(new JTextArea()));
-    add(tabbedPane);
+    add(new JLayer<>(tabbedPane, makeTestLayer()));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static LayerUI<JTabbedPane> makeTestLayer() {
+    return new LayerUI<JTabbedPane>() {
+      @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        if (c instanceof JLayer) {
+          JLayer<?> layer = (JLayer<?>) c;
+          Graphics2D g2 = (Graphics2D) g.create();
+          g2.setPaint(Color.RED);
+          Rectangle r = getTabAreaBounds((JTabbedPane) layer.getView());
+          g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+          g2.dispose();
+        }
+      }
+    };
+  }
+
+  private static Rectangle getTabAreaBounds(JTabbedPane tabbedPane) {
+    Rectangle r = SwingUtilities.calculateInnerArea(tabbedPane, null);
+    Rectangle cr = Optional.ofNullable(tabbedPane.getSelectedComponent())
+        .map(Component::getBounds)
+        .orElseGet(Rectangle::new);
+    int tp = tabbedPane.getTabPlacement();
+    // Note: don't call BasicTabbedPaneUI#getTabAreaInsets(), because it causes rotation.
+    Insets i1 = UIManager.getInsets("TabbedPane.tabAreaInsets");
+    Insets i2 = UIManager.getInsets("TabbedPane.contentBorderInsets");
+    if (tp == SwingConstants.TOP || tp == SwingConstants.BOTTOM) {
+      r.height -= cr.height + i1.top + i1.bottom + i2.top + i2.bottom;
+      // r.x += i1.left;
+      r.y += tp == SwingConstants.TOP ? i1.top : cr.y + cr.height + i1.bottom + i2.bottom;
+    } else {
+      r.width -= cr.width + i1.top + i1.bottom + i2.left + i2.right;
+      r.x += tp == SwingConstants.LEFT ? i1.top : cr.x + cr.width + i1.bottom + i2.right;
+      // r.y += i1.left;
+    }
+    return r;
   }
 
   private static JPopupMenu makeTabPopupMenu() {
