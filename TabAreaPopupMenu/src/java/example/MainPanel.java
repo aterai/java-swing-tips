@@ -75,6 +75,9 @@ public final class MainPanel extends JPanel {
           g2.setPaint(Color.RED);
           Rectangle r = getTabAreaBounds((JTabbedPane) layer.getView());
           g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+          // g2.setPaint(Color.GREEN);
+          // Rectangle r2 = getTabAreaBounds2((JTabbedPane) layer.getView());
+          // g2.drawRect(r2.x, r2.y, r2.width - 1, r2.height - 1);
           g2.dispose();
         }
       }
@@ -87,7 +90,6 @@ public final class MainPanel extends JPanel {
         .map(Component::getBounds)
         .orElseGet(Rectangle::new);
     int tp = tabbedPane.getTabPlacement();
-    // Note: don't call BasicTabbedPaneUI#getTabAreaInsets(), because it causes rotation.
     Insets i1 = UIManager.getInsets("TabbedPane.tabAreaInsets");
     Insets i2 = UIManager.getInsets("TabbedPane.contentBorderInsets");
     if (tp == SwingConstants.TOP || tp == SwingConstants.BOTTOM) {
@@ -101,6 +103,63 @@ public final class MainPanel extends JPanel {
     }
     return r;
   }
+
+  // private static Stream<Component> descendants(Container parent) {
+  //   return Stream.of(parent.getComponents())
+  //       .filter(Container.class::isInstance).map(Container.class::cast)
+  //       .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
+  // }
+
+  // // @see BasicTabbedPaneUI#rotateInsets(...)
+  // static void rotateInsets(Insets topInsets, Insets targetInsets, int targetPlacement) {
+  //   switch(targetPlacement) {
+  //     case SwingConstants.LEFT:
+  //       targetInsets.top = topInsets.left;
+  //       targetInsets.left = topInsets.top;
+  //       targetInsets.bottom = topInsets.right;
+  //       targetInsets.right = topInsets.bottom;
+  //       break;
+  //     case SwingConstants.BOTTOM:
+  //       targetInsets.top = topInsets.bottom;
+  //       targetInsets.left = topInsets.left;
+  //       targetInsets.bottom = topInsets.top;
+  //       targetInsets.right = topInsets.right;
+  //       break;
+  //     case SwingConstants.RIGHT:
+  //       targetInsets.top = topInsets.left;
+  //       targetInsets.left = topInsets.bottom;
+  //       targetInsets.bottom = topInsets.right;
+  //       targetInsets.right = topInsets.top;
+  //       break;
+  //     case SwingConstants.TOP:
+  //     default:
+  //       targetInsets.top = topInsets.top;
+  //       targetInsets.left = topInsets.left;
+  //       targetInsets.bottom = topInsets.bottom;
+  //       targetInsets.right = topInsets.right;
+  //   }
+  // }
+
+  // private static Rectangle getTabAreaBounds2(JTabbedPane tabbedPane) {
+  //   JComponent c = descendants(tabbedPane)
+  //       .filter(JViewport.class::isInstance)
+  //       .map(JComponent.class::cast)
+  //       .filter(v -> "TabbedPane.scrollableViewport".equals(v.getName()))
+  //       .findFirst().orElse(null);
+  //   Rectangle r = SwingUtilities.calculateInnerArea(c, null);
+  //
+  //   // Note: BasicTabbedPaneUI#getTabAreaInsets() causes rotation.
+  //   Insets tabAreaInsets = UIManager.getInsets("TabbedPane.tabAreaInsets");
+  //   Insets targetInsets = new Insets(0, 0, 0, 0);
+  //   rotateInsets(tabAreaInsets, targetInsets, tabbedPane.getTabPlacement());
+  //   if (r != null) {
+  //     r.x += tabAreaInsets.left;
+  //     r.y += tabAreaInsets.top;
+  //     r.width -= tabAreaInsets.left + tabAreaInsets.right;
+  //     r.height -= tabAreaInsets.top + tabAreaInsets.bottom;
+  //   }
+  //   return r;
+  // }
 
   private static JPopupMenu makeTabPopupMenu() {
     JPopupMenu popup = new JPopupMenu();
