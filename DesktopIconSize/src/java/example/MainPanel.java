@@ -51,13 +51,18 @@ public final class MainPanel extends JPanel {
     JInternalFrame f = new JInternalFrame(t, true, true, true, true);
     f.setDesktopIcon(new JInternalFrame.JDesktopIcon(f) {
       @Override public Dimension getPreferredSize() {
-        if (!check.isSelected()) {
-          return super.getPreferredSize();
+        Dimension d = super.getPreferredSize();
+        if (check.isSelected()) {
+          // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
+          // boolean isMotif = getUI() instanceof MotifDesktopIconUI;
+          boolean isMotif = getUI().getClass().getName().contains("MotifDesktopIconUI");
+          if (isMotif) {
+            d.setSize(64, 64 + 32);
+          } else {
+            d.setSize(ICON_SZ);
+          }
         }
-        // Java 9 error: package com.sun.java.swing.plaf.motif is not visible
-        // boolean isMotif = getUI() instanceof MotifDesktopIconUI;
-        boolean isMotif = getUI().getClass().getName().contains("MotifDesktopIconUI");
-        return isMotif ? new Dimension(64, 64 + 32) : ICON_SZ;
+        return d;
       }
     });
     f.setSize(200, 100);
