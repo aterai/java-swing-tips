@@ -19,6 +19,7 @@ import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private static final JTextArea LOG = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
     LOG.setEditable(false);
