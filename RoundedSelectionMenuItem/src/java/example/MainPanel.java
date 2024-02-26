@@ -5,11 +5,9 @@
 package example;
 
 import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
-
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import javax.swing.*;
@@ -79,7 +77,7 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             ButtonUI ui = getUI();
             if (ui instanceof WindowsMenuItemUI) {
-              setUI(new WindowsRoundMenuItemUI2());
+              setUI(new WindowsRoundedMenuItemUI());
             } else if (!(ui instanceof SynthMenuItemUI)) {
               setUI(new BasicRoundMenuItemUI());
             }
@@ -216,7 +214,7 @@ class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
       // g2.setComposite(AlphaComposite.Clear);
       // g2.fillRect(0, 0, width, height);
       // g2.setComposite(AlphaComposite.Src);
-      g2.fill(new RoundRectangle2D.Float(0f, 0f, width, height, 8f, 8f));
+      g2.fillRoundRect(0, 0, width, height, 8, 8);
       g2.setComposite(AlphaComposite.SrcAtop);
       super.paintBackground(g2, menuItem, bgColor);
       g2.dispose();
@@ -227,23 +225,27 @@ class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
   }
 }
 
-class WindowsRoundMenuItemUI2 extends WindowsMenuItemUI {
+class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
   private VolatileImage buffer;
 
+  @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
   @Override protected void paintBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
     ButtonModel model = menuItem.getModel();
     if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
       int width = menuItem.getWidth();
       int height = menuItem.getHeight();
       GraphicsConfiguration config = ((Graphics2D) g).getDeviceConfiguration();
-      // VolatileImage buffer = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
+      // VolatileImage buffer = config.createCompatibleVolatileImage(
+      //     width, height, Transparency.TRANSLUCENT);
       do {
         int status = VolatileImage.IMAGE_INCOMPATIBLE;
         if (buffer != null) {
           status = buffer.validate(config);
         }
         if (status == VolatileImage.IMAGE_INCOMPATIBLE || status == VolatileImage.IMAGE_RESTORED) {
-          if (buffer == null || buffer.getWidth() != width || buffer.getHeight() != height || status == VolatileImage.IMAGE_INCOMPATIBLE) {
+          if (buffer == null
+              || buffer.getWidth() != width || buffer.getHeight() != height
+              || status == VolatileImage.IMAGE_INCOMPATIBLE) {
             if (buffer != null) {
               buffer.flush();
             }
@@ -255,7 +257,7 @@ class WindowsRoundMenuItemUI2 extends WindowsMenuItemUI {
           g2.fillRect(0, 0, width, height);
           g2.setPaintMode(); // g2.setComposite(AlphaComposite.Src);
           g2.setPaint(Color.WHITE);
-          g2.fill(new RoundRectangle2D.Float(0f, 0f, width, height, 8f, 8f));
+          g2.fillRoundRect(0, 0, width, height, 8, 8);
           g2.setComposite(AlphaComposite.SrcAtop);
           super.paintBackground(g2, menuItem, bgColor);
           g2.dispose();
