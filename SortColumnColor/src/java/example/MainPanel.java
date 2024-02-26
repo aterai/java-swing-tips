@@ -6,8 +6,6 @@ package example;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
