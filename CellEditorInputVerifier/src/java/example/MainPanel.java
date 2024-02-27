@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.text.NumberFormat;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -109,20 +110,22 @@ public final class MainPanel extends JPanel {
 // Validating with Input Verifiers
 class IntegerInputVerifier extends InputVerifier {
   @Override public boolean verify(JComponent c) {
-    boolean verified = false;
-    if (c instanceof JTextComponent) {
-      String txt = ((JTextComponent) c).getText();
-      if (txt.isEmpty()) {
-        return true;
-      }
-      try {
-        int iv = Integer.parseInt(txt);
-        verified = iv >= 0;
-      } catch (NumberFormatException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(c);
-      }
-    }
-    return verified;
+    return Optional.ofNullable(c)
+        .filter(JTextComponent.class::isInstance)
+        .map(JTextComponent.class::cast)
+        .map(JTextComponent::getText)
+        .filter(txt -> !txt.isEmpty())
+        .map(txt -> {
+          boolean verified = false;
+          try {
+            int iv = Integer.parseInt(txt);
+            verified = iv >= 0;
+          } catch (NumberFormatException ex) {
+            UIManager.getLookAndFeel().provideErrorFeedback(c);
+          }
+          return verified;
+        })
+        .orElse(false);
   }
 }
 
