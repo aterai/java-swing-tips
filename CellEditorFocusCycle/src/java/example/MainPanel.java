@@ -248,18 +248,19 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
   public static Component getEditorFocusCycleAfter(Component editor) {
     Component fo = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
     Component cycleRoot = getFocusCycleRoot(editor);
+    Component child = null;
     if (fo != null && cycleRoot instanceof Container) {
       // System.out.println("FocusCycleRoot: " + cycleRoot.getClass().getName());
       Container root = (Container) cycleRoot;
       FocusTraversalPolicy ftp = root.getFocusTraversalPolicy();
-      Component child = ftp.getComponentAfter(root, fo);
-      if (child != null && SwingUtilities.isDescendingFrom(child, editor)) {
-        // System.out.println("requestFocus: " + child.getClass().getName());
-        // child.requestFocus();
-        return child;
+      Component c = ftp.getComponentAfter(root, fo);
+      if (c != null && SwingUtilities.isDescendingFrom(c, editor)) {
+        // System.out.println("requestFocus: " + c.getClass().getName());
+        // c.requestFocus();
+        child = c;
       }
     }
-    return null;
+    return child;
   }
 
   public static Component getFocusCycleRoot(Component c) {
