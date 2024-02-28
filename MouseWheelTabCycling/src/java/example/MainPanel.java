@@ -9,8 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.Optional;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -63,19 +63,19 @@ public final class MainPanel extends JPanel {
   private final class TabWheelHandler implements MouseWheelListener {
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
       JTabbedPane src = (JTabbedPane) e.getComponent();
-      if (!getTabAreaBounds(src).contains(e.getPoint())) {
-        return;
+      boolean policy = src.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT;
+      if (policy && getTabAreaBounds(src).contains(e.getPoint())) {
+        boolean dir = (e.isControlDown() ? -1 : 1) * e.getPreciseWheelRotation() > 0;
+        String cmd;
+        if (check.isSelected()) {
+          cmd = dir ? "scrollTabsForwardAction" : "scrollTabsBackwardAction";
+        } else {
+          cmd = dir ? "navigateNext" : "navigatePrevious";
+        }
+        int id = ActionEvent.ACTION_PERFORMED;
+        ActionEvent event = new ActionEvent(src, id, cmd, e.getWhen(), e.getModifiersEx());
+        src.getActionMap().get(cmd).actionPerformed(event);
       }
-      boolean dir = (e.isControlDown() ? -1 : 1) * e.getPreciseWheelRotation() > 0;
-      int id = ActionEvent.ACTION_PERFORMED;
-      String cmd;
-      if (check.isSelected()) {
-        cmd = dir ? "scrollTabsForwardAction" : "scrollTabsBackwardAction";
-      } else {
-        cmd = dir ? "navigateNext" : "navigatePrevious";
-      }
-      ActionEvent event = new ActionEvent(src, id, cmd, e.getWhen(), e.getModifiersEx());
-      src.getActionMap().get(cmd).actionPerformed(event);
       // int idx = src.getSelectedIndex() + (int) dir;
       // if (idx < 0) {
       //   idx = src.getTabCount() - 1;
@@ -86,31 +86,67 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public static Rectangle getTabAreaBounds(JTabbedPane tabbedPane) {
-    Rectangle tabbedRect = tabbedPane.getBounds();
-    int xx = tabbedRect.x;
-    int yy = tabbedRect.y;
-    Rectangle compRect = Optional.ofNullable(tabbedPane.getSelectedComponent())
-        .map(Component::getBounds).orElseGet(Rectangle::new);
-    int tabPlacement = tabbedPane.getTabPlacement();
-    if (isTopBottomTabPlacement(tabPlacement)) {
-      tabbedRect.height = tabbedRect.height - compRect.height;
-      if (tabPlacement == SwingConstants.BOTTOM) {
-        tabbedRect.y += compRect.y + compRect.height;
-      }
-    } else {
-      tabbedRect.width = tabbedRect.width - compRect.width;
-      if (tabPlacement == SwingConstants.RIGHT) {
-        tabbedRect.x += compRect.x + compRect.width;
-      }
-    }
-    tabbedRect.translate(-xx, -yy);
-    return tabbedRect;
+  private static Stream<Component> descendants(Container parent) {
+    return Stream.of(parent.getComponents())
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
-  private static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+  private static Rectangle getTabAreaBounds(JTabbedPane tabbedPane) {
+    return descendants(tabbedPane)
+        .filter(JViewport.class::isInstance)
+        .map(JComponent.class::cast)
+        .filter(v -> "TabbedPane.scrollableViewport".equals(v.getName()))
+        .findFirst()
+        .map(v -> {
+          Rectangle r = SwingUtilities.calculateInnerArea(v, null);
+          return SwingUtilities.convertRectangle(v, r, tabbedPane);
+        })
+        .orElseGet(Rectangle::new);
   }
+
+  // private static boolean isTopBottomTabPlacement(int tabPlacement) {
+  //   return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
+  // }
+
+  // public static Rectangle getTabAreaBounds(JTabbedPane tabbedPane) {
+  //   Rectangle tabbedRect = SwingUtilities.calculateInnerArea(tabbedPane, null);
+  //   Rectangle compRect = Optional.ofNullable(tabbedPane.getSelectedComponent())
+  //       .map(Component::getBounds).orElseGet(Rectangle::new);
+  //   int tabPlacement = tabbedPane.getTabPlacement();
+  //   if (isTopBottomTabPlacement(tabPlacement)) {
+  //     tabbedRect.height = tabbedRect.height - compRect.height;
+  //     if (tabPlacement == SwingConstants.BOTTOM) {
+  //       tabbedRect.y += compRect.y + compRect.height;
+  //     }
+  //   } else {
+  //     tabbedRect.width = tabbedRect.width - compRect.width;
+  //     if (tabPlacement == SwingConstants.RIGHT) {
+  //       tabbedRect.x += compRect.x + compRect.width;
+  //     }
+  //   }
+  //   return tabbedRect;
+  // }
+
+  // private static Rectangle getTabAreaBoundsExcludeInsets(JTabbedPane tabbedPane) {
+  //   Rectangle r = SwingUtilities.calculateInnerArea(tabbedPane, null);
+  //   Rectangle cr = Optional.ofNullable(tabbedPane.getSelectedComponent())
+  //       .map(Component::getBounds)
+  //       .orElseGet(Rectangle::new);
+  //   int tp = tabbedPane.getTabPlacement();
+  //   Insets i1 = UIManager.getInsets("TabbedPane.tabAreaInsets");
+  //   Insets i2 = UIManager.getInsets("TabbedPane.contentBorderInsets");
+  //   if (isTopBottomTabPlacement(tp)) {
+  //     r.height -= cr.height + i1.top + i1.bottom + i2.top + i2.bottom;
+  //     r.x += i1.left;
+  //     r.y += tp == SwingConstants.TOP ? i1.top : cr.y + cr.height + i1.bottom + i2.bottom;
+  //   } else {
+  //     r.width -= cr.width + i1.top + i1.bottom + i2.left + i2.right;
+  //     r.x += tp == SwingConstants.LEFT ? i1.top : cr.x + cr.width + i1.bottom + i2.right;
+  //     r.y += i1.left;
+  //   }
+  //   return r;
+  // }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
