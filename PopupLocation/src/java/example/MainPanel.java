@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
@@ -15,20 +16,44 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     JPopupMenu popup = new JPopupMenu();
-    popup.add("menu 1");
-    popup.add("menu 2");
-    popup.add("menu 3");
+    popup.add("MenuItem 1");
+    popup.add("MenuItem 2");
+    popup.add("MenuItem 3");
 
-    JTextField field1 = new JTextField("default JTextField");
+    JTextField field1 = new JTextField("Default JTextField");
     field1.setComponentPopupMenu(popup);
 
-    JTextField field2 = new JTextField("override JTextField#getPopupLocation(MouseEvent)") {
+    JTextField field2 = makeTextField();
+    field2.setComponentPopupMenu(popup);
+
+    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    p.add(field1);
+    p.add(field2);
+
+    JList<ListItem> list = new NewspaperStyleList(makeModel());
+    list.setComponentPopupMenu(popup);
+    JScrollPane scroll = new JScrollPane(list);
+    scroll.setBorder(BorderFactory.createTitledBorder("CONTEXT_MENU, Shift+F10"));
+
+    add(p, BorderLayout.NORTH);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTextField makeTextField() {
+    return new JTextField("Override JTextField#getPopupLocation(MouseEvent)") {
       @Override public Point getPopupLocation(MouseEvent e) {
-        Point pt = super.getPopupLocation(e);
+        // e == null <- Menu Key pressed
+        return e == null ? getCaretPoint() : super.getPopupLocation(e);
+      }
+
+      private Point getCaretPoint() {
+        Point pt = null;
         try {
-          Rectangle r = modelToView(getCaretPosition());
           // Java 9: Rectangle r = modelToView2D(getCaretPosition()).getBounds();
-          if (e == null && r != null) { // e == null <- Menu Key pressed
+          Rectangle r = modelToView(getCaretPosition());
+          if (r != null) {
             pt = r.getLocation();
             pt.translate(0, r.height);
           }
@@ -38,19 +63,6 @@ public final class MainPanel extends JPanel {
         return pt;
       }
     };
-    field2.setComponentPopupMenu(popup);
-
-    JList<ListItem> list = new NewspaperStyleList(makeModel());
-    list.setComponentPopupMenu(popup);
-
-    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    p.add(field1);
-    p.add(field2);
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(list));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static ListModel<ListItem> makeModel() {
@@ -207,14 +219,14 @@ class NewspaperStyleList extends JList<ListItem> {
     setCellRenderer(new ListItemListCellRenderer());
   }
 
-  @Override public Point getPopupLocation(MouseEvent event) {
-    if (event == null) {
-      int i = getLeadSelectionIndex();
-      Rectangle r = getCellBounds(i, i);
-      if (r != null) {
-        return new Point((int) r.getCenterX(), (int) r.getCenterY());
-      }
-    }
-    return super.getPopupLocation(event);
+  @Override public Point getPopupLocation(MouseEvent e) {
+    return e == null ? getCenterPoint() : super.getPopupLocation(e);
+  }
+
+  private Point getCenterPoint() {
+    int i = getLeadSelectionIndex();
+    return Optional.ofNullable(getCellBounds(i, i))
+        .map(r -> new Point((int) r.getCenterX(), (int) r.getCenterY()))
+        .orElse(null);
   }
 }
