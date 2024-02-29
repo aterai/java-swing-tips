@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -54,7 +55,7 @@ public final class MainPanel extends JPanel {
           if (r.contains(pt)) {
             int currentRow = table.rowAtPoint(pt);
             int currentColumn = table.columnAtPoint(pt);
-            if (TableUtils.isNotRowContains(table.getSelectedRows(), currentRow)) {
+            if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
               table.changeSelection(currentRow, currentColumn, false, false);
             }
           } else {
@@ -81,7 +82,7 @@ public final class MainPanel extends JPanel {
           if (r.contains(pt)) {
             int currentRow = table.rowAtPoint(pt);
             int currentColumn = table.columnAtPoint(pt);
-            if (TableUtils.isNotRowContains(table.getSelectedRows(), currentRow)) {
+            if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
               table.changeSelection(currentRow, currentColumn, false, false);
             }
           } else {
@@ -164,7 +165,7 @@ class RightMouseButtonLayerUI extends LayerUI<JScrollPane> {
       if (r.contains(pt)) {
         int currentRow = table.rowAtPoint(pt);
         int currentColumn = table.columnAtPoint(pt);
-        if (TableUtils.isNotRowContains(table.getSelectedRows(), currentRow)) {
+        if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
           table.changeSelection(currentRow, currentColumn, false, false);
         }
       } else {
@@ -189,12 +190,13 @@ final class TableUtils {
     return start.union(end);
   }
 
-  public static boolean isNotRowContains(int[] selectedRows, int currentRow) {
-    for (int i : selectedRows) {
-      if (i == currentRow) {
-        return false;
-      }
-    }
-    return true;
+  public static boolean noneMatch(int[] selectedRows, int currentRow) {
+    return IntStream.of(selectedRows).noneMatch(i -> i == currentRow);
+    // for (int i : selectedRows) {
+    //   if (i == currentRow) {
+    //     return false;
+    //   }
+    // }
+    // return true;
   }
 }
