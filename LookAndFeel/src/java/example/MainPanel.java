@@ -147,7 +147,7 @@ final class LookAndFeelUtils {
     try {
       lnfClass = Class.forName(laf);
     } catch (ClassNotFoundException ex) {
-      return null;
+      lnfClass = null;
     }
     return lnfClass;
   }
