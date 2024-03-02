@@ -41,6 +41,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   }
 
   private boolean checkRepaint(DefaultTableModel m, TableColumn column, Object status) {
+    boolean repaint;
     if (status == Status.INDETERMINATE) {
       List<?> data = m.getDataVector();
       List<Boolean> l = data.stream()
@@ -51,14 +52,15 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
       if (notDuplicates) {
         boolean isSelected = l.get(0);
         column.setHeaderValue(isSelected ? Status.SELECTED : Status.DESELECTED);
-        return true;
+        repaint = true;
       } else {
-        return false;
+        repaint = false;
       }
     } else {
       column.setHeaderValue(Status.INDETERMINATE);
-      return true;
+      repaint = true;
     }
+    return repaint;
   }
   // private boolean checkRepaint(TableModel m, TableColumn column, Object status) {
   //   if (status == Status.INDETERMINATE) {

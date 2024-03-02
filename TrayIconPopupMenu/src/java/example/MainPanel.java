@@ -180,44 +180,42 @@ final class TrayIconPopupMenuUtils {
   // Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
   public static Point adjustPopupLocation(JPopupMenu popup, Point pt) {
     Point p = new Point(pt);
-    if (GraphicsEnvironment.isHeadless()) {
-      return p;
-    }
+    if (!GraphicsEnvironment.isHeadless()) {
+      Rectangle screenBounds;
+      GraphicsConfiguration gc = getGraphicsConfiguration(p);
 
-    Rectangle screenBounds;
-    GraphicsConfiguration gc = getGraphicsConfiguration(p);
+      // If not found and popup have invoker, ask invoker about his gc
+      if (Objects.isNull(gc) && Objects.nonNull(popup.getInvoker())) {
+        gc = popup.getInvoker().getGraphicsConfiguration();
+      }
 
-    // If not found and popup have invoker, ask invoker about his gc
-    if (Objects.isNull(gc) && Objects.nonNull(popup.getInvoker())) {
-      gc = popup.getInvoker().getGraphicsConfiguration();
-    }
+      if (Objects.isNull(gc)) {
+        // If we don't have GraphicsConfiguration use primary screen
+        screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+      } else {
+        // If we have GraphicsConfiguration use it to get
+        // screen bounds
+        screenBounds = gc.getBounds();
+      }
 
-    if (Objects.isNull(gc)) {
-      // If we don't have GraphicsConfiguration use primary screen
-      screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
-    } else {
-      // If we have GraphicsConfiguration use it to get
-      // screen bounds
-      screenBounds = gc.getBounds();
-    }
+      Dimension size = popup.getPreferredSize();
+      // Use long variables to prevent overflow
+      long px = p.x;
+      long py = p.y;
+      long pw = px + size.width;
+      long ph = py + size.height;
+      if (pw > screenBounds.x + screenBounds.width) {
+        p.x -= size.width;
+      }
+      if (ph > screenBounds.y + screenBounds.height) {
+        p.y -= size.height;
+      }
 
-    Dimension size = popup.getPreferredSize();
-    // Use long variables to prevent overflow
-    long px = p.x;
-    long py = p.y;
-    long pw = px + size.width;
-    long ph = py + size.height;
-    if (pw > screenBounds.x + screenBounds.width) {
-      p.x -= size.width;
+      // Change is made to the desired (X, Y) values, when the
+      // PopupMenu is too tall OR too wide for the screen
+      p.x = Math.max(p.x, screenBounds.x);
+      p.y = Math.max(p.y, screenBounds.y);
     }
-    if (ph > screenBounds.y + screenBounds.height) {
-      p.y -= size.height;
-    }
-
-    // Change is made to the desired (X, Y) values, when the
-    // PopupMenu is too tall OR too wide for the screen
-    p.x = Math.max(p.x, screenBounds.x);
-    p.y = Math.max(p.y, screenBounds.y);
     return p;
   }
 }

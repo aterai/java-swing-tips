@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("unzip");
     button1.addActionListener(e -> {
       String str = field.getText();
-      makeDestDirPath(str).ifPresent(dir -> {
+      makeTargetDirPath(str).ifPresent(dir -> {
         Path path = Paths.get(str);
         try {
           // noticeably poor performance in JDK 8
@@ -149,19 +149,22 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Optional<Path> makeDestDirPath(String text) {
+  private static Optional<Path> makeTargetDirPath(String text) {
+    Optional<Path> op;
     Path path = Paths.get(text);
     // noticeably poor performance in JDK 8
     // if (str.isEmpty() || Files.notExists(path)) {
     if (text.isEmpty() || !path.toFile().exists()) {
-      return Optional.empty();
+      op = Optional.empty();
+    } else {
+      String name = Objects.toString(path.getFileName());
+      int lastDotPos = name.lastIndexOf('.');
+      if (lastDotPos > 0) {
+        name = name.substring(0, lastDotPos);
+      }
+      op = Optional.of(path.resolveSibling(name));
     }
-    String name = Objects.toString(path.getFileName());
-    int lastDotPos = name.lastIndexOf('.');
-    if (lastDotPos > 0) {
-      name = name.substring(0, lastDotPos);
-    }
-    return Optional.of(path.resolveSibling(name));
+    return op;
   }
 
   public static void main(String[] args) {
@@ -214,11 +217,11 @@ final class ZipUtils {
     return new ZipEntry(name);
   }
 
-  public static void unzip(Path zipFilePath, Path destDir) throws IOException {
+  public static void unzip(Path zipFilePath, Path targetDir) throws IOException {
     try (ZipFile zipFile = new ZipFile(zipFilePath.toString())) {
       for (ZipEntry zipEntry : Collections.list(zipFile.entries())) {
         String name = zipEntry.getName();
-        Path path = destDir.resolve(name);
+        Path path = targetDir.resolve(name);
         if (name.endsWith("/")) { // if (Files.isDirectory(path)) {
           LOGGER.info(() -> String.format("mkdir1: %s", path));
           Files.createDirectories(path);
