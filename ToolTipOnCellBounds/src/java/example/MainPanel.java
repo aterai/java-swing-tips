@@ -96,6 +96,7 @@ class TooltipList<E> extends JList<E> {
     ListCellRenderer<? super E> r = getCellRenderer();
     int i = locationToIndex(p);
     Rectangle cellBounds = getCellBounds(i, i);
+    Point pt = null;
     if (r != null && cellBounds != null && cellBounds.contains(p)) {
       ListSelectionModel lsm = getSelectionModel();
       boolean hasFocus = hasFocus() && lsm.getLeadSelectionIndex() == i;
@@ -103,10 +104,10 @@ class TooltipList<E> extends JList<E> {
       Component renderer = r.getListCellRendererComponent(
           this, value, i, lsm.isSelectedIndex(i), hasFocus);
       if (renderer instanceof JComponent && ((JComponent) renderer).getToolTipText() != null) {
-        return cellBounds.getLocation();
+        pt = cellBounds.getLocation();
       }
     }
-    return null;
+    return pt;
   }
 }
 
@@ -129,6 +130,7 @@ class CellRendererTooltipList<E> extends JList<E> {
     int i = locationToIndex(p);
     ListCellRenderer<? super E> r = getCellRenderer();
     Rectangle cellBounds = getCellBounds(i, i);
+    Point pt = null;
     if (r != null && cellBounds != null && cellBounds.contains(p)) {
       ListSelectionModel lsm = getSelectionModel();
       E str = getModel().getElementAt(i);
@@ -136,14 +138,13 @@ class CellRendererTooltipList<E> extends JList<E> {
       Component renderer = r.getListCellRendererComponent(
           this, str, i, lsm.isSelectedIndex(i), hasFocus);
       if (renderer instanceof JComponent && ((JComponent) renderer).getToolTipText() != null) {
-        Point pt = cellBounds.getLocation();
+        pt = cellBounds.getLocation();
         Insets ins = label.getInsets();
         pt.translate(-ins.left, -ins.top);
         label.setIcon(new RendererIcon(renderer, cellBounds));
-        return pt;
       }
     }
-    return null;
+    return pt;
   }
 
   @Override public JToolTip createToolTip() {
