@@ -121,10 +121,11 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
   private final JCheckBox check = new JCheckBox(" ");
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component c;
     if (index < 0) {
       String txt = getCheckedItemString(list.getModel());
       label.setText(txt.isEmpty() ? " " : txt);
-      return label;
+      c = label;
     } else {
       check.setText(Objects.toString(value, ""));
       check.setSelected(value.isSelected());
@@ -135,8 +136,9 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
         check.setBackground(list.getBackground());
         check.setForeground(list.getForeground());
       }
-      return check;
+      c = check;
     }
+    return c;
   }
 
   private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
