@@ -97,6 +97,7 @@
       <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
       <compilerarg value="-J-Duser.language=${user.language}" />
       <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-Xlint:unchecked" />
     </javac>
   </target>
@@ -111,6 +112,7 @@
       <jvmarg value="--add-opens=java.desktop/javax.swing=ALL-UNNAMED" if:set="jdk9orlater" />
       <jvmarg value="--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED" if:set="jdk9orlater" />
       <jvmarg value="--add-opens=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
+      <jvmarg value="--add-opens=java.desktop/sun.awt.shell=ALL-UNNAMED" if:set="jdk9orlater" />
     </java>
   </target>
 
@@ -293,7 +295,7 @@
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED" if:set="jdk9orlater" />
-      <compilerarg value="-J--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
+      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
     </javac>
   </target>
 
@@ -311,8 +313,8 @@
       <compilerclasspath>
         <fileset dir="${env.ECJ_HOME}" includes="*.jar" />
       </compilerclasspath>
-      <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="-warn:-serial,-warningToken" unless:set="jdk9orlater" />
-      <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED -warn:-serial,-warningToken" if:set="jdk9orlater" />
+      <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="-warn:-serial,-warningToken" />
+      <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
     </javac>
   </target>
 
