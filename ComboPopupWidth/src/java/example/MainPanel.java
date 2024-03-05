@@ -89,8 +89,14 @@ class WidePopupMenuListener implements PopupMenuListener {
     adjusting.set(true);
     combo.setSize(POPUP_MIN_WIDTH, size.height);
     combo.showPopup();
-    combo.setSize(size);
-    adjusting.set(false);
+    // // Java 8
+    // combo.setSize(size);
+    // adjusting.set(false);
+    // Java 21
+    EventQueue.invokeLater(() -> {
+      combo.setSize(size);
+      adjusting.set(false);
+    });
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

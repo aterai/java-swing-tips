@@ -128,16 +128,20 @@ public final class MainPanel extends JPanel {
             int popupWidth = proto.getIconWidth() * columnCount + i.left + i.right;
 
             Dimension size = combo.getSize();
-            if (size.width >= popupWidth) {
+            if (size.width >= popupWidth || adjusting.get()) {
               return;
             }
-            if (!adjusting.get()) {
-              adjusting.set(true);
-              combo.setSize(popupWidth, size.height);
-              combo.showPopup();
-            }
-            combo.setSize(size);
-            adjusting.set(false);
+            adjusting.set(true);
+            combo.setSize(popupWidth, size.height);
+            combo.showPopup();
+            // // Java 8
+            // combo.setSize(size);
+            // adjusting.set(false);
+            // Java 21
+            EventQueue.invokeLater(() -> {
+              combo.setSize(size);
+              adjusting.set(false);
+            });
           }
 
           @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
