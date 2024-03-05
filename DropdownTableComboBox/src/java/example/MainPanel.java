@@ -200,6 +200,8 @@ class ComboTablePopup extends BasicComboPopup {
   protected ComboTablePopup(JComboBox combo, JTable table) {
     super(combo);
     this.table = table;
+    // this.setBorderPainted(false);
+    // this.setBorder(BorderFactory.createEmptyBorder());
 
     ListSelectionModel sm = table.getSelectionModel();
     sm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -221,10 +223,10 @@ class ComboTablePopup extends BasicComboPopup {
     scroll = new JScrollPane(table);
   }
 
-  @Override public void updateUI() {
-    super.updateUI();
-    setBorder(BorderFactory.createEmptyBorder());
-  }
+  // @Override public void updateUI() {
+  //   super.updateUI();
+  //   EventQueue.invokeLater(() -> setBorder(BorderFactory.createEmptyBorder()));
+  // }
 
   // Java 9: @SuppressWarnings("deprecation")
   // @Override public void show() {
@@ -250,6 +252,8 @@ class ComboTablePopup extends BasicComboPopup {
       scroll.setPreferredSize(new Dimension(240, scrollHeight));
       super.removeAll();
       super.add(scroll);
+      setBorderPainted(false);
+      // setBorder(BorderFactory.createEmptyBorder());
     }
     super.togglePopup();
   }
