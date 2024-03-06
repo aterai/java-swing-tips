@@ -257,11 +257,10 @@ public class TableSorter extends AbstractTableModel {
   }
 
   public Icon getHeaderRendererIcon(int column, int size) {
-    Directive directive = getDirective(column);
-    if (EMPTY_DIRECTIVE.equals(directive)) {
-      return null;
-    }
-    return new Arrow(directive.direction == DESCENDING, size, sortingColumns.indexOf(directive));
+    Directive d = getDirective(column);
+    return EMPTY_DIRECTIVE.equals(d)
+        ? null
+        : new Arrow(d.direction == DESCENDING, size, sortingColumns.indexOf(d));
   }
 
   protected void cancelSorting() {
