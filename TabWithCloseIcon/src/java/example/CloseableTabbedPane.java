@@ -381,13 +381,9 @@ class CloseableTabIconHandler extends MouseAdapter {
   }
 
   private CloseTabIcon getCloseTabIcon(CloseableTabbedPane tabbedPane, Point pt) {
-    // int tabNumber = getUI().tabForCoordinate(this, e.getX(), e.getY());
-    int tabNumber = tabbedPane.indexAtLocation(pt.x, pt.y);
-    if (tabNumber < 0) {
-      return null;
-    } else {
-      return (CloseTabIcon) tabbedPane.getIconAt(tabNumber);
-    }
+    // int i = getUI().tabForCoordinate(this, e.getX(), e.getY());
+    int i = tabbedPane.indexAtLocation(pt.x, pt.y);
+    return i >= 0 ? (CloseTabIcon) tabbedPane.getIconAt(i) : null;
   }
 }
 
