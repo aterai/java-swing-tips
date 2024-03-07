@@ -8,7 +8,8 @@ import java.awt.geom.Path2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
-import java.util.Locale;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -19,6 +20,7 @@ import javax.swing.plaf.basic.BasicHTML;
 @SuppressWarnings("PMD.TooManyMethods")
 public class TitledBorder2 extends TitledBorder {
   private final JLabel label2;
+  private final Map<BorderPosition, Integer> positionMap = new EnumMap<>(BorderPosition.class);
 
   // Space between the border and the component's edge
   // protected static final int EDGE_SPACING = 2;
@@ -30,6 +32,16 @@ public class TitledBorder2 extends TitledBorder {
   // Horizontal inset of text that is left or right justified
   // protected static final int TEXT_INSET_H = 5;
   protected static final int TEXT_INSET_H2 = 11; // TEXT_SPACING2 * 2 + 1;
+
+  public enum BorderPosition {
+    DEFAULT_POSITION,
+    ABOVE_TOP,
+    TOP,
+    BELOW_TOP,
+    ABOVE_BOTTOM,
+    BOTTOM,
+    BELOW_BOTTOM;
+  }
 
   public TitledBorder2(String title) {
     this(null, title, LEADING, DEFAULT_POSITION, null, null);
@@ -69,6 +81,13 @@ public class TitledBorder2 extends TitledBorder {
     label2.setOpaque(false);
     label2.putClientProperty(BasicHTML.propertyKey, null);
     installPropertyChangeListeners2();
+    positionMap.put(BorderPosition.DEFAULT_POSITION, DEFAULT_POSITION);
+    positionMap.put(BorderPosition.ABOVE_TOP, ABOVE_TOP);
+    positionMap.put(BorderPosition.TOP, TOP);
+    positionMap.put(BorderPosition.BELOW_TOP, BELOW_TOP);
+    positionMap.put(BorderPosition.ABOVE_BOTTOM, ABOVE_BOTTOM);
+    positionMap.put(BorderPosition.BOTTOM, BOTTOM);
+    positionMap.put(BorderPosition.BELOW_BOTTOM, BELOW_BOTTOM);
   }
 
   /**
@@ -228,24 +247,43 @@ public class TitledBorder2 extends TitledBorder {
     }
   }
 
+  // private int getPosition2() {
+  //   int position = getTitlePosition();
+  //   if (position != DEFAULT_POSITION) {
+  //     return position;
+  //   }
+  //   Object value = UIManager.get("TitledBorder.position");
+  //   if (value instanceof Integer) {
+  //     int i = (Integer) value;
+  //     if (0 < i && i <= 6) {
+  //       return i;
+  //     }
+  //   } else if (value instanceof String) {
+  //     Integer aboveTop = TitledBorderUtils.getPositionByString(value);
+  //     if (aboveTop != null) {
+  //       return aboveTop;
+  //     }
+  //   }
+  //   return TOP;
+  // }
+
   private int getPosition2() {
     int position = getTitlePosition();
-    if (position != DEFAULT_POSITION) {
-      return position;
-    }
-    Object value = UIManager.get("TitledBorder.position");
-    if (value instanceof Integer) {
-      int i = (Integer) value;
-      if (0 < i && i <= 6) {
-        return i;
+    if (position == DEFAULT_POSITION) {
+      Object value = UIManager.get("TitledBorder.position");
+      if (value instanceof Integer && positionMap.containsValue(value)) {
+        position = (Integer) value;
+      } else if (value instanceof String) {
+        position = positionMap.keySet().stream()
+            .filter(key -> value.equals(key.name()))
+            .findFirst()
+            .map(positionMap::get)
+            .orElse(ABOVE_TOP);
+      } else {
+        position = TOP;
       }
-    } else if (value instanceof String) {
-      Integer aboveTop = TitledBorderUtils.getPositionByString(value);
-      if (aboveTop != null) {
-        return aboveTop;
-      }
     }
-    return TOP;
+    return position;
   }
 
   private int getJustification2(Component c) {
@@ -344,32 +382,32 @@ final class TitledBorderUtils {
     }
   }
 
-  public static Integer getPositionByString(Object value) {
-    String s = Objects.toString(value).toUpperCase(Locale.ENGLISH);
-    Integer ret;
-    switch (s) {
-      case "ABOVE_TOP":
-        ret = TitledBorder.ABOVE_TOP;
-        break;
-      case "TOP":
-        ret = TitledBorder.TOP;
-        break;
-      case "BELOW_TOP":
-        ret = TitledBorder.BELOW_TOP;
-        break;
-      case "ABOVE_BOTTOM":
-        ret = TitledBorder.ABOVE_BOTTOM;
-        break;
-      case "BOTTOM":
-        ret = TitledBorder.BOTTOM;
-        break;
-      case "BELOW_BOTTOM":
-        ret = TitledBorder.BELOW_BOTTOM;
-        break;
-      default:
-        ret = null;
-        break;
-    }
-    return ret;
-  }
+  // public static Integer getPositionByString(Object value) {
+  //   String s = Objects.toString(value).toUpperCase(Locale.ENGLISH);
+  //   Integer ret;
+  //   switch (s) {
+  //     case "ABOVE_TOP":
+  //       ret = TitledBorder.ABOVE_TOP;
+  //       break;
+  //     case "TOP":
+  //       ret = TitledBorder.TOP;
+  //       break;
+  //     case "BELOW_TOP":
+  //       ret = TitledBorder.BELOW_TOP;
+  //       break;
+  //     case "ABOVE_BOTTOM":
+  //       ret = TitledBorder.ABOVE_BOTTOM;
+  //       break;
+  //     case "BOTTOM":
+  //       ret = TitledBorder.BOTTOM;
+  //       break;
+  //     case "BELOW_BOTTOM":
+  //       ret = TitledBorder.BELOW_BOTTOM;
+  //       break;
+  //     default:
+  //       ret = null;
+  //       break;
+  //   }
+  //   return ret;
+  // }
 }
