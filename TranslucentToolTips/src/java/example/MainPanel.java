@@ -130,7 +130,8 @@ public final class MainPanel extends JPanel {
 
       private String getActivityText(int idx) {
         Contribution c = getModel().getElementAt(idx);
-        String actTxt = c.getActivity() == 0 ? "No" : Objects.toString(c.getActivity());
+        int activity = c.getActivity();
+        String actTxt = activity == 0 ? "No" : Objects.toString(activity);
         return String.format("%s contribution on %s", actTxt, c.getDate());
       }
     };
