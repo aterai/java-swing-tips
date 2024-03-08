@@ -198,11 +198,11 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public boolean isCellEditable(EventObject e) {
-    if (e instanceof MouseEvent) {
-      MouseEvent me = (MouseEvent) e;
-      return !(me.isShiftDown() || me.isControlDown());
-    }
-    return super.isCellEditable(e);
+    return e instanceof MouseEvent ? isEditableKey((MouseEvent) e) : super.isCellEditable(e);
+  }
+
+  private static boolean isEditableKey(MouseEvent e) {
+    return !(e.isShiftDown() || e.isControlDown());
   }
 
   private final class Handler extends MouseAdapter implements ActionListener {
