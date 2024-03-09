@@ -186,28 +186,17 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   }
 
   private Optional<SiteItem> getSiteItemFromModel(ComboBoxModel<SiteItem> model, Object o) {
+    Optional<SiteItem> op;
     if (o instanceof SiteItem) {
-      return Optional.of((SiteItem) o);
+      op = Optional.of((SiteItem) o);
+    } else {
+      String str = Objects.toString(o, "");
+      op = IntStream.range(0, model.getSize())
+          .mapToObj(model::getElementAt)
+          .filter(ui -> str.equals(ui.getUrl()))
+          .findFirst();
     }
-    String str = Objects.toString(o, "");
-    return IntStream.range(0, model.getSize())
-        .mapToObj(model::getElementAt)
-        .filter(ui -> str.equals(ui.getUrl()))
-        .findFirst();
-    // DefaultComboBoxModel<SiteItem> model = (DefaultComboBoxModel<SiteItem>) getModel();
-    // SiteItem item = null;
-    // for (int i = 0; i < model.getSize(); i++) {
-    //   SiteItem tmp = model.getElementAt(i);
-    //   if (tmp.url.equals(text)) {
-    //     item = tmp;
-    //     break;
-    //   }
-    // }
-    // if (Objects.nonNull(item)) {
-    //   model.removeElement(item);
-    //   model.insertElementAt(item, 0);
-    // }
-    // return item;
+    return op;
   }
 
   // private ImageIcon getFavicon(String url) {
