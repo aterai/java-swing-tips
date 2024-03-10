@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerListCellRenderer extends DefaultListCellRenderer {
-  private final transient Icon indentIcon = new IndentIcon();
+  private final transient Icon indentIcon = new GapIcon();
 
   @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -157,7 +157,7 @@ class RoundedCornerListCellRenderer extends DefaultListCellRenderer {
   }
 }
 
-class IndentIcon implements Icon {
+class GapIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     /* Empty icon */
   }
@@ -189,38 +189,13 @@ class HeavyWeightContainerListener implements PopupMenuListener {
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-    JComboBox<?> combo = (JComboBox<?>) e.getSource();
-    combo.setBorder(new RoundedCornerBorder());
+    ((JComponent) e.getSource()).setBorder(new RoundedCornerBorder());
   }
 
   @Override public void popupMenuCanceled(PopupMenuEvent e) {
     /* not needed */
   }
 }
-
-//class ComboRolloverHandler extends MouseAdapter {
-//  private static ButtonModel getButtonModel(MouseEvent e) {
-//    Container c = (Container) e.getComponent();
-//    JButton b = (JButton) c.getComponent(0);
-//    return b.getModel();
-//  }
-//
-//  @Override public void mouseEntered(MouseEvent e) {
-//    getButtonModel(e).setRollover(true);
-//  }
-//
-//  @Override public void mouseExited(MouseEvent e) {
-//    getButtonModel(e).setRollover(false);
-//  }
-//
-//  @Override public void mousePressed(MouseEvent e) {
-//    getButtonModel(e).setPressed(true);
-//  }
-//
-//  @Override public void mouseReleased(MouseEvent e) {
-//    getButtonModel(e).setPressed(false);
-//  }
-//}
 
 class ArrowIcon implements Icon {
   private final Color color;
