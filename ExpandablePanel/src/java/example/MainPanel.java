@@ -24,11 +24,11 @@ public final class MainPanel extends JPanel {
 
     ExpansionListener rl = e -> {
       setVisible(false);
-      Component source = (Component) e.getSource();
       centerBox.removeAll();
       northBox.removeAll();
       southBox.removeAll();
       boolean insertSouth = false;
+      Component source = (Component) e.getSource();
       for (AbstractExpansionPanel exp : panelList) {
         if (source.equals(exp) && exp.isExpanded()) {
           centerBox.add(exp);

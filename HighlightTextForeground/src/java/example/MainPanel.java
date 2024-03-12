@@ -129,7 +129,6 @@ public final class MainPanel extends JPanel {
   /* default */ int changeHighlight(int index) {
     field.setBackground(Color.WHITE);
     StyledDocument doc = textPane.getStyledDocument();
-    Style s = doc.getStyle("highlight-text-foreground");
     Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
 
     // clear the previous highlight:
@@ -175,6 +174,7 @@ public final class MainPanel extends JPanel {
       highlighter.removeHighlight(hh);
       int start = hh.getStartOffset();
       int end = hh.getEndOffset();
+      Style s = doc.getStyle("highlight-text-foreground");
       try {
         highlighter.addHighlight(start, end, currentPainter);
         doc.setCharacterAttributes(start, end - start, s, true);
