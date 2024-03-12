@@ -51,6 +51,7 @@ public final class MainPanel extends JPanel {
           case VERTICAL: {
             AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
             at.translate(0, -h);
+            // AffineTransform at = new AffineTransform(1d, 0d, 0d, -1d, 0d, h);
             Graphics2D g2 = (Graphics2D) g.create();
             g2.drawImage(img, at, this);
             g2.dispose();
@@ -59,6 +60,7 @@ public final class MainPanel extends JPanel {
           case HORIZONTAL: {
             AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
             at.translate(-w, 0);
+            // AffineTransform at = new AffineTransform(-1d, 0d, 0d, 1d, w, 0d);
             AffineTransformOp atOp = new AffineTransformOp(at, null);
             g.drawImage(atOp.filter(img, null), 0, 0, w, h, this);
             break;
@@ -131,19 +133,15 @@ enum Flip {
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-
     int w = getIconWidth();
     int h = getIconHeight();
     int gap = w / 5;
-
     g2.setColor(Color.WHITE);
     g2.fillRect(x, y, w, h);
-
     g2.setColor(Color.RED);
     g2.setStroke(new BasicStroke(w / 8f));
-    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
+    g2.drawLine(x + gap, y + gap, x + gap, y + h - gap);
     g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
-
     g2.dispose();
   }
 
