@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
   }
 
   public static Component makeLabelTable(int row, int column) {
-    JPanel p = new JPanel(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
     c.weighty = 1;
@@ -31,6 +30,7 @@ public final class MainPanel extends JPanel {
     BasicStroke dashedStroke = new BasicStroke(
         1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 2f, array, 0f);
     Border dashed = new StrokeMatteBorder(0, 0, 1, 1, dashedStroke, Color.BLACK);
+    JPanel p = new JPanel(new GridBagLayout());
     for (c.gridy = 0; c.gridy < row; c.gridy++) {
       for (c.gridx = 0; c.gridx < column; c.gridx++) {
         JLabel l = makeLabel(String.format(Locale.ENGLISH, "%d%d", c.gridx, c.gridy));

@@ -109,17 +109,15 @@ public final class MainPanel extends JPanel {
 
   private final class HighlightIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+      // paint Background
+      Rectangle cellRect = SwingUtilities.calculateInnerArea(label, label.getBounds());
+      g.setColor(Color.WHITE);
+      g.fillRect(cellRect.x, cellRect.y, cellRect.width, cellRect.height);
+
       // JViewport viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, c);
       JViewport viewport = scroll.getViewport();
       Rectangle viewRect = viewport.getBounds();
       Rectangle tableRect = table.getBounds();
-      Rectangle cellRect = SwingUtilities.calculateInnerArea(label, label.getBounds());
-      // Insets insets = ((JComponent) c).getInsets();
-      // Insets insets = label.getInsets();
-
-      // paint Background
-      g.setColor(Color.WHITE);
-      g.fillRect(cellRect.x, cellRect.y, cellRect.width, cellRect.height);
 
       // double sy = (cellRect.height - insets.top - insets.bottom) / tableRect.getHeight();
       double sy = cellRect.getHeight() / tableRect.getHeight();

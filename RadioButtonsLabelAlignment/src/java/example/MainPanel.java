@@ -18,7 +18,6 @@ public final class MainPanel extends JPanel {
     p.setFocusTraversalPolicyProvider(true);
     p.setFocusable(false);
     // p.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    boolean leftToRightParent = p.getComponentOrientation().isLeftToRight();
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 1;
@@ -33,6 +32,7 @@ public final class MainPanel extends JPanel {
         new JCheckBox("JCheckBox1"),
         new JCheckBox("JCheckBox2"));
     int gap = 0;
+    boolean leftToRightParent = p.getComponentOrientation().isLeftToRight();
     for (JComponent c : list) {
       // c.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
       gbc.insets.left = 0;

@@ -152,7 +152,6 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
     Component c = renderer.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
-      JLabel l = (JLabel) c;
       panel.setFocusable(false);
       panel.setRequestFocusEnabled(false);
       panel.setOpaque(false);
@@ -160,6 +159,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       checkBox.setFont(tree.getFont());
       checkBox.setFocusable(false);
       checkBox.setOpaque(false);
+      JLabel l = (JLabel) c;
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;

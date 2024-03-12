@@ -199,9 +199,9 @@ class FindNextAction extends AbstractAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
+    matchedResults.clear();
     TreePath selectedPath = tree.getSelectionPath();
     tree.clearSelection();
-    matchedResults.clear();
     searchTree(tree, tree.getPathForRow(0), field.getText(), matchedResults);
     if (!matchedResults.isEmpty()) {
       int nextIndex = 0;

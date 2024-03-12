@@ -27,9 +27,9 @@ public final class MainPanel extends JPanel {
     Action findNextAction = new AbstractAction("Find Next") {
       private final List<TreePath> rollOverPathLists = new ArrayList<>();
       @Override public void actionPerformed(ActionEvent e) {
+        rollOverPathLists.clear();
         TreePath selectedPath = tree.getSelectionPath();
         tree.clearSelection();
-        rollOverPathLists.clear();
         TreeUtils.searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
         if (!rollOverPathLists.isEmpty()) {
           int nextIndex = 0;

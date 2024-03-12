@@ -212,7 +212,6 @@ class SizeIcon extends ArrowToggleButtonIcon {
 
 class RibbonToggleButtonIcon extends ArrowToggleButtonIcon {
   @Override protected Shape makeShape(Container parent, Component c, int x, int y) {
-    double r = 4d;
     double w = c.getWidth() - 1d;
     double h = c.getHeight() - 1d;
     double h2 = h * .5;
@@ -222,6 +221,7 @@ class RibbonToggleButtonIcon extends ArrowToggleButtonIcon {
     p.quadTo(w, 0d + h, w - h2, h);
     if (Objects.equals(c, parent.getComponent(0))) {
       // :first-child
+      double r = 4d;
       p.lineTo(r, h);
       p.quadTo(0d, h, 0d, h - r);
       p.lineTo(0d, r);

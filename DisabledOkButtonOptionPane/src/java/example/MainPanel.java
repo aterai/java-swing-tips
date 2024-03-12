@@ -32,12 +32,12 @@ public final class MainPanel extends JPanel {
     String disabledMessage = "Text is required to create ...";
     JLabel label = new JLabel(" ");
     label.setForeground(Color.RED);
-    panel.add(field);
-    panel.add(label);
     if (field.getText().isEmpty()) {
       field.setBorder(disabledBorder);
       label.setText(disabledMessage);
     }
+    panel.add(field);
+    panel.add(label);
     field.addHierarchyListener(e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
