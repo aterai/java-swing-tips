@@ -39,7 +39,6 @@ public final class MainPanel extends JPanel {
         int arc = 10;
         int thumbSize = 24;
         int trackHeight = 8;
-        int tickSize = 4;
         int trackWidth = w - thumbSize;
         int fillTop = (thumbSize - trackHeight) / 2;
         int fillLeft = thumbSize / 2;
@@ -55,6 +54,7 @@ public final class MainPanel extends JPanel {
         // Paint the major tick marks on the track
         g.setColor(new Color(0x31_A8_F8));
         int value = c.getMinimum();
+        int tickSize = 4;
         while (value <= c.getMaximum()) {
           int xpt = getPositionForValue(c, r, value);
           g.fillOval(xpt, (int) r.getCenterY() - tickSize / 2, tickSize, tickSize);

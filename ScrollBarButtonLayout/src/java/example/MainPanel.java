@@ -90,29 +90,6 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
     // // decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
     // // <----
 
-    int gaps = decrGap + incrGap;
-    int trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
-
-    /* Compute the height and origin of the thumb. The case
-     * where the thumb is at the bottom edge is handled specially
-     * to avoid numerical problems in computing thumbY. Enforce
-     * the thumbs min/max dimensions. If the thumb doesn't
-     * fit in the track (trackH) we'll hide it later.
-     */
-    float min = sb.getMinimum();
-    int max = sb.getMaximum() - sb.getVisibleAmount();
-    float extent = sb.getVisibleAmount();
-    float range = sb.getMaximum() - min;
-    // float value = getValue(sb);
-    float value = sb.getValue();
-
-    int maxHeight = getMaximumThumbSize().height;
-    int minHeight = getMinimumThumbSize().height;
-    int thumbH = ScrollBarUtils.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
-    int y = incrButtonY - incrGap - thumbH;
-    float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
-    int thumbY = ScrollBarUtils.getThumbY(y, max, value, maxThumbY);
-
     /* If the buttons don't fit, allocate half of the available
      * space to each and move the lower one (incrButton) down.
      */
@@ -142,6 +119,26 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
      * make sure it fits between the buttons. Note that setting the
      * thumbs bounds will cause a repaint.
      */
+    int maxHeight = getMaximumThumbSize().height;
+    int minHeight = getMinimumThumbSize().height;
+    int gaps = decrGap + incrGap;
+    /* Compute the height and origin of the thumb. The case
+     * where the thumb is at the bottom edge is handled specially
+     * to avoid numerical problems in computing thumbY. Enforce
+     * the thumbs min/max dimensions. If the thumb doesn't
+     * fit in the track (trackH) we'll hide it later.
+     */
+    float min = sb.getMinimum();
+    int max = sb.getMaximum() - sb.getVisibleAmount();
+    float extent = sb.getVisibleAmount();
+    float range = sb.getMaximum() - min;
+    // float value = getValue(sb);
+    float value = sb.getValue();
+    int trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
+    int thumbH = ScrollBarUtils.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
+    int y = incrButtonY - incrGap - thumbH;
+    float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
+    int thumbY = ScrollBarUtils.getThumbY(y, max, value, maxThumbY);
     if (thumbH >= trackH) {
       setThumbBounds(0, 0, 0, 0);
     } else {
@@ -193,29 +190,6 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
     // // decrGap = UIManager.getInt("ScrollBar.decrementButtonGap");
     // // <----
 
-    int gaps = decrGap + incrGap;
-    int trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
-
-    /* Compute the height and origin of the thumb. The case
-     * where the thumb is at the bottom edge is handled specially
-     * to avoid numerical problems in computing thumbY. Enforce
-     * the thumbs min/max dimensions. If the thumb doesn't
-     * fit in the track (trackH) we'll hide it later.
-     */
-    float min = sb.getMinimum();
-    int max = sb.getMaximum() - sb.getVisibleAmount();
-    float extent = sb.getVisibleAmount();
-    float range = sb.getMaximum() - min;
-    // float value = getValue(sb);
-    float value = sb.getValue();
-
-    int maxHeight = getMaximumThumbSize().height;
-    int minHeight = getMinimumThumbSize().height;
-    int thumbH = ScrollBarUtils.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
-    int y = incrButtonY - incrGap - thumbH;
-    float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
-    int thumbY = ScrollBarUtils.getThumbY(y, max, value, maxThumbY);
-
     /* If the buttons don't fit, allocate half of the available
      * space to each and move the lower one (incrButton) down.
      */
@@ -245,6 +219,26 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
      * make sure it fits between the buttons. Note that setting the
      * thumbs bounds will cause a repaint.
      */
+    int maxHeight = getMaximumThumbSize().height;
+    int minHeight = getMinimumThumbSize().height;
+    int gaps = decrGap + incrGap;
+    /* Compute the height and origin of the thumb. The case
+     * where the thumb is at the bottom edge is handled specially
+     * to avoid numerical problems in computing thumbY. Enforce
+     * the thumbs min/max dimensions. If the thumb doesn't
+     * fit in the track (trackH) we'll hide it later.
+     */
+    float min = sb.getMinimum();
+    int max = sb.getMaximum() - sb.getVisibleAmount();
+    float extent = sb.getVisibleAmount();
+    float range = sb.getMaximum() - min;
+    // float value = getValue(sb);
+    float value = sb.getValue();
+    int trackH = sbSize.height - sbInsetsH - sbButtonsH - gaps;
+    int thumbH = ScrollBarUtils.getThumbHeight(trackH, extent, range, maxHeight, minHeight);
+    int y = incrButtonY - incrGap - thumbH;
+    float maxThumbY = (trackH - thumbH) * ((value - min) / (range - extent));
+    int thumbY = ScrollBarUtils.getThumbY(y, max, value, maxThumbY);
     if (thumbH >= trackH) {
       setThumbBounds(0, 0, 0, 0);
     } else {
