@@ -19,8 +19,9 @@ import javax.swing.plaf.basic.BasicHTML;
 
 @SuppressWarnings("PMD.TooManyMethods")
 public class TitledBorder2 extends TitledBorder {
-  private final JLabel label2;
+  @SuppressWarnings("PMD.UseConcurrentHashMap")
   private final Map<BorderPosition, Integer> positionMap = new EnumMap<>(BorderPosition.class);
+  private final JLabel label2;
 
   // Space between the border and the component's edge
   // protected static final int EDGE_SPACING = 2;
