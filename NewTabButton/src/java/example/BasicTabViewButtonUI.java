@@ -64,14 +64,16 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     AbstractButton b = (AbstractButton) c;
     Font f = b.getFont();
     g.setFont(f);
+    g.setColor(b.getBackground());
+    g.fillRect(0, 0, b.getWidth(), b.getHeight());
 
     SwingUtilities.calculateInnerArea(b, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
 
-    String text = SwingUtilities.layoutCompoundLabel(
-        c,
-        c.getFontMetrics(f),
+    final String text = SwingUtilities.layoutCompoundLabel(
+        b,
+        b.getFontMetrics(f),
         b.getText(),
         null, // altIcon != null ? altIcon : getDefaultIcon(),
         b.getVerticalAlignment(),
@@ -82,9 +84,6 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         iconRect,
         textRect,
         0); // b.getText() == null ? 0 : b.getIconTextGap());
-
-    g.setColor(b.getBackground());
-    g.fillRect(0, 0, c.getWidth(), c.getHeight());
 
     ButtonModel model = b.getModel();
     if (model.isSelected() || model.isArmed()) {
