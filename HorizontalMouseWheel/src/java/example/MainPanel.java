@@ -30,9 +30,11 @@ public final class MainPanel extends JPanel {
       Component c = e.getComponent();
       Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
       if (s instanceof JScrollPane) {
-        JScrollPane sp = (JScrollPane) s;
-        Component sb = e.isControlDown() ? sp.getHorizontalScrollBar() : sp.getVerticalScrollBar();
-        sb.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, sb));
+        JScrollPane scrollPane = (JScrollPane) s;
+        Component scrollBar = e.isControlDown()
+            ? scrollPane.getHorizontalScrollBar()
+            : scrollPane.getVerticalScrollBar();
+        scrollBar.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, scrollBar));
       }
     });
 
