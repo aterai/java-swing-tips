@@ -54,17 +54,19 @@ public final class MainPanel extends JPanel {
     Stream.of(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar)
         .forEach(sb -> sb.setUnitIncrement(25));
 
-    KeyStroke pk = KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK, false);
-    scroll.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(pk, "pressed");
-    scroll.getActionMap().put("pressed", new AbstractAction() {
+    InputMap im = scroll.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+    // KeyStroke shiftKeyPressed = KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, false);
+    // KeyStroke shiftKeyReleased = KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true);
+    im.put(KeyStroke.getKeyStroke("SHIFT"), "pressed");
+    im.put(KeyStroke.getKeyStroke("released SHIFT"), "released");
+
+    ActionMap am = scroll.getActionMap();
+    am.put("pressed", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         setShiftPressed(true);
       }
     });
-
-    KeyStroke rk = KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true);
-    scroll.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(rk, "released");
-    scroll.getActionMap().put("released", new AbstractAction() {
+    am.put("released", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         setShiftPressed(false);
       }
