@@ -150,14 +150,24 @@ class DropdownTableComboBox extends JComboBox<PaperSize> {
     private transient HighlightListener mouseHandler;
     @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
       Component c = super.prepareRenderer(renderer, row, column);
-      c.setForeground(Color.BLACK);
       if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
-        c.setBackground(new Color(0xFF_C8_C8));
+        c.setForeground(UIManager.getColor("Table.selectionForeground"));
+        c.setBackground(UIManager.getColor("Table.selectionBackground").brighter());
       } else if (isRowSelected(row)) {
-        c.setBackground(Color.CYAN);
+        c.setForeground(UIManager.getColor("Table.selectionForeground"));
+        c.setBackground(UIManager.getColor("Table.selectionBackground"));
       } else {
-        c.setBackground(Color.WHITE);
+        c.setForeground(UIManager.getColor("Table.foreground"));
+        c.setBackground(UIManager.getColor("Table.background"));
       }
+      // c.setForeground(Color.BLACK);
+      // if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
+      //   c.setBackground(new Color(0xFF_C8_C8));
+      // } else if (isRowSelected(row)) {
+      //   c.setBackground(Color.CYAN);
+      // } else {
+      //   c.setBackground(Color.WHITE);
+      // }
       return c;
     }
 
