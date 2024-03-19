@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -18,7 +20,7 @@ public final class MainPanel extends JPanel {
     wrappingMenuBar.add(makeToolBar(button));
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(wrappingMenuBar));
 
-    PopupMenuListener handler = new PopupMenuListener() {
+    PopupMenuListener switchHandler = new PopupMenuListener() {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         // not need
       }
@@ -35,8 +37,18 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(() -> getRootPane().setJMenuBar(wrappingMenuBar));
       }
     };
+    MouseAdapter popupKeeper = new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        Component c = e.getComponent();
+        if (c instanceof JMenu) {
+          ((JMenu) c).doClick();
+        }
+      }
+    };
     for (int i = 0; i < mainMenuBar.getMenuCount(); i++) {
-      mainMenuBar.getMenu(i).getPopupMenu().addPopupMenuListener(handler);
+      JMenu menu = mainMenuBar.getMenu(i);
+      menu.addMouseListener(popupKeeper);
+      menu.getPopupMenu().addPopupMenuListener(switchHandler);
     }
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
@@ -70,6 +82,7 @@ public final class MainPanel extends JPanel {
   private static JToolBar makeToolBar(JButton button) {
     JToolBar toolBar = new JToolBar();
     toolBar.setFloatable(false);
+    toolBar.setOpaque(false);
     toolBar.add(button);
     toolBar.add(Box.createHorizontalStrut(5));
     toolBar.add(new JLabel("<- Switch to JMenuBar"));
