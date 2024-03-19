@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -110,40 +111,40 @@ class TooltipList<E> extends JList<E> {
   }
 
   @Override public String getToolTipText(MouseEvent e) {
-    Point p0 = e.getPoint();
-    Point p1 = getMousePosition();
-    if (p1 != null && !p1.equals(p0)) {
-      int i = locationToIndex(p1);
-      Rectangle cellBounds = getCellBounds(i, i);
-      if (cellBounds != null && cellBounds.contains(p1)) {
-        MouseEvent event = new MouseEvent(
-            e.getComponent(),
-            MouseEvent.MOUSE_MOVED,
-            e.getWhen(),
-            // since Java 9, MouseEvent#getModifiers() has been deprecated
-            e.getModifiersEx() | e.getModifiers(),
-            p1.x,
-            p1.y,
-            e.getClickCount(),
-            e.isPopupTrigger()
-        );
-        return super.getToolTipText(event);
-      }
-    }
-    return super.getToolTipText(e);
+    MouseEvent event = getToolTipCellPoint(e)
+        .map(p -> new MouseEvent(
+                e.getComponent(),
+                MouseEvent.MOUSE_MOVED,
+                e.getWhen(),
+                // since Java 9, MouseEvent#getModifiers() has been deprecated
+                e.getModifiersEx() | e.getModifiers(),
+                p.x,
+                p.y,
+                e.getClickCount(),
+                e.isPopupTrigger()
+            )
+        )
+        .orElse(e);
+    return super.getToolTipText(event);
   }
 
   @Override public Point getToolTipLocation(MouseEvent e) {
-    Point p0 = e.getPoint();
-    Point p1 = getMousePosition();
-    if (p1 != null && !p1.equals(p0)) {
-      int i = locationToIndex(p1);
-      Rectangle cellBounds = getCellBounds(i, i);
-      if (cellBounds != null && cellBounds.contains(p1)) {
-        return new Point(p1.x, p1.y + cellBounds.height);
-      }
-    }
-    return null;
+    return getToolTipCellPoint(e)
+        .map(p -> {
+          int i = locationToIndex(p);
+          return new Point(p.x, p.y + getCellBounds(i, i).height);
+        })
+        .orElse(null);
+  }
+
+  private Optional<Point> getToolTipCellPoint(MouseEvent e) {
+    return Optional.ofNullable(getMousePosition())
+        .filter(p -> !p.equals(e.getPoint()))
+        .filter(p -> {
+          int i = locationToIndex(p);
+          Rectangle cellBounds = getCellBounds(i, i);
+          return cellBounds != null && cellBounds.contains(p);
+        });
   }
 }
 
