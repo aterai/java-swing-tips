@@ -122,7 +122,10 @@ class LineSplittingLabel extends JComponent {
     Shape s = toCenterAtf.createTransformedShape(shape);
     g2.setPaint(Color.BLACK);
     g2.fill(s);
-    Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight() / 2d);
+
+    double dw = b.getWidth();
+    double dh = b.getHeight() / 2d;
+    Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), dw, dh);
     g2.setClip(toCenterAtf.createTransformedShape(clip));
     g2.setPaint(Color.RED);
     g2.fill(s);

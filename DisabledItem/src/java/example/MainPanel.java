@@ -77,14 +77,14 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        ListCellRenderer<? super String> renderer = getCellRenderer();
+        ListCellRenderer<? super String> r = getCellRenderer();
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
           Component c;
           if (disableIndexSet.contains(index)) {
-            c = renderer.getListCellRendererComponent(list, value, index, false, false);
+            c = r.getListCellRendererComponent(list, value, index, false, false);
             c.setEnabled(false);
           } else {
-            c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
           }
           return c;
         });

@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(0, 1, 0, 2));
-    List<JTabbedPane> list = Arrays.asList(new JTabbedPane(), makeTabbedPane1(), makeTabbedPane2());
+    List<JTabbedPane> list = Arrays.asList(new JTabbedPane(), makeTabs1(), makeTabs2());
     list.forEach(tabs -> {
       tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
       tabs.addTab("00000000", new JLabel("0"));
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTabbedPane1() {
+  private static JTabbedPane makeTabs1() {
     return new JTabbedPane() {
       @Override public void removeTabAt(int index) {
         if (getTabCount() > 0) {
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JTabbedPane makeTabbedPane2() {
+  private static JTabbedPane makeTabs2() {
     return new JTabbedPane() {
       @Override public void removeTabAt(int index) {
         if (getTabCount() > 0) {
