@@ -61,11 +61,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static ClipboardService getClipboardService() {
+    ClipboardService cs;
     try {
-      return (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
+      cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
     } catch (UnavailableServiceException ex) {
-      return null;
+      cs = null;
     }
+    return cs;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
