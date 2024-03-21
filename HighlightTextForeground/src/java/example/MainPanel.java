@@ -111,22 +111,25 @@ public final class MainPanel extends JPanel {
   }
 
   private Optional<Pattern> getPattern() {
-    String text = field.getText();
-    if (Objects.isNull(text) || text.isEmpty()) {
-      return Optional.empty();
-    }
-    String cw = checkWord.isSelected() ? "\\b" : "";
-    String pattern = String.format("%s%s%s", cw, text, cw);
-    int flags = checkCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
-    try {
-      return Optional.of(Pattern.compile(pattern, flags));
-    } catch (PatternSyntaxException ex) {
-      field.setBackground(WARNING);
-      return Optional.empty();
-    }
+    return Optional.ofNullable(field.getText())
+        .filter(txt -> !txt.isEmpty())
+        .map(txt -> {
+          String cw = checkWord.isSelected() ? "\\b" : "";
+          String fmt = String.format("%s%s%s", cw, txt, cw);
+          boolean b = checkCase.isSelected();
+          int flags = b ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+          Pattern pattern;
+          try {
+            pattern = Pattern.compile(fmt, flags);
+          } catch (PatternSyntaxException ex) {
+            field.setBackground(WARNING);
+            pattern = null;
+          }
+          return pattern;
+        });
   }
 
-  /* default */ int changeHighlight(int index) {
+  public int changeHighlight(int index) {
     field.setBackground(Color.WHITE);
     StyledDocument doc = textPane.getStyledDocument();
     Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
