@@ -164,12 +164,14 @@ class RolloverDefaultTableCellRenderer extends DefaultTableCellRenderer {
     if (c instanceof JLabel) {
       ((JLabel) c).setText(String.format(fmt, value));
     }
+    Color selectionFgc = table.getSelectionForeground();
+    Color selectionBgc = table.getSelectionBackground();
     if (highlightedCell) {
-      c.setForeground(isSelected ? table.getSelectionForeground() : HIGHLIGHT);
-      c.setBackground(isSelected ? table.getSelectionBackground().darker() : table.getBackground());
+      c.setForeground(isSelected ? selectionFgc : HIGHLIGHT);
+      c.setBackground(isSelected ? selectionBgc.darker() : table.getBackground());
     } else {
-      c.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
-      c.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+      c.setForeground(isSelected ? selectionFgc : table.getForeground());
+      c.setBackground(isSelected ? selectionBgc : table.getBackground());
     }
     return c;
   }
