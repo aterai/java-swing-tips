@@ -49,27 +49,27 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static JComboBox<Icon> makeComboBox1(ComboBoxModel<Icon> model, Icon proto, int rowCount) {
+  public static JComboBox<Icon> makeComboBox1(ComboBoxModel<Icon> model, Icon proto, int rowCnt) {
     return new JComboBox<Icon>(model) {
       @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
         int w = proto.getIconWidth();
         int h = proto.getIconHeight();
         int totalCount = getItemCount();
-        int columnCount = totalCount / rowCount + (totalCount % rowCount == 0 ? 0 : 1);
+        int columnCount = totalCount / rowCnt + (totalCount % rowCnt == 0 ? 0 : 1);
         return new Dimension(w * columnCount + i.left + i.right, h + i.top + i.bottom);
       }
 
       @Override public void updateUI() {
         super.updateUI();
-        setMaximumRowCount(rowCount);
+        setMaximumRowCount(rowCnt);
         setPrototypeDisplayValue(proto);
 
         Accessible o = getAccessibleContext().getAccessibleChild(0);
         if (o instanceof ComboPopup) {
           JList<?> list = ((ComboPopup) o).getList();
           list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-          list.setVisibleRowCount(rowCount);
+          list.setVisibleRowCount(rowCnt);
           list.setFixedCellWidth(proto.getIconWidth());
           list.setFixedCellHeight(proto.getIconHeight());
         }
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  public static JComboBox<Icon> makeComboBox2(ComboBoxModel<Icon> model, Icon proto, int rowCount) {
+  public static JComboBox<Icon> makeComboBox2(ComboBoxModel<Icon> model, Icon proto, int rowCnt) {
     return new JComboBox<Icon>(model) {
       private PopupMenuListener listener;
 
@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         removePopupMenuListener(listener);
         super.updateUI();
-        setMaximumRowCount(rowCount);
+        setMaximumRowCount(rowCnt);
         setPrototypeDisplayValue(proto);
         ListCellRenderer<? super Icon> r = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
@@ -111,7 +111,7 @@ public final class MainPanel extends JPanel {
         if (o instanceof ComboPopup) {
           JList<?> list = ((ComboPopup) o).getList();
           list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-          list.setVisibleRowCount(rowCount);
+          list.setVisibleRowCount(rowCnt);
           list.setFixedCellWidth(proto.getIconWidth());
           list.setFixedCellHeight(proto.getIconHeight());
         }
@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
 
             Insets i = combo.getInsets();
             int totalCount = getItemCount();
-            int columnCount = totalCount / rowCount + (totalCount % rowCount == 0 ? 0 : 1);
+            int columnCount = totalCount / rowCnt + (totalCount % rowCnt == 0 ? 0 : 1);
             int popupWidth = proto.getIconWidth() * columnCount + i.left + i.right;
 
             Dimension size = combo.getSize();
