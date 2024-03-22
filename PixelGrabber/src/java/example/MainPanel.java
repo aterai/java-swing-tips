@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageProducer;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public final class MainPanel extends JPanel {
     int height = icon.getIconHeight();
 
     BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    makeRoundedMemoryImageSource(img, width, height).ifPresent(producer -> {
+    makeRoundedImageProducer(img, width, height).ifPresent(producer -> {
       Graphics g = bi.createGraphics();
       g.drawImage(createImage(producer), 0, 0, this);
       g.dispose();
@@ -84,7 +85,7 @@ public final class MainPanel extends JPanel {
     return area;
   }
 
-  private static Optional<MemoryImageSource> makeRoundedMemoryImageSource(Image img, int w, int h) {
+  private static Optional<ImageProducer> makeRoundedImageProducer(Image img, int w, int h) {
     int[] pix = new int[h * w];
     PixelGrabber pg = new PixelGrabber(img, 0, 0, w, h, pix, 0, w);
     try {
