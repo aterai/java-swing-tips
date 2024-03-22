@@ -81,20 +81,22 @@ public final class MainPanel extends JPanel {
   }
 
   public static List<Integer> getWidthRatioArray(String text, int length) {
+    Stream<Integer> stream;
     try {
-      return Stream.concat(
+      stream = Stream.concat(
           Stream.of(text.split(":"))
               .map(String::trim)
               .filter(s -> !s.isEmpty())
               .map(Integer::valueOf),
           Stream.generate(() -> 1).limit(length)
-      ).limit(length).collect(Collectors.toList());
+      );
     } catch (NumberFormatException ex) {
       Toolkit.getDefaultToolkit().beep();
       String msg = "invalid value.\n" + ex.getMessage();
       JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
-      return Stream.generate(() -> 1).limit(length).collect(Collectors.toList());
+      stream = Stream.generate(() -> 1);
     }
+    return stream.limit(length).collect(Collectors.toList());
   }
 
   public static void main(String[] args) {
