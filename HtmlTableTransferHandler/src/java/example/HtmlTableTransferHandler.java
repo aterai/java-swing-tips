@@ -10,12 +10,8 @@ import java.util.Objects;
 import javax.swing.*;
 
 public final class HtmlTableTransferHandler extends TransferHandler {
-  public boolean canStartDrag(JComponent c) {
-    if (c instanceof JTable) {
-      JTable table = (JTable) c;
-      return table.getRowSelectionAllowed() || table.getColumnSelectionAllowed();
-    }
-    return false;
+  public boolean canStartDrag(JTable table) {
+    return table.getRowSelectionAllowed() || table.getColumnSelectionAllowed();
   }
 
   private static int[] getSelectedRows(JTable table) {
@@ -60,7 +56,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
 
   // @see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
   @Override protected Transferable createTransferable(JComponent c) {
-    if (canStartDrag(c)) {
+    if (c instanceof JTable && canStartDrag((JTable) c)) {
       JTable table = (JTable) c;
       int[] rows = getSelectedRows(table);
       int[] cols = getSelectedColumns(table);
