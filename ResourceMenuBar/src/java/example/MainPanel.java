@@ -143,7 +143,7 @@ class VersionAction extends AbstractAction {
 
   @Override public void actionPerformed(ActionEvent e) {
     Component c = ((JComponent) e.getSource()).getRootPane();
-    Object[] obj = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
-    JOptionPane.showMessageDialog(c, obj, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
+    Object[] msg = {APP_NAME + " - Version " + VERSION + "." + RELEASE, COPYRIGHT};
+    JOptionPane.showMessageDialog(c, msg, APP_NAME, JOptionPane.INFORMATION_MESSAGE);
   }
 }

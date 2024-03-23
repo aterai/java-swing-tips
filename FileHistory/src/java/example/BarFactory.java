@@ -88,23 +88,23 @@ public final class BarFactory {
   }
 
   public JToolBar createToolBar() {
+    JToolBar toolBar = null;
     String tmp = getResourceString("toolbar");
-    if (Objects.isNull(tmp)) {
-      return null;
-    }
-    JToolBar toolBar = new JToolBar();
-    toolBar.setRollover(true);
-    toolBar.setFloatable(false);
-    for (String key : tokenize(tmp)) {
-      if (Objects.equals("-", key)) {
-        toolBar.add(Box.createHorizontalStrut(5));
-        toolBar.addSeparator();
-        toolBar.add(Box.createHorizontalStrut(5));
-      } else {
-        toolBar.add(createTool(key));
+    if (Objects.nonNull(tmp)) {
+      toolBar = new JToolBar();
+      toolBar.setRollover(true);
+      toolBar.setFloatable(false);
+      for (String key : tokenize(tmp)) {
+        if (Objects.equals("-", key)) {
+          toolBar.add(Box.createHorizontalStrut(5));
+          toolBar.addSeparator();
+          toolBar.add(Box.createHorizontalStrut(5));
+        } else {
+          toolBar.add(createTool(key));
+        }
       }
+      toolBar.add(Box.createHorizontalGlue());
     }
-    toolBar.add(Box.createHorizontalGlue());
     return toolBar;
   }
 
@@ -245,7 +245,7 @@ class Utf8ResourceBundleControl extends ResourceBundle.Control {
       String resourceName = toResourceName(
           bundleName,
           Objects.requireNonNull(format, "format must not be null"));
-      InputStream stream = null;
+      InputStream is = null;
       ClassLoader cl = Objects.requireNonNull(loader, "loader must not be null");
       if (reload) {
         URL url = cl.getResource(resourceName);
@@ -253,15 +253,15 @@ class Utf8ResourceBundleControl extends ResourceBundle.Control {
           URLConnection connection = url.openConnection();
           if (Objects.nonNull(connection)) {
             connection.setUseCaches(false);
-            stream = connection.getInputStream();
+            is = connection.getInputStream();
           }
         }
       } else {
-        stream = cl.getResourceAsStream(resourceName);
+        is = cl.getResourceAsStream(resourceName);
       }
-      if (Objects.nonNull(stream)) {
-        // BufferedInputStream bis = new BufferedInputStream(stream);
-        try (Reader r = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+      if (Objects.nonNull(is)) {
+        // BufferedInputStream bis = new BufferedInputStream(is);
+        try (Reader r = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
           bundle = new PropertyResourceBundle(r);
         }
       }
