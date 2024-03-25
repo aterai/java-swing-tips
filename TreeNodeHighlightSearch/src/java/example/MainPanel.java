@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -133,7 +134,12 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     if (selected) {
       c.setForeground(getTextSelectionColor());
     } else {
-      rollOver = query != null && !query.isEmpty() && Objects.toString(value, "").startsWith(query);
+      // rollOver = query != null && !query.isEmpty()
+      //   && Objects.toString(value, "").startsWith(query);
+      rollOver = Optional.ofNullable(query)
+          .filter(q -> !q.isEmpty())
+          .map(q -> Objects.toString(value, "").startsWith(q))
+          .orElse(false);
       c.setForeground(getTextNonSelectionColor());
       c.setBackground(getBackgroundNonSelectionColor());
     }
