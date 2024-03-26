@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
+class DnDList<E> extends JList<E> implements DragGestureListener {
   private static final Color LINE_COLOR = new Color(0x64_64_FF);
   private static final String NAME = "test";
   private static final String MIME_TYPE = DataFlavor.javaJVMLocalObjectMimeType;
@@ -75,6 +75,19 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
   private final Rectangle targetLine = new Rectangle();
   protected int draggedIndex = -1;
   protected int targetIndex = -1;
+  protected final transient Transferable transferable = new Transferable() {
+    @Override public Object getTransferData(DataFlavor flavor) {
+      return this;
+    }
+
+    @Override public DataFlavor[] getTransferDataFlavors() {
+      return new DataFlavor[] {FLAVOR};
+    }
+
+    @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+      return NAME.equals(flavor.getHumanPresentableName());
+    }
+  };
 
   protected DnDList() {
     super();
@@ -140,44 +153,10 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
       return;
     }
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, this, this);
+      e.startDrag(DragSource.DefaultMoveDrop, transferable, new ListDragSourceListener());
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }
-  }
-
-  // Interface: DragSourceListener
-  @Override public void dragEnter(DragSourceDragEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-  }
-
-  @Override public void dragExit(DragSourceEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-  }
-
-  @Override public void dragOver(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dragDropEnd(DragSourceDropEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dropActionChanged(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  // Interface: Transferable
-  @Override public Object getTransferData(DataFlavor flavor) {
-    return this;
-  }
-
-  @Override public DataFlavor[] getTransferDataFlavors() {
-    return new DataFlavor[] {FLAVOR};
-  }
-
-  @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return NAME.equals(flavor.getHumanPresentableName());
   }
 
   private final class ItemDropTargetListener implements DropTargetListener {
@@ -216,13 +195,6 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
 
     @Override public void drop(DropTargetDropEvent e) {
       DefaultListModel<E> model = (DefaultListModel<E>) getModel();
-      // Transferable t = e.getTransferable();
-      // DataFlavor[] f = t.getTransferDataFlavors();
-      // try {
-      //   Component comp = (Component) t.getTransferData(f[0]);
-      // } catch (UnsupportedFlavorException | IOException ex) {
-      //   e.dropComplete(false);
-      // }
       if (isDropAcceptable(e) && targetIndex >= 0) {
         E str = model.get(draggedIndex);
         if (targetIndex == draggedIndex) {
@@ -246,33 +218,35 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
     }
 
     private boolean isDragAcceptable(DropTargetDragEvent e) {
-      return isDataFlavorSupported(e.getCurrentDataFlavors()[0]);
+      DataFlavor[] flavors = e.getCurrentDataFlavors();
+      return transferable.isDataFlavorSupported(flavors[0]);
     }
 
     private boolean isDropAcceptable(DropTargetDropEvent e) {
-      return isDataFlavorSupported(e.getTransferable().getTransferDataFlavors()[0]);
+      DataFlavor[] flavors = e.getTransferable().getTransferDataFlavors();
+      return transferable.isDataFlavorSupported(flavors[0]);
     }
   }
 }
 
-// class ListDragSourceListener implements DragSourceListener {
-//   @Override public void dragEnter(DragSourceDragEvent e) {
-//     e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-//   }
-//
-//   @Override public void dragExit(DragSourceEvent e) {
-//     e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-//   }
-//
-//   @Override public void dragOver(DragSourceDragEvent e) {
-//     /* not needed */
-//   }
-//
-//   @Override public void dropActionChanged(DragSourceDragEvent e) {
-//     /* not needed */
-//   }
-//
-//   @Override public void dragDropEnd(DragSourceDropEvent e) {
-//     /* not needed */
-//   }
-// }
+class ListDragSourceListener implements DragSourceListener {
+  @Override public void dragEnter(DragSourceDragEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+  }
+
+  @Override public void dragExit(DragSourceEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+  }
+
+  @Override public void dragOver(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dropActionChanged(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dragDropEnd(DragSourceDropEvent e) {
+    /* not needed */
+  }
+}
