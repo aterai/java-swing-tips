@@ -164,17 +164,18 @@ final class TrayIconPopupMenuUtils {
 
   // Try to find GraphicsConfiguration, that includes mouse pointer position
   private static GraphicsConfiguration getGraphicsConfiguration(Point p) {
-    GraphicsConfiguration gc = null;
-    for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
-      if (gd.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
-        GraphicsConfiguration dgc = gd.getDefaultConfiguration();
-        if (dgc.getBounds().contains(p)) {
-          gc = dgc;
+    GraphicsConfiguration configuration = null;
+    GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    for (GraphicsDevice device : env.getScreenDevices()) {
+      if (device.getType() == GraphicsDevice.TYPE_RASTER_SCREEN) {
+        GraphicsConfiguration gc = device.getDefaultConfiguration();
+        if (gc.getBounds().contains(p)) {
+          configuration = gc;
           break;
         }
       }
     }
-    return gc;
+    return configuration;
   }
 
   // Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)

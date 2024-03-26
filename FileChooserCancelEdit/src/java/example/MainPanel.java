@@ -54,10 +54,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void setViewTypeDetails(JFileChooser fc) {
+  private static void setViewTypeDetails(JFileChooser fileChooser) {
     String cmd = "viewTypeDetails";
-    Optional.ofNullable(fc.getActionMap().get(cmd))
-        .ifPresent(a -> a.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, cmd)));
+    Optional.ofNullable(fileChooser.getActionMap().get(cmd))
+        .ifPresent(a -> {
+          int id = ActionEvent.ACTION_PERFORMED;
+          a.actionPerformed(new ActionEvent(fileChooser, id, cmd));
+        });
   }
 
   private static void append(JTextArea log, String str) {

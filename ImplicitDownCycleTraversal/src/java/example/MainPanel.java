@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     JPanel sub = new JPanel(new BorderLayout());
     sub.setBorder(BorderFactory.createTitledBorder("sub panel"));
     JCheckBox check2 = new JCheckBox("sub.FocusCycleRoot", true);
-    check2.addActionListener(e -> sub.setFocusCycleRoot(((JCheckBox) e.getSource()).isSelected()));
+    check2.addActionListener(e -> sub.setFocusCycleRoot(check2.isSelected()));
     sub.setFocusCycleRoot(true);
     sub.add(new JScrollPane(new JTextArea("JTextArea")));
     sub.add(check2, BorderLayout.SOUTH);

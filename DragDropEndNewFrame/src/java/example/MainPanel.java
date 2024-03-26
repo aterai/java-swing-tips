@@ -166,7 +166,8 @@ class DnDTabbedPane extends JTabbedPane {
   protected DnDTabbedPane() {
     super();
     glassPane.setName("GlassPane");
-    new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
+    new DropTarget(
+        glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
         this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
   }

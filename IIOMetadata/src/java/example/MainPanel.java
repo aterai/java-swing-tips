@@ -89,7 +89,9 @@ public final class MainPanel extends JPanel {
     if (node.hasAttributes()) {
       for (int i = 0; i < node.getAttributes().getLength(); i++) {
         Node attr = node.getAttributes().item(i);
-        buf.append(String.format("%s  #%s=%s%n", indent, attr.getNodeName(), attr.getNodeValue()));
+        String nodeName = attr.getNodeName();
+        String nodeValue = attr.getNodeValue();
+        buf.append(String.format("%s  #%s=%s%n", indent, nodeName, nodeValue));
       }
     }
     if (node.hasChildNodes()) {

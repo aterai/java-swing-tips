@@ -113,7 +113,6 @@ public final class MainPanel extends JPanel {
   }
 
   private Component makeNorthBox() {
-    // Box northBox = Box.createHorizontalBox();
     JPanel northBox = new JPanel(new GridLayout(3, 2, 5, 5));
     northBox.add(new JLabel("Number of backups to keep:", SwingConstants.RIGHT));
     northBox.add(spinner1);
@@ -124,7 +123,7 @@ public final class MainPanel extends JPanel {
     return northBox;
   }
 
-  public void append(Message m) {
+  private void append(Message m) {
     StyledDocument doc = jtp.getStyledDocument();
     try {
       doc.insertString(doc.getLength(), m.getText() + "\n", doc.getStyle(m.getType().toString()));
@@ -256,7 +255,8 @@ class BackgroundTask extends SwingWorker<File, Message> {
   }
 
   private boolean renameAndShiftBackup(File file) {
-    File tmpFile3 = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIdx + 1));
+    File parent = file.getParentFile();
+    File tmpFile3 = new File(parent, makeBackupFileName(file.getName(), oldIdx + 1));
     publish(mkMsg("Delete old backup file", MessageType.REGULAR));
     publish(mkMsg("  del:" + tmpFile3.getAbsolutePath(), MessageType.BLUE));
     try {
@@ -278,7 +278,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
       publish(mkMsg("Update old backup file numbers", MessageType.REGULAR));
       publish(mkMsg("  " + tmpFile1.getName() + " -> " + tmpFile2.getName(), MessageType.BLUE));
     }
-    File tmp = new File(file.getParentFile(), makeBackupFileName(file.getName(), oldIdx + newIdx));
+    File tmp = new File(parent, makeBackupFileName(file.getName(), oldIdx + newIdx));
     publish(mkMsg("Rename the older file", MessageType.REGULAR));
     publish(mkMsg("  " + file.getName() + " -> " + tmp.getName(), MessageType.BLUE));
 

@@ -40,7 +40,6 @@ public final class MainPanel extends JPanel {
     label1.setIcon(new ImageIcon(image));
 
     ColorModel colorModel = image.getColorModel();
-    // System.out.println(colorModel);
     IndexColorModel idxColorModel = null;
     int transIndex;
     if (colorModel instanceof IndexColorModel) {
@@ -96,7 +95,7 @@ public final class MainPanel extends JPanel {
         // int colorIndex = Byte.toUnsignedInt(data[arrayIndex]);
         int colorIndex = buffer.getElem(arrayIndex);
         if (idx == colorIndex) {
-          buf.setRGB(x, y, Color.RED.getRGB()); // 0xFF_FF_00_00);
+          buf.setRGB(x, y, Color.RED.getRGB());
         } else {
           buf.setRGB(x, y, model.getRGB(colorIndex));
         }
@@ -175,7 +174,9 @@ class PaletteListModel extends AbstractListModel<IndexedColor> {
   }
 
   @Override public IndexedColor getElementAt(int idx) {
-    return new IndexedColor(idx, new Color(model.getRGB(idx)), idx == model.getTransparentPixel());
+    Color color = new Color(model.getRGB(idx));
+    boolean transparent = idx == model.getTransparentPixel();
+    return new IndexedColor(idx, color, transparent);
   }
 }
 

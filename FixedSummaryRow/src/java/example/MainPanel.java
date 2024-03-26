@@ -64,11 +64,15 @@ public final class MainPanel extends JPanel {
         TableModel m = table.getModel();
         int rc = m.getRowCount();
         if (row == rc - 2) {
-          int sum = IntStream.range(1, rc - 1).map(i -> (Integer) m.getValueAt(i, column)).sum();
-          c = super.getTableCellRendererComponent(table, sum, isSelected, hasFocus, row, column);
+          int sum = IntStream.range(1, rc - 1)
+              .map(i -> (Integer) m.getValueAt(i, column))
+              .sum();
+          c = super.getTableCellRendererComponent(
+              table, sum, isSelected, hasFocus, row, column);
           c.setBackground(Color.ORANGE);
         } else {
-          c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+          c = super.getTableCellRendererComponent(
+              table, value, isSelected, hasFocus, row, column);
           c.setBackground(Color.WHITE);
         }
         c.setForeground(Color.BLACK);
