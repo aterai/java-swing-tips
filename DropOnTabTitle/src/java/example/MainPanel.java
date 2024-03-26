@@ -30,9 +30,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabs = new JTabbedPane();
-    tabs.addTab("00000000", new JScrollPane(makeList(0)));
-    tabs.addTab("11111111", new JScrollPane(makeList(1)));
-    tabs.addTab("22222222", new JScrollPane(makeList(2)));
+    tabs.addTab("Tab:000", new JScrollPane(makeList(0)));
+    tabs.addTab("Tab:001", new JScrollPane(makeList(1)));
+    tabs.addTab("Tab:002", new JScrollPane(makeList(2)));
     add(tabs);
     new DropTarget(tabs, DnDConstants.ACTION_MOVE, new TabTitleDropTargetListener(), true);
     setPreferredSize(new Dimension(320, 240));
@@ -43,8 +43,8 @@ public final class MainPanel extends JPanel {
     model.addElement(index + " - 1111");
     model.addElement(index + " - 22222222");
     model.addElement(index + " - 333333333333");
-    model.addElement(index + " - asdfasdfasdfasdfasd");
-    model.addElement(index + " - AAAAAAAAAAAAAA");
+    model.addElement(index + " - ----------");
+    model.addElement(index + " - +++++++++++++++");
     model.addElement(index + " - ****");
     return new DnDList<>(model);
   }
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceListener, Transferable {
+class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
   private static final String NAME = "test";
 
   protected DnDList() {
@@ -85,37 +85,16 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
 
   private void initDragGestureRecognizer() {
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-        (Component) this, DnDConstants.ACTION_MOVE, (DragGestureListener) this);
+        this, DnDConstants.ACTION_MOVE, this);
   }
 
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
     try {
-      e.startDrag(DragSource.DefaultMoveDrop, (Transferable) this, (DragSourceListener) this);
+      e.startDrag(DragSource.DefaultMoveDrop, this, new ListDragSourceListener());
     } catch (InvalidDnDOperationException ex) {
       throw new IllegalStateException(ex);
     }
-  }
-
-  // Interface: DragSourceListener
-  @Override public void dragEnter(DragSourceDragEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
-  }
-
-  @Override public void dragExit(DragSourceEvent e) {
-    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
-  }
-
-  @Override public void dragOver(DragSourceDragEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dragDropEnd(DragSourceDropEvent e) {
-    /* not needed */
-  }
-
-  @Override public void dropActionChanged(DragSourceDragEvent e) {
-    /* not needed */
   }
 
   // Interface: Transferable
@@ -131,7 +110,6 @@ class DnDList<E> extends JList<E> implements DragGestureListener, DragSourceList
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
     return NAME.equals(flavor.getHumanPresentableName());
-    // return flavor.getRepresentationClass().equals(Object.class);
   }
 }
 
@@ -139,15 +117,15 @@ class TabTitleDropTargetListener implements DropTargetListener {
   private int targetTabIndex = -1;
 
   @Override public void dropActionChanged(DropTargetDragEvent e) {
-    // repaint();
+    /* not needed */
   }
 
   @Override public void dragExit(DropTargetEvent e) {
-    // repaint();
+    /* not needed */
   }
 
   @Override public void dragEnter(DropTargetDragEvent e) {
-    // repaint();
+    /* not needed */
   }
 
   @Override public void dragOver(DropTargetDragEvent e) {
@@ -168,8 +146,8 @@ class TabTitleDropTargetListener implements DropTargetListener {
       DataFlavor[] f = t.getTransferDataFlavors();
 
       if (o instanceof JTabbedPane) {
-        JTabbedPane jtp = (JTabbedPane) o;
-        JScrollPane sp = (JScrollPane) jtp.getComponentAt(targetTabIndex);
+        JTabbedPane tabbedPane = (JTabbedPane) o;
+        JScrollPane sp = (JScrollPane) tabbedPane.getComponentAt(targetTabIndex);
         JViewport vp = sp.getViewport();
         JList<String> targetList = (JList<String>) SwingUtilities.getUnwrappedView(vp);
         JList<String> sourceList = (JList<String>) t.getTransferData(f[0]);
@@ -198,15 +176,37 @@ class TabTitleDropTargetListener implements DropTargetListener {
     targetTabIndex = -1;
     Component o = c.getComponent();
     if (o instanceof JTabbedPane && t.isDataFlavorSupported(f[0])) {
-      JTabbedPane jtp = (JTabbedPane) o;
-      for (int i = 0; i < jtp.getTabCount(); i++) {
-        if (jtp.getBoundsAt(i).contains(pt)) {
+      JTabbedPane tabbedPane = (JTabbedPane) o;
+      for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+        if (tabbedPane.getBoundsAt(i).contains(pt)) {
           targetTabIndex = i;
           break;
         }
       }
-      return targetTabIndex >= 0 && targetTabIndex != jtp.getSelectedIndex();
+      return targetTabIndex >= 0 && targetTabIndex != tabbedPane.getSelectedIndex();
     }
     return false;
+  }
+}
+
+class ListDragSourceListener implements DragSourceListener {
+  @Override public void dragEnter(DragSourceDragEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveDrop);
+  }
+
+  @Override public void dragExit(DragSourceEvent e) {
+    e.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
+  }
+
+  @Override public void dragOver(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dropActionChanged(DragSourceDragEvent e) {
+    /* not needed */
+  }
+
+  @Override public void dragDropEnd(DragSourceDropEvent e) {
+    /* not needed */
   }
 }
