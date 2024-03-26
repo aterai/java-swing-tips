@@ -220,17 +220,19 @@ final class SpringLayoutUtils {
     /* Singleton */
   }
 
-  public static void setScaleAndAdd(Container p, SpringLayout layout, Component c, Rectangle2D r) {
-    Spring pw = layout.getConstraint(SpringLayout.WIDTH, p);
-    Spring ph = layout.getConstraint(SpringLayout.HEIGHT, p);
-
-    SpringLayout.Constraints sc = layout.getConstraints(c);
-    sc.setX(Spring.scale(pw, (float) r.getX()));
-    sc.setY(Spring.scale(ph, (float) r.getY()));
-    sc.setWidth(Spring.scale(pw, (float) r.getWidth()));
-    sc.setHeight(Spring.scale(ph, (float) r.getHeight()));
-
-    p.add(c);
+  private static void setScaleAndAdd(Container p, Component c, Rectangle2D r) {
+    LayoutManager lm = p.getLayout();
+    if (lm instanceof SpringLayout) {
+      SpringLayout layout = (SpringLayout) lm;
+      Spring pw = layout.getConstraint(SpringLayout.WIDTH, p);
+      Spring ph = layout.getConstraint(SpringLayout.HEIGHT, p);
+      SpringLayout.Constraints sc = layout.getConstraints(c);
+      sc.setX(Spring.scale(pw, (float) r.getX()));
+      sc.setY(Spring.scale(ph, (float) r.getY()));
+      sc.setWidth(Spring.scale(pw, (float) r.getWidth()));
+      sc.setHeight(Spring.scale(ph, (float) r.getHeight()));
+      p.add(c);
+    }
   }
 
   public static Component makePanel(JList<?> lefts, JList<?> rights, JButton l2r, JButton r2l) {
@@ -248,11 +250,10 @@ final class SpringLayoutUtils {
     JScrollPane spl = new JScrollPane(lefts);
     JScrollPane spr = new JScrollPane(rights);
 
-    SpringLayout layout = new SpringLayout();
-    JPanel p = new JPanel(layout);
-    setScaleAndAdd(p, layout, spl, new Rectangle2D.Float(.05f, .05f, .40f, .90f));
-    setScaleAndAdd(p, layout, cpn, new Rectangle2D.Float(.45f, .05f, .10f, .90f));
-    setScaleAndAdd(p, layout, spr, new Rectangle2D.Float(.55f, .05f, .40f, .90f));
+    JPanel p = new JPanel(new SpringLayout());
+    setScaleAndAdd(p, spl, new Rectangle2D.Float(.05f, .05f, .40f, .90f));
+    setScaleAndAdd(p, cpn, new Rectangle2D.Float(.45f, .05f, .10f, .90f));
+    setScaleAndAdd(p, spr, new Rectangle2D.Float(.55f, .05f, .40f, .90f));
     return p;
   }
 }
