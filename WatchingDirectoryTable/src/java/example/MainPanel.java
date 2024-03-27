@@ -28,7 +28,7 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private final JTextArea logger = new JTextArea();
   private final FileModel model = new FileModel();
-  private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+  private final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
   private final Set<Integer> deleteRowSet = new TreeSet<>();
 
   private MainPanel() {

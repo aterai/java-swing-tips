@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
       return column == 0 ? Integer.class : Object.class;
     }
   };
-  private final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+  private final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
 
   private MainPanel() {
     super(new BorderLayout());

@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
       return column == 0 ? Integer.class : Object.class;
     }
   };
-  public final transient TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+  public final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
   public final JTable table = new JTable(model);
   public final JTextField field = new JTextField(2);
   public final JLabel label = new JLabel("/ 1");
@@ -281,12 +281,12 @@ class IntegerDocumentFilter extends DocumentFilter {
     fb.replace(offset, length, text, attrs);
   }
 
-  private static void checkInput(String proposedValue, int offset) throws BadLocationException {
+  private static void checkInput(String proposedValue, int offs) throws BadLocationException {
     if (!proposedValue.isEmpty()) {
       try {
         Integer.parseInt(proposedValue);
       } catch (NumberFormatException ex) {
-        throw (BadLocationException) new BadLocationException(proposedValue, offset).initCause(ex);
+        throw (BadLocationException) new BadLocationException(proposedValue, offs).initCause(ex);
       }
     }
   }
