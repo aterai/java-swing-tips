@@ -39,7 +39,8 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
       setInputBlock(true);
-      SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+      EventQueue systemEventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+      SecondaryLoop loop = systemEventQueue.createSecondaryLoop();
       worker = new Thread(() -> {
         String msg = "Done";
         try {

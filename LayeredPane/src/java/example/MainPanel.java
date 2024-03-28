@@ -53,8 +53,10 @@ public final class MainPanel extends JPanel {
     menuItem.setMnemonic(KeyEvent.VK_Q);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.ALT_DOWN_MASK));
     menuItem.setActionCommand("quit");
-    menuItem.addActionListener(e ->
-        Optional.ofNullable(SwingUtilities.getWindowAncestor(desktop)).ifPresent(Window::dispose));
+    menuItem.addActionListener(e -> {
+      Window w = SwingUtilities.getWindowAncestor(desktop);
+      Optional.ofNullable(w).ifPresent(Window::dispose);
+    });
     menu.add(menuItem);
     return menuBar;
   }
