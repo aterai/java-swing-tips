@@ -247,7 +247,8 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     }
     String line = scanner.nextLine();
     int size = readied + line.getBytes(cs).length + 1; // +1: \n
-    String note = String.format("%03d%% - %d/%d%n", 100 * size / lengthOfFile, size, lengthOfFile);
+    int pct = 100 * size / lengthOfFile;
+    String note = String.format("%03d%% - %d/%d%n", pct, size, lengthOfFile);
     publish(new Chunk(line, note));
     return size;
   }
