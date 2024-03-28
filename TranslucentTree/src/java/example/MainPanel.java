@@ -20,7 +20,8 @@ public final class MainPanel extends JPanel {
 
     // // NimbusLookAndFeel(SynthLookAndFeel) JDK 1.7.0
     // UIDefaults d = new UIDefaults();
-    // d.put("Tree:TreeCell[Enabled+Selected].backgroundPainter", new TransparentTreeCellPainter());
+    // String key = "Tree:TreeCell[Enabled+Selected].backgroundPainter";
+    // d.put(key, new TransparentTreeCellPainter());
     // tree2.putClientProperty("Nimbus.Overrides", d);
     // tree2.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 

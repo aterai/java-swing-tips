@@ -256,7 +256,8 @@ public final class MainPanel extends JPanel {
 //         Thread.sleep(50);
 //         setProgress(100 * current / lengthOfTask);
 //         current++;
-//         publish(new Message(current + "/" + lengthOfTask + ", " + file.getAbsolutePath(), true));
+//         String path = file.getAbsolutePath();
+//         publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
 //       }
 //     } catch (InterruptedException ex) {
 //       return "Interrupted";

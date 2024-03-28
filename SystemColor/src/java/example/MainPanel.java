@@ -33,13 +33,11 @@ public final class MainPanel extends JPanel {
     box.add(makeSystemColorPanel(SystemColor.controlShadow, "controlShadow"));
     box.add(makeSystemColorPanel(SystemColor.controlDkShadow, "controlDkShadow"));
     box.add(makeSystemColorPanel(SystemColor.controlText, "controlText"));
-    // box.add(makeSystemColorPanel(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
+    // box.add(makeSystemColorPanel(SystemColor.inactiveCaptionControlText, "..."));
     box.add(makeSystemColorPanel(SystemColor.control, "control"));
     box.add(makeSystemColorPanel(SystemColor.scrollbar, "scrollbar"));
     box.add(makeSystemColorPanel(SystemColor.info, "info"));
     box.add(makeSystemColorPanel(SystemColor.infoText, "infoText"));
-    // box.add(Box.createVerticalStrut(10));
-    // box.add(makeSystemColorPanel(new Color(0x00_4E_98), "test"));
 
     add(new JScrollPane(box));
     setPreferredSize(new Dimension(320, 240));
