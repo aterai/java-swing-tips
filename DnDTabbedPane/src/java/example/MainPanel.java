@@ -24,7 +24,6 @@ import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
@@ -186,15 +185,21 @@ class DnDTabbedPane extends JTabbedPane {
   protected DnDTabbedPane() {
     super();
     glassPane.setName("GlassPane");
-    new DropTarget(glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
+    new DropTarget(
+        glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
         this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
   }
 
+  @SuppressWarnings("PMD.NPathComplexity")
   protected int getTargetTabIndex(Point glassPt) {
+    int count = getTabCount();
+    if (count == 0) {
+      return -1;
+    }
     Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
     boolean isHorizontal = isTopBottomTabPlacement(getTabPlacement());
-    for (int i = 0; i < getTabCount(); ++i) {
+    for (int i = 0; i < count; ++i) {
       Rectangle r = getBoundsAt(i);
 
       // First half.
@@ -218,8 +223,6 @@ class DnDTabbedPane extends JTabbedPane {
       }
     }
 
-    int count = getTabCount();
-    if (count == 0) return -1;
     Rectangle lastRect = getBoundsAt(count - 1);
     Point d = isHorizontal ? new Point(1, 0) : new Point(0, 1);
     lastRect.translate(lastRect.width * d.x, lastRect.height * d.y);
