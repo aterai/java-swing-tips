@@ -214,7 +214,8 @@ class IndexedColorListRenderer implements ListCellRenderer<IndexedColor> {
       JLabel l = (JLabel) c;
       l.setIcon(new ColorIcon(value.getColor()));
       l.setToolTipText("index: " + value.getIndex());
-      l.setBorder(BorderFactory.createLineBorder(value.isTransparent() ? Color.RED : Color.WHITE));
+      Color borderColor = value.isTransparent() ? Color.RED : Color.WHITE;
+      l.setBorder(BorderFactory.createLineBorder(borderColor));
     }
     return c;
   }

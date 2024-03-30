@@ -103,11 +103,11 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
 
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
-    JViewport viewport = (JViewport) e.getComponent(); // label.getParent();
-    Point vp = viewport.getViewPosition(); // SwingUtilities.convertPoint(viewport, 0, 0, label);
+    JViewport view = (JViewport) e.getComponent(); // label.getParent();
+    Point vp = view.getViewPosition(); // SwingUtilities.convertPoint(view, 0, 0, label);
     vp.translate(startPt.x - pt.x, startPt.y - pt.y);
     delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
-    label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+    label.scrollRectToVisible(new Rectangle(vp, view.getSize()));
     startPt.setLocation(pt);
   }
 
@@ -178,7 +178,8 @@ class OverscrollEdgeEffectLayerUI extends LayerUI<JScrollPane> {
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
-    if (c instanceof JViewport && e.getID() == MouseEvent.MOUSE_DRAGGED && !animator.isRunning()) {
+    int id = e.getID();
+    if (c instanceof JViewport && id == MouseEvent.MOUSE_DRAGGED && !animator.isRunning()) {
       JViewport viewport = l.getView().getViewport();
       Dimension d = viewport.getView().getSize();
       Rectangle r = viewport.getViewRect();

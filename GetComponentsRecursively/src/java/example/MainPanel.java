@@ -114,14 +114,14 @@ final class SwingUtils {
   }
 
   // TEST2
-  public static Component findChildComponent(Container container, Class<? extends Component> cls) {
+  public static Component findChild(Container container, Class<? extends Component> clz) {
     int n = container.getComponentCount();
     for (int i = 0; i < n; i++) {
       Component comp = container.getComponent(i);
-      if (cls.isInstance(comp)) {
+      if (clz.isInstance(comp)) {
         return comp;
       } else if (comp instanceof Container) {
-        Component c = findChildComponent((Container) comp, cls);
+        Component c = findChild((Container) comp, clz);
         if (Objects.nonNull(c)) {
           return c;
         }
