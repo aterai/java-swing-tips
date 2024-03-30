@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
 
     // TEST:
     double d = 29.7 - 29.6 - .1;
-    String s1 = String.format("%f-%f-%f>=0:%b%n", 29.7, 29.6, .1, d >= .0);
-    String s2 = String.format("abs(%f-%f-%f)<1.0e-14:%b%n", 29.7, 29.6, .1, Math.abs(d) < 1.0e-14);
-    String s3 = String.format("abs(%f-%f-%f)<1.0e-15:%b%n", 29.7, 29.6, .1, Math.abs(d) < 1.0e-15);
+    String s1 = String.format("29.7-29.6-0.1>=0:%b%n", d >= 0.0);
+    String s2 = String.format("abs(29.7-29.6-0.1)<1.0e-14:%b%n", Math.abs(d) < 1.0e-14);
+    String s3 = String.format("abs(29.7-29.6-0.1)<1.0e-15:%b%n", Math.abs(d) < 1.0e-15);
 
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea(s1 + s2 + s3)));
