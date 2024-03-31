@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree();
     tree.setRowHeight(20);
     add(makeScrollPane(tree));
-    add(makeScrollPane(new TransparentTree()));
+    add(makeScrollPane(new RoundedSelectionTree()));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TransparentTree extends JTree {
+class RoundedSelectionTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0xC8_00_78_D7, true);
 
   @Override protected void paintComponent(Graphics g) {
