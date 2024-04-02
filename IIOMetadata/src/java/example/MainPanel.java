@@ -13,6 +13,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
@@ -32,8 +33,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     IIOMetadataNode root = null;
     Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpeg");
-    ImageReader reader = readers.next();
-    StringBuilder buf = new StringBuilder();
+    JTabbedPane tab = new JTabbedPane();
+    JTextArea log = new JTextArea();
+    tab.addTab("text", new JScrollPane(log));
 
     // [JDK-8080225]
     // FileInput/OutputStream/FileChannel cleanup should be improved - Java Bug System
@@ -45,8 +47,10 @@ public final class MainPanel extends JPanel {
     // try (InputStream is = Files.newInputStream(Paths.get(url.toURI()));
     //      ImageInputStream iis = ImageIO.createImageInputStream(is)) {
     if (url != null) {
+      StringBuilder buf = new StringBuilder();
       try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
         // FileInputStream source = new FileInputStream(new File("c:/tmp/test.jpg"));
+        ImageReader reader = readers.next();
         reader.setInput(iis, true);
 
         // ImageReadParam param = reader.getDefaultReadParam();
@@ -73,12 +77,10 @@ public final class MainPanel extends JPanel {
         buf.append(String.format("%s%n", ex.getMessage()));
         UIManager.getLookAndFeel().provideErrorFeedback(this);
       }
+      log.setText(buf.toString());
+      JTree tree = new JTree(new DefaultTreeModel(new XmlTreeNode(root)));
+      tab.addTab("tree", new JScrollPane(tree));
     }
-    JTextArea log = new JTextArea(buf.toString());
-    JTree tree = new JTree(new DefaultTreeModel(new XmlTreeNode(root)));
-    JTabbedPane tab = new JTabbedPane();
-    tab.addTab("text", new JScrollPane(log));
-    tab.addTab("tree", new JScrollPane(tree));
     add(tab);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -142,10 +144,12 @@ class XmlTreeNode implements TreeNode {
   }
 
   public boolean isShowAttributes() {
-    if (Objects.nonNull(showAttributes)) {
-      return showAttributes;
-    }
-    return Objects.nonNull(parent) && parent.isShowAttributes();
+    return Optional.ofNullable(showAttributes)
+      .orElseGet(() -> parent != null && parent.isShowAttributes());
+    // if (Objects.nonNull(showAttributes)) {
+    //   return showAttributes;
+    // }
+    // return Objects.nonNull(parent) && parent.isShowAttributes();
   }
 
   // public void setShowAttributes(Boolean set) {
