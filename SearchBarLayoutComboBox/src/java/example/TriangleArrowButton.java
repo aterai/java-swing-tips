@@ -5,13 +5,13 @@
 package example;
 
 import java.awt.*;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
 public final class TriangleArrowButton extends JButton {
-  private static Icon triangleIcon = new TriangleIcon();
+  private static final Icon TRIANGLE_ICON = new TriangleIcon();
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
@@ -32,16 +32,15 @@ public final class TriangleArrowButton extends JButton {
 
     super.paintComponent(g);
     Insets i = getInsets();
-    int x = r.width - i.right - triangleIcon.getIconWidth() - 2;
-    int y = i.top + (r.height - i.top - i.bottom - triangleIcon.getIconHeight()) / 2;
-    triangleIcon.paintIcon(this, g, x, y);
+    int x = r.width - i.right - TRIANGLE_ICON.getIconWidth() - 2;
+    int y = i.top + (r.height - i.top - i.bottom - TRIANGLE_ICON.getIconHeight()) / 2;
+    TRIANGLE_ICON.paintIcon(this, g, x, y);
   }
 
   @Override public Dimension getPreferredSize() {
+    int fw = Optional.ofNullable(getIcon()).map(Icon::getIconWidth).orElse(16);
     Insets i = getInsets();
-    Icon favicon = getIcon();
-    int fw = Objects.nonNull(favicon) ? favicon.getIconWidth() : 16;
-    int w = fw + triangleIcon.getIconWidth() + i.left + i.right;
+    int w = fw + TRIANGLE_ICON.getIconWidth() + i.left + i.right;
     return new Dimension(w, w);
   }
 
