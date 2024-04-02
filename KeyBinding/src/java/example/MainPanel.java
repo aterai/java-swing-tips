@@ -5,8 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.event.ItemEvent;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,88 +15,68 @@ import javax.swing.table.TableCellRenderer;
 public final class MainPanel extends JPanel {
   private final BindingMapModel model = new BindingMapModel();
   private final JComponent[] components = {
-    new JComboBox<>(),
-    new JDesktopPane(),
-    new JFormattedTextField(),
-    // new JFileChooser(),
-    new JInternalFrame(),
-    new JLabel(),
-    new JLayeredPane(),
-    new JList<>(),
-    new JMenuBar(),
-    new JOptionPane(),
-    new JPanel(),
-    new JPopupMenu(),
-    new JProgressBar(),
-    new JRootPane(),
-    new JScrollBar(),
-    new JScrollPane(),
-    new JSeparator(),
-    new JSlider(),
-    new JSpinner(),
-    new JSplitPane(),
-    new JTabbedPane(),
-    new JTable(),
-    new JTableHeader(),
-    new JToolBar(),
-    new JToolTip(),
-    new JTree(),
-    new JEditorPane(),
-    new JTextArea(),
-    new JTextField()
+      new JComboBox<>(),
+      new JDesktopPane(),
+      new JFormattedTextField(),
+      // new JFileChooser(),
+      new JInternalFrame(),
+      new JLabel(),
+      new JLayeredPane(),
+      new JList<>(),
+      new JMenuBar(),
+      new JOptionPane(),
+      new JPanel(),
+      new JPopupMenu(),
+      new JProgressBar(),
+      new JRootPane(),
+      new JScrollBar(),
+      new JScrollPane(),
+      new JSeparator(),
+      new JSlider(),
+      new JSpinner(),
+      new JSplitPane(),
+      new JTabbedPane(),
+      new JTable(),
+      new JTableHeader(),
+      new JToolBar(),
+      new JToolTip(),
+      new JTree(),
+      new JEditorPane(),
+      new JTextArea(),
+      new JTextField()
   };
-  private final JComboBox<JComponent> componentChoices = new JComboBox<>(components);
-  private final List<Integer> focusTypes = Arrays.asList(
-      WHEN_FOCUSED, WHEN_IN_FOCUSED_WINDOW, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+  private final JComboBox<JComponent> compChoices = new JComboBox<>(components);
 
   private MainPanel() {
-    super(new BorderLayout());
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isRowSelected(row)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
+    super(new BorderLayout(5, 5));
+    JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
-    JLabel renderer = new JLabel();
-    componentChoices.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      renderer.setOpaque(index >= 0);
-      renderer.setText(value.getClass().getName());
-      if (isSelected) {
-        renderer.setBackground(list.getSelectionBackground());
-        renderer.setForeground(list.getSelectionForeground());
-      } else {
-        renderer.setBackground(list.getBackground());
-        renderer.setForeground(list.getForeground());
+    DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    compChoices.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
+      if (c instanceof JLabel) {
+        ((JLabel) c).setText(value.getClass().getName());
       }
-      return renderer;
+      return c;
     });
-    JButton button = new JButton("show");
-    button.addActionListener(e -> {
-      model.setRowCount(0);
-      JComponent c = componentChoices.getItemAt(componentChoices.getSelectedIndex());
-      for (Integer f : focusTypes) {
-        loadBindingMap(f, c.getInputMap(f), c.getActionMap());
+    compChoices.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        model.setRowCount(0);
+        JComponent c = compChoices.getItemAt(compChoices.getSelectedIndex());
+        for (FocusType f : FocusType.values()) {
+          loadBindingMap(f, c.getInputMap(f.getId()), c.getActionMap());
+        }
       }
     });
-    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    p.add(componentChoices);
-    p.add(button);
-    add(p, BorderLayout.NORTH);
+    EventQueue.invokeLater(() -> compChoices.setSelectedIndex(compChoices.getItemCount() - 1));
+    add(compChoices, BorderLayout.NORTH);
     add(new JScrollPane(table));
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
-  // -------->
+
+  // <!--
   // // original code:
   // // ftp://ftp.oreilly.de/pub/examples/english_examples/jswing2/code/goodies/Mapper.java
   // private Hashtable<Object, ArrayList<KeyStroke>> buildReverseMap(InputMap im) {
@@ -117,8 +96,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   return h;
   // }
-
-  private void loadBindingMap(Integer focusType, InputMap im, ActionMap am) {
+  private void loadBindingMap(FocusType focusType, InputMap im, ActionMap am) {
     if (Objects.isNull(im.allKeys())) {
       return;
     }
@@ -143,9 +121,9 @@ public final class MainPanel extends JPanel {
       model.addBinding(makeBinding(focusType, actionMapKey.toString(), ""));
     }
   }
-  // <--------
+  // -->
 
-  private Binding makeBinding(Integer focusType, String actionName, String keyDescription) {
+  private Binding makeBinding(FocusType focusType, String actionName, String keyDescription) {
     return new Binding(focusType, actionName, keyDescription);
   }
 
@@ -173,9 +151,9 @@ public final class MainPanel extends JPanel {
 
 class BindingMapModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("Focus", String.class, false),
-    new ColumnContext("ActionName", String.class, false),
-    new ColumnContext("KeyDescription", String.class, false)
+      new ColumnContext("Focus", String.class, false),
+      new ColumnContext("ActionName", String.class, false),
+      new ColumnContext("KeyDescription", String.class, false)
   };
 
   public void addBinding(Binding t) {
@@ -213,17 +191,17 @@ class BindingMapModel extends DefaultTableModel {
 }
 
 class Binding {
-  private final Integer focusType;
+  private final FocusType focusType;
   private final String actionName;
   private final String keyDescription;
 
-  protected Binding(Integer focusType, String actionName, String keyDescription) {
+  protected Binding(FocusType focusType, String actionName, String keyDescription) {
     this.focusType = focusType;
     this.actionName = actionName;
     this.keyDescription = keyDescription;
   }
 
-  public Integer getFocusType() {
+  public FocusType getFocusType() {
     return focusType;
   }
 
@@ -236,10 +214,22 @@ class Binding {
   }
 
   public String getFocusTypeName() {
-    switch (getFocusType()) {
-      case JComponent.WHEN_FOCUSED: return "WHEN_FOCUSED";
-      case JComponent.WHEN_IN_FOCUSED_WINDOW: return "WHEN_IN_FOCUSED_WINDOW";
-      default: return "WHEN_ANCESTOR_OF_FOCUSED_COMPONENT";
-    }
+    return getFocusType().name();
+  }
+}
+
+enum FocusType {
+  WHEN_FOCUSED(JComponent.WHEN_FOCUSED),
+  WHEN_IN_FOCUSED_WINDOW(JComponent.WHEN_IN_FOCUSED_WINDOW),
+  WHEN_ANCESTOR_OF_FOCUSED_COMPONENT(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+  private final int id;
+
+  FocusType(int id) {
+    this.id = id;
+  }
+
+  int getId() {
+    return id;
   }
 }
