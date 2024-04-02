@@ -8,7 +8,6 @@ import java.awt.*;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.synth.Region;
@@ -59,8 +58,9 @@ public final class MainPanel extends JPanel {
 
   private static void addTab(JTabbedPane tabbedPane, TabTitle tt, Component c) {
     tabbedPane.addTab(tt.getTitle(), c);
-    URL url = tt.getUrl();
-    Icon icon = Objects.nonNull(url) ? new ImageIcon(url) : UIManager.getIcon("html.missingImage");
+    Icon icon = Optional.ofNullable(tt.getUrl())
+        .<Icon>map(ImageIcon::new)
+        .orElseGet(() -> UIManager.getIcon("html.missingImage"));
     JLabel label = new JLabel(null, icon, SwingConstants.CENTER) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
