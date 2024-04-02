@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -126,17 +127,24 @@ class VerticalTitledBorder extends TitledBorder {
     return ins;
   }
 
-  // Copied from TitledBorder
+  // // Copied from TitledBorder
+  // private Color getTitleColor(Component c) {
+  //   Color color = getTitleColor();
+  //   if (Objects.nonNull(color)) {
+  //     return color;
+  //   }
+  //   color = UIManager.getColor("TitledBorder.titleColor");
+  //   if (Objects.nonNull(color)) {
+  //     return color;
+  //   }
+  //   return Objects.nonNull(c) ? c.getForeground() : null;
+  // }
+
   private Color getTitleColor(Component c) {
-    Color color = getTitleColor();
-    if (Objects.nonNull(color)) {
-      return color;
-    }
-    color = UIManager.getColor("TitledBorder.titleColor");
-    if (Objects.nonNull(color)) {
-      return color;
-    }
-    return Objects.nonNull(c) ? c.getForeground() : null;
+    return Optional.ofNullable(getTitleColor())
+        .orElseGet(() -> Optional.ofNullable(UIManager.getColor("TitledBorder.titleColor"))
+        .orElseGet(() -> Optional.ofNullable(c).map(Component::getForeground)
+        .orElse(null)));
   }
 
   private JLabel getTitleLabel(Component c) {
