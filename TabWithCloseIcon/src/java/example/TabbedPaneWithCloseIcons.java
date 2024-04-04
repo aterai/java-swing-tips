@@ -6,7 +6,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class TabbedPaneWithCloseIcons extends JTabbedPane {
@@ -69,15 +69,12 @@ class SimpleCloseTabIcon implements Icon {
     g2.drawLine(10, 4, 4, 10);
     g2.drawLine(9, 3, 3, 9);
 
-    if (Objects.nonNull(fileIcon)) {
-      fileIcon.paintIcon(c, g2, dim.width, 0);
-    }
+    Optional.ofNullable(fileIcon).ifPresent(i -> i.paintIcon(c, g2, dim.width, 0));
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    int a = Objects.nonNull(fileIcon) ? fileIcon.getIconWidth() : 0;
-    return dim.width + a;
+    return dim.width + Optional.ofNullable(fileIcon).map(Icon::getIconWidth).orElse(0);
   }
 
   @Override public int getIconHeight() {
