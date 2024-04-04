@@ -228,44 +228,48 @@ class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
 class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
   private VolatileImage buffer;
 
-  @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
   @Override protected void paintBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
     ButtonModel model = menuItem.getModel();
     if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
-      int width = menuItem.getWidth();
-      int height = menuItem.getHeight();
-      GraphicsConfiguration config = ((Graphics2D) g).getDeviceConfiguration();
-      // VolatileImage buffer = config.createCompatibleVolatileImage(
-      //     width, height, Transparency.TRANSLUCENT);
-      do {
-        int status = VolatileImage.IMAGE_INCOMPATIBLE;
-        if (buffer != null) {
-          status = buffer.validate(config);
-        }
-        if (status == VolatileImage.IMAGE_INCOMPATIBLE || status == VolatileImage.IMAGE_RESTORED) {
-          if (buffer == null
-              || buffer.getWidth() != width || buffer.getHeight() != height
-              || status == VolatileImage.IMAGE_INCOMPATIBLE) {
-            if (buffer != null) {
-              buffer.flush();
-            }
-            buffer = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
-          }
-          Graphics2D g2 = buffer.createGraphics();
-          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-          g2.setComposite(AlphaComposite.Clear);
-          g2.fillRect(0, 0, width, height);
-          g2.setPaintMode(); // g2.setComposite(AlphaComposite.Src);
-          g2.setPaint(Color.WHITE);
-          g2.fillRoundRect(0, 0, width, height, 8, 8);
-          g2.setComposite(AlphaComposite.SrcAtop);
-          super.paintBackground(g2, menuItem, bgColor);
-          g2.dispose();
-        }
-      } while (buffer.contentsLost());
-      g.drawImage(buffer, 0, 0, menuItem);
+      paintSelectedBackground(g, menuItem, bgColor);
     } else {
       super.paintBackground(g, menuItem, bgColor);
     }
+  }
+
+  @SuppressWarnings("PMD.CyclomaticComplexity")
+  private void paintSelectedBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
+    int width = menuItem.getWidth();
+    int height = menuItem.getHeight();
+    GraphicsConfiguration config = ((Graphics2D) g).getDeviceConfiguration();
+    // VolatileImage buffer = config.createCompatibleVolatileImage(
+    //     width, height, Transparency.TRANSLUCENT);
+    do {
+      int status = VolatileImage.IMAGE_INCOMPATIBLE;
+      if (buffer != null) {
+        status = buffer.validate(config);
+      }
+      if (status == VolatileImage.IMAGE_INCOMPATIBLE || status == VolatileImage.IMAGE_RESTORED) {
+        if (buffer == null
+            || buffer.getWidth() != width || buffer.getHeight() != height
+            || status == VolatileImage.IMAGE_INCOMPATIBLE) {
+          if (buffer != null) {
+            buffer.flush();
+          }
+          buffer = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
+        }
+        Graphics2D g2 = buffer.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setComposite(AlphaComposite.Clear);
+        g2.fillRect(0, 0, width, height);
+        g2.setPaintMode(); // g2.setComposite(AlphaComposite.Src);
+        g2.setPaint(Color.WHITE);
+        g2.fillRoundRect(0, 0, width, height, 8, 8);
+        g2.setComposite(AlphaComposite.SrcAtop);
+        super.paintBackground(g2, menuItem, bgColor);
+        g2.dispose();
+      }
+    } while (buffer.contentsLost());
+    g.drawImage(buffer, 0, 0, menuItem);
   }
 }
