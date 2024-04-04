@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
@@ -39,14 +40,14 @@ public final class MainPanel extends JPanel {
     }));
     north.add(new JButton(new AbstractAction("Max:DividerLocation") {
       @Override public void actionPerformed(ActionEvent e) {
-        Insets i = splitPane.getInsets();
+        Optional<Insets> ins = Optional.ofNullable(splitPane.getInsets());
+        int loc;
         if (splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT) {
-          int v = Objects.nonNull(i) ? i.bottom : 0;
-          splitPane.setDividerLocation(splitPane.getHeight() - v);
+          loc = splitPane.getHeight() - ins.map(i -> i.bottom).orElse(0);
         } else {
-          int v = Objects.nonNull(i) ? i.right : 0;
-          splitPane.setDividerLocation(splitPane.getWidth() - v);
+          loc = splitPane.getWidth() - ins.map(i -> i.right).orElse(0);
         }
+        splitPane.setDividerLocation(loc);
         // int lastLoc = splitPane.getLastDividerLocation();
         // int currentLoc = splitPane.getDividerLocation();
         // int newLoc;
