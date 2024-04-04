@@ -83,7 +83,7 @@ class RowHeaderRenderer extends MouseAdapter implements TableCellRenderer {
     if (c instanceof JComponent && tcr.getClass().getName().contains("XPDefaultRenderer")) {
       ((JComponent) c).setOpaque(!focus);
       renderer.setIcon(new ComponentIcon(c));
-      return renderer;
+      c = renderer;
     }
     return c;
   }
