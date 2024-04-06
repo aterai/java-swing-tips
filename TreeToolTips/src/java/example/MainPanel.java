@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -16,8 +16,10 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(2, 1));
     JTree tree1 = new JTree() {
       @Override public String getToolTipText(MouseEvent e) {
-        TreePath path = getPathForLocation(e.getX(), e.getY());
-        return Objects.nonNull(path) ? "getToolTipText: " + path.getLastPathComponent() : null;
+        return Optional.ofNullable(getPathForLocation(e.getX(), e.getY()))
+            .map(TreePath::getLastPathComponent)
+            .map(txt -> "getToolTipText: " + txt)
+            .orElse(null);
       }
     };
     ToolTipManager.sharedInstance().registerComponent(tree1);
@@ -32,7 +34,9 @@ public final class MainPanel extends JPanel {
           Component c = r.getTreeCellRendererComponent(
               tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
-            String txt = Objects.nonNull(value) ? "TreeCellRenderer: " + value : null;
+            String txt = Optional.ofNullable(value)
+                .map(str -> "TreeCellRenderer: " + str)
+                .orElse(null);
             ((JComponent) c).setToolTipText(txt);
           }
           return c;
