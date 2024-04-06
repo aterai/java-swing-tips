@@ -9,8 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -289,84 +289,89 @@ class SwatchPanel extends JPanel {
   protected Dimension swatchSize;
   protected Dimension numSwatches;
   protected Dimension gap;
-
   private int selRow;
   private int selCol;
+  private transient Handler handler;
 
-  @SuppressWarnings({
-      "PMD.ConstructorCallsOverridableMethod",
-      "PMD.CyclomaticComplexity",
-      "PMD.CognitiveComplexity"
-  })
   protected SwatchPanel() {
     super();
+    ToolTipManager.sharedInstance().registerComponent(this);
+  }
+
+  @Override public void updateUI() {
+    removeFocusListener(handler);
+    removeKeyListener(handler);
+    super.updateUI();
     initValues();
     initColors();
-    setToolTipText(""); // register for events
+    // setToolTipText(""); // register for events
     setOpaque(true);
     setBackground(Color.WHITE);
     setFocusable(true);
     setInheritsPopupMenu(true);
 
-    addFocusListener(new FocusAdapter() {
-      @Override public void focusGained(FocusEvent e) {
-        repaint();
-      }
+    handler = new Handler();
+    addFocusListener(handler);
+    addKeyListener(handler);
+  }
 
-      @Override public void focusLost(FocusEvent e) {
-        repaint();
+  private final class Handler extends KeyAdapter implements FocusListener {
+    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
+    @Override public void keyPressed(KeyEvent e) {
+      boolean isLeftToRight = SwatchPanel.this.getComponentOrientation().isLeftToRight();
+      switch (e.getKeyCode()) {
+        case KeyEvent.VK_UP:
+          if (selRow > 0) {
+            selRow--;
+            repaint();
+          }
+          break;
+        case KeyEvent.VK_DOWN:
+          if (selRow < numSwatches.height - 1) {
+            selRow++;
+            repaint();
+          }
+          break;
+        case KeyEvent.VK_LEFT:
+          if (selCol > 0 && isLeftToRight) {
+            selCol--;
+            repaint();
+          } else if (selCol < numSwatches.width - 1 && !isLeftToRight) {
+            selCol++;
+            repaint();
+          }
+          break;
+        case KeyEvent.VK_RIGHT:
+          if (selCol < numSwatches.width - 1 && isLeftToRight) {
+            selCol++;
+            repaint();
+          } else if (selCol > 0 && !isLeftToRight) {
+            selCol--;
+            repaint();
+          }
+          break;
+        case KeyEvent.VK_HOME:
+          selCol = 0;
+          selRow = 0;
+          repaint();
+          break;
+        case KeyEvent.VK_END:
+          selCol = numSwatches.width - 1;
+          selRow = numSwatches.height - 1;
+          repaint();
+          break;
+        default:
+          break;
       }
-    });
+    }
 
-    addKeyListener(new KeyAdapter() {
-      @Override public void keyPressed(KeyEvent e) {
-        boolean isLeftToRight = SwatchPanel.this.getComponentOrientation().isLeftToRight();
-        switch (e.getKeyCode()) {
-          case KeyEvent.VK_UP:
-            if (selRow > 0) {
-              selRow--;
-              repaint();
-            }
-            break;
-          case KeyEvent.VK_DOWN:
-            if (selRow < numSwatches.height - 1) {
-              selRow++;
-              repaint();
-            }
-            break;
-          case KeyEvent.VK_LEFT:
-            if (selCol > 0 && isLeftToRight) {
-              selCol--;
-              repaint();
-            } else if (selCol < numSwatches.width - 1 && !isLeftToRight) {
-              selCol++;
-              repaint();
-            }
-            break;
-          case KeyEvent.VK_RIGHT:
-            if (selCol < numSwatches.width - 1 && isLeftToRight) {
-              selCol++;
-              repaint();
-            } else if (selCol > 0 && !isLeftToRight) {
-              selCol--;
-              repaint();
-            }
-            break;
-          case KeyEvent.VK_HOME:
-            selCol = 0;
-            selRow = 0;
-            repaint();
-            break;
-          case KeyEvent.VK_END:
-            selCol = numSwatches.width - 1;
-            selRow = numSwatches.height - 1;
-            repaint();
-            break;
-          default:
-            break;
-        }
-      }
-    });
+    @Override public void focusGained(FocusEvent e) {
+      repaint();
+    }
+
+    @Override public void focusLost(FocusEvent e) {
+      repaint();
+    }
   }
 
   public Color getSelectedColor() {
