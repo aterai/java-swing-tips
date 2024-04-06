@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -90,7 +89,7 @@ public final class MainPanel extends JPanel {
         JLabel l = (JLabel) c;
         l.setHorizontalAlignment(CENTER);
         LocalDate d = (LocalDate) value;
-        l.setText(Objects.toString(d.getDayOfMonth()));
+        l.setText(Integer.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
           l.setForeground(Color.BLACK);
         } else {

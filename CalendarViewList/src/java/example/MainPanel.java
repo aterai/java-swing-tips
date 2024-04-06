@@ -16,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -194,7 +193,7 @@ public final class MainPanel extends JPanel {
         JLabel l = (JLabel) c;
         l.setOpaque(true);
         l.setHorizontalAlignment(SwingConstants.CENTER);
-        l.setText(Objects.toString(value.getDayOfMonth()));
+        l.setText(Integer.toString(value.getDayOfMonth()));
       }
       Color fgc = c.getForeground();
       if (YearMonth.from(value).equals(YearMonth.from(getCurrentLocalDate()))) {

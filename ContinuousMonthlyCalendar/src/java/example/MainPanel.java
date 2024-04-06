@@ -14,7 +14,6 @@ import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -142,7 +141,7 @@ public final class MainPanel extends JPanel {
         LocalDate d = (LocalDate) value;
         JLabel l = (JLabel) c;
         l.setHorizontalAlignment(CENTER);
-        l.setText(Objects.toString(d.getDayOfMonth()));
+        l.setText(Integer.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
           l.setForeground(Color.BLACK);
         } else {
@@ -158,11 +157,15 @@ public final class MainPanel extends JPanel {
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {
-      switch (dow) {
-        case SUNDAY: return new Color(0xFF_DC_DC);
-        case SATURDAY: return new Color(0xDC_DC_FF);
-        default: return Color.WHITE;
+      Color color;
+      if (dow == DayOfWeek.SUNDAY) {
+        color = new Color(0xFF_DC_DC);
+      } else if (dow == DayOfWeek.SATURDAY) {
+        color = new Color(0xDC_DC_FF);
+      } else {
+        color = Color.WHITE;
       }
+      return color;
     }
   }
 

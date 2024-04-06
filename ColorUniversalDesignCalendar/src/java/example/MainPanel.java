@@ -129,7 +129,8 @@ public final class MainPanel extends JPanel {
     }
 
     private void updateEnclosedLabel(JLabel lbl, LocalDate d) {
-      lbl.setText("<html><b>" + Objects.toString(d.getDayOfMonth()));
+      String txt = Integer.toString(d.getDayOfMonth());
+      lbl.setText("<html><b>" + txt);
       // label.setText(getDayOfWeekText(d));
       boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
       if (isThisMonth && (d.getDayOfWeek() == DayOfWeek.SUNDAY || isJapaneseNationalHoliday(d))) {
@@ -144,16 +145,20 @@ public final class MainPanel extends JPanel {
       } else {
         lbl.setBackground(Color.WHITE);
         lbl.setForeground(Color.GRAY);
-        lbl.setText(Objects.toString(d.getDayOfMonth()));
+        lbl.setText(txt);
       }
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {
-      switch (dow) {
-        case SUNDAY: return new Color(0xFF_DC_DC);
-        case SATURDAY: return new Color(0xDC_DC_FF);
-        default: return Color.WHITE;
+      int code;
+      if (dow == DayOfWeek.SUNDAY) {
+        code = 0xFF_DC_DC;
+      } else if (dow == DayOfWeek.SATURDAY) {
+        code = 0xDC_DC_FF;
+      } else {
+        code = 0xFF_FF_FF;
       }
+      return new Color(code);
     }
 
     public boolean isJapaneseNationalHoliday(LocalDate d) {

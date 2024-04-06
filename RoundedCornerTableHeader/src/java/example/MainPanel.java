@@ -15,7 +15,6 @@ import java.time.temporal.WeekFields;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -131,7 +130,7 @@ public final class MainPanel extends JPanel {
       if (value instanceof LocalDate && c instanceof JLabel) {
         LocalDate d = (LocalDate) value;
         JLabel l = (JLabel) c;
-        l.setText(Objects.toString(d.getDayOfMonth()));
+        l.setText(Integer.toString(d.getDayOfMonth()));
         l.setVerticalAlignment(TOP);
         l.setHorizontalAlignment(CENTER);
         updateCellWeekColor(d, c);
@@ -139,7 +138,7 @@ public final class MainPanel extends JPanel {
         LocalDate nextWeekDay = d.plusDays(7);
         boolean isLastRow = row == table.getModel().getRowCount() - 1;
         if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
-          JLabel sub = new JLabel(Objects.toString(nextWeekDay.getDayOfMonth()));
+          JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
           sub.setFont(table.getFont());
           sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
           sub.setOpaque(false);
