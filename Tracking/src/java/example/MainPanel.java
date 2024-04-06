@@ -10,7 +10,6 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -96,7 +95,7 @@ class BadgeIcon implements Icon {
   }
 
   public String getText() {
-    return value > 999 ? "1K+" : Objects.toString(value);
+    return value > 999 ? "1K+" : Integer.toString(value);
   }
 
   public Shape getBadgeShape() {

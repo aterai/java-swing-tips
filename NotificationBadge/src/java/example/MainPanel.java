@@ -9,7 +9,6 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -186,7 +185,7 @@ class BadgeIcon implements Icon {
     // NumberFormat fmt = NumberFormat.getCompactNumberInstance(
     //    Locale.US, NumberFormat.Style.SHORT);
     // String txt = fmt.format(value);
-    String txt = value > 999 ? "1K" : Objects.toString(value);
+    String txt = value > 999 ? "1K" : Integer.toString(value);
     AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.66, 1d);
     return new TextLayout(txt, g2.getFont(), g2.getFontRenderContext()).getOutline(at);
   }

@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -131,7 +130,7 @@ public final class MainPanel extends JPanel {
       private String getActivityText(int idx) {
         Contribution c = getModel().getElementAt(idx);
         int activity = c.getActivity();
-        String actTxt = activity == 0 ? "No" : Objects.toString(activity);
+        String actTxt = activity == 0 ? "No" : Integer.toString(activity);
         return String.format("%s contribution on %s", actTxt, c.getDate());
       }
     };

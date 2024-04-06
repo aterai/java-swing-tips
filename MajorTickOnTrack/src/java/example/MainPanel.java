@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -148,7 +147,7 @@ class NumberIcon implements Icon {
     // NumberFormat fmt = NumberFormat.getCompactNumberInstance(
     //    Locale.US, NumberFormat.Style.SHORT);
     // String txt = fmt.format(value);
-    String txt = value > 999 ? "1K" : Objects.toString(value);
+    String txt = value > 999 ? "1K" : Integer.toString(value);
     AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.66, 1d);
     return new TextLayout(txt, g2.getFont(), g2.getFontRenderContext()).getOutline(at);
   }
