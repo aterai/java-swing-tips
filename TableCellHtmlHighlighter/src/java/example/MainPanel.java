@@ -111,13 +111,12 @@ class HighlightTableCellRenderer extends DefaultTableCellRenderer {
   private String prev;
 
   public boolean updatePattern(String str) {
-    if (Objects.equals(str, pattern)) {
-      return false;
-    } else {
+    boolean update = !Objects.equals(str, pattern);
+    if (update) {
       prev = pattern;
       pattern = str;
-      return true;
     }
+    return update;
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

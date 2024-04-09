@@ -116,13 +116,12 @@ class HighlightTableCellRenderer extends JTextField implements TableCellRenderer
   private String prev;
 
   public boolean updatePattern(String str) {
-    if (Objects.equals(str, pattern)) {
-      return false;
-    } else {
+    boolean update = !Objects.equals(str, pattern);
+    if (update) {
       prev = pattern;
       pattern = str;
-      return true;
     }
+    return update;
   }
 
   @Override public void updateUI() {

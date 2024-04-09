@@ -174,16 +174,18 @@ class CellIconTransferHandler extends TransferHandler {
 
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
+    boolean inserted;
     Component c = info.getComponent();
     try {
       Object o = info.getTransferable().getTransferData(ICON_FLAVOR);
       if (c instanceof JList && o instanceof Icon) {
         ((DefaultListModel<Object>) ((JList<?>) c).getModel()).addElement(o);
       }
-      return true;
+      inserted = true;
     } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+      inserted = false;
     }
+    return inserted;
   }
 }
 
