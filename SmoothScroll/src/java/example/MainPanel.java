@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collections;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -137,7 +136,7 @@ class LineNumberView extends JPanel {
 
   private int getComponentWidth(FontMetrics fontMetrics) {
     int lineCount = textArea.getLineCount();
-    int maxDigits = Math.max(3, Objects.toString(lineCount).length());
+    int maxDigits = Math.max(3, Integer.toString(lineCount).length());
     Insets i = getInsets();
     return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
   }
@@ -174,7 +173,7 @@ class LineNumberView extends JPanel {
     int y = start * fontMetrics.getHeight();
     int rmg = getInsets().right;
     for (int i = start; i <= end; i++) {
-      String text = Objects.toString(i + 1);
+      String text = Integer.toString(i + 1);
       int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
       y += fontAscent;
       g2.drawString(text, x, y);
