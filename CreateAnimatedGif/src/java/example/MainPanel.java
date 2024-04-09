@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
       gce.setAttribute("userInputFlag", "FALSE");
       gce.setAttribute("transparentColorFlag", "FALSE");
       gce.setAttribute("transparentColorIndex", "0");
-      gce.setAttribute("delayTime", Objects.toString(DELAY));
+      gce.setAttribute("delayTime", Integer.toString(DELAY));
 
       IIOMetadataNode ae = new IIOMetadataNode("ApplicationExtension");
       ae.setAttribute("applicationID", "NETSCAPE");

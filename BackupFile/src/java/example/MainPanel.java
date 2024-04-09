@@ -27,12 +27,12 @@ public final class MainPanel extends JPanel {
   private final JSpinner spinner1 = new JSpinner(model1);
   private final JSpinner spinner2 = new JSpinner(model2);
   private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
-  private final JTextPane jtp = new JTextPane();
+  private final JTextPane log = new JTextPane();
 
   private MainPanel() {
     super(new BorderLayout());
-    jtp.setEditable(false);
-    StyledDocument doc = jtp.getStyledDocument();
+    log.setEditable(false);
+    StyledDocument doc = log.getStyledDocument();
     // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
     Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
     // Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     ok.addActionListener(e -> addActionPerformed());
 
     JButton clear = new JButton("clear");
-    clear.addActionListener(e -> jtp.setText(""));
+    clear.addActionListener(e -> log.setText(""));
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
@@ -62,14 +62,16 @@ public final class MainPanel extends JPanel {
     editor2.getTextField().setEditable(false);
     spinner2.setEditor(editor2);
 
-    ChangeListener cl = e -> label.setText(
-        Objects.toString(model1.getNumber().intValue() + model2.getNumber().intValue()));
+    ChangeListener cl = e -> {
+      int i = model1.getNumber().intValue() + model2.getNumber().intValue();
+      label.setText(Integer.toString(i));
+    };
     model1.addChangeListener(cl);
     model2.addChangeListener(cl);
 
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
 
-    JScrollPane scroll = new JScrollPane(jtp);
+    JScrollPane scroll = new JScrollPane(log);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.getVerticalScrollBar().setUnitIncrement(25);
 
@@ -124,7 +126,7 @@ public final class MainPanel extends JPanel {
   }
 
   private void append(Message m) {
-    StyledDocument doc = jtp.getStyledDocument();
+    StyledDocument doc = log.getStyledDocument();
     try {
       doc.insertString(doc.getLength(), m.getText() + "\n", doc.getStyle(m.getType().toString()));
     } catch (BadLocationException ex) {

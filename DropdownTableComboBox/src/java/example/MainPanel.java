@@ -31,8 +31,8 @@ public final class MainPanel extends JPanel {
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         PaperSize rowData = combo.getItemAt(combo.getSelectedIndex());
-        wtf.setText(Objects.toString(rowData.getWidth()));
-        htf.setText(Objects.toString(rowData.getHeight()));
+        wtf.setText(Integer.toString(rowData.getWidth()));
+        htf.setText(Integer.toString(rowData.getHeight()));
       }
     });
     ListCellRenderer<? super PaperSize> renderer = combo.getRenderer();
