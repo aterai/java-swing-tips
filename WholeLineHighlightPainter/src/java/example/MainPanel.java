@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
@@ -199,7 +200,12 @@ class ParagraphWithEndMarkView extends ParagraphView {
     super.paint(g, allocation);
     try {
       Shape para = modelToView(getEndOffset(), allocation, Bias.Backward);
-      Rectangle r = Objects.nonNull(para) ? para.getBounds() : allocation.getBounds();
+      // Rectangle r = Objects.nonNull(para)
+      //     ? para.getBounds()
+      //     : allocation.getBounds();
+      Rectangle r = Optional.ofNullable(para)
+          .map(Shape::getBounds)
+          .orElseGet(allocation::getBounds);
       PARAGRAPH_MARK.paintIcon(null, g, r.x, r.y);
     } catch (BadLocationException ex) {
       // should never happen
