@@ -258,7 +258,7 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     int selectedCount = selectedIndices.length;
     boolean oneOrMore = selectedCount > 1;
     if (oneOrMore) {
-      LABEL.setText(Objects.toString(selectedCount));
+      LABEL.setText(Integer.toString(selectedCount));
       Dimension d = LABEL.getPreferredSize();
       int x = (w - d.width) / 2;
       int y = (h - d.height) / 2;

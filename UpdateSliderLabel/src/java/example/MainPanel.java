@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.util.Map;
-import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -77,7 +76,7 @@ public final class MainPanel extends JPanel {
       ((Map<?, ?>) labelTable).forEach((key, value) -> {
         if (key instanceof Integer && value instanceof JLabel) {
           JLabel label = (JLabel) value;
-          label.setText(Objects.toString((Integer) key / 100));
+          label.setText(Integer.toString((Integer) key / 100));
           // TEST: label.setHorizontalAlignment(SwingConstants.LEFT);
         }
       });

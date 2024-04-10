@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -63,35 +62,35 @@ public final class MainPanel extends JPanel {
     String txt;
     switch (column) {
       case 0:
-        txt = Objects.toString(v.getPosition());
+        txt = Integer.toString(v.getPosition());
         break;
       case 1:
         txt = v.getTeam();
         break;
       case 2:
-        txt = Objects.toString(v.getMatches());
+        txt = Integer.toString(v.getMatches());
         break;
       case 3:
-        txt = Objects.toString(v.getWins());
+        txt = Integer.toString(v.getWins());
         break;
       case 4:
-        txt = Objects.toString(v.getDraws());
+        txt = Integer.toString(v.getDraws());
         break;
       case 5:
-        txt = Objects.toString(v.getLosses());
+        txt = Integer.toString(v.getLosses());
         break;
       case 6:
-        txt = Objects.toString(v.getGoalsFor());
+        txt = Integer.toString(v.getGoalsFor());
         break;
       case 7:
-        txt = Objects.toString(v.getGoalsAgainst());
+        txt = Integer.toString(v.getGoalsAgainst());
         break;
       case 8:
         int d = v.getGoalDifference();
-        txt = d > 0 ? "+" + d : Objects.toString(d);
+        txt = d > 0 ? "+" + d : Integer.toString(d);
         break;
       default: // case 9:
-        txt = Objects.toString(v.getPoints());
+        txt = Integer.toString(v.getPoints());
     }
     return txt;
   }
