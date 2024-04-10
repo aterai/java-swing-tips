@@ -242,16 +242,15 @@ class FileListTable extends JTable {
 
   @Override public String getToolTipText(MouseEvent e) {
     Point pt = e.getPoint();
-    int row = rowAtPoint(pt);
     int col = columnAtPoint(pt);
-    if (convertColumnIndexToModel(col) != 0 || row < 0 || row > getRowCount()) {
-      return null;
+    String txt = null;
+    if (convertColumnIndexToModel(col) == 0) {
+      int row = rowAtPoint(pt);
+      if (getCellRect2(this, row, col).contains(pt)) {
+        txt = getValueAt(row, col).toString();
+      }
     }
-    Rectangle rect = getCellRect2(this, row, col);
-    if (rect.contains(pt)) {
-      return getValueAt(row, col).toString();
-    }
-    return null;
+    return txt;
   }
 
   @Override public void setColumnSelectionInterval(int index0, int index1) {
@@ -315,7 +314,9 @@ class FileListTable extends JTable {
     Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
     Dimension itemSize = cell.getPreferredSize();
     Rectangle cellBounds = table.getCellRect(row, col, false);
-    cellBounds.width = itemSize.width;
+    if (!cellBounds.isEmpty()) {
+      cellBounds.width = itemSize.width;
+    }
     return cellBounds;
   }
 
