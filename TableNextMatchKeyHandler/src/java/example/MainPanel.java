@@ -111,7 +111,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
       }
     } else {
       startIndex += increment;
-      typedString = Objects.toString(c);
+      typedString = String.valueOf(c);
       prefix = typedString;
     }
     lastTime = time;
