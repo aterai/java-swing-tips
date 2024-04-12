@@ -10,7 +10,6 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
   private final BindingMapModel model = new BindingMapModel();
@@ -229,7 +228,7 @@ enum FocusType {
     this.id = id;
   }
 
-  int getId() {
+  public int getId() {
     return id;
   }
 }
