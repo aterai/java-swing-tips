@@ -17,6 +17,7 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   public static final int FIXED_RANGE = 2;
   private static final String ES = "";
+  private static final Border BORDER = BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -53,8 +54,8 @@ public final class MainPanel extends JPanel {
     fixedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     fixedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     fixedTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-    fixedTable.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
-    fixedTable.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.GRAY));
+    fixedTable.setBorder(BORDER);
+    fixedTable.getTableHeader().setBorder(BORDER);
 
     table.setRowSorter(sorter);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

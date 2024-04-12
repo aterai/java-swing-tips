@@ -130,7 +130,8 @@ class RoundedCornerListCellRenderer extends DefaultListCellRenderer {
   private final transient Icon indentIcon = new GapIcon();
 
   @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-    Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    Component c = super.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
     if (c instanceof JLabel) {
       JLabel label = (JLabel) c;
       label.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
