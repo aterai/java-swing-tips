@@ -48,8 +48,8 @@ public final class MainPanel extends JPanel {
       tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks3, "prev2");
       tabs.getActionMap().put("prev2", new AbstractAction() {
         @Override public void actionPerformed(ActionEvent e) {
-          MouseEvent me = new MouseEvent(tabs, MouseEvent.MOUSE_PRESSED, 0, 0, 0, 0, 1, false);
-          tabs.dispatchEvent(me);
+          int pressed = MouseEvent.MOUSE_PRESSED;
+          tabs.dispatchEvent(new MouseEvent(tabs, pressed, 0, 0, 0, 0, 1, false));
           int s = tabs.getTabCount();
           tabs.setSelectedIndex((tabs.getSelectedIndex() + s - 1) % s);
         }
