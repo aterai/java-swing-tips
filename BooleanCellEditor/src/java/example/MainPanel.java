@@ -38,8 +38,11 @@ public final class MainPanel extends JPanel {
     JScrollPane s2 = new JScrollPane(table2);
     JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, s1, s2);
     split.setResizeWeight(.5);
-
     add(split);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -53,8 +56,8 @@ public final class MainPanel extends JPanel {
         setSelectionBackground(new ColorUIResource(Color.RED));
         super.updateUI();
         updateRenderer();
-        JCheckBox checkBox = makeBooleanEditor(this);
-        setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
+        TableCellEditor editor = new DefaultCellEditor(new BooleanCellEditor());
+        setDefaultEditor(Boolean.class, editor);
       }
 
       private void updateRenderer() {
@@ -72,45 +75,12 @@ public final class MainPanel extends JPanel {
         if (c instanceof JCheckBox) {
           JCheckBox b = (JCheckBox) c;
           b.setBackground(getSelectionBackground());
+          b.setHorizontalAlignment(SwingConstants.CENTER);
           b.setBorderPainted(true);
         }
         return c;
       }
     };
-  }
-
-  public static JCheckBox makeBooleanEditor(JTable table) {
-    JCheckBox checkBox = new JCheckBox();
-    checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-    checkBox.setBorderPainted(true);
-    checkBox.setOpaque(true);
-    checkBox.addMouseListener(new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        JCheckBox cb = (JCheckBox) e.getComponent();
-        ButtonModel m = cb.getModel();
-        int editingRow = table.getEditingRow();
-        if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
-          if (editingRow % 2 == 0) {
-            cb.setOpaque(false);
-            // cb.setBackground(getBackground());
-          } else {
-            cb.setOpaque(true);
-            cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-          }
-        } else {
-          cb.setBackground(table.getSelectionBackground());
-          cb.setOpaque(true);
-        }
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        // in order to drag table row selection
-        if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
-          table.getCellEditor().cancelCellEditing();
-        }
-      }
-    });
-    return checkBox;
   }
 
   public static void main(String[] args) {
@@ -132,5 +102,103 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class BooleanCellEditor extends JCheckBox {
+  private transient MouseAdapter handler;
+
+  @Override public void updateUI() {
+      removeMouseListener(handler);
+      super.updateUI();
+      // setHorizontalAlignment(SwingConstants.CENTER);
+      // setBorderPainted(true);
+      setOpaque(true);
+      handler = new MouseAdapter() {
+        @Override public void mousePressed(MouseEvent e) {
+          JCheckBox cb = (JCheckBox) e.getComponent();
+          JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
+          int editingRow = table.getEditingRow();
+          ButtonModel m = cb.getModel();
+          if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
+            if (editingRow % 2 == 0) {
+              cb.setOpaque(false);
+              // cb.setBackground(getBackground());
+            } else {
+              cb.setOpaque(true);
+              cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+            }
+          } else {
+            cb.setBackground(table.getSelectionBackground());
+            cb.setOpaque(true);
+          }
+        }
+
+        @Override public void mouseExited(MouseEvent e) {
+          // in order to drag table row selection
+          JCheckBox cb = (JCheckBox) e.getComponent();
+          JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
+          if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+            table.getCellEditor().cancelCellEditing();
+          }
+        }
+      };
+      addMouseListener(handler);
+    }
+}
+
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        ex.printStackTrace();
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }
