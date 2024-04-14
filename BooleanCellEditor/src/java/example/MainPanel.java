@@ -109,42 +109,42 @@ class BooleanCellEditor extends JCheckBox {
   private transient MouseAdapter handler;
 
   @Override public void updateUI() {
-      removeMouseListener(handler);
-      super.updateUI();
-      // setHorizontalAlignment(SwingConstants.CENTER);
-      // setBorderPainted(true);
-      setOpaque(true);
-      handler = new MouseAdapter() {
-        @Override public void mousePressed(MouseEvent e) {
-          JCheckBox cb = (JCheckBox) e.getComponent();
-          JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
-          int editingRow = table.getEditingRow();
-          ButtonModel m = cb.getModel();
-          if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
-            if (editingRow % 2 == 0) {
-              cb.setOpaque(false);
-              // cb.setBackground(getBackground());
-            } else {
-              cb.setOpaque(true);
-              cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-            }
+    removeMouseListener(handler);
+    super.updateUI();
+    // setHorizontalAlignment(SwingConstants.CENTER);
+    // setBorderPainted(true);
+    setOpaque(true);
+    handler = new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        JCheckBox cb = (JCheckBox) e.getComponent();
+        JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
+        int editingRow = table.getEditingRow();
+        ButtonModel m = cb.getModel();
+        if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
+          if (editingRow % 2 == 0) {
+            cb.setOpaque(false);
+            // cb.setBackground(getBackground());
           } else {
-            cb.setBackground(table.getSelectionBackground());
             cb.setOpaque(true);
+            cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
           }
+        } else {
+          cb.setBackground(table.getSelectionBackground());
+          cb.setOpaque(true);
         }
+      }
 
-        @Override public void mouseExited(MouseEvent e) {
-          // in order to drag table row selection
-          JCheckBox cb = (JCheckBox) e.getComponent();
-          JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
-          if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
-            table.getCellEditor().cancelCellEditing();
-          }
+      @Override public void mouseExited(MouseEvent e) {
+        // in order to drag table row selection
+        JCheckBox cb = (JCheckBox) e.getComponent();
+        JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
+        if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+          table.getCellEditor().cancelCellEditing();
         }
-      };
-      addMouseListener(handler);
-    }
+      }
+    };
+    addMouseListener(handler);
+  }
 }
 
 final class LookAndFeelUtils {
