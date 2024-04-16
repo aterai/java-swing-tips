@@ -116,13 +116,19 @@ class GroupableTableHeader extends JTableHeader {
   }
 
   public List<Object> getColumnGroups(TableColumn col) {
-    for (ColumnGroup cg : columnGroups) {
-      List<Object> groups = cg.getColumnGroupList(col, createMutableList());
-      if (!groups.isEmpty()) {
-        return groups;
-      }
-    }
-    return Collections.emptyList();
+    return columnGroups
+        .stream()
+        .map(cg -> cg.getColumnGroupList(col, createMutableList()))
+        .filter(groups -> !groups.isEmpty())
+        .findFirst()
+        .orElse(Collections.emptyList());
+    // for (ColumnGroup cg : columnGroups) {
+    //   List<Object> groups = cg.getColumnGroupList(col, createMutableList());
+    //   if (!groups.isEmpty()) {
+    //     return groups;
+    //   }
+    // }
+    // return Collections.emptyList();
   }
 
   private static <E> List<E> createMutableList() {
@@ -279,18 +285,13 @@ class ColumnGroup {
 
   public List<Object> getColumnGroupList(TableColumn c, List<Object> g) {
     g.add(this);
-    if (list.contains(c)) {
-      return g;
-    }
-    for (Object obj : list) {
-      if (obj instanceof ColumnGroup) {
-        List<Object> groups = ((ColumnGroup) obj).getColumnGroupList(c, createMutableList(g));
-        if (!groups.isEmpty()) {
-          return groups;
-        }
-      }
-    }
-    return Collections.emptyList();
+    return list.contains(c) ? g : list.stream()
+        .filter(ColumnGroup.class::isInstance)
+        .map(ColumnGroup.class::cast)
+        .map(cg -> cg.getColumnGroupList(c, createMutableList(g)))
+        .filter(groups -> !groups.isEmpty())
+        .findFirst()
+        .orElse(Collections.emptyList());
   }
 
   private static <E> List<E> createMutableList(Collection<? extends E> c) {
