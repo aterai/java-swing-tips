@@ -10,7 +10,9 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -92,28 +94,47 @@ class FileChooserTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(TransferSupport support) {
-    JFileChooser fc = (JFileChooser) support.getComponent();
-    Transferable transferable = support.getTransferable();
+    File[] files = getFiles(support.getTransferable());
+    Component c = support.getComponent();
+    boolean ret = c instanceof JFileChooser && files.length > 0;
+    if (ret) {
+      updateSelectedFiles((JFileChooser) c, files);
+    }
+    return ret;
+  }
+
+  private static Object getTransferData(Transferable transferable) {
+    Object o;
     try {
-      List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-      File[] files = new File[list.size()];
-      for (int i = 0; i < list.size(); i++) {
-        files[i] = (File) list.get(i);
-      }
-      if (fc.isMultiSelectionEnabled()) {
-        fc.setSelectedFiles(files);
-      } else {
-        File f = files[0];
-        if (f.isDirectory()) {
-          fc.setCurrentDirectory(f);
-        } else {
-          fc.setSelectedFile(f);
-        }
-      }
-      return true;
+      o = transferable.getTransferData(DataFlavor.javaFileListFlavor);
     } catch (IOException | UnsupportedFlavorException ex) {
-      // ex.printStackTrace();
-      return false;
+      o = null;
+    }
+    return o;
+  }
+
+  private static File[] getFiles(Transferable transferable) {
+    List<?> list = Optional.ofNullable(getTransferData(transferable))
+        .filter(o -> o instanceof List<?>)
+        .map(o -> (List<?>) o)
+        .orElse(Collections.emptyList());
+    File[] files = new File[list.size()];
+    for (int i = 0; i < list.size(); i++) {
+      files[i] = (File) list.get(i);
+    }
+    return files;
+  }
+
+  private static void updateSelectedFiles(JFileChooser fileChooser, File... files) {
+    if (fileChooser.isMultiSelectionEnabled()) {
+      fileChooser.setSelectedFiles(files);
+    } else {
+      File file = files[0];
+      if (file.isDirectory()) {
+        fileChooser.setCurrentDirectory(file);
+      } else {
+        fileChooser.setSelectedFile(file);
+      }
     }
   }
 }
