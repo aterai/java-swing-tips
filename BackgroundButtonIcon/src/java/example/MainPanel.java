@@ -29,8 +29,21 @@ public final class MainPanel extends JPanel {
 
   private static AbstractButton makeButton(String title, Color color, boolean first) {
     // https://java-swing-tips.blogspot.com/2008/11/rounded-corner-jbutton.html
-    AbstractButton b = new JToggleButton(title) {
+    return new JToggleButton(title, new TestIcon()) {
       private final transient ArrowToggleButtonCellIcon icon = new ArrowToggleButtonCellIcon();
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setContentAreaFilled(false);
+        int th = ArrowToggleButtonCellIcon.TH;
+        int left = LINE_WIDTH + BI_GAP + (first ? 0 : th);
+        setBorder(BorderFactory.createEmptyBorder(0, left, 0, th));
+        setFocusPainted(false);
+        setOpaque(false);
+        setBackground(color);
+        setHorizontalAlignment(LEFT);
+        // setIcon(new TestIcon());
+      }
 
       @Override public boolean contains(int x, int y) {
         // Shape shape = icon.getShape();
@@ -49,29 +62,6 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
       }
     };
-    b.setIcon(new Icon() {
-      @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.setColor(Color.GRAY);
-        g.drawOval(x, y, getIconWidth(), getIconHeight());
-      }
-
-      @Override public int getIconWidth() {
-        return 12;
-      }
-
-      @Override public int getIconHeight() {
-        return 12;
-      }
-    });
-    b.setContentAreaFilled(false);
-    int th = ArrowToggleButtonCellIcon.TH;
-    int left = LINE_WIDTH + BI_GAP + (first ? 0 : th);
-    b.setBorder(BorderFactory.createEmptyBorder(0, left, 0, th));
-    b.setHorizontalAlignment(SwingConstants.LEFT);
-    b.setFocusPainted(false);
-    b.setOpaque(false);
-    b.setBackground(color);
-    return b;
   }
 
   private static Container makeContainer(int overlap) {
@@ -181,5 +171,20 @@ class ArrowToggleButtonCellIcon implements Icon {
 
   @Override public int getIconHeight() {
     return HEIGHT;
+  }
+}
+
+class TestIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    g.setColor(Color.GRAY);
+    g.drawOval(x, y, getIconWidth(), getIconHeight());
+  }
+
+  @Override public int getIconWidth() {
+    return 12;
+  }
+
+  @Override public int getIconHeight() {
+    return 12;
   }
 }
