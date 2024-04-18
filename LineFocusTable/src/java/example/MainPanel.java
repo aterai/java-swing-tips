@@ -315,18 +315,19 @@ final class TablePopupMenu extends JPopupMenu {
 //         }
 //       }
 //
-//       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-//         JComponent c = (JComponent) super.prepareRenderer(tcr, row, column);
+//       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int col) {
+//         JComponent c = (JComponent) super.prepareRenderer(tcr, row, col);
 //         c.setBorder(dotBorder);
-//         updateBorderType(dotBorder, row == getSelectionModel().getLeadSelectionIndex(), column);
+//         boolean b = row == getSelectionModel().getLeadSelectionIndex();
+//         updateBorderType(dotBorder, b, col);
 //         return c;
 //       }
 //
-//       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-//         Component c = super.prepareEditor(editor, row, column);
+//       @Override public Component prepareEditor(TableCellEditor editor, int row, int col) {
+//         Component c = super.prepareEditor(editor, row, col);
 //         if (c instanceof JCheckBox) {
 //           JCheckBox b = (JCheckBox) c;
-//           updateBorderType((DotBorder) b.getBorder(), true, column);
+//           updateBorderType((DotBorder) b.getBorder(), true, col);
 //           b.setBorderPainted(true);
 //           b.setBackground(getSelectionBackground());
 //         }

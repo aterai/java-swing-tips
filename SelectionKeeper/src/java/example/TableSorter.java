@@ -199,20 +199,8 @@ public class TableSorter extends AbstractTableModel {
     tableHeader = header;
     Optional.ofNullable(tableHeader).ifPresent(h -> {
       h.addMouseListener(mouseListener);
-      h.setDefaultRenderer(new SortableHeaderRenderer(tableHeader.getDefaultRenderer()));
+      h.setDefaultRenderer(new SortableHeaderRenderer(h.getDefaultRenderer()));
     });
-    // if (tableHeader != null) {
-    //   tableHeader.removeMouseListener(mouseListener);
-    //   TableCellRenderer defaultRenderer = tableHeader.getDefaultRenderer();
-    //   if (defaultRenderer instanceof SortableHeaderRenderer) {
-    //     tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
-    //   }
-    // }
-    // tableHeader = header;
-    // if (tableHeader != null) {
-    //   header.addMouseListener(mouseListener);
-    //   header.setDefaultRenderer(new SortableHeaderRenderer(tableHeader.getDefaultRenderer()));
-    // }
   }
 
   public boolean isSorting() {

@@ -101,17 +101,21 @@ public final class MainPanel extends JPanel {
   //     //   d.height = Math.max(label.getPreferredSize().height, d.height);
   //     //   return d;
   //     // }
+  //     //
   //     // @Override protected void fireStateChanged() {
   //     //   super.fireStateChanged();
   //     //   ButtonModel m = getModel();
   //     //   if (m.isSelected() || m.isRollover() || m.isArmed()) {
-  //     //     label.setForeground(UIManager.getColor("MenuItem.acceleratorSelectionForeground"));
-  //     //     label.setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+  //     //     label.setForeground(
+  //     //         UIManager.getColor("MenuItem.acceleratorSelectionForeground"));
+  //     //     label.setBackground(
+  //     //         UIManager.getColor("MenuItem.selectionBackground"));
   //     //   } else {
   //     //     label.setForeground(getForeground());
   //     //     label.setBackground(getBackground());
   //     //   }
   //     // }
+  //
   //     @Override public void updateUI() {
   //       super.updateUI();
   //       if (getUI() instanceof WindowsMenuItemUI) {
@@ -306,14 +310,14 @@ final class MenuItemHelper {
   //   });
   // }
 
-  // public static String getAccText(JMenuItem mi, String acceleratorDelimiter) {
+  // public static String getAccText(JMenuItem mi, String delimiter) {
   //   StringBuilder accText = new StringBuilder();
   //   // KeyStroke accelerator = mi.getAccelerator();
   //   Optional.ofNullable(mi.getAccelerator()).ifPresent(accelerator -> {
   //     int modifiers = accelerator.getModifiers();
   //     if (modifiers > 0) {
-  //       // accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(acceleratorDelimiter);
-  //       accText.append(InputEvent.getModifiersExText(modifiers)).append(acceleratorDelimiter);
+  //       // accText.append(KeyEvent.getKeyModifiersText(modifiers)).append(delimiter);
+  //       accText.append(InputEvent.getModifiersExText(modifiers)).append(delimiter);
   //     }
   //     int keyCode = accelerator.getKeyCode();
   //     if (keyCode == 0) {
