@@ -10,6 +10,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -82,29 +83,32 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
   }
 
   private static ImageIcon getImageThumbnail(File file) {
-    if (Objects.isNull(file)) {
-      return null;
-    }
-    ImageIcon tmpIcon = new ImageIcon(file.getPath());
-    if (tmpIcon.getIconWidth() > PREVIEW_WIDTH) {
-      // Image img = tmpIcon.getImage().getScaledInstance(PREVIEW_WIDTH, -1, Image.SCALE_DEFAULT);
-      // The Perils of Image.getScaledInstance() | Java.net
-      // <del>http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html</del>
-      // The Perils of Image.getScaledInstance() Blog | Oracle Community
-      // https://community.oracle.com/docs/DOC-983611
-      float scale = PREVIEW_WIDTH / (float) tmpIcon.getIconWidth();
-      int newW = Math.round(tmpIcon.getIconWidth() * scale);
-      int newH = Math.round(tmpIcon.getIconHeight() * scale);
-      BufferedImage img = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g2 = img.createGraphics();
-      g2.setRenderingHint(
-          RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      g2.drawImage(tmpIcon.getImage(), 0, 0, newW, newH, null);
-      g2.dispose();
-      return new ImageIcon(img);
-    } else {
-      return tmpIcon;
-    }
+    return Optional.ofNullable(file)
+        .map(File::getPath)
+        .map(ImageIcon::new)
+        .map(i -> {
+          int w = i.getIconWidth();
+          return w > PREVIEW_WIDTH ? getScaledImageIcon(i, PREVIEW_WIDTH / (float) w) : i;
+        })
+        .orElse(null);
+  }
+
+  private static ImageIcon getScaledImageIcon(ImageIcon icon, float scale) {
+    // Image img = icon.getImage().getScaledInstance(PREVIEW_WIDTH, -1, Image.SCALE_DEFAULT);
+    // The Perils of Image.getScaledInstance() | Java.net
+    // <del>http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html</del>
+    // The Perils of Image.getScaledInstance() Blog | Oracle Community
+    // https://community.oracle.com/docs/DOC-983611
+    // float scale = PREVIEW_WIDTH / (float) icon.getIconWidth();
+    int newW = Math.round(icon.getIconWidth() * scale);
+    int newH = Math.round(icon.getIconHeight() * scale);
+    BufferedImage img = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = img.createGraphics();
+    g2.setRenderingHint(
+        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g2.drawImage(icon.getImage(), 0, 0, newW, newH, null);
+    g2.dispose();
+    return new ImageIcon(img);
   }
 
   @Override public void propertyChange(PropertyChangeEvent e) {
