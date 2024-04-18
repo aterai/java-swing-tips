@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -194,14 +195,14 @@ class LevelBar extends JPanel {
   // }
 
   protected int getSelectedIconIndex(Point p) {
-    for (int i = 0; i < labelList.size(); i++) {
-      Rectangle r = labelList.get(i).getBounds();
-      r.grow(gap, gap);
-      if (r.contains(p)) {
-        return i;
-      }
-    }
-    return -1;
+    return IntStream.range(0, labelList.size())
+        .filter(i -> {
+          Rectangle r = labelList.get(i).getBounds();
+          r.grow(gap, gap);
+          return r.contains(p);
+        })
+        .findFirst()
+        .orElse(-1);
   }
 
   protected void repaintIcon(int index) {
