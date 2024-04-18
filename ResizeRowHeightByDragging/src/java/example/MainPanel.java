@@ -104,9 +104,10 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
     int col = table.columnAtPoint(p);
     Rectangle r = table.getCellRect(row, col, false);
     r.grow(0, -2);
-    if (r.contains(p)) {
-      return -1;
-    }
+    return r.contains(p) ? -1 : getTargetRowIndex(p, r, row);
+  }
+
+  private static int getTargetRowIndex(Point p, Rectangle r, int row) {
     return p.y < r.getCenterY() ? row - 1 : row;
   }
 }
