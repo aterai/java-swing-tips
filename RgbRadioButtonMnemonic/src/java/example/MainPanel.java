@@ -130,16 +130,23 @@ public final class MainPanel extends JPanel {
   // @see javax/swing/colorchooser/ColorModel.java
   private static int getInteger(String key, Locale locale) {
     Object value = UIManager.get(key, locale);
+    int iv = -1;
     if (value instanceof Integer) {
-      return (Integer) value;
+      iv = (int) value;
     } else if (value instanceof String) {
-      try {
-        return Integer.parseInt((String) value);
-      } catch (NumberFormatException ignore) {
-        return -1;
-      }
+      iv = parseInt((String) value);
     }
-    return -1;
+    return iv;
+  }
+
+  private static int parseInt(String value) {
+    int iv;
+    try {
+      iv = Integer.parseInt(value);
+    } catch (NumberFormatException ignore) {
+      iv = -1;
+    }
+    return iv;
   }
 
   private static AbstractColorChooserPanel getRgbChooser(JColorChooser colorChooser) {
