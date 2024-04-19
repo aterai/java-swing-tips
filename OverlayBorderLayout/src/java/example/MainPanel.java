@@ -254,14 +254,8 @@ final class AnimationUtils {
   // }
 
   public static double easeInOut(double t) {
-    double ret;
     boolean isFirstHalf = t < .5;
-    if (isFirstHalf) {
-      ret = .5 * intPow(t * 2d, N);
-    } else {
-      ret = .5 * (intPow(t * 2d - 2d, N) + 2d);
-    }
-    return ret;
+    return isFirstHalf ? .5 * intPow(t * 2d, N) : .5 * (intPow(t * 2d - 2d, N) + 2d);
   }
 
   // https://wiki.c2.com/?IntegerPowerAlgorithm

@@ -151,11 +151,7 @@ class ScrollAction extends AbstractAction {
   protected static double easeInOut(double t) {
     // range: 0.0 <= t <= 1.0
     boolean isFirstHalf = t < .5;
-    if (isFirstHalf) {
-      return .5 * pow3(t * 2d);
-    } else {
-      return .5 * (pow3(t * 2d - 2d) + 2d);
-    }
+    return isFirstHalf ? .5 * pow3(t * 2d) : .5 * (pow3(t * 2d - 2d) + 2d);
   }
 
   protected static double pow3(double a) {

@@ -221,22 +221,12 @@ final class AnimationUtils {
 
   // public static double easeInOut(double t) {
   //   boolean isFirstHalf = t < .5;
-  //   if (isFirstHalf) {
-  //     return .5 * Math.pow(t * 2d, N);
-  //   } else {
-  //     return .5 * (Math.pow(t * 2d - 2d, N) + 2d);
-  //   }
+  //   return isFirstHalf ? .5 * Math.pow(t * 2d, N) : .5 * (Math.pow(t * 2d - 2d, N) + 2d);
   // }
 
   public static double easeInOut(double t) {
-    double ret;
     boolean isFirstHalf = t < .5;
-    if (isFirstHalf) {
-      ret = .5 * intPow(t * 2d, N);
-    } else {
-      ret = .5 * (intPow(t * 2d - 2d, N) + 2d);
-    }
-    return ret;
+    return isFirstHalf ? .5 * intPow(t * 2d, N) : .5 * (intPow(t * 2d - 2d, N) + 2d);
   }
 
   // https://wiki.c2.com/?IntegerPowerAlgorithm
