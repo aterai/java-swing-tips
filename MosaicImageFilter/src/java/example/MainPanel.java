@@ -30,14 +30,14 @@ public final class MainPanel extends JPanel {
     split.setResizeWeight(.5);
 
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage img = Optional.ofNullable(cl.getResource("example/test.jpg")).map(u -> {
+    Image img = Optional.ofNullable(cl.getResource("example/test.jpg")).map(u -> {
       try (InputStream s = u.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
         return makeMissingImage();
       }
     }).orElseGet(MainPanel::makeMissingImage);
-    ImageIcon imageIcon1 = new ImageIcon(img);
+    Icon imageIcon1 = new ImageIcon(img);
 
     Component beforeCanvas = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static Image makeMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
