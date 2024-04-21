@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
@@ -145,7 +146,7 @@ class XmlTreeNode implements TreeNode {
 
   public boolean isShowAttributes() {
     return Optional.ofNullable(showAttributes)
-      .orElseGet(() -> parent != null && parent.isShowAttributes());
+        .orElseGet(() -> parent != null && parent.isShowAttributes());
     // if (Objects.nonNull(showAttributes)) {
     //   return showAttributes;
     // }
@@ -245,14 +246,18 @@ class XmlTreeNode implements TreeNode {
     if (Objects.isNull(list)) {
       loadChildren();
     }
-    int i = 0;
-    for (XmlTreeNode c : list) {
-      if (Objects.equals(xmlNode, c.xmlNode)) {
-        return i;
-      }
-      i++;
-    }
-    return -1;
+    return IntStream.range(0, list.size())
+        .filter(i -> Objects.equals(xmlNode, list.get(i).xmlNode))
+        .findFirst()
+        .orElse(-1);
+    // int i = 0;
+    // for (XmlTreeNode c : list) {
+    //   if (Objects.equals(xmlNode, c.xmlNode)) {
+    //     return i;
+    //   }
+    //   i++;
+    // }
+    // return -1;
   }
 
   @Override public TreeNode getParent() {
