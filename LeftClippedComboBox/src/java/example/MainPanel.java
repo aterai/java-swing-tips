@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -24,13 +25,18 @@ public final class MainPanel extends JPanel {
   }
 
   private static JButton getArrowButton(Container box) {
-    for (Component c : box.getComponents()) {
-      if (c instanceof JButton) { // && "ComboBox.arrowButton".equals(c.getName())) {
-        // System.out.println(c.getName());
-        return (JButton) c;
-      }
-    }
-    return null;
+    return Stream.of(box.getComponents())
+        .filter(JButton.class::isInstance)
+        .map(JButton.class::cast)
+        .findFirst()
+        .orElse(null);
+    // for (Component c : box.getComponents()) {
+    //   if (c instanceof JButton) { // && "ComboBox.arrowButton".equals(c.getName())) {
+    //     // System.out.println(c.getName());
+    //     return (JButton) c;
+    //   }
+    // }
+    // return null;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -60,10 +66,10 @@ public final class MainPanel extends JPanel {
         Component c = super.getListCellRendererComponent(
             list, value, index, isSelected, cellHasFocus);
         if (c instanceof JLabel) {
-          String text = Objects.toString(value, "");
+          String s = Objects.toString(value, "");
           FontMetrics fm = c.getFontMetrics(c.getFont());
-          int width = getAvailableWidth(combo, index);
-          ((JLabel) c).setText(getLeftClippedText(text, fm, width));
+          int w = getAvailableWidth(combo, index);
+          ((JLabel) c).setText(fm.stringWidth(s) <= w ? s : getLeftClippedText(s, fm, w));
         }
         return c;
       }
@@ -93,28 +99,25 @@ public final class MainPanel extends JPanel {
         return availableWidth;
       }
 
+      // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
+      // @title Left Dot Renderer
+      // @author Rob Camick
+      // FontMetrics fm = getFontMetrics(getFont());
+      // if (fm.stringWidth(text) > width) {
+      //   String dots = "...";
+      //   int textWidth = fm.stringWidth(dots);
+      //   int nChars = text.length() - 1;
+      //   while (nChars > 0) {
+      //     textWidth += fm.charWidth(text.charAt(nChars));
+      //     if (textWidth > width) {
+      //       break;
+      //     }
+      //     nChars--;
+      //   }
+      //   setText(dots + text.substring(nChars + 1));
+      // }
+      // </blockquote>
       private String getLeftClippedText(String text, FontMetrics fm, int availableWidth) {
-        // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
-        // @title Left Dot Renderer
-        // @author Rob Camick
-        // FontMetrics fm = getFontMetrics(getFont());
-        // if (fm.stringWidth(text) > availableWidth) {
-        //   String dots = "...";
-        //   int textWidth = fm.stringWidth(dots);
-        //   int nChars = text.length() - 1;
-        //   while (nChars > 0) {
-        //     textWidth += fm.charWidth(text.charAt(nChars));
-        //     if (textWidth > availableWidth) {
-        //       break;
-        //     }
-        //     nChars--;
-        //   }
-        //   setText(dots + text.substring(nChars + 1));
-        // }
-        // </blockquote>
-        if (fm.stringWidth(text) <= availableWidth) {
-          return text;
-        }
         String dots = "...";
         int textWidth = fm.stringWidth(dots);
         int len = text.length();
