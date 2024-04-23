@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
 
   private static AbstractButton makeButton(String title, Color color, boolean first) {
     // https://java-swing-tips.blogspot.com/2008/11/rounded-corner-jbutton.html
-    return new JToggleButton(title, new TestIcon()) {
+    return new JToggleButton(title, new GrayIcon()) {
       private final transient ArrowToggleButtonCellIcon icon = new ArrowToggleButtonCellIcon();
 
       @Override public void updateUI() {
@@ -174,7 +174,7 @@ class ArrowToggleButtonCellIcon implements Icon {
   }
 }
 
-class TestIcon implements Icon {
+class GrayIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     g.setColor(Color.GRAY);
     g.drawOval(x, y, getIconWidth(), getIconHeight());
