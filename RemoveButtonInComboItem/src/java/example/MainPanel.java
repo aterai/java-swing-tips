@@ -264,27 +264,35 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = renderer.getListCellRendererComponent(
-        list, value, index, isSelected, cellHasFocus);
-    if (index < 0) {
-      return c;
+      list, value, index, isSelected, cellHasFocus);
+    if (index >= 0 && c instanceof JComponent) {
+      JComponent label = (JComponent) c;
+      label.setOpaque(false);
+      this.targetIndex = index;
+      updateDeleteButton(list, deleteButton, index == rolloverIndex);
+      panel.setBackground(getPanelBackground(list, index, isSelected));
+      panel.add(label);
+      c = panel;
     }
-    if (c instanceof JComponent) {
-      ((JComponent) c).setOpaque(false);
-    }
-    this.targetIndex = index;
+    return c;
+  }
+
+  private static Color getPanelBackground(JList<?> list, int index, boolean isSelected) {
+    Color bgc;
     if (isSelected) {
-      panel.setBackground(list.getSelectionBackground());
+      bgc = list.getSelectionBackground();
     } else {
-      panel.setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
+      bgc = index % 2 == 0 ? EVEN_COLOR : list.getBackground();
     }
+    return bgc;
+  }
+
+  private void updateDeleteButton(JList<?> list, JButton button, boolean isRollover) {
     boolean showDeleteButton = list.getModel().getSize() > 1;
-    deleteButton.setVisible(showDeleteButton);
+    button.setVisible(showDeleteButton);
     if (showDeleteButton) {
-      boolean isRollover = index == rolloverIndex;
-      deleteButton.getModel().setRollover(isRollover);
-      deleteButton.setForeground(isRollover ? Color.WHITE : list.getForeground());
+      button.getModel().setRollover(isRollover);
+      button.setForeground(isRollover ? Color.WHITE : list.getForeground());
     }
-    panel.add(c);
-    return panel;
   }
 }
