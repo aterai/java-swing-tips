@@ -223,8 +223,8 @@ class ShapeIcon implements Icon {
     // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.translate(x, y);
     Rectangle2D b = shape.getBounds2D();
-    double tx = width / 2d - b.getX() + b.getWidth() / 2d;
-    double ty = height / 2d - b.getY() + b.getHeight() / 2d;
+    double tx = width / 2d - b.getCenterX();
+    double ty = height / 2d - b.getCenterY();
     AffineTransform toCenterAt = AffineTransform.getTranslateInstance(tx, ty);
     g2.setPaint(c.getForeground());
     g2.fill(toCenterAt.createTransformedShape(shape));
