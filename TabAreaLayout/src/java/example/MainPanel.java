@@ -167,7 +167,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
-  public static final int TABAREA_SIZE = 28;
+  public static final int TAB_AREA_SIZE = 28;
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
@@ -224,7 +224,7 @@ class CardLayoutTabbedPane extends JPanel {
 
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
-      d.height = TABAREA_SIZE;
+      d.height = TAB_AREA_SIZE;
       return d;
     }
   };
@@ -236,11 +236,9 @@ class CardLayoutTabbedPane extends JPanel {
       JButton b = (JButton) e.getSource();
       Point p = b.getLocation();
       JPopupMenu popup = new JPopupMenu();
+      JViewport viewport = tabArea.getViewport();
       for (int i = 0; i < tabPanel.getComponentCount(); i++) {
-        JMenuItem mi = makeRadioMenuItem(tabPanel, i);
-        if (mi != null) {
-          popup.add(mi);
-        }
+        getHiddenTabMenuItem(viewport, tabPanel.getComponent(i)).ifPresent(popup::add);
       }
       p.x += b.getWidth() - popup.getPreferredSize().width - 1;
       p.y += b.getHeight();
@@ -269,22 +267,24 @@ class CardLayoutTabbedPane extends JPanel {
     setBackground(new Color(16, 16, 16));
   }
 
-  private JMenuItem makeRadioMenuItem(Container c, int i) {
-    JToggleButton tab = (JToggleButton) c.getComponent(i);
-    JViewport viewport = tabArea.getViewport();
-    Rectangle r = tab.getBounds();
-    if (viewport.getViewRect().contains(r)) {
-      return null;
-    }
-    JLabel label = (JLabel) tab.getComponent(0);
-    String title = label.getText();
-    JMenuItem mi = new JRadioButtonMenuItem(title);
-    mi.addActionListener(e -> {
-      tab.setSelected(true);
-      cardLayout.show(contentsPanel, title);
-      viewport.scrollRectToVisible(SwingUtilities.convertRectangle(c, r, viewport));
-    });
-    return mi;
+  private Optional<JMenuItem> getHiddenTabMenuItem(JViewport viewport, Component c) {
+    return Optional.ofNullable(c)
+      .filter(AbstractButton.class::isInstance)
+      .map(AbstractButton.class::cast)
+      .filter(tab -> !viewport.getViewRect().contains(tab.getBounds()))
+      .map(tab -> {
+        Rectangle r = tab.getBounds();
+        JLabel label = (JLabel) tab.getComponent(0);
+        String title = label.getText();
+        JMenuItem mi = new JRadioButtonMenuItem(title);
+        mi.addActionListener(e -> {
+          tab.setSelected(true);
+          cardLayout.show(contentsPanel, title);
+          Container p = tab.getParent();
+          viewport.scrollRectToVisible(SwingUtilities.convertRectangle(p, r, viewport));
+        });
+        return mi;
+      });
   }
 
   protected JComponent createTabComponent(String title, Icon icon, Component comp) {
@@ -379,7 +379,7 @@ class TabButton extends JToggleButton {
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    d.height = CardLayoutTabbedPane.TABAREA_SIZE;
+    d.height = CardLayoutTabbedPane.TAB_AREA_SIZE;
     return d;
   }
 
