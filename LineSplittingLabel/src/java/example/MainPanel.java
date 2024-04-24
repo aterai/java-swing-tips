@@ -70,24 +70,24 @@ class TricoloreLabel extends JComponent {
     Rectangle2D b = gv.getVisualBounds();
     double cx = w / 2d - b.getCenterX();
     double cy = h / 2d - b.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
 
     double dh = b.getHeight() / 3d;
     Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), b.getHeight());
     Rectangle2D clip1 = new Rectangle2D.Double(b.getX(), b.getY(), b.getWidth(), dh);
     Rectangle2D clip2 = new Rectangle2D.Double(b.getX(), b.getY() + 2d * dh, b.getWidth(), dh);
 
-    Shape s = toCenterAtf.createTransformedShape(gv.getOutline());
+    Shape s = toCenterAt.createTransformedShape(gv.getOutline());
 
-    g2.setClip(toCenterAtf.createTransformedShape(clip1));
+    g2.setClip(toCenterAt.createTransformedShape(clip1));
     g2.setPaint(Color.BLUE);
     g2.fill(s);
 
-    g2.setClip(toCenterAtf.createTransformedShape(clip2));
+    g2.setClip(toCenterAt.createTransformedShape(clip2));
     g2.setPaint(Color.RED);
     g2.fill(s);
 
-    g2.setClip(toCenterAtf.createTransformedShape(clip));
+    g2.setClip(toCenterAt.createTransformedShape(clip));
     g2.setPaint(Color.BLACK);
     g2.draw(s);
     g2.dispose();
@@ -117,16 +117,16 @@ class LineSplittingLabel extends JComponent {
     Rectangle2D b = shape.getBounds2D();
     double cx = w / 2d - b.getCenterX();
     double cy = h / 2d - b.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
 
-    Shape s = toCenterAtf.createTransformedShape(shape);
+    Shape s = toCenterAt.createTransformedShape(shape);
     g2.setPaint(Color.BLACK);
     g2.fill(s);
 
     double dw = b.getWidth();
     double dh = b.getHeight() / 2d;
     Rectangle2D clip = new Rectangle2D.Double(b.getX(), b.getY(), dw, dh);
-    g2.setClip(toCenterAtf.createTransformedShape(clip));
+    g2.setClip(toCenterAt.createTransformedShape(clip));
     g2.setPaint(Color.RED);
     g2.fill(s);
     g2.dispose();

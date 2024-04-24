@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import javax.swing.*;
 
@@ -139,11 +140,11 @@ class SilhouetteIcon implements Icon, Serializable {
 
     FontRenderContext frc = g2.getFontRenderContext();
     Shape shape = font.createGlyphVector(frc, str).getOutline();
-    Rectangle r = shape.getBounds();
-    int sx = getIconWidth() - r.width;
-    int sy = getIconHeight() - r.height;
-    AffineTransform at = AffineTransform.getTranslateInstance(-r.x + sx / 2d, -r.y + sy / 2d);
-    Shape shapeCentered = at.createTransformedShape(shape);
+    Rectangle2D b = shape.getBounds2D();
+    double cx = getIconWidth() / 2d - b.getCenterX();
+    double cy = getIconHeight() / 2d - b.getCenterY();
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+    Shape shapeCentered = toCenterAt.createTransformedShape(shape);
 
     Shape silhouette = getOuterShape(shapeCentered);
     g2.setStroke(new BasicStroke(3));

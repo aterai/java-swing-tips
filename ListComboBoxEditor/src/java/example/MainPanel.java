@@ -250,8 +250,7 @@ class NewspaperStyleList<E extends ListItem> extends JList<E> {
 class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
   protected static final Color SELECTED_COLOR = new Color(0x40_32_64_FF, true);
   private final JLabel label = new JLabel("", null, SwingConstants.CENTER) {
-    @Override
-    protected void paintComponent(Graphics g) {
+    @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       if (SELECTED_COLOR.equals(getBackground())) {
         Graphics2D g2 = (Graphics2D) g.create();

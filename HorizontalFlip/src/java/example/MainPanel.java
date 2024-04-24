@@ -30,8 +30,8 @@ public final class MainPanel extends JPanel {
         Rectangle2D b = copyleft.getBounds2D();
         double cx = getWidth() / 2d - b.getCenterX();
         double cy = getHeight() / 2d - b.getCenterY();
-        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
-        g2.fill(toCenterAtf.createTransformedShape(copyleft));
+        AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+        g2.fill(toCenterAt.createTransformedShape(copyleft));
         g2.dispose();
       }
     });

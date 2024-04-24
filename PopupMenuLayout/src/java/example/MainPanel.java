@@ -121,8 +121,8 @@ class SymbolIcon implements Icon {
     Rectangle2D b = symbol.getBounds2D();
     double cx = getIconWidth() / 2d - b.getCenterX();
     double cy = getIconHeight() / 2d - b.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
-    g2.fill(toCenterAtf.createTransformedShape(symbol));
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+    g2.fill(toCenterAt.createTransformedShape(symbol));
     g2.dispose();
   }
 

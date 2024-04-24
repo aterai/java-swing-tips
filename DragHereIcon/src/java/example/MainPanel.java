@@ -113,8 +113,8 @@ class DragHereIcon implements Icon {
     Rectangle2D b = arrow.getBounds2D();
     double cx = ICON_WIDTH / 2d - b.getCenterX();
     double cy = ICON_HEIGHT / 2d - b.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
-    g2.fill(toCenterAtf.createTransformedShape(arrow));
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+    g2.fill(toCenterAt.createTransformedShape(arrow));
     g2.dispose();
   }
 

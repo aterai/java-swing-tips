@@ -63,10 +63,10 @@ class FontRotateAnimation extends JComponent {
       AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), ax, ay);
       double cx = getWidth() / 2d - ax;
       double cy = getHeight() / 2d - ay;
-      AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
+      AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
 
       Shape s1 = at.createTransformedShape(outline);
-      shape = toCenterAtf.createTransformedShape(s1);
+      shape = toCenterAt.createTransformedShape(s1);
       repaint(shape.getBounds());
       // rotate = rotate >= 360 ? 0 : rotate + 2;
       rotate = (rotate + 2) % 360;

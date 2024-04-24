@@ -75,11 +75,11 @@ public final class MainPanel extends JPanel {
     Font font = g2.getFont().deriveFont(AffineTransform.getScaleInstance(.8, 1d));
     Shape s = new TextLayout(Integer.toString(size), font, frc).getOutline(null);
     g2.setPaint(Color.BLACK);
-    Rectangle r = s.getBounds();
-    double cx = size / 2d - r.getCenterX();
-    double cy = size / 2d - r.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
-    g2.fill(toCenterAtf.createTransformedShape(s));
+    Rectangle b = s.getBounds();
+    double cx = size / 2d - b.getCenterX();
+    double cy = size / 2d - b.getCenterY();
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+    g2.fill(toCenterAt.createTransformedShape(s));
     g2.dispose();
     return image;
   }

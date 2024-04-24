@@ -76,8 +76,7 @@ class DragHandler extends MouseAdapter {
   private final Point startPt = new Point();
   private final int dragThreshold = DragSource.getDragThreshold();
 
-  @Override
-  public void mousePressed(MouseEvent e) {
+  @Override public void mousePressed(MouseEvent e) {
     Container parent = (Container) e.getComponent();
     if (parent.getComponentCount() > 0) {
       startPt.setLocation(e.getPoint());
@@ -111,8 +110,7 @@ class DragHandler extends MouseAdapter {
     // p.repaint();
   }
 
-  @Override
-  public void mouseDragged(MouseEvent e) {
+  @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
 
@@ -146,8 +144,7 @@ class DragHandler extends MouseAdapter {
     parent.revalidate();
   }
 
-  @Override
-  public void mouseReleased(MouseEvent e) {
+  @Override public void mouseReleased(MouseEvent e) {
     if (!window.isVisible() || Objects.isNull(draggingComponent)) {
       return;
     }

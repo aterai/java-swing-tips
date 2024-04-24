@@ -43,8 +43,8 @@ public final class MainPanel extends JPanel {
         double h = getHeight();
         double cx = w / 2d - b.getCenterX();
         double cy = h / 2d - b.getCenterY();
-        AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(cx, cy);
-        Shape s = toCenterAtf.createTransformedShape(gv.getOutline());
+        AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+        Shape s = toCenterAt.createTransformedShape(gv.getOutline());
         Area bg = new Area(new Rectangle2D.Double(0d, 0d, w, h));
         bg.subtract(new Area(s));
         g2.setColor(getBackground());

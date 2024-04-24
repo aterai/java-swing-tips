@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -157,12 +158,12 @@ class NumberIcon implements Icon {
     g2.translate(x, y);
 
     Shape shape = getTextShape(g2);
-    Rectangle b = shape.getBounds();
+    Rectangle2D b = shape.getBounds2D();
     double tx = getIconWidth() / 2d - b.getCenterX();
     double ty = getIconHeight() / 2d - b.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(tx, ty);
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(tx, ty);
     g2.setPaint(Color.WHITE);
-    g2.fill(toCenterAtf.createTransformedShape(shape));
+    g2.fill(toCenterAt.createTransformedShape(shape));
     g2.dispose();
   }
 

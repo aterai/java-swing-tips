@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -204,11 +205,11 @@ class BadgeIcon implements Icon {
 
     g2.setPaint(badgeFgc);
     Shape shape = getTextShape(g2);
-    Rectangle b = shape.getBounds();
+    Rectangle2D b = shape.getBounds2D();
     double tx = getIconWidth() / 2d - b.getCenterX();
     double ty = getIconHeight() / 2d - b.getCenterY();
-    AffineTransform toCenterAtf = AffineTransform.getTranslateInstance(tx, ty);
-    g2.fill(toCenterAtf.createTransformedShape(shape));
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(tx, ty);
+    g2.fill(toCenterAt.createTransformedShape(shape));
     g2.dispose();
   }
 
