@@ -462,7 +462,11 @@ class WrapColumnFactory implements ViewFactory {
     if (kind != null) {
       switch (kind) {
         case AbstractDocument.ContentElementName:
-          return new WrapLabelView(element);
+          return new LabelView(element) {
+            @Override public float getMinimumSpan(int axis) {
+              return axis == X_AXIS ? 0 : super.getMinimumSpan(axis);
+            }
+          };
         case AbstractDocument.ParagraphElementName:
           return new ParagraphView(element);
         case AbstractDocument.SectionElementName:
@@ -479,20 +483,20 @@ class WrapColumnFactory implements ViewFactory {
   }
 }
 
-class WrapLabelView extends LabelView {
-  protected WrapLabelView(Element element) {
-    super(element);
-  }
-
-  // https://stackoverflow.com/questions/30590031/jtextpane-line-wrap-behavior
-  @Override public float getMinimumSpan(int axis) {
-    switch (axis) {
-      case X_AXIS:
-        return 0;
-      case Y_AXIS:
-        return super.getMinimumSpan(axis);
-      default:
-        throw new IllegalArgumentException("Invalid axis: " + axis);
-    }
-  }
-}
+// class WrapLabelView extends LabelView {
+//   protected WrapLabelView(Element element) {
+//     super(element);
+//   }
+//
+//   // https://stackoverflow.com/questions/30590031/jtextpane-line-wrap-behavior
+//   @Override public float getMinimumSpan(int axis) {
+//     switch (axis) {
+//       case X_AXIS:
+//         return 0;
+//       case Y_AXIS:
+//         return super.getMinimumSpan(axis);
+//       default:
+//         throw new IllegalArgumentException("Invalid axis: " + axis);
+//     }
+//   }
+// }
