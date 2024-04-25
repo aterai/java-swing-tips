@@ -11,6 +11,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.TableHeaderUI;
@@ -41,8 +42,8 @@ public final class MainPanel extends JPanel {
         @Override public void updateUI() {
           super.updateUI();
           EventQueue.invokeLater(() -> {
-            BasicSplitPaneDivider d = ((BasicSplitPaneUI) getUI()).getDivider();
-            d.setCursor(ResizeUtils.createCursor("⇹", 32, 32, d));
+            Component c = ((BasicSplitPaneUI) getUI()).getDivider();
+            c.setCursor(ResizeUtils.createCursor("⇹", 32, 32, c));
           });
         }
       };
@@ -121,26 +122,29 @@ final class ResizeUtils {
   }
 
   public static TableColumn getResizeColumn(JTableHeader header, Point p) {
-    int column = header.columnAtPoint(p);
-    if (column == -1) {
-      return null;
-    }
+    return Optional.ofNullable(header)
+        .map(h -> {
+          int column = h.columnAtPoint(p);
+          return column == -1 ? null : getRect(h, p, column);
+        })
+        .map(r -> {
+          int column = header.columnAtPoint(p);
+          int midPoint = r.x + r.width / 2;
+          int colIdx;
+          if (header.getComponentOrientation().isLeftToRight()) {
+            colIdx = p.x < midPoint ? column - 1 : column;
+          } else {
+            colIdx = p.x < midPoint ? column : column - 1;
+          }
+          return colIdx == -1 ? null : header.getColumnModel().getColumn(colIdx);
+        })
+        .orElse(null);
+  }
+
+  private static Rectangle getRect(JTableHeader header, Point p, int column) {
     Rectangle r = header.getHeaderRect(column);
     r.grow(-3, 0);
-    if (r.contains(p)) {
-      return null;
-    }
-    int midPoint = r.x + r.width / 2;
-    int columnIndex;
-    if (header.getComponentOrientation().isLeftToRight()) {
-      columnIndex = p.x < midPoint ? column - 1 : column;
-    } else {
-      columnIndex = p.x < midPoint ? column : column - 1;
-    }
-    if (columnIndex == -1) {
-      return null;
-    }
-    return header.getColumnModel().getColumn(columnIndex);
+    return r.contains(p) ? null : r;
   }
 }
 
