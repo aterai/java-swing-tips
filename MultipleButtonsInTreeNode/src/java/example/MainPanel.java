@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -127,36 +127,38 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
   @Override public boolean isCellEditable(EventObject e) {
     // return e instanceof MouseEvent;
-    if (!(e instanceof MouseEvent) || !(e.getSource() instanceof JTree)) {
-      return false;
-    }
-    MouseEvent me = (MouseEvent) e;
-    JTree tree = (JTree) me.getComponent();
-    Point pt = me.getPoint();
-    TreePath path = tree.getPathForLocation(pt.x, pt.y);
-    if (Objects.isNull(path)) {
-      return false;
-    }
-    Rectangle rect = tree.getPathBounds(path);
-    if (Objects.isNull(rect)) {
-      return false;
-    }
-    // rect.width = panel.getButtonAreaWidth();
-    // return rect.contains(pt);
-    if (rect.contains(pt)) {
-      TreeNode node = (TreeNode) path.getLastPathComponent();
-      int row = tree.getRowForLocation(pt.x, pt.y);
-      TreeCellRenderer r = tree.getCellRenderer();
-      boolean leaf = node.isLeaf();
-      Component c = r.getTreeCellRendererComponent(tree, " ", true, true, leaf, row, true);
-      c.setBounds(rect);
-      c.setLocation(0, 0);
-      // tree.doLayout();
-      tree.revalidate();
-      pt.translate(-rect.x, -rect.y);
-      return SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y) instanceof JButton;
-    }
-    return false;
+    return e instanceof MouseEvent && getDeepestButtonAt((MouseEvent) e);
+  }
+
+  private static boolean getDeepestButtonAt(MouseEvent e) {
+    Point pt = e.getPoint();
+    return Optional.ofNullable(e.getComponent())
+        .filter(JTree.class::isInstance)
+        .map(JTree.class::cast)
+        .map(tree -> {
+          TreePath path = tree.getPathForLocation(pt.x, pt.y);
+          Rectangle rect = tree.getPathBounds(path);
+          return contains(path, rect, pt) && getButtonAt(tree, path, rect, pt);
+        })
+        .orElse(false);
+  }
+
+  private static boolean contains(TreePath path, Rectangle rect, Point pt) {
+    return path != null && rect != null && rect.contains(pt);
+  }
+
+  private static boolean getButtonAt(JTree tree, TreePath path, Rectangle rect, Point pt) {
+    TreeNode node = (TreeNode) path.getLastPathComponent();
+    int row = tree.getRowForLocation(pt.x, pt.y);
+    TreeCellRenderer r = tree.getCellRenderer();
+    boolean leaf = node.isLeaf();
+    Component c = r.getTreeCellRendererComponent(tree, " ", true, true, leaf, row, true);
+    c.setBounds(rect);
+    c.setLocation(0, 0);
+    // tree.doLayout();
+    tree.revalidate();
+    pt.translate(-rect.x, -rect.y);
+    return SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y) instanceof JButton;
   }
 }
 
