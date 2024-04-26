@@ -262,7 +262,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         JOptionPane.showMessageDialog(getRootPane(), item.getTitle());
       } else {
         checkedIndex = -1;
-        getCheckBox(e, index).ifPresent(rb -> {
+        getCheckBoxAt(e, index).ifPresent(button -> {
           checkedIndex = index;
           if (isSelectedIndex(index)) {
             // setFocusable(false);
@@ -274,21 +274,23 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       }
     }
 
-    private Optional<AbstractButton> getCheckBox(MouseEvent e, int index) {
-      if (e.isShiftDown() || e.isControlDown() || e.isAltDown()) {
-        return Optional.empty();
-      }
+    private Optional<AbstractButton> getCheckBoxAt(MouseEvent e, int index) {
       JList<E> list = RubberBandSelectionList.this;
+      boolean b = e.isShiftDown() || e.isControlDown() || e.isAltDown();
+      return b ? Optional.empty() : getDeepestButtonAt(list, index, e.getPoint());
+    }
+
+    private Optional<AbstractButton> getDeepestButtonAt(JList<E> list, int index, Point pt) {
       E proto = list.getPrototypeCellValue();
       ListCellRenderer<? super E> cr = list.getCellRenderer();
       Component c = cr.getListCellRendererComponent(list, proto, index, false, false);
       Rectangle r = list.getCellBounds(index, index);
       c.setBounds(r);
       // c.doLayout(); // may be needed for other layout managers (e.g. FlowLayout)
-      Point pt = e.getPoint();
       pt.translate(-r.x, -r.y);
       return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-          .filter(AbstractButton.class::isInstance).map(AbstractButton.class::cast);
+          .filter(AbstractButton.class::isInstance)
+          .map(AbstractButton.class::cast);
     }
   }
 
