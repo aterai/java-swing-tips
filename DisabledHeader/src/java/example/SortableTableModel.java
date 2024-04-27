@@ -40,13 +40,16 @@ class ColumnComparator implements Comparator<Object>, Serializable {
 
   @SuppressWarnings("unchecked")
   @Override public int compare(Object one, Object two) {
-    if (one instanceof List && two instanceof List) {
-      Comparable<Object> o1 = (Comparable<Object>) ((List<Object>) one).get(index);
-      Comparable<Object> o2 = (Comparable<Object>) ((List<Object>) two).get(index);
-      int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
-      return c * (ascending ? 1 : -1);
-    }
-    return 0;
+    boolean b = one instanceof List && two instanceof List;
+    return b ? compare((List<Object>) one, (List<Object>) two) : 0;
+  }
+
+  @SuppressWarnings("unchecked")
+  private int compare(List<Object> one, List<Object> two) {
+    Comparable<Object> o1 = (Comparable<Object>) one.get(index);
+    Comparable<Object> o2 = (Comparable<Object>) two.get(index);
+    int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
+    return c * (ascending ? 1 : -1);
   }
 
   // @Override public int compare(Object one, Object two) {
