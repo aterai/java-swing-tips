@@ -181,6 +181,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
       }
     }
 
+    @SuppressWarnings("PMD.LambdaCanBeMethodReference")
     @Override public void actionPerformed(ActionEvent e) {
       EventQueue.invokeLater(() -> fireEditingStopped());
       // https://bugs.openjdk.org/browse/JDK-8138667
