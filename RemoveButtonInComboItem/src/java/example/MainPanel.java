@@ -264,7 +264,7 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = renderer.getListCellRendererComponent(
-      list, value, index, isSelected, cellHasFocus);
+        list, value, index, isSelected, cellHasFocus);
     if (index >= 0 && c instanceof JComponent) {
       JComponent label = (JComponent) c;
       label.setOpaque(false);
