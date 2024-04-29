@@ -112,16 +112,14 @@ class TabThumbnailTabbedPane extends JTabbedPane {
   }
 
   @Override public JToolTip createToolTip() {
-    int index = current;
-    if (index < 0) {
-      return null;
-    }
+    return current >= 0 ? makeToolTip(current) : null;
+  }
 
+  protected JToolTip makeToolTip(int index) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createEmptyBorder());
     p.add(new JLabel(getTitleAt(index)), BorderLayout.NORTH);
     p.add(getTabThumbnail(index));
-
     JToolTip tip = new JToolTip() {
       @Override public Dimension getPreferredSize() {
         Insets i = getInsets();
@@ -151,19 +149,15 @@ class TabThumbnailTabbedPane extends JTabbedPane {
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-
     int w = getIconWidth();
     int h = getIconHeight();
     int gap = w / 5;
-
     g2.setColor(Color.WHITE);
     g2.fillRect(x, y, w, h);
-
     g2.setColor(Color.RED);
     g2.setStroke(new BasicStroke(w / 8f));
     g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
     g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
-
     g2.dispose();
   }
 
