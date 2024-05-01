@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
       return;
     }
     JFrame frame = new JFrame("@title@");
-    frame.getContentPane().add(new MainPanel());
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);

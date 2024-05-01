@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
 
     @Override protected void paintComponent(Graphics g) {
       int[] indices = getSelectedIndices();
-      if (indices != null && indices.length > 0) {
+      if (indices.length > 0) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(SELECTED_COLOR);
@@ -312,7 +312,7 @@ final class GeomUtils {
   }
 
   /**
-     Rounding the corners of a Rectilinear Polygon.
+   * Rounding the corners of a Rectilinear Polygon.
    */
   public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
@@ -322,9 +322,9 @@ final class GeomUtils {
     Path2D path = new Path2D.Double();
     path.moveTo(pt0.getX() + arc, pt0.getY());
     for (int i = 0; i < sz; i++) {
-      Point2D prv = i == 0 ? list.get(sz - 1) : list.get(i - 1);
+      Point2D prv = list.get((i - 1 + sz) % sz);
       Point2D cur = list.get(i);
-      Point2D nxt = i < sz - 1 ? list.get(i + 1) : list.get(0);
+      Point2D nxt = list.get((i + 1) % sz);
       double dx0 = Math.signum(cur.getX() - prv.getX());
       double dy0 = Math.signum(cur.getY() - prv.getY());
       double dx1 = Math.signum(nxt.getX() - cur.getX());
@@ -332,8 +332,7 @@ final class GeomUtils {
       path.curveTo(
           cur.getX() - dx0 * akv, cur.getY() - dy0 * akv,
           cur.getX() + dx1 * akv, cur.getY() + dy1 * akv,
-          cur.getX() + dx1 * arc, cur.getY() + dy1 * arc
-      );
+          cur.getX() + dx1 * arc, cur.getY() + dy1 * arc);
       path.lineTo(nxt.getX() - dx1 * arc, nxt.getY() - dy1 * arc);
     }
     path.closePath();

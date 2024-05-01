@@ -52,8 +52,8 @@ public final class MainPanel extends JPanel {
       return;
     }
     JFrame frame = new JFrame("@title@");
-    frame.getContentPane().add(new MainPanel());
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
@@ -276,7 +276,7 @@ final class GeomUtils {
   }
 
   /**
-    Rounding the corners of a Rectilinear Polygon.
+   * Rounding the corners of a Rectilinear Polygon.
    */
   public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
