@@ -158,30 +158,36 @@ class XmlTreeNode implements TreeNode {
   // }
 
   private String getXmlTag() {
-    boolean includeAttributes = isShowAttributes();
-    if (xmlNode instanceof Element && includeAttributes) {
-      Element e = (Element) xmlNode;
-      StringBuilder buf = new StringBuilder();
-      buf.append(e.getTagName());
-      if (e.hasAttributes()) {
-        NamedNodeMap attr = e.getAttributes();
-        int count = attr.getLength();
-        for (int i = 0; i < count; i++) {
-          Node a = attr.item(i);
-          if (i == 0) {
-            buf.append(" [");
-          } else {
-            buf.append(", ");
-          }
-          buf.append(a.getNodeName()).append('=').append(a.getNodeValue());
-        }
-        buf.append(']');
-      }
-      return buf.toString();
+    String str;
+    // boolean includeAttributes = isShowAttributes();
+    if (xmlNode instanceof Element && isShowAttributes()) {
+      str = getAttributesString((Element) xmlNode);
     } else if (xmlNode instanceof Text) {
-      return xmlNode.getNodeValue();
+      str = xmlNode.getNodeValue();
+    } else {
+      str = xmlNode.getNodeName();
     }
-    return xmlNode.getNodeName();
+    return str;
+  }
+
+  private static String getAttributesString(Element e) {
+    StringBuilder buf = new StringBuilder();
+    buf.append(e.getTagName());
+    if (e.hasAttributes()) {
+      NamedNodeMap attr = e.getAttributes();
+      int count = attr.getLength();
+      for (int i = 0; i < count; i++) {
+        Node a = attr.item(i);
+        if (i == 0) {
+          buf.append(" [");
+        } else {
+          buf.append(", ");
+        }
+        buf.append(a.getNodeName()).append('=').append(a.getNodeValue());
+      }
+      buf.append(']');
+    }
+    return buf.toString();
   }
 
   // private List<XmlTreeNode> getChildren() {
@@ -265,13 +271,16 @@ class XmlTreeNode implements TreeNode {
   }
 
   @Override public boolean isLeaf() {
+    boolean leaf;
     if (xmlNode instanceof Element) {
-      return false;
+      leaf = false;
+    } else {
+      if (Objects.isNull(list)) {
+        loadChildren();
+      }
+      leaf = list.isEmpty();
     }
-    if (Objects.isNull(list)) {
-      loadChildren();
-    }
-    return list.isEmpty();
+    return leaf;
   }
 
   @Override public String toString() {
