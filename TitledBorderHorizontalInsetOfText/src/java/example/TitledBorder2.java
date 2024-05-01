@@ -234,18 +234,20 @@ public class TitledBorder2 extends TitledBorder {
    * @param insets  the object to be reinitialized
    */
   @Override public Insets getBorderInsets(Component c, Insets insets) {
-    if (isTitleNotEmpty()) {
-      int edge = getBorder() instanceof TitledBorder2 ? 0 : EDGE_SPACING;
-      Dimension size = getLabel2(c).getPreferredSize();
-      TitledBorderUtils.initInsets(insets, getPosition2(), edge, size);
-      insets.top += edge + TEXT_SPACING2;
-      insets.left += edge + TEXT_SPACING2;
-      insets.right += edge + TEXT_SPACING2;
-      insets.bottom += edge + TEXT_SPACING2;
-      return insets;
-    } else {
-      return super.getBorderInsets(c, insets);
-    }
+    return isTitleNotEmpty()
+        ? getTitleLabelInsets(c, insets)
+        : super.getBorderInsets(c, insets);
+  }
+
+  private Insets getTitleLabelInsets(Component c, Insets insets) {
+    int edge = getBorder() instanceof TitledBorder2 ? 0 : EDGE_SPACING;
+    Dimension size = getLabel2(c).getPreferredSize();
+    TitledBorderUtils.initInsets(insets, getPosition2(), edge, size);
+    insets.top += edge + TEXT_SPACING2;
+    insets.left += edge + TEXT_SPACING2;
+    insets.right += edge + TEXT_SPACING2;
+    insets.bottom += edge + TEXT_SPACING2;
+    return insets;
   }
 
   // private int getPosition2() {
