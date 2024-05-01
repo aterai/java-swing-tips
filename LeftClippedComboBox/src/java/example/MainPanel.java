@@ -155,7 +155,8 @@ class LeftClippedComboBox<E> extends JComboBox<E> {
     return dots + new String(acp, j, acp.length - j);
   }
 
-  private static int getLookAndFeelDependWidth(JComboBox<?> combo, int availableWidth) {
+  private static int getLookAndFeelDependWidth(JComboBox<?> combo, int width) {
+    int availableWidth = width;
     Insets padding = UIManager.getInsets("ComboBox.padding");
     if (padding != null) {
       // NimbusComboBoxUI only?
