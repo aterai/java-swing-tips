@@ -180,6 +180,7 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
   }
 
   private boolean checkRepaint(DefaultTableModel m, TableColumn column, Object status) {
+    boolean repaint = false;
     if (status == Status.INDETERMINATE) {
       List<?> data = m.getDataVector();
       List<Boolean> l = data.stream()
@@ -190,14 +191,13 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
       if (notDuplicates) {
         boolean isSelected = l.get(0);
         column.setHeaderValue(isSelected ? Status.SELECTED : Status.DESELECTED);
-        return true;
-      } else {
-        return false;
+        repaint = true;
       }
     } else {
       column.setHeaderValue(Status.INDETERMINATE);
-      return true;
+      repaint = true;
     }
+    return repaint;
   }
 
   @Override public void mouseClicked(MouseEvent e) {
