@@ -56,23 +56,24 @@ public final class MainPanel extends JPanel {
       @Override public boolean isFocusable() {
         return true;
       }
-
     };
 
-    ActionMap amc = popup.getActionMap();
-    amc.put("myUp", new AbstractAction() {
+    ActionMap am = popup.getActionMap();
+    am.put("loopUp", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int i = combo.getSelectedIndex();
-        combo.setSelectedIndex(i == 0 ? combo.getItemCount() - 1 : i - 1);
+        int size = combo.getItemCount();
+        combo.setSelectedIndex((i - 1 + size) % size);
       }
     });
-    amc.put("myDown", new AbstractAction() {
+    am.put("loopDown", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int i = combo.getSelectedIndex();
-        combo.setSelectedIndex(i == combo.getItemCount() - 1 ? 0 : i + 1);
+        int size = combo.getItemCount();
+        combo.setSelectedIndex((i + 1) % size);
       }
     });
-    amc.put("myEnt", new AbstractAction() {
+    am.put("insert", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         int i = combo.getSelectedIndex();
         Optional.ofNullable(combo.getItemAt(i)).ifPresent(o -> {
@@ -82,12 +83,12 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    InputMap imc = popup.getInputMap();
-    imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "myUp");
-    imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "myDown");
-    imc.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "myEnt");
+    InputMap im = popup.getInputMap();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "loopUp");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "loopDown");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "insert");
 
-    textPane.getActionMap().put("myPop", new AbstractAction() {
+    textPane.getActionMap().put("popupInsert", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         try {
           // Java 9:
@@ -110,7 +111,7 @@ public final class MainPanel extends JPanel {
       }
     });
     KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
-    textPane.getInputMap().put(keyStroke, "myPop");
+    textPane.getInputMap().put(keyStroke, "popupInsert");
 
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));

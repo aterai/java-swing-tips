@@ -18,14 +18,18 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         JComboBox<?> c = (JComboBox<?>) e.getSource();
         int i = c.getSelectedIndex();
-        c.setSelectedIndex(i == 0 ? c.getItemCount() - 1 : i - 1);
+        // c.setSelectedIndex(i == 0 ? c.getItemCount() - 1 : i - 1);
+        int size = c.getItemCount();
+        c.setSelectedIndex((i - 1 + size) % size);
       }
     };
     Action down = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         JComboBox<?> c = (JComboBox<?>) e.getSource();
         int i = c.getSelectedIndex();
-        c.setSelectedIndex(i == c.getItemCount() - 1 ? 0 : i + 1);
+        // c.setSelectedIndex(i == c.getItemCount() - 1 ? 0 : i + 1);
+        int size = c.getItemCount();
+        c.setSelectedIndex((i + 1) % size);
       }
     };
     ActionMap am = combo.getActionMap();
