@@ -128,14 +128,15 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
   // }
 
   @Override public boolean stopCellEditing() {
+    boolean stopEditing = true;
     JSpinner spinner = renderer.getSpinner();
     try {
       spinner.commitEdit();
     } catch (ParseException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(spinner);
-      return false;
+      stopEditing = false;
     }
-    return super.stopCellEditing();
+    return stopEditing && super.stopCellEditing();
     // fireEditingStopped();
     // return true;
   }
