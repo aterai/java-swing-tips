@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -66,9 +67,10 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     // copied from BasicTabbedPaneUI#paintTabArea(...)
     for (int i = runCount - 1; i >= 0; i--) {
       int start = tabRuns[i];
-      int next = tabRuns[(i == runCount - 1) ? 0 : i + 1];
-      // int end = next != 0 ? next - 1 : tabCount - 1;
-      int end = next == 0 ? tabCount - 1 : next - 1;
+      // int next = tabRuns[(i == runCount - 1) ? 0 : i + 1];
+      int next = tabRuns[(i + 1) % runCount];
+      // int end = next == 0 ? tabCount - 1 : next - 1;
+      int end = (next - 1 + tabCount) % tabCount;
       // for (int j = start; j <= end; j++) {
       // https://stackoverflow.com/questions/41566659/tabs-rendering-order-in-custom-jtabbedpane
       for (int j = end; j >= start; j--) {
@@ -109,11 +111,12 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
 
     float textShiftOffset = isSelected ? 0f : 1f;
     GeneralPath trapezoid = new GeneralPath();
-    trapezoid.moveTo((float) (x - ADJ2), (float) (y + h));
-    trapezoid.lineTo((float) (x + ADJ2), y + textShiftOffset);
-    trapezoid.lineTo((float) (x + w - ADJ2), y + textShiftOffset);
-    trapezoid.lineTo((float) (x + w + ADJ2), (float) (y + h));
-    // trapezoid.closePath();
+    trapezoid.moveTo(-ADJ2, h);
+    trapezoid.lineTo(ADJ2, textShiftOffset);
+    trapezoid.lineTo((float) w - ADJ2, textShiftOffset);
+    trapezoid.lineTo((float) w + ADJ2, h);
+    trapezoid.closePath();
+    trapezoid.transform(AffineTransform.getTranslateInstance(x, y));
 
     // TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
     g2.setColor(isSelected ? selectedTabColor : TAB_BGC);
