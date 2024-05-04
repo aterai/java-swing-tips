@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -99,20 +100,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static String getHorizontalAlignment(JSpinner.DefaultEditor editor) {
-    switch (editor.getTextField().getHorizontalAlignment()) {
-      case SwingConstants.LEFT:
-        return "LEFT";
-      case SwingConstants.CENTER:
-        return "CENTER";
-      case SwingConstants.RIGHT:
-        return "RIGHT";
-      case SwingConstants.LEADING:
-        return "LEADING";
-      case SwingConstants.TRAILING:
-        return "TRAILING";
-      default:
-        return "ERROR";
-    }
+    int v = editor.getTextField().getHorizontalAlignment();
+    return HorizontalAlignment.findBy(v).map(Enum::name).orElse("ERROR");
   }
 
   public static void main(String[] args) {
@@ -136,6 +125,31 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 }
+
+enum HorizontalAlignment {
+  LEFT(SwingConstants.LEFT),
+  CENTER(SwingConstants.CENTER),
+  RIGHT(SwingConstants.RIGHT),
+  LEADING(SwingConstants.LEADING),
+  TRAILING(SwingConstants.TRAILING);
+
+  private final int alignment;
+
+  HorizontalAlignment(int alignment) {
+    this.alignment = alignment;
+  }
+
+  public int getAlignment() {
+    return alignment;
+  }
+
+  public static Optional<HorizontalAlignment> findBy(int alignment) {
+    return Arrays.stream(values())
+        .filter(v -> v.getAlignment() == alignment)
+        .findFirst();
+  }
+}
+
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtils {
