@@ -43,8 +43,7 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("next");
     button.addActionListener(e -> {
-      int i = tabs0.getSelectedIndex() + 1;
-      int next = i >= tabs0.getTabCount() ? 0 : i;
+      int next = (tabs0.getSelectedIndex() + 1) % tabs0.getTabCount();
       Stream.of(tabs0, tabs2, tabs3).forEach(t -> t.setSelectedIndex(next));
     });
 
