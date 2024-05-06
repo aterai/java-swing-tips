@@ -192,16 +192,17 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
   // }
 
   @Override public boolean stopCellEditing() {
+    boolean stopEditing = true;
     try {
       spinner.commitEdit();
     } catch (ParseException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(spinner);
-      return false;
+      stopEditing = false;
       // // Edited value is invalid, spinner.getValue() will return
       // // the last valid value, you could revert the spinner to show that:
       // editor.getTextField().setValue(getValue());
     }
-    return super.stopCellEditing();
+    return stopEditing && super.stopCellEditing();
     // fireEditingStopped();
     // return true;
   }
