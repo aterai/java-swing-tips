@@ -110,18 +110,19 @@ class TextAreaCellEditor extends AbstractCellEditor implements TableCellEditor {
   }
 
   @Override public boolean isCellEditable(EventObject e) {
+    boolean editable = true;
     if (e instanceof MouseEvent) {
-      return ((MouseEvent) e).getClickCount() >= 2;
+      editable = ((MouseEvent) e).getClickCount() >= 2;
+    } else if (e instanceof KeyEvent) {
+      editable = immediatelyInsert(((KeyEvent) e).getKeyChar());
     }
-    // System.out.println("isCellEditable");
+    return editable;
+  }
+
+  private boolean immediatelyInsert(char keyChar) {
     EventQueue.invokeLater(() -> {
-      if (e instanceof KeyEvent) {
-        KeyEvent ke = (KeyEvent) e;
-        char kc = ke.getKeyChar();
-        if (Character.isUnicodeIdentifierStart(kc)) {
-          textArea.setText(textArea.getText() + kc);
-          // System.out.println("invokeLater: isCellEditable");
-        }
+      if (Character.isUnicodeIdentifierStart(keyChar)) {
+        textArea.setText(textArea.getText() + keyChar);
       }
     });
     return true;
