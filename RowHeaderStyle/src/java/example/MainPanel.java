@@ -105,22 +105,21 @@ class RowHeaderRenderer extends MouseAdapter implements TableCellRenderer {
   @Override public void mouseMoved(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
+    int row = table.rowAtPoint(pt);
     int col = table.columnAtPoint(pt);
-    int column = table.convertColumnIndexToModel(col);
-    if (column != 0) {
-      return;
-    }
     int prevRow = rollOverRowIndex;
-    rollOverRowIndex = table.rowAtPoint(pt);
-    if (rollOverRowIndex == prevRow) {
-      return;
-    }
+    int column = table.convertColumnIndexToModel(col);
+    rollOverRowIndex = column == 0 ? row : -1;
     Rectangle repaintRect;
-    if (rollOverRowIndex >= 0) {
-      Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
-      repaintRect = prevRow >= 0 ? r.union(table.getCellRect(prevRow, col, false)) : r;
+    if (column == 0 && row != prevRow) {
+      if (rollOverRowIndex >= 0) {
+        Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
+        repaintRect = prevRow >= 0 ? r.union(table.getCellRect(prevRow, col, false)) : r;
+      } else {
+        repaintRect = table.getCellRect(prevRow, col, false);
+      }
     } else {
-      repaintRect = table.getCellRect(prevRow, col, false);
+      repaintRect = table.getCellRect(prevRow, 0, false);
     }
     table.repaint(repaintRect);
   }
