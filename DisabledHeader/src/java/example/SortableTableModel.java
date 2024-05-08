@@ -38,14 +38,13 @@ class ColumnComparator implements Comparator<Object>, Serializable {
     this.ascending = ascending;
   }
 
-  @SuppressWarnings("unchecked")
   @Override public int compare(Object one, Object two) {
-    boolean b = one instanceof List && two instanceof List;
-    return b ? compare((List<Object>) one, (List<Object>) two) : 0;
+    return one instanceof List && two instanceof List
+        ? columnCompare((List<?>) one, (List<?>) two) : 0;
   }
 
   @SuppressWarnings("unchecked")
-  private int compare(List<Object> one, List<Object> two) {
+  private int columnCompare(List<?> one, List<?> two) {
     Comparable<Object> o1 = (Comparable<Object>) one.get(index);
     Comparable<Object> o2 = (Comparable<Object>) two.get(index);
     int c = Objects.compare(o1, o2, Comparator.nullsFirst(Comparator.naturalOrder()));
