@@ -16,11 +16,13 @@ public final class MainPanel extends JPanel {
 
     JTable table = new JTable(4, 3) {
       @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-        // System.out.println("key: " + ks.toString());
-        if (!check.isSelected() || isTabOrEnterKey(ks)) {
-          // System.out.println("tab or enter typed");
-          return super.processKeyBinding(ks, e, condition, pressed);
+        if (check.isSelected() && !isTabOrEnterKey(ks)) {
+          startEditing(ks, pressed);
         }
+        return super.processKeyBinding(ks, e, condition, pressed);
+      }
+
+      private void startEditing(KeyStroke ks, boolean pressed) {
         InputContext ic = getInputContext();
         boolean isCompositionEnabled = ic != null && ic.isCompositionEnabled();
         if (isCompositionEnabled && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
@@ -32,7 +34,6 @@ public final class MainPanel extends JPanel {
             // System.out.println("editCellAt: " + b);
           }
         }
-        return super.processKeyBinding(ks, e, condition, pressed);
       }
 
       private boolean isTabOrEnterKey(KeyStroke ks) {
