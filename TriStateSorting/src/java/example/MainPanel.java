@@ -5,65 +5,68 @@
 package example;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JRadioButton check1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
-    JRadioButton check2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
+    JRadioButton r1 = new JRadioButton("Default: ASCENDING<->DESCENDING", false);
+    JRadioButton r2 = new JRadioButton("ASCENDING->DESCENDING->UNSORTED", true);
     ButtonGroup bg = new ButtonGroup();
-    bg.add(check1);
-    bg.add(check2);
+    bg.add(r1);
+    bg.add(r2);
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(check1);
-    p.add(check2);
+    p.add(r1);
+    p.add(r2);
 
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
+    TableModel model = makeModel();
+    TableRowSorter<TableModel> sorter = makeSorter(model, r2);
     JTable table = new JTable(model);
-    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
-      @Override public void toggleSortOrder(int column) {
-        if (!check2.isSelected() || !isSortable(column)) {
-          super.toggleSortOrder(column);
-          return;
-        }
-        List<SortKey> keys = new ArrayList<>(getSortKeys());
-        if (!keys.isEmpty()) {
-          SortKey sortKey = keys.get(0);
-          if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
-            setSortKeys(null);
-            return;
-          }
-        }
-        super.toggleSortOrder(column);
-      }
-    };
     table.setRowSorter(sorter);
     // sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
     // sorter.toggleSortOrder(1);
 
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(60);
-    col.setMaxWidth(60);
-    col.setResizable(false);
-
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+  }
+
+  private static TableRowSorter<TableModel> makeSorter(TableModel m, AbstractButton b) {
+    return new TableRowSorter<TableModel>(m) {
+      @Override public void toggleSortOrder(int column) {
+        if (b.isSelected() && isSortable(column) && isDescending(column)) {
+          setSortKeys(Collections.emptyList());
+          // or: setSortKeys(null);
+        } else {
+          super.toggleSortOrder(column);
+        }
+      }
+
+      private boolean isDescending(int column) {
+        return Optional.of(getSortKeys())
+            .filter(keys -> !keys.isEmpty())
+            .map(keys -> keys.get(0))
+            .map(k -> k.getColumn() == column && k.getSortOrder() == SortOrder.DESCENDING)
+            .orElse(false);
+      }
+    };
   }
 
   public static void main(String[] args) {
