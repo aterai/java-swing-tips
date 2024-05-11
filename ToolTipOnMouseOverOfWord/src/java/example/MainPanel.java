@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Utilities;
@@ -40,12 +41,15 @@ public final class MainPanel extends JPanel {
   }
 
   private static boolean checkTrimEmpty(String str) {
-    for (int i = 0; i < str.length(); i++) {
-      if (!Character.isWhitespace(str.charAt(i))) {
-        return false;
-      }
-    }
-    return true;
+    return IntStream.range(0, str.length())
+        .mapToObj(str::charAt)
+        .allMatch(Character::isWhitespace);
+    // for (int i = 0; i < str.length(); i++) {
+    //   if (!Character.isWhitespace(str.charAt(i))) {
+    //     return false;
+    //   }
+    // }
+    // return true;
   }
 
   public static void main(String[] args) {
