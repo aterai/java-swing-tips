@@ -39,33 +39,32 @@ public final class MainPanel extends JPanel {
     };
     JTable table = new JTable(model) {
       private static final int LIST_ICON_COLUMN = 1;
+
       @Override public String getToolTipText(MouseEvent e) {
         Point pt = e.getPoint();
         int row = rowAtPoint(pt);
         int col = columnAtPoint(pt);
-        if (convertColumnIndexToModel(col) == LIST_ICON_COLUMN) {
-          TableCellRenderer tcr = getCellRenderer(row, col);
-          Component c = prepareRenderer(tcr, row, col);
-          // Object o = getValueAt(row, col);
-          // Component c = tcr.getTableCellRendererComponent(this, o, false, false, row, col);
-          if (c instanceof JPanel) {
-            Rectangle r = getCellRect(row, col, true);
-            c.setBounds(r);
-            // https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
-            c.doLayout();
-            pt.translate(-r.x, -r.y);
-            return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-                .filter(JLabel.class::isInstance).map(JLabel.class::cast)
-                .map(l -> ((ImageIcon) l.getIcon()).getDescription())
-                .orElseGet(() -> super.getToolTipText(e));
-            // Component l = SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y);
-            // if (l instanceof JLabel) {
-            //   ImageIcon icon = (ImageIcon) ((JLabel) l).getIcon();
-            //   return icon.getDescription();
-            // }
-          }
-        }
-        return super.getToolTipText(e);
+        TableCellRenderer tcr = getCellRenderer(row, col);
+        Component c = prepareRenderer(tcr, row, col);
+        int mci = convertColumnIndexToModel(col);
+        boolean b = mci == LIST_ICON_COLUMN && c instanceof JPanel;
+        return b ? getToolTipText(e, c) : super.getToolTipText(e);
+      }
+
+      private String getToolTipText(MouseEvent e, Component c) {
+        Point pt = e.getPoint();
+        int row = rowAtPoint(pt);
+        int col = columnAtPoint(pt);
+        Rectangle r = getCellRect(row, col, true);
+        c.setBounds(r);
+        // https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
+        c.doLayout();
+        pt.translate(-r.x, -r.y);
+        return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
+            .filter(JLabel.class::isInstance)
+            .map(JLabel.class::cast)
+            .map(l -> ((ImageIcon) l.getIcon()).getDescription())
+            .orElseGet(() -> super.getToolTipText(e));
       }
 
       @Override public void updateUI() {
