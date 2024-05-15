@@ -13,8 +13,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -55,6 +57,7 @@ public final class MainPanel extends JPanel {
           .ifPresent(this::updateRowsHeight);
     }
   };
+  private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final List<Color> monthThemeColor = Arrays.asList(
       new Color(0xD5_0B_17), new Color(0x02_6C_B6), new Color(0xED_87_AD),
       new Color(0xCE_30_6A), new Color(0x48_B0_37), new Color(0xA4_62_A2),
@@ -64,6 +67,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    holidayColorMap.put(DayOfWeek.SUNDAY, new Color(0xD9_0B_0D));
+    holidayColorMap.put(DayOfWeek.SATURDAY, new Color(0x10_4A_90));
+
     monthLabel.setOpaque(false);
     monthLabel.setFont(monthLabel.getFont().deriveFont(Font.BOLD));
 
@@ -174,11 +180,7 @@ public final class MainPanel extends JPanel {
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {
-      switch (dow) {
-        case SUNDAY: return new Color(0xD9_0B_0D);
-        case SATURDAY: return new Color(0x10_4A_90);
-        default: return Color.BLACK;
-      }
+      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(Color.BLACK);
     }
   }
 

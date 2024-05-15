@@ -11,8 +11,11 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.EnumMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -22,6 +25,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
+  private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JComboBox<String> combo = new JComboBox<>();
   private final JTable monthTable = new JTable();
@@ -29,6 +33,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(2, 2));
+    holidayColorMap.put(DayOfWeek.SUNDAY, new Color(0xFF_DC_DC));
+    holidayColorMap.put(DayOfWeek.SATURDAY, new Color(0xDC_DC_FF));
+
     TableModel model = new CalendarViewTableModel(YearMonth.from(realLocalDate));
     monthTable.setModel(model);
     TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
@@ -123,11 +130,7 @@ public final class MainPanel extends JPanel {
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {
-      switch (dow) {
-        case SUNDAY: return new Color(0xFF_DC_DC);
-        case SATURDAY: return new Color(0xDC_DC_FF);
-        default: return Color.WHITE;
-      }
+      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(Color.WHITE);
     }
   }
 

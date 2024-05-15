@@ -11,7 +11,9 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
+import java.util.EnumMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -20,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
+  private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {
     private void updateRowsHeight(JViewport vport) {
@@ -53,6 +56,9 @@ public final class MainPanel extends JPanel {
     monthTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     monthTable.setCellSelectionEnabled(true);
     monthTable.setFillsViewportHeight(true);
+
+    holidayColorMap.put(DayOfWeek.SUNDAY, new Color(0xFF_DC_DC));
+    holidayColorMap.put(DayOfWeek.SATURDAY, new Color(0xDC_DC_FF));
 
     JTableHeader header = monthTable.getTableHeader();
     header.setResizingAllowed(false);
@@ -136,11 +142,7 @@ public final class MainPanel extends JPanel {
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {
-      switch (dow) {
-        case SUNDAY: return new Color(0xFF_DC_DC);
-        case SATURDAY: return new Color(0xDC_DC_FF);
-        default: return Color.WHITE;
-      }
+      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(Color.WHITE);
     }
   }
 
