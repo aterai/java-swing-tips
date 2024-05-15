@@ -118,24 +118,24 @@ class SortButtonRenderer extends JButton implements TableCellRenderer {
     setText(Objects.toString(value, ""));
     setIcon(new EmptyIcon(iconSize));
     int modelColumn = table.convertColumnIndexToModel(column);
-    if (!isEnabledAt(modelColumn)) {
+    if (isEnabledAt(modelColumn)) {
+      getModel().setEnabled(true);
+      Integer iv = state.get(modelColumn);
+      if (Objects.equals(iv, DOWN)) {
+        setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
+        // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
+        // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
+      } else if (Objects.equals(iv, UP)) {
+        setIcon(UIManager.getIcon("Table.descendingSortIcon"));
+        // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
+        // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
+      }
+      boolean isPressed = modelColumn == pushedColumn;
+      getModel().setPressed(isPressed);
+      getModel().setArmed(isPressed);
+    } else {
       getModel().setEnabled(false);
-      return this;
     }
-    getModel().setEnabled(true);
-    Integer iv = state.get(modelColumn);
-    if (Objects.equals(iv, DOWN)) {
-      setIcon(UIManager.getIcon("Table.ascendingSortIcon"));
-      // setIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, false));
-      // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.DOWN, false, true));
-    } else if (Objects.equals(iv, UP)) {
-      setIcon(UIManager.getIcon("Table.descendingSortIcon"));
-      // setIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, false));
-      // setPressedIcon(new BevelArrowIcon(BevelArrowIcon.UP, false, true));
-    }
-    boolean isPressed = modelColumn == pushedColumn;
-    getModel().setPressed(isPressed);
-    getModel().setArmed(isPressed);
     return this;
   }
 
