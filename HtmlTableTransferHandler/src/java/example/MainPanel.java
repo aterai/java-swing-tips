@@ -100,11 +100,9 @@ class PropertyTable extends JTable {
   }
 
   @Override public TableCellRenderer getCellRenderer(int row, int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
-      return getDefaultRenderer(getClassAt(row, column));
-    } else {
-      return super.getCellRenderer(row, column);
-    }
+    return convertColumnIndexToModel(column) == TARGET_COL_IDX
+        ? getDefaultRenderer(getClassAt(row, column))
+        : super.getCellRenderer(row, column);
   }
 
   // https://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
@@ -122,11 +120,9 @@ class PropertyTable extends JTable {
   }
 
   @Override public Class<?> getColumnClass(int column) {
-    if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
-      return editingClass;
-    } else {
-      return super.getColumnClass(column);
-    }
+    return convertColumnIndexToModel(column) == TARGET_COL_IDX
+        ? editingClass
+        : super.getColumnClass(column);
   }
 }
 
