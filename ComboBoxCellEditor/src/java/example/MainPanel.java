@@ -178,6 +178,7 @@ class PluginPanel extends JPanel {
             for (String s : plugins) {
               model.addElement(s);
             }
+            // Java 11: model.addAll(plugins);
             comboBox.setSelectedIndex(node.getSelectedIndex());
           }
           return node;
