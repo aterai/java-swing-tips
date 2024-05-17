@@ -164,12 +164,13 @@ enum TexturePaints {
   }
 
   public Paint getTexturePaint() {
-    switch (this) {
-      case IMAGE: return TextureUtils.makeImageTexture();
-      case CHECKER: return TextureUtils.makeCheckerTexture();
-      case NULL: return null;
-      default: throw new AssertionError("Cannot happen");
+    Paint texture = null;
+    if (this == IMAGE) {
+      texture = TextureUtils.makeImageTexture();
+    } else if (this == CHECKER) {
+      texture = TextureUtils.makeCheckerTexture();
     }
+    return texture;
   }
 
   @Override public String toString() {
