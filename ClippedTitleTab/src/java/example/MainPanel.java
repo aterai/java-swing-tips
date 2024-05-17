@@ -90,14 +90,15 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
   // protected Insets contentBorderInsets;
 
   @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-    Insets i = tabPane.getInsets();
-    // Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+    // Insets i = tabPane.getInsets();
+    // int w = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
+    Rectangle r = SwingUtilities.calculateInnerArea(tabPane, null);
+    r.width -= tabAreaInsets.left + tabAreaInsets.right;
     int tabWidth;
-    int w = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      tabWidth = w / 4;
+      tabWidth = r.width / 4;
     } else { // TOP || BOTTOM
-      tabWidth = w / tabPane.getTabCount();
+      tabWidth = r.width / tabPane.getTabCount();
     }
     return tabWidth;
   }
