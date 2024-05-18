@@ -110,13 +110,15 @@ class PropertyTable extends JTable {
   // component is saved in the TableModel. The class was saved when the
   // editor was invoked so the proper class can be created.
   @Override public TableCellEditor getCellEditor(int row, int column) {
+    TableCellEditor editor;
     if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
       editingClass = getClassAt(row, column);
-      return getDefaultEditor(editingClass);
+      editor = getDefaultEditor(editingClass);
     } else {
       editingClass = null;
-      return super.getCellEditor(row, column);
+      editor = super.getCellEditor(row, column);
     }
+    return editor;
   }
 
   @Override public Class<?> getColumnClass(int column) {
