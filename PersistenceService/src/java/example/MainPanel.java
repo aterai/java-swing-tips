@@ -104,27 +104,27 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
       ps = null;
       bs = null;
     }
-    if (Objects.nonNull(ps) && Objects.nonNull(bs)) {
-      PersistenceService service = ps;
-      URL codebase = bs.getCodeBase();
-      loadWindowState(service, codebase, windowState);
-      return new WindowAdapter() {
-        @Override public void windowClosing(WindowEvent e) {
-          Frame f = (Frame) e.getComponent();
-          if (f.getExtendedState() == Frame.NORMAL) {
-            windowState.setSize(f.getSize());
-            // Point pt = f.getLocationOnScreen();
-            // if (pt.x < 0 || pt.y < 0) {
-            //   return;
-            // }
-            windowState.setLocation(f.getLocationOnScreen());
-          }
-          saveWindowState(service, codebase, windowState);
+    return Objects.nonNull(ps) && Objects.nonNull(bs)
+        ? makeWindowAdapter(ps, bs.getCodeBase())
+        : null;
+  }
+
+  private WindowAdapter makeWindowAdapter(PersistenceService service, URL codebase) {
+    loadWindowState(service, codebase, windowState);
+    return new WindowAdapter() {
+      @Override public void windowClosing(WindowEvent e) {
+        Frame f = (Frame) e.getComponent();
+        if (f.getExtendedState() == Frame.NORMAL) {
+          windowState.setSize(f.getSize());
+          // Point pt = f.getLocationOnScreen();
+          // if (pt.x < 0 || pt.y < 0) {
+          //   return;
+          // }
+          windowState.setLocation(f.getLocationOnScreen());
         }
-      };
-    } else {
-      return null;
-    }
+        saveWindowState(service, codebase, windowState);
+      }
+    };
   }
 
   private static void loadWindowState(PersistenceService ps, URL codebase, WindowState state) {
