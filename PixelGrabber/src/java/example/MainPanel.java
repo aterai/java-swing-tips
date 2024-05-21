@@ -86,24 +86,36 @@ public final class MainPanel extends JPanel {
   }
 
   private static Optional<ImageProducer> makeRoundedImageProducer(Image img, int w, int h) {
+    MemoryImageSource src = null;
     int[] pix = new int[h * w];
+    if (deliveringPixels(img, pix, w, h)) {
+      roundTopCorners(pix, w);
+      src = new MemoryImageSource(w, h, pix, 0, w);
+    }
+    return Optional.ofNullable(src);
+  }
+
+  private static boolean deliveringPixels(Image img, int[] pix, int w, int h) {
     PixelGrabber pg = new PixelGrabber(img, 0, 0, w, h, pix, 0, w);
+    boolean flg = true;
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
       // System.err.println("interrupted waiting for pixels!");
       ex.printStackTrace();
       Thread.currentThread().interrupt();
-      return Optional.empty();
+      flg = false;
     }
     if ((pg.getStatus() & ABORT) != 0) {
       // System.err.println("image fetch aborted or error");
-      return Optional.empty();
+      flg = false;
     }
+    return flg;
+  }
 
+  private static void roundTopCorners(int[] pix, int w) {
     Area area = makeNorthWestCorner();
     Rectangle r = area.getBounds();
-
     Shape s = area; // NW
     for (int y = 0; y < r.height; y++) {
       for (int x = 0; x < r.width; x++) {
@@ -122,7 +134,6 @@ public final class MainPanel extends JPanel {
         }
       }
     }
-
     // at = AffineTransform.getScaleInstance(1.0, -1.0);
     // at.translate(0, -height);
     // s = at.createTransformedShape(area); // SE
@@ -166,8 +177,6 @@ public final class MainPanel extends JPanel {
     //     else if (y == 4 && (x < 1 || x >= width - 1)) { pix[n] = 0x0; }
     //   }
     // }
-
-    return Optional.of(new MemoryImageSource(w, h, pix, 0, w));
   }
 
   private static Image makeMissingImage() {
