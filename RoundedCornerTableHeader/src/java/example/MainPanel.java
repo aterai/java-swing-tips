@@ -25,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
+  @SuppressWarnings("PMD.UseConcurrentHashMap")
+  private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {
     private void updateRowsHeight(JViewport vport) {
@@ -57,7 +59,6 @@ public final class MainPanel extends JPanel {
           .ifPresent(this::updateRowsHeight);
     }
   };
-  private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final List<Color> monthThemeColor = Arrays.asList(
       new Color(0xD5_0B_17), new Color(0x02_6C_B6), new Color(0xED_87_AD),
       new Color(0xCE_30_6A), new Color(0x48_B0_37), new Color(0xA4_62_A2),

@@ -25,6 +25,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
+  @SuppressWarnings("PMD.UseConcurrentHashMap")
   private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JComboBox<String> combo = new JComboBox<>();
