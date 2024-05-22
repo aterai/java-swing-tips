@@ -228,6 +228,7 @@ class NoWrapParagraphView extends ParagraphView {
 }
 
 class NoWrapViewFactory implements ViewFactory {
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       // case AbstractDocument.ContentElementName:

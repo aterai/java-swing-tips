@@ -42,11 +42,8 @@ public final class MainPanel extends JPanel {
         {"GGG", 92, true}, {"ggg", 0, false}
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
-        // ArrayIndexOutOfBoundsException: 0 >= 0
-        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-        // https://bugs.openjdk.org/browse/JDK-6967479
-        // return getValueAt(0, column).getClass();
         switch (column) {
           case 0: return String.class;
           case 1: return Number.class;

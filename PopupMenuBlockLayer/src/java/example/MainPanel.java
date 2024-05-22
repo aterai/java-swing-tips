@@ -30,17 +30,21 @@ public final class MainPanel extends JPanel {
   private static JTable makeTable() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
-        // ArrayIndexOutOfBoundsException: 0 >= 0
-        // [JDK-6967479] JTable sorter fires even if the model is empty - Java Bug System
-        // https://bugs.openjdk.org/browse/JDK-6967479
-        // return getValueAt(0, column).getClass();
         switch (column) {
           case 0: return String.class;
           case 1: return Number.class;
           case 2: return Boolean.class;
           default: return super.getColumnClass(column);
         }
+        // // Java 12:
+        // return switch (column) {
+        //   case 0 -> String.class;
+        //   case 1 -> Number.class;
+        //   case 2 -> Boolean.class;
+        //   default -> super.getColumnClass(column);
+        // };
       }
     };
     IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, false}));

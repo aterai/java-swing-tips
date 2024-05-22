@@ -122,13 +122,9 @@ class PropertyTable extends JTable {
   }
 
   @Override public Class<?> getColumnClass(int column) {
-    Class<?> clz;
-    if (convertColumnIndexToModel(column) == TARGET_COLUMN) {
-      clz = editingClass;
-    } else {
-      clz = super.getColumnClass(column);
-    }
-    return clz;
+    return convertColumnIndexToModel(column) == TARGET_COLUMN
+        ? editingClass
+        : super.getColumnClass(column);
   }
 }
 

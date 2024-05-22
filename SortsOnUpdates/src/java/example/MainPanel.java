@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
         {2, "", true}, {3, "", false}
     };
     return new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return Integer.class;

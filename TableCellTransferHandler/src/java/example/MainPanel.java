@@ -32,6 +32,7 @@ public final class MainPanel extends JPanel {
         {"fff", new ColorIcon(Color.CYAN), true},
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return String.class;

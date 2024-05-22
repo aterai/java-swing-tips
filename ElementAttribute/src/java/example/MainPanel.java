@@ -191,6 +191,7 @@ class CustomTooltipEditorPane extends JEditorPane {
 class TooltipEditorKit extends HTMLEditorKit {
   @Override public ViewFactory getViewFactory() {
     return new HTMLFactory() {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public View create(Element elem) {
         AttributeSet attrs = elem.getAttributes();
         Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);

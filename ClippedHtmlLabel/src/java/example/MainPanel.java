@@ -56,12 +56,12 @@ public final class MainPanel extends JPanel {
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
-        // switch (column) {
-        //   case 0: return Integer.class;
-        //   case 1: return String.class;
-        //   case 2: return URL.class;
-        //   default: return super.getColumnClass(column);
-        // }
+        // return switch (column) {
+        //   case 0 -> Integer.class;
+        //   case 1 -> String.class;
+        //   case 2 -> URL.class;
+        //   default -> super.getColumnClass(column);
+        // };
       }
 
       @Override public boolean isCellEditable(int row, int col) {

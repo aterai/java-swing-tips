@@ -112,7 +112,9 @@ class NoWrapEditorKit1 extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
     return new StyledViewFactory();
   }
+
   static class StyledViewFactory implements ViewFactory {
+    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public View create(Element elem) {
       String kind = elem.getName();
       if (Objects.nonNull(kind)) {
@@ -131,6 +133,7 @@ class NoWrapEditorKit1 extends StyledEditorKit {
       return new LabelView(elem);
     }
   }
+
   static class NoWrapBoxView extends BoxView {
     protected NoWrapBoxView(Element elem, int axis) {
       super(elem, axis);
@@ -162,6 +165,7 @@ class NoWrapParagraphView extends ParagraphView {
 }
 
 class NoWrapViewFactory implements ViewFactory {
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       // case AbstractDocument.ContentElementName:

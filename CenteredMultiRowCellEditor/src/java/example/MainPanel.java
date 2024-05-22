@@ -457,6 +457,7 @@ class WrapEditorKit extends StyledEditorKit {
 }
 
 class WrapColumnFactory implements ViewFactory {
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public View create(Element element) {
     String kind = element.getName();
     if (kind != null) {

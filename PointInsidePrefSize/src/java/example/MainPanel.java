@@ -25,6 +25,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] columnNames = {"No.", "Name", "URL"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return Integer.class;

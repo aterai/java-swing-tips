@@ -71,6 +71,7 @@ public final class MainPanel extends JPanel {
 class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
   @Override public ViewFactory getViewFactory() {
     return new HTMLEditorKit.HTMLFactory() {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public View create(Element elem) {
         // View view = super.create(elem);
         // if (view instanceof LabelView) {

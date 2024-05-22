@@ -26,12 +26,19 @@ public final class MainPanel extends JPanel {
 
     String[] columnNames = {"Integer", "String", "Boolean"};
     TableModel model = new DefaultTableModel(columnNames, 0) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return Integer.class;
           case 2: return Boolean.class;
           default: return String.class;
         }
+        // // Java 12:
+        // return switch (column) {
+        //   case 0 -> Integer.class;
+        //   case 2 -> Boolean.class;
+        //   default -> String.class;
+        // };
       }
     };
     model.addTableModelListener(e -> {

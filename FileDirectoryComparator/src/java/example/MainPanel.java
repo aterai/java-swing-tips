@@ -181,6 +181,7 @@ class DefaultFileComparator implements Comparator<File>, Serializable {
     this.column = column;
   }
 
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public int compare(File a, File b) {
     switch (column) {
       case 0: return a.getName().compareToIgnoreCase(b.getName());

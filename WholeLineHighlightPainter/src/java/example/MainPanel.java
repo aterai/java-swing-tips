@@ -171,6 +171,7 @@ class ParagraphMarkEditorKit extends StyledEditorKit implements ViewFactory {
     return this;
   }
 
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       // case AbstractDocument.ContentElementName:

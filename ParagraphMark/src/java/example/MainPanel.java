@@ -60,6 +60,7 @@ class MyEditorKit extends StyledEditorKit {
 }
 
 class MyViewFactory implements ViewFactory {
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       // case AbstractDocument.ContentElementName:
