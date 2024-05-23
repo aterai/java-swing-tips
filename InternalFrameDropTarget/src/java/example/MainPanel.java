@@ -275,34 +275,29 @@ class TableRowTransferHandler extends TransferHandler {
     return frame;
   }
 
-  private boolean canDropTableIntersection(TransferHandler.TransferSupport info) {
+  private boolean canDropTable(TransferHandler.TransferSupport info) {
     Component c = info.getComponent();
-    if (!(c instanceof JTable)) {
-      return false;
-    }
-    JTable target = (JTable) c;
-    if (!target.equals(source)) {
-      Container cn = SwingUtilities.getAncestorOfClass(JDesktopPane.class, target);
-      if (cn instanceof JDesktopPane) {
-        JDesktopPane dp = (JDesktopPane) cn;
-        JInternalFrame sf = getInternalFrame(source);
-        JInternalFrame tf = getInternalFrame(target);
-        if (Objects.isNull(sf) || Objects.isNull(tf) || dp.getIndexOf(tf) < dp.getIndexOf(sf)) {
-          return false;
-        }
-        Point pt = SwingUtilities.convertPoint(target, info.getDropLocation().getDropPoint(), dp);
-        Rectangle rect = sf.getBounds().intersection(tf.getBounds());
-        // if (rect.contains(pt)) { return false; }
-        return !rect.contains(pt);
-        // tf.moveToFront();
-        // tf.getParent().repaint();
-      }
-    }
-    return true;
+    Container p = SwingUtilities.getAncestorOfClass(JDesktopPane.class, c);
+    boolean b = c instanceof JTable && p instanceof JDesktopPane;
+    return b && (c.equals(source) || canDropTargetTable(info, (JDesktopPane) p, (JTable) c));
+  }
+
+  private boolean canDropTargetTable(TransferSupport info, JDesktopPane dp, JTable target) {
+    JInternalFrame sf = getInternalFrame(source);
+    JInternalFrame tf = getInternalFrame(target);
+    boolean nonNull = Objects.nonNull(sf) && Objects.nonNull(tf);
+    boolean isBack = dp.getIndexOf(tf) >= dp.getIndexOf(sf);
+    Point pt = SwingUtilities.convertPoint(target, info.getDropLocation().getDropPoint(), dp);
+    return nonNull && isBack && notIntersectionArea(sf, tf, pt);
+  }
+
+  private static boolean notIntersectionArea(JInternalFrame sf, JInternalFrame tf, Point pt) {
+    Rectangle r = sf.getBounds().intersection(tf.getBounds());
+    return !r.contains(pt);
   }
 
   @Override public boolean canImport(TransferHandler.TransferSupport info) {
-    boolean isSupported = info.isDataFlavorSupported(FLAVOR) && canDropTableIntersection(info);
+    boolean isSupported = info.isDataFlavorSupported(FLAVOR) && canDropTable(info);
     boolean canDrop = info.isDrop() && isSupported;
     getRootGlassPane(info.getComponent()).ifPresent(p -> {
       Cursor cursor = canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
