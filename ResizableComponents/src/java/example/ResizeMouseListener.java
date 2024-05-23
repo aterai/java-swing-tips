@@ -125,6 +125,7 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     // return deltaY;
   }
 
+  @SuppressWarnings("PMD.OnlyOneReturn")
   private Point getLimitedDelta(int cursorType, Rectangle pr, int deltaX, int deltaY) {
     switch (cursorType) {
       case Cursor.N_RESIZE_CURSOR:
@@ -143,7 +144,8 @@ public final class ResizeMouseListener extends MouseInputAdapter {
         return new Point(getDeltaX(deltaX, pr), getDeltaY(deltaY));
       case Cursor.SE_RESIZE_CURSOR:
         return new Point(getDeltaX(deltaX, pr), getDeltaY(deltaY, pr));
-      default: return new Point(deltaX, deltaY);
+      default:
+        return new Point(deltaX, deltaY);
     }
   }
 }

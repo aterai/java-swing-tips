@@ -164,6 +164,7 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
       return 0 <= len && len <= 8;
     }
 
+    @SuppressWarnings("PMD.OnlyOneReturn")
     private boolean isValid(String text) {
       int len = text.length();
       for (int i = 0; i < len; i++) {
