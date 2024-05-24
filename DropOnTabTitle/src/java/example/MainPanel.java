@@ -24,6 +24,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.io.IOException;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -129,7 +130,10 @@ class TabTitleDropTargetListener implements DropTargetListener {
   }
 
   @Override public void dragOver(DropTargetDragEvent e) {
-    if (isDropAcceptable(e)) {
+    targetTabIndex = -1;
+    Transferable t = e.getTransferable();
+    boolean supported = t.isDataFlavorSupported(t.getTransferDataFlavors()[0]);
+    if (supported && notOwnTab(e)) {
       e.acceptDrag(e.getDropAction());
     } else {
       e.rejectDrag();
@@ -168,24 +172,18 @@ class TabTitleDropTargetListener implements DropTargetListener {
     }
   }
 
-  private boolean isDropAcceptable(DropTargetDragEvent e) {
-    DropTargetContext c = e.getDropTargetContext();
-    Transferable t = e.getTransferable();
-    DataFlavor[] f = t.getTransferDataFlavors();
+  private boolean notOwnTab(DropTargetDragEvent e) {
     Point pt = e.getLocation();
-    targetTabIndex = -1;
-    Component o = c.getComponent();
-    if (o instanceof JTabbedPane && t.isDataFlavorSupported(f[0])) {
-      JTabbedPane tabbedPane = (JTabbedPane) o;
-      for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-        if (tabbedPane.getBoundsAt(i).contains(pt)) {
-          targetTabIndex = i;
-          break;
-        }
-      }
-      return targetTabIndex >= 0 && targetTabIndex != tabbedPane.getSelectedIndex();
-    }
-    return false;
+    Component c = e.getDropTargetContext().getComponent();
+    return c instanceof JTabbedPane && notOwnTab((JTabbedPane) c, pt);
+  }
+
+  private boolean notOwnTab(JTabbedPane tabbedPane, Point pt) {
+    targetTabIndex = IntStream.range(0, tabbedPane.getTabCount())
+      .filter(i -> tabbedPane.getBoundsAt(i).contains(pt))
+      .findFirst()
+      .orElse(-1);
+    return targetTabIndex >= 0 && targetTabIndex != tabbedPane.getSelectedIndex();
   }
 }
 
