@@ -95,18 +95,14 @@ class ColorItem implements Serializable {
     return Objects.hash(color, description);
   }
 
-  @Override public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj instanceof ColorItem) {
-      ColorItem item = (ColorItem) obj;
-      boolean b1 = Objects.equals(item.getColor(), color);
-      boolean b2 = Objects.equals(item.toString(), description);
-      return b1 && b2;
-    } else {
-      return false;
-    }
+  @Override public boolean equals(Object o) {
+    return this == o || o instanceof ColorItem && equals((ColorItem) o);
+  }
+
+  private boolean equals(ColorItem item) {
+    boolean b1 = Objects.equals(item.getColor(), color);
+    boolean b2 = Objects.equals(item.toString(), description);
+    return b1 && b2;
   }
 
   @Override public String toString() {
