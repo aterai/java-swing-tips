@@ -96,10 +96,10 @@ class ColorItem implements Serializable {
   }
 
   @Override public boolean equals(Object o) {
-    return this == o || o instanceof ColorItem && equals((ColorItem) o);
+    return this == o || o instanceof ColorItem && equals2((ColorItem) o);
   }
 
-  private boolean equals(ColorItem item) {
+  private boolean equals2(ColorItem item) {
     boolean b1 = Objects.equals(item.getColor(), color);
     boolean b2 = Objects.equals(item.toString(), description);
     return b1 && b2;
