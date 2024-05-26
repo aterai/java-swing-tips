@@ -160,14 +160,11 @@ class SelectWordCaret extends DefaultCaret {
   }
 
   @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof SelectWordCaret) || !super.equals(o)) {
-      return false;
-    }
-    SelectWordCaret that = (SelectWordCaret) o;
-    return p0 == that.p0 && p1 == that.p1;
+    return this == o || o instanceof SelectWordCaret && equals((SelectWordCaret) o);
+  }
+
+  private boolean equals(SelectWordCaret that) {
+    return super.equals(that) && p0 == that.p0 && p1 == that.p1;
   }
 
   @Override public int hashCode() {
