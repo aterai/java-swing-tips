@@ -134,13 +134,10 @@ class RowHeader {
   }
 
   @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof RowHeader)) {
-      return false;
-    }
-    RowHeader rh = (RowHeader) o;
+    return this == o || o instanceof RowHeader && equals2((RowHeader) o);
+  }
+
+  private boolean equals2(RowHeader rh) {
     return isExpandable() == rh.isExpandable()
         && isSelected() == rh.isSelected()
         && Objects.equals(getTitle(), rh.getTitle());
