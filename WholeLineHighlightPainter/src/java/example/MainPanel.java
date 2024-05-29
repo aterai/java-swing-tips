@@ -142,18 +142,13 @@ class FocusCaret extends DefaultCaret {
   }
 
   @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof FocusCaret)) {
-      return false;
-    }
-    if (!super.equals(o)) {
-      return false;
-    }
-    FocusCaret that = (FocusCaret) o;
-    return Objects.equals(nonFocusPainter, that.nonFocusPainter)
-        && Objects.equals(getSelectionPainter(), that.getSelectionPainter());
+    return this == o || o instanceof FocusCaret && equals2((FocusCaret) o);
+  }
+
+  private boolean equals2(FocusCaret that) {
+    boolean a = Objects.equals(nonFocusPainter, that.nonFocusPainter);
+    boolean b = Objects.equals(getSelectionPainter(), that.getSelectionPainter());
+    return super.equals(that) && a && b;
   }
 
   @Override public int hashCode() {
