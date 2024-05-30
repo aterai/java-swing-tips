@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
       UIDefaults d = new UIDefaults();
       d.put("OptionPane.sameSizeButtons", false);
       op.putClientProperty("Nimbus.Overrides", d);
-      op.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+      op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
       SwingUtilities.updateComponentTreeUI(op);
       op.createDialog(getRootPane(), "title").setVisible(true);
     });
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
       }
       d.put("OptionPane.sameSizeButtons", true);
       op.putClientProperty("Nimbus.Overrides", d);
-      op.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+      op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
       SwingUtilities.updateComponentTreeUI(op);
       op.createDialog(getRootPane(), "title").setVisible(true);
     });

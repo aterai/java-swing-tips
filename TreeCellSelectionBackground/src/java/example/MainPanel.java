@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
       }
     };
     tree.putClientProperty("Nimbus.Overrides", def);
-    tree.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+    tree.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
     tree.setBackground(Color.WHITE);
 
     JScrollPane s1 = new JScrollPane(new JTree());

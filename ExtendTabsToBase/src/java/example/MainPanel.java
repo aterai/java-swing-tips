@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     UIDefaults d = UIManager.getLookAndFeelDefaults();
     d.put("TabbedPane.extendTabsToBase", Boolean.FALSE);
     tabbedPane.putClientProperty("Nimbus.Overrides", d);
-    tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+    tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
 
     add(makeTitledPanel("TabbedPane.extendTabsToBase: true", makeTabbedPane()));
     add(makeTitledPanel("TabbedPane.extendTabsToBase: false", tabbedPane));

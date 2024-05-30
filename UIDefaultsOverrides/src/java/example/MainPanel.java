@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     });
     MultiLineTableCellRenderer r = new MultiLineTableCellRenderer();
     r.putClientProperty("Nimbus.Overrides", d);
-    r.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+    r.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
 
     // // or
     // d.put("TextArea.NotInScrollPane", new State("NotInScrollPane") {
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
   private JCheckBoxMenuItem makeCheckBoxMenuItem(String title, UIDefaults d) {
     JCheckBoxMenuItem mi = new JCheckBoxMenuItem(title);
     mi.putClientProperty("Nimbus.Overrides", d);
-    mi.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
+    mi.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
     return mi;
   }
 

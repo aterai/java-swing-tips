@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     // UIDefaults d = new UIDefaults();
     // d.put("Menu.arrowIcon", new ArrowIcon());
     // menu.putClientProperty("Nimbus.Overrides", d);
-    // menu.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+    // menu.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
     return menu;
   }
 

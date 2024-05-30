@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     UIDefaults d = UIManager.getLookAndFeelDefaults();
     d.put("ComboBox.buttonWhenNotEditable", false);
     combo.putClientProperty("Nimbus.Overrides", d);
-    combo.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+    combo.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
 
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("Default(editable):", makeComboBox(true)));

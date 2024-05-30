@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         d.put("CheckBox[MouseOver].iconPainter", painter2);
         d.put("CheckBox[Focused+MouseOver].iconPainter", painter2);
         putClientProperty("Nimbus.Overrides", d);
-        putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+        putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
       }
     };
     box.add(check3);
