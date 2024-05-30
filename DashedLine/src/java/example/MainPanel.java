@@ -5,16 +5,18 @@
 package example;
 
 import java.awt.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final float[] DEFAULT_DASH = {1f};
   private transient BasicStroke dashedStroke = makeStroke(1f, 1f, 5f, 1f);
 
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field = new JTextField("1f, 1f, 5f, 1f");
-
     JLabel label = new JLabel() {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -29,9 +31,10 @@ public final class MainPanel extends JPanel {
     };
     label.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
 
+    JTextField field = new JTextField("1f, 1f, 5f, 1f");
     JButton button = new JButton("Change");
     button.addActionListener(e -> {
-      dashedStroke = makeStroke(getDashArray(tokenize(field.getText().trim())));
+      dashedStroke = makeStroke(getDashArray(field.getText()));
       label.repaint();
     });
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
@@ -51,41 +54,35 @@ public final class MainPanel extends JPanel {
     return dashedStroke;
   }
 
-  private float[] getDashArray(String... strArray) {
-    if (strArray.length == 0) {
-      return new float[] {1f};
-    }
-    float[] dist = new float[strArray.length];
-    int i = 0;
+  private float[] getDashArray(String txt) {
+    List<Float> list;
     try {
-      for (String s : strArray) {
-        String ss = s.trim();
-        if (!ss.isEmpty()) {
-          dist[i++] = Float.parseFloat(ss);
-        }
-      }
+      list = Stream.of(txt.split(","))
+          .filter(s -> !s.trim().isEmpty())
+          .map(Float::parseFloat)
+          .collect(Collectors.toList());
     } catch (NumberFormatException ex) {
       EventQueue.invokeLater(() -> {
+        Toolkit.getDefaultToolkit().beep();
         Component c = getRootPane();
-        UIManager.getLookAndFeel().provideErrorFeedback(c);
         String msg = "Invalid input.\n" + ex.getMessage();
         JOptionPane.showMessageDialog(c, msg, "Error", JOptionPane.ERROR_MESSAGE);
       });
-      return new float[] {1f};
+      list = null;
     }
-    return i == 0 ? new float[] {1f} : dist;
+    return Objects.nonNull(list) ? toPrimitive(list) : DEFAULT_DASH;
+  }
+
+  public static float[] toPrimitive(List<Float> list) {
+    float[] array = new float[list.size()];
+    for (int i = 0; i < array.length; i++) {
+      array[i] = list.get(i).floatValue();
+    }
+    return array;
   }
 
   private static BasicStroke makeStroke(float... dist) {
     return new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, dist, 0f);
-  }
-
-  private static String[] tokenize(String text) {
-    // String[] strArray = text.split(","); // ErrorProne: StringSplitter
-    return Stream.of(text.split(","))
-        .map(String::trim)
-        .filter(s -> !s.isEmpty())
-        .toArray(String[]::new);
   }
 
   public static void main(String[] args) {
