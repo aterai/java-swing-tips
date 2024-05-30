@@ -38,15 +38,11 @@ public final class WindowState implements Serializable {
   }
 
   @Override public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o instanceof WindowState) {
-      WindowState ws = (WindowState) o;
-      return Objects.equals(ws.getLocation(), location) && Objects.equals(ws.getSize(), size);
-    } else {
-      return false;
-    }
+    return this == o || o instanceof WindowState && equals2((WindowState) o);
+  }
+
+  private boolean equals2(WindowState ws) {
+    return Objects.equals(ws.getLocation(), location) && Objects.equals(ws.getSize(), size);
   }
 
   @Override public String toString() {
