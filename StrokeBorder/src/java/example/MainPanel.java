@@ -5,52 +5,27 @@
 package example;
 
 import java.awt.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final float[] DEFAULT_DASH = {1f};
-  private final JComboBox<JoinStyle> joinCombo = new JComboBox<>(JoinStyle.values());
-  private final JComboBox<EndCapStyle> endCapCombo = new JComboBox<>(EndCapStyle.values());
-  private final JTextField field = new JTextField("10, 20");
-  private final JLabel label = new JLabel();
-  private final JButton button = new JButton("Change");
-
-  private float[] getDashArray() {
-    // String[] list = field.getText().split(","); // ErrorProne: StringSplitter
-    String[] list = Stream.of(field.getText().split(","))
-        .map(String::trim)
-        .filter(s -> !s.isEmpty())
-        .toArray(String[]::new);
-    if (list.length == 0) {
-      return DEFAULT_DASH;
-    }
-    float[] ary = new float[list.length];
-    int i = 0;
-    try {
-      for (String s : list) {
-        String ss = s.trim();
-        if (!ss.isEmpty()) {
-          ary[i++] = Float.parseFloat(ss);
-        }
-      }
-    } catch (NumberFormatException ex) {
-      EventQueue.invokeLater(() -> {
-        Toolkit.getDefaultToolkit().beep();
-        String msg = "Invalid input.\n" + ex.getMessage();
-        JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
-      });
-      return DEFAULT_DASH;
-    }
-    return i == 0 ? DEFAULT_DASH : ary;
-  }
 
   private MainPanel() {
     super(new BorderLayout());
+    JComboBox<JoinStyle> joinCombo = new JComboBox<>(JoinStyle.values());
+    JComboBox<EndCapStyle> endCapCombo = new JComboBox<>(EndCapStyle.values());
+    JTextField field = new JTextField("10, 20");
+    JLabel label = new JLabel();
+    JButton button = new JButton("Change");
     button.addActionListener(e -> {
       int ecs = endCapCombo.getItemAt(endCapCombo.getSelectedIndex()).getStyle();
       int js = joinCombo.getItemAt(joinCombo.getSelectedIndex()).getStyle();
-      BasicStroke dashedStroke = new BasicStroke(5f, ecs, js, 5f, getDashArray(), 0f);
+      String txt = field.getText();
+      BasicStroke dashedStroke = new BasicStroke(5f, ecs, js, 5f, getDashArray(txt), 0f);
       label.setBorder(BorderFactory.createStrokeBorder(dashedStroke, Color.RED));
     });
 
@@ -74,6 +49,33 @@ public final class MainPanel extends JPanel {
 
     button.doClick();
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
+  }
+
+  private float[] getDashArray(String txt) {
+    List<Float> list;
+    try {
+      list = Stream.of(txt.split(","))
+          .filter(s -> !s.trim().isEmpty())
+          .map(Float::parseFloat)
+          .collect(Collectors.toList());
+    } catch (NumberFormatException ex) {
+      EventQueue.invokeLater(() -> {
+        Toolkit.getDefaultToolkit().beep();
+        Component c = getRootPane();
+        String msg = "Invalid input.\n" + ex.getMessage();
+        JOptionPane.showMessageDialog(c, msg, "Error", JOptionPane.ERROR_MESSAGE);
+      });
+      list = null;
+    }
+    return Objects.nonNull(list) ? toPrimitive(list) : DEFAULT_DASH;
+  }
+
+  public static float[] toPrimitive(List<Float> list) {
+    float[] array = new float[list.size()];
+    for (int i = 0; i < array.length; i++) {
+      array[i] = list.get(i).floatValue();
+    }
+    return array;
   }
 
   public static void main(String[] args) {
