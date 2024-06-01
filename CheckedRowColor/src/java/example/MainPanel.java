@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     table.setIntercellSpacing(new Dimension());
     table.setRowSelectionAllowed(true);
     // table.setSurrendersFocusOnKeystroke(true);
-    // table.putClientProperty("JTable.autoStartsEdit", false);
+    // table.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }

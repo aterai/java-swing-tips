@@ -75,7 +75,7 @@ public class CloseTabIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     // boolean doPaintCloseIcon = true;
     // // try {
-    // //   JComponent.putClientProperty("isClosable", new Boolean(false));
+    // //   JComponent.putClientProperty("isClosable", Boolean.FALSE);
     // if (c instanceof JTabbedPane) {
     //   JTabbedPane tabbedPane = (JTabbedPane) c;
     //   int tabNumber = tabbedPane.getUI().tabForCoordinate(tabbedpane, x, y);
