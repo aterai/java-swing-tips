@@ -111,6 +111,7 @@ public final class MainPanel extends JPanel {
         boolean isLastRow = row == table.getModel().getRowCount() - 1;
         if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
           JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
+          sub.setFont(l.getFont());
           sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
           sub.setOpaque(false);
           sub.setVerticalAlignment(BOTTOM);
