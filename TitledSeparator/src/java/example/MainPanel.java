@@ -14,14 +14,15 @@ import javax.swing.border.TitledBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    String title = "TitledBorder";
     Box box = Box.createVerticalBox();
-    box.add(new TitledSeparator("TitledBorder", TitledBorder.DEFAULT_POSITION));
+    box.add(new TitledSeparator(title, TitledBorder.DEFAULT_POSITION));
     box.add(new JCheckBox("JCheckBox 0"));
     box.add(new JCheckBox("JCheckBox 1"));
     box.add(Box.createVerticalStrut(10));
 
     Color color = new Color(0x64_B4_C8);
-    box.add(new TitledSeparator("TitledBorder ABOVE TOP", color, TitledBorder.ABOVE_TOP));
+    box.add(new TitledSeparator(title + " ABOVE_TOP", color, TitledBorder.ABOVE_TOP));
     box.add(new JCheckBox("JCheckBox 2"));
     box.add(new JCheckBox("JCheckBox 3"));
     box.add(Box.createVerticalStrut(10));
@@ -29,7 +30,6 @@ public final class MainPanel extends JPanel {
     box.add(new JSeparator());
     box.add(new JCheckBox("JCheckBox 4"));
     box.add(new JCheckBox("JCheckBox 5"));
-    // box.add(Box.createVerticalStrut(8));
 
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -72,23 +72,28 @@ class TitledSeparator extends JLabel {
     this.title = title;
     this.target = target;
     this.titlePosition = titlePosition;
+    // updateBorder();
   }
 
   private void updateBorder() {
     // int height = new JSeparator().getPreferredSize().height;
     Icon icon = new TitledSeparatorIcon();
     setBorder(BorderFactory.createTitledBorder(
-        BorderFactory.createMatteBorder(icon.getIconHeight(), 0, 0, 0, icon), title,
-        TitledBorder.DEFAULT_JUSTIFICATION, titlePosition));
+        BorderFactory.createMatteBorder(icon.getIconHeight(), 0, 0, 0, icon),
+        title,
+        TitledBorder.DEFAULT_JUSTIFICATION,
+        titlePosition));
   }
 
   @Override public Dimension getMaximumSize() {
-    return new Dimension(Short.MAX_VALUE, super.getPreferredSize().height);
+    Dimension d = super.getPreferredSize();
+    d.width = Short.MAX_VALUE;
+    return d;
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    updateBorder();
+    EventQueue.invokeLater(this::updateBorder);
   }
 
   private final class TitledSeparatorIcon implements Icon {
@@ -111,7 +116,7 @@ class TitledSeparator extends JLabel {
       }
       int h = getIconHeight() / 2;
       Graphics2D g2 = (Graphics2D) g.create();
-      // XXX: g2.translate(x, y);
+      g2.translate(x, y);
       g2.setPaint(painter1);
       g2.fillRect(x, y, width, getIconHeight());
       g2.setPaint(painter2);
