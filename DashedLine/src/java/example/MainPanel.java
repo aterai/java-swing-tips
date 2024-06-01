@@ -58,7 +58,8 @@ public final class MainPanel extends JPanel {
     List<Float> list;
     try {
       list = Stream.of(txt.split(","))
-          .filter(s -> !s.trim().isEmpty())
+          .map(String::trim)
+          .filter(s -> !s.isEmpty())
           .map(Float::parseFloat)
           .collect(Collectors.toList());
     } catch (NumberFormatException ex) {
@@ -76,7 +77,7 @@ public final class MainPanel extends JPanel {
   public static float[] toPrimitive(List<Float> list) {
     float[] array = new float[list.size()];
     for (int i = 0; i < array.length; i++) {
-      array[i] = list.get(i).floatValue();
+      array[i] = list.get(i); // .floatValue();
     }
     return array;
   }
