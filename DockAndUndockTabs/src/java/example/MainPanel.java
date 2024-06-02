@@ -63,14 +63,13 @@ public final class MainPanel extends JPanel {
     LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
 
     DropTargetListener listener = new TabDropTargetAdapter();
-    Stream.of(tabbedPane, sub).forEach(t -> {
-      t.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-      t.setTransferHandler(handler);
+    Stream.of(tabbedPane, sub).forEach(tabs -> {
+      tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+      tabs.setTransferHandler(handler);
       try {
-        t.getDropTarget().addDropTargetListener(listener);
+        tabs.getDropTarget().addDropTargetListener(listener);
       } catch (TooManyListenersException ex) {
-        ex.printStackTrace();
-        UIManager.getLookAndFeel().provideErrorFeedback(t);
+        UIManager.getLookAndFeel().provideErrorFeedback(tabs);
       }
     });
 
@@ -110,7 +109,6 @@ class DnDTabbedPane extends JTabbedPane {
   private static final int BUTTON_SZ = 30; // XXX 30 is magic number of scroll button size
   private static final Rectangle RECT_BACKWARD = new Rectangle();
   private static final Rectangle RECT_FORWARD = new Rectangle();
-  // private final DropMode dropMode = DropMode.INSERT;
   protected int dragTabIndex = -1;
   private transient DnDTabbedPane.DropLocation dropLocation;
   private transient Handler handler;
@@ -118,7 +116,6 @@ class DnDTabbedPane extends JTabbedPane {
 
   public static final class DropLocation extends TransferHandler.DropLocation {
     private final int index;
-    // public boolean canDrop = true; // index >= 0;
 
     private DropLocation(Point p, int index) {
       super(p);
@@ -128,13 +125,6 @@ class DnDTabbedPane extends JTabbedPane {
     public int getIndex() {
       return index;
     }
-
-    // @Override public String toString() {
-    //   return getClass().getName()
-    //     + "[dropPoint=" + getDropPoint() + ","
-    //     + "index=" + index + ","
-    //     + "insert=" + isInsert + "]";
-    // }
   }
 
   private void clickArrowButton(String actionKey) {
@@ -149,21 +139,10 @@ class DnDTabbedPane extends JTabbedPane {
         }
       }
     }
-    JButton button = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
+    JButton button = "scrollTabsForwardAction".equals(actionKey)
+        ? forwardButton
+        : backwardButton;
     Optional.ofNullable(button).filter(JButton::isEnabled).ifPresent(JButton::doClick);
-
-    // // ArrayIndexOutOfBoundsException
-    // Optional.ofNullable(getActionMap())
-    //   .map(am -> am.get(actionKey))
-    //   .filter(Action::isEnabled)
-    //   .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ACTION_PERFORMED, null, 0, 0)));
-    // // ActionMap map = getActionMap();
-    // // if (Objects.nonNull(map)) {
-    // //   Action action = map.get(actionKey);
-    // //   if (Objects.nonNull(action) && action.isEnabled()) {
-    // //     action.actionPerformed(new ActionEvent(this, ACTION_PERFORMED, null, 0, 0));
-    // //   }
-    // // }
   }
 
   public void autoScrollTest(Point pt) {
@@ -208,25 +187,6 @@ class DnDTabbedPane extends JTabbedPane {
       return new DnDTabbedPane.DropLocation(p, getTabCount());
     }
     return new DnDTabbedPane.DropLocation(p, -1);
-    // switch (dropMode) {
-    //   case INSERT:
-    //     for (int i = 0; i < getTabCount(); i++) {
-    //       if (getBoundsAt(i).contains(p)) {
-    //         return new DnDTabbedPane.DropLocation(p, i);
-    //       }
-    //     }
-    //     if (getTabAreaBounds().contains(p)) {
-    //       return new DnDTabbedPane.DropLocation(p, getTabCount());
-    //     }
-    //     break;
-    //   case USE_SELECTION:
-    //   case ON:
-    //   case ON_OR_INSERT:
-    //   default:
-    //     assert false : "Unexpected drop mode";
-    //     break;
-    // }
-    // return new DnDTabbedPane.DropLocation(p, -1);
   }
 
   public final DnDTabbedPane.DropLocation getDropLocation() {
@@ -296,32 +256,6 @@ class DnDTabbedPane extends JTabbedPane {
     pointOnScreen.setLocation(-1, -1);
   }
 
-  // public Rectangle getTabAreaBounds() {
-  //   Rectangle tabbedRect = getBounds();
-  //   Component c = getSelectedComponent();
-  //   if (Objects.isNull(c)) {
-  //     return tabbedRect;
-  //   }
-  //   int xx = tabbedRect.x;
-  //   int yy = tabbedRect.y;
-  //   Rectangle compRect = getSelectedComponent().getBounds();
-  //   int tabPlacement = getTabPlacement();
-  //   if (tabPlacement == TOP) {
-  //     tabbedRect.height = tabbedRect.height - compRect.height;
-  //   } else if (tabPlacement == BOTTOM) {
-  //     tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
-  //     tabbedRect.height = tabbedRect.height - compRect.height;
-  //   } else if (tabPlacement == LEFT) {
-  //     tabbedRect.width = tabbedRect.width - compRect.width;
-  //   } else { // if (tabPlacement == RIGHT) {
-  //     tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
-  //     tabbedRect.width = tabbedRect.width - compRect.width;
-  //   }
-  //   tabbedRect.translate(-xx, -yy);
-  //   // tabbedRect.grow(2, 2);
-  //   return tabbedRect;
-  // }
-
   public Rectangle getTabAreaBounds() {
     Rectangle tabbedRect = getBounds();
     int xx = tabbedRect.x;
@@ -331,12 +265,12 @@ class DnDTabbedPane extends JTabbedPane {
         .orElseGet(Rectangle::new);
     int tabPlacement = getTabPlacement();
     if (isTopBottomTabPlacement(tabPlacement)) {
-      tabbedRect.height = tabbedRect.height - compRect.height;
+      tabbedRect.height -= compRect.height;
       if (tabPlacement == BOTTOM) {
         tabbedRect.y += compRect.y + compRect.height;
       }
     } else {
-      tabbedRect.width = tabbedRect.width - compRect.width;
+      tabbedRect.width -= compRect.width;
       if (tabPlacement == RIGHT) {
         tabbedRect.x += compRect.x + compRect.width;
       }
@@ -398,10 +332,6 @@ class DnDTabbedPane extends JTabbedPane {
   }
 }
 
-enum DragImageMode {
-  HEAVYWEIGHT, LIGHTWEIGHT
-}
-
 class TabDropTargetAdapter extends DropTargetAdapter {
   private void clearDropLocationPaint(Component c) {
     if (c instanceof DnDTabbedPane) {
@@ -456,27 +386,14 @@ class TabTransferHandler extends TransferHandler {
     }
   };
   protected JWindow dialog;
-  protected DragImageMode mode = DragImageMode.HEAVYWEIGHT;
-
-  public void setDragImageMode(DragImageMode dragMode) {
-    this.mode = dragMode;
-    setDragImage(null);
-  }
 
   protected TabTransferHandler() {
     super();
     // System.out.println("TabTransferHandler");
-    // localObjectFlavor = new ActivationDataFlavor(
-    //     DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
-    // dialog = new JWindow();
-    // dialog.add(label);
-    // dialog.setAlwaysOnTop(true); // Web Start
-    // AWTUtilities.setWindowOpacity(dialog, .5f); // JDK 1.6.0
     DragSource.getDefaultDragSource().addDragSourceMotionListener(e -> {
       Point pt = e.getLocation();
       pt.translate(5, 5); // offset
       if (dialog != null) {
-        // dialog.setOpacity(.5f);
         dialog.setLocation(pt);
       }
       source.pointOnScreen.setLocation(pt);
@@ -492,8 +409,8 @@ class TabTransferHandler extends TransferHandler {
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {
-          localObjectFlavor,
-          DataFlavor.javaFileListFlavor
+            localObjectFlavor,
+            DataFlavor.javaFileListFlavor
         };
       }
 
@@ -524,16 +441,6 @@ class TabTransferHandler extends TransferHandler {
     target.autoScrollTest(pt);
     DnDTabbedPane.DropLocation dl = target.tabDropLocationForPoint(pt);
     int idx = dl.getIndex();
-
-    // if (!isWebStart()) {
-    //   // System.out.println("local");
-    //   try {
-    //     source = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
-    //   } catch (Exception ex) {
-    //     ex.printStackTrace();
-    //   }
-    // }
-
     boolean canDrop;
     boolean inArea = target.getTabAreaBounds().contains(pt) && idx >= 0;
     if (target.equals(source)) {
@@ -556,15 +463,6 @@ class TabTransferHandler extends TransferHandler {
     target.updateTabDropLocation(dl, canDrop);
     return canDrop;
   }
-
-  // private static boolean isWebStart() {
-  //   try {
-  //     ServiceManager.lookup("javax.jnlp.BasicService");
-  //     return true;
-  //   } catch (UnavailableServiceException ex) {
-  //     return false;
-  //   }
-  // }
 
   private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
     Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
@@ -596,16 +494,12 @@ class TabTransferHandler extends TransferHandler {
       if (src.dragTabIndex < 0) {
         return NONE;
       }
-      if (mode == DragImageMode.HEAVYWEIGHT) {
-        label.setIcon(new ImageIcon(makeDragTabImage(src)));
-        dialog = new JWindow();
-        dialog.setOpacity(.5f);
-        dialog.add(label);
-        dialog.pack();
-        dialog.setVisible(true);
-      } else {
-        setDragImage(makeDragTabImage(src));
-      }
+      label.setIcon(new ImageIcon(makeDragTabImage(src)));
+      dialog = new JWindow();
+      dialog.setOpacity(.5f);
+      dialog.add(label);
+      dialog.pack();
+      dialog.setVisible(true);
       return MOVE;
     }
     return NONE;
@@ -641,10 +535,7 @@ class TabTransferHandler extends TransferHandler {
     }
     src.updateTabDropLocation(null, false);
     src.repaint();
-    if (mode == DragImageMode.HEAVYWEIGHT && dialog != null) {
-      // dialog.setVisible(false);
-      dialog.dispose();
-    }
+    dialog.dispose();
   }
 
   private static void createNewFrame(DnDTabbedPane src) {
@@ -697,15 +588,6 @@ class DropLocationLayerUI extends LayerUI<DnDTabbedPane> {
             g2.fill(LINE_RECT);
             g2.dispose();
           });
-      // DnDTabbedPane.DropLocation loc = tabbedPane.getDropLocation();
-      // if (Objects.nonNull(loc) && loc.getIndex() >= 0) {
-      //   Graphics2D g2 = (Graphics2D) g.create();
-      //   g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-      //   g2.setPaint(Color.RED);
-      //   initLineRect(tabbedPane, loc);
-      //   g2.fill(LINE_RECT);
-      //   g2.dispose();
-      // }
     }
   }
 
