@@ -79,7 +79,7 @@ class WatermarkTextField extends JTextField {
     super();
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     icon = Optional.ofNullable(cl.getResource("example/watermark.png"))
-        .map(url -> (Icon) new ImageIcon(url))
+        .<Icon>map(url -> new ImageIcon(url))
         .orElse(UIManager.getIcon("html.missingImage"));
   }
 
