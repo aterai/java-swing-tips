@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -111,8 +112,7 @@ public final class MainPanel extends JPanel {
     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
   }
 
-  public void addFile(Transferable transferable) throws UnsupportedFlavorException, IOException {
-    List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+  public boolean addFileTab(List<?> list) {
     new SwingWorker<Void, Void>() {
       @Override protected Void doInBackground() {
         for (Object o : list) {
@@ -123,6 +123,7 @@ public final class MainPanel extends JPanel {
         return null;
       }
     }.execute();
+    return !list.isEmpty();
   }
 
   private final class FileDropTargetListener extends DropTargetAdapter {
@@ -131,12 +132,8 @@ public final class MainPanel extends JPanel {
       Transferable transferable = e.getTransferable();
       if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
         e.acceptDrop(DnDConstants.ACTION_COPY);
-        try {
-          addFile(transferable);
-          e.dropComplete(true);
-        } catch (UnsupportedFlavorException | IOException ex) {
-          e.dropComplete(false);
-        }
+        boolean success = addFileTab(getFileList(transferable));
+        e.dropComplete(success);
       } else if (src instanceof DropTarget) {
         Component c = ((DropTarget) src).getComponent();
         if (c instanceof JTextComponent) {
@@ -156,6 +153,16 @@ public final class MainPanel extends JPanel {
     }
   }
 
+  private static List<?> getFileList(Transferable transferable) {
+    List<?> list;
+    try {
+      list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      list = Collections.emptyList();
+    }
+    return list;
+  }
+
   private final class FileTransferHandler extends TransferHandler {
     @Override public boolean canImport(TransferSupport support) {
       // System.out.println(support.getComponent().getClass().getName());
@@ -166,13 +173,8 @@ public final class MainPanel extends JPanel {
 
     @Override public boolean importData(TransferSupport support) {
       // System.out.println(support.getComponent().getClass().getName());
-      Transferable transferable = support.getTransferable();
-      try {
-        addFile(transferable);
-        return true;
-      } catch (IOException | UnsupportedFlavorException ex) {
-        return false;
-      }
+      List<?> list = getFileList(support.getTransferable());
+      return addFileTab(list);
     }
   }
 
