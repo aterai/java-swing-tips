@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ItemEvent;
 import java.io.File;
@@ -160,16 +161,26 @@ class FileTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
+    Transferable transferable = support.getTransferable();
+    List<?> list = getFileList(transferable);
+    JTable table = (JTable) support.getComponent();
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    list.stream()
+        .filter(File.class::isInstance)
+        .map(File.class::cast)
+        .map(f -> Collections.nCopies(3, f).toArray())
+        .forEach(model::addRow);
+    return !list.isEmpty();
+  }
+
+  private static List<?> getFileList(Transferable transferable) {
     List<?> list;
     try {
-      list = (List<?>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+      list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
     } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+      list = Collections.emptyList();
     }
-    DefaultTableModel model = (DefaultTableModel) ((JTable) support.getComponent()).getModel();
-    list.stream().filter(File.class::isInstance).map(File.class::cast)
-        .map(f -> Collections.nCopies(3, f).toArray()).forEach(model::addRow);
-    return true;
+    return list;
   }
 }
 
