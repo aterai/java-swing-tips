@@ -133,17 +133,14 @@ class ListItemTransferHandler extends TransferHandler {
   @Override public int getSourceActions(JComponent c) {
     // System.out.println("getSourceActions");
     c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
-    if (c instanceof JList) {
-      JList<?> source = (JList<?>) c;
-      setDragImage(createDragImage(source));
-      // Point pt = c.getMousePosition();
-      // if (Objects.nonNull(pt)) {
-      //   setDragImageOffset(pt);
-      // }
-      Optional.ofNullable(c.getMousePosition()).ifPresent(this::setDragImageOffset);
-      return MOVE; // TransferHandler.COPY_OR_MOVE;
-    }
-    return NONE;
+    return c instanceof JList ? getDragImageAction((JList<?>) c) : NONE;
+  }
+
+  protected int getDragImageAction(JList<?> src) {
+    setDragImage(createDragImage(src));
+    Optional.ofNullable(src.getMousePosition())
+        .ifPresent(this::setDragImageOffset);
+    return MOVE;
   }
 
   private static <E> BufferedImage createDragImage(JList<E> source) {
@@ -228,15 +225,14 @@ class CompactListItemTransferHandler extends ListItemTransferHandler {
     // System.out.println("getSourceActions");
     Component glassPane = c.getRootPane().getGlassPane();
     glassPane.setCursor(DragSource.DefaultMoveDrop);
-    if (!(c instanceof JList)) {
-      return NONE;
-    }
+    return c instanceof JList ? getDragImageAction((JList<?>) c) : NONE;
+  }
+
+  @Override protected int getDragImageAction(JList<?> src) {
     int cellLabelHeight = 21; // = height(15) + top(2) + bottom(2) + cell.bottom(2)
-    JList<?> source = (JList<?>) c;
-    int w = source.getFixedCellWidth();
-    int h = source.getFixedCellHeight() - cellLabelHeight;
-    // System.out.println(h);
-    setDragImage(createCompactDragImage(source, w, h));
+    int w = src.getFixedCellWidth();
+    int h = src.getFixedCellHeight() - cellLabelHeight;
+    setDragImage(createCompactDragImage(src, w, h));
     setDragImageOffset(new Point(w / 2, h));
     return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
