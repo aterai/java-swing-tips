@@ -10,6 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -153,9 +154,9 @@ class ListItemTransferHandler extends TransferHandler {
     } else { // Keyboard Copy & Paste
       index = target.getSelectedIndex();
     }
-    DefaultListModel<?> listModel = (DefaultListModel<?>) target.getModel();
+    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
     // boolean insert = dl.isInsert();
-    int max = listModel.getSize();
+    int max = model.getSize();
     // int index = dl.getIndex();
     index = index < 0 ? max : index; // If it is out of range, it is appended to the end
     index = Math.min(index, max);
@@ -165,22 +166,28 @@ class ListItemTransferHandler extends TransferHandler {
   @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
-    DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
+    DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
     int index = getIndex(info);
     addIndex = index;
-    try {
-      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o : values) {
-        int i = index++;
-        listModel.add(i, o);
-        target.addSelectionInterval(i, i);
-      }
-      addCount = info.isDrop() ? values.size() : 0;
-      // target.requestFocusInWindow();
-      return true;
-    } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+    List<?> values = getTransferData(info);
+    for (Object o : values) {
+      int i = index++;
+      model.add(i, o);
+      target.addSelectionInterval(i, i);
     }
+    addCount = info.isDrop() ? values.size() : 0;
+    // target.requestFocusInWindow();
+    return !values.isEmpty();
+  }
+
+  private static List<?> getTransferData(TransferSupport info) {
+    List<?> values;
+    try {
+      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      values = Collections.emptyList();
+    }
+    return values;
   }
 
   @Override public boolean importData(JComponent comp, Transferable t) {
