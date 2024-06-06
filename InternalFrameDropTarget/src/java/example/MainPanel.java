@@ -12,12 +12,14 @@ import java.awt.dnd.DragSource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -47,27 +49,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JTable makeDragAndDropTable(TransferHandler handler) {
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"AAA", 12, true}, {"aaa", 1, false},
-        {"BBB", 13, true}, {"bbb", 2, false},
-        {"CCC", 15, true}, {"ccc", 3, false},
-        {"DDD", 17, true}, {"ddd", 4, false},
-        {"EEE", 18, true}, {"eee", 5, false},
-        {"FFF", 19, true}, {"fff", 6, false},
-        {"GGG", 92, true}, {"ggg", 0, false}
-    };
-    JTable table = new JTable(new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    });
+    JTable table = new JTable(makeModel());
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setTransferHandler(handler);
     table.setDropMode(DropMode.INSERT_ROWS);
@@ -91,6 +73,30 @@ public final class MainPanel extends JPanel {
     // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), empty);
     // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
     return table;
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"AAA", 12, true}, {"aaa", 1, false},
+        {"BBB", 13, true}, {"bbb", 2, false},
+        {"CCC", 15, true}, {"ccc", 3, false},
+        {"DDD", 17, true}, {"ddd", 4, false},
+        {"EEE", 18, true}, {"eee", 5, false},
+        {"FFF", 19, true}, {"fff", 6, false},
+        {"GGG", 92, true}, {"ggg", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
+      @Override public Class<?> getColumnClass(int column) {
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
   }
 
   // private int index = -1;
@@ -325,23 +331,27 @@ class TableRowTransferHandler extends TransferHandler {
     index = index >= 0 && index < max ? index : max;
     addIndex = index;
     // target.setCursor(Cursor.getDefaultCursor());
-    try {
-      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      Object[] type = new Object[0];
-      for (Object o : values) {
-        int row = index++;
-        // model.insertRow(row, (Vector<?>) o);
-        model.insertRow(row, ((List<?>) o).toArray(type));
-        target.getSelectionModel().addSelectionInterval(row, row);
-      }
-      target.requestFocusInWindow();
-      if (Objects.equals(source, target) && info.isDrop()) {
-        addCount = values.size();
-      }
-      return true;
-    } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+    List<?> values = getTransferData(info);
+    Object[] type = new Object[0];
+    for (Object o : values) {
+      int row = index++;
+      // model.insertRow(row, (Vector<?>) o);
+      model.insertRow(row, ((List<?>) o).toArray(type));
+      target.getSelectionModel().addSelectionInterval(row, row);
     }
+    target.requestFocusInWindow();
+    addCount = Objects.equals(source, target) && info.isDrop() ? values.size() : 0;
+    return !values.isEmpty();
+  }
+
+  private static List<?> getTransferData(TransferSupport info) {
+    List<?> values;
+    try {
+      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      values = Collections.emptyList();
+    }
+    return values;
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
