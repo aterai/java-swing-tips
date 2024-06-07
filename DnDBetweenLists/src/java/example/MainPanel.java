@@ -136,7 +136,7 @@ class ListItemTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     return info.isDataFlavorSupported(FLAVOR);
   }
 
@@ -144,11 +144,11 @@ class ListItemTransferHandler extends TransferHandler {
     return COPY_OR_MOVE;
   }
 
-  private static int getIndex(TransferHandler.TransferSupport info) {
+  private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
     int index; // = dl.getIndex();
     if (info.isDrop()) { // Mouse Drag & Drop
-      TransferHandler.DropLocation tdl = info.getDropLocation();
+      DropLocation tdl = info.getDropLocation();
       if (tdl instanceof JList.DropLocation) {
         index = ((JList.DropLocation) tdl).getIndex();
       } else {
@@ -166,8 +166,18 @@ class ListItemTransferHandler extends TransferHandler {
     return index;
   }
 
+  private static List<?> getTransferData(TransferSupport info) {
+    List<?> values;
+    try {
+      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      values = Collections.emptyList();
+    }
+    return values;
+  }
+
   @SuppressWarnings("unchecked")
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
+  @Override public boolean importData(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
     DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
     int index = getIndex(info);
@@ -183,18 +193,8 @@ class ListItemTransferHandler extends TransferHandler {
     return !values.isEmpty();
   }
 
-  private static List<?> getTransferData(TransferSupport info) {
-    List<?> values;
-    try {
-      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-    } catch (UnsupportedFlavorException | IOException ex) {
-      values = Collections.emptyList();
-    }
-    return values;
-  }
-
   @Override public boolean importData(JComponent comp, Transferable t) {
-    return importData(new TransferHandler.TransferSupport(comp, t));
+    return importData(new TransferSupport(comp, t));
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
