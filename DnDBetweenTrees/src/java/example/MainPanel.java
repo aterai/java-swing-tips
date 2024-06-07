@@ -10,11 +10,13 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -85,18 +87,21 @@ class TreeTransferHandler extends TransferHandler {
   //     DefaultMutableTreeNode[].class,
   //     DataFlavor.javaJVMLocalObjectMimeType,
   //     "Array of TreeNode");
-  private static final String NAME = "Array of DefaultMutableTreeNode";
-  protected static final DataFlavor FLAVOR = new DataFlavor(DefaultMutableTreeNode[].class, NAME);
+  private static final String NAME = "List of DefaultMutableTreeNode";
+  protected static final DataFlavor FLAVOR = new DataFlavor(List.class, NAME);
   private JTree source;
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JTree) c;
     String msg = "SelectionPaths is null";
     TreePath[] paths = Objects.requireNonNull(source.getSelectionPaths(), msg);
-    DefaultMutableTreeNode[] nodes = new DefaultMutableTreeNode[paths.length];
-    for (int i = 0; i < paths.length; i++) {
-      nodes[i] = (DefaultMutableTreeNode) paths[i].getLastPathComponent();
-    }
+    List<Object> nodes = Arrays.stream(paths)
+        .map(TreePath::getLastPathComponent)
+        .collect(Collectors.toList()); // Java 16: .toList();
+    // List<Object> nodes = new ArrayList<>(paths.length);
+    // for (TreePath path : paths) {
+    //   nodes.add(path.getLastPathComponent());
+    // }
     // return new DataHandler(nodes, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
@@ -127,37 +132,38 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
-    DefaultMutableTreeNode[] nodes;
+    List<?> nodes = getTransferData(support.getTransferable());
+    Component c = support.getComponent();
+    TransferHandler.DropLocation dl = support.getDropLocation();
+    if (c instanceof JTree && dl instanceof JTree.DropLocation) {
+      insertNode((JTree) c, (JTree.DropLocation) dl, nodes);
+    }
+    return !nodes.isEmpty();
+  }
+
+  private static void insertNode(JTree tree, JTree.DropLocation dl, List<?> nodes) {
+    int childIndex = dl.getChildIndex();
+    TreePath path = dl.getPath();
+    DefaultMutableTreeNode tgt = (DefaultMutableTreeNode) path.getLastPathComponent();
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    AtomicInteger idx = new AtomicInteger(childIndex < 0 ? tgt.getChildCount() : childIndex);
+    nodes.stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(n -> {
+          DefaultMutableTreeNode clone = new DefaultMutableTreeNode(n.getUserObject());
+          model.insertNodeInto(deepCopy(n, clone), tgt, idx.getAndIncrement());
+        });
+  }
+
+  private static List<?> getTransferData(Transferable transferable) {
+    List<?> nodes;
     try {
-      Transferable t = support.getTransferable();
-      nodes = (DefaultMutableTreeNode[]) t.getTransferData(FLAVOR);
+      nodes = (List<?>) transferable.getTransferData(FLAVOR);
     } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+      nodes = Collections.emptyList();
     }
-    TransferHandler.DropLocation tdl = support.getDropLocation();
-    if (tdl instanceof JTree.DropLocation) {
-      JTree.DropLocation dl = (JTree.DropLocation) tdl;
-      int childIndex = dl.getChildIndex();
-      TreePath dest = dl.getPath();
-      DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dest.getLastPathComponent();
-      JTree tree = (JTree) support.getComponent();
-      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      // int idx = childIndex < 0 ? parent.getChildCount() : childIndex;
-      // // DefaultTreeModel sm = (DefaultTreeModel) source.getModel();
-      // for (DefaultMutableTreeNode node : nodes) {
-      //   // sm.removeNodeFromParent(node);
-      //   // model.insertNodeInto(node, parent, idx++);
-      //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-      //   model.insertNodeInto(deepCopy(node, clone), parent, idx++);
-      // }
-      AtomicInteger idx = new AtomicInteger(childIndex < 0 ? parent.getChildCount() : childIndex);
-      Stream.of(nodes).forEach(node -> {
-        DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-        model.insertNodeInto(deepCopy(node, clone), parent, idx.incrementAndGet());
-      });
-      return true;
-    }
-    return false;
+    return nodes;
   }
 
   private static DefaultMutableTreeNode deepCopy(MutableTreeNode src, DefaultMutableTreeNode tgt) {
