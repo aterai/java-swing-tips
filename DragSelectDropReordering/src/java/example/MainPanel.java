@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -400,35 +401,42 @@ class ListItemTransferHandler extends TransferHandler {
     return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
-  @SuppressWarnings("unchecked")
   @Override public boolean importData(TransferHandler.TransferSupport info) {
-    TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!(tdl instanceof JList.DropLocation)) {
-      return false;
-    }
-    JList.DropLocation dl = (JList.DropLocation) tdl;
-    JList<?> target = (JList<?>) info.getComponent();
-    DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = listModel.getSize();
+    Component c = info.getComponent();
+    TransferHandler.DropLocation dl = info.getDropLocation();
+    Transferable t = info.getTransferable();
+    return c instanceof JList
+        && dl instanceof JList.DropLocation
+        && addSelection((JList<?>) c, (JList.DropLocation) dl, t);
+  }
+
+  @SuppressWarnings("unchecked")
+  private boolean addSelection(JList<?> target, JList.DropLocation dl, Transferable t) {
+    DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
+    int max = model.getSize();
     int index = dl.getIndex();
     // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
     // index = Math.min(index, max);
     index = index >= 0 && index < max ? index : max;
     addIndex = index;
-    try {
-      // Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
-      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o : values) {
-        int i = index++;
-        listModel.add(i, o);
-        target.addSelectionInterval(i, i);
-      }
-      addCount = values.size();
-      return true;
-    } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+    List<?> values = getTransferData(t);
+    for (Object o : values) {
+      int i = index++;
+      model.add(i, o);
+      target.addSelectionInterval(i, i);
     }
+    addCount = values.size();
+    return !values.isEmpty();
+  }
+
+  private static List<?> getTransferData(Transferable transferable) {
+    List<?> values;
+    try {
+      values = (List<?>) transferable.getTransferData(FLAVOR);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      values = Collections.emptyList();
+    }
+    return values;
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
