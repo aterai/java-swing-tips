@@ -111,7 +111,6 @@ class TableRowTransferHandler extends TransferHandler {
   private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
-  private Component source;
 
   // protected TableRowTransferHandler() {
   //   super();
@@ -121,7 +120,6 @@ class TableRowTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     c.getRootPane().getGlassPane().setVisible(true);
-    source = c;
     JTable table = (JTable) c;
     DefaultTableModel model = (DefaultTableModel) table.getModel();
     // List<Object> list = new ArrayList<>();
