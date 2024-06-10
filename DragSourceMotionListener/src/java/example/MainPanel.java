@@ -166,18 +166,30 @@ class LabelTransferHandler extends TransferHandler {
 
   @Override public boolean importData(TransferHandler.TransferSupport support) {
     // System.out.println("importData");
-    DragPanel target = (DragPanel) support.getComponent();
+    Component c = support.getComponent();
+    Object o = getTransferableData(support.getTransferable());
+    return c instanceof DragPanel
+        && o instanceof DragPanel
+        && copyDragPanel((DragPanel) c, (DragPanel) o);
+  }
+
+  private static boolean copyDragPanel(DragPanel tgt, DragPanel src) {
+    JLabel l = new JLabel();
+    l.setIcon(src.draggingLabel.getIcon());
+    l.setText(src.draggingLabel.getText());
+    tgt.add(l);
+    tgt.revalidate();
+    return true;
+  }
+
+  private Object getTransferableData(Transferable transferable) {
+    Object src;
     try {
-      DragPanel src = (DragPanel) support.getTransferable().getTransferData(localObjectFlavor);
-      JLabel l = new JLabel();
-      l.setIcon(src.draggingLabel.getIcon());
-      l.setText(src.draggingLabel.getText());
-      target.add(l);
-      target.revalidate();
-      return true;
+      src = transferable.getTransferData(localObjectFlavor);
     } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+      src = null;
     }
+    return src;
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
