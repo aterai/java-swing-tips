@@ -12,6 +12,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.InputEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
@@ -84,7 +85,7 @@ public final class MainPanel extends JPanel {
         ListCellRenderer<? super Color> renderer = getCellRenderer();
         setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
           Component c = renderer.getListCellRendererComponent(
-                  list, value, index, isSelected, cellHasFocus);
+              list, value, index, isSelected, cellHasFocus);
           c.setForeground(value);
           return c;
         });
@@ -186,7 +187,7 @@ class ListItemTransferHandler extends TransferHandler {
   //   return super.canImport(comp, transferFlavors);
   // }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     // System.out.println("canImport(TransferSupport)");
     return info.isDataFlavorSupported(FLAVOR);
   }
@@ -195,11 +196,11 @@ class ListItemTransferHandler extends TransferHandler {
     return COPY_OR_MOVE;
   }
 
-  private static int getIndex(TransferHandler.TransferSupport info) {
+  private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
     int index; // = dl.getIndex();
     if (info.isDrop()) { // Mouse Drag & Drop
-      TransferHandler.DropLocation tdl = info.getDropLocation();
+      DropLocation tdl = info.getDropLocation();
       if (tdl instanceof JList.DropLocation) {
         index = ((JList.DropLocation) tdl).getIndex();
       } else {
@@ -208,43 +209,50 @@ class ListItemTransferHandler extends TransferHandler {
     } else { // Keyboard Copy & Paste
       index = target.getSelectedIndex();
     }
-    DefaultListModel<?> listModel = (DefaultListModel<?>) target.getModel();
+    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
     // boolean insert = dl.isInsert();
-    int max = listModel.getSize();
+    int max = model.getSize();
     // int index = dl.getIndex();
     index = index < 0 ? max : index; // If it is out of range, it is appended to the end
     index = Math.min(index, max);
     return index;
   }
 
+  private static List<?> getTransferData(TransferSupport info) {
+    List<?> values;
+    try {
+      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      values = Collections.emptyList();
+    }
+    return values;
+  }
+
   @SuppressWarnings("unchecked")
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
+  @Override public boolean importData(TransferSupport info) {
     // System.out.println("importData(TransferSupport)");
     JList<?> target = (JList<?>) info.getComponent();
     Object b = target.getClientProperty("canImportFromClipboard");
     if (!info.isDrop() && (b == null || Objects.equals(b, Boolean.FALSE))) {
       return false;
     }
-    DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
+    DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
     int index = getIndex(info);
     addIndex = index;
-    try {
-      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o : values) {
-        int i = index++;
-        listModel.add(i, o);
-        target.addSelectionInterval(i, i);
-      }
-      addCount = info.isDrop() && target.equals(source) ? values.size() : 0;
-      return true;
-    } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+    List<?> values = getTransferData(info);
+    for (Object o : values) {
+      int i = index++;
+      model.add(i, o);
+      target.addSelectionInterval(i, i);
     }
+    addCount = info.isDrop() && target.equals(source) ? values.size() : 0;
+    target.requestFocusInWindow();
+    return !values.isEmpty();
   }
 
   @Override public boolean importData(JComponent comp, Transferable t) {
     // System.out.println("importData(JComponent, Transferable)");
-    return importData(new TransferHandler.TransferSupport(comp, t));
+    return importData(new TransferSupport(comp, t));
   }
 
   @Override public void exportAsDrag(JComponent comp, InputEvent e, int action) {
