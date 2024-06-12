@@ -139,7 +139,7 @@ public final class MainPanel extends JPanel {
   //     return new DataHandler(header, localObjectFlavor.getMimeType());
   //   }
   //
-  //   @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  //   @Override public boolean canImport(TransferSupport info) {
   //     // System.out.println("canImport");
   //     return info.isDataFlavorSupported(localObjectFlavor);
   //   }
@@ -149,7 +149,7 @@ public final class MainPanel extends JPanel {
   //     return TransferHandler.MOVE;
   //   }
   //
-  //   @Override public boolean importData(TransferHandler.TransferSupport info) {
+  //   @Override public boolean importData(TransferSupport info) {
   //     System.out.println("importData");
   //     JTableHeader target = (JTableHeader) info.getComponent();
   //     // JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
@@ -281,7 +281,7 @@ class TableRowTransferHandler extends TransferHandler {
     return frame;
   }
 
-  private boolean canDropTable(TransferHandler.TransferSupport info) {
+  private boolean canDropTable(TransferSupport info) {
     Component c = info.getComponent();
     Container p = SwingUtilities.getAncestorOfClass(JDesktopPane.class, c);
     boolean b = c instanceof JTable && p instanceof JDesktopPane;
@@ -302,7 +302,7 @@ class TableRowTransferHandler extends TransferHandler {
     return !r.contains(pt);
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     boolean isSupported = info.isDataFlavorSupported(FLAVOR) && canDropTable(info);
     boolean canDrop = info.isDrop() && isSupported;
     getRootGlassPane(info.getComponent()).ifPresent(p -> {
@@ -316,7 +316,7 @@ class TableRowTransferHandler extends TransferHandler {
     return COPY_OR_MOVE;
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
+  @Override public boolean importData(TransferSupport info) {
     JTable target = (JTable) info.getComponent();
     DefaultTableModel model = (DefaultTableModel) target.getModel();
     int max = model.getRowCount();

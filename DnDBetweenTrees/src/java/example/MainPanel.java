@@ -126,15 +126,15 @@ class TreeTransferHandler extends TransferHandler {
     return MOVE;
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport support) {
+  @Override public boolean canImport(TransferSupport support) {
     boolean equals = Objects.equals(source, support.getComponent());
     return !equals && support.isDrop() && support.isDataFlavorSupported(FLAVOR);
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport support) {
+  @Override public boolean importData(TransferSupport support) {
     List<?> nodes = getTransferData(support.getTransferable());
     Component c = support.getComponent();
-    TransferHandler.DropLocation dl = support.getDropLocation();
+    DropLocation dl = support.getDropLocation();
     if (c instanceof JTree && dl instanceof JTree.DropLocation) {
       insertNode((JTree) c, (JTree.DropLocation) dl, nodes);
     }

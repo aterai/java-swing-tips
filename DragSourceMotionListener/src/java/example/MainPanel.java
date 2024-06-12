@@ -144,7 +144,7 @@ class LabelTransferHandler extends TransferHandler {
     //  // }
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport support) {
+  @Override public boolean canImport(TransferSupport support) {
     return support.isDrop() && support.isDataFlavorSupported(localObjectFlavor);
   }
 
@@ -164,7 +164,7 @@ class LabelTransferHandler extends TransferHandler {
     return MOVE;
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport support) {
+  @Override public boolean importData(TransferSupport support) {
     // System.out.println("importData");
     Component c = support.getComponent();
     Object o = getTransferableData(support.getTransferable());

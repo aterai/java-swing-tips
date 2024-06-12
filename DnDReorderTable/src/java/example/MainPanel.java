@@ -152,7 +152,7 @@ class TableRowTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     boolean canDrop = info.isDrop() && info.isDataFlavorSupported(FLAVOR);
     // XXX bug? The cursor flickering problem with JTableHeader:
     // info.getComponent().setCursor(
@@ -166,7 +166,7 @@ class TableRowTransferHandler extends TransferHandler {
     return COPY_OR_MOVE;
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
+  @Override public boolean importData(TransferSupport info) {
     JTable target = (JTable) info.getComponent();
     DefaultTableModel model = (DefaultTableModel) target.getModel();
     // boolean insert = dl.isInsert();

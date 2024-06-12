@@ -164,7 +164,7 @@ class CellIconTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     Component c = info.getComponent();
     return c instanceof JList && info.isDataFlavorSupported(ICON_FLAVOR);
   }
@@ -174,7 +174,7 @@ class CellIconTransferHandler extends TransferHandler {
   }
 
   @SuppressWarnings("unchecked")
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
+  @Override public boolean importData(TransferSupport info) {
     boolean inserted;
     Component c = info.getComponent();
     try {

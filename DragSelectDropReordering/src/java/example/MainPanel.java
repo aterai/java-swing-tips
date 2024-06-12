@@ -390,7 +390,7 @@ class ListItemTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     return info.isDrop() && info.isDataFlavorSupported(FLAVOR);
   }
 
@@ -401,9 +401,9 @@ class ListItemTransferHandler extends TransferHandler {
     return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
+  @Override public boolean importData(TransferSupport info) {
     Component c = info.getComponent();
-    TransferHandler.DropLocation dl = info.getDropLocation();
+    DropLocation dl = info.getDropLocation();
     Transferable t = info.getTransferable();
     return c instanceof JList
         && dl instanceof JList.DropLocation

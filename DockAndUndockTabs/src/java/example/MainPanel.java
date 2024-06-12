@@ -427,7 +427,7 @@ class TabTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport support) {
+  @Override public boolean canImport(TransferSupport support) {
     // System.out.println("canImport");
     if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
       // boolean b = support.isDataFlavorSupported(localObjectFlavor);
@@ -505,7 +505,7 @@ class TabTransferHandler extends TransferHandler {
     return NONE;
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport support) {
+  @Override public boolean importData(TransferSupport support) {
     // System.out.println("importData");
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     DnDTabbedPane.DropLocation dl = target.getDropLocation();
