@@ -12,6 +12,18 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    RowSorter<? extends TableModel> sorter = table.getRowSorter();
+    if (sorter instanceof TableRowSorter) {
+      RowComparator comparator = new RowComparator(table, 1);
+      ((TableRowSorter<? extends TableModel>) sorter).setComparator(1, comparator);
+    }
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] empty = {"", ""};
     String[] columnNames = {"DefaultTableRowSorter", "EmptiesLastTableRowSorter"};
     Object[][] data = {
@@ -20,21 +32,11 @@ public final class MainPanel extends JPanel {
         {"ccc", "ddd"}, {"fff", "fff"},
         empty, empty, empty, empty, empty
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return String.class;
       }
     };
-    JTable table = new JTable(model);
-    table.setAutoCreateRowSorter(true);
-    RowSorter<? extends TableModel> sorter = table.getRowSorter();
-    if (sorter instanceof TableRowSorter) {
-      RowComparator comparator = new RowComparator(table, 1);
-      ((TableRowSorter<? extends TableModel>) sorter).setComparator(1, comparator);
-    }
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -69,21 +71,44 @@ class RowComparator implements Comparator<String>, Serializable {
     this.column = column;
   }
 
+  // @Override public int compare(String a, String b) {
+  //   int dir = 1;
+  //   List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
+  //   if (!keys.isEmpty()) {
+  //     RowSorter.SortKey sortKey = keys.get(0);
+  //     if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+  //       dir = -1;
+  //     }
+  //   }
+  //   int ret;
+  //   if (a.isEmpty() && !b.isEmpty()) {
+  //     ret = dir;
+  //   } else if (!a.isEmpty() && b.isEmpty()) {
+  //     ret = -1 * dir;
+  //   } else {
+  //     ret = a.compareTo(b);
+  //   }
+  //   return ret;
+  // }
+
   @Override public int compare(String a, String b) {
-    int flag = 1;
+    int v = getWeight(a) - getWeight(b);
+    return v == 0 ? a.compareTo(b) : v * getSortOrderDirection();
+  }
+
+  private static int getWeight(String str) {
+    return str.isEmpty() ? 2 : 1;
+  }
+
+  private int getSortOrderDirection() {
+    int dir = 1;
     List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
     if (!keys.isEmpty()) {
       RowSorter.SortKey sortKey = keys.get(0);
       if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
-        flag = -1;
+        dir = -1;
       }
     }
-    if (a.isEmpty() && !b.isEmpty()) {
-      return flag;
-    } else if (!a.isEmpty() && b.isEmpty()) {
-      return -1 * flag;
-    } else {
-      return a.compareTo(b);
-    }
+    return dir;
   }
 }

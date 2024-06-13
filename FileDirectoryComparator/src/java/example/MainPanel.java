@@ -156,11 +156,11 @@ class FileTransferHandler extends TransferHandler {
     return COPY;
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport support) {
+  @Override public boolean canImport(TransferSupport support) {
     return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
   }
 
-  @Override public boolean importData(TransferHandler.TransferSupport support) {
+  @Override public boolean importData(TransferSupport support) {
     Transferable transferable = support.getTransferable();
     List<?> list = getFileList(transferable);
     JTable table = (JTable) support.getComponent();
@@ -214,13 +214,19 @@ class FileComparator extends DefaultFileComparator {
   }
 
   @Override public int compare(File a, File b) {
-    if (a.isDirectory() && !b.isDirectory()) {
-      return -1;
-    } else if (!a.isDirectory() && b.isDirectory()) {
-      return 1;
-    } else {
-      return super.compare(a, b);
-    }
+    // if (a.isDirectory() && !b.isDirectory()) {
+    //   return -1;
+    // } else if (!a.isDirectory() && b.isDirectory()) {
+    //   return 1;
+    // } else {
+    //   return super.compare(a, b);
+    // }
+    int v = getWeight(a) - getWeight(b);
+    return v == 0 ? super.compare(a, b) : v;
+  }
+
+  private static int getWeight(File file) {
+    return file.isDirectory() ? 1 : 2;
   }
 }
 
@@ -236,21 +242,32 @@ class FileGroupComparator extends DefaultFileComparator {
   }
 
   @Override public int compare(File a, File b) {
-    int flag = 1;
+    // int flag = getSortOrderDirection();
+    // if (a.isDirectory() && !b.isDirectory()) {
+    //   return -1 * flag;
+    // } else if (!a.isDirectory() && b.isDirectory()) {
+    //   return flag;
+    // } else {
+    //   return super.compare(a, b);
+    // }
+    int v = getWeight(a) - getWeight(b);
+    return v == 0 ? super.compare(a, b) : v * getSortOrderDirection();
+  }
+
+  private static int getWeight(File file) {
+    return file.isDirectory() ? 1 : 2;
+  }
+
+  private int getSortOrderDirection() {
+    int dir = 1;
     List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
     if (!keys.isEmpty()) {
       RowSorter.SortKey sortKey = keys.get(0);
       if (sortKey.getColumn() == getColumn() && sortKey.getSortOrder() == SortOrder.DESCENDING) {
-        flag = -1;
+        dir = -1;
       }
     }
-    if (a.isDirectory() && !b.isDirectory()) {
-      return -1 * flag;
-    } else if (!a.isDirectory() && b.isDirectory()) {
-      return flag;
-    } else {
-      return super.compare(a, b);
-    }
+    return dir;
   }
 }
 
