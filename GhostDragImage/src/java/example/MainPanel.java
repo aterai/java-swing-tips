@@ -12,6 +12,7 @@ import java.awt.dnd.DragSource;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -126,7 +127,7 @@ class ListItemTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferHandler.TransferSupport info) {
+  @Override public boolean canImport(TransferSupport info) {
     return info.isDrop() && info.isDataFlavorSupported(FLAVOR);
   }
 
@@ -158,34 +159,53 @@ class ListItemTransferHandler extends TransferHandler {
     return bi;
   }
 
-  @SuppressWarnings("unchecked")
-  @Override public boolean importData(TransferHandler.TransferSupport info) {
-    TransferHandler.DropLocation tdl = info.getDropLocation();
-    if (!(tdl instanceof JList.DropLocation)) {
-      return false;
-    }
-    JList.DropLocation dl = (JList.DropLocation) tdl;
+  private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
-    DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = listModel.getSize();
-    int index = dl.getIndex();
-    // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    // index = Math.min(index, max);
-    index = index >= 0 && index < max ? index : max;
-    addIndex = index;
-    try {
-      List<?> values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
-      for (Object o : values) {
-        int i = index++;
-        listModel.add(i, o);
-        target.addSelectionInterval(i, i);
+    int index; // = dl.getIndex();
+    if (info.isDrop()) { // Mouse Drag & Drop
+      DropLocation tdl = info.getDropLocation();
+      if (tdl instanceof JList.DropLocation) {
+        index = ((JList.DropLocation) tdl).getIndex();
+      } else {
+        index = target.getSelectedIndex();
       }
-      addCount = values.size();
-      return true;
-    } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
+    } else { // Keyboard Copy & Paste
+      index = target.getSelectedIndex();
     }
+    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
+    // boolean insert = dl.isInsert();
+    int max = model.getSize();
+    // int index = dl.getIndex();
+    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
+    index = Math.min(index, max);
+    return index;
+  }
+
+  private static List<?> getTransferData(TransferSupport info) {
+    List<?> values;
+    try {
+      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      values = Collections.emptyList();
+    }
+    return values;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override public boolean importData(TransferSupport info) {
+    JList<?> target = (JList<?>) info.getComponent();
+    DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
+    int index = getIndex(info);
+    addIndex = index;
+    List<?> values = getTransferData(info);
+    for (Object o : values) {
+      int i = index++;
+      model.add(i, o);
+      target.addSelectionInterval(i, i);
+    }
+    addCount = info.isDrop() ? values.size() : 0;
+    // target.requestFocusInWindow();
+    return !values.isEmpty();
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
