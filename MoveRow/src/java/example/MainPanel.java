@@ -193,12 +193,15 @@ class UpAction extends AbstractAction {
     if (table.isEditing()) {
       table.getCellEditor().stopCellEditing();
     }
+    TableModel model = table.getModel();
     int[] pos = table.getSelectedRows();
-    if (pos.length == 0) {
-      return;
+    if (model instanceof RowDataModel && pos.length != 0) {
+      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+      upTo((RowDataModel) model, pos, isShiftDown);
     }
-    RowDataModel model = (RowDataModel) table.getModel();
-    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+  }
+
+  private void upTo(RowDataModel model, int[] pos, boolean isShiftDown) {
     if (isShiftDown) { // Jump to the top
       model.moveRow(pos[0], pos[pos.length - 1], 0);
       table.setRowSelectionInterval(0, pos.length - 1);
@@ -226,12 +229,15 @@ class DownAction extends AbstractAction {
     if (table.isEditing()) {
       table.getCellEditor().stopCellEditing();
     }
+    TableModel model = table.getModel();
     int[] pos = table.getSelectedRows();
-    if (pos.length == 0) {
-      return;
+    if (model instanceof RowDataModel && pos.length != 0) {
+      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+      downTo((RowDataModel) model, pos, isShiftDown);
     }
-    RowDataModel model = (RowDataModel) table.getModel();
-    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+  }
+
+  private void downTo(RowDataModel model, int[] pos, boolean isShiftDown) {
     if (isShiftDown) { // Jump to the end
       model.moveRow(pos[0], pos[pos.length - 1], model.getRowCount() - pos.length);
       table.setRowSelectionInterval(model.getRowCount() - pos.length, model.getRowCount() - 1);
@@ -288,9 +294,9 @@ class InitAction extends AbstractAction {
 
 class RowDataModel extends SortableTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-    new ColumnContext("No.", Integer.class, false),
-    new ColumnContext("Name", String.class, true),
-    new ColumnContext("Comment", String.class, true)
+      new ColumnContext("No.", Integer.class, false),
+      new ColumnContext("Name", String.class, true),
+      new ColumnContext("Comment", String.class, true)
   };
   private int number;
 
