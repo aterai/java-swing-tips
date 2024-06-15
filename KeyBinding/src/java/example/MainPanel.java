@@ -6,6 +6,9 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -96,27 +99,24 @@ public final class MainPanel extends JPanel {
   //   return h;
   // }
   private void loadBindingMap(FocusType focusType, InputMap im, ActionMap am) {
-    if (Objects.isNull(im.allKeys())) {
+    KeyStroke[] imKeys = im.allKeys();
+    if (Objects.isNull(imKeys)) {
       return;
     }
     ActionMap tmpAm = new ActionMap();
     for (Object actionMapKey : am.allKeys()) {
       tmpAm.put(actionMapKey, am.get(actionMapKey));
     }
-    for (KeyStroke ks : im.allKeys()) {
+    for (KeyStroke ks : imKeys) {
       Object actionMapKey = im.get(ks);
       Action action = am.get(actionMapKey);
-      if (Objects.isNull(action)) {
-        model.addBinding(makeBinding(focusType, "____" + actionMapKey.toString(), ks.toString()));
-      } else {
-        model.addBinding(makeBinding(focusType, actionMapKey.toString(), ks.toString()));
-      }
+      String name = String.format("%s%s", action == null ? "____" : "", actionMapKey);
+      model.addBinding(makeBinding(focusType, name, ks.toString()));
       tmpAm.remove(actionMapKey);
     }
-    if (Objects.isNull(tmpAm.allKeys())) {
-      return;
-    }
-    for (Object actionMapKey : tmpAm.allKeys()) {
+    Object[] keys = tmpAm.allKeys();
+    List<Object> list = Objects.nonNull(keys) ? Arrays.asList(keys) : Collections.emptyList();
+    for (Object actionMapKey : list) {
       model.addBinding(makeBinding(focusType, actionMapKey.toString(), ""));
     }
   }
