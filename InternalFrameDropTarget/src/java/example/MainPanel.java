@@ -355,13 +355,10 @@ class TableRowTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    cleanup(c, action == MOVE);
-  }
-
-  private void cleanup(JComponent c, boolean remove) {
+    // cleanup(c, action == MOVE);
     getRootGlassPane(c).ifPresent(p -> p.setVisible(false));
     // c.setCursor(Cursor.getDefaultCursor());
-    if (remove && !indices.isEmpty()) {
+    if (action == MOVE && !indices.isEmpty()) {
       DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
       if (addCount > 0) {
         for (int i = 0; i < indices.size(); i++) {
@@ -379,4 +376,26 @@ class TableRowTransferHandler extends TransferHandler {
     addCount = 0;
     addIndex = -1;
   }
+
+  // private void cleanup(JComponent c, boolean remove) {
+  //   getRootGlassPane(c).ifPresent(p -> p.setVisible(false));
+  //   // c.setCursor(Cursor.getDefaultCursor());
+  //   if (remove && !indices.isEmpty()) {
+  //     DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
+  //     if (addCount > 0) {
+  //       for (int i = 0; i < indices.size(); i++) {
+  //         if (indices.get(i) >= addIndex) {
+  //           // indices[i] += addCount;
+  //           indices.set(i, indices.get(i) + addCount);
+  //         }
+  //       }
+  //     }
+  //     for (int i = indices.size() - 1; i >= 0; i--) {
+  //       model.removeRow(indices.get(i));
+  //     }
+  //   }
+  //   indices.clear();
+  //   addCount = 0;
+  //   addIndex = -1;
+  // }
 }
