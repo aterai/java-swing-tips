@@ -17,24 +17,25 @@ public final class MainPanel extends JPanel {
     log.setEditable(false);
     log.append("MouseInfo.getNumberOfButtons: " + MouseInfo.getNumberOfButtons() + "\n");
 
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.setComponentPopupMenu(new TabbedPanePopupMenu());
-    tabbedPane.addTab("Title a", new JLabel("Close a tab by the middle mouse button clicking."));
-    tabbedPane.addTab("Title b", new JLabel("JLabel b"));
-    tabbedPane.addTab("Title c", new JLabel("JLabel c"));
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.setComponentPopupMenu(new TabbedPanePopupMenu());
+    tabs.addTab("Title1", new JLabel("Close a tab by the middle mouse button clicking."));
+    tabs.addTab("Title2", new JLabel("JLabel 2"));
+    tabs.addTab("Title3", new JLabel("JLabel 3"));
 
-    tabbedPane.addMouseListener(new MouseAdapter() {
+    tabs.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         int button = e.getButton();
-        boolean isB2Clicked = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
+        int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+        boolean isB2Clicked = (e.getModifiersEx() & maskForButton) != 0;
 
-        String mask = button == 0 ? "NOBUTTON" : "BUTTON" + button;
+        String mask = button == MouseEvent.NOBUTTON ? "NOBUTTON" : "BUTTON" + button;
         log.append(mask + "\n");
         log.append("BUTTON2 mouseClicked: " + isB2Clicked + "\n");
 
-        boolean isB1Double = e.getClickCount() == 2 && button == 1;
+        boolean isB1Double = e.getClickCount() >= 2 && button == MouseEvent.BUTTON1;
         // && InputEvent.getMaskForButton(button) == InputEvent.BUTTON1_DOWN_MASK;
-        boolean isB2Down = MouseInfo.getNumberOfButtons() > 2 && button == 2;
+        boolean isB2Down = MouseInfo.getNumberOfButtons() > 2 && button == MouseEvent.BUTTON2;
         // = InputEvent.getMaskForButton(button) == InputEvent.BUTTON2_DOWN_MASK;
 
         JTabbedPane tabbedPane = (JTabbedPane) e.getComponent();
@@ -45,16 +46,18 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void mousePressed(MouseEvent e) {
-        boolean mousePressed = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
+        int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+        boolean mousePressed = (e.getModifiersEx() & maskForButton) != 0;
         log.append("BUTTON2 mousePressed: " + mousePressed + "\n");
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        boolean mouseReleased = (e.getModifiersEx() & InputEvent.getMaskForButton(2)) != 0;
+        int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+        boolean mouseReleased = (e.getModifiersEx() & maskForButton) != 0;
         log.append("BUTTON2 mouseReleased: " + mouseReleased + "\n");
       }
     });
-    add(tabbedPane);
+    add(tabs);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -110,9 +113,9 @@ final class TabbedPanePopupMenu extends JPopupMenu {
     closeAllButActive = add("Close all bat active");
     closeAllButActive.addActionListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      int tabidx = tabbedPane.getSelectedIndex();
-      String title = tabbedPane.getTitleAt(tabidx);
-      Component cmp = tabbedPane.getComponentAt(tabidx);
+      int tabIdx = tabbedPane.getSelectedIndex();
+      String title = tabbedPane.getTitleAt(tabIdx);
+      Component cmp = tabbedPane.getComponentAt(tabIdx);
       tabbedPane.removeAll();
       tabbedPane.addTab(title, cmp);
     });
