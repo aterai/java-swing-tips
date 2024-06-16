@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST DoubleClickInTabAreaToCreateNewTab" />
+  <property name="jnlp.Name"     value="DoubleClickInTabAreaToCreateNewTab" />
+  <property name="jnlp.name"     value="doubleclickintabareatocreatenewtab" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/doubleclickintabareatocreatenewtab/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DoubleClickInTabAreaToCreateNewTab.html" />
+</project>
