@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -161,19 +162,29 @@ class RegexDateFilter extends RowFilter<TableModel, Integer> {
   }
 
   @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-    // TableModel m = entry.getModel();
-    // for (int i = 0; i < m.getColumnCount(); i++) {
-    for (int i = entry.getValueCount() - 1; i >= 0; i--) {
-      Object v = entry.getValue(i);
-      if (v instanceof Date) {
-        matcher.reset(DateFormat.getDateInstance().format(v));
-      } else {
-        matcher.reset(entry.getStringValue(i));
-      }
-      if (matcher.find()) {
-        return true;
-      }
-    }
-    return false;
+    return IntStream.range(0, entry.getValueCount())
+      .anyMatch(i -> {
+        Object v = entry.getValue(i);
+        if (v instanceof Date) {
+          matcher.reset(DateFormat.getDateInstance().format(v));
+        } else {
+          matcher.reset(entry.getStringValue(i));
+        }
+        return matcher.find();
+      });
+    // // TableModel m = entry.getModel();
+    // // for (int i = 0; i < m.getColumnCount(); i++) {
+    // for (int i = entry.getValueCount() - 1; i >= 0; i--) {
+    //   Object v = entry.getValue(i);
+    //   if (v instanceof Date) {
+    //     matcher.reset(DateFormat.getDateInstance().format(v));
+    //   } else {
+    //     matcher.reset(entry.getStringValue(i));
+    //   }
+    //   if (matcher.find()) {
+    //     return true;
+    //   }
+    // }
+    // return false;
   }
 }
