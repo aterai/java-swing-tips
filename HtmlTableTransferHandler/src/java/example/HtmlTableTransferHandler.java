@@ -56,38 +56,37 @@ public final class HtmlTableTransferHandler extends TransferHandler {
 
   // @see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
   @Override protected Transferable createTransferable(JComponent c) {
+    Transferable transferable = null;
     if (c instanceof JTable && canStartDrag((JTable) c)) {
       JTable table = (JTable) c;
       int[] rows = getSelectedRows(table);
       int[] cols = getSelectedColumns(table);
       // if (rows == null || cols == null || rows.length == 0 || cols.length == 0) {
-      if (rows.length == 0 || cols.length == 0) {
-        return null;
-      }
-
-      StringBuilder plainBuf = new StringBuilder();
-      StringBuilder htmlBuf = new StringBuilder(1024);
-      htmlBuf.append("<html><body><table border='1'>");
-      for (int row : rows) {
-        htmlBuf.append("<tr>");
-        for (int col : cols) {
-          Object obj = table.getValueAt(row, col);
-          String val = Objects.toString(obj, "") + "\t";
-          plainBuf.append(val);
-          appendTag(htmlBuf, obj);
+      if (rows.length > 0 && cols.length > 0) {
+        StringBuilder plainBuf = new StringBuilder();
+        StringBuilder htmlBuf = new StringBuilder(1024);
+        htmlBuf.append("<html><body><table border='1'>");
+        for (int row : rows) {
+          htmlBuf.append("<tr>");
+          for (int col : cols) {
+            Object obj = table.getValueAt(row, col);
+            String val = Objects.toString(obj, "") + "\t";
+            plainBuf.append(val);
+            appendTag(htmlBuf, obj);
+          }
+          // we want a newline at the end of each line and not a tab
+          plainBuf.deleteCharAt(plainBuf.length() - 1).append('\n');
+          htmlBuf.append("</tr>");
         }
-        // we want a newline at the end of each line and not a tab
-        plainBuf.deleteCharAt(plainBuf.length() - 1).append('\n');
-        htmlBuf.append("</tr>");
+
+        // remove the last newline
+        plainBuf.deleteCharAt(plainBuf.length() - 1);
+        htmlBuf.append("</table></body></html>");
+
+        transferable = new BasicTransferable(plainBuf.toString(), htmlBuf.toString());
       }
-
-      // remove the last newline
-      plainBuf.deleteCharAt(plainBuf.length() - 1);
-      htmlBuf.append("</table></body></html>");
-
-      return new BasicTransferable(plainBuf.toString(), htmlBuf.toString());
     }
-    return null;
+    return transferable;
   }
 
   @Override public int getSourceActions(JComponent c) {
