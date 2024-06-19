@@ -48,6 +48,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   }
 
   private boolean fireDeleteEvent(TableModel m, TableColumn column, Object status) {
+    boolean repaint = true;
     if (m.getRowCount() == 0) {
       column.setHeaderValue(Status.DESELECTED);
     } else if (status == Status.INDETERMINATE) {
@@ -65,14 +66,15 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
       } else if (selected) {
         column.setHeaderValue(Status.SELECTED);
       } else {
-        return false;
+        repaint = false;
       }
     }
-    return true;
+    return repaint;
   }
 
   private boolean fireInsertEvent(
       TableModel m, TableColumn column, Object status, TableModelEvent e) {
+    boolean repaint = true;
     boolean selected = status == Status.DESELECTED;
     boolean deselected = status == Status.SELECTED;
     for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
@@ -85,12 +87,13 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     } else if (selected || deselected) {
       column.setHeaderValue(Status.INDETERMINATE);
     } else {
-      return false;
+      repaint = false;
     }
-    return true;
+    return repaint;
   }
 
   private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
+    boolean repaint = true;
     if (status == Status.INDETERMINATE) {
       boolean selected = true;
       boolean deselected = true;
@@ -99,7 +102,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
         selected &= b;
         deselected &= !b;
         if (selected == deselected) {
-          return false;
+          repaint = false;
         }
       }
       if (deselected) {
@@ -110,7 +113,7 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
     } else {
       column.setHeaderValue(Status.INDETERMINATE);
     }
-    return true;
+    return repaint;
   }
 
   @Override public void mouseClicked(MouseEvent e) {
