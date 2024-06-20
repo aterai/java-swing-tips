@@ -83,32 +83,33 @@ class SilentDeleteTextAction extends TextAction {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    JTextComponent target = getTextComponent(e);
-    if (Objects.nonNull(target) && target.isEditable()) {
-      Caret caret = target.getCaret();
-      int dot = caret.getDot();
-      int mark = caret.getMark();
-      if (DefaultEditorKit.deletePrevCharAction.equals(getValue(NAME))) {
-        // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
-        if (dot == 0 && mark == 0) {
-          return;
-        }
-      } else {
-        // @see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
-        Document doc = target.getDocument();
-        if (dot == mark && doc.getLength() == dot) {
-          return;
-        }
-      }
+    JTextComponent c = getTextComponent(e);
+    if (Objects.isNull(c) || !c.isEditable() || !skipBeep(c)) {
+      deleteAction.actionPerformed(e);
     }
-    deleteAction.actionPerformed(e);
+  }
+
+  private boolean skipBeep(JTextComponent textComponent) {
+    Caret caret = textComponent.getCaret();
+    int dot = caret.getDot();
+    int mark = caret.getMark();
+    boolean skip;
+    if (DefaultEditorKit.deletePrevCharAction.equals(getValue(NAME))) {
+      // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
+      skip = dot == 0 && mark == 0;
+    } else {
+      // @see javax/swing/text/DefaultEditorKit.java DeleteNextCharAction
+      Document doc = textComponent.getDocument();
+      skip = dot == mark && doc.getLength() == dot;
+    }
+    return skip;
   }
 }
 
 class SizeFilter extends DocumentFilter {
   private static final int MAX = 5;
 
-  @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+  @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     int len = fb.getDocument().getLength();
     if (len + text.length() > MAX) {
       Toolkit.getDefaultToolkit().beep();
@@ -117,11 +118,12 @@ class SizeFilter extends DocumentFilter {
     fb.insertString(offset, text, attr);
   }
 
-  @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
-    fb.remove(offset, length);
+  @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+    // fb.remove(offset, length);
+    replace(fb, offset, length, "", null);
   }
 
-  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+  @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     int len = fb.getDocument().getLength();
     if (len - length + text.length() > MAX) {
       Toolkit.getDefaultToolkit().beep();
