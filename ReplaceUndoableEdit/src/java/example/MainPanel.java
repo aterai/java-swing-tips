@@ -147,7 +147,7 @@ class CustomUndoPlainDocument extends PlainDocument {
 class DocumentFilterUndoManager extends UndoManager {
   private CompoundEdit compoundEdit;
   private final transient DocumentFilter undoFilter = new DocumentFilter() {
-    @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+    @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
       if (length == 0) {
         fb.insertString(offset, text, attrs);
       } else {

@@ -76,17 +76,17 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
     this.maskRange = maskRange;
   }
 
-  @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+  @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     if (Objects.nonNull(text)) {
       replace(fb, offset, 0, text, attr);
     }
   }
 
-  @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+  @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
     replace(fb, offset, length, "", null);
   }
 
-  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+  @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     Document doc = fb.getDocument();
     if (doc.getDefaultRootElement().getElementIndex(offset) >= maskRange) {
       fb.replace(offset, length, text, attrs);

@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
 class PinCodeDocumentFilter extends DocumentFilter {
   public static final int MAX = 4;
 
-  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+  @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     String str = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
     if (str.length() <= MAX && str.matches("\\d+")) {
       super.replace(fb, offset, length, text, attrs);
