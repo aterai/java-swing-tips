@@ -133,17 +133,17 @@ class IntegerInputVerifier extends InputVerifier {
 // https://web.archive.org/web/20050523001117/http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 // Validating with a Document Filter
 class IntegerDocumentFilter extends DocumentFilter {
-  @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+  @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     if (Objects.nonNull(text)) {
       replace(fb, offset, 0, text, attr);
     }
   }
 
-  @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+  @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
     replace(fb, offset, length, "", null);
   }
 
-  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+  @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     Document doc = fb.getDocument();
     int currentLength = doc.getLength();
     String currentContent = doc.getText(0, currentLength);

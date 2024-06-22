@@ -142,7 +142,7 @@ class FifoDocumentListener implements DocumentListener {
 class FifoDocumentFilter extends DocumentFilter {
   private static final int MAX_LINES = 10;
 
-  @Override public void insertString(DocumentFilter.FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+  @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     fb.insertString(offset, text, attr);
     Element root = fb.getDocument().getDefaultRootElement();
     if (root.getElementCount() > MAX_LINES) {

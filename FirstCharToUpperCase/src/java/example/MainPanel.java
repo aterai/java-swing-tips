@@ -72,7 +72,7 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
     this.textField = textField;
   }
 
-  @Override public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+  @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
     Document doc = fb.getDocument();
     if (offset == 0 && doc.getLength() - length > 0) {
       fb.replace(length, 1, doc.getText(length, 1).toUpperCase(Locale.ENGLISH), null);
@@ -81,7 +81,7 @@ class FirstCharToUpperCaseDocumentFilter extends DocumentFilter {
     fb.remove(offset, length);
   }
 
-  @Override public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+  @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     String str = text;
     if (offset == 0 && Objects.nonNull(text) && !text.isEmpty()) {
       str = text.substring(0, 1).toUpperCase(Locale.ENGLISH) + text.substring(1);
