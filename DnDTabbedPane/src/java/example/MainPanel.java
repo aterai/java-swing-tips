@@ -347,26 +347,26 @@ class DnDTabbedPane extends JTabbedPane {
     //     .orElseGet(Rectangle::new));
     int tabPlacement = getTabPlacement();
     if (isTopBottomTabPlacement(tabPlacement)) {
-      tabbedRect.height = tabbedRect.height - compRect.height;
+      tabbedRect.height -= compRect.height;
       if (tabPlacement == BOTTOM) {
         tabbedRect.y += compRect.y + compRect.height;
       }
     } else {
-      tabbedRect.width = tabbedRect.width - compRect.width;
+      tabbedRect.width -= compRect.width;
       if (tabPlacement == RIGHT) {
         tabbedRect.x += compRect.x + compRect.width;
       }
     }
     // if (tabPlacement == TOP) {
-    //   tabbedRect.height = tabbedRect.height - compRect.height;
+    //   tabbedRect.height -= compRect.height;
     // } else if (tabPlacement == BOTTOM) {
-    //   tabbedRect.y = tabbedRect.y + compRect.y + compRect.height;
-    //   tabbedRect.height = tabbedRect.height - compRect.height;
+    //   tabbedRect.y += compRect.y + compRect.height;
+    //   tabbedRect.height -= compRect.height;
     // } else if (tabPlacement == LEFT) {
-    //   tabbedRect.width = tabbedRect.width - compRect.width;
+    //   tabbedRect.width -= compRect.width;
     // } else if (tabPlacement == RIGHT) {
-    //   tabbedRect.x = tabbedRect.x + compRect.x + compRect.width;
-    //   tabbedRect.width = tabbedRect.width - compRect.width;
+    //   tabbedRect.x += compRect.x + compRect.width;
+    //   tabbedRect.width -= compRect.width;
     // }
     tabbedRect.grow(2, 2);
     return tabbedRect;

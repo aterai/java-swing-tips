@@ -115,12 +115,12 @@ public final class MainPanel extends JPanel {
   //       .map(Component::getBounds).orElseGet(Rectangle::new);
   //   int tabPlacement = tabbedPane.getTabPlacement();
   //   if (isTopBottomTabPlacement(tabPlacement)) {
-  //     tabbedRect.height = tabbedRect.height - compRect.height;
+  //     tabbedRect.height -= compRect.height;
   //     if (tabPlacement == SwingConstants.BOTTOM) {
   //       tabbedRect.y += compRect.y + compRect.height;
   //     }
   //   } else {
-  //     tabbedRect.width = tabbedRect.width - compRect.width;
+  //     tabbedRect.width -= compRect.width;
   //     if (tabPlacement == SwingConstants.RIGHT) {
   //       tabbedRect.x += compRect.x + compRect.width;
   //     }

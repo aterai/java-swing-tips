@@ -248,12 +248,12 @@ class DnDTabbedPane extends JTabbedPane {
         .orElseGet(Rectangle::new);
     int tabPlacement = getTabPlacement();
     if (isTopBottomTabPlacement(tabPlacement)) {
-      tabbedRect.height = tabbedRect.height - compRect.height;
+      tabbedRect.height -= compRect.height;
       if (tabPlacement == BOTTOM) {
         tabbedRect.y += compRect.y + compRect.height;
       }
     } else {
-      tabbedRect.width = tabbedRect.width - compRect.width;
+      tabbedRect.width -= compRect.width;
       if (tabPlacement == RIGHT) {
         tabbedRect.x += compRect.x + compRect.width;
       }
@@ -316,24 +316,28 @@ class TabDragSourceListener implements DragSourceListener {
     Window w = SwingUtilities.getWindowAncestor(c);
     boolean outOfFrame = !w.getBounds().contains(e.getLocation());
     if (dropSuccess && outOfFrame && c instanceof DnDTabbedPane) {
-      DnDTabbedPane src = (DnDTabbedPane) c;
-      int index = src.dragTabIndex;
-      final Component cmp = src.getComponentAt(index);
-      final Component tab = src.getTabComponentAt(index);
-      final String title = src.getTitleAt(index);
-      final Icon icon = src.getIconAt(index);
-      final String tip = src.getToolTipTextAt(index);
-      src.remove(index);
-      DnDTabbedPane tabs = new DnDTabbedPane();
-      tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-      tabs.addTab(title, icon, cmp, tip);
-      tabs.setTabComponentAt(0, tab);
+      DnDTabbedPane tabs = makeDnDTabbedPane((DnDTabbedPane) c);
       JFrame frame = new JFrame();
       frame.getContentPane().add(tabs);
       frame.setSize(320, 240);
       frame.setLocation(e.getLocation());
       frame.setVisible(true);
     }
+  }
+
+  private static DnDTabbedPane makeDnDTabbedPane(DnDTabbedPane src) {
+    int index = src.dragTabIndex;
+    final Component cmp = src.getComponentAt(index);
+    final Component tab = src.getTabComponentAt(index);
+    final String title = src.getTitleAt(index);
+    final Icon icon = src.getIconAt(index);
+    final String tip = src.getToolTipTextAt(index);
+    src.remove(index);
+    DnDTabbedPane tabs = new DnDTabbedPane();
+    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    tabs.addTab(title, icon, cmp, tip);
+    tabs.setTabComponentAt(0, tab);
+    return tabs;
   }
 
   @Override public void dropActionChanged(DragSourceDragEvent e) {
