@@ -227,21 +227,20 @@ class FishEyeTable extends JTable {
     // System.out.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH);
     int index = -1;
     for (int i = -rd2; i < rowCount; i++) {
-      int crh;
-      if (ccRow - rd2 <= i && i <= ccRow + rd2) {
+      boolean b = ccRow - rd2 <= i && i <= ccRow + rd2;
+      if (b) {
         index++;
-        if (i < 0) {
-          continue;
-        }
-        crh = fishEyeRowList.get(index).getHeight();
-      } else {
-        if (i < 0) {
-          continue;
-        }
-        crh = restRh + (restGap > 0 ? 1 : 0);
-        restGap--;
       }
-      setRowHeight(i, crh);
+      if (i >= 0) {
+        int crh;
+        if (b) {
+          crh = fishEyeRowList.get(index).getHeight();
+        } else {
+          crh = restRh + (restGap > 0 ? 1 : 0);
+          restGap--;
+        }
+        setRowHeight(i, crh);
+      }
     }
   }
 
