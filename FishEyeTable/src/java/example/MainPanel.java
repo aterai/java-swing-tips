@@ -205,14 +205,16 @@ class FishEyeTable extends JTable {
   }
 
   private int getViewableColoredRowCount(int idx) {
-    int rd2 = (fishEyeRowList.size() - 1) / 2;
+    int size = fishEyeRowList.size();
+    int rd2 = (size - 1) / 2;
     int rc = getModel().getRowCount();
+    int count = size;
     if (rd2 - idx > 0) {
-      return rd2 + 1 + idx;
+      count = rd2 + 1 + idx;
     } else if (idx > rc - 1 - rd2 && idx < rc - 1 + rd2) {
-      return rc - idx + rd2;
+      count = rc - idx + rd2;
     }
-    return fishEyeRowList.size();
+    return count;
   }
 
   protected void initRowHeight(int height, int ccRow) {
