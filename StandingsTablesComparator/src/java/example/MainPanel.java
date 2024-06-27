@@ -50,49 +50,11 @@ public final class MainPanel extends JPanel {
           JLabel l = (JLabel) c;
           int col = table.convertColumnIndexToModel(column);
           l.setHorizontalAlignment(col == 1 ? LEADING : CENTER);
-          l.setText(getColumnText((RowData) value, col));
+          l.setText(((RowData) value).toString(col));
         }
         return c;
       }
     };
-  }
-
-  @SuppressWarnings("PMD.CyclomaticComplexity")
-  private static String getColumnText(RowData v, int column) {
-    String txt;
-    switch (column) {
-      case 0:
-        txt = Integer.toString(v.getPosition());
-        break;
-      case 1:
-        txt = v.getTeam();
-        break;
-      case 2:
-        txt = Integer.toString(v.getMatches());
-        break;
-      case 3:
-        txt = Integer.toString(v.getWins());
-        break;
-      case 4:
-        txt = Integer.toString(v.getDraws());
-        break;
-      case 5:
-        txt = Integer.toString(v.getLosses());
-        break;
-      case 6:
-        txt = Integer.toString(v.getGoalsFor());
-        break;
-      case 7:
-        txt = Integer.toString(v.getGoalsAgainst());
-        break;
-      case 8:
-        int d = v.getGoalDifference();
-        txt = d > 0 ? "+" + d : Integer.toString(d);
-        break;
-      default: // case 9:
-        txt = Integer.toString(v.getPoints());
-    }
-    return txt;
   }
 
   private JTable makeTable(TableModel model) {
@@ -214,7 +176,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings("PMD.DataClass")
 class RowData {
   private final int position;
   private final String team;
@@ -279,5 +240,43 @@ class RowData {
 
   public int getPoints() {
     return wins * 3 + draws;
+  }
+
+  @SuppressWarnings("PMD.CyclomaticComplexity")
+  public String toString(int column) {
+    String txt;
+    switch (column) {
+      case 0:
+        txt = Integer.toString(getPosition());
+        break;
+      case 1:
+        txt = getTeam();
+        break;
+      case 2:
+        txt = Integer.toString(getMatches());
+        break;
+      case 3:
+        txt = Integer.toString(getWins());
+        break;
+      case 4:
+        txt = Integer.toString(getDraws());
+        break;
+      case 5:
+        txt = Integer.toString(getLosses());
+        break;
+      case 6:
+        txt = Integer.toString(getGoalsFor());
+        break;
+      case 7:
+        txt = Integer.toString(getGoalsAgainst());
+        break;
+      case 8:
+        int d = getGoalDifference();
+        txt = d > 0 ? "+" + d : Integer.toString(d);
+        break;
+      default: // case 9:
+        txt = Integer.toString(getPoints());
+    }
+    return txt;
   }
 }
