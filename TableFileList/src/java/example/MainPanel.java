@@ -266,13 +266,13 @@ class FileListTable extends JTable {
     private final Point srcPoint = new Point();
 
     @Override public void mouseDragged(MouseEvent e) {
-      Point destPoint = e.getPoint();
+      Point dstPoint = e.getPoint();
       Path2D rb = getRubberBand();
       rb.reset();
       rb.moveTo(srcPoint.x, srcPoint.y);
-      rb.lineTo(destPoint.x, srcPoint.y);
-      rb.lineTo(destPoint.x, destPoint.y);
-      rb.lineTo(srcPoint.x, destPoint.y);
+      rb.lineTo(dstPoint.x, srcPoint.y);
+      rb.lineTo(dstPoint.x, dstPoint.y);
+      rb.lineTo(srcPoint.x, dstPoint.y);
       rb.closePath();
       clearSelection();
       int col = convertColumnIndexToView(0);

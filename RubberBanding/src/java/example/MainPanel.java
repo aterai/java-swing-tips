@@ -128,13 +128,13 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     @Override public void mouseDragged(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       l.setFocusable(true);
-      Point destPoint = e.getPoint();
+      Point dstPoint = e.getPoint();
       Path2D rb = getRubberBand();
       rb.reset();
       rb.moveTo(srcPoint.x, srcPoint.y);
-      rb.lineTo(destPoint.x, srcPoint.y);
-      rb.lineTo(destPoint.x, destPoint.y);
-      rb.lineTo(srcPoint.x, destPoint.y);
+      rb.lineTo(dstPoint.x, srcPoint.y);
+      rb.lineTo(dstPoint.x, dstPoint.y);
+      rb.lineTo(srcPoint.x, dstPoint.y);
       rb.closePath();
 
       // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));

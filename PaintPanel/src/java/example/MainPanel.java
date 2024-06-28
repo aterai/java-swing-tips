@@ -117,12 +117,12 @@ public final class MainPanel extends JPanel {
 //     g.drawImage(offImage, 0, 0, this);
 //   }
 //
-//   private Rectangle getRepaintRectangle(Point srcPoint, Point destPoint) {
+//   private Rectangle getRepaintRectangle(Point srcPoint, Point dstPoint) {
 //     polygon.reset();
 //     polygon.addPoint(srcPoint.x, srcPoint.y);
-//     polygon.addPoint(destPoint.x, srcPoint.y);
-//     polygon.addPoint(destPoint.x, destPoint.y);
-//     polygon.addPoint(srcPoint.x, destPoint.y);
+//     polygon.addPoint(dstPoint.x, srcPoint.y);
+//     polygon.addPoint(dstPoint.x, dstPoint.y);
+//     polygon.addPoint(srcPoint.x, dstPoint.y);
 //     return polygon.getBounds();
 //   }
 // }

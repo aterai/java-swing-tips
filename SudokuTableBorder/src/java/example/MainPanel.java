@@ -116,11 +116,11 @@ public final class MainPanel extends JPanel {
     @SuppressWarnings("PMD.UseVarargs")
     protected SudokuCellRenderer(Integer[][] src) {
       super();
-      Integer[][] dest = new Integer[src.length][src[0].length];
+      Integer[][] dst = new Integer[src.length][src[0].length];
       for (int i = 0; i < src.length; i++) {
-        System.arraycopy(src[i], 0, dest[i], 0, src[0].length);
+        System.arraycopy(src[i], 0, dst[i], 0, src[0].length);
       }
-      this.mask = dest;
+      this.mask = dst;
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

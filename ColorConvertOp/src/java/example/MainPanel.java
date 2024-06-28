@@ -88,14 +88,14 @@ public final class MainPanel extends JPanel {
   private static Icon makeGrayIcon2(Image img) {
     int w = img.getWidth(null);
     int h = img.getHeight(null);
-    BufferedImage destination = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
-    Graphics g = destination.createGraphics();
+    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
+    Graphics g = dst.createGraphics();
     // // g.setColor(Color.WHITE);
     // https://community.oracle.com/thread/1373262 Color to Grayscale to Binary
     // g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
     g.drawImage(img, 0, 0, null);
     g.dispose();
-    return new ImageIcon(destination);
+    return new ImageIcon(dst);
   }
 
   private static Icon makeGrayIcon3(Image img) {

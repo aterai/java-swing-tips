@@ -60,14 +60,14 @@ public final class MainPanel extends JPanel {
 
     int w = image.getWidth();
     int h = image.getHeight();
-    BufferedImage dest = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     for (int i = 0; i < b.length; i++) {
       b[i] = (byte) (i * .2f);
     }
     BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
-    op.filter(image, dest);
-    return dest;
+    op.filter(image, dst);
+    return dst;
   }
 
   private static BufferedImage makeMissingImage() {

@@ -48,17 +48,17 @@ public final class MainPanel extends JPanel {
     int ln = model.getNumber().intValue();
     try {
       Element elem = root.getElement(ln - 1);
-      Rectangle dest = textArea.modelToView(elem.getStartOffset());
-      // Java 9: Rectangle dest = textArea.modelToView2D(elem.getStartOffset()).getBounds();
+      Rectangle dst = textArea.modelToView(elem.getStartOffset());
+      // Java 9: Rectangle dst = textArea.modelToView2D(elem.getStartOffset()).getBounds();
       Rectangle current = scroll.getViewport().getViewRect();
       new Timer(20, e -> {
         Timer animator = (Timer) e.getSource();
-        if (dest.y < current.y && animator.isRunning()) {
-          int d = Math.max(1, (current.y - dest.y) / 2);
+        if (dst.y < current.y && animator.isRunning()) {
+          int d = Math.max(1, (current.y - dst.y) / 2);
           current.y = current.y - d;
           textArea.scrollRectToVisible(current);
-        } else if (dest.y > current.y && animator.isRunning()) {
-          int d = Math.max(1, (dest.y - current.y) / 2);
+        } else if (dst.y > current.y && animator.isRunning()) {
+          int d = Math.max(1, (dst.y - current.y) / 2);
           current.y = current.y + d;
           textArea.scrollRectToVisible(current);
         } else {

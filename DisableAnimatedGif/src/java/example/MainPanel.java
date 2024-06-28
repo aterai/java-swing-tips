@@ -83,8 +83,8 @@ public final class MainPanel extends JPanel {
     // g.drawImage(img, 0, 0, null);
     // g.dispose();
     // ColorConvertOp cc = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-    // BufferedImage destination = cc.filter(source, null);
-    // return new ImageIcon(destination);
+    // BufferedImage dst = cc.filter(source, null);
+    // return new ImageIcon(dst);
     return new ImageIcon(GrayFilter.createDisabledImage(img));
   }
 

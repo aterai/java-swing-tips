@@ -165,12 +165,12 @@ final class ImageUtils {
 
     int w = img.getWidth();
     int h = img.getHeight();
-    BufferedImage dest = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     IntStream.range(0, b.length).forEach(i -> b[i] = (byte) (i * .5));
     BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
-    op.filter(img, dest);
-    return dest;
+    op.filter(img, dst);
+    return dst;
   }
 
   private static BufferedImage makeMissingImage() {

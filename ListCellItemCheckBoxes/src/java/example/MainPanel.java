@@ -184,13 +184,13 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       checkedIndex = -1;
       JList<?> l = (JList<?>) e.getComponent();
       // l.setFocusable(true);
-      Point destPoint = e.getPoint();
+      Point dstPoint = e.getPoint();
       Path2D rb = getRubberBand();
       rb.reset();
       rb.moveTo(srcPoint.x, srcPoint.y);
-      rb.lineTo(destPoint.x, srcPoint.y);
-      rb.lineTo(destPoint.x, destPoint.y);
-      rb.lineTo(srcPoint.x, destPoint.y);
+      rb.lineTo(dstPoint.x, srcPoint.y);
+      rb.lineTo(dstPoint.x, dstPoint.y);
+      rb.lineTo(srcPoint.x, dstPoint.y);
       rb.closePath();
 
       int[] indices = IntStream.range(0, l.getModel().getSize())
