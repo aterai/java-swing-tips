@@ -118,15 +118,14 @@ class MosaicImageFilter implements BufferedImageOp {
         int w = Math.min(blockSize, width - x);
         int h = Math.min(blockSize, height - y);
         srcRaster.getDataElements(x, y, w, h, pixels);
-        updatePixels(w, h, pixels);
+        updatePixels(pixels, w, h);
         dstRaster.setDataElements(x, y, w, h, pixels);
       }
     }
     return img;
   }
 
-  @SuppressWarnings("PMD.UseVarargs")
-  public static int getBlockRgb(int w, int h, int[] pixels) {
+  public static int getBlockRgb(int[] pixels, int w, int h) {
     int r = 0;
     int g = 0;
     int b = 0;
@@ -142,9 +141,8 @@ class MosaicImageFilter implements BufferedImageOp {
     return (r / size) << 16 | (g / size) << 8 | (b / size);
   }
 
-  @SuppressWarnings("PMD.UseVarargs")
-  public static void updatePixels(int w, int h, int[] pixels) {
-    int rgb = getBlockRgb(w, h, pixels);
+  public static void updatePixels(int[] pixels, int w, int h) {
+    int rgb = getBlockRgb(pixels, w, h);
     for (int by = 0; by < h; by++) {
       for (int bx = 0; bx < w; bx++) {
         int i = bx + by * w;
