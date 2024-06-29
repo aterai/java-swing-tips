@@ -25,7 +25,7 @@ import javax.swing.table.JTableHeader;
 public final class MainPanel extends JPanel {
   @SuppressWarnings("PMD.UseConcurrentHashMap")
   private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
-  private final JLabel dateLabel = new JLabel(realLocalDate.toString(), SwingConstants.CENTER);
+  private final JLabel dateLabel = new JLabel("", SwingConstants.CENTER);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable();
   private LocalDate currentLocalDate;
@@ -47,6 +47,7 @@ public final class MainPanel extends JPanel {
     header.setReorderingAllowed(false);
     ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
+    dateLabel.setText(realLocalDate.toString());
     ListSelectionListener selectionListener = e -> {
       if (!e.getValueIsAdjusting()) {
         int row = monthTable.getSelectedRow();
