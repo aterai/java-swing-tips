@@ -31,7 +31,12 @@ public final class MainPanel extends JPanel {
     // am.put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
     // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), empty);
     // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
+    add(makeControlBox(list), BorderLayout.NORTH);
+    add(new JScrollPane(list));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JPanel makeControlBox(JList<Color> list) {
     JCheckBox check1 = new JCheckBox("canExportAsDrag");
     check1.addActionListener(e -> {
       boolean b = check1.isSelected();
@@ -58,10 +63,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new BorderLayout());
     p.add(box1, BorderLayout.NORTH);
     p.add(box2, BorderLayout.SOUTH);
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(list));
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
   private static ListModel<Color> makeModel() {
