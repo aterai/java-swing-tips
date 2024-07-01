@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -27,17 +28,19 @@ public final class MainPanel extends JPanel {
 
   private JTable makeTable(TableModel model) {
     return new JTable(model) {
-      @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
         Component c = super.prepareRenderer(renderer, row, column);
+        int promotion = 2;
+        int playoffs = 6;
+        int relegation = 21;
         boolean isSelected = isRowSelected(row);
         if (!isSelected) {
           Integer num = (Integer) model.getValueAt(convertRowIndexToModel(row), 0);
-          if (num <= 2) {
+          if (num <= promotion) {
             c.setBackground(new Color(0xCF_F3_C0));
-          } else if (num <= 6) {
+          } else if (num <= playoffs) {
             c.setBackground(new Color(0xCB_F7_F5));
-          } else if (num >= 21) {
+          } else if (num >= relegation) {
             c.setBackground(new Color(0xFB_DC_DC));
           } else if (row % 2 == 0) {
             c.setBackground(Color.WHITE);
@@ -71,23 +74,17 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
   private static void initTableHeader(JTable table) {
     JTableHeader header = table.getTableHeader();
     ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
     TableColumnModel columnModel = table.getColumnModel();
-    for (int i = 0; i < columnModel.getColumnCount(); i++) {
-      if (i != 1) {
-        columnModel.getColumn(i).setMaxWidth(26);
-      }
-    }
+    IntStream.range(0, columnModel.getColumnCount())
+        .filter(i -> i != 1)
+        .forEach(i -> columnModel.getColumn(i).setMaxWidth(26));
     columnModel.getColumn(8).setCellRenderer(new DefaultTableCellRenderer() {
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        String sv = Objects.toString(value);
-        String txt = sv.startsWith("-") ? sv : "+" + sv;
-        if ("+0".equals(txt)) {
-          txt = "0";
-        }
+        String v = Objects.toString(value);
+        String txt = v.startsWith("-") || "0".equals(v) ? v : "+" + v;
         setHorizontalAlignment(RIGHT);
         return super.getTableCellRendererComponent(table, txt, isSelected, hasFocus, row, column);
       }
