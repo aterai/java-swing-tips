@@ -21,9 +21,11 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
@@ -191,43 +193,71 @@ class DnDTabbedPane extends JTabbedPane {
         this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
   }
 
-  @SuppressWarnings("PMD.NPathComplexity")
   protected int getTargetTabIndex(Point glassPt) {
-    int count = getTabCount();
-    if (count == 0) {
-      return -1;
-    }
     Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
-    boolean isHorizontal = isTopBottomTabPlacement(getTabPlacement());
-    for (int i = 0; i < count; ++i) {
-      Rectangle r = getBoundsAt(i);
-
-      // First half.
-      if (isHorizontal) {
-        r.width = r.width / 2 + 1;
-      } else {
-        r.height = r.height / 2 + 1;
-      }
-      if (r.contains(tabPt)) {
-        return i;
-      }
-
-      // Second half.
-      if (isHorizontal) {
-        r.x = r.x + r.width;
-      } else {
-        r.y = r.y + r.height;
-      }
-      if (r.contains(tabPt)) {
-        return i + 1;
-      }
-    }
-
-    Rectangle lastRect = getBoundsAt(count - 1);
-    Point d = isHorizontal ? new Point(1, 0) : new Point(0, 1);
-    lastRect.translate(lastRect.width * d.x, lastRect.height * d.y);
-    return lastRect.contains(tabPt) ? count : -1;
+    boolean horizontal = isTopBottomTabPlacement(getTabPlacement());
+    return IntStream.range(0, getTabCount())
+        .map(i -> horizontal ? getHorizontalIndex(i, tabPt) : getVerticalIndex(i, tabPt))
+        .filter(i -> i >= 0)
+        .findFirst()
+        .orElse(-1);
   }
+
+  private int getHorizontalIndex(int i, Point pt) {
+    Rectangle r = getBoundsAt(i);
+    boolean contains = r.contains(pt);
+    boolean lastTab = i == getTabCount() - 1;
+    int idx = -1;
+    Rectangle2D cr = new Rectangle2D.Double(r.getCenterX(), r.getY(), .1, r.getHeight());
+    int iv = cr.outcode(pt);
+    if (cr.contains(pt) || (contains && (iv & Rectangle2D.OUT_LEFT) != 0)) {
+      // First half.
+      idx = i;
+    } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_RIGHT) != 0) {
+      // Second half.
+      idx = i + 1;
+    }
+    return idx;
+  }
+
+  private int getVerticalIndex(int i, Point pt) {
+    Rectangle r = getBoundsAt(i);
+    boolean contains = r.contains(pt);
+    boolean lastTab = i == getTabCount() - 1;
+    int idx = -1;
+    Rectangle2D cr = new Rectangle2D.Double(r.getX(), r.getCenterY(), r.getWidth(), .1);
+    int iv = cr.outcode(pt);
+    if (cr.contains(pt) || (contains && (iv & Rectangle2D.OUT_TOP) != 0)) {
+      idx = i;
+    } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_BOTTOM) != 0) {
+      idx = i + 1;
+    }
+    return idx;
+  }
+
+  // private int getTargetTabIndex(int i, boolean isHorizontal, Point pt) {
+  //   Rectangle r = getBoundsAt(i);
+  //   // First half.
+  //   if (isHorizontal) {
+  //     r.width = r.width / 2 + 1;
+  //   } else {
+  //     r.height = r.height / 2 + 1;
+  //   }
+  //   if (r.contains(pt)) {
+  //     return i;
+  //   }
+  //
+  //   // Second half.
+  //   if (isHorizontal) {
+  //     r.x += r.width;
+  //   } else {
+  //     r.y += r.height;
+  //   }
+  //   if (r.contains(pt)) {
+  //     return i + 1;
+  //   }
+  //   return -1;
+  // }
 
   protected void convertTab(int prev, int next) {
     if (next < 0 || prev == next) {
