@@ -61,17 +61,19 @@ public final class MainPanel extends JPanel {
     return keyboard;
   }
 
-  @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
   private static int getGridWidth(int len) {
     // return len > 10 ? 14 : len > 4  ? 4 : len > 1  ? 3 : len == 1 ? 2 : 1;
+    int space = 10;
+    int shift = 4;
+    int alt = 1;
     int l;
-    if (len > 10) {
+    if (len > space) {
       l = 14;
-    } else if (len > 4) {
+    } else if (len > shift) {
       l = 4;
-    } else if (len > 1) {
+    } else if (len > alt) {
       l = 3;
-    } else if (len == 1) {
+    } else if (len == alt) {
       l = 2;
     } else {
       l = 1;
