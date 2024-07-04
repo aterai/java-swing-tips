@@ -170,7 +170,6 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
   @SuppressWarnings({
       "PMD.CognitiveComplexity",
       "PMD.CyclomaticComplexity",
-      "PMD.ExcessiveMethodLength",
       "PMD.NcssCount",
       "PMD.NPathComplexity",
       "checkstyle:methodlength"

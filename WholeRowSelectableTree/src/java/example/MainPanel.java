@@ -64,7 +64,6 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
   @SuppressWarnings({
       "PMD.CognitiveComplexity",
       "PMD.CyclomaticComplexity",
-      "PMD.ExcessiveMethodLength",
       "PMD.NPathComplexity",
       "PMD.NcssCount"
   })
