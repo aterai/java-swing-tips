@@ -82,7 +82,6 @@ class SpinnerNumberModelGroup {
     this.expectedSum = expectedSum;
   }
 
-  @SuppressWarnings("PMD.UnusedAssignment")
   private void update(SpinnerNumberModel source) {
     if (updating) {
       return;
