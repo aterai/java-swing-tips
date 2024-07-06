@@ -63,6 +63,7 @@ public final class MainPanel extends JPanel {
         c.setFont(getFont());
         if (c instanceof JCheckBox) {
           JCheckBox cb = (JCheckBox) c;
+          cb.setForeground(getSelectionForeground());
           cb.setBackground(getSelectionBackground());
           cb.setBorderPainted(false);
           updateCheckIcon(cb);
@@ -179,31 +180,30 @@ class ScaledIcon implements Icon {
 
 class CheckBoxIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (!(c instanceof AbstractButton)) {
-      return;
+    if (c instanceof AbstractButton) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.translate(x, y);
+      // g2.setPaint(Color.DARK_GRAY);
+      float s = Math.min(getIconWidth(), getIconHeight()) * .05f;
+      float w = getIconWidth() - s - s;
+      float h = getIconHeight() - s - s;
+      float gw = w / 8f;
+      float gh = h / 8f;
+      AbstractButton b = (AbstractButton) c;
+      g2.setPaint(b.getForeground());
+      g2.setStroke(new BasicStroke(s));
+      g2.draw(new Rectangle2D.Float(s, s, w, h));
+      if (b.getModel().isSelected()) {
+        g2.setStroke(new BasicStroke(3f * s));
+        Path2D p = new Path2D.Float();
+        p.moveTo(x + 2f * gw, y + .5f * h);
+        p.lineTo(x + .4f * w, y + h - 2f * gh);
+        p.lineTo(x + w - 2f * gw, y + 2f * gh);
+        g2.draw(p);
+      }
+      g2.dispose();
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.translate(x, y);
-    g2.setPaint(Color.DARK_GRAY);
-    float s = Math.min(getIconWidth(), getIconHeight()) * .05f;
-    float w = getIconWidth() - s - s;
-    float h = getIconHeight() - s - s;
-    float gw = w / 8f;
-    float gh = h / 8f;
-    g2.setStroke(new BasicStroke(s));
-    g2.draw(new Rectangle2D.Float(s, s, w, h));
-    AbstractButton b = (AbstractButton) c;
-    // g2.setPaint(b.getForeground());
-    if (b.getModel().isSelected()) {
-      g2.setStroke(new BasicStroke(3f * s));
-      Path2D p = new Path2D.Float();
-      p.moveTo(x + 2f * gw, y + .5f * h);
-      p.lineTo(x + .4f * w, y + h - 2f * gh);
-      p.lineTo(x + w - 2f * gw, y + 2f * gh);
-      g2.draw(p);
-    }
-    g2.dispose();
   }
 
   @Override public int getIconWidth() {
