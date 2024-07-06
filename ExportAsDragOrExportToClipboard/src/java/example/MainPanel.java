@@ -230,14 +230,13 @@ class ListItemTransferHandler extends TransferHandler {
     return values;
   }
 
+  // private static boolean canImportFromClipboard(JComponent c) {
+  //   Object o = c.getClientProperty("canImportFromClipboard");
+  //   return o != null && Objects.equals(o, Boolean.TRUE);
+  // }
+
   @SuppressWarnings("unchecked")
-  @Override public boolean importData(TransferSupport info) {
-    // System.out.println("importData(TransferSupport)");
-    JList<?> target = (JList<?>) info.getComponent();
-    Object b = target.getClientProperty("canImportFromClipboard");
-    if (!info.isDrop() && (b == null || Objects.equals(b, Boolean.FALSE))) {
-      return false;
-    }
+  private boolean importListData(TransferSupport info, JList<?> target) {
     DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
     int index = getIndex(info);
     addIndex = index;
@@ -252,10 +251,19 @@ class ListItemTransferHandler extends TransferHandler {
     return !values.isEmpty();
   }
 
-  @Override public boolean importData(JComponent comp, Transferable t) {
-    // System.out.println("importData(JComponent, Transferable)");
-    return importData(new TransferSupport(comp, t));
+  @Override public boolean importData(TransferSupport info) {
+    // System.out.println("importData(TransferSupport)");
+    JList<?> target = (JList<?>) info.getComponent();
+    Object o = target.getClientProperty("canImportFromClipboard");
+    boolean b = o != null && Objects.equals(o, Boolean.TRUE);
+    // boolean b = canImportFromClipboard(target);
+    return (info.isDrop() || b) && importListData(info, target);
   }
+
+  // @Override public boolean importData(JComponent comp, Transferable t) {
+  //   // System.out.println("importData(JComponent, Transferable)");
+  //   return importData(new TransferSupport(comp, t));
+  // }
 
   @Override public void exportAsDrag(JComponent comp, InputEvent e, int action) {
     // System.out.println("exportAsDrag");
@@ -274,11 +282,8 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    cleanup(c, action == MOVE);
-  }
-
-  private void cleanup(JComponent c, boolean remove) {
-    if (remove && !indices.isEmpty()) {
+    // cleanup(c, action == MOVE);
+    if (action == MOVE && !indices.isEmpty()) {
       // If we are moving items around in the same list, we
       // need to adjust the indices accordingly, since those
       // after the insertion point have moved.
@@ -299,4 +304,27 @@ class ListItemTransferHandler extends TransferHandler {
     addCount = 0;
     addIndex = -1;
   }
+
+  // private void cleanup(JComponent c, boolean remove) {
+  //   if (remove && !indices.isEmpty()) {
+  //     // If we are moving items around in the same list, we
+  //     // need to adjust the indices accordingly, since those
+  //     // after the insertion point have moved.
+  //     if (addCount > 0) {
+  //       for (int i = 0; i < indices.size(); i++) {
+  //         if (indices.get(i) >= addIndex) {
+  //           indices.set(i, indices.get(i) + addCount);
+  //         }
+  //       }
+  //     }
+  //     JList<?> src = (JList<?>) c;
+  //     DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
+  //     for (int i = indices.size() - 1; i >= 0; i--) {
+  //       model.remove(indices.get(i));
+  //     }
+  //   }
+  //   indices.clear();
+  //   addCount = 0;
+  //   addIndex = -1;
+  // }
 }
