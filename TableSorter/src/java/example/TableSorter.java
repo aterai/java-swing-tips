@@ -267,7 +267,7 @@ public class TableSorter extends AbstractTableModel {
     }
   }
 
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({"rawtypes", "PMD.OnlyOneReturn"})
   protected Comparator getComparator(int column) {
     Class<?> columnType = tableModel.getColumnClass(column);
     Comparator<?> comparator = columnComparators.get(columnType);
@@ -346,6 +346,7 @@ public class TableSorter extends AbstractTableModel {
 
   // Helper classes
   private final class RowComparator<E extends TableRow> implements Comparator<E> {
+    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public int compare(TableRow r1, TableRow r2) {
       int row1 = r1.modelIndex;
       int row2 = r2.modelIndex;
@@ -381,6 +382,7 @@ public class TableSorter extends AbstractTableModel {
   }
 
   private final class TableModelHandler implements TableModelListener {
+    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public void tableChanged(TableModelEvent e) {
       // If we're not sorting by anything, just pass the event along.
       if (!isSorting()) {
