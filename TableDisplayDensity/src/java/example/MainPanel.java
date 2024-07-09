@@ -184,16 +184,15 @@ class CheckBoxIcon implements Icon {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(x, y);
-      // g2.setPaint(Color.DARK_GRAY);
+      AbstractButton b = (AbstractButton) c;
+      g2.setPaint(b.getForeground()); // g2.setPaint(Color.DARK_GRAY);
       float s = Math.min(getIconWidth(), getIconHeight()) * .05f;
+      g2.setStroke(new BasicStroke(s));
       float w = getIconWidth() - s - s;
       float h = getIconHeight() - s - s;
+      g2.draw(new Rectangle2D.Float(s, s, w, h));
       float gw = w / 8f;
       float gh = h / 8f;
-      AbstractButton b = (AbstractButton) c;
-      g2.setPaint(b.getForeground());
-      g2.setStroke(new BasicStroke(s));
-      g2.draw(new Rectangle2D.Float(s, s, w, h));
       if (b.getModel().isSelected()) {
         g2.setStroke(new BasicStroke(3f * s));
         Path2D p = new Path2D.Float();
