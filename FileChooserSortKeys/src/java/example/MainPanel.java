@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
 
   private JFileChooser makeFileChooser() {
     return new JFileChooser() {
-      private transient AncestorListener handler = null;
+      private transient AncestorListener handler;
 
       @Override public void updateUI() {
         removeAncestorListener(handler);
