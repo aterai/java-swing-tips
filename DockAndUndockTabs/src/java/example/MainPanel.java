@@ -178,15 +178,18 @@ class DnDTabbedPane extends JTabbedPane {
   // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
   public DnDTabbedPane.DropLocation tabDropLocationForPoint(Point p) {
     // assert dropMode == DropMode.INSERT : "Unexpected drop mode";
-    for (int i = 0; i < getTabCount(); i++) {
-      if (getBoundsAt(i).contains(p)) {
-        return new DnDTabbedPane.DropLocation(p, i);
-      }
-    }
-    if (getTabAreaBounds().contains(p)) {
-      return new DnDTabbedPane.DropLocation(p, getTabCount());
-    }
-    return new DnDTabbedPane.DropLocation(p, -1);
+    int count = getTabCount();
+    int idx = IntStream.range(0, count)
+        .filter(i -> getBoundsAt(i).contains(p))
+        .findFirst()
+        .orElseGet(() -> getTabAreaBounds().contains(p) ? count : -1);
+    // for (int i = 0; i < count; i++) {
+    //   if (getBoundsAt(i).contains(p)) {
+    //     return new DnDTabbedPane.DropLocation(p, i);
+    //   }
+    // }
+    // int idx = getTabAreaBounds().contains(p) ? count : -1;
+    return new DnDTabbedPane.DropLocation(p, idx);
   }
 
   public final DnDTabbedPane.DropLocation getDropLocation() {
@@ -435,7 +438,7 @@ class TabTransferHandler extends TransferHandler {
       return false;
     }
     support.setDropAction(MOVE);
-    TransferHandler.DropLocation tdl = support.getDropLocation();
+    DropLocation tdl = support.getDropLocation();
     Point pt = tdl.getDropPoint();
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     target.autoScrollTest(pt);
@@ -489,39 +492,43 @@ class TabTransferHandler extends TransferHandler {
 
   @Override public int getSourceActions(JComponent c) {
     // System.out.println("getSourceActions");
+    int action = NONE;
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane src = (DnDTabbedPane) c;
-      if (src.dragTabIndex < 0) {
-        return NONE;
+      if (src.dragTabIndex >= 0) {
+        label.setIcon(new ImageIcon(makeDragTabImage(src)));
+        dialog = new JWindow();
+        dialog.setOpacity(.5f);
+        dialog.add(label);
+        dialog.pack();
+        dialog.setVisible(true);
+        action = MOVE;
       }
-      label.setIcon(new ImageIcon(makeDragTabImage(src)));
-      dialog = new JWindow();
-      dialog.setOpacity(.5f);
-      dialog.add(label);
-      dialog.pack();
-      dialog.setVisible(true);
-      return MOVE;
     }
-    return NONE;
+    return action;
   }
 
   @Override public boolean importData(TransferSupport support) {
     // System.out.println("importData");
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     DnDTabbedPane.DropLocation dl = target.getDropLocation();
+    Object data;
     try {
-      DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(localObjectFlavor);
-      DnDTabbedPane src = data.tabbedPane;
+      data = support.getTransferable().getTransferData(localObjectFlavor);
+    } catch (UnsupportedFlavorException | IOException ex) {
+      data = null;
+    }
+    boolean b = data instanceof DnDTabData;
+    if (b) {
+      DnDTabbedPane src = ((DnDTabData) data).tabbedPane;
       int index = dl.getIndex(); // boolean insert = dl.isInsert();
       if (target.equals(src)) {
         src.convertTab(src.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
       } else {
         src.exportTab(src.dragTabIndex, target, index);
       }
-      return true;
-    } catch (UnsupportedFlavorException | IOException ex) {
-      return false;
     }
+    return b;
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
