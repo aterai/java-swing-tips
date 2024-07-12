@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -235,14 +236,54 @@ class DnDTabbedPane extends JTabbedPane {
     addPropertyChangeListener(handler);
   }
 
+  private int getHorizontalIndex(int i, Point pt) {
+    Rectangle r = getBoundsAt(i);
+    boolean contains = r.contains(pt);
+    boolean lastTab = i == getTabCount() - 1;
+    int idx = -1;
+    Rectangle2D cr = new Rectangle2D.Double(r.getCenterX(), r.getY(), .1, r.getHeight());
+    int iv = cr.outcode(pt);
+    if (cr.contains(pt) || (contains && (iv & Rectangle2D.OUT_LEFT) != 0)) {
+      // First half.
+      idx = i;
+    } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_RIGHT) != 0) {
+      // Second half.
+      idx = i + 1;
+    }
+    return idx;
+  }
+
+  private int getVerticalIndex(int i, Point pt) {
+    Rectangle r = getBoundsAt(i);
+    boolean contains = r.contains(pt);
+    boolean lastTab = i == getTabCount() - 1;
+    int idx = -1;
+    Rectangle2D cr = new Rectangle2D.Double(r.getX(), r.getCenterY(), r.getWidth(), .1);
+    int iv = cr.outcode(pt);
+    if (cr.contains(pt) || (contains && (iv & Rectangle2D.OUT_TOP) != 0)) {
+      // First half.
+      idx = i;
+    } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_BOTTOM) != 0) {
+      // Second half.
+      idx = i + 1;
+    }
+    return idx;
+  }
+
   // @Override TransferHandler.DropLocation dropLocationForPoint(Point p) {
   public DnDTabbedPane.DropLocation tabDropLocationForPoint(Point p) {
     // assert dropMode == DropMode.INSERT : "Unexpected drop mode";
     int count = getTabCount();
+    boolean horizontal = isTopBottomTabPlacement(getTabPlacement());
     int idx = IntStream.range(0, count)
-        .filter(i -> getBoundsAt(i).contains(p))
+        .map(i -> horizontal ? getHorizontalIndex(i, p) : getVerticalIndex(i, p))
+        .filter(i -> i >= 0)
         .findFirst()
-        .orElseGet(() -> getTabAreaBounds().contains(p) ? count : -1);
+        .orElse(-1);
+    // int idx = IntStream.range(0, count)
+    //     .filter(i -> getBoundsAt(i).contains(p))
+    //     .findFirst()
+    //     .orElseGet(() -> getTabAreaBounds().contains(p) ? count : -1);
     return new DnDTabbedPane.DropLocation(p, idx);
     // switch (dropMode) {
     //   case INSERT:
@@ -421,9 +462,9 @@ class DnDTabbedPane extends JTabbedPane {
         // pointed out by Arjen
         int idx = src.indexAtLocation(tabPt.x, tabPt.y);
         int selIdx = src.getSelectedIndex();
-        boolean isRotateTabRuns = !(src.getUI() instanceof MetalTabbedPaneUI)
-            && src.getTabLayoutPolicy() == WRAP_TAB_LAYOUT && idx != selIdx;
-        dragTabIndex = isRotateTabRuns ? selIdx : idx;
+        boolean isWrap = src.getTabLayoutPolicy() == WRAP_TAB_LAYOUT;
+        boolean isRotate = !(src.getUI() instanceof MetalTabbedPaneUI) && idx != selIdx;
+        dragTabIndex = isWrap && isRotate ? selIdx : idx;
         th.exportAsDrag(src, e, TransferHandler.MOVE);
         startPt = null;
       }
