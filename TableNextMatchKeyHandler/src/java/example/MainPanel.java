@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -161,15 +162,24 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     // start search from the next/previous element from the
     // selected element
     int increment = Position.Bias.Forward.equals(bias) ? 1 : -1;
-    int row = startRow;
-    do {
-      Object value = table.getValueAt(row, TARGET_COLUMN);
-      String text = Objects.toString(value, "");
-      if (text.toUpperCase(Locale.ENGLISH).startsWith(upperPrefix)) {
-        return row;
-      }
-      row = (row + increment + max) % max;
-    } while (row != startRow);
-    return -1;
+    return IntStream.iterate(startRow, row -> (row + increment + max) % max)
+        .limit(max)
+        .filter(row -> {
+          Object value = table.getValueAt(row, TARGET_COLUMN);
+          String text = Objects.toString(value, "");
+          return text.toUpperCase(Locale.ENGLISH).startsWith(upperPrefix);
+        })
+        .findFirst()
+        .orElse(-1);
+    // int row = startRow;
+    // do {
+    //   Object value = table.getValueAt(row, TARGET_COLUMN);
+    //   String text = Objects.toString(value, "");
+    //   if (text.toUpperCase(Locale.ENGLISH).startsWith(upperPrefix)) {
+    //     return row;
+    //   }
+    //   row = (row + increment + max) % max;
+    // } while (row != startRow);
+    // return -1;
   }
 }
