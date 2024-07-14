@@ -16,7 +16,8 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        setLayout(new GridLayout(0, 1, 2, 2));
+        // setLayout(new GridLayout(0, 1, 2, 2));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
       }
     };
     initMenuBar(menuBar);
@@ -43,7 +44,11 @@ public final class MainPanel extends JPanel {
     };
     for (MenuElement m : menuBar.getSubElements()) {
       if (m instanceof JMenu) {
-        ((JMenu) m).addMenuListener(listener);
+        JMenu menu = (JMenu) m;
+        menu.addMenuListener(listener);
+        Dimension d = menu.getMaximumSize();
+        d.width = Short.MAX_VALUE;
+        menu.setMaximumSize(d);
       }
     }
 
@@ -86,6 +91,13 @@ public final class MainPanel extends JPanel {
     JMenu menu4 = new JMenu("information");
     menu4.setIcon(UIManager.getIcon("OptionPane.informationIcon"));
     menuBar.add(menu4);
+    menu4.add(makeSubMenu());
+
+    menuBar.add(new JSeparator(SwingConstants.HORIZONTAL));
+    menuBar.add(makeSubMenu());
+  }
+
+  private static JMenu makeSubMenu() {
     JMenu sub1 = new JMenu("JMenu1");
     sub1.add("MenuItem1");
     sub1.add("MenuItem2");
@@ -93,7 +105,7 @@ public final class MainPanel extends JPanel {
     sub2.add("MenuItem3");
     sub2.add("MenuItem4");
     sub1.add(sub2);
-    menu4.add(sub1);
+    return sub1;
   }
 
   public static void main(String[] args) {
