@@ -127,6 +127,7 @@ final class LookAndFeelUtils {
     return mi;
   }
 
+  @SuppressWarnings("PMD.OnlyOneReturn")
   private static boolean isAvailableLookAndFeel(Class<?> lnfClass) {
     Constructor<?> cc;
     try {

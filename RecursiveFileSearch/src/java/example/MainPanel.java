@@ -294,6 +294,7 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     this.dir = dir;
   }
 
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override protected String doInBackground() throws InterruptedException {
     if (Objects.isNull(dir) || !dir.exists()) {
       publish(new Message("The directory does not exist.", true));

@@ -68,6 +68,7 @@ public final class MainPanel extends JPanel {
   }
 
   // Before 1.5
+  @SuppressWarnings("PMD.OnlyOneReturn")
   public static boolean isCanonicalPath(File file) {
     if (file == null) {
       return false;

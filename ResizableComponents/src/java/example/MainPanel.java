@@ -230,6 +230,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
   }
 
+  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public Cursor getResizeCursor(MouseEvent e) {
     Component c = e.getComponent();
     int w = c.getWidth();

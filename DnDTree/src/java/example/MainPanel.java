@@ -135,6 +135,7 @@ class DnDTree extends JTree {
       /* not needed */
     }
 
+    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public void dragOver(DropTargetDragEvent e) {
       DataFlavor[] f = e.getCurrentDataFlavors();
       boolean isSupported = TreeNodeTransferable.NAME.equals(f[0].getHumanPresentableName());
@@ -181,6 +182,7 @@ class DnDTree extends JTree {
       repaint();
     }
 
+    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public void drop(DropTargetDropEvent e) {
       // System.out.println("drop");
       // if (!isWebStart()) {

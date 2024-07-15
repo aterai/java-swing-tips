@@ -101,6 +101,7 @@ final class SwingUtils {
   }
 
   // TEST1
+  @SuppressWarnings("PMD.OnlyOneReturn")
   public static boolean searchAndResizeMode(Container parent) {
     for (Component c : parent.getComponents()) {
       if (c instanceof JTable) {
@@ -114,6 +115,7 @@ final class SwingUtils {
   }
 
   // TEST2
+  @SuppressWarnings("PMD.OnlyOneReturn")
   public static Component findChild(Container container, Class<? extends Component> clz) {
     int n = container.getComponentCount();
     for (int i = 0; i < n; i++) {
@@ -131,6 +133,7 @@ final class SwingUtils {
   }
 
   // TEST3
+  @SuppressWarnings("PMD.OnlyOneReturn")
   public static <T> Optional<T> getComponentByClass(Container parent, Class<T> clz) {
     if (clz.isInstance(parent)) {
       return Optional.of(clz.cast(parent));
