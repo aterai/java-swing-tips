@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -72,7 +73,7 @@ class DragHandler extends MouseAdapter {
   private final JWindow window = new JWindow();
   private Component draggingComponent;
   private int index = -1;
-  private final Component gap = Box.createHorizontalStrut(24);
+  private Component gap;
   private final Point startPt = new Point();
   private final int dragThreshold = DragSource.getDragThreshold();
 
@@ -91,6 +92,7 @@ class DragHandler extends MouseAdapter {
       return;
     }
     draggingComponent = c;
+    gap = Box.createHorizontalStrut(c.getWidth());
     swapComponent(parent, c, gap, index);
 
     window.add(draggingComponent);
@@ -101,13 +103,6 @@ class DragHandler extends MouseAdapter {
     SwingUtilities.convertPointToScreen(p, parent);
     window.setLocation(p);
     window.setVisible(true);
-  }
-
-  private static void swapComponent(Container p, Component remove, Component add, int idx) {
-    p.remove(remove);
-    p.add(add, idx);
-    p.revalidate();
-    // p.repaint();
   }
 
   @Override public void mouseDragged(MouseEvent e) {
@@ -126,22 +121,12 @@ class DragHandler extends MouseAdapter {
     SwingUtilities.convertPointToScreen(p, parent);
     window.setLocation(p);
 
-    for (int i = 0; i < parent.getComponentCount(); i++) {
-      Component c = parent.getComponent(i);
-      Rectangle r = c.getBounds();
-      int wd2 = r.width / 2;
-      PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
-      NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
-      if (PREV_AREA.contains(pt)) {
-        swapComponent(parent, gap, gap, i > 1 ? i : 0);
-        return;
-      } else if (NEXT_AREA.contains(pt)) {
-        swapComponent(parent, gap, gap, i);
-        return;
-      }
-    }
-    parent.remove(gap);
-    parent.revalidate();
+    int idx = IntStream.range(0, parent.getComponentCount())
+        .map(i -> getTargetIndex(parent, i, pt))
+        .filter(i -> i >= 0)
+        .findFirst()
+        .orElse(-1);
+    swapComponent(parent, gap, gap, idx);
   }
 
   @Override public void mouseReleased(MouseEvent e) {
@@ -150,29 +135,39 @@ class DragHandler extends MouseAdapter {
     }
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
-
+    int max = parent.getComponentCount();
     Component cmp = draggingComponent;
     draggingComponent = null;
     window.setVisible(false);
+    int idx = IntStream.range(0, max)
+        .map(i -> getTargetIndex(parent, i, pt))
+        .filter(i -> i >= 0)
+        .findFirst()
+        .orElseGet(() -> parent.getBounds().contains(pt) ? max : index);
+    swapComponent(parent, gap, cmp, idx);
+  }
 
-    for (int i = 0; i < parent.getComponentCount(); i++) {
-      Component c = parent.getComponent(i);
-      Rectangle r = c.getBounds();
-      int wd2 = r.width / 2;
-      PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
-      NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
-      if (PREV_AREA.contains(pt)) {
-        swapComponent(parent, gap, cmp, i > 1 ? i : 0);
-        return;
-      } else if (NEXT_AREA.contains(pt)) {
-        swapComponent(parent, gap, cmp, i);
-        return;
-      }
+  private int getTargetIndex(Container parent, int i, Point pt) {
+    Component c = parent.getComponent(i);
+    Rectangle r = c.getBounds();
+    int wd2 = r.width / 2;
+    PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
+    NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
+    int idx = -1;
+    if (PREV_AREA.contains(pt)) {
+      idx = i > 1 ? i : 0;
+    } else if (NEXT_AREA.contains(pt)) {
+      idx = i;
     }
-    if (parent.getBounds().contains(pt)) {
-      swapComponent(parent, gap, cmp, parent.getComponentCount());
-    } else {
-      swapComponent(parent, gap, cmp, index);
+    return idx;
+  }
+
+  private static void swapComponent(Container p, Component remove, Component add, int idx) {
+    p.remove(remove);
+    if (idx >= 0) {
+      p.add(add, idx);
     }
+    p.revalidate();
+    p.repaint();
   }
 }
