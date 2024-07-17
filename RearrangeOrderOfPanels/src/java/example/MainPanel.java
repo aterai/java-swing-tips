@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -71,7 +72,7 @@ public final class MainPanel extends JPanel {
 class RearrangingHandler extends MouseAdapter {
   private static final Rectangle R1 = new Rectangle();
   private static final Rectangle R2 = new Rectangle();
-  private final Rectangle prevRect = new Rectangle();
+  private static final Rectangle PREV_RECT = new Rectangle();
   private final int dragThreshold = DragSource.getDragThreshold();
   private final JWindow window = new JWindow();
   private final Point startPt = new Point();
@@ -99,7 +100,7 @@ class RearrangingHandler extends MouseAdapter {
     dragOffset.setLocation(pt.x - dp.x, pt.y - dp.y);
 
     gap = Box.createRigidArea(d);
-    swapComponentLocation(parent, c, gap, index);
+    swapComponent(parent, c, gap, index);
 
     window.setBackground(new Color(0x0, true));
     window.add(draggingComponent);
@@ -118,27 +119,6 @@ class RearrangingHandler extends MouseAdapter {
     }
   }
 
-  private int getTargetIndex(Rectangle r, Point pt, int i) {
-    int ht2 = Math.round(r.height / 2f);
-    R1.setBounds(r.x, r.y, r.width, ht2);
-    R2.setBounds(r.x, r.y + ht2, r.width, ht2);
-    if (R1.contains(pt)) {
-      prevRect.setBounds(R1);
-      return i > 1 ? i : 0;
-    } else if (R2.contains(pt)) {
-      prevRect.setBounds(R2);
-      return i;
-    }
-    return -1;
-  }
-
-  private static void swapComponentLocation(Container p, Component remove, Component add, int i) {
-    p.remove(remove);
-    p.add(add, i);
-    p.revalidate();
-    p.repaint();
-  }
-
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
@@ -149,56 +129,82 @@ class RearrangingHandler extends MouseAdapter {
       return;
     }
     updateWindowLocation(pt, parent);
-
-    if (prevRect.contains(pt)) {
-      return;
+    if (!PREV_RECT.contains(pt)) {
+      IntStream.range(0, parent.getComponentCount())
+          .filter(i -> {
+            Component c = parent.getComponent(i);
+            return !Objects.equals(c, gap) || !c.getBounds().contains(pt);
+          })
+          .map(i -> getTargetIndex(parent.getComponent(i), pt, i))
+          .filter(i -> i >= 0)
+          .findFirst()
+          .ifPresent(i -> swapComponent(parent, gap, gap, i));
     }
-    for (int i = 0; i < parent.getComponentCount(); i++) {
-      Component c = parent.getComponent(i);
-      Rectangle r = c.getBounds();
-      if (Objects.equals(c, gap) && r.contains(pt)) {
-        return;
-      }
-      int tgt = getTargetIndex(r, pt, i);
-      if (tgt >= 0) {
-        swapComponentLocation(parent, gap, gap, tgt);
-        return;
-      }
-    }
-    // System.out.println("outer");
-    parent.remove(gap);
-    parent.revalidate();
   }
 
   @Override public void mouseReleased(MouseEvent e) {
     dragOffset.setLocation(0, 0);
-    prevRect.setBounds(0, 0, 0, 0);
+    PREV_RECT.setBounds(0, 0, 0, 0);
     window.setVisible(false);
-
     // if (!window.isVisible() || Objects.isNull(draggingComponent) {
     //   return;
     // }
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
+    Rectangle ppRect = parent.getParent().getBounds();
+    int max = parent.getComponentCount();
     Component cmp = draggingComponent;
     draggingComponent = null;
+    int idx = IntStream.range(0, max)
+        .map(i -> {
+          Component c = parent.getComponent(i);
+          return Objects.equals(c, gap) ? i : getTargetIndex(c, pt, i);
+        })
+        .filter(i -> i >= 0)
+        .findFirst()
+        .orElseGet(() -> ppRect.contains(pt) ? max : index);
+    swapComponent(parent, gap, cmp, idx);
+    // for (int i = 0; i < parent.getComponentCount(); i++) {
+    //   Component c = parent.getComponent(i);
+    //   if (Objects.equals(c, gap)) {
+    //     swapComponent(parent, gap, cmp, i);
+    //     return;
+    //   }
+    //   int tgt = getTargetIndex(c.getBounds(), pt, i);
+    //   if (tgt >= 0) {
+    //     swapComponent(parent, gap, cmp, tgt);
+    //     return;
+    //   }
+    // }
+    // if (parent.getParent().getBounds().contains(pt)) {
+    //   swapComponent(parent, gap, cmp, parent.getComponentCount());
+    // } else {
+    //   swapComponent(parent, gap, cmp, index);
+    // }
+  }
 
-    for (int i = 0; i < parent.getComponentCount(); i++) {
-      Component c = parent.getComponent(i);
-      if (Objects.equals(c, gap)) {
-        swapComponentLocation(parent, gap, cmp, i);
-        return;
-      }
-      int tgt = getTargetIndex(c.getBounds(), pt, i);
-      if (tgt >= 0) {
-        swapComponentLocation(parent, gap, cmp, tgt);
-        return;
-      }
+  private static int getTargetIndex(Component c, Point pt, int i) {
+    Rectangle r = c.getBounds();
+    int ht2 = Math.round(r.height / 2f);
+    R1.setBounds(r.x, r.y, r.width, ht2);
+    R2.setBounds(r.x, r.y + ht2, r.width, ht2);
+    int idx = -1;
+    if (R1.contains(pt)) {
+      PREV_RECT.setBounds(R1);
+      idx = i > 1 ? i : 0;
+    } else if (R2.contains(pt)) {
+      PREV_RECT.setBounds(R2);
+      idx = i;
     }
-    if (parent.getParent().getBounds().contains(pt)) {
-      swapComponentLocation(parent, gap, cmp, parent.getComponentCount());
-    } else {
-      swapComponentLocation(parent, gap, cmp, index);
+    return idx;
+  }
+
+  private static void swapComponent(Container p, Component remove, Component add, int i) {
+    p.remove(remove);
+    if (i >= 0 && add != null) {
+      p.add(add, i);
     }
+    p.revalidate();
+    p.repaint();
   }
 }
