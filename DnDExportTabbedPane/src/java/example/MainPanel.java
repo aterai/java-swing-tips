@@ -551,11 +551,11 @@ class TabTransferHandler extends TransferHandler {
 
   @Override public boolean canImport(TransferSupport support) {
     // System.out.println("canImport");
-    if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
-      // boolean b = support.isDataFlavorSupported(localObjectFlavor);
-      // System.out.println("canImport:" + support.isDrop() + " " + b);
-      return false;
-    }
+    // if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
+    //   // boolean b = support.isDataFlavorSupported(localObjectFlavor);
+    //   // System.out.println("canImport:" + support.isDrop() + " " + b);
+    //   return false;
+    // }
     support.setDropAction(MOVE);
     DropLocation tdl = support.getDropLocation();
     Point pt = tdl.getDropPoint();
@@ -573,16 +573,18 @@ class TabTransferHandler extends TransferHandler {
     //   }
     // }
 
-    boolean canDrop;
-    boolean inArea = target.getTabAreaBounds().contains(pt) && idx >= 0;
-    if (target.equals(source)) {
-      // System.out.println("tgt == src");
-      canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
-    } else {
-      // System.out.format("tgt!=src%n tgt: %s%n src: %s", tgt.getName(), src.getName());
-      canDrop = Optional.ofNullable(source)
-          .map(c -> !c.isAncestorOf(target))
-          .orElse(false) && inArea;
+    boolean canDrop = false;
+    if (support.isDrop() && support.isDataFlavorSupported(localObjectFlavor)) {
+      boolean inArea = target.getTabAreaBounds().contains(pt) && idx >= 0;
+      if (target.equals(source)) {
+        // System.out.println("tgt == src");
+        canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+      } else {
+        // System.out.format("tgt!=src%n tgt: %s%n src: %s", tgt.getName(), src.getName());
+        canDrop = Optional.ofNullable(source)
+            .map(c -> !c.isAncestorOf(target))
+            .orElse(false) && inArea;
+      }
     }
 
     // [JDK-6700748]
