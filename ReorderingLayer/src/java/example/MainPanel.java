@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -111,7 +112,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
         if (Objects.nonNull(draggingComponent)) {
           // swap the dragging panel and the temporary filler
           int idx = parent.getComponentZOrder(fillerComponent);
-          replaceComponents(parent, fillerComponent, draggingComponent, idx);
+          swapComponent(parent, fillerComponent, draggingComponent, idx);
           draggingComponent = null;
         }
         break;
@@ -122,27 +123,38 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
     Component c = e.getComponent();
-    if (e.getID() != MouseEvent.MOUSE_DRAGGED || !(c instanceof JLayer<?>)) {
-      return;
+    if (e.getID() == MouseEvent.MOUSE_DRAGGED && c instanceof JLayer<?>) {
+      mouseDragged(l, e.getPoint());
     }
-    JComponent parent = l.getView();
-    Point pt = e.getPoint();
+  }
+
+  private void mouseDragged(JLayer<? extends V> l, Point pt) {
+    JComponent p = l.getView();
     if (Objects.isNull(draggingComponent)) {
       // MotionThreshold
       if (startPt.distance(pt) > dragThreshold) {
-        startDragging(parent, pt);
+        startDragging(p, pt);
       }
       return;
     }
 
-    // update the filler panel location
     if (!PREV_RECT.contains(pt)) {
-      updateFillerLocation(parent, fillerComponent, pt);
+      // update the filler panel location
+      // updateFillerLocation(p, fillerComponent, pt);
+      IntStream.range(0, p.getComponentCount())
+          .filter(i -> {
+            Component tc = p.getComponent(i);
+            return !Objects.equals(tc, fillerComponent) || !tc.getBounds().contains(pt);
+          })
+          .map(i -> getTargetIndex(p.getComponent(i), pt, i))
+          .filter(i -> i >= 0)
+          .findFirst()
+          .ifPresent(i -> swapComponent(p, fillerComponent, fillerComponent, i));
     }
 
     // update the dragging panel location
-    updateDraggingPanelLocation(parent, SwingUtilities.convertPoint(c, pt, l), dragOffset);
-    parent.repaint();
+    updateDraggingPanelLocation(p, pt, dragOffset);
+    p.repaint();
   }
 
   private void startDragging(JComponent parent, Point pt) {
@@ -158,51 +170,67 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     dragOffset.setLocation(pt.x - r.x, pt.y - r.y);
 
     fillerComponent = Box.createRigidArea(r.getSize());
-    replaceComponents(parent, c, fillerComponent, index);
+    swapComponent(parent, c, fillerComponent, index);
 
     updateDraggingPanelLocation(parent, pt, dragOffset);
   }
 
-  private static void updateDraggingPanelLocation(JComponent parent, Point pt, Point dragOffset) {
-    int y = pt.y - dragOffset.y;
-    Rectangle r = SwingUtilities.calculateInnerArea(parent, TEMP_RECT);
+  private static void updateDraggingPanelLocation(JComponent p, Point pt, Point offset) {
+    int y = pt.y - offset.y;
+    Rectangle r = SwingUtilities.calculateInnerArea(p, TEMP_RECT);
     int bottom = r.y + r.height - DRAGGING_RECT.height;
     DRAGGING_RECT.setLocation(r.x, Math.min(Math.max(y, r.y), bottom));
   }
 
-  private static void updateFillerLocation(Container parent, Component filler, Point pt) {
-    // change the temporary filler location
-    for (int i = 0; i < parent.getComponentCount(); i++) {
-      Component c = parent.getComponent(i);
-      Rectangle r = c.getBounds();
-      if (Objects.equals(c, filler) && r.contains(pt)) {
-        return;
-      }
-      int tgt = getTargetIndex(r, pt, i);
-      if (tgt >= 0) {
-        replaceComponents(parent, filler, filler, tgt);
-        return;
-      }
-    }
-  }
+  // private static void updateFillerLocation(Container p, Component filler, Point pt) {
+  //   IntStream.range(0, p.getComponentCount())
+  //       .filter(i -> {
+  //         Component c = p.getComponent(i);
+  //         return !Objects.equals(c, filler) || !c.getBounds().contains(pt);
+  //       })
+  //       .map(i -> getTargetIndex(p.getComponent(i), pt, i))
+  //       .filter(tgt -> tgt >= 0)
+  //       .findFirst()
+  //       .ifPresent(tgt -> swapComponent(p, filler, filler, tgt));
+  // }
 
-  private static int getTargetIndex(Rectangle r, Point pt, int i) {
+  // private static void updateFillerLocation(Container parent, Component filler, Point pt) {
+  //   // change the temporary filler location
+  //   for (int i = 0; i < parent.getComponentCount(); i++) {
+  //     Component c = parent.getComponent(i);
+  //     Rectangle r = c.getBounds();
+  //     if (Objects.equals(c, filler) && r.contains(pt)) {
+  //       return;
+  //     }
+  //     int tgt = getTargetIndex(r, pt, i);
+  //     if (tgt >= 0) {
+  //       swapComponent(parent, filler, filler, tgt);
+  //       return;
+  //     }
+  //   }
+  // }
+
+  private static int getTargetIndex(Component c, Point pt, int i) {
+    Rectangle r = c.getBounds();
     int ht2 = Math.round(r.height / 2f);
     TOP_HALF_RECT.setBounds(r.x, r.y, r.width, ht2);
     BOTTOM_HALF_RECT.setBounds(r.x, r.y + ht2, r.width, ht2);
+    int idx = -1;
     if (TOP_HALF_RECT.contains(pt)) {
       PREV_RECT.setBounds(TOP_HALF_RECT);
-      return i > 1 ? i : 0;
+      idx = i > 1 ? i : 0;
     } else if (BOTTOM_HALF_RECT.contains(pt)) {
       PREV_RECT.setBounds(BOTTOM_HALF_RECT);
-      return i;
+      idx = i;
     }
-    return -1;
+    return idx;
   }
 
-  private static void replaceComponents(Container p, Component remove, Component add, int idx) {
+  private static void swapComponent(Container p, Component remove, Component add, int i) {
     p.remove(remove);
-    p.add(add, idx);
+    if (i >= 0 && add != null) {
+      p.add(add, i);
+    }
     p.revalidate();
     p.repaint();
   }
