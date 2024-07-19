@@ -19,7 +19,6 @@
     <exclude name="AtLeastOneConstructor" />
     <exclude name="LocalVariableCouldBeFinal" />
     <exclude name="MethodArgumentCouldBeFinal" />
-    <exclude name="OnlyOneReturn" />
     <exclude name="ShortVariable" />
     <exclude name="LongVariable" />
     <exclude name="UseDiamondOperator" />
