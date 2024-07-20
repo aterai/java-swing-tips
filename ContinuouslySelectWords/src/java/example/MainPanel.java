@@ -109,8 +109,7 @@ class SelectWordCaret extends DefaultCaret {
     }
   }
 
-  @SuppressWarnings("PMD.UseVarargs")
-  private int getCaretPositionByLocation(JTextComponent c, Point pt, Position.Bias[] biasRet) {
+  private int getCaretPositionByLocation(JTextComponent c, Position.Bias[] biasRet, Point pt) {
     int pos = c.getUI().viewToModel(c, pt, biasRet);
     // Java 9: int pos = c.getUI().viewToModel2D(c, pt, biasRet);
     if (biasRet[0] == null) {
@@ -122,7 +121,7 @@ class SelectWordCaret extends DefaultCaret {
   private void continuouslySelectWords(MouseEvent e) {
     Position.Bias[] biasRet = new Position.Bias[1];
     JTextComponent c = getComponent();
-    int pos = getCaretPositionByLocation(c, e.getPoint(), biasRet);
+    int pos = getCaretPositionByLocation(c, biasRet, e.getPoint());
     try {
       if (p0 < pos && pos < p1) {
         setDot(p0);
@@ -142,7 +141,7 @@ class SelectWordCaret extends DefaultCaret {
   private void continuouslySelectRows(MouseEvent e) {
     Position.Bias[] biasRet = new Position.Bias[1];
     JTextComponent c = getComponent();
-    int pos = getCaretPositionByLocation(c, e.getPoint(), biasRet);
+    int pos = getCaretPositionByLocation(c, biasRet, e.getPoint());
     try {
       if (p0 < pos && pos < p1) {
         setDot(p0);
