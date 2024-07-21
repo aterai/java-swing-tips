@@ -37,40 +37,32 @@ public final class MainPanel extends JPanel {
     TreeModel model = tree.getModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
-    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.breadthFirstEnumeration())
+        .stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .forEach(n -> n.setUserObject(makeUserObject(n, END_HEIGHT)));
     tree.addTreeWillExpandListener(new TreeWillExpandListener() {
       @Override public void treeWillExpand(TreeExpansionEvent e) {
-        JTree t = (JTree) e.getSource();
-        TreePath anchor = t.getAnchorSelectionPath();
-        TreePath lead = t.getLeadSelectionPath();
-        TreePath path = e.getPath();
-        Object o = path.getLastPathComponent();
-        if (o instanceof DefaultMutableTreeNode && t.isPathSelected(path)) {
+        Object o = e.getPath().getLastPathComponent();
+        if (o instanceof DefaultMutableTreeNode) {
           DefaultMutableTreeNode parent = (DefaultMutableTreeNode) o;
           List<DefaultMutableTreeNode> list = getTreeNodes(parent);
           parent.setUserObject(makeUserObject(parent, END_HEIGHT));
           list.forEach(n -> n.setUserObject(makeUserObject(n, START_HEIGHT)));
           startExpandTimer(e, list);
-          TreePath[] paths = list.stream().map(TreePath::new).toArray(TreePath[]::new);
-          t.addSelectionPaths(paths);
-          t.setAnchorSelectionPath(anchor);
-          t.setLeadSelectionPath(lead);
         }
       }
 
       @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
-        TreePath path = e.getPath();
-        Object o = path.getLastPathComponent();
-        if (o instanceof DefaultMutableTreeNode) {
-          DefaultMutableTreeNode root = (DefaultMutableTreeNode) o;
-          List<DefaultMutableTreeNode> list = getTreeNodes(root);
-          boolean b = list.stream()
+        Object c = e.getPath().getLastPathComponent();
+        if (c instanceof DefaultMutableTreeNode) {
+          List<DefaultMutableTreeNode> list = getTreeNodes((DefaultMutableTreeNode) c);
+          boolean b = list
+              .stream()
               .anyMatch(n -> {
-                Object obj = n.getUserObject();
-                return obj instanceof SizeNode && ((SizeNode) obj).height == END_HEIGHT;
+                Object uo = n.getUserObject();
+                return uo instanceof SizeNode && ((SizeNode) uo).height == END_HEIGHT;
               });
           if (b) {
             startCollapseTimer(e, list);
