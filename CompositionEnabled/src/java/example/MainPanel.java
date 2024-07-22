@@ -24,8 +24,8 @@ public final class MainPanel extends JPanel {
 
       private void startEditing(KeyStroke ks, boolean pressed) {
         InputContext ic = getInputContext();
-        boolean isCompositionEnabled = ic != null && ic.isCompositionEnabled();
-        if (isCompositionEnabled && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
+        boolean isCompEnabled = ic != null && ic.isCompositionEnabled();
+        if (isCompEnabled && !isEditing() && !pressed && !ks.isOnKeyRelease()) {
           int selectedRow = getSelectedRow();
           int selectedColumn = getSelectedColumn();
           if (selectedRow != -1 && selectedColumn != -1) {
