@@ -20,7 +20,6 @@
     <exclude name="LocalVariableCouldBeFinal" />
     <exclude name="MethodArgumentCouldBeFinal" />
     <exclude name="ShortVariable" />
-    <exclude name="LongVariable" />
     <exclude name="UseDiamondOperator" />
   </rule>
   <rule ref="category/java/design.xml">

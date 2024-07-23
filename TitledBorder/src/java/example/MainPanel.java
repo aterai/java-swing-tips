@@ -99,6 +99,7 @@ enum VerticalOrientation {
   }
 }
 
+@SuppressWarnings("PMD.LongVariable")
 enum Justification {
   DEFAULT_JUSTIFICATION(TitledBorder.DEFAULT_JUSTIFICATION, "Default Justification"),
   LEFT(TitledBorder.LEFT, "Left"),

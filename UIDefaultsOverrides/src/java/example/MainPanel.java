@@ -135,6 +135,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
+@SuppressWarnings("PMD.LongVariable")
 enum CheckIcon {
   ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER
 }

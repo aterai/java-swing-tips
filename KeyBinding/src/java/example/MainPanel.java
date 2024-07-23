@@ -217,6 +217,7 @@ class Binding {
   }
 }
 
+@SuppressWarnings("PMD.LongVariable")
 enum FocusType {
   WHEN_FOCUSED(JComponent.WHEN_FOCUSED),
   WHEN_IN_FOCUSED_WINDOW(JComponent.WHEN_IN_FOCUSED_WINDOW),

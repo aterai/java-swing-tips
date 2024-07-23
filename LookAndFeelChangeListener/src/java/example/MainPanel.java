@@ -162,6 +162,7 @@ public final class MainPanel extends JPanel {
   // }
 }
 
+@SuppressWarnings("PMD.LongVariable")
 enum TreeDraws {
   DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
   DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
