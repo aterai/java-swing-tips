@@ -182,7 +182,6 @@ class DnDTree extends JTree {
       repaint();
     }
 
-    @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public void drop(DropTargetDropEvent e) {
       // System.out.println("drop");
       // if (!isWebStart()) {
@@ -209,24 +208,24 @@ class DnDTree extends JTree {
       if (targetNode.equals(draggingNode)) {
         // Cannot move the node to the node itself
         e.dropComplete(false);
-        return;
-      }
-      e.acceptDrop(DnDConstants.ACTION_MOVE);
-
-      DefaultTreeModel model = (DefaultTreeModel) getModel();
-      model.removeNodeFromParent(draggingNode);
-
-      TreeNode parent = targetNode.getParent();
-      if (parent instanceof MutableTreeNode && targetNode.isLeaf()) {
-        model.insertNodeInto(draggingNode, (MutableTreeNode) parent, parent.getIndex(targetNode));
       } else {
-        model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
-      }
-      e.dropComplete(true);
+        e.acceptDrop(DnDConstants.ACTION_MOVE);
 
-      dropTargetNode = null;
-      draggedNode = null;
-      repaint();
+        DefaultTreeModel model = (DefaultTreeModel) getModel();
+        model.removeNodeFromParent(draggingNode);
+
+        TreeNode parent = targetNode.getParent();
+        if (parent instanceof MutableTreeNode && targetNode.isLeaf()) {
+          model.insertNodeInto(draggingNode, (MutableTreeNode) parent, parent.getIndex(targetNode));
+        } else {
+          model.insertNodeInto(draggingNode, targetNode, targetNode.getChildCount());
+        }
+        e.dropComplete(true);
+
+        dropTargetNode = null;
+        draggedNode = null;
+        repaint();
+      }
     }
 
     private void rejectDrag(DropTargetDragEvent e) {
