@@ -41,7 +41,7 @@ public class TitledBorder2 extends TitledBorder {
     BELOW_TOP,
     ABOVE_BOTTOM,
     BOTTOM,
-    BELOW_BOTTOM;
+    BELOW_BOTTOM
   }
 
   public TitledBorder2(String title) {
