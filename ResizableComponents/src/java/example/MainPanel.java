@@ -238,10 +238,10 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     Point pt = e.getPoint();
     Rectangle bounds = new Rectangle(w, h);
     Rectangle actualBounds = new Rectangle(SIZE, SIZE, w - 2 * SIZE, h - 2 * SIZE);
-    Cursor corsor = Cursor.getDefaultCursor();
+    Cursor cursor = Cursor.getDefaultCursor();
     if (bounds.contains(pt) && !actualBounds.contains(pt)) {
       Rectangle controlPoint = new Rectangle(SIZE, SIZE);
-      corsor = Arrays.stream(Locations.values())
+      cursor = Arrays.stream(Locations.values())
           .filter(loc -> {
             controlPoint.setLocation(loc.getPoint(bounds));
             return controlPoint.contains(pt);
@@ -250,7 +250,7 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
           .map(Locations::getCursor)
           .orElse(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
-    return corsor;
+    return cursor;
     // for (Locations loc : Locations.values()) {
     //   rect.setLocation(loc.getPoint(r));
     //   if (rect.contains(pt)) {
