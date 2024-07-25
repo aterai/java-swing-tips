@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
@@ -230,30 +231,32 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
     }
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   @Override public Cursor getResizeCursor(MouseEvent e) {
     Component c = e.getComponent();
     int w = c.getWidth();
     int h = c.getHeight();
     Point pt = e.getPoint();
-
     Rectangle bounds = new Rectangle(w, h);
-    if (!bounds.contains(pt)) {
-      return Cursor.getDefaultCursor();
-    }
-
     Rectangle actualBounds = new Rectangle(SIZE, SIZE, w - 2 * SIZE, h - 2 * SIZE);
-    if (actualBounds.contains(pt)) {
-      return Cursor.getDefaultCursor();
+    Cursor corsor = Cursor.getDefaultCursor();
+    if (bounds.contains(pt) && !actualBounds.contains(pt)) {
+      Rectangle controlPoint = new Rectangle(SIZE, SIZE);
+      corsor = Arrays.stream(Locations.values())
+          .filter(loc -> {
+            controlPoint.setLocation(loc.getPoint(bounds));
+            return controlPoint.contains(pt);
+          })
+          .findFirst()
+          .map(Locations::getCursor)
+          .orElse(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
-    Rectangle rect = new Rectangle(SIZE, SIZE);
-    Rectangle r = new Rectangle(0, 0, w, h);
-    for (Locations loc : Locations.values()) {
-      rect.setLocation(loc.getPoint(r));
-      if (rect.contains(pt)) {
-        return loc.getCursor();
-      }
-    }
-    return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+    return corsor;
+    // for (Locations loc : Locations.values()) {
+    //   rect.setLocation(loc.getPoint(r));
+    //   if (rect.contains(pt)) {
+    //     return loc.getCursor();
+    //   }
+    // }
+    // return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
   }
 }
