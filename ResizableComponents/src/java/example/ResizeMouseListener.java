@@ -183,7 +183,7 @@ enum Directions {
   },
   SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
     @Override public Rectangle getBounds(Rectangle r, Point d) {
-      return new Rectangle(r.x, r.y, r.width, r.height);
+      return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height - d.y);
     }
   },
   SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
