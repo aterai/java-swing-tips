@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -127,20 +128,44 @@ final class LookAndFeelUtils {
     return mi;
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
   private static boolean isAvailableLookAndFeel(Class<?> lnfClass) {
+    return Optional.ofNullable(getConstructor(lnfClass))
+        .map(LookAndFeelUtils::isAvailableInstance)
+        .orElse(false);
+    // Constructor<?> cc = getConstructor(lnfClass);
+    // boolean isAvailable;
+    // if (cc != null) {
+    //   try {
+    //     LookAndFeel newLnF = (LookAndFeel) cc.newInstance();
+    //     isAvailable = newLnF.isSupportedLookAndFeel();
+    //   } catch (Exception ex) {
+    //     isAvailable = false;
+    //   }
+    // } else {
+    //   isAvailable = false;
+    // }
+    // return isAvailable;
+  }
+
+  private static boolean isAvailableInstance(Constructor<?> cc) {
+    boolean isAvailable;
+    try {
+      LookAndFeel newLnF = (LookAndFeel) cc.newInstance();
+      isAvailable = newLnF.isSupportedLookAndFeel();
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+      isAvailable = false;
+    }
+    return isAvailable;
+  }
+
+  private static Constructor<?> getConstructor(Class<?> lnfClass) {
     Constructor<?> cc;
     try {
       cc = lnfClass.getConstructor();
     } catch (NoSuchMethodException e) {
-      return false;
+      cc = null;
     }
-    try {
-      LookAndFeel newLnF = (LookAndFeel) cc.newInstance();
-      return newLnF.isSupportedLookAndFeel();
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException ex) {
-      return false;
-    }
+    return cc;
   }
 
   private static Class<?> getLnfClass(String laf) {
