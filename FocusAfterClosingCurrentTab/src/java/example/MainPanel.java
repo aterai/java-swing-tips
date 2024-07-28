@@ -203,11 +203,11 @@ class ButtonTabComponent extends JPanel {
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout());
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
-    add(makeTitleLabel(tabbedPane));
+    add(makeTitleLabel());
     add(makeCloseButton(), BorderLayout.EAST);
   }
 
-  private JLabel makeTitleLabel(JTabbedPane tabbedPane) {
+  private JLabel makeTitleLabel() {
     return new JLabel() {
       @Override public String getText() {
         String txt = null;
