@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
   private static void appendLog(String str) {
     LOG.append(str + "\n");
   }
-  
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
