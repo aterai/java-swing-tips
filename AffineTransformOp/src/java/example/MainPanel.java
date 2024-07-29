@@ -48,26 +48,25 @@ public final class MainPanel extends JPanel {
         int w = img.getWidth(this);
         int h = img.getHeight(this);
         switch (getMode()) {
-          case VERTICAL: {
-            AffineTransform at = AffineTransform.getScaleInstance(1d, -1d);
-            at.translate(0, -h);
-            // AffineTransform at = new AffineTransform(1d, 0d, 0d, -1d, 0d, h);
+          case VERTICAL:
+            AffineTransform at1 = AffineTransform.getScaleInstance(1d, -1d);
+            at1.translate(0, -h);
+            // AffineTransform at1 = new AffineTransform(1d, 0d, 0d, -1d, 0d, h);
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.drawImage(img, at, this);
+            g2.drawImage(img, at1, this);
             g2.dispose();
             break;
-          }
-          case HORIZONTAL: {
-            AffineTransform at = AffineTransform.getScaleInstance(-1d, 1d);
-            at.translate(-w, 0);
-            // AffineTransform at = new AffineTransform(-1d, 0d, 0d, 1d, w, 0d);
-            AffineTransformOp atOp = new AffineTransformOp(at, null);
+
+          case HORIZONTAL:
+            AffineTransform at2 = AffineTransform.getScaleInstance(-1d, 1d);
+            at2.translate(-w, 0);
+            // AffineTransform at2 = new AffineTransform(-1d, 0d, 0d, 1d, w, 0d);
+            AffineTransformOp atOp = new AffineTransformOp(at2, null);
             g.drawImage(atOp.filter(img, null), 0, 0, w, h, this);
             break;
-          }
-          default: {
+
+          default:
             g.drawImage(img, 0, 0, w, h, this);
-          }
         }
       }
     };
