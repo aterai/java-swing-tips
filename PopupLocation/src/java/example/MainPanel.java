@@ -160,7 +160,7 @@ final class ListItem {
   private final Icon icon;
   private final String title;
 
-  public ListItem(String title, Icon icon) {
+  /* default */ ListItem(String title, Icon icon) {
     this.title = title;
     this.icon = icon;
   }
