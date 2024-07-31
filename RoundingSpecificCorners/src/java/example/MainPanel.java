@@ -73,58 +73,90 @@ public final class MainPanel extends JPanel {
 
     if (types.contains(Type.SUBTRACT)) {
       g2.setColor(Color.RED);
-      Shape shape0 = makeRoundedRect0(rect, aw, ah, corners);
+      Shape shape0 = ShapeUtils.makeRoundRect0(rect, aw, ah, corners);
       g2.draw(shape0);
     }
 
     if (types.contains(Type.PATH2D1)) {
       g2.setColor(Color.GREEN);
-      Shape shape1 = makeRoundedRect1(rect, aw, ah, corners);
+      Shape shape1 = ShapeUtils.makeRoundRect1(rect, aw, ah, corners);
       g2.draw(shape1);
     }
 
     if (types.contains(Type.PATH2D2)) {
       g2.setColor(Color.BLUE);
-      Shape shape2 = makeRoundedRect2(rect, aw, ah, corners);
+      Shape shape2 = ShapeUtils.makeRoundRect2(rect, aw, ah, corners);
       g2.draw(shape2);
     }
 
     g2.dispose();
   }
 
-  public Shape makeRoundedRect0(Rectangle2D rect, double aw, double ah, Set<Corner> corners) {
-    double x = rect.getX();
-    double y = rect.getY();
-    double w = rect.getWidth();
-    double h = rect.getHeight();
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      ex.printStackTrace();
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+// https://stackoverflow.com/questions/77889724/how-to-make-half-rounded-border
+enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
+
+enum Type { ROUND_RECTANGLE2D, SUBTRACT, PATH2D1, PATH2D2 }
+
+final class ShapeUtils {
+  private ShapeUtils() {
+    /* Singleton */
+  }
+
+  public static Shape makeRoundRect0(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+    double x = r.getX();
+    double y = r.getY();
+    double w = r.getWidth();
+    double h = r.getHeight();
     double arw = aw * .5;
     double arh = ah * .5;
-    Area r = new Area(rect);
+    Area area = new Area(r);
     if (corners.contains(Corner.TOP_LEFT)) {
       Area tl = new Area(new Rectangle2D.Double(x, y, arw, arh));
       tl.subtract(new Area(new Ellipse2D.Double(x, y, aw, ah)));
-      r.subtract(tl);
+      area.subtract(tl);
     }
     if (corners.contains(Corner.TOP_RIGHT)) {
       Area tr = new Area(new Rectangle2D.Double(x + w - arw, y, arw, arh));
       tr.subtract(new Area(new Ellipse2D.Double(x + w - aw, y, aw, ah)));
-      r.subtract(tr);
+      area.subtract(tr);
     }
     if (corners.contains(Corner.BOTTOM_LEFT)) {
       Area bl = new Area(new Rectangle2D.Double(x, y + h - arh, arw, arh));
       bl.subtract(new Area(new Ellipse2D.Double(x, y + h - ah, aw, ah)));
-      r.subtract(bl);
+      area.subtract(bl);
     }
     if (corners.contains(Corner.BOTTOM_RIGHT)) {
       Area br = new Area(new Rectangle2D.Double(x + w - arw, y + h - arh, arw, arh));
       br.subtract(new Area(new Ellipse2D.Double(x + w - aw, y + h - ah, aw, ah)));
-      r.subtract(br);
+      area.subtract(br);
     }
-    // r.transform(AffineTransform.getTranslateInstance(x, y));
-    return r;
+    // area.transform(AffineTransform.getTranslateInstance(x, y));
+    return area;
   }
 
-  public static Path2D makeRoundedRect1(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape makeRoundRect1(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
@@ -161,7 +193,7 @@ public final class MainPanel extends JPanel {
     return path;
   }
 
-  public Shape makeRoundedRect2(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape makeRoundRect2(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
@@ -199,31 +231,5 @@ public final class MainPanel extends JPanel {
     p.closePath();
     // p.transform(AffineTransform.getTranslateInstance(x, y));
     return p;
-  }
-
-  // https://stackoverflow.com/questions/77889724/how-to-make-half-rounded-border
-  public enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
-
-  public enum Type { ROUND_RECTANGLE2D, SUBTRACT, PATH2D1, PATH2D2 }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
