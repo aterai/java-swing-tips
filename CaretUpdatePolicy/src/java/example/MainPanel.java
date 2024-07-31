@@ -62,23 +62,23 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private class BackgroundTask extends SwingWorker<String, String> {
-    @Override protected String doInBackground() throws InterruptedException {
-      while (!isCancelled()) {
-        doSomething();
-        if (check.isSelected()) {
-          publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
-        } else {
-          test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
-        }
-      }
-      return "Cancelled";
-    }
-
-    protected void doSomething() throws InterruptedException {
-      Thread.sleep(500);
-    }
-  }
+  // private class BackgroundTask extends SwingWorker<String, String> {
+  //   @Override protected String doInBackground() throws InterruptedException {
+  //     while (!isCancelled()) {
+  //       doSomething();
+  //       if (check.isSelected()) {
+  //         publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
+  //       } else {
+  //         test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
+  //       }
+  //     }
+  //     return "Cancelled";
+  //   }
+  //
+  //   protected void doSomething() throws InterruptedException {
+  //     Thread.sleep(500);
+  //   }
+  // }
 
   private static Component makeTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
@@ -116,8 +116,24 @@ public final class MainPanel extends JPanel {
     //   });
     //   thread.start();
     // }
-    if (Objects.isNull(worker)) {
-      worker = new BackgroundTask() {
+    if (Objects.isNull(worker) || worker.isDone()) {
+      worker = new SwingWorker<String, String>() {
+        @Override protected String doInBackground() throws InterruptedException {
+          while (!isCancelled()) {
+            doSomething();
+            if (check.isSelected()) {
+              publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
+            } else {
+              test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
+            }
+          }
+          return "Cancelled";
+        }
+
+        private void doSomething() throws InterruptedException {
+          Thread.sleep(500);
+        }
+
         @Override protected void process(List<String> chunks) {
           chunks.forEach(MainPanel.this::test);
         }
