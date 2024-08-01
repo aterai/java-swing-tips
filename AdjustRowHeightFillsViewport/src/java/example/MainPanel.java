@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,21 +15,35 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    DefaultTableModel model = makeModel();
+    JTable table = makeTable(model);
+    JScrollPane scroll = makeScrollPane(table);
+    JButton button = new JButton("add");
+    button.addActionListener(e -> model.addRow(new Object[] {"", 0, false}));
+    add(scroll);
+    add(button, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultTableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
+  }
+
+  private JTable makeTable(DefaultTableModel model) {
+    return new JTable(model) {
       private int prevHeight = -1;
       private int prevCount = -1;
 
-      private void updateRowsHeight(JViewport vport) {
-        int height = vport.getExtentSize().height;
+      private void updateRowsHeight(JViewport viewport) {
+        int height = viewport.getExtentSize().height;
         int rowCount = getModel().getRowCount();
         int defaultRowHeight = height / rowCount;
         if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
@@ -50,26 +65,28 @@ public final class MainPanel extends JPanel {
             .ifPresent(this::updateRowsHeight);
       }
     };
+  }
 
-    JScrollPane scroll = new JScrollPane(table);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    // TEST: scroll.addComponentListener(new TableRowHeightAdjuster());
-    scroll.addComponentListener(new ComponentAdapter() {
-      @Override public void componentResized(ComponentEvent e) {
-        Component c = e.getComponent();
-        if (c instanceof JScrollPane) {
-          ((JScrollPane) c).getViewport().getView().revalidate();
-        }
+  private JScrollPane makeScrollPane(JTable table) {
+    return new JScrollPane(table) {
+      private transient ComponentListener listener;
+
+      @Override public void updateUI() {
+        removeComponentListener(listener);
+        super.updateUI();
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        listener = new ComponentAdapter() {
+          @Override public void componentResized(ComponentEvent e) {
+            Component c = e.getComponent();
+            if (c instanceof JScrollPane) {
+              ((JScrollPane) c).getViewport().getView().revalidate();
+            }
+          }
+        };
+        addComponentListener(listener);
       }
-    });
-
-    JButton button = new JButton("add");
-    button.addActionListener(e -> model.addRow(new Object[] {"", 0, false}));
-
-    add(scroll);
-    add(button, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    };
   }
 
   public static void main(String[] args) {
