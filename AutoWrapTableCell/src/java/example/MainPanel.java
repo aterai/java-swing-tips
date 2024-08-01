@@ -14,10 +14,21 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private static final int AUTO_WRAP_COLUMN = 1;
-
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = makeTable();
+    JScrollPane scroll = new JScrollPane(table) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+      }
+    };
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Default", "AutoWrap"};
     Object[][] data = {
         {"123456789012345678901234567890", "123456789012345678901234567890"},
@@ -25,8 +36,12 @@ public final class MainPanel extends JPanel {
         {"3333333", "----------------------------------------------0"},
         {"4444444444444444444", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>|"},
     };
-    TableModel model = new DefaultTableModel(data, columnNames);
-    JTable table = new JTable(model) {
+    return new DefaultTableModel(data, columnNames);
+  }
+
+  private JTable makeTable() {
+    return new JTable(makeModel()) {
+      private static final int AUTO_WRAP_COLUMN = 1;
       private final Color evenColor = new Color(0xE6_F0_FF);
 
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -89,13 +104,6 @@ public final class MainPanel extends JPanel {
       //   return preferredHeight + insets.top + insets.bottom;
       // }
     };
-
-    JScrollPane scroll = new JScrollPane(table);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
