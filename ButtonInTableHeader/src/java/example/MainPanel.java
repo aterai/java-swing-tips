@@ -20,17 +20,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Boolean", "Integer", "String"};
-    Object[][] data = {
-        {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
-        {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         setSelectionForeground(new ColorUIResource(Color.RED));
         setSelectionBackground(new ColorUIResource(Color.RED));
@@ -68,6 +58,19 @@ public final class MainPanel extends JPanel {
     // table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Boolean", "Integer", "String"};
+    Object[][] data = {
+        {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
+        {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
@@ -181,7 +184,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
       if (rolloverIndex == mci) {
         int w = table.getColumnModel().getColumn(mci).getWidth();
         int h = table.getTableHeader().getHeight();
-        // Icon icon = new MenuArrowIcon();
+        // Icon arrowIcon = new MenuArrowIcon();
         Border outside = l.getBorder();
         Border inside = BorderFactory.createEmptyBorder(0, 0, 0, BUTTON_WIDTH);
         Border b = BorderFactory.createCompoundBorder(outside, inside);
