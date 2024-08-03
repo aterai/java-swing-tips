@@ -19,7 +19,6 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("CheckBoxMenuItem.doNotCloseOnMouseClick", true);
-
     JTable table = new JTable(new DefaultTableModel(12, 8));
     table.getTableHeader().setComponentPopupMenu(new TableHeaderPopupMenu(table));
 
@@ -88,7 +87,7 @@ final class TableHeaderPopupMenu extends JPopupMenu {
         } else {
           columnModel.removeColumn(tableColumn);
         }
-        updateMenuItems(columnModel);
+        updateMenuItems(columnModel.getColumnCount() == 1);
       });
       add(item);
     });
@@ -100,18 +99,22 @@ final class TableHeaderPopupMenu extends JPopupMenu {
       header.setDraggedColumn(null);
       header.repaint();
       header.getTable().repaint();
-      updateMenuItems(header.getColumnModel());
+      updateMenuItems(header.getColumnModel().getColumnCount() == 1);
       super.show(c, x, y);
     }
   }
 
-  private void updateMenuItems(TableColumnModel columnModel) {
-    boolean isOnlyOneMenu = columnModel.getColumnCount() == 1;
+  private void updateMenuItems(boolean isOnlyOneMenu) {
     if (isOnlyOneMenu) {
-      descendants(this).map(MenuElement::getComponent).forEach(mi ->
-          mi.setEnabled(!(mi instanceof AbstractButton) || !((AbstractButton) mi).isSelected()));
+      descendants(this)
+          .map(MenuElement::getComponent)
+          .filter(AbstractButton.class::isInstance)
+          .map(AbstractButton.class::cast)
+          .forEach(b -> b.setEnabled(!b.isSelected()));
     } else {
-      descendants(this).forEach(me -> me.getComponent().setEnabled(true));
+      descendants(this)
+          .map(MenuElement::getComponent)
+          .forEach(c -> c.setEnabled(true));
     }
   }
 
