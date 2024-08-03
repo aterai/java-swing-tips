@@ -126,11 +126,12 @@ public final class MainPanel extends JPanel {
     JFrame.setDefaultLookAndFeelDecorated(true);
     JFrame frame = new JFrame("@title@");
     // frame.setUndecorated(true);
-
     // if (System.getProperty("java.version").startsWith("1.6.0")) {
     //   AWTUtilities.setWindowOpaque(frame, false);
     // }
-    frame.setBackground(new Color(0x0, true)); // 1.7.0
+    if (frame.getGraphicsConfiguration().isTranslucencyCapable()) {
+      frame.setBackground(new Color(0x0, true)); // 1.7.0
+    }
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
