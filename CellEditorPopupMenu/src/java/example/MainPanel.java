@@ -24,17 +24,7 @@ import javax.swing.undo.UndoManager;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "String"};
-    Object[][] data = {
-        {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
-        {"AAA", "bbb bbb"}, {"CCC", "ddd ddd"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
     JTextComponent textField = (JTextComponent) ce.getComponent();
@@ -42,6 +32,19 @@ public final class MainPanel extends JPanel {
     textField.setComponentPopupMenu(popup);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "String"};
+    Object[][] data = {
+        {"Undo", "Ctrl Z"}, {"Redo", "Ctrl Y"},
+        {"AAA", "bbb bbb"}, {"CCC", "ddd ddd"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
