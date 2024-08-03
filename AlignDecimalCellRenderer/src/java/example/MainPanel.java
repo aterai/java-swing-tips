@@ -9,6 +9,7 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -19,31 +20,35 @@ import javax.swing.text.TabStop;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setAutoCreateRowSorter(true);
+        setRowSelectionAllowed(true);
+        setFillsViewportHeight(true);
+        setShowVerticalLines(false);
+        setShowHorizontalLines(false);
+        setFocusable(false);
+        setIntercellSpacing(new Dimension());
+        TableColumn column = getColumnModel().getColumn(2);
+        column.setCellRenderer(new AlignDecimalCellRenderer());
+      }
+    };
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Double", "ALIGN_DECIMAL"};
     Object[][] data = {
         {"aaa", 1.4142, 1.4142}, {"bbb", 98.765, 98.765},
         {"CCC", 1.73, 1.73}, {"DDD", 0d, 0d}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        getColumnModel().getColumn(2).setCellRenderer(new AlignDecimalCellRenderer());
-      }
-    };
-    table.setAutoCreateRowSorter(true);
-    table.setRowSelectionAllowed(true);
-    table.setFillsViewportHeight(true);
-    table.setShowVerticalLines(false);
-    table.setShowHorizontalLines(false);
-    table.setFocusable(false);
-    table.setIntercellSpacing(new Dimension());
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
