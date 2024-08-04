@@ -124,16 +124,21 @@ class CheckBoxTable extends JTable {
 
   private final class CheckBoxListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-      Component c = e.getComponent();
-      if (c instanceof JTable && checkedIndex >= 0) {
-        ListSelectionModel sm = ((JTable) c).getSelectionModel();
-        if (sm.isSelectedIndex(checkedIndex)) {
-          sm.removeSelectionInterval(checkedIndex, checkedIndex);
+      JTable table = (JTable) e.getComponent();
+      Point pt = e.getPoint();
+      if (table.columnAtPoint(pt) == CHECKBOX_COLUMN) {
+        int row = table.rowAtPoint(pt);
+        checkedIndex = row;
+        ListSelectionModel sm = table.getSelectionModel();
+        if (sm.isSelectedIndex(row)) {
+          sm.removeSelectionInterval(row, row);
         } else {
-          sm.addSelectionInterval(checkedIndex, checkedIndex);
+          sm.addSelectionInterval(row, row);
         }
-        c.repaint();
+      } else {
+        checkedIndex = -1;
       }
+      table.repaint();
     }
   }
 }
