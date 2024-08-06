@@ -9,6 +9,7 @@ import java.awt.font.FontRenderContext;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -19,19 +20,22 @@ public final class MainPanel extends JPanel {
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setVerticalAlignment(SwingConstants.CENTER);
 
-    String[] columnNames = {"family", "name", "postscript name", "canDisplay", "isEmpty"};
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-
-      @Override public Class<?> getColumnClass(int column) {
-        return column > 2 ? Boolean.class : String.class;
-      }
-    };
-    JTable table = new JTable(model);
     Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-    Stream.of(fonts)
+    JTable table = new JTable(makeModel(fonts, code));
+    table.getSelectionModel().addListSelectionListener(e -> {
+      if (!e.getValueIsAdjusting() && table.getSelectedRowCount() == 1) {
+        label.setFont(fonts[table.getSelectedRow()].deriveFont(24f));
+      }
+    });
+
+    add(label, BorderLayout.NORTH);
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private TableModel makeModel(Font[] fonts, int code) {
+    String[] columnNames = {"family", "name", "postscript name", "canDisplay", "isEmpty"};
+    Object[][] data = Stream.of(fonts)
         .map(f -> {
           String txt = String.valueOf(Character.toChars(code));
           FontRenderContext frc = getFontMetrics(f).getFontRenderContext();
@@ -43,16 +47,16 @@ public final class MainPanel extends JPanel {
               f.createGlyphVector(frc, txt).getVisualBounds().isEmpty()
           };
         })
-        .forEach(model::addRow);
-    table.getSelectionModel().addListSelectionListener(e -> {
-      if (!e.getValueIsAdjusting() && table.getSelectedRowCount() == 1) {
-        label.setFont(fonts[table.getSelectedRow()].deriveFont(24f));
+        .toArray(Object[][]::new);
+    return new DefaultTableModel(data, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
       }
-    });
 
-    add(label, BorderLayout.NORTH);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
+      @Override public Class<?> getColumnClass(int column) {
+        return column > 2 ? Boolean.class : String.class;
+      }
+    };
   }
 
   public static void main(String[] args) {
