@@ -24,17 +24,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"user", "rwx"};
-    Object[][] data = {
-        {"owner", EnumSet.allOf(Permissions.class)},
-        {"group", EnumSet.of(Permissions.READ)},
-        {"other", EnumSet.noneOf(Permissions.class)}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
+    TableModel model = makeModel();
     JTable table = new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
@@ -64,34 +54,7 @@ public final class MainPanel extends JPanel {
 
     JLabel label = new JLabel();
     JButton button = new JButton("ls -l (chmod)");
-    button.addActionListener(e -> {
-      StringBuilder numBuf = new StringBuilder(3);
-      StringBuilder buf = new StringBuilder(9);
-      for (int i = 0; i < model.getRowCount(); i++) {
-        Set<?> v = (Set<?>) model.getValueAt(i, 1);
-        int flg = 0;
-        if (v.contains(Permissions.READ)) {
-          flg |= map.get(Permissions.READ);
-          buf.append('r');
-        } else {
-          buf.append('-');
-        }
-        if (v.contains(Permissions.WRITE)) {
-          flg |= map.get(Permissions.WRITE);
-          buf.append('w');
-        } else {
-          buf.append('-');
-        }
-        if (v.contains(Permissions.EXECUTE)) {
-          flg |= map.get(Permissions.EXECUTE);
-          buf.append('x');
-        } else {
-          buf.append('-');
-        }
-        numBuf.append(flg);
-      }
-      label.setText(String.format(" %s -%s", numBuf, buf));
-    });
+    button.addActionListener(e -> label.setText(getPermissionsText(model, map)));
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(label);
@@ -99,6 +62,49 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getPermissionsText(TableModel model, Map<Permissions, Integer> map) {
+    StringBuilder numBuf = new StringBuilder(3);
+    StringBuilder buf = new StringBuilder(9);
+    for (int i = 0; i < model.getRowCount(); i++) {
+      Set<?> v = (Set<?>) model.getValueAt(i, 1);
+      int flg = 0;
+      if (v.contains(Permissions.READ)) {
+        flg |= map.get(Permissions.READ);
+        buf.append('r');
+      } else {
+        buf.append('-');
+      }
+      if (v.contains(Permissions.WRITE)) {
+        flg |= map.get(Permissions.WRITE);
+        buf.append('w');
+      } else {
+        buf.append('-');
+      }
+      if (v.contains(Permissions.EXECUTE)) {
+        flg |= map.get(Permissions.EXECUTE);
+        buf.append('x');
+      } else {
+        buf.append('-');
+      }
+      numBuf.append(flg);
+    }
+    return String.format(" %s -%s", numBuf, buf);
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"user", "rwx"};
+    Object[][] data = {
+        {"owner", EnumSet.allOf(Permissions.class)},
+        {"group", EnumSet.of(Permissions.READ)},
+        {"other", EnumSet.noneOf(Permissions.class)}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {

@@ -30,27 +30,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Name", "Comment"};
-    Object[][] data = {
-        {"test1.jpg", "11111"},
-        {"test1234.jpg", "  "},
-        {"test15354.gif", "22222"},
-        {"t.png", "comment"},
-        {"33333.jpg", "123"},
-        {"4444444444444444.mpg", "test"},
-        {"5555555555555", ""},
-        {"test1.jpg", ""}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-    };
-    JTable table = new FileListTable(model);
+    JTable table = new FileListTable(makeModel());
+    table.setComponentPopupMenu(new TablePopupMenu());
 
     KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
     KeyStroke stab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
@@ -72,9 +53,31 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Name", "Comment"};
+    Object[][] data = {
+        {"test1.jpg", "11111"},
+        {"test1234.jpg", "  "},
+        {"test15354.gif", "22222"},
+        {"t.png", "comment"},
+        {"33333.jpg", "123"},
+        {"4444444444444444.mpg", "test"},
+        {"5555555555555", ""},
+        {"test1.jpg", ""}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
   }
 
   public static void main(String[] args) {

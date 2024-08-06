@@ -16,18 +16,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Column1", "Column2"};
-    Object[][] data = {
-        {"colors", makeModel("blue", "violet", "red", "yellow")},
-        {"sports", makeModel("basketball", "soccer", "football", "hockey")},
-        {"food", makeModel("hot dogs", "pizza", "ravioli", "bananas")},
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return column == 1 ? DefaultComboBoxModel.class : String.class;
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setRowHeight(24);
     table.setAutoCreateRowSorter(true);
 
@@ -37,6 +26,20 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Column1", "Column2"};
+    Object[][] data = {
+        {"colors", makeModel("blue", "violet", "red", "yellow")},
+        {"sports", makeModel("basketball", "soccer", "football", "hockey")},
+        {"food", makeModel("hot dogs", "pizza", "ravioli", "bananas")},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column == 1 ? DefaultComboBoxModel.class : String.class;
+      }
+    };
   }
 
   private static DefaultComboBoxModel<String> makeModel(String... items) {
