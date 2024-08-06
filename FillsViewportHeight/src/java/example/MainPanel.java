@@ -10,27 +10,12 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       private final Color evenColor = new Color(0xF5_F5_F5);
 
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -45,6 +30,9 @@ public final class MainPanel extends JPanel {
         return c;
       }
     };
+    // table.setRowSorter(new TableRowSorter<>(table.getModel()));
+    table.setAutoCreateRowSorter(true);
+
     JScrollPane scroll = new JScrollPane(table);
     scroll.setBackground(Color.RED);
     scroll.getViewport().setBackground(Color.GREEN);
@@ -55,12 +43,29 @@ public final class MainPanel extends JPanel {
     table.setComponentPopupMenu(new TablePopupMenu());
     // scroll.getViewport().setComponentPopupMenu(makePop());
     // scroll.setComponentPopupMenu(makePop());
-    table.setRowSorter(new TableRowSorter<>(model));
 
     add(makeToolBox(table), BorderLayout.NORTH);
     add(makeColorBox(table), BorderLayout.SOUTH);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
+      @Override public Class<?> getColumnClass(int column) {
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
   }
 
   private static Component makeToolBox(JTable table) {
