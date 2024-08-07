@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,38 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    add(new JScrollPane(makeTable(makeModel())));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTable makeTable(TableModel tableModel) {
+    return new JTable(tableModel) {
+      private transient TableModelListener listener;
+
+      @Override public void updateUI() {
+        getModel().removeTableModelListener(listener);
+        super.updateUI();
+        setDefaultRenderer(Color.class, new ColorRenderer());
+        setDefaultEditor(Color.class, new ColorEditor());
+        listener = e -> {
+          if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COL_IDX) {
+            TableModel model = (TableModel) e.getSource();
+            int row = e.getFirstRow();
+            String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
+            Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
+            UIManager.put(key, new ColorUIResource(color));
+            EventQueue.invokeLater(() -> {
+              Container c = getTopLevelAncestor();
+              Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
+            });
+          }
+        };
+        getModel().addTableModelListener(listener);
+      }
+    };
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Key", "Color"};
     Object[][] data = {
         {"activeCaption", UIManager.getColor("activeCaption")},
@@ -54,7 +87,7 @@ public final class MainPanel extends JPanel {
         {"windowBorder", UIManager.getColor("windowBorder")},
         {"windowText", UIManager.getColor("windowText")}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
         return column == COLOR_COL_IDX;
       }
@@ -63,25 +96,6 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model);
-    table.setDefaultRenderer(Color.class, new ColorRenderer());
-    table.setDefaultEditor(Color.class, new ColorEditor());
-
-    model.addTableModelListener(e -> {
-      if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COL_IDX) {
-        int row = e.getFirstRow();
-        String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
-        Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
-        UIManager.put(key, new ColorUIResource(color));
-        EventQueue.invokeLater(() -> {
-          Container c = table.getTopLevelAncestor();
-          Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
-        });
-      }
-    });
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
