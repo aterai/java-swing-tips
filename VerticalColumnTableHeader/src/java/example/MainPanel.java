@@ -16,21 +16,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"a", 12, true}, {"b", 5, false}, {"C", 92, true}, {"D", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         ColorUIResource reset = new ColorUIResource(Color.RED);
         setSelectionForeground(reset);
@@ -51,14 +41,15 @@ public final class MainPanel extends JPanel {
           tc.setHeaderRenderer(hr);
           tc.setPreferredWidth(32);
         }
+        setAutoCreateRowSorter(true);
+        setAutoResizeMode(AUTO_RESIZE_OFF);
       }
     };
-    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-    table.setRowSorter(sorter);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    // table.setRowSorter(new TableRowSorter<>(table.getModel()));
+    // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
     JButton button = new JButton("clear SortKeys");
-    button.addActionListener(e -> sorter.setSortKeys(null));
+    button.addActionListener(e -> table.getRowSorter().setSortKeys(null));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -67,6 +58,18 @@ public final class MainPanel extends JPanel {
     add(button, BorderLayout.SOUTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"a", 12, true}, {"b", 5, false}, {"C", 92, true}, {"D", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
