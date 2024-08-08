@@ -44,7 +44,9 @@ public final class MainPanel extends JPanel {
     digitalClock.setUndecorated(true);
     // digitalClock.setAlwaysOnTop(true);
     // AWTUtilities.setWindowOpaque(digitalClock, false); // JDK 1.6.0
-    digitalClock.setBackground(new Color(0x0, true)); // JDK 1.7.0
+    if (digitalClock.getGraphicsConfiguration().isTranslucencyCapable()) {
+      digitalClock.setBackground(new Color(0x0, true)); // Java 1.7.0
+    }
     digitalClock.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     digitalClock.pack();
     digitalClock.setLocationRelativeTo(null);

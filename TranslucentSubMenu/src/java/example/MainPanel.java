@@ -235,7 +235,9 @@ class TranslucentPopup extends Popup {
     // AWTUtilities.setWindowOpacity(popupWindow, (contents instanceof JToolTip) ? .8f : .95f);
     // popupWindow.setOpacity(.5f);
     // AWTUtilities.setWindowOpaque(popupWindow, false); // Java 1.6.0_10
-    popupWindow.setBackground(new Color(0x0, true)); // Java 1.7.0
+    if (popupWindow.getGraphicsConfiguration().isTranslucencyCapable()) {
+      popupWindow.setBackground(new Color(0x0, true)); // Java 1.7.0
+    }
     // determine the popup location
     popupWindow.setLocation(ownerX, ownerY);
     // add the contents to the popup

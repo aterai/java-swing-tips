@@ -11,6 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -179,12 +180,16 @@ class HeavyWeightContainerListener implements PopupMenuListener {
       combo.setBorder(new TopRoundedCornerBorder());
       Accessible a = combo.getUI().getAccessibleChild(combo, 0);
       if (a instanceof JPopupMenu) {
-        Window w = SwingUtilities.getWindowAncestor((Component) a);
-        // https://ateraimemo.com/Swing/DropShadowPopup.html
-        if (w != null && w.getType() == Window.Type.POPUP) {
-          // Popup$HeavyWeightWindow
-          w.setBackground(new Color(0x0, true));
-        }
+        Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
+            .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
+            .filter(w -> w.getType() == Window.Type.POPUP)
+            .ifPresent(w -> w.setBackground(new Color(0x0, true)));
+        // Window w = SwingUtilities.getWindowAncestor((Component) a);
+        // // https://ateraimemo.com/Swing/DropShadowPopup.html
+        // if (w != null && window.getType() == Window.Type.POPUP) {
+        //   // Popup$HeavyWeightWindow
+        //   w.setBackground(new Color(0x0, true));
+        // }
       }
     });
   }
