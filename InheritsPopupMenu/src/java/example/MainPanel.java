@@ -11,21 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    };
+    DefaultTableModel model = makeModel();
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
 
@@ -76,6 +62,24 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
+      @Override public Class<?> getColumnClass(int column) {
+        switch (column) {
+          case 0: return String.class;
+          case 1: return Number.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
+        }
+      }
+    };
   }
 
   public static void main(String[] args) {

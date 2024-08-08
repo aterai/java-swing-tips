@@ -14,28 +14,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
-
-    // TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
-    //   @Override public void toggleSortOrder(int column) {
-    //     super.toggleSortOrder(column);
-    //     if (check2.isSelected()) {
-    //       table.clearSelection();
-    //     }
-    //   }
-    // };
-    // table.setRowSorter(sorter);
-    // table.setUpdateSelectionOnSort(false);
 
     JCheckBox check1 = new JCheckBox("UpdateSelectionOnSort", true);
     check1.addActionListener(e -> table.setUpdateSelectionOnSort(check1.isSelected()));
@@ -56,10 +36,21 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p.add(check1);
     p.add(check2);
-
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
