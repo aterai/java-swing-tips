@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
     //   AWTUtilities.setWindowOpaque(frame, false);
     // }
     if (frame.getGraphicsConfiguration().isTranslucencyCapable()) {
-      frame.setBackground(new Color(0x0, true)); // 1.7.0
+      frame.setBackground(new Color(0x0, true)); // Java 1.7.0
     }
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());

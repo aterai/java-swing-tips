@@ -92,8 +92,9 @@ public final class MainPanel extends JPanel {
       }
     };
     frame.setUndecorated(true);
-    frame.setBackground(new Color(0x0, true));
-
+    if (frame.getGraphicsConfiguration().isTranslucencyCapable()) {
+      frame.setBackground(new Color(0x0, true));
+    }
     JPanel titlePane = new JPanel(new BorderLayout());
     MouseInputListener dwl = new DragWindowListener();
     titlePane.addMouseListener(dwl);

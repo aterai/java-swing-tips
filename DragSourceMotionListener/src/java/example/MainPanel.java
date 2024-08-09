@@ -119,7 +119,9 @@ class LabelTransferHandler extends TransferHandler {
     // AccessControlException: access denied ("java.awt.AWTPermission" "setWindowAlwaysOnTop")
     // window.setAlwaysOnTop(true);
     // AWTUtilities.setWindowOpaque(window, false); // JDK 1.6.0
-    window.setBackground(new Color(0x0, true)); // JDK 1.7.0
+    if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+      window.setBackground(new Color(0x0, true)); // Java 1.7.0
+    }
     DragSource.getDefaultDragSource().addDragSourceMotionListener(e -> {
       Point pt = e.getLocation();
       // pt.translate(5, 5); // offset
