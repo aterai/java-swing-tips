@@ -16,17 +16,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"AAA", "BBB", "CCC", "DDD"};
-    Object[][] data = {
-        {"aaa", "1", "true", "cc"}, {"aaa", "1", "false", "dd"},
-        {"aaa", "2", "true", "ee"}, {"ddd", "3", "false", "ff"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         MultiSortHeaderRenderer r = new MultiSortHeaderRenderer();
@@ -39,6 +29,19 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"AAA", "BBB", "CCC", "DDD"};
+    Object[][] data = {
+        {"aaa", "1", "true", "cc"}, {"aaa", "1", "false", "dd"},
+        {"aaa", "2", "true", "ee"}, {"ddd", "3", "false", "ff"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
   }
 
   public static void main(String[] args) {

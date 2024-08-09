@@ -39,12 +39,7 @@ public final class MainPanel extends JPanel {
     initBorderAndAlignment(field3);
     field3.setFormatterFactory(new NumberFormatterFactory());
 
-    String[] columnNames = {"Default", "DocumentFilter", "InputVerifier", "JFormattedTextField"};
-    TableModel model = new DefaultTableModel(columnNames, 10) {
-      @Override public Class<?> getColumnClass(int column) {
-        return Integer.class;
-      }
-    };
+    TableModel model = makeModel();
     JTable table = new JTable(model) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
@@ -76,6 +71,15 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Default", "DocumentFilter", "InputVerifier", "JFormattedTextField"};
+    return new DefaultTableModel(columnNames, 10) {
+      @Override public Class<?> getColumnClass(int column) {
+        return Integer.class;
+      }
+    };
   }
 
   private static void initBorderAndAlignment(JTextField textField) {

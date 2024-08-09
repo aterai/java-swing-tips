@@ -13,20 +13,9 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"AAA", 0, true}, {"BBB", 1, false},
-        {"CCC", 2, true}, {"DDD", 3, true},
-        {"EEE", 4, true}, {"FFF", 5, false},
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     // RowSorter<? extends TableModel> defSorter = table.getRowSorter();
-    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
+    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel()) {
       @Override public boolean isSortable(int column) {
         return false;
       }
@@ -50,6 +39,20 @@ public final class MainPanel extends JPanel {
     add(check, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"AAA", 0, true}, {"BBB", 1, false},
+        {"CCC", 2, true}, {"DDD", 3, true},
+        {"EEE", 4, true}, {"FFF", 5, false},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
