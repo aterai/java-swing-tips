@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.ComponentUI;
@@ -90,10 +91,11 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
     Popup pp = super.getPopup(popup, x, y);
     if (pp != null) {
       EventQueue.invokeLater(() -> {
-        Window w = SwingUtilities.getWindowAncestor(popup);
-        if (w != null && w.getType() == Window.Type.POPUP) {
-          w.setBackground(new Color(0x0, true));
-        }
+        Window window = SwingUtilities.getWindowAncestor(popup);
+        Optional.ofNullable(window)
+            .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
+            .filter(w -> w.getType() == Window.Type.POPUP)
+            .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       });
       Container c = SwingUtilities.getUnwrappedParent(popup);
       if (c instanceof JComponent) {

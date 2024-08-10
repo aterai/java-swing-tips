@@ -81,7 +81,9 @@ class DragHandler extends MouseAdapter {
     Container parent = (Container) e.getComponent();
     if (parent.getComponentCount() > 0) {
       startPt.setLocation(e.getPoint());
-      window.setBackground(new Color(0x0, true));
+      if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+        window.setBackground(new Color(0x0, true));
+      }
     }
   }
 
