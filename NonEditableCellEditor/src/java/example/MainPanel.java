@@ -17,17 +17,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    String[] columnNames = {"A", "B", "C"};
-    Object[][] data = {
-        {"aaa", "bb bb bb bb", "ccc ccc"}, {"bbb", "ff", "ggg oo pp"},
-        {"CCC", "kkk", "jj"}, {"DDD", "ii mm nn", "hhh hhh lll"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     table.setFillsViewportHeight(true);
     // table.setFocusable(false);
@@ -72,6 +62,19 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B", "C"};
+    Object[][] data = {
+        {"aaa", "bb bb bb bb", "ccc ccc"}, {"bbb", "ff", "ggg oo pp"},
+        {"CCC", "kkk", "jj"}, {"DDD", "ii mm nn", "hhh hhh lll"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {

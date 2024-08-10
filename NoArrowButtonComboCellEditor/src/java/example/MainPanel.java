@@ -24,26 +24,31 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ZoneId zid = ZoneId.systemDefault();
+    JTable table = new JTable(makeModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setAutoCreateRowSorter(true);
+        TableColumn col = getColumnModel().getColumn(0);
+        col.setCellRenderer(new LocalDateTimeTableCellRenderer());
+        col.setCellEditor(new LocalDateTimeTableCellEditor());
+      }
+    };
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static TableModel makeModel() {
+    ZoneId zid = ZoneId.systemDefault();
     String[] columnNames = {"LocalDateTime", "String", "Boolean"};
     Object[][] data = {
         {LocalDateTime.now(zid), "aaa", true}, {LocalDateTime.now(zid), "bbb", false},
         {LocalDateTime.now(zid), "CCC", true}, {LocalDateTime.now(zid), "DDD", false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model);
-    table.setAutoCreateRowSorter(true);
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setCellRenderer(new LocalDateTimeTableCellRenderer());
-    col.setCellEditor(new LocalDateTimeTableCellEditor());
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {

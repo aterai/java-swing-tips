@@ -20,18 +20,11 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"JSpinner", "Buttons"};
-    Object[][] data = {
-        {50, 100}, {100, 50}, {30, 20}, {0, 100}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return Integer.class;
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
+        setRowHeight(36);
+        setAutoCreateRowSorter(true);
         EventQueue.invokeLater(() -> {
           TableColumn column = getColumnModel().getColumn(0);
           column.setCellRenderer(new SpinnerRenderer());
@@ -43,10 +36,20 @@ public final class MainPanel extends JPanel {
         });
       }
     };
-    table.setRowHeight(36);
-    table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"JSpinner", "Buttons"};
+    Object[][] data = {
+        {50, 100}, {100, 50}, {30, 20}, {0, 100}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return Integer.class;
+      }
+    };
   }
 
   public static void main(String[] args) {
