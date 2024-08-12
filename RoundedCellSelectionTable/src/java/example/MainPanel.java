@@ -127,13 +127,21 @@ class RoundedCellSelectionTable extends JTable {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(getSelectionBackground());
       Area area = new Area();
-      for (int row = 0; row < getRowCount(); row++) {
-        for (int col = 0; col < getColumnCount(); col++) {
+      for (int row : getSelectedRows()) {
+        for (int col : getSelectedColumns()) {
           addArea(area, row, col);
         }
       }
-      // if (!area.isEmpty()) {
+      // Arrays.stream(getSelectedRows())
+      //     .boxed()
+      //     .flatMap(row -> Arrays.stream(getSelectedColumns())
+      //         .filter(col -> isCellSelected(row, col))
+      //         .mapToObj(col -> getCellRect(row, col, true))
+      //         .map(Area::new))
+      //     .forEach(area::add);
+
       int arc = 8;
+      // if (!area.isEmpty()) {
       for (Area a : GeomUtils.singularization(area)) {
         // List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
         // g2.fill(GeomUtils.convertRoundedPath(lst, arc / 2d));
