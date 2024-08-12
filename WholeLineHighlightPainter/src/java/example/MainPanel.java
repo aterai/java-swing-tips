@@ -142,7 +142,7 @@ class FocusCaret extends DefaultCaret {
   }
 
   @Override public boolean equals(Object o) {
-    return this == o || o instanceof FocusCaret && equals2((FocusCaret) o);
+    return this == o || (o instanceof FocusCaret && equals2((FocusCaret) o));
   }
 
   private boolean equals2(FocusCaret that) {

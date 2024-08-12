@@ -134,7 +134,7 @@ class RowHeader {
   }
 
   @Override public boolean equals(Object o) {
-    return this == o || o instanceof RowHeader && equals2((RowHeader) o);
+    return this == o || (o instanceof RowHeader && equals2((RowHeader) o));
   }
 
   private boolean equals2(RowHeader rh) {
