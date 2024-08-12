@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST RoundedCellSelectionTable" />
+  <property name="jnlp.Name"     value="RoundedCellSelectionTable" />
+  <property name="jnlp.name"     value="roundedcellselectiontable" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/roundedcellselectiontable/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/RoundedCellSelectionTable.html" />
+</project>
