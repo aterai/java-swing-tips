@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -134,9 +133,12 @@ class RoundedCellSelectionTable extends JTable {
         }
       }
       // if (!area.isEmpty()) {
+      int arc = 8;
       for (Area a : GeomUtils.singularization(area)) {
-        List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
-        g2.fill(GeomUtils.convertRoundedPath(lst, 4d));
+        // List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
+        // g2.fill(GeomUtils.convertRoundedPath(lst, arc / 2d));
+        Rectangle r = a.getBounds();
+        g2.fillRoundRect(r.x, r.y, r.width - 1, r.height - 1, arc, arc);
       }
       g2.dispose();
     }
@@ -155,52 +157,52 @@ final class GeomUtils {
     /* Singleton */
   }
 
-  public static List<Point2D> convertAreaToPoint2DList(Area area) {
-    List<Point2D> list = new ArrayList<>();
-    PathIterator pi = area.getPathIterator(null);
-    double[] coords = new double[6];
-    while (!pi.isDone()) {
-      int pathSegmentType = pi.currentSegment(coords);
-      switch (pathSegmentType) {
-        case PathIterator.SEG_MOVETO:
-        case PathIterator.SEG_LINETO:
-          list.add(new Point2D.Double(coords[0], coords[1]));
-          break;
-        default:
-          break;
-      }
-      pi.next();
-    }
-    return list;
-  }
+  // public static List<Point2D> convertAreaToPoint2DList(Area area) {
+  //   List<Point2D> list = new ArrayList<>();
+  //   PathIterator pi = area.getPathIterator(null);
+  //   double[] coords = new double[6];
+  //   while (!pi.isDone()) {
+  //     int pathSegmentType = pi.currentSegment(coords);
+  //     switch (pathSegmentType) {
+  //       case PathIterator.SEG_MOVETO:
+  //       case PathIterator.SEG_LINETO:
+  //         list.add(new Point2D.Double(coords[0], coords[1]));
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //     pi.next();
+  //   }
+  //   return list;
+  // }
 
   /**
    * Rounding the corners of a Rectilinear Polygon.
    */
-  public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
-    double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
-    double akv = arc - arc * kappa;
-    int sz = list.size();
-    Point2D pt0 = list.get(0);
-    Path2D path = new Path2D.Double();
-    path.moveTo(pt0.getX() + arc, pt0.getY());
-    for (int i = 0; i < sz; i++) {
-      Point2D prv = list.get((i - 1 + sz) % sz);
-      Point2D cur = list.get(i);
-      Point2D nxt = list.get((i + 1) % sz);
-      double dx0 = Math.signum(cur.getX() - prv.getX());
-      double dy0 = Math.signum(cur.getY() - prv.getY());
-      double dx1 = Math.signum(nxt.getX() - cur.getX());
-      double dy1 = Math.signum(nxt.getY() - cur.getY());
-      path.curveTo(
-          cur.getX() - dx0 * akv, cur.getY() - dy0 * akv,
-          cur.getX() + dx1 * akv, cur.getY() + dy1 * akv,
-          cur.getX() + dx1 * arc, cur.getY() + dy1 * arc);
-      path.lineTo(nxt.getX() - dx1 * arc, nxt.getY() - dy1 * arc);
-    }
-    path.closePath();
-    return path;
-  }
+  // public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
+  //   double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
+  //   double akv = arc - arc * kappa;
+  //   int sz = list.size();
+  //   Point2D pt0 = list.get(0);
+  //   Path2D path = new Path2D.Double();
+  //   path.moveTo(pt0.getX() + arc, pt0.getY());
+  //   for (int i = 0; i < sz; i++) {
+  //     Point2D prv = list.get((i - 1 + sz) % sz);
+  //     Point2D cur = list.get(i);
+  //     Point2D nxt = list.get((i + 1) % sz);
+  //     double dx0 = Math.signum(cur.getX() - prv.getX());
+  //     double dy0 = Math.signum(cur.getY() - prv.getY());
+  //     double dx1 = Math.signum(nxt.getX() - cur.getX());
+  //     double dy1 = Math.signum(nxt.getY() - cur.getY());
+  //     path.curveTo(
+  //         cur.getX() - dx0 * akv, cur.getY() - dy0 * akv,
+  //         cur.getX() + dx1 * akv, cur.getY() + dy1 * akv,
+  //         cur.getX() + dx1 * arc, cur.getY() + dy1 * arc);
+  //     path.lineTo(nxt.getX() - dx1 * arc, nxt.getY() - dy1 * arc);
+  //   }
+  //   path.closePath();
+  //   return path;
+  // }
 
   public static List<Area> singularization(Area rect) {
     List<Area> list = new ArrayList<>();
