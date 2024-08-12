@@ -150,12 +150,12 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
     return c;
   }
 
-  @Override public Color getBackgroundNonSelectionColor() {
+  @Override public Color getBackgroundSelectionColor() {
     return ALPHA_OF_ZERO;
   }
 
-  @Override public Color getBackgroundSelectionColor() {
-    return ALPHA_OF_ZERO;
+  @Override public Color getBackgroundNonSelectionColor() {
+    return getBackgroundSelectionColor();
   }
 }
 
