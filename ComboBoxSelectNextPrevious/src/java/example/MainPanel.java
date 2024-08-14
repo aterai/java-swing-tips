@@ -93,6 +93,7 @@ class LookAndFeelComboBox extends JComboBox<LookAndFeelInfo> {
         } catch (UnsupportedLookAndFeelException ignored) {
           Toolkit.getDefaultToolkit().beep();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+          Toolkit.getDefaultToolkit().beep();
           ex.printStackTrace();
         }
       }
