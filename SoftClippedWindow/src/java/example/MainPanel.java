@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         return ImageIO.read(s);
       } catch (IOException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         return makeMissingImage();
       }
     }).orElseGet(MainPanel::makeMissingImage);
@@ -48,7 +48,9 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("soft clipped window");
     button2.addActionListener(e -> {
       JWindow window = new JWindow();
-      window.setBackground(new Color(0x0, true));
+      if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+        window.setBackground(new Color(0x0, true));
+      }
       window.getContentPane().add(makePanel(clippedImage));
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
@@ -77,12 +79,16 @@ public final class MainPanel extends JPanel {
     DragWindowListener dwl = new DragWindowListener();
     panel.addMouseListener(dwl);
     panel.addMouseMotionListener(dwl);
+    panel.add(makeCloseButtonBox(), BorderLayout.SOUTH);
+    panel.setOpaque(false);
+    return panel;
+  }
 
+  private static Box makeCloseButtonBox() {
     JButton close = new JButton("close");
     close.addActionListener(e -> {
       Component c = (Component) e.getSource();
-      // Window window = SwingUtilities.getWindowAncestor(c);
-      // window.dispose();
+      // SwingUtilities.getWindowAncestor(c).dispose();
       Optional.ofNullable(SwingUtilities.getWindowAncestor(c)).ifPresent(Window::dispose);
     });
 
@@ -91,10 +97,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalGlue());
     box.add(close);
     // box.setOpaque(false);
-
-    panel.add(box, BorderLayout.SOUTH);
-    panel.setOpaque(false);
-    return panel;
+    return box;
   }
 
   // @see https://community.oracle.com/blogs/campbell/2006/07/19/java-2d-trickery-soft-clipping
