@@ -173,6 +173,7 @@ class BalloonToolTip extends JToolTip {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
         Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
+            .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
             .filter(w -> w.getType() == Window.Type.POPUP)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
