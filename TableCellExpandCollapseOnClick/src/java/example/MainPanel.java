@@ -18,23 +18,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"RowHeader", "Description"};
-    Object[][] data = {
-        {new RowHeader("aaa", true), "0000\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"},
-        {new RowHeader("bbb", false), "1111111"},
-        {new RowHeader("ccc", true), "2222222222222\n1\n2\n3"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return column == 0;
-      }
-    };
     int defaultHeight = 20;
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setAutoCreateRowSorter(true);
@@ -65,6 +50,24 @@ public final class MainPanel extends JPanel {
     });
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"RowHeader", "Description"};
+    Object[][] data = {
+        {new RowHeader("aaa", true), "0000\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"},
+        {new RowHeader("bbb", false), "1111111"},
+        {new RowHeader("ccc", true), "2222222222222\n1\n2\n3"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return column == 0;
+      }
+    };
   }
 
   public static void main(String[] args) {
