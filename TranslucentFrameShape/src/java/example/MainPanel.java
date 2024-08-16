@@ -20,7 +20,9 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       JWindow window = new JWindow();
       window.getContentPane().add(makePanel(shape));
-      window.setBackground(new Color(0x0, true));
+      if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+        window.setBackground(new Color(0x0, true));
+      }
       window.setShape(shape);
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
@@ -30,7 +32,9 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("not use Window#setShape(...)");
     button2.addActionListener(e -> {
       JWindow window = new JWindow();
-      window.setBackground(new Color(0x0, true));
+      if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+        window.setBackground(new Color(0x0, true));
+      }
       window.getContentPane().add(makePanel(shape));
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
