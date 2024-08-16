@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.ComponentUI;
@@ -19,12 +20,10 @@ public final class RoundedPopupMenuUI extends BasicPopupMenuUI {
   @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
     Popup pp = super.getPopup(popup, x, y);
     if (pp != null) {
-      EventQueue.invokeLater(() -> {
-        Window w = SwingUtilities.getWindowAncestor(popup);
-        if (w != null && w.getType() == Window.Type.POPUP) {
-          w.setBackground(new Color(0x0, true));
-        }
-      });
+      EventQueue.invokeLater(() -> Optional.ofNullable(SwingUtilities.getWindowAncestor(popup))
+          .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
+          .filter(w -> w.getType() == Window.Type.POPUP)
+          .ifPresent(w -> w.setBackground(new Color(0x0, true))));
       popup.setBorder(new RoundedBorder());
       popup.setOpaque(false);
     }
