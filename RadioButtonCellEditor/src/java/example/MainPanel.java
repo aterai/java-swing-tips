@@ -15,12 +15,26 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setAutoCreateRowSorter(true);
+        TableColumn c = getColumnModel().getColumn(2);
+        c.setCellRenderer(new RadioButtonsRenderer());
+        c.setCellEditor(new RadioButtonsEditor());
+      }
+    };
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
         {1, "D", true}, {2, "B", false}, {3, "C", false},
         {4, "E", false}, {5, "A", false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
@@ -35,17 +49,6 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    JTable table = new JTable(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setAutoCreateRowSorter(true);
-        TableColumn c = getColumnModel().getColumn(2);
-        c.setCellRenderer(new RadioButtonsRenderer());
-        c.setCellEditor(new RadioButtonsEditor());
-      }
-    };
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
