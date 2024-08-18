@@ -262,13 +262,10 @@ final class DropShadowPopupMenu extends JPopupMenu {
       }
       g2.dispose();
     }
-    EventQueue.invokeLater(() -> {
-      Window top = SwingUtilities.getWindowAncestor(this);
-      if (top != null && top.getType() == Window.Type.POPUP) {
-        // Popup$HeavyWeightWindow
-        top.setBackground(new Color(0x0, true)); // JDK 1.7.0
-      }
-    });
+    EventQueue.invokeLater(() -> Optional.ofNullable(SwingUtilities.getWindowAncestor(this))
+        .filter(top -> top.getGraphicsConfiguration().isTranslucencyCapable())
+        .filter(top -> top.getType() == Window.Type.POPUP) // Popup$HeavyWeightWindow
+        .ifPresent(top -> top.setBackground(new Color(0x0, true))));
     super.show(c, x, y);
   }
 }
