@@ -11,11 +11,31 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        // setShowGrid(false);
+        // setAutoCreateRowSorter(true);
+        setSurrendersFocusOnKeystroke(true);
+        TableCellRenderer r = getDefaultRenderer(Date.class);
+        if (r instanceof JLabel) {
+          ((JLabel) r).setHorizontalAlignment(SwingConstants.LEFT);
+        }
+        setDefaultEditor(Date.class, new SpinnerCellEditor());
+      }
+    };
+
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Integer", "String", "Date"};
     @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
@@ -23,25 +43,11 @@ public final class MainPanel extends JPanel {
         {-9, "EEE", new Date()}, {1, "", new Date()},
         {10, "CCC", new Date()}, {7, "FFF", new Date()},
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        // setShowGrid(false);
-        // setAutoCreateRowSorter(true);
-        setSurrendersFocusOnKeystroke(true);
-
-        ((JLabel) getDefaultRenderer(Date.class)).setHorizontalAlignment(SwingConstants.LEFT);
-        setDefaultEditor(Date.class, new SpinnerCellEditor());
-      }
-    };
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
