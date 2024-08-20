@@ -48,17 +48,16 @@ public final class MainPanel extends JPanel {
           @Override protected ComboPopup createPopup() {
             return new BasicComboPopup(comboBox) {
               @Override protected JScrollPane createScroller() {
-                JScrollPane sp = new JScrollPane(list) {
+                return new JScrollPane(list) {
                   @Override public void updateUI() {
                     super.updateUI();
                     getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
                     getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+                    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+                    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+                    // setHorizontalScrollBar(null);
                   }
                 };
-                sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-                sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                sp.setHorizontalScrollBar(null);
-                return sp;
               }
             };
           }
