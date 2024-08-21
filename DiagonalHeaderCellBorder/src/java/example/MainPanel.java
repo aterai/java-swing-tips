@@ -19,21 +19,12 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"", "Boolean1", "Boolean2", "Boolean3", "Boolean4"};
-    Object[][] data = {
-        {"aaa", true, true, false, true}, {"bbb", false, false, false, true},
-        {"ccc", false, true, false, true}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
     int size = 32;
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setRowHeight(size);
+        setAutoResizeMode(AUTO_RESIZE_OFF);
         TableCellRenderer hr = new VerticalTableHeaderRenderer();
         TableColumnModel cm = getColumnModel();
         cm.getColumn(0).setHeaderRenderer(new DiagonallySplitHeaderRenderer());
@@ -45,8 +36,6 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
     JScrollPane scroll = new JScrollPane(table);
     scroll.setColumnHeader(new JViewport() {
       @Override public Dimension getPreferredSize() {
@@ -55,9 +44,22 @@ public final class MainPanel extends JPanel {
         return d;
       }
     });
-
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"", "Boolean1", "Boolean2", "Boolean3", "Boolean4"};
+    Object[][] data = {
+        {"aaa", true, true, false, true},
+        {"bbb", false, false, false, true},
+        {"ccc", false, true, false, true}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
