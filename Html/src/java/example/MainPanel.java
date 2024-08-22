@@ -16,17 +16,7 @@ public final class MainPanel extends JPanel {
     tab.addTab("<html>Test<p>Test</p></html>", new JLabel("Test1"));
     tab.addTab("<html>Test<p>test", new JLabel("Test2"));
 
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false},
-        {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     table.setRowSelectionAllowed(true);
     table.setRowHeight(32);
@@ -35,6 +25,19 @@ public final class MainPanel extends JPanel {
     add(tab, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "<html><span style='color:red'>Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"<html><span style='color:blue'>bbb", 5, false},
+        {"CCC", 92, true}, {"<html><span style='color:green'>DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
