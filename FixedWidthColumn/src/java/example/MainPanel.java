@@ -6,31 +6,18 @@ package example;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
-    JTableHeader tableHeader = table.getTableHeader();
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    tableHeader.setReorderingAllowed(false);
+    JTable table = new JTable(8, 3);
+    JTableHeader header = table.getTableHeader();
+    header.setReorderingAllowed(false);
 
     // // User can't resize columns by dragging between headers.
-    // tableHeader.setResizingAllowed(false);
+    // header.setResizingAllowed(false);
 
     // // Disable resizing of the column width(JTable.AUTO_RESIZE_OFF).
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
