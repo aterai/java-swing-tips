@@ -8,43 +8,32 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(new JScrollPane(new JTable(model)));
-    sp.setBottomComponent(new JScrollPane(new JTree()));
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    split.setTopComponent(new JScrollPane(new JTable(8, 3)));
+    split.setBottomComponent(new JScrollPane(new JTree()));
 
     JRadioButton r0 = new JRadioButton("0.0", true);
     r0.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        sp.setResizeWeight(0d);
+        split.setResizeWeight(0d);
       }
     });
 
     JRadioButton r1 = new JRadioButton("0.5");
     r1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        sp.setResizeWeight(.5);
+        split.setResizeWeight(.5);
       }
     });
 
     JRadioButton r2 = new JRadioButton("1.0");
     r2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        sp.setResizeWeight(1d);
+        split.setResizeWeight(1d);
       }
     });
 
@@ -56,11 +45,11 @@ public final class MainPanel extends JPanel {
       p.add(r);
     });
     add(p, BorderLayout.NORTH);
-    add(sp);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
 
-    EventQueue.invokeLater(() -> sp.setDividerLocation(.5));
-    // TEST: EventQueue.invokeLater(() -> sp.setResizeWeight(.5));
+    EventQueue.invokeLater(() -> split.setDividerLocation(.5));
+    // TEST: EventQueue.invokeLater(() -> split.setResizeWeight(.5));
   }
 
   public static void main(String[] args) {
