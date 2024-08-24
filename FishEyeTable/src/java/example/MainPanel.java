@@ -21,6 +21,20 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new FishEyeTable(makeModel());
+    table.setRowSelectionInterval(0, 0);
+    JScrollPane scroll = new JScrollPane(table) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+      }
+    };
+    add(scroll, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", -1, true}
@@ -33,12 +47,7 @@ public final class MainPanel extends JPanel {
     IntStream.range(0, 20)
         .mapToObj(i -> new Object[] {"Name: " + i, i, i % 2 == 0})
         .forEach(model::addRow);
-    JTable table = new FishEyeTable(model);
-    table.setRowSelectionInterval(0, 0);
-    JScrollPane scroll = new JScrollPane(table);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setPreferredSize(new Dimension(320, 240));
-    add(scroll, BorderLayout.NORTH);
+    return model;
   }
 
   public static void main(String[] args) {
