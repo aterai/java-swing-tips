@@ -27,15 +27,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
+    DefaultTableModel model = makeModel();
     JTable table = new JTable(model) {
       @Override public String getToolTipText(MouseEvent e) {
         int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
@@ -66,6 +58,18 @@ public final class MainPanel extends JPanel {
     add(scroll);
     add(check, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
