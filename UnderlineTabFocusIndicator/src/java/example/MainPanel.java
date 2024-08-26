@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     tabs.addTab("JTree", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
     tabs.addTab("JTextArea", new ColorIcon(Color.GREEN), new JScrollPane(new JTextArea()));
     tabs.addTab("JTable", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(8, 3)));
-    tabs.addTab("JSplitPane", new ColorIcon(Color.ORANGE), new JScrollPane(new JSplitPane()));
+    tabs.addTab("JSplitPane", new ColorIcon(Color.ORANGE), new JSplitPane());
     tabs.setSelectedIndex(-1);
     EventQueue.invokeLater(() -> tabs.setSelectedIndex(0));
 

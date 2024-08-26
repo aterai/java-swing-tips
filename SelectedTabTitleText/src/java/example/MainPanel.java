@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     addTab(tabs, titles.get(0), new JScrollPane(new JTree()));
     addTab(tabs, titles.get(1), new JScrollPane(new JTextArea()));
     addTab(tabs, titles.get(2), new JScrollPane(new JTable(8, 3)));
-    addTab(tabs, titles.get(3), new JScrollPane(new JSplitPane()));
+    addTab(tabs, titles.get(3), new JSplitPane());
     tabs.setSelectedIndex(-1);
     EventQueue.invokeLater(() -> tabs.setSelectedIndex(0));
 
@@ -206,7 +206,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 //     tabs.addTab(makeTitle(titles.get(0), true), new JScrollPane(new JTree()));
 //     tabs.addTab(makeTitle(titles.get(1), false), new JScrollPane(new JTextArea()));
 //     tabs.addTab(makeTitle(titles.get(2), false), new JScrollPane(new JTable(8, 3)));
-//     tabs.addTab(makeTitle(titles.get(3), false), new JScrollPane(new JSplitPane()));
+//     tabs.addTab(makeTitle(titles.get(3), false), new JSplitPane());
 //     tabs.setSelectedIndex(0);
 //
 //     tabs.addChangeListener(e -> {

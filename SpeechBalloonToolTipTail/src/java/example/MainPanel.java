@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
       }
     };
     tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
-    tabs.addTab("111", new ColorIcon(Color.GREEN), new JScrollPane(new JSplitPane()), "1111");
+    tabs.addTab("111", new ColorIcon(Color.GREEN), new JSplitPane(), "1111");
     tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "222");
     tabs.addTab("333", new ColorIcon(Color.ORANGE), new JLabel("6"), "33333333333333333333");
     tabs.addTab("444", new ColorIcon(Color.CYAN), new JLabel("7"), "44444444444444444444444");
