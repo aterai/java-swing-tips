@@ -13,7 +13,6 @@ import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
@@ -25,16 +24,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
-    Object[][] data = {
-        {STR0, STR1, STR2}, {STR0, STR1, STR2}, {STR3, STR3, STR3}, {STR3, STR3, STR3}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         setSelectionForeground(null); // Nimbus
         setSelectionBackground(null); // Nimbus
@@ -42,6 +32,7 @@ public final class MainPanel extends JPanel {
         getColumnModel().getColumn(1).setCellRenderer(null);
         getColumnModel().getColumn(2).setCellRenderer(null);
         super.updateUI();
+        getTableHeader().setReorderingAllowed(false);
         setRowSelectionAllowed(true);
         setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         setRowHeight(50);
@@ -50,12 +41,22 @@ public final class MainPanel extends JPanel {
         getColumnModel().getColumn(2).setCellRenderer(new TextAreaCellRenderer());
       }
     };
-
-    JTableHeader tableHeader = table.getTableHeader();
-    tableHeader.setReorderingAllowed(false);
-
+    // JTableHeader header = table.getTableHeader();
+    // header.setReorderingAllowed(false);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
+    Object[][] data = {
+        {STR0, STR1, STR2}, {STR0, STR1, STR2}, {STR3, STR3, STR3}, {STR3, STR3, STR3}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {

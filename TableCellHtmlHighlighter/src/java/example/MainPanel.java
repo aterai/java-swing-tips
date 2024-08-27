@@ -25,22 +25,12 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    String[] columnNames = {"A", "B"};
-    Object[][] data = {
-        {"aaa", "bb aa cc"}, {"bbb", "def"},
-        {"ccc bbb aaa bbb aae abe", "xxx"}, {"ddd aaa bbb bbb", "cc bb aa"},
-        {"cc cc bb bb aaa bb bb e", "xxx"}, {"ddd aaa b bb bb", "cc bb aa"}};
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-    };
-    sorter = new TableRowSorter<>(model);
-
+    TableModel model = makeModel();
     JTable table = new JTable(model);
-    table.setFillsViewportHeight(true);
+    sorter = new TableRowSorter<>(model);
     table.setRowSorter(sorter);
     table.setDefaultRenderer(String.class, renderer);
+    table.setFillsViewportHeight(true);
 
     field.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
@@ -57,16 +47,29 @@ public final class MainPanel extends JPanel {
     });
     fireDocumentChangeEvent();
 
-    JPanel sp = new JPanel(new BorderLayout(5, 5));
-    sp.add(new JLabel("regex pattern:"), BorderLayout.WEST);
-    sp.add(field);
-    sp.add(Box.createVerticalStrut(2), BorderLayout.SOUTH);
-    sp.setBorder(BorderFactory.createTitledBorder("Search"));
+    JPanel p = new JPanel(new BorderLayout(5, 5));
+    p.add(new JLabel("regex pattern:"), BorderLayout.WEST);
+    p.add(field);
+    p.add(Box.createVerticalStrut(2), BorderLayout.SOUTH);
+    p.setBorder(BorderFactory.createTitledBorder("Search"));
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    add(sp, BorderLayout.NORTH);
+    add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+        {"aaa", "bb aa cc"}, {"bbb", "def"},
+        {"ccc bbb aaa bbb aae abe", "xxx"}, {"ddd aaa bbb bbb", "cc bb aa"},
+        {"cc cc bb bb aaa bb bb e", "xxx"}, {"ddd aaa b bb bb", "cc bb aa"}};
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
   }
 
   public void fireDocumentChangeEvent() {
