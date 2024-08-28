@@ -20,31 +20,11 @@ public final class MainPanel extends JPanel {
   //     JTable.class, DataFlavor.javaJVMLocalObjectMimeType, "JTable");
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel());
     CellIconTransferHandler handler = new CellIconTransferHandler();
-
-    String[] columnNames = {"String", "Icon", "Boolean"};
-    Object[][] data = {
-        {"aaa", new ColorIcon(Color.RED), true},
-        {"bbb", new ColorIcon(Color.GREEN), false},
-        {"ccc", new ColorIcon(Color.BLUE), true},
-        {"ddd", new ColorIcon(Color.ORANGE), true},
-        {"eee", new ColorIcon(Color.PINK), false},
-        {"fff", new ColorIcon(Color.CYAN), true},
-    };
-    JTable table = new JTable(new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Icon.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    });
+    table.setTransferHandler(handler);
     table.setCellSelectionEnabled(true);
     table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.setTransferHandler(handler);
     table.setDragEnabled(true);
     table.setFillsViewportHeight(true);
     TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
@@ -107,6 +87,33 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.SOUTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"String", "Icon", "Boolean"};
+    Object[][] data = {
+        {"aaa", new ColorIcon(Color.RED), true},
+        {"bbb", new ColorIcon(Color.GREEN), false},
+        {"ccc", new ColorIcon(Color.BLUE), true},
+        {"ddd", new ColorIcon(Color.ORANGE), true},
+        {"eee", new ColorIcon(Color.PINK), false},
+        {"fff", new ColorIcon(Color.CYAN), true},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @SuppressWarnings("PMD.OnlyOneReturn")
+      @Override public Class<?> getColumnClass(int column) {
+        switch (column) {
+          case 0:
+            return String.class;
+          case 1:
+            return Icon.class;
+          case 2:
+            return Boolean.class;
+          default:
+            return super.getColumnClass(column);
+        }
+      }
+    };
   }
 
   public static void main(String[] args) {
