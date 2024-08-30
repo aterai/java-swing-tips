@@ -18,16 +18,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Integer", "Answer"};
-    Object[][] data = {
-        {1, Answer.A}, {2, Answer.B}, {3, Answer.C}, {4, Answer.C}, {5, Answer.A}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         TableColumn column = getColumnModel().getColumn(1);
@@ -69,6 +60,18 @@ public final class MainPanel extends JPanel {
     // RadioButtonEditorRenderer rbe = new RadioButtonEditorRenderer();
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Integer", "Answer"};
+    Object[][] data = {
+        {1, Answer.A}, {2, Answer.B}, {3, Answer.C}, {4, Answer.C}, {5, Answer.A}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
