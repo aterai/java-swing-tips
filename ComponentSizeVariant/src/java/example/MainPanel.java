@@ -15,16 +15,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         TableCellRenderer r = getDefaultRenderer(Boolean.class);
@@ -33,18 +24,18 @@ public final class MainPanel extends JPanel {
         if (r instanceof JComponent && value != null) {
           ((JComponent) r).putClientProperty(key, value);
         }
+        setAutoCreateRowSorter(true);
       }
     };
-    table.setAutoCreateRowSorter(true);
 
     JPanel p1 = new JPanel(new GridLayout(2, 1));
     p1.add(new JScrollPane(table));
     p1.add(new JScrollPane(new JTree()));
 
     JPanel p2 = new JPanel(new GridLayout(1, 2));
-    p2.add(new JLabel("abc"));
-    p2.add(new JCheckBox("def"));
-    p2.add(new JButton("ghi"));
+    p2.add(new JLabel("JLabel"));
+    p2.add(new JCheckBox("JCheckBox"));
+    p2.add(new JButton("JButton"));
 
     JMenuBar mb = new JMenuBar();
     mb.add(SizeVariantUtils.createSizeVariantMenu());
@@ -54,6 +45,18 @@ public final class MainPanel extends JPanel {
     add(p1);
     add(p2, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
@@ -91,12 +94,12 @@ final class SizeVariantUtils {
     return menu;
   }
 
-  private static JRadioButtonMenuItem createSizeVariantItem(String cmd, ButtonGroup bg) {
-    JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(cmd, "regular".equals(cmd));
-    menuItem.addActionListener(e -> setSizeVariant(bg.getSelection().getActionCommand()));
-    menuItem.setActionCommand(cmd);
-    bg.add(menuItem);
-    return menuItem;
+  private static JMenuItem createSizeVariantItem(String cmd, ButtonGroup bg) {
+    JMenuItem item = new JRadioButtonMenuItem(cmd, "regular".equals(cmd));
+    item.addActionListener(e -> setSizeVariant(e.getActionCommand()));
+    item.setActionCommand(cmd);
+    bg.add(item);
+    return item;
   }
 
   private static void setSizeVariant(String cmd) {
