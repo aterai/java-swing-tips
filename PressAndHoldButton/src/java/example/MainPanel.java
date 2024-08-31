@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -25,7 +26,7 @@ public final class MainPanel extends JPanel {
         .map(MainPanel::makeMenuButton)
         .forEach(b -> {
           b.addActionListener(e -> {
-            String cmd = getCommand(bg);
+            String cmd = e.getActionCommand();
             log.append(String.format("Selected JRadioButton command: %s%n", cmd));
             popupMenu.setVisible(false);
           });
@@ -38,7 +39,9 @@ public final class MainPanel extends JPanel {
     // button.getAction().putValue(Action.NAME, text);
     button.getAction().putValue(Action.SMALL_ICON, icon);
     button.addActionListener(e -> {
-      String cmd = getCommand(bg);
+      ButtonModel m = bg.getSelection();
+      String cmd = Objects.nonNull(m) ? m.getActionCommand() : "null";
+      // Optional.ofNullable(m).map(ButtonModel::getActionCommand).orElse("null");
       log.append(String.format("Selected action command: %s%n", cmd));
     });
 
@@ -48,15 +51,6 @@ public final class MainPanel extends JPanel {
     add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static String getCommand(ButtonGroup bg) {
-    ButtonModel model = bg.getSelection();
-    String cmd = "null";
-    if (model != null) {
-      cmd = model.getActionCommand();
-    }
-    return cmd;
   }
 
   private static AbstractButton makeMenuButton(MenuContext m) {
