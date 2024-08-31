@@ -354,9 +354,15 @@
     </module>
     -->
     <module name="MethodName">
-      <property name="format" value="^[a-z][a-z0-9]\w*$"/>
+      <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
       <message key="name.invalidPattern"
              value="Method name ''{0}'' must match pattern ''{1}''."/>
+    </module>
+    <module name="SuppressionXpathSingleFilter">
+      <property name="checks" value="MethodName"/>
+      <property name="query" value="//METHOD_DEF[
+                                     .//ANNOTATION/IDENT[contains(@text, 'Test')]]//*"/>
+      <property name="message" value="'[a-z][a-z0-9][_a-zA-Z0-9]*'.*"/>
     </module>
     <module name="SingleLineJavadoc"/>
     <module name="EmptyCatchBlock">
