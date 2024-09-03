@@ -22,12 +22,23 @@ public final class MainPanel extends JPanel {
     DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
     JCheckBox check = new JCheckBox("Lock all(JScrollPane, JTable, JPopupMenu)");
     check.addActionListener(e -> layerUI.setLocked(((JCheckBox) e.getSource()).isSelected()));
-    add(new JLayer<>(new JScrollPane(makeTable()), layerUI));
+
+    JTable table = new JTable(makeModel()) {
+      @Override public String getToolTipText(MouseEvent e) {
+        int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
+        TableModel m = getModel();
+        return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
+      }
+    };
+    table.setAutoCreateRowSorter(true);
+    table.setComponentPopupMenu(new TablePopupMenu());
+
+    add(new JLayer<>(new JScrollPane(table), layerUI));
     add(check, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable() {
+  private static DefaultTableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @SuppressWarnings("PMD.OnlyOneReturn")
@@ -47,18 +58,10 @@ public final class MainPanel extends JPanel {
         // };
       }
     };
-    IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, false}));
-
-    JTable table = new JTable(model) {
-      @Override public String getToolTipText(MouseEvent e) {
-        int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-        TableModel m = getModel();
-        return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
-      }
-    };
-    table.setAutoCreateRowSorter(true);
-    table.setComponentPopupMenu(new TablePopupMenu());
-    return table;
+    IntStream.range(0, 100)
+        .mapToObj(i -> new Object[] {"Name " + i, i, false})
+        .forEach(model::addRow);
+    return model;
   }
 
   public static void main(String[] args) {

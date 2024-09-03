@@ -12,34 +12,32 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  // [JDK-6299213]
-  // The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731)
-  // Fixed: https://bugs.openjdk.org/browse/JDK-6299213
-  // private final JScrollPane scroll = new JScrollPane(table) {
-  //   @Override public void updateUI() {
-  //     super.updateUI();
-  //     JPopupMenu jpm = getComponentPopupMenu();
-  //     if (jpm == null && pop != null) {
-  //       SwingUtilities.updateComponentTreeUI(pop);
-  //     }
-  //   }
-  // };
-
   private MainPanel() {
     super(new BorderLayout());
-    DefaultTableModel model = makeModel();
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public String getToolTipText(MouseEvent e) {
         int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
         TableModel m = getModel();
         return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
       }
     };
-    JScrollPane scroll = new JScrollPane(table);
-
-    IntStream.range(0, 100).forEach(i -> model.addRow(new Object[] {"Name " + i, i, false}));
     table.setAutoCreateRowSorter(true);
-
+    table.setComponentPopupMenu(new TablePopupMenu());
+    // table.setInheritsPopupMenu(true);
+    JScrollPane scroll = new JScrollPane(table);
+    // [JDK-6299213]
+    // The PopupMenu is not updated if the LAF is changed (incomplete fix of 4962731)
+    // Fixed: https://bugs.openjdk.org/browse/JDK-6299213
+    // JScrollPane scroll = new JScrollPane(table) {
+    //   @Override public void updateUI() {
+    //     super.updateUI();
+    //     JPopupMenu jpm = getComponentPopupMenu();
+    //     if (jpm == null && pop != null) {
+    //       SwingUtilities.updateComponentTreeUI(pop);
+    //     }
+    //   }
+    // };
+    // scroll.setComponentPopupMenu(new TablePopupMenu());
     JCheckBox check = new JCheckBox("Disable Scrolling");
     check.addActionListener(e -> {
       table.clearSelection();
@@ -50,26 +48,25 @@ public final class MainPanel extends JPanel {
       // table.getTableHeader().setEnabled(!isSelected);
       // scroll.setComponentPopupMenu(isSelected ? pop : null);
     });
-
-    // scroll.setComponentPopupMenu(new TablePopupMenu());
-    // table.setInheritsPopupMenu(true);
-    table.setComponentPopupMenu(new TablePopupMenu());
-
     add(scroll);
     add(check, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultTableModel makeModel() {
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
-    return new DefaultTableModel(data, columnNames) {
+    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
+    IntStream.range(0, 100)
+        .mapToObj(i -> new Object[] {"Name " + i, i, false})
+        .forEach(model::addRow);
+    return model;
   }
 
   public static void main(String[] args) {
