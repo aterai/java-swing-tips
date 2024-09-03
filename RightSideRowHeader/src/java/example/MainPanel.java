@@ -12,7 +12,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
   public static final int FIXED_RANGE = 2;
@@ -21,6 +20,62 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    // RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+    JTable fixedTable = new JTable(table.getModel());
+    fixedTable.setSelectionModel(table.getSelectionModel());
+    fixedTable.setRowSorter(table.getRowSorter());
+    fixedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    fixedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    fixedTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    fixedTable.setBorder(BORDER);
+    fixedTable.getTableHeader().setBorder(BORDER);
+    for (int i = table.getModel().getColumnCount() - 1; i >= 0; i--) {
+      if (i < FIXED_RANGE) {
+        table.removeColumn(table.getColumnModel().getColumn(i));
+        fixedTable.getColumnModel().getColumn(i).setResizable(false);
+      } else {
+        fixedTable.removeColumn(fixedTable.getColumnModel().getColumn(i));
+      }
+    }
+    fixedTable.setPreferredScrollableViewportSize(fixedTable.getPreferredSize());
+
+    JScrollPane scroll = new JScrollPane(table);
+    scroll.setLayout(new RightFixedScrollPaneLayout());
+    scroll.setRowHeaderView(fixedTable);
+    scroll.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, fixedTable.getTableHeader());
+    // TEST:
+    // table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    // // fixedTable.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    // scroll.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    // scroll.setCorner(ScrollPaneConstants.UPPER_RIGHT_CORNER, fixedTable.getTableHeader());
+    scroll.getViewport().setBackground(Color.WHITE);
+    scroll.getRowHeader().setBackground(Color.WHITE);
+    scroll.getRowHeader().addChangeListener(e -> {
+      JViewport viewport = (JViewport) e.getSource();
+      scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
+    });
+
+    JButton addButton = new JButton("add");
+    addButton.addActionListener(e -> {
+      table.getRowSorter().setSortKeys(null);
+      DefaultTableModel m = (DefaultTableModel) table.getModel();
+      IntStream.range(0, 100)
+          .mapToObj(i -> new Object[] {i, i + 1, "A" + i, "B" + i})
+          .forEach(m::addRow);
+    });
+
+    add(scroll);
+    add(addButton, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     Object[][] data = {
         {1, 11, "A", ES, ES, ES, ES, ES},
         {2, 22, ES, "B", ES, ES, ES, ES},
@@ -30,69 +85,11 @@ public final class MainPanel extends JPanel {
         {6, 66, ES, ES, ES, ES, ES, "F"}
     };
     String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return column < FIXED_RANGE ? Integer.class : Object.class;
       }
     };
-    RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-
-    JTable fixedTable = new JTable(model);
-    JTable table = new JTable(model);
-    fixedTable.setSelectionModel(table.getSelectionModel());
-
-    for (int i = model.getColumnCount() - 1; i >= 0; i--) {
-      if (i < FIXED_RANGE) {
-        table.removeColumn(table.getColumnModel().getColumn(i));
-        fixedTable.getColumnModel().getColumn(i).setResizable(false);
-      } else {
-        fixedTable.removeColumn(fixedTable.getColumnModel().getColumn(i));
-      }
-    }
-
-    fixedTable.setRowSorter(sorter);
-    fixedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    fixedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    fixedTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-    fixedTable.setBorder(BORDER);
-    fixedTable.getTableHeader().setBorder(BORDER);
-
-    table.setRowSorter(sorter);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
-    JScrollPane scroll = new JScrollPane(table);
-    scroll.setLayout(new RightFixedScrollPaneLayout());
-
-    fixedTable.setPreferredScrollableViewportSize(fixedTable.getPreferredSize());
-    scroll.setRowHeaderView(fixedTable);
-
-    scroll.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, fixedTable.getTableHeader());
-    // TEST:
-    // table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    // // fixedTable.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    // scroll.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    // scroll.setCorner(ScrollPaneConstants.UPPER_RIGHT_CORNER, fixedTable.getTableHeader());
-
-    scroll.getViewport().setBackground(Color.WHITE);
-    scroll.getRowHeader().setBackground(Color.WHITE);
-
-    scroll.getRowHeader().addChangeListener(e -> {
-      JViewport viewport = (JViewport) e.getSource();
-      scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
-    });
-
-    JButton addButton = new JButton("add");
-    addButton.addActionListener(e -> {
-      sorter.setSortKeys(null);
-      IntStream.range(0, 100)
-          .forEach(i -> model.addRow(new Object[] {i, i + 1, "A" + i, "B" + i}));
-    });
-
-    add(scroll);
-    add(addButton, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   // private MainPanel() {
