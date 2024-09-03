@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
   public static final int FIXED_RANGE = 2;
@@ -17,30 +16,20 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    // <blockquote cite="FixedColumnExample.java">
-    // @author Nobuo Tamemasa
-    Object[][] data = {
-        {1, 11, "A", ES, ES, ES, ES, ES},
-        {2, 22, ES, "B", ES, ES, ES, ES},
-        {3, 33, ES, ES, "C", ES, ES, ES},
-        {4, 1, ES, ES, ES, "D", ES, ES},
-        {5, 55, ES, ES, ES, ES, "E", ES},
-        {6, 66, ES, ES, ES, ES, ES, "F"}
-    };
-    String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
-    // </blockquote>
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return column < FIXED_RANGE ? Integer.class : Object.class;
-      }
-    };
-    RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    // RowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-    JTable fixedTable = new JTable(model);
-    JTable table = new JTable(model);
+    JTable fixedTable = new JTable(table.getModel());
     fixedTable.setSelectionModel(table.getSelectionModel());
-
-    for (int i = model.getColumnCount() - 1; i >= 0; i--) {
+    fixedTable.setRowSorter(table.getRowSorter());
+    fixedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    fixedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    fixedTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    for (int i = table.getColumnCount() - 1; i >= 0; i--) {
       if (i < FIXED_RANGE) {
         table.removeColumn(table.getColumnModel().getColumn(i));
         fixedTable.getColumnModel().getColumn(i).setResizable(false);
@@ -48,16 +37,6 @@ public final class MainPanel extends JPanel {
         fixedTable.removeColumn(fixedTable.getColumnModel().getColumn(i));
       }
     }
-
-    fixedTable.setRowSorter(sorter);
-    fixedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    fixedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    fixedTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
-    table.setRowSorter(sorter);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
     JScrollPane scroll = new JScrollPane(table);
     // JViewport viewport = new JViewport();
@@ -79,17 +58,38 @@ public final class MainPanel extends JPanel {
     });
     // </blockquote>
 
-    JButton addButton = new JButton("add");
+    JButton addButton = new JButton("add 0..<100");
     addButton.addActionListener(e -> {
-      sorter.setSortKeys(null);
+      table.getRowSorter().setSortKeys(null);
+      DefaultTableModel m = (DefaultTableModel) table.getModel();
       IntStream.range(0, 100)
           .mapToObj(i -> new Object[] {i, i + 1, "A" + i, "B" + i})
-          .forEach(model::addRow);
+          .forEach(m::addRow);
     });
 
     add(scroll);
     add(addButton, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    // <blockquote cite="FixedColumnExample.java">
+    // @author Nobuo Tamemasa
+    Object[][] data = {
+        {1, 11, "A", ES, ES, ES, ES, ES},
+        {2, 22, ES, "B", ES, ES, ES, ES},
+        {3, 33, ES, ES, "C", ES, ES, ES},
+        {4, 1, ES, ES, ES, "D", ES, ES},
+        {5, 55, ES, ES, ES, ES, "E", ES},
+        {6, 66, ES, ES, ES, ES, ES, "F"}
+    };
+    String[] columnNames = {"fixed 1", "fixed 2", "A", "B", "C", "D", "E", "F"};
+    // </blockquote>
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column < FIXED_RANGE ? Integer.class : Object.class;
+      }
+    };
   }
 
   public static void main(String[] args) {
