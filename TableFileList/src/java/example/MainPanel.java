@@ -30,6 +30,12 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new FileListTable(makeModel());
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Name", "Comment"};
     Object[][] data = {
         {"test1.jpg", "11111"},
@@ -41,7 +47,7 @@ public final class MainPanel extends JPanel {
         {"5555555555555", ""},
         {"test1.jpg", ""}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
@@ -50,9 +56,6 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    JTable table = new FileListTable(model);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   // private static int getStringWidth(JTable table, int row, int column) {

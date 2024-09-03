@@ -28,23 +28,11 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    String[] columnNames = {"A", "B"};
-    Object[][] data = {
-        {"aaa", "bb aa cc"}, {"bbb", "def"},
-        {"ccc abc aa ab bb ada eab ee", "xxx"}, {"ddd aa abb bb", "cc bb aba"},
-        {"cc bac bb bb aa abc e", "xxx"}, {"ddd aa ab cab bb", "cc bab aab"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-    };
-    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
-
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setFillsViewportHeight(true);
-    table.setRowSorter(sorter);
     table.setDefaultRenderer(String.class, renderer);
+    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(table.getModel());
+    table.setRowSorter(sorter);
 
     field.getDocument().addDocumentListener(new DocumentListener() {
       @Override public void insertUpdate(DocumentEvent e) {
@@ -71,6 +59,20 @@ public final class MainPanel extends JPanel {
     add(sp, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+        {"aaa", "bb aa cc"}, {"bbb", "def"},
+        {"ccc abc aa ab bb ada eab ee", "xxx"}, {"ddd aa abb bb", "cc bb aba"},
+        {"cc bac bb bb aa abc e", "xxx"}, {"ddd aa ab cab bb", "cc bab aab"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
   }
 
   public void fireDocumentChangeEvent(TableRowSorter<? extends TableModel> sorter) {
