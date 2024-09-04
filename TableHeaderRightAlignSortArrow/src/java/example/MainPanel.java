@@ -12,22 +12,14 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
 
     String key = "TableHeader.rightAlignSortArrow";
     JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
       @Override public void updateUI() {
         super.updateUI();
+        setOpaque(false);
         EventQueue.invokeLater(() -> {
           boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
           setSelected(b);
@@ -35,17 +27,10 @@ public final class MainPanel extends JPanel {
         });
       }
     };
-    check.setOpaque(false);
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
       updateSortAlign(table, key, b);
     });
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    mb.add(Box.createHorizontalGlue());
-    mb.add(check);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     // // NimbusLookAndFeel TEST:
     // if (UIManager.getLookAndFeel().getClass().getName().contains("Nimbus")) {
@@ -69,8 +54,25 @@ public final class MainPanel extends JPanel {
     //   }
     // }
 
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    mb.add(Box.createHorizontalGlue());
+    mb.add(check);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void updateSortAlign(JTable table, String key, boolean b) {

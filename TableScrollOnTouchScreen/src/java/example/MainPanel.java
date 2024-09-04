@@ -12,20 +12,12 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    IntStream.range(0, 1000)
-        .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
-        .forEach(model::addRow);
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       private transient TableTouchScreenHandler handler;
       @Override public void updateUI() {
         removeMouseMotionListener(handler);
@@ -42,6 +34,19 @@ public final class MainPanel extends JPanel {
     UIManager.put("ScrollBar.width", 30);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    IntStream.range(0, 1000)
+        .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
+        .forEach(model::addRow);
+    return model;
   }
 
   public static void main(String[] args) {
