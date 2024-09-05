@@ -54,9 +54,9 @@ public final class MainPanel extends JPanel {
   }
 
   private static ComboBoxModel<String> makeModel() {
-    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    IntStream.range(0, 10).forEach(i -> model.addElement("item: " + i));
-    return model;
+    DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
+    IntStream.range(0, 10).mapToObj(i -> "item: " + i).forEach(m::addElement);
+    return m;
   }
 
   public static void main(String[] args) {

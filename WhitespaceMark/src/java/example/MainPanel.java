@@ -80,7 +80,8 @@ class CustomEditorKit extends StyledEditorKit {
     // }
     TabStop[] tabs = IntStream.range(0, 100)
         .mapToObj(i -> (i + 1f) * tabLength)
-        .map(TabStop::new).toArray(TabStop[]::new);
+        .map(TabStop::new)
+        .toArray(TabStop[]::new);
     TabSet tabSet = new TabSet(tabs);
     StyleConstants.setTabSet(ATTRS, tabSet);
     super.install(c);
