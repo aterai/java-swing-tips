@@ -20,24 +20,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "List<Icon>"};
-    Icon informationIcon = getOptionPaneIcon("OptionPane.informationIcon");
-    Icon errorIcon = getOptionPaneIcon("OptionPane.errorIcon");
-    Icon questionIcon = getOptionPaneIcon("OptionPane.questionIcon");
-    Icon warningIcon = getOptionPaneIcon("OptionPane.warningIcon");
-    Object[][] data = {
-        {"aa", Arrays.asList(informationIcon, errorIcon)},
-        {"bb", Arrays.asList(errorIcon, informationIcon, warningIcon, questionIcon)},
-        {"cc", Arrays.asList(questionIcon, errorIcon, warningIcon)},
-        {"dd", Collections.singletonList(informationIcon)},
-        {"ee", Arrays.asList(warningIcon, questionIcon)}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       private static final int LIST_ICON_COLUMN = 1;
 
       @Override public String getToolTipText(MouseEvent e) {
@@ -82,6 +65,26 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "List<Icon>"};
+    Icon informationIcon = getOptionPaneIcon("OptionPane.informationIcon");
+    Icon errorIcon = getOptionPaneIcon("OptionPane.errorIcon");
+    Icon questionIcon = getOptionPaneIcon("OptionPane.questionIcon");
+    Icon warningIcon = getOptionPaneIcon("OptionPane.warningIcon");
+    Object[][] data = {
+        {"aa", Arrays.asList(informationIcon, errorIcon)},
+        {"bb", Arrays.asList(errorIcon, informationIcon, warningIcon, questionIcon)},
+        {"cc", Arrays.asList(questionIcon, errorIcon, warningIcon)},
+        {"dd", Collections.singletonList(informationIcon)},
+        {"ee", Arrays.asList(warningIcon, questionIcon)}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static Icon getOptionPaneIcon(String key) {
