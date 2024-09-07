@@ -75,8 +75,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Component makeTablePanel() {
-    TransferHandler handler = new TableRowTransferHandler();
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
@@ -87,17 +86,16 @@ public final class MainPanel extends JPanel {
         {"FFF", 19, true}, {"fff", 6, false},
         {"GGG", 92, true}, {"ggg", 0, false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
+        return getValueAt(0, column).getClass();
       }
     };
+  }
+
+  private static Component makeTablePanel() {
+    TransferHandler handler = new TableRowTransferHandler();
+    TableModel model = makeModel();
     JTable table = new JTable(model);
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setTransferHandler(handler);

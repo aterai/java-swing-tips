@@ -62,14 +62,8 @@ public final class MainPanel extends JPanel {
         {"GGG", 92, true}, {"ggg", 0, false}
     };
     return new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
+        return getValueAt(0, column).getClass();
       }
     };
   }
