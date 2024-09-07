@@ -13,22 +13,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
-      @Override public Class<?> getColumnClass(int column) {
-        switch (column) {
-          case 0: return String.class;
-          case 1: return Number.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
-        }
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -69,6 +54,18 @@ public final class MainPanel extends JPanel {
     add(scroll);
     add(pnl, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
@@ -121,6 +118,12 @@ final class TablePopupMenu extends JPopupMenu {
     if (c instanceof JTable) {
       delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
       super.show(c, x, y);
+    } else if (c instanceof JScrollPane) {
+      JScrollPane scroll = (JScrollPane) c;
+      JTable table = (JTable) scroll.getViewport().getView();
+      delete.setEnabled(table.getSelectedRowCount() > 0);
+      Point pt = SwingUtilities.convertPoint(c, x, y, table);
+      super.show(table, pt.x, pt.y);
     }
   }
 }
