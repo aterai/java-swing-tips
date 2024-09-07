@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -65,8 +66,9 @@ final class TablePopupMenu extends JPopupMenu {
 
   /* default */ TablePopupMenu(String... arrays) {
     super();
-    columnNames = new String[arrays.length];
-    System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
+    // columnNames = new String[arrays.length];
+    // System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
+    columnNames = Arrays.copyOf(arrays, arrays.length);
 
     JTextField textField = new JTextField();
     textField.addAncestorListener(new FocusAncestorListener());
