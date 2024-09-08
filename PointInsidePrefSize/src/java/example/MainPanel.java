@@ -33,6 +33,13 @@ public final class MainPanel extends JPanel {
           case 2: return URL.class;
           default: return super.getColumnClass(column);
         }
+        // // Java 12:
+        // return switch (column) {
+        //   case 0 -> Integer.class;
+        //   case 1 -> String.class;
+        //   case 2 -> URL.class;
+        //   default -> super.getColumnClass(column);
+        // };
       }
 
       @Override public boolean isCellEditable(int row, int col) {

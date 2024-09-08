@@ -103,15 +103,18 @@ public final class MainPanel extends JPanel {
       @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
-          case 0:
-            return String.class;
-          case 1:
-            return Icon.class;
-          case 2:
-            return Boolean.class;
-          default:
-            return super.getColumnClass(column);
+          case 0: return String.class;
+          case 1: return Icon.class;
+          case 2: return Boolean.class;
+          default: return super.getColumnClass(column);
         }
+        // Java 12
+        // return switch (column) {
+        //   case 0 -> String.class;
+        //   case 1 -> Icon.class;
+        //   case 2 -> Boolean.class;
+        //   default -> super.getColumnClass(column);
+        // };
       }
     };
   }
