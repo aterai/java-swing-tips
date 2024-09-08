@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST CheckIconInteriorBackground" />
+  <property name="jnlp.Name"     value="CheckIconInteriorBackground" />
+  <property name="jnlp.name"     value="checkiconinteriorbackground" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkiconinteriorbackground/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckIconInteriorBackground.html" />
+</project>
