@@ -15,41 +15,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"A", "B", "C"};
-    Object[][] data = {
-        {"0, 0", "0, 1", "0, 2"},
-        {"1, 0", "1, 1", "1, 2"},
-        {"2, 0", "2, 1", "2, 2"},
-        {"3, 0", "3, 1", "3, 2"},
-        {"4, 0", "4, 1", "4, 2"},
-        {"5, 0", "5, 1", "5, 2"},
-        {"6, 0", "6, 1", "6, 2"},
-        {"7, 0", "7, 1", "7, 2"},
-        {"8, 0", "8, 1", "8, 2"},
-        {"9, 0", "9, 1", "9, 2"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isCellSelected(row, column)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
+    JTable table = new JTable(makeModel());
     table.setCellSelectionEnabled(true);
-    // table.setAutoCreateRowSorter(true);
 
     String actionMapKey = "clear-selection";
     table.getActionMap().put(actionMapKey, new AbstractAction(actionMapKey) {
@@ -61,8 +28,10 @@ public final class MainPanel extends JPanel {
     InputMap im = table.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), actionMapKey);
 
-    SpinnerNumberModel rowField = new SpinnerNumberModel(1, 0, model.getRowCount() - 1, 1);
-    SpinnerNumberModel colField = new SpinnerNumberModel(2, 0, model.getColumnCount() - 1, 1);
+    int rowCount = table.getRowCount() - 1;
+    int colCount = table.getColumnCount() - 1;
+    SpinnerNumberModel rowField = new SpinnerNumberModel(1, 0, rowCount, 1);
+    SpinnerNumberModel colField = new SpinnerNumberModel(2, 0, colCount, 1);
     JCheckBox toggle = new JCheckBox("toggle", false);
     JCheckBox extend = new JCheckBox("extend", false);
 
@@ -104,6 +73,27 @@ public final class MainPanel extends JPanel {
     add(panel, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B", "C"};
+    Object[][] data = {
+        {"0, 0", "0, 1", "0, 2"},
+        {"1, 0", "1, 1", "1, 2"},
+        {"2, 0", "2, 1", "2, 2"},
+        {"3, 0", "3, 1", "3, 2"},
+        {"4, 0", "4, 1", "4, 2"},
+        {"5, 0", "5, 1", "5, 2"},
+        {"6, 0", "6, 1", "6, 2"},
+        {"7, 0", "7, 1", "7, 2"},
+        {"8, 0", "8, 1", "8, 2"},
+        {"9, 0", "9, 1", "9, 2"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {

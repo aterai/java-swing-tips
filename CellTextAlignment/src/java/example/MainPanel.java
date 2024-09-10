@@ -21,16 +21,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Integer", "String", "Boolean"};
-    Object[][] data = {
-        {12, "aaa", true}, {5, "bbb", false}, {92, "CCC", true}, {0, "DDD", false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    // JTable table = new JTable(model) {
+    // JTable table = new JTable(makeModel()) {
     //   @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
     //     Component c = super.prepareRenderer(tcr, row, column);
     //     if (1 == convertColumnIndexToModel(column)) {
@@ -41,7 +32,7 @@ public final class MainPanel extends JPanel {
     //     return c;
     //   }
     // };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
 
     TableColumnModel cm = table.getColumnModel();
@@ -62,6 +53,18 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Integer", "String", "Boolean"};
+    Object[][] data = {
+        {12, "aaa", true}, {5, "bbb", false}, {92, "CCC", true}, {0, "DDD", false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   private final class HorizontalAlignmentTableRenderer extends DefaultTableCellRenderer {
