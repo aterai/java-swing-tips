@@ -20,25 +20,15 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"user", "rwx"};
-    Object[][] data = {
-        {"owner", 7}, {"group", 6}, {"other", 5}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         TableColumn c = getColumnModel().getColumn(1);
         c.setCellRenderer(new CheckBoxesRenderer());
         c.setCellEditor(new CheckBoxesEditor());
+        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
       }
     };
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
     // if (System.getProperty("java.version").startsWith("1.6.0")) {
     //   // 1.6.0_xx bug? column header click -> edit cancel?
     //   table.getTableHeader().addMouseListener(new MouseAdapter() {
@@ -49,9 +39,20 @@ public final class MainPanel extends JPanel {
     //     }
     //   });
     // }
-
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"user", "rwx"};
+    Object[][] data = {
+        {"owner", 7}, {"group", 6}, {"other", 5}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {

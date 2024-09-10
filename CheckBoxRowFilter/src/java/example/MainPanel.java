@@ -16,16 +16,7 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-    String[] columnNames = {"#", "String", "Integer"};
-    Object[][] data = {
-        {false, "aaa", 12}, {false, "bbb", 5},
-        {false, "CCC", 92}, {false, "DDD", 0}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
+    TableModel model = makeModel();
     JTable selector = new JTable(model);
     selector.setAutoCreateRowSorter(true);
     selector.getColumnModel().getColumn(0).setMaxWidth(32);
@@ -57,6 +48,19 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(selector));
     add(new JScrollPane(viewer));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"#", "String", "Integer"};
+    Object[][] data = {
+        {false, "aaa", 12}, {false, "bbb", 5},
+        {false, "CCC", 92}, {false, "DDD", 0}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
