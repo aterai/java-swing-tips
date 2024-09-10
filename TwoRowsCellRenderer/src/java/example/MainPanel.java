@@ -14,21 +14,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"A", "B"};
-    Object[][] data = {
-        {"123456789012345678901234567890123456789012345678901234567890", "12345"},
-        {"bbb", "abcdefghijklmnopqrstuvwxyz----abcdefghijklmnopqrstuvwxyz"},
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         setSelectionForeground(null); // Nimbus
         setSelectionBackground(null); // Nimbus
@@ -38,9 +24,25 @@ public final class MainPanel extends JPanel {
     };
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(table.getRowHeight() * 2);
-
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+        {"123456789012345678901234567890123456789012345678901234567890", "12345"},
+        {"bbb", "abcdefghijklmnopqrstuvwxyz----abcdefghijklmnopqrstuvwxyz"},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
   }
 
   public static void main(String[] args) {

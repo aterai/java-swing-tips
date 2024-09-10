@@ -18,25 +18,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Number", "Boolean"};
-    Object[][] data = {
-        {"aaa", 1, false}, {"bbb", 20, false},
-        {"ccc", 2, false}, {"ddd", 3, false},
-        {"aaa", 1, false}, {"bbb", 20, false},
-        {"ccc", 2, false}, {"ddd", 3, false},
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int col) {
-        return col == BOOLEAN_COLUMN;
-      }
-    };
-    JTable table = makeTable(model);
+    JTable table = makeTable(makeModel());
     // TEST: JTable table = makeTable2(model);
-    model.addTableModelListener(e -> {
+    table.getModel().addTableModelListener(e -> {
       if (e.getType() == TableModelEvent.UPDATE) {
         // System.out.println("TableModel: tableChanged");
         rowRepaint(table, table.convertRowIndexToView(e.getFirstRow()));
@@ -51,6 +35,25 @@ public final class MainPanel extends JPanel {
     // table.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Number", "Boolean"};
+    Object[][] data = {
+        {"aaa", 1, false}, {"bbb", 20, false},
+        {"ccc", 2, false}, {"ddd", 3, false},
+        {"aaa", 1, false}, {"bbb", 20, false},
+        {"ccc", 2, false}, {"ddd", 3, false},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int col) {
+        return col == BOOLEAN_COLUMN;
+      }
+    };
   }
 
   public static JTable makeTable(TableModel model) {

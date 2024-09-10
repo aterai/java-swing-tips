@@ -20,21 +20,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Boolean"};
-    Object[][] data = {
-        {"AAA", true}, {"bbb", false}, {"CCC", true},
-        {"ddd", false}, {"EEE", true}, {"fff", false},
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return column == 1 ? Boolean.class : super.getColumnClass(column);
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return column == 1;
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         // setDefaultRenderer(Boolean.class, null);
         setDefaultEditor(Boolean.class, null);
@@ -51,6 +37,23 @@ public final class MainPanel extends JPanel {
     };
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Boolean"};
+    Object[][] data = {
+        {"AAA", true}, {"bbb", false}, {"CCC", true},
+        {"ddd", false}, {"EEE", true}, {"fff", false},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column == 1 ? Boolean.class : super.getColumnClass(column);
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return column == 1;
+      }
+    };
   }
 
   public static void main(String[] args) {
