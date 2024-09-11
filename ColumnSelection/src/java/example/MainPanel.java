@@ -10,39 +10,15 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private final JCheckBox check = new JCheckBox("Header click: Select all cells in a column", true);
+
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isCellSelected(row, column)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
+    JTable table = new JTable(makeModel());
     table.setCellSelectionEnabled(true);
-
-    JCheckBox check = new JCheckBox("Header click: Select all cells in a column", true);
-
     JTableHeader header = table.getTableHeader();
     header.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -57,10 +33,8 @@ public final class MainPanel extends JPanel {
         table.changeSelection(table.getRowCount() - 1, col, false, true);
       }
     });
-
     JButton button = new JButton("clear selection");
     button.addActionListener(e -> table.clearSelection());
-
     // table.getTableHeader().addMouseListener(new MouseAdapter() {
     //   @Override public void mousePressed(MouseEvent e) {
     //     JTable table = ((JTableHeader) e.getSource()).getTable();
@@ -76,11 +50,22 @@ public final class MainPanel extends JPanel {
     //     }
     //   }
     // });
-
     add(check, BorderLayout.NORTH);
     add(new JScrollPane(table));
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
