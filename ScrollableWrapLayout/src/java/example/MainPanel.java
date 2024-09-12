@@ -128,6 +128,7 @@ class ScrollableWrapLayout extends FlowLayout {
     super.layoutContainer(target);
   }
 
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public Dimension preferredLayoutSize(Container target) {
     Dimension dim = super.preferredLayoutSize(target);
     synchronized (target.getTreeLock()) {

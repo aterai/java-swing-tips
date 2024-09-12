@@ -137,6 +137,7 @@ public final class MainPanel extends JPanel {
       }
     };
     p.setLayout(new BorderLayout(0, 0) {
+      @SuppressWarnings("PMD.AvoidSynchronizedStatement")
       @Override public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
           Insets insets = parent.getInsets();

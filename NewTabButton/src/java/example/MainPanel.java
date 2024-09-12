@@ -333,6 +333,7 @@ class TabLayout implements LayoutManager, Serializable {
     /* not needed */
   }
 
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public Dimension preferredLayoutSize(Container parent) {
     synchronized (parent.getTreeLock()) {
       int last = parent.getComponentCount() - 1;
@@ -349,12 +350,14 @@ class TabLayout implements LayoutManager, Serializable {
     }
   }
 
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public Dimension minimumLayoutSize(Container parent) {
     synchronized (parent.getTreeLock()) {
       return new Dimension(100, 24);
     }
   }
 
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public void layoutContainer(Container parent) {
     synchronized (parent.getTreeLock()) {
       int count = parent.getComponentCount();

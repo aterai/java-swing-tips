@@ -34,6 +34,7 @@ public final class MainPanel extends JPanel {
   private static JMenuBar createMenuBar() {
     JMenuBar menuBar = new JMenuBar();
     menuBar.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2) {
+      @SuppressWarnings("PMD.AvoidSynchronizedStatement")
       @Override public Dimension preferredLayoutSize(Container target) {
         synchronized (target.getTreeLock()) {
           int targetWidth = target.getSize().width;

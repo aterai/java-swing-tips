@@ -42,6 +42,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("Override FlowLayout#layoutContainer(...)"));
     p.setLayout(new FlowLayout() {
+      @SuppressWarnings("PMD.AvoidSynchronizedStatement")
       @Override public void layoutContainer(Container target) {
         synchronized (target.getTreeLock()) {
           int nmembers = target.getComponentCount();

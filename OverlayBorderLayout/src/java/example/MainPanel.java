@@ -150,6 +150,7 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
     component.revalidate();
   }
 
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public void layoutContainer(Container parent) {
     synchronized (parent.getTreeLock()) {
       Insets insets = parent.getInsets();

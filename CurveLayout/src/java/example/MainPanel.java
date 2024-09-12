@@ -33,6 +33,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         setLayout(new FlowLayout() {
+          @SuppressWarnings("PMD.AvoidSynchronizedStatement")
           @Override public void layoutContainer(Container target) {
             synchronized (target.getTreeLock()) {
               int nmembers = target.getComponentCount();

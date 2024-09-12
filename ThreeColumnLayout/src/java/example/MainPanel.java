@@ -156,6 +156,7 @@ public final class MainPanel extends JPanel {
     Component box = makeCenterBox(button1, button2);
 
     JPanel panel = new JPanel(new BorderLayout(0, 0) {
+      @SuppressWarnings("PMD.AvoidSynchronizedStatement")
       @Override public void layoutContainer(Container target) {
         synchronized (target.getTreeLock()) {
           Insets insets = target.getInsets();
