@@ -20,19 +20,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"AAA", "BBB"};
-    Object[][] data = {
-        {makeOptionPaneDescription("error"), SEE},
-        {makeOptionPaneDescription("information"), SEE},
-        {makeOptionPaneDescription("question"), SEE},
-        {makeOptionPaneDescription("warning"), SEE},
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         setColumnCellRenderer(null);
         super.updateUI();
@@ -59,6 +47,21 @@ public final class MainPanel extends JPanel {
     table.setRowHeight(56);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B"};
+    Object[][] data = {
+        {makeOptionPaneDescription("error"), SEE},
+        {makeOptionPaneDescription("information"), SEE},
+        {makeOptionPaneDescription("question"), SEE},
+        {makeOptionPaneDescription("warning"), SEE},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
   }
 
   private static OptionPaneDescription makeOptionPaneDescription(String type) {
