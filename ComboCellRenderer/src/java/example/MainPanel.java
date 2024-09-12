@@ -18,17 +18,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] comboModel = {"Name 0", "Name 1", "Name 2"};
-    String[] columnNames = {"Integer", "String", "Boolean"};
-    Object[][] data = {
-        {12, comboModel[0], true}, {5, comboModel[2], false},
-        {92, comboModel[1], true}, {0, comboModel[0], false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel(comboModel)) {
       private final Color evenColor = new Color(0xF0_F0_FA);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
@@ -59,6 +49,19 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel(String[] comboModel) {
+    String[] columnNames = {"Integer", "String", "Boolean"};
+    Object[][] data = {
+        {12, comboModel[0], true}, {5, comboModel[2], false},
+        {92, comboModel[1], true}, {0, comboModel[0], false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   private static <E> JComboBox<E> makeComboBox(ComboBoxModel<E> model) {

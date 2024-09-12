@@ -15,20 +15,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-
     String[] comboModel = {"Name 0", "Name 1", "Name 2"};
-    String[] columnNames = {"Integer", "String", "Boolean"};
-    Object[][] data = {
-        {12, comboModel[0], true}, {5, comboModel[2], false},
-        {92, comboModel[1], true}, {3, comboModel[0], false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
-
+    JTable table = new JTable(makeModel(comboModel));
     TableColumn c0 = table.getColumnModel().getColumn(0);
     c0.setMinWidth(60);
     c0.setMaxWidth(60);
@@ -41,6 +29,20 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel(String[] comboModel) {
+    String[] columnNames = {"Integer", "String", "Boolean"};
+    Object[][] data = {
+        {12, comboModel[0], true}, {5, comboModel[2], false},
+        {92, comboModel[1], true}, {3, comboModel[0], false}
+    };
+    TableModel model = new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    return model;
   }
 
   private static <E> JComboBox<E> makeCombo(ComboBoxModel<E> model) {
