@@ -18,6 +18,38 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel());
+    TableRowSorter<TableModel> s = new TableRowSorter<TableModel>(table.getModel()) {
+      @Override public void toggleSortOrder(int column) {
+        RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
+        setRowFilter(null);
+        super.toggleSortOrder(column);
+        setRowFilter(f);
+      }
+    };
+    s.setRowFilter(new RowFilter<TableModel, Integer>() {
+      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+        return 0 != table.convertRowIndexToView(entry.getIdentifier());
+      }
+    });
+    // s.setSortsOnUpdates(true);
+    s.toggleSortOrder(1);
+    table.setRowSorter(s);
+    table.getModel().addTableModelListener(e -> {
+      if (e.getType() == TableModelEvent.UPDATE) {
+        table.repaint();
+      }
+    });
+    TableCellRenderer renderer = new SummaryRowRenderer();
+    TableColumnModel cm = table.getColumnModel();
+    for (int i = 0; i < cm.getColumnCount(); i++) {
+      cm.getColumn(i).setCellRenderer(renderer);
+    }
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"A", "B"};
     Object[][] data = {
         {Integer.MIN_VALUE, Integer.MIN_VALUE},
@@ -25,7 +57,8 @@ public final class MainPanel extends JPanel {
         {1, 5}, {1, 4}, {1, -5}, {1, 0}, {1, 6},
         {Integer.MAX_VALUE, Integer.MAX_VALUE}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    // getValueAt(0, column).getClass();
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return Integer.class; // getValueAt(0, column).getClass();
       }
@@ -34,58 +67,6 @@ public final class MainPanel extends JPanel {
         return row > 0 && row != getRowCount() - 1;
       }
     };
-    JTable table = new JTable(model);
-    RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
-      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-        return 0 != table.convertRowIndexToView(entry.getIdentifier());
-      }
-    };
-    TableRowSorter<TableModel> s = new TableRowSorter<TableModel>(model) {
-      @Override public void toggleSortOrder(int column) {
-        RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
-        setRowFilter(null);
-        super.toggleSortOrder(column);
-        setRowFilter(f);
-      }
-    };
-    s.setRowFilter(filter);
-    // s.setSortsOnUpdates(true);
-    s.toggleSortOrder(1);
-    table.setRowSorter(s);
-
-    model.addTableModelListener(e -> {
-      if (e.getType() == TableModelEvent.UPDATE) {
-        table.repaint();
-      }
-    });
-    TableCellRenderer renderer = new DefaultTableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c;
-        TableModel m = table.getModel();
-        int rc = m.getRowCount();
-        if (row == rc - 2) {
-          int sum = IntStream.range(1, rc - 1)
-              .map(i -> (Integer) m.getValueAt(i, column))
-              .sum();
-          c = super.getTableCellRendererComponent(
-              table, sum, isSelected, hasFocus, row, column);
-          c.setBackground(Color.ORANGE);
-        } else {
-          c = super.getTableCellRendererComponent(
-              table, value, isSelected, hasFocus, row, column);
-          c.setBackground(Color.WHITE);
-        }
-        c.setForeground(Color.BLACK);
-        return c;
-      }
-    };
-    TableColumnModel cm = table.getColumnModel();
-    for (int i = 0; i < cm.getColumnCount(); i++) {
-      cm.getColumn(i).setCellRenderer(renderer);
-    }
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -107,5 +88,27 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class SummaryRowRenderer extends DefaultTableCellRenderer {
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    Component c;
+    TableModel m = table.getModel();
+    int rc = m.getRowCount();
+    if (row == rc - 2) {
+      int sum = IntStream.range(1, rc - 1)
+          .map(i -> (Integer) m.getValueAt(i, column))
+          .sum();
+      c = super.getTableCellRendererComponent(
+          table, sum, isSelected, hasFocus, row, column);
+      c.setBackground(Color.ORANGE);
+    } else {
+      c = super.getTableCellRendererComponent(
+          table, value, isSelected, hasFocus, row, column);
+      c.setBackground(Color.WHITE);
+    }
+    c.setForeground(Color.BLACK);
+    return c;
   }
 }
