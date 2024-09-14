@@ -23,9 +23,23 @@ public final class MainPanel extends JPanel {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     });
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    table.setFillsViewportHeight(true);
+    table.setComponentPopupMenu(new TablePopupMenu());
+    table.setLayout(new GridBagLayout());
+    table.add(editor);
+    table.getModel().addTableModelListener(e -> {
+      TableModel m = (TableModel) e.getSource();
+      editor.setVisible(m.getRowCount() == 0);
+    });
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static TableModel makeModel() {
     String[] columnNames = {"Integer", "String", "Boolean"};
-    TableModel model = new DefaultTableModel(columnNames, 0) {
+    return new DefaultTableModel(columnNames, 0) {
       @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
@@ -41,18 +55,6 @@ public final class MainPanel extends JPanel {
         // };
       }
     };
-    model.addTableModelListener(e -> {
-      TableModel m = (TableModel) e.getSource();
-      editor.setVisible(m.getRowCount() == 0);
-    });
-    JTable table = new JTable(model);
-    table.setAutoCreateRowSorter(true);
-    table.setFillsViewportHeight(true);
-    table.setComponentPopupMenu(new TablePopupMenu());
-    table.setLayout(new GridBagLayout());
-    table.add(editor);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
