@@ -27,28 +27,18 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html
-    String[] columnNames = {"SNo.", "1", "2", "Native", "2", "3"};
-    Object[][] data = {
-        {"119", "foo", "bar", "ja", "ko", "zh"}, {"911", "bar", "foo", "en", "fr", "pt"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames);
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override protected JTableHeader createDefaultTableHeader() {
         TableColumnModel cm = getColumnModel();
         ColumnGroup name = new ColumnGroup("Name");
         name.add(cm.getColumn(1));
         name.add(cm.getColumn(2));
-
         ColumnGroup lang = new ColumnGroup("Language");
         lang.add(cm.getColumn(3));
-
         ColumnGroup other = new ColumnGroup("Others");
         other.add(cm.getColumn(4));
         other.add(cm.getColumn(5));
-
         lang.add(other);
-
         GroupableTableHeader header = new GroupableTableHeader(cm);
         header.addColumnGroup(name);
         header.addColumnGroup(lang);
@@ -57,6 +47,15 @@ public final class MainPanel extends JPanel {
     };
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"SNo.", "1", "2", "Native", "2", "3"};
+    Object[][] data = {
+        {"119", "foo", "bar", "ja", "ko", "zh"},
+        {"911", "bar", "foo", "en", "fr", "pt"}
+    };
+    return new DefaultTableModel(data, columnNames);
   }
 
   public static void main(String[] args) {
