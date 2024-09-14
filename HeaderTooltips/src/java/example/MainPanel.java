@@ -15,27 +15,39 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel()) {
+      @Override protected JTableHeader createDefaultTableHeader() {
+        return new JTableHeader(columnModel) {
+          @Override public String getToolTipText(MouseEvent e) {
+            int i = columnAtPoint(e.getPoint());
+            TableColumn c = getColumnModel().getColumn(i);
+            return String.format("%s (width=%dpx)", c.getHeaderValue(), c.getWidth());
+          }
+        };
+      }
+    };
+    // table.setTableHeader(new JTableHeader(table.getColumnModel()) {
+    //   @Override public String getToolTipText(MouseEvent e) {
+    //     int i = columnAtPoint(e.getPoint());
+    //     // return getTable().getColumnName(i) + " (...)";
+    //     TableColumn c = getColumnModel().getColumn(i);
+    //     return String.format("%s (width=%dpx)", c.getHeaderValue(), c.getWidth());
+    //   }
+    // });
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model);
-    table.setTableHeader(new JTableHeader(table.getColumnModel()) {
-      @Override public String getToolTipText(MouseEvent e) {
-        int i = columnAtPoint(e.getPoint());
-        // return getTable().getColumnName(i) + " (...)";
-        TableColumn c = getColumnModel().getColumn(i);
-        return String.format("%s (width=%dpx)", c.getHeaderValue(), c.getWidth());
-      }
-    });
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
