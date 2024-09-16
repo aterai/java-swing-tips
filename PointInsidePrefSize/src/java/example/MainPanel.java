@@ -19,10 +19,40 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new JTable(makeModel());
+    table.setRowSelectionAllowed(true);
+    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    table.setIntercellSpacing(new Dimension());
+    table.setShowGrid(false);
+    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.setAutoCreateRowSorter(true);
+
+    TableColumnModel cm = table.getColumnModel();
+    TableColumn col = cm.getColumn(0);
+    col.setMinWidth(50);
+    col.setMaxWidth(50);
+    col.setResizable(false);
+
+    cm.getColumn(1).setPreferredWidth(1000);
+    cm.getColumn(2).setPreferredWidth(2000);
+
+    UrlRenderer renderer = new UrlRenderer();
+    table.setDefaultRenderer(URL.class, renderer);
+    table.addMouseListener(renderer);
+    table.addMouseMotionListener(renderer);
+
+    JScrollPane scrollPane = new JScrollPane(table);
+    scrollPane.getViewport().setBackground(Color.WHITE);
+    add(scrollPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"No.", "Name", "URL"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @SuppressWarnings("PMD.OnlyOneReturn")
@@ -50,41 +80,7 @@ public final class MainPanel extends JPanel {
     model.addRow(new Object[] {1, "Java Swing Tips", mkUrl("https://ateraimemo.com/Swing.html")});
     model.addRow(new Object[] {2, "Example", mkUrl("https://www.example.com/")});
     model.addRow(new Object[] {3, "Example.jp", mkUrl("https://www.example.jp/")});
-
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        return c;
-      }
-    };
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    table.setIntercellSpacing(new Dimension());
-    table.setShowGrid(false);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-    table.setAutoCreateRowSorter(true);
-
-    TableColumnModel cm = table.getColumnModel();
-    TableColumn col = cm.getColumn(0);
-    col.setMinWidth(50);
-    col.setMaxWidth(50);
-    col.setResizable(false);
-
-    cm.getColumn(1).setPreferredWidth(1000);
-    cm.getColumn(2).setPreferredWidth(2000);
-
-    UrlRenderer renderer = new UrlRenderer();
-    table.setDefaultRenderer(URL.class, renderer);
-    table.addMouseListener(renderer);
-    table.addMouseMotionListener(renderer);
-
-    JScrollPane scrollPane = new JScrollPane(table);
-    scrollPane.getViewport().setBackground(Color.WHITE);
-    add(scrollPane);
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
   private static URL mkUrl(String path) {
@@ -251,7 +247,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
           Desktop.getDesktop().browse(url.toURI());
         }
       } catch (URISyntaxException | IOException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }

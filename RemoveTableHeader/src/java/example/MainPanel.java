@@ -7,50 +7,38 @@ package example;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isCellSelected(row, column)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     // table.setTableHeader(null);
     // table.setTableHeader(new JTableHeader(table.getColumnModel()));
-
-    JScrollPane scrollPane = new JScrollPane(table);
-    add(scrollPane);
+    JScrollPane scroll = new JScrollPane(table);
+    add(scroll);
     JCheckBox check = new JCheckBox("JTableHeader visible: ", true);
     check.addActionListener(e -> {
       JCheckBox cb = (JCheckBox) e.getSource();
       // table.getTableHeader().setVisible(cb.isSelected());
-      scrollPane.getColumnHeader().setVisible(cb.isSelected());
-      scrollPane.revalidate();
+      scroll.getColumnHeader().setVisible(cb.isSelected());
+      scroll.revalidate();
     });
     add(check, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
