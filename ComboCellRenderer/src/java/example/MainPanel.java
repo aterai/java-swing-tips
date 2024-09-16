@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel(String[] comboModel) {
+  private static TableModel makeModel(String... comboModel) {
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
         {12, comboModel[0], true}, {5, comboModel[2], false},
