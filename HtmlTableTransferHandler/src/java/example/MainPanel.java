@@ -22,6 +22,17 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(3, 1));
+    TableModel model = makeModel();
+    JTable table1 = new PropertyTable(model);
+    JTable table2 = new PropertyTable(model);
+    table2.setTransferHandler(new HtmlTableTransferHandler());
+    add(new JScrollPane(table1));
+    add(new JScrollPane(table2));
+    add(new JScrollPane(new JEditorPane("text/html", "")));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Type", "Value"};
     @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
@@ -32,19 +43,11 @@ public final class MainPanel extends JPanel {
         {"Boolean", Boolean.TRUE},
         {"Color", Color.RED}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table1 = new PropertyTable(model);
-    JTable table2 = new PropertyTable(model);
-    table2.setTransferHandler(new HtmlTableTransferHandler());
-
-    add(new JScrollPane(table1));
-    add(new JScrollPane(table2));
-    add(new JScrollPane(new JEditorPane("text/html", "")));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {

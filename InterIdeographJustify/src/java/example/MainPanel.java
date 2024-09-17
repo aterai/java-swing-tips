@@ -16,17 +16,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Justified", "Default"};
-    Object[][] data = {
-        {"会社名", ""},
-        {"所在地", ""},
-        {"電話番号", ""},
-        {"設立", ""},
-        {"代表取締役", ""},
-        {"事業内容", ""}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames);
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       private final Color evenColor = new Color(0xF5_F5_FF);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
@@ -55,6 +45,19 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Justified", "Default"};
+    Object[][] data = {
+        {"会社名", ""},
+        {"所在地", ""},
+        {"電話番号", ""},
+        {"設立", ""},
+        {"代表取締役", ""},
+        {"事業内容", ""}
+    };
+    return new DefaultTableModel(data, columnNames);
   }
 
   public static void main(String[] args) {
