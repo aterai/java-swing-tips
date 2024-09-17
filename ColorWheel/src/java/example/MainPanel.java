@@ -73,16 +73,15 @@ class ColorWheel extends JPanel {
     int[] row = new int[SIZE];
     float size = SIZE;
     float radius = size / 2f;
-
     for (int yi = 0; yi < SIZE; yi++) {
-      float y = yi - size / 2f;
+      float y = yi - radius;
       for (int xi = 0; xi < SIZE; xi++) {
-        float x = xi - size / 2f;
+        float x = xi - radius;
         double theta = Math.atan2(y, x) - 3d * Math.PI / 2d;
         if (theta < 0) {
           theta += 2d * Math.PI;
         }
-        double r = Math.sqrt(x * x + y * y);
+        double r = Math.hypot(x, y); // Math.sqrt(x * x + y * y);
         float hue = (float) (theta / (2d * Math.PI));
         float sat = Math.min((float) (r / radius), 1f);
         float bri = 1f;
