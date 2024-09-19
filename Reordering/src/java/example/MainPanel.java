@@ -6,27 +6,16 @@ package example;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(6, 3);
     JTableHeader header = table.getTableHeader();
     header.setReorderingAllowed(false);
 
-    JCheckBox check = new JCheckBox("disable column dragging", true);
+    JCheckBox check = new JCheckBox("Disable reordering by dragging columns", true);
     check.addActionListener(e -> header.setReorderingAllowed(!check.isSelected()));
 
     add(check, BorderLayout.NORTH);
