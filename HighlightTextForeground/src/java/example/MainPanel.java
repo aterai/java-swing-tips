@@ -118,12 +118,11 @@ public final class MainPanel extends JPanel {
           String fmt = String.format("%s%s%s", cw, txt, cw);
           boolean b = checkCase.isSelected();
           int flags = b ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
-          Pattern pattern;
+          Pattern pattern = null;
           try {
             pattern = Pattern.compile(fmt, flags);
           } catch (PatternSyntaxException ex) {
             field.setBackground(WARNING);
-            pattern = null;
           }
           return pattern;
         });
