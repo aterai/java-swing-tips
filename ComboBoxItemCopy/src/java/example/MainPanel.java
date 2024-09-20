@@ -36,7 +36,9 @@ public final class MainPanel extends JPanel {
     };
     ActionMap am = combo1.getActionMap();
     am.put(COPY_KEY, copy);
-    int modifiers = InputEvent.CTRL_DOWN_MASK;
+    // int modifiers = InputEvent.CTRL_DOWN_MASK;
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
     InputMap im = combo1.getInputMap(WHEN_FOCUSED);
     im.put(keyStroke, COPY_KEY);
