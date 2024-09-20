@@ -6,8 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
@@ -30,20 +28,23 @@ public final class MainPanel extends JPanel {
   }
 
   private static void initUndoRedo(JTextComponent tc) {
-    String undoCmd = "undo";
-    String redoCmd = "redo";
+    String undo = "undo";
+    String redo = "redo";
 
     UndoManager manager = new UndoManager();
     tc.getDocument().addUndoableEditListener(manager);
-    tc.getActionMap().put(undoCmd, new UndoAction(manager));
-    tc.getActionMap().put(redoCmd, new RedoAction(manager));
+    tc.getActionMap().put(undo, new UndoAction(manager));
+    tc.getActionMap().put(redo, new RedoAction(manager));
 
-    int modifiers = tc.getToolkit().getMenuShortcutKeyMask();
-    // Java 10: int modifiers = tc.getToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = tc.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers), undoCmd);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, modifiers | InputEvent.SHIFT_DOWN_MASK), redoCmd);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, modifiers), redoCmd);
+    im.put(KeyStroke.getKeyStroke("ctrl Z"), undo);
+    im.put(KeyStroke.getKeyStroke("ctrl shift Z"), redo);
+    im.put(KeyStroke.getKeyStroke("ctrl Y"), redo);
+    // int m = tc.getToolkit().getMenuShortcutKeyMask();
+    // Java 10: int m = tc.getToolkit().getMenuShortcutKeyMaskEx();
+    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, m), undo);
+    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, m | InputEvent.SHIFT_DOWN_MASK), redo);
+    // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, m), redo);
   }
 
   private static class UndoAction extends AbstractAction {
