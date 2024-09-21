@@ -12,11 +12,11 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始");
+    JCheckBox check = new JCheckBox("一時ウィンドウ(入力モード)->enterでセル編集開始", true);
 
     JTable table = new JTable(4, 3) {
       @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-        if (check.isSelected() && !isTabOrEnterKey(ks)) {
+        if (check.isSelected() && !isTabOrEnterKey(ks.getKeyCode())) {
           startEditing(ks, pressed);
         }
         return super.processKeyBinding(ks, e, condition, pressed);
@@ -36,8 +36,8 @@ public final class MainPanel extends JPanel {
         }
       }
 
-      private boolean isTabOrEnterKey(KeyStroke ks) {
-        return KeyStroke.getKeyStroke('\t').equals(ks) || KeyStroke.getKeyStroke('\n').equals(ks);
+      private boolean isTabOrEnterKey(int keyCode) {
+        return keyCode == KeyEvent.VK_TAB || keyCode == KeyEvent.VK_ENTER;
       }
     };
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
