@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -110,8 +109,8 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
-    textPane.getInputMap().put(keyStroke, "popupInsert");
+    // KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
+    textPane.getInputMap().put(KeyStroke.getKeyStroke("shift TAB"), "popupInsert");
 
     add(new JScrollPane(textPane));
     setPreferredSize(new Dimension(320, 240));
