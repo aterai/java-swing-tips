@@ -37,6 +37,8 @@ public final class MainPanel extends JPanel {
     g2.dispose();
   }
 
+  // [Fun with Java2D - Strokes](http://www.jhlabs.com/java/java2d/strokes/)
+  // http://www.jhlabs.com/java/java2d/strokes/ShapeStroke.java
   public static Shape createTextOnPath(Shape shape, GlyphVector gv) {
     double[] points = new double[6];
     Point2D prevPt = new Point2D.Double();
