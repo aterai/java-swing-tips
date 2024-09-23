@@ -6,8 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
@@ -41,17 +39,17 @@ public final class MainPanel extends JPanel {
 
     String prev = "navigatePrevious";
     am.put(prev, new TabNavigateAction(tabs, am.get(prev)));
-    im0.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), prev);
-    im1.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK), prev);
-    im0.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), prev);
-    im1.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK), prev);
+    im0.put(KeyStroke.getKeyStroke("LEFT"), prev);
+    im1.put(KeyStroke.getKeyStroke("alt LEFT"), prev);
+    im0.put(KeyStroke.getKeyStroke("UP"), prev);
+    im1.put(KeyStroke.getKeyStroke("alt UP"), prev);
 
     String next = "navigateNext";
     am.put(next, new TabNavigateAction(tabs, am.get(next)));
-    im0.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), next);
-    im1.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK), next);
-    im0.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), next);
-    im1.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK), next);
+    im0.put(KeyStroke.getKeyStroke("RIGHT"), next);
+    im1.put(KeyStroke.getKeyStroke("alt RIGHT"), next);
+    im0.put(KeyStroke.getKeyStroke("DOWN"), next);
+    im1.put(KeyStroke.getKeyStroke("alt DOWN"), next);
 
     Box box = Box.createHorizontalBox();
     box.add(layout);
