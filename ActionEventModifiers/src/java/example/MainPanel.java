@@ -31,9 +31,9 @@ public final class MainPanel extends JPanel {
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
     JTextField field = new JTextField(20);
-    KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK);
+    // KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK);
     String key = "beep";
-    field.getInputMap().put(ks, key);
+    field.getInputMap().put(KeyStroke.getKeyStroke("shift B"), key);
     field.getActionMap().put(key, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         Toolkit.getDefaultToolkit().beep();
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
         Toolkit.getDefaultToolkit().beep();
       }
     });
-    item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.SHIFT_DOWN_MASK));
+    item.setAccelerator(KeyStroke.getKeyStroke("shift 1"));
     item.setMnemonic(KeyEvent.VK_I);
     item.addActionListener(e -> {
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
