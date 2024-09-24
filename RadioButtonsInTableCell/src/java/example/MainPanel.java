@@ -135,19 +135,20 @@ class RadioButtonsPanel extends JPanel {
   public void updateSelectedButton(Object v) {
     if (v instanceof Answer) {
       initButtons();
-      switch ((Answer) v) {
-        case A:
-          ((JRadioButton) getComponent(0)).setSelected(true);
-          break;
-        case B:
-          ((JRadioButton) getComponent(1)).setSelected(true);
-          break;
-        case C:
-          ((JRadioButton) getComponent(2)).setSelected(true);
-          break;
-        default:
-          break;
-      }
+      ((JRadioButton) getComponent(((Answer) v).ordinal())).setSelected(true);
+      // switch ((Answer) v) {
+      //   case A:
+      //     ((JRadioButton) getComponent(0)).setSelected(true);
+      //     break;
+      //   case B:
+      //     ((JRadioButton) getComponent(1)).setSelected(true);
+      //     break;
+      //   case C:
+      //     ((JRadioButton) getComponent(2)).setSelected(true);
+      //     break;
+      //   default:
+      //     break;
+      // }
     }
   }
 
