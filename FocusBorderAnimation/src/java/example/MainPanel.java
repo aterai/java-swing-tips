@@ -150,12 +150,12 @@ class AnimatedBorder extends EmptyBorder {
     double threshold = 2d;
     double[] coords = new double[6];
     while (!pi.isDone()) {
-      int segment = pi.currentSegment(coords);
+      int pathSegmentType = pi.currentSegment(coords);
       Point2D current = createPoint(coords[0], coords[1]);
-      if (segment == PathIterator.SEG_MOVETO) {
+      if (pathSegmentType == PathIterator.SEG_MOVETO) {
         points.add(current);
         prev.setLocation(current);
-      } else if (segment == PathIterator.SEG_LINETO) {
+      } else if (pathSegmentType == PathIterator.SEG_LINETO) {
         double distance = prev.distance(current);
         double fraction = delta;
         if (distance > threshold) {

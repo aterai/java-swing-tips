@@ -234,8 +234,7 @@ final class GeomUtils {
     PathIterator pi = area.getPathIterator(null);
     double[] coords = new double[6];
     while (!pi.isDone()) {
-      int pathSegmentType = pi.currentSegment(coords);
-      switch (pathSegmentType) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
         case PathIterator.SEG_LINETO:
           list.add(new Point2D.Double(coords[0], coords[1]));
@@ -248,7 +247,7 @@ final class GeomUtils {
     return list;
   }
 
-  public static List<Point2D> flatteningStepsOnRightSide(List<Point2D> list, double arc) {
+  public static void flatteningStepsOnRightSide(List<Point2D> list, double arc) {
     int sz = list.size();
     for (int i = 0; i < sz; i++) {
       int i1 = (i + 1) % sz;
@@ -267,7 +266,6 @@ final class GeomUtils {
         replace(list, i3, max, pt3.getY());
       }
     }
-    return list;
   }
 
   private static void replace(List<Point2D> list, int i, double x, double y) {
@@ -313,8 +311,7 @@ final class GeomUtils {
     PathIterator pi = rect.getPathIterator(null);
     double[] coords = new double[6];
     while (!pi.isDone()) {
-      int pathSegmentType = pi.currentSegment(coords);
-      switch (pathSegmentType) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
           path.moveTo(coords[0], coords[1]);
           break;

@@ -101,8 +101,7 @@ class SilhouetteIcon implements Icon, Serializable {
     PathIterator pi = shape.getPathIterator(null);
     double[] coords = new double[6];
     while (!pi.isDone()) {
-      int pathSegmentType = pi.currentSegment(coords);
-      switch (pathSegmentType) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
           path.moveTo(coords[0], coords[1]);
           break;
