@@ -297,8 +297,7 @@ final class GeomUtils {
     PathIterator pi = area.getPathIterator(null);
     double[] coords = new double[6];
     while (!pi.isDone()) {
-      int pathSegmentType = pi.currentSegment(coords);
-      switch (pathSegmentType) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
         case PathIterator.SEG_LINETO:
           list.add(new Point2D.Double(coords[0], coords[1]));
@@ -339,36 +338,35 @@ final class GeomUtils {
     return path;
   }
 
-  public static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
-    Path2D path = new Path2D.Double();
-    PathIterator pi = rect.getPathIterator(null);
-    double[] coords = new double[6];
-    while (!pi.isDone()) {
-      int pathSegmentType = pi.currentSegment(coords);
-      switch (pathSegmentType) {
-        case PathIterator.SEG_MOVETO:
-          path.moveTo(coords[0], coords[1]);
-          break;
-        case PathIterator.SEG_LINETO:
-          path.lineTo(coords[0], coords[1]);
-          break;
-        case PathIterator.SEG_QUADTO:
-          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-          break;
-        case PathIterator.SEG_CUBICTO:
-          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-          break;
-        case PathIterator.SEG_CLOSE:
-          path.closePath();
-          list.add(new Area(path));
-          path.reset();
-          break;
-        default:
-          break;
-      }
-      pi.next();
-    }
-    return list;
-  }
+  // public static List<Area> singularization(Area rect) {
+  //   List<Area> list = new ArrayList<>();
+  //   Path2D path = new Path2D.Double();
+  //   PathIterator pi = rect.getPathIterator(null);
+  //   double[] coords = new double[6];
+  //   while (!pi.isDone()) {
+  //     switch (pi.currentSegment(coords)) {
+  //       case PathIterator.SEG_MOVETO:
+  //         path.moveTo(coords[0], coords[1]);
+  //         break;
+  //       case PathIterator.SEG_LINETO:
+  //         path.lineTo(coords[0], coords[1]);
+  //         break;
+  //       case PathIterator.SEG_QUADTO:
+  //         path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+  //         break;
+  //       case PathIterator.SEG_CUBICTO:
+  //         path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+  //         break;
+  //       case PathIterator.SEG_CLOSE:
+  //         path.closePath();
+  //         list.add(new Area(path));
+  //         path.reset();
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //     pi.next();
+  //   }
+  //   return list;
+  // }
 }
