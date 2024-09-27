@@ -43,7 +43,8 @@ public final class MainPanel extends JPanel {
     }
     try (AudioInputStream wav = AudioSystem.getAudioInputStream(url);
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, wav.getFormat()))) {
-      SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+      EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+      SecondaryLoop loop = eventQueue.createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
         if (Objects.equals(t, LineEvent.Type.STOP) || Objects.equals(t, LineEvent.Type.CLOSE)) {
@@ -54,7 +55,7 @@ public final class MainPanel extends JPanel {
       clip.start();
       loop.enter();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
   }

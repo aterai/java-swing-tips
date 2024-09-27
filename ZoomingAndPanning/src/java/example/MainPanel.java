@@ -40,7 +40,8 @@ public final class MainPanel extends JPanel {
     removeMouseMotionListener(zoomAndPanHandler);
     removeMouseWheelListener(zoomAndPanHandler);
     super.updateUI();
-    zoomAndPanHandler = new ZoomAndPanHandler();
+    DefaultBoundedRangeModel range = new DefaultBoundedRangeModel(0, 1, -10, 11);
+    zoomAndPanHandler = new ZoomAndPanHandler(1.2, range);
     addMouseListener(zoomAndPanHandler);
     addMouseMotionListener(zoomAndPanHandler);
     addMouseWheelListener(zoomAndPanHandler);
@@ -78,13 +79,15 @@ public final class MainPanel extends JPanel {
 }
 
 class ZoomAndPanHandler extends MouseAdapter {
-  private static final double ZOOM_FACTOR = 1.2;
-  private static final int MIN = -10;
-  private static final int MAX = 10;
-  private static final int EXT = 1;
-  private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(0, EXT, MIN, MAX + EXT);
+  private final double zoomFactor;
+  private final BoundedRangeModel zoomRange;
   private final AffineTransform coordAndZoomAtf = new AffineTransform();
   private final Point2D dragStartPoint = new Point();
+
+  protected ZoomAndPanHandler(double zoomFactor, BoundedRangeModel zoomRange) {
+    this.zoomFactor = zoomFactor;
+    this.zoomRange = zoomRange;
+  }
 
   @Override public void mousePressed(MouseEvent e) {
     dragStartPoint.setLocation(e.getPoint());
@@ -104,9 +107,10 @@ class ZoomAndPanHandler extends MouseAdapter {
   @Override public void mouseWheelMoved(MouseWheelEvent e) {
     int dir = e.getWheelRotation();
     int z = zoomRange.getValue();
-    zoomRange.setValue(z + EXT * (dir > 0 ? -1 : 1));
+    int ext = zoomRange.getExtent();
+    zoomRange.setValue(z + ext * (dir > 0 ? -1 : 1));
     if (z != zoomRange.getValue()) {
-      double scale = dir > 0 ? 1d / ZOOM_FACTOR : ZOOM_FACTOR;
+      double scale = dir > 0 ? 1d / zoomFactor : zoomFactor;
       Point2D pt;
       if (e.isControlDown()) {
         Rectangle r = e.getComponent().getBounds();

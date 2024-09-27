@@ -241,8 +241,8 @@ class EditableTitledBorder extends TitledBorder {
     JLabel label = getLabel2(c);
     Dimension size = label.getPreferredSize();
     Rectangle r = new Rectangle(c.getWidth() - i.left - i.right, size.height);
-    calcLabelPosition(c, edge, i, r);
-    calcLabelJustification(c, size, i, r);
+    calcPosition(c, edge, i, r);
+    calcJustification(c, size, i, r);
     return r;
   }
 
@@ -253,7 +253,7 @@ class EditableTitledBorder extends TitledBorder {
         .orElseGet(Rectangle::new);
   }
 
-  private void calcLabelPosition(Component c, int edge, Insets insets, Rectangle lblR) {
+  private void calcPosition(Component c, int edge, Insets insets, Rectangle lblR) {
     switch (getTitlePosition()) {
       case ABOVE_TOP:
         insets.left = 0;
@@ -290,7 +290,7 @@ class EditableTitledBorder extends TitledBorder {
     insets.right += edge + TEXT_INSET_H;
   }
 
-  private void calcLabelJustification(Component c, Dimension size, Insets insets, Rectangle lblR) {
+  private void calcJustification(Component c, Dimension size, Insets insets, Rectangle lblR) {
     if (lblR.width > size.width) {
       lblR.width = size.width;
     }

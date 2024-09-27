@@ -121,18 +121,18 @@ class RowDataRenderer implements TableCellRenderer {
     Component c = renderer.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (value instanceof RowData && c instanceof JLabel) {
-      updateCellRenderer(table, (RowData) value, row, column, (JLabel) c);
+      updateLabel(table, (RowData) value, row, column, (JLabel) c);
     }
     return c;
   }
 
-  private void updateCellRenderer(JTable table, RowData value, int row, int column, JLabel label) {
+  private void updateLabel(JTable table, RowData value, int row, int col, JLabel label) {
     label.setHorizontalAlignment(SwingConstants.LEFT);
-    switch (table.convertColumnIndexToModel(column)) {
+    switch (table.convertColumnIndexToModel(col)) {
       case 0:
         String str = value.getGroup();
         if (row > 0) {
-          RowData prev = (RowData) table.getValueAt(row - 1, column);
+          RowData prev = (RowData) table.getValueAt(row - 1, col);
           if (Objects.equals(prev.getGroup(), str)) {
             label.setText(" ");
             break;

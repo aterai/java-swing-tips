@@ -147,7 +147,10 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
   }
 
   public void setStart(Comparable<ChronoLocalDateTime<?>> start) {
-    if (Objects.isNull(start) ? Objects.nonNull(this.start) : !Objects.equals(start, this.start)) {
+    boolean b = Optional.ofNullable(start)
+        .map(s -> !Objects.equals(s, this.start))
+        .orElse(Objects.nonNull(this.start));
+    if (b) {
       this.start = start;
       fireStateChanged();
     }

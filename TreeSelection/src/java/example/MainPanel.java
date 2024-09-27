@@ -14,25 +14,25 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTree tree = new JTree();
-
+    TreeSelectionModel tsm = tree.getSelectionModel();
     JRadioButton r0 = new JRadioButton("DISCONTIGUOUS_TREE_SELECTION", true);
     r0.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+        tsm.setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
       }
     });
 
     JRadioButton r1 = new JRadioButton("SINGLE_TREE_SELECTION");
     r1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tsm.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
       }
     });
 
     JRadioButton r2 = new JRadioButton("CONTIGUOUS_TREE_SELECTION");
     r2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+        tsm.setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
       }
     });
 

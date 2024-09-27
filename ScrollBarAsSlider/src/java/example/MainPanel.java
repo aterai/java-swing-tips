@@ -9,29 +9,27 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final int STEP = 5;
-  private static final int EXTENT = 20;
+  private static final int EXT = 20;
   private static final int MIN = 0;
-  private static final int MAX = EXTENT * 10; // 200
+  private static final int MAX = EXT * 10; // 200
   private static final int VALUE = 50;
 
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JScrollBar scrollbar = new JScrollBar(Adjustable.HORIZONTAL, VALUE, EXTENT, MIN, MAX + EXTENT);
+    JScrollBar bar = new JScrollBar(Adjustable.HORIZONTAL, VALUE, EXT, MIN, MAX + EXT);
     SpinnerNumberModel model = new SpinnerNumberModel(VALUE, MIN, MAX, STEP);
-
-    scrollbar.setUnitIncrement(STEP);
-    scrollbar.getModel().addChangeListener(e -> {
+    bar.setUnitIncrement(STEP);
+    bar.getModel().addChangeListener(e -> {
       int v = ((BoundedRangeModel) e.getSource()).getValue();
       model.setValue(v);
     });
-
     model.addChangeListener(e -> {
       int v = ((SpinnerNumberModel) e.getSource()).getNumber().intValue();
-      scrollbar.setValue(v);
+      bar.setValue(v);
     });
 
     add(makeTitledPanel("JSpinner", new JSpinner(model)));
-    add(makeTitledPanel("JScrollBar", scrollbar));
+    add(makeTitledPanel("JScrollBar", bar));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
