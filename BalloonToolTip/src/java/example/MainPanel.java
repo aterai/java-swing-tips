@@ -10,25 +10,13 @@ import java.awt.event.HierarchyListener;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Objects;
 import java.util.Optional;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("ABC DEF GHI JKL MNO PQR STU VWX YZ");
-    model.addElement("111");
-    model.addElement("111222");
-    model.addElement("111222333");
-    model.addElement("1234567890 abc def ghi jkl mno pqr stu vwx yz");
-    model.addElement("bbb1");
-    model.addElement("bbb12");
-    model.addElement("1234567890-+*/=ABC DEF GHI JKL MNO PQR STU VWX YZ");
-    model.addElement("bbb123");
-
-    JList<String> list1 = new JList<String>(model) {
+    JList<String> list1 = new JList<String>(makeModel()) {
       @Override public JToolTip createToolTip() {
         JToolTip tip = new BalloonToolTip();
         tip.setComponent(this);
@@ -40,17 +28,30 @@ public final class MainPanel extends JPanel {
         setCellRenderer(new TooltipListCellRenderer<>());
       }
     };
+    add(makeTitledPanel("BalloonToolTip", list1));
 
-    JList<String> list2 = new JList<String>(model) {
+    JList<String> list2 = new JList<String>(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setCellRenderer(new TooltipListCellRenderer<>());
       }
     };
-
-    add(makeTitledPanel("BalloonToolTip", list1));
     add(makeTitledPanel("Default JToolTip", list2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultListModel<String> makeModel() {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    model.addElement("ABC DEF GHI JKL MNO PQR STU VWX YZ");
+    model.addElement("111");
+    model.addElement("111222");
+    model.addElement("111222333");
+    model.addElement("1234567890 abc def ghi jkl mno pqr stu vwx yz");
+    model.addElement("bbb1");
+    model.addElement("bbb12");
+    model.addElement("1234567890-+*/=ABC DEF GHI JKL MNO PQR STU VWX YZ");
+    model.addElement("bbb123");
+    return model;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -101,9 +102,14 @@ class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
           .map(v -> SwingUtilities.calculateInnerArea(v, null))
           .orElseGet(Rectangle::new);
       // rect.width -= i.left + i.right;
-      FontMetrics fm = c.getFontMetrics(c.getFont());
-      String s = Objects.toString(value, "");
-      ((JComponent) c).setToolTipText(fm.stringWidth(s) > rect.width ? s : list.getToolTipText());
+      // FontMetrics fm = c.getFontMetrics(c.getFont());
+      // String s = Objects.toString(value, "");
+      // String txt = fm.stringWidth(s) > rect.width ? s : list.getToolTipText();
+      String txt = Optional.ofNullable(value)
+          .map(Object::toString)
+          .filter(str -> c.getFontMetrics(c.getFont()).stringWidth(str) > rect.width)
+          .orElseGet(list::getToolTipText);
+      ((JComponent) c).setToolTipText(txt);
     }
     return c;
   }
@@ -141,7 +147,7 @@ class BalloonToolTip extends JToolTip {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Shape s = makeBalloonShape();
+    Shape s = makeBalloonShape(4d, 6d);
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(getBackground());
@@ -152,16 +158,19 @@ class BalloonToolTip extends JToolTip {
     super.paintComponent(g);
   }
 
-  private Shape makeBalloonShape() {
-    Insets i = getInsets();
-    float w = getWidth() - 1f;
-    float h = getHeight() - 1f;
-    float v = i.top * .5f;
-    Path2D triangle = new Path2D.Float();
-    triangle.moveTo(i.left + v + v, 0f);
-    triangle.lineTo(i.left + v, v);
-    triangle.lineTo(i.left + v + v + v, v);
-    Area area = new Area(new RoundRectangle2D.Float(0f, v, w, h - i.bottom - v, i.top, i.top));
+  public Shape makeBalloonShape(double triHeight, double arc) {
+    // Insets i = getInsets();
+    // double x = i.left;
+    // double h = getHeight() - i.bottom - y - 1d;
+    Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
+    double x = rect.getX();
+    Path2D triangle = new Path2D.Double();
+    triangle.moveTo(x + triHeight, triHeight);
+    triangle.lineTo(x + triHeight * 2d, 0d);
+    triangle.lineTo(x + triHeight * 3d, triHeight);
+    double w = getWidth() - 1d;
+    double h = rect.getHeight() + triHeight - 1d;
+    Area area = new Area(new RoundRectangle2D.Double(0d, triHeight, w, h, arc, arc));
     area.add(new Area(triangle));
     return area;
   }
