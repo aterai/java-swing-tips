@@ -85,6 +85,7 @@ class ZoomAndPanHandler extends MouseAdapter {
   private final Point2D dragStartPoint = new Point();
 
   protected ZoomAndPanHandler(double zoomFactor, BoundedRangeModel zoomRange) {
+    super();
     this.zoomFactor = zoomFactor;
     this.zoomRange = zoomRange;
   }
