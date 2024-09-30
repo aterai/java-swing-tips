@@ -35,6 +35,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static ComboItem[] makeModel() {
+    // https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
     return new ComboItem[] {
         new ComboItem(
             "Create a merge commit",
