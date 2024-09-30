@@ -347,15 +347,15 @@ class BalloonToolTip extends JToolTip {
   }
 
   private Shape makeBalloonShape() {
-    float w = getWidth() - 1f;
-    float h = getHeight() - TRI_HEIGHT - 1f;
-    float r = 10f;
-    float cx = getWidth() * .5f;
-    Path2D triangle = new Path2D.Float();
+    double w = getWidth() - 1d;
+    double h = getHeight() - TRI_HEIGHT - 1d;
+    double cx = getWidth() * .5d;
+    Path2D triangle = new Path2D.Double();
     triangle.moveTo(cx - TRI_HEIGHT, h);
     triangle.lineTo(cx, h + TRI_HEIGHT);
     triangle.lineTo(cx + TRI_HEIGHT, h);
-    Area area = new Area(new RoundRectangle2D.Float(0f, 0f, w, h, r, r));
+    double arc = 10d;
+    Area area = new Area(new RoundRectangle2D.Double(0d, 0d, w, h, arc, arc));
     area.add(new Area(triangle));
     return area;
   }
