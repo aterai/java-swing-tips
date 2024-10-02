@@ -53,12 +53,10 @@ public final class MainPanel extends JPanel {
         Arrays.stream(indices)
             .mapToObj(i -> getCellBounds(i, i))
             .forEach(r -> area.add(new Area(r)));
-        // for (Area a : GeomUtils.singularization(area)) {
-        //   List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
-        //   g2.fill(GeomUtils.convertRoundedPath(lst, 4d));
-        // }
-        List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(area);
-        g2.fill(GeomUtils.convertRoundedPath(lst, 4d));
+        for (Area a : GeomUtils.singularization(area)) {
+          List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
+          g2.fill(GeomUtils.convertRoundedPath(lst, 4d));
+        }
         g2.dispose();
       }
       super.paintComponent(g);
@@ -337,35 +335,35 @@ final class GeomUtils {
     return path;
   }
 
-  // public static List<Area> singularization(Area rect) {
-  //   List<Area> list = new ArrayList<>();
-  //   Path2D path = new Path2D.Double();
-  //   PathIterator pi = rect.getPathIterator(null);
-  //   double[] coords = new double[6];
-  //   while (!pi.isDone()) {
-  //     switch (pi.currentSegment(coords)) {
-  //       case PathIterator.SEG_MOVETO:
-  //         path.moveTo(coords[0], coords[1]);
-  //         break;
-  //       case PathIterator.SEG_LINETO:
-  //         path.lineTo(coords[0], coords[1]);
-  //         break;
-  //       case PathIterator.SEG_QUADTO:
-  //         path.quadTo(coords[0], coords[1], coords[2], coords[3]);
-  //         break;
-  //       case PathIterator.SEG_CUBICTO:
-  //         path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-  //         break;
-  //       case PathIterator.SEG_CLOSE:
-  //         path.closePath();
-  //         list.add(new Area(path));
-  //         path.reset();
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //     pi.next();
-  //   }
-  //   return list;
-  // }
+  public static List<Area> singularization(Area rect) {
+    List<Area> list = new ArrayList<>();
+    Path2D path = new Path2D.Double();
+    PathIterator pi = rect.getPathIterator(null);
+    double[] coords = new double[6];
+    while (!pi.isDone()) {
+      switch (pi.currentSegment(coords)) {
+        case PathIterator.SEG_MOVETO:
+          path.moveTo(coords[0], coords[1]);
+          break;
+        case PathIterator.SEG_LINETO:
+          path.lineTo(coords[0], coords[1]);
+          break;
+        case PathIterator.SEG_QUADTO:
+          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+          break;
+        case PathIterator.SEG_CUBICTO:
+          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+          break;
+        case PathIterator.SEG_CLOSE:
+          path.closePath();
+          list.add(new Area(path));
+          path.reset();
+          break;
+        default:
+          break;
+      }
+      pi.next();
+    }
+    return list;
+  }
 }
