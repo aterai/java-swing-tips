@@ -127,8 +127,11 @@ public final class MainPanel extends JPanel {
 
   private void append(Message m) {
     StyledDocument doc = log.getStyledDocument();
+    int len = doc.getLength();
+    String txt = m.getText() + "\n";
+    Style style = doc.getStyle(m.getType().toString());
     try {
-      doc.insertString(doc.getLength(), m.getText() + "\n", doc.getStyle(m.getType().toString()));
+      doc.insertString(len, txt, style);
     } catch (BadLocationException ex) {
       // should never happen
       RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
