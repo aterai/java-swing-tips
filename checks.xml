@@ -17,9 +17,6 @@
  -->
 
 <module name="Checker">
-  <module name="SuppressWarningsFilter"/>
-
-  <property name="localeLanguage" value="en"/>
 
   <property name="charset" value="UTF-8"/>
 
@@ -31,12 +28,25 @@
   <module name="BeforeExecutionExclusionFileFilter">
     <property name="fileNamePattern" value="module\-info\.java$"/>
   </module>
+
+  <module name="SuppressWarningsFilter"/>
+
   <!-- https://checkstyle.org/filters/suppressionfilter.html -->
   <module name="SuppressionFilter">
     <property name="file" value="${org.checkstyle.google.suppressionfilter.config}"
            default="checkstyle-suppressions.xml" />
     <property name="optional" value="true"/>
   </module>
+
+  <!-- https://checkstyle.org/filters/suppresswithnearbytextfilter.html -->
+  <!--
+  <module name="SuppressWithNearbyTextFilter">
+    <property name="nearbyTextPattern"
+              value="CHECKSTYLE.SUPPRESS\: (\w+) for ([+-]\d+) lines"/>
+    <property name="checkPattern" value="$1"/>
+    <property name="lineRange" value="$2"/>
+  </module>
+  -->
 
   <!-- Checks for whitespace                                   -->
   <!-- See https://checkstyle.org/checks/whitespace/index.html -->
@@ -71,11 +81,6 @@
     <!-- module name="OneTopLevelClass"/ -->
     <module name="NoLineWrap">
       <property name="tokens" value="PACKAGE_DEF, IMPORT, STATIC_IMPORT"/>
-    </module>
-    <module name="EmptyBlock">
-      <property name="option" value="TEXT"/>
-      <property name="tokens"
-               value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
     </module>
     <module name="NeedBraces">
       <property name="tokens"
@@ -134,6 +139,19 @@
                may only be represented as '{}' when not part of a multi-block statement (4.1.3)"/>
       <message key="ws.notPreceded"
               value="WhitespaceAround: ''{0}'' is not preceded with whitespace."/>
+    </module>
+    <module name="SuppressionXpathSingleFilter">
+      <property name="checks" value="WhitespaceAround"/>
+      <property name="query" value="//*[self::LITERAL_IF or self::LITERAL_ELSE or self::STATIC_INIT
+                                 or self::LITERAL_TRY or self::LITERAL_CATCH]/SLIST[count(./*)=1]
+                                 | //*[self::STATIC_INIT or self::LITERAL_TRY or self::LITERAL_IF]
+                                 //*[self::RCURLY][parent::SLIST[count(./*)=1]]"/>
+    </module>
+    <module name="RegexpSinglelineJava">
+      <property name="format" value="\{[ ]+\}"/>
+      <property name="message" value="Empty blocks should have no spaces. Empty blocks
+                                   may only be represented as '{}' when not part of a
+                                   multi-block statement (4.1.3)"/>
     </module>
     <module name="OneStatementPerLine"/>
     <module name="MultipleVariableDeclarations"/>
@@ -272,6 +290,7 @@
     </module>
     <module name="NoWhitespaceBeforeCaseDefaultColon"/>
     <module name="OverloadMethodsDeclarationOrder"/>
+    <!-- module name="ConstructorsDeclarationGrouping"/ -->
     <module name="VariableDeclarationUsageDistance"/>
     <module name="CustomImportOrder">
       <property name="sortImportsInGroupAlphabetically" value="true"/>
@@ -303,7 +322,7 @@
       <property name="tokens"
                value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR,
                     LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF,
-                    TYPE_EXTENSION_AND"/>
+                    TYPE_EXTENSION_AND "/>
     </module>
     <module name="AnnotationLocation">
       <property name="id" value="AnnotationLocationMostCases"/>
@@ -323,7 +342,9 @@
       <property name="forbiddenSummaryFragments"
                value="^@return the *|^This method returns |^A [{]@code [a-zA-Z0-9]+[}]( is a )"/>
     </module>
-    <module name="JavadocParagraph"/>
+    <module name="JavadocParagraph">
+      <property name="allowNewlineParagraph" value="false"/>
+    </module>
     <module name="RequireEmptyLineBeforeBlockTagGroup"/>
     <module name="AtclauseOrder">
       <property name="tagOrder" value="@param, @return, @throws, @deprecated"/>
@@ -339,11 +360,19 @@
       <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF, COMPACT_CTOR_DEF"/>
     </module>
     <module name="MissingJavadocMethod">
-      <property name="scope" value="public"/>
-      <property name="minLineCount" value="2"/>
+      <property name="scope" value="protected"/>
+      <property name="allowMissingPropertyJavadoc" value="true"/>
       <property name="allowedAnnotations" value="Override, Test"/>
       <property name="tokens" value="METHOD_DEF, CTOR_DEF, ANNOTATION_FIELD_DEF,
                                    COMPACT_CTOR_DEF"/>
+    </module>
+    <module name="SuppressionXpathSingleFilter">
+      <property name="checks" value="MissingJavadocMethod"/>
+      <property name="query" value="//*[self::METHOD_DEF or self::CTOR_DEF
+                                 or self::ANNOTATION_FIELD_DEF or self::COMPACT_CTOR_DEF]
+                                 [ancestor::*[self::INTERFACE_DEF or self::CLASS_DEF
+                                 or self::RECORD_DEF or self::ENUM_DEF]
+                                 [not(./MODIFIERS/LITERAL_PUBLIC)]]"/>
     </module>
     <module name="MissingJavadocType">
       <property name="scope" value="protected"/>
@@ -361,8 +390,9 @@
     <module name="SuppressionXpathSingleFilter">
       <property name="checks" value="MethodName"/>
       <property name="query" value="//METHOD_DEF[
-                                     .//ANNOTATION/IDENT[contains(@text, 'Test')]]//*"/>
-      <property name="message" value="'[a-z][a-z0-9][_a-zA-Z0-9]*'.*"/>
+                                     ./MODIFIERS/ANNOTATION//IDENT[contains(@text, 'Test')]
+                                   ]/IDENT"/>
+      <property name="message" value="'[a-z][a-z0-9][a-zA-Z0-9]*(?:_[a-z][a-z0-9][a-zA-Z0-9]*)*'"/>
     </module>
     <module name="SingleLineJavadoc"/>
     <module name="EmptyCatchBlock">
