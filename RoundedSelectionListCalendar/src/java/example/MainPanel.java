@@ -27,7 +27,6 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final Color SELECTED_COLOR = new Color(0xC8_00_78_D7, true);
-  public final Dimension size = new Dimension(40, 26);
   public final JLabel yearMonthLabel = new JLabel("", SwingConstants.CENTER);
   public final JList<LocalDate> monthList = new JList<LocalDate>() {
     @Override public void updateUI() {
@@ -35,8 +34,8 @@ public final class MainPanel extends JPanel {
       super.updateUI();
       setLayoutOrientation(HORIZONTAL_WRAP);
       setVisibleRowCount(CalendarViewListModel.ROW_COUNT); // ensure 6 rows in the list
-      setFixedCellWidth(size.width);
-      setFixedCellHeight(size.height);
+      setFixedCellWidth(40);
+      setFixedCellHeight(26);
       setCellRenderer(new CalendarListRenderer());
       setOpaque(false);
       getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -112,8 +111,8 @@ public final class MainPanel extends JPanel {
         getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         setLayoutOrientation(HORIZONTAL_WRAP);
         setVisibleRowCount(0);
-        setFixedCellWidth(size.width);
-        setFixedCellHeight(size.height);
+        setFixedCellWidth(monthList.getFixedCellWidth());
+        setFixedCellHeight(monthList.getFixedCellHeight());
       }
     };
     updateMonthView(realLocalDate);
