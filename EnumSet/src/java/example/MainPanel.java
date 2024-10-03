@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
@@ -135,7 +136,7 @@ enum Permissions {
 
 class CheckBoxesPanel extends JPanel {
   private static final Color BGC = new Color(0x0, true);
-  protected final String[] titles = {"r", "w", "x"};
+  private final String[] titles = {"r", "w", "x"};
   private final List<JCheckBox> buttons = Stream.of(titles).map(title -> {
     JCheckBox b = new JCheckBox(title);
     b.setOpaque(false);
@@ -151,6 +152,10 @@ class CheckBoxesPanel extends JPanel {
     setBackground(BGC);
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
     EventQueue.invokeLater(this::initButtons);
+  }
+
+  protected String[] getTitles() {
+    return Arrays.copyOf(titles, titles.length);
   }
 
   private void initButtons() {
@@ -206,17 +211,18 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
 
   protected CheckBoxesEditor() {
     super();
+    String[] titles = renderer.getTitles();
     ActionMap am = renderer.getActionMap();
-    Stream.of(renderer.titles).forEach(t -> am.put(t, new AbstractAction(t) {
+    Stream.of(titles).forEach(t -> am.put(t, new AbstractAction(t) {
       @Override public void actionPerformed(ActionEvent e) {
         renderer.doClickCheckBox(t);
         fireEditingStopped();
       }
     }));
     InputMap im = renderer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), renderer.titles[0]);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), renderer.titles[1]);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), renderer.titles[2]);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), titles[0]);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), titles[1]);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), titles[2]);
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
