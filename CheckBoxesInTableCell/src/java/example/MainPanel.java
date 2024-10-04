@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 
 class CheckBoxesPanel extends JPanel {
   private static final Color BGC = new Color(0x0, true);
-  protected final String[] titles = {"r", "w", "x"};
+  private final String[] titles = {"r", "w", "x"};
   private final List<JCheckBox> buttons = Stream.of(titles).map(title -> {
     JCheckBox b = new JCheckBox(title);
     b.setOpaque(false);

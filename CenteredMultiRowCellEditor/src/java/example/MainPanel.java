@@ -180,19 +180,19 @@ class EditableList<E extends ListItem> extends JList<E> {
   public static final String RENAME = "rename-title";
   public static final String CANCEL = "cancel-editing";
   public static final String EDITING = "start-editing";
-  protected int editingIndex = -1;
-  protected int editorWidth = -1;
+  private int editingIndex = -1;
+  private int editorWidth = -1;
   private transient MouseAdapter handler;
-  // protected final Container glassPane = new EditorGlassPane(); // LightWeightEditor
-  protected Window window; // HeavyWeightEditor
-  protected final JTextPane editor = new JTextPane() {
+  // private final Container glassPane = new EditorGlassPane(); // LightWeightEditor
+  private Window window; // HeavyWeightEditor
+  private final JTextPane editor = new JTextPane() {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
       d.width = editorWidth;
       return d;
     }
   };
-  protected final Action startEditing = new AbstractAction() {
+  private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       // getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
@@ -224,14 +224,14 @@ class EditableList<E extends ListItem> extends JList<E> {
       editor.requestFocusInWindow();
     }
   };
-  protected final Action cancelEditing = new AbstractAction() {
+  private final Action cancelEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       // glassPane.setVisible(false);
       window.setVisible(false);
       editingIndex = -1;
     }
   };
-  protected final Action renameTitle = new AbstractAction() {
+  private final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       ListModel<E> m = getModel();
       String title = editor.getText().trim();
