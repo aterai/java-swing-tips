@@ -18,23 +18,26 @@ import javax.swing.text.Position;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    TableModel model = makeModel();
+    JTable table = new JTable(model);
+    table.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+    table.setAutoCreateRowSorter(true);
+    table.addKeyListener(new TableNextMatchKeyHandler());
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"aaa", 15, true},
         {"bbb", 6, false}, {"abc", 92, true}, {"Bbb", 0, false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model);
-    table.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
-    table.setAutoCreateRowSorter(true);
-    table.addKeyListener(new TableNextMatchKeyHandler());
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
