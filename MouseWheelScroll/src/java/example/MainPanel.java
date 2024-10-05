@@ -166,9 +166,9 @@ public final class MainPanel extends JPanel {
 }
 
 class DragScrollListener extends MouseAdapter {
-  protected final Cursor defCursor = Cursor.getDefaultCursor();
-  protected final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  protected final Point pp = new Point();
+  private final Cursor defCursor = Cursor.getDefaultCursor();
+  private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+  private final Point pp = new Point();
 
   @Override public void mouseDragged(MouseEvent e) {
     Component c = e.getComponent();

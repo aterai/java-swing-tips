@@ -129,9 +129,7 @@ public final class MainPanel extends JPanel {
       updateComponentDone();
       String text;
       try {
-        if (Objects.nonNull(pms)) {
-          pms.close();
-        }
+        closeStream();
         text = isCancelled() ? "Cancelled" : get();
       } catch (InterruptedException ex) {
         text = "Interrupted";
@@ -200,7 +198,7 @@ class Chunk {
 }
 
 class BackgroundTask extends SwingWorker<String, Chunk> {
-  protected final ProgressMonitorInputStream pms;
+  private final ProgressMonitorInputStream pms;
   private final Charset cs;
   private final int lengthOfFile;
 
@@ -251,5 +249,11 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     String note = String.format("%03d%% - %d/%d%n", pct, size, lengthOfFile);
     publish(new Chunk(line, note));
     return size;
+  }
+
+  protected void closeStream() throws IOException {
+    if (Objects.nonNull(pms)) {
+      pms.close();
+    }
   }
 }
