@@ -5,9 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -18,7 +17,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JComboBox<JoinStyle> joinCombo = new JComboBox<>(JoinStyle.values());
     JComboBox<EndCapStyle> endCapCombo = new JComboBox<>(EndCapStyle.values());
-    JTextField field = new JTextField("10, 20");
+    JTextField field = new JTextField("10f, 20f");
     JLabel label = new JLabel();
     JButton button = new JButton("Change");
     button.addActionListener(e -> {
@@ -52,13 +51,13 @@ public final class MainPanel extends JPanel {
   }
 
   private float[] getDashArray(String txt) {
-    List<Float> list;
+    List<Float> list = new ArrayList<>();
     try {
-      list = Stream.of(txt.split(","))
+      Stream.of(txt.split(","))
           .map(String::trim)
           .filter(s -> !s.isEmpty())
           .map(Float::parseFloat)
-          .collect(Collectors.toList());
+          .forEach(list::add);
     } catch (NumberFormatException ex) {
       EventQueue.invokeLater(() -> {
         Toolkit.getDefaultToolkit().beep();
@@ -66,9 +65,9 @@ public final class MainPanel extends JPanel {
         String msg = "Invalid input.\n" + ex.getMessage();
         JOptionPane.showMessageDialog(c, msg, "Error", JOptionPane.ERROR_MESSAGE);
       });
-      list = null;
+      // list.clear();
     }
-    return Objects.nonNull(list) ? toPrimitive(list) : DEFAULT_DASH;
+    return list.isEmpty() ? DEFAULT_DASH : toPrimitive(list);
   }
 
   public static float[] toPrimitive(List<Float> list) {
