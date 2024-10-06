@@ -34,7 +34,9 @@ public final class MainPanel extends JPanel {
         String tipText = null;
         if (size.width > labelW) {
           Rectangle r = new Rectangle(labelX, labelY, labelW, labelH);
-          tipText = r.contains(e.getPoint()) ? title : null;
+          if (r.contains(e.getPoint())) {
+            tipText = title;
+          }
         }
         return tipText;
       }
