@@ -38,18 +38,16 @@ public final class MainPanel extends JPanel {
     // }
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        // Object o = ((JComboBox) e.getSource()).getSelectedItem();
-        Object o = e.getItem();
-        if (Objects.equals("ImageTexturePaint", o)) {
-          texture = imageTexture;
-          setOpaque(false);
-        } else if (Objects.equals("CheckerTexturePaint", o)) {
-          texture = checkerTexture;
-          setOpaque(false);
-        } else {
-          texture = null;
-          setOpaque(true);
+        // Object item = ((JComboBox) e.getSource()).getSelectedItem();
+        Object item = e.getItem();
+        TexturePaint texturePaint = null;
+        if (Objects.equals("ImageTexturePaint", item)) {
+          texturePaint = imageTexture;
+        } else if (Objects.equals("CheckerTexturePaint", item)) {
+          texturePaint = checkerTexture;
         }
+        texture = texturePaint;
+        setOpaque(texturePaint == null);
         getRootPane().getContentPane().repaint();
         // Window w = SwingUtilities.getWindowAncestor(getRootPane());
         // if (w instanceof JFrame) { // XXX: JDK 1.7.0 ???
