@@ -246,17 +246,18 @@ final class TextureUtils {
   }
 
   private static Optional<Font> makeFont(URL url) {
-    Font font;
+    Optional<Font> op;
     if (url == null) {
-      font = null;
+      op = Optional.empty();
     } else {
       try (InputStream is = url.openStream()) {
-        font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
+        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+        op = Optional.of(font.deriveFont(12f));
       } catch (IOException | FontFormatException ex) {
-        font = null;
+        op = Optional.empty();
       }
     }
-    return Optional.ofNullable(font);
+    return op;
   }
 }
 

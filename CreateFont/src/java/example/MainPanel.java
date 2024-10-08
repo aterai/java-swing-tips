@@ -73,17 +73,32 @@ public final class MainPanel extends JPanel {
   // }
 
   private static Optional<Font> makeFont(URL url) {
-    return Optional.ofNullable(url)
-        .map(u -> {
-          Font font;
-          try (InputStream is = url.openStream()) {
-            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
-          } catch (IOException | FontFormatException ex) {
-            font = null;
-          }
-          return font;
-        });
+    Optional<Font> op;
+    if (url == null) {
+      op = Optional.empty();
+    } else {
+      try (InputStream is = url.openStream()) {
+        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+        op = Optional.of(font.deriveFont(12f));
+      } catch (IOException | FontFormatException ex) {
+        op = Optional.empty();
+      }
+    }
+    return op;
   }
+
+  // private static Optional<Font> makeFont(URL url) {
+  //   return Optional.ofNullable(url)
+  //       .map(u -> {
+  //         Font font;
+  //         try (InputStream is = url.openStream()) {
+  //           font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(12f);
+  //         } catch (IOException | FontFormatException ex) {
+  //           font = null;
+  //         }
+  //         return font;
+  //       });
+  // }
 
   // private static Document makeDocument(URL url, String encoding) {
   //   DefaultStyledDocument doc = new DefaultStyledDocument();
