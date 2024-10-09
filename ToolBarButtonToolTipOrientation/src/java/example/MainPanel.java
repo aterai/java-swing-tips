@@ -41,41 +41,46 @@ public final class MainPanel extends JPanel {
 
   private Component createToolBarButton(ColorItem item) {
     JButton button = new JButton(item.getIcon()) {
-      private transient BalloonToolTip tip;
-      private final JLabel label = new JLabel(" ", CENTER);
+      private transient JToolTip tip;
 
       @Override public Point getToolTipLocation(MouseEvent e) {
         String txt = getToolTipText();
         return Optional.ofNullable(txt).map(toolTipText -> {
-          JToolTip tips = createToolTip();
-          tips.setTipText(toolTipText);
-          label.setText(toolTipText);
+          JToolTip toolTip = createToolTip();
+          toolTip.setTipText(toolTipText);
+          Component c = toolTip.getComponent(0);
+          if (c instanceof JLabel) {
+            ((JLabel) c).setText(toolTipText);
+          }
           Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, this);
           String constraint = calculateConstraint(bar.getParent(), bar);
-          if (tips instanceof BalloonToolTip) {
-            ((BalloonToolTip) tips).updateBalloonShape(constraint);
+          if (toolTip instanceof BalloonToolTip) {
+            ((BalloonToolTip) toolTip).updateBalloonShape(constraint);
           }
-          return getToolTipPoint(getPreferredSize(), tips.getPreferredSize(), constraint);
+          Dimension btnSize = getPreferredSize();
+          Dimension tipSize = toolTip.getPreferredSize();
+          return getToolTipPoint(btnSize, tipSize, constraint);
         }).orElse(null);
       }
 
       @Override public JToolTip createToolTip() {
-        if (tip == null) {
-          tip = new BalloonToolTip();
-          LookAndFeel.installColorsAndFont(
-              label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
-          tip.add(label);
-          Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, this);
-          String constraint = calculateConstraint(bar.getParent(), bar);
-          tip.updateBalloonShape(constraint);
-          tip.setComponent(this);
-        }
         return tip;
       }
 
       @Override public void updateUI() {
-        tip = null;
         super.updateUI();
+        BalloonToolTip toolTip = new BalloonToolTip();
+        JLabel label = new JLabel(" ", CENTER);
+        LookAndFeel.installColorsAndFont(
+            label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+        toolTip.add(label);
+        toolTip.setComponent(this);
+        // EventQueue.invokeLater(() -> {
+        //   Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, this);
+        //   String constraint = calculateConstraint(bar.getParent(), bar);
+        //   toolTip.updateBalloonShape(constraint);
+        // });
+        tip = toolTip;
       }
     };
     button.setOpaque(false);

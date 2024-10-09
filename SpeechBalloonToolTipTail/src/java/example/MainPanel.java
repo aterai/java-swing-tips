@@ -54,20 +54,22 @@ public final class MainPanel extends JPanel {
 
   private static JTabbedPane makeTabbedPane() {
     JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
-      private transient BalloonToolTip tip;
-      private final JLabel label = new JLabel(" ", CENTER);
+      private transient JToolTip tip;
 
       @Override public Point getToolTipLocation(MouseEvent e) {
         int idx = indexAtLocation(e.getX(), e.getY());
         String txt = idx >= 0 ? getToolTipTextAt(idx) : null;
         return Optional.ofNullable(txt).map(toolTipText -> {
-          JToolTip tips = createToolTip();
-          tips.setTipText(toolTipText);
-          label.setText(toolTipText);
-          if (tips instanceof BalloonToolTip) {
-            ((BalloonToolTip) tips).updateBalloonShape(getTabPlacement());
+          JToolTip toolTip = createToolTip();
+          toolTip.setTipText(toolTipText);
+          Component c = toolTip.getComponent(0);
+          if (c instanceof JLabel) {
+            ((JLabel) c).setText(toolTipText);
           }
-          return getToolTipPoint(getBoundsAt(idx), tips.getPreferredSize());
+          if (toolTip instanceof BalloonToolTip) {
+            ((BalloonToolTip) toolTip).updateBalloonShape(getTabPlacement());
+          }
+          return getToolTipPoint(getBoundsAt(idx), toolTip.getPreferredSize());
         }).orElse(null);
       }
 
@@ -95,20 +97,28 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public JToolTip createToolTip() {
-        if (tip == null) {
-          tip = new BalloonToolTip();
-          LookAndFeel.installColorsAndFont(
-              label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
-          tip.add(label);
-          tip.updateBalloonShape(getTabPlacement());
-          tip.setComponent(this);
-        }
+        // if (tip == null) {
+        //   tip = new BalloonToolTip();
+        //   LookAndFeel.installColorsAndFont(
+        //       label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+        //   tip.add(label);
+        //   tip.updateBalloonShape(getTabPlacement());
+        //   tip.setComponent(this);
+        // }
         return tip;
       }
 
       @Override public void updateUI() {
-        tip = null;
+        // tip = null;
         super.updateUI();
+        BalloonToolTip toolTip = new BalloonToolTip();
+        JLabel label = new JLabel(" ", CENTER);
+        LookAndFeel.installColorsAndFont(
+            label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+        toolTip.add(label);
+        toolTip.updateBalloonShape(getTabPlacement());
+        toolTip.setComponent(this);
+        tip = toolTip;
       }
     };
     tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
