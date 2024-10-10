@@ -80,29 +80,32 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static Optional<Pattern> getPattern(String regex) {
+    Optional<Pattern> op;
+    if (Objects.nonNull(regex) && !regex.isEmpty()) {
+      try {
+        op = Optional.of(Pattern.compile(regex));
+      } catch (PatternSyntaxException ex) {
+        op = Optional.empty();
+      }
+    } else {
+      op = Optional.empty();
+    }
+    return op;
+  }
+
   public void filter(String txt) {
-    Optional.ofNullable(txt)
-        .filter(regex -> !regex.isEmpty())
-        .map(regex -> {
-          Pattern pattern;
-          try {
-            pattern = Pattern.compile(regex);
-          } catch (PatternSyntaxException ex) {
-            pattern = null;
-          }
-          return pattern;
-        })
-        .ifPresent(pattern -> {
-          List<ListItem> selected = list.getSelectedValuesList();
-          model.clear();
-          Stream.of(defaultModel)
-              .filter(item -> pattern.matcher(item.getTitle()).find())
-              .forEach(model::addElement);
-          selected.forEach(item -> {
-            int i = model.indexOf(item);
-            list.addSelectionInterval(i, i);
-          });
-        });
+    getPattern(txt).ifPresent(pattern -> {
+      List<ListItem> selected = list.getSelectedValuesList();
+      model.clear();
+      Stream.of(defaultModel)
+          .filter(item -> pattern.matcher(item.getTitle()).find())
+          .forEach(model::addElement);
+      selected.forEach(item -> {
+        int i = model.indexOf(item);
+        list.addSelectionInterval(i, i);
+      });
+    });
   }
 
   public static void main(String[] args) {
