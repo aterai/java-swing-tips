@@ -18,7 +18,9 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeTable();
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
     JCheckBox focusCheck = new JCheckBox("DefaultCellEditor:focusLost", true);
     DefaultCellEditor dce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
@@ -83,34 +85,16 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable() {
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer"};
     Object[][] data = {
         {"aaa", 12}, {"bbb", 5}, {"CCC", 92}, {"DDD", 0}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isRowSelected(row)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-    };
-    table.setAutoCreateRowSorter(true);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-    // table.setSurrendersFocusOnKeystroke(true);
-    return table;
   }
 
   public static void main(String[] args) {
