@@ -16,19 +16,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String-String/String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"1234567890123456789012345678901234567890", 12, true},
-        {"BBB", 2, true}, {"EEE", 3, false},
-        {"CCC", 4, true}, {"FFF", 5, false},
-        {"DDD", 6, true}, {"GGG", 7, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (c instanceof JComponent) {
@@ -57,6 +45,21 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String-String/String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"1234567890123456789012345678901234567890", 12, true},
+        {"BBB", 2, true}, {"EEE", 3, false},
+        {"CCC", 4, true}, {"FFF", 5, false},
+        {"DDD", 6, true}, {"GGG", 7, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
