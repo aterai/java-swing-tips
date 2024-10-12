@@ -103,18 +103,18 @@ class FileChooserTransferHandler extends TransferHandler {
     return ret;
   }
 
-  private static Object getTransferData(Transferable transferable) {
-    Object o;
+  private static Optional<Object> getTransferData(Transferable transferable) {
+    Optional<Object> o;
     try {
-      o = transferable.getTransferData(DataFlavor.javaFileListFlavor);
+      o = Optional.of(transferable.getTransferData(DataFlavor.javaFileListFlavor));
     } catch (IOException | UnsupportedFlavorException ex) {
-      o = null;
+      o = Optional.empty();
     }
     return o;
   }
 
   private static File[] getFiles(Transferable transferable) {
-    List<?> list = Optional.ofNullable(getTransferData(transferable))
+    List<?> list = getTransferData(transferable)
         .filter(o -> o instanceof List<?>)
         .map(o -> (List<?>) o)
         .orElse(Collections.emptyList());
