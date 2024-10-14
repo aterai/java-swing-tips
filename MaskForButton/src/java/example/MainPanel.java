@@ -25,36 +25,40 @@ public final class MainPanel extends JPanel {
 
     tabs.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        int button = e.getButton();
-        int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
-        boolean isB2Clicked = (e.getModifiersEx() & maskForButton) != 0;
-
-        String mask = button == MouseEvent.NOBUTTON ? "NOBUTTON" : "BUTTON" + button;
+        int btn = e.getButton();
+        // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+        // int maskForButton = InputEvent.BUTTON2_DOWN_MASK;
+        // boolean isB2Clicked = (e.getModifiersEx() & maskForButton) != 0;
+        String mask = btn == MouseEvent.NOBUTTON ? "NOBUTTON" : "BUTTON" + btn;
         log.append(mask + "\n");
-        log.append("BUTTON2 mouseClicked: " + isB2Clicked + "\n");
+        // log.append("Middle mouseClicked: " + isB2Clicked + "\n");
 
-        boolean isB1Double = e.getClickCount() >= 2 && button == MouseEvent.BUTTON1;
-        // && InputEvent.getMaskForButton(button) == InputEvent.BUTTON1_DOWN_MASK;
-        boolean isB2Down = MouseInfo.getNumberOfButtons() > 2 && button == MouseEvent.BUTTON2;
-        // = InputEvent.getMaskForButton(button) == InputEvent.BUTTON2_DOWN_MASK;
+        boolean isDouble = e.getClickCount() >= 2;
+        boolean isLeftDouble = SwingUtilities.isLeftMouseButton(e) && isDouble;
+        // && InputEvent.getMaskForButton(btn) == InputEvent.BUTTON1_DOWN_MASK;
+        // boolean isMiddle = MouseInfo.getNumberOfButtons() > 2 && btn == MouseEvent.BUTTON2;
+        // = InputEvent.getMaskForButton(btn) == InputEvent.BUTTON2_DOWN_MASK;
+        boolean isMiddle = SwingUtilities.isMiddleMouseButton(e);
 
         JTabbedPane tabbedPane = (JTabbedPane) e.getComponent();
         int idx = tabbedPane.indexAtLocation(e.getX(), e.getY());
-        if (idx >= 0 && (isB2Down || isB1Double)) {
+        if (idx >= 0 && (isMiddle || isLeftDouble)) {
           tabbedPane.remove(idx);
         }
       }
 
       @Override public void mousePressed(MouseEvent e) {
-        int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
-        boolean mousePressed = (e.getModifiersEx() & maskForButton) != 0;
-        log.append("BUTTON2 mousePressed: " + mousePressed + "\n");
+        // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+        // boolean mousePressed = (e.getModifiersEx() & maskForButton) != 0;
+        boolean mousePressed = SwingUtilities.isMiddleMouseButton(e);
+        log.append("Middle mousePressed: " + mousePressed + "\n");
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
-        boolean mouseReleased = (e.getModifiersEx() & maskForButton) != 0;
-        log.append("BUTTON2 mouseReleased: " + mouseReleased + "\n");
+        // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+        // boolean mouseReleased = (e.getModifiersEx() & maskForButton) != 0;
+        boolean mouseReleased = SwingUtilities.isMiddleMouseButton(e);
+        log.append("Middle mouseReleased: " + mouseReleased + "\n");
       }
     });
     add(tabs);
