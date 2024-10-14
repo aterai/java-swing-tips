@@ -107,7 +107,7 @@ class TextComponentMouseHandler extends MouseAdapter {
         int pos = textArea.viewToModel(e.getPoint());
         textArea.setCaretPosition(pos);
       }
-      if (e.getButton() == MouseEvent.BUTTON1) {
+      if (SwingUtilities.isLeftMouseButton(e)) {
         holdTimer.start();
       }
     }

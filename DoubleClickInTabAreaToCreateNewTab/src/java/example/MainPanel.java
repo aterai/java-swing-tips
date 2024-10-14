@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("Title", new JScrollPane(new JTextArea(help)));
     tabbedPane.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        boolean leftButton = e.getButton() == MouseEvent.BUTTON1;
+        boolean leftButton = SwingUtilities.isLeftMouseButton(e);
         boolean doubleClick = e.getClickCount() >= 2;
         JTabbedPane tabs = (JTabbedPane) e.getComponent();
         int idx = tabs.indexAtLocation(e.getX(), e.getY());

@@ -257,7 +257,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
 
     private void cellPressed(MouseEvent e, int index) {
-      if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() > 1) {
+      if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() > 1) {
         ListItem item = getModel().getElementAt(index);
         JOptionPane.showMessageDialog(getRootPane(), item.getTitle());
       } else {

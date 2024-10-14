@@ -234,7 +234,7 @@ class IconTable extends JTable {
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     handler = new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
           startEditing();
         }
       }

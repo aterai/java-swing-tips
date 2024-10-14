@@ -132,7 +132,7 @@ class CheckBoxList extends JList<CheckBoxNode> {
     handler = new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         int index = locationToIndex(e.getPoint());
-        if (e.getButton() == MouseEvent.BUTTON1 && index >= 0) {
+        if (SwingUtilities.isLeftMouseButton(e) && index >= 0) {
           DefaultListModel<CheckBoxNode> m = (DefaultListModel<CheckBoxNode>) getModel();
           CheckBoxNode n = m.get(index);
           m.set(index, new CheckBoxNode(n.getText(), !n.isSelected()));

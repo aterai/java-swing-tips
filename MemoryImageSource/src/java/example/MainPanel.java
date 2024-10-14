@@ -71,7 +71,7 @@ class PaintPanel extends JPanel {
     handler = new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         startPoint.setLocation(e.getPoint());
-        penColor = e.getButton() == MouseEvent.BUTTON1 ? 0xFF_00_00_00 : 0x0;
+        penColor = SwingUtilities.isLeftMouseButton(e) ? 0xFF_00_00_00 : 0x0;
       }
 
       @Override public void mouseDragged(MouseEvent e) {
