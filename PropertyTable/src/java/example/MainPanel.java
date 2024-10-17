@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -22,6 +23,13 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new PropertyTable(makeModel());
+
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"Type", "Value"};
     @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
@@ -32,15 +40,11 @@ public final class MainPanel extends JPanel {
         {"Boolean", Boolean.TRUE},
         {"Color", Color.RED}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new PropertyTable(model);
-
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -80,7 +84,8 @@ class PropertyTable extends JTable {
   private Class<?> getClassAt(int row, int column) {
     int mc = convertColumnIndexToModel(column);
     int mr = convertRowIndexToModel(row);
-    return getModel().getValueAt(mr, mc).getClass();
+    TableModel m = getModel();
+    return mc == TARGET_COLUMN ? m.getValueAt(mr, mc).getClass() : null;
   }
 
   @Override public void updateUI() {
@@ -96,13 +101,14 @@ class PropertyTable extends JTable {
   }
 
   @Override public TableCellRenderer getCellRenderer(int row, int column) {
-    TableCellRenderer r;
-    if (convertColumnIndexToModel(column) == TARGET_COLUMN) {
-      r = getDefaultRenderer(getClassAt(row, column));
-    } else {
-      r = super.getCellRenderer(row, column);
-    }
-    return r;
+    // boolean isTarget = convertColumnIndexToModel(column) == TARGET_COLUMN;
+    // return isTarget
+    //     ? getDefaultRenderer(getClassAt(row, column))
+    //     : super.getCellRenderer(row, column);
+    Class<?> clz = getClassAt(row, column);
+    return Objects.nonNull(clz)
+        ? getDefaultRenderer(clz)
+        : super.getCellRenderer(row, column);
   }
 
   // https://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
@@ -110,15 +116,11 @@ class PropertyTable extends JTable {
   // component is saved in the TableModel. The class was saved when the
   // editor was invoked so the proper class can be created.
   @Override public TableCellEditor getCellEditor(int row, int column) {
-    TableCellEditor editor;
-    if (convertColumnIndexToModel(column) == TARGET_COLUMN) {
-      editingClass = getClassAt(row, column);
-      editor = getDefaultEditor(editingClass);
-    } else {
-      editingClass = null;
-      editor = super.getCellEditor(row, column);
-    }
-    return editor;
+    editingClass = getClassAt(row, column);
+    // return convertColumnIndexToModel(column) == TARGET_COL_IDX
+    return Objects.nonNull(editingClass)
+        ? getDefaultEditor(editingClass)
+        : super.getCellEditor(row, column);
   }
 
   @Override public Class<?> getColumnClass(int column) {
@@ -145,12 +147,8 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
       }
 
       @Override public void focusGained(FocusEvent e) {
-        // System.out.println("getTextField");
         setArrowButtonEnabled(true);
         EventQueue.invokeLater(() -> {
-          // editor.getTextField().setCaretPosition(8);
-          // editor.getTextField().setSelectionStart(8);
-          // editor.getTextField().setSelectionEnd(10);
           JTextField field = (JTextField) e.getComponent();
           field.setCaretPosition(8);
           field.setSelectionStart(8);
@@ -182,7 +180,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
   // @Override public boolean isCellEditable(EventObject e) {
   //   return true;
   // }
-  //
+
   // @Override public boolean shouldSelectCell(EventObject anEvent) {
   //   return true;
   // }

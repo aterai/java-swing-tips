@@ -11,6 +11,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -73,7 +74,7 @@ public final class MainPanel extends JPanel {
 }
 
 class PropertyTable extends JTable {
-  private static final int TARGET_COL_IDX = 1;
+  private static final int TARGET_COLUMN = 1;
   private Class<?> editingClass;
 
   protected PropertyTable(TableModel model) {
@@ -87,7 +88,8 @@ class PropertyTable extends JTable {
   private Class<?> getClassAt(int row, int column) {
     int mc = convertColumnIndexToModel(column);
     int mr = convertRowIndexToModel(row);
-    return getModel().getValueAt(mr, mc).getClass();
+    TableModel m = getModel();
+    return mc == TARGET_COLUMN ? m.getValueAt(mr, mc).getClass() : null;
   }
 
   @Override public void updateUI() {
@@ -103,8 +105,13 @@ class PropertyTable extends JTable {
   }
 
   @Override public TableCellRenderer getCellRenderer(int row, int column) {
-    return convertColumnIndexToModel(column) == TARGET_COL_IDX
-        ? getDefaultRenderer(getClassAt(row, column))
+    // boolean isTarget = convertColumnIndexToModel(column) == TARGET_COLUMN;
+    // return isTarget
+    //     ? getDefaultRenderer(getClassAt(row, column))
+    //     : super.getCellRenderer(row, column);
+    Class<?> clz = getClassAt(row, column);
+    return Objects.nonNull(clz)
+        ? getDefaultRenderer(clz)
         : super.getCellRenderer(row, column);
   }
 
@@ -113,19 +120,15 @@ class PropertyTable extends JTable {
   // component is saved in the TableModel. The class was saved when the
   // editor was invoked so the proper class can be created.
   @Override public TableCellEditor getCellEditor(int row, int column) {
-    TableCellEditor editor;
-    if (convertColumnIndexToModel(column) == TARGET_COL_IDX) {
-      editingClass = getClassAt(row, column);
-      editor = getDefaultEditor(editingClass);
-    } else {
-      editingClass = null;
-      editor = super.getCellEditor(row, column);
-    }
-    return editor;
+    editingClass = getClassAt(row, column);
+    // return convertColumnIndexToModel(column) == TARGET_COL_IDX
+    return Objects.nonNull(editingClass)
+        ? getDefaultEditor(editingClass)
+        : super.getCellEditor(row, column);
   }
 
   @Override public Class<?> getColumnClass(int column) {
-    return convertColumnIndexToModel(column) == TARGET_COL_IDX
+    return convertColumnIndexToModel(column) == TARGET_COLUMN
         ? editingClass
         : super.getColumnClass(column);
   }
