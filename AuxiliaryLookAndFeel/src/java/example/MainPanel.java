@@ -13,14 +13,14 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JComboBox<String> combo = makeComboBox();
     UIManager.put("ComboBox.font", combo.getFont());
-    JCheckBox check = new JCheckBox("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
+    String text = "<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)";
+    JCheckBox check = new JCheckBox(text);
 
     LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
     UIManager.addPropertyChangeListener(e -> {
       boolean lnf = Objects.equals("lookAndFeel", e.getPropertyName());
       if (lnf) {
-        boolean isWindows = Objects.equals("Windows", e.getNewValue());
-        if (isWindows) {
+        if (isWindows(e.getNewValue())) {
           if (check.isSelected()) {
             UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
           }
@@ -58,6 +58,11 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static boolean isWindows(Object info) {
+    // boolean isWindows = Objects.equals("Windows", info);
+    return info instanceof String && info.toString().contains("Windows");
   }
 
   private static JComboBox<String> makeComboBox() {

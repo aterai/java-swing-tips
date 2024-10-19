@@ -94,10 +94,10 @@ class BasicComboPopup2 extends BasicComboPopup {
     super(combo);
   }
 
-  @Override public void uninstallingUI() {
-    super.uninstallingUI();
-    handler2 = null;
-  }
+  // @Override public void uninstallingUI() {
+  //   super.uninstallingUI();
+  //   handler2 = null;
+  // }
 
   @Override protected MouseListener createListMouseListener() {
     // if (Objects.isNull(handler2)) {
