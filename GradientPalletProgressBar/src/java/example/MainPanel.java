@@ -167,29 +167,35 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
 
   @Override public void paintDeterminate(Graphics g, JComponent c) {
     Insets b = progressBar.getInsets(); // area for border
-    int barRectWidth = progressBar.getWidth() - b.right - b.left;
-    int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
-    if (barRectWidth <= 0 || barRectHeight <= 0) {
+    // int barRectWidth = progressBar.getWidth() - b.right - b.left;
+    // int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
+    // if (barRectWidth <= 0 || barRectHeight <= 0) {
+    //   return;
+    // }
+    Rectangle r = SwingUtilities.calculateInnerArea(progressBar, null);
+    if (r.isEmpty()) {
       return;
     }
     // int cellLength = getCellLength();
     // int cellSpacing = getCellSpacing();
     // amount of progress to draw
-    int amountFull = getAmountFull(b, barRectWidth, barRectHeight);
+    int amountFull = getAmountFull(b, r.width, r.height);
 
     // draw the cells
     if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {
-      float x = amountFull / (float) barRectWidth;
+      float x = amountFull / (float) r.width;
       g.setColor(getColorFromPallet(pallet, x));
-      g.fillRect(b.left, b.top, amountFull, barRectHeight);
+      g.fillRect(r.x, r.y, amountFull, r.height);
     } else { // VERTICAL
-      float y = amountFull / (float) barRectHeight;
+      float y = amountFull / (float) r.height;
       g.setColor(getColorFromPallet(pallet, y));
-      g.fillRect(b.left, barRectHeight + b.bottom - amountFull, barRectWidth, amountFull);
+      // g.fillRect(b.left, barRectHeight + b.bottom - amountFull, r.width, amountFull);
+      g.fillRect(r.x, r.y + r.height - amountFull, r.width, amountFull);
     }
+
     // Deal with possible text painting
     if (progressBar.isStringPainted()) {
-      paintString(g, b.left, b.top, barRectWidth, barRectHeight, amountFull, b);
+      paintString(g, r.x, r.y, r.width, r.height, amountFull, b);
     }
   }
 }
