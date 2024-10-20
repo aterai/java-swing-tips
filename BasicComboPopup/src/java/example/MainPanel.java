@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
       @Override public void uninstallingUI() {
         if (Objects.nonNull(listener)) {
           list.removeMouseListener(listener);
-          listener = null;
+          // listener = null;
         }
         super.uninstallingUI();
       }

@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -121,12 +120,12 @@ class LengthInputVerifier extends InputVerifier {
 }
 
 class BasicComboPopup2 extends BasicComboPopup {
-  private transient MouseListener handler2;
+  // private transient MouseListener handler2;
 
-  @Override public void uninstallingUI() {
-    super.uninstallingUI();
-    handler2 = null;
-  }
+  // @Override public void uninstallingUI() {
+  //   super.uninstallingUI();
+  //   handler2 = null;
+  // }
 
   // Java 8: protected BasicComboPopup2(JComboBox<?> combo) {
   // Java 9: protected BasicComboPopup2(JComboBox<Object> combo) {
@@ -136,10 +135,11 @@ class BasicComboPopup2 extends BasicComboPopup {
   }
 
   @Override protected MouseListener createMouseListener() {
-    if (Objects.isNull(handler2)) {
-      handler2 = new Handler2();
-    }
-    return handler2;
+    // if (Objects.isNull(handler2)) {
+    //   handler2 = new Handler2();
+    // }
+    // return handler2;
+    return new Handler2();
   }
 
   private final class Handler2 extends MouseAdapter {
