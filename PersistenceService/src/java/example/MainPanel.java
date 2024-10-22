@@ -94,18 +94,18 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
   }
 
   @Override public WindowListener doInBackground() {
-    PersistenceService ps;
-    BasicService bs;
+    Object ps;
+    Object bs;
     try {
-      bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-      ps = (PersistenceService) ServiceManager.lookup("javax.jnlp.PersistenceService");
+      bs = ServiceManager.lookup("javax.jnlp.BasicService");
+      ps = ServiceManager.lookup("javax.jnlp.PersistenceService");
     } catch (UnavailableServiceException ex) {
       // ex.printStackTrace();
       ps = null;
       bs = null;
     }
-    return Objects.nonNull(ps) && Objects.nonNull(bs)
-        ? makeWindowAdapter(ps, bs.getCodeBase())
+    return ps instanceof PersistenceService && bs instanceof BasicService
+        ? makeWindowAdapter((PersistenceService) ps, ((BasicService) bs).getCodeBase())
         : null;
   }
 
