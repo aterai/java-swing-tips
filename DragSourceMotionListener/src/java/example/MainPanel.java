@@ -168,28 +168,32 @@ class LabelTransferHandler extends TransferHandler {
 
   @Override public boolean importData(TransferSupport support) {
     // System.out.println("importData");
-    Component c = support.getComponent();
-    Object o = getTransferableData(support.getTransferable());
-    return c instanceof DragPanel
-        && o instanceof DragPanel
-        && copyDragPanel((DragPanel) c, (DragPanel) o);
+    return getTransferableData(support.getTransferable())
+        .filter(DragPanel.class::isInstance)
+        .map(DragPanel.class::cast)
+        .map(o -> copyDragPanel(o, support.getComponent()))
+        .orElse(false);
   }
 
-  private static boolean copyDragPanel(DragPanel tgt, DragPanel src) {
-    JLabel l = new JLabel();
-    l.setIcon(src.draggingLabel.getIcon());
-    l.setText(src.draggingLabel.getText());
-    tgt.add(l);
-    tgt.revalidate();
-    return true;
+  private static boolean copyDragPanel(DragPanel src, Component tgt) {
+    boolean b = tgt instanceof DragPanel;
+    if (b) {
+      JLabel l = new JLabel();
+      l.setIcon(src.draggingLabel.getIcon());
+      l.setText(src.draggingLabel.getText());
+      DragPanel tgtPanel = (DragPanel) tgt;
+      tgtPanel.add(l);
+      tgtPanel.revalidate();
+    }
+    return b;
   }
 
-  private Object getTransferableData(Transferable transferable) {
-    Object src;
+  private Optional<Object> getTransferableData(Transferable transferable) {
+    Optional<Object> src;
     try {
-      src = transferable.getTransferData(localObjectFlavor);
+      src = Optional.of(transferable.getTransferData(localObjectFlavor));
     } catch (UnsupportedFlavorException | IOException ex) {
-      src = null;
+      src = Optional.empty();
     }
     return src;
   }
