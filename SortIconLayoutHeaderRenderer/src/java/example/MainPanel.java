@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -24,18 +25,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("TableHeader.rightAlignSortArrow", Boolean.FALSE);
-    String[] columnNames = {"Name", "CPU", "Memory", "Disk"};
-    Object[][] data = {
-        {"aaa", "1%", "1.6MB", "0MB/S"}, {"bbb", "1%", "2.4MB", "3MB/S"},
-        {"ccc", "2%", "0.3MB", "1MB/S"}, {"ddd", "3%", "0.5MB", "2MB/S"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-    };
-
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         DefaultTableCellRenderer cr = new DefaultTableCellRenderer();
@@ -50,13 +40,24 @@ public final class MainPanel extends JPanel {
       }
     };
     table.setAutoCreateRowSorter(true);
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Name", "CPU", "Memory", "Disk"};
+    Object[][] data = {
+        {"aaa", "1%", "1.6MB", "0MB/S"}, {"bbb", "1%", "2.4MB", "3MB/S"},
+        {"ccc", "2%", "0.3MB", "1MB/S"}, {"ddd", "3%", "0.5MB", "2MB/S"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
   }
 
   public static void main(String[] args) {
@@ -171,17 +172,20 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     Graphics2D g2 = img.createGraphics();
     icon.paintIcon(null, g2, 0, 0);
     g2.dispose();
-    URI uri;
+    return makeTempFile(img).map(File::toURI).orElse(null);
+  }
+
+  private static Optional<File> makeTempFile(BufferedImage img) {
+    Optional<File> op;
     try {
-      File tmp = File.createTempFile("icon", ".png");
-      tmp.deleteOnExit();
-      ImageIO.write(img, "png", tmp);
-      uri = tmp.toURI();
+      File file = File.createTempFile("icon", ".png");
+      file.deleteOnExit();
+      ImageIO.write(img, "png", file);
+      op = Optional.of(file);
     } catch (IOException ex) {
-      // ex.printStackTrace();
-      uri = null;
+      op = Optional.empty();
     }
-    return uri;
+    return op;
   }
 }
 
