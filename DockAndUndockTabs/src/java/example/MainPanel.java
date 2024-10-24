@@ -323,7 +323,7 @@ class DnDTabbedPane extends JTabbedPane {
         TransferHandler th = src.getTransferHandler();
         // When a tab runs rotation occurs, a tab that is not the target is dragged.
         // pointed out by Arjen
-        int idx = src.indexAtLocation(tabPt.x, tabPt.y);
+        int idx = src.indexAtLocation(startPt.x, startPt.y);
         int selIdx = src.getSelectedIndex();
         boolean isRotateTabRuns = !(src.getUI() instanceof MetalTabbedPaneUI)
             && src.getTabLayoutPolicy() == WRAP_TAB_LAYOUT && idx != selIdx;
