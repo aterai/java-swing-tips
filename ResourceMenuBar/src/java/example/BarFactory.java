@@ -64,13 +64,13 @@ public final class BarFactory {
   }
 
   private String getResourceString(String nm) {
-    String str;
+    Optional<String> op;
     try {
-      str = Objects.nonNull(resources) ? resources.getString(nm) : null;
+      op = Optional.ofNullable(resources).map(r -> r.getString(nm));
     } catch (MissingResourceException ex) {
-      str = null;
+      op = Optional.empty();
     }
-    return str;
+    return op.orElse(null);
   }
 
   private String[] tokenize(String input) {
