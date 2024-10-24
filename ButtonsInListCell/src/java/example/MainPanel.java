@@ -63,7 +63,8 @@ public final class MainPanel extends JPanel {
 
 class CellButtonsMouseListener<E> extends MouseInputAdapter {
   private int prevIndex = -1;
-  private JButton prevButton;
+  // private JButton prevButton;
+  private final Rectangle prevButtonRect = new Rectangle();
   private final JList<E> list;
 
   protected CellButtonsMouseListener(JList<E> list) {
@@ -79,7 +80,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       if (prevIndex >= 0) {
         rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
       }
-      prevButton = null;
+      prevButtonRect.setSize(0, 0);
       return;
     }
     ListCellRenderer<? super E> lcr = list.getCellRenderer();
@@ -88,33 +89,34 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       JButton button = getButton(list, pt, index);
       renderer.button = button;
       if (Objects.nonNull(button)) {
-        repaintCell(renderer, button, index);
+        button.getModel().setRollover(true);
+        repaintCell(renderer, button.getBounds(), index);
       } else {
         repaintPrevButton(renderer, index);
       }
-      prevButton = button;
     }
     prevIndex = index;
   }
 
-  private void repaintCell(ButtonsRenderer<?> renderer, JButton button, int index) {
-    button.getModel().setRollover(true);
+  private void repaintCell(ButtonsRenderer<?> renderer, Rectangle btnRect, int index) {
     renderer.rolloverIndex = index;
-    if (!Objects.equals(button, prevButton)) {
+    if (!prevButtonRect.equals(btnRect)) {
       rectRepaint(list, list.getCellBounds(prevIndex, index));
     }
+    prevButtonRect.setBounds(btnRect);
   }
 
   private void repaintPrevButton(ButtonsRenderer<?> renderer, int index) {
     renderer.rolloverIndex = -1;
     if (prevIndex == index) {
-      if (Objects.nonNull(prevButton)) {
+      if (!prevButtonRect.isEmpty()) {
         rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
       }
     } else {
       rectRepaint(list, list.getCellBounds(index, index));
     }
     prevIndex = -1;
+    prevButtonRect.setSize(0, 0);
   }
 
   @Override public void mousePressed(MouseEvent e) {
