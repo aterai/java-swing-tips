@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -76,21 +77,21 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    model.addRow(new Object[] {0, "FrontPage", mkUrl("https://ateraimemo.com/")});
-    model.addRow(new Object[] {1, "Java Swing Tips", mkUrl("https://ateraimemo.com/Swing.html")});
-    model.addRow(new Object[] {2, "Example", mkUrl("https://www.example.com/")});
-    model.addRow(new Object[] {3, "Example.jp", mkUrl("https://www.example.jp/")});
+    model.addRow(new Object[] {0, "FrontPage", toUrl("https://ateraimemo.com/")});
+    model.addRow(new Object[] {1, "Java Swing Tips", toUrl("https://ateraimemo.com/Swing.html")});
+    model.addRow(new Object[] {2, "Example", toUrl("https://www.example.com/")});
+    model.addRow(new Object[] {3, "Example.jp", toUrl("https://www.example.jp/")});
     return model;
   }
 
-  private static URL mkUrl(String path) {
-    URL url;
+  private static URL toUrl(String path) {
+    Optional<URL> op;
     try {
-      url = new URL(path);
+      op = Optional.of(new URL(path));
     } catch (MalformedURLException ex) {
-      url = null;
+      op = Optional.empty();
     }
-    return url;
+    return op.orElse(null);
   }
 
   public static void main(String[] args) {

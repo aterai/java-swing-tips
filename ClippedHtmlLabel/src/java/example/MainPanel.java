@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -71,13 +72,13 @@ public final class MainPanel extends JPanel {
   }
 
   private static URL makeUrl(String path) {
-    URL url;
+    Optional<URL> op;
     try {
-      url = new URL(path);
+      op = Optional.of(new URL(path));
     } catch (MalformedURLException ex) {
-      url = null;
+      op = Optional.empty();
     }
-    return url;
+    return op.orElse(null);
   }
 
   private static JTable makeTable(TableModel model) {
