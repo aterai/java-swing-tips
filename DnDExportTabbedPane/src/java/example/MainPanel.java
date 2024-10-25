@@ -160,7 +160,9 @@ class DnDTabbedPane extends JTabbedPane {
         }
       }
     }
-    JButton button = "scrollTabsForwardAction".equals(actionKey) ? forwardButton : backwardButton;
+    JButton button = "scrollTabsForwardAction".equals(actionKey)
+        ? forwardButton
+        : backwardButton;
     Optional.ofNullable(button).filter(JButton::isEnabled).ifPresent(JButton::doClick);
 
     // // ArrayIndexOutOfBoundsException
@@ -412,7 +414,7 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   private final class Handler extends MouseAdapter implements PropertyChangeListener {
-    private Point startPt;
+    private final Point startPt = new Point(-1, -1);
     private final int dragThreshold = DragSource.getDragThreshold();
     // Toolkit tk = Toolkit.getDefaultToolkit();
     // Integer dragThreshold = (Integer) tk.getDesktopProperty("DnD.gestureMotionThreshold");
@@ -437,7 +439,7 @@ class DnDTabbedPane extends JTabbedPane {
       DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
       boolean isOnlyOneTab = src.getTabCount() <= 1;
       if (isOnlyOneTab) {
-        startPt = null;
+        startPt.setLocation(-1, -1);
         return;
       }
       Point tabPt = e.getPoint(); // e.getDragOrigin();
@@ -445,12 +447,12 @@ class DnDTabbedPane extends JTabbedPane {
       // disabled tab, null component problem.
       // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
       boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
-      startPt = flag ? null : tabPt;
+      startPt.setLocation(flag ? new Point(-1, -1) : tabPt);
     }
 
     @Override public void mouseDragged(MouseEvent e) {
       Point tabPt = e.getPoint(); // e.getDragOrigin();
-      if (Objects.nonNull(startPt) && startPt.distance(tabPt) > dragThreshold) {
+      if (startPt.x >= 0 && startPt.distance(tabPt) > dragThreshold) {
         DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
         TransferHandler th = src.getTransferHandler();
         // When a tab runs rotation occurs, a tab that is not the target is dragged.
@@ -464,7 +466,7 @@ class DnDTabbedPane extends JTabbedPane {
         // LINE_RECT.setBounds(0, 0, 0, 0);
         src.getRootPane().getGlassPane().setVisible(true);
         src.updateTabDropLocation(new DnDTabbedPane.DropLocation(tabPt, -1), true);
-        startPt = null;
+        startPt.setLocation(-1, -1);
       }
     }
   }
