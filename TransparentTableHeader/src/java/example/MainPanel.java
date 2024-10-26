@@ -20,9 +20,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final Color alphaZero = new Color(0x0, true);
-  private final Color color = new Color(0x32_FF_00_00, true);
-
   private MainPanel() {
     super(new BorderLayout());
     TexturePaint texture = makeImageTexture();
@@ -36,6 +33,7 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
       }
     };
+    Color alphaZero = table.getBackground();
     scroll.setOpaque(false);
     scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     scroll.setBackground(alphaZero);
@@ -45,20 +43,24 @@ public final class MainPanel extends JPanel {
     scroll.getColumnHeader().setOpaque(false);
     scroll.getColumnHeader().setBackground(alphaZero);
 
+    Color color = new Color(0x32_FF_00_00, true);
     JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
-    check.addActionListener(e -> table.setBackground(check.isSelected() ? color : alphaZero));
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      table.setBackground(b ? color : alphaZero);
+    });
 
     add(check, BorderLayout.NORTH);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTable makeTable() {
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
         return column == 2;
       }
@@ -67,7 +69,10 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-    return new JTable(model) {
+  }
+
+  private JTable makeTable() {
+    return new JTable(makeModel()) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
         if (c instanceof JComponent) {
@@ -110,6 +115,7 @@ public final class MainPanel extends JPanel {
         setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
         setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
         setOpaque(false);
+        Color alphaZero = new Color(0x0, true);
         setBackground(alphaZero);
         // setGridColor(alphaZero);
         getTableHeader().setDefaultRenderer(new TransparentHeader());
