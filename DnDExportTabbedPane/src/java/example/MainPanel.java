@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     tabbedPane.addTab("JLabel 01", new JLabel("Test"));
     tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));
     tabbedPane.addTab("JTextArea 03", new JScrollPane(new JTextArea("JTextArea 03")));
-    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111<br>13412341234123446745"));
+    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111<br>1234567890"));
     tabbedPane.addTab("null 05", null);
     tabbedPane.addTab("JTabbedPane 06", sub);
     tabbedPane.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
       try {
         t.getDropTarget().addDropTargetListener(listener);
       } catch (TooManyListenersException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         UIManager.getLookAndFeel().provideErrorFeedback(t);
       }
     });
@@ -653,12 +653,7 @@ class TabTransferHandler extends TransferHandler {
     // System.out.println("importData");
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     DnDTabbedPane.DropLocation dl = target.getDropLocation();
-    Object data;
-    try {
-      data = support.getTransferable().getTransferData(localObjectFlavor);
-    } catch (UnsupportedFlavorException | IOException ex) {
-      data = null;
-    }
+    Object data = getTransferData(support, localObjectFlavor);
     boolean b = data instanceof DnDTabData;
     if (b) {
       DnDTabbedPane src = ((DnDTabData) data).tabbedPane;
@@ -670,6 +665,16 @@ class TabTransferHandler extends TransferHandler {
       }
     }
     return b;
+  }
+
+  private static Object getTransferData(TransferSupport support, DataFlavor flavor) {
+    Optional<Object> data;
+    try {
+      data = Optional.of(support.getTransferable().getTransferData(flavor));
+    } catch (UnsupportedFlavorException | IOException ex) {
+      data = Optional.empty();
+    }
+    return data.orElse(null);
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {

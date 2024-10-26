@@ -682,12 +682,7 @@ class TabTransferHandler extends TransferHandler {
     // System.out.println("importData");
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
     DnDTabbedPane.DropLocation dl = target.getDropLocation();
-    Object data;
-    try {
-      data = support.getTransferable().getTransferData(localObjectFlavor);
-    } catch (UnsupportedFlavorException | IOException ex) {
-      data = null;
-    }
+    Object data = getTransferData(support, localObjectFlavor);
     boolean b = data instanceof DnDTabData;
     if (b) {
       DnDTabbedPane src = ((DnDTabData) data).tabbedPane;
@@ -699,6 +694,16 @@ class TabTransferHandler extends TransferHandler {
       }
     }
     return b;
+  }
+
+  private static Object getTransferData(TransferSupport support, DataFlavor flavor) {
+    Optional<Object> data;
+    try {
+      data = Optional.of(support.getTransferable().getTransferData(flavor));
+    } catch (UnsupportedFlavorException | IOException ex) {
+      data = Optional.empty();
+    }
+    return data.orElse(null);
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
