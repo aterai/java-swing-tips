@@ -11,6 +11,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
+import java.util.Optional;
 import javax.jnlp.ClipboardService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
@@ -61,13 +62,15 @@ public final class MainPanel extends JPanel {
   }
 
   private static ClipboardService getClipboardService() {
-    ClipboardService cs;
+    Optional<Object> op;
     try {
-      cs = (ClipboardService) ServiceManager.lookup("javax.jnlp.ClipboardService");
+      op = Optional.ofNullable(ServiceManager.lookup("javax.jnlp.ClipboardService"));
     } catch (UnavailableServiceException ex) {
-      cs = null;
+      op = Optional.empty();
     }
-    return cs;
+    return op.filter(ClipboardService.class::isInstance)
+        .map(ClipboardService.class::cast)
+        .orElse(null);
   }
 
   private static Component makeTitledPanel(String title, Component c) {

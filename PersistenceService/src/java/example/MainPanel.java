@@ -18,6 +18,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import javax.jnlp.BasicService;
@@ -94,19 +95,21 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
   }
 
   @Override public WindowListener doInBackground() {
-    Object ps;
-    Object bs;
-    try {
-      bs = ServiceManager.lookup("javax.jnlp.BasicService");
-      ps = ServiceManager.lookup("javax.jnlp.PersistenceService");
-    } catch (UnavailableServiceException ex) {
-      // ex.printStackTrace();
-      ps = null;
-      bs = null;
-    }
+    Object bs = getService("javax.jnlp.BasicService");
+    Object ps = getService("javax.jnlp.PersistenceService");
     return ps instanceof PersistenceService && bs instanceof BasicService
         ? makeWindowAdapter((PersistenceService) ps, ((BasicService) bs).getCodeBase())
         : null;
+  }
+
+  private static Object getService(String service) {
+    Optional<Object> op;
+    try {
+      op = Optional.ofNullable(ServiceManager.lookup(service));
+    } catch (UnavailableServiceException ex) {
+      op = Optional.empty();
+    }
+    return op.orElse(null);
   }
 
   private WindowAdapter makeWindowAdapter(PersistenceService service, URL codebase) {
