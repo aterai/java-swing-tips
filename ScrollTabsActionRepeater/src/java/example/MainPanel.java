@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addRepeatHandler(JButton button, Action action) {
-    ActionRepeatHandler handler = new ActionRepeatHandler(action);
+    ActionRepeatHandler handler = new ActionRepeatHandler(button, action);
     button.addActionListener(handler);
     button.addMouseListener(handler);
   }
@@ -71,10 +71,11 @@ public final class MainPanel extends JPanel {
 class ActionRepeatHandler extends MouseAdapter implements ActionListener {
   private final Timer timer;
   private final Action action;
-  private JButton button;
+  private final AbstractButton button;
 
-  protected ActionRepeatHandler(Action action) {
+  protected ActionRepeatHandler(AbstractButton button, Action action) {
     super();
+    this.button = button;
     this.action = action;
     timer = new Timer(60, this);
     timer.setInitialDelay(300);
@@ -82,10 +83,9 @@ class ActionRepeatHandler extends MouseAdapter implements ActionListener {
 
   @Override public void actionPerformed(ActionEvent e) {
     Object o = e.getSource();
-    if (o instanceof Timer && button != null) {
+    if (o instanceof Timer) {
       if (!button.getModel().isPressed() && timer.isRunning()) {
         timer.stop();
-        button = null;
       } else {
         Component c = SwingUtilities.getAncestorOfClass(JTabbedPane.class, button);
         action.actionPerformed(new ActionEvent(c,
@@ -97,19 +97,19 @@ class ActionRepeatHandler extends MouseAdapter implements ActionListener {
 
   @Override public void mousePressed(MouseEvent e) {
     if (SwingUtilities.isLeftMouseButton(e) && e.getComponent().isEnabled()) {
-      button = (JButton) e.getComponent();
       timer.start();
     }
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    timer.stop();
-    button = null;
-  }
-
-  @Override public void mouseExited(MouseEvent e) {
     if (timer.isRunning()) {
       timer.stop();
     }
   }
+
+  // @Override public void mouseExited(MouseEvent e) {
+  //   if (timer.isRunning()) {
+  //     timer.stop();
+  //   }
+  // }
 }
