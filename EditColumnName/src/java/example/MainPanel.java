@@ -18,24 +18,26 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     String[] columnNames = {"AAA", "BBB", "CCC"};
-    Object[][] data = {
-        {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
-        {"CCC", "g", "hh"}, {"DDD", "ii", "j"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel(columnNames));
     // table.setAutoCreateColumnsFromModel(true);
     table.setFillsViewportHeight(true);
     table.getTableHeader().setComponentPopupMenu(new TablePopupMenu(columnNames));
     // table.getTableHeader().setReorderingAllowed(false);
     // table.getTableHeader().setDraggedDistance(4);
-
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel(String[] columnNames) {
+    Object[][] data = {
+        {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
+        {"CCC", "g", "hh"}, {"DDD", "ii", "j"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+    };
   }
 
   public static void main(String[] args) {
