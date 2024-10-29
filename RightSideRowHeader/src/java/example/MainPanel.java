@@ -227,13 +227,11 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
     boolean scrollableWidth = false;
     boolean scrollableHeight = false;
     boolean isEmpty = availR.width < 0 || availR.height < 0;
-    Scrollable sv;
+    Scrollable sv = null;
     if (!isEmpty && view instanceof Scrollable) {
       sv = (Scrollable) view;
       scrollableWidth = sv.getScrollableTracksViewportWidth();
       scrollableHeight = sv.getScrollableTracksViewportHeight();
-    } else {
-      sv = null;
     }
 
     Rectangle vsbR = new Rectangle(0, availR.y - vpbInsets.top, 0, 0);
