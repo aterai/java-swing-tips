@@ -79,12 +79,9 @@ class BigDecimalSpinnerModel extends SpinnerNumberModel {
   private Number incrValue2(int dir) {
     BigDecimal value = BigDecimal.valueOf((Double) getNumber());
     BigDecimal stepSize = BigDecimal.valueOf((Double) getStepSize());
-    BigDecimal newValue = dir > 0 ? value.add(stepSize) : value.subtract(stepSize);
+    BigDecimal newVal = dir > 0 ? value.add(stepSize) : value.subtract(stepSize);
     BigDecimal max = BigDecimal.valueOf((Double) getMaximum());
     BigDecimal min = BigDecimal.valueOf((Double) getMinimum());
-    if (max.compareTo(newValue) < 0 || min.compareTo(newValue) > 0) {
-      newValue = null;
-    }
-    return newValue;
+    return max.compareTo(newVal) < 0 || min.compareTo(newVal) > 0 ? null : newVal;
   }
 }
