@@ -159,23 +159,23 @@ final class LookAndFeelUtils {
   }
 
   private static Constructor<?> getConstructor(Class<?> lnfClass) {
-    Constructor<?> cc;
+    Optional<Constructor<?>> op;
     try {
-      cc = lnfClass.getConstructor();
+      op = Optional.of(lnfClass.getConstructor());
     } catch (NoSuchMethodException e) {
-      cc = null;
+      op = Optional.empty();
     }
-    return cc;
+    return op.orElse(null);
   }
 
   private static Class<?> getLnfClass(String laf) {
-    Class<?> lnfClass;
+    Optional<Class<?>> op;
     try {
-      lnfClass = Class.forName(laf);
+      op = Optional.of(Class.forName(laf));
     } catch (ClassNotFoundException ex) {
-      lnfClass = null;
+      op = Optional.empty();
     }
-    return lnfClass;
+    return op.orElse(null);
   }
 
   private static class ChangeLookAndFeelAction extends AbstractAction {
