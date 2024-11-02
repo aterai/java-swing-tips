@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel(String[] columnNames) {
+  private static TableModel makeModel(String... columnNames) {
     Object[][] data = {
         {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
         {"CCC", "g", "hh"}, {"DDD", "ii", "j"}
