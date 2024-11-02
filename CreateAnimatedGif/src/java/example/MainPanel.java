@@ -116,8 +116,8 @@ public final class MainPanel extends JPanel {
       for (int i = 0; i < list.size() * DELAY; i++) {
         paintFrame(img, list);
         Collections.rotate(list, 1);
-        writer.writeToSequence(makeIioImage(img, metadata), null);
-        metadata = null;
+        IIOMetadata meta = i == 0 ? metadata : null;
+        writer.writeToSequence(makeIioImage(img, meta), null);
       }
       writer.endWriteSequence();
     }
