@@ -108,7 +108,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
         editor.setVisible(false);
         editingIdx = -1;
         len = -1;
-        tabComponent = null;
+        // tabComponent = null;
         editor.setPreferredSize(null);
         tabbedPane.requestFocusInWindow();
       }
