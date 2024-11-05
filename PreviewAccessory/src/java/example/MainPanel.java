@@ -71,7 +71,6 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
   private static final int PREVIEW_WIDTH = 90;
   private static final int PREVIEW_MARGIN = 5;
   private ImageIcon thumbnail;
-  private File file;
 
   protected ImagePreview(JFileChooser chooser) {
     super();
@@ -112,29 +111,25 @@ class ImagePreview extends JComponent implements PropertyChangeListener {
   }
 
   @Override public void propertyChange(PropertyChangeEvent e) {
+    String name = e.getPropertyName();
     boolean update = false;
-    String prop = e.getPropertyName();
-    if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
-      file = null;
-      update = true;
-    } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
+    File file = null;
+    if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(name)) {
       file = (File) e.getNewValue();
+      update = true;
+    } else if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(name)) {
       update = true;
     }
     if (update) {
+      thumbnail = getImageThumbnail(file);
       if (isShowing()) {
-        thumbnail = getImageThumbnail(file);
         repaint();
-      } else {
-        thumbnail = null;
       }
     }
   }
 
   @Override protected void paintComponent(Graphics g) {
-    if (Objects.isNull(thumbnail)) {
-      thumbnail = getImageThumbnail(file);
-    }
+    super.paintComponent(g);
     if (Objects.nonNull(thumbnail)) {
       int x = Math.max(PREVIEW_MARGIN, getWidth() / 2 - thumbnail.getIconWidth() / 2);
       int y = Math.max(0, getHeight() / 2 - thumbnail.getIconHeight() / 2);
