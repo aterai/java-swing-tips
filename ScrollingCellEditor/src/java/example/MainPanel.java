@@ -20,23 +20,12 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"JTextField", "JTextArea"};
-    Object[][] data = {
-        {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
-        {"bbb", "ccc"}, {"11112222", "333\n444\n555"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setAutoCreateRowSorter(true);
         setSurrendersFocusOnKeystroke(true);
         setRowHeight(64);
-
         TableColumn c = getColumnModel().getColumn(1);
         c.setCellEditor(new TextAreaCellEditor());
         c.setCellRenderer(new TextAreaCellRenderer());
@@ -44,6 +33,19 @@ public final class MainPanel extends JPanel {
     };
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"JTextField", "JTextArea"};
+    Object[][] data = {
+        {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
+        {"bbb", "ccc"}, {"11112222", "333\n444\n555"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
