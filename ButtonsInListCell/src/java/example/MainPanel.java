@@ -145,7 +145,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       if (Objects.nonNull(button) && renderer instanceof ButtonsRenderer) {
         ButtonsRenderer<?> r = (ButtonsRenderer<?>) renderer;
         r.pressedIndex = -1;
-        r.button = null;
+        // r.button = null;
         button.doClick();
         rectRepaint(list, list.getCellBounds(index, index));
       }
