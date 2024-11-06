@@ -17,25 +17,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"html"};
-    Object[][] data = {
-        {"<html><font color=red>font color red</font><br /> " + TEXT},
-        {"<html><font color=green>font color green</font> " + TEXT},
-        {"<html><font color=blue>font color blue</font> " + TEXT},
-        {"<html><font color=black>font color black</font><br />  " + TEXT},
-        {"<html><font color=orange>font color orange</font> " + TEXT},
-        {"<html><font color=gray>font color gray</font> " + TEXT}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return String.class;
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(16);
 
@@ -67,6 +49,27 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"html"};
+    Object[][] data = {
+        {"<html><font color=red>font color red</font><br /> " + TEXT},
+        {"<html><font color=green>font color green</font> " + TEXT},
+        {"<html><font color=blue>font color blue</font> " + TEXT},
+        {"<html><font color=black>font color black</font><br />  " + TEXT},
+        {"<html><font color=orange>font color orange</font> " + TEXT},
+        {"<html><font color=gray>font color gray</font> " + TEXT}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return String.class;
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
   }
 
   public static void main(String[] args) {
