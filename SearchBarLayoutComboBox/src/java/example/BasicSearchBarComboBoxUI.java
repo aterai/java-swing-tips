@@ -177,10 +177,11 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
    * {@inheritDoc}
    */
   @Override protected void uninstallComponents() {
-    if (loupeButton != null) {
-      unconfigureLoupeButton();
-    }
-    loupeButton = null;
+    // if (loupeButton != null) {
+    //   unconfigureLoupeButton();
+    // }
+    // loupeButton = null;
+    unconfigureLoupeButton();
     super.uninstallComponents();
   }
 
