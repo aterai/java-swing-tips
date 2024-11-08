@@ -17,27 +17,16 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JCheckBox check1 = new JCheckBox("Custom Sorting");
-
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"AA", 1, true}, {"BB", 2, false}, {"cc", 3, true}, {"dd", 4, false}, {"ee", 5, false},
-        {"FF", -1, true}, {"GG", -2, true}, {"HH", -3, true}, {"II", -4, true}, {"JJ", -5, true},
-        {"KK", 6, true}, {"LL", 7, false}, {"MM", 8, true}, {"NN", 9, false}, {"OO", 0, false},
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setFillsViewportHeight(true);
     // XXX: sorter.setSortsOnUpdates(true);
 
-    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model) {
+    TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel()) {
       @Override public void toggleSortOrder(int column) {
         super.toggleSortOrder(column);
-        if (check1.isSelected()) {
-          model.fireTableDataChanged();
+        TableModel m = getModel();
+        if (check1.isSelected() && m instanceof DefaultTableModel) {
+          ((DefaultTableModel) m).fireTableDataChanged();
           sort(); // allRowsChanged();
         }
         // if (check1.isSelected()) {
@@ -72,6 +61,20 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"AA", 1, true}, {"BB", 2, false}, {"cc", 3, true}, {"dd", 4, false}, {"ee", 5, false},
+        {"FF", -1, true}, {"GG", -2, true}, {"HH", -3, true}, {"II", -4, true}, {"JJ", -5, true},
+        {"KK", 6, true}, {"LL", 7, false}, {"MM", 8, true}, {"NN", 9, false}, {"OO", 0, false},
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
