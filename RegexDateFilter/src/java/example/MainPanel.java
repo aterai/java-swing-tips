@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -38,12 +40,20 @@ public final class MainPanel extends JPanel {
 
     JTable table = new JTable(makeModel(date, start, end)) {
       @Override public String getToolTipText(MouseEvent e) {
-        int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-        return getModel().getValueAt(row, 0).toString();
+        String txt = super.getToolTipText(e);
+        int idx = rowAtPoint(e.getPoint());
+        if (idx >= 0) {
+          int row = convertRowIndexToModel(idx);
+          txt = Optional.ofNullable(getModel().getValueAt(row, 0))
+              .map(Objects::toString)
+              .orElse(null);
+        }
+        return txt;
       }
     };
     TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(table.getModel());
     table.setRowSorter(sorter);
+    table.setFillsViewportHeight(true);
 
     // RowFilter.regexFilter
     Matcher m1 = Pattern.compile("12").matcher(date.toString());
@@ -163,15 +173,15 @@ class RegexDateFilter extends RowFilter<TableModel, Integer> {
 
   @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
     return IntStream.range(0, entry.getValueCount())
-      .anyMatch(i -> {
-        Object v = entry.getValue(i);
-        if (v instanceof Date) {
-          matcher.reset(DateFormat.getDateInstance().format(v));
-        } else {
-          matcher.reset(entry.getStringValue(i));
-        }
-        return matcher.find();
-      });
+        .anyMatch(i -> {
+          Object v = entry.getValue(i);
+          if (v instanceof Date) {
+            matcher.reset(DateFormat.getDateInstance().format(v));
+          } else {
+            matcher.reset(entry.getStringValue(i));
+          }
+          return matcher.find();
+        });
     // // TableModel m = entry.getModel();
     // // for (int i = 0; i < m.getColumnCount(); i++) {
     // for (int i = entry.getValueCount() - 1; i >= 0; i--) {
