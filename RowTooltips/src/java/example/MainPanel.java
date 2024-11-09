@@ -13,23 +13,19 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public String getToolTipText(MouseEvent e) {
-        int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-        TableModel m = getModel();
-        Object v0 = m.getValueAt(row, 0);
-        Object v1 = m.getValueAt(row, 1);
-        Object v2 = m.getValueAt(row, 2);
-        return String.format("<html>%s<br>%s<br>%s</html>", v0, v1, v2);
+        String txt = super.getToolTipText(e);
+        int idx = rowAtPoint(e.getPoint());
+        if (idx >= 0) {
+          int row = convertRowIndexToModel(idx);
+          TableModel m = getModel();
+          Object v0 = m.getValueAt(row, 0);
+          Object v1 = m.getValueAt(row, 1);
+          Object v2 = m.getValueAt(row, 2);
+          txt = String.format("<html>%s<br>%s<br>%s</html>", v0, v1, v2);
+        }
+        return txt;
       }
 
       // public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -45,8 +41,21 @@ public final class MainPanel extends JPanel {
       // }
     };
     table.setAutoCreateRowSorter(true);
+    table.setFillsViewportHeight(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
