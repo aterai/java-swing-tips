@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
     p.setOpaque(false);
-    p.add(makeCompactSlider());
+    p.add(makeCompactSlider1());
     p.add(makeCompactSlider2());
     p.add(makeCompactSlider3());
     p.add(makeCompactSlider4());
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeCompactSlider() {
+  private static Component makeCompactSlider1() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JProgressBar progressBar = makeProgressBar(m);
     JSpinner spinner = makeSpinner(progressBar);
@@ -78,9 +78,10 @@ public final class MainPanel extends JPanel {
         field.setBorder(BorderFactory.createEmptyBorder());
         UIDefaults d = new UIDefaults();
         Painter<JComponent> painter = (g, c, w, h) -> {};
-        d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Enabled].backgroundPainter", painter);
-        d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Focused].backgroundPainter", painter);
-        d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Selected].backgroundPainter", painter);
+        String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
+        d.put(key + "[Enabled].backgroundPainter", painter);
+        d.put(key + "[Focused].backgroundPainter", painter);
+        d.put(key + "[Selected].backgroundPainter", painter);
         field.putClientProperty("Nimbus.Overrides", d);
         field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
       }
@@ -100,7 +101,6 @@ public final class MainPanel extends JPanel {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JProgressBar progressBar = makeProgressBar(m);
     JSpinner spinner = makeSpinner2(m);
-    // JSpinner spinner = makeSpinner(progressBar);
     initListener(spinner, progressBar);
     LayerUI<JSpinner> layerUI = new LayerUI<JSpinner>() {
       private final JPanel renderer = new JPanel();
@@ -138,9 +138,10 @@ public final class MainPanel extends JPanel {
         field.setBorder(BorderFactory.createEmptyBorder());
         UIDefaults d = new UIDefaults();
         Painter<JComponent> painter = (g, c, w, h) -> {};
-        d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Enabled].backgroundPainter", painter);
-        d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Focused].backgroundPainter", painter);
-        d.put("Spinner:Panel:\"Spinner.formattedTextField\"[Selected].backgroundPainter", painter);
+        String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
+        d.put(key + "[Enabled].backgroundPainter", painter);
+        d.put(key + "[Focused].backgroundPainter", painter);
+        d.put(key + "[Selected].backgroundPainter", painter);
         field.putClientProperty("Nimbus.Overrides", d);
         field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
       }
@@ -151,7 +152,6 @@ public final class MainPanel extends JPanel {
     spinner.addChangeListener(e -> {
       JSpinner source = (JSpinner) e.getSource();
       progressBar.setValue((Integer) source.getValue());
-      source.repaint();
     });
     spinner.addMouseWheelListener(e -> {
       JSpinner source = (JSpinner) e.getComponent();
@@ -169,7 +169,7 @@ public final class MainPanel extends JPanel {
   private static Component makeCompactSlider3() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JProgressBar progressBar = makeProgressBar(m);
-    JTextField field = makeSpinner3(progressBar);
+    JTextField field = makeTextField(progressBar);
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(field);
@@ -179,7 +179,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private static JTextField makeSpinner3(JProgressBar progressBar) {
+  private static JTextField makeTextField(JProgressBar progressBar) {
     JFormattedTextField field = new JFormattedTextField() {
       private final JPanel renderer = new JPanel();
 
@@ -345,9 +345,9 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   private final BoundedRangeModel model;
   private JButton arrowButton;
 
-  protected AutoRepeatHandler(int extent, JTextComponent view, BoundedRangeModel model) {
+  protected AutoRepeatHandler(int step, JTextComponent view, BoundedRangeModel model) {
     super();
-    this.extent = BigInteger.valueOf(extent);
+    this.extent = BigInteger.valueOf(step);
     this.view = view;
     this.model = model;
     autoRepeatTimer = new Timer(60, this);
