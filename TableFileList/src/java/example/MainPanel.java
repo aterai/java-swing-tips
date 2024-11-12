@@ -295,18 +295,25 @@ class FileListTable extends JTable {
     }
 
     @Override public void mousePressed(MouseEvent e) {
-      srcPoint.setLocation(e.getPoint());
-      if (rowAtPoint(e.getPoint()) < 0) {
+      Point pt = e.getPoint();
+      srcPoint.setLocation(pt);
+      int row = rowAtPoint(pt);
+      int col = convertColumnIndexToView(0);
+      FileListTable table = FileListTable.this;
+      if (row < 0 || !getCellRect2(table, row, col).contains(pt)) {
         clearSelection();
         e.getComponent().repaint();
-      } else {
-        int index = rowAtPoint(e.getPoint());
-        Rectangle rect = getCellRect2(FileListTable.this, index, convertColumnIndexToView(0));
-        if (!rect.contains(e.getPoint())) {
-          clearSelection();
-          e.getComponent().repaint();
-        }
       }
+      // if (row < 0) {
+      //   clearSelection();
+      //   e.getComponent().repaint();
+      // } else {
+      //   Rectangle rect = getCellRect2(table, row, col);
+      //   if (!rect.contains(pt)) {
+      //     clearSelection();
+      //     e.getComponent().repaint();
+      //   }
+      // }
     }
   }
 
