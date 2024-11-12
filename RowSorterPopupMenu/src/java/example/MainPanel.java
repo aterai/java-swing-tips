@@ -19,17 +19,8 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
-    table.setRowSorter(new TableRowSorter<TableModel>(model) {
+    JTable table = new JTable(makeModel());
+    table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()) {
       @Override public void toggleSortOrder(int column) {
         /* Disable header click sorting */
       }
@@ -68,6 +59,18 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   public static void main(String[] args) {
