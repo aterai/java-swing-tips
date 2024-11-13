@@ -19,11 +19,20 @@ public final class MainPanel extends JPanel {
       @Override protected JTableHeader createDefaultTableHeader() {
         return new JTableHeader(columnModel) {
           @Override public String getToolTipText(MouseEvent e) {
-            int i = columnAtPoint(e.getPoint());
-            TableColumn c = getColumnModel().getColumn(i);
+            int column = columnAtPoint(e.getPoint());
+            return column >= 0 ? getToolTipText(column) : null;
+          }
+
+          private String getToolTipText(int column) {
+            TableColumn c = getColumnModel().getColumn(column);
             return String.format("%s (width=%dpx)", c.getHeaderValue(), c.getWidth());
           }
         };
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
       }
     };
     // table.setTableHeader(new JTableHeader(table.getColumnModel()) {
