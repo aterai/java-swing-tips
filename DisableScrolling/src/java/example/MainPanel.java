@@ -16,12 +16,18 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new JTable(makeModel()) {
       @Override public String getToolTipText(MouseEvent e) {
-        int row = convertRowIndexToModel(rowAtPoint(e.getPoint()));
-        TableModel m = getModel();
-        return String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
+        String txt = super.getToolTipText(e);
+        int idx = rowAtPoint(e.getPoint());
+        if (idx >= 0) {
+          int row = convertRowIndexToModel(idx);
+          TableModel m = getModel();
+          txt = String.format("%s, %s", m.getValueAt(row, 0), m.getValueAt(row, 2));
+        }
+        return txt;
       }
     };
     table.setAutoCreateRowSorter(true);
+    table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
     // table.setInheritsPopupMenu(true);
     JScrollPane scroll = new JScrollPane(table);
