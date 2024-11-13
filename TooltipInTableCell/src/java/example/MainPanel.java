@@ -24,14 +24,19 @@ public final class MainPanel extends JPanel {
       private static final int LIST_ICON_COLUMN = 1;
 
       @Override public String getToolTipText(MouseEvent e) {
+        String txt = super.getToolTipText(e);
         Point pt = e.getPoint();
         int row = rowAtPoint(pt);
         int col = columnAtPoint(pt);
-        TableCellRenderer tcr = getCellRenderer(row, col);
-        Component c = prepareRenderer(tcr, row, col);
-        int mci = convertColumnIndexToModel(col);
-        boolean b = mci == LIST_ICON_COLUMN && c instanceof JPanel;
-        return b ? getToolTipText(e, c) : super.getToolTipText(e);
+        if (row >= 0 && col >= 0) {
+          TableCellRenderer tcr = getCellRenderer(row, col);
+          Component c = prepareRenderer(tcr, row, col);
+          int mci = convertColumnIndexToModel(col);
+          if (mci == LIST_ICON_COLUMN && c instanceof JPanel) {
+            txt = getToolTipText(e, c);
+          }
+        }
+        return txt;
       }
 
       private String getToolTipText(MouseEvent e, Component c) {
@@ -62,6 +67,8 @@ public final class MainPanel extends JPanel {
         setRowHeight(40);
       }
     };
+    // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
