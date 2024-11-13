@@ -18,35 +18,11 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Group", "Name", "Count"};
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @Override public Class<?> getColumnClass(int column) {
-        return RowData.class;
-      }
-    };
-
-    String colors = "colors";
-    addRowData(model, new RowData(colors, "blue", 1));
-    addRowData(model, new RowData(colors, "violet", 2));
-    addRowData(model, new RowData(colors, "red", 3));
-    addRowData(model, new RowData(colors, "yellow", 4));
-    String sports = "sports";
-    addRowData(model, new RowData(sports, "baseball", 23));
-    addRowData(model, new RowData(sports, "soccer", 22));
-    addRowData(model, new RowData(sports, "football", 21));
-    addRowData(model, new RowData(sports, "hockey", 20));
-    String food = "food";
-    addRowData(model, new RowData(food, "hot dogs", 10));
-    addRowData(model, new RowData(food, "pizza", 11));
-    addRowData(model, new RowData(food, "ravioli", 12));
-    addRowData(model, new RowData(food, "bananas", 13));
-
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setFillsViewportHeight(true);
         setDefaultRenderer(RowData.class, new RowDataRenderer());
-
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(getModel());
         Comparator<RowData> c = Comparator.comparing(RowData::getGroup);
         sorter.setComparator(0, c);
@@ -62,6 +38,31 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Group", "Name", "Count"};
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+      @Override public Class<?> getColumnClass(int column) {
+        return RowData.class;
+      }
+    };
+    String colors = "colors";
+    addRowData(model, new RowData(colors, "blue", 1));
+    addRowData(model, new RowData(colors, "violet", 2));
+    addRowData(model, new RowData(colors, "red", 3));
+    addRowData(model, new RowData(colors, "yellow", 4));
+    String sports = "sports";
+    addRowData(model, new RowData(sports, "baseball", 23));
+    addRowData(model, new RowData(sports, "soccer", 22));
+    addRowData(model, new RowData(sports, "football", 21));
+    addRowData(model, new RowData(sports, "hockey", 20));
+    String food = "food";
+    addRowData(model, new RowData(food, "hot dogs", 10));
+    addRowData(model, new RowData(food, "pizza", 11));
+    addRowData(model, new RowData(food, "ravioli", 12));
+    addRowData(model, new RowData(food, "bananas", 13));
+    return model;
   }
 
   private static void addRowData(DefaultTableModel model, RowData data) {
