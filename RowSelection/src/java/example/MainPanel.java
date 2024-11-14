@@ -18,16 +18,7 @@ public final class MainPanel extends JPanel {
     JPanel infoPanel = new JPanel();
     infoPanel.add(label);
 
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     // table.setRowSorter(new TableRowSorter<>(model));
     table.getSelectionModel().addListSelectionListener(e -> {
@@ -51,6 +42,18 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     add(infoPanel, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
   }
 
   private static String getInfo(JTable table) {
