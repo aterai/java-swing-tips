@@ -20,6 +20,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -44,46 +45,53 @@ public final class MainPanel extends JPanel {
     switchPanel.colors[2] = Color.BLUE;
 
     JButton button = new JButton("open JColorChooser");
-    button.addActionListener(e -> {
-      JColorChooser cc = new JColorChooser();
-      AbstractColorChooserPanel[] panels = cc.getChooserPanels();
-      // https://stackoverflow.com/questions/10793916/jcolorchooser-save-restore-recent-colors-in-swatches-panel
-      List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
-      choosers.remove(0);
-      MySwatchChooserPanel swatch = new MySwatchChooserPanel();
-      swatch.addPropertyChangeListener("ancestor", event -> {
-        Color[] colors = swatch.recentSwatchPanel.colors;
-        if (event.getNewValue() == null) {
-          System.arraycopy(colors, 0, switchPanel.colors, 0, colors.length);
-        } else {
-          System.arraycopy(switchPanel.colors, 0, colors, 0, colors.length);
-        }
-      });
-      choosers.add(0, swatch);
-      cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
-
-      ColorTracker ok = new ColorTracker(cc);
-      Component parent = getRootPane();
-      String title = "JColorChooser";
-      JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
-      dialog.addComponentListener(new ComponentAdapter() {
-        @Override public void componentHidden(ComponentEvent e) {
-          ((Window) e.getComponent()).dispose();
-        }
-      });
-      dialog.setVisible(true); // blocks until user brings dialog down...
-      switchPanel.repaint();
-      Color color = ok.getColor();
-      if (color != null) {
-        label.setBackground(color);
-      }
-    });
+    button.addActionListener(e -> showColorChooser(switchPanel, label));
 
     add(switchPanel);
     add(label);
     add(button);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showColorChooser(RecentSwatchPanel switchPanel, JLabel label) {
+    JColorChooser cc = new JColorChooser();
+    List<AbstractColorChooserPanel> choosers = getColorChooserPanels(cc, switchPanel);
+    cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
+    ColorTracker ok = new ColorTracker(cc);
+    Component parent = getRootPane();
+    String title = "JColorChooser";
+    JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
+    dialog.addComponentListener(new ComponentAdapter() {
+      @Override public void componentHidden(ComponentEvent e) {
+        ((Window) e.getComponent()).dispose();
+      }
+    });
+    dialog.setVisible(true); // blocks until user brings dialog down...
+    switchPanel.repaint();
+    Color color = ok.getColor();
+    if (color != null) {
+      label.setBackground(color);
+    }
+  }
+
+  private static List<AbstractColorChooserPanel> getColorChooserPanels(
+      JColorChooser cc, RecentSwatchPanel switchPanel) {
+    AbstractColorChooserPanel[] panels = cc.getChooserPanels();
+    // https://stackoverflow.com/questions/10793916/jcolorchooser-save-restore-recent-colors-in-swatches-panel
+    List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
+    choosers.remove(0);
+    MySwatchChooserPanel swatch = new MySwatchChooserPanel();
+    swatch.addPropertyChangeListener("ancestor", event -> {
+      Color[] colors = swatch.recentSwatchPanel.colors;
+      if (event.getNewValue() == null) {
+        System.arraycopy(colors, 0, switchPanel.colors, 0, colors.length);
+      } else {
+        System.arraycopy(switchPanel.colors, 0, colors, 0, colors.length);
+      }
+    });
+    choosers.add(0, swatch);
+    return choosers;
   }
 
   public static void main(String[] args) {
@@ -157,7 +165,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
   }
 
   @Override protected void buildChooser() {
-    swatchPanel =  new MainSwatchPanel();
+    swatchPanel = new MainSwatchPanel();
     swatchPanel.putClientProperty(AccessibleContext.ACCESSIBLE_NAME_PROPERTY, getDisplayName());
     swatchPanel.setInheritsPopupMenu(true);
 
@@ -215,6 +223,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     add(superHolder);
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override public void uninstallChooserPanel(JColorChooser enclosingChooser) {
     super.uninstallChooserPanel(enclosingChooser);
     swatchPanel.removeMouseListener(mainSwatchListener);
@@ -383,38 +392,33 @@ class SwatchPanel extends JPanel {
   }
 
   @Override public void paintComponent(Graphics g) {
+    Color defColor = UIManager.getColor("ColorChooser.swatchesDefaultRecentColor");
     g.setColor(getBackground());
     g.fillRect(0, 0, getWidth(), getHeight());
+    boolean ltr = getComponentOrientation().isLeftToRight();
+    int sw = swatchSize.width;
+    int sh = swatchSize.height;
+    int gw = gap.width;
+    int gh = gap.height;
     for (int row = 0; row < numSwatches.height; row++) {
-      int y = row * (swatchSize.height + gap.height);
-      for (int column = 0; column < numSwatches.width; column++) {
-        Color c = getColorForCell(column, row);
+      int y = row * (sh + gh);
+      for (int col = 0; col < numSwatches.width; col++) {
+        Color c = Optional.ofNullable(getColorForCell(col, row)).orElse(defColor);
         g.setColor(c);
-        int x;
-        if (getComponentOrientation().isLeftToRight()) {
-          x = column * (swatchSize.width + gap.width);
-        } else {
-          x = (numSwatches.width - column - 1) * (swatchSize.width + gap.width);
-        }
-        g.fillRect(x, y, swatchSize.width, swatchSize.height);
+        int x = ltr ? col * (sw + gw) : (numSwatches.width - col - 1) * (sw + gw);
+        g.fillRect(x, y, sw, sh);
         g.setColor(Color.BLACK);
-        g.drawLine(x + swatchSize.width - 1, y,
-            x + swatchSize.width - 1, y + swatchSize.height - 1);
-        g.drawLine(x, y + swatchSize.height - 1,
-            x + swatchSize.width - 1, y + swatchSize.height - 1);
-
-        if (selRow == row && selCol == column && this.isFocusOwner()) {
+        g.drawLine(x + sw - 1, y, x + sw - 1, y + sh - 1);
+        g.drawLine(x, y + sh - 1, x + sw - 1, y + sh - 1);
+        if (selRow == row && selCol == col && isFocusOwner()) {
           Color c2 = getFocusColor(c);
           g.setColor(c2);
-
-          g.drawLine(x, y, x + swatchSize.width - 1, y);
-          g.drawLine(x, y, x, y + swatchSize.height - 1);
-          g.drawLine(x + swatchSize.width - 1, y,
-              x + swatchSize.width - 1, y + swatchSize.height - 1);
-          g.drawLine(x, y + swatchSize.height - 1,
-              x + swatchSize.width - 1, y + swatchSize.height - 1);
-          g.drawLine(x, y, x + swatchSize.width - 1, y + swatchSize.height - 1);
-          g.drawLine(x, y + swatchSize.height - 1, x + swatchSize.width - 1, y);
+          g.drawLine(x, y, x + sw - 1, y);
+          g.drawLine(x, y, x, y + sh - 1);
+          g.drawLine(x + sw - 1, y, x + sw - 1, y + sh - 1);
+          g.drawLine(x, y + sh - 1, x + sw - 1, y + sh - 1);
+          g.drawLine(x, y, x + sw - 1, y + sh - 1);
+          g.drawLine(x, y + sh - 1, x + sw - 1, y);
         }
       }
     }
@@ -438,8 +442,9 @@ class SwatchPanel extends JPanel {
   }
 
   @Override public String getToolTipText(MouseEvent e) {
-    Color color = getColorForLocation(e.getX(), e.getY());
-    return color.getRed() + ", " + color.getGreen() + ", " + color.getBlue();
+    return Optional.ofNullable(getColorForLocation(e.getX(), e.getY()))
+        .map(c -> c.getRed() + ", " + c.getGreen() + ", " + c.getBlue())
+        .orElse(null);
   }
 
   public void setSelectedColorFromLocation(int x, int y) {
@@ -453,13 +458,11 @@ class SwatchPanel extends JPanel {
   }
 
   public Color getColorForLocation(int x, int y) {
-    int column;
-    if (getComponentOrientation().isLeftToRight()) {
-      column = x / (swatchSize.width + gap.width);
-    } else {
-      column = numSwatches.width - x / (swatchSize.width + gap.width) - 1;
-    }
-    int row = y / (swatchSize.height + gap.height);
+    boolean leftToRight = getComponentOrientation().isLeftToRight();
+    int w = swatchSize.width + gap.width;
+    int column = leftToRight ? x / w : numSwatches.width - x / w - 1;
+    int h = swatchSize.height + gap.height;
+    int row = y / h;
     return getColorForCell(column, row);
   }
 
@@ -476,7 +479,8 @@ class RecentSwatchPanel extends SwatchPanel {
   }
 
   @Override protected void initColors() {
-    Color defaultRecent = UIManager.getColor("ColorChooser.swatchesDefaultRecentColor");
+    Color defaultRecent = null;
+    // = UIManager.getColor("ColorChooser.swatchesDefaultRecentColor");
     int numColors = numSwatches.width * numSwatches.height;
     colors = new Color[numColors];
     for (int i = 0; i < numColors; i++) {
