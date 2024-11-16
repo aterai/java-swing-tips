@@ -10,27 +10,12 @@ import java.awt.event.MouseEvent;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JScrollPane scroll = new JScrollPane(makeTable());
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private JTable makeTable() {
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    IntStream.range(0, 1000)
-        .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
-        .forEach(model::addRow);
-    return new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       private transient MouseAdapter handler;
       @Override public void updateUI() {
         removeMouseMotionListener(handler);
@@ -45,6 +30,23 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
+    JScrollPane scroll = new JScrollPane(table);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+    IntStream.range(0, 1000)
+        .mapToObj(i -> new Object[] {"Java Swing", i, i % 2 == 0})
+        .forEach(model::addRow);
+    return model;
   }
 
   public static void main(String[] args) {
@@ -75,17 +77,17 @@ class DragScrollingListener extends MouseAdapter {
   public static final double GRAVITY = .95;
   private final Cursor dc = Cursor.getDefaultCursor();
   private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  private final Timer scroller;
+  private final Timer scrollTimer;
   private final Point startPt = new Point();
   private final Point delta = new Point();
 
   protected DragScrollingListener(JComponent c) {
     super();
-    this.scroller = new Timer(DELAY, e -> {
-      JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(c);
-      Point vp = vport.getViewPosition();
+    this.scrollTimer = new Timer(DELAY, e -> {
+      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(c);
+      Point vp = viewport.getViewPosition();
       vp.translate(-delta.x, -delta.y);
-      c.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      c.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
       if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
         delta.setLocation((int) (delta.x * GRAVITY), (int) (delta.y * GRAVITY));
       } else {
@@ -101,7 +103,7 @@ class DragScrollingListener extends MouseAdapter {
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
       startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), p));
-      scroller.stop();
+      scrollTimer.stop();
     }
   }
 
@@ -109,12 +111,16 @@ class DragScrollingListener extends MouseAdapter {
     Component c = e.getComponent();
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      Point vp = vport.getViewPosition();
-      vp.translate(startPt.x - cp.x, startPt.y - cp.y);
-      delta.setLocation(VELOCITY * (cp.x - startPt.x), VELOCITY * (cp.y - startPt.y));
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      Point vp = viewport.getViewPosition();
+      int dx = cp.x - startPt.x;
+      int dy = cp.y - startPt.y;
+      vp.translate(-dx, -dy);
+      delta.setLocation(dx * VELOCITY, dy * VELOCITY);
+      Rectangle rect = viewport.getBounds();
+      rect.setLocation(vp);
+      ((JComponent) c).scrollRectToVisible(rect);
       startPt.setLocation(cp);
     }
   }
@@ -123,6 +129,6 @@ class DragScrollingListener extends MouseAdapter {
     Component c = e.getComponent();
     c.setCursor(dc);
     c.setEnabled(true);
-    scroller.start();
+    scrollTimer.start();
   }
 }
