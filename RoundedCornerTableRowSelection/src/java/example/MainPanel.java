@@ -17,30 +17,7 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JScrollPane scroll = new JScrollPane(makeTable());
-    scroll.setBackground(Color.WHITE);
-    scroll.getViewport().setBackground(Color.WHITE);
-    scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setOpaque(true);
-    setBackground(Color.WHITE);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static JTable makeTable() {
-    String[] columnNames = {"A", "B", "C", "Integer"};
-    Object[][] data = {
-        {"aaa", "aa", "a", 12},
-        {"bbb", "bb", "b", 5},
-        {"ccc", "cc", "c", 92},
-        {"ddd", "dd", "d", 0}
-    };
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    return new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setRowHeight(24);
@@ -53,6 +30,29 @@ public final class MainPanel extends JPanel {
         for (int i = 0; i < columns.getColumnCount(); i++) {
           columns.getColumn(i).setCellRenderer(r);
         }
+      }
+    };
+    JScrollPane scroll = new JScrollPane(table);
+    scroll.setBackground(Color.WHITE);
+    scroll.getViewport().setBackground(Color.WHITE);
+    scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setOpaque(true);
+    setBackground(Color.WHITE);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"A", "B", "C", "Integer"};
+    Object[][] data = {
+        {"aaa", "aa", "a", 12},
+        {"bbb", "bb", "b", 5},
+        {"ccc", "cc", "c", 92},
+        {"ddd", "dd", "d", 0}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
       }
     };
   }
