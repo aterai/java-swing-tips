@@ -135,40 +135,6 @@ class ToggleButtonBarCellIcon implements Icon {
     if (Objects.isNull(parent)) {
       return;
     }
-    double r = 4d;
-    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
-    double w = c.getWidth();
-    double h = c.getHeight() - 1d;
-
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-    Path2D p = new Path2D.Double();
-    if (Objects.equals(c, parent.getComponent(0))) {
-      // :first-child
-      p.moveTo(x, y + r);
-      p.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
-      p.lineTo(x + w, y);
-      p.lineTo(x + w, y + h);
-      p.lineTo(x + r, y + h);
-      p.curveTo(x + r - rr, y + h, x, y + h - r + rr, x, y + h - r);
-    } else if (Objects.equals(c, parent.getComponent(parent.getComponentCount() - 1))) {
-      // :last-child
-      w--;
-      p.moveTo(x, y);
-      p.lineTo(x + w - r, y);
-      p.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
-      p.lineTo(x + w, y + h - r);
-      p.curveTo(x + w, y + h - r + rr, x + w - r + rr, y + h, x + w - r, y + h);
-      p.lineTo(x, y + h);
-    } else {
-      p.moveTo(x, y);
-      p.lineTo(x + w, y);
-      p.lineTo(x + w, y + h);
-      p.lineTo(x, y + h);
-    }
-    p.closePath();
-
     Color ssc = TL;
     Color bgc = BR;
     if (c instanceof AbstractButton) {
@@ -178,15 +144,52 @@ class ToggleButtonBarCellIcon implements Icon {
         bgc = SB;
       }
     }
-
-    Area area = new Area(p);
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.translate(x, y);
+    Path2D path = makeButtonPath(c, parent);
+    // path.transform(AffineTransform.getTranslateInstance(x, y));
+    Area area = new Area(path);
     g2.setPaint(c.getBackground());
     g2.fill(area);
-    g2.setPaint(new GradientPaint(x, y, ssc, x, y + (float) h, bgc, true));
+    g2.setPaint(new GradientPaint(0f, 0f, ssc, 0f, c.getHeight(), bgc, true));
     g2.fill(area);
     g2.setPaint(BR);
     g2.draw(area);
     g2.dispose();
+  }
+
+  private static Path2D makeButtonPath(Component c, Container p) {
+    double r = 4d;
+    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
+    double w = c.getWidth();
+    double h = c.getHeight() - 1d;
+    Path2D path = new Path2D.Double();
+    if (Objects.equals(c, p.getComponent(0))) {
+      // :first-child
+      path.moveTo(0d, r);
+      path.curveTo(0d, r - rr, r - rr, 0d, r, 0d);
+      path.lineTo(w, 0d);
+      path.lineTo(w, h);
+      path.lineTo(r, h);
+      path.curveTo(r - rr, h, 0d, h - r + rr, 0d, h - r);
+    } else if (Objects.equals(c, p.getComponent(p.getComponentCount() - 1))) {
+      // :last-child
+      w--;
+      path.moveTo(0d, 0d);
+      path.lineTo(w - r, 0d);
+      path.curveTo(w - r + rr, 0d, w, r - rr, w, r);
+      path.lineTo(w, h - r);
+      path.curveTo(w, h - r + rr, w - r + rr, h, w - r, h);
+      path.lineTo(0d, h);
+    } else {
+      path.moveTo(0d, 0d);
+      path.lineTo(w, 0d);
+      path.lineTo(w, h);
+      path.lineTo(0d, h);
+    }
+    path.closePath();
+    return path;
   }
 
   @Override public int getIconWidth() {
