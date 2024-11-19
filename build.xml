@@ -263,7 +263,7 @@
 
   <target name="errorprone" depends="prepare-src">
     <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
-    <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar"/>
+    <property name="javac.jar" location="${env.ERRORPRONE_HOME}/javac-9+181-r4173-1.jar" />
     <path id="processorpath.ref">
       <fileset dir="${env.ERRORPRONE_HOME}">
         <include name="*.jar" />
@@ -279,10 +279,11 @@
            includeAntRuntime="no">
       <include name="**/*.java" />
       <exclude name="**/module-info.java" unless:set="jdk9orlater" />
-      <compilerarg value="-J-Xbootclasspath/p:${javac.jar}" unless:set="jdk9orlater"/>
-      <compilerarg value="-XDcompilePolicy=simple"/>
-      <compilerarg value="-processorpath"/>
-      <compilerarg pathref="processorpath.ref"/>
+      <compilerarg value="-J-Xbootclasspath/p:${javac.jar}" unless:set="jdk9orlater" />
+      <compilerarg value="-XDcompilePolicy=simple" />
+      <compilerarg value="--should-stop=ifError=FLOW" if:set="jdk9orlater" />
+      <compilerarg value="-processorpath" />
+      <compilerarg pathref="processorpath.ref" />
       <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
       <compilerarg value="-J-Dfile.encoding=UTF-8" />
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" if:set="jdk9orlater" />
