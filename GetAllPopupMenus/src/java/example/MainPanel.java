@@ -15,7 +15,13 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeTable();
+    JTable table = new JTable(makeModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setFillsViewportHeight(true);
+        setAutoCreateRowSorter(true);
+      }
+    };
     table.setComponentPopupMenu(makePopupMenu());
 
     JTabbedPane tabs = new JTabbedPane();
@@ -73,22 +79,15 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable() {
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"prev1: Ctrl+1", 1, true}, {"next1: Ctrl+2", 2, false},
         {"prev2: Ctrl+3", 3, true}, {"next2: Ctrl+4", 4, false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
-      }
-    };
-    return new JTable(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setFillsViewportHeight(true);
-        setAutoCreateRowSorter(true);
       }
     };
   }
