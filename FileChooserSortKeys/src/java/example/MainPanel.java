@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
             //     .filter(JTable.class::isInstance)
             //     .map(JTable.class::cast)
             //     .findFirst()
-            //     .ifPresent(table -> sortKeys =  table.getRowSorter().getSortKeys());
+            //     .ifPresent(table -> sortKeys = table.getRowSorter().getSortKeys());
           }
 
           @Override public void ancestorMoved(AncestorEvent e) {
