@@ -30,6 +30,7 @@ public final class MainPanel extends JPanel {
       bg.add(rb);
       box.add(Box.createHorizontalStrut(5));
     });
+    box.add(Box.createHorizontalGlue());
 
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -136,11 +137,12 @@ class MissingIcon implements Icon {
     int h = getIconHeight();
     int gap = w / 5;
     g2.setColor(Color.WHITE);
-    g2.fillRect(x, y, w, h);
+    g2.translate(x, y);
+    g2.fillRect(0, 0, w, h);
     g2.setColor(Color.RED);
     g2.setStroke(new BasicStroke(w / 8f));
-    g2.drawLine(x + gap, y + gap, x + gap, y + h - gap);
-    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
+    g2.drawLine(gap, gap, gap, h - gap);
+    g2.drawLine(gap, h - gap, w - gap, gap);
     g2.dispose();
   }
 
