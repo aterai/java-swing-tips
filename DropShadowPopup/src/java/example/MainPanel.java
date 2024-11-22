@@ -84,16 +84,14 @@ public final class MainPanel extends JPanel {
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-
     int w = getIconWidth();
     int h = getIconHeight();
     int gap = w / 5;
-
-    g2.setColor(Color.RED);
     g2.setStroke(new BasicStroke(w / 8f));
-    g2.drawLine(x + gap, y + gap, x + w - gap, y + h - gap);
-    g2.drawLine(x + gap, y + h - gap, x + w - gap, y + gap);
-
+    g2.setColor(Color.RED);
+    g2.translate(x, y);
+    g2.drawLine(gap, gap, w - gap, h - gap);
+    g2.drawLine(gap, h - gap, w - gap, gap);
     g2.dispose();
   }
 
