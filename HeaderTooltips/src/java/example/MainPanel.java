@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
 
       @Override public void updateUI() {
         super.updateUI();
-        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        setAutoResizeMode(AUTO_RESIZE_OFF);
       }
     };
     // table.setTableHeader(new JTableHeader(table.getColumnModel()) {
