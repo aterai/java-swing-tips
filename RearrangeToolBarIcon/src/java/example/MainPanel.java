@@ -131,6 +131,7 @@ class DragHandler extends MouseAdapter {
     swapComponent(parent, gap, gap, idx);
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override public void mouseReleased(MouseEvent e) {
     if (!window.isVisible() || Objects.isNull(draggingComponent)) {
       return;

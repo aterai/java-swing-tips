@@ -33,7 +33,6 @@
   </rule>
   <rule ref="category/java/errorprone.xml">
     <exclude name="MissingSerialVersionUID" />
-    <exclude name="NullAssignment" />
   </rule>
   <rule ref="category/java/multithreading.xml">
     <exclude name="DoNotUseThreads" />

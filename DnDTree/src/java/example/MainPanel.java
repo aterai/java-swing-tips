@@ -182,6 +182,7 @@ class DnDTree extends JTree {
       repaint();
     }
 
+    @SuppressWarnings("PMD.NullAssignment")
     @Override public void drop(DropTargetDropEvent e) {
       // System.out.println("drop");
       // if (!isWebStart()) {
@@ -228,6 +229,7 @@ class DnDTree extends JTree {
       }
     }
 
+    @SuppressWarnings("PMD.NullAssignment")
     private void rejectDrag(DropTargetDragEvent e) {
       e.rejectDrag();
       dropTargetNode = null; // dropTargetNode as null,

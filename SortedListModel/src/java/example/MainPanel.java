@@ -59,6 +59,7 @@ public final class MainPanel extends JPanel {
   private final JRadioButton descending = new JRadioButton("descending");
   private final List<JRadioButton> directionList = Arrays.asList(ascending, descending);
 
+  @SuppressWarnings("PMD.NullAssignment")
   private MainPanel() {
     super(new BorderLayout());
     Stream.of(defaultModel).forEach(model::addElement);

@@ -144,6 +144,7 @@ class RearrangingHandler extends MouseAdapter {
     }
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override public void mouseReleased(MouseEvent e) {
     dragOffset.setLocation(0, 0);
     PREV_RECT.setBounds(0, 0, 0, 0);

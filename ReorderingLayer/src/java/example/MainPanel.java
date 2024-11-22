@@ -98,6 +98,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     super.uninstallUI(c);
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
     JComponent parent = l.getView();
     Component c = e.getComponent();

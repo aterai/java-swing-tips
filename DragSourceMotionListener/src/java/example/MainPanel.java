@@ -198,6 +198,7 @@ class LabelTransferHandler extends TransferHandler {
     return src;
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     // System.out.println("exportDone");
     DragPanel src = (DragPanel) c;

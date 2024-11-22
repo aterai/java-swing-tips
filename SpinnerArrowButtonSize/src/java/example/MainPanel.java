@@ -122,6 +122,7 @@ class SpinnerLayout implements LayoutManager {
     }
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override public void removeLayoutComponent(Component c) {
     if (Objects.equals(c, nextButton)) {
       nextButton = null;

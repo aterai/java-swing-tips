@@ -129,6 +129,7 @@ class CustomUndoPlainDocument extends PlainDocument {
     //     .ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     if (length == 0) {
       // System.out.println("insert");
@@ -147,6 +148,7 @@ class CustomUndoPlainDocument extends PlainDocument {
 class DocumentFilterUndoManager extends UndoManager {
   private CompoundEdit compoundEdit;
   private final transient DocumentFilter undoFilter = new DocumentFilter() {
+    @SuppressWarnings("PMD.NullAssignment")
     @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
       if (length == 0) {
         fb.insertString(offset, text, attrs);

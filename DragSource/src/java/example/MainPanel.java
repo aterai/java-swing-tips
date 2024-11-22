@@ -128,6 +128,7 @@ public final class MainPanel extends JPanel {
     label.setText("tmpFile#exists(): true(draggable)");
   }
 
+  @SuppressWarnings("PMD.NullAssignment")
   public void clearFile() {
     file = null;
     label.setIcon(i1);
