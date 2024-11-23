@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -166,7 +167,7 @@ class TreeTransferHandler extends TransferHandler {
     return nodes;
   }
 
-  private static DefaultMutableTreeNode deepCopy(MutableTreeNode src, DefaultMutableTreeNode tgt) {
+  private static MutableTreeNode deepCopy(TreeNode src, DefaultMutableTreeNode tgt) {
     // Java 9: Collections.list(src.children()).stream()
     Collections.list((Enumeration<?>) src.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
