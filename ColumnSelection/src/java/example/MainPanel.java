@@ -7,53 +7,46 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final JCheckBox check = new JCheckBox("Header click: Select all cells in a column", true);
-
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel());
-    table.setCellSelectionEnabled(true);
+    JTable table = makeTable();
     JTableHeader header = table.getTableHeader();
     header.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        if (!check.isSelected()) {
-          return;
-        }
-        if (table.isEditing()) {
-          table.getCellEditor().stopCellEditing();
+        JTable t = ((JTableHeader) e.getComponent()).getTable();
+        if (t.isEditing()) {
+          t.getCellEditor().stopCellEditing();
         }
         int col = header.columnAtPoint(e.getPoint());
-        table.changeSelection(0, col, false, false);
-        table.changeSelection(table.getRowCount() - 1, col, false, true);
+        t.changeSelection(0, col, false, false);
+        t.changeSelection(t.getRowCount() - 1, col, false, true);
       }
     });
+    List<JTable> list = Arrays.asList(makeTable(), table);
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    for (JTable t : list) {
+      p.add(new JScrollPane(t));
+    }
     JButton button = new JButton("clear selection");
-    button.addActionListener(e -> table.clearSelection());
-    // table.getTableHeader().addMouseListener(new MouseAdapter() {
-    //   @Override public void mousePressed(MouseEvent e) {
-    //     JTable table = ((JTableHeader) e.getSource()).getTable();
-    //     if (table.isEditing()) {
-    //       table.getCellEditor().stopCellEditing();
-    //     }
-    //     if (check.isSelected()) {
-    //       // table.getSelectionModel().clearSelection();
-    //       // table.getSelectionModel().setAnchorSelectionIndex(-1);
-    //       // table.getSelectionModel().setLeadSelectionIndex(-1);
-    //       table.getColumnModel().getSelectionModel().setAnchorSelectionIndex(-1);
-    //       table.getColumnModel().getSelectionModel().setLeadSelectionIndex(-1);
-    //     }
-    //   }
-    // });
-    add(check, BorderLayout.NORTH);
-    add(new JScrollPane(table));
+    button.addActionListener(e -> list.forEach(JTable::clearSelection));
+    add(p);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTable makeTable() {
+    JTable table = new JTable(makeModel());
+    table.setCellSelectionEnabled(true);
+    table.setAutoCreateRowSorter(true);
+    return table;
   }
 
   private static TableModel makeModel() {
