@@ -18,45 +18,16 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextArea info = new JTextArea(HELP1 + HELP2 + "\n----\n");
     info.setEditable(false);
-
-    JButton button = new JButton("showOptionDialog");
-    button.addActionListener(e -> {
-      JComponent c = (JComponent) e.getSource();
-      int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), HELP1 + HELP2);
-      if (retValue == JOptionPane.YES_OPTION) {
-        info.append("YES_OPTION\n");
-      } else if (retValue == JOptionPane.NO_OPTION) {
-        info.append("NO_OPTION\n");
-      } else if (retValue == JOptionPane.CANCEL_OPTION) {
-        info.append("CANCEL_OPTION\n");
-      }
-    });
+    JButton button = makeShowOptionDialogButton(info);
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
-
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(new JButton("111"));
     box.add(new JButton("222"));
     box.add(button);
     box.add(new JButton("333"));
-    KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
-    int ftk = KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS;
-    // Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(ftk));
-    Set<AWTKeyStroke> forwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(ftk));
-    forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
-    forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
-    // frame.setFocusTraversalKeys(ftk, forwardKeys);
-    focusManager.setDefaultFocusTraversalKeys(ftk, forwardKeys);
-
-    int btk = KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS;
-    // Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(btk));
-    Set<AWTKeyStroke> backwardKeys = new HashSet<>(focusManager.getDefaultFocusTraversalKeys(btk));
-    backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
-    backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
-    // frame.setFocusTraversalKeys(btk, backwardKeys);
-    focusManager.setDefaultFocusTraversalKeys(btk, backwardKeys);
-
+    updateFocusTraversalKeys();
     setFocusCycleRoot(true);
     setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
       @Override protected boolean accept(Component c) {
@@ -73,6 +44,43 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(info));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void updateFocusTraversalKeys() {
+    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    int ftk = KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS;
+    // Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(ftk));
+    Set<AWTKeyStroke> defaultForwardKeys = manager.getDefaultFocusTraversalKeys(ftk);
+    Set<AWTKeyStroke> forwardKeys = new HashSet<>(defaultForwardKeys);
+    forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
+    forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
+    // frame.setFocusTraversalKeys(ftk, forwardKeys);
+    manager.setDefaultFocusTraversalKeys(ftk, forwardKeys);
+
+    int btk = KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS;
+    // Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(btk));
+    Set<AWTKeyStroke> defaultBackwardKeys = manager.getDefaultFocusTraversalKeys(btk);
+    Set<AWTKeyStroke> backwardKeys = new HashSet<>(defaultBackwardKeys);
+    backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
+    backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
+    // frame.setFocusTraversalKeys(btk, backwardKeys);
+    manager.setDefaultFocusTraversalKeys(btk, backwardKeys);
+  }
+
+  private static JButton makeShowOptionDialogButton(JTextArea info) {
+    JButton button = new JButton("showOptionDialog");
+    button.addActionListener(e -> {
+      JComponent c = (JComponent) e.getSource();
+      int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), HELP1 + HELP2);
+      if (retValue == JOptionPane.YES_OPTION) {
+        info.append("YES_OPTION\n");
+      } else if (retValue == JOptionPane.NO_OPTION) {
+        info.append("NO_OPTION\n");
+      } else if (retValue == JOptionPane.CANCEL_OPTION) {
+        info.append("CANCEL_OPTION\n");
+      }
+    });
+    return button;
   }
 
   // // %JAVA_HOME%/src_b23/javax/swing/JOptionPane.java
