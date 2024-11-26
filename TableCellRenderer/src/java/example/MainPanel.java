@@ -225,15 +225,15 @@ class TextAreaCellRenderer implements TableCellRenderer {
 //     }
 //   }
 //
-//   @Override protected void firePropertyChange(String propertyName, Object ov, Object nv) {
-//     if ("document".equals(propertyName)) {
-//       super.firePropertyChange(propertyName, ov, nv);
-//     } else if (("font".equals(propertyName) || "foreground".equals(propertyName)) && ov != nv) {
-//       super.firePropertyChange(propertyName, ov, nv);
+//   @Override protected void firePropertyChange(String property, Object ov, Object nv) {
+//     if ("document".equals(property)) {
+//       super.firePropertyChange(property, ov, nv);
+//     } else if (("font".equals(property) || "foreground".equals(property)) && ov != nv) {
+//       super.firePropertyChange(property, ov, nv);
 //     }
 //   }
 //
-//   @Override public void firePropertyChange(String propertyName, boolean ov, boolean nv) {
+//   @Override public void firePropertyChange(String property, boolean ov, boolean nv) {
 //     /* Overridden for performance reasons. */
 //   }
 //

@@ -189,7 +189,8 @@ enum PasswordField {
 //
 //   // In Java, is it possible to check if a String is only ASCII? - Stack Overflow
 //   // https://stackoverflow.com/questions/3585053/in-java-is-it-possible-to-check-if-a-string-is-only-ascii
-//   private static void checkInput(String proposedValue, int offset) throws BadLocationException {
+//   private static void checkInput(String proposedValue, int offset)
+//         throws BadLocationException {
 //     if (!proposedValue.isEmpty() && !asciiEncoder.canEncode(proposedValue)) {
 //       throw new BadLocationException(proposedValue, offset);
 //     }

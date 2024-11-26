@@ -43,23 +43,25 @@ public final class MainPanel extends JPanel {
         });
       }
 
-      // private void init() {
-      //   setLeafIcon(DefaultLookup.getIcon(this, ui, "Tree.leafIcon"));
-      //   setClosedIcon(DefaultLookup.getIcon(this, ui, "Tree.closedIcon"));
-      //   setOpenIcon(DefaultLookup.getIcon(this, ui, "Tree.openIcon"));
-      //   setTextSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionForeground"));
-      //   setTextNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textForeground"));
-      //   setBackgroundSelectionColor(
-      //       DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
-      //   setBackgroundNonSelectionColor(DefaultLookup.getColor(this, ui, "Tree.textBackground"));
-      //   setBorderSelectionColor(DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
-      //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
-      //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
-      //   // ... = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
-      //   Insets i = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
-      //   if (i != null) {
-      //     setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right));
-      //   }
+      // setLeafIcon(DefaultLookup.getIcon(this, ui, "Tree.leafIcon"));
+      // setClosedIcon(DefaultLookup.getIcon(this, ui, "Tree.closedIcon"));
+      // setOpenIcon(DefaultLookup.getIcon(this, ui, "Tree.openIcon"));
+      // setTextSelectionColor(
+      //     DefaultLookup.getColor(this, ui, "Tree.selectionForeground"));
+      // setTextNonSelectionColor(
+      //     DefaultLookup.getColor(this, ui, "Tree.textForeground"));
+      // setBackgroundSelectionColor(
+      //     DefaultLookup.getColor(this, ui, "Tree.selectionBackground"));
+      // setBackgroundNonSelectionColor(
+      //     DefaultLookup.getColor(this, ui, "Tree.textBackground"));
+      // setBorderSelectionColor(
+      //     DefaultLookup.getColor(this, ui, "Tree.selectionBorderColor"));
+      // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawsFocusBorderAroundIcon", false);
+      // ... = DefaultLookup.getBoolean(this, ui, "Tree.drawDashedFocusIndicator", false);
+      // ... = DefaultLookup.getBoolean(this, ui, "Tree.rendererFillBackground", true);
+      // Insets i = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
+      // if (i != null) {
+      //   setBorder(BorderFactory.createEmptyBorder(i.top, i.left, i.bottom, i.right));
       // }
     };
     // tree2.setToolTipText(" ");
