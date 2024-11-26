@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.swing.*;
@@ -16,34 +18,37 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(1, 2));
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(12, 20));
     UIManager.put("List.lockToPositionOnScroll", Boolean.FALSE);
-    add(new JScrollPane(makeList()));
-    add(makeStickyHeaderScrollPane(makeList()));
+    ListModel<String> model = makeModel();
+    add(makeScrollPane(makeList(model)));
+    add(new JLayer<>(makeScrollPane(makeList(model)), new StickyLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeList() {
-    DefaultListModel<String> m = new DefaultListModel<>();
+  private static ListModel<String> makeModel() {
+    DefaultListModel<String> model = new DefaultListModel<>();
     for (int i = 0; i < 100; i++) {
       String indent = i % 10 == 0 ? "" : "    ";
       LocalDateTime now = LocalDateTime.now(ZoneId.systemDefault());
-      m.addElement(String.format("%s%04d: %s", indent, i, now));
+      model.addElement(String.format("%s%04d: %s", indent, i, now));
     }
+    return model;
+  }
+
+  private static Component makeList(ListModel<String> m) {
     JList<String> list = new JList<>(m);
     list.setFixedCellHeight(32);
     return list;
   }
 
-  private static Component makeStickyHeaderScrollPane(Component c) {
-    JScrollPane scroll = new JScrollPane(c) {
+  private static JScrollPane makeScrollPane(Component c) {
+    return new JScrollPane(c) {
       @Override public void updateUI() {
         super.updateUI();
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-        getVerticalScrollBar().setUnitIncrement(2);
+        getVerticalScrollBar().setUnitIncrement(4);
       }
     };
-    LayerUI<JScrollPane> layer = new StickyLayerUI();
-    return new JLayer<>(scroll, layer);
   }
 
   public static void main(String[] args) {
@@ -69,7 +74,9 @@ public final class MainPanel extends JPanel {
 }
 
 class StickyLayerUI extends LayerUI<JScrollPane> {
-  private final JPanel panel = new JPanel();
+  private final JPanel renderer = new JPanel();
+  private int currentHeaderIdx = -1;
+  private int nextHeaderIdx = -1;
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -87,51 +94,75 @@ class StickyLayerUI extends LayerUI<JScrollPane> {
     super.uninstallUI(c);
   }
 
-  @SuppressWarnings("unchecked")
-  @Override public void paint(Graphics g, JComponent c) {
-    super.paint(g, c);
-    if (c instanceof JLayer) {
-      JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
-      JViewport viewport = scroll.getViewport();
-      JList<String> list = (JList<String>) viewport.getView();
-      int cellHeight = list.getFixedCellHeight();
-      Rectangle viewRect = viewport.getViewRect();
-      Point vp = SwingUtilities.convertPoint(viewport, 0, 0, c);
-      Point pt1 = SwingUtilities.convertPoint(c, vp, list);
-      int idx1 = list.locationToIndex(pt1);
-      // Point pt2 = SwingUtilities.convertPoint(c, new Point(vp.x, vp.y + cellHeight), list);
-      // int idx2 = list.locationToIndex(pt2);
-      Rectangle header1 = new Rectangle(vp.x, vp.y, viewRect.width, cellHeight);
-      if (idx1 >= 0) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        int headerIndex1 = getHeaderIndex1(list, idx1);
-        // int headerIndex2 = (idx2 / 5) * 5;
-        Component c1 = getComponent(list, headerIndex1);
-        int nhi = getNextHeaderIndex1(list, idx1);
-        Point nextPt = list.getCellBounds(nhi, nhi).getLocation();
-        if (header1.contains(SwingUtilities.convertPoint(list, nextPt, c))) {
-          Dimension d = header1.getSize();
-          SwingUtilities.paintComponent(g2, c1, panel, getHeaderRect(list, idx1, c, d));
-          Component cn = getComponent(list, nhi);
-          SwingUtilities.paintComponent(g2, cn, panel, getHeaderRect(list, nhi, c, d));
-        } else {
-          SwingUtilities.paintComponent(g2, c1, panel, header1);
-        }
-        // if (headerIndex1 != headerIndex2) {
-        //   Component c2 = getComponent(list, headerIndex2);
-        //   c2.setBackground(Color.LIGHT_GRAY);
-        //   SwingUtilities.paintComponent(g2, c2, p, header2);
-        // }
-        g2.dispose();
-      }
+  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
+    super.processMouseMotionEvent(e, l);
+    Component c = l.getView().getViewport().getView();
+    if (e.getID() == MouseEvent.MOUSE_DRAGGED && c instanceof JList) {
+      update((JList<?>) c);
     }
   }
 
-  private static int getHeaderIndex1(JList<String> list, int start) {
+  @Override protected void processMouseWheelEvent(MouseWheelEvent e, JLayer<? extends JScrollPane> l) {
+    super.processMouseWheelEvent(e, l);
+    Component c = l.getView().getViewport().getView();
+    if (c instanceof JList) {
+      update((JList<?>) c);
+    }
+  }
+
+  private void update(JList<?> list) {
+    int idx = list.getFirstVisibleIndex();
+    if (idx >= 0) {
+      currentHeaderIdx = getHeaderIndex1(list, idx);
+      nextHeaderIdx = getNextHeaderIndex1(list, idx);
+    } else {
+      currentHeaderIdx = -1;
+      nextHeaderIdx = -1;
+    }
+  }
+
+  @Override public void paint(Graphics g, JComponent c) {
+    super.paint(g, c);
+    JList<?> list = getList(c);
+    if (list != null && currentHeaderIdx >= 0) {
+      JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
+      Rectangle headerRect = scroll.getViewport().getBounds();
+      headerRect.height = list.getFixedCellHeight();
+        Graphics2D g2 = (Graphics2D) g.create();
+      int firstVisibleIdx = list.getFirstVisibleIndex();
+      if (firstVisibleIdx + 1 == nextHeaderIdx) {
+        Dimension d = headerRect.getSize();
+        Component c1 = getComponent(list, currentHeaderIdx);
+        Rectangle r1 = getHeaderRect(list, firstVisibleIdx, c, d);
+        SwingUtilities.paintComponent(g2, c1, renderer, r1);
+        Component c2 = getComponent(list, nextHeaderIdx);
+        Rectangle r2 = getHeaderRect(list, nextHeaderIdx, c, d);
+        SwingUtilities.paintComponent(g2, c2, renderer, r2);
+        } else {
+        Component c1 = getComponent(list, currentHeaderIdx);
+        SwingUtilities.paintComponent(g2, c1, renderer, headerRect);
+        }
+        g2.dispose();
+      }
+    }
+
+  private static JList<?> getList(JComponent layer) {
+    JList<?> list = null;
+    if (layer instanceof JLayer) {
+      JScrollPane scroll = (JScrollPane) ((JLayer<?>) layer).getView();
+      Component view = scroll.getViewport().getView();
+      if (view instanceof JList) {
+        list = (JList<?>) view;
+      }
+    }
+    return list;
+  }
+
+  private static int getHeaderIndex1(JList<?> list, int start) {
     return list.getNextMatch("0", start, Position.Bias.Backward);
   }
 
-  private static int getNextHeaderIndex1(JList<String> list, int start) {
+  private static int getNextHeaderIndex1(JList<?> list, int start) {
     return list.getNextMatch("0", start, Position.Bias.Forward);
   }
 
@@ -143,8 +174,8 @@ class StickyLayerUI extends LayerUI<JScrollPane> {
 
   private static <E> Component getComponent(JList<E> list, int idx) {
     E value = list.getModel().getElementAt(idx);
-    ListCellRenderer<? super E> renderer = list.getCellRenderer();
-    Component c = renderer.getListCellRendererComponent(list, value, idx, false, false);
+    ListCellRenderer<? super E> r = list.getCellRenderer();
+    Component c = r.getListCellRendererComponent(list, value, idx, false, false);
     c.setBackground(Color.GRAY);
     c.setForeground(Color.WHITE);
     return c;
