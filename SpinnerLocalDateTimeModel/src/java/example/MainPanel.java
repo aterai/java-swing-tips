@@ -45,8 +45,7 @@ public final class MainPanel extends JPanel {
 
     String dateFormat = "yyyy/MM/dd";
 
-    SpinnerDateModel m0 = new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH);
-    JSpinner spinner0 = new JSpinner(m0);
+    JSpinner spinner0 = new JSpinner(makeSpinnerDateModel(date, start, end));
     spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
 
     LocalDateTime d = LocalDateTime.now(ZoneId.systemDefault());
@@ -59,8 +58,7 @@ public final class MainPanel extends JPanel {
     info.append(s + "\n");
     info.append(e + "\n");
 
-    SpinnerModel m1 = new SpinnerDateModel(toDate(d), toDate(s), toDate(e), Calendar.DAY_OF_MONTH);
-    JSpinner spinner1 = new JSpinner(m1);
+    JSpinner spinner1 = new JSpinner(makeSpinnerDateModel(toDate(d), toDate(s), toDate(e)));
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
 
     JSpinner spinner2 = new JSpinner(new SpinnerLocalDateTimeModel(d, s, e, ChronoUnit.DAYS));
@@ -84,6 +82,10 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(info));
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static SpinnerDateModel makeSpinnerDateModel(Date date, Date start, Date end) {
+    return new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH);
   }
 
   private static Date toDate(LocalDateTime localDateTime) {
