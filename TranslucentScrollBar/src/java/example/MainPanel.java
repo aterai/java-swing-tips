@@ -15,6 +15,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
+    UIManager.put("ScrollBar.minimumThumbSize", new Dimension(12, 20));
     add(new JScrollPane(makeList()));
     add(makeTranslucentScrollBar(makeList()));
     setPreferredSize(new Dimension(320, 240));
@@ -22,8 +23,8 @@ public final class MainPanel extends JPanel {
 
   private static Component makeList() {
     DefaultListModel<String> m = new DefaultListModel<>();
-    IntStream.range(0, 50)
-        .mapToObj(i -> String.format("%05d: %s", i, LocalDateTime.now(ZoneId.systemDefault())))
+    IntStream.range(0, 500)
+        .mapToObj(i -> String.format("%03d: %s", i, LocalDateTime.now(ZoneId.systemDefault())))
         .forEach(m::addElement);
     return new JList<>(m);
   }
@@ -118,7 +119,9 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
     JScrollBar sb = (JScrollBar) c;
     Color color;
-    if (!sb.isEnabled() || r.width > r.height) {
+    Dimension min = UIManager.getDimension("ScrollBar.minimumThumbSize");
+    r.height = Math.max(r.height, min.height);
+    if (!sb.isEnabled()) {
       return;
     } else if (isDragging) {
       color = DRAGGING_COLOR;
