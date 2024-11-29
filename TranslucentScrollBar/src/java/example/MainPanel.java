@@ -117,25 +117,30 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   }
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
-    JScrollBar sb = (JScrollBar) c;
-    Color color;
     Dimension min = UIManager.getDimension("ScrollBar.minimumThumbSize");
     r.height = Math.max(r.height, min.height);
-    if (!sb.isEnabled()) {
-      return;
-    } else if (isDragging) {
-      color = DRAGGING_COLOR;
-    } else if (isThumbRollover()) {
-      color = ROLLOVER_COLOR;
-    } else {
-      color = DEFAULT_COLOR;
-    }
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(color);
-    g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-    g2.setPaint(Color.WHITE);
-    g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+    g2.setPaint(getThumbColor(c));
+    g2.fill(r);
+    g2.setPaint(Color.LIGHT_GRAY);
+    g2.draw(r);
     g2.dispose();
+  }
+
+  private Color getThumbColor(JComponent c) {
+    Color color;
+    if (c.isEnabled()) {
+      if (isDragging) {
+        color = DRAGGING_COLOR;
+      } else if (isThumbRollover()) {
+        color = ROLLOVER_COLOR;
+      } else {
+        color = DEFAULT_COLOR;
+      }
+    } else {
+      color = Color.DARK_GRAY;
+    }
+    return color;
   }
 }
