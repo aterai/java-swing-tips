@@ -32,9 +32,7 @@ public final class MainPanel extends JPanel {
     });
     List<JTable> list = Arrays.asList(makeTable(), table);
     JPanel p = new JPanel(new GridLayout(2, 1));
-    for (JTable t : list) {
-      p.add(new JScrollPane(t));
-    }
+    list.stream().map(JScrollPane::new).forEach(p::add);
     JButton button = new JButton("clear selection");
     button.addActionListener(e -> list.forEach(JTable::clearSelection));
     add(p);
