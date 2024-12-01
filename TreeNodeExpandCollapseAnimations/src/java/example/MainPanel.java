@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -50,7 +51,7 @@ public final class MainPanel extends JPanel {
           List<DefaultMutableTreeNode> list = getTreeNodes(parent);
           parent.setUserObject(makeUserObject(parent, END_HEIGHT));
           list.forEach(n -> n.setUserObject(makeUserObject(n, START_HEIGHT)));
-          startExpandTimer(e, list);
+          startExpand(e, list);
         }
       }
 
@@ -65,7 +66,7 @@ public final class MainPanel extends JPanel {
                 return uo instanceof SizeNode && ((SizeNode) uo).height == END_HEIGHT;
               });
           if (b) {
-            startCollapseTimer(e, list);
+            startCollapse(e, list);
             throw new ExpandVetoException(e);
           }
         }
@@ -89,24 +90,21 @@ public final class MainPanel extends JPanel {
     return new SizeNode(title, height);
   }
 
-  private static void startExpandTimer(TreeExpansionEvent e, List<DefaultMutableTreeNode> list) {
+  private static void startExpand(TreeExpansionEvent e, List<? extends TreeNode> list) {
     JTree tree = (JTree) e.getSource();
     TreeModel model = tree.getModel();
     AtomicInteger height = new AtomicInteger(START_HEIGHT);
     new Timer(DELAY, ev -> {
       int h = height.getAndIncrement();
       if (h <= END_HEIGHT) {
-        list.forEach(n -> {
-          Object uo = makeUserObject(n, h);
-          model.valueForPathChanged(new TreePath(n.getPath()), uo);
-        });
+        updateNodeHeight(list, model, h);
       } else {
         ((Timer) ev.getSource()).stop();
       }
     }).start();
   }
 
-  private static void startCollapseTimer(TreeExpansionEvent e, List<DefaultMutableTreeNode> list) {
+  private static void startCollapse(TreeExpansionEvent e, List<? extends TreeNode> list) {
     JTree tree = (JTree) e.getSource();
     TreePath path = e.getPath();
     TreeModel model = tree.getModel();
@@ -114,15 +112,22 @@ public final class MainPanel extends JPanel {
     new Timer(DELAY, ev -> {
       int h = height.getAndDecrement();
       if (h >= START_HEIGHT) {
-        list.forEach(n -> {
-          Object uo = makeUserObject(n, h);
-          model.valueForPathChanged(new TreePath(n.getPath()), uo);
-        });
+        updateNodeHeight(list, model, h);
       } else {
         ((Timer) ev.getSource()).stop();
         tree.collapsePath(path);
       }
     }).start();
+  }
+
+  private static void updateNodeHeight(List<? extends TreeNode> l, TreeModel m, int h) {
+    l.stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(n -> {
+          Object uo = makeUserObject(n, h);
+          m.valueForPathChanged(new TreePath(n.getPath()), uo);
+        });
   }
 
   private static Component makeTitledPanel(String title, Component c) {
