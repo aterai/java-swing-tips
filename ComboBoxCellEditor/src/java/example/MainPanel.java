@@ -141,14 +141,14 @@ class PluginNode {
 
 class PluginPanel extends JPanel {
   protected final JLabel pluginName = new JLabel();
-  protected final JComboBox<String> comboBox;
+  protected final JComboBox<String> combo;
 
-  protected PluginPanel(JComboBox<String> comboBox) {
+  protected PluginPanel(JComboBox<String> combo) {
     super();
-    this.comboBox = comboBox;
-    comboBox.setPrototypeDisplayValue("Debug mode x");
+    this.combo = combo;
+    combo.setPrototypeDisplayValue("Debug mode x");
     add(pluginName);
-    add(comboBox);
+    add(combo);
   }
 
   @Override public final Component add(Component comp) {
@@ -165,25 +165,30 @@ class PluginPanel extends JPanel {
         .map(DefaultMutableTreeNode.class::cast)
         .map(DefaultMutableTreeNode::getUserObject)
         .filter(PluginNode.class::isInstance)
-        .map(userObject -> {
-          PluginNode node = (PluginNode) userObject;
-          pluginName.setText(node.toString());
-          DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBox.getModel();
-          model.removeAllElements();
-          List<String> plugins = node.getPlugins();
-          if (plugins.isEmpty()) {
-            remove(comboBox);
-          } else {
-            add(comboBox);
-            for (String s : plugins) {
-              model.addElement(s);
-            }
-            // Java 11: model.addAll(plugins);
-            comboBox.setSelectedIndex(node.getSelectedIndex());
-          }
-          return node;
-        })
+        .map(PluginNode.class::cast)
+        .map(this::updatePluginNode)
         .orElse(null);
+  }
+
+  private PluginNode updatePluginNode(PluginNode node) {
+    pluginName.setText(node.toString());
+    ComboBoxModel<String> model = combo.getModel();
+    if (model instanceof DefaultComboBoxModel) {
+      DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) model;
+      m.removeAllElements();
+      List<String> plugins = node.getPlugins();
+      if (plugins.isEmpty()) {
+        remove(combo);
+      } else {
+        add(combo);
+        for (String s : plugins) {
+          m.addElement(s);
+        }
+        // Java 11: m1.addAll(plugins);
+        combo.setSelectedIndex(node.getSelectedIndex());
+      }
+    }
+    return node;
   }
 }
 
@@ -218,7 +223,7 @@ class PluginCellEditor extends DefaultCellEditor {
   @Override public Object getCellEditorValue() {
     Object o = super.getCellEditorValue();
     return Optional.ofNullable(node).<Object>map(n -> {
-      DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.comboBox.getModel();
+      DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.combo.getModel();
       PluginNode pn = new PluginNode(panel.pluginName.getText(), n.getPlugins());
       pn.setSelectedIndex(m.getIndexOf(o));
       return pn;
@@ -266,11 +271,11 @@ class PluginCellEditor extends DefaultCellEditor {
       Point pt = SwingUtilities.convertPoint(cmp, p, panel);
       Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
       if (o instanceof JComboBox) {
-        panel.comboBox.showPopup();
+        panel.combo.showPopup();
       } else if (Objects.nonNull(o)) { // maybe ArrowButton in JComboBox
         Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, o);
         if (c instanceof JComboBox) {
-          panel.comboBox.showPopup();
+          panel.combo.showPopup();
         }
       }
     });
