@@ -180,15 +180,12 @@ class HeavyWeightContainerListener implements PopupMenuListener {
       Accessible a = combo.getUI().getAccessibleChild(combo, 0);
       if (a instanceof JPopupMenu) {
         Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
-            .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
-            .filter(w -> w.getType() == Window.Type.POPUP)
+            .filter(w -> {
+              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+              GraphicsConfiguration gc = w.getGraphicsConfiguration();
+              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+            })
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
-        // Window w = SwingUtilities.getWindowAncestor((Component) a);
-        // // https://ateraimemo.com/Swing/DropShadowPopup.html
-        // if (w != null && window.getType() == Window.Type.POPUP) {
-        //   // Popup$HeavyWeightWindow
-        //   w.setBackground(new Color(0x0, true));
-        // }
       }
     });
   }

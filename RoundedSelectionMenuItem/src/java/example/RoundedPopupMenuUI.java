@@ -21,8 +21,11 @@ public final class RoundedPopupMenuUI extends BasicPopupMenuUI {
     Popup pp = super.getPopup(popup, x, y);
     if (pp != null) {
       EventQueue.invokeLater(() -> Optional.ofNullable(SwingUtilities.getWindowAncestor(popup))
-          .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
-          .filter(w -> w.getType() == Window.Type.POPUP)
+          .filter(w -> {
+            boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+            GraphicsConfiguration gc = w.getGraphicsConfiguration();
+            return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+          })
           .ifPresent(w -> w.setBackground(new Color(0x0, true))));
       popup.setBorder(new RoundedBorder());
       popup.setOpaque(false);

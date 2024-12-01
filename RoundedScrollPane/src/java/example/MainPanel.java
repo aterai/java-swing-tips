@@ -174,8 +174,11 @@ class HeavyWeightContainerListener implements PopupMenuListener {
       if (a instanceof JPopupMenu) {
         // https://ateraimemo.com/Swing/DropShadowPopup.html
         Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
-            .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
-            .filter(w -> w.getType() == Window.Type.POPUP) // Popup$HeavyWeightWindow
+            .filter(w -> {
+              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+              GraphicsConfiguration gc = w.getGraphicsConfiguration();
+              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+            })
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     });

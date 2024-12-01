@@ -93,8 +93,11 @@ public final class CustomPopupMenuUI extends BasicPopupMenuUI {
       EventQueue.invokeLater(() -> {
         Window window = SwingUtilities.getWindowAncestor(popup);
         Optional.ofNullable(window)
-            .filter(w -> w.getGraphicsConfiguration().isTranslucencyCapable())
-            .filter(w -> w.getType() == Window.Type.POPUP)
+            .filter(w -> {
+              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+              GraphicsConfiguration gc = w.getGraphicsConfiguration();
+              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+            })
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       });
       Container c = SwingUtilities.getUnwrappedParent(popup);
