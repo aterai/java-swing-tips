@@ -108,7 +108,8 @@ public final class MainPanel extends JPanel {
     frame.setMinimumSize(new Dimension(300, 120));
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
-    if (frame.getGraphicsConfiguration().isTranslucencyCapable()) {
+    GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+    if (gc != null && gc.isTranslucencyCapable()) {
       frame.setBackground(new Color(0x0, true));
     }
     frame.pack();

@@ -92,7 +92,8 @@ public final class MainPanel extends JPanel {
       }
     };
     frame.setUndecorated(true);
-    if (frame.getGraphicsConfiguration().isTranslucencyCapable()) {
+    GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+    if (gc != null && gc.isTranslucencyCapable()) {
       frame.setBackground(new Color(0x0, true));
     }
     JPanel titlePane = new JPanel(new BorderLayout());
