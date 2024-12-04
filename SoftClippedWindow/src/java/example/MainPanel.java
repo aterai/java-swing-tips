@@ -48,7 +48,8 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("soft clipped window");
     button2.addActionListener(e -> {
       JWindow window = new JWindow();
-      if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+      GraphicsConfiguration gc = window.getGraphicsConfiguration();
+      if (gc != null && gc.isTranslucencyCapable()) {
         window.setBackground(new Color(0x0, true));
       }
       window.getContentPane().add(makePanel(clippedImage));

@@ -102,7 +102,8 @@ class RearrangingHandler extends MouseAdapter {
     gap = Box.createRigidArea(d);
     swapComponent(parent, c, gap, index);
 
-    if (window.getGraphicsConfiguration().isTranslucencyCapable()) {
+    GraphicsConfiguration gc = window.getGraphicsConfiguration();
+    if (gc != null && gc.isTranslucencyCapable()) {
       window.setBackground(new Color(0x0, true));
     }
     window.add(draggingComponent);
