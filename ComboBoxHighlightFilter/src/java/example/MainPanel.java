@@ -141,15 +141,15 @@ public final class MainPanel extends JPanel {
 }
 
 class ComboKeyHandler extends KeyAdapter {
-  private final JComboBox<String> comboBox;
+  private final JComboBox<String> combo;
   private final List<String> list = new ArrayList<>();
   private boolean shouldHide;
 
   protected ComboKeyHandler(JComboBox<String> combo) {
     super();
-    this.comboBox = combo;
-    for (int i = 0; i < comboBox.getModel().getSize(); i++) {
-      list.add(comboBox.getItemAt(i));
+    this.combo = combo;
+    for (int i = 0; i < combo.getModel().getSize(); i++) {
+      list.add(combo.getItemAt(i));
     }
   }
 
@@ -159,15 +159,15 @@ class ComboKeyHandler extends KeyAdapter {
       ComboBoxModel<String> m;
       if (text.isEmpty()) {
         m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
-        setSuggestionModel(comboBox, m, "");
-        comboBox.hidePopup();
+        setSuggestionModel(m, "");
+        combo.hidePopup();
       } else {
         m = getSuggestedModel(list, text);
         if (m.getSize() == 0 || shouldHide) {
-          comboBox.hidePopup();
+          combo.hidePopup();
         } else {
-          setSuggestionModel(comboBox, m, text);
-          comboBox.showPopup();
+          setSuggestionModel(m, text);
+          combo.showPopup();
         }
       }
     });
@@ -192,7 +192,7 @@ class ComboKeyHandler extends KeyAdapter {
         if (!list.contains(text)) {
           list.add(text);
           list.sort(Comparator.naturalOrder());
-          setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
+          setSuggestionModel(getSuggestedModel(list, text), text);
         }
         shouldHide = true;
         break;
@@ -205,19 +205,19 @@ class ComboKeyHandler extends KeyAdapter {
     }
   }
 
-  private static void setSuggestionModel(JComboBox<String> c, ComboBoxModel<String> m, String s) {
-    c.setModel(m);
-    c.setSelectedIndex(-1);
-    ((JTextField) c.getEditor().getEditorComponent()).setText(s);
+  private void setSuggestionModel(ComboBoxModel<String> model, String txt) {
+    combo.setModel(model);
+    combo.setSelectedIndex(-1);
+    ((JTextField) combo.getEditor().getEditorComponent()).setText(txt);
   }
 
-  private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {
-    DefaultComboBoxModel<String> m = new DefaultComboBoxModel<>();
+  private ComboBoxModel<String> getSuggestedModel(List<String> list, String txt) {
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     for (String s : list) {
-      if (s.contains(text)) {
-        m.addElement(s);
+      if (s.contains(txt)) {
+        model.addElement(s);
       }
     }
-    return m;
+    return model;
   }
 }
