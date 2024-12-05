@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
     JButton clearButton = new JButton("Preferences#clear() and JFrame#dispose()");
     clearButton.addActionListener(e -> {
       try {
-        handler.prefs.clear();
-        handler.prefs.flush();
+        handler.pref.clear();
+        handler.pref.flush();
       } catch (BackingStoreException ex) {
         ex.printStackTrace();
         Toolkit.getDefaultToolkit().beep();
@@ -89,32 +89,36 @@ public final class MainPanel extends JPanel {
 
 class WindowPreferencesHandler extends WindowAdapter implements ComponentListener {
   private static final String PREFIX = "xxx_";
-  public final Preferences prefs = Preferences.userNodeForPackage(getClass());
+  public final Preferences pref = Preferences.userNodeForPackage(getClass());
   public final Dimension dim = new Dimension(320, 240);
   public final Point pos = new Point();
 
   public void initFrameSizeAndLocation(Window frame) {
-    int wdim = prefs.getInt(PREFIX + "dimw", dim.width);
-    int hdim = prefs.getInt(PREFIX + "dimh", dim.height);
-    dim.setSize(wdim, hdim);
-    // setPreferredSize(dim);
-    frame.pack();
-
-    Rectangle screen = frame.getGraphicsConfiguration().getBounds();
-    pos.setLocation(screen.getCenterX() - dim.width / 2d, screen.getCenterY() - dim.height / 2d);
-    int xpos = prefs.getInt(PREFIX + "locx", pos.x);
-    int ypos = prefs.getInt(PREFIX + "locy", pos.y);
-    pos.setLocation(xpos, ypos);
-    frame.setLocation(pos.x, pos.y);
+    GraphicsConfiguration gc = frame.getGraphicsConfiguration();
+    if (gc != null) {
+      int width = pref.getInt(PREFIX + "dimw", dim.width);
+      int height = pref.getInt(PREFIX + "dimh", dim.height);
+      dim.setSize(width, height);
+      // setPreferredSize(dim);
+      frame.pack();
+      Rectangle screen = gc.getBounds();
+      double dx = screen.getCenterX() - dim.width / 2d;
+      double dy = screen.getCenterY() - dim.height / 2d;
+      pos.setLocation(dx, dy);
+      int px = pref.getInt(PREFIX + "locx", pos.x);
+      int py = pref.getInt(PREFIX + "locy", pos.y);
+      pos.setLocation(px, py);
+      frame.setLocation(pos.x, pos.y);
+    }
   }
 
   public void saveLocation() {
-    prefs.putInt(PREFIX + "locx", pos.x);
-    prefs.putInt(PREFIX + "locy", pos.y);
-    prefs.putInt(PREFIX + "dimw", dim.width);
-    prefs.putInt(PREFIX + "dimh", dim.height);
+    pref.putInt(PREFIX + "locx", pos.x);
+    pref.putInt(PREFIX + "locy", pos.y);
+    pref.putInt(PREFIX + "dimw", dim.width);
+    pref.putInt(PREFIX + "dimh", dim.height);
     try {
-      prefs.flush();
+      pref.flush();
     } catch (BackingStoreException ex) {
       ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();

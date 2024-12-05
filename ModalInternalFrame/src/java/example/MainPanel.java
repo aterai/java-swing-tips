@@ -112,15 +112,18 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      setMenuBarEnabled(false);
       Window w = SwingUtilities.getWindowAncestor(getDesktop());
-      Rectangle screen = w.getGraphicsConfiguration().getBounds();
-      glass.setSize(screen.width, screen.height);
-      glass.setVisible(true);
-      JOptionPane.showInternalMessageDialog(
-          getDesktop(), "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
-      glass.setVisible(false);
-      setMenuBarEnabled(true);
+      GraphicsConfiguration gc = w.getGraphicsConfiguration();
+      if (gc != null) {
+        setMenuBarEnabled(false);
+        Rectangle screen = gc.getBounds();
+        glass.setSize(screen.width, screen.height);
+        glass.setVisible(true);
+        JOptionPane.showInternalMessageDialog(
+            getDesktop(), "information", "modal2", JOptionPane.INFORMATION_MESSAGE);
+        glass.setVisible(false);
+        setMenuBarEnabled(true);
+      }
     }
   }
 
