@@ -12,13 +12,14 @@ import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
-    Component c = new JLayer<>(new JScrollPane(makeTable()), new DisableRightButtonSwapLayerUI());
+    super(new GridLayout(2, 1));
+    String help1 = "Default";
+    add(makeTitledPanel(help1, new JScrollPane(makeTable())));
 
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("Default", new JScrollPane(makeTable())));
-    p.add(makeTitledPanel("Disable right mouse button reordering", c));
-    add(p);
+    String help2 = "Disable right mouse button reordering";
+    JScrollPane scroll = new JScrollPane(makeTable());
+    LayerUI<JScrollPane> layerUI = new DisableRightButtonSwapLayerUI();
+    add(makeTitledPanel(help2, new JLayer<>(scroll, layerUI)));
     setPreferredSize(new Dimension(320, 240));
   }
 
