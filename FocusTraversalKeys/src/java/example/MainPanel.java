@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
     KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
     int ftk = KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS;
     // Set<AWTKeyStroke> forwardKeys = new HashSet<>(frame.getFocusTraversalKeys(ftk));
-    Set<AWTKeyStroke> defaultForwardKeys = manager.getDefaultFocusTraversalKeys(ftk);
-    Set<AWTKeyStroke> forwardKeys = new HashSet<>(defaultForwardKeys);
+    Set<AWTKeyStroke> defForwardKeys = manager.getDefaultFocusTraversalKeys(ftk);
+    Set<AWTKeyStroke> forwardKeys = new HashSet<>(defForwardKeys);
     forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
     forwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
     // frame.setFocusTraversalKeys(ftk, forwardKeys);
@@ -59,8 +59,8 @@ public final class MainPanel extends JPanel {
 
     int btk = KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS;
     // Set<AWTKeyStroke> backwardKeys = new HashSet<>(frame.getFocusTraversalKeys(btk));
-    Set<AWTKeyStroke> defaultBackwardKeys = manager.getDefaultFocusTraversalKeys(btk);
-    Set<AWTKeyStroke> backwardKeys = new HashSet<>(defaultBackwardKeys);
+    Set<AWTKeyStroke> defBackwardKeys = manager.getDefaultFocusTraversalKeys(btk);
+    Set<AWTKeyStroke> backwardKeys = new HashSet<>(defBackwardKeys);
     backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
     backwardKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
     // frame.setFocusTraversalKeys(btk, backwardKeys);
