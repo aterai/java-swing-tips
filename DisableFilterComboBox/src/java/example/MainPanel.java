@@ -44,12 +44,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void updateFileChooser(JFileChooser fileChooser) {
-    boolean f = fileChooser.getFileSelectionMode() != JFileChooser.DIRECTORIES_ONLY;
-    fileChooser.setAcceptAllFileFilterUsed(f);
-    String txt = UIManager.getString("FileChooser.filesOfTypeLabelText", fileChooser.getLocale());
-    SwingUtils.descendants(fileChooser)
-        .filter(JLabel.class::isInstance).map(JLabel.class::cast)
+  private static void updateFileChooser(JFileChooser chooser) {
+    boolean f = chooser.getFileSelectionMode() != JFileChooser.DIRECTORIES_ONLY;
+    chooser.setAcceptAllFileFilterUsed(f);
+    String key = "FileChooser.filesOfTypeLabelText";
+    String txt = UIManager.getString(key, chooser.getLocale());
+    SwingUtils.descendants(chooser)
+        .filter(JLabel.class::isInstance)
+        .map(JLabel.class::cast)
         .forEach(label -> {
           if (txt.equals(label.getText())) {
             Component c = label.getLabelFor();
