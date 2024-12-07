@@ -128,7 +128,7 @@ class StickyLayerUI extends LayerUI<JScrollPane> {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
       Rectangle headerRect = scroll.getViewport().getBounds();
       headerRect.height = list.getFixedCellHeight();
-        Graphics2D g2 = (Graphics2D) g.create();
+      Graphics2D g2 = (Graphics2D) g.create();
       int firstVisibleIdx = list.getFirstVisibleIndex();
       if (firstVisibleIdx + 1 == nextHeaderIdx) {
         Dimension d = headerRect.getSize();
@@ -138,13 +138,14 @@ class StickyLayerUI extends LayerUI<JScrollPane> {
         Component c2 = getComponent(list, nextHeaderIdx);
         Rectangle r2 = getHeaderRect(list, nextHeaderIdx, c, d);
         SwingUtilities.paintComponent(g2, c2, renderer, r2);
-        } else {
-        Component c1 = getComponent(list, currentHeaderIdx);
+      } else {
+        int idx = firstVisibleIdx == nextHeaderIdx ? nextHeaderIdx : currentHeaderIdx;
+        Component c1 = getComponent(list, idx);
         SwingUtilities.paintComponent(g2, c1, renderer, headerRect);
-        }
-        g2.dispose();
       }
+      g2.dispose();
     }
+  }
 
   private static JList<?> getList(JComponent layer) {
     JList<?> list = null;
