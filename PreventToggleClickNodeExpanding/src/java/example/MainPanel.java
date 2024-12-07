@@ -77,12 +77,16 @@ public final class MainPanel extends JPanel {
       if (file.isDirectory()) {
         createChildren(file, child);
       } else if (Objects.equals("MainPanel.java", file.getName())) {
-        child.add(new DefaultMutableTreeNode("MainPanel()"));
-        child.add(new DefaultMutableTreeNode("createAndShowGui():void"));
-        child.add(new DefaultMutableTreeNode("createChildren(File, DefaultMutableTreeNode):void"));
-        child.add(new DefaultMutableTreeNode("main(String[]):void"));
+        child.add(makeNode("MainPanel()"));
+        child.add(makeNode("createAndShowGui():void"));
+        child.add(makeNode("createChildren(File, DefaultMutableTreeNode):void"));
+        child.add(makeNode("main(String[]):void"));
       }
     });
+  }
+
+  private static DefaultMutableTreeNode makeNode(String txt) {
+    return new DefaultMutableTreeNode(txt);
   }
 
   public static File getFileFromTreePath(TreePath path) {
