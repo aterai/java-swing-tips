@@ -19,8 +19,8 @@ public final class MainPanel extends JPanel {
       @Override protected JTableHeader createDefaultTableHeader() {
         return new JTableHeader(columnModel) {
           @Override public String getToolTipText(MouseEvent e) {
-            int column = columnAtPoint(e.getPoint());
-            return column >= 0 ? getToolTipText(column) : null;
+            int col = columnAtPoint(e.getPoint());
+            return col >= 0 ? getToolTipText(col) : super.getToolTipText(e);
           }
 
           private String getToolTipText(int column) {
@@ -37,10 +37,8 @@ public final class MainPanel extends JPanel {
     };
     // table.setTableHeader(new JTableHeader(table.getColumnModel()) {
     //   @Override public String getToolTipText(MouseEvent e) {
-    //     int i = columnAtPoint(e.getPoint());
-    //     // return getTable().getColumnName(i) + " (...)";
-    //     TableColumn c = getColumnModel().getColumn(i);
-    //     return String.format("%s (width=%dpx)", c.getHeaderValue(), c.getWidth());
+    //     int col = columnAtPoint(e.getPoint());
+    //     return col >= 0 ? getToolTipText(col) : super.getToolTipText(e);
     //   }
     // });
     add(new JScrollPane(table));
