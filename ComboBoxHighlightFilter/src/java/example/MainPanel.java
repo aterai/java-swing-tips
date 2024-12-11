@@ -211,13 +211,13 @@ class ComboKeyHandler extends KeyAdapter {
     ((JTextField) combo.getEditor().getEditorComponent()).setText(txt);
   }
 
-  private ComboBoxModel<String> getSuggestedModel(List<String> list, String txt) {
-    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    for (String s : list) {
+  private ComboBoxModel<String> getSuggestedModel(List<String> src, String txt) {
+    DefaultComboBoxModel<String> dst = new DefaultComboBoxModel<>();
+    for (String s : src) {
       if (s.contains(txt)) {
-        model.addElement(s);
+        dst.addElement(s);
       }
     }
-    return model;
+    return dst;
   }
 }

@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
   }
 
   private final class FileSearchTask extends RecursiveFileSearchTask {
-    public FileSearchTask(File dir) {
+    protected FileSearchTask(File dir) {
       super(dir);
     }
 
@@ -326,11 +326,11 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
     return msg;
   }
 
-  private List<Path> getPathList(Path dir) {
+  private List<Path> getPathList(Path dirPath) {
     List<Path> list = new ArrayList<>();
     try {
       counter = 0;
-      recursiveSearch(dir, list);
+      recursiveSearch(dirPath, list);
     } catch (IOException ex) {
       publish(new Message("The search was canceled", true));
       list.clear();
