@@ -70,19 +70,22 @@ public final class MainPanel extends JPanel {
   }
 
   public static JTable makeTable() {
+    JTable table = new JTable(makeModel());
+    table.setAutoCreateRowSorter(true);
+    return table;
+  }
+
+  private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aa", 12, true}, {"bb", 5, false},
         {"CC", 92, true}, {"DD", 0, false}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model);
-    table.setAutoCreateRowSorter(true);
-    return table;
   }
 
   public static void main(String[] args) {
