@@ -167,6 +167,7 @@
                     COMPACT_CTOR_DEF"/>
       <property name="allowNoEmptyLineBetweenFields" value="true"/>
     </module>
+    <module name="SingleSpaceSeparator" />
     <module name="SeparatorWrap">
       <property name="id" value="SeparatorWrapDot"/>
       <property name="tokens" value="DOT"/>

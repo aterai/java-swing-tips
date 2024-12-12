@@ -107,7 +107,7 @@ class CheckBoxesPanel extends JPanel {
   }
 
   protected String[] getTitles() {
-    return Arrays.copyOf(titles,  titles.length);
+    return Arrays.copyOf(titles, titles.length);
   }
 
   protected void updateButtons(Object v) {

@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     ButtonGroup group2 = new ButtonGroup();
     Container p2 = makeUI(group2);
     p2.setFocusTraversalPolicyProvider(true);
-    p2.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy()  {
+    p2.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy() {
       @Override public Component getDefaultComponent(Container focusCycleRoot) {
         ButtonModel selection = group2.getSelection();
         return Stream.of(focusCycleRoot.getComponents())
