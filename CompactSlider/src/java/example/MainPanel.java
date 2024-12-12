@@ -77,7 +77,9 @@ public final class MainPanel extends JPanel {
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder());
         UIDefaults d = new UIDefaults();
-        Painter<JComponent> painter = (g, c, w, h) -> {};
+        Painter<JComponent> painter = (g, c, w, h) -> {
+          // empty painter
+        };
         String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
         d.put(key + "[Enabled].backgroundPainter", painter);
         d.put(key + "[Focused].backgroundPainter", painter);
@@ -137,7 +139,9 @@ public final class MainPanel extends JPanel {
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder());
         UIDefaults d = new UIDefaults();
-        Painter<JComponent> painter = (g, c, w, h) -> {};
+        Painter<JComponent> painter = (g, c, w, h) -> {
+          // empty painter
+        };
         String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
         d.put(key + "[Enabled].backgroundPainter", painter);
         d.put(key + "[Focused].backgroundPainter", painter);
