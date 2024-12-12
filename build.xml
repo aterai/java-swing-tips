@@ -367,10 +367,17 @@
     </path>
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
     <mkdir dir="${build.reports}" />
-    <checkstyle config="${sca.dir}/checks.xml" failOnViolation="false">
+    <property name="checkstyle.config" location="${basedir}/checks.xml" unless:set="checkstyle.config" />
+    <echo message="checkstyle.config: ${checkstyle.config}" />
+    <checkstyle config="${checkstyle.config}" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="${build.reports}/checkstyle-result.xml" />
-      <fileset dir="${src.dir}" excludes="**/module-info.java" includes="**/*.java" />
+      <fileset dir="${src.dir}">
+        <exclude name="**/build/**" />
+        <exclude name="**/target/**" />
+        <exclude name="**/module-info.java" unless:set="jdk9orlater" />
+        <include name="**/*.java" />
+      </fileset>
     </checkstyle>
   </target>
 

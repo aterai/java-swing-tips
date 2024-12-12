@@ -51,7 +51,9 @@
       </fileset>
     </path>
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
-    <checkstyle config="${basedir}/checks.xml" failOnViolation="false">
+    <property name="checkstyle.config" location="${basedir}/checks.xml" unless:set="checkstyle.config" />
+    <echo message="checkstyle.config: ${checkstyle.config}" />
+    <checkstyle config="${checkstyle.config}" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="${basedir}/checkstyle-result.xml" />
       <fileset dir="${basedir}">
