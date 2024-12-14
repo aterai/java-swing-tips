@@ -53,7 +53,6 @@ public final class MainPanel extends JPanel {
     set2.add(new DefaultMutableTreeNode("333333333"));
     set2.add(new DefaultMutableTreeNode("4444444444444"));
 
-
     DefaultMutableTreeNode set1 = new DefaultMutableTreeNode("Set 00000001");
     set1.add(new DefaultMutableTreeNode("3333333333333333333333333333"));
     set1.add(set2);

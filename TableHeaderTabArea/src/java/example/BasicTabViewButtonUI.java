@@ -65,7 +65,6 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     g.setColor(b.getBackground());
     g.fillRect(0, 0, b.getWidth(), b.getHeight());
 
-
     SwingUtilities.calculateInnerArea(b, viewRect);
     iconRect.setBounds(0, 0, 0, 0);
     textRect.setBounds(0, 0, 0, 0);
