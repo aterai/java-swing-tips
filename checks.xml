@@ -325,6 +325,13 @@
                     LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF,
                     TYPE_EXTENSION_AND "/>
     </module>
+
+    <!-- Metrics -->
+    <module name="CyclomaticComplexity">
+      <property name="switchBlockAsSingleDecisionPoint" value="true"/>
+    </module>
+    <module name="NPathComplexity"/>
+
     <module name="AnnotationLocation">
       <property name="id" value="AnnotationLocationMostCases"/>
       <property name="tokens"

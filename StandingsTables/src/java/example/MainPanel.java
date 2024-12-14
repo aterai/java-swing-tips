@@ -155,27 +155,30 @@ class BorderPaintLayerUI extends LayerUI<JScrollPane> {
       List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
       int column = keys.isEmpty() ? -1 : keys.get(0).getColumn();
       if (column <= 0 || column == 9) {
-        Graphics2D g2 = (Graphics2D) g.create();
         boolean b1 = column == 0 && keys.get(0).getSortOrder() == SortOrder.ASCENDING;
         boolean b2 = column == 9 && keys.get(0).getSortOrder() == SortOrder.DESCENDING;
-        if (column < 0 || b1 || b2) {
-          g2.setPaint(Color.GREEN.darker());
-          g2.draw(makeUnderline(c, table, 2));
-          g2.setPaint(Color.BLUE.darker());
-          g2.draw(makeUnderline(c, table, 6));
-          g2.setPaint(Color.RED.darker());
-          g2.draw(makeUnderline(c, table, 20));
-        } else {
-          g2.setPaint(Color.GREEN.darker());
-          g2.draw(makeUnderline(c, table, 22 - 2));
-          g2.setPaint(Color.BLUE.darker());
-          g2.draw(makeUnderline(c, table, 22 - 6));
-          g2.setPaint(Color.RED.darker());
-          g2.draw(makeUnderline(c, table, 22 - 20));
-        }
-        g2.dispose();
+        paintLines(g, c, table, column < 0 || b1 || b2);
       }
     }
+  }
+
+  private static void paintLines(Graphics g, Component layer, JTable table, boolean b) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(Color.GREEN.darker());
+    if (b) {
+      g2.draw(makeUnderline(layer, table, 2));
+      g2.setPaint(Color.BLUE.darker());
+      g2.draw(makeUnderline(layer, table, 6));
+      g2.setPaint(Color.RED.darker());
+      g2.draw(makeUnderline(layer, table, 20));
+    } else {
+      g2.draw(makeUnderline(layer, table, 22 - 2));
+      g2.setPaint(Color.BLUE.darker());
+      g2.draw(makeUnderline(layer, table, 22 - 6));
+      g2.setPaint(Color.RED.darker());
+      g2.draw(makeUnderline(layer, table, 22 - 20));
+    }
+    g2.dispose();
   }
 
   private static JTable getTable(Component c) {
@@ -189,7 +192,7 @@ class BorderPaintLayerUI extends LayerUI<JScrollPane> {
     return table;
   }
 
-  private static Line2D makeUnderline(JComponent c, JTable table, int idx) {
+  private static Line2D makeUnderline(Component c, JTable table, int idx) {
     Rectangle r0 = table.getCellRect(idx - 1, 0, false);
     Rectangle r1 = table.getCellRect(idx - 1, table.getColumnCount() - 1, false);
     Rectangle r = SwingUtilities.convertRectangle(table, r0.union(r1), c);

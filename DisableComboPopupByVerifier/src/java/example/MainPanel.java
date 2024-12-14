@@ -147,17 +147,8 @@ class BasicComboPopup2 extends BasicComboPopup {
       if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
         return;
       }
-      boolean hasFocus = true;
-      if (comboBox.isEditable()) {
-        Component comp = comboBox.getEditor().getEditorComponent();
-        if (!(comp instanceof JComponent) || ((JComponent) comp).isRequestFocusEnabled()) {
-          hasFocus = comp.hasFocus() || comp.requestFocusInWindow();
-        }
-      } else if (comboBox.isRequestFocusEnabled()) {
-        hasFocus = comboBox.hasFocus() || comboBox.requestFocusInWindow();
-      }
       Component c = e.getComponent();
-      if (hasFocus) {
+      if (hasFocus(comboBox)) {
         togglePopup();
       } else if (c instanceof AbstractButton) {
         ((AbstractButton) c).getModel().setPressed(false);
@@ -184,5 +175,18 @@ class BasicComboPopup2 extends BasicComboPopup {
       hasEntered = false;
       stopAutoScrolling();
     }
+  }
+
+  private static boolean hasFocus(JComboBox<?> combo) {
+    boolean hasFocus = true;
+    if (combo.isEditable()) {
+      Component comp = combo.getEditor().getEditorComponent();
+      if (!(comp instanceof JComponent) || ((JComponent) comp).isRequestFocusEnabled()) {
+        hasFocus = comp.hasFocus() || comp.requestFocusInWindow();
+      }
+    } else if (combo.isRequestFocusEnabled()) {
+      hasFocus = combo.hasFocus() || combo.requestFocusInWindow();
+    }
+    return hasFocus;
   }
 }
