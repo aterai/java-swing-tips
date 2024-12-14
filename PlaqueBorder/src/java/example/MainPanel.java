@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -39,19 +40,7 @@ public final class MainPanel extends JPanel {
         getViewport().setBackground(getBackground());
         setBorder(new PlaqueBorder(ARC) {
           @Override protected Shape getBorderShape(double x, double y, double w, double h, double r) {
-            double rr = r * .5522;
-            Path2D path = new Path2D.Double();
-            path.moveTo(x, y + r);
-            path.curveTo(x + rr, y + r, x + r, y + rr, x + r, y);
-            path.lineTo(x + w - r, y);
-            path.curveTo(x + w - r, y + rr, x + w - rr, y + r, x + w, y + r);
-            path.lineTo(x + w, y + h - r);
-            path.curveTo(x + w - rr, y + h - r, x + w - r, y + h - rr, x + w - r, y + h);
-            path.lineTo(x + r, y + h);
-            path.curveTo(x + r, y + h - rr, x + rr, y + h - r, x, y + h - r);
-            // path.lineTo(x, y + r);
-            path.closePath();
-            return path;
+            return makeBorderShape(x, y, w, h, r);
           }
         });
       }
@@ -85,6 +74,22 @@ public final class MainPanel extends JPanel {
     // setBackground(Color.RED);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Shape makeBorderShape(double x, double y, double w, double h, double r) {
+    double rr = r * .5522;
+    Path2D path = new Path2D.Double();
+    path.moveTo(0, r);
+    path.curveTo(rr, r, r, rr, r, y);
+    path.lineTo(w - r, 0);
+    path.curveTo(w - r, rr, w - rr, r, w, r);
+    path.lineTo(w, h - r);
+    path.curveTo(w - rr, h - r, w - r, h - rr, w - r, h);
+    path.lineTo(r, h);
+    path.curveTo(r, h - rr, rr, h - r, 0, h - r);
+    // path.lineTo(0, r);
+    path.closePath();
+    return AffineTransform.getTranslateInstance(x, y).createTransformedShape(path);
   }
 
   public static void main(String[] args) {
@@ -125,11 +130,11 @@ class PlaqueBorder extends EmptyBorder {
   }
 
   protected Shape getBorderShape(double x, double y, double w, double h, double r) {
-    Area rect = new Area(new Rectangle2D.Double(x, y, w, h));
-    rect.subtract(new Area(new Ellipse2D.Double(x - r, y - r, r + r, r + r)));
-    rect.subtract(new Area(new Ellipse2D.Double(x + w - r, y - r, r + r, r + r)));
-    rect.subtract(new Area(new Ellipse2D.Double(x - r, y + h - r, r + r, r + r)));
-    rect.subtract(new Area(new Ellipse2D.Double(x + w - r, y + h - r, r + r, r + r)));
-    return rect;
+    Area rect = new Area(new Rectangle2D.Double(0, 0, w, h));
+    rect.subtract(new Area(new Ellipse2D.Double(- r, - r, r + r, r + r)));
+    rect.subtract(new Area(new Ellipse2D.Double(w - r, - r, r + r, r + r)));
+    rect.subtract(new Area(new Ellipse2D.Double(- r, h - r, r + r, r + r)));
+    rect.subtract(new Area(new Ellipse2D.Double(w - r, h - r, r + r, r + r)));
+    return AffineTransform.getTranslateInstance(x, y).createTransformedShape(rect);
   }
 }

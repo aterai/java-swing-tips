@@ -13,34 +13,48 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabs1 = makeTabbedPane();
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    tabbedPane.addTab("JRadioButtonMenuItem", makeTest1());
+    tabbedPane.addTab("JRadioButton", makeTest2());
+    tabbedPane.addTab("JComboBox", makeTest3());
+    tabbedPane.addTab("JSpinner", makeTest4());
+    add(tabbedPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Component makeTest1() {
+    JTabbedPane tabs = makeTabbedPane();
     JMenu menu = new JMenu("JMenu");
-    ButtonGroup bg1 = new ButtonGroup();
-    ItemListener handler1 = e -> {
+    ButtonGroup bg = new ButtonGroup();
+    ItemListener handler = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        String name = bg1.getSelection().getActionCommand();
-        tabs1.setTabPlacement(TabPlacement.valueOf(name).getPlacement());
+        String name = bg.getSelection().getActionCommand();
+        tabs.setTabPlacement(TabPlacement.valueOf(name).getPlacement());
       }
     };
     Arrays.asList(TabPlacement.values()).forEach(tp -> {
       String name = tp.name();
       boolean selected = tp == TabPlacement.TOP;
       JMenuItem item = new JRadioButtonMenuItem(name, selected);
-      item.addItemListener(handler1);
+      item.addItemListener(handler);
       item.setActionCommand(name);
       menu.add(item);
-      bg1.add(item);
+      bg.add(item);
     });
     JMenuBar mb = new JMenuBar();
     mb.add(menu);
     // EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    return makePanel(tabs, mb);
+  }
 
-    JTabbedPane tabs2 = makeTabbedPane();
-    ButtonGroup bg2 = new ButtonGroup();
-    ItemListener handler2 = e -> {
+  private static Component makeTest2() {
+    JTabbedPane tabs = makeTabbedPane();
+    ButtonGroup bg = new ButtonGroup();
+    ItemListener handler = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        String name = bg2.getSelection().getActionCommand();
-        tabs2.setTabPlacement(TabPlacement.valueOf(name).getPlacement());
+        String name = bg.getSelection().getActionCommand();
+        tabs.setTabPlacement(TabPlacement.valueOf(name).getPlacement());
       }
     };
     Box box = Box.createHorizontalBox();
@@ -48,28 +62,34 @@ public final class MainPanel extends JPanel {
       String name = tp.name();
       boolean selected = tp == TabPlacement.TOP;
       JRadioButton radio = new JRadioButton(name, selected);
-      radio.addItemListener(handler2);
+      radio.addItemListener(handler);
       radio.setActionCommand(name);
       box.add(radio);
-      bg2.add(radio);
+      bg.add(radio);
     });
+    return makePanel(tabs, box);
+  }
 
-    JTabbedPane tabs3 = makeTabbedPane();
+  private static Component makeTest3() {
+    JTabbedPane tabs = makeTabbedPane();
     JComboBox<TabPlacement> combo = new JComboBox<>(TabPlacement.values());
     combo.addItemListener(e -> {
       Object o = e.getItem();
       if (e.getStateChange() == ItemEvent.SELECTED && o instanceof TabPlacement) {
-        tabs3.setTabPlacement(((TabPlacement) o).getPlacement());
+        tabs.setTabPlacement(((TabPlacement) o).getPlacement());
         // String name = e.getItem().toString();
-        // tabs3.setTabPlacement(TabPlacement.valueOf(name).getPlacement());
+        // tabs.setTabPlacement(TabPlacement.valueOf(name).getPlacement());
         // int idx = combo.getSelectedIndex();
-        // tabs3.setTabPlacement(combo.getItemAt(idx).getPlacement());
+        // tabs.setTabPlacement(combo.getItemAt(idx).getPlacement());
       }
     });
+    return makePanel(tabs, combo);
+  }
 
-    JTabbedPane tabs4 = makeTabbedPane();
-    SpinnerListModel model4 = new SpinnerListModel(TabPlacement.values());
-    JSpinner spinner = new JSpinner(model4) {
+  private static Component makeTest4() {
+    JTabbedPane tabs = makeTabbedPane();
+    SpinnerListModel model = new SpinnerListModel(TabPlacement.values());
+    JSpinner spinner = new JSpinner(model) {
       @Override public Object getNextValue() {
         return super.getPreviousValue();
       }
@@ -80,19 +100,12 @@ public final class MainPanel extends JPanel {
     };
     ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setEditable(false);
     spinner.addChangeListener(e -> {
-      Object o = model4.getValue();
+      Object o = model.getValue();
       if (o instanceof TabPlacement) {
-        tabs4.setTabPlacement(((TabPlacement) o).getPlacement());
+        tabs.setTabPlacement(((TabPlacement) o).getPlacement());
       }
     });
-
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    tabbedPane.addTab("JRadioButtonMenuItem", makePanel(tabs1, mb));
-    tabbedPane.addTab("JRadioButton", makePanel(tabs2, box));
-    tabbedPane.addTab("JComboBox", makePanel(tabs3, combo));
-    tabbedPane.addTab("JSpinner", makePanel(tabs4, spinner));
-    add(tabbedPane);
-    setPreferredSize(new Dimension(320, 240));
+    return makePanel(tabs, spinner);
   }
 
   private static JTabbedPane makeTabbedPane() {
@@ -105,7 +118,7 @@ public final class MainPanel extends JPanel {
     return tabs;
   }
 
-  private JPanel makePanel(JTabbedPane tabs, JComponent c) {
+  private static Component makePanel(Component tabs, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     if (c != null) {
       p.add(c, BorderLayout.NORTH);

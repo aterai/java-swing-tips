@@ -29,7 +29,23 @@ public final class MainPanel extends JPanel {
     LOGGER.setUseParentHandlers(false);
     JTextArea textArea = new JTextArea();
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
+    add(new JScrollPane(textArea));
 
+    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
+    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    p.add(makeTextField());
+    JButton button = makeButton();
+    p.add(button);
+    EventQueue.invokeLater(() -> {
+      JRootPane root = getRootPane();
+      root.setJMenuBar(makeMenuBar());
+      root.setDefaultButton(button);
+    });
+    add(p, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTextField makeTextField() {
     JTextField field = new JTextField(20);
     // KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.SHIFT_DOWN_MASK);
     String key = "beep";
@@ -51,7 +67,10 @@ public final class MainPanel extends JPanel {
         }
       }
     });
+    return field;
+  }
 
+  private static JButton makeButton() {
     JButton button = new JButton("TEST: ActionEvent#getModifiers()");
     button.addActionListener(e -> {
       // BAD EXAMPLE: boolean isShiftDown = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
@@ -66,7 +85,10 @@ public final class MainPanel extends JPanel {
         LOGGER.info(() -> "JButton: Mouse event mask");
       }
     });
+    return button;
+  }
 
+  private static JMenuBar makeMenuBar() {
     JMenuBar menuBar = new JMenuBar();
     JMenu menu = menuBar.add(new JMenu("Test"));
     menu.setMnemonic(KeyEvent.VK_T);
@@ -88,21 +110,7 @@ public final class MainPanel extends JPanel {
         LOGGER.info(() -> "JMenuItem: Mouse event mask");
       }
     });
-
-    EventQueue.invokeLater(() -> {
-      JRootPane root = getRootPane();
-      root.setJMenuBar(menuBar);
-      root.setDefaultButton(button);
-    });
-
-    JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
-    p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    p.add(field);
-    p.add(button);
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(textArea));
-    setPreferredSize(new Dimension(320, 240));
+    return menuBar;
   }
 
   public static void main(String[] args) {
