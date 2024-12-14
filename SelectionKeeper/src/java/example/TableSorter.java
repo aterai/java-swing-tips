@@ -111,8 +111,8 @@ public class TableSorter extends AbstractTableModel {
   public static final int NOT_SORTED = 0;
   public static final int ASCENDING = 1;
 
-  private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
   public static final Comparator<Object> LEXICAL_COMP = new LexicalComparator();
+  private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
 
   protected transient TableModel tableModel;
 
@@ -125,17 +125,6 @@ public class TableSorter extends AbstractTableModel {
   private final transient RowComparator<TableRow> rowComparator = new RowComparator<>();
   private transient MouseListener mouseListener;
   private transient TableModelListener modelListener;
-
-  public void readObject() {
-    mouseListener = new MouseHandler();
-    modelListener = new TableModelHandler();
-  }
-
-  public Object readResolve() {
-    mouseListener = new MouseHandler();
-    modelListener = new TableModelHandler();
-    return this;
-  }
 
   public TableSorter() {
     super();
@@ -152,6 +141,17 @@ public class TableSorter extends AbstractTableModel {
     this();
     setTableHeader(tableHeader);
     setTableModel(tableModel);
+  }
+
+  public void readObject() {
+    mouseListener = new MouseHandler();
+    modelListener = new TableModelHandler();
+  }
+
+  public Object readResolve() {
+    mouseListener = new MouseHandler();
+    modelListener = new TableModelHandler();
+    return this;
   }
 
   protected void clearSortingState() {

@@ -19,10 +19,6 @@ import javax.swing.plaf.basic.BasicHTML;
 
 @SuppressWarnings("PMD.TooManyMethods")
 public class TitledBorder2 extends TitledBorder {
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
-  private final Map<BorderPosition, Integer> positionMap = new EnumMap<>(BorderPosition.class);
-  private final JLabel label2;
-
   // Space between the border and the component's edge
   // protected static final int EDGE_SPACING = 2;
 
@@ -33,6 +29,10 @@ public class TitledBorder2 extends TitledBorder {
   // Horizontal inset of text that is left or right justified
   // protected static final int TEXT_INSET_H = 5;
   protected static final int TEXT_INSET_H2 = 11; // TEXT_SPACING2 * 2 + 1;
+
+  @SuppressWarnings("PMD.UseConcurrentHashMap")
+  private final Map<BorderPosition, Integer> positionMap = new EnumMap<>(BorderPosition.class);
+  private final JLabel label2;
 
   public enum BorderPosition {
     DEFAULT_POSITION,

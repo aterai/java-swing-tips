@@ -14,23 +14,6 @@ public final class MainPanel extends JPanel {
   private final Dimension defaultSize = new Dimension(320, 240);
   private Dimension dpiPreferredSize;
 
-  public static float getDpiScaling() {
-    int sr = Toolkit.getDefaultToolkit().getScreenResolution();
-    float dpi = System.getProperty("os.name").startsWith("Windows") ? 96f : 72f;
-    return sr / dpi;
-  }
-
-  @Override public Dimension getPreferredSize() {
-    if (Objects.isNull(dpiPreferredSize)) {
-      float s = getDpiScaling();
-      float fw = defaultSize.width * s;
-      float fh = defaultSize.height * s;
-      dpiPreferredSize = new Dimension((int) fw, (int) fh);
-    }
-    // System.out.println(dpiPreferredSize);
-    return dpiPreferredSize;
-  }
-
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(makeModel()) {
@@ -77,6 +60,23 @@ public final class MainPanel extends JPanel {
     // };
     split.setResizeWeight(.5);
     add(split);
+  }
+
+  public static float getDpiScaling() {
+    int sr = Toolkit.getDefaultToolkit().getScreenResolution();
+    float dpi = System.getProperty("os.name").startsWith("Windows") ? 96f : 72f;
+    return sr / dpi;
+  }
+
+  @Override public Dimension getPreferredSize() {
+    if (Objects.isNull(dpiPreferredSize)) {
+      float s = getDpiScaling();
+      float fw = defaultSize.width * s;
+      float fh = defaultSize.height * s;
+      dpiPreferredSize = new Dimension((int) fw, (int) fh);
+    }
+    // System.out.println(dpiPreferredSize);
+    return dpiPreferredSize;
   }
 
   private static TableModel makeModel() {

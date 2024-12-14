@@ -81,11 +81,11 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundedCornerButton extends JButton {
-  private static final double ARC = 16d;
   protected static final int FOCUS_STROKE = 2;
   protected static final Color FC = new Color(100, 150, 255, 200);
   protected static final Color AC = new Color(230, 230, 230);
   protected static final Color RC = Color.ORANGE;
+  private static final double ARC = 16d;
   protected transient Shape shape;
   protected transient Shape border;
   protected transient Shape base;

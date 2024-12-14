@@ -172,8 +172,8 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
 }
 
 class LocalDateTimeCellRenderer implements ListCellRenderer<LocalDateTime> {
-  private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
   private static final String PATTERN = "yyyy/MM/dd";
+  private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends LocalDateTime> list, LocalDateTime value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = renderer.getListCellRendererComponent(

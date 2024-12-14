@@ -44,9 +44,9 @@ public final class MainPanel extends JPanel {
 }
 
 class PaintPanel extends JPanel {
+  private static final Paint TEXTURE = createCheckerTexture(6, new Color(0x32_C8_96_64, true));
   private final Point startPoint = new Point();
   private final transient BufferedImage backImage;
-  private static final Paint TEXTURE = createCheckerTexture(6, new Color(0x32_C8_96_64, true));
   private final Rectangle rect = new Rectangle(320, 240);
   private final int[] pixels;
   private final transient ImageProducer src;

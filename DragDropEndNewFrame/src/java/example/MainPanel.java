@@ -115,17 +115,23 @@ class DnDTabbedPane extends JTabbedPane {
   private static final int LINE_SIZE = 3;
   private static final int RWH = 20;
   private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
-
-  private final GhostGlassPane glassPane = new GhostGlassPane(this);
   protected int dragTabIndex = -1;
-
   // For Debug: >>>
   protected boolean hasGhost = true;
   protected boolean isPaintScrollArea = true;
   // <<<
-
   protected Rectangle rectBackward = new Rectangle();
   protected Rectangle rectForward = new Rectangle();
+  private final GhostGlassPane glassPane = new GhostGlassPane(this);
+
+  protected DnDTabbedPane() {
+    super();
+    glassPane.setName("GlassPane");
+    new DropTarget(
+        glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
+    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+        this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
+  }
 
   private void clickArrowButton(String actionKey) {
     JButton forwardButton = null;
@@ -161,15 +167,6 @@ class DnDTabbedPane extends JTabbedPane {
     } else if (rectForward.contains(glassPt)) {
       clickArrowButton("scrollTabsForwardAction");
     }
-  }
-
-  protected DnDTabbedPane() {
-    super();
-    glassPane.setName("GlassPane");
-    new DropTarget(
-        glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
-    DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
-        this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
   }
 
   protected int getTargetTabIndex(Point glassPt) {

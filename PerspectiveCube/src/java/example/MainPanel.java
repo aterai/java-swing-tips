@@ -114,11 +114,11 @@ public final class MainPanel extends JPanel {
 }
 
 class Vertex {
+  public double vx;
+  public double vy;
   private double dx;
   private double dy;
   private double dz;
-  public double vx;
-  public double vy;
 
   protected Vertex(double dx, double dy, double dz) {
     this.dx = dx;

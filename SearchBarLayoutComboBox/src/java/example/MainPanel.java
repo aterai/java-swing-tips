@@ -127,6 +127,30 @@ class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxM
 class SearchBarComboBox<E extends SearchEngine> extends JComboBox<E> {
   private static final String UI_CLASS_ID = "SearchBarComboBoxUI";
 
+  // protected SearchBarComboBox() {
+  //   super();
+  //   setModel(new DefaultComboBoxModel<>());
+  //   init();
+  // }
+
+  protected SearchBarComboBox(ComboBoxModel<E> model) {
+    super(model);
+    // setModel(model);
+    // init();
+  }
+
+  @SafeVarargs protected SearchBarComboBox(E... items) {
+    super(items);
+    // setModel(new DefaultComboBoxModel<>(items));
+    // init();
+  }
+
+  // protected SearchBarComboBox(Vector<?> items) {
+  //   super();
+  //   setModel(new DefaultComboBoxModel(items));
+  //   init();
+  // }
+
   @Override public String getUIClassID() {
     return UI_CLASS_ID;
   }
@@ -157,30 +181,6 @@ class SearchBarComboBox<E extends SearchEngine> extends JComboBox<E> {
     //   SwingUtilities.updateComponentTreeUI((Component) renderer);
     // }
   }
-
-  // protected SearchBarComboBox() {
-  //   super();
-  //   setModel(new DefaultComboBoxModel<>());
-  //   init();
-  // }
-
-  protected SearchBarComboBox(ComboBoxModel<E> model) {
-    super(model);
-    // setModel(model);
-    // init();
-  }
-
-  @SafeVarargs protected SearchBarComboBox(E... items) {
-    super(items);
-    // setModel(new DefaultComboBoxModel<>(items));
-    // init();
-  }
-
-  // protected SearchBarComboBox(Vector<?> items) {
-  //   super();
-  //   setModel(new DefaultComboBoxModel(items));
-  //   init();
-  // }
 
   // private void init() {
   //   installAncestorListener();

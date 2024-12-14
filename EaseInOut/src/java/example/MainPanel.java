@@ -94,6 +94,11 @@ class ImageCaptionLabel extends JLabel {
   };
   private transient LabelHandler handler;
 
+  protected ImageCaptionLabel(Icon icon, String caption) {
+    super(icon);
+    textArea.setText(caption);
+  }
+
   protected void dispatchMouseEvent(MouseEvent e) {
     Component src = e.getComponent();
     // this: target Component;
@@ -131,11 +136,6 @@ class ImageCaptionLabel extends JLabel {
         // }
       }
     });
-  }
-
-  protected ImageCaptionLabel(Icon icon, String caption) {
-    super(icon);
-    textArea.setText(caption);
   }
 
   private final class LabelHandler extends MouseAdapter implements HierarchyListener {

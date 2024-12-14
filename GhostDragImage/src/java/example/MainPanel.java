@@ -80,9 +80,6 @@ public final class MainPanel extends JPanel {
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
-  private final List<Integer> indices = new ArrayList<>();
-  private int addIndex = -1; // Location where items were added
-  private int addCount; // Number of items added.
   protected static final JLabel LABEL = new JLabel() {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
@@ -90,6 +87,9 @@ class ListItemTransferHandler extends TransferHandler {
       return d;
     }
   };
+  private final List<Integer> indices = new ArrayList<>();
+  private int addIndex = -1; // Location where items were added
+  private int addCount; // Number of items added.
 
   protected ListItemTransferHandler() {
     super();

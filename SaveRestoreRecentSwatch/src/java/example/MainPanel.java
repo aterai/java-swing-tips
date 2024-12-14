@@ -136,8 +136,8 @@ class ColorTracker implements ActionListener {
 // copied from javax/swing/colorchooser/DefaultSwatchChooserPanel.java
 @SuppressWarnings("PMD.LongVariable")
 class MySwatchChooserPanel extends AbstractColorChooserPanel {
-  private SwatchPanel swatchPanel;
   protected RecentSwatchPanel recentSwatchPanel;
+  private SwatchPanel swatchPanel;
   private transient MouseListener mainSwatchListener;
   private transient MouseListener recentSwatchListener;
   private transient KeyListener mainSwatchKeyListener;

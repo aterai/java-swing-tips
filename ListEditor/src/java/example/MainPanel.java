@@ -200,7 +200,6 @@ class EditableList<E extends ListItem> extends JList<E> {
   public static final String RENAME = "rename-title";
   public static final String CANCEL = "cancel-editing";
   public static final String EDITING = "start-editing";
-  private transient MouseAdapter handler;
   protected final Container glassPane = new EditorGlassPane();
   protected final JTextField editor = new JTextField();
   protected final Action startEditing = new AbstractAction() {
@@ -242,6 +241,7 @@ class EditableList<E extends ListItem> extends JList<E> {
       glassPane.setVisible(false);
     }
   };
+  private transient MouseAdapter handler;
 
   protected EditableList(ListModel<E> model) {
     super(model);

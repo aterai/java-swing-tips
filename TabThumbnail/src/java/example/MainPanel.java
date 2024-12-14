@@ -86,8 +86,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TabThumbnailTabbedPane extends JTabbedPane {
-  private int current = -1;
   private static final double SCALE = .15;
+  private int current = -1;
 
   private Component getTabThumbnail(int index) {
     Component c = getComponentAt(index);

@@ -79,6 +79,10 @@ class IconPasswordFieldUI extends BasicPasswordFieldUI {
   }
 
   private static class IconPasswordView extends PasswordView {
+    protected IconPasswordView(Element element) {
+      super(element);
+    }
+
     @Override protected int drawEchoCharacter(Graphics g, int x, int y, char c) {
       // Graphics2D g2 = (Graphics2D) g.create();
       // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -106,10 +110,6 @@ class IconPasswordFieldUI extends BasicPasswordFieldUI {
     //   g2.dispose();
     //   return x + ICON.getIconWidth();
     // }
-
-    protected IconPasswordView(Element element) {
-      super(element);
-    }
   }
 }
 

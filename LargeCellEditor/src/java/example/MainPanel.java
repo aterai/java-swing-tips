@@ -265,9 +265,9 @@ class IconTable extends JTable {
 }
 
 class EditorFromList<E extends IconItem> extends JList<E> {
+  protected int rollOverRowIndex = -1;
   private final Dimension dim;
   private transient RollOverListener handler;
-  protected int rollOverRowIndex = -1;
 
   protected EditorFromList(ListModel<E> model, Dimension dim) {
     super(model);

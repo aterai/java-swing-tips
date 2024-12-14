@@ -91,9 +91,9 @@ public final class MainPanel extends JPanel {
 // Java Swing Hacks - HACK #26: DnD JTree
 // https://www.oreilly.co.jp/books/4873112788/
 class DnDTree extends JTree {
-  private transient DropTarget treeDropTarget;
   protected transient TreeNode dropTargetNode;
   protected transient TreeNode draggedNode;
+  private transient DropTarget treeDropTarget;
   private final transient DragSourceListener listener = new NodeDragSourceListener();
 
   @Override public void updateUI() {

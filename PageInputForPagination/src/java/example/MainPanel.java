@@ -24,6 +24,9 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
 public final class MainPanel extends JPanel {
+  public final JTextField field = new JTextField(2);
+  public final JLabel label = new JLabel("/ 1");
+  public final int itemsPerPage;
   private final JButton first = new JButton("|<");
   private final JButton prev = new JButton("<");
   private final JButton next = new JButton(">");
@@ -36,10 +39,6 @@ public final class MainPanel extends JPanel {
   };
   public final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
   public final JTable table = new JTable(model);
-  public final JTextField field = new JTextField(2);
-  public final JLabel label = new JLabel("/ 1");
-
-  public final int itemsPerPage;
   private int maxPageIndex;
   private int currentPageIndex;
 

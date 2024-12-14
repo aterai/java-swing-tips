@@ -17,6 +17,16 @@ import javax.swing.*;
  */
 public class CloseTabIcon implements Icon {
   /**
+   * true whether the mouse is over this icon, false otherwise.
+   */
+  protected boolean mouseover;
+
+  /**
+   * true whether the mouse is pressed on this icon, false otherwise.
+   */
+  protected boolean mousepressed;
+
+  /**
    * the x position of the icon.
    */
   private int xpos;
@@ -40,16 +50,6 @@ public class CloseTabIcon implements Icon {
    * the additional fileicon.
    */
   private final Icon fileIcon;
-
-  /**
-   * true whether the mouse is over this icon, false otherwise.
-   */
-  protected boolean mouseover;
-
-  /**
-   * true whether the mouse is pressed on this icon, false otherwise.
-   */
-  protected boolean mousepressed;
 
   /**
    * Creates a new instance of <code>CloseTabIcon</code>.

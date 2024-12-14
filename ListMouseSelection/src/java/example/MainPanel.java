@@ -108,11 +108,11 @@ class SingleMouseClickSelectList<E> extends JList<E> {
 }
 
 class SingleClickSelectList<E> extends JList<E> {
-  private transient SelectionHandler listener;
   protected boolean isDragging;
   protected boolean isInsideDragging;
   protected boolean startOutside;
   protected int startIndex = -1;
+  private transient SelectionHandler listener;
 
   protected SingleClickSelectList(ListModel<E> model) {
     super(model);

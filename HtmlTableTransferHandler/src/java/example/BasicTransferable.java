@@ -20,11 +20,11 @@ import javax.swing.UIManager;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
 public class BasicTransferable implements Transferable {
-  private final String plainData;
-  private final String htmlData;
   private static DataFlavor[] htmlFlavors;
   private static DataFlavor[] stringFlavors;
   private static DataFlavor[] plainFlavors;
+  private final String plainData;
+  private final String htmlData;
 
   static {
     try {

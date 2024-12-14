@@ -532,11 +532,6 @@ class TabTransferHandler extends TransferHandler {
   protected final JWindow dialog = new JWindow();
   protected DragImageMode mode = DragImageMode.LIGHTWEIGHT;
 
-  public void setDragImageMode(DragImageMode dragMode) {
-    this.mode = dragMode;
-    setDragImage(null);
-  }
-
   protected TabTransferHandler() {
     super();
     // System.out.println("TabTransferHandler");
@@ -551,6 +546,11 @@ class TabTransferHandler extends TransferHandler {
       pt.translate(5, 5); // offset
       dialog.setLocation(pt);
     });
+  }
+
+  public void setDragImageMode(DragImageMode dragMode) {
+    this.mode = dragMode;
+    setDragImage(null);
   }
 
   @Override protected Transferable createTransferable(JComponent c) {

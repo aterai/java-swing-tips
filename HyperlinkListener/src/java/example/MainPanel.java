@@ -117,6 +117,28 @@ public final class MainPanel extends JPanel {
 
 class HyperlinkButton extends JButton {
   private static final String UI_CLASS_ID = "LinkViewButtonUI";
+
+  protected HyperlinkButton() {
+    this(null, null);
+  }
+
+  protected HyperlinkButton(Icon icon) {
+    this(null, icon);
+  }
+
+  protected HyperlinkButton(String text) {
+    this(text, null);
+  }
+
+  protected HyperlinkButton(Action a) {
+    this();
+    super.setAction(a);
+  }
+
+  protected HyperlinkButton(String text, Icon icon) {
+    super(text, icon);
+  }
+
   // @Override public String getUIClassID() {
   //   return UI_CLASS_ID;
   // }
@@ -139,27 +161,6 @@ class HyperlinkButton extends JButton {
 
   @Override public LinkViewButtonUI getUI() {
     return BasicLinkViewButtonUI.createUI(this);
-  }
-
-  protected HyperlinkButton() {
-    this(null, null);
-  }
-
-  protected HyperlinkButton(Icon icon) {
-    this(null, icon);
-  }
-
-  protected HyperlinkButton(String text) {
-    this(text, null);
-  }
-
-  protected HyperlinkButton(Action a) {
-    this();
-    super.setAction(a);
-  }
-
-  protected HyperlinkButton(String text, Icon icon) {
-    super(text, icon);
   }
 }
 

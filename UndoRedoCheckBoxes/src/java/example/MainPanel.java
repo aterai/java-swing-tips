@@ -14,10 +14,10 @@ import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEditSupport;
 
 public final class MainPanel extends JPanel {
-  private BigInteger status = new BigInteger("111000111", 2);
   public static final int BIT_LENGTH = 50;
   public static final String ONE_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "1"));
   public static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+  private BigInteger status = new BigInteger("111000111", 2);
   private final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel();

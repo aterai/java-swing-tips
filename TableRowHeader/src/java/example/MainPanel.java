@@ -88,9 +88,9 @@ class RowHeaderList<E> extends JList<E> {
   protected final JTable table;
   protected final transient ListSelectionModel tableSelection;
   protected final transient ListSelectionModel listSelection = getSelectionModel();
-  private transient MouseAdapter handler;
   protected int rollOverRowIndex = -1;
   protected int pressedRowIndex = -1;
+  private transient MouseAdapter handler;
 
   protected RowHeaderList(ListModel<E> model, JTable table) {
     super(model);

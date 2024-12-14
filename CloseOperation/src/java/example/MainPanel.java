@@ -14,23 +14,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   public static final AtomicInteger COUNTER = new AtomicInteger(0);
 
-  public static JFrame createFrame(String title) {
-    JFrame frame = new JFrame(Objects.toString(title, "Frame #" + COUNTER));
-    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    COUNTER.getAndIncrement();
-    frame.addWindowListener(new WindowAdapter() {
-      @Override public void windowClosing(WindowEvent e) {
-        if (COUNTER.getAndDecrement() == 0) {
-          Window w = e.getWindow();
-          if (w instanceof JFrame) {
-            ((JFrame) w).setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-          }
-        }
-      }
-    });
-    return frame;
-  }
-
   private MainPanel() {
     super(new BorderLayout());
     JButton button = new JButton("New Frame");
@@ -49,6 +32,23 @@ public final class MainPanel extends JPanel {
     });
     add(button);
     setPreferredSize(new Dimension(320, 100));
+  }
+
+  public static JFrame createFrame(String title) {
+    JFrame frame = new JFrame(Objects.toString(title, "Frame #" + COUNTER));
+    frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    COUNTER.getAndIncrement();
+    frame.addWindowListener(new WindowAdapter() {
+      @Override public void windowClosing(WindowEvent e) {
+        if (COUNTER.getAndDecrement() == 0) {
+          Window w = e.getWindow();
+          if (w instanceof JFrame) {
+            ((JFrame) w).setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+          }
+        }
+      }
+    });
+    return frame;
   }
 
   public static void main(String[] args) {

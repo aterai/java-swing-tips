@@ -14,6 +14,36 @@ public final class MainPanel extends JPanel {
   private static final Font FONT12 = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
   private static final Font FONT32 = new Font(Font.SANS_SERIF, Font.PLAIN, 32);
 
+  private MainPanel() {
+    super(new BorderLayout());
+    MyButton button = new MyButton("JButton");
+    addFontChangeListener(button);
+    // addFontChangeListener(combo);
+    MyLabel label = new MyLabel("JLabel");
+    addFontChangeListener(label);
+
+    JMenu menu = new JMenu("Font");
+    menu.setToolTipText("Select font size");
+    menu.add("32pt").addActionListener(e -> fireFontChangeEvent("font32", FONT32));
+    menu.add("12pt").addActionListener(e -> fireFontChangeEvent("font12", FONT12));
+
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(menu);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+
+    label.setFont(FONT12);
+    MyComboBox combo = new MyComboBox();
+    combo.setFont(FONT12);
+    button.setFont(FONT12);
+
+    JPanel panel = new JPanel();
+    panel.add(label);
+    panel.add(combo);
+    panel.add(button);
+    add(panel);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
   // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/EventListenerList.html
   // OvershadowingSubclassFields:
   // JComponent: private final EventListenerList listenerList = new EventListenerList();
@@ -66,36 +96,6 @@ public final class MainPanel extends JPanel {
   //   revalidate();
   // }
 
-  private MainPanel() {
-    super(new BorderLayout());
-    MyButton button = new MyButton("JButton");
-    addFontChangeListener(button);
-    // addFontChangeListener(combo);
-    MyLabel label = new MyLabel("JLabel");
-    addFontChangeListener(label);
-
-    JMenu menu = new JMenu("Font");
-    menu.setToolTipText("Select font size");
-    menu.add("32pt").addActionListener(e -> fireFontChangeEvent("font32", FONT32));
-    menu.add("12pt").addActionListener(e -> fireFontChangeEvent("font12", FONT12));
-
-    JMenuBar menuBar = new JMenuBar();
-    menuBar.add(menu);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
-
-    label.setFont(FONT12);
-    MyComboBox combo = new MyComboBox();
-    combo.setFont(FONT12);
-    button.setFont(FONT12);
-
-    JPanel panel = new JPanel();
-    panel.add(label);
-    panel.add(combo);
-    panel.add(button);
-    add(panel);
-    setPreferredSize(new Dimension(320, 240));
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -127,18 +127,18 @@ class FontChangeEvent extends EventObject {
   private final String command;
   private final Font font;
 
+  protected FontChangeEvent(Object source, String cmd, Font font) {
+    super(source);
+    this.command = cmd;
+    this.font = font;
+  }
+
   public String getCommand() {
     return command;
   }
 
   public Font getFont() {
     return font;
-  }
-
-  protected FontChangeEvent(Object source, String cmd, Font font) {
-    super(source);
-    this.command = cmd;
-    this.font = font;
   }
 }
 

@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
   // 0b111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111
   // public static final int BIT_LENGTH = 63;
   public static final int BIT_LENGTH = 72;
-  public BitSet status = BitSet.valueOf(new long[] {Long.parseLong("111000111", 2)});
   public static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
+  public BitSet status = BitSet.valueOf(new long[] {Long.parseLong("111000111", 2)});
   public final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel(new GridLayout(0, 8));

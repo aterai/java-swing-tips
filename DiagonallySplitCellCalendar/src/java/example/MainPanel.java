@@ -47,10 +47,6 @@ public final class MainPanel extends JPanel {
   };
   private LocalDate currentLocalDate;
 
-  public LocalDate getCurrentLocalDate() {
-    return currentLocalDate;
-  }
-
   private MainPanel() {
     super(new BorderLayout());
     monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
@@ -83,6 +79,10 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(monthTable));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public LocalDate getCurrentLocalDate() {
+    return currentLocalDate;
   }
 
   public void updateMonthView(LocalDate localDate) {

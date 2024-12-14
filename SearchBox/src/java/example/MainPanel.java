@@ -128,15 +128,15 @@ public final class MainPanel extends JPanel {
 }
 
 class ControlPanelLayout extends BorderLayout {
-  private boolean isHidden = true;
-  private final Container controls;
-  private final Timer animator = new Timer(5, null);
-  private int controlsHeight;
   public final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
     @Override public void actionPerformed(ActionEvent e) {
       showHideActionPerformed();
     }
   };
+  private boolean isHidden = true;
+  private final Container controls;
+  private final Timer animator = new Timer(5, null);
+  private int controlsHeight;
 
   protected ControlPanelLayout(Container controls, int hgap, int vgap) {
     super(hgap, vgap);

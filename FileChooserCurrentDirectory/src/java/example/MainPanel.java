@@ -34,15 +34,6 @@ public final class MainPanel extends JPanel {
     // }
   };
 
-  @Override public void updateUI() {
-    super.updateUI();
-    EventQueue.invokeLater(() -> {
-      SwingUtilities.updateComponentTreeUI(fc0);
-      SwingUtilities.updateComponentTreeUI(fc1);
-      SwingUtilities.updateComponentTreeUI(fc2);
-    });
-  }
-
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridBagLayout());
@@ -110,6 +101,15 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    EventQueue.invokeLater(() -> {
+      SwingUtilities.updateComponentTreeUI(fc0);
+      SwingUtilities.updateComponentTreeUI(fc1);
+      SwingUtilities.updateComponentTreeUI(fc2);
+    });
   }
 
   public static void main(String[] args) {

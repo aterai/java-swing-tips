@@ -67,22 +67,6 @@ class DigitalClock extends JPanel {
   });
   private transient HierarchyListener listener;
 
-  @Override public void updateUI() {
-    removeHierarchyListener(listener);
-    super.updateUI();
-    listener = e -> {
-      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-        if (e.getComponent().isShowing()) {
-          timer.start();
-        } else {
-          timer.stop();
-        }
-      }
-    };
-    addHierarchyListener(listener);
-    setBackground(DigitalNumber.BGC);
-  }
-
   protected DigitalClock() {
     super();
     double x = SIZE * 3d;
@@ -106,6 +90,22 @@ class DigitalClock extends JPanel {
     s1 = new DigitalNumber(x, y2, hs);
     x += s1.getBounds().width + gap / 2d;
     s2 = new DigitalNumber(x, y2, hs);
+  }
+
+  @Override public void updateUI() {
+    removeHierarchyListener(listener);
+    super.updateUI();
+    listener = e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+        if (e.getComponent().isShowing()) {
+          timer.start();
+        } else {
+          timer.stop();
+        }
+      }
+    };
+    addHierarchyListener(listener);
+    setBackground(DigitalNumber.BGC);
   }
 
   private void updateTime() {
@@ -156,15 +156,15 @@ class DigitalClock extends JPanel {
 }
 
 class DigitalNumber {
+  public static final Color OFF = new Color(0xCC_CC_CC);
+  public static final Color ON = Color.DARK_GRAY;
+  public static final Color BGC = Color.LIGHT_GRAY;
   private final double isosceles;
   private final double dx;
   private final double dy;
   private final double width;
   private final double height;
   private final Rectangle rect = new Rectangle();
-  public static final Color OFF = new Color(0xCC_CC_CC);
-  public static final Color ON = Color.DARK_GRAY;
-  public static final Color BGC = Color.LIGHT_GRAY;
   private final List<Set<Seg>> numbers = Arrays.asList(
       EnumSet.of(Seg.A, Seg.B, Seg.C, Seg.D, Seg.E, Seg.F),
       EnumSet.of(Seg.B, Seg.C),

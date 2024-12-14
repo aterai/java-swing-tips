@@ -53,9 +53,9 @@ public final class MainPanel extends JPanel {
 
 class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
   private static final int ADJ2 = 3;
-  private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
   private static final Color TAB_BGC = Color.LIGHT_GRAY;
   private static final Color TAB_BORDER = Color.GRAY;
+  private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
 
   @Override protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
     int tabCount = tabPane.getTabCount();

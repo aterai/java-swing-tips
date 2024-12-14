@@ -200,18 +200,18 @@ class KineticScrollingListener2 extends MouseAdapter implements HierarchyListene
   protected final Timer inside = new Timer(DELAY, null);
   protected final Timer outside = new Timer(DELAY, null);
 
-  protected static boolean isInside(JViewport viewport, JComponent comp) {
-    Point vp = viewport.getViewPosition();
-    return vp.x >= 0 && vp.x + viewport.getWidth() - comp.getWidth() <= 0
-        && vp.y >= 0 && vp.y + viewport.getHeight() - comp.getHeight() <= 0;
-  }
-
   protected KineticScrollingListener2(JComponent comp) {
     super();
     this.label = comp;
     this.dc = comp.getCursor();
     inside.addActionListener(e -> dragInside());
     outside.addActionListener(e -> dragOutside());
+  }
+
+  protected static boolean isInside(JViewport viewport, JComponent comp) {
+    Point vp = viewport.getViewPosition();
+    return vp.x >= 0 && vp.x + viewport.getWidth() - comp.getWidth() <= 0
+        && vp.y >= 0 && vp.y + viewport.getHeight() - comp.getHeight() <= 0;
   }
 
   private void dragInside() {

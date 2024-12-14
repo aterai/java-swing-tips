@@ -177,6 +177,9 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
 
 class ButtonsRenderer<E> implements ListCellRenderer<E> {
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
+  protected int pressedIndex = -1;
+  protected int rolloverIndex = -1;
+  protected JButton button;
   private final JTextArea textArea = new JTextArea();
   private final JButton deleteButton = new JButton("delete");
   private final JButton copyButton = new JButton("copy");
@@ -189,9 +192,6 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
     }
   };
   private int targetIndex;
-  protected int pressedIndex = -1;
-  protected int rolloverIndex = -1;
-  protected JButton button;
 
   protected ButtonsRenderer(DefaultListModel<E> model) {
     renderer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));

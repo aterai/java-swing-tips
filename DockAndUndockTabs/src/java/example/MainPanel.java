@@ -110,9 +110,9 @@ class DnDTabbedPane extends JTabbedPane {
   private static final Rectangle RECT_BACKWARD = new Rectangle();
   private static final Rectangle RECT_FORWARD = new Rectangle();
   protected int dragTabIndex = -1;
+  protected final Point pointOnScreen = new Point(-1, -1);
   private transient DnDTabbedPane.DropLocation dropLocation;
   private transient Handler handler;
-  protected final Point pointOnScreen = new Point(-1, -1);
 
   public static final class DropLocation extends TransferHandler.DropLocation {
     private final int index;

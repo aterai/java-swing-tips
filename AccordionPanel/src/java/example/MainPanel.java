@@ -115,8 +115,6 @@ abstract class AbstractExpansionPanel extends JPanel {
   private final JLabel label;
   private final JPanel panel = makePanel();
 
-  public abstract JPanel makePanel();
-
   protected AbstractExpansionPanel(String title) {
     super(new BorderLayout());
     this.title = title;
@@ -149,6 +147,8 @@ abstract class AbstractExpansionPanel extends JPanel {
     panel.setBorder(border);
     add(panel);
   }
+
+  public abstract JPanel makePanel();
 
   @Override public final Component add(Component comp) {
     return super.add(comp);

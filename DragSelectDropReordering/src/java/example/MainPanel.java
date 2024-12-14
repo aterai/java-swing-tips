@@ -73,9 +73,9 @@ public final class MainPanel extends JPanel {
 }
 
 class ReorderableList<E extends ListItem> extends JList<E> {
+  protected final Path2D rubberBand = new Path2D.Double();
   private transient MouseInputListener rbl;
   private Color rubberBandColor;
-  protected final Path2D rubberBand = new Path2D.Double();
 
   protected ReorderableList(ListModel<E> model) {
     super(model);

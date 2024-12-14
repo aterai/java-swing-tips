@@ -209,26 +209,6 @@ class TabButton extends JRadioButton {
   private Color rolloverSelTc; // = Color.WHITE;
   private Color selectedTc; // = Color.WHITE;
 
-  @Override public void updateUI() {
-    if (Objects.nonNull(UIManager.get(getUIClassID()))) {
-      setUI((TabViewButtonUI) UIManager.getUI(this));
-    } else {
-      setUI(new BasicTabViewButtonUI());
-    }
-  }
-
-  @Override public String getUIClassID() {
-    return UI_CLASS_ID;
-  }
-
-  // @Override public void setUI(TabViewButtonUI ui) {
-  //   super.setUI(ui);
-  // }
-
-  @Override public TabViewButtonUI getUI() {
-    return (TabViewButtonUI) ui;
-  }
-
   protected TabButton() {
     super(null, null);
   }
@@ -250,6 +230,26 @@ class TabButton extends JRadioButton {
   protected TabButton(String text, Icon icon) {
     super(text, icon);
     // updateUI();
+  }
+
+  @Override public void updateUI() {
+    if (Objects.nonNull(UIManager.get(getUIClassID()))) {
+      setUI((TabViewButtonUI) UIManager.getUI(this));
+    } else {
+      setUI(new BasicTabViewButtonUI());
+    }
+  }
+
+  @Override public String getUIClassID() {
+    return UI_CLASS_ID;
+  }
+
+  // @Override public void setUI(TabViewButtonUI ui) {
+  //   super.setUI(ui);
+  // }
+
+  @Override public TabViewButtonUI getUI() {
+    return (TabViewButtonUI) ui;
   }
 
   @Override protected void fireStateChanged() {

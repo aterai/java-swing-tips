@@ -367,7 +367,7 @@
     </path>
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="checkstyle.classpath" />
     <mkdir dir="${build.reports}" />
-    <property name="checkstyle.config" location="${basedir}/checks.xml" unless:set="checkstyle.config" />
+    <property name="checkstyle.config" location="${sca.dir}/checks.xml" unless:set="checkstyle.config" />
     <echo message="checkstyle.config: ${checkstyle.config}" />
     <checkstyle config="${checkstyle.config}" failOnViolation="false">
       <formatter type="plain" />

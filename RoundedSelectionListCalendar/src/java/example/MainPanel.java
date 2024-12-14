@@ -65,10 +65,6 @@ public final class MainPanel extends JPanel {
   public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
 
-  public LocalDate getCurrentLocalDate() {
-    return currentLocalDate;
-  }
-
   private MainPanel() {
     super();
     installActions();
@@ -142,6 +138,10 @@ public final class MainPanel extends JPanel {
 
     add(box);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public LocalDate getCurrentLocalDate() {
+    return currentLocalDate;
   }
 
   private void installActions() {
