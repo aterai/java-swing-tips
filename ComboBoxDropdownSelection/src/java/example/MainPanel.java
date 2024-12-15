@@ -17,9 +17,24 @@ public final class MainPanel extends JPanel {
     String[] model = {"123456", "7890", "a"};
     JComboBox<String> comboBox0 = new JComboBox<>(model);
     comboBox0.setEditable(true);
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    p.add(new JLabel("Default:", SwingConstants.LEFT));
+    p.add(comboBox0);
+    p.add(Box.createVerticalStrut(15));
+    p.add(new JLabel("popupMenuWillBecomeVisible:", SwingConstants.LEFT));
+    p.add(makeComboBox1(model));
+    p.add(Box.createVerticalStrut(15));
+    p.add(new JLabel("+enterPressed Action:", SwingConstants.LEFT));
+    p.add(makeComboBox2(model));
+    add(p, BorderLayout.NORTH);
+    setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JComboBox<String> comboBox1 = new JComboBox<String>(model) {
+  private static JComboBox<String> makeComboBox1(String[] model) {
+    return new JComboBox<String>(model) {
       private transient PopupMenuListener handler;
+
       @Override public void updateUI() {
         removePopupMenuListener(handler);
         super.updateUI();
@@ -28,11 +43,14 @@ public final class MainPanel extends JPanel {
         addPopupMenuListener(handler);
       }
     };
+  }
 
-    JComboBox<String> comboBox2 = new JComboBox<String>(model) {
+  private static JComboBox<String> makeComboBox2(String[] model) {
+    return new JComboBox<String>(model) {
       private static final int MAX_HISTORY = 10;
       private static final String ENTER_PRESSED = "enterPressed";
       private transient PopupMenuListener handler;
+
       @Override public void updateUI() {
         removePopupMenuListener(handler);
         getActionMap().put(ENTER_PRESSED, null);
@@ -63,19 +81,6 @@ public final class MainPanel extends JPanel {
         addPopupMenuListener(handler);
       }
     };
-
-    JPanel p = new JPanel(new GridLayout(0, 1));
-    p.add(new JLabel("Default:", SwingConstants.LEFT));
-    p.add(comboBox0);
-    p.add(Box.createVerticalStrut(15));
-    p.add(new JLabel("popupMenuWillBecomeVisible:", SwingConstants.LEFT));
-    p.add(comboBox1);
-    p.add(Box.createVerticalStrut(15));
-    p.add(new JLabel("+enterPressed Action:", SwingConstants.LEFT));
-    p.add(comboBox2);
-    add(p, BorderLayout.NORTH);
-    setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {

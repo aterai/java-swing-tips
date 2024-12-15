@@ -22,11 +22,19 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(15, 15));
     JPanel p = new JPanel(new GridLayout(0, 1, 16, 16));
     p.setOpaque(true);
-
     JComboBox<String> combo1 = new JComboBox<>(makeModel());
     p.add(combo1);
+    JComboBox<String> combo2 = makeFlatComboBox();
+    combo2.setModel(makeModel());
+    p.add(combo2);
+    setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+    add(p, BorderLayout.NORTH);
+    setOpaque(true);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JComboBox<String> combo2 = new JComboBox<String>(makeModel()) {
+  private static <E> JComboBox<E> makeFlatComboBox() {
+    return new JComboBox<E>() {
       @Override public void updateUI() {
         UIManager.put(KEY, BorderFactory.createLineBorder(Color.GRAY));
         UIManager.put("ScrollBar.width", 10);
@@ -83,12 +91,6 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    p.add(combo2);
-
-    setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
-    add(p, BorderLayout.NORTH);
-    setOpaque(true);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static DefaultComboBoxModel<String> makeModel() {
