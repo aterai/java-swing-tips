@@ -130,11 +130,12 @@ class PlaqueBorder extends EmptyBorder {
   }
 
   protected Shape getBorderShape(double x, double y, double w, double h, double r) {
+    double a = r + r;
     Area rect = new Area(new Rectangle2D.Double(0, 0, w, h));
-    rect.subtract(new Area(new Ellipse2D.Double(- r, - r, r + r, r + r)));
-    rect.subtract(new Area(new Ellipse2D.Double(w - r, - r, r + r, r + r)));
-    rect.subtract(new Area(new Ellipse2D.Double(- r, h - r, r + r, r + r)));
-    rect.subtract(new Area(new Ellipse2D.Double(w - r, h - r, r + r, r + r)));
+    rect.subtract(new Area(new Ellipse2D.Double(-r, -r, a, a)));
+    rect.subtract(new Area(new Ellipse2D.Double(w - r, -r, a, a)));
+    rect.subtract(new Area(new Ellipse2D.Double(-r, h - r, a, a)));
+    rect.subtract(new Area(new Ellipse2D.Double(w - r, h - r, a, a)));
     return AffineTransform.getTranslateInstance(x, y).createTransformedShape(rect);
   }
 }
