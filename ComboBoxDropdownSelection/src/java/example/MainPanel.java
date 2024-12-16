@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox1(String[] model) {
+  private static JComboBox<String> makeComboBox1(String... model) {
     return new JComboBox<String>(model) {
       private transient PopupMenuListener handler;
 
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JComboBox<String> makeComboBox2(String[] model) {
+  private static JComboBox<String> makeComboBox2(String... model) {
     return new JComboBox<String>(model) {
       private static final int MAX_HISTORY = 10;
       private static final String ENTER_PRESSED = "enterPressed";

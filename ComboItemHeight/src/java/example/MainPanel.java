@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox1(String[] items) {
+  private static JComboBox<String> makeComboBox1(String... items) {
     return new JComboBox<String>(items) {
       @Override public void updateUI() {
         super.updateUI();
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private JComboBox<String> makeComboBox2(String[] items) {
+  private JComboBox<String> makeComboBox2(String... items) {
     JComboBox<String> combo = new JComboBox<>(items);
     combo.setRenderer(new DefaultListCellRenderer() {
       private int cellHeight;
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     return combo;
   }
 
-  private static JComboBox<String> makeComboBox3(String[] items) {
+  private static JComboBox<String> makeComboBox3(String... items) {
     return new JComboBox<String>(items) {
       @Override public void updateUI() {
         setRenderer(null);
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JComboBox<String> makeComboBox4(String[] items) {
+  private static JComboBox<String> makeComboBox4(String... items) {
     return new JComboBox<String>(items) {
       @Override public void updateUI() {
         setRenderer(null);
