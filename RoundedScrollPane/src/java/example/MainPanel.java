@@ -40,7 +40,17 @@ public final class MainPanel extends JPanel {
     UIManager.put("ScrollBar.decrementButtonGap", 0);
     UIManager.put("ScrollBar.thumb", THUMB);
     UIManager.put("ScrollBar.track", BACKGROUND);
+    JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
+    p.setOpaque(true);
+    p.add(makeComboBox());
+    add(p, BorderLayout.NORTH);
+    add(makeScrollPane());
+    setOpaque(true);
+    setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JComboBox<String> makeComboBox() {
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
     UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
@@ -49,8 +59,7 @@ public final class MainPanel extends JPanel {
     UIManager.put("ComboBox.buttonBackground", FOREGROUND);
     UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
     UIManager.put("ComboBox.buttonShadow", FOREGROUND);
-
-    JComboBox<String> combo = new JComboBox<String>(makeModel()) {
+    return new JComboBox<String>(makeModel()) {
       private transient MouseListener handler;
       private transient PopupMenuListener listener;
       @Override public void updateUI() {
@@ -98,18 +107,15 @@ public final class MainPanel extends JPanel {
         }
       }
     };
+  }
 
-    JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
-    p.setOpaque(true);
-    p.add(combo);
-
+  private static JScrollPane makeScrollPane() {
     JTree tree = new JTree();
     int row = 0;
     while (row < tree.getRowCount()) {
       tree.expandRow(row);
       row++;
     }
-
     JScrollPane scroll = new JScrollPane(tree) {
       @Override public void updateUI() {
         super.updateUI();
@@ -119,12 +125,7 @@ public final class MainPanel extends JPanel {
     };
     scroll.setBackground(tree.getBackground());
     scroll.setBorder(new RoundedCornerBorder());
-
-    setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    add(scroll);
-    add(p, BorderLayout.NORTH);
-    setOpaque(true);
-    setPreferredSize(new Dimension(320, 240));
+    return scroll;
   }
 
   private static DefaultComboBoxModel<String> makeModel() {

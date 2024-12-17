@@ -21,14 +21,21 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(2, 2));
-    JTabbedPane tabbedPane = makeTabbedPane();
+    JTabbedPane tabs = makeTabbedPane();
+    tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
+    tabs.addTab("111", new ColorIcon(Color.GREEN), new JSplitPane(), "1111");
+    tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "222");
+    tabs.addTab("333", new ColorIcon(Color.ORANGE), new JLabel("6"), "33333333333333333333");
+    tabs.addTab("444", new ColorIcon(Color.CYAN), new JLabel("7"), "44444444444444444444444");
+    tabs.addTab("555", new ColorIcon(Color.PINK), new JLabel("8"), "5555555555555555555555555");
+
     JMenu menu = new JMenu("TabPlacement");
     ButtonGroup bg = new ButtonGroup();
     ItemListener handler = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         ButtonModel m = bg.getSelection();
         TabPlacement tp = TabPlacement.valueOf(m.getActionCommand());
-        tabbedPane.setTabPlacement(tp.getPlacement());
+        tabs.setTabPlacement(tp.getPlacement());
       }
     };
     Arrays.asList(TabPlacement.values()).forEach(tp -> {
@@ -47,13 +54,13 @@ public final class MainPanel extends JPanel {
     mb.add(Box.createHorizontalGlue());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
-    add(tabbedPane);
+    add(tabs);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
   }
 
   private static JTabbedPane makeTabbedPane() {
-    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
+    return new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       private transient JToolTip tip;
 
       @Override public Point getToolTipLocation(MouseEvent e) {
@@ -121,13 +128,6 @@ public final class MainPanel extends JPanel {
         tip = toolTip;
       }
     };
-    tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
-    tabs.addTab("111", new ColorIcon(Color.GREEN), new JSplitPane(), "1111");
-    tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "222");
-    tabs.addTab("333", new ColorIcon(Color.ORANGE), new JLabel("6"), "33333333333333333333");
-    tabs.addTab("444", new ColorIcon(Color.CYAN), new JLabel("7"), "44444444444444444444444");
-    tabs.addTab("555", new ColorIcon(Color.PINK), new JLabel("8"), "5555555555555555555555555");
-    return tabs;
   }
 
   public static void main(String[] args) {
