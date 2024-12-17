@@ -62,10 +62,10 @@ public final class MainPanel extends JPanel {
 
 class WholeRowSelectableTreeUI extends BasicTreeUI {
   @SuppressWarnings({
-      "PMD.CognitiveComplexity",
-      "PMD.CyclomaticComplexity",
-      "PMD.NPathComplexity",
-      "PMD.NcssCount"
+      "CyclomaticComplexity",
+      "NPathComplexity",
+      "PMD.NcssCount",
+      "PMD.CognitiveComplexity"
   })
   @Override public void paint(Graphics g, JComponent c) {
     // @see javax/swing/plaf/synth/SynthTreeUI#paint(SynthContext ctx, Graphics g)

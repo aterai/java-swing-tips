@@ -325,7 +325,7 @@ class SwatchPanel extends JPanel {
   }
 
   private final class Handler extends KeyAdapter implements FocusListener {
-    @SuppressWarnings({"PMD.CognitiveComplexity", "PMD.CyclomaticComplexity"})
+    @SuppressWarnings({"CyclomaticComplexity", "PMD.CognitiveComplexity"})
     @Override public void keyPressed(KeyEvent e) {
       boolean isLeftToRight = SwatchPanel.this.getComponentOrientation().isLeftToRight();
       switch (e.getKeyCode()) {
