@@ -24,38 +24,8 @@ import javax.swing.filechooser.FileSystemView;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    JLabel smallLabel = new JLabel() {
-      @Override public Dimension getPreferredSize() {
-        return new Dimension(16 + 1, 16 + 1);
-      }
-
-      @Override public Dimension getMaximumSize() {
-        return getPreferredSize();
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        setAlignmentY(BOTTOM_ALIGNMENT);
-      }
-    };
-
-    JLabel largeLabel = new JLabel() {
-      @Override public Dimension getPreferredSize() {
-        return new Dimension(32 + 1, 32 + 1);
-      }
-
-      @Override public Dimension getMaximumSize() {
-        return getPreferredSize();
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        setAlignmentY(BOTTOM_ALIGNMENT);
-      }
-    };
-
+    JLabel smallLabel = makeLabel(new Dimension(16, 16));
+    JLabel largeLabel = makeLabel(new Dimension(32, 32));
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createTitledBorder("drop File"));
     box.add(smallLabel);
@@ -63,11 +33,9 @@ public final class MainPanel extends JPanel {
     box.add(largeLabel);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     add(box);
-
     String s1 = "Warning: ShellFolder is internal proprietary API";
     String s2 = "and may be removed in a future release";
     add(new JLabel(String.format("<html>%s<br>%s", s1, s2)));
-
     DropTargetListener dtl = new DropTargetAdapter() {
       @Override public void dragOver(DropTargetDragEvent e) {
         if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
@@ -104,6 +72,24 @@ public final class MainPanel extends JPanel {
     };
     setDropTarget(new DropTarget(this, DnDConstants.ACTION_COPY, dtl, true));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JLabel makeLabel(Dimension size) {
+    return new JLabel() {
+      @Override public Dimension getPreferredSize() {
+        return new Dimension(size.width + 1, size.height + 1);
+      }
+
+      @Override public Dimension getMaximumSize() {
+        return getPreferredSize();
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        setAlignmentY(BOTTOM_ALIGNMENT);
+      }
+    };
   }
 
   public static void main(String[] args) {
