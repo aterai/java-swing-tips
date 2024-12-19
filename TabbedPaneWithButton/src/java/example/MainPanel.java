@@ -61,7 +61,27 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane() {
+    JTabbedPane tabs = makeTabbedPane(button);
+    tabs.addTab("title1", new JLabel("12345"));
+    tabs.addTab("title2", new JScrollPane(new JTree()));
+    tabs.addTab("title3", new JLabel("67890"));
+    button.addActionListener(e -> tabs.addTab("title", new JLabel("JLabel")));
+
+    JPanel p = new JPanel();
+    p.setLayout(new OverlayLayout(p));
+    p.add(button);
+    p.add(tabs);
+    add(p);
+    JMenuBar menuBar = new JMenuBar();
+    JMenu m1 = new JMenu("Tab");
+    m1.add("removeAll").addActionListener(e -> tabs.removeAll());
+    menuBar.add(m1);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTabbedPane makeTabbedPane(JButton button) {
+    return new ClippedTitleTabbedPane() {
       @Override public void updateUI() {
         String key = "TabbedPane.tabAreaInsets";
         UIManager.put(key, null); // uninstall
@@ -92,25 +112,6 @@ public final class MainPanel extends JPanel {
         return new Insets(Math.max(ai.top, tih), d.width + ai.left, ai.bottom, ai.right);
       }
     };
-    tabs.addTab("title1", new JLabel("12345"));
-    tabs.addTab("title2", new JScrollPane(new JTree()));
-    tabs.addTab("title3", new JLabel("67890"));
-
-    button.addActionListener(e -> tabs.addTab("title", new JLabel("JLabel")));
-
-    JPanel p = new JPanel();
-    p.setLayout(new OverlayLayout(p));
-    p.add(button);
-    p.add(tabs);
-
-    JMenuBar menuBar = new JMenuBar();
-    JMenu m1 = new JMenu("Tab");
-    m1.add("removeAll").addActionListener(e -> tabs.removeAll());
-    menuBar.add(m1);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
-
-    add(p);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
