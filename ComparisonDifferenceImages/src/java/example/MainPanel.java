@@ -7,8 +7,8 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.awt.image.MemoryImageSource;
+import java.awt.image.PixelGrabber;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
@@ -84,14 +84,21 @@ public final class MainPanel extends JPanel {
     Graphics g = image.createGraphics();
     g.drawImage(img, 0, 0, null);
     g.dispose();
-    return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-    // int[] pixels = new int[w * h];
-    // try {
-    //   new PixelGrabber(image, 0, 0, width, height, pixels, 0, width).grabPixels();
-    // } catch (InterruptedException ex) {
-    //   ex.printStackTrace();
-    // }
-    // return pixels;
+    // return ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+    int[] pixels = new int[w * h];
+    EventQueue systemEventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+    SecondaryLoop loop = systemEventQueue.createSecondaryLoop();
+    Thread worker = new Thread(() -> {
+      try {
+        new PixelGrabber(image, 0, 0, w, h, pixels, 0, w).grabPixels();
+      } catch (InterruptedException ex) {
+        Thread.currentThread().interrupt();
+      }
+      loop.exit();
+    });
+    worker.start();
+    loop.enter();
+    return pixels;
   }
 
   private static Image makeImage(String path) {
