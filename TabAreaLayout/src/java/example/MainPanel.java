@@ -81,8 +81,23 @@ public final class MainPanel extends JPanel {
     tabs.addTab("3:JTextArea", new ColorIcon(Color.BLUE), new JScrollPane(new JTextArea()));
     tabs.addTab("4:JButton", new ColorIcon(Color.CYAN), new JButton("JButton"));
 
+    Box box = Box.createHorizontalBox();
+    box.setAlignmentX(LEFT_ALIGNMENT);
+    // TEST: box.setOpaque(true);
+    box.add(Box.createHorizontalGlue());
+    box.add(makeDropdownButton(tabs, buttonSize));
+
+    JPanel p = new JPanel();
+    p.setLayout(new OverlayLayout(p));
+    p.add(box);
+    p.add(tabs);
+    return p;
+  }
+
+  private JButton makeDropdownButton(JTabbedPane tabs, int buttonSize) {
     JButton button = new JButton("⊽") {
       private transient MouseListener handler;
+
       @Override public void updateUI() {
         removeMouseListener(handler);
         super.updateUI();
@@ -124,18 +139,7 @@ public final class MainPanel extends JPanel {
       p.y += b.getHeight();
       popup.show(b.getParent(), p.x, p.y);
     });
-
-    Box box = Box.createHorizontalBox();
-    box.setAlignmentX(LEFT_ALIGNMENT);
-    // TEST: box.setOpaque(true);
-    box.add(Box.createHorizontalGlue());
-    box.add(button);
-
-    JPanel p = new JPanel();
-    p.setLayout(new OverlayLayout(p));
-    p.add(box);
-    p.add(tabs);
-    return p;
+    return button;
   }
 
   private JMenuItem makeRadioMenuItem(JTabbedPane tabs, int i, int selected) {
@@ -269,22 +273,22 @@ class CardLayoutTabbedPane extends JPanel {
 
   private Optional<JMenuItem> getHiddenTabMenuItem(JViewport viewport, Component c) {
     return Optional.ofNullable(c)
-      .filter(AbstractButton.class::isInstance)
-      .map(AbstractButton.class::cast)
-      .filter(tab -> !viewport.getViewRect().contains(tab.getBounds()))
-      .map(tab -> {
-        Rectangle r = tab.getBounds();
-        JLabel label = (JLabel) tab.getComponent(0);
-        String title = label.getText();
-        JMenuItem mi = new JRadioButtonMenuItem(title);
-        mi.addActionListener(e -> {
-          tab.setSelected(true);
-          cardLayout.show(contentsPanel, title);
-          Container p = tab.getParent();
-          viewport.scrollRectToVisible(SwingUtilities.convertRectangle(p, r, viewport));
+        .filter(AbstractButton.class::isInstance)
+        .map(AbstractButton.class::cast)
+        .filter(tab -> !viewport.getViewRect().contains(tab.getBounds()))
+        .map(tab -> {
+          Rectangle r = tab.getBounds();
+          JLabel label = (JLabel) tab.getComponent(0);
+          String title = label.getText();
+          JMenuItem mi = new JRadioButtonMenuItem(title);
+          mi.addActionListener(e -> {
+            tab.setSelected(true);
+            cardLayout.show(contentsPanel, title);
+            Container p = tab.getParent();
+            viewport.scrollRectToVisible(SwingUtilities.convertRectangle(p, r, viewport));
+          });
+          return mi;
         });
-        return mi;
-      });
   }
 
   protected JComponent createTabComponent(String title, Icon icon, Component comp) {
@@ -306,6 +310,12 @@ class CardLayoutTabbedPane extends JPanel {
     label.setIcon(icon);
     label.setOpaque(false);
 
+    tab.add(label);
+    tab.add(makeCloseButton(comp, tab), BorderLayout.EAST);
+    return tab;
+  }
+
+  private JButton makeCloseButton(Component comp, JToggleButton tab) {
     JButton close = new JButton(new CloseTabIcon(new Color(0xB0_B0_B0))) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(12, 12);
@@ -330,10 +340,7 @@ class CardLayoutTabbedPane extends JPanel {
     close.setContentAreaFilled(false);
     close.setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
     close.setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
-
-    tab.add(label);
-    tab.add(close, BorderLayout.EAST);
-    return tab;
+    return close;
   }
 
   public void addTab(String title, Icon icon, Component comp) {
@@ -618,15 +625,15 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       super.doLayout();
       return;
     }
-    Insets tabInsets = getTabInsets();
-    Insets tabAreaInsets = getTabAreaInsets();
+    Insets tabIns = getTabInsets();
+    Insets tabAreaIns = getTabAreaInsets();
     Insets ins = getInsets();
-    int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - ins.left - ins.right;
-    int tabWidth; // = tabInsets.left + tabInsets.right + 3;
+    int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - ins.left - ins.right;
+    int tabWidth; // = tabIns.left + tabIns.right + 3;
     int gap;
 
-    int tabPlacement = getTabPlacement();
-    if (tabPlacement == LEFT || tabPlacement == RIGHT) {
+    int placement = getTabPlacement();
+    if (placement == LEFT || placement == RIGHT) {
       tabWidth = areaWidth / 4;
       gap = 0;
     } else { // TOP || BOTTOM
@@ -639,7 +646,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     }
 
     // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
-    tabWidth -= tabInsets.left + tabInsets.right + 3;
+    tabWidth -= tabIns.left + tabIns.right + 3;
     updateAllTabWidth(tabWidth, gap);
 
     super.doLayout();
