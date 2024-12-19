@@ -30,7 +30,6 @@ public final class MainPanel extends JPanel {
       }
     };
     tabs.addChangeListener(e -> {
-      // System.out.println("Tab selected");
       focusIndex = tabs.getSelectedIndex();
       tabs.repaint();
     });
@@ -45,27 +44,10 @@ public final class MainPanel extends JPanel {
     InputMap im = tabs.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "selectTabWithFocus");
 
-    String key = "TabbedPane.selectionFollowsFocus";
-    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
-      @Override public void updateUI() {
-        super.updateUI();
-        boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
-        setSelected(b);
-        UIManager.put(key, b);
-      }
-    };
-    check.setFocusable(false);
-    check.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
-      UIManager.put(key, b);
-      SwingUtilities.updateComponentTreeUI(tabs);
-    });
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    mb.add(check);
+    mb.add(makeCheckBox(tabs));
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     add(new JLayer<>(tabs, new LayerUI<JTabbedPane>() {
       @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
@@ -84,6 +66,25 @@ public final class MainPanel extends JPanel {
       }
     }));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JCheckBox makeCheckBox(JTabbedPane tabs) {
+    String key = "TabbedPane.selectionFollowsFocus";
+    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
+        setSelected(b);
+        UIManager.put(key, b);
+      }
+    };
+    check.setFocusable(false);
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      UIManager.put(key, b);
+      SwingUtilities.updateComponentTreeUI(tabs);
+    });
+    return check;
   }
 
   public static void main(String[] args) {
