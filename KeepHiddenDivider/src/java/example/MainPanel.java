@@ -14,20 +14,9 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JScrollPane s1 = new JScrollPane(new JTable(5, 3)) {
-      @Override public Dimension getMinimumSize() {
-        return new Dimension(0, 100);
-      }
-    };
-    JScrollPane s2 = new JScrollPane(new JTree()) {
-      @Override public Dimension getMinimumSize() {
-        return new Dimension(0, 100);
-      }
-    };
-
     JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    splitPane.setTopComponent(s1);
-    splitPane.setBottomComponent(s2);
+    splitPane.setTopComponent(makeScrollPane(new JTable(5, 3)));
+    splitPane.setBottomComponent(makeScrollPane(new JTree()));
     splitPane.setOneTouchExpandable(true);
 
     JPanel north = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -103,6 +92,14 @@ public final class MainPanel extends JPanel {
     add(north, BorderLayout.NORTH);
     add(splitPane);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JScrollPane makeScrollPane(Component c) {
+    return new JScrollPane(c) {
+      @Override public Dimension getMinimumSize() {
+        return new Dimension(0, 100);
+      }
+    };
   }
 
   private static void initDividerButtonModel(Container divider, JButton minBtn, JButton maxBtn) {
