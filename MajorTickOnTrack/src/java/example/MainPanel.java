@@ -33,55 +33,7 @@ public final class MainPanel extends JPanel {
     d.put("Slider:SliderThumb[Focused].backgroundPainter", thumbPainter);
     d.put("Slider:SliderThumb[MouseOver].backgroundPainter", thumbPainter);
     d.put("Slider:SliderThumb[Pressed].backgroundPainter", thumbPainter);
-
-    d.put("Slider:SliderTrack[Enabled].backgroundPainter", new Painter<JSlider>() {
-      @Override public void paint(Graphics2D g, JSlider c, int w, int h) {
-        int arc = 10;
-        int thumbSize = 24;
-        int trackHeight = 8;
-        int trackWidth = w - thumbSize;
-        int fillTop = (thumbSize - trackHeight) / 2;
-        int fillLeft = thumbSize / 2;
-
-        // Paint track
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(new Color(0xC6_E4_FC));
-        g.fillRoundRect(fillLeft, fillTop + 2, trackWidth, trackHeight - 4, arc, arc);
-
-        int fillBottom = fillTop + trackHeight;
-        Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
-
-        // Paint the major tick marks on the track
-        g.setColor(new Color(0x31_A8_F8));
-        int value = c.getMinimum();
-        int tickSize = 4;
-        while (value <= c.getMaximum()) {
-          int xpt = getPositionForValue(c, r, value);
-          g.fillOval(xpt, (int) r.getCenterY() - tickSize / 2, tickSize, tickSize);
-          // Overflow checking
-          if (Integer.MAX_VALUE - c.getMajorTickSpacing() < value) {
-            break;
-          }
-          value += c.getMajorTickSpacing();
-        }
-
-        // JSlider.isFilled
-        int fillRight = getPositionForValue(c, r, c.getValue());
-        g.setColor(new Color(0x21_98_F6));
-        g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
-      }
-
-      // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
-      private int getPositionForValue(JSlider slider, Rectangle trackRect, float value) {
-        float min = slider.getMinimum();
-        float max = slider.getMaximum();
-        float pixelsPerValue = trackRect.width / (max - min);
-        int trackLeft = trackRect.x;
-        int trackRight = trackRect.x + trackRect.width - 1;
-        int pos = trackLeft + Math.round(pixelsPerValue * (value - min));
-        return Math.max(trackLeft, Math.min(trackRight, pos));
-      }
-    });
+    d.put("Slider:SliderTrack[Enabled].backgroundPainter", new SliderTrackPainter());
 
     JSlider slider = new JSlider();
     slider.setSnapToTicks(true);
@@ -133,6 +85,55 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class SliderTrackPainter implements Painter<JSlider> {
+  @Override public void paint(Graphics2D g, JSlider c, int w, int h) {
+    int arc = 10;
+    int thumbSize = 24;
+    int trackHeight = 8;
+    int trackWidth = w - thumbSize;
+    int fillTop = (thumbSize - trackHeight) / 2;
+    int fillLeft = thumbSize / 2;
+
+    // Paint track
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g.setColor(new Color(0xC6_E4_FC));
+    g.fillRoundRect(fillLeft, fillTop + 2, trackWidth, trackHeight - 4, arc, arc);
+
+    int fillBottom = fillTop + trackHeight;
+    Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
+
+    // Paint the major tick marks on the track
+    g.setColor(new Color(0x31_A8_F8));
+    int value = c.getMinimum();
+    int tickSize = 4;
+    while (value <= c.getMaximum()) {
+      int xpt = getPositionForValue(c, r, value);
+      g.fillOval(xpt, (int) r.getCenterY() - tickSize / 2, tickSize, tickSize);
+      // Overflow checking
+      if (Integer.MAX_VALUE - c.getMajorTickSpacing() < value) {
+        break;
+      }
+      value += c.getMajorTickSpacing();
+    }
+
+    // JSlider.isFilled
+    int fillRight = getPositionForValue(c, r, c.getValue());
+    g.setColor(new Color(0x21_98_F6));
+    g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
+  }
+
+  // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
+  private int getPositionForValue(JSlider slider, Rectangle trackRect, float value) {
+    float min = slider.getMinimum();
+    float max = slider.getMaximum();
+    float pixelsPerValue = trackRect.width / (max - min);
+    int trackLeft = trackRect.x;
+    int trackRight = trackRect.x + trackRect.width - 1;
+    int pos = trackLeft + Math.round(pixelsPerValue * (value - min));
+    return Math.max(trackLeft, Math.min(trackRight, pos));
   }
 }
 
