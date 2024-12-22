@@ -22,6 +22,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
+  public static final Dimension CELL_SIZE = new Dimension(40, 26);
   public final JLabel yearMonthLabel = new JLabel("", SwingConstants.CENTER);
   public final JList<LocalDate> monthList = new JList<LocalDate>() {
     private transient MouseInputListener handler;
@@ -32,8 +33,8 @@ public final class MainPanel extends JPanel {
       super.updateUI();
       setLayoutOrientation(HORIZONTAL_WRAP);
       setVisibleRowCount(CalendarViewListModel.ROW_COUNT); // ensure 6 rows in the list
-      setFixedCellWidth(40);
-      setFixedCellHeight(26);
+      setFixedCellWidth(CELL_SIZE.width);
+      setFixedCellHeight(CELL_SIZE.height);
       setCellRenderer(new CalendarListRenderer());
       getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
       handler = new SingleIntervalMouseSelectionListener();
@@ -64,32 +65,10 @@ public final class MainPanel extends JPanel {
     for (int i = 0; i < DayOfWeek.values().length; i++) {
       weekModel.add(i, firstDayOfWeek.plus(i));
     }
-    JList<DayOfWeek> header = new JList<DayOfWeek>(weekModel) {
-      @Override public void updateUI() {
-        setCellRenderer(null);
-        super.updateUI();
-        ListCellRenderer<? super DayOfWeek> r = getCellRenderer();
-        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(list, value, index, false, false);
-          c.setBackground(new Color(0xDC_DC_DC));
-          if (c instanceof JLabel) {
-            JLabel l = (JLabel) c;
-            l.setHorizontalAlignment(SwingConstants.CENTER);
-            l.setText(value.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
-          }
-          return c;
-        });
-        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        setLayoutOrientation(HORIZONTAL_WRAP);
-        setVisibleRowCount(0);
-        setFixedCellWidth(monthList.getFixedCellWidth());
-        setFixedCellHeight(monthList.getFixedCellHeight());
-      }
-    };
     updateMonthView(realLocalDate);
 
     JScrollPane scroll = new JScrollPane(monthList);
-    scroll.setColumnHeaderView(header);
+    scroll.setColumnHeaderView(makeDayOfWeekList(weekModel));
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -115,6 +94,31 @@ public final class MainPanel extends JPanel {
 
     add(box);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JList<DayOfWeek> makeDayOfWeekList(DefaultListModel<DayOfWeek> weekModel) {
+    return new JList<DayOfWeek>(weekModel) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        ListCellRenderer<? super DayOfWeek> r = getCellRenderer();
+        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = r.getListCellRendererComponent(list, value, index, false, false);
+          c.setBackground(new Color(0xDC_DC_DC));
+          if (c instanceof JLabel) {
+            JLabel l = (JLabel) c;
+            l.setHorizontalAlignment(SwingConstants.CENTER);
+            l.setText(value.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
+          }
+          return c;
+        });
+        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setLayoutOrientation(HORIZONTAL_WRAP);
+        setVisibleRowCount(0);
+        setFixedCellWidth(CELL_SIZE.width);
+        setFixedCellHeight(CELL_SIZE.height);
+      }
+    };
   }
 
   public LocalDate getCurrentLocalDate() {
