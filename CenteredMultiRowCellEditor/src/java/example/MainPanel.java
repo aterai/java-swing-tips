@@ -264,34 +264,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
     doc.setParagraphAttributes(0, doc.getLength(), center, false);
     editor.setComponentPopupMenu(new TextComponentPopupMenu());
-    editor.getDocument().addDocumentListener(new DocumentListener() {
-      private int prev = -1;
-      private void update() {
-        EventQueue.invokeLater(() -> {
-          int h = editor.getPreferredSize().height;
-          if (prev != h) {
-            Rectangle rect = editor.getBounds();
-            rect.height = h;
-            editor.setBounds(rect);
-            window.pack();
-            editor.requestFocusInWindow();
-          }
-          prev = h;
-        });
-      }
-
-      @Override public void insertUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void removeUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void changedUpdate(DocumentEvent e) {
-        update();
-      }
-    });
+    editor.getDocument().addDocumentListener(new ResizeHandler());
 
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(WHEN_FOCUSED);
@@ -359,6 +332,36 @@ class EditableList<E extends ListItem> extends JList<E> {
     handler = new EditingHandler();
     addMouseListener(handler);
     addMouseMotionListener(handler);
+  }
+
+  /* default */ class ResizeHandler implements DocumentListener {
+    private int prev = -1;
+
+    private void update() {
+      EventQueue.invokeLater(() -> {
+        int h = editor.getPreferredSize().height;
+        if (prev != h) {
+          Rectangle rect = editor.getBounds();
+          rect.height = h;
+          editor.setBounds(rect);
+          window.pack();
+          editor.requestFocusInWindow();
+        }
+        prev = h;
+      });
+    }
+
+    @Override public void insertUpdate(DocumentEvent e) {
+      update();
+    }
+
+    @Override public void removeUpdate(DocumentEvent e) {
+      update();
+    }
+
+    @Override public void changedUpdate(DocumentEvent e) {
+      update();
+    }
   }
 
   /* default */ class EditingHandler extends MouseAdapter {
