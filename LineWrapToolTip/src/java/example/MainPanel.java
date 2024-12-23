@@ -114,6 +114,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LineWrapToolTip extends JToolTip {
+  private static final double JAVA17 = 17.0;
   private static final JLabel MEASURER = new JLabel(" ");
   private static final int TIP_WIDTH = 200;
   private final JTextArea textArea = new JTextArea(0, 20);
@@ -142,8 +143,8 @@ class LineWrapToolTip extends JToolTip {
     Dimension d = getLayout().preferredLayoutSize(this);
     Dimension dim;
     String version = System.getProperty("java.specification.version");
-    if (Double.parseDouble(version) >= 21.0) {
-      dim = getTextAreaSize21(d);
+    if (Double.parseDouble(version) >= JAVA17) {
+      dim = getTextAreaSize17(d);
     } else {
       dim = getTextAreaSize8(d);
     }
@@ -151,13 +152,15 @@ class LineWrapToolTip extends JToolTip {
   }
 
   private Dimension getTextAreaSize8(Dimension d) {
+    Font font = textArea.getFont();
+    MEASURER.setFont(font);
     MEASURER.setText(textArea.getText());
     Insets i = getInsets();
-    int pad = getTextAreaPadding(i);
-    // Java 8 bug???:
+    int pad = getTextAreaPaddingWidth(i);
+    // JDK-8226513 JEditorPane is shown with incorrect size - Java Bug System
+    // https://bugs.openjdk.org/browse/JDK-8226513
     // d.width = Math.min(d.width, MEASURER.getPreferredSize().width + pad);
     d.width = Math.min(TIP_WIDTH, MEASURER.getPreferredSize().width + pad);
-    Font font = textArea.getFont();
     AttributedString as = new AttributedString(textArea.getText());
     as.addAttribute(TextAttribute.FONT, font);
     AttributedCharacterIterator aci = as.getIterator();
@@ -169,21 +172,42 @@ class LineWrapToolTip extends JToolTip {
       TextLayout tl = lbm.nextLayout(TIP_WIDTH);
       y += tl.getDescent() + tl.getLeading() + tl.getAscent();
     }
-    d.height = (int) y + font.getSize() - i.top - i.bottom;
+    d.height = (int) y + getTextAreaPaddingHeight(i);
     return d;
   }
 
-  private Dimension getTextAreaSize21(Dimension d) {
+  private Dimension getTextAreaSize17(Dimension d) {
+    MEASURER.setFont(textArea.getFont());
     MEASURER.setText(textArea.getText());
-    int pad = getTextAreaPadding(getInsets());
+    int pad = getTextAreaPaddingWidth(getInsets());
     d.width = Math.min(d.width, MEASURER.getPreferredSize().width + pad);
     return d;
   }
 
-  private int getTextAreaPadding(Insets i) {
+  private int getTextAreaPaddingWidth(Insets i) {
+    // @see BasicTextUI.java
+    // margin required to show caret in the rightmost position
+    int caretMargin = -1;
+    Object property = UIManager.get("Caret.width");
+    if (property instanceof Number) {
+      caretMargin = ((Number) property).intValue();
+    }
+    property = textArea.getClientProperty("caretWidth");
+    if (property instanceof Number) {
+      caretMargin = ((Number) property).intValue();
+    }
+    if (caretMargin < 0) {
+      caretMargin = 1;
+    }
     Insets ti = textArea.getInsets();
-    Insets tm = textArea.getMargin();
-    return i.left + i.right + ti.left + ti.right + tm.left + tm.right;
+    return i.left + i.right + ti.left + ti.right + caretMargin;
+    // Insets tm = textArea.getMargin();
+    // return i.left + i.right + ti.left + ti.right + tm.left + tm.right;
+  }
+
+  private int getTextAreaPaddingHeight(Insets i) {
+    Insets ti = textArea.getInsets();
+    return i.top + i.bottom + ti.top + ti.bottom;
   }
 
   @Override public void setTipText(String tipText) {
