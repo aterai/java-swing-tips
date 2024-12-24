@@ -27,7 +27,33 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] model = {"111", "2222", "33333"};
     JComboBox<String> combo0 = new JComboBox<>(model);
-    JComboBox<String> combo1 = new JComboBox<String>(model) {
+    JComboBox<String> combo1 = makeComboBox(model);
+
+    JCheckBox check = new JCheckBox("setEditable");
+    check.setOpaque(false);
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      for (JComboBox<?> c : Arrays.asList(combo0, combo1)) {
+        c.setEditable(b);
+        c.repaint();
+      }
+    });
+
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    box.add(makeTitledPanel("Default JComboBox", combo0));
+    box.add(Box.createVerticalStrut(15));
+    box.add(makeTitledPanel("RoundedCornerComboBox", combo1));
+    add(box, BorderLayout.NORTH);
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    mb.add(check);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JComboBox<String> makeComboBox(String[] model) {
+    return new JComboBox<String>(model) {
       private transient PopupMenuListener listener;
 
       @Override public void updateUI() {
@@ -73,28 +99,6 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-
-    JCheckBox check = new JCheckBox("setEditable");
-    check.setOpaque(false);
-    check.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
-      for (JComboBox<?> c : Arrays.asList(combo0, combo1)) {
-        c.setEditable(b);
-        c.repaint();
-      }
-    });
-
-    Box box = Box.createVerticalBox();
-    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("Default JComboBox", combo0));
-    box.add(Box.createVerticalStrut(15));
-    box.add(makeTitledPanel("RoundedCornerComboBox", combo1));
-    add(box, BorderLayout.NORTH);
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    mb.add(check);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static Component makeTitledPanel(String title, Component c) {
