@@ -157,10 +157,11 @@ class LineWrapToolTip extends JToolTip {
     MEASURER.setText(textArea.getText());
     Insets i = getInsets();
     int pad = getTextAreaPaddingWidth(i);
-    // JDK-8226513 JEditorPane is shown with incorrect size - Java Bug System
-    // https://bugs.openjdk.org/browse/JDK-8226513
     // d.width = Math.min(d.width, MEASURER.getPreferredSize().width + pad);
     d.width = Math.min(TIP_WIDTH, MEASURER.getPreferredSize().width + pad);
+
+    // JDK-8226513 JEditorPane is shown with incorrect size - Java Bug System
+    // https://bugs.openjdk.org/browse/JDK-8226513
     AttributedString as = new AttributedString(textArea.getText());
     as.addAttribute(TextAttribute.FONT, font);
     AttributedCharacterIterator aci = as.getIterator();
