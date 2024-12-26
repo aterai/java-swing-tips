@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -136,45 +137,17 @@ public final class MainPanel extends JPanel {
       frame.setBackground(new Color(0x0, true));
     }
 
-    JPanel titlePane = new JPanel(new BorderLayout(W, W));
-    titlePane.setOpaque(false);
-    titlePane.setBackground(Color.ORANGE);
-    titlePane.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
-
-    JCheckBox check = new JCheckBox("check");
-    check.setOpaque(false);
-    check.setFocusable(false);
-
-    Box titleBox = Box.createHorizontalBox();
-    titleBox.add(makeComboBox(title));
-    titleBox.add(Box.createHorizontalGlue());
-    titleBox.add(check);
-
-    JButton button = makeTitleButton(new ApplicationIcon());
-    button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
-    titlePane.add(button, BorderLayout.WEST);
-    titlePane.add(titleBox);
-
-    JButton close = makeTitleButton(new CloseIcon());
-    close.addActionListener(e -> {
-      JComponent b = (JComponent) e.getSource();
-      Container c = b.getTopLevelAncestor();
-      if (c instanceof Window) {
-        Window w = (Window) c;
-        w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
-      }
-    });
-    titlePane.add(close, BorderLayout.EAST);
-
     MouseInputListener rwl = new ResizeWindowListener();
-    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight).forEach(c -> {
-      c.addMouseListener(rwl);
-      c.addMouseMotionListener(rwl);
-    });
+    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight)
+        .forEach(c -> {
+          c.addMouseListener(rwl);
+          c.addMouseMotionListener(rwl);
+        });
 
+    JPanel titleBar = makeTitleBar(title);
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(new JLayer<>(titlePane, new TitleBarDragLayerUI()), BorderLayout.CENTER);
+    titlePanel.add(new JLayer<>(titleBar, new TitleBarDragLayerUI()), BorderLayout.CENTER);
 
     JPanel northPanel = new JPanel(new BorderLayout());
     northPanel.add(topLeft, BorderLayout.WEST);
@@ -202,6 +175,39 @@ public final class MainPanel extends JPanel {
     return frame;
   }
 
+  private static JPanel makeTitleBar(String title) {
+    JPanel titleBar = new JPanel(new BorderLayout(W, W));
+    titleBar.setOpaque(false);
+    titleBar.setBackground(Color.ORANGE);
+    titleBar.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
+
+    JCheckBox check = new JCheckBox("check");
+    check.setOpaque(false);
+    check.setFocusable(false);
+
+    Box titleBox = Box.createHorizontalBox();
+    titleBox.add(makeComboBox(title));
+    titleBox.add(Box.createHorizontalGlue());
+    titleBox.add(check);
+
+    JButton button = makeTitleButton(new ApplicationIcon());
+    button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
+    titleBar.add(button, BorderLayout.WEST);
+    titleBar.add(titleBox);
+
+    JButton close = makeTitleButton(new CloseIcon());
+    close.addActionListener(e -> {
+      JComponent b = (JComponent) e.getSource();
+      Container c = b.getTopLevelAncestor();
+      if (c instanceof Window) {
+        Window w = (Window) c;
+        w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+      }
+    });
+    titleBar.add(close, BorderLayout.EAST);
+    return titleBar;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -212,7 +218,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     MainPanel p = new MainPanel();
