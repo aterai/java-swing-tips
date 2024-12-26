@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -17,10 +18,9 @@ public final class MainPanel extends JPanel {
     @Override public void setCurrentDirectory(File dir) {
       File current = dir;
       if (Objects.nonNull(current) && !isTraversable(current)) {
-        current = current.getParentFile();
-        while (Objects.nonNull(current) && !isTraversable(current)) {
+        do {
           current = current.getParentFile();
-        }
+        } while (Objects.nonNull(current) && !isTraversable(current));
       }
       super.setCurrentDirectory(current);
     }
@@ -43,15 +43,9 @@ public final class MainPanel extends JPanel {
     fc2.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
     JTextField field = new JTextField(24);
-    try {
-      field.setText(new File(".").getCanonicalPath());
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      UIManager.getLookAndFeel().provideErrorFeedback(field);
-    }
+    field.setText(getCanonicalFilePath(new File(".")));
 
     JTextArea log = new JTextArea();
-
     JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
     JButton button1 = new JButton("setCurrentDirectory");
     button1.addActionListener(e -> {
@@ -103,6 +97,16 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static String getCanonicalFilePath(File file) {
+    String path;
+    try {
+      path = file.getCanonicalPath();
+    } catch (IOException ex) {
+      path = "";
+    }
+    return path;
+  }
+
   @Override public void updateUI() {
     super.updateUI();
     EventQueue.invokeLater(() -> {
@@ -123,7 +127,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
