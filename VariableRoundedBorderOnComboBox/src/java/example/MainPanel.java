@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JComboBox<String> makeComboBox(String[] model) {
+  private JComboBox<String> makeComboBox(String... model) {
     return new JComboBox<String>(model) {
       private transient PopupMenuListener listener;
 
