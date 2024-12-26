@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -294,18 +295,7 @@ public final class MainPanel extends JPanel {
         field.setValue(intValue);
       }
     });
-    JPanel p = new JPanel() {
-      @Override public boolean isOptimizedDrawingEnabled() {
-        return false;
-      }
-
-      @Override public Dimension getPreferredSize() {
-        return slider.getPreferredSize();
-      }
-    };
-    p.setLayout(new OverlayLayout(p));
-    p.setOpaque(false);
-    p.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+    JPanel p = makeOverlayPanel(slider.getPreferredSize());
     p.add(field);
     p.add(slider);
     Box box = Box.createHorizontalBox();
@@ -318,6 +308,22 @@ public final class MainPanel extends JPanel {
     panel.add(p);
     panel.add(box, BorderLayout.EAST);
     return panel;
+  }
+
+  private static JPanel makeOverlayPanel(Dimension size) {
+    JPanel p = new JPanel() {
+      @Override public boolean isOptimizedDrawingEnabled() {
+        return false;
+      }
+
+      @Override public Dimension getPreferredSize() {
+        return size;
+      }
+    };
+    p.setLayout(new OverlayLayout(p));
+    p.setOpaque(false);
+    p.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+    return p;
   }
 
   public static void main(String[] args) {
@@ -534,7 +540,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
