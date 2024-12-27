@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -15,8 +16,8 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public final class MainPanel extends JPanel {
   private final JTextField field1 = new JTextField();
   private final JTextField field2 = new JTextField();
-  private final JScrollBar scroller1 = new JScrollBar(Adjustable.HORIZONTAL);
-  private final JScrollBar scroller2 = new JScrollBar(Adjustable.HORIZONTAL) {
+  private final JScrollBar scrollbar1 = new JScrollBar(Adjustable.HORIZONTAL);
+  private final JScrollBar scrollbar2 = new JScrollBar(Adjustable.HORIZONTAL) {
     @Override public void updateUI() {
       super.updateUI();
       setUI(new ArrowButtonlessScrollBarUI());
@@ -28,20 +29,15 @@ public final class MainPanel extends JPanel {
       return d;
     }
   };
-  private final transient EmptyThumbHandler handler = new EmptyThumbHandler(field1, scroller1);
+  private final transient EmptyThumbHandler handler = new EmptyThumbHandler(field1, scrollbar1);
 
   private MainPanel() {
     super(new BorderLayout());
-    String var = "var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');";
-    String code = "if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3])";
-    String replace = ".replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');";
-    String js = String.format("javascript:(function(){%s%s%s}());", var, code, replace);
+    String js = makeOneLineCode();
     field1.setText(js);
     field2.setText(js);
-
-    scroller1.setModel(field1.getHorizontalVisibility());
-    scroller2.setModel(field2.getHorizontalVisibility());
-
+    scrollbar1.setModel(field1.getHorizontalVisibility());
+    scrollbar2.setModel(field2.getHorizontalVisibility());
     JCheckBox check = new JCheckBox("add EmptyThumbHandler");
     check.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
@@ -51,24 +47,6 @@ public final class MainPanel extends JPanel {
         field1.removeComponentListener(handler);
         field1.getDocument().removeDocumentListener(handler);
       }
-    });
-
-    JButton caretButton = new JButton("setCaretPosition: 0");
-    caretButton.addActionListener(e -> {
-      field1.requestFocusInWindow();
-      field1.setCaretPosition(0);
-      scroller1.revalidate();
-      field2.requestFocusInWindow();
-      field2.setCaretPosition(0);
-      scroller2.revalidate();
-    });
-
-    JButton offsetButton = new JButton("setScrollOffset: 0");
-    offsetButton.addActionListener(e -> {
-      field1.setScrollOffset(0);
-      scroller1.revalidate();
-      field2.setScrollOffset(0);
-      scroller2.revalidate();
     });
 
     Box p = Box.createVerticalBox();
@@ -81,26 +59,52 @@ public final class MainPanel extends JPanel {
     p.add(new JLabel("BoundedRangeModel: textField.getHorizontalVisibility()"));
     p.add(field1);
     p.add(Box.createVerticalStrut(2));
-    p.add(scroller1);
+    p.add(scrollbar1);
     p.add(Box.createVerticalStrut(2));
     p.add(check);
     p.add(Box.createVerticalStrut(5));
     p.add(new JLabel("BoundedRangeModel+textField.ArrowButtonlessScrollBarUI"));
     p.add(field2);
     p.add(Box.createVerticalStrut(2));
-    p.add(scroller2);
+    p.add(scrollbar2);
     p.add(Box.createVerticalStrut(5));
+    add(p, BorderLayout.NORTH);
+    add(makeButtons(), BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private Box makeButtons() {
+    JButton caretButton = new JButton("setCaretPosition: 0");
+    caretButton.addActionListener(e -> {
+      field1.requestFocusInWindow();
+      field1.setCaretPosition(0);
+      scrollbar1.revalidate();
+      field2.requestFocusInWindow();
+      field2.setCaretPosition(0);
+      scrollbar2.revalidate();
+    });
+
+    JButton offsetButton = new JButton("setScrollOffset: 0");
+    offsetButton.addActionListener(e -> {
+      field1.setScrollOffset(0);
+      scrollbar1.revalidate();
+      field2.setScrollOffset(0);
+      scrollbar2.revalidate();
+    });
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(caretButton);
     box.add(Box.createHorizontalStrut(5));
     box.add(offsetButton);
+    return box;
+  }
 
-    add(p, BorderLayout.NORTH);
-    add(box, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+  private static String makeOneLineCode() {
+    String loc = "var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');";
+    String code = "if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3])";
+    String replace = ".replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');";
+    return String.format("javascript:(function(){%s%s%s}());", loc, code, replace);
   }
 
   public static void main(String[] args) {
@@ -113,7 +117,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -128,12 +132,12 @@ public final class MainPanel extends JPanel {
 class EmptyThumbHandler extends ComponentAdapter implements DocumentListener {
   private final BoundedRangeModel emptyThumbModel = new DefaultBoundedRangeModel(0, 1, 0, 1);
   private final JTextField textField;
-  private final JScrollBar scroller;
+  private final JScrollBar scrollbar;
 
-  protected EmptyThumbHandler(JTextField textField, JScrollBar scroller) {
+  protected EmptyThumbHandler(JTextField textField, JScrollBar scrollbar) {
     super();
     this.textField = textField;
-    this.scroller = scroller;
+    this.scrollbar = scrollbar;
   }
 
   private void changeThumbModel() {
@@ -141,9 +145,9 @@ class EmptyThumbHandler extends ComponentAdapter implements DocumentListener {
       BoundedRangeModel m = textField.getHorizontalVisibility();
       int iv = m.getMaximum() - m.getMinimum() - m.getExtent() - 1; // -1: bug?
       if (iv <= 0) {
-        scroller.setModel(emptyThumbModel);
+        scrollbar.setModel(emptyThumbModel);
       } else {
-        scroller.setModel(textField.getHorizontalVisibility());
+        scrollbar.setModel(textField.getHorizontalVisibility());
       }
     });
   }
