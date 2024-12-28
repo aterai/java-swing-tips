@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -14,57 +15,62 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super();
+    JPanel panel = makeNumericKeypad();
+    panel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+    add(panel);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeNumericKeypad() {
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(1, 1, 1, 1);
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.gridy = 0;
-    JPanel panel = new JPanel(new GridBagLayout());
-    panel.add(makeButton("<html>Num<br>Lock"), c);
+    JPanel p = new JPanel(new GridBagLayout());
+    p.add(makeButton("<html>Num<br>Lock"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    panel.add(makeButton("/"), c);
-    panel.add(makeButton("*"), c);
-    panel.add(makeButton("-"), c);
+    p.add(makeButton("/"), c);
+    p.add(makeButton("*"), c);
+    p.add(makeButton("-"), c);
     c.gridx = 0;
     c.gridy++;
-    panel.add(makeButton("7", "Home"), c);
+    p.add(makeButton("7", "Home"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    panel.add(makeButton("8", "↑"), c);
-    panel.add(makeButton("9", "PgUp"), c);
+    p.add(makeButton("8", "↑"), c);
+    p.add(makeButton("9", "PgUp"), c);
     c.gridheight = 2;
-    panel.add(makeButton("+", "+"), c);
+    p.add(makeButton("+", "+"), c);
     c.gridx = 0;
     c.gridy++;
     c.gridheight = 1;
-    panel.add(makeButton("4", "←"), c);
+    p.add(makeButton("4", "←"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    panel.add(makeButton("5"), c);
-    panel.add(makeButton("6", "→"), c);
+    p.add(makeButton("5"), c);
+    p.add(makeButton("6", "→"), c);
     c.gridx = 0;
     c.gridy++;
-    panel.add(makeButton("1", "End"), c);
+    p.add(makeButton("1", "End"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    panel.add(makeButton("2", "↓"), c);
-    panel.add(makeButton("3", "PgDn"), c);
+    p.add(makeButton("2", "↓"), c);
+    p.add(makeButton("3", "PgDn"), c);
     c.gridheight = 2;
     JButton enter = makeButton("Enter", "Enter");
-    panel.add(enter, c);
+    p.add(enter, c);
     EventQueue.invokeLater(() -> {
-      getRootPane().setDefaultButton(enter);
+      p.getRootPane().setDefaultButton(enter);
       enter.requestFocusInWindow();
     });
     c.gridx = 0;
     c.gridy++;
     c.gridwidth = 2;
     c.gridheight = 1;
-    panel.add(makeButton("0", "Insert"), c);
+    p.add(makeButton("0", "Insert"), c);
     c.gridx = GridBagConstraints.RELATIVE;
     c.gridwidth = 1;
-    panel.add(makeButton(".", "Delete"), c);
-    panel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-    add(panel);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    p.add(makeButton(".", "Delete"), c);
+    return p;
   }
 
   private static JButton makeButton(String... s) {
@@ -128,7 +134,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
