@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -28,27 +29,7 @@ public final class MainPanel extends JPanel {
       if (c instanceof Window) {
         Window window = (Window) c;
         window.addWindowStateListener(e -> {
-          String ws;
-          switch (e.getNewState()) {
-            case Frame.NORMAL:
-              ws = "NORMAL";
-              break;
-            case Frame.ICONIFIED:
-              ws = "ICONIFIED";
-              break;
-            case Frame.MAXIMIZED_HORIZ:
-              ws = "MAXIMIZED_HORIZ";
-              break;
-            case Frame.MAXIMIZED_VERT:
-              ws = "MAXIMIZED_VERT";
-              break;
-            case Frame.MAXIMIZED_BOTH:
-              ws = "MAXIMIZED_BOTH";
-              break;
-            default:
-              ws = "ERROR";
-              break;
-          }
+          String ws = getWindowStateString(e);
           log.append(String.format("WindowStateListener: %s%n", ws));
         });
 
@@ -85,6 +66,31 @@ public final class MainPanel extends JPanel {
     });
   }
 
+  private static String getWindowStateString(WindowEvent e) {
+    String state;
+    switch (e.getNewState()) {
+      case Frame.NORMAL:
+        state = "NORMAL";
+        break;
+      case Frame.ICONIFIED:
+        state = "ICONIFIED";
+        break;
+      case Frame.MAXIMIZED_HORIZ:
+        state = "MAXIMIZED_HORIZ";
+        break;
+      case Frame.MAXIMIZED_VERT:
+        state = "MAXIMIZED_VERT";
+        break;
+      case Frame.MAXIMIZED_BOTH:
+        state = "MAXIMIZED_BOTH";
+        break;
+      default:
+        state = "ERROR";
+        break;
+    }
+    return state;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -95,7 +101,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
