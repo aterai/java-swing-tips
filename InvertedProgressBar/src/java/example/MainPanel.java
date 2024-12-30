@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -75,6 +76,14 @@ public final class MainPanel extends JPanel implements HierarchyListener {
       p2.add(Box.createHorizontalStrut(25));
     });
 
+    addHierarchyListener(this);
+    add(p1, BorderLayout.NORTH);
+    add(p2, BorderLayout.WEST);
+    add(makeBox(progress0), BorderLayout.EAST);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private Box makeBox(JProgressBar progress0) {
     JButton button = new JButton("Test");
     button.addActionListener(e -> {
       if (Objects.nonNull(worker) && !worker.isDone()) {
@@ -88,17 +97,12 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
     box.add(Box.createVerticalGlue());
     box.add(button);
-
-    addHierarchyListener(this);
-    add(p1, BorderLayout.NORTH);
-    add(p2, BorderLayout.WEST);
-    add(box, BorderLayout.EAST);
-    setPreferredSize(new Dimension(320, 240));
+    return box;
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-    if (displayability && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+    if (b && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
       // System.out.println("DISPOSE_ON_CLOSE");
       worker.cancel(true);
       // worker = null;
@@ -115,7 +119,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
