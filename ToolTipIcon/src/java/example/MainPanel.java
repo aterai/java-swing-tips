@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -16,7 +17,6 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     String path = "example/wi0124-48.png";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
     Icon icon = Optional.ofNullable(url).map(u -> {
@@ -26,8 +26,26 @@ public final class MainPanel extends JPanel {
         return UIManager.getIcon("html.missingImage");
       }
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
+    JLabel l1 = makeLabel1(icon);
+    l1.setToolTipText("Test1");
+    JLabel l2 = makeLabel2(icon);
+    l2.setToolTipText("Test2");
+    JLabel l3 = new JLabel("ToolTip icon using HTML tags"); // align='middle'
+    l3.setToolTipText(String.format("<html><img src='%s'>Test3</img>", url));
+    Box box = Box.createVerticalBox();
+    box.add(l1);
+    box.add(Box.createVerticalStrut(20));
+    box.add(l2);
+    box.add(Box.createVerticalStrut(20));
+    box.add(l3);
+    box.add(Box.createVerticalGlue());
+    add(box);
+    setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JLabel l1 = new JLabel("ToolTip icon using JLabel") {
+  private JLabel makeLabel1(Icon icon) {
+    return new JLabel("ToolTip icon using JLabel") {
       @Override public JToolTip createToolTip() {
         JLabel iconLabel = new JLabel(icon);
         iconLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -54,9 +72,10 @@ public final class MainPanel extends JPanel {
         return tip;
       }
     };
-    l1.setToolTipText("Test1");
+  }
 
-    JLabel l2 = new JLabel("ToolTip icon using MatteBorder") {
+  private JLabel makeLabel2(Icon icon) {
+    return new JLabel("ToolTip icon using MatteBorder") {
       @Override public JToolTip createToolTip() {
         JToolTip tip = new JToolTip() {
           @Override public Dimension getPreferredSize() {
@@ -75,22 +94,6 @@ public final class MainPanel extends JPanel {
         return tip;
       }
     };
-    l2.setToolTipText("Test2");
-
-    JLabel l3 = new JLabel("ToolTip icon using HTML tags");
-    l3.setToolTipText(String.format("<html><img src='%s'>Test3</img>", url)); // align='middle'
-
-    Box box = Box.createVerticalBox();
-    box.add(l1);
-    box.add(Box.createVerticalStrut(20));
-    box.add(l2);
-    box.add(Box.createVerticalStrut(20));
-    box.add(l3);
-    box.add(Box.createVerticalGlue());
-
-    add(box);
-    setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -103,7 +106,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
