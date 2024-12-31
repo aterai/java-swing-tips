@@ -10,6 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
@@ -19,54 +20,113 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel(new GridLayout(2, 1, 25, 5));
+    p.add(makeTitledPanel("JComboBox + ComboBoxEditor", makeListEditorComboBox1()));
+    p.add(makeTitledPanel("JList + JPopupMenu", makeListEditorComboBox2()));
+    add(p, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JComboBox<ListItem> makeListEditorComboBox1() {
     ListModel<ListItem> model = makeModel();
     JList<ListItem> list = new NewspaperStyleList<>(model);
-    JScrollPane scroll = new JScrollPane(list) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = 62 * 3 + 10;
-        d.height = 32;
-        return d;
-      }
-    };
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.setViewportBorder(BorderFactory.createEmptyBorder());
+    int fixedCellWidth = list.getFixedCellWidth();
+    int fixedCellHeight = list.getFixedCellHeight();
+    Dimension dim = new Dimension(fixedCellWidth * 4, fixedCellHeight);
+    JScrollPane scroll = makeScrollPane(list, dim);
+    DefaultComboBoxModel<ListItem> cm = new DefaultComboBoxModel<>();
+    for (int i = 0; i < model.getSize(); i++) {
+      cm.addElement(model.getElementAt(i));
+    }
+    return new JComboBox<ListItem>(cm) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setMaximumRowCount(4);
+        setPrototypeDisplayValue(new ListItem("red", new ColorIcon(Color.RED)));
+        EventQueue.invokeLater(() -> {
+          ComboPopup popup = (ComboPopup) getAccessibleContext().getAccessibleChild(0);
+          JList<?> lst = popup.getList();
+          lst.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+          lst.setVisibleRowCount(0);
+          lst.setFixedCellWidth(fixedCellWidth);
+          lst.setFixedCellHeight(fixedCellHeight);
+          lst.setOpaque(true);
+          lst.setBackground(new Color(0x32_32_32));
+          lst.setForeground(Color.WHITE);
+        });
+        setRenderer(new ListItemListCellRenderer<>());
+        setEditable(true);
+        setEditor(new ComboBoxEditor() {
+          @Override public Component getEditorComponent() {
+            return scroll;
+          }
 
-    JList<ListItem> list2 = new NewspaperStyleList<>(model);
-    JScrollPane scroll2 = new JScrollPane(list2) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = 62 * 4 + 10;
-        return d;
+          @Override public void setItem(Object anObject) {
+            setSelectedIndex(list.getSelectedIndex());
+          }
+
+          @Override public Object getItem() {
+            return list.getSelectedValue();
+          }
+
+          @Override public void selectAll() {
+            // System.out.println("selectAll");
+          }
+
+          @Override public void addActionListener(ActionListener l) {
+            // System.out.println("addActionListener");
+          }
+
+          @Override public void removeActionListener(ActionListener l) {
+            // System.out.println("removeActionListener");
+          }
+        });
       }
     };
-    scroll2.setBorder(BorderFactory.createEmptyBorder());
-    scroll2.setViewportBorder(BorderFactory.createEmptyBorder());
+  }
+
+  private static JPanel makeListEditorComboBox2() {
+    ListModel<ListItem> model = makeModel();
+    JList<ListItem> list = new NewspaperStyleList<>(model);
+    int fcw = list.getFixedCellWidth();
+    int fch = list.getFixedCellHeight();
+    JScrollPane scroll = makeScrollPane(list, new Dimension(fcw * 3 + 10, fch));
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+    JList<ListItem> dropDownList = new NewspaperStyleList<>(model);
+    int ddw = dropDownList.getFixedCellWidth() * 4 + 10;
+    JScrollPane dropDownScroll = makeScrollPane(dropDownList, new Dimension(ddw, 0));
 
     JPopupMenu popup = new JPopupMenu();
     popup.setLayout(new BorderLayout());
-    list2.addMouseListener(new MouseAdapter() {
+    dropDownList.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         if (popup.isVisible() && e.getClickCount() >= 2) {
           popup.setVisible(false);
         }
       }
     });
-    popup.add(scroll2);
+    popup.add(dropDownScroll);
     popup.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-    JToggleButton dropDown = new JToggleButton(new DropDownArrowIcon());
+    JToggleButton dropButton = makeDropDownButton();
+    dropButton.addItemListener(e -> {
+      AbstractButton b = (AbstractButton) e.getItemSelectable();
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        popup.show(b, -scroll.getWidth(), b.getHeight());
+      }
+    });
+
     popup.addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        list2.setSelectedIndex(list.getSelectedIndex());
+        dropDownList.setSelectedIndex(list.getSelectedIndex());
         EventQueue.invokeLater(popup::pack);
       }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        dropDown.setSelected(false);
+        dropButton.setSelected(false);
         list.requestFocusInWindow();
-        int i = list2.getSelectedIndex();
+        int i = dropDownList.getSelectedIndex();
         if (i >= 0) {
           list.setSelectedIndex(i);
           list.scrollRectToVisible(list.getCellBounds(i, i));
@@ -78,107 +138,43 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    dropDown.setBorder(BorderFactory.createEmptyBorder());
-    dropDown.setContentAreaFilled(false);
-    dropDown.setFocusPainted(false);
-    dropDown.setFocusable(false);
-    dropDown.addItemListener(e -> {
-      AbstractButton b = (AbstractButton) e.getItemSelectable();
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        popup.show(b, -scroll.getWidth(), b.getHeight());
-      }
-    });
-
     JScrollBar verticalScrollBar = scroll.getVerticalScrollBar();
     JPanel verticalBox = new JPanel(new BorderLayout()) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.height = 32 + 5 + 5;
+        d.height = list.getFixedCellHeight();
         return d;
       }
     };
     verticalBox.setOpaque(false);
     verticalBox.add(verticalScrollBar);
-    verticalBox.add(dropDown, BorderLayout.SOUTH);
+    verticalBox.add(dropButton, BorderLayout.SOUTH);
 
     JPanel panel = new JPanel(new BorderLayout(0, 0));
     panel.add(scroll);
     panel.add(verticalBox, BorderLayout.EAST);
     panel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-
-    JPanel p = new JPanel(new GridLayout(2, 1, 25, 25));
-    p.add(makeTitledPanel("JList + JPopupMenu", panel));
-    p.add(makeTitledPanel("JComboBox + ComboBoxEditor", makeListEditorComboBox()));
-    add(p, BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
+    return panel;
   }
 
-  private JComboBox<ListItem> makeListEditorComboBox() {
-    ListModel<ListItem> model = makeModel();
-    JList<ListItem> list = new NewspaperStyleList<>(model);
-    JScrollPane scroll = new JScrollPane(list) {
+  private static JScrollPane makeScrollPane(JList<?> list, Dimension dim) {
+    return new JScrollPane(list) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.width = 62 * 4;
-        d.height = 40;
+        d.width = dim.width;
+        d.height = dim.height > 0 ? dim.height : d.height;
         return d;
       }
-    };
-    scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.setViewportBorder(BorderFactory.createEmptyBorder());
-    DefaultComboBoxModel<ListItem> cm = new DefaultComboBoxModel<>();
-    for (int i = 0; i < model.getSize(); i++) {
-      cm.addElement(model.getElementAt(i));
-    }
-    JComboBox<ListItem> combo = new JComboBox<ListItem>(cm) {
+
       @Override public void updateUI() {
         super.updateUI();
-        setMaximumRowCount(4);
-        setPrototypeDisplayValue(new ListItem("red", new ColorIcon(Color.RED)));
-        EventQueue.invokeLater(() -> {
-          ComboPopup popup = (ComboPopup) getAccessibleContext().getAccessibleChild(0);
-          JList<?> lst = popup.getList();
-          lst.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-          lst.setVisibleRowCount(0);
-          lst.setFixedCellWidth(62);
-          lst.setFixedCellHeight(40);
-          lst.setOpaque(true);
-          lst.setBackground(new Color(0x32_32_32));
-          lst.setForeground(Color.WHITE);
-        });
+        setBorder(BorderFactory.createEmptyBorder());
+        setViewportBorder(BorderFactory.createEmptyBorder());
       }
     };
-    combo.setRenderer(new ListItemListCellRenderer<>());
-    combo.setEditable(true);
-    combo.setEditor(new ComboBoxEditor() {
-      @Override public Component getEditorComponent() {
-        return scroll;
-      }
-
-      @Override public void setItem(Object anObject) {
-        combo.setSelectedIndex(list.getSelectedIndex());
-      }
-
-      @Override public Object getItem() {
-        return list.getSelectedValue();
-      }
-
-      @Override public void selectAll() {
-        // System.out.println("selectAll");
-      }
-
-      @Override public void addActionListener(ActionListener l) {
-        // System.out.println("addActionListener");
-      }
-
-      @Override public void removeActionListener(ActionListener l) {
-        // System.out.println("removeActionListener");
-      }
-    });
-    return combo;
   }
 
-  private ListModel<ListItem> makeModel() {
+  private static ListModel<ListItem> makeModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
@@ -196,8 +192,20 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
+  private static JToggleButton makeDropDownButton() {
+    return new JToggleButton(new DropDownArrowIcon()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder());
+        setContentAreaFilled(false);
+        setFocusPainted(false);
+        setFocusable(false);
+      }
+    };
+  }
+
   private static Component makeTitledPanel(String title, Component c) {
-    JPanel p = new JPanel(new GridBagLayout());
+    JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING));
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
     return p;
@@ -213,7 +221,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
