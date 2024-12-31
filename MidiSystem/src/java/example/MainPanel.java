@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -17,41 +18,40 @@ import javax.sound.midi.Sequencer;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final byte END_OF_TRACK = 0x2F;
-
   private MainPanel() {
     super(new BorderLayout(5, 5));
+    Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+    box.add(Box.createHorizontalGlue());
     JButton start = makeButton("start");
+    box.add(start);
     JButton pause = makeButton("pause");
     pause.setEnabled(false);
+    box.add(pause);
     JButton reset = makeButton("reset");
+    box.add(reset);
 
+    SwingWorker<?, ?> worker = makePlayer(start, pause, reset);
+    worker.execute();
+    addHierarchyListener(e -> {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
+        worker.cancel(true);
+      }
+    });
+    add(makeTitle(getBackground()));
+    add(box, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static SwingWorker<?, ?> makePlayer(JButton start, JButton pause, JButton reset) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/Mozart_toruko_k.mid");
-    assert url != null;
-    SwingWorker<Void, Long> worker = new SwingWorker<Void, Long>() {
+    return new Player(url) {
       private long tickPos;
-      @Override protected Void doInBackground() throws InterruptedException {
-        try (Sequencer sequencer = MidiSystem.getSequencer()) {
-          sequencer.open();
-          sequencer.setSequence(MidiSystem.getSequence(url));
-          sequencer.addMetaEventListener(e -> {
-            if (e.getType() == END_OF_TRACK) {
-              publish(0L);
-            }
-          });
-          EventQueue.invokeLater(() -> addListener(sequencer));
-          while (sequencer.isOpen()) {
-            updateTickPosition(sequencer);
-          }
-        } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
-          ex.printStackTrace();
-          publish(0L);
-        }
-        return null;
-      }
 
-      private void addListener(Sequencer sequencer) {
+      @Override protected void addListener(Sequencer sequencer) {
         start.addActionListener(e -> {
           sequencer.setTickPosition(tickPos);
           sequencer.start();
@@ -71,13 +71,6 @@ public final class MainPanel extends JPanel {
         });
       }
 
-      private void updateTickPosition(Sequencer sequencer) throws InterruptedException {
-        if (sequencer.isRunning()) {
-          publish(sequencer.getTickPosition());
-        }
-        Thread.sleep(1000L);
-      }
-
       @Override protected void process(List<Long> chunks) {
         chunks.forEach(tp -> {
           tickPos = tp;
@@ -87,41 +80,16 @@ public final class MainPanel extends JPanel {
         });
       }
 
-      // @Override protected void done() {
-      //   tickPos = 0L;
-      //   initButtons(true);
-      // }
+      @Override protected void done() {
+        tickPos = 0L;
+        initButtons(true);
+      }
 
       private void initButtons(boolean flg) {
         start.setEnabled(flg);
         pause.setEnabled(!flg);
       }
     };
-    worker.execute();
-
-    addHierarchyListener(worker);
-
-    Box box = Box.createHorizontalBox();
-    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-    box.add(Box.createHorizontalGlue());
-    box.add(start);
-    box.add(pause);
-    box.add(reset);
-
-    add(makeTitle(getBackground()));
-    add(box, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private void addHierarchyListener(SwingWorker<?, ?> worker) {
-    addHierarchyListener(e -> {
-      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (b && !e.getComponent().isDisplayable()) {
-        // System.out.println("DISPLAYABILITY_CHANGED");
-        worker.cancel(true);
-      }
-    });
   }
 
   private static Component makeTitle(Color bgc) {
@@ -153,7 +121,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -163,5 +131,45 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+abstract class Player extends SwingWorker<Void, Long> {
+  private static final byte END_OF_TRACK = 0x2F;
+  private final URL url;
+  // private long tickPos;
+
+  protected Player(URL url) {
+    super();
+    assert url != null;
+    this.url = url;
+  }
+
+  @Override protected Void doInBackground() throws InterruptedException {
+    try (Sequencer sequencer = MidiSystem.getSequencer()) {
+      sequencer.open();
+      sequencer.setSequence(MidiSystem.getSequence(url));
+      sequencer.addMetaEventListener(e -> {
+        if (e.getType() == END_OF_TRACK) {
+          publish(0L);
+        }
+      });
+      EventQueue.invokeLater(() -> addListener(sequencer));
+      while (sequencer.isOpen()) {
+        updateTickPosition(sequencer);
+      }
+    } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
+      publish(0L);
+    }
+    return null;
+  }
+
+  protected abstract void addListener(Sequencer sequencer);
+
+  private void updateTickPosition(Sequencer sequencer) throws InterruptedException {
+    if (sequencer.isRunning()) {
+      publish(sequencer.getTickPosition());
+    }
+    Thread.sleep(1000L);
   }
 }
