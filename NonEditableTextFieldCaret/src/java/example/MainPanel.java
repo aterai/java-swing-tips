@@ -6,45 +6,16 @@ package example;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field1 = makeTextField("setEnabled(false)");
-    field1.setEnabled(false);
-
-    JTextField field2 = makeTextField("setEditable(false)");
-    field2.setEditable(false);
-
-    JTextField field3 = makeTextField("DefaultCaret#setVisible(true)");
-    field3.setEditable(false);
-    field3.setCaret(new DefaultCaret() {
-      @Override public void focusGained(FocusEvent e) {
-        super.focusGained(e);
-        if (getComponent().isEnabled()) {
-          setVisible(true);
-        }
-      }
-    });
-
-    JTextField field4 = makeTextField("DefaultCaret#setBlinkRate(...)");
-    field4.setEditable(false);
-    field4.setCaret(new DefaultCaret() {
-      @Override public void focusGained(FocusEvent e) {
-        super.focusGained(e);
-        if (getComponent().isEnabled()) {
-          setBlinkRate(UIManager.getInt("TextField.caretBlinkRate"));
-          setVisible(true);
-        }
-      }
-    });
-
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(8, 4, 8, 4);
     c.anchor = GridBagConstraints.WEST;
-
     JPanel p = new JPanel(new GridBagLayout());
     c.gridy = 0;
     p.add(new JLabel("Default: "), c);
@@ -61,15 +32,15 @@ public final class MainPanel extends JPanel {
     c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
     c.gridy = 0;
-    p.add(makeTextField("Default JTextField"), c);
+    p.add(makeTextField0(), c);
     c.gridy = 1;
-    p.add(field1, c);
+    p.add(makeTextField1(), c);
     c.gridy = 2;
-    p.add(field2, c);
+    p.add(makeTextField2(), c);
     c.gridy = 3;
-    p.add(field3, c);
+    p.add(makeTextField3(), c);
     c.gridy = 4;
-    p.add(field4, c);
+    p.add(makeTextField4(), c);
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -80,12 +51,80 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTextField makeTextField(String txt) {
-    JTextField field = new JTextField(txt);
-    field.setOpaque(false);
-    field.setBorder(BorderFactory.createEmptyBorder());
-    field.setBackground(new Color(0x0, true)); // Nimbus?
-    return field;
+  private static JTextField makeTextField0() {
+    return new JTextField("Default JTextField") {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        setBackground(new Color(0x0, true)); // Nimbus?
+      }
+    };
+  }
+
+  private static JTextField makeTextField1() {
+    return new JTextField("setEnabled(false)") {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        setBackground(new Color(0x0, true)); // Nimbus?
+        setEnabled(false);
+      }
+    };
+  }
+
+  private static JTextField makeTextField2() {
+    return new JTextField("setEditable(false)") {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        setBackground(new Color(0x0, true)); // Nimbus?
+        setEditable(false);
+      }
+    };
+  }
+
+  private static JTextField makeTextField3() {
+    return new JTextField("DefaultCaret#setVisible(true)") {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        setBackground(new Color(0x0, true)); // Nimbus?
+        setEditable(false);
+        setCaret(new DefaultCaret() {
+          @Override public void focusGained(FocusEvent e) {
+            super.focusGained(e);
+            if (getComponent().isEnabled()) {
+              setVisible(true);
+            }
+          }
+        });
+      }
+    };
+  }
+
+  private static JTextField makeTextField4() {
+    return new JTextField("DefaultCaret#setBlinkRate(...)") {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        setBackground(new Color(0x0, true)); // Nimbus?
+        setEditable(false);
+        setCaret(new DefaultCaret() {
+          @Override public void focusGained(FocusEvent e) {
+            super.focusGained(e);
+            if (getComponent().isEnabled()) {
+              setBlinkRate(UIManager.getInt("TextField.caretBlinkRate"));
+              setVisible(true);
+            }
+          }
+        });
+      }
+    };
   }
 
   public static void main(String[] args) {
@@ -98,7 +137,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -152,7 +191,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
