@@ -5,84 +5,33 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 public final class MainPanel extends JPanel {
-  @SuppressWarnings("unchecked")
+  private static final String NIMBUS_OVERRIDES = "Nimbus.Overrides";
+
   private MainPanel() {
     super(new BorderLayout());
-    String[] model = {"Red", "Green", "Blue"};
-    JList<String> list = new JList<>(model);
+    String[] colors = {"Red", "Green", "Blue"};
+    ComboBoxModel<String> model = new DefaultComboBoxModel<>(colors);
+    JList<String> list = new JList<>(colors);
     UIDefaults d = new UIDefaults();
     d.put("List.rendererUseListColors", true);
-    String key = "Nimbus.Overrides";
-    list.putClientProperty(key, d);
-
+    list.putClientProperty(NIMBUS_OVERRIDES, d);
     JPanel p0 = new JPanel(new GridLayout(1, 2));
     p0.add(new JScrollPane(new JList<>(model)));
     p0.add(new JScrollPane(list));
 
-    JComboBox<String> combo0 = new JComboBox<String>(model) {
-      @Override public void updateUI() {
-        setRenderer(null);
-        super.updateUI();
-        UIDefaults d = new UIDefaults();
-        d.put("ComboBox.rendererUseListColors", true);
-        putClientProperty(key, d);
-        // Accessible o = getAccessibleContext().getAccessibleChild(0);
-        // if (o instanceof ComboPopup) {
-        //   JList<?> list = ((ComboPopup) o).getList();
-        //   list.setSelectionForeground(Color.WHITE);
-        //   list.setSelectionBackground(Color.RED);
-        // }
-      }
-    };
-
-    // UIManager.put("ComboBox.rendererUseListColors", Boolean.TRUE);
-    JComboBox<String> combo1 = new JComboBox<>(model);
-    combo1.setRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        return super.getListCellRendererComponent(
-            list, "TEST0: " + value, index, isSelected, cellHasFocus);
-      }
-    });
-    // UIDefaults d1 = new UIDefaults();
-    // d1.put("ComboBox.rendererUseListColors", true);
-    // combo1.putClientProperty("Nimbus.Overrides", d1);
-
-    JComboBox<String> combo2 = new JComboBox<>(model);
-    combo2.setRenderer(new BasicComboBoxRenderer() {
-      @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        return super.getListCellRendererComponent(
-            list, "TEST1: " + value, index, isSelected, cellHasFocus);
-      }
-    });
-    // combo2.putClientProperty("Nimbus.Overrides", d1);
-
-    JComboBox<String> combo3 = new JComboBox<String>(model) {
-      @Override public void updateUI() {
-        setRenderer(null);
-        super.updateUI();
-        UIDefaults d = new UIDefaults();
-        d.put("ComboBox.rendererUseListColors", false);
-        putClientProperty(key, d);
-        ListCellRenderer<? super String> r = getRenderer();
-        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(
-              list, value, index, isSelected, cellHasFocus);
-          if (c instanceof JLabel) {
-            ((JLabel) c).setText("TEST2: " + value);
-          }
-          return c;
-        });
-      }
-    };
-
     JPanel grid = new JPanel(new GridLayout(2, 2));
+    JComboBox<String> combo0 = makeComboBox0(model);
     grid.add(makeTitledPanel("ComboBox.rendererUseListColors: true", combo0));
+    JComboBox<String> combo1 = makeComboBox1(model);
     grid.add(makeTitledPanel("DefaultListCellRenderer", combo1));
+    JComboBox<String> combo2 = makeComboBox2(model);
     grid.add(makeTitledPanel("BasicComboBoxRenderer", combo2));
+    JComboBox<String> combo3 = makeComboBox3(model);
     grid.add(makeTitledPanel("SynthComboBoxRenderer + ListCellRenderer", combo3));
     JPanel p1 = new JPanel(new BorderLayout());
     p1.add(grid, BorderLayout.NORTH);
@@ -96,6 +45,73 @@ public final class MainPanel extends JPanel {
     tabs.add("JComboBox", p1);
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static <E> JComboBox<E> makeComboBox0(ComboBoxModel<E> model) {
+    return new JComboBox<E>(model) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        UIDefaults d = new UIDefaults();
+        d.put("ComboBox.rendererUseListColors", true);
+        putClientProperty(NIMBUS_OVERRIDES, d);
+        // Accessible o = getAccessibleContext().getAccessibleChild(0);
+        // if (o instanceof ComboPopup) {
+        //   JList<?> list = ((ComboPopup) o).getList();
+        //   list.setSelectionForeground(Color.WHITE);
+        //   list.setSelectionBackground(Color.RED);
+        // }
+      }
+    };
+  }
+
+  private static <E> JComboBox<E> makeComboBox1(ComboBoxModel<E> model) {
+    // UIManager.put("ComboBox.rendererUseListColors", Boolean.TRUE);
+    JComboBox<E> combo = new JComboBox<>(model);
+    combo.setRenderer(new DefaultListCellRenderer() {
+      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        return super.getListCellRendererComponent(
+            list, "TEST0: " + value, index, isSelected, cellHasFocus);
+      }
+    });
+    // UIDefaults d1 = new UIDefaults();
+    // d1.put("ComboBox.rendererUseListColors", true);
+    // combo.putClientProperty("Nimbus.Overrides", d1);
+    return combo;
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <E> JComboBox<E> makeComboBox2(ComboBoxModel<E> model) {
+    JComboBox<E> combo = new JComboBox<>(model);
+    combo.setRenderer(new BasicComboBoxRenderer() {
+      @Override public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        return super.getListCellRendererComponent(
+            list, "TEST1: " + value, index, isSelected, cellHasFocus);
+      }
+    });
+    // combo.putClientProperty("Nimbus.Overrides", d1);
+    return combo;
+  }
+
+  private static <E> JComboBox<E> makeComboBox3(ComboBoxModel<E> model) {
+    return new JComboBox<E>(model) {
+      @Override public void updateUI() {
+        setRenderer(null);
+        super.updateUI();
+        UIDefaults d = new UIDefaults();
+        d.put("ComboBox.rendererUseListColors", false);
+        putClientProperty(NIMBUS_OVERRIDES, d);
+        ListCellRenderer<? super E> r = getRenderer();
+        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+          Component c = r.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
+          if (c instanceof JLabel) {
+            ((JLabel) c).setText("TEST2: " + value);
+          }
+          return c;
+        });
+      }
+    };
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -116,7 +132,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -170,7 +186,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
