@@ -11,6 +11,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,79 +20,95 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 2));
-    JPasswordField pf1 = makePasswordField();
-    AbstractButton b1 = new JCheckBox("show passwords");
-    b1.addActionListener(e -> {
-      AbstractButton c = (AbstractButton) e.getSource();
-      pf1.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
-    });
-    Container p1 = new JPanel(new BorderLayout());
-    p1.add(pf1);
-    p1.add(b1, BorderLayout.SOUTH);
+    Container p1 = makePasswordPanel1();
     add(makeTitledPanel("BorderLayout + JCheckBox", p1));
-
-    JPasswordField pf2 = makePasswordField();
-    // AbstractDocument doc = (AbstractDocument) pf2.getDocument();
-    // doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
-    AbstractButton b2 = new JToggleButton();
-    b2.addActionListener(e -> {
-      AbstractButton c = (AbstractButton) e.getSource();
-      pf2.setEchoChar(c.isSelected() ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
-    });
-    initEyeButton(b2);
-    Container p2 = makeOverlayLayoutPanel();
-    p2.add(b2);
-    p2.add(pf2);
+    Container p2 = makePasswordPanel2();
     add(makeTitledPanel("OverlayLayout + JToggleButton", p2));
+    Container p3 = makePasswordPanel3();
+    add(makeTitledPanel("CardLayout + JTextField(can copy) + ...", p3));
+    Container p4 = makePasswordPanel4();
+    add(makeTitledPanel("press and hold down the mouse button", p4));
+    setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JPasswordField pf3 = makePasswordField();
-    JTextField tf3 = new JTextField(24);
-    tf3.setFont(FONT);
-    tf3.enableInputMethods(false);
-    tf3.setDocument(pf3.getDocument());
+  private static Container makePasswordPanel1() {
+    JPasswordField password = makePasswordField();
+    AbstractButton button = new JCheckBox("show passwords");
+    button.addActionListener(e -> {
+      boolean b = ((AbstractButton) e.getSource()).isSelected();
+      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
+    });
+    Container p = new JPanel(new BorderLayout());
+    p.add(password);
+    p.add(button, BorderLayout.SOUTH);
+    return p;
+  }
+
+  private static Container makePasswordPanel2() {
+    JPasswordField password = makePasswordField();
+    // AbstractDocument doc = (AbstractDocument) password.getDocument();
+    // doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
+    AbstractButton button = new JToggleButton();
+    button.addActionListener(e -> {
+      boolean b = ((AbstractButton) e.getSource()).isSelected();
+      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
+    });
+    initEyeButton(button);
+    Container p = makeOverlayLayoutPanel();
+    p.add(button);
+    p.add(password);
+    return p;
+  }
+
+  private Container makePasswordPanel3() {
+    JPasswordField password = makePasswordField();
+    JTextField field = new JTextField(24);
+    field.setFont(FONT);
+    field.enableInputMethods(false);
+    field.setDocument(password.getDocument());
 
     CardLayout cardLayout = new CardLayout();
-    Container p3 = new JPanel(cardLayout) {
+    Container p = new JPanel(cardLayout) {
       @Override public void updateUI() {
         super.updateUI();
         setAlignmentX(RIGHT_ALIGNMENT);
       }
     };
-    p3.add(pf3, PasswordField.HIDE.toString());
-    p3.add(tf3, PasswordField.SHOW.toString());
+    p.add(password, PasswordField.HIDE.toString());
+    p.add(field, PasswordField.SHOW.toString());
 
-    AbstractButton b3 = new JToggleButton();
-    b3.addActionListener(e -> {
-      AbstractButton c = (AbstractButton) e.getSource();
-      PasswordField s = c.isSelected() ? PasswordField.SHOW : PasswordField.HIDE;
-      cardLayout.show(p3, s.toString());
+    AbstractButton button = new JToggleButton();
+    button.addActionListener(e -> {
+      boolean b = ((AbstractButton) e.getSource()).isSelected();
+      PasswordField s = b ? PasswordField.SHOW : PasswordField.HIDE;
+      cardLayout.show(p, s.toString());
     });
-    initEyeButton(b3);
+    initEyeButton(button);
 
-    Container pp3 = makeOverlayLayoutPanel();
-    pp3.add(b3);
-    pp3.add(p3);
-    add(makeTitledPanel("CardLayout + JTextField(can copy) + ...", pp3));
+    Container panel = makeOverlayLayoutPanel();
+    panel.add(button);
+    panel.add(p);
+    return panel;
+  }
 
-    JPasswordField pf4 = makePasswordField();
-    AbstractButton b4 = new JButton();
-    b4.addMouseListener(new MouseAdapter() {
+  private static Container makePasswordPanel4() {
+    JPasswordField password = makePasswordField();
+    AbstractButton button = new JButton();
+    button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        pf4.setEchoChar('\u0000');
+        password.setEchoChar('\u0000');
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        pf4.setEchoChar((Character) UIManager.get(ECHO_CHAR));
+        password.setEchoChar((Character) UIManager.get(ECHO_CHAR));
       }
     });
-    initEyeButton(b4);
-    Container p4 = makeOverlayLayoutPanel();
-    p4.add(b4);
-    p4.add(pf4);
-    add(makeTitledPanel("press and hold down the mouse button", p4));
-
-    setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
-    setPreferredSize(new Dimension(320, 240));
+    initEyeButton(button);
+    Container p = makeOverlayLayoutPanel();
+    p.add(button);
+    p.add(password);
+    return p;
   }
 
   private static void initEyeButton(AbstractButton b) {
@@ -146,7 +163,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
