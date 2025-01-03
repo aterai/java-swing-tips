@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.script.Invocable;
@@ -131,6 +132,16 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalGlue());
     box.add(button);
 
+    JPanel p = makeMiniMapPanel(scroll.getVerticalScrollBar());
+    p.add(minimap, BorderLayout.EAST);
+    p.add(scroll);
+
+    add(p);
+    add(box, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeMiniMapPanel(JScrollBar vsb) {
     JPanel p = new JPanel() {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
@@ -150,7 +161,7 @@ public final class MainPanel extends JPanel {
           Component ec = getLayoutComponent(parent, EAST);
           if (Objects.nonNull(ec)) {
             Dimension d = ec.getPreferredSize();
-            JScrollBar vsb = scroll.getVerticalScrollBar();
+            // JScrollBar vsb = scroll.getVerticalScrollBar();
             int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
             ec.setBounds(right - d.width - vsw, top, d.width, bottom - top);
           }
@@ -161,11 +172,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    p.add(minimap, BorderLayout.EAST);
-    p.add(scroll);
-    add(p);
-    add(box, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
   private static StyleSheet makeStyleSheet() {
@@ -254,7 +261,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
