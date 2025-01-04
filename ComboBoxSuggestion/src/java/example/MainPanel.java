@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -129,7 +130,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -149,7 +150,7 @@ class ComboKeyHandler extends KeyAdapter {
   protected ComboKeyHandler(JComboBox<String> combo) {
     super();
     this.comboBox = combo;
-    for (int i = 0; i < comboBox.getModel().getSize(); i++) {
+    for (int i = 0; i < comboBox.getItemCount(); i++) {
       list.add(comboBox.getItemAt(i));
     }
   }
@@ -239,7 +240,7 @@ class ComboKeyHandler extends KeyAdapter {
 //       editorKeyListener = new ComboKeyHandler();
 //     }
 //     editor.addKeyListener(editorKeyListener);
-//     for (int i = 0; i < comboBox.getModel().getSize(); i++) {
+//     for (int i = 0; i < comboBox.getItemCount(); i++) {
 //       list.addElement(comboBox.getItemAt(i));
 //     }
 //     textField.setText("");

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
@@ -95,7 +96,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -123,7 +124,7 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
   private final Action down = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       int si = getSelectedIndex();
-      for (int i = si + 1; i < getModel().getSize(); i++) {
+      for (int i = si + 1; i < getItemCount(); i++) {
         if (getItemAt(i).isLeaf()) {
           setSelectedIndex(i);
           break;

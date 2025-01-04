@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -102,7 +103,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -246,9 +247,8 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
   }
 
   @Override public Object[] getSelectedObjects() {
-    ListModel<E> model = getModel();
-    return IntStream.range(0, model.getSize())
-        .mapToObj(model::getElementAt)
+    return IntStream.range(0, getItemCount())
+        .mapToObj(getModel()::getElementAt)
         .filter(CheckItem::isSelected)
         .toArray();
   }
