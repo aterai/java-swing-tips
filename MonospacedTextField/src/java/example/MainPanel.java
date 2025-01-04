@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -39,7 +40,8 @@ public final class MainPanel extends JPanel {
     JFormattedTextField field3 = new JFormattedTextField(code) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.width += 1;
+        // int caretMargin = UIManager.getInt("Caret.width");
+        d.width += 1; // 1: caret width
         return d;
       }
     };
@@ -66,19 +68,26 @@ public final class MainPanel extends JPanel {
     box.add(makeTitledPanel(l3, field3));
     box.add(makeTitledPanel(l4, field4));
 
-    JTextArea log = new JTextArea();
-    EventQueue.invokeLater(() -> {
-      append(log, field0, code);
-      append(log, field1, code);
-      append(log, field2, code);
-    });
-
     JPanel p = new JPanel(new BorderLayout());
     p.add(box, BorderLayout.WEST);
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
+    add(new JScrollPane(makeInfoTextArea(code, field0, field1, field2)));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTextArea makeInfoTextArea(String code, JTextField... list) {
+    JTextArea log = new JTextArea();
+    EventQueue.invokeLater(() -> {
+      for (JTextField field : list) {
+        Font font = field.getFont();
+        FontRenderContext frc = field.getFontMetrics(font).getFontRenderContext();
+        Rectangle2D r2 = font.getStringBounds(code, frc);
+        Rectangle r = SwingUtilities.calculateInnerArea(field, null);
+        log.append(String.format("%s%n  %s%n  %s%n", font, r, r2));
+      }
+    });
+    return log;
   }
 
   private static Container makeTitledPanel(Component title, Component c) {
@@ -86,14 +95,6 @@ public final class MainPanel extends JPanel {
     box.add(title);
     box.add(c);
     return box;
-  }
-
-  private static void append(JTextArea log, JComponent c, String str) {
-    Font font = c.getFont();
-    FontRenderContext frc = c.getFontMetrics(font).getFontRenderContext();
-    Rectangle2D r2 = font.getStringBounds(str, frc);
-    Rectangle r = SwingUtilities.calculateInnerArea(c, null);
-    log.append(String.format("%s%n  %s%n  %s%n", font, r, r2));
   }
 
   public static void main(String[] args) {
@@ -106,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
