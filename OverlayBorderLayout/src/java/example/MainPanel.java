@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -38,16 +39,7 @@ public final class MainPanel extends JPanel {
     scroll.setBorder(BorderFactory.createTitledBorder("Find... Ctrl+F"));
     p.add(scroll);
 
-    JTextField field = new JTextField("b", 10) {
-      private transient AncestorListener listener;
-
-      @Override public void updateUI() {
-        removeAncestorListener(listener);
-        super.updateUI();
-        listener = new FocusAncestorListener();
-        addAncestorListener(listener);
-      }
-    };
+    JTextField field = makeTextField();
     Action findNextAction = new FindNextAction(tree, field);
     JButton button = new JButton(findNextAction);
     button.setFocusable(false);
@@ -63,11 +55,11 @@ public final class MainPanel extends JPanel {
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-searchbox");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-search-box");
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close-search-box");
 
     ActionMap am = p.getActionMap();
-    am.put("open-searchbox", new AbstractAction("Show/Hide Search Box") {
+    am.put("open-search-box", new AbstractAction("Show/Hide Search Box") {
       @Override public void actionPerformed(ActionEvent e) {
         if (!animator.isRunning()) {
           handler.setShowing(!searchBox.isVisible());
@@ -76,7 +68,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    am.put("close-searchbox", new AbstractAction("Hide Search Box") {
+    am.put("close-search-box", new AbstractAction("Hide Search Box") {
       @Override public void actionPerformed(ActionEvent e) {
         if (!animator.isRunning()) {
           handler.setShowing(false);
@@ -92,6 +84,19 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private JTextField makeTextField() {
+    return new JTextField("b", 10) {
+      private transient AncestorListener listener;
+
+      @Override public void updateUI() {
+        removeAncestorListener(listener);
+        super.updateUI();
+        listener = new FocusAncestorListener();
+        addAncestorListener(listener);
+      }
+    };
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -102,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
