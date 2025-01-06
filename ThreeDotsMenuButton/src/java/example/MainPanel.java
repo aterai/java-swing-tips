@@ -9,15 +9,19 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new GridLayout(1, 2));
-    ListModel<String> model = makeModel();
-    add(makeScrollPane(makeList(model)));
-    add(new JLayer<>(makeScrollPane(makeList(model)), new RolloverLayerUI()));
+    super(new BorderLayout());
+    ListModel<String> m = makeModel();
+    Component l = makeScrollPane(makeList(m));
+    Component r = new JLayer<>(makeScrollPane(makeList(m)), new RolloverLayerUI());
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, l, r);
+    split.setResizeWeight(.5);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -77,7 +81,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -135,7 +139,7 @@ class RolloverLayerUI extends LayerUI<JScrollPane> {
         if (popup != null && !r.contains(pt)) {
           popup.show(c, pt.x, pt.y);
         }
-      } else if (id == MouseEvent.MOUSE_EXITED) {
+      } else if (id == MouseEvent.MOUSE_EXITED && rolloverIdx >= 0) {
         list.repaint(list.getCellBounds(rolloverIdx, rolloverIdx));
         rolloverIdx = -1;
         loc.setLocation(-100, -100);
@@ -150,11 +154,16 @@ class RolloverLayerUI extends LayerUI<JScrollPane> {
       JList<?> list = (JList<?>) c;
       Point pt = e.getPoint();
       loc.setLocation(pt);
+      int prev = rolloverIdx;
       rolloverIdx = list.locationToIndex(pt);
-      Rectangle r = list.getCellBounds(rolloverIdx, rolloverIdx);
-      r.width = l.getView().getViewportBorderBounds().width;
-      r.grow(0, r.height);
-      list.repaint(r);
+      // #30 ThreeDotsMenuButton: If you scroll too fast, multiple layers will be displayed
+      if (rolloverIdx >= 0) {
+        Rectangle r = list.getCellBounds(rolloverIdx, rolloverIdx);
+        r.width = l.getView().getViewportBorderBounds().width;
+        r.grow(0, r.height);
+        Rectangle rr = prev >= 0 ? r.union(list.getCellBounds(prev, prev)) : r;
+        list.repaint(rr);
+      }
     }
   }
 
