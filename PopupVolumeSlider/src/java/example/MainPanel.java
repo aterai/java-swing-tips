@@ -9,6 +9,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -39,6 +40,21 @@ public final class MainPanel extends JPanel {
     });
     popup.add(slider);
 
+    JToggleButton button = makeToggleButton(popup, slider);
+    slider.getModel().addChangeListener(e -> {
+      BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+      button.setEnabled(m.getValue() > m.getMinimum());
+      button.repaint();
+    });
+
+    Box box = Box.createHorizontalBox();
+    box.add(button);
+    add(box, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 10));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JToggleButton makeToggleButton(JPopupMenu popup, JSlider slider) {
     JToggleButton button = new JToggleButton("🔊") {
       @Override public JToolTip createToolTip() {
         JToolTip tip = super.createToolTip();
@@ -98,18 +114,7 @@ public final class MainPanel extends JPanel {
         button.setSelected(false);
       }
     });
-
-    slider.getModel().addChangeListener(e -> {
-      BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      button.setEnabled(m.getValue() > m.getMinimum());
-      button.repaint();
-    });
-
-    Box box = Box.createHorizontalBox();
-    box.add(button);
-    add(box, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 10));
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static void main(String[] args) {
@@ -122,7 +127,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
