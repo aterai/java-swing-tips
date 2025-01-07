@@ -17,40 +17,41 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JScrollPane scroll = new JScrollPane();
+  private final JScrollBar verticalBar = scroll.getVerticalScrollBar();
+  private final JScrollBar horizontalBar = scroll.getHorizontalScrollBar();
+  private final JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
+    @Override public boolean isVisible() {
+      return !isShiftPressed() && super.isVisible();
+    }
+
+    @Override public Dimension getPreferredSize() {
+      Dimension d = super.getPreferredSize();
+      d.width = 0;
+      return d;
+    }
+  };
+  private final JScrollBar zeroHorizontalBar = new JScrollBar(Adjustable.HORIZONTAL) {
+    @Override public Dimension getPreferredSize() {
+      Dimension d = super.getPreferredSize();
+      d.height = 0;
+      return d;
+    }
+  };
   private boolean shiftPressed;
 
   private MainPanel() {
     super(new BorderLayout());
     JLabel label = makeImageLabel();
-
     MouseAdapter ml = new DragScrollListener();
     label.addMouseMotionListener(ml);
     label.addMouseListener(ml);
-
-    JScrollPane scroll = new JScrollPane(label);
-    JScrollBar verticalBar = scroll.getVerticalScrollBar();
-    JScrollBar horizontalBar = scroll.getHorizontalScrollBar();
-    JScrollBar zeroVerticalBar = new JScrollBar(Adjustable.VERTICAL) {
-      @Override public boolean isVisible() {
-        return !isShiftPressed() && super.isVisible();
-      }
-
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = 0;
-        return d;
-      }
-    };
-    JScrollBar zeroHorizontalBar = new JScrollBar(Adjustable.HORIZONTAL) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.height = 0;
-        return d;
-      }
-    };
-
     Stream.of(zeroVerticalBar, zeroHorizontalBar, verticalBar, horizontalBar)
         .forEach(sb -> sb.setUnitIncrement(25));
+
+    scroll.setViewportView(label);
+    scroll.setVerticalScrollBar(zeroVerticalBar);
+    scroll.setHorizontalScrollBar(zeroHorizontalBar);
 
     InputMap im = scroll.getInputMap(WHEN_IN_FOCUSED_WINDOW);
     // KeyStroke shiftKeyPressed = KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, false);
@@ -70,6 +71,18 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    // JScrollBar vsb = scroll.getVerticalScrollBar();
+    // vsb.setPreferredSize(new Dimension(0, vsb.getPreferredSize().height));
+    // vsb.putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
+    // JScrollBar hsb = scroll.getHorizontalScrollBar();
+    // hsb.setPreferredSize(new Dimension(hsb.getPreferredSize().width, 0));
+
+    add(makeBox(), BorderLayout.NORTH);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JPanel makeBox() {
     JRadioButton r0 = new JRadioButton("Size: 0, shift pressed: Horizontal WheelScrolling", true);
     r0.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -107,19 +120,7 @@ public final class MainPanel extends JPanel {
     b.add(r2);
     p.add(r0);
     p.add(b);
-
-    scroll.setVerticalScrollBar(zeroVerticalBar);
-    scroll.setHorizontalScrollBar(zeroHorizontalBar);
-
-    // JScrollBar vsb = scroll.getVerticalScrollBar();
-    // vsb.setPreferredSize(new Dimension(0, vsb.getPreferredSize().height));
-    // vsb.putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
-    // JScrollBar hsb = scroll.getHorizontalScrollBar();
-    // hsb.setPreferredSize(new Dimension(hsb.getPreferredSize().width, 0));
-
-    add(p, BorderLayout.NORTH);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
   private JLabel makeImageLabel() {
