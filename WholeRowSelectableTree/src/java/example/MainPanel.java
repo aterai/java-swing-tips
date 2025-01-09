@@ -67,7 +67,8 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
       "PMD.NcssCount",
       "PMD.CognitiveComplexity",
       "CyclomaticComplexity",
-      "NPathComplexity"
+      "NPathComplexity",
+      "JavaNCSS"
   })
   @Override public void paint(Graphics g, JComponent c) {
     // @see javax/swing/plaf/synth/SynthTreeUI#paint(SynthContext ctx, Graphics g)

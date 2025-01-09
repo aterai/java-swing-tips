@@ -330,6 +330,7 @@
     <module name="CyclomaticComplexity">
       <property name="switchBlockAsSingleDecisionPoint" value="true"/>
     </module>
+    <module name="JavaNCSS"/>
     <module name="NPathComplexity"/>
 
     <module name="AnnotationLocation">

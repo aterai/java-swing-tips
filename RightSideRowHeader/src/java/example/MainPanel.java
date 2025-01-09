@@ -171,7 +171,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       "PMD.CognitiveComplexity",
       "CyclomaticComplexity",
       "NPathComplexity",
-      "checkstyle:methodlength"
+      "MethodLength",
+      "JavaNCSS"
   })
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JScrollPane)) {
