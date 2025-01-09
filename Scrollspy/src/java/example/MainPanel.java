@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
@@ -49,41 +50,7 @@ public final class MainPanel extends JPanel {
     editor.setText("<html><body><h1>Scrollspy</h1><p id='main'></p><p id='bottom'>id=bottom</p>");
 
     HTMLDocument doc = (HTMLDocument) editor.getDocument();
-    Element element = doc.getElement("main");
-
-    TreeModel model = makeModel();
-    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-    // Java 9: Collections.list(root.preorderEnumeration()).stream()
-    Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .filter(node -> !node.isRoot())
-        .map(node -> Objects.toString(node.getUserObject()))
-        .forEach(ref -> {
-          String br = String.join("", Collections.nCopies(12, "<br />"));
-          String tag = "<a name='%s' href='#'>%s</a>%s";
-          try {
-            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
-          } catch (BadLocationException | IOException ex) {
-            ex.printStackTrace();
-            UIManager.getLookAndFeel().provideErrorFeedback(editor);
-          }
-        });
-
-    JTree tree = new RowSelectionTree();
-    tree.setModel(model);
-    tree.setRowHeight(32);
-    tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-    tree.addTreeSelectionListener(e -> {
-      Object o = e.getNewLeadSelectionPath().getLastPathComponent();
-      if (o instanceof DefaultMutableTreeNode && tree.isEnabled()) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
-        String ref = Objects.toString(node.getUserObject());
-        editor.scrollToReference(ref);
-      }
-    });
-    expandAllNodes(tree);
+    JTree tree = makeTocSideTree(doc);
 
     // scroll to top of page
     EventQueue.invokeLater(() -> editor.scrollRectToVisible(editor.getBounds()));
@@ -112,6 +79,44 @@ public final class MainPanel extends JPanel {
     split.setResizeWeight(.5);
     add(split);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTree makeTocSideTree(HTMLDocument doc) {
+    Element element = doc.getElement("main");
+    TreeModel model = makeModel();
+    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+    // Java 9: Collections.list(root.preorderEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .filter(node -> !node.isRoot())
+        .map(node -> Objects.toString(node.getUserObject()))
+        .forEach(ref -> {
+          String br = String.join("", Collections.nCopies(12, "<br />"));
+          String tag = "<a name='%s' href='#'>%s</a>%s";
+          try {
+            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
+          } catch (BadLocationException | IOException ex) {
+            // Logger.getGlobal().severe(ex::getMessage);
+            UIManager.getLookAndFeel().provideErrorFeedback(editor);
+          }
+        });
+
+    JTree tree = new RowSelectionTree();
+    tree.setModel(model);
+    tree.setRowHeight(32);
+    tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    tree.addTreeSelectionListener(e -> {
+      Object o = e.getNewLeadSelectionPath().getLastPathComponent();
+      if (o instanceof DefaultMutableTreeNode && tree.isEnabled()) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+        String ref = Objects.toString(node.getUserObject());
+        editor.scrollToReference(ref);
+      }
+    });
+    expandAllNodes(tree);
+    return tree;
   }
 
   private static void searchTreeNode(JTree tree, Object name) {
@@ -184,7 +189,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
