@@ -59,13 +59,27 @@ public final class MainPanel extends JPanel {
     d.put("Spinner:\"Spinner.nextButton\"[Pressed].backgroundPainter", painter4);
 
     SpinnerModel model = new SpinnerNumberModel(0, 0, 100, 5);
-    JSpinner spinner1 = new JSpinner(model);
-    // NG: spinner1.putClientProperty("Nimbus.Overrides", d);
-    JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) spinner1.getEditor();
-    editor1.getTextField().putClientProperty("Nimbus.Overrides", d);
-    configureSpinnerButtons(spinner1, d);
+    JPanel p = new JPanel(new GridLayout(0, 1, 20, 20));
+    p.setOpaque(false);
+    p.add(new JSpinner(model));
+    p.add(makeSpinner1(model, d));
+    p.add(makeSpinner2(model));
+    add(p, BorderLayout.NORTH);
+    setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JSpinner spinner2 = new JSpinner(model) {
+  private static JSpinner makeSpinner1(SpinnerModel model, UIDefaults d) {
+    JSpinner spinner = new JSpinner(model);
+    // NG: spinner.putClientProperty("Nimbus.Overrides", d);
+    JSpinner.DefaultEditor editor1 = (JSpinner.DefaultEditor) spinner.getEditor();
+    editor1.getTextField().putClientProperty("Nimbus.Overrides", d);
+    configureSpinnerButtons(spinner, d);
+    return spinner;
+  }
+
+  private JSpinner makeSpinner2(SpinnerModel model) {
+    JSpinner spinner = new JSpinner(model) {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(new Color(0x64_FF_00_00, true));
@@ -74,18 +88,10 @@ public final class MainPanel extends JPanel {
         super.paintComponent(g);
       }
     };
-    spinner2.setOpaque(false);
-    spinner2.getEditor().setOpaque(false);
-    ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setOpaque(false);
-
-    JPanel p = new JPanel(new GridLayout(0, 1, 20, 20));
-    p.setOpaque(false);
-    p.add(new JSpinner(model));
-    p.add(spinner1);
-    p.add(spinner2);
-    add(p, BorderLayout.NORTH);
-    setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
-    setPreferredSize(new Dimension(320, 240));
+    spinner.setOpaque(false);
+    spinner.getEditor().setOpaque(false);
+    ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setOpaque(false);
+    return spinner;
   }
 
   private static void configureSpinnerButtons(Container comp, UIDefaults d) {
