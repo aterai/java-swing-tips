@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -16,8 +17,19 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(2, 1));
     JTextArea textArea = new JTextArea();
     textArea.setEditable(false);
-
     TableModel model = makeModel();
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addChangeListener(e -> textArea.setText(""));
+    tabbedPane.addTab("JTable", makeTable0(model, textArea));
+    tabbedPane.addTab("SelectionModel", makeTable1(model, textArea));
+    tabbedPane.addTab("Row/Column", makeTable2(model, textArea));
+    tabbedPane.addTab("changeSelection", makeTable3(model, textArea));
+    add(tabbedPane);
+    add(new JScrollPane(textArea));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTable makeTable0(TableModel model, JTextArea textArea) {
     JTable table0 = new JTable(model);
     table0.setCellSelectionEnabled(true);
     ListSelectionListener lsl0 = new AbstractTableCellSelectionListener() {
@@ -33,7 +45,10 @@ public final class MainPanel extends JPanel {
     };
     table0.getSelectionModel().addListSelectionListener(lsl0);
     table0.getColumnModel().getSelectionModel().addListSelectionListener(lsl0);
+    return table0;
+  }
 
+  private static JTable makeTable1(TableModel model, JTextArea textArea) {
     JTable table1 = new JTable(model);
     table1.setCellSelectionEnabled(true);
     ListSelectionListener lsl1 = new AbstractTableCellSelectionListener() {
@@ -49,7 +64,10 @@ public final class MainPanel extends JPanel {
     };
     table1.getSelectionModel().addListSelectionListener(lsl1);
     table1.getColumnModel().getSelectionModel().addListSelectionListener(lsl1);
+    return table1;
+  }
 
+  private static JTable makeTable2(TableModel model, JTextArea textArea) {
     JTable table2 = new JTable(model);
     table2.setCellSelectionEnabled(true);
     table2.getSelectionModel().addListSelectionListener(e -> {
@@ -76,7 +94,10 @@ public final class MainPanel extends JPanel {
         textArea.setCaretPosition(textArea.getDocument().getLength());
       }
     });
+    return table2;
+  }
 
+  private static JTable makeTable3(TableModel model, JTextArea textArea) {
     JTable table3 = new JTable(model) {
       @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
         super.changeSelection(rowIndex, columnIndex, toggle, extend);
@@ -85,16 +106,7 @@ public final class MainPanel extends JPanel {
       }
     };
     table3.setCellSelectionEnabled(true);
-
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addChangeListener(e -> textArea.setText(""));
-    tabbedPane.addTab("JTable", table0);
-    tabbedPane.addTab("SelectionModel", table1);
-    tabbedPane.addTab("Row/Column", table2);
-    tabbedPane.addTab("changeSelection", table3);
-    add(tabbedPane);
-    add(new JScrollPane(textArea));
-    setPreferredSize(new Dimension(320, 240));
+    return table3;
   }
 
   private static TableModel makeModel() {
@@ -131,7 +143,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
