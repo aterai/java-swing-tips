@@ -178,27 +178,32 @@ final class TrayIconPopupMenuUtils {
     return configuration;
   }
 
-  // Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
-  public static Point adjustPopupLocation(JPopupMenu popup, Point pt) {
+  private static Rectangle getScreenBounds(Component c, Point pt) {
     Point p = new Point(pt);
+    Rectangle screenBounds = new Rectangle();
     if (!GraphicsEnvironment.isHeadless()) {
-      Rectangle screenBounds;
       GraphicsConfiguration gc = getGraphicsConfiguration(p);
-
       // If not found and popup have invoker, ask invoker about his gc
-      if (Objects.isNull(gc) && Objects.nonNull(popup.getInvoker())) {
-        gc = popup.getInvoker().getGraphicsConfiguration();
+      if (Objects.isNull(gc) && Objects.nonNull(c)) {
+        gc = c.getGraphicsConfiguration();
       }
-
       if (Objects.isNull(gc)) {
         // If we don't have GraphicsConfiguration use primary screen
-        screenBounds = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        screenBounds.setSize(Toolkit.getDefaultToolkit().getScreenSize());
       } else {
         // If we have GraphicsConfiguration use it to get
         // screen bounds
-        screenBounds = gc.getBounds();
+        screenBounds.setBounds(gc.getBounds());
       }
+    }
+    return screenBounds;
+  }
 
+  // Copied from JPopupMenu.java: JPopupMenu#adjustPopupLocationToFitScreen(...)
+  public static Point adjustPopupLocation(JPopupMenu popup, Point pt) {
+    Rectangle screenBounds = getScreenBounds(popup.getInvoker(), pt);
+    Point p = new Point(pt);
+    if (!screenBounds.isEmpty()) {
       Dimension size = popup.getPreferredSize();
       // Use long variables to prevent overflow
       long px = p.x;
@@ -211,7 +216,6 @@ final class TrayIconPopupMenuUtils {
       if (ph > screenBounds.y + screenBounds.height) {
         p.y -= size.height;
       }
-
       // Change is made to the desired (X, Y) values, when the
       // PopupMenu is too tall OR too wide for the screen
       p.x = Math.max(p.x, screenBounds.x);
@@ -260,15 +264,19 @@ final class LookAndFeelUtils {
 
   // public static JMenu createLookAndFeelMenu() {
   //   JMenu menu = new JMenu("LookAndFeel");
-  //   ButtonGroup lafGroup = new ButtonGroup();
-  //   for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
-  //     boolean selected = lafInfo.getClassName().equals(lookAndFeel);
-  //     AbstractButton lafItem = new JRadioButtonMenuItem(lafInfo.getName(), selected);
-  //     initLookAndFeelAction(lafInfo, lafItem);
-  //     menu.add(lafItem);
-  //     lafGroup.add(lafItem);
+  //   ButtonGroup buttonGroup = new ButtonGroup();
+  //   for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+  //     AbstractButton b = makeButton(info);
+  //     initLookAndFeelAction(info, b);
+  //     menu.add(b);
+  //     buttonGroup.add(b);
   //   }
   //   return menu;
+  // }
+
+  // private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  //   boolean selected = info.getClassName().equals(lookAndFeel);
+  //   return new JRadioButtonMenuItem(info.getName(), selected);
   // }
 
   public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
@@ -279,12 +287,12 @@ final class LookAndFeelUtils {
     b.addActionListener(e -> setLookAndFeel(cmd));
   }
 
-  private static void setLookAndFeel(String lookAndFeel) {
-    String oldLookAndFeel = LookAndFeelUtils.lookAndFeel;
-    if (!oldLookAndFeel.equals(lookAndFeel)) {
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
       try {
-        UIManager.setLookAndFeel(lookAndFeel);
-        LookAndFeelUtils.lookAndFeel = lookAndFeel;
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
@@ -292,7 +300,7 @@ final class LookAndFeelUtils {
         return;
       }
       updateLookAndFeel();
-      // firePropertyChange("lookAndFeel", oldLookAndFeel, lookAndFeel);
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
     }
   }
 
