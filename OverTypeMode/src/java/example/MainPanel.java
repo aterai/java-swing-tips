@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.TextUI;
 import javax.swing.text.BadLocationException;
@@ -17,7 +18,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    OvertypeTextArea textArea = new OvertypeTextArea();
+    OverTypeTextArea textArea = new OverTypeTextArea();
     textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
     textArea.setText("Press the INSERT key to toggle the overwrite mode.\nあああ\n1234567890");
     add(new JScrollPane(textArea));
@@ -34,7 +35,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -47,8 +48,8 @@ public final class MainPanel extends JPanel {
 }
 
 // https://community.oracle.com/thread/1385467 JTextPane edit mode (insert or overwrite)???
-class OvertypeTextArea extends JTextArea {
-  private boolean overtypeMode = true;
+class OverTypeTextArea extends JTextArea {
+  private boolean overTypeMode = true;
   private transient Caret defaultCaret;
   private transient Caret overtypeCaret;
 
@@ -57,23 +58,23 @@ class OvertypeTextArea extends JTextArea {
     EventQueue.invokeLater(() -> {
       // setCaretColor(Color.RED);
       defaultCaret = getCaret();
-      overtypeCaret = new OvertypeCaret();
+      overtypeCaret = new OverTypeCaret();
       overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
-      setOvertypeMode(overtypeMode);
+      setOverTypeMode(overTypeMode);
     });
   }
 
-  public boolean isOvertypeMode() {
-    return overtypeMode;
+  public boolean isOverTypeMode() {
+    return overTypeMode;
   }
 
   /*
-   * Set the caret to use depending on overtype/insert mode
+   * Set the caret to use depending on over-type/insert mode
    */
-  public void setOvertypeMode(boolean overtypeMode) {
-    this.overtypeMode = overtypeMode;
+  public void setOverTypeMode(boolean isOverType) {
+    this.overTypeMode = isOverType;
     int pos = getCaretPosition();
-    if (isOvertypeMode()) {
+    if (isOverTypeMode()) {
       setCaret(overtypeCaret);
     } else {
       setCaret(defaultCaret);
@@ -85,9 +86,9 @@ class OvertypeTextArea extends JTextArea {
    * Override method from JComponent
    */
   @Override public void replaceSelection(String text) {
-    // Implement overtype mode by selecting the character at the current
+    // Implement over-type mode by selecting the character at the current
     // caret position
-    if (isOvertypeMode()) {
+    if (isOverTypeMode()) {
       int pos = getCaretPosition();
       if (getSelectionStart() == getSelectionEnd() && pos < getDocument().getLength()) {
         moveCaretPosition(pos + 1);
@@ -101,11 +102,11 @@ class OvertypeTextArea extends JTextArea {
    */
   @Override protected void processKeyEvent(KeyEvent e) {
     super.processKeyEvent(e);
-    // Handle release of Insert key to toggle overtype/insert mode
+    // Handle release of Insert key to toggle over-type/insert mode
     if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_INSERT) {
       setCaretPosition(getCaretPosition()); // add
       moveCaretPosition(getCaretPosition()); // add
-      setOvertypeMode(!isOvertypeMode());
+      setOverTypeMode(!isOverTypeMode());
       e.getComponent().repaint(); // add
     }
   }
@@ -113,9 +114,9 @@ class OvertypeTextArea extends JTextArea {
   /*
    * Paint a horizontal line the width of a column and 1 pixel high
    */
-  private final class OvertypeCaret extends DefaultCaret {
+  private final class OverTypeCaret extends DefaultCaret {
     /*
-     * The overtype caret will simply be a horizontal line one pixel high
+     * The over-type caret will simply be a horizontal line one pixel high
      * (once we determine where to paint it)
      */
     @Override public void paint(Graphics g) {
@@ -129,7 +130,7 @@ class OvertypeTextArea extends JTextArea {
           g.setColor(component.getCaretColor());
           int width = g.getFontMetrics().charWidth('w');
           // A patch for full width characters >>>>
-          if (isOvertypeMode()) {
+          if (isOverTypeMode()) {
             int pos = getCaretPosition();
             if (pos < getDocument().getLength()) {
               if (getSelectionStart() == getSelectionEnd()) {

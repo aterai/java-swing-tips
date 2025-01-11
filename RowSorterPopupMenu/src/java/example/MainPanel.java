@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -83,7 +84,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -114,7 +115,7 @@ final class TableHeaderPopupMenu extends JPopupMenu {
       table.repaint();
       int i = table.convertColumnIndexToModel(header.columnAtPoint(new Point(x, y)));
       if (i >= 0) {
-        actions.forEach(a -> a.setIndex(i));
+        actions.forEach(a -> a.setSortingIndex(i));
         super.show(c, x, y);
       }
     }
@@ -122,20 +123,20 @@ final class TableHeaderPopupMenu extends JPopupMenu {
 
   private class SortAction extends AbstractAction {
     private final SortOrder dir;
-    private int index = -1;
+    private int sortingIndex = -1;
 
     protected SortAction(SortOrder dir) {
       super(dir.toString());
       this.dir = dir;
     }
 
-    public void setIndex(int index) {
-      this.index = index;
+    public void setSortingIndex(int index) {
+      sortingIndex = index;
     }
 
     @Override public void actionPerformed(ActionEvent e) {
       JTableHeader h = (JTableHeader) getInvoker();
-      RowSorter.SortKey sortKey = new RowSorter.SortKey(index, dir);
+      RowSorter.SortKey sortKey = new RowSorter.SortKey(sortingIndex, dir);
       h.getTable().getRowSorter().setSortKeys(Collections.singletonList(sortKey));
     }
   }

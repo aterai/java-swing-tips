@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -64,7 +65,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -96,24 +97,24 @@ class ComboItem implements Serializable {
     return enabled;
   }
 
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
+  public void setEnabled(boolean isEnabled) {
+    enabled = isEnabled;
   }
 
   public boolean isEditable() {
     return editable;
   }
 
-  public void setEditable(boolean editable) {
-    this.editable = editable;
+  public void setEditable(boolean isEditable) {
+    editable = isEditable;
   }
 
   public String getText() {
     return text;
   }
 
-  public void setText(String text) {
-    this.text = text;
+  public void setText(String newText) {
+    this.text = newText;
   }
 
   @Override public int hashCode() {

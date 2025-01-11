@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -122,8 +123,8 @@ public final class MainPanel extends JPanel {
     return file;
   }
 
-  public void setFile(File file) {
-    this.file = file;
+  public void setFile(File newFile) {
+    file = newFile;
     label.setIcon(i2);
     label.setText("tmpFile#exists(): true(draggable)");
   }
@@ -160,7 +161,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

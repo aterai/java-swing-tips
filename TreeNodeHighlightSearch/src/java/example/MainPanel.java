@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -95,7 +96,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -120,8 +121,8 @@ class HighlightTreeCellRenderer extends DefaultTreeCellRenderer {
     super.updateUI();
   }
 
-  public void setQuery(String query) {
-    this.query = query;
+  public void setQuery(String newQuery) {
+    this.query = newQuery;
   }
 
   @Override public Color getBackgroundNonSelectionColor() {
