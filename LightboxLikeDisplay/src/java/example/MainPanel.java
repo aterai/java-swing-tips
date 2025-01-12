@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -80,7 +81,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -216,8 +217,8 @@ class AnimeIcon implements Icon {
     }
   }
 
-  public void setRunning(boolean running) {
-    this.running = running;
+  public void setRunning(boolean isRunning) {
+    running = isRunning;
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {

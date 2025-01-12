@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel {
         msg = "Interrupted";
         Thread.currentThread().interrupt();
       } catch (ExecutionException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         msg = "Error: " + ex.getMessage();
       }
       appendText("\n" + msg + "\n");
@@ -119,7 +120,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -249,8 +250,8 @@ class LoadingIcon implements Icon {
     }
   }
 
-  public void setRunning(boolean running) {
-    this.running = running;
+  public void setRunning(boolean isRunning) {
+    running = isRunning;
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
