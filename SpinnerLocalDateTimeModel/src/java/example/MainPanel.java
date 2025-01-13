@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -113,7 +114,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -148,12 +149,12 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     this.temporalUnit = temporalUnit;
   }
 
-  public void setStart(Comparable<ChronoLocalDateTime<?>> start) {
-    boolean b = Optional.ofNullable(start)
-        .map(s -> !Objects.equals(s, this.start))
-        .orElse(Objects.nonNull(this.start));
+  public void setStart(Comparable<ChronoLocalDateTime<?>> startDate) {
+    boolean b = Optional.ofNullable(startDate)
+        .map(s -> !Objects.equals(s, start))
+        .orElse(Objects.nonNull(start));
     if (b) {
-      this.start = start;
+      start = startDate;
       fireStateChanged();
     }
   }
@@ -162,9 +163,12 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     return start;
   }
 
-  public void setEnd(Comparable<ChronoLocalDateTime<?>> end) {
-    if (Objects.isNull(end) ? Objects.nonNull(this.end) : !Objects.equals(end, this.end)) {
-      this.end = end;
+  public void setEnd(Comparable<ChronoLocalDateTime<?>> endDate) {
+    boolean b = Optional.ofNullable(endDate)
+        .map(e -> !Objects.equals(e, end))
+        .orElse(Objects.nonNull(end));
+    if (b) {
+      end = endDate;
       fireStateChanged();
     }
   }
@@ -173,9 +177,9 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     return end;
   }
 
-  public void setTemporalUnit(TemporalUnit temporalUnit) {
-    if (Objects.equals(temporalUnit, this.temporalUnit)) {
-      this.temporalUnit = temporalUnit;
+  public void setTemporalUnit(TemporalUnit unit) {
+    if (Objects.equals(unit, temporalUnit)) {
+      temporalUnit = unit;
       fireStateChanged();
     }
   }
@@ -210,12 +214,12 @@ class SpinnerLocalDateTimeModel extends AbstractSpinnerModel {
     return getLocalDateTime();
   }
 
-  @Override public void setValue(Object value) {
-    if (!(value instanceof ChronoLocalDateTime<?>)) {
-      throw new IllegalArgumentException("illegal value");
+  @Override public void setValue(Object o) {
+    if (!(o instanceof ChronoLocalDateTime<?>)) {
+      throw new IllegalArgumentException("illegal o");
     }
-    if (!value.equals(this.value)) {
-      this.value = (ChronoLocalDateTime<?>) value;
+    if (!o.equals(value)) {
+      value = (ChronoLocalDateTime<?>) o;
       fireStateChanged();
     }
   }
@@ -247,7 +251,6 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
         ftf.setColumns(Math.max(maxString.length(), minString.length()));
       } catch (ParseException ex) {
         // PENDING: hmuller
-        ex.printStackTrace();
         UIManager.getLookAndFeel().provideErrorFeedback(ftf);
       }
       ftf.setHorizontalAlignment(SwingConstants.LEFT);

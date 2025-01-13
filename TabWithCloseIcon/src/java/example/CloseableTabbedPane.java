@@ -69,7 +69,7 @@ public final class CloseableTabbedPane extends JTabbedPane {
   //  * @param horizTextPosition  the horizontal position of the text (e.g.
   //  * SwingConstants.TRAILING or SwingConstants.LEFT)
   //  */
-  // public CloseableTabbedPane(int horizTextPosition) {
+  // public CloseableTabbedPane(int horizTxtPos) {
   //   super();
   //   init(horizTextPosition);
   // }
@@ -474,8 +474,8 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
     textRect.y += ynudge;
   }
 
-  public void setHorizTextPosition(int horizTextPosition) {
-    this.horizTextPosition = horizTextPosition;
+  public void setHorizTextPosition(int horizTxtPos) {
+    horizTextPosition = horizTxtPos;
   }
 }
 
@@ -552,7 +552,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     textRect.y += ynudge;
   }
 
-  public void setHorizTextPosition(int horizTextPosition) {
-    this.horizTextPosition = horizTextPosition;
+  public void setHorizTextPosition(int horizTxtPos) {
+    horizTextPosition = horizTxtPos;
   }
 }

@@ -29,8 +29,8 @@ public final class WindowState implements Serializable {
     return size;
   }
 
-  public void setSize(Dimension size) {
-    this.size.setSize(Math.max(MIN.width, size.width), Math.max(MIN.height, size.height));
+  public void setSize(Dimension sz) {
+    size.setSize(Math.max(MIN.width, sz.width), Math.max(MIN.height, sz.height));
   }
 
   @Override public int hashCode() {
