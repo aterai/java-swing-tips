@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -48,20 +49,20 @@ public final class MainPanel extends JPanel {
     c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
 
-    CheckableItem[] m = {
-        new CheckableItem("aaa", false),
-        new CheckableItem("bbb bbb", true),
-        new CheckableItem("111", false),
-        new CheckableItem("33333", true),
-        new CheckableItem("2222", true),
-        new CheckableItem("ccc ccc", false)
+    CheckItem[] m = {
+        new CheckItem("aaa", false),
+        new CheckItem("bbb bbb", true),
+        new CheckItem("111", false),
+        new CheckItem("33333", true),
+        new CheckItem("2222", true),
+        new CheckItem("ccc ccc", false)
     };
 
-    JComboBox<CheckableItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
-    JComboBox<CheckableItem> combo1 = new CheckedComboBox1<>(new DefaultComboBoxModel<>(m));
-    JComboBox<CheckableItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
-    JComboBox<CheckableItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
-    JComboBox<CheckableItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
+    JComboBox<CheckItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));
+    JComboBox<CheckItem> combo1 = new CheckedComboBox1<>(new DefaultComboBoxModel<>(m));
+    JComboBox<CheckItem> combo2 = new CheckedComboBox2<>(new DefaultComboBoxModel<>(m));
+    JComboBox<CheckItem> combo3 = new CheckedComboBox3<>(new DefaultComboBoxModel<>(m));
+    JComboBox<CheckItem> combo4 = new CheckedComboBox4<>(new CheckableComboBoxModel<>(m));
     Stream.of(combo0, combo1, combo2, combo3, combo4).forEach(cmp -> {
       // cmp.setPrototypeDisplayValue(displayValue);
       p.add(cmp, c);
@@ -82,7 +83,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -94,11 +95,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class CheckableItem {
+class CheckItem {
   private final String text;
   private boolean selected;
 
-  protected CheckableItem(String text, boolean selected) {
+  protected CheckItem(String text, boolean selected) {
     this.text = text;
     this.selected = selected;
   }
@@ -107,8 +108,8 @@ class CheckableItem {
     return selected;
   }
 
-  public void setSelected(boolean selected) {
-    this.selected = selected;
+  public void setSelected(boolean isSelected) {
+    selected = isSelected;
   }
 
   @Override public String toString() {
@@ -116,7 +117,7 @@ class CheckableItem {
   }
 }
 
-class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<E> {
+class CheckBoxCellRenderer<E extends CheckItem> implements ListCellRenderer<E> {
   private final JLabel label = new JLabel(" ");
   private final JCheckBox check = new JCheckBox(" ");
 
@@ -141,17 +142,17 @@ class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<
     return c;
   }
 
-  private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
+  private static <E extends CheckItem> String getCheckedItemString(ListModel<E> model) {
     return IntStream.range(0, model.getSize())
         .mapToObj(model::getElementAt)
-        .filter(CheckableItem::isSelected)
+        .filter(CheckItem::isSelected)
         .map(Objects::toString)
         .sorted()
         .collect(Collectors.joining(", "));
   }
 }
 
-class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
+class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
   private boolean keepOpen;
   private transient ActionListener listener;
 
@@ -219,28 +220,28 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
   }
 }
 
-class CheckedComboBox1<E extends CheckableItem> extends CheckedComboBox<E> {
+class CheckedComboBox1<E extends CheckItem> extends CheckedComboBox<E> {
   protected CheckedComboBox1(ComboBoxModel<E> model) {
     super(model);
   }
 
   @Override protected void updateItem(int index) {
     if (isPopupVisible()) {
-      CheckableItem item = getItemAt(index);
+      CheckItem item = getItemAt(index);
       item.setSelected(!item.isSelected());
       contentsChanged(new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, index, index));
     }
   }
 }
 
-class CheckedComboBox2<E extends CheckableItem> extends CheckedComboBox<E> {
+class CheckedComboBox2<E extends CheckItem> extends CheckedComboBox<E> {
   protected CheckedComboBox2(ComboBoxModel<E> model) {
     super(model);
   }
 
   @Override protected void updateItem(int index) {
     if (isPopupVisible()) {
-      CheckableItem item = getItemAt(index);
+      CheckItem item = getItemAt(index);
       item.setSelected(!item.isSelected());
       repaint();
       Accessible a = getAccessibleContext().getAccessibleChild(0);
@@ -251,7 +252,7 @@ class CheckedComboBox2<E extends CheckableItem> extends CheckedComboBox<E> {
   }
 }
 
-class CheckedComboBox3<E extends CheckableItem> extends CheckedComboBox<E> {
+class CheckedComboBox3<E extends CheckItem> extends CheckedComboBox<E> {
   protected CheckedComboBox3(ComboBoxModel<E> model) {
     super(model);
   }
@@ -282,14 +283,14 @@ class CheckableComboBoxModel<E> extends DefaultComboBoxModel<E> {
   }
 }
 
-class CheckedComboBox4<E extends CheckableItem> extends CheckedComboBox<E> {
+class CheckedComboBox4<E extends CheckItem> extends CheckedComboBox<E> {
   protected CheckedComboBox4(ComboBoxModel<E> model) {
     super(model);
   }
 
   @Override protected void updateItem(int index) {
     if (isPopupVisible()) {
-      CheckableItem item = getItemAt(index);
+      CheckItem item = getItemAt(index);
       item.setSelected(!item.isSelected());
       ComboBoxModel<E> m = getModel();
       if (m instanceof CheckableComboBoxModel) {

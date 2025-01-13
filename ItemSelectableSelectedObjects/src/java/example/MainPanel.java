@@ -143,8 +143,8 @@ class CheckItem {
     return selected;
   }
 
-  public void setSelected(boolean selected) {
-    this.selected = selected;
+  public void setSelected(boolean isSelected) {
+    selected = isSelected;
   }
 
   @Override public String toString() {

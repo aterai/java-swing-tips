@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.accessibility.Accessible;
@@ -27,7 +28,7 @@ public final class MainPanel extends JPanel {
     p.add(Box.createVerticalStrut(20));
     p.add(new JLabel("CheckedComboBox:"));
     p.add(new CheckedComboBox<>(makeModel()));
-    // p.add(new CheckedComboBox<>(new CheckableComboBoxModel<>(m)));
+    // p.add(new CheckedComboBox<>(new CheckedComboBoxModel<>(m)));
     p.add(Box.createVerticalStrut(20));
     p.add(new JLabel("CheckedComboBox(Windows):"));
     p.add(new WindowsCheckedComboBox<>(makeModel()));
@@ -35,14 +36,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ComboBoxModel<CheckableItem> makeModel() {
-    CheckableItem[] m = {
-        new CheckableItem("aaa", false),
-        new CheckableItem("bb", true),
-        new CheckableItem("111", false),
-        new CheckableItem("33333", true),
-        new CheckableItem("2222", true),
-        new CheckableItem("c", false)
+  private static ComboBoxModel<CheckItem> makeModel() {
+    CheckItem[] m = {
+        new CheckItem("aaa", false),
+        new CheckItem("bb", true),
+        new CheckItem("111", false),
+        new CheckItem("33333", true),
+        new CheckItem("2222", true),
+        new CheckItem("c", false)
     };
     return new DefaultComboBoxModel<>(m);
   }
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -69,8 +70,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// class CheckableComboBoxModel<E> extends DefaultComboBoxModel<E> {
-//   protected CheckableComboBoxModel(E[] items) {
+// class CheckedComboBoxModel<E> extends DefaultComboBoxModel<E> {
+//   protected CheckedComboBoxModel(E[] items) {
 //     super(items);
 //   }
 //
@@ -79,11 +80,11 @@ public final class MainPanel extends JPanel {
 //   }
 // }
 
-class CheckableItem {
+class CheckItem {
   private final String text;
   private boolean selected;
 
-  protected CheckableItem(String text, boolean selected) {
+  protected CheckItem(String text, boolean selected) {
     this.text = text;
     this.selected = selected;
   }
@@ -92,8 +93,8 @@ class CheckableItem {
     return selected;
   }
 
-  public void setSelected(boolean selected) {
-    this.selected = selected;
+  public void setSelected(boolean isSelected) {
+    selected = isSelected;
   }
 
   @Override public String toString() {
@@ -101,13 +102,13 @@ class CheckableItem {
   }
 }
 
-// class CheckBoxCellRenderer<E extends CheckableItem> implements ListCellRenderer<E> {
+// class CheckBoxCellRenderer<E extends CheckItem> implements ListCellRenderer<E> {
 //   private final JLabel label = new JLabel(" ");
 //   private final JCheckBox check = new JCheckBox(" ");
 //
 //   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
 //     if (index < 0) {
-//       String txt = getCheckedItemString(list.getModel());
+//       String txt = getCheckItemString(list.getModel());
 //       label.setText(txt.isEmpty() ? " " : txt);
 //       return label;
 //     } else {
@@ -124,16 +125,16 @@ class CheckableItem {
 //     }
 //   }
 //
-//   private static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
+//   private static <E extends CheckItem> String getCheckItemString(ListModel<E> model) {
 //     return IntStream.range(0, model.getSize())
 //         .mapToObj(model::getElementAt)
-//         .filter(CheckableItem::isSelected)
+//         .filter(CheckItem::isSelected)
 //         .map(Objects::toString)
 //         .sorted()
 //         .collect(Collectors.joining(", "));
 //     // List<String> sl = new ArrayList<>();
 //     // for (int i = 0; i < model.getSize(); i++) {
-//     //   CheckableItem v = model.getElementAt(i);
+//     //   CheckItem v = model.getElementAt(i);
 //     //   if (v.isSelected()) {
 //     //     sl.add(v.toString());
 //     //   }
@@ -148,7 +149,7 @@ class CheckableItem {
 //   }
 // }
 
-class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
+class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
   protected boolean keepOpen;
   private final JPanel panel = new JPanel(new BorderLayout());
 
@@ -193,7 +194,7 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
       Component c = renderer.getListCellRendererComponent(
           list, value, index, isSelected, cellHasFocus);
       if (index < 0) {
-        String txt = getCheckedItemString(list.getModel());
+        String txt = getCheckItemString(list.getModel());
         JLabel l = (JLabel) c;
         l.setText(txt.isEmpty() ? " " : txt);
         l.setOpaque(false);
@@ -230,8 +231,8 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
       item.setSelected(!item.isSelected());
       // item.selected ^= true;
       // ComboBoxModel m = getModel();
-      // if (m instanceof CheckableComboBoxModel) {
-      //   ((CheckableComboBoxModel) m).fireContentsChanged(index);
+      // if (m instanceof CheckedComboBoxModel) {
+      //   ((CheckedComboBoxModel) m).fireContentsChanged(index);
       // }
       // removeItemAt(index);
       // insertItemAt(item, index);
@@ -248,17 +249,17 @@ class CheckedComboBox<E extends CheckableItem> extends JComboBox<E> {
     }
   }
 
-  protected static <E extends CheckableItem> String getCheckedItemString(ListModel<E> model) {
+  protected static <E extends CheckItem> String getCheckItemString(ListModel<E> model) {
     return IntStream.range(0, model.getSize())
         .mapToObj(model::getElementAt)
-        .filter(CheckableItem::isSelected)
+        .filter(CheckItem::isSelected)
         .map(Objects::toString)
         .sorted()
         .collect(Collectors.joining(", "));
   }
 }
 
-class WindowsCheckedComboBox<E extends CheckableItem> extends CheckedComboBox<E> {
+class WindowsCheckedComboBox<E extends CheckItem> extends CheckedComboBox<E> {
   private transient ActionListener listener;
 
   protected WindowsCheckedComboBox(ComboBoxModel<E> model) {
@@ -281,7 +282,7 @@ class WindowsCheckedComboBox<E extends CheckableItem> extends CheckedComboBox<E>
     JCheckBox check = new JCheckBox(" ");
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       if (index < 0) {
-        String txt = getCheckedItemString(list.getModel());
+        String txt = getCheckItemString(list.getModel());
         label.setText(txt.isEmpty() ? " " : txt);
         return label;
       } else {
