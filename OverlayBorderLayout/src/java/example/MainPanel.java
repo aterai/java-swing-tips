@@ -128,11 +128,11 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
 
   protected LayoutAnimator(JComponent c) {
     super();
-    this.component = c;
+    component = c;
   }
 
-  public void setShowing(boolean showing) {
-    this.showing = showing;
+  public void setShowing(boolean b) {
+    showing = b;
   }
 
   @Override public void actionPerformed(ActionEvent e) {
