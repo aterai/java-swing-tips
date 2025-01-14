@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,50 +20,18 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Icon icon = Optional.ofNullable(cl.getResource(path)).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
-      } catch (IOException ex) {
-        return new MissingIcon();
-      }
-    }).orElseGet(MissingIcon::new);
-    JLabel label = new JLabel(icon);
-
     // // JDK 1.6.0
-    // JScrollPane scroll = new JScrollPane(label);
-    // JViewport vport = scroll.getViewport();
-
+    // JScrollPane scroll = new JScrollPane(new JLabel(makeIcon()));
     // JDK 1.7.0 or later
-    AtomicBoolean isAdjusting = new AtomicBoolean();
-    JViewport vport = new JViewport() {
-      private static final boolean WEIGHT_MIXING = false;
-      // private boolean isAdjusting;
-      @Override public void revalidate() {
-        if (!WEIGHT_MIXING && isAdjusting.get()) {
-          return;
-        }
-        super.revalidate();
-      }
-
-      @Override public void setViewPosition(Point p) {
-        if (WEIGHT_MIXING) {
-          super.setViewPosition(p);
-        } else {
-          isAdjusting.set(true);
-          super.setViewPosition(p);
-          isAdjusting.set(false);
-        }
+    JScrollPane scroll = new JScrollPane(new JLabel(makeIcon())) {
+      @Override protected JViewport createViewport() {
+        return makeViewport();
       }
     };
-    vport.add(label);
-    JScrollPane scroll = new JScrollPane();
-    scroll.setViewport(vport);
-
     HandScrollListener hsl1 = new HandScrollListener();
-    vport.addMouseMotionListener(hsl1);
-    vport.addMouseListener(hsl1);
+    JViewport viewport = scroll.getViewport();
+    viewport.addMouseMotionListener(hsl1);
+    viewport.addMouseListener(hsl1);
 
     JRadioButton radio = new JRadioButton("scrollRectToVisible", true);
     radio.addItemListener(e -> hsl1.setWithinRangeMode(e.getStateChange() == ItemEvent.SELECTED));
@@ -83,6 +52,43 @@ public final class MainPanel extends JPanel {
     scroll.setPreferredSize(new Dimension(320, 240));
   }
 
+  private JViewport makeViewport() {
+    AtomicBoolean isAdjusting = new AtomicBoolean();
+    return new JViewport() {
+      private static final boolean WEIGHT_MIXING = false;
+      // private boolean isAdjusting;
+
+      @Override public void revalidate() {
+        if (!WEIGHT_MIXING && isAdjusting.get()) {
+          return;
+        }
+        super.revalidate();
+      }
+
+      @Override public void setViewPosition(Point p) {
+        if (WEIGHT_MIXING) {
+          super.setViewPosition(p);
+        } else {
+          isAdjusting.set(true);
+          super.setViewPosition(p);
+          isAdjusting.set(false);
+        }
+      }
+    };
+  }
+
+  private static Icon makeIcon() {
+    String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return new ImageIcon(ImageIO.read(s));
+      } catch (IOException ex) {
+        return new MissingIcon();
+      }
+    }).orElseGet(MissingIcon::new);
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -93,7 +99,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -135,8 +141,8 @@ class HandScrollListener extends MouseAdapter {
     e.getComponent().setCursor(defCursor);
   }
 
-  public void setWithinRangeMode(boolean withinRangeMode) {
-    this.withinRangeMode = withinRangeMode;
+  public void setWithinRangeMode(boolean b) {
+    withinRangeMode = b;
   }
 }
 
