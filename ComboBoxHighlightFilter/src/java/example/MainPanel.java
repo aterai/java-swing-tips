@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static Component makeHelpPanel() {
+  private static JPanel makeHelpPanel() {
     JPanel lp = new JPanel(new GridLayout(2, 1, 2, 2));
     lp.add(new JLabel("Char: show Popup"));
     lp.add(new JLabel("ESC: hide Popup"));

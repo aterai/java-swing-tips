@@ -18,11 +18,11 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     return button;
   }
 
-  private static Component makeListPanel() {
+  private static JPanel makeListPanel() {
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("1111");
     model.addElement("22222222");
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static TableModel makeModel() {
+  private static DefaultTableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
@@ -93,10 +93,9 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static Component makeTablePanel() {
+  private static JPanel makeTablePanel() {
     TransferHandler handler = new TableRowTransferHandler();
-    TableModel model = makeModel();
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setTransferHandler(handler);
     table.setDropMode(DropMode.INSERT_ROWS);
@@ -115,7 +114,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Component makeTreePanel() {
+  private static JPanel makeTreePanel() {
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     tree.setDragEnabled(true);
@@ -154,7 +153,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -218,9 +217,8 @@ class ListItemTransferHandler extends TransferHandler {
     } else { // Keyboard Copy & Paste
       index = target.getSelectedIndex();
     }
-    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
     // boolean insert = dl.isInsert();
-    int max = model.getSize();
+    int max = target.getModel().getSize();
     // int index = dl.getIndex();
     index = index < 0 ? max : index; // If it is out of range, it is appended to the end
     index = Math.min(index, max);

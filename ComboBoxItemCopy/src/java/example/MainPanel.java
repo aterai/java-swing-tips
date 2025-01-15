@@ -7,11 +7,11 @@ package example;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
@@ -28,19 +28,17 @@ public final class MainPanel extends JPanel {
         JComboBox<?> combo = (JComboBox<?>) e.getSource();
         Optional.ofNullable(combo.getSelectedItem()).ifPresent(text -> {
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-          Transferable contents = new StringSelection(Objects.toString(text));
-          clipboard.setContents(contents, null);
+          String data = Objects.toString(text);
+          clipboard.setContents(new StringSelection(data), null);
         });
       }
     };
-    ActionMap am = combo1.getActionMap();
-    am.put(COPY_KEY, copy);
+    combo1.getActionMap().put(COPY_KEY, copy);
     // int modifiers = InputEvent.CTRL_DOWN_MASK;
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
-    InputMap im = combo1.getInputMap(WHEN_FOCUSED);
-    im.put(keyStroke, COPY_KEY);
+    combo1.getInputMap(WHEN_FOCUSED).put(keyStroke, COPY_KEY);
     JPopupMenu popup = new JPopupMenu();
     popup.add(COPY_KEY).addActionListener(e -> {
       Class<?> clz = JComboBox.class;
@@ -108,7 +106,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

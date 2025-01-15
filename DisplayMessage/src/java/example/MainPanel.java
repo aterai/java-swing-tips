@@ -11,12 +11,46 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    String path = "example/16x16.png";
+    Image img = ImageUtils.getImage(path);
+    TrayIcon icon = new TrayIcon(img, "TRAY", makePopupMenu());
+    // icon.addActionListener(e -> log.append(e.toString() + "\n"));
+    try {
+      SystemTray.getSystemTray().add(icon);
+    } catch (AWTException ex) {
+      throw new IllegalStateException(ex);
+    }
+    add(makeTestPanel(), BorderLayout.NORTH);
+    add(new JScrollPane(new JTextArea()));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeTestPanel() {
+    // ERROR, WARNING, INFO, NONE
+    TrayIcon.MessageType[] values = TrayIcon.MessageType.values();
+    JComboBox<TrayIcon.MessageType> msgType = new JComboBox<>(values);
+    JButton msgButton = new JButton("TrayIcon#displayMessage()");
+    msgButton.addActionListener(e -> {
+      TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
+      if (icons.length > 0) {
+        TrayIcon.MessageType type = msgType.getItemAt(msgType.getSelectedIndex());
+        icons[0].displayMessage("caption", "text text", type);
+      }
+    });
+    JPanel p = new JPanel();
+    p.add(msgType);
+    p.add(msgButton);
+    return p;
+  }
+
+  private PopupMenu makePopupMenu() {
     MenuItem openItem = new MenuItem("OPEN");
     openItem.addActionListener(e -> {
       Container c = getTopLevelAncestor();
@@ -24,7 +58,6 @@ public final class MainPanel extends JPanel {
         c.setVisible(true);
       }
     });
-
     MenuItem exitItem = new MenuItem("EXIT");
     exitItem.addActionListener(e -> {
       Container c = getTopLevelAncestor();
@@ -36,56 +69,10 @@ public final class MainPanel extends JPanel {
         tray.remove(icon);
       }
     });
-
     PopupMenu popup = new PopupMenu();
     popup.add(openItem);
     popup.add(exitItem);
-
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource("example/16x16.png")).map(url -> {
-      try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeDefaultTrayImage();
-      }
-    }).orElseGet(MainPanel::makeDefaultTrayImage);
-    TrayIcon icon = new TrayIcon(img, "TRAY", popup);
-    // icon.addActionListener(e -> log.append(e.toString() + "\n"));
-    try {
-      SystemTray.getSystemTray().add(icon);
-    } catch (AWTException ex) {
-      throw new IllegalStateException(ex);
-    }
-
-    // ERROR, WARNING, INFO, NONE
-    JComboBox<TrayIcon.MessageType> messageType = new JComboBox<>(TrayIcon.MessageType.values());
-
-    JButton messageButton = new JButton("TrayIcon#displayMessage()");
-    messageButton.addActionListener(e -> {
-      TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
-      if (icons.length > 0) {
-        TrayIcon.MessageType type = messageType.getItemAt(messageType.getSelectedIndex());
-        icons[0].displayMessage("caption", "text text", type);
-      }
-    });
-    JPanel p = new JPanel();
-    p.add(messageType);
-    p.add(messageButton);
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(new JTextArea()));
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static Image makeDefaultTrayImage() {
-    Icon icon = UIManager.getIcon("InternalFrame.icon");
-    int w = icon.getIconWidth();
-    int h = icon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    icon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
+    return popup;
   }
 
   public static void main(String[] args) {
@@ -98,7 +85,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -117,5 +104,33 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static Image getImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeDefaultTrayImage();
+      }
+    }).orElseGet(ImageUtils::makeDefaultTrayImage);
+  }
+
+  public static Image makeDefaultTrayImage() {
+    Icon icon = UIManager.getIcon("InternalFrame.icon");
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    icon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 }
