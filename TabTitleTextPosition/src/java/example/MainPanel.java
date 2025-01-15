@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.synth.Region;
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -156,7 +157,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = (i == getTabCount() - 1) ? rest : 1;
+        int a = i == getTabCount() - 1 ? rest : 1;
         int w = rest > 0 ? tabWidth + a : tabWidth;
         dim.setSize(w, tab.getPreferredSize().height);
         tab.setPreferredSize(dim);

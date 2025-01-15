@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.synth.Region;
 import javax.swing.plaf.synth.SynthConstants;
@@ -90,7 +91,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -176,7 +177,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = (i == getTabCount() - 1) ? rest : 1;
+        int a = i == getTabCount() - 1 ? rest : 1;
         int w = rest > 0 ? tabSize + a : tabSize;
         if (isSide) {
           dim.setSize(tab.getPreferredSize().width, w);

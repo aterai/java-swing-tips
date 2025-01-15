@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.synth.Region;
@@ -19,7 +20,7 @@ import javax.swing.plaf.synth.SynthStyle;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane(SwingConstants.LEFT);
+    ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane();
     tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabs.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
     tabs.addTab("2", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(5, 3)));
@@ -40,7 +41,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -57,13 +58,13 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   private static final int MIN_WIDTH = 24;
   private int tabAreaWidth = 32;
 
-  // protected ClippedTitleTabbedPane() {
-  //   super();
-  // }
-
-  protected ClippedTitleTabbedPane(int tabPlacement) {
-    super(tabPlacement);
+  protected ClippedTitleTabbedPane() {
+    super(SwingConstants.LEFT);
   }
+
+  // protected ClippedTitleTabbedPane(int tabPlacement) {
+  //   super(tabPlacement);
+  // }
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
@@ -134,7 +135,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = (i == getTabCount() - 1) ? rest : 1;
+        int a = i == getTabCount() - 1 ? rest : 1;
         int w = rest > 0 ? tabWidth + a : tabWidth;
         dim.setSize(w, tab.getPreferredSize().height);
         tab.setPreferredSize(dim);

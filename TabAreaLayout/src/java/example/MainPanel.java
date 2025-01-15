@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.LayerUI;
@@ -158,7 +159,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -588,11 +589,11 @@ class HorizontalScrollLayerUI extends LayerUI<JScrollPane> {
   @Override protected void processMouseWheelEvent(MouseWheelEvent e, JLayer<? extends JScrollPane> l) {
     JScrollPane scroll = l.getView();
     JScrollBar hsb = scroll.getHorizontalScrollBar();
-    JViewport vport = scroll.getViewport();
-    Point vp = vport.getViewPosition();
+    JViewport viewport = scroll.getViewport();
+    Point vp = viewport.getViewPosition();
     vp.translate(hsb.getBlockIncrement() * e.getWheelRotation(), 0);
-    JComponent v = (JComponent) SwingUtilities.getUnwrappedView(vport);
-    v.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+    JComponent v = (JComponent) SwingUtilities.getUnwrappedView(viewport);
+    v.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
   }
 }
 
@@ -664,7 +665,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = (i == getTabCount() - 1) ? rest : 1;
+        int a = i == getTabCount() - 1 ? rest : 1;
         int w = rest > 0 ? tabWidth + a : tabWidth;
         dim.setSize(w, tab.getPreferredSize().height);
         tab.setPreferredSize(dim);
