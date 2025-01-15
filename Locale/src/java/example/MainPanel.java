@@ -6,31 +6,32 @@ package example;
 
 import java.awt.*;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final Locale[] LOCALE_ARRAY = {
-    Locale.ENGLISH,
-    Locale.FRENCH,
-    Locale.GERMAN,
-    Locale.ITALIAN,
-    Locale.JAPANESE,
-    Locale.KOREAN,
-    Locale.CHINESE,
-    Locale.SIMPLIFIED_CHINESE,
-    Locale.TRADITIONAL_CHINESE,
-    Locale.FRANCE,
-    Locale.GERMANY,
-    Locale.ITALY,
-    Locale.JAPAN,
-    Locale.KOREA,
-    Locale.CHINA,
-    Locale.PRC,
-    Locale.TAIWAN,
-    Locale.UK,
-    Locale.US,
-    Locale.CANADA,
-    Locale.CANADA_FRENCH,
+      Locale.ENGLISH,
+      Locale.FRENCH,
+      Locale.GERMAN,
+      Locale.ITALIAN,
+      Locale.JAPANESE,
+      Locale.KOREAN,
+      Locale.CHINESE,
+      Locale.SIMPLIFIED_CHINESE,
+      Locale.TRADITIONAL_CHINESE,
+      Locale.FRANCE,
+      Locale.GERMANY,
+      Locale.ITALY,
+      Locale.JAPAN,
+      Locale.KOREA,
+      Locale.CHINA,
+      Locale.PRC,
+      Locale.TAIWAN,
+      Locale.UK,
+      Locale.US,
+      Locale.CANADA,
+      Locale.CANADA_FRENCH,
   };
 
   private MainPanel() {
@@ -84,7 +85,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
