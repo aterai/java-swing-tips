@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -162,7 +163,7 @@ final class LookAndFeelUtils {
     Optional<Constructor<?>> op;
     try {
       op = Optional.of(lnfClass.getConstructor());
-    } catch (NoSuchMethodException e) {
+    } catch (NoSuchMethodException ex) {
       op = Optional.empty();
     }
     return op.orElse(null);
@@ -203,7 +204,7 @@ final class LookAndFeelUtils {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
       // System.out.println("Failed loading L&F: " + currentLaf);
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       Toolkit.getDefaultToolkit().beep();
     }
   }

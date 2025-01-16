@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -76,8 +77,8 @@ public final class MainPanel extends JPanel {
     Robot rbt = null;
     try {
       rbt = new Robot();
-    } catch (AWTException e) {
-      e.printStackTrace();
+    } catch (AWTException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
       Toolkit.getDefaultToolkit().beep();
     }
     return rbt;
@@ -93,7 +94,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

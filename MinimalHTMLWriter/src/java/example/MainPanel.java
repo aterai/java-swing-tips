@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -191,9 +192,9 @@ final class TextComponentPopupMenu extends JPopupMenu {
       String str = doc.getText(start, length);
       Transferable transferable = new BasicTransferable(str, contents);
       clipboard.setContents(transferable, null);
-    } catch (IOException | BadLocationException e) {
+    } catch (IOException | BadLocationException ex) {
+      // Logger.getGlobal().severe(ex::getMessage);
       UIManager.getLookAndFeel().provideErrorFeedback(textPane);
-      e.printStackTrace();
     }
   }
 
@@ -211,9 +212,9 @@ final class TextComponentPopupMenu extends JPopupMenu {
       String contents = os.toString();
       Transferable htmlTransferable = new HtmlTransferable(contents);
       clipboard.setContents(htmlTransferable, null);
-    } catch (IOException | BadLocationException e) {
+    } catch (IOException | BadLocationException ex) {
+      // Logger.getGlobal().severe(ex::getMessage);
       UIManager.getLookAndFeel().provideErrorFeedback(textPane);
-      e.printStackTrace();
     }
   }
 
