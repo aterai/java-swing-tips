@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -104,7 +105,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -511,7 +512,8 @@ class MainSwatchPanel extends SwatchPanel {
     int numColors = rawValues.length / 3;
     colors = new Color[numColors];
     for (int i = 0; i < numColors; i++) {
-      colors[i] = new Color(rawValues[(i * 3)], rawValues[(i * 3) + 1], rawValues[(i * 3) + 2]);
+      int v = i * 3;
+      colors[i] = new Color(rawValues[v], rawValues[v + 1], rawValues[v + 2]);
     }
   }
 

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
@@ -77,7 +78,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -142,7 +143,7 @@ class FocusCaret extends DefaultCaret {
   }
 
   @Override public boolean equals(Object o) {
-    return this == o || (o instanceof FocusCaret && equals2((FocusCaret) o));
+    return this == o || o instanceof FocusCaret && equals2((FocusCaret) o);
   }
 
   private boolean equals2(FocusCaret that) {
