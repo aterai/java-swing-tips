@@ -1,4 +1,4 @@
-//-*- mode:java; encoding:utf8n; coding:utf-8 -*-
+// -*- mode:java; encoding:utf8n; coding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 // @homepage@
 
@@ -13,6 +13,7 @@ import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -24,10 +25,10 @@ public final class MainPanel extends JPanel {
   // Character.MIN_CODE_POINT: 0x0, Character.MAX_CODE_POINT: 0x10FFFF
   private final SpinnerNumberModel numberModel = new SpinnerNumberModel(
       0x51DE, 0x0, Character.MAX_CODE_POINT, 1);
-  private final GlyphPaintPanel fontPanel = new GlyphPaintPanel();
 
   private MainPanel() {
     super(new BorderLayout());
+    GlyphPaintPanel fontPanel = new GlyphPaintPanel();
     numberModel.addChangeListener(e -> fontPanel.repaint());
     JSpinner spinner = new JSpinner(numberModel);
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
@@ -38,21 +39,21 @@ public final class MainPanel extends JPanel {
     JRadioButton exMi = new JRadioButton(FontPaint.IPA_EX_MINCHO.toString());
     exMi.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        setFontPaintFlag(EnumSet.of(FontPaint.IPA_EX_MINCHO));
+        setFontPaintFlag(fontPanel, EnumSet.of(FontPaint.IPA_EX_MINCHO));
       }
     });
 
     JRadioButton mjMi = new JRadioButton(FontPaint.IPA_MJ_MINCHO.toString());
     mjMi.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        setFontPaintFlag(EnumSet.of(FontPaint.IPA_MJ_MINCHO));
+        setFontPaintFlag(fontPanel, EnumSet.of(FontPaint.IPA_MJ_MINCHO));
       }
     });
 
     JRadioButton both = new JRadioButton("Both", true);
     both.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        setFontPaintFlag(EnumSet.allOf(FontPaint.class));
+        setFontPaintFlag(fontPanel, EnumSet.allOf(FontPaint.class));
       }
     });
 
@@ -69,9 +70,9 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void setFontPaintFlag(Set<FontPaint> fp) {
-    fontPanel.setFontPaintFlag(fp);
-    fontPanel.repaint();
+  private static void setFontPaintFlag(GlyphPaintPanel p, Set<FontPaint> fp) {
+    p.setFontPaintFlag(fp);
+    p.repaint();
   }
 
   public String getCharacterString() {
@@ -89,6 +90,10 @@ public final class MainPanel extends JPanel {
     //   ca[1] = (char) (x % 0x400 + 0xDC00);
     //   str = String.valueOf(ca, 0, 2);
     // }
+  }
+
+  private enum FontPaint {
+    IPA_EX_MINCHO, IPA_MJ_MINCHO
   }
 
   private final class GlyphPaintPanel extends JPanel {
@@ -194,7 +199,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -204,8 +209,4 @@ public final class MainPanel extends JPanel {
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
-}
-
-enum FontPaint {
-  IPA_EX_MINCHO, IPA_MJ_MINCHO
 }
