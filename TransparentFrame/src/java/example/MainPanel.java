@@ -12,12 +12,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  public static final Paint TEXTURE = makeTexturePaint();
+  public static final Paint TEXTURE = ImageUtils.makeTexturePaint();
   private static int openFrameCount;
 
   private MainPanel() {
@@ -48,15 +49,8 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p3));
 
     String path = "example/GIANT_TCR1_2013.jpg";
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-    desktop.setBorder(new CentredBackgroundBorder(image));
+    BufferedImage image = ImageUtils.makeImage(path);
+    desktop.setBorder(new CentredBackgroundBorder(ImageUtils.makeImage(path)));
     // D3D/OGL: Window translucency doesn't work with accelerated pipelines
     // https://bugs.openjdk.org/browse/JDK-6655001
     // desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
@@ -95,7 +89,45 @@ public final class MainPanel extends JPanel {
     return frame;
   }
 
-  private static TexturePaint makeTexturePaint() {
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static BufferedImage makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ImageUtils::makeMissingImage);
+  }
+
+  public static TexturePaint makeTexturePaint() {
     BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = img.createGraphics();
     g2.setPaint(new Color(0x64_64_78_64, true));
@@ -112,7 +144,7 @@ public final class MainPanel extends JPanel {
     return new TexturePaint(img, new Rectangle(16, 16));
   }
 
-  private static BufferedImage makeMissingImage() {
+  public static BufferedImage makeMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -121,27 +153,6 @@ public final class MainPanel extends JPanel {
     missingIcon.paintIcon(null, g2, 0, 0);
     g2.dispose();
     return bi;
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
 

@@ -39,12 +39,9 @@ public final class MainPanel extends JPanel {
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     JDesktopPane desktop = new JDesktopPane();
-
     InputMap im = desktop.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
-
-    ActionMap am = desktop.getActionMap();
-    am.put("escape", new AbstractAction() {
+    desktop.getActionMap().put("escape", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         getSelectedFrame(desktop).ifPresent(desktop.getDesktopManager()::closeFrame);
       }
@@ -107,7 +104,6 @@ public final class MainPanel extends JPanel {
     }));
     b5.setToolTipText("f.setClosed(true);");
     toolBar.add(b5);
-
     return toolBar;
   }
 

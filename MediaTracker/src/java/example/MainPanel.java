@@ -25,42 +25,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 public final class MainPanel extends JPanel {
-  public final AtomicInteger imageId = new AtomicInteger(0);
-  public final FileModel model = new FileModel();
-  public transient MediaTracker tracker;
-
-  private final class ImageDropTargetListener extends DropTargetAdapter {
-    @Override public void dragOver(DropTargetDragEvent e) {
-      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-        e.acceptDrag(DnDConstants.ACTION_COPY);
-        return;
-      }
-      e.rejectDrag();
-    }
-
-    @Override public void drop(DropTargetDropEvent e) {
-      try {
-        if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          e.acceptDrop(DnDConstants.ACTION_COPY);
-          Transferable transferable = e.getTransferable();
-          ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
-              .stream().filter(File.class::isInstance).map(File.class::cast)
-              .map(File::toPath)
-              .forEach(MainPanel.this::addImage);
-          e.dropComplete(true);
-        } else {
-          e.rejectDrop();
-        }
-      } catch (UnsupportedFlavorException | IOException ex) {
-        e.rejectDrop();
-      }
-    }
-  }
+  private final AtomicInteger imageId = new AtomicInteger(0);
+  private final FileModel model = new FileModel();
+  private transient MediaTracker tracker;
 
   private MainPanel() {
     super(new BorderLayout());
@@ -80,16 +53,7 @@ public final class MainPanel extends JPanel {
     col.setMaxWidth(60);
     col.setResizable(false);
 
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL url = cl.getResource("example/test.png");
-    if (url != null) {
-      try {
-        addImage(Paths.get(url.toURI()));
-      } catch (URISyntaxException ex) {
-        ex.printStackTrace();
-        UIManager.getLookAndFeel().provideErrorFeedback(this);
-      }
-    }
+    PathUtils.getPath("example/test.png").ifPresent(this::addImage);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -119,6 +83,34 @@ public final class MainPanel extends JPanel {
     }.execute();
   }
 
+  private final class ImageDropTargetListener extends DropTargetAdapter {
+    @Override public void dragOver(DropTargetDragEvent e) {
+      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        e.acceptDrag(DnDConstants.ACTION_COPY);
+        return;
+      }
+      e.rejectDrag();
+    }
+
+    @Override public void drop(DropTargetDropEvent e) {
+      try {
+        if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+          e.acceptDrop(DnDConstants.ACTION_COPY);
+          Transferable transferable = e.getTransferable();
+          ((List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor))
+              .stream().filter(File.class::isInstance).map(File.class::cast)
+              .map(File::toPath)
+              .forEach(MainPanel.this::addImage);
+          e.dropComplete(true);
+        } else {
+          e.rejectDrop();
+        }
+      } catch (UnsupportedFlavorException | IOException ex) {
+        e.rejectDrop();
+      }
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -129,7 +121,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -259,5 +251,27 @@ final class TablePopupMenu extends JPopupMenu {
       delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
       super.show(c, x, y);
     }
+  }
+}
+
+final class PathUtils {
+  private PathUtils() {
+    /* Singleton */
+  }
+
+  public static Optional<Path> getPath(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource(path);
+    Optional<Path> op;
+    if (url != null) {
+      try {
+        op = Optional.of(Paths.get(url.toURI()));
+      } catch (URISyntaxException ex) {
+        op = Optional.empty();
+      }
+    } else {
+      op = Optional.empty();
+    }
+    return op;
   }
 }

@@ -12,8 +12,8 @@ import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -85,8 +85,8 @@ public final class MainPanel extends JPanel {
     });
 
     String path = "example/GIANT_TCR1_2013.jpg";
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage bi = getFilteredImage(cl.getResource(path));
+    BufferedImage img = ImageUtils.getImage(path);
+    BufferedImage bi = ImageUtils.getFilteredImage(img);
     JScrollPane scroll = new JScrollPane(editorPane);
     scroll.getViewport().setOpaque(false);
     scroll.setViewportBorder(new CentredBackgroundBorder(bi));
@@ -100,38 +100,6 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(2));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static BufferedImage getFilteredImage(URL url) {
-    BufferedImage image = Optional.ofNullable(url).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-
-    int w = image.getWidth();
-    int h = image.getHeight();
-    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-    byte[] b = new byte[256];
-    for (int i = 0; i < b.length; i++) {
-      b[i] = (byte) (i * .2f);
-    }
-    BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
-    op.filter(image, dst);
-    return dst;
-  }
-
-  private static BufferedImage makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   // https://ateraimemo.com/Swing/Highlighter.html
@@ -165,7 +133,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -201,5 +169,46 @@ class CentredBackgroundBorder implements Border {
 
   @Override public boolean isBorderOpaque() {
     return true;
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static BufferedImage getImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ImageUtils::makeMissingImage);
+  }
+
+  public static BufferedImage getFilteredImage(BufferedImage image) {
+    int w = image.getWidth();
+    int h = image.getHeight();
+    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    byte[] b = new byte[256];
+    for (int i = 0; i < b.length; i++) {
+      b[i] = (byte) (i * .2f);
+    }
+    BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
+    op.filter(image, dst);
+    return dst;
+  }
+
+  public static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 }

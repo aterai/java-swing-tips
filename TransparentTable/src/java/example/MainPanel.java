@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -62,7 +63,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    TexturePaint texture = makeImageTexture();
+    TexturePaint texture = ImageUtils.makeImageTexture();
     JScrollPane scroll = new JScrollPane(table) {
       @Override protected JViewport createViewport() {
         return new JViewport() {
@@ -99,31 +100,6 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static TexturePaint makeImageTexture() {
-    // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
-    String path = "example/unkaku_w.png";
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
-      try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-    return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
-  }
-
-  private static BufferedImage makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -134,7 +110,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -183,5 +159,36 @@ class TranslucentBooleanRenderer implements TableCellRenderer {
     renderer.setSelected(Objects.equals(value, Boolean.TRUE));
     renderer.setHorizontalAlignment(SwingConstants.CENTER);
     return renderer;
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static TexturePaint makeImageTexture() {
+    // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
+    String path = "example/unkaku_w.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ImageUtils::makeMissingImage);
+    return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+  }
+
+  public static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 }

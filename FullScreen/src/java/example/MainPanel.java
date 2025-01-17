@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -43,17 +42,16 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    ActionMap am = getActionMap();
     String key = "full-screen";
+    InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0), key);
-    am.put(key, new AbstractAction() {
+    getActionMap().put(key, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         toggleFullScreenWindow();
       }
     });
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
-    am.put("close", new AbstractAction() {
+    getActionMap().put("close", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         LOGGER.info(() -> "ESC KeyEvent:");
         // int mode = 2;
@@ -94,7 +92,7 @@ public final class MainPanel extends JPanel {
       Dialog dialog = (Dialog) c;
       GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       GraphicsDevice gd = ge.getDefaultScreenDevice();
-      if (Objects.isNull(gd.getFullScreenWindow())) {
+      if (gd.getFullScreenWindow() == null) {
         dialog.dispose(); // destroy the native resources
         dialog.setUndecorated(true);
         dialog.setVisible(true); // rebuilding the native resources
@@ -120,7 +118,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JDialog dialog = new JDialog();

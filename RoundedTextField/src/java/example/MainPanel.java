@@ -10,13 +10,14 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private static final Paint TEXTURE = makeCheckerTexture();
+  private static final Paint TEXTURE = ImageUtils.makeCheckerTexture();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -122,24 +123,6 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static TexturePaint makeCheckerTexture() {
-    int cs = 6;
-    int sz = cs * cs;
-    BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = img.createGraphics();
-    g2.setPaint(new Color(0x32_64_64_64, true));
-    g2.fillRect(0, 0, sz, sz);
-    for (int i = 0; i * cs < sz; i++) {
-      for (int j = 0; j * cs < sz; j++) {
-        if ((i + j) % 2 == 0) {
-          g2.fillRect(i * cs, j * cs, cs, cs);
-        }
-      }
-    }
-    g2.dispose();
-    return new TexturePaint(img, new Rectangle(sz, sz));
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -150,7 +133,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -202,5 +185,29 @@ class RoundedCornerBorder extends AbstractBorder {
   @Override public Insets getBorderInsets(Component c, Insets insets) {
     insets.set(4, 8, 4, 8);
     return insets;
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static TexturePaint makeCheckerTexture() {
+    int cs = 6;
+    int sz = cs * cs;
+    BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = img.createGraphics();
+    g2.setPaint(new Color(0x32_64_64_64, true));
+    g2.fillRect(0, 0, sz, sz);
+    for (int i = 0; i * cs < sz; i++) {
+      for (int j = 0; j * cs < sz; j++) {
+        if ((i + j) % 2 == 0) {
+          g2.fillRect(i * cs, j * cs, cs, cs);
+        }
+      }
+    }
+    g2.dispose();
+    return new TexturePaint(img, new Rectangle(sz, sz));
   }
 }

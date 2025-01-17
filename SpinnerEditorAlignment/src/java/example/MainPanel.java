@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,7 +20,8 @@ public final class MainPanel extends JPanel {
     JRadioButton r3 = new JRadioButton("TRAILING");
     ItemListener il = e -> {
       int alignment;
-      ItemSelectable item = e.getItemSelectable();
+      Object item = e.getItem();
+      // or: ItemSelectable item = e.getItemSelectable();
       if (r1.equals(item)) {
         alignment = SwingConstants.LEADING;
       } else if (r2.equals(item)) {
@@ -114,7 +116,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -149,7 +151,6 @@ enum HorizontalAlignment {
         .findFirst();
   }
 }
-
 
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtils {
@@ -193,7 +194,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

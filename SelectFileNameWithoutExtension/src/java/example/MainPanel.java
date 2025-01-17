@@ -11,70 +11,32 @@ import java.awt.event.ContainerEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea log = new JTextArea();
-
     JButton button1 = new JButton("Default");
-    button1.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
-      }
-    });
-
+    button1.addActionListener(e -> openDefaultFileChooser());
     JButton button2 = new JButton("ListView");
-    button2.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      descendants(chooser)
-          .filter(JList.class::isInstance)
-          .map(JList.class::cast)
-          .findFirst()
-          .ifPresent(MainPanel::addCellEditorListener);
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
-      }
-    });
-
+    button2.addActionListener(e -> openListViewFileChooser());
     JButton button3 = new JButton("DetailsView");
-    button3.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      String cmd = "viewTypeDetails";
-      Action detailsAction = chooser.getActionMap().get(cmd);
-      if (Objects.nonNull(detailsAction)) {
-        ActionEvent ae = new ActionEvent(chooser, ActionEvent.ACTION_PERFORMED, cmd);
-        detailsAction.actionPerformed(ae);
-      }
-      descendants(chooser)
-          .filter(JTable.class::isInstance)
-          .map(JTable.class::cast)
-          .findFirst()
-          .ifPresent(MainPanel::addCellEditorFocusListener);
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
-      }
-    });
-
+    button3.addActionListener(e -> openDetailsViewFileChooser());
     JPanel p1 = new JPanel();
     String title1 = "The cell editor selects the whole filename";
     p1.setBorder(BorderFactory.createTitledBorder(title1));
     p1.add(button1);
-
     JPanel p2 = new JPanel();
     String title2 = "The cell editor selects the filename without the extension";
     p2.setBorder(BorderFactory.createTitledBorder(title2));
     p2.add(button2);
     p2.add(button3);
-
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(p1);
     p.add(p2);
@@ -83,10 +45,44 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Stream<Component> descendants(Container parent) {
-    return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance).map(Container.class::cast)
-        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
+  private void openDefaultFileChooser() {
+    JFileChooser chooser = new JFileChooser();
+    int retValue = chooser.showOpenDialog(log.getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.setText(chooser.getSelectedFile().getAbsolutePath());
+    }
+  }
+
+  private void openDetailsViewFileChooser() {
+    JFileChooser chooser = new JFileChooser();
+    String cmd = "viewTypeDetails";
+    Action detailsAction = chooser.getActionMap().get(cmd);
+    if (Objects.nonNull(detailsAction)) {
+      ActionEvent ae = new ActionEvent(chooser, ActionEvent.ACTION_PERFORMED, cmd);
+      detailsAction.actionPerformed(ae);
+    }
+    SwingUtils.descendants(chooser)
+        .filter(JTable.class::isInstance)
+        .map(JTable.class::cast)
+        .findFirst()
+        .ifPresent(MainPanel::addCellEditorFocusListener);
+    int retValue = chooser.showOpenDialog(log.getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.setText(chooser.getSelectedFile().getAbsolutePath());
+    }
+  }
+
+  private void openListViewFileChooser() {
+    JFileChooser chooser = new JFileChooser();
+    SwingUtils.descendants(chooser)
+        .filter(JList.class::isInstance)
+        .map(JList.class::cast)
+        .findFirst()
+        .ifPresent(MainPanel::addCellEditorListener);
+    int retValue = chooser.showOpenDialog(log.getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.setText(chooser.getSelectedFile().getAbsolutePath());
+    }
   }
 
   private static void selectWithoutExtension(JTextField editor) {
@@ -137,7 +133,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -146,5 +142,17 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+final class SwingUtils {
+  private SwingUtils() {
+    /* Singleton */
+  }
+
+  public static Stream<Component> descendants(Container parent) {
+    return Stream.of(parent.getComponents())
+        .filter(Container.class::isInstance).map(Container.class::cast)
+        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }

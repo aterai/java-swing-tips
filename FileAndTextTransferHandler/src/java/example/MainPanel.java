@@ -19,8 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
   private final JTabbedPane tabbedPane = new JTabbedPane();
@@ -136,15 +136,15 @@ public final class MainPanel extends JPanel {
         e.dropComplete(success);
       } else if (src instanceof DropTarget) {
         Component c = ((DropTarget) src).getComponent();
-        if (c instanceof JTextComponent) {
-          JTextComponent textArea = (JTextComponent) c;
+        if (c instanceof JTextArea) {
+          JTextArea textArea = (JTextArea) c;
           TransferHandler textHandler = textArea.getTransferHandler();
           if (textHandler != null) {
             textHandler.importData(textArea, transferable);
           }
         }
-      } else if (src instanceof JTextComponent) {
-        JTextComponent textArea = (JTextComponent) src;
+      } else if (src instanceof JTextArea) {
+        JTextArea textArea = (JTextArea) src;
         TransferHandler textHandler = textArea.getTransferHandler();
         if (textHandler != null) {
           textHandler.importData(textArea, transferable);
@@ -188,7 +188,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
