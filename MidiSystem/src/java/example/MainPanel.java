@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
   private static SwingWorker<?, ?> makePlayer(JButton start, JButton pause, JButton reset) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/Mozart_toruko_k.mid");
-    return new Player(url) {
+    return new AbstractPlayer(url) {
       private long tickPos;
 
       @Override protected void addListener(Sequencer sequencer) {
@@ -134,12 +134,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-abstract class Player extends SwingWorker<Void, Long> {
+abstract class AbstractPlayer extends SwingWorker<Void, Long> {
   private static final byte END_OF_TRACK = 0x2F;
   private final URL url;
   // private long tickPos;
 
-  protected Player(URL url) {
+  protected AbstractPlayer(URL url) {
     super();
     assert url != null;
     this.url = url;
