@@ -9,11 +9,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new JTable(makeModel()) {
       private final Color evenColor = new Color(0xFA_FA_FA);
-      private transient UrlRenderer handler;
+      private transient UriRenderer handler;
 
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
@@ -55,8 +55,8 @@ public final class MainPanel extends JPanel {
         cm.getColumn(1).setPreferredWidth(1000);
         cm.getColumn(2).setPreferredWidth(2000);
 
-        handler = new UrlRenderer();
-        setDefaultRenderer(URL.class, handler);
+        handler = new UriRenderer();
+        setDefaultRenderer(URI.class, handler);
         addMouseListener(handler);
         addMouseMotionListener(handler);
       }
@@ -67,23 +67,23 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static URL makeUrl(String path) {
-    Optional<URL> op;
+  private static URI makeUri(String path) {
+    Optional<URI> op;
     try {
-      op = Optional.of(new URL(path));
-    } catch (MalformedURLException ex) {
+      op = Optional.of(new URI(path));
+    } catch (URISyntaxException ex) {
       op = Optional.empty();
     }
     return op.orElse(null);
   }
 
   private static TableModel makeModel() {
-    String[] columnNames = {"No.", "Name", "URL"};
+    String[] columnNames = {"No.", "Name", "URI"};
     Object[][] data = {
-        {0, "FrontPage", makeUrl("https://ateraimemo.com/")},
-        {1, "Java Swing Tips", makeUrl("https://ateraimemo.com/Swing.html")},
-        {2, "Example", makeUrl("http://www.example.com/")},
-        {3, "example.jp", makeUrl("http://www.example.jp/")}
+        {0, "FrontPage", makeUri("https://ateraimemo.com/")},
+        {1, "Java Swing Tips", makeUri("https://ateraimemo.com/Swing.html")},
+        {2, "Example", makeUri("http://www.example.com/")},
+        {3, "example.jp", makeUri("http://www.example.jp/")}
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -106,7 +106,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
+class UriRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
   private int viewRowIndex = -1;
   private int viewColumnIndex = -1;
   private boolean isRollover;
@@ -146,8 +146,8 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isRollover;
   }
 
-  private static boolean isUrlColumn(JTable table, int column) {
-    return column >= 0 && table.getColumnClass(column).equals(URL.class);
+  private static boolean isUriColumn(JTable table, int column) {
+    return column >= 0 && table.getColumnClass(column).equals(URI.class);
   }
 
   @Override public void mouseMoved(MouseEvent e) {
@@ -160,7 +160,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
 
     boolean prevRollover = isRollover;
-    isRollover = isUrlColumn(table, viewColumnIndex);
+    isRollover = isUriColumn(table, viewColumnIndex);
     boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
 
     if (isSameCell && isNotRollover) {
@@ -183,7 +183,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 
   @Override public void mouseExited(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
-    if (isUrlColumn(table, viewColumnIndex)) {
+    if (isUriColumn(table, viewColumnIndex)) {
       table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       viewRowIndex = -1;
       viewColumnIndex = -1;
@@ -195,19 +195,19 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
     int col = table.columnAtPoint(pt);
-    if (isUrlColumn(table, col)) {
+    if (isUriColumn(table, col)) {
       int crow = table.rowAtPoint(pt);
-      URL url = (URL) table.getValueAt(crow, col);
-      // System.out.println(url);
+      URI uri = (URI) table.getValueAt(crow, col);
+      // System.out.println(uri);
       try {
         // Web Start
         // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-        // bs.showDocument(url);
+        // bs.showDocument(uri);
         if (Desktop.isDesktopSupported()) {
-          Desktop.getDesktop().browse(url.toURI());
+          Desktop.getDesktop().browse(uri);
         }
-      } catch (URISyntaxException | IOException ex) {
-        ex.printStackTrace();
+      } catch (IOException ex) {
+        // Logger.getGlobal().severe(ex::getMessage);
         UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }

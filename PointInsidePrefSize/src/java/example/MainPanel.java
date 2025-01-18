@@ -9,11 +9,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
     cm.getColumn(1).setPreferredWidth(1000);
     cm.getColumn(2).setPreferredWidth(2000);
 
-    UrlRenderer renderer = new UrlRenderer();
-    table.setDefaultRenderer(URL.class, renderer);
+    UriRenderer renderer = new UriRenderer();
+    table.setDefaultRenderer(URI.class, renderer);
     table.addMouseListener(renderer);
     table.addMouseMotionListener(renderer);
 
@@ -54,21 +54,21 @@ public final class MainPanel extends JPanel {
   }
 
   private static TableModel makeModel() {
-    String[] columnNames = {"No.", "Name", "URL"};
+    String[] columnNames = {"No.", "Name", "URI"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return Integer.class;
           case 1: return String.class;
-          case 2: return URL.class;
+          case 2: return URI.class;
           default: return super.getColumnClass(column);
         }
         // // Java 12:
         // return switch (column) {
         //   case 0 -> Integer.class;
         //   case 1 -> String.class;
-        //   case 2 -> URL.class;
+        //   case 2 -> URI.class;
         //   default -> super.getColumnClass(column);
         // };
       }
@@ -77,18 +77,18 @@ public final class MainPanel extends JPanel {
         return false;
       }
     };
-    model.addRow(new Object[] {0, "FrontPage", toUrl("https://ateraimemo.com/")});
-    model.addRow(new Object[] {1, "Java Swing Tips", toUrl("https://ateraimemo.com/Swing.html")});
-    model.addRow(new Object[] {2, "Example", toUrl("https://www.example.com/")});
-    model.addRow(new Object[] {3, "Example.jp", toUrl("https://www.example.jp/")});
+    model.addRow(new Object[] {0, "FrontPage", toUri("https://ateraimemo.com/")});
+    model.addRow(new Object[] {1, "Java Swing Tips", toUri("https://ateraimemo.com/Swing.html")});
+    model.addRow(new Object[] {2, "Example", toUri("https://www.example.com/")});
+    model.addRow(new Object[] {3, "Example.jp", toUri("https://www.example.jp/")});
     return model;
   }
 
-  private static URL toUrl(String path) {
-    Optional<URL> op;
+  private static URI toUri(String path) {
+    Optional<URI> op;
     try {
-      op = Optional.of(new URL(path));
-    } catch (MalformedURLException ex) {
+      op = Optional.of(new URI(path));
+    } catch (URISyntaxException ex) {
       op = Optional.empty();
     }
     return op.orElse(null);
@@ -104,7 +104,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -116,7 +116,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
+class UriRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
   private static final Rectangle CELL_RECT = new Rectangle();
   private static final Rectangle ICON_RECT = new Rectangle();
   private static final Rectangle TEXT_RECT = new Rectangle();
@@ -180,8 +180,8 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     return cellBounds.contains(p);
   }
 
-  private static boolean isUrlColumn(JTable table, int column) {
-    return column >= 0 && table.getColumnClass(column).equals(URL.class);
+  private static boolean isUriColumn(JTable table, int column) {
+    return column >= 0 && table.getColumnClass(column).equals(URI.class);
   }
 
   @Override public void mouseMoved(MouseEvent e) {
@@ -194,7 +194,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
 
     boolean prevRollover = isRollover;
-    isRollover = isUrlColumn(table, viewColumnIndex) && pointInsidePrefSize(table, pt);
+    isRollover = isUriColumn(table, viewColumnIndex) && pointInsidePrefSize(table, pt);
     boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
 
     if (isSameCell && isNotRollover) {
@@ -224,7 +224,7 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 
   @Override public void mouseExited(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
-    if (isUrlColumn(table, viewColumnIndex)) {
+    if (isUriColumn(table, viewColumnIndex)) {
       table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       viewRowIndex = -1;
       viewColumnIndex = -1;
@@ -236,20 +236,15 @@ class UrlRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
     int col = table.columnAtPoint(pt);
-    if (isUrlColumn(table, col) && pointInsidePrefSize(table, pt)) {
+    if (isUriColumn(table, col) && pointInsidePrefSize(table, pt)) {
       int crow = table.rowAtPoint(pt);
-      URL url = (URL) table.getValueAt(crow, col);
-      // System.out.println(url);
-      try {
-        // Web Start
-        // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
-        // bs.showDocument(url);
-        if (Desktop.isDesktopSupported()) {
-          Desktop.getDesktop().browse(url.toURI());
+      URI uri = (URI) table.getValueAt(crow, col);
+      if (Desktop.isDesktopSupported()) {
+        try {
+          Desktop.getDesktop().browse(uri);
+        } catch (IOException ex) {
+          UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
         }
-      } catch (URISyntaxException | IOException ex) {
-        // ex.printStackTrace();
-        UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }
   }

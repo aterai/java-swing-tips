@@ -10,7 +10,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -58,9 +60,9 @@ public final class MainPanel extends JPanel {
     URLConnection urlConnection;
     try {
       // URLConnection urlConnection = getUrlConnection(path);
-      urlConnection = new URL(path).openConnection();
-    } catch (IOException ex) {
-      ex.printStackTrace();
+      urlConnection = new URI(path).toURL().openConnection();
+    } catch (URISyntaxException | IOException ex) {
+      // ex.printStackTrace();
       textArea.setText("error: " + ex.getMessage());
       return;
     }
@@ -88,7 +90,7 @@ public final class MainPanel extends JPanel {
       task.execute();
       loop.enter();
     } catch (IOException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       textArea.setText("error: " + ex.getMessage());
     }
   }
@@ -135,7 +137,7 @@ public final class MainPanel extends JPanel {
         text = "Interrupted";
         Thread.currentThread().interrupt();
       } catch (IOException | ExecutionException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         text = "Error:" + ex.getMessage();
       }
       append(text);
@@ -146,7 +148,7 @@ public final class MainPanel extends JPanel {
     runButton.setEnabled(true);
   }
 
-  public void update(Chunk c) {
+  private void update(Chunk c) {
     append(c.getLine());
     monitor.setNote(c.getNote());
   }
@@ -166,7 +168,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
