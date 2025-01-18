@@ -16,12 +16,13 @@ import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(2, 2));
-    JTabbedPane tabs = makeTabbedPane();
+    JTabbedPane tabs = new BalloonToolTipTabbedPane();
     tabs.addTab("000", new ColorIcon(Color.RED), new JScrollPane(new JTree()), "00000");
     tabs.addTab("111", new ColorIcon(Color.GREEN), new JSplitPane(), "1111");
     tabs.addTab("222", new ColorIcon(Color.BLUE), new JScrollPane(new JTable(5, 5)), "222");
@@ -51,83 +52,11 @@ public final class MainPanel extends JPanel {
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     mb.add(menu);
-    mb.add(Box.createHorizontalGlue());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     add(tabs);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static JTabbedPane makeTabbedPane() {
-    return new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
-      private transient JToolTip tip;
-
-      @Override public Point getToolTipLocation(MouseEvent e) {
-        int idx = indexAtLocation(e.getX(), e.getY());
-        String txt = idx >= 0 ? getToolTipTextAt(idx) : null;
-        return Optional.ofNullable(txt).map(toolTipText -> {
-          JToolTip toolTip = createToolTip();
-          toolTip.setTipText(toolTipText);
-          Component c = toolTip.getComponent(0);
-          if (c instanceof JLabel) {
-            ((JLabel) c).setText(toolTipText);
-          }
-          if (toolTip instanceof BalloonToolTip) {
-            ((BalloonToolTip) toolTip).updateBalloonShape(getTabPlacement());
-          }
-          return getToolTipPoint(getBoundsAt(idx), toolTip.getPreferredSize());
-        }).orElse(null);
-      }
-
-      private Point getToolTipPoint(Rectangle r, Dimension d) {
-        double dx;
-        double dy;
-        switch (getTabPlacement()) {
-          case LEFT:
-            dx = r.getMaxX();
-            dy = r.getCenterY() - d.getHeight() / 2d;
-            break;
-          case RIGHT:
-            dx = r.getMinX() - d.getWidth();
-            dy = r.getCenterY() - d.getHeight() / 2d;
-            break;
-          case BOTTOM:
-            dx = r.getCenterX() - d.getWidth() / 2d;
-            dy = r.getMinY() - d.getHeight();
-            break;
-          default: // case TOP:
-            dx = r.getCenterX() - d.getWidth() / 2d;
-            dy = r.getMaxY() + 8d;
-        }
-        return new Point((int) (dx + .5), (int) (dy + .5));
-      }
-
-      @Override public JToolTip createToolTip() {
-        // if (tip == null) {
-        //   tip = new BalloonToolTip();
-        //   LookAndFeel.installColorsAndFont(
-        //       label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
-        //   tip.add(label);
-        //   tip.updateBalloonShape(getTabPlacement());
-        //   tip.setComponent(this);
-        // }
-        return tip;
-      }
-
-      @Override public void updateUI() {
-        // tip = null;
-        super.updateUI();
-        BalloonToolTip toolTip = new BalloonToolTip();
-        JLabel label = new JLabel(" ", CENTER);
-        LookAndFeel.installColorsAndFont(
-            label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
-        toolTip.add(label);
-        toolTip.updateBalloonShape(getTabPlacement());
-        toolTip.setComponent(this);
-        tip = toolTip;
-      }
-    };
   }
 
   public static void main(String[] args) {
@@ -140,7 +69,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -149,6 +78,79 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class BalloonToolTipTabbedPane extends JTabbedPane {
+  private transient JToolTip tip;
+
+  protected BalloonToolTipTabbedPane() {
+    super(TOP, SCROLL_TAB_LAYOUT);
+  }
+
+  @Override public Point getToolTipLocation(MouseEvent e) {
+    int idx = indexAtLocation(e.getX(), e.getY());
+    String txt = idx >= 0 ? getToolTipTextAt(idx) : null;
+    return Optional.ofNullable(txt).map(toolTipText -> {
+      JToolTip toolTip = createToolTip();
+      toolTip.setTipText(toolTipText);
+      Component c = toolTip.getComponent(0);
+      if (c instanceof JLabel) {
+        ((JLabel) c).setText(toolTipText);
+      }
+      if (toolTip instanceof BalloonToolTip) {
+        ((BalloonToolTip) toolTip).updateBalloonShape(getTabPlacement());
+      }
+      return getToolTipPoint(getBoundsAt(idx), toolTip.getPreferredSize());
+    }).orElse(null);
+  }
+
+  private Point getToolTipPoint(Rectangle r, Dimension d) {
+    double dx;
+    double dy;
+    switch (getTabPlacement()) {
+      case LEFT:
+        dx = r.getMaxX();
+        dy = r.getCenterY() - d.getHeight() / 2d;
+        break;
+      case RIGHT:
+        dx = r.getMinX() - d.getWidth();
+        dy = r.getCenterY() - d.getHeight() / 2d;
+        break;
+      case BOTTOM:
+        dx = r.getCenterX() - d.getWidth() / 2d;
+        dy = r.getMinY() - d.getHeight();
+        break;
+      default: // case TOP:
+        dx = r.getCenterX() - d.getWidth() / 2d;
+        dy = r.getMaxY() + 8d;
+    }
+    return new Point((int) (dx + .5), (int) (dy + .5));
+  }
+
+  @Override public JToolTip createToolTip() {
+    // if (tip == null) {
+    //   tip = new BalloonToolTip();
+    //   LookAndFeel.installColorsAndFont(
+    //       label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    //   tip.add(label);
+    //   tip.updateBalloonShape(getTabPlacement());
+    //   tip.setComponent(this);
+    // }
+    return tip;
+  }
+
+  @Override public void updateUI() {
+    // tip = null;
+    super.updateUI();
+    BalloonToolTip toolTip = new BalloonToolTip();
+    JLabel label = new JLabel(" ", CENTER);
+    LookAndFeel.installColorsAndFont(
+        label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    toolTip.add(label);
+    toolTip.updateBalloonShape(getTabPlacement());
+    toolTip.setComponent(this);
+    tip = toolTip;
   }
 }
 
@@ -320,7 +322,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
