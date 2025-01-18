@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TooManyListenersException;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -70,7 +71,7 @@ public final class MainPanel extends JPanel {
       try {
         t.getDropTarget().addDropTargetListener(listener);
       } catch (TooManyListenersException ex) {
-        ex.printStackTrace();
+        // Logger.getGlobal().severe(ex::getMessage);
         UIManager.getLookAndFeel().provideErrorFeedback(t);
       }
     });
@@ -111,7 +112,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     TabTransferHandler handler = new TabTransferHandler();
@@ -243,7 +244,7 @@ class DnDTabbedPane extends JTabbedPane {
     int idx = -1;
     Rectangle2D cr = new Rectangle2D.Double(r.getCenterX(), r.getY(), .1, r.getHeight());
     int iv = cr.outcode(pt);
-    if (cr.contains(pt) || (contains && (iv & Rectangle2D.OUT_LEFT) != 0)) {
+    if (cr.contains(pt) || contains && (iv & Rectangle2D.OUT_LEFT) != 0) {
       // First half.
       idx = i;
     } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_RIGHT) != 0) {
@@ -260,7 +261,7 @@ class DnDTabbedPane extends JTabbedPane {
     int idx = -1;
     Rectangle2D cr = new Rectangle2D.Double(r.getX(), r.getCenterY(), r.getWidth(), .1);
     int iv = cr.outcode(pt);
-    if (cr.contains(pt) || (contains && (iv & Rectangle2D.OUT_TOP) != 0)) {
+    if (cr.contains(pt) || contains && (iv & Rectangle2D.OUT_TOP) != 0) {
       // First half.
       idx = i;
     } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_BOTTOM) != 0) {

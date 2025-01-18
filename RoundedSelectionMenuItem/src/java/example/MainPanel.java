@@ -10,6 +10,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicMenuItemUI;
@@ -99,7 +100,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -152,7 +153,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
@@ -174,7 +175,7 @@ class BasicRoundMenuItemUI extends BasicMenuItemUI {
     int menuWidth = menuItem.getWidth();
     int menuHeight = menuItem.getHeight();
     if (menuItem.isOpaque()) {
-      if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
+      if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // g2.clearRect(0, 0, menuWidth, menuHeight);
@@ -188,7 +189,7 @@ class BasicRoundMenuItemUI extends BasicMenuItemUI {
         g.fillRect(0, 0, menuWidth, menuHeight);
       }
       g.setColor(oldColor);
-    } else if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
+    } else if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
       g.setColor(bgColor);
       ((Graphics2D) g).setRenderingHint(
           RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -203,7 +204,7 @@ class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
 
   @Override protected void paintBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
     ButtonModel model = menuItem.getModel();
-    if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
+    if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
       int width = menuItem.getWidth();
       int height = menuItem.getHeight();
       if (buffer == null || buffer.getWidth() != width || buffer.getHeight() != height) {
@@ -230,7 +231,7 @@ class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
 
   @Override protected void paintBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
     ButtonModel model = menuItem.getModel();
-    if (model.isArmed() || (menuItem instanceof JMenu && model.isSelected())) {
+    if (model.isArmed() || menuItem instanceof JMenu && model.isSelected()) {
       paintSelectedBackground(g, menuItem, bgColor);
     } else {
       super.paintBackground(g, menuItem, bgColor);
