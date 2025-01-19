@@ -84,22 +84,29 @@ public final class MainPanel extends JPanel {
   }
 
   private static void columnSort(ActionEvent e, SortOrder order) {
-    JTable table = null;
-    int col = -1;
     Object o = e.getSource();
     if (o instanceof JTable) {
-      table = (JTable) o;
+      JTable table = (JTable) o;
       JTableHeader header = table.getTableHeader();
       if (header != null) {
         table.getActionMap().get("focusHeader").actionPerformed(e);
-        col = table.getSelectedColumn();
+        int col = table.getSelectedColumn();
+        sort(table, col, order);
+        int id = ActionEvent.ACTION_PERFORMED;
+        String cmd = "focusTable";
+        ActionEvent ae = new ActionEvent(header, id, cmd);
+        header.getActionMap().get(cmd).actionPerformed(ae);
       }
     } else if (o instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) o;
-      table = header.getTable();
-      col = getSelectedColumnIndex(header);
+      JTable table = header.getTable();
+      int col = getSelectedColumnIndex(header);
+      sort(table, col, order);
     }
-    if (col >= 0 && table != null) {
+  }
+
+  private static void sort(JTable table, int col, SortOrder order) {
+    if (col >= 0) {
       RowSorter.SortKey sortKey = new RowSorter.SortKey(col, order);
       table.getRowSorter().setSortKeys(Collections.singletonList(sortKey));
     }
