@@ -13,6 +13,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -30,9 +31,9 @@ public final class MainPanel extends JPanel {
     Container box0 = makeBox0();
     Container box1 = makeBox1();
 
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("Basic, Metal", makeTitledPanel(null, box1, BACKGROUND));
-    tabbedPane.addTab("Windows", makeTitledPanel(null, box0, null));
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.addTab("Basic, Metal", SwingUtils.makeTitledPanel(null, box1, BACKGROUND));
+    tabs.addTab("Windows", SwingUtils.makeTitledPanel(null, box0, null));
 
     JCheckBox check = new JCheckBox("editable");
     check.addActionListener(e -> {
@@ -45,19 +46,19 @@ public final class MainPanel extends JPanel {
       repaint();
     });
 
-    add(tabbedPane);
+    add(tabs);
     add(check, BorderLayout.SOUTH);
     // setOpaque(true);
     // setBackground(BACKGROUND);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultComboBoxModel<String> makeModel() {
-    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-    model.addElement("1234");
-    model.addElement("5555555555555555555555");
-    model.addElement("6789000000000");
-    return model;
+  private static String[] makeModel() {
+    return new String[] {
+        "1234",
+        "5555555555555555555555",
+        "6789000000000"
+    };
   }
 
   private static Container makeBox0() {
@@ -66,12 +67,12 @@ public final class MainPanel extends JPanel {
 
     JComboBox<String> combo0 = new JComboBox<>(makeModel());
     combo0.setBorder(new RoundedCornerBorder());
-    box.add(makeTitledPanel("RoundRectangle2D:", combo0, null));
+    box.add(SwingUtils.makeTitledPanel("RoundRectangle2D:", combo0, null));
     box.add(Box.createVerticalStrut(5));
 
     JComboBox<String> combo1 = new JComboBox<>(makeModel());
     combo1.setBorder(new KamabokoBorder());
-    box.add(makeTitledPanel("Path2D:", combo1, null));
+    box.add(SwingUtils.makeTitledPanel("Path2D:", combo1, null));
     box.add(Box.createVerticalStrut(5));
 
     JComboBox<String> combo2 = new JComboBox<String>(makeModel()) {
@@ -91,7 +92,8 @@ public final class MainPanel extends JPanel {
         setBorder(new KamabokoBorder());
       }
     };
-    box.add(makeTitledPanel("WindowsComboBoxUI#createArrowButton():", combo2, null));
+    String title = "WindowsComboBoxUI#createArrowButton():";
+    box.add(SwingUtils.makeTitledPanel(title, combo2, null));
     return box;
   }
 
@@ -123,7 +125,7 @@ public final class MainPanel extends JPanel {
         ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, FOREGROUND));
       }
     };
-    box.add(makeTitledPanel("MetalComboBoxUI:", combo0, BACKGROUND));
+    box.add(SwingUtils.makeTitledPanel("MetalComboBoxUI:", combo0, BACKGROUND));
     box.add(Box.createVerticalStrut(10));
 
     JComboBox<String> combo1 = new JComboBox<String>(makeModel()) {
@@ -134,7 +136,7 @@ public final class MainPanel extends JPanel {
         ((JComponent) o).setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, FOREGROUND));
       }
     };
-    box.add(makeTitledPanel("BasicComboBoxUI:", combo1, BACKGROUND));
+    box.add(SwingUtils.makeTitledPanel("BasicComboBoxUI:", combo1, BACKGROUND));
     box.add(Box.createVerticalStrut(10));
 
     UIManager.put("ComboBox.border", new KamabokoBorder());
@@ -159,29 +161,9 @@ public final class MainPanel extends JPanel {
         addMouseListener(handler);
       }
     };
-    box.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo2, BACKGROUND));
+    String title = "BasicComboBoxUI#createArrowButton():";
+    box.add(SwingUtils.makeTitledPanel(title, combo2, BACKGROUND));
     return box;
-  }
-
-  private static Component makeTitledPanel(String title, Container cmp, Color bgc) {
-    JPanel p = new JPanel(new BorderLayout());
-    if (cmp.getLayout() instanceof BoxLayout) {
-      p.add(cmp, BorderLayout.NORTH);
-    } else {
-      p.add(cmp);
-    }
-    if (Objects.nonNull(title)) {
-      TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), title);
-      if (Objects.nonNull(bgc)) {
-        b.setTitleColor(new Color(~bgc.getRGB()));
-      }
-      p.setBorder(b);
-    }
-    if (Objects.nonNull(bgc)) {
-      p.setOpaque(true);
-      p.setBackground(bgc);
-    }
-    return p;
   }
 
   public static void main(String[] args) {
@@ -194,7 +176,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -367,5 +349,26 @@ final class SwingUtils {
     return Stream.of(parent.getComponents())
         .filter(Container.class::isInstance).map(Container.class::cast)
         .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
+  }
+
+  public static Component makeTitledPanel(String title, Container cmp, Color bgc) {
+    JPanel p = new JPanel(new BorderLayout());
+    if (cmp.getLayout() instanceof BoxLayout) {
+      p.add(cmp, BorderLayout.NORTH);
+    } else {
+      p.add(cmp);
+    }
+    if (Objects.nonNull(title)) {
+      TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), title);
+      if (Objects.nonNull(bgc)) {
+        b.setTitleColor(new Color(~bgc.getRGB()));
+      }
+      p.setBorder(b);
+    }
+    if (Objects.nonNull(bgc)) {
+      p.setOpaque(true);
+      p.setBackground(bgc);
+    }
+    return p;
   }
 }
