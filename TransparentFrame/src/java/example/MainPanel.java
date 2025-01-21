@@ -49,7 +49,6 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p3));
 
     String path = "example/GIANT_TCR1_2013.jpg";
-    BufferedImage image = ImageUtils.makeImage(path);
     desktop.setBorder(new CentredBackgroundBorder(ImageUtils.makeImage(path)));
     // D3D/OGL: Window translucency doesn't work with accelerated pipelines
     // https://bugs.openjdk.org/browse/JDK-6655001
