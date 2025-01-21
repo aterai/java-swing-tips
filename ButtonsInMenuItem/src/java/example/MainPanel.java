@@ -11,6 +11,7 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.DefaultEditorKit;
@@ -24,31 +25,56 @@ public final class MainPanel extends JPanel {
   }
 
   private static JMenuBar createMenuBar() {
-    Component edit = makeEditButtonBar(Arrays.asList(
-        makeButton("Cut", new DefaultEditorKit.CutAction()),
-        makeButton("Copy", new DefaultEditorKit.CopyAction()),
-        makeButton("Paste", new DefaultEditorKit.PasteAction())));
-
+    Component edit = MenuBarUtils.makeButtonBar(Arrays.asList(
+        MenuBarUtils.makeButton("Cut", new DefaultEditorKit.CutAction()),
+        MenuBarUtils.makeButton("Copy", new DefaultEditorKit.CopyAction()),
+        MenuBarUtils.makeButton("Paste", new DefaultEditorKit.PasteAction())));
     JMenu menu = new JMenu("File");
     menu.add("111111111");
     menu.addSeparator();
-    menu.add(makeEditMenuItem(edit));
+    menu.add(MenuBarUtils.makeGridBagMenuItem(edit));
     menu.addSeparator();
     menu.add("22222");
     menu.add("3333");
     menu.add("4444444");
-
     JMenuBar mb = new JMenuBar();
     mb.add(menu);
     return mb;
   }
 
-  private static JMenuItem makeEditMenuItem(Component edit) {
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+final class MenuBarUtils {
+  private MenuBarUtils() {
+    /* Singleton */
+  }
+
+  public static JMenuItem makeGridBagMenuItem(Component comp) {
     JMenuItem item = new JMenuItem("Edit") {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.width += edit.getPreferredSize().width;
-        d.height = Math.max(edit.getPreferredSize().height, d.height);
+        d.width += comp.getPreferredSize().width;
+        d.height = Math.max(comp.getPreferredSize().height, d.height);
         return d;
       }
 
@@ -68,12 +94,12 @@ public final class MainPanel extends JPanel {
     c.fill = GridBagConstraints.HORIZONTAL;
     item.add(Box.createHorizontalGlue(), c);
     c.fill = GridBagConstraints.NONE;
-    item.add(edit, c);
+    item.add(comp, c);
 
     return item;
   }
 
-  private static Component makeEditButtonBar(List<AbstractButton> list) {
+  public static Component makeButtonBar(List<AbstractButton> list) {
     int size = list.size();
     JPanel p = new JPanel(new GridLayout(1, size, 0, 0)) {
       @Override public Dimension getMaximumSize() {
@@ -90,7 +116,7 @@ public final class MainPanel extends JPanel {
     return new JLayer<>(p, new EditMenuLayerUI<>(list.get(size - 1)));
   }
 
-  private static AbstractButton makeButton(String title, Action action) {
+  public static AbstractButton makeButton(String title, Action action) {
     AbstractButton b = new JButton(action);
     b.addActionListener(e -> {
       Component a = (Component) e.getSource();
@@ -109,27 +135,6 @@ public final class MainPanel extends JPanel {
     b.setFocusPainted(false);
     b.setOpaque(false);
     return b;
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
 
