@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,9 +18,9 @@ import java.nio.file.WatchService;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -37,35 +36,20 @@ public final class MainPanel extends JPanel {
     table.setRowSorter(sorter);
     table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
+    // TableColumn col = table.getColumnModel().getColumn(0);
+    // col.setMinWidth(30);
+    // col.setMaxWidth(30);
+    // col.setResizable(false);
 
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(30);
-    col.setMaxWidth(30);
-    col.setResizable(false);
-
-    Path dir = Paths.get(System.getProperty("java.io.tmpdir"));
     SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
-    Thread worker = new Thread(() -> {
-      try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
-        dir.register(
-            watcher,
-            StandardWatchEventKinds.ENTRY_CREATE,
-            StandardWatchEventKinds.ENTRY_DELETE);
-        append("register: " + dir);
-        processEvents(dir, watcher);
-        loop.exit();
-      } catch (IOException ex) {
-        throw new UncheckedIOException(ex);
-      }
-    });
+    Thread worker = getThread(loop);
     worker.start();
     if (!loop.enter()) {
       append("Error");
     }
-
     addHierarchyListener(e -> {
-      boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (displayability && !e.getComponent().isDisplayable()) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable()) {
         worker.interrupt();
       }
     });
@@ -91,6 +75,24 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(sp);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private Thread getThread(SecondaryLoop loop) {
+    return new Thread(() -> {
+      try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
+        Path dir = Paths.get(System.getProperty("java.io.tmpdir"));
+        dir.register(
+            watcher,
+            StandardWatchEventKinds.ENTRY_CREATE,
+            StandardWatchEventKinds.ENTRY_DELETE);
+        append("register: " + dir);
+        processEvents(dir, watcher);
+        loop.exit();
+      } catch (IOException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+        // throw new UncheckedIOException(ex);
+      }
+    });
   }
 
   // Watching a Directory for Changes (The Java™ Tutorials > Essential Classes > Basic I/O)
@@ -177,7 +179,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
