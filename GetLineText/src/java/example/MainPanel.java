@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -19,6 +20,23 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JTextArea textArea = new JTextArea(makeText());
+    textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+    JScrollPane scroll = new JScrollPane(textArea);
+    scroll.setRowHeaderView(new LineNumberView(textArea));
+    JButton button = new JButton("count commented lines: startsWith(\"#\")");
+    button.addActionListener(e -> {
+      String msg = "commented lines: " + getCount1(textArea);
+      String title = "title";
+      JOptionPane.showMessageDialog(scroll, msg, title, JOptionPane.INFORMATION_MESSAGE);
+    });
+    EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
+    add(button, BorderLayout.NORTH);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String makeText() {
     StringBuilder sb = new StringBuilder();
     String txt = "1111111111111111\n";
     String comment = "#comment\n";
@@ -28,72 +46,69 @@ public final class MainPanel extends JPanel {
         sb.append(comment);
       }
     });
-
-    JTextArea textArea = new JTextArea();
-    JScrollPane scroll = new JScrollPane(textArea);
-    textArea.setText(sb.toString());
-    scroll.setRowHeaderView(new LineNumberView(textArea));
-    textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
-
-    JButton button = new JButton("count commented lines: startsWith(\"#\")");
-
-    button.addActionListener(e -> {
-      int count = 0;
-      StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
-      while (st.hasMoreTokens()) {
-        // if (st.nextToken().startsWith(SHARP)) {
-        // if (st.nextToken().charAt(0) == SHARP) {
-        if (st.nextToken().codePointAt(0) == SHARP) {
-          count++;
-        }
-      }
-      // // String#split >>>>
-      // for (String line : textArea.getText().split("\\n")) {
-      //   if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
-      //     count++;
-      //   }
-      // }
-      // // <<<< String#split
-
-      // // LineNumberReader >>>>
-      // try (LineNumberReader lnr = new LineNumberReader(new StringReader(textArea.getText()))) {
-      //   String line = null;
-      //   while ((line = lnr.readLine()) != null) {
-      //     if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
-      //       count++;
-      //     }
-      //   }
-      // } catch (java.io.IOException ex) {
-      //   ex.printStackTrace();
-      // }
-      // // <<<< LineNumberReader
-
-      // // ElementCount >>>>
-      // Document doc = textArea.getDocument();
-      // Element root = doc.getDefaultRootElement();
-      // try {
-      //   for (int i = 0; i < root.getElementCount(); i++) {
-      //     Element elm = root.getElement(i);
-      //     int len = elm.getEndOffset() - elm.getStartOffset();
-      //     String line = doc.getText(elm.getStartOffset(), len);
-      //     if (line.codePointAt(0) == SHARP) {
-      //       count++;
-      //     }
-      //   }
-      // } catch (BadLocationException ex) {
-      //   throw new RuntimeException(ex); // should never happen
-      // }
-      // // <<<< ElementCount
-      String msg = "commented lines: " + count;
-      JOptionPane.showMessageDialog(scroll, msg, "title", JOptionPane.INFORMATION_MESSAGE);
-    });
-    // frame.getRootPane().setDefaultButton(button);
-    EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
-
-    add(button, BorderLayout.NORTH);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
+    return sb.toString();
   }
+
+  private static int getCount1(JTextArea textArea) {
+    int count = 0;
+    StringTokenizer st = new StringTokenizer(textArea.getText(), "\n");
+    while (st.hasMoreTokens()) {
+      // if (st.nextToken().startsWith(SHARP)) {
+      // if (st.nextToken().charAt(0) == SHARP) {
+      if (st.nextToken().codePointAt(0) == SHARP) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  // private static int getCount2(JTextArea textArea) {
+  //   // String#split
+  //   int count = 0;
+  //   for (String line : textArea.getText().split("\\n")) {
+  //     if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
+  //       count++;
+  //     }
+  //   }
+  //   return count;
+  // }
+
+  // private static int getCount3(JTextArea textArea) {
+  //   // LineNumberReader
+  //   int count = 0;
+  //   String txt = textArea.getText();
+  //   try (LineNumberReader lnr = new LineNumberReader(new StringReader(txt))) {
+  //     String line = null;
+  //     while ((line = lnr.readLine()) != null) {
+  //       if (!line.isEmpty() && line.codePointAt(0) == SHARP) {
+  //         count++;
+  //       }
+  //     }
+  //   } catch (java.io.IOException ex) {
+  //     ex.printStackTrace();
+  //   }
+  //   return count;
+  // }
+
+  // private static int getCount4(JTextArea textArea) {
+  //   // ElementCount
+  //   int count = 0;
+  //   Document doc = textArea.getDocument();
+  //   Element root = doc.getDefaultRootElement();
+  //   try {
+  //     for (int i = 0; i < root.getElementCount(); i++) {
+  //       Element elm = root.getElement(i);
+  //       int len = elm.getEndOffset() - elm.getStartOffset();
+  //       String line = doc.getText(elm.getStartOffset(), len);
+  //       if (line.codePointAt(0) == SHARP) {
+  //         count++;
+  //       }
+  //     }
+  //   } catch (BadLocationException ex) {
+  //     throw new RuntimeException(ex); // should never happen
+  //   }
+  //   return count;
+  // }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
@@ -105,7 +120,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
