@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Stream;
@@ -118,7 +119,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -132,7 +133,7 @@ public final class MainPanel extends JPanel {
 
 class SelectedImageFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
-    return (argb & 0xFF_FF_FF_00) | ((argb & 0xFF) >> 1);
+    return argb & 0xFF_FF_FF_00 | (argb & 0xFF) >> 1;
   }
 }
 

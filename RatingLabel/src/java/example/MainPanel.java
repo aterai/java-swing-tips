@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -112,7 +113,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -230,6 +231,6 @@ class SelectedImageFilter extends RGBImageFilter {
     int r = Math.round(((argb >> 16) & 0xFF) * rf);
     int g = Math.round(((argb >> 8) & 0xFF) * gf);
     int b = Math.round((argb & 0xFF) * bf);
-    return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
+    return argb & 0xFF_00_00_00 | r << 16 | g << 8 | b;
   }
 }

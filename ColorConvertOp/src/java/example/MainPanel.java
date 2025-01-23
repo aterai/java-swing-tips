@@ -16,6 +16,7 @@ import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -91,7 +92,7 @@ public final class MainPanel extends JPanel {
     BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
     Graphics g = dst.createGraphics();
     // // g.setColor(Color.WHITE);
-    // https://community.oracle.com/thread/1373262 Color to Grayscale to Binary
+    // https://community.oracle.com/thread/1373262 Color to Gray scale to Binary
     // g.fillRect(0, 0, w, h); // need to pre-fill(alpha?)
     g.drawImage(img, 0, 0, null);
     g.dispose();
@@ -125,7 +126,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -147,8 +148,9 @@ class GrayImageFilter extends RGBImageFilter {
     int r = (argb >> 16) & 0xFF;
     int g = (argb >> 8) & 0xFF;
     int b = argb & 0xFF;
-    int m = (2 * r + 4 * g + b) / 7; // NTSC Coefficients
+    // NTSC Coefficients
+    int m = (2 * r + 4 * g + b) / 7;
     // return new Color(m, m, m, a).getRGB();
-    return (argb & 0xFF_00_00_00) | (m << 16) | (m << 8) | m;
+    return argb & 0xFF_00_00_00 | m << 16 | m << 8 | m;
   }
 }

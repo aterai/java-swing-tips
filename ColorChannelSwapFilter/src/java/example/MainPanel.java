@@ -13,6 +13,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -67,8 +68,8 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(2));
 
     addHierarchyListener(e -> {
-      boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (displayability && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
         // System.out.println("DISPOSE_ON_CLOSE");
         worker.cancel(true);
         // worker = null;
@@ -103,7 +104,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -151,7 +152,7 @@ class RedGreenChannelSwapFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     int r = (argb >> 16) & 0xFF;
     int g = (argb >> 8) & 0xFF;
-    return (argb & 0xFF_00_00_FF) | (g << 16) | (r << 8);
+    return argb & 0xFF_00_00_FF | g << 16 | r << 8;
   }
 }
 

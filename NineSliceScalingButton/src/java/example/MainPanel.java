@@ -13,6 +13,7 @@ import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -108,7 +109,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -302,7 +303,7 @@ class NineSliceScalingIcon implements Icon {
 class PressedFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     int r = Math.round(((argb >> 16) & 0xFF) * .6f);
-    return (argb & 0xFF_00_FF_FF) | (r << 16);
+    return argb & 0xFF_00_FF_FF | r << 16;
   }
 }
 
@@ -311,6 +312,6 @@ class RolloverFilter extends RGBImageFilter {
     // int r = (argb >> 16) & 0xFF;
     int g = Math.min(0xFF, Math.round(((argb >> 8) & 0xFF) * 1.5f));
     int b = Math.min(0xFF, Math.round((argb & 0xFF) * 1.5f));
-    return (argb & 0xFF_FF_00_00) | (g << 8) | b;
+    return argb & 0xFF_FF_00_00 | g << 8 | b;
   }
 }

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -86,7 +87,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -146,7 +147,7 @@ class MosaicImageFilter implements BufferedImageOp {
     for (int by = 0; by < h; by++) {
       for (int bx = 0; bx < w; bx++) {
         int i = bx + by * w;
-        pixels[i] = (pixels[i] & 0xFF_00_00_00) | rgb;
+        pixels[i] = pixels[i] & 0xFF_00_00_00 | rgb;
       }
     }
   }

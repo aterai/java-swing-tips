@@ -10,6 +10,7 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.RGBImageFilter;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -153,7 +154,7 @@ class ColorFilter extends RGBImageFilter {
     int r = 0xFF; // (argb >> 16) & 0xFF;
     int g = (argb >> 8) & 0xFF;
     int b = argb & 0xFF;
-    return (argb & 0xFF_00_00_00) | (r << 16) | (g << 8) | b;
+    return argb & 0xFF_00_00_00 | r << 16 | g << 8 | b;
   }
 }
 
@@ -199,7 +200,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
