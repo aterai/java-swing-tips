@@ -15,21 +15,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 // import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
-  private static final Paint TEXTURE = makeCheckerTexture();
+  private static final Paint TEXTURE = ImageUtils.makeCheckerTexture();
 
   private MainPanel() {
     super();
     // ecqlipse 2 PNG by chrfb on DeviantArt
     // https://www.deviantart.com/chrfb/art/ecqlipse-2-PNG-59941546
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL url = cl.getResource("example/RECYCLE BIN - EMPTY_16x16-32.png");
-
+    String path1 = "example/RECYCLE BIN - EMPTY_16x16-32.png";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path1);
     add(makeButton(makeTitleWithIcon(url, "align=top", "top")));
     add(makeButton(makeTitleWithIcon(url, "align=middle", "middle")));
     add(makeButton(makeTitleWithIcon(url, "align=bottom", "bottom")));
@@ -46,17 +46,14 @@ public final class MainPanel extends JPanel {
     p.add(label);
     p.add(b);
     add(p);
-
     add(makeButton("☎ text"));
-
     add(new TranslucentButton("TranslucentButton", icon));
-
     add(makeButton("1"));
     add(makeButton("22222222"));
     add(makeButton("333333333333333333"));
     add(makeButton("44444444444444444444444444444"));
 
-    BufferedImage bi = getFilteredImage(cl.getResource("example/test.jpg"));
+    BufferedImage bi = ImageUtils.getFilteredImage("example/test.jpg");
     setBorder(new CentredBackgroundBorder(bi));
     // setBackground(new Color(50, 50, 50));
     setOpaque(false);
@@ -98,7 +95,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -107,57 +104,6 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-  }
-
-  private static BufferedImage getFilteredImage(URL url) {
-    BufferedImage image = Optional.ofNullable(url).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-
-    int w = image.getWidth();
-    int h = image.getHeight();
-    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-    byte[] b = new byte[256];
-    for (int i = 0; i < b.length; i++) {
-      b[i] = (byte) (i * .5);
-    }
-    BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
-    op.filter(image, dst);
-    return dst;
-  }
-
-  private static BufferedImage makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
-  }
-
-  private static TexturePaint makeCheckerTexture() {
-    int cs = 6;
-    int sz = cs * cs;
-    BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = img.createGraphics();
-    g2.setPaint(new Color(120, 120, 120));
-    g2.fillRect(0, 0, sz, sz);
-    g2.setPaint(new Color(200, 200, 200, 20));
-    for (int i = 0; i * cs < sz; i++) {
-      for (int j = 0; j * cs < sz; j++) {
-        if ((i + j) % 2 == 0) {
-          g2.fillRect(i * cs, j * cs, cs, cs);
-        }
-      }
-    }
-    g2.dispose();
-    return new TexturePaint(img, new Rectangle(sz, sz));
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -176,9 +122,9 @@ class TranslucentButton extends JButton {
   private static final Color SB = new Color(1f, 1f, 1f, .1f);
   private static final float R = 8f;
 
-  protected TranslucentButton(String text) {
-    super(text);
-  }
+  // protected TranslucentButton(String text) {
+  //   super(text);
+  // }
 
   protected TranslucentButton(String text, Icon icon) {
     super(text, icon);
@@ -301,5 +247,63 @@ class CentredBackgroundBorder implements Border {
 
   @Override public boolean isBorderOpaque() {
     return true;
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static BufferedImage getFilteredImage(String path) {
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    BufferedImage image = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ImageUtils::makeMissingImage);
+
+    int w = image.getWidth();
+    int h = image.getHeight();
+    BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    byte[] b = new byte[256];
+    for (int i = 0; i < b.length; i++) {
+      b[i] = (byte) (i * .5);
+    }
+    BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
+    op.filter(image, dst);
+    return dst;
+  }
+
+  public static BufferedImage makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
+  }
+
+  public static TexturePaint makeCheckerTexture() {
+    int cs = 6;
+    int sz = cs * cs;
+    BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = img.createGraphics();
+    g2.setPaint(new Color(120, 120, 120));
+    g2.fillRect(0, 0, sz, sz);
+    g2.setPaint(new Color(200, 200, 200, 20));
+    for (int i = 0; i * cs < sz; i++) {
+      for (int j = 0; j * cs < sz; j++) {
+        if ((i + j) % 2 == 0) {
+          g2.fillRect(i * cs, j * cs, cs, cs);
+        }
+      }
+    }
+    g2.dispose();
+    return new TexturePaint(img, new Rectangle(sz, sz));
   }
 }
