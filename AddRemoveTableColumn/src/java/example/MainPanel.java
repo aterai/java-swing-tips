@@ -6,8 +6,8 @@ package example;
 
 import java.awt.*;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -76,21 +76,24 @@ final class TableHeaderPopupMenu extends JPopupMenu {
   /* default */ TableHeaderPopupMenu(JTable table) {
     super();
     TableColumnModel columnModel = table.getColumnModel();
-    List<TableColumn> list = Collections.list(columnModel.getColumns());
-    list.forEach(tableColumn -> {
-      String name = Objects.toString(tableColumn.getHeaderValue());
-      // System.out.format("%s - %s%n", name, tableColumn.getIdentifier());
-      JCheckBoxMenuItem item = new JCheckBoxMenuItem(name, true);
-      item.addItemListener(e -> {
-        if (((AbstractButton) e.getItemSelectable()).isSelected()) {
-          columnModel.addColumn(tableColumn);
-        } else {
-          columnModel.removeColumn(tableColumn);
-        }
-        updateMenuItems(columnModel.getColumnCount() == 1);
-      });
-      add(item);
+    for (TableColumn tableColumn : Collections.list(columnModel.getColumns())) {
+      add(makeCheckBoxMenuItem(tableColumn, columnModel));
+    }
+  }
+
+  private JMenuItem makeCheckBoxMenuItem(TableColumn column, TableColumnModel model) {
+    String name = Objects.toString(column.getHeaderValue());
+    // System.out.format("%s - %s%n", name, column.getIdentifier());
+    JMenuItem item = new JCheckBoxMenuItem(name, true);
+    item.addItemListener(e -> {
+      if (((AbstractButton) e.getItemSelectable()).isSelected()) {
+        model.addColumn(column);
+      } else {
+        model.removeColumn(column);
+      }
+      updateMenuItems(model.getColumnCount() == 1);
     });
+    return item;
   }
 
   @Override public void show(Component c, int x, int y) {

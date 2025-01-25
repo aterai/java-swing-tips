@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -33,20 +34,23 @@ public final class MainPanel extends JPanel {
         setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
           Component c = r.getTreeCellRendererComponent(
               tree, value, selected, expanded, leaf, row, hasFocus);
-          if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
-            JLabel l = (JLabel) c;
-            Object v = ((DefaultMutableTreeNode) value).getUserObject();
-            if (v instanceof NodeObject) {
-              NodeObject uo = (NodeObject) v;
-              l.setText(Objects.toString(uo.getTitle(), ""));
-              l.setIcon(uo.getIcon());
-            } else {
-              l.setText(Objects.toString(value, ""));
-              l.setIcon(null);
-            }
+          if (c instanceof JLabel && value instanceof DefaultMutableTreeNode) {
+            update((JLabel) c, (DefaultMutableTreeNode) value);
           }
           return c;
         });
+      }
+
+      private void update(JLabel label, DefaultMutableTreeNode value) {
+        Object o = value.getUserObject();
+        if (o instanceof NodeObject) {
+          NodeObject uo = (NodeObject) o;
+          label.setText(Objects.toString(uo.getTitle(), ""));
+          label.setIcon(uo.getIcon());
+        } else {
+          label.setText(Objects.toString(value, ""));
+          label.setIcon(null);
+        }
       }
     };
     TreePath path = new TreePath(s1.getPath());
@@ -94,7 +98,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

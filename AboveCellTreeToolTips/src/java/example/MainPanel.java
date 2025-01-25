@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -28,15 +29,6 @@ public final class MainPanel extends JPanel {
           if (c instanceof JComponent) {
             ((JComponent) c).setToolTipText(Objects.toString(value, null));
           }
-          // JLabel l = (JLabel) c;
-          // Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, tree);
-          // if (s instanceof JScrollPane) {
-          //   Insets i = l.getInsets();
-          //   Rectangle rect = ((JScrollPane) s).getViewportBorderBounds();
-          //   FontMetrics fm = l.getFontMetrics(l.getFont());
-          //   String str = Objects.toString(value, "");
-          //   l.setToolTipText(fm.stringWidth(str) > rect.width ? str : null);
-          // }
           return c;
         });
       }
@@ -112,7 +104,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

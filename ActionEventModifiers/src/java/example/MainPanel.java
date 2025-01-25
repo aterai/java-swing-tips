@@ -34,7 +34,8 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     p.add(makeTextField());
-    JButton button = makeButton();
+    JButton button = new JButton("TEST: ActionEvent#getModifiers()");
+    button.addActionListener(MainPanel::info);
     p.add(button);
     EventQueue.invokeLater(() -> {
       JRootPane root = getRootPane();
@@ -70,46 +71,35 @@ public final class MainPanel extends JPanel {
     return field;
   }
 
-  private static JButton makeButton() {
-    JButton button = new JButton("TEST: ActionEvent#getModifiers()");
-    button.addActionListener(e -> {
-      // BAD EXAMPLE: boolean isShiftDown = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
-      // Always use ActionEvent.*_MASK instead of InputEvent.*_MASK in ActionListener
-      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      if (isShiftDown) {
-        LOGGER.info(() -> "JButton: Shift is Down");
-      } else {
-        LOGGER.info(() -> "JButton: Shift is Up");
-      }
-      if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
-        LOGGER.info(() -> "JButton: Mouse event mask");
-      }
-    });
-    return button;
+  private static void info(ActionEvent e) {
+    String name = e.getSource().getClass().getSimpleName();
+    // BAD EXAMPLE: boolean isShiftDown = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
+    // Always use ActionEvent.*_MASK instead of InputEvent.*_MASK in ActionListener
+    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+    if (isShiftDown) {
+      LOGGER.info(() -> name + ": Shift is Down");
+    } else {
+      LOGGER.info(() -> name + ": Shift is Up");
+    }
+    if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
+      LOGGER.info(() -> name + ": Mouse event mask");
+    }
   }
 
   private static JMenuBar makeMenuBar() {
     JMenuBar menuBar = new JMenuBar();
     JMenu menu = menuBar.add(new JMenu("Test"));
     menu.setMnemonic(KeyEvent.VK_T);
-    JMenuItem item = menu.add(new AbstractAction("beep") {
+    // JMenuItem item = menu.add(new AbstractAction("beep") {
+    JMenuItem item = new JMenuItem(new AbstractAction("beep") {
       @Override public void actionPerformed(ActionEvent e) {
         Toolkit.getDefaultToolkit().beep();
       }
     });
+    menu.add(item).addActionListener(MainPanel::info);
     item.setAccelerator(KeyStroke.getKeyStroke("shift 1"));
     item.setMnemonic(KeyEvent.VK_I);
-    item.addActionListener(e -> {
-      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      if (isShiftDown) {
-        LOGGER.info(() -> "JMenuItem: Shift is Down");
-      } else {
-        LOGGER.info(() -> "JMenuItem: Shift is Up");
-      }
-      if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
-        LOGGER.info(() -> "JMenuItem: Mouse event mask");
-      }
-    });
+    // item.addActionListener(MainPanel::info);
     return menuBar;
   }
 
@@ -123,7 +113,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
