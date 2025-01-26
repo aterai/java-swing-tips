@@ -25,7 +25,6 @@ import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
@@ -103,10 +102,10 @@ public final class MainPanel extends JPanel {
   }
 
   // https://ateraimemo.com/Swing/Highlighter.html
-  public static void setHighlight(JTextComponent jtc, String pattern, HighlightPainter painter) {
-    Highlighter highlighter = jtc.getHighlighter();
+  public static void setHighlight(JEditorPane editor, String pattern, HighlightPainter painter) {
+    Highlighter highlighter = editor.getHighlighter();
     highlighter.removeAllHighlights();
-    Document doc = jtc.getDocument();
+    Document doc = editor.getDocument();
     try {
       String text = doc.getText(0, doc.getLength());
       Matcher matcher = Pattern.compile(pattern).matcher(text);
@@ -118,9 +117,9 @@ public final class MainPanel extends JPanel {
         pos = end;
       }
     } catch (BadLocationException | PatternSyntaxException ex) {
-      UIManager.getLookAndFeel().provideErrorFeedback(jtc);
+      UIManager.getLookAndFeel().provideErrorFeedback(editor);
     }
-    jtc.repaint();
+    editor.repaint();
   }
 
   public static void main(String[] args) {

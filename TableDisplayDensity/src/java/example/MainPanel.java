@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
@@ -98,7 +99,7 @@ public final class MainPanel extends JPanel {
     b3.addActionListener(e -> scaling(table, font, fontSize, rowHeight, 2f));
     JToolBar toolBar = new JToolBar();
     ButtonGroup group = new ButtonGroup();
-    for (AbstractButton b : Arrays.asList(b1, b2, b3)) {
+    for (JToggleButton b : Arrays.asList(b1, b2, b3)) {
       b.setFocusable(false);
       group.add(b);
       toolBar.add(b);
@@ -138,7 +139,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
