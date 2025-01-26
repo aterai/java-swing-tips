@@ -110,17 +110,9 @@ public final class MainPanel extends JPanel {
   }
 
   private static TableModel makeModel() {
-    return new DefaultTableModel() {
+    return new DefaultTableModel(6, 7) {
       @Override public Class<?> getColumnClass(int column) {
         return Integer.class;
-      }
-
-      @Override public int getRowCount() {
-        return 6;
-      }
-
-      @Override public int getColumnCount() {
-        return 7;
       }
 
       @Override public Object getValueAt(int row, int column) {

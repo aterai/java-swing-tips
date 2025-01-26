@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
@@ -51,7 +52,6 @@ public final class MainPanel extends JPanel {
       private Point getCaretPoint() {
         Point pt = null;
         try {
-          // Java 9: Rectangle r = modelToView2D(getCaretPosition()).getBounds();
           Rectangle r = modelToView(getCaretPosition());
           if (r != null) {
             pt = r.getLocation();
@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -109,9 +110,7 @@ public final class MainPanel extends JPanel {
         JPopupMenu pop = (JPopupMenu) e.getSource();
         JTextComponent tc = (JTextComponent) pop.getInvoker();
         log.append(tc.getClass().getName() + ": " + tc.getName() + "\n");
-        // TEST:
-        // tc.requestFocusInWindow();
-        // tc.selectAll();
+        // TEST: tc.requestFocusInWindow(); tc.selectAll();
         boolean hasSelectedText = Objects.nonNull(tc.getSelectedText());
         cutAction.setEnabled(hasSelectedText);
         copyAction.setEnabled(hasSelectedText);
@@ -130,7 +129,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

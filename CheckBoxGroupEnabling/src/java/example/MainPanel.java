@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeModelEvent;
@@ -77,27 +78,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JTree makeTree() {
-    JTree tree = new JTree() {
-      @Override public void updateUI() {
-        setCellRenderer(null);
-        setCellEditor(null);
-        super.updateUI();
-        setEditable(true);
-        setRootVisible(false);
-        setShowsRootHandles(false);
-        setCellRenderer(new CheckBoxNodeRenderer());
-        setCellEditor(new CheckBoxNodeEditor());
-      }
-
-      @Override public boolean isPathEditable(TreePath path) {
-        return Optional.ofNullable(path.getLastPathComponent())
-            .filter(DefaultMutableTreeNode.class::isInstance)
-            .map(n -> ((DefaultMutableTreeNode) n).getUserObject())
-            .filter(CheckBoxNode.class::isInstance)
-            .map(uo -> ((CheckBoxNode) uo).isEnabled())
-            .orElse(false);
-      }
-    };
+    JTree tree = new CheckBoxTree();
     int row = 0;
     while (row < tree.getRowCount()) {
       tree.expandRow(row++);
@@ -132,7 +113,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -169,6 +150,28 @@ class CheckBoxNode {
 
   @Override public String toString() {
     return text;
+  }
+}
+
+class CheckBoxTree extends JTree {
+  @Override public void updateUI() {
+    setCellRenderer(null);
+    setCellEditor(null);
+    super.updateUI();
+    setEditable(true);
+    setRootVisible(false);
+    setShowsRootHandles(false);
+    setCellRenderer(new CheckBoxNodeRenderer());
+    setCellEditor(new CheckBoxNodeEditor());
+  }
+
+  @Override public boolean isPathEditable(TreePath path) {
+    return Optional.ofNullable(path.getLastPathComponent())
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(n -> ((DefaultMutableTreeNode) n).getUserObject())
+        .filter(CheckBoxNode.class::isInstance)
+        .map(uo -> ((CheckBoxNode) uo).isEnabled())
+        .orElse(false);
   }
 }
 

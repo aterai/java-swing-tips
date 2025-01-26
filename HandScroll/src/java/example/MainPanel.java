@@ -56,7 +56,6 @@ public final class MainPanel extends JPanel {
     AtomicBoolean isAdjusting = new AtomicBoolean();
     return new JViewport() {
       private static final boolean WEIGHT_MIXING = false;
-      // private boolean isAdjusting;
 
       @Override public void revalidate() {
         if (!WEIGHT_MIXING && isAdjusting.get()) {

@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
@@ -20,35 +21,14 @@ public final class MainPanel extends JPanel {
   private static JToolBar makeVerticalToolBar() {
     JToolBar toolBar = new JToolBar(SwingConstants.VERTICAL);
     // toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.PAGE_AXIS));
-
-    // TEST:
-    // JToolBar toolBar = new JToolBar(orientation) {
-    //   @Override public Dimension getPreferredSize() {
-    //     if (((BasicToolBarUI) getUI()).isFloating()) {
-    //       setLayout(new GridLayout(0, 3));
-    //       return new Dimension(ICON_SIZE * 3, ICON_SIZE * 2);
-    //     } else {
-    //       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    //       return super.getPreferredSize();
-    //     }
-    //   }
-    //   @Override public Dimension getMinimumSize() {
-    //     return getPreferredSize();
-    //   }
-    //   @Override public Dimension getMaximumSize() {
-    //     return getPreferredSize();
-    //   }
-    // };
-
     JPanel panel = new JPanel() {
       @Override public Dimension getPreferredSize() {
-        Dimension dim;
+        Dimension dim = super.getPreferredSize();
         if (((BasicToolBarUI) toolBar.getUI()).isFloating()) {
           setLayout(new GridLayout(0, 3));
-          dim = new Dimension(ICON_SIZE * 3, ICON_SIZE * 2);
+          dim.setSize(ICON_SIZE * 3, ICON_SIZE * 2);
         } else {
           setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-          dim = super.getPreferredSize();
         }
         return dim;
       }
@@ -95,6 +75,28 @@ public final class MainPanel extends JPanel {
     return toolBar;
   }
 
+  // private static JToolBar makeTestToolBar(int orientation) {
+  //   return new JToolBar(orientation) {
+  //     @Override public Dimension getPreferredSize() {
+  //       if (((BasicToolBarUI) getUI()).isFloating()) {
+  //         setLayout(new GridLayout(0, 3));
+  //         return new Dimension(ICON_SIZE * 3, ICON_SIZE * 2);
+  //       } else {
+  //         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+  //         return super.getPreferredSize();
+  //       }
+  //     }
+  //
+  //     @Override public Dimension getMinimumSize() {
+  //       return getPreferredSize();
+  //     }
+  //
+  //     @Override public Dimension getMaximumSize() {
+  //       return getPreferredSize();
+  //     }
+  //   };
+  // }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -105,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

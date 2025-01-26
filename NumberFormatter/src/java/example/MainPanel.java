@@ -8,6 +8,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -32,30 +33,27 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JSpinner makeWarningSpinner(SpinnerNumberModel model) {
+  private static JSpinner makeWarningSpinner(SpinnerNumberModel model) {
     JSpinner spinner = new JSpinner(model);
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFormatterFactory(makeFormatterFactory(model));
     ftf.getDocument().addDocumentListener(new DocumentListener() {
-      private final Color errorBackground = new Color(0xFF_C8_C8);
+      private final Color errorBgc = new Color(0xFF_C8_C8);
       @Override public void changedUpdate(DocumentEvent e) {
-        updateEditValid();
+        EventQueue.invokeLater(this::updateEditValid);
       }
 
       @Override public void insertUpdate(DocumentEvent e) {
-        updateEditValid();
+        EventQueue.invokeLater(this::updateEditValid);
       }
 
       @Override public void removeUpdate(DocumentEvent e) {
-        updateEditValid();
+        EventQueue.invokeLater(this::updateEditValid);
       }
 
       private void updateEditValid() {
-        EventQueue.invokeLater(() -> {
-          Color bgc = ftf.isEditValid() ? Color.WHITE : errorBackground;
-          ftf.setBackground(bgc);
-        });
+        ftf.setBackground(ftf.isEditValid() ? Color.WHITE : errorBgc);
       }
     });
     return spinner;
@@ -131,7 +129,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

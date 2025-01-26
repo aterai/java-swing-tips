@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
@@ -72,7 +73,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -126,9 +127,9 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
 
 class MetalTooltipSliderUI extends MetalSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
+    // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
     return new TrackListener() {
       @Override public void mousePressed(MouseEvent e) {
-        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
         if (SwingUtilities.isLeftMouseButton(e)) {
           JSlider slider = (JSlider) e.getComponent();
           if (slider.getOrientation() == SwingConstants.VERTICAL) {
