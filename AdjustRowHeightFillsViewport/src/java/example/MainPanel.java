@@ -9,14 +9,16 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     DefaultTableModel model = makeModel();
-    JTable table = makeTable(model);
+    JTable table = new AdjustRowHeightTable(model);
     JScrollPane scroll = makeScrollPane(table);
     JButton button = new JButton("add");
     button.addActionListener(e -> model.addRow(new Object[] {"", 0, false}));
@@ -37,38 +39,8 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private JTable makeTable(DefaultTableModel model) {
-    return new JTable(model) {
-      private int prevHeight = -1;
-      private int prevCount = -1;
-
-      private void updateRowsHeight(JViewport viewport) {
-        int height = viewport.getExtentSize().height;
-        int rowCount = getModel().getRowCount();
-        int defaultRowHeight = height / rowCount;
-        if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
-          int remainder = height % rowCount;
-          for (int i = 0; i < rowCount; i++) {
-            int a = Math.min(1, Math.max(0, remainder--));
-            setRowHeight(i, defaultRowHeight + a);
-          }
-        }
-        prevHeight = height;
-        prevCount = rowCount;
-      }
-
-      @Override public void doLayout() {
-        super.doLayout();
-        Class<JViewport> clz = JViewport.class;
-        Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-            .filter(clz::isInstance).map(clz::cast)
-            .ifPresent(this::updateRowsHeight);
-      }
-    };
-  }
-
-  private JScrollPane makeScrollPane(JTable table) {
-    return new JScrollPane(table) {
+  private JScrollPane makeScrollPane(Component comp) {
+    return new JScrollPane(comp) {
       private transient ComponentListener listener;
 
       @Override public void updateUI() {
@@ -99,7 +71,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -108,6 +80,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class AdjustRowHeightTable extends JTable {
+  private int prevHeight = -1;
+  private int prevCount = -1;
+
+  protected AdjustRowHeightTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void doLayout() {
+    super.doLayout();
+    Class<JViewport> clz = JViewport.class;
+    Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
+        .filter(clz::isInstance)
+        .map(clz::cast)
+        .ifPresent(this::updateRowsHeight);
+  }
+
+  private void updateRowsHeight(JViewport viewport) {
+    int height = viewport.getExtentSize().height;
+    int rowCount = getModel().getRowCount();
+    int defaultRowHeight = height / rowCount;
+    if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
+      int remainder = height % rowCount;
+      for (int i = 0; i < rowCount; i++) {
+        int a = Math.min(1, Math.max(0, remainder--));
+        setRowHeight(i, defaultRowHeight + a);
+      }
+    }
+    prevHeight = height;
+    prevCount = rowCount;
   }
 }
 
