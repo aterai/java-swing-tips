@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,7 +32,6 @@ public final class MainPanel extends JPanel {
       box.add(Box.createHorizontalStrut(5));
     });
     box.add(Box.createHorizontalGlue());
-
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
@@ -41,38 +41,7 @@ public final class MainPanel extends JPanel {
         return makeMissingImage();
       }
     }).orElseGet(MainPanel::makeMissingImage);
-
-    JPanel p = new JPanel() {
-      @Override protected void paintComponent(Graphics g) {
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
-        int w = img.getWidth(this);
-        int h = img.getHeight(this);
-        switch (getMode()) {
-          case VERTICAL:
-            AffineTransform at1 = AffineTransform.getScaleInstance(1d, -1d);
-            at1.translate(0, -h);
-            // AffineTransform at1 = new AffineTransform(1d, 0d, 0d, -1d, 0d, h);
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.drawImage(img, at1, this);
-            g2.dispose();
-            break;
-
-          case HORIZONTAL:
-            AffineTransform at2 = AffineTransform.getScaleInstance(-1d, 1d);
-            at2.translate(-w, 0);
-            // AffineTransform at2 = new AffineTransform(-1d, 0d, 0d, 1d, w, 0d);
-            AffineTransformOp atOp = new AffineTransformOp(at2, null);
-            g.drawImage(atOp.filter(img, null), 0, 0, w, h, this);
-            break;
-
-          default:
-            g.drawImage(img, 0, 0, w, h, this);
-        }
-      }
-    };
-
-    add(p);
+    add(new ImageFlipPanel(img));
     add(box, BorderLayout.SOUTH);
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
@@ -104,6 +73,43 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
+  private final class ImageFlipPanel extends JPanel {
+    private final transient BufferedImage image;
+
+    private ImageFlipPanel(BufferedImage image) {
+      super();
+      this.image = image;
+    }
+
+    @Override protected void paintComponent(Graphics g) {
+      g.setColor(getBackground());
+      g.fillRect(0, 0, getWidth(), getHeight());
+      int w = image.getWidth();
+      int h = image.getHeight();
+      switch (getMode()) {
+        case VERTICAL:
+          AffineTransform at1 = AffineTransform.getScaleInstance(1d, -1d);
+          at1.translate(0, -h);
+          // AffineTransform at1 = new AffineTransform(1d, 0d, 0d, -1d, 0d, h);
+          Graphics2D g2 = (Graphics2D) g.create();
+          g2.drawImage(image, at1, this);
+          g2.dispose();
+          break;
+
+        case HORIZONTAL:
+          AffineTransform at2 = AffineTransform.getScaleInstance(-1d, 1d);
+          at2.translate(-w, 0);
+          // AffineTransform at2 = new AffineTransform(-1d, 0d, 0d, 1d, w, 0d);
+          AffineTransformOp atOp = new AffineTransformOp(at2, null);
+          g.drawImage(atOp.filter(image, null), 0, 0, w, h, this);
+          break;
+
+        default:
+          g.drawImage(image, 0, 0, w, h, this);
+      }
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -114,7 +120,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
