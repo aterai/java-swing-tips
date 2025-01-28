@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
@@ -34,15 +35,14 @@ public final class MainPanel extends JPanel {
   public static Icon makeAnimatedIcon(String path, JComboBox<?> combo, int row) {
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
     return Optional.ofNullable(url)
-        .<Icon>map(u -> {
-          ImageIcon icon = new ImageIcon(u);
+        .map(ImageIcon::new)
+        .<Icon>map(icon -> {
           // Wastefulness: icon.setImageObserver(combo);
-          icon.setImageObserver((img, infoflags, x, y, w, h) -> {
-            // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
-            if (combo.isShowing() && (infoflags & (FRAMEBITS | ALLBITS)) != 0) {
+          icon.setImageObserver((img, flags, x, y, w, h) -> {
+            if (combo.isShowing() && (flags & (FRAMEBITS | ALLBITS)) != 0) {
               repaintComboBox(combo, row);
             }
-            return (infoflags & (ALLBITS | ABORT)) == 0;
+            return (flags & (ALLBITS | ABORT)) == 0;
           });
           return icon;
         })
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

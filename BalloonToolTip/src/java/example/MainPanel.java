@@ -11,6 +11,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -73,7 +74,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -124,17 +125,10 @@ class BalloonToolTip extends JToolTip {
     listener = e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-        // Window w = SwingUtilities.getWindowAncestor(c);
-        // if (w != null && w.getType() == Window.Type.POPUP) {
-        //   // Popup$HeavyWeightWindow
-        //   w.setBackground(new Color(0x0, true));
-        // }
         Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
+            .filter(w -> w.getType() == Window.Type.POPUP)
+            .filter(w -> Optional.ofNullable(w.getGraphicsConfiguration())
+                .map(GraphicsConfiguration::isTranslucencyCapable).orElse(false))
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };

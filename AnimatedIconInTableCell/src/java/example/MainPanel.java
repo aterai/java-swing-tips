@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,25 +43,27 @@ public final class MainPanel extends JPanel {
 
   public static Icon makeImageIcon(URL url, JTable table, int row, int col) {
     return Optional.ofNullable(url)
-        .<Icon>map(u -> {
-          ImageIcon icon = new ImageIcon(u);
-          // Wastefulness: icon.setImageObserver((ImageObserver) table);
-          icon.setImageObserver((img, infoflags, x, y, w, h) -> {
-            // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
-            if (!table.isShowing()) {
-              return false; // @see javax.swing.JLabel#imageUpdate(...)
+        .map(ImageIcon::new)
+        .<Icon>map(icon -> {
+          icon.setImageObserver((img, flags, x, y, w, h) -> {
+            boolean repaint = false;
+            if (table.isShowing()) {
+              if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
+                tableRepaint(table, row, col);
+              }
+              repaint = (flags & (ALLBITS | ABORT)) == 0;
             }
-            // @see java.awt.Component#imageUpdate(...)
-            if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) {
-              int vr = table.convertRowIndexToView(row); // JDK 1.6.0
-              int vc = table.convertColumnIndexToView(col);
-              table.repaint(table.getCellRect(vr, vc, false));
-            }
-            return (infoflags & (ALLBITS | ABORT)) == 0;
+            return repaint;
           });
           return icon;
         })
         .orElseGet(() -> UIManager.getIcon("html.missingImage"));
+  }
+
+  private static void tableRepaint(JTable table, int row, int col) {
+    int vr = table.convertRowIndexToView(row); // JDK 1.6.0
+    int vc = table.convertColumnIndexToView(col);
+    table.repaint(table.getCellRect(vr, vc, false));
   }
 
   public static void main(String[] args) {
@@ -73,7 +76,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

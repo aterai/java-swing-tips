@@ -6,11 +6,13 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
@@ -30,16 +32,20 @@ public final class MainPanel extends JPanel {
           Component c = r.getTreeCellRendererComponent(
               tree, value, selected, expanded, leaf, row, hasFocus);
           if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
-            TreeNode[] tn = ((DefaultMutableTreeNode) value).getPath();
-            String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
-                .map(i -> 1 + tn[i - 1].getIndex(tn[i]))
-                .mapToObj(Objects::toString)
-                .collect(Collectors.joining("."));
-            ((JLabel) c).setText(String.format("%s%s %s", MARK, s, value));
+            update((DefaultMutableTreeNode) value, (JLabel) c);
           }
           return c;
         });
         setRootVisible(false);
+      }
+
+      private void update(DefaultMutableTreeNode value, JLabel c) {
+        TreeNode[] tn = value.getPath();
+        String s = IntStream.range(1, tn.length) // ignore the root node by skipping index 0
+            .map(i -> 1 + tn[i - 1].getIndex(tn[i]))
+            .mapToObj(Objects::toString)
+            .collect(Collectors.joining("."));
+        c.setText(String.format("%s%s %s", MARK, s, value));
       }
     };
     add(new JScrollPane(toc));
@@ -54,7 +60,7 @@ public final class MainPanel extends JPanel {
     return new DefaultTreeModel(root);
   }
 
-  private static DefaultMutableTreeNode makePart() {
+  private static MutableTreeNode makePart() {
     DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("Chapter");
     c1.add(new DefaultMutableTreeNode("Section A"));
     c1.add(new DefaultMutableTreeNode("Section B"));
@@ -81,7 +87,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

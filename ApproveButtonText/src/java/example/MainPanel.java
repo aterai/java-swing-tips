@@ -40,20 +40,19 @@ public final class MainPanel extends JPanel {
 
     // JButton showSaveDialog = new JButton("Save:取消し->キャンセル");
     JButton showSaveDialog = new JButton("Save:取消->キャンセル");
-    showSaveDialog.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser();
-      // fileChooser.addPropertyChangeListener(e -> {
-      //   String prop = e.getPropertyName();
-      //   System.out.println("----\n" + prop);
-      //   if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
-      //     prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
-      //     System.out.println("sss");
-      //     fileChooser.setApproveButtonText("保存(S)");
-      //     fileChooser.setApproveButtonMnemonic('S');
-      //   }
-      // });
-      appendSelectedFile(fileChooser, p);
-    });
+    showSaveDialog.addActionListener(e -> appendSelectedFile(new JFileChooser(), p));
+    // showSaveDialog.addActionListener(e -> {
+    //   JFileChooser fileChooser = new JFileChooser();
+    //   fileChooser.addPropertyChangeListener(e -> {
+    //     String prop = e.getPropertyName();
+    //     if (prop == JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ||
+    //       prop == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
+    //       fileChooser.setApproveButtonText("保存(S)");
+    //       fileChooser.setApproveButtonMnemonic('S');
+    //     }
+    //   });
+    //   appendSelectedFile(fileChooser, p);
+    // });
     p.add(showOpenDialog);
     p.add(showSaveDialog);
     return p;
