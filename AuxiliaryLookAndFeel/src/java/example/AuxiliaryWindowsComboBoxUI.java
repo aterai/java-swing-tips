@@ -33,6 +33,7 @@ public final class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
   // @Override public void installUI(JComponent c) {
   //   // super.installUI(c);
   // }
+
   // @Override public void uninstallUI(JComponent c) {
   //   // super.uninstallUI(c);
   // }
@@ -52,8 +53,9 @@ public final class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
 
   @Override public void addEditor() {
     removeEditor();
-    Optional.ofNullable(comboBox.getEditor()).ifPresent(cbe -> {
-      editor = cbe.getEditorComponent();
+    ComboBoxEditor comboBoxEditor = comboBox.getEditor();
+    if (comboBoxEditor != null) {
+      editor = comboBoxEditor.getEditorComponent();
       Optional.ofNullable(editor).ifPresent(ec -> {
         configureEditor();
         comboBox.add(ec);
@@ -62,7 +64,7 @@ public final class AuxiliaryWindowsComboBoxUI extends WindowsComboBoxUI {
           ec.requestFocusInWindow();
         }
       });
-    });
+    }
   }
   // @Override public void unconfigureArrowButton() {}
   // @Override public void configureArrowButton() {}

@@ -18,8 +18,7 @@ public final class MainPanel extends JPanel {
 
     LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
     UIManager.addPropertyChangeListener(e -> {
-      boolean lnf = Objects.equals("lookAndFeel", e.getPropertyName());
-      if (lnf) {
+      if (Objects.equals("lookAndFeel", e.getPropertyName())) {
         if (isWindows(e.getNewValue())) {
           if (check.isSelected()) {
             UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);

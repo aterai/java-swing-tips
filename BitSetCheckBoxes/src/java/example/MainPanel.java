@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.BitSet;
 import java.util.Collections;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -51,30 +52,33 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    Stream.of(undoAct, redoAct, selectAllAct, clearAllAct).map(JButton::new).forEach(b -> {
-      box.add(b);
-      box.add(Box.createHorizontalStrut(2));
-    });
-
-    IntStream.range(0, BIT_LENGTH).forEach(i -> {
-      JCheckBox c = new JCheckBox(Integer.toString(i), status.get(i));
-      c.addActionListener(e -> {
-        JCheckBox cb = (JCheckBox) e.getSource();
-        BitSet newValue = status.get(0, BIT_LENGTH);
-        newValue.set(i, cb.isSelected());
-        undoSupport.postEdit(new StatusEdit(status, newValue));
-        status = newValue;
-        label.setText(print(status));
-      });
-      panel.add(c);
-    });
-
+    Stream.of(undoAct, redoAct, selectAllAct, clearAllAct)
+        .map(JButton::new)
+        .forEach(b -> {
+          box.add(b);
+          box.add(Box.createHorizontalStrut(2));
+        });
+    IntStream.range(0, BIT_LENGTH)
+        .mapToObj(this::makeCheckBox)
+        .forEach(panel::add);
     label.setFont(label.getFont().deriveFont(8f));
 
     add(label, BorderLayout.NORTH);
     add(new JScrollPane(panel));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JCheckBox makeCheckBox(int i) {
+    JCheckBox c = new JCheckBox(Integer.toString(i), status.get(i));
+    c.addActionListener(e -> {
+      BitSet newValue = status.get(0, BIT_LENGTH);
+      newValue.set(i, ((JCheckBox) e.getSource()).isSelected());
+      undoSupport.postEdit(new StatusEdit(status, newValue));
+      status = newValue;
+      label.setText(print(status));
+    });
+    return c;
   }
 
   public void updateCheckBoxes(BitSet value) {
@@ -126,7 +130,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

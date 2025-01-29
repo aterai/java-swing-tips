@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.text.BadLocationException;
@@ -62,19 +63,16 @@ public final class MainPanel extends JPanel {
     textPane.getActionMap().put("popupInsert", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         try {
-          // Java 9:
-          // Rectangle rect = textPane.modelToView2D(textPane.getCaretPosition()).getBounds();
+          // Java 9: rect = textPane.modelToView2D(textPane.getCaretPosition()).getBounds();
           Rectangle rect = textPane.modelToView(textPane.getCaretPosition());
           popup.show(textPane, rect.x, (int) rect.getMaxY());
           EventQueue.invokeLater(() -> {
-            Container c = popup.getTopLevelAncestor();
-            if (c instanceof Window) {
-              ((Window) c).toFront();
-            }
+            Optional.ofNullable(popup.getTopLevelAncestor())
+                .filter(Window.class::isInstance).map(Window.class::cast)
+                .ifPresent(Window::toFront);
             popup.requestFocusInWindow();
           });
-        } catch (BadLocationException ex) {
-          // should never happen
+        } catch (BadLocationException ex) { // should never happen
           RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
           wrap.initCause(ex);
           throw wrap;
@@ -129,7 +127,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
