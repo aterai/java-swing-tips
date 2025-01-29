@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -16,7 +17,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeTable();
+    JTable table = new AutoWrapTable(makeModel());
     JScrollPane scroll = new JScrollPane(table) {
       @Override public void updateUI() {
         super.updateUI();
@@ -39,73 +40,6 @@ public final class MainPanel extends JPanel {
     return new DefaultTableModel(data, columnNames);
   }
 
-  private JTable makeTable() {
-    return new JTable(makeModel()) {
-      private static final int AUTO_WRAP_COLUMN = 1;
-      private final Color evenColor = new Color(0xE6_F0_FF);
-
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        if (isRowSelected(row)) {
-          c.setForeground(getSelectionForeground());
-          c.setBackground(getSelectionBackground());
-        } else {
-          c.setForeground(getForeground());
-          c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        }
-        return c;
-      }
-
-      @Override public void updateUI() {
-        getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(null);
-        super.updateUI();
-        setEnabled(false);
-        setShowGrid(false);
-        getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
-        // setIntercellSpacing(new Dimension());
-      }
-
-      // @Override public void doLayout() {
-      //   // System.out.println("doLayout");
-      //   initPreferredHeight();
-      //   super.doLayout();
-      // }
-
-      // @Override public void columnMarginChanged(ChangeEvent e) {
-      //   // System.out.println("columnMarginChanged");
-      //   super.columnMarginChanged(e);
-      //   initPreferredHeight();
-      // }
-
-      // private void initPreferredHeight() {
-      //   for (int row = 0; row < getRowCount(); row++) {
-      //     int maximum_height = 0;
-      //     for (int col = 0; col < getColumnModel().getColumnCount(); col++) {
-      //       Component c = prepareRenderer(getCellRenderer(row, col), row, col);
-      //       if (c instanceof JTextArea) {
-      //         JTextArea a = (JTextArea) c;
-      //         int h = getPreferredHeight(a); // + getIntercellSpacing().height;
-      //         maximum_height = Math.max(maximum_height, h);
-      //       }
-      //     }
-      //     setRowHeight(row, maximum_height);
-      //   }
-      // }
-
-      // // https://tips4java.wordpress.com/2008/10/26/text-utilities/
-      // private int getPreferredHeight(JTextComponent c) {
-      //   Insets insets = c.getInsets();
-      //   // Insets margin = c.getMargin();
-      //   // System.out.println(insets);
-      //   View view = c.getUI().getRootView(c).getView(0);
-      //   float f = view.getPreferredSpan(View.Y_AXIS);
-      //   // System.out.println(f);
-      //   int preferredHeight = (int) f;
-      //   return preferredHeight + insets.top + insets.bottom;
-      // }
-    };
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -116,7 +50,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -127,6 +61,88 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 }
+
+class AutoWrapTable extends JTable {
+  private static final int AUTO_WRAP_COLUMN = 1;
+  private final Color evenColor = new Color(0xE6_F0_FF);
+
+  protected AutoWrapTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+    Component c = super.prepareRenderer(tcr, row, column);
+    if (isRowSelected(row)) {
+      c.setForeground(getSelectionForeground());
+      c.setBackground(getSelectionBackground());
+    } else {
+      c.setForeground(getForeground());
+      c.setBackground(row % 2 == 0 ? evenColor : getBackground());
+    }
+    return c;
+  }
+
+  @Override public void updateUI() {
+    getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(null);
+    super.updateUI();
+    setEnabled(false);
+    setShowGrid(false);
+    getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
+  }
+}
+
+// class AutoWrapTable extends JTable {
+//   private static final int AUTO_WRAP_COLUMN = 1;
+//
+//   protected AutoWrapTable(TableModel model) {
+//     super(model);
+//   }
+//
+//   @Override public void updateUI() {
+//     getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(null);
+//     super.updateUI();
+//     setEnabled(false);
+//     setShowGrid(false);
+//     getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
+//   }
+//
+//   @Override public void doLayout() {
+//     initPreferredHeight();
+//     super.doLayout();
+//   }
+//
+//   @Override public void columnMarginChanged(ChangeEvent e) {
+//     super.columnMarginChanged(e);
+//     initPreferredHeight();
+//   }
+//
+//   private void initPreferredHeight() {
+//     for (int row = 0; row < getRowCount(); row++) {
+//       int maximum_height = 0;
+//       for (int col = 0; col < getColumnModel().getColumnCount(); col++) {
+//         Component c = prepareRenderer(getCellRenderer(row, col), row, col);
+//         if (c instanceof JTextArea) {
+//           JTextArea a = (JTextArea) c;
+//           int h = getPreferredHeight(a);
+//           maximum_height = Math.max(maximum_height, h);
+//         }
+//       }
+//       setRowHeight(row, maximum_height);
+//     }
+//   }
+//
+//   // https://tips4java.wordpress.com/2008/10/26/text-utilities/
+//   private int getPreferredHeight(JTextComponent c) {
+//     Insets insets = c.getInsets();
+//     // Insets margin = c.getMargin();
+//     // System.out.println(insets);
+//     View view = c.getUI().getRootView(c).getView(0);
+//     float f = view.getPreferredSpan(View.Y_AXIS);
+//     // System.out.println(f);
+//     int preferredHeight = (int) f;
+//     return preferredHeight + insets.top + insets.bottom;
+//   }
+// }
 
 // delegation pattern
 class TextAreaCellRenderer implements TableCellRenderer {
@@ -185,7 +201,7 @@ class TextAreaCellRenderer implements TableCellRenderer {
   }
 }
 
-// // inheritance to extend a class
+// // inheritance to extend a class.
 // class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
 //   private final List<List<Integer>> rowAndCellHeights = new ArrayList<>();
 //
