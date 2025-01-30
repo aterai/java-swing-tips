@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsMenuItemUI;
 import com.sun.java.swing.plaf.windows.WindowsMenuUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.basic.BasicMenuItemUI;
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -101,73 +102,7 @@ class CustomWindowsMenuUI extends WindowsMenuUI {
           }
         }
         super.mousePressed(e);
-        // MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-        // if (menu.isTopLevelMenu()) {
-        //   if (menu.isSelected() && menu.getPopupMenu().isShowing()) {
-        //     manager.clearSelectedPath();
-        //   } else {
-        //     Container cnt = menu.getParent();
-        //     if (cnt instanceof JMenuBar) {
-        //       MenuElement[] me = new MenuElement[2];
-        //       me[0] = (MenuElement) cnt;
-        //       me[1] = menu;
-        //       manager.setSelectedPath(me);
-        //     }
-        //   }
-        // }
-        // MenuElement[] paths = manager.getSelectedPath();
-        // if (paths.length > 0 && paths[paths.length - 1] != menu.getPopupMenu()) {
-        //   if (menu.isTopLevelMenu() || menu.getDelay() == 0) {
-        //     MenuElement[] newPath = new MenuElement[paths.length + 1];
-        //     System.arraycopy(paths, 0, newPath, 0, paths.length);
-        //     newPath[paths.length] = menu.getPopupMenu();
-        //     MenuSelectionManager.defaultManager().setSelectedPath(newPath);
-        //   } else {
-        //     setupPostTimer(menu);
-        //   }
-        // }
       }
-
-      // @Override public void mouseReleased(MouseEvent e) {
-      //   JMenu menu = (JMenu) menuItem;
-      //   if (!menu.isEnabled()) {
-      //     return;
-      //   }
-      //   MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-      //   manager.processMouseEvent(e);
-      //   if (!e.isConsumed()) {
-      //     manager.clearSelectedPath();
-      //   }
-      // }
-
-      // @Override public void mouseEntered(MouseEvent e) {
-      //   MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-      //   int modifiers = e.getModifiersEx();
-      //   if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
-      //     MenuSelectionManager.defaultManager().processMouseEvent(e);
-      //   } else {
-      //     manager.setSelectedPath(getPath());
-      //   }
-      // }
-
-      // @Override public void mouseExited(MouseEvent e) {
-      //   MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-      //   int modifiers = e.getModifiersEx();
-      //   if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
-      //     MenuSelectionManager.defaultManager().processMouseEvent(e);
-      //   } else {
-      //     MenuElement[] path = manager.getSelectedPath();
-      //     if (path.length > 1 && path[path.length - 1] == menuItem) {
-      //       MenuElement[] newPath = new MenuElement[path.length - 1];
-      //       System.arraycopy(path, 0, newPath, 0, path.length - 1);
-      //       manager.setSelectedPath(newPath);
-      //     }
-      //   }
-      // }
-
-      // @Override public void mouseDragged(MouseEvent e) {
-      //   MenuSelectionManager.defaultManager().processMouseEvent(e);
-      // }
     };
   }
 }
@@ -180,43 +115,129 @@ class CustomWindowsMenuItemUI extends WindowsMenuItemUI {
           return;
         }
         super.mouseReleased(e);
-        // MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-        // Point p = e.getPoint();
-        // if (p.x >= 0 && p.x < menuItem.getWidth() && p.y >= 0 && p.y < menuItem.getHeight()) {
-        //   doClick(manager);
-        // } else {
-        //   manager.processMouseEvent(e);
-        // }
       }
-
-      // @Override public void mouseEntered(MouseEvent e) {
-      //   MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-      //   int modifiers = e.getModifiersEx();
-      //   if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
-      //     MenuSelectionManager.defaultManager().processMouseEvent(e);
-      //   } else {
-      //     manager.setSelectedPath(getPath());
-      //   }
-      // }
-
-      // @Override public void mouseExited(MouseEvent e) {
-      //   MenuSelectionManager manager = MenuSelectionManager.defaultManager();
-      //   int modifiers = e.getModifiersEx();
-      //   if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
-      //     MenuSelectionManager.defaultManager().processMouseEvent(e);
-      //   } else {
-      //     MenuElement[] path = manager.getSelectedPath();
-      //     if (path.length > 1 && path[path.length - 1] == menuItem) {
-      //       MenuElement[] newPath = new MenuElement[path.length - 1];
-      //       System.arraycopy(path, 0, newPath, 0, path.length - 1);
-      //       manager.setSelectedPath(newPath);
-      //     }
-      //   }
-      // }
-
-      // @Override public void mouseDragged(MouseEvent e) {
-      //   MenuSelectionManager.defaultManager().processMouseEvent(e);
-      // }
     };
   }
 }
+
+/*
+class CustomWindowsMenuUI extends WindowsMenuUI {
+  @Override protected MouseInputListener createMouseInputListener(JComponent c) {
+    return new BasicMenuItemUI.MouseInputHandler() {
+      @Override public void mousePressed(MouseEvent e) {
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        if (menu.isTopLevelMenu()) {
+          if (menu.isSelected() && menu.getPopupMenu().isShowing()) {
+            manager.clearSelectedPath();
+          } else {
+            Container cnt = menu.getParent();
+            if (cnt instanceof JMenuBar) {
+              MenuElement[] me = new MenuElement[2];
+              me[0] = (MenuElement) cnt;
+              me[1] = menu;
+              manager.setSelectedPath(me);
+            }
+          }
+        }
+        MenuElement[] paths = manager.getSelectedPath();
+        if (paths.length > 0 && paths[paths.length - 1] != menu.getPopupMenu()) {
+          if (menu.isTopLevelMenu() || menu.getDelay() == 0) {
+            MenuElement[] newPath = new MenuElement[paths.length + 1];
+            System.arraycopy(paths, 0, newPath, 0, paths.length);
+            newPath[paths.length] = menu.getPopupMenu();
+            MenuSelectionManager.defaultManager().setSelectedPath(newPath);
+          } else {
+            setupPostTimer(menu);
+          }
+        }
+      }
+
+      @Override public void mouseReleased(MouseEvent e) {
+        JMenu menu = (JMenu) menuItem;
+        if (!menu.isEnabled()) {
+          return;
+        }
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        manager.processMouseEvent(e);
+        if (!e.isConsumed()) {
+          manager.clearSelectedPath();
+        }
+      }
+
+      @Override public void mouseEntered(MouseEvent e) {
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        int modifiers = e.getModifiersEx();
+        if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
+          MenuSelectionManager.defaultManager().processMouseEvent(e);
+        } else {
+          manager.setSelectedPath(getPath());
+        }
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        int modifiers = e.getModifiersEx();
+        if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
+          MenuSelectionManager.defaultManager().processMouseEvent(e);
+        } else {
+          MenuElement[] path = manager.getSelectedPath();
+          if (path.length > 1 && path[path.length - 1] == menuItem) {
+            MenuElement[] newPath = new MenuElement[path.length - 1];
+            System.arraycopy(path, 0, newPath, 0, path.length - 1);
+            manager.setSelectedPath(newPath);
+          }
+        }
+      }
+
+      @Override public void mouseDragged(MouseEvent e) {
+        MenuSelectionManager.defaultManager().processMouseEvent(e);
+      }
+    };
+  }
+}
+
+class CustomWindowsMenuItemUI extends WindowsMenuItemUI {
+  @Override protected MouseInputListener createMouseInputListener(JComponent c) {
+    return new BasicMenuItemUI.MouseInputHandler() {
+      @Override public void mouseReleased(MouseEvent e) {
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        Point p = e.getPoint();
+        if (p.x >= 0 && p.x < menuItem.getWidth() && p.y >= 0 && p.y < menuItem.getHeight()) {
+          doClick(manager);
+        } else {
+          manager.processMouseEvent(e);
+        }
+      }
+
+      @Override public void mouseEntered(MouseEvent e) {
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        int modifiers = e.getModifiersEx();
+        if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
+          MenuSelectionManager.defaultManager().processMouseEvent(e);
+        } else {
+          manager.setSelectedPath(getPath());
+        }
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        MenuSelectionManager manager = MenuSelectionManager.defaultManager();
+        int modifiers = e.getModifiersEx();
+        if ((modifiers & InputEvent.BUTTON1_DOWN_MASK) != 0) {
+          MenuSelectionManager.defaultManager().processMouseEvent(e);
+        } else {
+          MenuElement[] path = manager.getSelectedPath();
+          if (path.length > 1 && path[path.length - 1] == menuItem) {
+            MenuElement[] newPath = new MenuElement[path.length - 1];
+            System.arraycopy(path, 0, newPath, 0, path.length - 1);
+            manager.setSelectedPath(newPath);
+          }
+        }
+      }
+
+      @Override public void mouseDragged(MouseEvent e) {
+        MenuSelectionManager.defaultManager().processMouseEvent(e);
+      }
+    };
+  }
+}
+*/

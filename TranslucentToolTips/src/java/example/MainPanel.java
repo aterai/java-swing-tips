@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -38,7 +39,9 @@ public final class MainPanel extends JPanel {
         new ContributionIcon(color),
         new ContributionIcon(color.darker()),
         new ContributionIcon(color.darker().darker()));
-    JList<Contribution> weekList = makeWeekList(activityIcons);
+
+    LocalDate date = LocalDate.now(ZoneId.systemDefault());
+    JList<Contribution> weekList = new ContributionCalendarList(date, activityIcons);
     Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
 
     Box box = Box.createHorizontalBox();
@@ -66,74 +69,6 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(new JTextArea()));
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private JList<Contribution> makeWeekList(List<Icon> activityIcons) {
-    LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
-    return new JList<Contribution>(new CalendarViewListModel(currentLocalDate)) {
-      private transient JToolTip tip;
-
-      @Override public void updateUI() {
-        setCellRenderer(null);
-        super.updateUI();
-        setLayoutOrientation(VERTICAL_WRAP);
-        setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
-        setFixedCellWidth(CELL_SIZE.width);
-        setFixedCellHeight(CELL_SIZE.height);
-        ListCellRenderer<? super Contribution> renderer = getCellRenderer();
-        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(
-              list, value, index, isSelected, cellHasFocus);
-          if (c instanceof JLabel) {
-            ((JLabel) c).setIcon(getActivityIcon(value));
-          }
-          return c;
-        });
-        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-      }
-
-      @Override public String getToolTipText(MouseEvent e) {
-        Point p = e.getPoint();
-        int i = locationToIndex(p);
-        Rectangle r = getCellBounds(i, i);
-        return r != null && r.contains(p) ? getActivityText(i) : null;
-      }
-
-      @Override public Point getToolTipLocation(MouseEvent e) {
-        return Optional.ofNullable(getToolTipText(e)).map(toolTipText -> {
-          int i = locationToIndex(e.getPoint());
-          JToolTip tips = createToolTip();
-          tips.setTipText(toolTipText);
-          Rectangle r = getCellBounds(i, i);
-          Dimension d = tips.getPreferredSize();
-          int cellCenterX = (int) (r.getCenterX() - d.getWidth() / 2d);
-          int cellTopY = r.y - d.height - 2;
-          return new Point(cellCenterX, cellTopY);
-        }).orElse(null);
-      }
-
-      @Override public JToolTip createToolTip() {
-        if (tip == null) {
-          tip = new BalloonToolTip();
-          tip.setComponent(this);
-        }
-        return tip;
-      }
-
-      private Icon getActivityIcon(Contribution value) {
-        return value.getDate().isAfter(currentLocalDate)
-            ? new ContributionIcon(Color.WHITE)
-            : activityIcons.get(value.getActivity());
-      }
-
-      private String getActivityText(int idx) {
-        Contribution c = getModel().getElementAt(idx);
-        int activity = c.getActivity();
-        String actTxt = activity == 0 ? "No" : Integer.toString(activity);
-        return String.format("%s contribution on %s", actTxt, c.getDate());
-      }
-    };
   }
 
   private static Component makeWeekCalendar(JList<Contribution> weekList, Font font) {
@@ -223,7 +158,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -307,6 +242,79 @@ class ContributionIcon implements Icon {
   }
 }
 
+class ContributionCalendarList extends JList<Contribution> {
+  public static final Dimension CELL_SIZE = new Dimension(10, 10);
+  private final List<Icon> activityIcons;
+  private final LocalDate currentLocalDate;
+  private transient JToolTip tip;
+
+  protected ContributionCalendarList(LocalDate date, List<Icon> activityIcons) {
+    super(new CalendarViewListModel(date));
+    this.currentLocalDate = date;
+    this.activityIcons = activityIcons;
+  }
+
+  @Override public void updateUI() {
+    setCellRenderer(null);
+    super.updateUI();
+    setLayoutOrientation(VERTICAL_WRAP);
+    setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
+    setFixedCellWidth(CELL_SIZE.width);
+    setFixedCellHeight(CELL_SIZE.height);
+    ListCellRenderer<? super Contribution> renderer = getCellRenderer();
+    setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
+      if (c instanceof JLabel) {
+        ((JLabel) c).setIcon(getActivityIcon(value));
+      }
+      return c;
+    });
+    getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+  }
+
+  @Override public String getToolTipText(MouseEvent e) {
+    Point p = e.getPoint();
+    int i = locationToIndex(p);
+    Rectangle r = getCellBounds(i, i);
+    return r != null && r.contains(p) ? getActivityText(i) : null;
+  }
+
+  @Override public Point getToolTipLocation(MouseEvent e) {
+    return Optional.ofNullable(getToolTipText(e)).map(toolTipText -> {
+      int i = locationToIndex(e.getPoint());
+      JToolTip tips = createToolTip();
+      tips.setTipText(toolTipText);
+      Rectangle r = getCellBounds(i, i);
+      Dimension d = tips.getPreferredSize();
+      int cellCenterX = (int) (r.getCenterX() - d.getWidth() / 2d);
+      int cellTopY = r.y - d.height - 2;
+      return new Point(cellCenterX, cellTopY);
+    }).orElse(null);
+  }
+
+  @Override public JToolTip createToolTip() {
+    if (tip == null) {
+      tip = new BalloonToolTip();
+      tip.setComponent(this);
+    }
+    return tip;
+  }
+
+  private Icon getActivityIcon(Contribution value) {
+    return value.getDate().isAfter(currentLocalDate)
+        ? new ContributionIcon(Color.WHITE)
+        : activityIcons.get(value.getActivity());
+  }
+
+  private String getActivityText(int idx) {
+    Contribution c = getModel().getElementAt(idx);
+    int activity = c.getActivity();
+    String actTxt = activity == 0 ? "No" : Integer.toString(activity);
+    return String.format("%s contribution on %s", actTxt, c.getDate());
+  }
+}
 class BalloonToolTip extends JToolTip {
   private static final int TRI_HEIGHT = 4;
   private transient HierarchyListener listener;
