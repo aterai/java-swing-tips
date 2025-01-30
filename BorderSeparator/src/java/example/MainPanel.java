@@ -5,11 +5,26 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    ComboBoxModel<ListItem> model = makeModel();
+    JComboBox<ListItem> combo1 = makeComboBox(model);
+    JComboBox<ListItem> combo2 = makeComboBox(model);
+    combo2.setEditable(true);
+    JPanel p = new JPanel(new GridLayout(2, 1, 25, 25));
+    p.add(makeTitledPanel("setEditable(false)", combo1));
+    p.add(makeTitledPanel("setEditable(true)", combo2));
+    add(p, BorderLayout.NORTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ComboBoxModel<ListItem> makeModel() {
     DefaultComboBoxModel<ListItem> model = new DefaultComboBoxModel<>();
     model.addElement(new ListItem("1111"));
     model.addElement(new ListItem("1111222"));
@@ -17,23 +32,7 @@ public final class MainPanel extends JPanel {
     model.addElement(new ListItem("444444", true));
     model.addElement(new ListItem("555"));
     model.addElement(new ListItem("6666666"));
-
-    JComboBox<ListItem> combo1 = makeComboBox(model);
-    JComboBox<ListItem> combo2 = makeComboBox(model);
-    combo2.setEditable(true);
-
-    Box box1 = Box.createVerticalBox();
-    box1.setBorder(BorderFactory.createTitledBorder("setEditable(false)"));
-    box1.add(combo1);
-
-    Box box2 = Box.createVerticalBox();
-    box2.setBorder(BorderFactory.createTitledBorder("setEditable(true)"));
-    box2.add(combo2);
-
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    add(box1, BorderLayout.NORTH);
-    add(box2, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    return model;
   }
 
   private static JComboBox<ListItem> makeComboBox(ComboBoxModel<ListItem> model) {
@@ -46,17 +45,29 @@ public final class MainPanel extends JPanel {
           Component c = renderer.getListCellRendererComponent(
               list, value, index, isSelected, cellHasFocus);
           if (c instanceof JComponent) {
-            JComponent jc = (JComponent) c;
-            if (index != -1 && value.hasSeparator()) {
-              jc.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
-            } else {
-              jc.setBorder(BorderFactory.createEmptyBorder());
-            }
+            ((JComponent) c).setBorder(getSeparatorBorder(value, index));
           }
           return c;
         });
       }
+
+      private Border getSeparatorBorder(ListItem value, int index) {
+        Border b;
+        if (index != -1 && value.hasSeparator()) {
+          b = BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY);
+        } else {
+          b = BorderFactory.createEmptyBorder();
+        }
+        return b;
+      }
     };
+  }
+
+  private static Component makeTitledPanel(String title, Component c) {
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createTitledBorder(title));
+    box.add(c);
+    return box;
   }
 
   public static void main(String[] args) {
@@ -69,7 +80,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,25 +14,9 @@ public final class MainPanel extends JPanel {
     JCheckBox check = new JCheckBox("0x22_FF_00_00");
     JButton button = new JButton("Stop 5sec");
     button.addActionListener(e -> {
-      Window w = SwingUtilities.getWindowAncestor(getRootPane());
-      JDialog dialog = new JDialog(w, Dialog.ModalityType.APPLICATION_MODAL);
-      dialog.setUndecorated(true);
-      dialog.setBounds(w.getBounds());
-      dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
       int color = check.isSelected() ? 0x22_FF_00_00 : 0x01_00_00_00;
-      dialog.setBackground(new Color(color, true));
-      new BackgroundTask() {
-        @Override protected void done() {
-          if (!isDisplayable()) {
-            cancel(true);
-            return;
-          }
-          dialog.setVisible(false);
-        }
-      }.execute();
-      dialog.setVisible(true);
+      blocking(new Color(color, true));
     });
-
     JPanel p = new JPanel();
     p.add(check);
     p.add(new JTextField(10));
@@ -39,6 +24,25 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea(100, 80)));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void blocking(Color color) {
+    Window w = SwingUtilities.getWindowAncestor(getRootPane());
+    JDialog dialog = new JDialog(w, Dialog.ModalityType.APPLICATION_MODAL);
+    dialog.setUndecorated(true);
+    dialog.setBounds(w.getBounds());
+    dialog.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    dialog.setBackground(color);
+    new BackgroundTask() {
+      @Override protected void done() {
+        if (!isDisplayable()) {
+          cancel(true);
+          return;
+        }
+        dialog.setVisible(false);
+      }
+    }.execute();
+    dialog.setVisible(true);
   }
 
   public static void main(String[] args) {
@@ -51,7 +55,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

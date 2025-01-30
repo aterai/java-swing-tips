@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,13 +24,7 @@ public final class MainPanel extends JPanel {
         label2.setText("".equals(label2.getText()) ? "!!!Warning!!!" : ""));
     addHierarchyListener(e -> {
       if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-        if (e.getComponent().isDisplayable()) {
-          timer1.start();
-          timer2.start();
-        } else {
-          timer1.stop();
-          timer2.stop();
-        }
+        updateTimers(e.getComponent().isDisplayable(), timer1, timer2);
       }
     });
 
@@ -39,6 +34,16 @@ public final class MainPanel extends JPanel {
     add(p);
     setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void updateTimers(boolean b, Timer... timers) {
+    for (Timer timer : timers) {
+      if (b) {
+        timer.start();
+      } else {
+        timer.stop();
+      }
+    }
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -58,7 +63,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -72,17 +73,16 @@ public final class MainPanel extends JPanel {
       }
 
       private void resetViewportPosition(int idx) {
-        if (getTabCount() <= 0) {
-          return;
-        }
         String name = "TabbedPane.scrollableViewport";
-        Component o = Arrays.stream(getComponents())
-            .filter(c -> Objects.equals(name, c.getName())).findFirst().orElse(null);
-        if (o instanceof JViewport) {
-          JViewport viewport = (JViewport) o;
-          JComponent c = (JComponent) viewport.getView();
-          c.scrollRectToVisible(getBoundsAt(idx));
-        }
+        Arrays.stream(getComponents())
+            .filter(c -> Objects.equals(name, c.getName()))
+            .findFirst()
+            .filter(JViewport.class::isInstance)
+            .map(JViewport.class::cast)
+            .ifPresent(viewport -> {
+              JComponent c = (JComponent) viewport.getView();
+              c.scrollRectToVisible(getBoundsAt(idx));
+            });
       }
     };
   }
@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

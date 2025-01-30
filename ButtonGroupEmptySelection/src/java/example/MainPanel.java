@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -41,12 +42,6 @@ public final class MainPanel extends JPanel {
           .map(b -> String.format("\"%s\" isSelected.", b.getActionCommand()))
           .orElse("Please select one of the option above.");
       label.setText(txt);
-      // ButtonModel bm = bg.getSelection();
-      // if (bm != null) {
-      //   label.setText(String.format("\"%s\" isSelected.", bm.getActionCommand()));
-      // } else {
-      //   label.setText("Please select one of the option above.");
-      // }
     });
     return button;
   }
@@ -61,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
