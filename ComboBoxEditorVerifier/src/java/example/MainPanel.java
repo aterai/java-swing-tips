@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
       // }
 
       @Override public Component getEditorComponent() {
-        // if (editorComponent != null) { editorComponent = makeLayer(); }
+        // if (editorComponent == null) { editorComponent = makeLayer(); }
         editorComponent = Optional.ofNullable(editorComponent).orElseGet(this::makeLayer);
         return editorComponent;
       }

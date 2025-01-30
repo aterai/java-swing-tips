@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -21,27 +22,7 @@ public final class MainPanel extends JPanel {
       }
     };
     initMenuBar(menuBar);
-    MenuListener listener = new MenuListener() {
-      @Override public void menuSelected(MenuEvent e) {
-        Object src = e.getSource();
-        if (src instanceof JMenu && ((JMenu) src).isTopLevelMenu()) {
-          EventQueue.invokeLater(() -> {
-            JMenu menu = (JMenu) src;
-            Point loc = menu.getLocationOnScreen();
-            loc.x += menu.getWidth();
-            menu.getPopupMenu().setLocation(loc);
-          });
-        }
-      }
-
-      @Override public void menuDeselected(MenuEvent e) {
-        // Do nothing
-      }
-
-      @Override public void menuCanceled(MenuEvent e) {
-        // Do nothing
-      }
-    };
+    MenuListener listener = new VerticalMenuListener();
     for (MenuElement m : menuBar.getSubElements()) {
       if (m instanceof JMenu) {
         JMenu menu = (JMenu) m;
@@ -118,7 +99,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -127,6 +108,28 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class VerticalMenuListener implements MenuListener {
+  @Override public void menuSelected(MenuEvent e) {
+    Object src = e.getSource();
+    if (src instanceof JMenu && ((JMenu) src).isTopLevelMenu()) {
+      EventQueue.invokeLater(() -> {
+        JMenu menu = (JMenu) src;
+        Point loc = menu.getLocationOnScreen();
+        loc.x += menu.getWidth();
+        menu.getPopupMenu().setLocation(loc);
+      });
+    }
+  }
+
+  @Override public void menuDeselected(MenuEvent e) {
+    /* Do nothing */
+  }
+
+  @Override public void menuCanceled(MenuEvent e) {
+    /* Do nothing */
   }
 }
 
@@ -171,7 +174,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

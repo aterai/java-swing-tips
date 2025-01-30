@@ -9,6 +9,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.KeyEvent;
 import java.util.EventObject;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
@@ -34,7 +35,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -57,13 +58,10 @@ class CustomCellEditor extends DefaultCellEditor {
       Component c = e.getComponent();
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (b && c instanceof JTextField && c.isShowing()) {
-        // System.out.println("hierarchyChanged: SHOWING_CHANGED");
-        JTextField tc = (JTextField) c;
-        tc.removeAll();
-        tc.add(button);
-        Rectangle r = tc.getBounds();
+        ((JTextField) c).removeAll();
+        ((JTextField) c).add(button);
+        Rectangle r = c.getBounds();
         button.setBounds(r.width - BUTTON_WIDTH, 0, BUTTON_WIDTH, r.height);
-        // tc.requestFocusInWindow();
       }
     });
   }

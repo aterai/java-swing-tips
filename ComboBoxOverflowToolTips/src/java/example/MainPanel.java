@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -15,10 +16,8 @@ public final class MainPanel extends JPanel {
     ComboBoxModel<String> model = makeComboBoxModel();
     JComboBox<String> combo1 = new ToolTipComboBox<>(model);
     add(makeTitledPanel("Overflow ToolTip JComboBox", combo1), BorderLayout.NORTH);
-
     JComboBox<String> combo2 = new JComboBox<>(model);
     add(makeTitledPanel("Default JComboBox", combo2), BorderLayout.SOUTH);
-
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -51,7 +50,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -73,37 +72,32 @@ class ToolTipComboBox<E> extends JComboBox<E> {
     super.updateUI();
     ListCellRenderer<? super E> renderer = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component r = renderer.getListCellRendererComponent(
+      Component c = renderer.getListCellRendererComponent(
           list, value, index, isSelected, cellHasFocus);
-      JComponent c = (JComponent) r;
-      // Insets i1 = getInsets();
-      Insets ins = c.getInsets();
-      // int availableWidth = getWidth() - i1.top - i1.bottom - ins.top - ins.bottom;
-      Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
-      // System.out.println(rect);
-      int availableWidth = rect.width - ins.top - ins.bottom;
-
-      String str = Objects.toString(value, "");
-      FontMetrics fm = c.getFontMetrics(c.getFont());
-      c.setToolTipText(fm.stringWidth(str) > availableWidth ? str : null);
-
-      if (index < 0) {
-        // @see BasicComboBoxUI#rectangleForCurrentValue
-        // System.out.println(UIManager.getBoolean("ComboBox.squareButton"));
-        // int buttonSize = getHeight() - i1.top - i1.bottom; // - ins.top - ins.bottom;
-        // JButton arrowButton = getArrowButton(this);
-        // int buttonSize = arrowButton != null ? arrowButton.getWidth() : rect.height;
-        int buttonSize = Stream.of(getComponents())
-            .filter(JButton.class::isInstance)
-            .findFirst()
-            .map(Component::getWidth)
-            .orElse(rect.height);
-        availableWidth -= buttonSize;
-        JTextField tf = (JTextField) getEditor().getEditorComponent();
-        availableWidth -= tf.getMargin().left + tf.getMargin().right;
-        setToolTipText(fm.stringWidth(str) > availableWidth ? str : null);
+      if (c instanceof JComponent) {
+        setToolTipText((JComponent) c, value, index < 0);
       }
       return c;
     });
+  }
+
+  private void setToolTipText(JComponent c, E value, boolean isComboBody) {
+    Insets ins = c.getInsets();
+    Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
+    int availableWidth = rect.width - ins.top - ins.bottom;
+    String str = Objects.toString(value, "");
+    FontMetrics fm = c.getFontMetrics(c.getFont());
+    c.setToolTipText(fm.stringWidth(str) > availableWidth ? str : null);
+    if (isComboBody) {
+      int buttonSize = Stream.of(getComponents())
+          .filter(JButton.class::isInstance)
+          .findFirst()
+          .map(Component::getWidth)
+          .orElse(rect.height);
+      availableWidth -= buttonSize;
+      JTextField tf = (JTextField) getEditor().getEditorComponent();
+      availableWidth -= tf.getMargin().left + tf.getMargin().right;
+      setToolTipText(fm.stringWidth(str) > availableWidth ? str : null);
+    }
   }
 }

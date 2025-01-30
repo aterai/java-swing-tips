@@ -167,7 +167,6 @@ class CheckComboBoxEditor implements ComboBoxEditor {
         JComboBox<?> combo = (JComboBox<?>) c;
         int idx = combo.getSelectedIndex();
         if (idx >= 0 && idx != editor.getEditingIndex()) {
-          // System.out.println("setItem: " + idx);
           editor.setEditingIndex(idx);
         }
       }
