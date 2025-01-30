@@ -7,61 +7,89 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final String TXT = "***********************";
-  private static final int LINE_WIDTH = 1;
-  private static final int BI_GAP = 2;
 
   private MainPanel() {
     super(new GridLayout(0, 1));
     setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 0));
-    add(makeBreadcrumbList(0, Color.PINK, Arrays.asList("overlap1:", "0px", TXT)));
-    add(makeBreadcrumbList(5, Color.CYAN, Arrays.asList("overlap2:", "5px", TXT)));
-    add(makeBreadcrumbList(9, Color.ORANGE, Arrays.asList("overlap3:", "9px", TXT)));
+    add(IconToggleButton.makeBreadcrumbBar(0, Color.PINK, "overlap1:", "0px", TXT));
+    add(IconToggleButton.makeBreadcrumbBar(5, Color.CYAN, "overlap2:", "5px", TXT));
+    add(IconToggleButton.makeBreadcrumbBar(9, Color.ORANGE, "overlap3:", "9px", TXT));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static AbstractButton makeButton(String title, Color color, boolean first) {
-    // https://java-swing-tips.blogspot.com/2008/11/rounded-corner-jbutton.html
-    return new JToggleButton(title, new GrayIcon()) {
-      private final transient ArrowToggleButtonCellIcon icon = new ArrowToggleButtonCellIcon();
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
 
-      @Override public void updateUI() {
-        super.updateUI();
-        setContentAreaFilled(false);
-        int th = ArrowToggleButtonCellIcon.TH;
-        int left = LINE_WIDTH + BI_GAP + (first ? 0 : th);
-        setBorder(BorderFactory.createEmptyBorder(0, left, 0, th));
-        setFocusPainted(false);
-        setOpaque(false);
-        setBackground(color);
-        setHorizontalAlignment(LEFT);
-        // setIcon(new TestIcon());
-      }
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
 
-      @Override public boolean contains(int x, int y) {
-        // Shape shape = icon.getShape();
-        // return shape != null && shape.contains(x, y);
-        return Optional.ofNullable(icon.getShape())
-            .map(s -> s.contains(x, y))
-            .orElseGet(() -> super.contains(x, y));
-      }
+class IconToggleButton extends JToggleButton {
+  private static final int LINE_WIDTH = 1;
+  private static final int BI_GAP = 2;
+  private final transient ArrowToggleButtonCellIcon icon = new ArrowToggleButtonCellIcon();
+  private final boolean first;
 
-      @Override public Dimension getPreferredSize() {
-        return new Dimension(icon.getIconWidth(), icon.getIconHeight());
-      }
+  protected IconToggleButton(String title, Color color, boolean first) {
+    super(title, new GrayIcon());
+    this.first = first;
+    setBackground(color);
+  }
 
-      @Override protected void paintComponent(Graphics g) {
-        icon.paintIcon(this, g, 0, 0);
-        super.paintComponent(g);
-      }
-    };
+  @Override public void updateUI() {
+    super.updateUI();
+    setContentAreaFilled(false);
+    int th = ArrowToggleButtonCellIcon.TH;
+    int left = LINE_WIDTH + BI_GAP + (first ? 0 : th);
+    setBorder(BorderFactory.createEmptyBorder(0, left, 0, th));
+    setFocusPainted(false);
+    setOpaque(false);
+    // setBackground(color);
+    setHorizontalAlignment(LEFT);
+    // setIcon(new TestIcon());
+  }
+
+  @Override public boolean contains(int x, int y) {
+    // Shape shape = icon.getShape();
+    // return shape != null && shape.contains(x, y);
+    return Optional.ofNullable(icon.getShape())
+        .map(s -> s.contains(x, y))
+        .orElseGet(() -> super.contains(x, y));
+  }
+
+  @Override public Dimension getPreferredSize() {
+    return new Dimension(icon.getIconWidth(), icon.getIconHeight());
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    icon.paintIcon(this, g, 0, 0);
+    super.paintComponent(g);
+  }
+
+  @Override public final void setBackground(Color bg) {
+    super.setBackground(bg);
   }
 
   private static Container makeContainer(int overlap) {
@@ -76,38 +104,19 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Component makeBreadcrumbList(int overlap, Color color, List<String> list) {
+  public static Component makeBreadcrumbBar(int overlap, Color bgc, String... list) {
     Container p = makeContainer(overlap + LINE_WIDTH);
-    ButtonGroup bg = new ButtonGroup();
-    boolean f = true;
+    ButtonGroup group = new ButtonGroup();
     for (String title : list) {
-      AbstractButton b = makeButton(title, color, f);
+      AbstractButton b = makeButton(title, bgc, p.getComponentCount() == 0);
       p.add(b);
-      bg.add(b);
-      f = false;
+      group.add(b);
     }
     return p;
   }
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
+  private static AbstractButton makeButton(String title, Color color, boolean first) {
+    return new IconToggleButton(title, color, first);
   }
 }
 

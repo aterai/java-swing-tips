@@ -64,19 +64,27 @@ public final class MainPanel extends JPanel {
           case 2: return URI.class;
           default: return super.getColumnClass(column);
         }
-        // // Java 12:
-        // return switch (column) {
-        //   case 0 -> Integer.class;
-        //   case 1 -> String.class;
-        //   case 2 -> URI.class;
-        //   default -> super.getColumnClass(column);
-        // };
       }
 
       @Override public boolean isCellEditable(int row, int col) {
         return false;
       }
     };
+    // // Java 12:
+    // DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+    //   @Override public Class<?> getColumnClass(int column) {
+    //     return switch (column) {
+    //       case 0 -> Integer.class;
+    //       case 1 -> String.class;
+    //       case 2 -> URI.class;
+    //       default -> super.getColumnClass(column);
+    //     };
+    //   }
+    //
+    //   @Override public boolean isCellEditable(int row, int col) {
+    //     return false;
+    //   }
+    // };
     model.addRow(new Object[] {0, "FrontPage", toUri("https://ateraimemo.com/")});
     model.addRow(new Object[] {1, "Java Swing Tips", toUri("https://ateraimemo.com/Swing.html")});
     model.addRow(new Object[] {2, "Example", toUri("https://www.example.com/")});

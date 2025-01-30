@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -63,9 +64,7 @@ public final class MainPanel extends JPanel {
       // }
 
       @Override public Component getEditorComponent() {
-        // if (Objects.isNull(editorComponent)) {
-        //   editorComponent = makeLayer();
-        // }
+        // if (editorComponent != null) { editorComponent = makeLayer(); }
         editorComponent = Optional.ofNullable(editorComponent).orElseGet(this::makeLayer);
         return editorComponent;
       }
@@ -98,7 +97,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

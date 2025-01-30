@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -28,47 +29,46 @@ public final class MainPanel extends JPanel {
 
     SimpleDateFormat format = new SimpleDateFormat("mm:ss, SSS", Locale.getDefault());
     DefaultFormatterFactory factory = new DefaultFormatterFactory(new DateFormatter(format));
-    JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND));
+
+    SpinnerDateModel model1 = new SpinnerDateModel(d, null, null, Calendar.SECOND);
+    JSpinner spinner1 = new JSpinner(model1);
     ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().setFormatterFactory(factory);
-    Map<Integer, Integer> stepSizeMap = new ConcurrentHashMap<>();
-    stepSizeMap.put(Calendar.HOUR_OF_DAY, 1);
-    stepSizeMap.put(Calendar.MINUTE, 1);
-    stepSizeMap.put(Calendar.SECOND, 30);
-    stepSizeMap.put(Calendar.MILLISECOND, 500);
 
-    JSpinner spinner2 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND) {
-      @Override public Object getPreviousValue() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getDate());
-        int calendarField = getCalendarField();
-        int stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
-        cal.add(calendarField, -stepSize);
-        // Date prev = cal.getTime();
-        // Comparable start = getStart();
-        // return ((start == null) || (start.compareTo(prev) <= 0)) ? prev : null;
-        // return prev;
-        return cal.getTime();
-      }
-
-      @Override public Object getNextValue() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getDate());
-        int calendarField = getCalendarField();
-        int stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
-        cal.add(calendarField, stepSize);
-        // Date next = cal.getTime();
-        // Comparable end = getEnd();
-        // return ((end == null) || (end.compareTo(next) >= 0)) ? next : null;
-        // return next;
-        return cal.getTime();
-      }
-    });
+    SpinnerDateModel model2 = makeSpinnerDateModel(d);
+    JSpinner spinner2 = new JSpinner(model2);
     ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
 
     add(makeTitledPanel("Default SpinnerDateModel", spinner1));
     add(makeTitledPanel("Override SpinnerDateModel#getNextValue(...)", spinner2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static SpinnerDateModel makeSpinnerDateModel(Date d) {
+    Map<Integer, Integer> stepSizeMap = new ConcurrentHashMap<>();
+    stepSizeMap.put(Calendar.HOUR_OF_DAY, 1);
+    stepSizeMap.put(Calendar.MINUTE, 1);
+    stepSizeMap.put(Calendar.SECOND, 30);
+    stepSizeMap.put(Calendar.MILLISECOND, 500);
+
+    return new SpinnerDateModel(d, null, null, Calendar.SECOND) {
+      @Override public Object getPreviousValue() {
+        return getDateValue(-1);
+      }
+
+      @Override public Object getNextValue() {
+        return getDateValue(1);
+      }
+
+      private Date getDateValue(int dir) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getDate());
+        int calendarField = getCalendarField();
+        int stepSize = Optional.ofNullable(stepSizeMap.get(calendarField)).orElse(1);
+        cal.add(calendarField, dir * stepSize);
+        return cal.getTime();
+      }
+    };
   }
 
   private static Component makeTitledPanel(String title, Component cmp) {
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
