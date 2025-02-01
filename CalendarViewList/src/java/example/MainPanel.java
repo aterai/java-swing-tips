@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -58,17 +59,9 @@ public final class MainPanel extends JPanel {
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     JLabel label = new JLabel(" ", SwingConstants.CENTER);
-
     monthList.getSelectionModel().addListSelectionListener(e -> {
       ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-      if (lsm.isSelectionEmpty()) {
-        label.setText(" ");
-      } else {
-        ListModel<LocalDate> model = monthList.getModel();
-        LocalDate from = model.getElementAt(lsm.getMinSelectionIndex());
-        LocalDate to = model.getElementAt(lsm.getMaxSelectionIndex());
-        label.setText(Period.between(from, to).toString());
-      }
+      label.setText(lsm.isSelectionEmpty() ? " " : between(lsm));
     });
 
     Box box = Box.createVerticalBox();
@@ -79,6 +72,13 @@ public final class MainPanel extends JPanel {
 
     add(box);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private String between(ListSelectionModel lsm) {
+    ListModel<LocalDate> model = monthList.getModel();
+    LocalDate from = model.getElementAt(lsm.getMinSelectionIndex());
+    LocalDate to = model.getElementAt(lsm.getMaxSelectionIndex());
+    return Period.between(from, to).toString();
   }
 
   private static JList<DayOfWeek> makeHeaderList() {
@@ -98,8 +98,6 @@ public final class MainPanel extends JPanel {
           if (c instanceof JLabel) {
             JLabel l = (JLabel) c;
             l.setHorizontalAlignment(SwingConstants.CENTER);
-            // String s = value.getDisplayName(TextStyle.SHORT_STANDALONE, locale);
-            // l.setText(s.substring(0, Math.min(2, s.length())));
             l.setText(value.getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault()));
           }
           return c;
@@ -225,7 +223,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

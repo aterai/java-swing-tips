@@ -8,7 +8,9 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -26,24 +28,14 @@ public final class MainPanel extends JPanel {
       monitor.setProgress(0);
       SwingWorker<String, String> worker = new BackgroundTask() {
         @Override protected void process(List<String> chunks) {
-          // if (isDisplayable() && !isCancelled()) {
-          //   chunks.forEach(monitor::setNote);
-          // } else {
-          //   cancel(true);
-          // }
           chunks.forEach(monitor::setNote);
         }
 
         @Override protected void done() {
-          // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
           runButton.setEnabled(true);
           monitor.close();
           try {
-            if (isCancelled()) {
-              area.append("Cancelled\n");
-            } else {
-              area.append(get() + "\n");
-            }
+            area.append(isCancelled() ? "Cancelled\n" : get() + "\n");
           } catch (InterruptedException ex) {
             area.append("Interrupted\n");
             Thread.currentThread().interrupt();
@@ -76,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -120,13 +112,11 @@ class ProgressListener implements PropertyChangeListener {
     boolean isProgress = "progress".equals(e.getPropertyName());
     if (isProgress) {
       monitor.setProgress((Integer) e.getNewValue());
-      Object o = e.getSource();
-      if (o instanceof SwingWorker) {
-        SwingWorker<?, ?> task = (SwingWorker<?, ?>) o;
-        if (task.isDone() || monitor.isCanceled()) {
-          task.cancel(true);
-        }
-      }
+      Optional.ofNullable(e.getSource())
+          .filter(SwingWorker.class::isInstance)
+          .map(SwingWorker.class::cast)
+          .filter(task -> task.isDone() || monitor.isCanceled())
+          .ifPresent(task -> task.cancel(true));
     }
   }
 }

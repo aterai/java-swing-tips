@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -69,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -224,13 +225,6 @@ class EditableList<E extends ListItem> extends JList<E> {
       editor.requestFocusInWindow();
     }
   };
-  private final Action cancelEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      // glassPane.setVisible(false);
-      window.setVisible(false);
-      editingIndex = -1;
-    }
-  };
   private final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       ListModel<E> m = getModel();
@@ -253,6 +247,35 @@ class EditableList<E extends ListItem> extends JList<E> {
 
   protected EditableList(ListModel<E> model) {
     super(model);
+    initEditor();
+    initAction();
+    EventQueue.invokeLater(this::initHandler);
+  }
+
+  private void initAction() {
+    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    InputMap im = editor.getInputMap(WHEN_FOCUSED);
+    im.put(enterKey, RENAME);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
+
+    ActionMap am = editor.getActionMap();
+    am.put(RENAME, renameTitle);
+    // glassPane.setVisible(false);
+    Action cancelEditing = new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        // glassPane.setVisible(false);
+        window.setVisible(false);
+        editingIndex = -1;
+      }
+    };
+    am.put(CANCEL, cancelEditing);
+
+    getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
+    getActionMap().put(EDITING, startEditing);
+  }
+
+  private void initEditor() {
     editor.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     editor.setEditorKit(new WrapEditorKit());
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
@@ -265,47 +288,34 @@ class EditableList<E extends ListItem> extends JList<E> {
     doc.setParagraphAttributes(0, doc.getLength(), center, false);
     editor.setComponentPopupMenu(new TextComponentPopupMenu());
     editor.getDocument().addDocumentListener(new ResizeHandler());
+  }
 
-    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    InputMap im = editor.getInputMap(WHEN_FOCUSED);
-    im.put(enterKey, RENAME);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
-
-    ActionMap am = editor.getActionMap();
-    am.put(RENAME, renameTitle);
-    am.put(CANCEL, cancelEditing);
-
-    getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
-    getActionMap().put(EDITING, startEditing);
-
-    EventQueue.invokeLater(() -> {
-      Window windowAncestor = SwingUtilities.getWindowAncestor(this);
-      windowAncestor.addMouseListener(new MouseAdapter() {
-        @Override public void mousePressed(MouseEvent e) {
-          resetEditor(editor);
-        }
-      });
-      windowAncestor.addComponentListener(new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) {
-          resetEditor(editor);
-        }
-
-        @Override public void componentMoved(ComponentEvent e) {
-          resetEditor(editor);
-        }
-      });
-
-      Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
-      if (c != null) {
-        c.addMouseWheelListener(e -> {
-          if (window != null && window.isVisible() && editingIndex >= 0) {
-            ActionEvent ev = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, "");
-            renameTitle.actionPerformed(ev);
-          }
-        });
+  private void initHandler() {
+    Window windowAncestor = SwingUtilities.getWindowAncestor(this);
+    windowAncestor.addMouseListener(new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        resetEditor(editor);
       }
     });
+    windowAncestor.addComponentListener(new ComponentAdapter() {
+      @Override public void componentResized(ComponentEvent e) {
+        resetEditor(editor);
+      }
+
+      @Override public void componentMoved(ComponentEvent e) {
+        resetEditor(editor);
+      }
+    });
+
+    Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+    if (c != null) {
+      c.addMouseWheelListener(e -> {
+        if (window != null && window.isVisible() && editingIndex >= 0) {
+          ActionEvent ev = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, "");
+          renameTitle.actionPerformed(ev);
+        }
+      });
+    }
   }
 
   public static void resetEditor(Component editor) {
