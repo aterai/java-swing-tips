@@ -315,6 +315,7 @@ class ContributionCalendarList extends JList<Contribution> {
     return String.format("%s contribution on %s", actTxt, c.getDate());
   }
 }
+
 class BalloonToolTip extends JToolTip {
   private static final int TRI_HEIGHT = 4;
   private transient HierarchyListener listener;

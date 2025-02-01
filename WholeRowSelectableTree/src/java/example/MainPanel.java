@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Enumeration;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -48,7 +49,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -241,14 +242,6 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
     }
   }
 
-  private static Color getBackgroundSelectionColor(Component component) {
-    Color color = Color.LIGHT_GRAY;
-    if (component instanceof DefaultTreeCellRenderer) {
-      color = ((DefaultTreeCellRenderer) component).getBackgroundSelectionColor();
-    }
-    return color;
-  }
-
   @Override protected MouseListener createMouseListener() {
     return new MouseHandler() {
       @Override public void mousePressed(MouseEvent e) {
@@ -262,23 +255,31 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
       @Override public void mouseDragged(MouseEvent e) {
         super.mouseDragged(convertMouseEvent(e));
       }
-
-      private MouseEvent convertMouseEvent(MouseEvent e) {
-        boolean b1 = !tree.isEnabled() || !SwingUtilities.isLeftMouseButton(e) || e.isConsumed();
-        int x = e.getX();
-        int y = e.getY();
-        TreePath path = getClosestPathForLocation(tree, x, y);
-        boolean b2 = path == null || isLocationInExpandControl(path, x, y);
-        Rectangle bounds = getPathBounds(tree, path);
-        int newX = (int) bounds.getCenterX();
-        bounds.x = 0;
-        bounds.width = tree.getWidth();
-        return !b1 && !b2 && bounds.contains(e.getPoint()) ? new MouseEvent(
-            e.getComponent(), e.getID(), e.getWhen(),
-            e.getModifiers() | e.getModifiersEx(),
-            newX, e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton()) : e;
-      }
     };
+  }
+
+  private MouseEvent convertMouseEvent(MouseEvent e) {
+    boolean b1 = !tree.isEnabled() || !SwingUtilities.isLeftMouseButton(e) || e.isConsumed();
+    int x = e.getX();
+    int y = e.getY();
+    TreePath path = getClosestPathForLocation(tree, x, y);
+    boolean b2 = path == null || isLocationInExpandControl(path, x, y);
+    Rectangle bounds = getPathBounds(tree, path);
+    int newX = (int) bounds.getCenterX();
+    bounds.x = 0;
+    bounds.width = tree.getWidth();
+    return !b1 && !b2 && bounds.contains(e.getPoint()) ? new MouseEvent(
+        e.getComponent(), e.getID(), e.getWhen(),
+        e.getModifiers() | e.getModifiersEx(),
+        newX, e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton()) : e;
+  }
+
+  private static Color getBackgroundSelectionColor(Component component) {
+    Color color = Color.LIGHT_GRAY;
+    if (component instanceof DefaultTreeCellRenderer) {
+      color = ((DefaultTreeCellRenderer) component).getBackgroundSelectionColor();
+    }
+    return color;
   }
 }
 
@@ -324,7 +325,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
