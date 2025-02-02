@@ -45,20 +45,10 @@ public final class MainPanel extends JPanel {
           Component c = renderer.getListCellRendererComponent(
               list, value, index, isSelected, cellHasFocus);
           if (c instanceof JComponent) {
-            ((JComponent) c).setBorder(getSeparatorBorder(value, index));
+            ((JComponent) c).setBorder(value.getSeparatorBorder(index));
           }
           return c;
         });
-      }
-
-      private Border getSeparatorBorder(ListItem value, int index) {
-        Border b;
-        if (index != -1 && value.hasSeparator()) {
-          b = BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY);
-        } else {
-          b = BorderFactory.createEmptyBorder();
-        }
-        return b;
       }
     };
   }
@@ -107,6 +97,16 @@ class ListItem {
 
   public boolean hasSeparator() {
     return flag;
+  }
+
+  public Border getSeparatorBorder(int index) {
+    Border b;
+    if (index != -1 && hasSeparator()) {
+      b = BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY);
+    } else {
+      b = BorderFactory.createEmptyBorder();
+    }
+    return b;
   }
 
   @Override public String toString() {

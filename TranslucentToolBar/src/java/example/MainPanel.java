@@ -15,6 +15,7 @@ import java.awt.image.RescaleOp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -30,45 +31,20 @@ public final class MainPanel extends JPanel {
         return new MissingIcon();
       }
     }).orElseGet(MissingIcon::new);
-
-    JToolBar toolBar = makeTranslucentToolBar();
+    JToolBar toolBar = makeToolBar();
     JLabel label = new LabelWithToolBox(icon, toolBar);
     label.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(0xDE_DE_DE)),
         BorderFactory.createLineBorder(Color.WHITE, 4)));
     label.add(toolBar);
-
     add(label);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JToolBar makeTranslucentToolBar() {
-    JToolBar toolBar = new JToolBar() {
-      private transient MouseListener listener;
-
-      @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(getBackground());
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.dispose();
-        super.paintComponent(g);
-      }
-
-      @Override public void updateUI() {
-        removeMouseListener(listener);
-        super.updateUI();
-        listener = new ParentDispatchMouseListener();
-        addMouseListener(listener);
-        setFloatable(false);
-        setOpaque(false);
-        setBackground(new Color(0x0, true));
-        setForeground(Color.WHITE);
-        setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
-      }
-    };
+  private JToolBar makeToolBar() {
+    JToolBar toolBar = new TranslucentToolBar();
     // toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.X_AXIS));
     toolBar.add(Box.createGlue());
-    // http://chrfb.deviantart.com/art/quot-ecqlipse-2-quot-PNG-59941546
     toolBar.add(makeToolButton("ATTACHMENT_16x16-32.png"));
     toolBar.add(Box.createHorizontalStrut(2));
     toolBar.add(makeToolButton("RECYCLE BIN - EMPTY_16x16-32.png"));
@@ -144,7 +120,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -154,6 +130,30 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TranslucentToolBar extends JToolBar {
+  private transient MouseListener listener;
+
+  @Override protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(getBackground());
+    g2.fillRect(0, 0, getWidth(), getHeight());
+    g2.dispose();
+    super.paintComponent(g);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    super.updateUI();
+    listener = new ParentDispatchMouseListener();
+    addMouseListener(listener);
+    setFloatable(false);
+    setOpaque(false);
+    setBackground(new Color(0x0, true));
+    setForeground(Color.WHITE);
+    setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
   }
 }
 

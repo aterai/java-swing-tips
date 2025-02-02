@@ -6,11 +6,11 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -20,14 +20,10 @@ public final class MainPanel extends JPanel {
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (c instanceof JComponent) {
-          JComponent l = (JComponent) c;
-          Insets i = l.getInsets();
+          JComponent label = (JComponent) c;
           Rectangle rect = getCellRect(row, column, false);
-          rect.width -= i.left + i.right;
-          FontMetrics fm = l.getFontMetrics(l.getFont());
           String str = Objects.toString(getValueAt(row, column), "");
-          int cellTextWidth = fm.stringWidth(str);
-          l.setToolTipText(cellTextWidth > rect.width ? str : getToolTipText());
+          label.setToolTipText(isOmitted(label, rect, str) ? str : getToolTipText());
         }
         return c;
       }
@@ -35,9 +31,8 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         TableCellRenderer r = new ToolTipHeaderRenderer();
-        TableColumnModel columnModel = getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-          columnModel.getColumn(i).setHeaderRenderer(r);
+        for (int i = 0; i < getColumnModel().getColumnCount(); i++) {
+          getColumnModel().getColumn(i).setHeaderRenderer(r);
         }
       }
     };
@@ -45,6 +40,14 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static boolean isOmitted(JComponent c, Rectangle rect, String str) {
+    Insets i = c.getInsets();
+    int rectWidth = rect.width - i.left - i.right;
+    FontMetrics fm = c.getFontMetrics(c.getFont());
+    int cellTextWidth = fm.stringWidth(str);
+    return cellTextWidth > rectWidth;
   }
 
   private static TableModel makeModel() {
@@ -72,7 +75,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -95,11 +98,9 @@ class ToolTipHeaderRenderer implements TableCellRenderer {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       Insets i = l.getInsets();
-      Rectangle rect = header.getHeaderRect(column); // = table.getCellRect(row, column, false);
+      Rectangle rect = header.getHeaderRect(column);
       rect.width -= i.left + i.right;
-      boolean isClipped = isClipped(l, rect);
-      // isClipped = l.getFontMetrics(l.getFont()).stringWidth(l.getText()) > rect.width;
-      l.setToolTipText(isClipped ? l.getText() : header.getToolTipText());
+      l.setToolTipText(isClipped(l, rect) ? l.getText() : header.getToolTipText());
     }
     return c;
   }

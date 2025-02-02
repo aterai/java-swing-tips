@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     textPane.getActionMap().put("popupInsert", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         try {
-          // Java 9: rect = textPane.modelToView2D(textPane.getCaretPosition()).getBounds();
+          // Java 9: rect = textPane.modelToView2D(pos).getBounds();
           Rectangle rect = textPane.modelToView(textPane.getCaretPosition());
           popup.show(textPane, rect.x, (int) rect.getMaxY());
           EventQueue.invokeLater(() -> {

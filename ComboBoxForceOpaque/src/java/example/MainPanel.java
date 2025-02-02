@@ -88,12 +88,11 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setRenderer(null);
         super.updateUI();
-        ListCellRenderer<? super String> r = getRenderer();
+        ListCellRenderer<? super String> renderer = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(
+          Component c = renderer.getListCellRendererComponent(
               list, value, index, isSelected, cellHasFocus);
-          ((JComponent) c).setOpaque(true);
-          // ((JComponent) c).setOpaque(index < 0); // WindowsLookAndFeel
+          ((JComponent) c).setOpaque(true); // setOpaque(index < 0) // WindowsLaf
           return c;
         });
         ComboPopup popup = (ComboPopup) getAccessibleContext().getAccessibleChild(0);
@@ -103,13 +102,6 @@ public final class MainPanel extends JPanel {
         list.setSelectionBackground(Color.LIGHT_GRAY);
         list.setSelectionForeground(Color.BLACK);
         setBackground(BACKGROUND);
-        // if (isSelected) {
-        //   c.setBackground(list.getSelectionBackground());
-        //   c.setForeground(Color.BLACK);
-        // } else {
-        //   c.setBackground(list.getBackground());
-        //   c.setForeground(list.getForeground());
-        // }
       }
     };
   }
