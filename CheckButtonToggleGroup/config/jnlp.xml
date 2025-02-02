@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST CheckButtonToggleGroup" />
+  <property name="jnlp.Name"     value="CheckButtonToggleGroup" />
+  <property name="jnlp.name"     value="checkbuttontogglegroup" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/checkbuttontogglegroup/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CheckButtonToggleGroup.html" />
+</project>
