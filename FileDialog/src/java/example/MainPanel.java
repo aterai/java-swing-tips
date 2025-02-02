@@ -9,6 +9,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -26,47 +28,48 @@ public final class MainPanel extends JPanel {
   }
 
   private JButton makeButton1() {
-    JButton button1 = new JButton("FileDialog(Frame)");
-    button1.addActionListener(e -> {
-      // Window w = SwingUtilities.getWindowAncestor(this);
-      // Frame frame = new Frame(w.getGraphicsConfiguration());
-      Frame frame = JOptionPane.getFrameForComponent(this);
-      // Frame frame = null;
-      FileDialog fd = new FileDialog(frame, "title");
-      // fd.setLocation(500, 500);
-      fd.setTitle("FileDialog(Frame frame, String title)");
-      fd.setDirectory(System.getProperty("user.home"));
-      // frame.addWindowListener(new WindowAdapter() {
-      fd.addWindowListener(new WindowAdapter() {
-        @Override public void windowOpened(WindowEvent e) {
-          append("windowOpened");
-          Window w = e.getWindow();
-          append("FileDialog: " + fd.getLocation());
-          append("Window: " + w.getLocation());
-          fd.setTitle("windowOpened");
-          // fd.setLocation(500, 500);
-          // append("FileDialog: " + fd.getLocation());
-          Dialog d = (Dialog) SwingUtilities.getRoot(fd);
-          append("fd == SwingUtilities.getRoot(fd): " + Objects.equals(d, fd));
-          append("fd == w: " + Objects.equals(w, fd));
-        }
-      });
-      // fd.addWindowStateListener(ev -> {
-      //   System.out.println(ev);
-      // });
-      fd.setVisible(true);
-      if (fd.getFile() != null) {
-        // append(fd.getDirectory() + fd.getFile());
-        File file = new File(fd.getDirectory(), fd.getFile());
+    JButton button = new JButton("FileDialog(Frame)");
+    button.addActionListener(e -> {
+      File file = openFileDialog1(this);
+      if (file != null) {
         append(file.getAbsolutePath());
       }
     });
-    return button1;
+    return button;
+  }
+
+  private File openFileDialog1(Component parent) {
+    Frame frame = JOptionPane.getFrameForComponent(parent);
+    FileDialog fd = new FileDialog(frame, "title");
+    // fd.setLocation(500, 500);
+    fd.setTitle("FileDialog(Frame frame, String title)");
+    fd.setDirectory(System.getProperty("user.home"));
+    fd.addWindowListener(new WindowAdapter() {
+      @Override public void windowOpened(WindowEvent e) {
+        info(e, fd);
+      }
+    });
+    fd.setVisible(true);
+    return Optional.ofNullable(fd.getFile())
+        .map(name -> new File(fd.getDirectory(), name))
+        .orElse(null);
+  }
+
+  private void info(WindowEvent e, FileDialog fd) {
+    append("windowOpened");
+    Window w = e.getWindow();
+    append("FileDialog: " + fd.getLocation());
+    append("Window: " + w.getLocation());
+    fd.setTitle("windowOpened");
+    // fd.setLocation(500, 500); append("FileDialog: " + fd.getLocation());
+    Dialog d = (Dialog) SwingUtilities.getRoot(fd);
+    append("fd == SwingUtilities.getRoot(fd): " + Objects.equals(d, fd));
+    append("fd == w: " + Objects.equals(w, fd));
   }
 
   private JButton makeButton2() {
-    JButton button2 = new JButton("FileDialog(Dialog)");
-    button2.addActionListener(e -> {
+    JButton button = new JButton("FileDialog(Dialog)");
+    button.addActionListener(e -> {
       Dialog dialog = new Dialog(SwingUtilities.getWindowAncestor(this));
       FileDialog fd = new FileDialog(dialog, "FileDialog(Dialog dialog, String title)");
       // fd.setDirectory(System.getProperty("user.home"));
@@ -76,7 +79,7 @@ public final class MainPanel extends JPanel {
         append(file.getAbsolutePath());
       }
     });
-    return button2;
+    return button;
   }
 
   public void append(String str) {
@@ -93,7 +96,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

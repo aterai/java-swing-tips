@@ -23,60 +23,64 @@ public final class MainPanel extends JPanel {
       }
     };
     table.setComponentPopupMenu(makePopupMenu());
-
-    JTabbedPane tabs = new JTabbedPane();
+    JTabbedPane tabs = new JTabbedPane() {
+      @Override public void updateUI() {
+        super.updateUI();
+        // initActions(this);
+        EventQueue.invokeLater(() -> initActions(this));
+      }
+    };
     tabs.addTab("JTable", new JScrollPane(table));
     tabs.addTab("JTree", new JScrollPane(new JTree()));
     tabs.addTab("JSplitPane", new JSplitPane());
     tabs.addTab("JButton", new JButton("button"));
-
-    EventQueue.invokeLater(() -> {
-      int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-      // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-      KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, modifiers);
-      tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks1, "prev1");
-      tabs.getActionMap().put("prev1", new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-          int s = tabs.getTabCount();
-          tabs.setSelectedIndex((tabs.getSelectedIndex() + s - 1) % s);
-        }
-      });
-
-      KeyStroke ks2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, modifiers);
-      tabs.getInputMap(WHEN_FOCUSED).put(ks2, "next1");
-      tabs.getActionMap().put("next1", new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-          tabs.setSelectedIndex((tabs.getSelectedIndex() + 1) % tabs.getTabCount());
-        }
-      });
-
-      KeyStroke ks3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, modifiers);
-      tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks3, "prev2");
-      tabs.getActionMap().put("prev2", new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-          int pressed = MouseEvent.MOUSE_PRESSED;
-          tabs.dispatchEvent(new MouseEvent(tabs, pressed, 0, 0, 0, 0, 1, false));
-          int s = tabs.getTabCount();
-          tabs.setSelectedIndex((tabs.getSelectedIndex() + s - 1) % s);
-        }
-      });
-
-      KeyStroke ks4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, modifiers);
-      tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks4, "next2");
-      tabs.getActionMap().put("next2", new AbstractAction() {
-        @Override public void actionPerformed(ActionEvent e) {
-          for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
-            if (m instanceof JPopupMenu) {
-              ((JPopupMenu) m).setVisible(false);
-            }
-          }
-          tabs.setSelectedIndex((tabs.getSelectedIndex() + 1) % tabs.getTabCount());
-        }
-      });
-    });
-
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void initActions(JTabbedPane tabs) {
+    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+    KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, modifiers);
+    tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks1, "prev1");
+    tabs.getActionMap().put("prev1", new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        int s = tabs.getTabCount();
+        tabs.setSelectedIndex((tabs.getSelectedIndex() + s - 1) % s);
+      }
+    });
+
+    KeyStroke ks2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, modifiers);
+    tabs.getInputMap(WHEN_FOCUSED).put(ks2, "next1");
+    tabs.getActionMap().put("next1", new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        tabs.setSelectedIndex((tabs.getSelectedIndex() + 1) % tabs.getTabCount());
+      }
+    });
+
+    KeyStroke ks3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, modifiers);
+    tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks3, "prev2");
+    tabs.getActionMap().put("prev2", new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        int pressed = MouseEvent.MOUSE_PRESSED;
+        tabs.dispatchEvent(new MouseEvent(tabs, pressed, 0, 0, 0, 0, 1, false));
+        int s = tabs.getTabCount();
+        tabs.setSelectedIndex((tabs.getSelectedIndex() + s - 1) % s);
+      }
+    });
+
+    KeyStroke ks4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, modifiers);
+    tabs.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(ks4, "next2");
+    tabs.getActionMap().put("next2", new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        for (MenuElement m : MenuSelectionManager.defaultManager().getSelectedPath()) {
+          if (m instanceof JPopupMenu) {
+            ((JPopupMenu) m).setVisible(false);
+          }
+        }
+        tabs.setSelectedIndex((tabs.getSelectedIndex() + 1) % tabs.getTabCount());
+      }
+    });
   }
 
   private static TableModel makeModel() {

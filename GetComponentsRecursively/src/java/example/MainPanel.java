@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -15,7 +16,6 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTextArea log = new JTextArea();
-
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
@@ -24,46 +24,15 @@ public final class MainPanel extends JPanel {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
-
     JButton button2 = new JButton("Details View");
     button2.addActionListener(e -> {
       JFileChooser fc = new JFileChooser();
-      // java - How can I start the JFileChooser in the Details view? - Stack Overflow
-      // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-      String cmd = "viewTypeDetails";
-      Action detailsAction = fc.getActionMap().get(cmd);
-      if (Objects.nonNull(detailsAction)) {
-        detailsAction.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, cmd));
-      }
-
-      // TEST1:
-      // SwingUtils.searchAndResizeMode(fc);
-
-      // TEST2:
-      // Component c = SwingUtils.findChildComponent(fc, JTable.class);
-      // if (c instanceof JTable) { ... }
-
-      // TEST3:
-      // SwingUtils.getComponentByClass(fc, JTable.class).ifPresent(t -> ...);
-
-      // TEST4:
-      SwingUtils.descendants(fc)
-          .filter(JTable.class::isInstance).map(JTable.class::cast)
-          .findFirst()
-          .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
-
-      // TEST5:
-      // SwingUtils.descendantOrSelf(fc)
-      //     .filter(JTable.class::isInstance).map(JTable.class::cast)
-      //     .findFirst()
-      //     .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
-
+      initFileChooserViewType(fc);
       int retValue = fc.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fc.getSelectedFile().getAbsolutePath());
       }
     });
-
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
     p.add(button1);
@@ -71,6 +40,38 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void initFileChooserViewType(JFileChooser fc) {
+    // java - How can I start the JFileChooser in the Details view? - Stack Overflow
+    // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+    String cmd = "viewTypeDetails";
+    Action detailsAction = fc.getActionMap().get(cmd);
+    if (Objects.nonNull(detailsAction)) {
+      detailsAction.actionPerformed(new ActionEvent(fc, ActionEvent.ACTION_PERFORMED, cmd));
+    }
+
+    // TEST1:
+    // SwingUtils.searchAndResizeMode(fc);
+
+    // TEST2:
+    // Component c = SwingUtils.findChildComponent(fc, JTable.class);
+    // if (c instanceof JTable) { ... }
+
+    // TEST3:
+    // SwingUtils.getComponentByClass(fc, JTable.class).ifPresent(t -> ...);
+
+    // TEST4:
+    SwingUtils.descendants(fc)
+        .filter(JTable.class::isInstance).map(JTable.class::cast)
+        .findFirst()
+        .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
+
+    // TEST5:
+    // SwingUtils.descendantOrSelf(fc)
+    //     .filter(JTable.class::isInstance).map(JTable.class::cast)
+    //     .findFirst()
+    //     .ifPresent(t -> t.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN));
   }
 
   public static void main(String[] args) {
@@ -83,7 +84,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
