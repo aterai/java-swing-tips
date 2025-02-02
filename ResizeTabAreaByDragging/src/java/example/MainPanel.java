@@ -22,11 +22,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     ClippedTitleTabbedPane tabs = new ClippedTitleTabbedPane();
     tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    tabs.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
-    tabs.addTab("2", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(5, 3)));
-    tabs.addTab("33333333333333", new ColorIcon(Color.BLUE), new JLabel("666666666"));
-    tabs.addTab("444444444444444444444444", new ColorIcon(Color.ORANGE), new JSplitPane());
-
+    tabs.addTab("JTree", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
+    tabs.addTab("JTable", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(5, 3)));
+    tabs.addTab("JLabel", new ColorIcon(Color.BLUE), new JLabel("text"));
+    tabs.addTab("JSplitPane", new ColorIcon(Color.ORANGE), new JSplitPane());
     add(new JLayer<>(tabs, new TabAreaResizeLayer()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -59,7 +58,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   private int tabAreaWidth = 32;
 
   protected ClippedTitleTabbedPane() {
-    super(SwingConstants.LEFT);
+    super(LEFT);
   }
 
   // protected ClippedTitleTabbedPane(int tabPlacement) {
