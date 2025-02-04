@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
@@ -20,42 +21,15 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      @Override public void updateUI() {
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        super.updateUI();
-        TableModel m = getModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
-          TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-          if (r instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component) r);
-          }
-        }
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          JCheckBox b = (JCheckBox) c;
-          b.setBackground(getSelectionBackground());
-          b.setBorderPainted(true);
-        }
-        return c;
-      }
-    };
-
+    JTable table = new CustomHeaderTable(makeModel());
     JPopupMenu pop = new JPopupMenu();
-    pop.add("000");
-    pop.add("11111");
-    pop.add("2222222");
-
+    pop.add("JMenuItem: 1");
+    pop.add("JMenuItem: 22");
+    pop.add("JMenuItem: 333");
     HeaderRenderer r = new HeaderRenderer(table.getTableHeader(), pop);
     table.getColumnModel().getColumn(0).setHeaderRenderer(r);
     table.getColumnModel().getColumn(1).setHeaderRenderer(r);
     table.getColumnModel().getColumn(2).setHeaderRenderer(r);
-
-    // table.setAutoCreateRowSorter(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -83,7 +57,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -92,6 +66,35 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class CustomHeaderTable extends JTable {
+  protected CustomHeaderTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    super.updateUI();
+    TableModel m = getModel();
+    for (int i = 0; i < m.getColumnCount(); i++) {
+      TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+      if (r instanceof Component) {
+        SwingUtilities.updateComponentTreeUI((Component) r);
+      }
+    }
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JCheckBox) {
+      JCheckBox b = (JCheckBox) c;
+      b.setBackground(getSelectionBackground());
+      b.setBorderPainted(true);
+    }
+    return c;
   }
 }
 
@@ -114,45 +117,7 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
     //   Insets i = c.getInsets();
     //   r.translate(r.width - i.right, 0);
     // } else {
-    MouseInputListener handler = new MouseInputAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        JTableHeader header = (JTableHeader) e.getComponent();
-        JTable table = header.getTable();
-        // TableColumnModel columnModel = table.getColumnModel();
-        // int vci = columnModel.getColumnIndexAtX(e.getX());
-        int vci = table.columnAtPoint(e.getPoint());
-        // int mci = table.convertColumnIndexToModel(vci);
-        // TableColumn column = table.getColumnModel().getColumn(mci);
-        // int w = column.getWidth(); // Nimbus???
-        // int h = header.getHeight();
-        Rectangle r = header.getHeaderRect(vci);
-        Container c = (Container) getTableCellRendererComponent(table, "", true, true, -1, vci);
-        // if (!isNimbus) {
-        //   Insets i = c.getInsets();
-        //   r.translate(r.width - i.right, 0);
-        // } else {
-        r.translate(r.width - BUTTON_WIDTH, 0);
-        r.setSize(BUTTON_WIDTH, r.height);
-        Point pt = e.getPoint();
-        if (c.getComponentCount() > 0 && r.contains(pt)) {
-          popup.show(header, r.x, r.height);
-          JButton b = (JButton) c.getComponent(0);
-          b.doClick();
-          e.consume();
-        }
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        rolloverIndex = -1;
-      }
-
-      @Override public void mouseMoved(MouseEvent e) {
-        JTableHeader header = (JTableHeader) e.getComponent();
-        JTable table = header.getTable();
-        int vci = table.columnAtPoint(e.getPoint());
-        rolloverIndex = table.convertColumnIndexToModel(vci);
-      }
-    };
+    MouseInputListener handler = new RolloverHandler();
     header.addMouseListener(handler);
     header.addMouseMotionListener(handler);
   }
@@ -203,6 +168,47 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
       // }
     }
     return c;
+  }
+
+  private final class RolloverHandler extends MouseInputAdapter {
+    @Override public void mouseClicked(MouseEvent e) {
+      JTableHeader header = (JTableHeader) e.getComponent();
+      JTable table = header.getTable();
+      // TableColumnModel columnModel = table.getColumnModel();
+      // int vci = columnModel.getColumnIndexAtX(e.getX());
+      int vci = table.columnAtPoint(e.getPoint());
+      // int mci = table.convertColumnIndexToModel(vci);
+      // TableColumn column = table.getColumnModel().getColumn(mci);
+      // int w = column.getWidth(); // Nimbus???
+      // int h = header.getHeight();
+      Rectangle r = header.getHeaderRect(vci);
+      Container c = (Container) getTableCellRendererComponent(
+          table, "", true, true, -1, vci);
+      // if (!isNimbus) {
+      //   Insets i = c.getInsets();
+      //   r.translate(r.width - i.right, 0);
+      // } else {
+      r.translate(r.width - BUTTON_WIDTH, 0);
+      r.setSize(BUTTON_WIDTH, r.height);
+      Point pt = e.getPoint();
+      if (c.getComponentCount() > 0 && r.contains(pt)) {
+        popup.show(header, r.x, r.height);
+        JButton b = (JButton) c.getComponent(0);
+        b.doClick();
+        e.consume();
+      }
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      rolloverIndex = -1;
+    }
+
+    @Override public void mouseMoved(MouseEvent e) {
+      JTableHeader header = (JTableHeader) e.getComponent();
+      JTable table = header.getTable();
+      int vci = table.columnAtPoint(e.getPoint());
+      rolloverIndex = table.convertColumnIndexToModel(vci);
+    }
   }
 }
 

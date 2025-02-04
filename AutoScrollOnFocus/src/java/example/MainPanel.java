@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -16,12 +17,7 @@ public final class MainPanel extends JPanel {
       @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
         Component c = super.getComponentAfter(focusCycleRoot, cmp);
         // TEST1: box.scrollRectToVisible(c.getBounds());
-        // TEST2:
-        // Optional.ofNullable(SwingUtilities.getAncestorOfClass(JViewport.class, focusCycleRoot))
-        //     .filter(JViewport.class::isInstance).map(JViewport.class::cast)
-        //     .map(SwingUtilities::getUnwrappedView)
-        //     .filter(JComponent.class::isInstance).map(JComponent.class::cast)
-        //     .ifPresent(view -> view.scrollRectToVisible(c.getBounds()));
+        // TEST2: scrollTest(focusCycleRoot, c);
         if (focusCycleRoot instanceof JComponent) {
           ((JComponent) focusCycleRoot).scrollRectToVisible(c.getBounds());
         }
@@ -40,6 +36,17 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(box));
     setPreferredSize(new Dimension(320, 240));
   }
+
+  // private static void scrollTest(Container focusRoot, Component c) {
+  //   Container viewport = SwingUtilities.getAncestorOfClass(JViewport.class, focusRoot);
+  //   Optional.ofNullable(viewport)
+  //       .filter(JViewport.class::isInstance)
+  //       .map(JViewport.class::cast)
+  //       .map(SwingUtilities::getUnwrappedView)
+  //       .filter(JComponent.class::isInstance)
+  //       .map(JComponent.class::cast)
+  //       .ifPresent(view -> view.scrollRectToVisible(c.getBounds()));
+  // }
 
   private static Box makeTestBox() {
     Box box = Box.createVerticalBox();
@@ -63,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
