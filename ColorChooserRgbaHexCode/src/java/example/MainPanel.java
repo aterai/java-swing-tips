@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.text.AttributeSet;
@@ -34,48 +35,49 @@ public final class MainPanel extends JPanel {
     };
     label.setOpaque(true);
     label.setBackground(new Color(0xFF_FF_00_00, true));
-
     UIManager.put("ColorChooser.rgbHexCodeText", "#RGBA:");
     JButton button = new JButton("open JColorChooser");
     button.addActionListener(e -> {
-      JColorChooser cc = new JColorChooser();
-      cc.setColor(label.getBackground());
-      AbstractColorChooserPanel rgbChooser = getRgbChooser(cc);
-      if (rgbChooser != null) {
-        AbstractColorChooserPanel[] panels = cc.getChooserPanels();
-        List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
-        // AbstractColorChooserPanel rgbChooser = choosers.get(3);
-        // Java 9: if (rgbChooser.isColorTransparencySelectionEnabled()) {
-        for (Component c : rgbChooser.getComponents()) {
-          if (c instanceof JFormattedTextField) {
-            removeFocusListeners(c);
-            // c.removePropertyChangeListener("value", (PropertyChangeListener) rgbChooser);
-            // javax.swing.colorchooser.ValueFormatter.init(8, true, (JFormattedTextField) c);
-            ValueFormatter.init((JFormattedTextField) c);
-          }
-        }
-        cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
-      }
-      ColorTracker ok = new ColorTracker(cc);
-      Component parent = getRootPane();
-      String title = "JColorChooser";
-      JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
-      dialog.addComponentListener(new ComponentAdapter() {
-        @Override public void componentHidden(ComponentEvent e) {
-          ((Window) e.getComponent()).dispose();
-        }
-      });
-      dialog.setVisible(true);
-      Color color = ok.getColor();
+      Color color = openColorChooser(getRootPane(), label.getBackground());
       if (color != null) {
         label.setBackground(color);
       }
     });
-
     add(label);
     add(button);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Color openColorChooser(Component parent, Color initColor) {
+    JColorChooser cc = new JColorChooser();
+    cc.setColor(initColor);
+    AbstractColorChooserPanel rgbChooser = getRgbChooser(cc);
+    if (rgbChooser != null) {
+      AbstractColorChooserPanel[] panels = cc.getChooserPanels();
+      List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
+      // AbstractColorChooserPanel rgbChooser = choosers.get(3);
+      // Java 9: if (rgbChooser.isColorTransparencySelectionEnabled()) {
+      for (Component c : rgbChooser.getComponents()) {
+        if (c instanceof JFormattedTextField) {
+          removeFocusListeners(c);
+          // c.removePropertyChangeListener("value", (PropertyChangeListener) rgbChooser);
+          // javax.swing.colorchooser.ValueFormatter.init(8, true, (JFormattedTextField) c);
+          ValueFormatter.init((JFormattedTextField) c);
+        }
+      }
+      cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
+    }
+    ColorTracker ok = new ColorTracker(cc);
+    String title = "JColorChooser";
+    JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
+    dialog.addComponentListener(new ComponentAdapter() {
+      @Override public void componentHidden(ComponentEvent e) {
+        ((Window) e.getComponent()).dispose();
+      }
+    });
+    dialog.setVisible(true);
+    return ok.getColor();
   }
 
   private static AbstractColorChooserPanel getRgbChooser(JColorChooser colorChooser) {
@@ -107,7 +109,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -148,32 +150,17 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
       }
     }
 
-    @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet set) throws BadLocationException {
-      if (isValidLength(fb.getDocument().getLength() + text.length() - length) && isValid(text)) {
-        fb.replace(offset, length, text.toUpperCase(Locale.ENGLISH), set);
+    @Override public void replace(FilterBypass fb, int offset, int length, String txt, AttributeSet set) throws BadLocationException {
+      int len = fb.getDocument().getLength() + txt.length() - length;
+      if (isValidLength(len) && isValidCode(txt)) {
+        fb.replace(offset, length, txt.toUpperCase(Locale.ENGLISH), set);
       }
     }
 
-    @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet set) throws BadLocationException {
-      if (isValidLength(fb.getDocument().getLength() + text.length()) && isValid(text)) {
-        fb.insertString(offset, text.toUpperCase(Locale.ENGLISH), set);
+    @Override public void insertString(FilterBypass fb, int offset, String txt, AttributeSet set) throws BadLocationException {
+      if (isValidLength(fb.getDocument().getLength() + txt.length()) && isValidCode(txt)) {
+        fb.insertString(offset, txt.toUpperCase(Locale.ENGLISH), set);
       }
-    }
-
-    private boolean isValidLength(int len) {
-      return 0 <= len && len <= 8;
-    }
-
-    @SuppressWarnings("PMD.OnlyOneReturn")
-    private boolean isValid(String text) {
-      int len = text.length();
-      for (int i = 0; i < len; i++) {
-        char ch = text.charAt(i);
-        if (Character.digit(ch, 16) < 0) {
-          return false;
-        }
-      }
-      return true;
     }
   };
 
@@ -190,6 +177,22 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
     text.setHorizontalAlignment(SwingConstants.RIGHT);
     text.setMinimumSize(text.getPreferredSize());
     text.addFocusListener(formatter);
+  }
+
+  private static boolean isValidLength(int len) {
+    return 0 <= len && len <= 8;
+  }
+
+  private static boolean isValidCode(String code) {
+    return code.chars().allMatch(c -> Character.digit(c, 16) < 0);
+    // boolean isValid = true;
+    // for (int i = 0; i < code.length(); i++) {
+    //   if (Character.digit(code.charAt(i), 16) < 0) {
+    //     isValid = false;
+    //     break;
+    //   }
+    // }
+    // return isValid;
   }
 
   @Override public Object stringToValue(String text) throws ParseException {
