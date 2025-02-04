@@ -184,7 +184,7 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
   }
 
   private static boolean isValidCode(String code) {
-    return code.chars().allMatch(c -> Character.digit(c, 16) < 0);
+    return code.chars().allMatch(c -> Character.digit(c, 16) >= 0);
     // boolean isValid = true;
     // for (int i = 0; i < code.length(); i++) {
     //   if (Character.digit(code.charAt(i), 16) < 0) {
