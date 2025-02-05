@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -16,38 +17,7 @@ import javax.swing.table.TableCellEditor;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(10, 3) {
-      private final CellBorder border = new CellBorder(2, 2, 1, 2);
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JTextField) {
-          ((JComponent) c).setBorder(border);
-          border.setStartCell(column == 0);
-        }
-        return c;
-      }
-    };
-    table.setAutoCreateRowSorter(true);
-    table.setFillsViewportHeight(true);
-    table.setShowVerticalLines(false);
-    table.setGridColor(Color.ORANGE);
-    table.setSelectionForeground(Color.BLACK);
-    table.setSelectionBackground(new Color(0x64_AA_EE_FF, true));
-    table.setIntercellSpacing(new Dimension(0, 1));
-    table.setBorder(BorderFactory.createEmptyBorder());
-    table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-      private final CellBorder border = new CellBorder(2, 2, 1, 2);
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        Component c = super.getTableCellRendererComponent(
-            table, value, isSelected, hasFocus, row, column);
-        border.setStartCell(column == 0);
-        if (c instanceof JComponent) {
-          ((JComponent) c).setBorder(border);
-        }
-        return c;
-      }
-    });
-
+    JTable table = makeFlatTable();
     JTableHeader header = table.getTableHeader();
     header.setBorder(BorderFactory.createEmptyBorder());
     header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -70,7 +40,7 @@ public final class MainPanel extends JPanel {
     // field.setBorder(BorderFactory.createEmptyBorder(2, 2, 1, 2));
     // table.setDefaultEditor(Object.class, new DefaultCellEditor(field));
 
-    JScrollPane scroll = makeTranslucentScrollBar(table);
+    JScrollPane scroll = new TranslucentScrollPane(table);
     scroll.setBorder(BorderFactory.createLineBorder(table.getGridColor()));
     // scroll.setBackground(table.getGridColor());
     scroll.getViewport().setBackground(table.getBackground());
@@ -80,28 +50,42 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JScrollPane makeTranslucentScrollBar(JTable c) {
-    return new JScrollPane(c) {
-      @Override public boolean isOptimizedDrawingEnabled() {
-        return false; // JScrollBar is overlap
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        EventQueue.invokeLater(() -> {
-          getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
-          getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
-          setComponentZOrder(getVerticalScrollBar(), 0);
-          setComponentZOrder(getHorizontalScrollBar(), 1);
-          setComponentZOrder(getViewport(), 2);
-          getVerticalScrollBar().setOpaque(false);
-          getHorizontalScrollBar().setOpaque(false);
-        });
-        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-        setLayout(new OverlapScrollPaneLayout());
+  private static JTable makeFlatTable() {
+    JTable table = new JTable(10, 3) {
+      private final CellBorder border = new CellBorder(2, 2, 1, 2);
+      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+        Component c = super.prepareEditor(editor, row, column);
+        if (c instanceof JTextField) {
+          ((JComponent) c).setBorder(border);
+          border.setStartCell(column == 0);
+        }
+        return c;
       }
     };
+    table.setAutoCreateRowSorter(true);
+    table.setFillsViewportHeight(true);
+    table.setShowVerticalLines(false);
+    table.setGridColor(Color.ORANGE);
+    table.setSelectionForeground(Color.BLACK);
+    table.setSelectionBackground(new Color(0x64_AA_EE_FF, true));
+    table.setIntercellSpacing(new Dimension(0, 1));
+    table.setBorder(BorderFactory.createEmptyBorder());
+    table.setDefaultRenderer(Object.class, new FlatTableCellRenderer());
+    return table;
+  }
+
+  private static final class FlatTableCellRenderer extends DefaultTableCellRenderer {
+    private final CellBorder border = new CellBorder(2, 2, 1, 2);
+
+    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+      Component c = super.getTableCellRendererComponent(
+          table, value, isSelected, hasFocus, row, column);
+      border.setStartCell(column == 0);
+      if (c instanceof JComponent) {
+        ((JComponent) c).setBorder(border);
+      }
+      return c;
+    }
   }
 
   public static void main(String[] args) {
@@ -114,7 +98,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -123,6 +107,32 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TranslucentScrollPane extends JScrollPane {
+  protected TranslucentScrollPane(Component c) {
+    super(c);
+  }
+
+  @Override public boolean isOptimizedDrawingEnabled() {
+    return false; // JScrollBar is overlap
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    EventQueue.invokeLater(() -> {
+      getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
+      getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
+      setComponentZOrder(getVerticalScrollBar(), 0);
+      setComponentZOrder(getHorizontalScrollBar(), 1);
+      setComponentZOrder(getViewport(), 2);
+      getVerticalScrollBar().setOpaque(false);
+      getHorizontalScrollBar().setOpaque(false);
+    });
+    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+    setLayout(new OverlapScrollPaneLayout());
   }
 }
 

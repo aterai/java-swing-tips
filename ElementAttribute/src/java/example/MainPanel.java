@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -49,18 +50,32 @@ public final class MainPanel extends JPanel {
     editor1.setEditable(false);
     ToolTipManager.sharedInstance().registerComponent(editor1);
 
-    JEditorPane editor2 = new JEditorPane();
-    editor2.setEditorKit(new TooltipEditorKit());
-    editor2.setText(htmlText);
-    editor2.setEditable(false);
-    editor2.addHyperlinkListener(e -> {
+    JEditorPane editor2 = makeEditorPane(htmlText);
+    ToolTipManager.sharedInstance().registerComponent(editor2);
+
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    split.setResizeWeight(.5);
+    split.setTopComponent(new JScrollPane(editor1));
+    split.setBottomComponent(new JScrollPane(editor2));
+    add(split);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JEditorPane makeEditorPane(String htmlText) {
+    JEditorPane editor = new JEditorPane();
+    editor.setEditorKit(new TooltipEditorKit());
+    editor.setText(htmlText);
+    editor.setEditable(false);
+    editor.addHyperlinkListener(e -> {
       JEditorPane editorPane = (JEditorPane) e.getSource();
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
         String message = "You click the link with the URL " + e.getURL();
         JOptionPane.showMessageDialog(editorPane, message);
       } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
         tooltip = editorPane.getToolTipText();
-        String text = Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null);
+        String text = Optional.ofNullable(e.getURL())
+            .map(URL::toExternalForm)
+            .orElse(null);
         editorPane.setToolTipText(text);
         // URL url = e.getURL();
         // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
@@ -68,14 +83,7 @@ public final class MainPanel extends JPanel {
         editorPane.setToolTipText(tooltip);
       }
     });
-    ToolTipManager.sharedInstance().registerComponent(editor2);
-
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setResizeWeight(.5);
-    sp.setTopComponent(new JScrollPane(editor1));
-    sp.setBottomComponent(new JScrollPane(editor2));
-    add(sp);
-    setPreferredSize(new Dimension(320, 240));
+    return editor;
   }
 
   public static void main(String[] args) {
@@ -88,7 +96,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -115,7 +123,8 @@ class CustomTooltipEditorPane extends JEditorPane {
   //       Rectangle r1 = s1 instanceof Rectangle ? (Rectangle) s1 : s1.getBounds();
   //       Shape s2 = ui.modelToView(editor, e.getEndOffset(), Position.Bias.Backward);
   //       if (s2 != null) {
-  //         Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds(); r1.add(r2);
+  //         Rectangle r2 = s2 instanceof Rectangle ? (Rectangle) s2 : s2.getBounds();
+  //         r1.add(r2);
   //       }
   //       return r1.contains(x, y);
   //     } catch (BadLocationException ex) {
@@ -141,14 +150,6 @@ class CustomTooltipEditorPane extends JEditorPane {
               .map(attr -> attr.getAttribute(HTML.Attribute.TITLE))
               .orElse(null);
           editor.setToolTipText((String) o);
-          // Element elem = e.getSourceElement();
-          // if (Objects.nonNull(elem)) {
-          //   AttributeSet attr = elem.getAttributes();
-          //   AttributeSet a = (AttributeSet) attr.getAttribute(HTML.Tag.A);
-          //   if (Objects.nonNull(a)) {
-          //     editor.setToolTipText((String) a.getAttribute(HTML.Attribute.TITLE));
-          //   }
-          // }
         } else if (Objects.equals(e.getEventType(), HyperlinkEvent.EventType.EXITED)) {
           editor.setToolTipText(tooltip);
         }
