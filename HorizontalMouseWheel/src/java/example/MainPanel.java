@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -28,13 +29,12 @@ public final class MainPanel extends JPanel {
     label.setBorder(BorderFactory.createTitledBorder("Horizontal scroll: CTRL + Wheel"));
     label.addMouseWheelListener(e -> {
       Component c = e.getComponent();
-      Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
-      if (s instanceof JScrollPane) {
-        JScrollPane scrollPane = (JScrollPane) s;
-        Component scrollBar = e.isControlDown()
-            ? scrollPane.getHorizontalScrollBar()
-            : scrollPane.getVerticalScrollBar();
-        scrollBar.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, scrollBar));
+      Container o = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
+      if (o instanceof JScrollPane) {
+        JScrollPane s = (JScrollPane) o;
+        Component bar = e.isControlDown()
+            ? s.getHorizontalScrollBar() : s.getVerticalScrollBar();
+        bar.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, bar));
       }
     });
 
@@ -44,15 +44,13 @@ public final class MainPanel extends JPanel {
     JScrollBar hsb = scroll.getHorizontalScrollBar();
     hsb.setUnitIncrement(10);
     hsb.addMouseWheelListener(e -> {
-      JScrollBar sb = (JScrollBar) e.getComponent();
-      Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, sb);
+      Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
       if (c instanceof JScrollPane) {
-        JViewport vport = ((JScrollPane) c).getViewport();
-        Point vp = vport.getViewPosition();
-        int d = hsb.getUnitIncrement() * e.getWheelRotation();
-        vp.translate(d, 0);
-        JComponent v = (JComponent) SwingUtilities.getUnwrappedView(vport);
-        v.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+        JViewport viewport = ((JScrollPane) c).getViewport();
+        Point pt = viewport.getViewPosition();
+        pt.translate(hsb.getUnitIncrement() * e.getWheelRotation(), 0);
+        JComponent view = (JComponent) SwingUtilities.getUnwrappedView(viewport);
+        view.scrollRectToVisible(new Rectangle(pt, viewport.getSize()));
       }
     });
 
@@ -70,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -32,7 +33,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -52,9 +53,9 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
     super(TOP, SCROLL_TAB_LAYOUT);
   }
 
-  protected HoverCloseButtonTabbedPane(int tabPlacement) {
-    super(tabPlacement, SCROLL_TAB_LAYOUT);
-  }
+  // protected HoverCloseButtonTabbedPane(int tabPlacement) {
+  //   super(tabPlacement, SCROLL_TAB_LAYOUT);
+  // }
 
   // protected HoverCloseButtonTabbedPane(int tabPlacement, int tabLayoutPolicy) {
   //   super(tabPlacement, SCROLL_TAB_LAYOUT);
@@ -104,24 +105,23 @@ class TabPanel extends JPanel {
     }
   };
 
-  protected TabPanel(JTabbedPane pane, String title, Component content) {
+  protected TabPanel(JTabbedPane tabs, String title, Component content) {
     super(new BorderLayout());
     JLabel label = new JLabel() {
       @Override public Dimension getPreferredSize() {
-        Dimension dim = super.getPreferredSize();
-        int bw = button.isVisible() ? button.getPreferredSize().width : 0;
-        return new Dimension(TAB_WIDTH - bw, dim.height);
+        Dimension d = super.getPreferredSize();
+        int buttonWidth = button.isVisible() ? button.getPreferredSize().width : 0;
+        return new Dimension(TAB_WIDTH - buttonWidth, d.height);
       }
     };
     label.setText(title);
     label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 1));
 
     button.addActionListener(e -> {
-      int idx = pane.indexOfComponent(content);
-      pane.removeTabAt(idx);
-      int count = pane.getTabCount();
-      if (count > idx) {
-        Component c = pane.getTabComponentAt(idx);
+      int idx = tabs.indexOfComponent(content);
+      tabs.removeTabAt(idx);
+      if (tabs.getTabCount() > idx) {
+        Component c = tabs.getTabComponentAt(idx);
         if (c instanceof TabPanel) {
           ((TabPanel) c).setButtonVisible(true);
         }

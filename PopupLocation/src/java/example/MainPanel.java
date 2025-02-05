@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -21,10 +22,17 @@ public final class MainPanel extends JPanel {
     popup.add("MenuItem 2");
     popup.add("MenuItem 3");
 
-    JTextField field1 = new JTextField("Default JTextField");
+    String text1 = "Default JTextField";
+    JTextField field1 = new JTextField(text1);
     field1.setComponentPopupMenu(popup);
 
-    JTextField field2 = makeTextField();
+    String text2 = "Override JTextField#getPopupLocation(MouseEvent)";
+    JTextField field2 = new JTextField(text2) {
+      @Override public Point getPopupLocation(MouseEvent e) {
+        // e == null <- Menu Key pressed
+        return e == null ? getCaretPoint(this) : super.getPopupLocation(e);
+      }
+    };
     field2.setComponentPopupMenu(popup);
 
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
@@ -42,27 +50,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTextField makeTextField() {
-    return new JTextField("Override JTextField#getPopupLocation(MouseEvent)") {
-      @Override public Point getPopupLocation(MouseEvent e) {
-        // e == null <- Menu Key pressed
-        return e == null ? getCaretPoint() : super.getPopupLocation(e);
+  private static Point getCaretPoint(JTextComponent editor) {
+    Point pt = null;
+    try {
+      Rectangle r = editor.modelToView(editor.getCaretPosition());
+      if (r != null) {
+        pt = r.getLocation();
+        pt.translate(0, r.height);
       }
-
-      private Point getCaretPoint() {
-        Point pt = null;
-        try {
-          Rectangle r = modelToView(getCaretPosition());
-          if (r != null) {
-            pt = r.getLocation();
-            pt.translate(0, r.height);
-          }
-        } catch (BadLocationException ex) {
-          UIManager.getLookAndFeel().provideErrorFeedback(this);
-        }
-        return pt;
-      }
-    };
+    } catch (BadLocationException ex) {
+      UIManager.getLookAndFeel().provideErrorFeedback(editor);
+    }
+    return pt;
   }
 
   private static ListModel<ListItem> makeModel() {
