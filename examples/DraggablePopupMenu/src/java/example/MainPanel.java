@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
 
   private static JPopupMenu makePopup() {
     JPopupMenu popup = new JPopupMenu();
-    popup.add(makePopupHeader());
+    popup.add(new PopupMenuHeader("Header"));
     popup.add("JMenuItem");
     popup.addSeparator();
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
@@ -41,36 +42,6 @@ public final class MainPanel extends JPanel {
     menu.add("Sub JMenuItem 2");
     popup.add(menu);
     return popup;
-  }
-
-  private static JLabel makePopupHeader() {
-    JLabel header = new JLabel("Header", SwingConstants.CENTER) {
-      private transient MouseAdapter listener;
-      @Override public void updateUI() {
-        removeMouseListener(listener);
-        removeMouseMotionListener(listener);
-        super.updateUI();
-        listener = new PopupHeaderMouseListener();
-        addMouseListener(listener);
-        addMouseMotionListener(listener);
-      }
-
-      @Override public Dimension getMaximumSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = Short.MAX_VALUE;
-        return d;
-      }
-
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.height = 24;
-        return d;
-      }
-    };
-    // header.setAlignmentX(Component.CENTER_ALIGNMENT);
-    header.setOpaque(true);
-    header.setBackground(Color.LIGHT_GRAY);
-    return header;
   }
 
   public static void main(String[] args) {
@@ -83,7 +54,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -92,6 +63,38 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class PopupMenuHeader extends JLabel {
+  private transient MouseAdapter listener;
+
+  protected PopupMenuHeader(String text) {
+    super(text, CENTER);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    removeMouseMotionListener(listener);
+    super.updateUI();
+    listener = new PopupHeaderMouseListener();
+    addMouseListener(listener);
+    addMouseMotionListener(listener);
+    // header.setAlignmentX(Component.CENTER_ALIGNMENT);
+    setOpaque(true);
+    setBackground(Color.LIGHT_GRAY);
+  }
+
+  @Override public Dimension getMaximumSize() {
+    Dimension d = super.getPreferredSize();
+    d.width = Short.MAX_VALUE;
+    return d;
+  }
+
+  @Override public Dimension getPreferredSize() {
+    Dimension d = super.getPreferredSize();
+    d.height = 24;
+    return d;
   }
 }
 

@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
@@ -99,7 +100,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -146,41 +147,7 @@ enum PaperSize {
 }
 
 class DropdownTableComboBox extends JComboBox<PaperSize> {
-  private final JTable table = new JTable() {
-    private transient HighlightListener mouseHandler;
-    @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-      Component c = super.prepareRenderer(renderer, row, column);
-      if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
-        c.setForeground(UIManager.getColor("Table.selectionForeground"));
-        c.setBackground(UIManager.getColor("Table.selectionBackground").brighter());
-      } else if (isRowSelected(row)) {
-        c.setForeground(UIManager.getColor("Table.selectionForeground"));
-        c.setBackground(UIManager.getColor("Table.selectionBackground"));
-      } else {
-        c.setForeground(UIManager.getColor("Table.foreground"));
-        c.setBackground(UIManager.getColor("Table.background"));
-      }
-      // c.setForeground(Color.BLACK);
-      // if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
-      //   c.setBackground(new Color(0xFF_C8_C8));
-      // } else if (isRowSelected(row)) {
-      //   c.setBackground(Color.CYAN);
-      // } else {
-      //   c.setBackground(Color.WHITE);
-      // }
-      return c;
-    }
-
-    @Override public void updateUI() {
-      removeMouseListener(mouseHandler);
-      removeMouseMotionListener(mouseHandler);
-      super.updateUI();
-      mouseHandler = new HighlightListener();
-      addMouseListener(mouseHandler);
-      addMouseMotionListener(mouseHandler);
-      getTableHeader().setReorderingAllowed(false);
-    }
-  };
+  private final JTable table = new DropdownTable();
 
   protected DropdownTableComboBox(PaperSize[] paperSizes, TableModel tableModel) {
     super(paperSizes);
@@ -197,6 +164,35 @@ class DropdownTableComboBox extends JComboBox<PaperSize> {
       });
       setEditable(false);
     });
+  }
+}
+
+class DropdownTable extends JTable {
+  private transient HighlightListener mouseHandler;
+
+  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    Component c = super.prepareRenderer(renderer, row, column);
+    if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
+      c.setForeground(UIManager.getColor("Table.selectionForeground"));
+      c.setBackground(UIManager.getColor("Table.selectionBackground").brighter());
+    } else if (isRowSelected(row)) {
+      c.setForeground(UIManager.getColor("Table.selectionForeground"));
+      c.setBackground(UIManager.getColor("Table.selectionBackground"));
+    } else {
+      c.setForeground(UIManager.getColor("Table.foreground"));
+      c.setBackground(UIManager.getColor("Table.background"));
+    }
+    return c;
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(mouseHandler);
+    removeMouseMotionListener(mouseHandler);
+    super.updateUI();
+    mouseHandler = new HighlightListener();
+    addMouseListener(mouseHandler);
+    addMouseMotionListener(mouseHandler);
+    getTableHeader().setReorderingAllowed(false);
   }
 }
 
