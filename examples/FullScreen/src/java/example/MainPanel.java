@@ -54,25 +54,11 @@ public final class MainPanel extends JPanel {
     getActionMap().put("close", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         LOGGER.info(() -> "ESC KeyEvent:");
-        // int mode = 2;
-        // if (mode == 0) {
-        //   // dialog.dispose();
-        //   // triggered windowClosed
-        // } else if (mode == 1) {
-        //   // // When DISPOSE_ON_CLOSE met WebStart > www.pushing-pixels.org/?p=232
-        //   // // Web Start thread is a non-daemon thread so the JVM cannot exit.
-        //   // // JVM shutdown
-        //   // System.exit(0);
-        // } else {
-
-        // // click on the X
-        // Component c = SwingUtilities.getRoot(getRootPane());
         Container c = getTopLevelAncestor();
         if (c instanceof Window) {
           Window d = (Window) c;
           d.dispatchEvent(new WindowEvent(d, WindowEvent.WINDOW_CLOSING));
         }
-        // triggered windowClosing
       }
     });
     String help1 = "F11 or Double Click: toggle full-screen";
@@ -124,15 +110,6 @@ public final class MainPanel extends JPanel {
     JDialog dialog = new JDialog();
     dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     dialog.addWindowListener(new WindowAdapter() {
-      // @SuppressWarnings("PMD.DoNotCallSystemExit")
-      // @Override public void windowClosing(WindowEvent e) {
-      //   System.out.println("windowClosing:");
-      //   System.out.println("  triggered only when you click on the X");
-      //   System.out.println("  or on the close menu item in the window's system menu.'");
-      //   System.out.println("System.exit(0);");
-      //   System.exit(0); // WebStart
-      // }
-
       @Override public void windowClosing(WindowEvent e) {
         LOGGER.info(() -> {
           String str1 = "windowClosing:";

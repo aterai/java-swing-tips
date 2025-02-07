@@ -8,29 +8,18 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     JLabel label = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
-
     ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
     AccessController.doPrivileged(new PrivilegedAction<Void>() {
       @SuppressWarnings("AvoidAccessibilityAlteration")
       @Override public Void run() {
         try {
-          // Field field;
-          // if (System.getProperty("java.version").startsWith("1.6.0")) {
-          //   // ComboBox scroll and selected/highlight on glasspane
-          //   // https://community.oracle.com/thread/1357949
-          //   // Class<?> clazz = Class.forName("javax.swing.PopupFactory");
-          //   // field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
-          //   field = PopupFactory.class.getDeclaredField("forceHeavyWeightPopupKey");
-          // } else {
-          //   Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
-          //   field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
-          // }
           Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
           Field field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
           field.setAccessible(true);
@@ -41,6 +30,29 @@ public final class MainPanel extends JPanel {
         return null;
       }
     });
+    // Java 1.7.0, 1.6.0
+    // AccessController.doPrivileged(new PrivilegedAction<Void>() {
+    //   @SuppressWarnings("AvoidAccessibilityAlteration")
+    //   @Override public Void run() {
+    //     try {
+    //       Field field;
+    //       if (System.getProperty("java.version").startsWith("1.6.0")) {
+    //         // ComboBox scroll and selected/highlight on glass pane
+    //         // https://community.oracle.com/thread/1357949
+    //         // Class<?> clazz = Class.forName("javax.swing.PopupFactory");
+    //         // field = clazz.getDeclaredField("forceHeavyWeightPopupKey");
+    //         field = PopupFactory.class.getDeclaredField("forceHeavyWeightPopupKey");
+    //       } else {
+    //         Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
+    //         field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+    //       }
+    //       label.putClientProperty(field.get(null), Boolean.TRUE);
+    //     } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
+    //       throw new UnsupportedOperationException(ex);
+    //     }
+    //     return null;
+    //   }
+    // });
 
     JComponent glass = new JPanel(new BorderLayout()) {
       private final Color backgroundColor = new Color(0x64_64_64_C8, true);
@@ -79,7 +91,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
