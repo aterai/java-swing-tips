@@ -9,61 +9,28 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private Wipe mode = Wipe.IN;
-
   private MainPanel() {
     super(new BorderLayout());
     Timer animator = new Timer(5, null);
-    String path = "example/test.png";
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image image = Optional.ofNullable(cl.getResource(path)).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-
-    Component wipe = new JComponent() {
-      private int ww;
-      @Override protected void paintComponent(Graphics g) {
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
-        int iw = image.getWidth(this);
-        int ih = image.getHeight(this);
-        if (getWipeMode() == Wipe.IN) {
-          if (ww < iw) {
-            ww += 10;
-          } else {
-            animator.stop();
-          }
-        } else { // Wipe.OUT:
-          if (ww > 0) {
-            ww -= 10;
-          } else {
-            animator.stop();
-          }
-        }
-        g.drawImage(image, 0, 0, iw, ih, this);
-        g.fillRect(ww, 0, iw, ih);
-      }
-    };
+    Image image = ImageUtils.makeImage("example/test.png");
+    WipePanel wipe = new WipePanel(image, animator);
     wipe.setBackground(Color.BLACK);
     animator.addActionListener(e -> wipe.repaint());
 
     JButton button1 = new JButton("Wipe In");
     button1.addActionListener(e -> {
-      setWipeMode(Wipe.IN);
+      wipe.setWipeMode(Wipe.IN);
       animator.start();
     });
 
     JButton button2 = new JButton("Wipe Out");
     button2.addActionListener(e -> {
-      setWipeMode(Wipe.OUT);
+      wipe.setWipeMode(Wipe.OUT);
       animator.start();
     });
 
@@ -73,25 +40,6 @@ public final class MainPanel extends JPanel {
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
     animator.start();
-  }
-
-  private void setWipeMode(Wipe wipeMode) {
-    this.mode = wipeMode;
-  }
-
-  private Wipe getWipeMode() {
-    return mode;
-  }
-
-  private static Image makeMissingImage() {
-    Icon missingIcon = new MissingIcon();
-    int w = missingIcon.getIconWidth();
-    int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {
@@ -104,7 +52,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -118,6 +66,49 @@ public final class MainPanel extends JPanel {
 
 enum Wipe {
   IN, OUT
+}
+
+class WipePanel extends JComponent {
+  private final Image image;
+  private final Timer animator;
+  private Wipe mode = Wipe.IN;
+  private int ww;
+
+  protected WipePanel(Image image, Timer animator) {
+    super();
+    this.image = image;
+    this.animator = animator;
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    g.setColor(getBackground());
+    g.fillRect(0, 0, getWidth(), getHeight());
+    int iw = image.getWidth(this);
+    int ih = image.getHeight(this);
+    if (getWipeMode() == Wipe.IN) {
+      if (ww < iw) {
+        ww += 10;
+      } else {
+        animator.stop();
+      }
+    } else { // Wipe.OUT:
+      if (ww > 0) {
+        ww -= 10;
+      } else {
+        animator.stop();
+      }
+    }
+    g.drawImage(image, 0, 0, iw, ih, this);
+    g.fillRect(ww, 0, iw, ih);
+  }
+
+  public void setWipeMode(Wipe wipeMode) {
+    this.mode = wipeMode;
+  }
+
+  public Wipe getWipeMode() {
+    return mode;
+  }
 }
 
 class MissingIcon implements Icon {
@@ -142,5 +133,33 @@ class MissingIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 240;
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(ImageUtils::makeMissingImage);
+  }
+
+  public static Image makeMissingImage() {
+    Icon missingIcon = new MissingIcon();
+    int w = missingIcon.getIconWidth();
+    int h = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
   }
 }

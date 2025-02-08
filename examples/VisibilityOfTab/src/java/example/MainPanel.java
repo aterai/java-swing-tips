@@ -64,27 +64,27 @@ public final class MainPanel extends JPanel {
     return new JTabbedPane() {
       @Override public void removeTabAt(int index) {
         if (getTabCount() > 0) {
-          resetViewportPosition(0);
+          resetViewportPosition(this, 0);
           super.removeTabAt(index);
-          resetViewportPosition(index - 1);
+          resetViewportPosition(this, index - 1);
         } else {
           super.removeTabAt(index);
         }
       }
-
-      private void resetViewportPosition(int idx) {
-        String name = "TabbedPane.scrollableViewport";
-        Arrays.stream(getComponents())
-            .filter(c -> Objects.equals(name, c.getName()))
-            .findFirst()
-            .filter(JViewport.class::isInstance)
-            .map(JViewport.class::cast)
-            .ifPresent(viewport -> {
-              JComponent c = (JComponent) viewport.getView();
-              c.scrollRectToVisible(getBoundsAt(idx));
-            });
-      }
     };
+  }
+
+  private static void resetViewportPosition(JTabbedPane tabs, int idx) {
+    String name = "TabbedPane.scrollableViewport";
+    Arrays.stream(tabs.getComponents())
+        .filter(c -> Objects.equals(name, c.getName()))
+        .findFirst()
+        .filter(JViewport.class::isInstance)
+        .map(JViewport.class::cast)
+        .ifPresent(viewport -> {
+          JComponent c = (JComponent) viewport.getView();
+          c.scrollRectToVisible(tabs.getBoundsAt(idx));
+        });
   }
 
   public static void main(String[] args) {
