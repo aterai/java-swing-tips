@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
@@ -23,8 +24,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         if (getUI() instanceof WindowsSliderUI) {
           setUI(new WindowsZoomLevelsSliderUI(this));
-        } else {
-          // NullPointerException ???
+        } else { // NullPointerException ???
           UIManager.put("Slider.trackWidth", 0); // Meaningless settings that are not used?
           UIManager.put("Slider.majorTickLength", 8); // BasicSliderUI#getTickLength(): 8
           Icon missingIcon = UIManager.getIcon("html.missingImage");
@@ -56,20 +56,23 @@ public final class MainPanel extends JPanel {
     if (labelTable instanceof Map) {
       ((Map<?, ?>) labelTable).forEach((key, value) -> {
         if (key instanceof Integer && value instanceof JLabel) {
-          int iv = (Integer) key;
-          String txt = " ";
-          if (iv == 0) {
-            txt = "100%";
-          } else if (iv == slider.getMinimum()) {
-            txt = "5%";
-          } else if (iv == slider.getMaximum()) {
-            txt = "800%";
-          }
-          ((JLabel) value).setText(txt);
+          ((JLabel) value).setText(getLabelText(slider, (Integer) key));
         }
       });
     }
     slider.setLabelTable(slider.getLabelTable()); // Update LabelTable
+  }
+
+  private static String getLabelText(JSlider slider, Integer iv) {
+    String txt = " ";
+    if (iv == 0) {
+      txt = "100%";
+    } else if (iv == slider.getMinimum()) {
+      txt = "5%";
+    } else if (iv == slider.getMaximum()) {
+      txt = "800%";
+    }
+    return txt;
   }
 
   public static void main(String[] args) {
@@ -82,7 +85,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -100,33 +103,35 @@ class WindowsZoomLevelsSliderUI extends WindowsSliderUI {
   }
 
   @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mouseClicked(MouseEvent e) {
-        boolean isLeftDoubleClick = SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
-        if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
-          slider.setValue(0);
-        } else {
-          super.mouseClicked(e);
-        }
-      }
+    return new WindowsTrackHandler();
+  }
 
-      @Override public void mouseDragged(MouseEvent e) {
-        // case HORIZONTAL:
-        int halfThumbWidth = thumbRect.width / 2;
-        int trackLength = trackRect.width;
-        int pos = e.getX() + halfThumbWidth;
-        int possibleTickPos = slider.getMaximum() - slider.getMinimum();
-        int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
-        int tickPixels = trackLength * tickSp / possibleTickPos;
-        int tickPixels2 = tickPixels / 2;
-        int trackCenter = (int) trackRect.getCenterX();
-        if (trackCenter - tickPixels2 < pos && pos < trackCenter + tickPixels2) {
-          e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
-          offset = 0;
-        }
-        super.mouseDragged(e);
+  private final class WindowsTrackHandler extends TrackListener {
+    @Override public void mouseClicked(MouseEvent e) {
+      boolean isLeftDoubleClick = SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
+      if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
+        slider.setValue(0);
+      } else {
+        super.mouseClicked(e);
       }
-    };
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      // case HORIZONTAL:
+      int halfThumbWidth = thumbRect.width / 2;
+      int trackLength = trackRect.width;
+      int pos = e.getX() + halfThumbWidth;
+      int possibleTickPos = slider.getMaximum() - slider.getMinimum();
+      int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
+      int tickPixels = trackLength * tickSp / possibleTickPos;
+      int tickPixels2 = tickPixels / 2;
+      int trackCenter = (int) trackRect.getCenterX();
+      if (trackCenter - tickPixels2 < pos && pos < trackCenter + tickPixels2) {
+        e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
+        offset = 0;
+      }
+      super.mouseDragged(e);
+    }
   }
 }
 
@@ -136,31 +141,34 @@ class MetalZoomLevelsSliderUI extends MetalSliderUI {
   }
 
   @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mouseClicked(MouseEvent e) {
-        boolean isLeftDoubleClick = SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
-        if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
-          slider.setValue(0);
-        } else {
-          super.mouseClicked(e);
-        }
-      }
+    return new MetalTrackHandler();
+  }
 
-      @Override public void mouseDragged(MouseEvent e) {
-        // case HORIZONTAL:
-        int halfThumbWidth = thumbRect.width / 2;
-        int trackLength = trackRect.width;
-        int pos = e.getX() + halfThumbWidth;
-        int possibleTickPos = slider.getMaximum() - slider.getMinimum();
-        int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
-        int tickPixels = trackLength * tickSp / possibleTickPos;
-        int trackCenter = (int) trackRect.getCenterX();
-        if (trackCenter - tickPixels < pos && pos < trackCenter + tickPixels) {
-          e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
-          offset = 0;
-        }
-        super.mouseDragged(e);
+  private final class MetalTrackHandler extends TrackListener {
+    @Override public void mouseClicked(MouseEvent e) {
+      boolean isLeftDoubleClick = SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
+      if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
+        slider.setValue(0);
+      } else {
+        super.mouseClicked(e);
       }
-    };
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      // case HORIZONTAL:
+      int halfThumbWidth = thumbRect.width / 2;
+      int trackLength = trackRect.width;
+      int pos = e.getX() + halfThumbWidth;
+      int possibleTickPos = slider.getMaximum() - slider.getMinimum();
+      int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
+      int tickPixels = trackLength * tickSp / possibleTickPos;
+      int tickPixels2 = tickPixels / 2;
+      int trackCenter = (int) trackRect.getCenterX();
+      if (trackCenter - tickPixels2 < pos && pos < trackCenter + tickPixels2) {
+        e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
+        offset = 0;
+      }
+      super.mouseDragged(e);
+    }
   }
 }
