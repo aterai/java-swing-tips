@@ -7,6 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 import java.awt.*;
 import java.io.File;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicDirectoryModel;
@@ -30,30 +31,7 @@ public final class MainPanel extends JPanel {
     JButton writableButton = new JButton("Rename only File#canWrite() == true");
     writableButton.addActionListener(e -> {
       UIManager.put("FileChooser.readOnly", Boolean.FALSE);
-      JFileChooser fileChooser = new JFileChooser() {
-        @Override protected void setUI(ComponentUI ui) {
-          if (ui instanceof WindowsFileChooserUI) {
-            super.setUI(WindowsCanWriteFileChooserUI.createUI(this));
-          } else {
-            super.setUI(MetalCanWriteFileChooserUI.createUI(this));
-          }
-        }
-      };
-
-      // ActionMap am = fc.getActionMap();
-      // // WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
-      // Action editFileNameAction = am.get("editFileName");
-      // am.put("editFileName", new AbstractAction("editFileName2") {
-      //   @Override public void actionPerformed(ActionEvent e) {
-      //     File file = fc.getSelectedFile();
-      //     if (file != null && file.canWrite()) {
-      //       editFileNameAction.actionPerformed(e);
-      //     }
-      //   }
-      // });
-      // Action newFolder = am.get("New Folder");
-      // newFolder.setEnabled(false);
-
+      JFileChooser fileChooser = makeFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
@@ -69,6 +47,32 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static JFileChooser makeFileChooser() {
+    return new JFileChooser() {
+      @Override protected void setUI(ComponentUI ui1) {
+        if (ui1 instanceof WindowsFileChooserUI) {
+          super.setUI(WindowsCanWriteFileChooserUI.createUI(this));
+        } else {
+          super.setUI(MetalCanWriteFileChooserUI.createUI(this));
+        }
+      }
+    };
+    // ActionMap am = fileChooser.getActionMap();
+    // // WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, editFileName, pressed F2
+    // Action editFileNameAction = am.get("editFileName");
+    // am.put("editFileName", new AbstractAction("editFileName2") {
+    //   @Override public void actionPerformed(ActionEvent e) {
+    //     File file = fc.getSelectedFile();
+    //     if (file != null && file.canWrite()) {
+    //       editFileNameAction.actionPerformed(e);
+    //     }
+    //   }
+    // });
+    // Action newFolder = am.get("New Folder");
+    // newFolder.setEnabled(false);
+    // return fileChooser;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -79,7 +83,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

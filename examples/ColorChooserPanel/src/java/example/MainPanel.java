@@ -12,6 +12,7 @@ import java.awt.event.ComponentEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -42,37 +43,7 @@ public final class MainPanel extends JPanel {
           .filter(AbstractButton::isSelected)
           .map(AbstractButton::getText)
           .collect(Collectors.toList());
-      Color color;
-      String title = "JColorChooser";
-      Component parent = getRootPane();
-      if (selected.isEmpty()) { // use default JColorChooser
-        color = JColorChooser.showDialog(parent, title, label.getBackground());
-      } else {
-        JColorChooser cc = new JColorChooser();
-        cc.setColor(label.getBackground());
-        for (AbstractColorChooserPanel p : cc.getChooserPanels()) {
-          if (!selected.contains(p.getDisplayName())) {
-            cc.removeChooserPanel(p);
-          }
-        }
-        ColorTracker ok = new ColorTracker(cc);
-        JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
-        // dialog.addComponentListener(new ColorChooserDialog.DisposeOnClose());
-        dialog.addComponentListener(new ComponentAdapter() {
-          @Override public void componentHidden(ComponentEvent e) {
-            ((Window) e.getComponent()).dispose();
-          }
-        });
-        dialog.setVisible(true); // blocks until user brings dialog down...
-        color = ok.getColor();
-
-        // dialog.getContentPane().removeAll();
-        // dialog.getContentPane().add(cc);
-        // dialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-        // dialog.pack();
-        // dialog.setLocationRelativeTo(SwingUtilities.getWindowAncestor(getRootPane()));
-        // dialog.setVisible(true);
-      }
+      Color color = openColorChooser(getRootPane(), selected, label.getBackground());
       if (color != null) {
         label.setBackground(color);
       }
@@ -90,6 +61,33 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  public static Color openColorChooser(Component p, List<String> names, Color initColor) {
+    Color color;
+    String title = "JColorChooser";
+    if (names.isEmpty()) { // use default JColorChooser
+      color = JColorChooser.showDialog(p, title, initColor);
+    } else {
+      JColorChooser cc = new JColorChooser();
+      cc.setColor(initColor);
+      for (AbstractColorChooserPanel chooserPanel : cc.getChooserPanels()) {
+        if (!names.contains(chooserPanel.getDisplayName())) {
+          cc.removeChooserPanel(chooserPanel);
+        }
+      }
+      ColorTracker ok = new ColorTracker(cc);
+      JDialog dialog = JColorChooser.createDialog(p, title, true, cc, ok, null);
+      // dialog.addComponentListener(new ColorChooserDialog.DisposeOnClose());
+      dialog.addComponentListener(new ComponentAdapter() {
+        @Override public void componentHidden(ComponentEvent e) {
+          ((Window) e.getComponent()).dispose();
+        }
+      });
+      dialog.setVisible(true); // blocks until user brings dialog down...
+      color = ok.getColor();
+    }
+    return color;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -100,7 +98,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
