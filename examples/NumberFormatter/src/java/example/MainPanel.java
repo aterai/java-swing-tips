@@ -38,34 +38,13 @@ public final class MainPanel extends JPanel {
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFormatterFactory(makeFormatterFactory(model));
-    ftf.getDocument().addDocumentListener(new DocumentListener() {
-      private final Color errorBgc = new Color(0xFF_C8_C8);
-      @Override public void changedUpdate(DocumentEvent e) {
-        EventQueue.invokeLater(this::updateEditValid);
-      }
-
-      @Override public void insertUpdate(DocumentEvent e) {
-        EventQueue.invokeLater(this::updateEditValid);
-      }
-
-      @Override public void removeUpdate(DocumentEvent e) {
-        EventQueue.invokeLater(this::updateEditValid);
-      }
-
-      private void updateEditValid() {
-        ftf.setBackground(ftf.isEditValid() ? Color.WHITE : errorBgc);
-      }
-    });
+    ftf.getDocument().addDocumentListener(new WarningDocumentListener(ftf));
     return spinner;
   }
 
   private static DefaultFormatterFactory makeFormatterFactory(SpinnerNumberModel m) {
     NumberFormat format = new DecimalFormat("####0"); // , dfs);
     NumberFormatter editFormatter = new NumberFormatter(format) {
-      // @Override protected DocumentFilter getDocumentFilter() {
-      //   return new IntegerDocumentFilter();
-      // }
-
       @Override public Object stringToValue(String text) throws ParseException {
         try {
           Long.parseLong(text);
@@ -93,10 +72,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static SpinnerNumberModel makeSpinnerNumberModel() {
-    // java.lang.ClassCastException: class java.lang.Double cannot be cast to class java.lang.Long
-    // (java.lang.Double and java.lang.Long are in module java.base of loader 'bootstrap')
-    // at example.MainPanel$2.stringToValue(MainPanel.java:80)
-    // at java.desktop/javax.swing.JFormattedTextField.commitEdit(JFormattedTextField.java:563)
+    // ClassCastException: class Double cannot be cast to class Long
     // return new SpinnerNumberModel(10L, 0L, 99_999L, 1L);
     Long value = 10L;
     Long minimum = 0L;
@@ -138,6 +114,34 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class WarningDocumentListener implements DocumentListener {
+  private static final Color ERROR_BGC = new Color(0xFF_C8_C8);
+  private final JFormattedTextField field;
+
+  protected WarningDocumentListener(JFormattedTextField field) {
+    this.field = field;
+  }
+
+  @Override public void changedUpdate(DocumentEvent e) {
+    updateEditValid();
+  }
+
+  @Override public void insertUpdate(DocumentEvent e) {
+    updateEditValid();
+  }
+
+  @Override public void removeUpdate(DocumentEvent e) {
+    updateEditValid();
+  }
+
+  private void updateEditValid() {
+    EventQueue.invokeLater(() -> {
+      Color c = field.isEditValid() ? Color.WHITE : ERROR_BGC;
+      field.setBackground(c);
+    });
   }
 }
 

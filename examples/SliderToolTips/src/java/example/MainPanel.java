@@ -100,17 +100,6 @@ class WindowsTooltipSliderUI extends WindowsSliderUI {
           } else { // SwingConstants.HORIZONTAL
             slider.setValue(valueForXPosition(e.getX()));
           }
-          // switch (slider.getOrientation()) {
-          //   case SwingConstants.VERTICAL:
-          //     slider.setValue(valueForYPosition(e.getY()));
-          //     break;
-          //   case SwingConstants.HORIZONTAL:
-          //     slider.setValue(valueForXPosition(e.getX()));
-          //     break;
-          //   default:
-          //     throw new IllegalArgumentException(
-          //         "orientation must be one of: VERTICAL, HORIZONTAL");
-          // }
           super.mousePressed(e); // isDragging = true;
           super.mouseDragged(e);
         } else {
