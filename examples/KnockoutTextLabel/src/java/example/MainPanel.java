@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -31,22 +32,17 @@ public final class MainPanel extends JPanel {
     }).orElseGet(MainPanel::makeMissingImage);
     JLabel label = new JLabel("ABC") {
       @Override protected void paintComponent(Graphics g) {
-        // super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.drawImage(image, 0, 0, getWidth(), getHeight(), this);
         FontRenderContext frc = g2.getFontRenderContext();
-        String text = getText();
-        GlyphVector gv = getFont().createGlyphVector(frc, text);
+        GlyphVector gv = getFont().createGlyphVector(frc, getText());
         Rectangle2D b = gv.getVisualBounds();
-        double w = getWidth();
-        double h = getHeight();
-        double cx = w / 2d - b.getCenterX();
-        double cy = h / 2d - b.getCenterY();
+        double cx = getWidth() / 2d - b.getCenterX();
+        double cy = getHeight() / 2d - b.getCenterY();
         AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
-        Shape s = toCenterAt.createTransformedShape(gv.getOutline());
-        Area bg = new Area(new Rectangle2D.Double(0d, 0d, w, h));
-        bg.subtract(new Area(s));
+        Area bg = new Area(new Rectangle2D.Double(0d, 0d, getWidth(), getHeight()));
+        bg.subtract(new Area(toCenterAt.createTransformedShape(gv.getOutline())));
         g2.setColor(getBackground());
         g2.fill(bg);
         g2.dispose();
@@ -87,7 +83,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

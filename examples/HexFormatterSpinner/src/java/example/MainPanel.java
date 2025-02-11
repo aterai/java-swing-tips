@@ -162,26 +162,15 @@ public final class MainPanel extends JPanel {
         }
         Toolkit.getDefaultToolkit().beep();
         throw new ParseException(text, 0);
-
         // try {
         //   return Integer.valueOf(text, 16);
         // } catch (NumberFormatException ex) {
         //   Toolkit.getDefaultToolkit().beep();
-        //   ParseException wrap = new ParseException(text, 0);
-        //   wrap.initCause(ex);
-        //   throw wrap;
         // }
       }
 
-      // private static final String MASK = "000000";
       @Override public String valueToString(Object value) {
-        // String str = MASK + Integer.toHexString((Integer) value).toUpperCase(Locale.ENGLISH);
-        // int i = str.length() - MASK.length();
-        // return str.substring(i);
-        // String s = Integer.toHexString((Integer) value);
-        // return String.format("%6S", s).replaceAll(" ", "0");
-        Integer iv = (Integer) value;
-        return String.format("%06X", iv);
+        return String.format("%06X", (Integer) value);
       }
     };
     formatter.setValueClass(Integer.class);
