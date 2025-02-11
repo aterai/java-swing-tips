@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     try {
       Thread.sleep(5000);
     } catch (InterruptedException ex) {
-      ex.printStackTrace();
+      // Logger.getGlobal().severe(ex::getMessage);
       UIManager.getLookAndFeel().provideErrorFeedback(this);
       Thread.currentThread().interrupt();
     }
@@ -56,28 +56,11 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JWindow splashScreen = new JWindow();
-    EventQueue.invokeLater(() -> {
-      LOGGER.info(() -> "splashScreen show start / EDT: " + EventQueue.isDispatchThread());
-      String path = "example/splash.png";
-      ClassLoader cl = Thread.currentThread().getContextClassLoader();
-      Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
-        try (InputStream s = url.openStream()) {
-          return ImageIO.read(s);
-        } catch (IOException ex) {
-          return makeMissingImage();
-        }
-      }).orElseGet(MainPanel::makeMissingImage);
-      splashScreen.getContentPane().add(new JLabel(new ImageIcon(img)));
-      splashScreen.pack();
-      splashScreen.setLocationRelativeTo(null);
-      splashScreen.setVisible(true);
-      LOGGER.info(() -> "splashScreen show end");
-    });
-
+    EventQueue.invokeLater(() -> openSplashScreen(splashScreen));
     LOGGER.info(() -> "createGUI start / EDT: " + EventQueue.isDispatchThread());
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -85,17 +68,35 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     LOGGER.info(() -> "createGUI end");
+    EventQueue.invokeLater(() -> closeSplashScreen(splashScreen, frame));
+  }
 
-    EventQueue.invokeLater(() -> {
-      LOGGER.info(() -> "  splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
-      // splashScreen.setVisible(false);
-      splashScreen.dispose();
-      LOGGER.info(() -> "  splashScreen dispose end");
+  private static void openSplashScreen(JWindow splashScreen) {
+    LOGGER.info(() -> "splashScreen show start / EDT: " + EventQueue.isDispatchThread());
+    String path = "example/splash.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    splashScreen.getContentPane().add(new JLabel(new ImageIcon(img)));
+    splashScreen.pack();
+    splashScreen.setLocationRelativeTo(null);
+    splashScreen.setVisible(true);
+    LOGGER.info(() -> "splashScreen show end");
+  }
 
-      LOGGER.info(() -> "  frame show start / EDT: " + EventQueue.isDispatchThread());
-      frame.setVisible(true);
-      LOGGER.info(() -> "  frame show end");
-    });
+  private static void closeSplashScreen(JWindow splashScreen, JFrame frame) {
+    LOGGER.info(() -> "  splashScreen dispose start / EDT: " + EventQueue.isDispatchThread());
+    // splashScreen.setVisible(false);
+    splashScreen.dispose();
+    LOGGER.info(() -> "  splashScreen dispose end");
+    LOGGER.info(() -> "  frame show start / EDT: " + EventQueue.isDispatchThread());
+    frame.setVisible(true);
+    LOGGER.info(() -> "  frame show end");
   }
 }
 
