@@ -7,6 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.SliderUI;
 import javax.swing.plaf.basic.BasicSliderUI;
@@ -50,18 +51,13 @@ public final class MainPanel extends JPanel {
         } else {
           setUI(new BasicJumpToClickedPositionSliderUI(this));
         }
-        // } else {
-        //   // NullPointerException ???
+        // } else { // NullPointerException ???
         //   UIManager.put("Slider.trackWidth", 0); // Meaningless settings that are not used?
         //   UIManager.put("Slider.majorTickLength", 8); // BasicSliderUI#getTickLength(): 8
-        //   Icon missingIcon = UIManager.getIcon("html.missingImage");
-        //   UIManager.put("Slider.verticalThumbIcon", missingIcon);
-        //   UIManager.put("Slider.horizontalThumbIcon", missingIcon);
+        //   UIManager.put("Slider.verticalThumbIcon", UIManager.getIcon("html.missingImage"));
+        //   UIManager.put("Slider.horizontalThumbIcon", UIManager.getIcon("html.missingImage"));
         //   setUI(new MetalJumpToClickedPositionSliderUI());
         // }
-        // setSnapToTicks(false);
-        // setPaintTicks(true);
-        // setPaintLabels(true);
       }
     };
   }
@@ -83,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -100,9 +96,86 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
     super(slider);
   }
 
+  @Override protected TrackListener createTrackListener(JSlider slider) {
+    return new TrackListener() {
+      @Override public void mousePressed(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+          scrollToClickInTrack(e);
+          super.mousePressed(e); // isDragging = true;
+          super.mouseDragged(e);
+        } else {
+          super.mousePressed(e);
+        }
+      }
+
+      @Override public boolean shouldScroll(int direction) {
+        return false;
+      }
+    };
+  }
+
+  private void scrollToClickInTrack(MouseEvent e) {
+    JSlider slider = (JSlider) e.getComponent();
+    switch (slider.getOrientation()) {
+      case SwingConstants.VERTICAL:
+        slider.setValue(valueForYPosition(e.getY()));
+        break;
+      case SwingConstants.HORIZONTAL:
+        slider.setValue(valueForXPosition(e.getX()));
+        break;
+      default:
+        String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
+        throw new IllegalArgumentException(msg);
+    }
+  }
+}
+
+class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
+  @Override protected TrackListener createTrackListener(JSlider slider) {
+    return new TrackListener() {
+      @Override public void mousePressed(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+          scrollToClickInTrack(e);
+          super.mousePressed(e); // isDragging = true;
+          super.mouseDragged(e);
+        } else {
+          super.mousePressed(e);
+        }
+      }
+
+      @Override public boolean shouldScroll(int direction) {
+        return false;
+      }
+    };
+  }
+
+  private void scrollToClickInTrack(MouseEvent e) {
+    JSlider slider = (JSlider) e.getComponent();
+    switch (slider.getOrientation()) {
+      case SwingConstants.VERTICAL:
+        slider.setValue(valueForYPosition(e.getY()));
+        break;
+      case SwingConstants.HORIZONTAL:
+        slider.setValue(valueForXPosition(e.getX()));
+        break;
+      default:
+        String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
+        throw new IllegalArgumentException(msg);
+    }
+  }
+}
+
+class BasicJumpToClickedPositionSliderUI extends BasicSliderUI {
+  protected BasicJumpToClickedPositionSliderUI(JSlider slider) {
+    super(slider);
+  }
+
+  @Override protected TrackListener createTrackListener(JSlider slider) {
+    return new JumpTrackListener();
+  }
+
   // // JSlider question: Position after left-click - Stack Overflow
   // // https://stackoverflow.com/questions/518471/jslider-question-position-after-leftclick
-  // // TEST:
   // protected void scrollDueToClickInTrack(int direction) {
   //   int value = slider.getValue();
   //   if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
@@ -113,102 +186,32 @@ class WindowsJumpToClickedPositionSliderUI extends WindowsSliderUI {
   //   slider.setValue(value);
   // }
 
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mousePressed(MouseEvent e) {
-        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
-        if (SwingUtilities.isLeftMouseButton(e)) {
-          JSlider slider = (JSlider) e.getComponent();
-          switch (slider.getOrientation()) {
-            case SwingConstants.VERTICAL:
-              slider.setValue(valueForYPosition(e.getY()));
-              break;
-            case SwingConstants.HORIZONTAL:
-              slider.setValue(valueForXPosition(e.getX()));
-              break;
-            default:
-              String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
-              throw new IllegalArgumentException(msg);
-          }
-          super.mousePressed(e); // isDragging = true;
-          super.mouseDragged(e);
-        } else {
-          super.mousePressed(e);
+  protected class JumpTrackListener extends TrackListener {
+    @Override public void mousePressed(MouseEvent e) {
+      // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
+      if (SwingUtilities.isLeftMouseButton(e)) {
+        JSlider slider = (JSlider) e.getComponent();
+        switch (slider.getOrientation()) {
+          case SwingConstants.VERTICAL:
+            slider.setValue(valueForYPosition(e.getY()));
+            break;
+          case SwingConstants.HORIZONTAL:
+            slider.setValue(valueForXPosition(e.getX()));
+            break;
+          default:
+            String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
+            throw new IllegalArgumentException(msg);
         }
+        super.mousePressed(e); // isDragging = true;
+        super.mouseDragged(e);
+      } else {
+        super.mousePressed(e);
       }
+    }
 
-      @Override public boolean shouldScroll(int direction) {
-        return false;
-      }
-    };
-  }
-}
-
-class MetalJumpToClickedPositionSliderUI extends MetalSliderUI {
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mousePressed(MouseEvent e) {
-        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
-        if (SwingUtilities.isLeftMouseButton(e)) {
-          JSlider slider = (JSlider) e.getComponent();
-          switch (slider.getOrientation()) {
-            case SwingConstants.VERTICAL:
-              slider.setValue(valueForYPosition(e.getY()));
-              break;
-            case SwingConstants.HORIZONTAL:
-              slider.setValue(valueForXPosition(e.getX()));
-              break;
-            default:
-              String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
-              throw new IllegalArgumentException(msg);
-          }
-          super.mousePressed(e); // isDragging = true;
-          super.mouseDragged(e);
-        } else {
-          super.mousePressed(e);
-        }
-      }
-
-      @Override public boolean shouldScroll(int direction) {
-        return false;
-      }
-    };
-  }
-}
-
-class BasicJumpToClickedPositionSliderUI extends BasicSliderUI {
-  protected BasicJumpToClickedPositionSliderUI(JSlider slider) {
-    super(slider);
-  }
-
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mousePressed(MouseEvent e) {
-        // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
-        if (SwingUtilities.isLeftMouseButton(e)) {
-          JSlider slider = (JSlider) e.getComponent();
-          switch (slider.getOrientation()) {
-            case SwingConstants.VERTICAL:
-              slider.setValue(valueForYPosition(e.getY()));
-              break;
-            case SwingConstants.HORIZONTAL:
-              slider.setValue(valueForXPosition(e.getX()));
-              break;
-            default:
-              String msg = "orientation must be one of: VERTICAL, HORIZONTAL";
-              throw new IllegalArgumentException(msg);
-          }
-          super.mousePressed(e); // isDragging = true;
-          super.mouseDragged(e);
-        } else {
-          super.mousePressed(e);
-        }
-      }
-
-      @Override public boolean shouldScroll(int direction) {
-        return false;
-      }
-    };
+    @Override public boolean shouldScroll(int direction) {
+      return false;
+    }
   }
 }
 
@@ -253,7 +256,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

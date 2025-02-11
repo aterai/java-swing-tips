@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
@@ -37,24 +38,7 @@ public final class MainPanel extends JPanel {
           loc = splitPane.getWidth() - ins.map(i -> i.right).orElse(0);
         }
         splitPane.setDividerLocation(loc);
-        // int lastLoc = splitPane.getLastDividerLocation();
-        // int currentLoc = splitPane.getDividerLocation();
-        // int newLoc;
-        // BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI) splitPane.getUI();
-        // Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
-        //
-        // if (currentLoc == insets.top) {
-        //   int maxLoc = splitPane.getMaximumDividerLocation();
-        //   newLoc = Math.min(lastLoc, maxLoc);
-        //   // splitPaneUI.setKeepHidden(false);
-        // } else {
-        //   newLoc = splitPane.getHeight() - divider.getHeight() - insets.top;
-        //   // splitPaneUI.setKeepHidden(true);
-        // }
-        // if (currentLoc != newLoc) {
-        //   splitPane.setDividerLocation(newLoc);
-        //   splitPane.setLastDividerLocation(currentLoc);
-        // }
+        // test(splitPane);
       }
     }));
 
@@ -94,6 +78,25 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  // private static void test(JSplitPane splitPane) {
+  //   int lastLoc = splitPane.getLastDividerLocation();
+  //   int currentLoc = splitPane.getDividerLocation();
+  //   Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+  //   int newLoc;
+  //   if (currentLoc == splitPane.getInsets().top) {
+  //     int maxLoc = splitPane.getMaximumDividerLocation();
+  //     newLoc = Math.min(lastLoc, maxLoc); // splitPaneUI.setKeepHidden(false);
+  //   } else {
+  //     newLoc = splitPane.getHeight() - divider.getHeight() - splitPane.getInsets().top;
+  //     // BasicSplitPaneUI splitPaneUI = (BasicSplitPaneUI) splitPane.getUI();
+  //     // splitPaneUI.setKeepHidden(true);
+  //   }
+  //   if (currentLoc != newLoc) {
+  //     splitPane.setDividerLocation(newLoc);
+  //     splitPane.setLastDividerLocation(currentLoc);
+  //   }
+  // }
+
   private static JScrollPane makeScrollPane(Component c) {
     return new JScrollPane(c) {
       @Override public Dimension getMinimumSize() {
@@ -129,7 +132,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
