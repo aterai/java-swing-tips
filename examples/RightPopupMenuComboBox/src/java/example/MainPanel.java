@@ -12,6 +12,7 @@ import java.awt.image.RescaleOp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -71,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -85,17 +86,16 @@ public final class MainPanel extends JPanel {
 
 class RightPopupMenuListener implements PopupMenuListener {
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    EventQueue.invokeLater(() -> {
-      JComboBox<?> combo = (JComboBox<?>) e.getSource();
-      Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
-      // Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-      if (a instanceof JPopupMenu) {
-        JPopupMenu pop = (JPopupMenu) a;
-        Point p = new Point(combo.getSize().width, 0);
-        SwingUtilities.convertPointToScreen(p, combo);
-        pop.setLocation(p);
-      }
-    });
+    JComboBox<?> combo = (JComboBox<?>) e.getSource();
+    Accessible a = combo.getAccessibleContext().getAccessibleChild(0);
+    // Or Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+    if (a instanceof JPopupMenu) {
+      EventQueue.invokeLater(() -> {
+        Point pt = new Point(combo.getSize().width, 0);
+        SwingUtilities.convertPointToScreen(pt, combo);
+        ((JPopupMenu) a).setLocation(pt);
+      });
+    }
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

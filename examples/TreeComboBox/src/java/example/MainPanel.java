@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
@@ -138,32 +139,42 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     ListCellRenderer<? super E> r = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-      if (!value.isLeaf()) {
-        c.setForeground(Color.WHITE);
-        c.setBackground(Color.GRAY.darker());
-      }
-      int indent = 0;
-      if (index >= 0 && value instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-        indent = Math.max(0, node.getLevel() - 1) * 16;
-      }
       if (c instanceof JComponent) {
-        ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(1, indent + 1, 1, 1));
+        updateColor(value, c);
+        ((JComponent) c).setBorder(getIndentBorder(value, index));
       }
       return c;
     });
-    EventQueue.invokeLater(() -> {
-      String selectPrevKey = "selectPrevious3";
-      String selectNextKey = "selectNext3";
-      ActionMap am = getActionMap();
-      am.put(selectPrevKey, up);
-      am.put(selectNextKey, down);
-      InputMap im = getInputMap();
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey);
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey);
-    });
+    EventQueue.invokeLater(this::initKeyActions);
+  }
+
+  private static <E extends TreeNode> void updateColor(E value, Component c) {
+    if (!value.isLeaf()) {
+      c.setForeground(Color.WHITE);
+      c.setBackground(Color.GRAY.darker());
+    }
+  }
+
+  private static <E extends TreeNode> Border getIndentBorder(E value, int index) {
+    int indent = 0;
+    if (index >= 0 && value instanceof DefaultMutableTreeNode) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+      indent = Math.max(0, node.getLevel() - 1) * 16;
+    }
+    return BorderFactory.createEmptyBorder(1, indent + 1, 1, 1);
+  }
+
+  private void initKeyActions() {
+    String selectPrevKey = "selectPrevious3";
+    String selectNextKey = "selectNext3";
+    ActionMap am = getActionMap();
+    am.put(selectPrevKey, up);
+    am.put(selectNextKey, down);
+    InputMap im = getInputMap();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey);
   }
 
   @Override public void setPopupVisible(boolean v) {

@@ -7,25 +7,13 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-    DefaultListModel<String> model = new DefaultListModel<>();
-    for (int i = 0; i < 8; i++) {
-      model.addElement(i + ": 11111");
-      model.addElement(i + ": 22222");
-      model.addElement(i + ": 33333");
-      model.addElement(i + ": 44444");
-      model.addElement(i + ": 55555");
-      model.addElement(i + ": 66666");
-      model.addElement(i + ": 77777");
-      model.addElement(i + ": 88888");
-      model.addElement(i + ": 99999");
-      model.addElement(i + ": 00000");
-    }
-
+    DefaultListModel<String> model = makeModel();
     JList<String> list0 = new JList<String>(model) {
       @Override public void updateUI() {
         super.updateUI();
@@ -45,23 +33,19 @@ public final class MainPanel extends JPanel {
       Component view = scrollPane.getViewport().getView();
       MouseEvent event = SwingUtilities.convertMouseEvent(scrollPane, e, view);
       ToolTipManager.sharedInstance().mouseMoved(event);
-      // Tooltips, the mouse wheel and JScrollPane oracle-tech
-      // https://community.oracle.com/tech/developers/discussion/1353509/tooltips-the-mouse-wheel-and-jscrollpane
-      // Point p = SwingUti.getMousePosition();
-      // if (p != null) {
-      //   MouseEvent event = new MouseEvent(
-      //       e.getComponent(),
-      //       MouseEvent.MOUSE_MOVED,
-      //       e.getWhen(),
-      //       e.getModifiersEx() | e.getModifiers(),
-      //       p.x,
-      //       p.y,
-      //       e.getClickCount(),
-      //       e.isPopupTrigger()
-      //   );
-      //   ToolTipManager.sharedInstance().mouseMoved(event);
-      // }
     });
+    // Tooltips, the mouse wheel and JScrollPane oracle-tech
+    // https://community.oracle.com/tech/developers/discussion/1353509/tooltips-the-mouse-wheel-and-jscrollpane
+    // scroll1.addMouseWheelListener(e -> {
+    //   Point p = getToolTipCellPoint();
+    //   if (p != null) {
+    //     MouseEvent event = new MouseEvent(
+    //         e.getComponent(), MouseEvent.MOUSE_MOVED, e.getWhen(),
+    //         e.getModifiersEx() | e.getModifiers(),
+    //         p.x, p.y, e.getClickCount(), e.isPopupTrigger());
+    //     ToolTipManager.sharedInstance().mouseMoved(event);
+    //   }
+    // });
 
     JList<String> list2 = new TooltipList<String>(model) {
       @Override public void updateUI() {
@@ -74,6 +58,23 @@ public final class MainPanel extends JPanel {
     add(makeTitledPanel("MouseWheelListener", scroll1));
     add(makeTitledPanel("getToolTipLocation", new JScrollPane(list2)));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static DefaultListModel<String> makeModel() {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    for (int i = 0; i < 8; i++) {
+      model.addElement(i + ": 11111");
+      model.addElement(i + ": 22222");
+      model.addElement(i + ": 33333");
+      model.addElement(i + ": 44444");
+      model.addElement(i + ": 55555");
+      model.addElement(i + ": 66666");
+      model.addElement(i + ": 77777");
+      model.addElement(i + ": 88888");
+      model.addElement(i + ": 99999");
+      model.addElement(i + ": 00000");
+    }
+    return model;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -93,7 +94,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -113,18 +114,10 @@ class TooltipList<E> extends JList<E> {
   @Override public String getToolTipText(MouseEvent e) {
     MouseEvent event = getToolTipCellPoint(e)
         .map(p -> new MouseEvent(
-                e.getComponent(),
-                MouseEvent.MOUSE_MOVED,
-                e.getWhen(),
-                // since Java 9, MouseEvent#getModifiers() has been deprecated
-                e.getModifiersEx() | e.getModifiers(),
-                p.x,
-                p.y,
-                e.getClickCount(),
-                e.isPopupTrigger()
-            )
-        )
-        .orElse(e);
+            e.getComponent(), MouseEvent.MOUSE_MOVED, e.getWhen(),
+            e.getModifiersEx() | e.getModifiers(),
+            p.x, p.y, e.getClickCount(), e.isPopupTrigger())
+        ).orElse(e);
     return super.getToolTipText(event);
   }
 

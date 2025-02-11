@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.ItemEvent;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -94,7 +96,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -113,7 +115,7 @@ class ViewPositionViewport extends JViewport {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void revalidate() {
-    if (!MIDDLEWEIGHT && adjusting.get()) {
+    if (!MIDDLEWEIGHT && adjusting != null && adjusting.get()) {
       return;
     }
     super.revalidate();
@@ -145,18 +147,19 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
     super();
     this.label = comp;
     this.dc = comp.getCursor();
-    this.scroller = new Timer(DELAY, e -> {
-      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-      Point vp = viewport.getViewPosition();
-      vp.translate(-delta.x, -delta.y);
-      label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
-      // System.out.println(delta);
-      if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
-        delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
-      } else {
-        ((Timer) e.getSource()).stop();
-      }
-    });
+    this.scroller = new Timer(DELAY, this::scroll);
+  }
+
+  private void scroll(ActionEvent e) {
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    Point vp = viewport.getViewPosition();
+    vp.translate(-delta.x, -delta.y);
+    label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+    if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+      delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
+    } else {
+      ((Timer) e.getSource()).stop();
+    }
   }
 
   @Override public void mousePressed(MouseEvent e) {
