@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
@@ -25,13 +26,6 @@ public final class MainPanel extends JPanel {
       // Java 9: Collections.list(root.depthFirstEnumeration())
       Collections.list((Enumeration<?>) root.depthFirstEnumeration())
           .forEach(n -> textArea.append(String.format("%s%n", n)));
-
-      // // Java 9: Enumeration<TreeNode> e = root.depthFirstEnumeration();
-      // Enumeration<?> e = root.depthFirstEnumeration();
-      // while (e.hasMoreElements()) {
-      //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-      //   textArea.append(node.toString() + "\n");
-      // }
     });
 
     // JButton postorder = new JButton("postorder");
@@ -40,13 +34,6 @@ public final class MainPanel extends JPanel {
     //   // Java 9: Collections.list(root.postorderEnumeration())
     //   Collections.list((Enumeration<?>) root.postorderEnumeration())
     //       .forEach(n -> textArea.append(Objects.toString(n) + "\n"));
-    //
-    //   // // Java 9: Enumeration<TreeNode> e = root.postorderEnumeration();
-    //   // Enumeration<?> e = root.postorderEnumeration();
-    //   // while (e.hasMoreElements()) {
-    //   //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-    //   //   textArea.append(node.toString() + "\n");
-    //   // }
     // });
 
     JButton breadthFirst = new JButton("breadthFirst");
@@ -55,13 +42,6 @@ public final class MainPanel extends JPanel {
       // Java 9: Collections.list(root.breadthFirstEnumeration())
       Collections.list((Enumeration<?>) root.breadthFirstEnumeration())
           .forEach(n -> textArea.append(String.format("%s%n", n)));
-
-      // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
-      // Enumeration<?> e = root.breadthFirstEnumeration();
-      // while (e.hasMoreElements()) {
-      //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-      //   textArea.append(node.toString() + "\n");
-      // }
     });
 
     JButton preorder = new JButton("preorder");
@@ -70,13 +50,6 @@ public final class MainPanel extends JPanel {
       // Java 9: Collections.list(root.preorderEnumeration())
       Collections.list((Enumeration<?>) root.preorderEnumeration())
           .forEach(n -> textArea.append(String.format("%s%n", n)));
-
-      // // Java 9: Enumeration<TreeNode> e = root.preorderEnumeration();
-      // Enumeration<?> e = root.preorderEnumeration();
-      // while (e.hasMoreElements()) {
-      //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-      //   textArea.append(node.toString() + "\n");
-      // }
     });
 
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
@@ -107,7 +80,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

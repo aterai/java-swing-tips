@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -34,8 +35,7 @@ public final class MainPanel extends JPanel {
               tree, value, selected, expanded, leaf, row, hasFocus);
           if (c instanceof JComponent) {
             String txt = Optional.ofNullable(value)
-                .map(str -> "TreeCellRenderer: " + str)
-                .orElse(null);
+                .map(str -> "TreeCellRenderer: " + str).orElse(null);
             ((JComponent) c).setToolTipText(txt);
           }
           return c;
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

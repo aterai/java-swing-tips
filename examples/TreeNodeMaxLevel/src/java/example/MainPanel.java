@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -63,16 +64,20 @@ public final class MainPanel extends JPanel {
         JTree tree = (JTree) getInvoker();
         TreePath path = tree.getSelectionPath();
         if (path != null && path.getPathCount() <= MAX_NODE_LEVELS) {
-          DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-          DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
-          DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
-          self.add(child);
-          model.reload(self);
+          addNode(tree, path, "New child node");
         } else {
           String msg = String.format("ERROR: Maximum levels of %d exceeded.", MAX_NODE_LEVELS);
           JOptionPane.showMessageDialog(tree, msg, "add node", JOptionPane.ERROR_MESSAGE);
         }
       });
+    }
+
+    public void addNode(JTree tree, TreePath path, Object userObject) {
+      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+      DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
+      DefaultMutableTreeNode child = new DefaultMutableTreeNode(userObject);
+      self.add(child);
+      model.reload(self);
     }
 
     @Override public void show(Component c, int x, int y) {
@@ -92,7 +97,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

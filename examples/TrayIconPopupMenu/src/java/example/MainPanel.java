@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,9 +31,7 @@ public final class MainPanel extends JPanel {
     String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
     Stream.of(UIManager.getInstalledLookAndFeels())
         .forEach(info -> {
-          boolean selected = info.getClassName().equals(lookAndFeel);
-          AbstractButton rb = new JRadioButton(info.getName(), selected);
-          LookAndFeelUtils.initLookAndFeelAction(info, rb);
+          AbstractButton rb = makeRadioButton(info, lookAndFeel);
           rb.addActionListener(e -> EventQueue.invokeLater(() -> {
             SwingUtilities.updateComponentTreeUI(popup);
             popup.pack();
@@ -52,6 +51,13 @@ public final class MainPanel extends JPanel {
         initPopupMenu((Frame) c);
       }
     });
+  }
+
+  private static JRadioButton makeRadioButton(UIManager.LookAndFeelInfo info, String laf) {
+    boolean selected = info.getClassName().equals(laf);
+    JRadioButton rb = new JRadioButton(info.getName(), selected);
+    LookAndFeelUtils.initLookAndFeelAction(info, rb);
+    return rb;
   }
 
   private void initPopupMenu(Frame frame) {
@@ -109,9 +115,7 @@ public final class MainPanel extends JPanel {
       for (Frame f : Frame.getFrames()) {
         f.dispose();
       }
-      // tray.remove(icon);
-      // frame.dispose();
-      // tmp.dispose();
+      // tray.remove(icon); frame.dispose(); tmp.dispose();
     });
   }
 
@@ -136,7 +140,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -296,7 +300,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
