@@ -12,6 +12,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -25,9 +26,10 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] model = {"111", "2222", "33333"};
+    String[] items = {"111", "2222", "33333"};
+    ComboBoxModel<String> model = new DefaultComboBoxModel<>(items);
     JComboBox<String> combo0 = new JComboBox<>(model);
-    JComboBox<String> combo1 = makeComboBox(model);
+    JComboBox<String> combo1 = new RoundedComboBox<>(model);
 
     JCheckBox check = new JCheckBox("setEditable");
     check.setOpaque(false);
@@ -52,55 +54,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JComboBox<String> makeComboBox(String... model) {
-    return new JComboBox<String>(model) {
-      private transient PopupMenuListener listener;
-
-      @Override public void updateUI() {
-        setRenderer(null);
-        removePopupMenuListener(listener);
-        super.updateUI();
-        setBorder(new RoundedCornerBorder());
-        setRenderer(new RoundedCornerListCellRenderer());
-        setUI(new BasicComboBoxUI() {
-          @Override protected JButton createArrowButton() {
-            JButton b = new JButton(new ArrowIcon(Color.WHITE, Color.BLACK));
-            b.setContentAreaFilled(false);
-            b.setFocusPainted(false);
-            b.setBorder(BorderFactory.createEmptyBorder());
-            return b;
-          }
-
-          @Override protected ComboPopup createPopup() {
-            return new BasicComboPopup(comboBox) {
-              @Override protected JScrollPane createScroller() {
-                return new JScrollPane(list) {
-                  @Override public void updateUI() {
-                    super.updateUI();
-                    getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                    getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
-                    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-                    // setHorizontalScrollBar(null);
-                  }
-                };
-              }
-            };
-          }
-        });
-        listener = new HeavyWeightContainerListener();
-        addPopupMenuListener(listener);
-        Object o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof JComponent) {
-          JComponent c = (JComponent) o;
-          c.setBorder(new BottomRoundedCornerBorder());
-          // c.setBackground(UIManager.getColor("List.background")); // ???
-          c.setBackground(Color.WHITE);
-        }
-      }
-    };
-  }
-
   private static Component makeTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), title));
@@ -118,7 +71,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -127,6 +80,57 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RoundedComboBox<E> extends JComboBox<E> {
+  private transient PopupMenuListener listener;
+
+  protected RoundedComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    setRenderer(null);
+    removePopupMenuListener(listener);
+    super.updateUI();
+    setBorder(new RoundedCornerBorder());
+    setRenderer(new RoundedCornerListCellRenderer());
+    setUI(new BasicComboBoxUI() {
+      @Override protected JButton createArrowButton() {
+        JButton b = new JButton(new ArrowIcon(Color.WHITE, Color.BLACK));
+        b.setContentAreaFilled(false);
+        b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createEmptyBorder());
+        return b;
+      }
+
+      @Override protected ComboPopup createPopup() {
+        return new BasicComboPopup(comboBox) {
+          @Override protected JScrollPane createScroller() {
+            return new JScrollPane(list) {
+              @Override public void updateUI() {
+                super.updateUI();
+                getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+                getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+                setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+                setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+                // setHorizontalScrollBar(null);
+              }
+            };
+          }
+        };
+      }
+    });
+    listener = new HeavyWeightContainerListener();
+    addPopupMenuListener(listener);
+    Object o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof JComponent) {
+      JComponent c = (JComponent) o;
+      c.setBorder(new BottomRoundedCornerBorder());
+      // c.setBackground(UIManager.getColor("List.background")); // ???
+      c.setBackground(Color.WHITE);
+    }
   }
 }
 
@@ -184,14 +188,16 @@ class HeavyWeightContainerListener implements PopupMenuListener {
       Accessible a = combo.getUI().getAccessibleChild(combo, 0);
       if (a instanceof JPopupMenu) {
         Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
+            .filter(HeavyWeightContainerListener::isHeavyWeight)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     });
+  }
+
+  private static boolean isHeavyWeight(Window w) {
+    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+    GraphicsConfiguration gc = w.getGraphicsConfiguration();
+    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -439,7 +445,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
