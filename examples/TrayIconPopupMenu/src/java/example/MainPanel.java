@@ -24,40 +24,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    add(new JLabel("SystemTray.isSupported(): " + SystemTray.isSupported()), BorderLayout.NORTH);
-
-    ButtonGroup bg = new ButtonGroup();
-    Box box = Box.createVerticalBox();
-    String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
-    Stream.of(UIManager.getInstalledLookAndFeels())
-        .forEach(info -> {
-          AbstractButton rb = makeRadioButton(info, lookAndFeel);
-          rb.addActionListener(e -> EventQueue.invokeLater(() -> {
-            SwingUtilities.updateComponentTreeUI(popup);
-            popup.pack();
-          }));
-          bg.add(rb);
-          box.add(rb);
-        });
-    box.add(Box.createVerticalGlue());
-    box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
-
-    add(box);
+    String msg = "SystemTray.isSupported(): " + SystemTray.isSupported();
+    add(new JLabel(msg), BorderLayout.NORTH);
+    add(LookAndFeelUtils.makeLookAndFeelBox(popup));
     setPreferredSize(new Dimension(320, 240));
-
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
       if (c instanceof Frame) {
         initPopupMenu((Frame) c);
       }
     });
-  }
-
-  private static JRadioButton makeRadioButton(UIManager.LookAndFeelInfo info, String laf) {
-    boolean selected = info.getClassName().equals(laf);
-    JRadioButton rb = new JRadioButton(info.getName(), selected);
-    LookAndFeelUtils.initLookAndFeelAction(info, rb);
-    return rb;
   }
 
   private void initPopupMenu(Frame frame) {
@@ -70,15 +46,8 @@ public final class MainPanel extends JPanel {
     tmp.setUndecorated(true);
     // tmp.setAlwaysOnTop(true);
 
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image image = Optional.ofNullable(cl.getResource("example/16x16.png")).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeDefaultTrayImage();
-      }
-    }).orElseGet(MainPanel::makeDefaultTrayImage);
-    TrayIcon icon = new TrayIcon(image, "TRAY", null);
+    String path = "example/16x16.png";
+    TrayIcon icon = new TrayIcon(TrayIconPopupMenuUtils.makeImage(path), "TRAY", null);
     icon.addMouseListener(new TrayIconPopupMenuHandler(popup, tmp));
     try {
       SystemTray.getSystemTray().add(icon);
@@ -87,22 +56,10 @@ public final class MainPanel extends JPanel {
     }
 
     // init JPopupMenu
-    popup.addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        /* not needed */
-      }
-
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        tmp.setVisible(false);
-      }
-
-      @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        tmp.setVisible(false);
-      }
-    });
+    popup.addPopupMenuListener(new TemporaryParentPopupListener(tmp));
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
-    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
-    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem: 1234567890"));
+    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem: 1"));
+    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem: 2"));
     popup.add("Open").addActionListener(e -> {
       frame.setExtendedState(Frame.NORMAL);
       frame.setVisible(true);
@@ -117,17 +74,6 @@ public final class MainPanel extends JPanel {
       }
       // tray.remove(icon); frame.dispose(); tmp.dispose();
     });
-  }
-
-  private static Image makeDefaultTrayImage() {
-    Icon icon = UIManager.getIcon("InternalFrame.icon");
-    int w = icon.getIconWidth();
-    int h = icon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    icon.paintIcon(null, g2, 0, 0);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {
@@ -227,6 +173,48 @@ final class TrayIconPopupMenuUtils {
     }
     return p;
   }
+
+  public static Image makeImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeDefaultTrayImage();
+      }
+    }).orElseGet(TrayIconPopupMenuUtils::makeDefaultTrayImage);
+  }
+
+  private static Image makeDefaultTrayImage() {
+    Icon icon = UIManager.getIcon("InternalFrame.icon");
+    int w = icon.getIconWidth();
+    int h = icon.getIconHeight();
+    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    icon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    return bi;
+  }
+}
+
+class TemporaryParentPopupListener implements PopupMenuListener {
+  private final JDialog parent;
+
+  protected TemporaryParentPopupListener(JDialog parent) {
+    this.parent = parent;
+  }
+
+  @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    /* not needed */
+  }
+
+  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    parent.setVisible(false);
+  }
+
+  @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    parent.setVisible(false);
+  }
 }
 
 class TrayIconPopupMenuHandler extends MouseAdapter {
@@ -283,7 +271,33 @@ final class LookAndFeelUtils {
   //   return new JRadioButtonMenuItem(info.getName(), selected);
   // }
 
-  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+  public static Component makeLookAndFeelBox(JPopupMenu popup) {
+    ButtonGroup bg = new ButtonGroup();
+    Box box = Box.createVerticalBox();
+    String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+    Stream.of(UIManager.getInstalledLookAndFeels())
+        .forEach(info -> {
+          AbstractButton rb = makeButton(info, lookAndFeel);
+          rb.addActionListener(e -> EventQueue.invokeLater(() -> {
+            SwingUtilities.updateComponentTreeUI(popup);
+            popup.pack();
+          }));
+          bg.add(rb);
+          box.add(rb);
+        });
+    box.add(Box.createVerticalGlue());
+    box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
+    return box;
+  }
+
+  private static JRadioButton makeButton(UIManager.LookAndFeelInfo info, String laf) {
+    boolean selected = info.getClassName().equals(laf);
+    JRadioButton rb = new JRadioButton(info.getName(), selected);
+    initLookAndFeelAction(info, rb);
+    return rb;
+  }
+
+  private static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
     String cmd = info.getClassName();
     b.setText(info.getName());
     b.setActionCommand(cmd);
