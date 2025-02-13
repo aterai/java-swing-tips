@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -72,16 +73,13 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public boolean shouldYieldFocus(JComponent input) {
-        // System.out.println("shouldYieldFocus");
         button.setEnabled(isAllValid());
         return super.shouldYieldFocus(input);
       }
 
-      // Java 9:
-      // @Override public boolean shouldYieldFocus(JComponent source, JComponent target) {
-      //   System.out.println("shouldYieldFocus");
-      //   target.setEnabled(isAllValid());
-      //   return super.shouldYieldFocus(source, target);
+      // @Override public boolean shouldYieldFocus(JComponent src, JComponent tgt) {
+      //   tgt.setEnabled(isAllValid());
+      //   return super.shouldYieldFocus(src, tgt); // Java 9
       // }
     });
     textField.addFocusListener(new FocusAdapter() {
@@ -89,22 +87,9 @@ public final class MainPanel extends JPanel {
         if (e.isTemporary()) {
           return;
         }
-        // System.out.println("focusLost");
         button.setEnabled(isAllValid());
       }
     });
-    // // TEST:
-    // textField.getDocument().addDocumentListener(new DocumentListener() {
-    //   @Override public void insertUpdate(DocumentEvent e) {
-    //     System.out.println("insertUpdate");
-    //   }
-    //   @Override public void removeUpdate(DocumentEvent e) {
-    //     System.out.println("removeUpdate");
-    //   }
-    //   @Override public void changedUpdate(DocumentEvent e) {
-    //     /* not needed */
-    //   }
-    // });
     return textField;
   }
 
@@ -118,7 +103,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

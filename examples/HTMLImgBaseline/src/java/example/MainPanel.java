@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -56,7 +57,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -73,10 +74,6 @@ class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
     return new HTMLEditorKit.HTMLFactory() {
       @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public View create(Element elem) {
-        // View view = super.create(elem);
-        // if (view instanceof LabelView) {
-        //   System.out.println("debug: " + view.getAlignment(View.Y_AXIS));
-        // }
         AttributeSet attrs = elem.getAttributes();
         Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
         Object o = name == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
@@ -84,8 +81,7 @@ class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
           HTML.Tag kind = (HTML.Tag) o;
           if (kind == HTML.Tag.IMG) {
             return new ImageView(elem) {
-              @Override public float getAlignment(int axis) {
-                // .8125f magic number...
+              @Override public float getAlignment(int axis) { // .8125f: magic number
                 return axis == Y_AXIS ? .8125f : super.getAlignment(axis);
               }
             };
