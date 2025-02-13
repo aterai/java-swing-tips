@@ -45,6 +45,7 @@ public final class MainPanel extends JPanel {
     Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
 
     Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(10, 0, 2, 0));
     box.add(makeLabel("Less", font));
     box.add(Box.createHorizontalStrut(2));
     activityIcons.forEach(icon -> {
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel {
     GridBagConstraints c = new GridBagConstraints();
     p.add(makeWeekCalendar(weekList, font), c);
 
-    c.insets = new Insets(10, 0, 2, 0);
+    // c.insets = new Insets(10, 0, 2, 0);
     c.gridy = 1;
     c.anchor = GridBagConstraints.LINE_END;
     p.add(box, c);
@@ -327,11 +328,7 @@ class BalloonToolTip extends JToolTip {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
         Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
+            .filter(BalloonToolTip::isHeavyWeight)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };
@@ -370,5 +367,11 @@ class BalloonToolTip extends JToolTip {
     Area area = new Area(new RoundRectangle2D.Double(0d, 0d, w, h, arc, arc));
     area.add(new Area(triangle));
     return area;
+  }
+
+  private static boolean isHeavyWeight(Window w) {
+    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+    GraphicsConfiguration gc = w.getGraphicsConfiguration();
+    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
   }
 }
