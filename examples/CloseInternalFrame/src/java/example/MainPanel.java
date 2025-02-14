@@ -123,36 +123,38 @@ public final class MainPanel extends JPanel {
         col += 1;
       }
     });
-    f.addInternalFrameListener(new InternalFrameListener() {
-      @Override public void internalFrameClosing(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameClosing: " + e.getInternalFrame().getTitle());
-      }
-
-      @Override public void internalFrameClosed(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameClosed: " + e.getInternalFrame().getTitle());
-      }
-
-      @Override public void internalFrameOpened(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameOpened: " + e.getInternalFrame().getTitle());
-      }
-
-      @Override public void internalFrameIconified(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameIconified: " + e.getInternalFrame().getTitle());
-      }
-
-      @Override public void internalFrameDeiconified(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameDeiconified: " + e.getInternalFrame().getTitle());
-      }
-
-      @Override public void internalFrameActivated(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameActivated: " + e.getInternalFrame().getTitle());
-      }
-
-      @Override public void internalFrameDeactivated(InternalFrameEvent e) {
-        LOGGER.info(() -> "internalFrameDeactivated: " + e.getInternalFrame().getTitle());
-      }
-    });
+    f.addInternalFrameListener(new InternalFrameHandler());
     return f;
+  }
+
+  private static final class InternalFrameHandler implements InternalFrameListener {
+    @Override public void internalFrameClosing(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameClosing: " + e.getInternalFrame().getTitle());
+    }
+
+    @Override public void internalFrameClosed(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameClosed: " + e.getInternalFrame().getTitle());
+    }
+
+    @Override public void internalFrameOpened(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameOpened: " + e.getInternalFrame().getTitle());
+    }
+
+    @Override public void internalFrameIconified(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameIconified: " + e.getInternalFrame().getTitle());
+    }
+
+    @Override public void internalFrameDeiconified(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameDeiconified: " + e.getInternalFrame().getTitle());
+    }
+
+    @Override public void internalFrameActivated(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameActivated: " + e.getInternalFrame().getTitle());
+    }
+
+    @Override public void internalFrameDeactivated(InternalFrameEvent e) {
+      LOGGER.info(() -> "internalFrameDeactivated: " + e.getInternalFrame().getTitle());
+    }
   }
 
   public static void main(String[] args) {
@@ -165,7 +167,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
