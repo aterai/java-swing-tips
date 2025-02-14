@@ -20,32 +20,32 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 2));
-    Container p1 = makePasswordPanel1();
+    JPanel p1 = makePasswordPanel1();
     add(makeTitledPanel("BorderLayout + JCheckBox", p1));
-    Container p2 = makePasswordPanel2();
+    JPanel p2 = makePasswordPanel2();
     add(makeTitledPanel("OverlayLayout + JToggleButton", p2));
-    Container p3 = makePasswordPanel3();
+    JPanel p3 = makePasswordPanel3();
     add(makeTitledPanel("CardLayout + JTextField(can copy) + ...", p3));
-    Container p4 = makePasswordPanel4();
+    JPanel p4 = makePasswordPanel4();
     add(makeTitledPanel("press and hold down the mouse button", p4));
     setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Container makePasswordPanel1() {
+  private static JPanel makePasswordPanel1() {
     JPasswordField password = makePasswordField();
     AbstractButton button = new JCheckBox("show passwords");
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
     });
-    Container p = new JPanel(new BorderLayout());
+    JPanel p = new JPanel(new BorderLayout());
     p.add(password);
     p.add(button, BorderLayout.SOUTH);
     return p;
   }
 
-  private static Container makePasswordPanel2() {
+  private static JPanel makePasswordPanel2() {
     JPasswordField password = makePasswordField();
     // AbstractDocument doc = (AbstractDocument) password.getDocument();
     // doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
@@ -55,13 +55,13 @@ public final class MainPanel extends JPanel {
       password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
     });
     initEyeButton(button);
-    Container p = makeOverlayLayoutPanel();
+    JPanel p = makeOverlayLayoutPanel();
     p.add(button);
     p.add(password);
     return p;
   }
 
-  private Container makePasswordPanel3() {
+  private JPanel makePasswordPanel3() {
     JPasswordField password = makePasswordField();
     JTextField field = new JTextField(24);
     field.setFont(FONT);
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
     field.setDocument(password.getDocument());
 
     CardLayout cardLayout = new CardLayout();
-    Container p = new JPanel(cardLayout) {
+    JPanel p = new JPanel(cardLayout) {
       @Override public void updateUI() {
         super.updateUI();
         setAlignmentX(RIGHT_ALIGNMENT);
@@ -86,13 +86,13 @@ public final class MainPanel extends JPanel {
     });
     initEyeButton(button);
 
-    Container panel = makeOverlayLayoutPanel();
+    JPanel panel = makeOverlayLayoutPanel();
     panel.add(button);
     panel.add(p);
     return panel;
   }
 
-  private static Container makePasswordPanel4() {
+  private static JPanel makePasswordPanel4() {
     JPasswordField password = makePasswordField();
     AbstractButton button = new JButton();
     button.addMouseListener(new MouseAdapter() {
@@ -105,7 +105,7 @@ public final class MainPanel extends JPanel {
       }
     });
     initEyeButton(button);
-    Container p = makeOverlayLayoutPanel();
+    JPanel p = makeOverlayLayoutPanel();
     p.add(button);
     p.add(password);
     return p;
@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
     b.setToolTipText("show/hide passwords");
   }
 
-  private static Container makeOverlayLayoutPanel() {
+  private static JPanel makeOverlayLayoutPanel() {
     JPanel p = new JPanel() {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
