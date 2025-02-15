@@ -5,12 +5,15 @@
 package example;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
+import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -29,45 +32,27 @@ public final class MainPanel extends JPanel {
 
     JPanel p = new JPanel(new GridLayout(2, 1, 5, 5));
     p.add(scroll);
-    p.add(label);
+    p.add(new JScrollPane(label));
+
+    JFileChooser chooser = new JFileChooser();
+    chooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG (*.png)", "png"));
 
     JButton encode = new JButton("encode");
     encode.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      chooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG (*.png)", "png"));
-      int retValue = chooser.showOpenDialog(encode);
-      if (retValue == JFileChooser.APPROVE_OPTION) {
+      int ret = chooser.showOpenDialog(getRootPane());
+      if (ret == JFileChooser.APPROVE_OPTION) {
         Path path = chooser.getSelectedFile().toPath();
-        try {
-          textArea.setText(Base64.getEncoder().encodeToString(Files.readAllBytes(path)));
-        } catch (IOException ex) {
-          textArea.setText("error: " + path);
-        }
-        // try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-        //   BufferedImage image = ImageIO.read(file);
-        //   ImageIO.write(image, "png", bos);
-        //   bos.flush();
-        //   // byte[] encoded = Base64.getEncoder().encode(bos.toByteArray());
-        //   // textArea.setText(new String(encoded, StandardCharsets.ISO_8859_1));
-        //   textArea.setText(Base64.getEncoder().encodeToString(bos.toByteArray()));
-        // } catch (IOException ex) {
-        //   textArea.setText("error: " + file.getAbsolutePath());
-        // }
+        String b64 = encode(path).orElseGet(() -> "error: " + path);
+        textArea.setText(b64);
       }
     });
+
     JButton decode = new JButton("decode");
     decode.addActionListener(e -> {
       String b64 = textArea.getText();
-      if (b64.isEmpty()) {
-        return;
-      }
-      // byte[] bytes = b64.getBytes(StandardCharsets.ISO_8859_1);
-      // try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(bytes))) {
-      try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(b64))) {
-        label.setIcon(new ImageIcon(ImageIO.read(input)));
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        label.setIcon(null);
+      if (!b64.isEmpty()) {
+        Icon icon = decode(b64).map(ImageIcon::new).orElse(null);
+        label.setIcon(icon);
       }
     });
 
@@ -82,6 +67,40 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static Optional<String> encode(Path path) {
+    Optional<String> op;
+    try {
+      byte[] src = Files.readAllBytes(path);
+      op = Optional.ofNullable(Base64.getEncoder().encodeToString(src));
+    } catch (IOException ex) {
+      op = Optional.empty();
+    }
+    return op;
+    // try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+    //   BufferedImage image = ImageIO.read(file);
+    //   ImageIO.write(image, "png", bos);
+    //   bos.flush();
+    //   // byte[] encoded = Base64.getEncoder().encode(bos.toByteArray());
+    //   // textArea.setText(new String(encoded, StandardCharsets.ISO_8859_1));
+    //   textArea.setText(Base64.getEncoder().encodeToString(bos.toByteArray()));
+    // } catch (IOException ex) {
+    //   textArea.setText("error: " + file.getAbsolutePath());
+    // }
+  }
+
+  private static Optional<BufferedImage> decode(String b64) {
+    // byte[] bytes = b64.getBytes(StandardCharsets.ISO_8859_1);
+    // try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(bytes))) {
+    Optional<BufferedImage> op;
+    try (InputStream input = new ByteArrayInputStream(Base64.getDecoder().decode(b64))) {
+      op = Optional.ofNullable(ImageIO.read(input));
+    } catch (IOException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      op = Optional.empty();
+    }
+    return op;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -92,7 +111,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         .orElseGet(() -> UIManager.getIcon("html.missingImage"));
     Object[][] data = {
         {"Default ImageIcon", icon},
-        {"ImageIcon#setImageObserver", makeImageIcon(url, table, 1, 1)}
+        {"ImageIcon#setImageObserver", makeAnimatedIcon(url, table, 1, 1)}
     };
     String[] columnNames = {"String", "ImageIcon"};
     table.setModel(new DefaultTableModel(data, columnNames) {
@@ -41,23 +41,25 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Icon makeImageIcon(URL url, JTable table, int row, int col) {
+  public static Icon makeAnimatedIcon(URL url, JTable table, int row, int col) {
     return Optional.ofNullable(url)
-        .map(ImageIcon::new)
-        .<Icon>map(icon -> {
-          icon.setImageObserver((img, flags, x, y, w, h) -> {
-            boolean repaint = false;
-            if (table.isShowing()) {
-              if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
-                tableRepaint(table, row, col);
-              }
-              repaint = (flags & (ALLBITS | ABORT)) == 0;
-            }
-            return repaint;
-          });
-          return icon;
-        })
+        .map(u -> makeIcon(u, table, row, col))
         .orElseGet(() -> UIManager.getIcon("html.missingImage"));
+  }
+
+  private static Icon makeIcon(URL url, JTable table, int row, int col) {
+    ImageIcon icon = new ImageIcon(url);
+    icon.setImageObserver((img, flags, x, y, w, h) -> {
+      boolean repaint = false;
+      if (table.isShowing()) {
+        if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
+          tableRepaint(table, row, col);
+        }
+        repaint = (flags & (ALLBITS | ABORT)) == 0;
+      }
+      return repaint;
+    });
+    return icon;
   }
 
   private static void tableRepaint(JTable table, int row, int col) {

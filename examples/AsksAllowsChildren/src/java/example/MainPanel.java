@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -87,7 +88,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -116,45 +117,44 @@ final class TreePopupMenu extends JPopupMenu {
   /* default */ TreePopupMenu() {
     super();
     addFolderItem = add("add folder");
-    addFolderItem.addActionListener(e -> {
-      JTree tree = (JTree) getInvoker();
-      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-      DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Folder", true);
-      model.insertNodeInto(child, parent, parent.getChildCount());
-      tree.scrollPathToVisible(new TreePath(child.getPath()));
-    });
+    addFolderItem.addActionListener(e -> addNode("New Folder", true));
     addNodeItem = add("add node");
-    addNodeItem.addActionListener(e -> {
+    addNodeItem.addActionListener(e -> addNode("New Item", false));
+    add("edit").addActionListener(e -> editNode());
+    addSeparator();
+    add("remove").addActionListener(e -> removeNode());
+  }
+
+  private void addNode(String name, boolean allowsChildren) {
+    JTree tree = (JTree) getInvoker();
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode(name, allowsChildren);
+    model.insertNodeInto(child, parent, parent.getChildCount());
+    tree.scrollPathToVisible(new TreePath(child.getPath()));
+  }
+
+  private void editNode() {
+    Object node = path.getLastPathComponent();
+    if (node instanceof DefaultMutableTreeNode) {
+      DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
+      textField.setText(leaf.getUserObject().toString());
+      JTree tree = (JTree) getInvoker();
+      int ret = JOptionPane.showConfirmDialog(
+          tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (ret == JOptionPane.OK_OPTION) {
+        tree.getModel().valueForPathChanged(path, textField.getText());
+      }
+    }
+  }
+
+  private void removeNode() {
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+    if (!node.isRoot()) {
       JTree tree = (JTree) getInvoker();
       DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-      DefaultMutableTreeNode child = new DefaultMutableTreeNode("New Item", false);
-      model.insertNodeInto(child, parent, parent.getChildCount());
-      tree.scrollPathToVisible(new TreePath(child.getPath()));
-    });
-    add("edit").addActionListener(e -> {
-      Object node = path.getLastPathComponent();
-      if (node instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-        textField.setText(leaf.getUserObject().toString());
-        JTree tree = (JTree) getInvoker();
-        int ret = JOptionPane.showConfirmDialog(
-            tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (ret == JOptionPane.OK_OPTION) {
-          tree.getModel().valueForPathChanged(path, textField.getText());
-        }
-      }
-    });
-    addSeparator();
-    add("remove").addActionListener(e -> {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-      if (!node.isRoot()) {
-        JTree tree = (JTree) getInvoker();
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.removeNodeFromParent(node);
-      }
-    });
+      model.removeNodeFromParent(node);
+    }
   }
 
   @Override public void show(Component c, int x, int y) {
