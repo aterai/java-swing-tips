@@ -12,18 +12,26 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    add(new JLayer<>(makeTabbedPane(), new DebugLayerUI()));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTabbedPane makeTabbedPane() {
     // UIManager.put("TabbedPane.tabAreaInsets", new Insets(5, 10, 15, 20));
     // UIManager.put("TabbedPane.contentBorderInsets", new Insets(5, 10, 15, 20));
+    JPopupMenu popup1 = makeTabPopupMenu();
+    JPopupMenu popup2 = makeTabAreaPopupMenu();
     JTabbedPane tabbedPane = new JTabbedPane() {
-      private final JPopupMenu popup1 = makeTabPopupMenu();
-      private final JPopupMenu popup2 = makeTabAreaPopupMenu();
-
       @Override public void updateUI() {
         super.updateUI();
         EventQueue.invokeLater(() -> {
@@ -35,73 +43,17 @@ public final class MainPanel extends JPanel {
 
       @Override public Point getPopupLocation(MouseEvent e) {
         int idx = indexAtLocation(e.getX(), e.getY());
-        if (idx < 0 && getTabAreaBounds(this).contains(e.getPoint())) {
+        if (idx < 0 && TabbedPaneUtils.getTabAreaBounds(this).contains(e.getPoint())) {
           setComponentPopupMenu(popup2);
         } else {
           setComponentPopupMenu(popup1);
         }
         return super.getPopupLocation(e);
       }
-
-      // @Override public JPopupMenu getComponentPopupMenu() {
-      //   int idx = getSelectedIndex();
-      //   Component c = getTabComponentAt(idx);
-      //   JPopupMenu popup;
-      //   if (idx>= 0 && c instanceof JComponent) {
-      //     popup = ((JComponent) c).getComponentPopupMenu();
-      //   } else {
-      //     popup = super.getComponentPopupMenu();
-      //   }
-      //   return popup;
-      // }
     };
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabbedPane.addTab("Title: 0", new JScrollPane(new JTextArea()));
-    add(new JLayer<>(tabbedPane, makeTestLayer()));
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static LayerUI<JTabbedPane> makeTestLayer() {
-    return new LayerUI<JTabbedPane>() {
-      @Override public void paint(Graphics g, JComponent c) {
-        super.paint(g, c);
-        if (c instanceof JLayer) {
-          JLayer<?> layer = (JLayer<?>) c;
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setPaint(Color.RED);
-          Rectangle r = getTabAreaBounds((JTabbedPane) layer.getView());
-          g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
-          // g2.setPaint(Color.GREEN);
-          // Rectangle r2 = getTabAreaBounds2((JTabbedPane) layer.getView());
-          // g2.drawRect(r2.x, r2.y, r2.width - 1, r2.height - 1);
-          g2.dispose();
-        }
-      }
-    };
-  }
-
-  private static Rectangle getTabAreaBounds(JTabbedPane tabbedPane) {
-    Rectangle r = SwingUtilities.calculateInnerArea(tabbedPane, null);
-    Rectangle cr = Optional.ofNullable(tabbedPane.getSelectedComponent())
-        .map(Component::getBounds)
-        .orElseGet(Rectangle::new);
-    int tp = tabbedPane.getTabPlacement();
-    Insets i1 = UIManager.getInsets("TabbedPane.tabAreaInsets");
-    Insets i2 = UIManager.getInsets("TabbedPane.contentBorderInsets");
-    if (tp == SwingConstants.TOP || tp == SwingConstants.BOTTOM) {
-      r.height -= cr.height + i1.top + i1.bottom + i2.top + i2.bottom;
-      // r.x += i1.left;
-      r.y += tp == SwingConstants.TOP ? i1.top : cr.y + cr.height + i1.bottom + i2.bottom;
-    } else {
-      r.width -= cr.width + i1.top + i1.bottom + i2.left + i2.right;
-      r.x += tp == SwingConstants.LEFT ? i1.top : cr.x + cr.width + i1.bottom + i2.right;
-      // r.y += i1.left;
-    }
-    return r;
+    return tabbedPane;
   }
 
   // private static Stream<Component> descendants(Container parent) {
@@ -171,20 +123,7 @@ public final class MainPanel extends JPanel {
     });
     popup.addSeparator();
     JMenuItem rename = popup.add("Rename");
-    rename.addActionListener(e -> {
-      JTabbedPane tabs = (JTabbedPane) popup.getInvoker();
-      String name = tabs.getTitleAt(tabs.getSelectedIndex());
-      JTextField textField = new JTextField(name);
-      int result = JOptionPane.showConfirmDialog(
-          tabs, textField, rename.getText(),
-          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (result == JOptionPane.OK_OPTION) {
-        String str = textField.getText().trim();
-        if (!str.equals(name)) {
-          tabs.setTitleAt(tabs.getSelectedIndex(), str);
-        }
-      }
-    });
+    rename.addActionListener(e -> renameTab(popup));
     popup.addSeparator();
     JMenuItem close = popup.add("Close");
     close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.CTRL_DOWN_MASK));
@@ -198,15 +137,32 @@ public final class MainPanel extends JPanel {
       tabs.removeAll();
     });
     JMenuItem closeAllButActive = popup.add("Close all bat active");
-    closeAllButActive.addActionListener(e -> {
-      JTabbedPane tabs = (JTabbedPane) popup.getInvoker();
-      int idx = tabs.getSelectedIndex();
-      String title = tabs.getTitleAt(idx);
-      Component cmp = tabs.getComponentAt(idx);
-      tabs.removeAll();
-      tabs.addTab(title, cmp);
-    });
+    closeAllButActive.addActionListener(e -> closeAllButActiveTab(popup));
     return popup;
+  }
+
+  private static void renameTab(JPopupMenu popup) {
+    JTabbedPane tabs = (JTabbedPane) popup.getInvoker();
+    String name = tabs.getTitleAt(tabs.getSelectedIndex());
+    JTextField textField = new JTextField(name);
+    int result = JOptionPane.showConfirmDialog(
+        tabs, textField, "Rename",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (result == JOptionPane.OK_OPTION) {
+      String str = textField.getText().trim();
+      if (!str.equals(name)) {
+        tabs.setTitleAt(tabs.getSelectedIndex(), str);
+      }
+    }
+  }
+
+  private static void closeAllButActiveTab(JPopupMenu popup) {
+    JTabbedPane tabs = (JTabbedPane) popup.getInvoker();
+    int idx = tabs.getSelectedIndex();
+    String title = tabs.getTitleAt(idx);
+    Component cmp = tabs.getComponentAt(idx);
+    tabs.removeAll();
+    tabs.addTab(title, cmp);
   }
 
   private static JPopupMenu makeTabAreaPopupMenu() {
@@ -249,7 +205,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -275,6 +231,49 @@ enum TabPlacement {
 
   public int getPlacement() {
     return placement;
+  }
+}
+
+final class DebugLayerUI extends LayerUI<JTabbedPane> {
+  @Override public void paint(Graphics g, JComponent c) {
+    super.paint(g, c);
+    if (c instanceof JLayer) {
+      JLayer<?> layer = (JLayer<?>) c;
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(Color.RED);
+      Rectangle r = TabbedPaneUtils.getTabAreaBounds((JTabbedPane) layer.getView());
+      g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+      // g2.setPaint(Color.GREEN);
+      // Rectangle r2 = getTabAreaBounds2((JTabbedPane) layer.getView());
+      // g2.drawRect(r2.x, r2.y, r2.width - 1, r2.height - 1);
+      g2.dispose();
+    }
+  }
+}
+
+final class TabbedPaneUtils {
+  private TabbedPaneUtils() {
+    /* Singleton */
+  }
+
+  public static Rectangle getTabAreaBounds(JTabbedPane tabbedPane) {
+    Rectangle r = SwingUtilities.calculateInnerArea(tabbedPane, null);
+    Rectangle cr = Optional.ofNullable(tabbedPane.getSelectedComponent())
+        .map(Component::getBounds)
+        .orElseGet(Rectangle::new);
+    int tp = tabbedPane.getTabPlacement();
+    Insets i1 = UIManager.getInsets("TabbedPane.tabAreaInsets");
+    Insets i2 = UIManager.getInsets("TabbedPane.contentBorderInsets");
+    if (tp == SwingConstants.TOP || tp == SwingConstants.BOTTOM) {
+      r.height -= cr.height + i1.top + i1.bottom + i2.top + i2.bottom;
+      // r.x += i1.left;
+      r.y += tp == SwingConstants.TOP ? i1.top : cr.y + cr.height + i1.bottom + i2.bottom;
+    } else {
+      r.width -= cr.width + i1.top + i1.bottom + i2.left + i2.right;
+      r.x += tp == SwingConstants.LEFT ? i1.top : cr.x + cr.width + i1.bottom + i2.right;
+      // r.y += i1.left;
+    }
+    return r;
   }
 }
 
@@ -319,7 +318,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
