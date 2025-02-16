@@ -10,7 +10,7 @@
 
   <target name="all">
     <subant target="${all}">
-      <fileset dir="." casesensitive="yes">
+      <fileset dir="examples" casesensitive="yes">
         <filename name=".*/*" negate="true" />
         <filename name="*~/*" negate="true" />
         <filename name="*/build.xml" />
