@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -25,8 +26,7 @@ public final class MainPanel extends JPanel {
     Icon emptyIcon = new EmptyIcon();
 
     DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) tree.getCellRenderer();
-    renderer.setOpenIcon(emptyIcon);
-    renderer.setClosedIcon(emptyIcon);
+    initIcon(renderer, emptyIcon, emptyIcon);
     renderer.setLeafIcon(emptyIcon);
     allNodesChanged(tree);
 
@@ -34,11 +34,9 @@ public final class MainPanel extends JPanel {
     folderCheck.addActionListener(e -> {
       DefaultTreeCellRenderer r = (DefaultTreeCellRenderer) tree.getCellRenderer();
       if (((JCheckBox) e.getSource()).isSelected()) {
-        r.setOpenIcon(r.getDefaultOpenIcon());
-        r.setClosedIcon(r.getDefaultClosedIcon());
+        initIcon(r, r.getDefaultOpenIcon(), r.getDefaultClosedIcon());
       } else {
-        r.setOpenIcon(emptyIcon);
-        r.setClosedIcon(emptyIcon);
+        initIcon(r, emptyIcon, emptyIcon);
       }
       allNodesChanged(tree);
     });
@@ -88,6 +86,11 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void initIcon(DefaultTreeCellRenderer r, Icon open, Icon close) {
+    r.setOpenIcon(open);
+    r.setClosedIcon(close);
+  }
+
   private static void allNodesChanged(JTree tree) {
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
@@ -107,7 +110,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
