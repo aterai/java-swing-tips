@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,17 +18,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    DefaultTableModel model = makeModel();
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(START_HEIGHT);
-    for (int i = 0; i < model.getRowCount(); i++) {
+    for (int i = 0; i < table.getRowCount(); i++) {
       table.setRowHeight(i, END_HEIGHT);
     }
     Action deleteAction = new AbstractAction("delete") {
       @Override public void actionPerformed(ActionEvent e) {
-        deleteActionPerformed(table, model);
+        deleteActionPerformed(table);
       }
     };
     JPopupMenu popup = new JPopupMenu() {
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     };
     Action createAction = new AbstractAction("add") {
       @Override public void actionPerformed(ActionEvent e) {
-        createActionPerformed(table, model);
+        createActionPerformed(table);
       }
     };
     popup.add(createAction);
@@ -67,39 +67,48 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  public void createActionPerformed(JTable table, DefaultTableModel model) {
+  public void createActionPerformed(JTable table) {
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
     model.addRow(new Object[] {"New name", model.getRowCount(), false});
     int index = table.convertRowIndexToView(model.getRowCount() - 1);
     AtomicInteger height = new AtomicInteger(START_HEIGHT);
     new Timer(DELAY, e -> {
-      int h = height.getAndIncrement();
-      if (h < END_HEIGHT) {
-        table.setRowHeight(index, h);
+      int curHeight = height.getAndIncrement();
+      if (curHeight < END_HEIGHT) {
+        table.setRowHeight(index, curHeight);
       } else {
         ((Timer) e.getSource()).stop();
       }
     }).start();
   }
 
-  public void deleteActionPerformed(JTable table, DefaultTableModel model) {
+  public void deleteActionPerformed(JTable table) {
     int[] selection = table.getSelectedRows();
-    if (selection.length == 0) {
-      return;
+    if (selection.length > 0) {
+      AtomicInteger height = new AtomicInteger(END_HEIGHT);
+      new Timer(DELAY, e -> {
+        int curHeight = height.getAndDecrement();
+        if (curHeight > START_HEIGHT) {
+          setRowsHeight(table, selection, curHeight);
+        } else {
+          ((Timer) e.getSource()).stop();
+          removeRows(table, selection);
+        }
+      }).start();
     }
-    AtomicInteger height = new AtomicInteger(END_HEIGHT);
-    new Timer(DELAY, e -> {
-      int h = height.getAndDecrement();
-      if (h > START_HEIGHT) {
-        for (int i = selection.length - 1; i >= 0; i--) {
-          table.setRowHeight(selection[i], h);
-        }
-      } else {
-        ((Timer) e.getSource()).stop();
-        for (int i = selection.length - 1; i >= 0; i--) {
-          model.removeRow(table.convertRowIndexToModel(selection[i]));
-        }
-      }
-    }).start();
+  }
+
+  private static void removeRows(JTable table, int[] selection) {
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    for (int i = selection.length - 1; i >= 0; i--) {
+      model.removeRow(table.convertRowIndexToModel(selection[i]));
+    }
+  }
+
+  private static void setRowsHeight(JTable table, int[] selection, int height) {
+    for (int i = selection.length - 1; i >= 0; i--) {
+      table.setRowHeight(selection[i], height);
+    }
   }
 
   public static void main(String[] args) {
@@ -112,7 +121,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
