@@ -20,56 +20,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      private final Insets iconIns = new Insets(2, 2, 2, 2);
-      private final transient Icon checkIcon = new CheckBoxIcon();
-
-      @Override public void updateUI() {
-        ColorUIResource reset = new ColorUIResource(Color.RED);
-        setSelectionForeground(reset);
-        setSelectionBackground(reset);
-        super.updateUI();
-        UIDefaults def = UIManager.getLookAndFeelDefaults();
-        Object showGrid = def.get("Table.showGrid");
-        Color gridColor = def.getColor("Table.gridColor");
-        if (showGrid == null && gridColor != null) {
-          setShowGrid(true);
-          setIntercellSpacing(new DimensionUIResource(1, 1));
-          createDefaultRenderers();
-        }
-      }
-
-      @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component c = super.prepareRenderer(renderer, row, column);
-        // c.setFont(getFont());
-        if (c instanceof JCheckBox) {
-          JCheckBox cb = (JCheckBox) c;
-          cb.setBorderPainted(false);
-          updateCheckIcon(cb);
-        }
-        return c;
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        c.setFont(getFont());
-        if (c instanceof JCheckBox) {
-          JCheckBox cb = (JCheckBox) c;
-          cb.setForeground(getSelectionForeground());
-          cb.setBackground(getSelectionBackground());
-          cb.setBorderPainted(false);
-          updateCheckIcon(cb);
-        }
-        return c;
-      }
-
-      private void updateCheckIcon(JCheckBox checkBox) {
-        int s = getRowHeight() - iconIns.top - iconIns.bottom;
-        checkBox.setIcon(new ScaledIcon(checkIcon, s, s));
-      }
-    };
+    JTable table = new ScaledTable(makeModel());
     table.setAutoCreateRowSorter(true);
-
     add(makeToolBar(table), BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -148,6 +100,59 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ScaledTable extends JTable {
+  private final Insets iconIns = new Insets(2, 2, 2, 2);
+  private final transient Icon checkIcon = new CheckBoxIcon();
+
+  protected ScaledTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    ColorUIResource reset = new ColorUIResource(Color.RED);
+    setSelectionForeground(reset);
+    setSelectionBackground(reset);
+    super.updateUI();
+    UIDefaults def = UIManager.getLookAndFeelDefaults();
+    Object showGrid = def.get("Table.showGrid");
+    Color gridColor = def.getColor("Table.gridColor");
+    if (showGrid == null && gridColor != null) {
+      setShowGrid(true);
+      setIntercellSpacing(new DimensionUIResource(1, 1));
+      createDefaultRenderers();
+    }
+  }
+
+  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    Component c = super.prepareRenderer(renderer, row, column);
+    // c.setFont(getFont());
+    if (c instanceof JCheckBox) {
+      JCheckBox cb = (JCheckBox) c;
+      cb.setBorderPainted(false);
+      updateCheckIcon(cb);
+    }
+    return c;
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    c.setFont(getFont());
+    if (c instanceof JCheckBox) {
+      JCheckBox cb = (JCheckBox) c;
+      cb.setForeground(getSelectionForeground());
+      cb.setBackground(getSelectionBackground());
+      cb.setBorderPainted(false);
+      updateCheckIcon(cb);
+    }
+    return c;
+  }
+
+  private void updateCheckIcon(JCheckBox checkBox) {
+    int s = getRowHeight() - iconIns.top - iconIns.bottom;
+    checkBox.setIcon(new ScaledIcon(checkIcon, s, s));
   }
 }
 
