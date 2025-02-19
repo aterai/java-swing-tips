@@ -34,15 +34,12 @@ public final class MainPanel extends JPanel {
       g2.fillRect(0, 0, w, h);
       g2.setPaint(borderColor);
       g2.drawRect(0, 0, w - 1, h - 1);
-
       g2.drawLine(0, 2, 2, 0);
       g2.drawLine(w - 3, 0, w - 1, 2);
-
       g2.clearRect(0, 0, 2, 1);
       g2.clearRect(0, 0, 1, 2);
       g2.clearRect(w - 2, 0, 2, 1);
       g2.clearRect(w - 1, 0, 1, 2);
-
       g2.dispose();
     }
   };

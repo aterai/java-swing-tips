@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -107,7 +108,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -202,27 +203,34 @@ class BasicComboPopup3 extends BasicComboPopup {
   @Override protected JList createList() {
     return new JList<Object>(comboBox.getModel()) {
       @Override protected void processMouseEvent(MouseEvent e) {
-        if (SwingUtilities.isRightMouseButton(e)) {
-          return;
+        if (!SwingUtilities.isRightMouseButton(e)) {
+          if (e.isControlDown()) {
+            super.processMouseEvent(convertMouseEventModifiers(e));
+          } else {
+            super.processMouseEvent(e);
+          }
         }
-        MouseEvent ev = e;
-        if (e.isControlDown()) {
-          // Fix for 4234053. Filter out the Control Key from the list.
-          // i.e., don't allow CTRL key deselection.
-          ev = new MouseEvent(
-              e.getComponent(), e.getID(), e.getWhen(),
-              // e.getModifiers() ^ InputEvent.CTRL_MASK,
-              // Java 10:
-              // e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
-              e.getModifiersEx() ^ InputEvent.CTRL_DOWN_MASK,
-              e.getX(), e.getY(),
-              e.getXOnScreen(), e.getYOnScreen(),
-              e.getClickCount(),
-              e.isPopupTrigger(),
-              MouseEvent.NOBUTTON);
-        }
-        super.processMouseEvent(ev);
       }
     };
+  }
+
+  private static MouseEvent convertMouseEventModifiers(MouseEvent e) {
+    // Fix for 4234053. Filter out the Control Key from the list.
+    // i.e., don't allow CTRL key deselection.
+    return new MouseEvent(
+        e.getComponent(),
+        e.getID(),
+        e.getWhen(),
+        // e.getModifiers() ^ InputEvent.CTRL_MASK,
+        // Java 10:
+        // e.getModifiersEx() ^ Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(),
+        e.getModifiersEx() ^ InputEvent.CTRL_DOWN_MASK,
+        e.getX(),
+        e.getY(),
+        e.getXOnScreen(),
+        e.getYOnScreen(),
+        e.getClickCount(),
+        e.isPopupTrigger(),
+        MouseEvent.NOBUTTON);
   }
 }
