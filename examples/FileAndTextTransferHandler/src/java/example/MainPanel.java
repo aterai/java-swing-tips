@@ -27,25 +27,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    EventQueue.invokeLater(() -> {
-      JRootPane root = getRootPane();
-      root.setTransferHandler(new FileTransferHandler());
-      JLayeredPane layer = root.getLayeredPane();
-      layer.setTransferHandler(new FileTransferHandler());
-      Container container = root.getContentPane();
-      if (container instanceof JComponent) {
-        ((JComponent) container).setTransferHandler(new FileTransferHandler());
-      }
-      Window window = SwingUtilities.getWindowAncestor(tabbedPane);
-      if (window instanceof JFrame) {
-        ((JFrame) window).setTransferHandler(new FileTransferHandler());
-      }
-      // Component glassPane = root.getGlassPane();
-      // if (glassPane instanceof JComponent) {
-      //   ((JComponent) glassPane).setTransferHandler(new FileTransferHandler());
-      //   glassPane.setVisible(true);
-      // }
-    });
+    EventQueue.invokeLater(this::setFileTransferHandler);
 
     JTextArea textArea = new JTextArea();
     textArea.setDragEnabled(true);
@@ -74,6 +56,26 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void setFileTransferHandler() {
+    JRootPane root = getRootPane();
+    FileTransferHandler handler = new FileTransferHandler();
+    root.setTransferHandler(handler);
+    root.getLayeredPane().setTransferHandler(handler);
+    Container container = root.getContentPane();
+    if (container instanceof JComponent) {
+      ((JComponent) container).setTransferHandler(handler);
+    }
+    Window window = SwingUtilities.getWindowAncestor(root);
+    if (window instanceof JFrame) {
+      ((JFrame) window).setTransferHandler(handler);
+    }
+    // Component glassPane = root.getGlassPane();
+    // if (glassPane instanceof JComponent) {
+    //   ((JComponent) glassPane).setTransferHandler(handler);
+    //   glassPane.setVisible(true);
+    // }
   }
 
   public void addTab(File file) {
