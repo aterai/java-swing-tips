@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -73,7 +74,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -121,13 +122,10 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
       if (pn >= 0) {
         String str = String.format("%3d", pn);
         FontMetrics metrics = g.getFontMetrics();
-        // int xx = pnPt.x - getX() - metrics.stringWidth(str);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(isSynth ? getForeground() : getTextNonSelectionColor());
-        g2.drawString(str, pnPt.x - getX() - metrics.stringWidth(str), pnPt.y);
-        g2.setStroke(READER);
-        g2.drawLine(rxs, pnPt.y, rxe - getX() - metrics.stringWidth("000"), pnPt.y);
-        g2.dispose();
+        g.setColor(isSynth ? getForeground() : getTextNonSelectionColor());
+        g.drawString(str, pnPt.x - getX() - metrics.stringWidth(str), pnPt.y);
+        ((Graphics2D) g).setStroke(READER);
+        g.drawLine(rxs, pnPt.y, rxe - getX() - metrics.stringWidth("000"), pnPt.y);
       }
     }
 
