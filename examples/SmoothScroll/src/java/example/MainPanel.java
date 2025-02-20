@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collections;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -47,27 +48,33 @@ public final class MainPanel extends JPanel {
     // int ln = Math.max(1, Math.min(root.getElementCount(), model.getNumber().intValue()));
     int ln = model.getNumber().intValue();
     try {
-      Element elem = root.getElement(ln - 1);
-      Rectangle dst = textArea.modelToView(elem.getStartOffset());
+      int offset = root.getElement(ln - 1).getStartOffset();
+      Rectangle dst = textArea.modelToView(offset);
       // Java 9: Rectangle dst = textArea.modelToView2D(elem.getStartOffset()).getBounds();
-      Rectangle current = scroll.getViewport().getViewRect();
+      Rectangle cur = scroll.getViewport().getViewRect();
       new Timer(20, e -> {
-        Timer animator = (Timer) e.getSource();
-        if (dst.y < current.y && animator.isRunning()) {
-          int d = Math.max(1, (current.y - dst.y) / 2);
-          current.y = current.y - d;
-          textArea.scrollRectToVisible(current);
-        } else if (dst.y > current.y && animator.isRunning()) {
-          int d = Math.max(1, (dst.y - current.y) / 2);
-          current.y = current.y + d;
-          textArea.scrollRectToVisible(current);
-        } else {
-          textArea.setCaretPosition(elem.getStartOffset());
-          animator.stop();
+        Object src = e.getSource();
+        if (src instanceof Timer) {
+          smoothScroll((Timer) src, dst, cur, offset);
         }
       }).start();
     } catch (BadLocationException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+    }
+  }
+
+  private void smoothScroll(Timer animator, Rectangle dst, Rectangle cur, int offset) {
+    if (dst.y < cur.y && animator.isRunning()) {
+      int d = Math.max(1, (cur.y - dst.y) / 2);
+      cur.y = cur.y - d;
+      textArea.scrollRectToVisible(cur);
+    } else if (dst.y > cur.y && animator.isRunning()) {
+      int d = Math.max(1, (dst.y - cur.y) / 2);
+      cur.y = cur.y + d;
+      textArea.scrollRectToVisible(cur);
+    } else {
+      textArea.setCaretPosition(offset);
+      animator.stop();
     }
   }
 
@@ -81,7 +88,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
