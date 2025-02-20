@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -36,7 +37,7 @@ public final class MainPanel extends JPanel {
     Arrays.asList(TabPlacement.values()).forEach(tp -> {
       String name = tp.name();
       boolean selected = tp == TabPlacement.TOP;
-      JMenuItem item = new JRadioButtonMenuItem(name, selected);
+      JRadioButtonMenuItem item = new JRadioButtonMenuItem(name, selected);
       item.addItemListener(handler);
       item.setActionCommand(name);
       menu.add(item);
@@ -112,8 +113,8 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
     tabs.addTab("JTree", new JScrollPane(new JTree()));
     tabs.addTab("JTable", new JScrollPane(new JTable(5, 5)));
-    tabs.addTab("JSplitPane", new JSplitPane());
-    tabs.addTab("JLabel", new JLabel("JLabel"));
+    // tabs.addTab("JSplitPane", new JSplitPane());
+    // tabs.addTab("JLabel", new JLabel("JLabel"));
     tabs.addTab("JButton", new JButton("JButton"));
     return tabs;
   }
@@ -137,7 +138,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
