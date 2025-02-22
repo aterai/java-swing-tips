@@ -7,6 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -46,7 +47,7 @@ public final class MainPanel extends JPanel {
     textArea.setText(TEXT + TEXT + TEXT);
 
     JScrollPane scroll = new JScrollPane(textArea);
-    scroll.setVerticalScrollBar(makeVerticalScrollBar());
+    scroll.setVerticalScrollBar(new HighlightScrollBar());
 
     JLabel label = new JLabel(new HighlightIcon(textArea, scroll.getHorizontalScrollBar()));
     scroll.setRowHeaderView(label);
@@ -78,26 +79,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JScrollBar makeVerticalScrollBar() {
-    return new JScrollBar(Adjustable.VERTICAL) {
-      @Override public void updateUI() {
-        super.updateUI();
-        ScrollBarUI ui = getUI();
-        if (ui instanceof WindowsScrollBarUI) {
-          setUI(new WindowsHighlightScrollBarUI());
-        } else if (!(ui instanceof SynthScrollBarUI)) {
-          setUI(new MetalHighlightScrollBarUI());
-        }
-        setUnitIncrement(10);
-      }
-      //   @Override public Dimension getPreferredSize() {
-      //     Dimension d = super.getPreferredSize();
-      //     d.width += 4; // getInsets().left;
-      //     return d;
-      //   }
-    };
-  }
-
   public static void setHighlight(JTextComponent jtc, String pattern) {
     Highlighter highlighter = jtc.getHighlighter();
     highlighter.removeAllHighlights();
@@ -127,7 +108,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -137,6 +118,29 @@ public final class MainPanel extends JPanel {
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
+}
+
+class HighlightScrollBar extends JScrollBar {
+  protected HighlightScrollBar() {
+    super(VERTICAL);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    ScrollBarUI ui = getUI();
+    if (ui instanceof WindowsScrollBarUI) {
+      setUI(new WindowsHighlightScrollBarUI());
+    } else if (!(ui instanceof SynthScrollBarUI)) {
+      setUI(new MetalHighlightScrollBarUI());
+    }
+    setUnitIncrement(10);
+  }
+
+  //   @Override public Dimension getPreferredSize() {
+  //     Dimension d = super.getPreferredSize();
+  //     d.width += 4; // getInsets().left;
+  //     return d;
+  //   }
 }
 
 class HighlightIcon implements Icon {
@@ -182,11 +186,11 @@ class HighlightIcon implements Icon {
 
     // paint Thumb
     if (scrollbar.isVisible()) {
-      // JViewport vport = Objects.requireNonNull(
+      // JViewport viewport = Objects.requireNonNull(
       //     (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, textArea));
-      // Rectangle thumbRect = vport.getBounds();
+      // Rectangle thumbRect = viewport.getBounds();
       thumbRect.height = range.getExtent();
-      thumbRect.y = range.getValue(); // vport.getViewPosition().y;
+      thumbRect.y = range.getValue(); // viewport.getViewPosition().y;
       g2.setColor(THUMB_COLOR);
       Rectangle s = at.createTransformedShape(thumbRect).getBounds();
       g2.fillRect(0, top + s.y, getIconWidth(), s.height);
