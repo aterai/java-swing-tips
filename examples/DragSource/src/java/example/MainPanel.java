@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     //         }
     //       }
     //     };
-    //     e.startDrag(DragSource.DefaultMoveDrop, new TempFileTransferable(tmpFile), dsa);
+    //     e.startDrag(DragSource.DefaultMoveDrop, new FileTransferable(tmpFile), dsa);
     //   }
     // });
 
@@ -58,9 +58,7 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected Transferable createTransferable(JComponent c) {
-        return Optional.ofNullable(getFile())
-            .map(TempFileTransferable::new)
-            .orElse(null);
+        return Optional.ofNullable(getFile()).map(FileTransferable::new).orElse(null);
       }
 
       @Override protected void exportDone(JComponent c, Transferable data, int action) {
@@ -87,10 +85,7 @@ public final class MainPanel extends JPanel {
       try {
         outfile = createTempFile();
       } catch (IOException ex) {
-        JComponent c = (JComponent) e.getSource();
-        UIManager.getLookAndFeel().provideErrorFeedback(c);
-        String msg = "Could not create file.";
-        JOptionPane.showMessageDialog(c.getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
+        errorFeedback((JComponent) e.getSource());
         return;
       }
       setFile(outfile);
@@ -113,6 +108,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void errorFeedback(JComponent c) {
+    UIManager.getLookAndFeel().provideErrorFeedback(c);
+    JRootPane root = c.getRootPane();
+    String msg = "Could not create file.";
+    String title = "Error";
+    JOptionPane.showMessageDialog(root, msg, title, JOptionPane.ERROR_MESSAGE);
+  }
+
   private File createTempFile() throws IOException {
     File tempFile = File.createTempFile("test", ".tmp");
     tempFile.deleteOnExit();
@@ -126,14 +129,14 @@ public final class MainPanel extends JPanel {
   public void setFile(File newFile) {
     file = newFile;
     label.setIcon(i2);
-    label.setText("tmpFile#exists(): true(draggable)");
+    label.setText("tmpFile#exists() = true; // draggable");
   }
 
   @SuppressWarnings("PMD.NullAssignment")
   public void clearFile() {
     file = null;
     label.setIcon(i1);
-    label.setText("tmpFile#exists(): false");
+    label.setText("tmpFile#exists() = false");
   }
 
   private static Icon makeIcon(String path) {
@@ -173,10 +176,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TempFileTransferable implements Transferable {
+class FileTransferable implements Transferable {
   private final File file;
 
-  protected TempFileTransferable(File file) {
+  protected FileTransferable(File file) {
     this.file = file;
   }
 
