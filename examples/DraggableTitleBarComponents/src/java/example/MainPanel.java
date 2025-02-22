@@ -11,201 +11,44 @@ import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
-  private static final int W = 4;
-  private final SideLabel left = new SideLabel(Side.W);
-  private final SideLabel right = new SideLabel(Side.E);
-  private final SideLabel top = new SideLabel(Side.N);
-  private final SideLabel bottom = new SideLabel(Side.S);
-  private final SideLabel topLeft = new SideLabel(Side.NW);
-  private final SideLabel topRight = new SideLabel(Side.NE);
-  private final SideLabel bottomLeft = new SideLabel(Side.SW);
-  private final SideLabel bottomRight = new SideLabel(Side.SE);
-  private final JPanel contentPanel = new JPanel(new BorderLayout());
-  private final JPanel resizePanel = new JPanel(new BorderLayout()) {
-    private final Color borderColor = new Color(0x64_64_64);
-
-    @Override protected void paintComponent(Graphics g) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      int w = getWidth();
-      int h = getHeight();
-      g2.setPaint(Color.ORANGE);
-      g2.fillRect(0, 0, w, h);
-      g2.setPaint(borderColor);
-      g2.drawRect(0, 0, w - 1, h - 1);
-
-      g2.drawLine(0, 2, 2, 0);
-      g2.drawLine(w - 3, 0, w - 1, 2);
-
-      g2.clearRect(0, 0, 2, 1);
-      g2.clearRect(0, 0, 1, 2);
-      g2.clearRect(w - 2, 0, 2, 1);
-      g2.clearRect(w - 1, 0, 1, 2);
-
-      g2.dispose();
-    }
-  };
-
   private MainPanel() {
     super(new BorderLayout());
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeTitleButton(Icon icon) {
-    JButton button = new JButton(icon);
-    button.setContentAreaFilled(false);
-    button.setFocusPainted(false);
-    button.setBorder(BorderFactory.createEmptyBorder());
-    button.setOpaque(true);
-    button.setBackground(Color.ORANGE);
-    return button;
-  }
-
-  public Container getMainContentPane() {
-    return contentPanel;
-  }
-
-  private static JComboBox<String> makeComboBox(String title) {
+  private static Container makeTitleBox(String title) {
+    JCheckBox check = new JCheckBox("check");
+    check.setOpaque(false);
+    check.setFocusable(false);
     String[] items = {title, title + " (1)", title + " (2)", title + " (3)"};
-    JComboBox<String> combo = new JComboBox<String>(items) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setUI(new BasicComboBoxUI() {
-          @Override protected JButton createArrowButton() {
-            JButton button = new JButton();
-            button.setBorder(BorderFactory.createEmptyBorder());
-            button.setVisible(false);
-            return button;
-          }
-        });
-        setOpaque(true);
-        setForeground(Color.BLACK);
-        setBackground(Color.ORANGE);
-        setBorder(BorderFactory.createEmptyBorder());
-        setFocusable(false);
-        // setFont(getFont().deriveFont(16f));
-      }
-    };
-    combo.addMouseListener(new MouseAdapter() {
-      private ButtonModel getButtonModel(MouseEvent e) {
-        JComboBox<?> cb = (JComboBox<?>) e.getComponent();
-        JButton b = (JButton) cb.getComponent(0);
-        return b.getModel();
-      }
-
-      @Override public void mouseEntered(MouseEvent e) {
-        getButtonModel(e).setRollover(true);
-        e.getComponent().setBackground(Color.ORANGE.darker());
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        getButtonModel(e).setRollover(false);
-        e.getComponent().setBackground(Color.ORANGE);
-      }
-
-      @Override public void mousePressed(MouseEvent e) {
-        getButtonModel(e).setPressed(true);
-        combo.setPopupVisible(false);
-      }
-
-      @Override public void mouseReleased(MouseEvent e) {
-        getButtonModel(e).setPressed(false);
-      }
-
-      @Override public void mouseClicked(MouseEvent e) {
-        combo.setPopupVisible(true);
-      }
-    });
-    return combo;
+    JComboBox<String> combo = new NoButtonComboBox<>(new DefaultComboBoxModel<>(items));
+    Box titleBox = Box.createHorizontalBox();
+    titleBox.add(combo);
+    titleBox.add(Box.createHorizontalGlue());
+    titleBox.add(check);
+    return titleBox;
   }
 
-  public JFrame makeFrame(String title) {
-    JFrame frame = new JFrame(title) {
-      @Override public Container getContentPane() {
-        return getMainContentPane();
-      }
-    };
+  public static JFrame makeFrame(String title) {
+    JFrame frame = new JFrame(title);
     frame.setUndecorated(true);
     GraphicsConfiguration gc = frame.getGraphicsConfiguration();
     if (gc != null && gc.isTranslucencyCapable()) {
       frame.setBackground(new Color(0x0, true));
     }
-
-    MouseInputListener rwl = new ResizeWindowListener();
-    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight)
-        .forEach(c -> {
-          c.addMouseListener(rwl);
-          c.addMouseMotionListener(rwl);
-        });
-
-    JPanel titleBar = makeTitleBar(title);
-    JPanel titlePanel = new JPanel(new BorderLayout());
-    titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(new JLayer<>(titleBar, new TitleBarDragLayerUI()), BorderLayout.CENTER);
-
-    JPanel northPanel = new JPanel(new BorderLayout());
-    northPanel.add(topLeft, BorderLayout.WEST);
-    northPanel.add(titlePanel, BorderLayout.CENTER);
-    northPanel.add(topRight, BorderLayout.EAST);
-
-    JPanel southPanel = new JPanel(new BorderLayout());
-    southPanel.add(bottomLeft, BorderLayout.WEST);
-    southPanel.add(bottom, BorderLayout.CENTER);
-    southPanel.add(bottomRight, BorderLayout.EAST);
-
-    resizePanel.add(left, BorderLayout.WEST);
-    resizePanel.add(right, BorderLayout.EAST);
-    resizePanel.add(northPanel, BorderLayout.NORTH);
-    resizePanel.add(southPanel, BorderLayout.SOUTH);
-    resizePanel.add(contentPanel, BorderLayout.CENTER);
-
-    titlePanel.setOpaque(false);
-    northPanel.setOpaque(false);
-    southPanel.setOpaque(false);
-
-    contentPanel.setOpaque(false);
+    Container titleBox = makeTitleBox(title);
+    JPanel resizePanel = new ResizePanel(titleBox);
     resizePanel.setOpaque(false);
+    JPanel contentPane = new JPanel(new BorderLayout());
+    contentPane.setOpaque(false);
+    resizePanel.add(contentPane);
     frame.setContentPane(resizePanel);
     return frame;
-  }
-
-  private static JPanel makeTitleBar(String title) {
-    JPanel titleBar = new JPanel(new BorderLayout(W, W));
-    titleBar.setOpaque(false);
-    titleBar.setBackground(Color.ORANGE);
-    titleBar.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
-
-    JCheckBox check = new JCheckBox("check");
-    check.setOpaque(false);
-    check.setFocusable(false);
-
-    Box titleBox = Box.createHorizontalBox();
-    titleBox.add(makeComboBox(title));
-    titleBox.add(Box.createHorizontalGlue());
-    titleBox.add(check);
-
-    JButton button = makeTitleButton(new ApplicationIcon());
-    button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
-    titleBar.add(button, BorderLayout.WEST);
-    titleBar.add(titleBox);
-
-    JButton close = makeTitleButton(new CloseIcon());
-    close.addActionListener(e -> {
-      JComponent b = (JComponent) e.getSource();
-      Container c = b.getTopLevelAncestor();
-      if (c instanceof Window) {
-        Window w = (Window) c;
-        w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
-      }
-    });
-    titleBar.add(close, BorderLayout.EAST);
-    return titleBar;
   }
 
   public static void main(String[] args) {
@@ -221,10 +64,9 @@ public final class MainPanel extends JPanel {
       Logger.getGlobal().severe(ex::getMessage);
       return;
     }
-    MainPanel p = new MainPanel();
-    JFrame frame = p.makeFrame("@title@");
+    JFrame frame = makeFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(p);
+    frame.getContentPane().add(new MainPanel());
     frame.setMinimumSize(new Dimension(100, 100));
     frame.pack();
     frame.setLocationRelativeTo(null);
@@ -339,7 +181,109 @@ class SideLabel extends JLabel {
   }
 }
 
-class ResizeWindowListener extends MouseInputAdapter {
+class ResizePanel extends JPanel {
+  private static final int W = 4;
+  private final Color borderColor = new Color(0x64_64_64);
+
+  protected ResizePanel(Container titleBox) {
+    super(new BorderLayout());
+    MouseAdapter rwl = new ResizeWindowListener();
+    SideLabel left = new SideLabel(Side.W);
+    SideLabel right = new SideLabel(Side.E);
+    SideLabel top = new SideLabel(Side.N);
+    SideLabel bottom = new SideLabel(Side.S);
+    SideLabel topLeft = new SideLabel(Side.NW);
+    SideLabel topRight = new SideLabel(Side.NE);
+    SideLabel bottomLeft = new SideLabel(Side.SW);
+    SideLabel bottomRight = new SideLabel(Side.SE);
+    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight)
+        .forEach(c -> {
+          c.addMouseListener(rwl);
+          c.addMouseMotionListener(rwl);
+        });
+
+    JPanel titleBar = makeTitleBar(titleBox);
+    JPanel titlePanel = new JPanel(new BorderLayout());
+    titlePanel.add(top, BorderLayout.NORTH);
+    titlePanel.add(new JLayer<>(titleBar, new TitleBarDragLayerUI()), BorderLayout.CENTER);
+
+    JPanel northPanel = new JPanel(new BorderLayout());
+    northPanel.add(topLeft, BorderLayout.WEST);
+    northPanel.add(titlePanel, BorderLayout.CENTER);
+    northPanel.add(topRight, BorderLayout.EAST);
+
+    JPanel southPanel = new JPanel(new BorderLayout());
+    southPanel.add(bottomLeft, BorderLayout.WEST);
+    southPanel.add(bottom, BorderLayout.CENTER);
+    southPanel.add(bottomRight, BorderLayout.EAST);
+
+    add(left, BorderLayout.WEST);
+    add(right, BorderLayout.EAST);
+    add(northPanel, BorderLayout.NORTH);
+    add(southPanel, BorderLayout.SOUTH);
+
+    titlePanel.setOpaque(false);
+    northPanel.setOpaque(false);
+    southPanel.setOpaque(false);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    int w = getWidth();
+    int h = getHeight();
+    g2.setPaint(Color.ORANGE);
+    g2.fillRect(0, 0, w, h);
+    g2.setPaint(borderColor);
+    g2.drawRect(0, 0, w - 1, h - 1);
+    g2.drawLine(0, 2, 2, 0);
+    g2.drawLine(w - 3, 0, w - 1, 2);
+    g2.clearRect(0, 0, 2, 1);
+    g2.clearRect(0, 0, 1, 2);
+    g2.clearRect(w - 2, 0, 2, 1);
+    g2.clearRect(w - 1, 0, 1, 2);
+    g2.dispose();
+  }
+
+  private static JPanel makeTitleBar(Container titleBox) {
+    JPanel titleBar = new JPanel(new BorderLayout(W, W));
+    titleBar.setOpaque(false);
+    titleBar.setBackground(Color.ORANGE);
+    titleBar.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
+
+    JButton button = makeTitleButton(new ApplicationIcon());
+    button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
+    titleBar.add(button, BorderLayout.WEST);
+    titleBar.add(titleBox);
+
+    JButton close = makeTitleButton(new CloseIcon());
+    close.addActionListener(e -> {
+      JComponent b = (JComponent) e.getSource();
+      Container c = b.getTopLevelAncestor();
+      if (c instanceof Window) {
+        Window w = (Window) c;
+        w.dispatchEvent(new WindowEvent(w, WindowEvent.WINDOW_CLOSING));
+      }
+    });
+    titleBar.add(close, BorderLayout.EAST);
+    return titleBar;
+  }
+
+  private static JButton makeTitleButton(Icon icon) {
+    JButton button = new JButton(icon);
+    button.setContentAreaFilled(false);
+    button.setFocusPainted(false);
+    button.setBorder(BorderFactory.createEmptyBorder());
+    button.setOpaque(true);
+    button.setBackground(Color.ORANGE);
+    return button;
+  }
+}
+
+class ResizeWindowListener extends MouseAdapter {
   private final Rectangle rect = new Rectangle();
 
   @Override public void mousePressed(MouseEvent e) {
@@ -432,5 +376,65 @@ class CloseIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 16;
+  }
+}
+
+class NoButtonComboBox<E> extends JComboBox<E> {
+  private transient MouseAdapter listener;
+
+  protected NoButtonComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    super.updateUI();
+    setUI(new BasicComboBoxUI() {
+      @Override protected JButton createArrowButton() {
+        JButton button = new JButton();
+        button.setBorder(BorderFactory.createEmptyBorder());
+        button.setVisible(false);
+        return button;
+      }
+    });
+    setOpaque(true);
+    setForeground(Color.BLACK);
+    setBackground(Color.ORANGE);
+    setBorder(BorderFactory.createEmptyBorder());
+    setFocusable(false);
+    // setFont(getFont().deriveFont(16f));
+    listener = new MouseHandler();
+    addMouseListener(listener);
+  }
+
+  protected class MouseHandler extends MouseAdapter {
+    private ButtonModel getButtonModel(MouseEvent e) {
+      JComboBox<?> cb = (JComboBox<?>) e.getComponent();
+      JButton b = (JButton) cb.getComponent(0);
+      return b.getModel();
+    }
+
+    @Override public void mouseEntered(MouseEvent e) {
+      getButtonModel(e).setRollover(true);
+      e.getComponent().setBackground(Color.ORANGE.darker());
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      getButtonModel(e).setRollover(false);
+      e.getComponent().setBackground(Color.ORANGE);
+    }
+
+    @Override public void mousePressed(MouseEvent e) {
+      getButtonModel(e).setPressed(true);
+      setPopupVisible(false);
+    }
+
+    @Override public void mouseReleased(MouseEvent e) {
+      getButtonModel(e).setPressed(false);
+    }
+
+    @Override public void mouseClicked(MouseEvent e) {
+      setPopupVisible(true);
+    }
   }
 }
