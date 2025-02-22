@@ -21,6 +21,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -54,7 +55,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -103,15 +104,19 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = renderer.getListCellRendererComponent(
           list, value, index, isSelected, cellHasFocus);
-      if (isSelected) {
-        c.setForeground(list.getSelectionForeground());
-        c.setBackground(list.getSelectionBackground());
-      } else {
-        c.setForeground(list.getForeground());
-        c.setBackground(index % 2 == 0 ? EVEN_BGC : list.getBackground());
-      }
+      updateColor(list, c, index, isSelected);
       return c;
     });
+  }
+
+  private static void updateColor(JList<?> list, Component c, int i, boolean selected) {
+    if (selected) {
+      c.setForeground(list.getSelectionForeground());
+      c.setBackground(list.getSelectionBackground());
+    } else {
+      c.setForeground(list.getForeground());
+      c.setBackground(i % 2 == 0 ? EVEN_BGC : list.getBackground());
+    }
   }
 
   @Override protected void paintComponent(Graphics g) {
