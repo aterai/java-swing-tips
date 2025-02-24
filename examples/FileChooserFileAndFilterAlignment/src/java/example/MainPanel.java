@@ -6,6 +6,7 @@ package example;
 
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalFileChooserUI;
@@ -17,28 +18,19 @@ public final class MainPanel extends JPanel {
 
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser();
-      int retValue = fileChooser.showOpenDialog(getRootPane());
+      JFileChooser chooser = new JFileChooser();
+      int retValue = chooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
 
     JButton button2 = new JButton("Alignment: Right");
     button2.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser() {
-        @Override public void updateUI() {
-          super.updateUI();
-          if (getUI() instanceof WindowsFileChooserUI) {
-            setUI(new RightAlignmentWindowsFileChooserUI(this));
-          } else {
-            setUI(new RightAlignmentMetalFileChooserUI(this));
-          }
-        }
-      };
-      int retValue = fileChooser.showOpenDialog(getRootPane());
+      JFileChooser chooser = new RightAlignmentFileChooser();
+      int retValue = chooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
 
@@ -61,7 +53,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -101,6 +93,17 @@ class RightAlignmentWindowsFileChooserUI extends WindowsFileChooserUI {
         .filter(JLabel.class::isInstance)
         .map(JLabel.class::cast)
         .forEach(l -> l.setAlignmentX(Component.RIGHT_ALIGNMENT));
+  }
+}
+
+class RightAlignmentFileChooser extends JFileChooser {
+  @Override public void updateUI() {
+    super.updateUI();
+    if (getUI() instanceof WindowsFileChooserUI) {
+      setUI(new RightAlignmentWindowsFileChooserUI(this));
+    } else {
+      setUI(new RightAlignmentMetalFileChooserUI(this));
+    }
   }
 }
 
