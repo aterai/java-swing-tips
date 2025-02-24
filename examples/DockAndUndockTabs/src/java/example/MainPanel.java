@@ -408,25 +408,7 @@ class TabTransferHandler extends TransferHandler {
       source = (DnDTabbedPane) c;
     }
     // return new DataHandler(c, localObjectFlavor.getMimeType());
-    return new Transferable() {
-      @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[] {
-            localObjectFlavor,
-            DataFlavor.javaFileListFlavor
-        };
-      }
-
-      @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return Arrays.asList(getTransferDataFlavors()).contains(flavor);
-      }
-
-      @Override public Object getTransferData(DataFlavor flavor) {
-        DataFlavor[] flavors = getTransferDataFlavors();
-        return flavor.equals(flavors[0])
-            ? new DnDTabData(source)
-            : Collections.emptyList();
-      }
-    };
+    return new TabTransferable(source, localObjectFlavor);
   }
 
   @Override public boolean canImport(TransferSupport support) {
@@ -474,9 +456,9 @@ class TabTransferHandler extends TransferHandler {
     int action = NONE;
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane src = (DnDTabbedPane) c;
-      if (src.dragTabIndex >= 0) {
-        Image img = ImageUtils.getTabImage(src, src.dragTabIndex);
-        label.setIcon(new ImageIcon(img));
+      int idx = src.dragTabIndex;
+      if (idx >= 0) {
+        label.setIcon(new ImageIcon(ImageUtils.getTabImage(src, idx)));
         dialog = new JWindow();
         dialog.setOpacity(.5f);
         dialog.add(label);
@@ -558,6 +540,34 @@ class TabTransferHandler extends TransferHandler {
     frame.setLocation(src.pointOnScreen);
     frame.setVisible(true);
     EventQueue.invokeLater(frame::toFront);
+  }
+}
+
+class TabTransferable implements Transferable {
+  private final DnDTabbedPane tabs;
+  private final DataFlavor localObjectFlavor;
+
+  protected TabTransferable(DnDTabbedPane tabs, DataFlavor localObjectFlavor) {
+    this.tabs = tabs;
+    this.localObjectFlavor = localObjectFlavor;
+  }
+
+  @Override public DataFlavor[] getTransferDataFlavors() {
+    return new DataFlavor[] {
+        localObjectFlavor,
+        DataFlavor.javaFileListFlavor
+    };
+  }
+
+  @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+    return Arrays.asList(getTransferDataFlavors()).contains(flavor);
+  }
+
+  @Override public Object getTransferData(DataFlavor flavor) {
+    DataFlavor[] flavors = getTransferDataFlavors();
+    return flavor.equals(flavors[0])
+        ? new DnDTabData(tabs)
+        : Collections.emptyList();
   }
 }
 
