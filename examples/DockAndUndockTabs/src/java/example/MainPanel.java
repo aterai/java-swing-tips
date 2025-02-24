@@ -20,15 +20,14 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TooManyListenersException;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -63,7 +62,7 @@ public final class MainPanel extends JPanel {
     LayerUI<DnDTabbedPane> layerUI = new DropLocationLayerUI();
 
     DropTargetListener listener = new TabDropTargetAdapter();
-    Stream.of(tabbedPane, sub).forEach(tabs -> {
+    Arrays.asList(tabbedPane, sub).forEach(tabs -> {
       tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
       tabs.setTransferHandler(handler);
       try {
@@ -92,7 +91,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -425,7 +424,7 @@ class TabTransferHandler extends TransferHandler {
         DataFlavor[] flavors = getTransferDataFlavors();
         return flavor.equals(flavors[0])
             ? new DnDTabData(source)
-            : Collections.<File>emptyList();
+            : Collections.emptyList();
       }
     };
   }
@@ -470,36 +469,14 @@ class TabTransferHandler extends TransferHandler {
     return canDrop;
   }
 
-  private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
-    Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
-    int w = tabs.getWidth();
-    int h = tabs.getHeight();
-    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics g = img.createGraphics();
-    tabs.paint(g);
-    g.dispose();
-    if (rect.x < 0) {
-      rect.translate(-rect.x, 0);
-    }
-    if (rect.y < 0) {
-      rect.translate(0, -rect.y);
-    }
-    if (rect.x + rect.width > img.getWidth()) {
-      rect.width = img.getWidth() - rect.x;
-    }
-    if (rect.y + rect.height > img.getHeight()) {
-      rect.height = img.getHeight() - rect.y;
-    }
-    return img.getSubimage(rect.x, rect.y, rect.width, rect.height);
-  }
-
   @Override public int getSourceActions(JComponent c) {
     // System.out.println("getSourceActions");
     int action = NONE;
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane src = (DnDTabbedPane) c;
       if (src.dragTabIndex >= 0) {
-        label.setIcon(new ImageIcon(makeDragTabImage(src)));
+        Image img = ImageUtils.getTabImage(src, src.dragTabIndex);
+        label.setIcon(new ImageIcon(img));
         dialog = new JWindow();
         dialog.setOpacity(.5f);
         dialog.add(label);
@@ -571,7 +548,7 @@ class TabTransferHandler extends TransferHandler {
     try {
       tabs.getDropTarget().addDropTargetListener(listener);
     } catch (TooManyListenersException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       UIManager.getLookAndFeel().provideErrorFeedback(tabs);
     }
     JFrame frame = new JFrame();
@@ -726,5 +703,34 @@ final class TabButton extends JButton {
     g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
     g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);
     g2.dispose();
+  }
+}
+
+final class ImageUtils {
+  private ImageUtils() {
+    /* Singleton */
+  }
+
+  public static BufferedImage getTabImage(JTabbedPane tabs, int index) {
+    int w = tabs.getWidth();
+    int h = tabs.getHeight();
+    BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = img.createGraphics();
+    tabs.paint(g2);
+    g2.dispose();
+    Rectangle rect = tabs.getBoundsAt(index);
+    if (rect.x < 0) {
+      rect.translate(-rect.x, 0);
+    }
+    if (rect.y < 0) {
+      rect.translate(0, -rect.y);
+    }
+    if (rect.x + rect.width > img.getWidth()) {
+      rect.width = img.getWidth() - rect.x;
+    }
+    if (rect.y + rect.height > img.getHeight()) {
+      rect.height = img.getHeight() - rect.y;
+    }
+    return img.getSubimage(rect.x, rect.y, rect.width, rect.height);
   }
 }
