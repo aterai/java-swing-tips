@@ -7,62 +7,64 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JTextArea log = new JTextArea();
     log.setEditable(false);
     log.append("MouseInfo.getNumberOfButtons: " + MouseInfo.getNumberOfButtons() + "\n");
-
     JTabbedPane tabs = new JTabbedPane();
+    tabs.addMouseListener(new TabCloseHandler());
     tabs.setComponentPopupMenu(new TabbedPanePopupMenu());
     tabs.addTab("Title1", new JLabel("Close a tab by the middle mouse button clicking."));
     tabs.addTab("Title2", new JLabel("JLabel 2"));
     tabs.addTab("Title3", new JLabel("JLabel 3"));
-
-    tabs.addMouseListener(new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        int btn = e.getButton();
-        // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
-        // int maskForButton = InputEvent.BUTTON2_DOWN_MASK;
-        // boolean isB2Clicked = (e.getModifiersEx() & maskForButton) != 0;
-        String mask = btn == MouseEvent.NOBUTTON ? "NOBUTTON" : "BUTTON" + btn;
-        log.append(mask + "\n");
-        // log.append("Middle mouseClicked: " + isB2Clicked + "\n");
-
-        boolean isDouble = e.getClickCount() >= 2;
-        boolean isLeftDouble = SwingUtilities.isLeftMouseButton(e) && isDouble;
-        // && InputEvent.getMaskForButton(btn) == InputEvent.BUTTON1_DOWN_MASK;
-        // boolean isMiddle = MouseInfo.getNumberOfButtons() > 2 && btn == MouseEvent.BUTTON2;
-        // = InputEvent.getMaskForButton(btn) == InputEvent.BUTTON2_DOWN_MASK;
-        boolean isMiddle = SwingUtilities.isMiddleMouseButton(e);
-
-        JTabbedPane tabbedPane = (JTabbedPane) e.getComponent();
-        int idx = tabbedPane.indexAtLocation(e.getX(), e.getY());
-        if (idx >= 0 && (isMiddle || isLeftDouble)) {
-          tabbedPane.remove(idx);
-        }
-      }
-
-      @Override public void mousePressed(MouseEvent e) {
-        // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
-        // boolean mousePressed = (e.getModifiersEx() & maskForButton) != 0;
-        boolean mousePressed = SwingUtilities.isMiddleMouseButton(e);
-        log.append("Middle mousePressed: " + mousePressed + "\n");
-      }
-
-      @Override public void mouseReleased(MouseEvent e) {
-        // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
-        // boolean mouseReleased = (e.getModifiersEx() & maskForButton) != 0;
-        boolean mouseReleased = SwingUtilities.isMiddleMouseButton(e);
-        log.append("Middle mouseReleased: " + mouseReleased + "\n");
-      }
-    });
     add(tabs);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private final class TabCloseHandler extends MouseAdapter {
+    @Override public void mouseClicked(MouseEvent e) {
+      int btn = e.getButton();
+      // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+      // int maskForButton = InputEvent.BUTTON2_DOWN_MASK;
+      // boolean isB2Clicked = (e.getModifiersEx() & maskForButton) != 0;
+      String mask = btn == MouseEvent.NOBUTTON ? "NOBUTTON" : "BUTTON" + btn;
+      log.append(mask + "\n");
+      // log.append("Middle mouseClicked: " + isB2Clicked + "\n");
+
+      boolean isDouble = e.getClickCount() >= 2;
+      boolean isLeftDouble = SwingUtilities.isLeftMouseButton(e) && isDouble;
+      // && InputEvent.getMaskForButton(btn) == InputEvent.BUTTON1_DOWN_MASK;
+      // boolean isMiddle = MouseInfo.getNumberOfButtons() > 2 && btn == MouseEvent.BUTTON2;
+      // = InputEvent.getMaskForButton(btn) == InputEvent.BUTTON2_DOWN_MASK;
+      boolean isMiddle = SwingUtilities.isMiddleMouseButton(e);
+
+      JTabbedPane tabbedPane = (JTabbedPane) e.getComponent();
+      int idx = tabbedPane.indexAtLocation(e.getX(), e.getY());
+      if (idx >= 0 && (isMiddle || isLeftDouble)) {
+        tabbedPane.remove(idx);
+      }
+    }
+
+    @Override public void mousePressed(MouseEvent e) {
+      // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+      // boolean mousePressed = (e.getModifiersEx() & maskForButton) != 0;
+      boolean mousePressed = SwingUtilities.isMiddleMouseButton(e);
+      log.append("Middle mousePressed: " + mousePressed + "\n");
+    }
+
+    @Override public void mouseReleased(MouseEvent e) {
+      // int maskForButton = InputEvent.getMaskForButton(MouseEvent.BUTTON2);
+      // boolean mouseReleased = (e.getModifiersEx() & maskForButton) != 0;
+      boolean mouseReleased = SwingUtilities.isMiddleMouseButton(e);
+      log.append("Middle mouseReleased: " + mouseReleased + "\n");
+    }
   }
 
   public static void main(String[] args) {
@@ -75,7 +77,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
