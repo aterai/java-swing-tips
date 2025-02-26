@@ -62,48 +62,12 @@ public final class MainPanel extends JPanel {
 }
 
 class ImageCaptionLabel extends JLabel {
-  private final JTextArea textArea = new JTextArea() {
-    private transient MouseListener listener;
-    @Override protected void paintComponent(Graphics g) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setPaint(getBackground());
-      g2.fillRect(0, 0, getWidth(), getHeight());
-      g2.dispose();
-      super.paintComponent(g);
-    }
-
-    @Override public void updateUI() {
-      removeMouseListener(listener);
-      super.updateUI();
-      setFont(getFont().deriveFont(11f));
-      setOpaque(false);
-      setEditable(false);
-      setBackground(new Color(0x0, true));
-      setForeground(Color.WHITE);
-      setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
-      listener = new MouseAdapter() {
-        @Override public void mouseEntered(MouseEvent e) {
-          dispatchMouseEvent(e);
-        }
-
-        @Override public void mouseExited(MouseEvent e) {
-          dispatchMouseEvent(e);
-        }
-      };
-      addMouseListener(listener);
-    }
-  };
+  private final JTextArea textArea = new CaptionTextArea();
   private transient LabelHandler handler;
 
   protected ImageCaptionLabel(Icon icon, String caption) {
     super(icon);
     textArea.setText(caption);
-  }
-
-  protected void dispatchMouseEvent(MouseEvent e) {
-    Component src = e.getComponent();
-    // this: target Component;
-    this.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, this));
   }
 
   public JTextArea getTextArea() {
@@ -173,20 +137,19 @@ class ImageCaptionLabel extends JLabel {
     }
 
     @Override public void mouseEntered(MouseEvent e) {
-      if (animator.isRunning() || isMaxHeight()) {
-        return;
+      if (!animator.isRunning() && !isMaxHeight()) {
+        this.direction = 2;
+        animator.start();
       }
-      this.direction = 2;
-      animator.start();
     }
 
     @Override public void mouseExited(MouseEvent e) {
       Component c = e.getComponent();
-      if (animator.isRunning() || c.contains(e.getPoint()) && isMaxHeight()) {
-        return;
+      boolean isMaxHeight = c.contains(e.getPoint()) && isMaxHeight();
+      if (!animator.isRunning() && !isMaxHeight) {
+        this.direction = -2;
+        animator.start();
       }
-      this.direction = -2;
-      animator.start();
     }
 
     private boolean isMaxHeight() {
@@ -198,6 +161,48 @@ class ImageCaptionLabel extends JLabel {
       if (b && !e.getComponent().isDisplayable()) {
         animator.stop();
       }
+    }
+  }
+}
+
+class CaptionTextArea extends JTextArea {
+  private transient MouseListener listener;
+
+  @Override protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(getBackground());
+    g2.fillRect(0, 0, getWidth(), getHeight());
+    g2.dispose();
+    super.paintComponent(g);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(listener);
+    super.updateUI();
+    setFont(getFont().deriveFont(11f));
+    setOpaque(false);
+    setEditable(false);
+    setBackground(new Color(0x0, true));
+    setForeground(Color.WHITE);
+    setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
+    listener = new MouseAdapter() {
+      @Override public void mouseEntered(MouseEvent e) {
+        dispatchMouseEvent(e);
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        dispatchMouseEvent(e);
+      }
+    };
+    addMouseListener(listener);
+  }
+
+  private void dispatchMouseEvent(MouseEvent e) {
+    Component src = e.getComponent();
+    // Component dst = SwingUtilities.getUnwrappedParent(src);
+    Container dst = SwingUtilities.getAncestorOfClass(JLabel.class, src);
+    if (dst instanceof JLabel) {
+      dst.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, dst));
     }
   }
 }
