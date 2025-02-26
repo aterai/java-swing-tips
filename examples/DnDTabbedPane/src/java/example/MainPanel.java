@@ -208,7 +208,8 @@ class DnDTabbedPane extends JTabbedPane {
     int idx = -1;
     Rectangle2D cr = new Rectangle2D.Double(r.getCenterX(), r.getY(), .1, r.getHeight());
     int iv = cr.outcode(pt);
-    if (cr.contains(pt) || contains && (iv & Rectangle2D.OUT_LEFT) != 0) {
+    boolean isOutLeft = contains && (iv & Rectangle2D.OUT_LEFT) != 0;
+    if (cr.contains(pt) || isOutLeft) {
       // First half.
       idx = i;
     } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_RIGHT) != 0) {
@@ -225,7 +226,8 @@ class DnDTabbedPane extends JTabbedPane {
     int idx = -1;
     Rectangle2D cr = new Rectangle2D.Double(r.getX(), r.getCenterY(), r.getWidth(), .1);
     int iv = cr.outcode(pt);
-    if (cr.contains(pt) || contains && (iv & Rectangle2D.OUT_TOP) != 0) {
+    boolean isOutTop = contains && (iv & Rectangle2D.OUT_TOP) != 0;
+    if (cr.contains(pt) || isOutTop) {
       idx = i;
     } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_BOTTOM) != 0) {
       idx = i + 1;
