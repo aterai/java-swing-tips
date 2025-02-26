@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
         "public", "protected", "private",
         "final", "transient", "super", "this", "return", "class"
     });
-    BasicComboPopup popup = makeComboPopup(combo, textPane);
+    BasicComboPopup popup = new EditorComboPopup(combo, textPane);
     ActionMap am = popup.getActionMap();
     am.put("loopUp", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -86,37 +86,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BasicComboPopup makeComboPopup(JComboBox<Object> combo, JTextPane textPane) {
-    return new BasicComboPopup(combo) {
-      private transient MouseListener listener;
-
-      @Override protected void installListListeners() {
-        super.installListListeners();
-        listener = new MouseAdapter() {
-          @Override public void mouseClicked(MouseEvent e) {
-            hide();
-            TextEditorUtils.append(textPane, Objects.toString(comboBox.getSelectedItem()));
-          }
-        };
-        if (Objects.nonNull(list)) {
-          list.addMouseListener(listener);
-        }
-      }
-
-      @Override public void uninstallingUI() {
-        if (Objects.nonNull(listener)) {
-          list.removeMouseListener(listener);
-          // listener = null;
-        }
-        super.uninstallingUI();
-      }
-
-      @Override public boolean isFocusable() {
-        return true;
-      }
-    };
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -139,42 +108,42 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// class EditorComboPopup extends BasicComboPopup {
-//   protected final JTextComponent textArea;
-//   private transient MouseListener listener;
-//
-//   // Java 9:
-//   // protected EditorComboPopup(JTextComponent textArea, JComboBox<Object> cb) {
-//   protected EditorComboPopup(JTextComponent textArea, JComboBox<?> cb) {
-//     super(cb);
-//     this.textArea = textArea;
-//   }
-//
-//   @Override protected void installListListeners() {
-//     super.installListListeners();
-//     listener = new MouseAdapter() {
-//       @Override public void mouseClicked(MouseEvent e) {
-//         hide();
-//         TextEditorUtils.append(textArea, Objects.toString(comboBox.getSelectedItem()));
-//       }
-//     };
-//     if (Objects.nonNull(list)) {
-//       list.addMouseListener(listener);
-//     }
-//   }
-//
-//   @Override public void uninstallingUI() {
-//     if (Objects.nonNull(listener)) {
-//       list.removeMouseListener(listener);
-//       listener = null;
-//     }
-//     super.uninstallingUI();
-//   }
-//
-//   @Override public boolean isFocusable() {
-//     return true;
-//   }
-// }
+class EditorComboPopup extends BasicComboPopup {
+  private final JTextComponent editor;
+  private transient MouseListener listener;
+
+  // Java 9: protected EditorComboPopup(JComboBox<Object> cb, JTextComponent editor) {
+  // Java 8: protected EditorComboPopup(JComboBox<?> combo, JTextComponent editor) {
+  protected EditorComboPopup(JComboBox combo, JTextComponent editor) {
+    super(combo);
+    this.editor = editor;
+  }
+
+  @Override protected void installListListeners() {
+    super.installListListeners();
+    listener = new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        hide();
+        TextEditorUtils.append(editor, Objects.toString(comboBox.getSelectedItem()));
+      }
+    };
+    if (Objects.nonNull(list)) {
+      list.addMouseListener(listener);
+    }
+  }
+
+  @Override public void uninstallingUI() {
+    if (Objects.nonNull(listener)) {
+      list.removeMouseListener(listener);
+      // listener = null;
+    }
+    super.uninstallingUI();
+  }
+
+  @Override public boolean isFocusable() {
+    return true;
+  }
+}
 
 final class TextEditorUtils {
   private TextEditorUtils() {
