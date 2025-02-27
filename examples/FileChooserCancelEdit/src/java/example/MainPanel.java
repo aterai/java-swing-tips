@@ -21,8 +21,7 @@ public final class MainPanel extends JPanel {
     button0.addActionListener(e -> {
       setViewTypeDetails(fileChooser0);
       descendants(fileChooser0)
-          .filter(JTable.class::isInstance).map(JTable.class::cast)
-          .findFirst()
+          .filter(JTable.class::isInstance).map(JTable.class::cast).findFirst()
           .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
       int retValue = fileChooser0.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -35,9 +34,7 @@ public final class MainPanel extends JPanel {
     button1.addActionListener(e -> {
       setViewTypeDetails(fileChooser1);
       descendants(fileChooser1)
-          .filter(JTable.class::isInstance).map(JTable.class::cast)
-          // debugging: .peek(table -> append(log, "isEditing: " + table.isEditing()))
-          .findFirst()
+          .filter(JTable.class::isInstance).map(JTable.class::cast).findFirst()
           .filter(JTable::isEditing).ifPresent(JTable::removeEditor);
       int retValue = fileChooser1.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
