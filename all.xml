@@ -10,7 +10,7 @@
 
   <target name="all">
     <subant target="${all}">
-      <fileset dir="." casesensitive="yes">
+      <fileset dir="examples" casesensitive="yes">
         <filename name=".*/*" negate="true" />
         <filename name="*~/*" negate="true" />
         <filename name="*/build.xml" />
@@ -30,7 +30,7 @@
       <ruleset>${basedir}/ruleset.xml</ruleset>
       <formatter type="xml" toFile="report_pmd.xml" />
       <formatter type="text" toConsole="true" />
-      <fileset dir="${basedir}">
+      <fileset dir="${basedir}/examples">
         <exclude name="**/build/**" />
         <exclude name="**/target/**" />
         <exclude name="**/module-info.java" unless:set="jdk9orlater" />
@@ -56,7 +56,7 @@
     <checkstyle config="${checkstyle.config}" failOnViolation="false">
       <formatter type="plain" />
       <formatter type="xml" toFile="${basedir}/checkstyle-result.xml" />
-      <fileset dir="${basedir}">
+      <fileset dir="${basedir}/examples">
         <exclude name="**/build/**" />
         <exclude name="**/target/**" />
         <exclude name="**/module-info.java" unless:set="jdk9orlater" />
