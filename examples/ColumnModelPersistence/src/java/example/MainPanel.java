@@ -63,11 +63,11 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void encode(JTable table, JTextArea textArea) {
+  private static void encode(JTable table, JTextArea textArea) {
     try {
       Path path = File.createTempFile("output", ".xml").toPath();
       // try (var xe = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(file)))) {
-      try (XMLEncoder xe = new XMLEncoder(getOutputStream(path))) {
+      try (XMLEncoder xe = new XMLEncoder(IoStreamUtils.getOutputStream(path))) {
         String[] constructors = {"column", "sortOrder"};
         PersistenceDelegate d1 = new DefaultPersistenceDelegate(constructors);
         xe.setPersistenceDelegate(RowSorter.SortKey.class, d1);
@@ -90,12 +90,12 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private void decode(JTable table, JTextArea textArea) {
+  private static void decode(JTable table, JTextArea textArea) {
     String text = textArea.getText();
     if (text.isEmpty()) {
       return;
     }
-    try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
+    try (XMLDecoder xd = new XMLDecoder(IoStreamUtils.getInputStream(text))) {
       // @SuppressWarnings("unchecked")
       // var keys = (List<? extends RowSorter.SortKey>) xd.readObject();
       Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
@@ -110,15 +110,6 @@ public final class MainPanel extends JPanel {
       DefaultTableColumnModel cm = (DefaultTableColumnModel) xd.readObject();
       table.setColumnModel(cm);
     }
-  }
-
-  private BufferedOutputStream getOutputStream(Path path) throws IOException {
-    return new BufferedOutputStream(Files.newOutputStream(path));
-  }
-
-  private BufferedInputStream getInputStream(String text) {
-    byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
-    return new BufferedInputStream(new ByteArrayInputStream(bytes));
   }
 
   public static void main(String[] args) {
@@ -181,25 +172,9 @@ final class TableHeaderPopupMenu extends JPopupMenu {
 
   /* default */ TableHeaderPopupMenu() {
     super();
-    JTextField textField = new JTextField();
-    textField.addAncestorListener(new FocusAncestorListener());
-
-    add("Edit: setHeaderValue").addActionListener(e -> {
-      JTableHeader header = (JTableHeader) getInvoker();
-      TableColumn column = header.getColumnModel().getColumn(index);
-      String name = column.getHeaderValue().toString();
-      textField.setText(name);
-      Component p = header.getRootPane();
-      int ret = JOptionPane.showConfirmDialog(
-          p, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (ret == JOptionPane.OK_OPTION) {
-        String str = textField.getText().trim();
-        if (!str.equals(name)) {
-          column.setHeaderValue(str);
-          header.repaint(header.getHeaderRect(index));
-        }
-      }
-    });
+    JTextField editor = new JTextField();
+    editor.addAncestorListener(new FocusAncestorListener());
+    add("Edit: setHeaderValue").addActionListener(e -> editHeaderValue(editor));
   }
 
   @Override public void show(Component c, int x, int y) {
@@ -211,6 +186,23 @@ final class TableHeaderPopupMenu extends JPopupMenu {
       index = header.columnAtPoint(new Point(x, y));
       if (index >= 0) {
         super.show(c, x, y);
+      }
+    }
+  }
+
+  private void editHeaderValue(JTextField textField) {
+    JTableHeader header = (JTableHeader) getInvoker();
+    TableColumn column = header.getColumnModel().getColumn(index);
+    String name = column.getHeaderValue().toString();
+    textField.setText(name);
+    Component p = header.getRootPane();
+    int ret = JOptionPane.showConfirmDialog(
+        p, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (ret == JOptionPane.OK_OPTION) {
+      String str = textField.getText().trim();
+      if (!str.equals(name)) {
+        column.setHeaderValue(str);
+        header.repaint(header.getHeaderRect(index));
       }
     }
   }
@@ -227,5 +219,20 @@ class FocusAncestorListener implements AncestorListener {
 
   @Override public void ancestorRemoved(AncestorEvent e) {
     /* not needed */
+  }
+}
+
+final class IoStreamUtils {
+  private IoStreamUtils() {
+    /* Singleton */
+  }
+
+  public static BufferedOutputStream getOutputStream(Path path) throws IOException {
+    return new BufferedOutputStream(Files.newOutputStream(path));
+  }
+
+  public static BufferedInputStream getInputStream(String text) {
+    byte[] bytes = text.getBytes(StandardCharsets.UTF_8);
+    return new BufferedInputStream(new ByteArrayInputStream(bytes));
   }
 }
