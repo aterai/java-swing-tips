@@ -49,7 +49,6 @@ public final class MainPanel extends JPanel {
         setUI(new BasicComboBoxUI() {
           @Override protected JButton createArrowButton() {
             JButton b = new JButton(new ArrowIcon()); // .createArrowButton();
-            b.setBackground(Color.BLACK);
             b.setContentAreaFilled(false);
             b.setFocusPainted(false);
             b.setBorder(BorderFactory.createEmptyBorder());
