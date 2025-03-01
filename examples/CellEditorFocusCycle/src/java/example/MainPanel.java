@@ -12,6 +12,7 @@ import java.util.EnumSet;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -104,9 +105,9 @@ enum Permissions {
 class CheckBoxesPanel extends JPanel {
   protected transient Border focusBorder;
   protected transient Border noFocusBorder;
-  private final String[] titles = {"r", "w", "x"};
-  private final List<JCheckBox> buttons = Stream.of(titles).map(title -> {
-    JCheckBox b = new JCheckBox(title);
+  private static final String[] MODE = {"r", "w", "x"};
+  private final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
+    JCheckBox b = new JCheckBox(s);
     b.setOpaque(false);
     // b.setFocusPainted(false);
     // b.setFocusable(false);
@@ -131,7 +132,7 @@ class CheckBoxesPanel extends JPanel {
   }
 
   protected String[] getTitles() {
-    return Arrays.copyOf(titles, titles.length);
+    return Arrays.copyOf(MODE, MODE.length);
   }
 
   private void initButtons() {

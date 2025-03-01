@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -66,7 +67,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -80,9 +81,9 @@ public final class MainPanel extends JPanel {
 
 class CheckBoxesPanel extends JPanel {
   private static final Color BGC = new Color(0x0, true);
-  private final String[] titles = {"r", "w", "x"};
-  private final List<JCheckBox> buttons = Stream.of(titles).map(title -> {
-    JCheckBox b = new JCheckBox(title);
+  private static final String[] MODE = {"r", "w", "x"};
+  private final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
+    JCheckBox b = new JCheckBox(s);
     b.setOpaque(false);
     b.setFocusable(false);
     b.setRolloverEnabled(false);
@@ -107,7 +108,7 @@ class CheckBoxesPanel extends JPanel {
   }
 
   protected String[] getTitles() {
-    return Arrays.copyOf(titles, titles.length);
+    return Arrays.copyOf(MODE, MODE.length);
   }
 
   protected void updateButtons(Object v) {

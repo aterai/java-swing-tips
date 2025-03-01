@@ -6,6 +6,7 @@ package example;
 
 import com.sun.java.swing.plaf.windows.WindowsFileChooserUI;
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalFileChooserUI;
@@ -17,13 +18,7 @@ public final class MainPanel extends JPanel {
 
     JButton button1 = new JButton("Metal");
     button1.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser() {
-        @Override public void updateUI() {
-          super.updateUI();
-          setUI(new EncodingFileChooserUI(this));
-          resetChoosableFileFilters();
-        }
-      };
+      JFileChooser fileChooser = makeEncodingFileChooser();
       int retValue = fileChooser.showSaveDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         EncodingFileChooserUI ui = (EncodingFileChooserUI) fileChooser.getUI();
@@ -34,24 +29,7 @@ public final class MainPanel extends JPanel {
 
     JButton button2 = new JButton("Alignment: Right");
     button2.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser() {
-        @Override public void updateUI() {
-          super.updateUI();
-          setUI(new WindowsFileChooserUI(this) {
-            @Override public void installComponents(JFileChooser fc) {
-              super.installComponents(fc);
-              JPanel bottomPanel = getBottomPanel();
-              SwingUtils.descendants(bottomPanel)
-                  .filter(JLabel.class::isInstance).map(JLabel.class::cast)
-                  .forEach(l -> {
-                    l.setAlignmentX(RIGHT_ALIGNMENT);
-                    l.setHorizontalAlignment(SwingConstants.RIGHT);
-                  });
-            }
-          });
-          resetChoosableFileFilters();
-        }
-      };
+      JFileChooser fileChooser = makeWindowsFileChooser();
       int retValue = fileChooser.showSaveDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
@@ -77,6 +55,37 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private JFileChooser makeEncodingFileChooser() {
+    return new JFileChooser() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new EncodingFileChooserUI(this));
+        resetChoosableFileFilters();
+      }
+    };
+  }
+
+  private JFileChooser makeWindowsFileChooser() {
+    return new JFileChooser() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new WindowsFileChooserUI(this) {
+          @Override public void installComponents(JFileChooser fc) {
+            super.installComponents(fc);
+            JPanel bottomPanel = getBottomPanel();
+            SwingUtils.descendants(bottomPanel)
+                .filter(JLabel.class::isInstance).map(JLabel.class::cast)
+                .forEach(l -> {
+                  l.setAlignmentX(RIGHT_ALIGNMENT);
+                  l.setHorizontalAlignment(SwingConstants.RIGHT);
+                });
+          }
+        });
+        resetChoosableFileFilters();
+      }
+    };
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -87,7 +96,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -100,8 +109,8 @@ public final class MainPanel extends JPanel {
 }
 
 class EncodingFileChooserUI extends MetalFileChooserUI {
-  private final String[] model = {"UTF-8", "UTF-16", "Shift_JIS", "EUC-JP"};
-  private final JComboBox<String> combo = new JComboBox<>(model);
+  private static final String[] ENCODINGS = {"UTF-8", "UTF-16", "Shift_JIS", "EUC-JP"};
+  private final JComboBox<String> combo = new JComboBox<>(ENCODINGS);
 
   protected EncodingFileChooserUI(JFileChooser fileChooser) {
     super(fileChooser);

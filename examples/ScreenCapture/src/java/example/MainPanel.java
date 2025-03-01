@@ -16,18 +16,18 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final transient Robot robot;
-  private final Rectangle screenRect;
-  private final Rectangle buf = new Rectangle();
-  private transient BufferedImage backgroundImage;
-  private final float[] data = {
+  private static final float[] DATA = {
       .1f, .1f, .1f,
       .1f, .2f, .1f,
       .1f, .1f, .1f,
   };
-  private final transient Kernel kernel = new Kernel(3, 3, data);
-  private final transient ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-  private final Color bgc = new Color(255, 255, 255, 100);
+  private static final Kernel KERNEL = new Kernel(3, 3, DATA);
+  private static final ConvolveOp OP = new ConvolveOp(KERNEL, ConvolveOp.EDGE_NO_OP, null);
+  private static final Color BGC = new Color(255, 255, 255, 100);
+  private final transient Robot robot;
+  private final Rectangle screenRect;
+  private final Rectangle buf = new Rectangle();
+  private transient BufferedImage backgroundImage;
 
   private MainPanel() {
     super();
@@ -64,13 +64,13 @@ public final class MainPanel extends JPanel {
     SwingUtilities.computeIntersection(pt.x, pt.y, getWidth(), getHeight(), buf);
     Image img = backgroundImage.getSubimage(buf.x, buf.y, buf.width, buf.height);
     g2.drawImage(img, -Math.min(pt.x, 0), -Math.min(pt.y, 0), this);
-    g2.setPaint(bgc);
+    g2.setPaint(BGC);
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
   }
 
   public void updateBackground() {
-    backgroundImage = op.filter(robot.createScreenCapture(screenRect), null);
+    backgroundImage = OP.filter(robot.createScreenCapture(screenRect), null);
   }
 
   private static Robot createRobot() {

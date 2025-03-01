@@ -19,6 +19,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -50,7 +51,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -64,10 +65,10 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
-  private final String[] arabicNumerals = {
+  private static final String[] ARABIC_NUMERALS = {
       "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
   };
-  // private final String[] earthlyBranches = {
+  // private static final String[] EARTHLY_BRANCHES = {
   //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"
   // };
   private LocalTime time = LocalTime.now(ZoneId.systemDefault());
@@ -163,7 +164,7 @@ class AnalogClock extends JPanel {
     FontRenderContext frc = g2.getFontRenderContext();
 
     if (isRotate) {
-      for (String txt : arabicNumerals) {
+      for (String txt : ARABIC_NUMERALS) {
         double m00 = at.getScaleX();
         double d = m00 > 0d || Math.abs(m00) < 0.0001 ? 1d : -1d;
         AffineTransform si = AffineTransform.getScaleInstance(d, d);
@@ -177,7 +178,7 @@ class AnalogClock extends JPanel {
       }
     } else {
       Point2D ptSrc = new Point2D.Double();
-      for (String txt : arabicNumerals) {
+      for (String txt : ARABIC_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(null);
         Rectangle2D r = s.getBounds2D();
         double ty = radius - hourMarkerLen - r.getHeight();

@@ -68,10 +68,10 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
-  private final String[] arabicNumerals = {
+  private static final String[] ARABIC_NUMERALS = {
       "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
   };
-  private final String[] romanNumerals = {
+  private static final String[] ROMAN_NUMERALS = {
       "XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI"
   };
   private LocalTime time = LocalTime.now(ZoneId.systemDefault());
@@ -171,7 +171,7 @@ class AnalogClock extends JPanel {
     FontRenderContext frc = g2.getFontRenderContext();
     if (isRomanNumerals) {
       AffineTransform si = AffineTransform.getScaleInstance(1d, 2d);
-      for (String txt : romanNumerals) {
+      for (String txt : ROMAN_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(si);
         Rectangle2D r = s.getBounds2D();
         double tx = r.getCenterX();
@@ -182,7 +182,7 @@ class AnalogClock extends JPanel {
       }
     } else {
       Point2D ptSrc = new Point2D.Double();
-      for (String txt : arabicNumerals) {
+      for (String txt : ARABIC_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(null);
         Rectangle2D r = s.getBounds2D();
         double ty = radius - hourMarkerLen - r.getHeight() - r.getCenterY() * .5;
