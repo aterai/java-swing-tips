@@ -83,29 +83,32 @@ public final class MainPanel extends JPanel {
   }
 
   public void deleteActionPerformed(JTable table) {
-    int[] selection = table.getSelectedRows();
-    if (selection.length > 0) {
+    if (table.getSelectedRows().length > 0) {
+      table.setEnabled(false);
       AtomicInteger height = new AtomicInteger(END_HEIGHT);
       new Timer(DELAY, e -> {
         int curHeight = height.getAndDecrement();
         if (curHeight > START_HEIGHT) {
-          setRowsHeight(table, selection, curHeight);
+          setSelectedRowsHeight(table, curHeight);
         } else {
           ((Timer) e.getSource()).stop();
-          removeRows(table, selection);
+          removeSelectedRows(table);
+          table.setEnabled(true);
         }
       }).start();
     }
   }
 
-  private static void removeRows(JTable table, int[] selection) {
+  private static void removeSelectedRows(JTable table) {
     DefaultTableModel model = (DefaultTableModel) table.getModel();
+    int[] selection = table.getSelectedRows();
     for (int i = selection.length - 1; i >= 0; i--) {
       model.removeRow(table.convertRowIndexToModel(selection[i]));
     }
   }
 
-  private static void setRowsHeight(JTable table, int[] selection, int height) {
+  private static void setSelectedRowsHeight(JTable table, int height) {
+    int[] selection = table.getSelectedRows();
     for (int i = selection.length - 1; i >= 0; i--) {
       table.setRowHeight(selection[i], height);
     }
