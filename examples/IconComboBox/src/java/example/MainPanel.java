@@ -143,8 +143,8 @@ final class ComboBoxUtils {
   //     }
   //
   //     @Override public int getIconHeight() {
-  //       Insets is = comp.getInsets();
-  //       return comp.getPreferredSize().height - is.top - is.bottom;
+  //       Insets i = comp.getInsets();
+  //       return comp.getPreferredSize().height - i.top - i.bottom;
   //     }
   //   };
   //   Border b1 = BorderFactory.createMatteBorder(0, icon.getIconWidth(), 0, 0, wrappedIcon);
@@ -170,8 +170,9 @@ final class ComboBoxUtils {
       }
 
       @Override public int getIconHeight() {
-        Insets is = comp.getInsets();
-        return comp.getPreferredSize().height - is.top - is.bottom;
+        // Insets i = comp.getInsets();
+        // return comp.getPreferredSize().height - i.top - i.bottom;
+        return SwingUtilities.calculateInnerArea(comp, null).height;
       }
     };
     Border b1 = BorderFactory.createMatteBorder(0, icon.getIconWidth(), 0, 0, wrappedIcon);
