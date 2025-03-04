@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -42,17 +43,11 @@ public final class MainPanel extends JPanel {
       " as are layout management and accessibility.",
       " This lesson ends with a set of questions and exercises",
       " so you can test yourself on what you've learned.");
-  private static final Color WARNING = new Color(0xFF_C8_C8);
-  private static final Color CURRENT = new Color(0xAA_00_64_00, true);
-  private static final Color MATCHED = new Color(0x64_DD_DD_00, true);
-  private final transient HighlightPainter currentPainter = new DefaultHighlightPainter(CURRENT);
-  private final transient HighlightPainter matchedPainter = new DefaultHighlightPainter(MATCHED);
   private final JTextPane textPane = new JTextPane();
   private final JTextField field = new JTextField("Swing");
   private final JCheckBox checkCase = new JCheckBox("Match case");
   private final JCheckBox checkWord = new JCheckBox("Match whole word only");
   private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
-  private final transient HighlightHandler handler = new HighlightHandler();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -71,6 +66,7 @@ public final class MainPanel extends JPanel {
     Style htf = doc.addStyle("highlight-text-foreground", def);
     StyleConstants.setForeground(htf, new Color(0xFF_DD_FF));
 
+    HighlightHandler handler = new HighlightHandler();
     field.getDocument().addDocumentListener(handler);
     Stream.of(prevButton, nextButton, checkCase, checkWord).forEach(b -> {
       b.setFocusable(false);
@@ -98,99 +94,28 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void scrollToCenter(JTextComponent tc, int pos) throws BadLocationException {
-    Rectangle rect = tc.modelToView(pos);
-    // Java 9: Rectangle rect = tc.modelToView2D(pos).getBounds();
-    Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
-    if (Objects.nonNull(rect) && c instanceof JViewport) {
-      rect.x = Math.round(rect.x - c.getWidth() / 2f);
-      rect.width = c.getWidth();
-      rect.height = Math.round(c.getHeight() / 2f);
-      tc.scrollRectToVisible(rect);
+  private Pattern getPattern(String txt) {
+    String cw = checkWord.isSelected() ? "\\b" : "";
+    String fmt = String.format("%s%s%s", cw, txt, cw);
+    boolean b = checkCase.isSelected();
+    int flags = b ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+    Pattern pattern = null;
+    try {
+      pattern = Pattern.compile(fmt, flags);
+    } catch (PatternSyntaxException ex) {
+      field.setBackground(DocUtils.WARNING);
     }
+    return pattern;
   }
 
-  private Optional<Pattern> getPattern() {
+  private int changeHighlight(int idx) {
     return Optional.ofNullable(field.getText())
         .filter(txt -> !txt.isEmpty())
-        .map(txt -> {
-          String cw = checkWord.isSelected() ? "\\b" : "";
-          String fmt = String.format("%s%s%s", cw, txt, cw);
-          boolean b = checkCase.isSelected();
-          int flags = b ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
-          Pattern pattern = null;
-          try {
-            pattern = Pattern.compile(fmt, flags);
-          } catch (PatternSyntaxException ex) {
-            field.setBackground(WARNING);
-          }
-          return pattern;
-        });
-  }
-
-  public int changeHighlight(int index) {
-    field.setBackground(Color.WHITE);
-    StyledDocument doc = textPane.getStyledDocument();
-    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
-
-    // clear the previous highlight:
-    Highlighter highlighter = textPane.getHighlighter();
-    for (Highlighter.Highlight h : highlighter.getHighlights()) {
-      int start = h.getStartOffset();
-      int end = h.getEndOffset();
-      doc.setCharacterAttributes(start, end - start, def, true);
-    }
-    highlighter.removeAllHighlights();
-    // doc.setCharacterAttributes(0, doc.getLength(), def, true);
-
-    // match highlighting:
-    getPattern().ifPresent(pattern -> {
-      try {
-        Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
-        int pos = 0;
-        while (matcher.find(pos) && !matcher.group().isEmpty()) {
-          int start = matcher.start();
-          int end = matcher.end();
-          highlighter.addHighlight(start, end, matchedPainter);
-          // doc.setCharacterAttributes(start, end - start, red, true);
-          pos = end;
-        }
-      } catch (BadLocationException ex) {
-        // should never happen
-        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-        wrap.initCause(ex);
-        throw wrap;
-      }
-    });
-    JLabel label = layerUI.getHintLabel();
-    Highlighter.Highlight[] array = highlighter.getHighlights();
-    int hits = array.length;
-    int idx = index;
-    if (hits == 0) {
-      idx = -1;
-      label.setOpaque(true);
-    } else {
-      idx = (idx + hits) % hits;
-      label.setOpaque(false);
-      Highlighter.Highlight hh = highlighter.getHighlights()[idx];
-      highlighter.removeHighlight(hh);
-      int start = hh.getStartOffset();
-      int end = hh.getEndOffset();
-      Style s = doc.getStyle("highlight-text-foreground");
-      try {
-        highlighter.addHighlight(start, end, currentPainter);
-        doc.setCharacterAttributes(start, end - start, s, true);
-        scrollToCenter(textPane, start);
-      } catch (BadLocationException ex) {
-        // should never happen
-        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-        wrap.initCause(ex);
-        throw wrap;
-      }
-    }
-    label.setText(String.format("%02d / %02d%n", idx + 1, hits));
-    field.repaint();
-    return idx;
+        .map(this::getPattern)
+        .map(pattern -> {
+          JLabel hint = layerUI.getHintLabel();
+          return DocUtils.getHighlightIdx(textPane, hint, pattern, idx);
+        }).orElse(-1);
   }
 
   private final class HighlightHandler implements DocumentListener, ActionListener {
@@ -232,7 +157,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -241,6 +166,97 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+final class DocUtils {
+  public static final Color WARNING = new Color(0xFF_C8_C8);
+  public static final Color CURRENT = new Color(0xAA_00_64_00, true);
+  public static final Color MATCHED = new Color(0x64_DD_DD_00, true);
+  public static final HighlightPainter CURRENT_PAINTER = new DefaultHighlightPainter(CURRENT);
+  public static final HighlightPainter MATCHED_PAINTER = new DefaultHighlightPainter(MATCHED);
+
+  private DocUtils() {
+    /* Singleton */
+  }
+
+  public static void scrollToCenter(JTextComponent tc, int pos) throws BadLocationException {
+    Rectangle rect = tc.modelToView(pos);
+    // Java 9: Rectangle rect = tc.modelToView2D(pos).getBounds();
+    Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
+    if (Objects.nonNull(rect) && c instanceof JViewport) {
+      rect.x = Math.round(rect.x - c.getWidth() / 2f);
+      rect.width = c.getWidth();
+      rect.height = Math.round(c.getHeight() / 2f);
+      tc.scrollRectToVisible(rect);
+    }
+  }
+
+  public static int getHighlightIdx(JTextPane editor, JLabel hint, Pattern ptn, int idx) {
+    StyledDocument doc = editor.getStyledDocument();
+    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+
+    // clear the previous highlight:
+    Highlighter highlighter = editor.getHighlighter();
+    for (Highlighter.Highlight h : highlighter.getHighlights()) {
+      int start = h.getStartOffset();
+      int end = h.getEndOffset();
+      doc.setCharacterAttributes(start, end - start, def, true);
+    }
+    highlighter.removeAllHighlights();
+    // doc.setCharacterAttributes(0, doc.getLength(), def, true);
+
+    // match highlighting:
+    try {
+      Matcher matcher = ptn.matcher(doc.getText(0, doc.getLength()));
+      int pos = 0;
+      while (matcher.find(pos) && !matcher.group().isEmpty()) {
+        int start = matcher.start();
+        int end = matcher.end();
+        highlighter.addHighlight(start, end, MATCHED_PAINTER);
+        // doc.setCharacterAttributes(start, end - start, red, true);
+        pos = end;
+      }
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
+    // JLabel hint = layerUI.getHintLabel();
+    Highlighter.Highlight[] array = highlighter.getHighlights();
+    int hits = array.length;
+    int i = idx;
+    if (hits == 0) {
+      i = -1;
+      hint.setOpaque(true);
+    } else {
+      i = (i + hits) % hits;
+      hint.setOpaque(false);
+      Highlighter.Highlight hh = highlighter.getHighlights()[i];
+      highlighter.removeHighlight(hh);
+      int start = hh.getStartOffset();
+      int end = hh.getEndOffset();
+      Style s = doc.getStyle("highlight-text-foreground");
+      try {
+        highlighter.addHighlight(start, end, CURRENT_PAINTER);
+        doc.setCharacterAttributes(start, end - start, s, true);
+        scrollToCenter(editor, start);
+      } catch (BadLocationException ex) {
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
+      }
+    }
+    hint.setText(String.format("%02d / %02d%n", i + 1, hits));
+    EventQueue.invokeLater(() -> {
+      Container c = SwingUtilities.getAncestorOfClass(JTextField.class, hint);
+      if (c instanceof JTextField) {
+        c.repaint();
+      }
+    });
+    return i;
   }
 }
 
