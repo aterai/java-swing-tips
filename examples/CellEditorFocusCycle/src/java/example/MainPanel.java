@@ -103,10 +103,8 @@ enum Permissions {
 }
 
 class CheckBoxesPanel extends JPanel {
-  protected transient Border focusBorder;
-  protected transient Border noFocusBorder;
   private static final String[] MODE = {"r", "w", "x"};
-  private final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
+  protected final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
     JCheckBox b = new JCheckBox(s);
     b.setOpaque(false);
     // b.setFocusPainted(false);
@@ -114,6 +112,8 @@ class CheckBoxesPanel extends JPanel {
     // b.setRolloverEnabled(false);
     return b;
   }).collect(Collectors.toList());
+  protected transient Border focusBorder;
+  protected transient Border noFocusBorder;
 
   @Override public void updateUI() {
     super.updateUI();
