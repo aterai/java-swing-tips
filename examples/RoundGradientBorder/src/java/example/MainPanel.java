@@ -82,12 +82,12 @@ class GradientIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-      return size.width;
-    }
+    return size.width;
+  }
 
-    @Override public int getIconHeight() {
-      return size.height;
-    }
+  @Override public int getIconHeight() {
+    return size.height;
+  }
 }
 
 class RoundGradientBorder extends EmptyBorder {
