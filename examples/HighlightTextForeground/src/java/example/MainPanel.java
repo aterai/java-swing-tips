@@ -134,14 +134,11 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      Object o = e.getSource();
-      if (o instanceof AbstractButton) {
-        String cmd = ((AbstractButton) o).getActionCommand();
-        if (Objects.equals("prev", cmd)) {
-          current--;
-        } else if (Objects.equals("next", cmd)) {
-          current++;
-        }
+      String cmd = e.getActionCommand();
+      if (Objects.equals("prev", cmd)) {
+        current--;
+      } else if (Objects.equals("next", cmd)) {
+        current++;
       }
       current = changeHighlight(current);
     }
@@ -223,7 +220,6 @@ final class DocUtils {
       wrap.initCause(ex);
       throw wrap;
     }
-    // JLabel hint = layerUI.getHintLabel();
     Highlighter.Highlight[] array = highlighter.getHighlights();
     int hits = array.length;
     int i = idx;
