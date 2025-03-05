@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
@@ -20,31 +21,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      @Override public void updateUI() {
-        ColorUIResource reset = new ColorUIResource(Color.RED);
-        setSelectionForeground(reset);
-        setSelectionBackground(reset);
-        super.updateUI();
-        UIDefaults def = UIManager.getLookAndFeelDefaults();
-        Object showGrid = def.get("Table.showGrid");
-        Color gridColor = def.getColor("Table.gridColor");
-        if (showGrid == null && gridColor != null) {
-          setShowGrid(true);
-          setIntercellSpacing(new DimensionUIResource(1, 1));
-          createDefaultRenderers();
-        }
-        TableCellRenderer hr = new VerticalTableHeaderRenderer();
-        TableColumnModel cm = getColumnModel();
-        for (int i = 0; i < cm.getColumnCount(); i++) {
-          TableColumn tc = cm.getColumn(i);
-          tc.setHeaderRenderer(hr);
-          tc.setPreferredWidth(32);
-        }
-        setAutoCreateRowSorter(true);
-        setAutoResizeMode(AUTO_RESIZE_OFF);
-      }
-    };
+    JTable table = new VerticalHeaderTable(makeModel());
     // table.setRowSorter(new TableRowSorter<>(table.getModel()));
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -82,7 +59,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -195,6 +172,36 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
   // }
 }
 
+class VerticalHeaderTable extends JTable {
+  protected VerticalHeaderTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    ColorUIResource reset = new ColorUIResource(Color.RED);
+    setSelectionForeground(reset);
+    setSelectionBackground(reset);
+    super.updateUI();
+    UIDefaults def = UIManager.getLookAndFeelDefaults();
+    Object showGrid = def.get("Table.showGrid");
+    Color gridColor = def.getColor("Table.gridColor");
+    if (showGrid == null && gridColor != null) {
+      setShowGrid(true);
+      setIntercellSpacing(new DimensionUIResource(1, 1));
+      createDefaultRenderers();
+    }
+    TableCellRenderer hr = new VerticalTableHeaderRenderer();
+    TableColumnModel cm = getColumnModel();
+    for (int i = 0; i < cm.getColumnCount(); i++) {
+      TableColumn tc = cm.getColumn(i);
+      tc.setHeaderRenderer(hr);
+      tc.setPreferredWidth(32);
+    }
+    setAutoCreateRowSorter(true);
+    setAutoResizeMode(AUTO_RESIZE_OFF);
+  }
+}
+
 class EmptyIcon implements Icon {
   private final int width;
   private final int height;
@@ -233,8 +240,8 @@ class RotateIcon implements Icon {
     icon.paintIcon(null, g, 0, 0);
     g.dispose();
 
-    int numquadrants = rotate / 90 % 4;
-    switch (numquadrants) {
+    int numQuadrants = rotate / 90 % 4;
+    switch (numQuadrants) {
       case 3:
       case -1:
         trans = AffineTransform.getTranslateInstance(0, dim.width);
@@ -252,10 +259,10 @@ class RotateIcon implements Icon {
         trans = AffineTransform.getTranslateInstance(0, 0);
         break;
     }
-    trans.quadrantRotate(numquadrants);
-    // or: trans.concatenate(AffineTransform.getQuadrantRotateInstance(numquadrants));
-    // or: trans.rotate(Math.PI / 2.0 * numquadrants);
-    // or: trans.rotate(Math.toRadians(90d * numquadrants));
+    trans.quadrantRotate(numQuadrants);
+    // or: trans.concatenate(AffineTransform.getQuadrantRotateInstance(numQuadrants));
+    // or: trans.rotate(Math.PI / 2.0 * numQuadrants);
+    // or: trans.rotate(Math.toRadians(90d * numQuadrants));
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -316,7 +323,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
