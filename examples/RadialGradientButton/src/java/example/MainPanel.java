@@ -11,6 +11,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -22,21 +23,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new RadialGradientPaintButton("JButton JButton JButton JButton");
     button2.setForeground(Color.WHITE);
 
-    JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 50)) {
-      private transient Paint texture;
-      @Override public void updateUI() {
-        super.updateUI();
-        texture = TextureUtils.createCheckerTexture(16, new Color(0xEE_32_32_32, true));
-      }
-
-      @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(texture);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.dispose();
-        super.paintComponent(g);
-      }
-    };
+    JPanel p = new TexturePanel(new FlowLayout(FlowLayout.CENTER, 20, 50));
     p.setOpaque(false);
     p.add(button1);
     p.add(button2);
@@ -55,7 +42,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -70,23 +57,26 @@ public final class MainPanel extends JPanel {
 // Stunning hover effects with CSS variables ? Prototypr
 // https://blog.prototypr.io/stunning-hover-effects-with-css-variables-f855e7b95330
 class RadialGradientButton extends JButton {
-  private static final int DELTA = 10;
-  private static final double ARC = 32d;
-  private int radius;
-  private final float[] dist = {0f, 1f};
-  private final Color[] colors = {new Color(0x64_44_05_F7, true), new Color(0x00_F7_23_59, true)};
-  private final Timer timer1 = new Timer(10, e -> {
+  protected static final int DELTA = 10;
+  protected static final double ARC = 32d;
+  protected static final float[] DIST = {0f, 1f};
+  protected static final Color[] COLORS = {
+      new Color(0x64_44_05_F7, true),
+      new Color(0x00_F7_23_59, true)
+  };
+  protected int radius;
+  protected final Timer timer1 = new Timer(10, e -> {
     radius = Math.min(200, radius + DELTA);
     repaint();
   });
-  private final Timer timer2 = new Timer(10, e -> {
+  protected final Timer timer2 = new Timer(10, e -> {
     radius = Math.max(0, radius - DELTA);
     repaint();
   });
-  private final Point pt = new Point();
-  private transient Shape shape;
-  private Rectangle base;
-  private transient MouseAdapter listener;
+  protected final Point pt = new Point();
+  protected transient Shape shape;
+  protected Rectangle base;
+  protected transient MouseAdapter listener;
 
   protected RadialGradientButton(String title) {
     super(title);
@@ -101,34 +91,7 @@ class RadialGradientButton extends JButton {
     setFocusPainted(false);
     setBackground(new Color(0xF7_23_59));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    listener = new MouseAdapter() {
-      @Override public void mouseEntered(MouseEvent e) {
-        timer2.stop();
-        if (!timer1.isRunning()) {
-          timer1.start();
-        }
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        timer1.stop();
-        if (!timer2.isRunning()) {
-          timer2.start();
-        }
-      }
-
-      @Override public void mouseMoved(MouseEvent e) {
-        update(e);
-      }
-
-      @Override public void mouseDragged(MouseEvent e) {
-        update(e);
-      }
-
-      private void update(MouseEvent e) {
-        pt.setLocation(e.getPoint());
-        e.getComponent().repaint();
-      }
-    };
+    listener = new HoverHandler();
     addMouseListener(listener);
     addMouseMotionListener(listener);
     update();
@@ -137,13 +100,6 @@ class RadialGradientButton extends JButton {
   @Override public boolean contains(int x, int y) {
     update();
     return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
-  }
-
-  protected void update() {
-    if (!getBounds().equals(base)) {
-      base = getBounds();
-      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC, ARC);
-    }
   }
 
   // @Override protected void paintBorder(Graphics g) {
@@ -175,7 +131,7 @@ class RadialGradientButton extends JButton {
 
     if (radius > 0) {
       int r2 = radius + radius;
-      g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
+      g2.setPaint(new RadialGradientPaint(pt, r2, DIST, COLORS));
       g2.setComposite(AlphaComposite.SrcAtop);
       g2.setClip(shape);
       g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
@@ -184,83 +140,58 @@ class RadialGradientButton extends JButton {
 
     super.paintComponent(g);
   }
+
+  protected void update() {
+    if (!getBounds().equals(base)) {
+      base = getBounds();
+      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC, ARC);
+    }
+  }
+
+  protected final class HoverHandler extends MouseAdapter {
+    @Override public void mouseEntered(MouseEvent e) {
+      timer2.stop();
+      if (!timer1.isRunning()) {
+        timer1.start();
+      }
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      timer1.stop();
+      if (!timer2.isRunning()) {
+        timer2.start();
+      }
+    }
+
+    @Override public void mouseMoved(MouseEvent e) {
+      updateLocation(e);
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      updateLocation(e);
+    }
+
+    private void updateLocation(MouseEvent e) {
+      pt.setLocation(e.getPoint());
+      e.getComponent().repaint();
+    }
+  }
 }
 
-class RadialGradientPaintButton extends JButton {
-  private static final int DELTA = 10;
-  private static final double ARC = 32d;
-  private int radius;
-  private final float[] dist = {0f, 1f};
-  private final Color[] colors = {
-      new Color(0x64_44_05_F7, true),
-      new Color(0x00_F7_23_59, true)
-  };
-  private final Timer timer1 = new Timer(10, e -> {
-    radius = Math.min(200, radius + DELTA);
-    repaint();
-  });
-  private final Timer timer2 = new Timer(10, e -> {
-    radius = Math.max(0, radius - DELTA);
-    repaint();
-  });
-  private final Point pt = new Point();
-  private transient Shape shape;
-  private Rectangle base;
+class RadialGradientPaintButton extends RadialGradientButton {
   private transient BufferedImage buf;
-  private transient MouseAdapter listener;
 
   protected RadialGradientPaintButton(String title) {
     super(title);
   }
 
-  @Override public void updateUI() {
-    removeMouseListener(listener);
-    removeMouseMotionListener(listener);
-    super.updateUI();
-    setOpaque(false);
-    setContentAreaFilled(false);
-    setFocusPainted(false);
-    setBackground(new Color(0xF7_23_59));
-    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    listener = new MouseAdapter() {
-      @Override public void mouseEntered(MouseEvent e) {
-        timer2.stop();
-        if (!timer1.isRunning()) {
-          timer1.start();
-        }
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        timer1.stop();
-        if (!timer2.isRunning()) {
-          timer2.start();
-        }
-      }
-
-      @Override public void mouseMoved(MouseEvent e) {
-        update(e);
-      }
-
-      @Override public void mouseDragged(MouseEvent e) {
-        update(e);
-      }
-
-      private void update(MouseEvent e) {
-        pt.setLocation(e.getPoint());
-        e.getComponent().repaint();
-      }
-    };
-    addMouseListener(listener);
-    addMouseMotionListener(listener);
+  @Override protected void paintComponent(Graphics g) {
     update();
+    g.drawImage(buf, 0, 0, this);
+    super.paintComponent(g);
   }
 
-  @Override public boolean contains(int x, int y) {
-    update();
-    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
-  }
-
-  protected void update() {
+  @Override protected void update() {
     if (!getBounds().equals(base)) {
       base = getBounds();
       int w = getWidth();
@@ -285,24 +216,33 @@ class RadialGradientPaintButton extends JButton {
 
     if (radius > 0) {
       int r2 = radius + radius;
-      g2.setPaint(new RadialGradientPaint(pt, r2, dist, colors));
+      g2.setPaint(new RadialGradientPaint(pt, r2, DIST, COLORS));
       g2.setComposite(AlphaComposite.SrcAtop);
       // g2.setClip(shape);
       g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
     }
     g2.dispose();
   }
-
-  @Override protected void paintComponent(Graphics g) {
-    update();
-    g.drawImage(buf, 0, 0, this);
-    super.paintComponent(g);
-  }
 }
 
-final class TextureUtils {
-  private TextureUtils() {
-    /* HideUtilityClassConstructor */
+class TexturePanel extends JPanel {
+  private transient Paint texture;
+
+  protected TexturePanel(LayoutManager layout) {
+    super(layout);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    texture = createCheckerTexture(16, new Color(0xEE_32_32_32, true));
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(texture);
+    g2.fillRect(0, 0, getWidth(), getHeight());
+    g2.dispose();
+    super.paintComponent(g);
   }
 
   public static TexturePaint createCheckerTexture(int cs, Color color) {
