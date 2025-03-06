@@ -17,12 +17,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  public static final Dimension CELL_SIZE = new Dimension(10, 10);
-
   private MainPanel() {
     super(new BorderLayout());
     Color color = new Color(0x32_C8_32);
@@ -33,10 +32,13 @@ public final class MainPanel extends JPanel {
         new ContributionIcon(color.darker()),
         new ContributionIcon(color.darker().darker()));
 
-    JList<Contribution> weekList = makeContributionHeatmap(activityIcons);
-    Font font = weekList.getFont().deriveFont(CELL_SIZE.height - 1f);
+    LocalDate date = LocalDate.now(ZoneId.systemDefault());
+    JList<Contribution> weekList = new ContributionCalendarList(date, activityIcons);
+    int height = ContributionIcon.CELL_SIZE.height;
+    Font font = weekList.getFont().deriveFont(height - 1f);
 
     Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(10, 0, 2, 0));
     box.add(makeLabel("Less", font));
     box.add(Box.createHorizontalStrut(2));
     activityIcons.forEach(icon -> {
@@ -52,7 +54,7 @@ public final class MainPanel extends JPanel {
     GridBagConstraints c = new GridBagConstraints();
     p.add(makeWeekCalendar(weekList, font), c);
 
-    c.insets = new Insets(10, 0, 2, 0);
+    // c.insets = new Insets(10, 0, 2, 0);
     c.gridy = 1;
     c.anchor = GridBagConstraints.LINE_END;
     p.add(box, c);
@@ -61,48 +63,6 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(new JTextArea()));
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private JList<Contribution> makeContributionHeatmap(List<Icon> activityIcons) {
-    LocalDate currentLocalDate = LocalDate.now(ZoneId.systemDefault());
-    ListModel<Contribution> model = new CalendarViewListModel(currentLocalDate);
-    return new JList<Contribution>(model) {
-      @Override public void updateUI() {
-        setCellRenderer(null);
-        super.updateUI();
-        setLayoutOrientation(VERTICAL_WRAP);
-        setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
-        setFixedCellWidth(CELL_SIZE.width);
-        setFixedCellHeight(CELL_SIZE.height);
-        ListCellRenderer<? super Contribution> renderer = getCellRenderer();
-        Icon futureCellIcon = new ContributionIcon(getBackground());
-        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(
-              list, value, index, isSelected, cellHasFocus);
-          if (c instanceof JLabel) {
-            boolean b = value.getDate().isAfter(currentLocalDate);
-            ((JLabel) c).setIcon(b ? futureCellIcon : activityIcons.get(value.getActivity()));
-          }
-          return c;
-        });
-        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-      }
-
-      @Override public String getToolTipText(MouseEvent e) {
-        Point p = e.getPoint();
-        int i = locationToIndex(p);
-        Rectangle r = getCellBounds(i, i);
-        return r != null && r.contains(p) ? getActivityText(i) : null;
-      }
-
-      private String getActivityText(int idx) {
-        Contribution c = getModel().getElementAt(idx);
-        int activity = c.getActivity();
-        String actTxt = activity == 0 ? "No" : Integer.toString(activity);
-        return String.format("%s contribution on %s", actTxt, c.getDate());
-      }
-    };
   }
 
   private static Component makeWeekCalendar(JList<Contribution> weekList, Font font) {
@@ -124,23 +84,22 @@ public final class MainPanel extends JPanel {
     rowHeader.setFont(font);
     rowHeader.setLayoutOrientation(JList.VERTICAL_WRAP);
     rowHeader.setVisibleRowCount(DayOfWeek.values().length);
-    rowHeader.setFixedCellHeight(CELL_SIZE.height);
+    rowHeader.setFixedCellHeight(ContributionIcon.CELL_SIZE.height);
 
     JPanel colHeader = new JPanel(new GridBagLayout());
     colHeader.setBackground(Color.WHITE);
     GridBagConstraints c = new GridBagConstraints();
     for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW; c.gridx++) {
-      colHeader.add(Box.createHorizontalStrut(CELL_SIZE.width), c); // grid guides
+      // grid guides
+      colHeader.add(Box.createHorizontalStrut(ContributionIcon.CELL_SIZE.width), c);
     }
     c.anchor = GridBagConstraints.LINE_START;
     c.gridy = 1;
     c.gridwidth = 3; // use 3 columns to display the name of the month
     for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW - c.gridwidth + 1; c.gridx++) {
-      int d = c.gridx * DayOfWeek.values().length;
-      LocalDate date = weekList.getModel().getElementAt(d).getDate();
-      // int weekNumberOfMonth = date.get(weekFields.weekOfMonth());
-      // System.out.println(weekNumberOfMonth);
-      // ignore WeekFields#getMinimalDaysInFirstWeek()
+      int index = c.gridx * DayOfWeek.values().length;
+      Contribution contribution = weekList.getModel().getElementAt(index);
+      LocalDate date = contribution.getDate();
       boolean isFirst = date.getMonth() != date.minusWeeks(1L).getMonth();
       if (isFirst) {
         colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
@@ -194,7 +153,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -254,6 +213,7 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
 }
 
 class ContributionIcon implements Icon {
+  public static final Dimension CELL_SIZE = new Dimension(10, 10);
   private final Color color;
 
   protected ContributionIcon(Color color) {
@@ -270,10 +230,61 @@ class ContributionIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return MainPanel.CELL_SIZE.width - 2;
+    return CELL_SIZE.width - 2;
   }
 
   @Override public int getIconHeight() {
-    return MainPanel.CELL_SIZE.height - 2;
+    return CELL_SIZE.height - 2;
+  }
+}
+
+class ContributionCalendarList extends JList<Contribution> {
+  private final List<Icon> activityIcons;
+  private final LocalDate currentLocalDate;
+
+  protected ContributionCalendarList(LocalDate date, List<Icon> activityIcons) {
+    super(new CalendarViewListModel(date));
+    this.currentLocalDate = date;
+    this.activityIcons = activityIcons;
+  }
+
+  @Override public void updateUI() {
+    setCellRenderer(null);
+    super.updateUI();
+    setLayoutOrientation(VERTICAL_WRAP);
+    setVisibleRowCount(DayOfWeek.values().length); // ensure 7 rows in the list
+    setFixedCellWidth(ContributionIcon.CELL_SIZE.width);
+    setFixedCellHeight(ContributionIcon.CELL_SIZE.height);
+    ListCellRenderer<? super Contribution> renderer = getCellRenderer();
+    setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
+      if (c instanceof JLabel) {
+        ((JLabel) c).setIcon(getActivityIcon(value));
+      }
+      return c;
+    });
+    getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+  }
+
+  @Override public String getToolTipText(MouseEvent e) {
+    Point p = e.getPoint();
+    int i = locationToIndex(p);
+    Rectangle r = getCellBounds(i, i);
+    return r != null && r.contains(p) ? getActivityText(i) : null;
+  }
+
+  private Icon getActivityIcon(Contribution value) {
+    return value.getDate().isAfter(currentLocalDate)
+        ? new ContributionIcon(Color.WHITE)
+        : activityIcons.get(value.getActivity());
+  }
+
+  private String getActivityText(int idx) {
+    Contribution c = getModel().getElementAt(idx);
+    int activity = c.getActivity();
+    String actTxt = activity == 0 ? "No" : Integer.toString(activity);
+    return String.format("%s contribution on %s", actTxt, c.getDate());
   }
 }
