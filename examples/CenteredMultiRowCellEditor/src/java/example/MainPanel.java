@@ -184,7 +184,6 @@ class EditableList<E extends ListItem> extends JList<E> {
   private int editingIndex = -1;
   private int editorWidth = -1;
   private transient MouseAdapter handler;
-  // private final Container glassPane = new EditorGlassPane(); // LightWeightEditor
   private Window window; // HeavyWeightEditor
   private final JTextPane editor = new JTextPane() {
     @Override public Dimension getPreferredSize() {
@@ -193,57 +192,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       return d;
     }
   };
-  private final Action startEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      // getRootPane().setGlassPane(glassPane);
-      int idx = getSelectedIndex();
-      editingIndex = idx;
-      Rectangle rect = getCellBounds(idx, idx);
-      // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
-      // rect.setLocation(p);
-      editorWidth = rect.width;
-      editor.setText(getSelectedValue().getTitle());
-      int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
-      rect.y += rect.height - rowHeight - 2 - 1;
-      rect.height = editor.getPreferredSize().height;
-      editor.setBounds(rect);
-      editor.selectAll();
-      // glassPane.add(editor);
-      // glassPane.setVisible(true);
-      Point p = new Point(rect.getLocation());
-      SwingUtilities.convertPointToScreen(p, EditableList.this);
-      if (window == null) {
-        window = new JWindow(SwingUtilities.getWindowAncestor(EditableList.this));
-        window.setFocusableWindowState(true);
-        window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        // window.setAlwaysOnTop(true);
-        window.add(editor);
-      }
-      window.setLocation(p);
-      window.pack();
-      window.setVisible(true);
-      editor.requestFocusInWindow();
-    }
-  };
-  private final Action renameTitle = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      ListModel<E> m = getModel();
-      String title = editor.getText().trim();
-      int index = editingIndex; // getSelectedIndex();
-      if (!title.isEmpty() && index >= 0 && m instanceof DefaultListModel<?>) {
-        @SuppressWarnings("unchecked")
-        DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
-        ListItem item = m.getElementAt(index);
-        model.remove(index);
-        model.add(index, new ListItem(editor.getText().trim(), item.getIcon()));
-        setSelectedIndex(index); // 1. Both must be run
-        EventQueue.invokeLater(() -> setSelectedIndex(index)); // 2. Both must be run
-      }
-      // glassPane.setVisible(false);
-      window.setVisible(false);
-      editingIndex = -1;
-    }
-  };
+  private final Action startEditing = new StartEditingAction();
+  private final Action renameTitle = new RenameAction();
 
   protected EditableList(ListModel<E> model) {
     super(model);
@@ -259,8 +209,8 @@ class EditableList<E extends ListItem> extends JList<E> {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
 
-    ActionMap am = editor.getActionMap();
-    am.put(RENAME, renameTitle);
+    // ActionMap am = editor.getActionMap();
+    editor.getActionMap().put(RENAME, renameTitle);
     // glassPane.setVisible(false);
     Action cancelEditing = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -269,7 +219,7 @@ class EditableList<E extends ListItem> extends JList<E> {
         editingIndex = -1;
       }
     };
-    am.put(CANCEL, cancelEditing);
+    editor.getActionMap().put(CANCEL, cancelEditing);
 
     getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
     getActionMap().put(EDITING, startEditing);
@@ -344,50 +294,90 @@ class EditableList<E extends ListItem> extends JList<E> {
     addMouseMotionListener(handler);
   }
 
-  /* default */ class ResizeHandler implements DocumentListener {
-    private int prev = -1;
-
-    private void update() {
-      EventQueue.invokeLater(() -> {
-        int h = editor.getPreferredSize().height;
-        if (prev != h) {
-          Rectangle rect = editor.getBounds();
-          rect.height = h;
-          editor.setBounds(rect);
-          window.pack();
-          editor.requestFocusInWindow();
-        }
-        prev = h;
-      });
-    }
-
-    @Override public void insertUpdate(DocumentEvent e) {
-      update();
-    }
-
-    @Override public void removeUpdate(DocumentEvent e) {
-      update();
-    }
-
-    @Override public void changedUpdate(DocumentEvent e) {
-      update();
+  private final class StartEditingAction extends AbstractAction {
+    @Override public void actionPerformed(ActionEvent e) {
+      // getRootPane().setGlassPane(glassPane);
+      int idx = getSelectedIndex();
+      editingIndex = idx;
+      Rectangle rect = getCellBounds(idx, idx);
+      // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
+      // rect.setLocation(p);
+      editorWidth = rect.width;
+      editor.setText(getSelectedValue().getTitle());
+      int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
+      rect.y += rect.height - rowHeight - 2 - 1;
+      rect.height = editor.getPreferredSize().height;
+      editor.setBounds(rect);
+      editor.selectAll();
+      // glassPane.add(editor);
+      // glassPane.setVisible(true);
+      Point p = new Point(rect.getLocation());
+      SwingUtilities.convertPointToScreen(p, EditableList.this);
+      if (window == null) {
+        window = new JWindow(SwingUtilities.getWindowAncestor(EditableList.this));
+        window.setFocusableWindowState(true);
+        window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        // window.setAlwaysOnTop(true);
+        window.add(editor);
+      }
+      window.setLocation(p);
+      window.pack();
+      window.setVisible(true);
+      editor.requestFocusInWindow();
     }
   }
 
-  /* default */ class EditingHandler extends MouseAdapter {
-    private boolean startOutside;
-
-    @Override public void mouseClicked(MouseEvent e) {
-      int idx = getSelectedIndex();
-      Rectangle rect = getCellBounds(idx, idx);
-      if (rect == null) {
-        return;
+  private final class RenameAction extends AbstractAction {
+    @Override public void actionPerformed(ActionEvent e) {
+      ListModel<E> m = getModel();
+      String title = editor.getText().trim();
+      int index = editingIndex; // getSelectedIndex();
+      if (!title.isEmpty() && index >= 0 && m instanceof DefaultListModel<?>) {
+        @SuppressWarnings("unchecked")
+        DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
+        ListItem item = m.getElementAt(index);
+        model.remove(index);
+        model.add(index, new ListItem(editor.getText().trim(), item.getIcon()));
+        setSelectedIndex(index); // 1. Both must be run
+        EventQueue.invokeLater(() -> setSelectedIndex(index)); // 2. Both must be run
       }
+      // glassPane.setVisible(false);
+      window.setVisible(false);
+      editingIndex = -1;
+    }
+  }
+
+  private final class ResizeHandler implements DocumentListener {
+    private int prev = -1;
+
+    private void update() {
       int h = editor.getPreferredSize().height;
-      rect.y = rect.y + rect.height - h - 2 - 1;
-      rect.height = h;
-      boolean isDoubleClick = e.getClickCount() >= 2;
-      if (isDoubleClick && rect.contains(e.getPoint())) {
+      if (prev != h) {
+        Rectangle rect = editor.getBounds();
+        rect.height = h;
+        editor.setBounds(rect);
+        window.pack();
+        editor.requestFocusInWindow();
+      }
+      prev = h;
+    }
+
+    @Override public void insertUpdate(DocumentEvent e) {
+      EventQueue.invokeLater(this::update);
+    }
+
+    @Override public void removeUpdate(DocumentEvent e) {
+      EventQueue.invokeLater(this::update);
+    }
+
+    @Override public void changedUpdate(DocumentEvent e) {
+      EventQueue.invokeLater(this::update);
+    }
+  }
+
+  private final class EditingHandler extends EditingMouseAdapter {
+    @Override public void mouseClicked(MouseEvent e) {
+      if (isStartEditingEvent(e, editor.getPreferredSize())) {
         Component c = e.getComponent();
         ActionEvent ev = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
         startEditing.actionPerformed(ev);
@@ -404,31 +394,48 @@ class EditableList<E extends ListItem> extends JList<E> {
         clearSelectionAndFocus(list);
       }
     }
+  }
+}
 
-    @Override public void mouseReleased(MouseEvent e) {
+class EditingMouseAdapter extends MouseAdapter {
+  protected boolean startOutside;
+
+  @Override public void mouseReleased(MouseEvent e) {
+    startOutside = false;
+  }
+
+  @Override public void mouseDragged(MouseEvent e) {
+    JList<?> list = (JList<?>) e.getComponent();
+    if (contains(list, e.getPoint())) {
       startOutside = false;
+    } else if (startOutside) {
+      clearSelectionAndFocus(list);
     }
+  }
 
-    @Override public void mouseDragged(MouseEvent e) {
-      JList<?> list = (JList<?>) e.getComponent();
-      if (contains(list, e.getPoint())) {
-        startOutside = false;
-      } else if (startOutside) {
-        clearSelectionAndFocus(list);
-      }
+  protected boolean isStartEditingEvent(MouseEvent e, Dimension dim) {
+    JList<?> list = (JList<?>) e.getComponent();
+    int idx = list.getSelectedIndex();
+    Rectangle rect = list.getCellBounds(idx, idx);
+    boolean b = false;
+    if (rect != null) {
+      rect.y = rect.y + rect.height - dim.height - 2 - 1;
+      rect.height = dim.height;
+      b = e.getClickCount() >= 2 && rect.contains(e.getPoint());
     }
+    return b;
+  }
 
-    private void clearSelectionAndFocus(JList<?> list) {
-      list.clearSelection();
-      list.getSelectionModel().setAnchorSelectionIndex(-1);
-      list.getSelectionModel().setLeadSelectionIndex(-1);
-    }
+  protected void clearSelectionAndFocus(JList<?> list) {
+    list.clearSelection();
+    list.getSelectionModel().setAnchorSelectionIndex(-1);
+    list.getSelectionModel().setLeadSelectionIndex(-1);
+  }
 
-    private boolean contains(JList<?> list, Point pt) {
-      return IntStream.range(0, list.getModel().getSize())
-          .mapToObj(i -> list.getCellBounds(i, i))
-          .anyMatch(r -> r != null && r.contains(pt));
-    }
+  protected boolean contains(JList<?> list, Point pt) {
+    return IntStream.range(0, list.getModel().getSize())
+        .mapToObj(i -> list.getCellBounds(i, i))
+        .anyMatch(r -> r != null && r.contains(pt));
   }
 }
 
