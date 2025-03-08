@@ -152,14 +152,7 @@ class LoggingTextPane extends JTextPane {
   @Override public void updateUI() {
     super.updateUI();
     setEditable(false);
-    StyledDocument doc = getStyledDocument();
-    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
-    // Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
-    // StyleConstants.setForeground(error, Color.BLACK);
-    // Style error = doc.addStyle(ERROR, regular);
-    StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
-    StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
+    EventQueue.invokeLater(this::initStyle);
   }
 
   public void append(Message m) {
@@ -175,6 +168,17 @@ class LoggingTextPane extends JTextPane {
       wrap.initCause(ex);
       throw wrap;
     }
+  }
+
+  private void initStyle() {
+    StyledDocument doc = getStyledDocument();
+    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+    // Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
+    // StyleConstants.setForeground(error, Color.BLACK);
+    // Style error = doc.addStyle(ERROR, regular);
+    StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
+    StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
   }
 }
 
