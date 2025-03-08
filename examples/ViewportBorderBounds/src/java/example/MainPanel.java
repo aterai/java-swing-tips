@@ -69,6 +69,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void loadFile(String path, ScriptEngine engine, JEditorPane editor) {
+    try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
+      String txt = lines
+          .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+          .collect(Collectors.joining("\n"));
+      editor.setText("<pre>" + ScriptEngineUtils.prettify(engine, txt) + "\n</pre>");
+    } catch (IOException ex) {
+      // ex.printStackTrace();
+      editor.setText(ex.getMessage());
+    }
+  }
+
   private static StyleSheet makeStyleSheet() {
     // https://github.com/google/code-prettify/blob/master/styles/desert.css
     StyleSheet styleSheet = new StyleSheet();
@@ -84,18 +96,6 @@ public final class MainPanel extends JPanel {
     styleSheet.addRule(".atv {color:#ffa0a0}");
     styleSheet.addRule(".dec {color:#98fb98}");
     return styleSheet;
-  }
-
-  private static void loadFile(String path, ScriptEngine engine, JEditorPane editor) {
-    try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
-      String txt = lines
-          .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
-          .collect(Collectors.joining("\n"));
-      editor.setText("<pre>" + ScriptEngineUtils.prettify(engine, txt) + "\n</pre>");
-    } catch (IOException ex) {
-      // ex.printStackTrace();
-      editor.setText(ex.getMessage());
-    }
   }
 
   public static void main(String[] args) {
@@ -158,8 +158,6 @@ final class ScriptEngineUtils {
     ScriptEngineManager manager = new ScriptEngineManager();
     ScriptEngine engine = manager.getEngineByName("JavaScript");
 
-    // String p = "https://raw.githubusercontent.com/google/code-prettify/f5ad44e3253f1bc8e288477a36b2ce5972e8e161/src/prettify.js";
-    // URL url = new URL(p);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/prettify.js");
     try {
@@ -181,7 +179,6 @@ final class ScriptEngineUtils {
       Object w = engine.get("window");
       printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
     } catch (ScriptException | NoSuchMethodException ex) {
-      // ex.printStackTrace();
       printTxt = ex.getMessage();
     }
     return printTxt;

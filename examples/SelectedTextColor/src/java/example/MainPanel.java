@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.script.Invocable;
@@ -25,25 +26,11 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private final JEditorPane editor1 = new JEditorPane();
   private final JEditorPane editor2 = new JEditorPane();
-  private final transient ScriptEngine engine = createEngine();
 
   private MainPanel() {
     super(new BorderLayout());
-    StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule(".str {color:#008800}");
-    styleSheet.addRule(".kwd {color:#000088}");
-    styleSheet.addRule(".com {color:#880000}");
-    styleSheet.addRule(".typ {color:#660066}");
-    styleSheet.addRule(".lit {color:#006666}");
-    styleSheet.addRule(".pun {color:#666600}");
-    styleSheet.addRule(".pln {color:#000000}");
-    styleSheet.addRule(".tag {color:#000088}");
-    styleSheet.addRule(".atn {color:#660066}");
-    styleSheet.addRule(".atv {color:#008800}");
-    styleSheet.addRule(".dec {color:#660066}");
-
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(styleSheet);
+    htmlEditorKit.setStyleSheet(makeStyleSheet());
 
     Stream.of(editor1, editor2).forEach(e -> {
       e.setEditorKit(htmlEditorKit);
@@ -56,12 +43,13 @@ public final class MainPanel extends JPanel {
     editor2.setSelectionColor(new Color(0x64_88_AA_AA, true));
     // TEST: editor2.setSelectionColor(null);
 
+    ScriptEngine engine = ScriptEngineUtils.createEngine();
     JButton button = new JButton("open");
     button.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       int ret = fileChooser.showOpenDialog(getRootPane());
       if (ret == JFileChooser.APPROVE_OPTION) {
-        loadFile(fileChooser.getSelectedFile().getAbsolutePath());
+        loadFile(fileChooser.getSelectedFile().getAbsolutePath(), engine);
       }
     });
 
@@ -78,80 +66,35 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void loadFile(String path) {
+  private void loadFile(String path, ScriptEngine engine) {
     try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
       String txt = lines
           .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
-      String html = "<pre>" + prettify(engine, txt) + "\n</pre>";
+      String html = "<pre>" + ScriptEngineUtils.prettify(engine, txt) + "\n</pre>";
       editor1.setText(html);
       editor2.setText(html);
     } catch (IOException ex) {
-      ex.printStackTrace();
+      // Logger.getGlobal().severe(ex::getMessage);
       editor1.setText(ex.getMessage());
       editor2.setText(ex.getMessage());
     }
   }
 
-  private static ScriptEngine createEngine() {
-    ScriptEngineManager manager = new ScriptEngineManager();
-    ScriptEngine engine = manager.getEngineByName("JavaScript");
-
-    // String p = "https://raw.githubusercontent.com/google/code-prettify/f5ad44e3253f1bc8e288477a36b2ce5972e8e161/src/prettify.js";
-    // URL url = new URL(p);
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL url = cl.getResource("example/prettify.js");
-    try {
-      assert url != null;
-      // Charset cs = StandardCharsets.UTF_8;
-      // try (Reader reader = new BufferedReader(new InputStreamReader(url.openStream(), cs))) {
-      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
-        engine.eval("var window={}, navigator=null;");
-        engine.eval(reader);
-      }
-    } catch (IOException | ScriptException | URISyntaxException ex) {
-      ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
-    }
-    return engine;
-
-    // try {
-    //   URI uri = MainPanel.class.getResource("prettify.js").toURI();
-    //   // https://stackoverflow.com/questions/22605666/java-access-files-in-jar-causes-java-nio-file-filesystemnotfoundexception
-    //   if ("jar".equals(uri.getScheme())) {
-    //     for (FileSystemProvider provider : FileSystemProvider.installedProviders()) {
-    //       if (provider.getScheme().equalsIgnoreCase("jar")) {
-    //         try {
-    //           provider.getFileSystem(uri);
-    //         } catch (FileSystemNotFoundException e) {
-    //           // in this case we need to initialize it first:
-    //           provider.newFileSystem(uri, Collections.emptyMap());
-    //         }
-    //       }
-    //     }
-    //   }
-    //   Path path = Paths.get(uri);
-    //   try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-    //     engine.eval("var window={}, navigator=null;");
-    //     engine.eval(r);
-    //     return engine;
-    //   }
-    // } catch (IOException | ScriptException | URISyntaxException ex) {
-    //   ex.printStackTrace();
-    //   return null;
-    // }
-  }
-
-  private static String prettify(ScriptEngine engine, String src) {
-    String printTxt;
-    try {
-      Object w = engine.get("window");
-      printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
-    } catch (ScriptException | NoSuchMethodException ex) {
-      // ex.printStackTrace();
-      printTxt = ex.getMessage();
-    }
-    return printTxt;
+  private static StyleSheet makeStyleSheet() {
+    StyleSheet styleSheet = new StyleSheet();
+    styleSheet.addRule(".str {color:#008800}");
+    styleSheet.addRule(".kwd {color:#000088}");
+    styleSheet.addRule(".com {color:#880000}");
+    styleSheet.addRule(".typ {color:#660066}");
+    styleSheet.addRule(".lit {color:#006666}");
+    styleSheet.addRule(".pun {color:#666600}");
+    styleSheet.addRule(".pln {color:#000000}");
+    styleSheet.addRule(".tag {color:#000088}");
+    styleSheet.addRule(".atn {color:#660066}");
+    styleSheet.addRule(".atv {color:#008800}");
+    styleSheet.addRule(".dec {color:#660066}");
+    return styleSheet;
   }
 
   public static void main(String[] args) {
@@ -164,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -173,5 +116,41 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+final class ScriptEngineUtils {
+  private ScriptEngineUtils() {
+    /* Singleton */
+  }
+
+  public static ScriptEngine createEngine() {
+    ScriptEngineManager manager = new ScriptEngineManager();
+    ScriptEngine engine = manager.getEngineByName("JavaScript");
+
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource("example/prettify.js");
+    try {
+      assert url != null;
+      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
+        engine.eval("var window={}, navigator=null;");
+        engine.eval(reader);
+      }
+    } catch (IOException | ScriptException | URISyntaxException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      Toolkit.getDefaultToolkit().beep();
+    }
+    return engine;
+  }
+
+  public static String prettify(ScriptEngine engine, String src) {
+    String printTxt;
+    try {
+      Object w = engine.get("window");
+      printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
+    } catch (ScriptException | NoSuchMethodException ex) {
+      printTxt = ex.getMessage();
+    }
+    return printTxt;
   }
 }

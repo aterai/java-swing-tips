@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.script.Invocable;
@@ -25,27 +26,14 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule(".str {color:#008800}");
-    styleSheet.addRule(".kwd {color:#000088}");
-    styleSheet.addRule(".com {color:#880000}");
-    styleSheet.addRule(".typ {color:#660066}");
-    styleSheet.addRule(".lit {color:#006666}");
-    styleSheet.addRule(".pun {color:#666600}");
-    styleSheet.addRule(".pln {color:#000000}");
-    styleSheet.addRule(".tag {color:#000088}");
-    styleSheet.addRule(".atn {color:#660066}");
-    styleSheet.addRule(".atv {color:#008800}");
-    styleSheet.addRule(".dec {color:#660066}");
-
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(styleSheet);
+    htmlEditorKit.setStyleSheet(makeStyleSheet());
 
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
 
-    ScriptEngine engine = createEngine();
+    ScriptEngine engine = ScriptEngineUtils.createEngine();
     JButton button = new JButton("open");
     button.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
@@ -70,14 +58,57 @@ public final class MainPanel extends JPanel {
       String txt = lines
           .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
           .collect(Collectors.joining("\n"));
-      editor.setText("<pre>" + prettify(engine, txt) + "\n</pre>");
+      editor.setText("<pre>" + ScriptEngineUtils.prettify(engine, txt) + "\n</pre>");
     } catch (IOException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       editor.setText(ex.getMessage());
     }
   }
 
-  private static ScriptEngine createEngine() {
+  private static StyleSheet makeStyleSheet() {
+    StyleSheet styleSheet = new StyleSheet();
+    styleSheet.addRule(".str {color:#008800}");
+    styleSheet.addRule(".kwd {color:#000088}");
+    styleSheet.addRule(".com {color:#880000}");
+    styleSheet.addRule(".typ {color:#660066}");
+    styleSheet.addRule(".lit {color:#006666}");
+    styleSheet.addRule(".pun {color:#666600}");
+    styleSheet.addRule(".pln {color:#000000}");
+    styleSheet.addRule(".tag {color:#000088}");
+    styleSheet.addRule(".atn {color:#660066}");
+    styleSheet.addRule(".atv {color:#008800}");
+    styleSheet.addRule(".dec {color:#660066}");
+    return styleSheet;
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+final class ScriptEngineUtils {
+  private ScriptEngineUtils() {
+    /* Singleton */
+  }
+
+  public static ScriptEngine createEngine() {
     ScriptEngineManager manager = new ScriptEngineManager();
     ScriptEngine engine = manager.getEngineByName("JavaScript");
 
@@ -94,7 +125,7 @@ public final class MainPanel extends JPanel {
         engine.eval(reader);
       }
     } catch (IOException | ScriptException | URISyntaxException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       Toolkit.getDefaultToolkit().beep();
     }
     return engine;
@@ -126,7 +157,7 @@ public final class MainPanel extends JPanel {
     // }
   }
 
-  private static String prettify(ScriptEngine engine, String src) {
+  public static String prettify(ScriptEngine engine, String src) {
     String printTxt;
     try {
       Object w = engine.get("window");
@@ -136,26 +167,5 @@ public final class MainPanel extends JPanel {
       printTxt = ex.getMessage();
     }
     return printTxt;
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
