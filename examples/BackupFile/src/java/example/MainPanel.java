@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
@@ -27,22 +28,17 @@ public final class MainPanel extends JPanel {
   private final JSpinner spinner1 = new JSpinner(model1);
   private final JSpinner spinner2 = new JSpinner(model2);
   private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
-  private final JTextPane log = new JTextPane();
+  private final LoggingTextPane log = new LoggingTextPane();
 
   private MainPanel() {
     super(new BorderLayout());
-    log.setEditable(false);
-    StyledDocument doc = log.getStyledDocument();
-    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
-    // Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
-    // StyleConstants.setForeground(error, Color.BLACK);
-    // Style error = doc.addStyle(ERROR, regular);
-    StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
-    StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
-
     JButton ok = new JButton("Create new " + FILE_NAME);
-    ok.addActionListener(e -> addActionPerformed());
+    ok.addActionListener(e -> {
+      File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
+      int oldIdx = model1.getNumber().intValue();
+      int newIdx = model2.getNumber().intValue();
+      new BackupTask(file, oldIdx, newIdx).execute();
+    });
 
     JButton clear = new JButton("clear");
     clear.addActionListener(e -> log.setText(""));
@@ -82,38 +78,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void addActionPerformed() {
-    File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
-    new BackgroundTask(file, model1.getNumber().intValue(), model2.getNumber().intValue()) {
-      @Override protected void process(List<Message> chunks) {
-        if (isDisplayable() && !isCancelled()) {
-          chunks.forEach(MainPanel.this::append);
-        } else {
-          cancel(true);
-        }
-      }
-
-      @Override protected void done() {
-        try {
-          File nf = get();
-          if (Objects.isNull(nf)) {
-            append(mkMsg("Failed to create backup file.", MessageType.ERROR));
-          } else if (nf.createNewFile()) {
-            append(mkMsg("Generated " + nf.getName() + ".", MessageType.REGULAR));
-          } else {
-            append(mkMsg("Failed to generate " + nf.getName() + ".", MessageType.ERROR));
-          }
-        } catch (InterruptedException ex) {
-          append(mkMsg(ex.getMessage(), MessageType.ERROR));
-          Thread.currentThread().interrupt();
-        } catch (ExecutionException | IOException ex) {
-          append(mkMsg(ex.getMessage(), MessageType.ERROR));
-        }
-        append(mkMsg("----------------------------------", MessageType.REGULAR));
-      }
-    }.execute();
-  }
-
   private Component makeNorthBox() {
     JPanel northBox = new JPanel(new GridLayout(3, 2, 5, 5));
     northBox.add(new JLabel("Number of backups to keep:", SwingConstants.RIGHT));
@@ -125,18 +89,36 @@ public final class MainPanel extends JPanel {
     return northBox;
   }
 
-  private void append(Message m) {
-    StyledDocument doc = log.getStyledDocument();
-    int len = doc.getLength();
-    String txt = m.getText() + "\n";
-    Style style = doc.getStyle(m.getType().toString());
-    try {
-      doc.insertString(len, txt, style);
-    } catch (BadLocationException ex) {
-      // should never happen
-      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-      wrap.initCause(ex);
-      throw wrap;
+  private final class BackupTask extends BackgroundTask {
+    public BackupTask(File file, int oldIdx, int newIdx) {
+      super(file, oldIdx, newIdx);
+    }
+
+    @Override protected void process(List<Message> chunks) {
+      if (isDisplayable() && !isCancelled()) {
+        chunks.forEach(log::append);
+      } else {
+        cancel(true);
+      }
+    }
+
+    @Override protected void done() {
+      try {
+        File nf = get();
+        if (Objects.isNull(nf)) {
+          log.append(mkMsg("Failed to create backup file.", MessageType.ERROR));
+        } else if (nf.createNewFile()) {
+          log.append(mkMsg("Generated " + nf.getName() + ".", MessageType.REGULAR));
+        } else {
+          log.append(mkMsg("Failed to generate " + nf.getName() + ".", MessageType.ERROR));
+        }
+      } catch (InterruptedException ex) {
+        log.append(mkMsg(ex.getMessage(), MessageType.ERROR));
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException | IOException ex) {
+        log.append(mkMsg(ex.getMessage(), MessageType.ERROR));
+      }
+      log.append(mkMsg("----------------------------------", MessageType.REGULAR));
     }
   }
 
@@ -150,7 +132,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -159,6 +141,40 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class LoggingTextPane extends JTextPane {
+  protected LoggingTextPane() {
+    super();
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setEditable(false);
+    StyledDocument doc = getStyledDocument();
+    // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+    Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
+    // Style regular = doc.addStyle(MessageType.REGULAR.toString(), def);
+    // StyleConstants.setForeground(error, Color.BLACK);
+    // Style error = doc.addStyle(ERROR, regular);
+    StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
+    StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
+  }
+
+  public void append(Message m) {
+    StyledDocument doc = getStyledDocument();
+    int len = doc.getLength();
+    String txt = m.getText() + "\n";
+    Style style = doc.getStyle(m.getType().toString());
+    try {
+      doc.insertString(len, txt, style);
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
   }
 }
 
