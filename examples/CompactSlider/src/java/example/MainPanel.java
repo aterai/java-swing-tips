@@ -23,16 +23,13 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.NumberFormatter;
 
-@SuppressWarnings("PMD.TooManyMethods")
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
+    JPanel p = new JPanel(new GridLayout(0, 1, 10, 10));
     p.setOpaque(false);
-    p.add(makeCompactSlider1());
-    p.add(makeCompactSlider2());
-    p.add(makeCompactSlider3());
-    p.add(makeCompactSlider4());
+    p.add(new CompactSliderPanel1());
+    p.add(new CompactSliderPanel2());
     add(p, BorderLayout.NORTH);
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -42,192 +39,202 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+final class CompactSliderPanel1 extends JPanel {
+  public CompactSliderPanel1() {
+    super(new GridLayout(0, 1, 10, 10));
+    setOpaque(false);
+    add(makeCompactSlider1());
+    add(makeCompactSlider2());
+    setBackground(Color.WHITE);
+  }
+
   private static Component makeCompactSlider1() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    JProgressBar progressBar = makeProgressBar(m);
-    JSpinner spinner = makeSpinner(progressBar);
+    JProgressBar progressBar = new FlatProgressBar(m);
+    int value = m.getValue();
+    int min = m.getMinimum();
+    int max = m.getMaximum();
+    SpinnerNumberModel model = new SpinnerNumberModel(value, min, max, 5);
+    JSpinner spinner = new ProgressBarSpinner(model, progressBar);
     initListener(spinner, progressBar);
     return spinner;
   }
 
-  private static JProgressBar makeProgressBar(BoundedRangeModel m) {
-    return new JProgressBar(m) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setUI(new BasicProgressBarUI());
-        setOpaque(false);
-        setBorder(BorderFactory.createEmptyBorder());
-      }
-    };
-  }
-
-  private static JSpinner makeSpinner(JProgressBar progressBar) {
-    BoundedRangeModel m = progressBar.getModel();
-    int value = m.getValue();
-    int min = m.getMinimum();
-    int max = m.getMaximum();
-    return new JSpinner(new SpinnerNumberModel(value, min, max, 5)) {
-      private final JPanel renderer = new JPanel();
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
-        editor.setOpaque(false);
-        JTextField field = editor.getTextField();
-        field.setOpaque(false);
-        field.setBorder(BorderFactory.createEmptyBorder());
-        UIDefaults d = new UIDefaults();
-        Painter<JComponent> painter = (g, c, w, h) -> {
-          // empty painter
-        };
-        String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
-        d.put(key + "[Enabled].backgroundPainter", painter);
-        d.put(key + "[Focused].backgroundPainter", painter);
-        d.put(key + "[Selected].backgroundPainter", painter);
-        field.putClientProperty("Nimbus.Overrides", d);
-        field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
-      }
-
-      @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        JComponent editor = getEditor();
-        Rectangle r = editor.getBounds();
-        SwingUtilities.paintComponent(g2, progressBar, renderer, r);
-        g2.dispose();
-      }
-    };
-  }
-
   private static Component makeCompactSlider2() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    JProgressBar progressBar = makeProgressBar(m);
-    JSpinner spinner = makeSpinner2(m);
-    initListener(spinner, progressBar);
-    LayerUI<JSpinner> layerUI = new LayerUI<JSpinner>() {
-      private final JPanel renderer = new JPanel();
-
-      @Override public void paint(Graphics g, JComponent c) {
-        // super.paint(g, c);
-        if (c instanceof JLayer) {
-          Component view = ((JLayer<?>) c).getView();
-          if (view instanceof JSpinner) {
-            JComponent editor = ((JSpinner) view).getEditor();
-            Rectangle r = editor.getBounds();
-            Graphics2D g2 = (Graphics2D) g.create();
-            SwingUtilities.paintComponent(g2, progressBar, renderer, r);
-            g2.dispose();
-          }
-        }
-        super.paint(g, c);
-      }
-    };
-    return new JLayer<>(spinner, layerUI);
-  }
-
-  private static JSpinner makeSpinner2(BoundedRangeModel m) {
+    JProgressBar progressBar = new FlatProgressBar(m);
     int min = m.getMinimum();
     int max = m.getMaximum();
     int value = m.getValue();
-    return new JSpinner(new SpinnerNumberModel(value, min, max, 5)) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        DefaultEditor editor = (DefaultEditor) getEditor();
-        editor.setOpaque(false);
-        JTextField field = editor.getTextField();
-        field.setOpaque(false);
-        field.setBorder(BorderFactory.createEmptyBorder());
-        UIDefaults d = new UIDefaults();
-        Painter<JComponent> painter = (g, c, w, h) -> {
-          // empty painter
-        };
-        String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
-        d.put(key + "[Enabled].backgroundPainter", painter);
-        d.put(key + "[Focused].backgroundPainter", painter);
-        d.put(key + "[Selected].backgroundPainter", painter);
-        field.putClientProperty("Nimbus.Overrides", d);
-        field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
-      }
-    };
+    JSpinner spinner = new FlatSpinner(new SpinnerNumberModel(value, min, max, 5));
+    initListener(spinner, progressBar);
+    return new JLayer<>(spinner, new ProgressBarLayerUI(progressBar));
   }
 
   private static void initListener(JSpinner spinner, JProgressBar progressBar) {
     spinner.addChangeListener(e -> {
-      JSpinner source = (JSpinner) e.getSource();
-      progressBar.setValue((Integer) source.getValue());
+      JSpinner src = (JSpinner) e.getSource();
+      progressBar.setValue((Integer) src.getValue());
     });
     spinner.addMouseWheelListener(e -> {
-      JSpinner source = (JSpinner) e.getComponent();
-      SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
-      Integer oldValue = (Integer) source.getValue();
-      Integer intValue = oldValue - e.getWheelRotation() * model.getStepSize().intValue();
-      Integer max = (Integer) model.getMaximum();
-      Integer min = (Integer) model.getMinimum();
-      if (min <= intValue && intValue <= max) {
-        source.setValue(intValue);
+      JSpinner src = (JSpinner) e.getComponent();
+      SpinnerNumberModel m = (SpinnerNumberModel) src.getModel();
+      int step = e.getWheelRotation() * m.getStepSize().intValue();
+      int iv = (int) src.getValue() - step;
+      if ((Integer) m.getMinimum() <= iv && iv <= (Integer) m.getMaximum()) {
+        src.setValue(iv);
       }
     });
+  }
+}
+
+class FlatProgressBar extends JProgressBar {
+  protected FlatProgressBar(BoundedRangeModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setUI(new BasicProgressBarUI());
+    setOpaque(false);
+    setBorder(BorderFactory.createEmptyBorder());
+  }
+}
+
+class FlatSpinner extends JSpinner {
+  protected FlatSpinner(SpinnerModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    DefaultEditor editor = (DefaultEditor) getEditor();
+    editor.setOpaque(false);
+    JTextField field = editor.getTextField();
+    field.setOpaque(false);
+    field.setBorder(BorderFactory.createEmptyBorder());
+    UIDefaults d = new UIDefaults();
+    Painter<JComponent> painter = (g, c, w, h) -> {
+      // empty painter
+    };
+    String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
+    d.put(key + "[Enabled].backgroundPainter", painter);
+    d.put(key + "[Focused].backgroundPainter", painter);
+    d.put(key + "[Selected].backgroundPainter", painter);
+    field.putClientProperty("Nimbus.Overrides", d);
+    field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+  }
+}
+
+class ProgressBarLayerUI extends LayerUI<JSpinner> {
+  private final JPanel renderer = new JPanel();
+  private final JProgressBar progressBar;
+
+  protected ProgressBarLayerUI(JProgressBar progressBar) {
+    super();
+    this.progressBar = progressBar;
+  }
+
+  @Override public void paint(Graphics g, JComponent c) {
+    // super.paint(g, c);
+    if (c instanceof JLayer) {
+      Component view = ((JLayer<?>) c).getView();
+      if (view instanceof JSpinner) {
+        JComponent editor = ((JSpinner) view).getEditor();
+        Rectangle r = editor.getBounds();
+        Graphics2D g2 = (Graphics2D) g.create();
+        SwingUtilities.paintComponent(g2, progressBar, renderer, r);
+        g2.dispose();
+      }
+    }
+    super.paint(g, c);
+  }
+}
+
+class ProgressBarSpinner extends JSpinner {
+  private final JPanel renderer = new JPanel();
+  private final JProgressBar progressBar;
+
+  protected ProgressBarSpinner(SpinnerModel model, JProgressBar progressBar) {
+    super(model);
+    this.progressBar = progressBar;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
+    editor.setOpaque(false);
+    JTextField field = editor.getTextField();
+    field.setOpaque(false);
+    field.setBorder(BorderFactory.createEmptyBorder());
+    UIDefaults d = new UIDefaults();
+    Painter<JComponent> painter = (g, c, w, h) -> {
+      // empty painter
+    };
+    String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
+    d.put(key + "[Enabled].backgroundPainter", painter);
+    d.put(key + "[Focused].backgroundPainter", painter);
+    d.put(key + "[Selected].backgroundPainter", painter);
+    field.putClientProperty("Nimbus.Overrides", d);
+    field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D) g.create();
+    JComponent editor = getEditor();
+    Rectangle r = editor.getBounds();
+    SwingUtilities.paintComponent(g2, progressBar, renderer, r);
+    g2.dispose();
+  }
+}
+
+final class CompactSliderPanel2 extends JPanel {
+  public CompactSliderPanel2() {
+    super(new GridLayout(0, 1, 10, 10));
+    setOpaque(false);
+    add(makeCompactSlider3());
+    add(makeCompactSlider4());
+    setBackground(Color.WHITE);
   }
 
   private static Component makeCompactSlider3() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    JProgressBar progressBar = makeProgressBar(m);
-    JTextField field = makeTextField(progressBar);
+    JProgressBar progressBar = new FlatProgressBar(m);
+    JFormattedTextField field = new ProgressBarFormattedTextField(progressBar);
+    field.setValue(50);
+    field.addMouseWheelListener(e -> {
+      JFormattedTextField src = (JFormattedTextField) e.getComponent();
+      BoundedRangeModel model = progressBar.getModel();
+      int iv = (Integer) src.getValue() - e.getWheelRotation();
+      if (model.getMinimum() <= iv && iv <= model.getMaximum()) {
+        src.setValue(iv);
+        progressBar.setValue(iv);
+      }
+    });
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(field);
-    box.add(makeButton(-5, field, progressBar.getModel()));
-    box.add(makeButton(+5, field, progressBar.getModel()));
+    box.add(makeButton(-5, field, m));
+    box.add(makeButton(+5, field, m));
     box.add(Box.createHorizontalGlue());
     return box;
-  }
-
-  private static JTextField makeTextField(JProgressBar progressBar) {
-    JFormattedTextField field = new JFormattedTextField() {
-      private final JPanel renderer = new JPanel();
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        setFormatterFactory(new NumberFormatterFactory());
-        setHorizontalAlignment(RIGHT);
-      }
-
-      @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        Rectangle r = SwingUtilities.calculateInnerArea(this, null);
-        SwingUtilities.paintComponent(g2, progressBar, renderer, r);
-        g2.dispose();
-        super.paintComponent(g);
-      }
-
-      @Override public void commitEdit() throws ParseException {
-        super.commitEdit();
-        Optional.ofNullable(getValue())
-            .filter(Integer.class::isInstance)
-            .map(Integer.class::cast)
-            .ifPresent(progressBar::setValue);
-      }
-    };
-    field.setHorizontalAlignment(SwingConstants.RIGHT);
-    field.setOpaque(false);
-    field.setColumns(16);
-    field.setValue(50);
-    field.addMouseWheelListener(e -> {
-      JFormattedTextField source = (JFormattedTextField) e.getComponent();
-      BoundedRangeModel model = progressBar.getModel();
-      Integer oldValue = (Integer) source.getValue();
-      int intValue = oldValue - e.getWheelRotation();
-      int max = model.getMaximum();
-      int min = model.getMinimum();
-      if (min <= intValue && intValue <= max) {
-        source.setValue(intValue);
-        progressBar.setValue(intValue);
-      }
-    });
-    return field;
   }
 
   private static JButton makeButton(int step, JTextComponent view, BoundedRangeModel m) {
@@ -249,53 +256,25 @@ public final class MainPanel extends JPanel {
         setAlignmentX(RIGHT_ALIGNMENT);
       }
     };
-    JFormattedTextField field = new JFormattedTextField() {
-      @Override public void updateUI() {
-        // removeMouseListener(handler);
-        // removeMouseMotionListener(handler);
-        super.updateUI();
-        setFormatterFactory(new NumberFormatterFactory());
-        setHorizontalAlignment(RIGHT);
-        setOpaque(false);
-        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        // handler = new MouseEventHandler(slider);
-        // addMouseListener(handler);
-        // addMouseMotionListener(handler);
-      }
-
-      @Override public void commitEdit() throws ParseException {
-        super.commitEdit();
-        Optional.ofNullable(getValue())
-            .filter(Integer.class::isInstance)
-            .map(Integer.class::cast)
-            .ifPresent(slider::setValue);
-      }
-
-      @Override public Dimension getMaximumSize() {
-        return super.getPreferredSize();
-      }
-    };
-    field.setColumns(3);
+    JFormattedTextField field = new SliderFormattedTextField(slider);
     field.setValue(slider.getValue());
-    field.setHorizontalAlignment(SwingConstants.RIGHT);
-    field.setAlignmentX(RIGHT_ALIGNMENT);
     slider.addChangeListener(e -> {
-      JSlider source = (JSlider) e.getSource();
-      field.setValue(source.getValue());
-      source.repaint();
+      JSlider src = (JSlider) e.getSource();
+      field.setValue(src.getValue());
+      src.repaint();
     });
     slider.addMouseWheelListener(e -> {
-      JSlider source = (JSlider) e.getComponent();
-      int oldValue = source.getValue();
-      int intValue = oldValue - e.getWheelRotation();
-      int max = source.getMaximum();
-      int min = source.getMinimum();
-      if (min <= intValue && intValue <= max) {
-        source.setValue(intValue);
-        field.setValue(intValue);
+      JSlider src = (JSlider) e.getComponent();
+      int iv = src.getValue() - e.getWheelRotation();
+      if (src.getMinimum() <= iv && iv <= src.getMaximum()) {
+        src.setValue(iv);
+        field.setValue(iv);
       }
     });
-    JPanel p = makeOverlayPanel(slider.getPreferredSize());
+    JPanel p = new OverlayPanel(slider.getPreferredSize());
+    p.setLayout(new OverlayLayout(p));
+    p.setOpaque(false);
+    p.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     p.add(field);
     p.add(slider);
     Box box = Box.createHorizontalBox();
@@ -308,43 +287,6 @@ public final class MainPanel extends JPanel {
     panel.add(p);
     panel.add(box, BorderLayout.EAST);
     return panel;
-  }
-
-  private static JPanel makeOverlayPanel(Dimension size) {
-    JPanel p = new JPanel() {
-      @Override public boolean isOptimizedDrawingEnabled() {
-        return false;
-      }
-
-      @Override public Dimension getPreferredSize() {
-        return size;
-      }
-    };
-    p.setLayout(new OverlayLayout(p));
-    p.setOpaque(false);
-    p.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-    return p;
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    // try {
-    //     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    // } catch (UnsupportedLookAndFeelException ignored) {
-    //     Toolkit.getDefaultToolkit().beep();
-    // } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-    //     ex.printStackTrace();
-    //     return;
-    // }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
 
@@ -498,6 +440,97 @@ class FlatSliderUI extends BasicSliderUI {
 //     target.repaint();
 //   }
 // }
+
+class ProgressBarFormattedTextField extends JFormattedTextField {
+  private final JPanel renderer = new JPanel();
+  private final JProgressBar progressBar;
+
+  protected ProgressBarFormattedTextField(JProgressBar progressBar) {
+    super();
+    this.progressBar = progressBar;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    setFormatterFactory(new NumberFormatterFactory());
+    setHorizontalAlignment(RIGHT);
+    setHorizontalAlignment(RIGHT);
+    setOpaque(false);
+    setColumns(16);
+    // setValue(50);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    SwingUtilities.paintComponent(g2, progressBar, renderer, r);
+    g2.dispose();
+    super.paintComponent(g);
+  }
+
+  @Override public void commitEdit() throws ParseException {
+    super.commitEdit();
+    Optional.ofNullable(getValue())
+        .filter(Integer.class::isInstance)
+        .map(Integer.class::cast)
+        .ifPresent(progressBar::setValue);
+  }
+}
+
+class SliderFormattedTextField extends JFormattedTextField {
+  private final JSlider slider;
+
+  protected SliderFormattedTextField(JSlider slider) {
+    super();
+    this.slider = slider;
+  }
+
+  @Override public void updateUI() {
+    // removeMouseListener(handler);
+    // removeMouseMotionListener(handler);
+    super.updateUI();
+    setFormatterFactory(new NumberFormatterFactory());
+    setHorizontalAlignment(RIGHT);
+    setOpaque(false);
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    setColumns(3);
+    setHorizontalAlignment(RIGHT);
+    setAlignmentX(RIGHT_ALIGNMENT);
+    // handler = new MouseEventHandler(slider);
+    // addMouseListener(handler);
+    // addMouseMotionListener(handler);
+  }
+
+  @Override public void commitEdit() throws ParseException {
+    super.commitEdit();
+    Optional.ofNullable(getValue())
+        .filter(Integer.class::isInstance)
+        .map(Integer.class::cast)
+        .ifPresent(slider::setValue);
+  }
+
+  @Override public Dimension getMaximumSize() {
+    return super.getPreferredSize();
+  }
+}
+
+class OverlayPanel extends JPanel {
+  private final Dimension size;
+
+  protected OverlayPanel(Dimension size) {
+    super();
+    this.size = size;
+  }
+
+  @Override public boolean isOptimizedDrawingEnabled() {
+    return false;
+  }
+
+  @Override public Dimension getPreferredSize() {
+    return size;
+  }
+}
 
 final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
