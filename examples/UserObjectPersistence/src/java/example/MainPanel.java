@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -59,35 +60,10 @@ public final class MainPanel extends JPanel {
     // tree.setToggleClickCount(1);
 
     JButton save = new JButton("save");
-    save.addActionListener(e -> {
-      try {
-        Path path = File.createTempFile("output", ".xml").toPath();
-        String[] names = {"label", "status"};
-        try (XMLEncoder xe = new XMLEncoder(getOutputStream(path))) {
-          xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(names));
-          xe.writeObject(tree.getModel());
-        }
-        try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
-          textArea.read(r, "temp");
-        }
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        textArea.setText(ex.getMessage());
-      }
-    });
+    save.addActionListener(e -> saveTree(tree));
 
     JButton load = new JButton("load");
-    load.addActionListener(e -> {
-      String text = textArea.getText();
-      if (text.isEmpty()) {
-        return;
-      }
-      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
-        DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
-        m.addTreeModelListener(new CheckBoxStatusUpdateListener());
-        tree.setModel(m);
-      }
-    });
+    load.addActionListener(e -> loadTree(tree));
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -104,6 +80,34 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void saveTree(JTree tree) {
+    try {
+      Path path = File.createTempFile("output", ".xml").toPath();
+      String[] names = {"label", "status"};
+      try (XMLEncoder xe = new XMLEncoder(getOutputStream(path))) {
+        xe.setPersistenceDelegate(CheckBoxNode.class, new DefaultPersistenceDelegate(names));
+        xe.writeObject(tree.getModel());
+      }
+      try (Reader r = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+        textArea.read(r, "temp");
+      }
+    } catch (IOException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      textArea.setText(ex.getMessage());
+    }
+  }
+
+  private void loadTree(JTree tree) {
+    String text = textArea.getText();
+    if (!text.isEmpty()) {
+      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
+        DefaultTreeModel m = (DefaultTreeModel) xd.readObject();
+        m.addTreeModelListener(new CheckBoxStatusUpdateListener());
+        tree.setModel(m);
+      }
+    }
   }
 
   private BufferedOutputStream getOutputStream(Path path) throws IOException {
