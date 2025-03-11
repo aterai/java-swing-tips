@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
@@ -19,12 +20,7 @@ import javax.swing.text.View;
 public final class MainPanel extends JPanel {
   private static final int LR_PAGE_SIZE = 5;
   private final Box box = Box.createHorizontalBox();
-  private final String[] columnNames = {"Year", "String", "Comment"};
-  private final DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column == 0 ? Integer.class : Object.class;
-    }
-  };
+  private final DefaultTableModel model = makeModel();
   private final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
 
   private MainPanel() {
@@ -45,6 +41,15 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static DefaultTableModel makeModel() {
+    String[] columnNames = {"Year", "String", "Comment"};
+    return new DefaultTableModel(columnNames, 0) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column == 0 ? Integer.class : Object.class;
+      }
+    };
   }
 
   private void initLinkBox(int itemsPerPage, int currentPageIndex) {
@@ -116,31 +121,7 @@ public final class MainPanel extends JPanel {
   }
 
   private JRadioButton makeRadioButton(int itemsPerPage, int current, int target) {
-    JRadioButton radio = new JRadioButton(Objects.toString(target)) {
-      @Override protected void fireStateChanged() {
-        ButtonModel bm = getModel();
-        if (bm.isEnabled()) {
-          if (bm.isPressed() && bm.isArmed()) {
-            setForeground(Color.GREEN);
-          } else if (bm.isSelected()) {
-            setForeground(Color.RED);
-          }
-          // } else if (isRolloverEnabled() && bm.isRollover()) {
-          //   setForeground(Color.BLUE);
-          // }
-        } else {
-          setForeground(Color.GRAY);
-        }
-        super.fireStateChanged();
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setUI(new LinkViewRadioButtonUI());
-        setForeground(Color.BLUE);
-        fireStateChanged();
-      }
-    };
+    JRadioButton radio = new LinkViewRadioButton(Objects.toString(target));
     if (target == current) {
       radio.setSelected(true);
     }
@@ -171,7 +152,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -180,6 +161,33 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class LinkViewRadioButton extends JRadioButton {
+  protected LinkViewRadioButton(String text) {
+    super(text);
+  }
+
+  @Override protected void fireStateChanged() {
+    ButtonModel bm = getModel();
+    if (bm.isEnabled()) {
+      if (bm.isPressed() && bm.isArmed()) {
+        setForeground(Color.GREEN);
+      } else if (bm.isSelected()) {
+        setForeground(Color.RED);
+      }
+    } else {
+      setForeground(Color.GRAY);
+    }
+    super.fireStateChanged();
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setUI(new LinkViewRadioButtonUI());
+    setForeground(Color.BLUE);
+    fireStateChanged();
   }
 }
 
