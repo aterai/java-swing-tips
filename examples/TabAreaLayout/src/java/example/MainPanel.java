@@ -5,10 +5,14 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -33,18 +37,13 @@ public final class MainPanel extends JPanel {
 
   private Component makeCardLayoutTabbedPane() {
     CardLayoutTabbedPane tabs = new CardLayoutTabbedPane();
-    tabs.addTab("1:JTree", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
-    tabs.addTab("2:JTable", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(10, 3)));
-    tabs.addTab("3:JTextArea", new ColorIcon(Color.BLUE), new JScrollPane(new JTextArea()));
-    tabs.addTab("4:JButton", new ColorIcon(Color.CYAN), new JButton("JButton"));
-    tabs.addTab("5:JCheckBox", new ColorIcon(Color.ORANGE), new JCheckBox("JCheckBox"));
-    tabs.addTab("6:JRadioButton", new ColorIcon(Color.PINK), new JRadioButton("JRadioButton"));
-    tabs.addTab("7:JSplitPane", new ColorIcon(Color.YELLOW), new JSplitPane());
+    tabs.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    tabs.setBackground(new Color(16, 16, 16));
+    TabbedPaneUtils.makeIconTabs().forEach(t -> tabs.addTab(t.title, t.icon, t.comp));
     EventQueue.invokeLater(() -> tabs.getTabArea().getHorizontalScrollBar().setVisible(false));
-
     JPopupMenu popup = new JPopupMenu();
-    popup.add("test: add");
-    popup.add("test: delete");
+    popup.add("add Tab");
+    popup.add("delete Tab");
     tabs.getTabArea().setComponentPopupMenu(popup);
     return tabs;
   }
@@ -56,7 +55,7 @@ public final class MainPanel extends JPanel {
         String key = "TabbedPane.tabAreaInsets";
         UIManager.put(key, null); // uninstall
         super.updateUI();
-        UIManager.put(key, getButtonPaddingTabAreaInsets());
+        UIManager.put(key, getButtonPadding(this, buttonSize));
         super.updateUI(); // reinstall
       }
 
@@ -67,20 +66,8 @@ public final class MainPanel extends JPanel {
       @Override public float getAlignmentY() {
         return TOP_ALIGNMENT;
       }
-
-      private Insets getButtonPaddingTabAreaInsets() {
-        Insets ti = getTabInsets();
-        Insets ai = getTabAreaInsets();
-        // Dimension d = button.getPreferredSize();
-        FontMetrics fm = getFontMetrics(getFont());
-        int tih = buttonSize - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
-        return new Insets(Math.max(ai.top, tih), ai.left, ai.bottom, ai.left + buttonSize);
-      }
     };
-    tabs.addTab("1:JTree", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
-    tabs.addTab("2:JTable", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(10, 3)));
-    tabs.addTab("3:JTextArea", new ColorIcon(Color.BLUE), new JScrollPane(new JTextArea()));
-    tabs.addTab("4:JButton", new ColorIcon(Color.CYAN), new JButton("JButton"));
+    TabbedPaneUtils.makeIconTabs().forEach(t -> tabs.addTab(t.title, t.icon, t.comp));
 
     Box box = Box.createHorizontalBox();
     box.setAlignmentX(LEFT_ALIGNMENT);
@@ -95,52 +82,38 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
+  private static Insets getButtonPadding(ClippedTitleTabbedPane tabs, int buttonSize) {
+    Insets ti = TabbedPaneUtils.getTabInsets(tabs);
+    Insets ai = TabbedPaneUtils.getTabAreaInsets(tabs);
+    // Dimension d = button.getPreferredSize();
+    FontMetrics fm = tabs.getFontMetrics(tabs.getFont());
+    int tih = buttonSize - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
+    return new Insets(Math.max(ai.top, tih), ai.left, ai.bottom, ai.left + buttonSize);
+  }
+
   private JButton makeDropdownButton(JTabbedPane tabs, int buttonSize) {
-    JButton button = new JButton("⊽") {
-      private transient MouseListener handler;
-
-      @Override public void updateUI() {
-        removeMouseListener(handler);
-        super.updateUI();
-        setFocusable(false);
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 6));
-        handler = new MouseAdapter() {
-          @Override public void mouseEntered(MouseEvent e) {
-            setContentAreaFilled(true);
-          }
-
-          @Override public void mouseExited(MouseEvent e) {
-            setContentAreaFilled(false);
-          }
-        };
-        addMouseListener(handler);
-      }
-
+    JButton button = new DropdownButton("⊽") {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
         d.width = buttonSize;
         return d;
       }
-
-      @Override public float getAlignmentY() {
-        return TOP_ALIGNMENT;
-      }
     };
-    button.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      Point p = b.getLocation();
-      JPopupMenu popup = new JPopupMenu();
-      int selected = tabs.getSelectedIndex();
-      for (int i = 0; i < tabs.getTabCount(); i++) {
-        popup.add(makeRadioMenuItem(tabs, i, selected));
-      }
-      p.x += b.getWidth() - popup.getPreferredSize().width - 1;
-      p.y += b.getHeight();
-      popup.show(b.getParent(), p.x, p.y);
-    });
+    button.addActionListener(e -> showPopup(tabs, e));
     return button;
+  }
+
+  private void showPopup(JTabbedPane tabs, ActionEvent e) {
+    JButton b = (JButton) e.getSource();
+    Point p = b.getLocation();
+    JPopupMenu popup = new JPopupMenu();
+    int selected = tabs.getSelectedIndex();
+    for (int i = 0; i < tabs.getTabCount(); i++) {
+      popup.add(makeRadioMenuItem(tabs, i, selected));
+    }
+    p.x += b.getWidth() - popup.getPreferredSize().width - 1;
+    p.y += b.getHeight();
+    popup.show(b.getParent(), p.x, p.y);
   }
 
   private JMenuItem makeRadioMenuItem(JTabbedPane tabs, int i, int selected) {
@@ -172,83 +145,16 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
-  public static final int TAB_AREA_SIZE = 28;
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
-  private final JButton hiddenTabs = new JButton("⊽") {
-    private transient MouseListener handler;
-    @Override public void updateUI() {
-      removeMouseListener(handler);
-      super.updateUI();
-      setFocusable(false);
-      setContentAreaFilled(false);
-      setFocusPainted(false);
-      setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 6));
-      handler = new MouseAdapter() {
-        @Override public void mouseEntered(MouseEvent e) {
-          setContentAreaFilled(true);
-        }
-
-        @Override public void mouseExited(MouseEvent e) {
-          setContentAreaFilled(false);
-        }
-      };
-      addMouseListener(handler);
-    }
-
-    @Override public float getAlignmentY() {
-      return TOP_ALIGNMENT;
-    }
-  };
-
+  private final JButton hiddenTabs = new CardDropdownButton("⊽", this);
   private final ButtonGroup group = new ButtonGroup();
-  private final JScrollPane tabArea = new JScrollPane(tabPanel) {
-    @Override public boolean isOptimizedDrawingEnabled() {
-      return false; // JScrollBar is overlap
-    }
-
-    @Override public void updateUI() {
-      super.updateUI();
-      EventQueue.invokeLater(() -> {
-        getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
-        getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
-        setLayout(new OverlapScrollPaneLayout());
-        setComponentZOrder(getVerticalScrollBar(), 0);
-        setComponentZOrder(getHorizontalScrollBar(), 1);
-        setComponentZOrder(getViewport(), 2);
-      });
-      setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
-      setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-      getVerticalScrollBar().setOpaque(false);
-      getHorizontalScrollBar().setOpaque(false);
-      setBackground(Color.DARK_GRAY);
-      setViewportBorder(BorderFactory.createEmptyBorder());
-      setBorder(BorderFactory.createEmptyBorder());
-    }
-
-    @Override public Dimension getPreferredSize() {
-      Dimension d = super.getPreferredSize();
-      d.height = TAB_AREA_SIZE;
-      return d;
-    }
-  };
+  private final JScrollPane tabArea = new ScrollableTabArea(tabPanel);
 
   protected CardLayoutTabbedPane() {
     super(new BorderLayout());
     tabPanel.setInheritsPopupMenu(true);
-    hiddenTabs.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      Point p = b.getLocation();
-      JPopupMenu popup = new JPopupMenu();
-      JViewport viewport = tabArea.getViewport();
-      for (int i = 0; i < tabPanel.getComponentCount(); i++) {
-        getHiddenTabMenuItem(viewport, tabPanel.getComponent(i)).ifPresent(popup::add);
-      }
-      p.x += b.getWidth() - popup.getPreferredSize().width - 1;
-      p.y += b.getHeight();
-      popup.show(b.getParent(), p.x, p.y);
-    });
     JPanel buttons = new JPanel(new GridBagLayout());
     buttons.add(hiddenTabs);
     JPanel header = new JPanel(new BorderLayout());
@@ -258,38 +164,18 @@ class CardLayoutTabbedPane extends JPanel {
     add(contentsPanel);
   }
 
+  @Override public void doLayout() {
+    BoundedRangeModel m = tabArea.getHorizontalScrollBar().getModel();
+    hiddenTabs.setVisible(m.getMaximum() - m.getExtent() > 0);
+    super.doLayout();
+  }
+
   @Override public final Component add(Component comp) {
     return super.add(comp);
   }
 
   @Override public final void add(Component comp, Object constraints) {
     super.add(comp, constraints);
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    setBackground(new Color(16, 16, 16));
-  }
-
-  private Optional<JMenuItem> getHiddenTabMenuItem(JViewport viewport, Component c) {
-    return Optional.ofNullable(c)
-        .filter(AbstractButton.class::isInstance)
-        .map(AbstractButton.class::cast)
-        .filter(tab -> !viewport.getViewRect().contains(tab.getBounds()))
-        .map(tab -> {
-          Rectangle r = tab.getBounds();
-          JLabel label = (JLabel) tab.getComponent(0);
-          String title = label.getText();
-          JMenuItem mi = new JRadioButtonMenuItem(title);
-          mi.addActionListener(e -> {
-            tab.setSelected(true);
-            cardLayout.show(contentsPanel, title);
-            Container p = tab.getParent();
-            viewport.scrollRectToVisible(SwingUtilities.convertRectangle(p, r, viewport));
-          });
-          return mi;
-        });
   }
 
   protected JComponent createTabComponent(String title, Icon icon, Component comp) {
@@ -325,11 +211,9 @@ class CardLayoutTabbedPane extends JPanel {
     close.addActionListener(e -> {
       tabPanel.remove(tab);
       contentsPanel.remove(comp);
-      boolean oneOrMore = tabPanel.getComponentCount() > 1;
-      if (oneOrMore) {
+      if (tabPanel.getComponentCount() - 1 > 0) {
         tabPanel.revalidate();
-        TabButton b = (TabButton) tabPanel.getComponent(0);
-        b.setSelected(true);
+        ((TabButton) tabPanel.getComponent(0)).setSelected(true);
         cardLayout.first(contentsPanel);
       }
       tabPanel.revalidate();
@@ -337,7 +221,6 @@ class CardLayoutTabbedPane extends JPanel {
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusable(false);
     close.setOpaque(false);
-    // close.setFocusPainted(false);
     close.setContentAreaFilled(false);
     close.setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
     close.setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
@@ -352,14 +235,140 @@ class CardLayoutTabbedPane extends JPanel {
     EventQueue.invokeLater(() -> tabPanel.scrollRectToVisible(tab.getBounds()));
   }
 
+  public JPanel getTabPanel() {
+    return tabPanel;
+  }
+
+  public JPanel getContentsPanel() {
+    return contentsPanel;
+  }
+
   public JScrollPane getTabArea() {
     return tabArea;
   }
+}
 
-  @Override public void doLayout() {
-    BoundedRangeModel m = tabArea.getHorizontalScrollBar().getModel();
-    hiddenTabs.setVisible(m.getMaximum() - m.getExtent() > 0);
-    super.doLayout();
+class DropdownButton extends JButton {
+  private transient MouseListener handler;
+
+  protected DropdownButton(String text) {
+    super(text);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    super.updateUI();
+    setFocusable(false);
+    setContentAreaFilled(false);
+    setFocusPainted(false);
+    setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 6));
+    handler = new MouseAdapter() {
+      @Override public void mouseEntered(MouseEvent e) {
+        setContentAreaFilled(true);
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        setContentAreaFilled(false);
+      }
+    };
+    addMouseListener(handler);
+  }
+
+  @Override public float getAlignmentY() {
+    return TOP_ALIGNMENT;
+  }
+}
+
+class CardDropdownButton extends DropdownButton {
+  private final CardLayoutTabbedPane tabs;
+  private transient ActionListener popupListener;
+
+  protected CardDropdownButton(String text, CardLayoutTabbedPane tabs) {
+    super(text);
+    this.tabs = tabs;
+  }
+
+  @Override public void updateUI() {
+    removeActionListener(popupListener);
+    super.updateUI();
+    popupListener = this::showPopup;
+    addActionListener(popupListener);
+  }
+
+  public void showPopup(ActionEvent e) {
+    JButton b = (JButton) e.getSource();
+    Point p = b.getLocation();
+    JPopupMenu popup = new JPopupMenu();
+    JViewport viewport = tabs.getTabArea().getViewport();
+    for (Component c : tabs.getTabPanel().getComponents()) {
+      getHiddenTabMenuItem(viewport, c).ifPresent(popup::add);
+    }
+    p.x += b.getWidth() - popup.getPreferredSize().width - 1;
+    p.y += b.getHeight();
+    popup.show(b.getParent(), p.x, p.y);
+  }
+
+  private Optional<JMenuItem> getHiddenTabMenuItem(JViewport viewport, Component c) {
+    return Optional.ofNullable(c)
+        .filter(AbstractButton.class::isInstance)
+        .map(AbstractButton.class::cast)
+        .filter(tab -> !viewport.getViewRect().contains(tab.getBounds()))
+        .map(tab -> {
+          String title = ((JLabel) tab.getComponent(0)).getText();
+          JMenuItem mi = new JRadioButtonMenuItem(title);
+          mi.addActionListener(e -> scrollTabToVisible(viewport, tab));
+          return mi;
+        });
+  }
+
+  private void scrollTabToVisible(JViewport viewport, AbstractButton tab) {
+    tab.setSelected(true);
+    String title = ((JLabel) tab.getComponent(0)).getText();
+    JPanel contentsPanel = tabs.getContentsPanel();
+    LayoutManager layout = contentsPanel.getLayout();
+    if (layout instanceof CardLayout) {
+      ((CardLayout) layout).show(contentsPanel, title);
+      Container p = tab.getParent();
+      Rectangle r = tab.getBounds();
+      viewport.scrollRectToVisible(SwingUtilities.convertRectangle(p, r, viewport));
+    }
+  }
+}
+
+class ScrollableTabArea extends JScrollPane {
+  public static final int TAB_AREA_SIZE = 28;
+
+  protected ScrollableTabArea(Component view) {
+    super(view);
+  }
+
+  @Override public boolean isOptimizedDrawingEnabled() {
+    return false; // JScrollBar is overlap
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    EventQueue.invokeLater(() -> {
+      getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
+      getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
+      setLayout(new OverlapScrollPaneLayout());
+      setComponentZOrder(getVerticalScrollBar(), 0);
+      setComponentZOrder(getHorizontalScrollBar(), 1);
+      setComponentZOrder(getViewport(), 2);
+    });
+    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+    getVerticalScrollBar().setOpaque(false);
+    getHorizontalScrollBar().setOpaque(false);
+    setBackground(Color.DARK_GRAY);
+    setViewportBorder(BorderFactory.createEmptyBorder());
+    setBorder(BorderFactory.createEmptyBorder());
+  }
+
+  @Override public Dimension getPreferredSize() {
+    Dimension d = super.getPreferredSize();
+    d.height = TAB_AREA_SIZE;
+    return d;
   }
 }
 
@@ -387,7 +396,7 @@ class TabButton extends JToggleButton {
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    d.height = CardLayoutTabbedPane.TAB_AREA_SIZE;
+    d.height = ScrollableTabArea.TAB_AREA_SIZE;
     return d;
   }
 
@@ -604,30 +613,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super();
   }
 
-  private Insets getSynthInsets(Region region) {
-    SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
-  }
-
-  protected Insets getTabInsets() {
-    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
-        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
-  }
-
-  protected Insets getTabAreaInsets() {
-    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
-        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
-  }
-
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount == 0 || !isVisible()) {
       super.doLayout();
       return;
     }
-    Insets tabIns = getTabInsets();
-    Insets tabAreaIns = getTabAreaInsets();
+    Insets tabIns = TabbedPaneUtils.getTabInsets(this);
+    Insets tabAreaIns = TabbedPaneUtils.getTabAreaInsets(this);
     Insets ins = getInsets();
     int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - ins.left - ins.right;
     int tabWidth; // = tabIns.left + tabIns.right + 3;
@@ -672,5 +665,50 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         rest -= a;
       }
     }
+  }
+}
+
+class IconTab {
+  public final String title;
+  public final Icon icon;
+  public final Component comp;
+
+  protected IconTab(String title, Icon icon, Component component) {
+    this.title = title;
+    this.icon = icon;
+    this.comp = component;
+  }
+}
+
+final class TabbedPaneUtils {
+  private TabbedPaneUtils() {
+    /* Singleton */
+  }
+
+  public static List<IconTab> makeIconTabs() {
+    return Arrays.asList(
+        new IconTab("1:JTree", new ColorIcon(Color.RED), new JScrollPane(new JTree())),
+        new IconTab("2:JTable", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(10, 3))),
+        new IconTab("3:JTextArea", new ColorIcon(Color.BLUE), new JScrollPane(new JTextArea())),
+        new IconTab("4:JButton", new ColorIcon(Color.CYAN), new JButton("JButton")),
+        new IconTab("5:JCheckBox", new ColorIcon(Color.ORANGE), new JCheckBox("JCheckBox")),
+        new IconTab("6:JRadioButton", new ColorIcon(Color.PINK), new JRadioButton("JRadioButton")),
+        new IconTab("7:JSplitPane", new ColorIcon(Color.YELLOW), new JSplitPane()));
+  }
+
+  public static Insets getSynthInsets(JTabbedPane tabs, Region region) {
+    SynthStyle style = SynthLookAndFeel.getStyle(tabs, region);
+    SynthContext context = new SynthContext(tabs, region, style, SynthConstants.ENABLED);
+    return style.getInsets(context, null);
+  }
+
+  public static Insets getTabInsets(JTabbedPane tabs) {
+    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
+        .orElseGet(() -> getSynthInsets(tabs, Region.TABBED_PANE_TAB));
+  }
+
+  public static Insets getTabAreaInsets(JTabbedPane tabs) {
+    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
+        .orElseGet(() -> getSynthInsets(tabs, Region.TABBED_PANE_TAB_AREA));
   }
 }
