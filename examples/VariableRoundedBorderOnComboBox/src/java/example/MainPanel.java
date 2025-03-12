@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] items = {"111", "2222", "33333"};
+    String[] items = {"111", "2222", "33333", "4", "5", "6", "7", "8", "9"};
     ComboBoxModel<String> model = new DefaultComboBoxModel<>(items);
     JComboBox<String> combo0 = new JComboBox<>(model);
     JComboBox<String> combo1 = new RoundedComboBox<>(model);
@@ -96,32 +96,7 @@ class RoundedComboBox<E> extends JComboBox<E> {
     super.updateUI();
     setBorder(new RoundedCornerBorder());
     setRenderer(new RoundedCornerListCellRenderer());
-    setUI(new BasicComboBoxUI() {
-      @Override protected JButton createArrowButton() {
-        JButton b = new JButton(new ArrowIcon(Color.WHITE, Color.BLACK));
-        b.setContentAreaFilled(false);
-        b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createEmptyBorder());
-        return b;
-      }
-
-      @Override protected ComboPopup createPopup() {
-        return new BasicComboPopup(comboBox) {
-          @Override protected JScrollPane createScroller() {
-            return new JScrollPane(list) {
-              @Override public void updateUI() {
-                super.updateUI();
-                getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
-                setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-                // setHorizontalScrollBar(null);
-              }
-            };
-          }
-        };
-      }
-    });
+    setUI(new WithoutArrowButtonComboBoxUI());
     listener = new HeavyWeightContainerListener();
     addPopupMenuListener(listener);
     Object o = getAccessibleContext().getAccessibleChild(0);
@@ -352,6 +327,53 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     g2.dispose();
   }
 }
+
+class WithoutArrowButtonComboBoxUI extends BasicComboBoxUI {
+  @Override protected JButton createArrowButton() {
+    JButton b = new JButton(new ArrowIcon(Color.WHITE, Color.BLACK));
+    b.setContentAreaFilled(false);
+    b.setFocusPainted(false);
+    b.setBorder(BorderFactory.createEmptyBorder());
+    return b;
+  }
+
+  @Override protected ComboPopup createPopup() {
+    return new BasicComboPopup(comboBox) {
+      @Override protected JScrollPane createScroller() {
+        return new JScrollPane(list) {
+          @Override public void updateUI() {
+            super.updateUI();
+            getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+            getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+            setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+            setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+          }
+        };
+      }
+    };
+  }
+}
+
+// class WithoutArrowButtonComboPopup extends BasicComboPopup {
+//   // Java 8: protected WithoutArrowButtonComboPopup(JComboBox<?> comboBox) {
+//   // Java 9:
+//   protected WithoutArrowButtonComboPopup(JComboBox<Object> comboBox) {
+//     super(comboBox);
+//   }
+//
+//   @Override protected JScrollPane createScroller() {
+//     return new JScrollPane(list) {
+//       @Override public void updateUI() {
+//         super.updateUI();
+//         getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+//         getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+//         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+//         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+//         // setHorizontalScrollBar(null);
+//       }
+//     };
+//   }
+// }
 
 class ZeroSizeButton extends JButton {
   @Override public Dimension getPreferredSize() {
