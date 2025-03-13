@@ -106,28 +106,25 @@ class CardLayoutTabbedPane extends JPanel {
     });
     tab.setLayout(new BorderLayout());
     // tab.setLayout(new OverlayLayout(tab));
+
     JButton close = new JButton(new CloseTabIcon(Color.GRAY)) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(12, 12);
       }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder());
+        setFocusPainted(false);
+        setContentAreaFilled(false);
+        setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
+        setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
+      }
     };
     close.addActionListener(e -> {
-      tabPanel.remove(tab);
       contentsPanel.remove(comp);
-      boolean oneOrMore = tabPanel.getComponentCount() > 1;
-      if (oneOrMore) {
-        tabPanel.revalidate();
-        TabButton b = (TabButton) tabPanel.getComponent(0);
-        b.setSelected(true);
-        cardLayout.first(contentsPanel);
-      }
-      tabPanel.revalidate();
+      closeTab(tab);
     });
-    close.setBorder(BorderFactory.createEmptyBorder());
-    close.setFocusPainted(false);
-    close.setContentAreaFilled(false);
-    close.setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
-    close.setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
 
     JPanel p = new JPanel(new BorderLayout());
     p.setOpaque(false);
@@ -136,6 +133,17 @@ class CardLayoutTabbedPane extends JPanel {
     bg.add(tab);
     tab.setSelected(true);
     return tab;
+  }
+
+  private void closeTab(TabButton tab) {
+    tabPanel.remove(tab);
+    boolean oneOrMore = tabPanel.getComponentCount() > 1;
+    if (oneOrMore) {
+      tabPanel.revalidate();
+      ((TabButton) tabPanel.getComponent(0)).setSelected(true);
+      cardLayout.first(contentsPanel);
+    }
+    tabPanel.revalidate();
   }
 
   public void addTab(String title, Component comp) {
