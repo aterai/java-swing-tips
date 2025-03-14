@@ -39,45 +39,7 @@ public final class MainPanel extends JPanel {
     tree.setCellEditor(new PluginCellEditor(new JComboBox<>()));
 
     JTextArea textArea = new JTextArea(5, 1);
-
-    tree.getModel().addTreeModelListener(new TreeModelListener() {
-      @Override public void treeNodesChanged(TreeModelEvent e) {
-        Optional.ofNullable(e.getChildren())
-            .filter(children -> children.length == 1)
-            .map(children -> children[0])
-            .filter(DefaultMutableTreeNode.class::isInstance)
-            .map(DefaultMutableTreeNode.class::cast)
-            .map(DefaultMutableTreeNode::getUserObject)
-            .filter(PluginNode.class::isInstance)
-            .map(PluginNode.class::cast)
-            .map(uo -> String.format("%s %s%n", uo, uo.getPlugins().get(uo.getSelectedIndex())))
-            .ifPresent(textArea::append);
-        // Object[] children = e.getChildren();
-        // boolean isNotRootAndOnlyOneNodeChanged = Objects.nonNull(children)
-        //     && children.length == 1 && children[0] instanceof DefaultMutableTreeNode;
-        // if (isNotRootAndOnlyOneNodeChanged) {
-        //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) children[0];
-        //   Object userObject = node.getUserObject();
-        //   if (userObject instanceof PluginNode) {
-        //     PluginNode uo = (PluginNode) userObject;
-        //     String v = uo.getPlugins().get(uo.getSelectedIndex());
-        //     textArea.append(String.format("%s %s%n", uo, v));
-        //   }
-        // }
-      }
-
-      @Override public void treeNodesInserted(TreeModelEvent e) {
-        /* not needed */
-      }
-
-      @Override public void treeNodesRemoved(TreeModelEvent e) {
-        /* not needed */
-      }
-
-      @Override public void treeStructureChanged(TreeModelEvent e) {
-        /* not needed */
-      }
-    });
+    tree.getModel().addTreeModelListener(new InfoTreeModelListener(textArea));
     add(new JScrollPane(tree));
     add(new JScrollPane(textArea), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
@@ -261,24 +223,55 @@ class PluginCellEditor extends DefaultCellEditor {
 
   @Override public boolean isCellEditable(EventObject e) {
     if (e instanceof MouseEvent) {
-      MouseEvent me = (MouseEvent) e;
-      showComboPopup(me.getComponent(), me.getPoint());
+      EventQueue.invokeLater(() -> showComboPopup((MouseEvent) e));
     }
     return delegate.isCellEditable(e);
   }
 
-  private void showComboPopup(Component cmp, Point p) {
-    EventQueue.invokeLater(() -> {
-      Point pt = SwingUtilities.convertPoint(cmp, p, panel);
-      Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
-      if (o instanceof JComboBox) {
+  private void showComboPopup(MouseEvent e) {
+    Component cmp = e.getComponent();
+    Point pt = SwingUtilities.convertPoint(cmp, e.getPoint(), panel);
+    Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
+    if (o instanceof JComboBox) {
+      panel.combo.showPopup();
+    } else if (Objects.nonNull(o)) { // maybe ArrowButton in JComboBox
+      Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, o);
+      if (c instanceof JComboBox) {
         panel.combo.showPopup();
-      } else if (Objects.nonNull(o)) { // maybe ArrowButton in JComboBox
-        Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, o);
-        if (c instanceof JComboBox) {
-          panel.combo.showPopup();
-        }
       }
-    });
+    }
+  }
+}
+
+class InfoTreeModelListener implements TreeModelListener {
+  private final JTextArea textArea;
+
+  protected InfoTreeModelListener(JTextArea textArea) {
+    this.textArea = textArea;
+  }
+
+  @Override public void treeNodesChanged(TreeModelEvent e) {
+    Optional.ofNullable(e.getChildren())
+        .filter(children -> children.length == 1)
+        .map(children -> children[0])
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .map(DefaultMutableTreeNode::getUserObject)
+        .filter(PluginNode.class::isInstance)
+        .map(PluginNode.class::cast)
+        .map(o -> String.format("%s %s%n", o, o.getPlugins().get(o.getSelectedIndex())))
+        .ifPresent(textArea::append);
+  }
+
+  @Override public void treeNodesInserted(TreeModelEvent e) {
+    /* not needed */
+  }
+
+  @Override public void treeNodesRemoved(TreeModelEvent e) {
+    /* not needed */
+  }
+
+  @Override public void treeStructureChanged(TreeModelEvent e) {
+    /* not needed */
   }
 }
