@@ -5,7 +5,9 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -25,35 +27,39 @@ public final class MainPanel extends JPanel {
     String str = String.join("\n", u1F60x, u1F61x, u1F62x, u1F63x, u1F64x);
     JTextArea textArea = new JTextArea(str);
     textArea.addCaretListener(e -> {
-      try {
-        int dot = e.getDot();
-        int mark = e.getMark();
-        if (dot - mark == 0) {
-          Document doc = textArea.getDocument();
-          String txt = doc.getText(dot, 1);
-          int code = txt.codePointAt(0);
-          if (Character.isHighSurrogate((char) code)) {
-            txt = doc.getText(dot, 2);
-            code = txt.codePointAt(0);
-            // code = Character.toCodePoint(
-            //     (char) code, (char) doc.getText(dot + 1, 1).codePointAt(0));
-            // txt = new String(Character.toChars(code));
-          }
-          label.setText(String.format("%s: U+%04X", txt, code));
-        } else {
-          label.setText("");
-        }
-      } catch (BadLocationException ex) {
-        // should never happen
-        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-        wrap.initCause(ex);
-        throw wrap;
-      }
+      String info = getCodeInfoAtCaret(e, textArea.getDocument());
+      label.setText(info);
     });
 
     add(new JScrollPane(textArea));
     add(label, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getCodeInfoAtCaret(CaretEvent e, Document doc) {
+    String str = "";
+    try {
+      int dot = e.getDot();
+      int mark = e.getMark();
+      if (dot - mark == 0) {
+        String txt = doc.getText(dot, 1);
+        int code = txt.codePointAt(0);
+        if (Character.isHighSurrogate((char) code)) {
+          txt = doc.getText(dot, 2);
+          code = txt.codePointAt(0);
+          // code = Character.toCodePoint(
+          //     (char) code, (char) doc.getText(dot + 1, 1).codePointAt(0));
+          // txt = new String(Character.toChars(code));
+        }
+        str = String.format("%s: U+%04X", txt, code);
+      }
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
+    return str;
   }
 
   public static void main(String[] args) {
@@ -66,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

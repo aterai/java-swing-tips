@@ -5,7 +5,9 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -43,18 +45,7 @@ public final class MainPanel extends JPanel {
     doc.setCharacterAttributes(10, 20, attr2, false);
 
     JTextPane textPane = new JTextPane(doc);
-    textPane.addCaretListener(e -> {
-      if (e.getDot() == e.getMark()) {
-        AttributeSet a = doc.getCharacterElement(e.getDot()).getAttributes();
-        append("isBold: " + StyleConstants.isBold(a));
-        append("isUnderline: " + StyleConstants.isUnderline(a));
-        append("Foreground: " + StyleConstants.getForeground(a));
-        append("FontFamily: " + StyleConstants.getFontFamily(a));
-        append("FontSize: " + StyleConstants.getFontSize(a));
-        append("Font: " + style.getFont(a));
-        append("----");
-      }
-    });
+    textPane.addCaretListener(e -> info(e, doc, style));
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     sp.setResizeWeight(.5);
@@ -62,6 +53,19 @@ public final class MainPanel extends JPanel {
     sp.setBottomComponent(new JScrollPane(textArea));
     add(sp);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void info(CaretEvent e, StyledDocument doc, StyleContext style) {
+    if (e.getDot() == e.getMark()) {
+      AttributeSet a = doc.getCharacterElement(e.getDot()).getAttributes();
+      append("isBold: " + StyleConstants.isBold(a));
+      append("isUnderline: " + StyleConstants.isUnderline(a));
+      append("Foreground: " + StyleConstants.getForeground(a));
+      append("FontFamily: " + StyleConstants.getFontFamily(a));
+      append("FontSize: " + StyleConstants.getFontSize(a));
+      append("Font: " + style.getFont(a));
+      append("----");
+    }
   }
 
   private void append(String str) {
@@ -79,7 +83,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
