@@ -6,69 +6,60 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
-  private final BindingMapModel model = new BindingMapModel();
-  private final JComponent[] components = {
-      new JComboBox<>(),
-      new JDesktopPane(),
-      new JFormattedTextField(),
-      // new JFileChooser(),
-      new JInternalFrame(),
-      new JLabel(),
-      new JLayeredPane(),
-      new JList<>(),
-      new JMenuBar(),
-      new JOptionPane(),
-      new JPanel(),
-      new JPopupMenu(),
-      new JProgressBar(),
-      new JRootPane(),
-      new JScrollBar(),
-      new JScrollPane(),
-      new JSeparator(),
-      new JSlider(),
-      new JSpinner(),
-      new JSplitPane(),
-      new JTabbedPane(),
-      new JTable(),
-      new JTableHeader(),
-      new JToolBar(),
-      new JToolTip(),
-      new JTree(),
-      new JEditorPane(),
-      new JTextArea(),
-      new JTextField()
+  private static final String[] COMPONENTS = {
+      "javax.swing.JComboBox",
+      "javax.swing.JDesktopPane",
+      "javax.swing.JFormattedTextField",
+      // "JFileChooser",
+      "javax.swing.JInternalFrame",
+      "javax.swing.JLabel",
+      "javax.swing.JLayeredPane",
+      "javax.swing.JList",
+      "javax.swing.JMenuBar",
+      "javax.swing.JOptionPane",
+      "javax.swing.JPanel",
+      "javax.swing.JPopupMenu",
+      "javax.swing.JProgressBar",
+      "javax.swing.JRootPane",
+      "javax.swing.JScrollBar",
+      "javax.swing.JScrollPane",
+      "javax.swing.JSeparator",
+      "javax.swing.JSlider",
+      "javax.swing.JSpinner",
+      "javax.swing.JSplitPane",
+      "javax.swing.JTabbedPane",
+      "javax.swing.JTable",
+      "javax.swing.table.JTableHeader",
+      "javax.swing.JToolBar",
+      "javax.swing.JToolTip",
+      "javax.swing.JTree",
+      "javax.swing.JEditorPane",
+      "javax.swing.JTextArea",
+      "javax.swing.JTextField"
   };
-  private final JComboBox<JComponent> compChoices = new JComboBox<>(components);
+  private final BindingMapModel model = new BindingMapModel();
+  private final JComboBox<String> compChoices = new JComboBox<>(COMPONENTS);
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
     JTable table = new JTable(model);
     table.setAutoCreateRowSorter(true);
-    DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-    compChoices.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
-      if (c instanceof JLabel) {
-        ((JLabel) c).setText(value.getClass().getName());
-      }
-      return c;
-    });
     compChoices.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         model.setRowCount(0);
-        JComponent c = compChoices.getItemAt(compChoices.getSelectedIndex());
-        for (FocusType f : FocusType.values()) {
-          loadBindingMap(f, c.getInputMap(f.getId()), c.getActionMap());
-        }
+        int idx = compChoices.getSelectedIndex();
+        updateTableModel(compChoices.getItemAt(idx));
       }
     });
     EventQueue.invokeLater(() -> compChoices.setSelectedIndex(compChoices.getItemCount() - 1));
@@ -76,6 +67,23 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(table));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void updateTableModel(String name) {
+    try {
+      Class<?> clz = Class.forName(name);
+      Constructor<?> constructor = clz.getConstructor();
+      Object o = constructor.newInstance();
+      if (o instanceof JComponent) {
+        JComponent c = (JComponent) o;
+        for (FocusType f : FocusType.values()) {
+          loadBindingMap(f, c.getInputMap(f.getId()), c.getActionMap());
+        }
+      }
+    } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException
+             | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+    }
   }
 
   // <!--
@@ -136,7 +144,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -150,13 +158,13 @@ public final class MainPanel extends JPanel {
 
 class BindingMapModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
-      new ColumnContext("Focus", String.class, false),
       new ColumnContext("ActionName", String.class, false),
-      new ColumnContext("KeyDescription", String.class, false)
+      new ColumnContext("KeyDescription", String.class, false),
+      new ColumnContext("Focus", String.class, false)
   };
 
   public void addBinding(Binding t) {
-    Object[] obj = {t.getFocusTypeName(), t.getActionName(), t.getKeyDescription()};
+    Object[] obj = {t.getActionName(), t.getKeyDescription(), t.getFocusTypeName()};
     super.addRow(obj);
   }
 
