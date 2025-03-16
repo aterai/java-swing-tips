@@ -39,26 +39,13 @@ public final class MainPanel extends JPanel {
   private MainPanel(TransferHandler handler, LayerUI<DnDTabbedPane> layerUI) {
     super(new BorderLayout());
     DnDTabbedPane sub = new DnDTabbedPane();
-    sub.addTab("Title aa", new JLabel("aaa"));
-    sub.addTab("Title bb", new JScrollPane(new JTree()));
-    sub.addTab("Title cc", new JScrollPane(new JTextArea("JTextArea cc")));
-
-    tabbedPane.addTab("JTree 00", new JScrollPane(new JTree()));
-    tabbedPane.addTab("JLabel 01", new JLabel("Test"));
-    tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));
-    tabbedPane.addTab("JTextArea 03", new JScrollPane(new JTextArea("JTextArea 03")));
-    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111<br>13412341234123446745"));
-    tabbedPane.addTab("null 05", null);
-    tabbedPane.addTab("JTabbedPane 06", sub);
-    tabbedPane.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
-
-    // ButtonTabComponent
-    IntStream.range(0, tabbedPane.getTabCount()).forEach(this::setTabComponent);
+    TabbedPaneUtils.initSampleTabs1(sub);
+    TabbedPaneUtils.initSampleTabs0(tabbedPane);
+    TabbedPaneUtils.initCloseButtonAtAllTab(tabbedPane);
+    tabbedPane.addTab("JTabbedPane 07", sub);
 
     DnDTabbedPane sub2 = new DnDTabbedPane();
-    sub2.addTab("Title aaa", new JLabel("aaa"));
-    sub2.addTab("Title bbb", new JScrollPane(new JTree()));
-    sub2.addTab("Title ccc", new JScrollPane(new JTextArea("JTextArea ccc")));
+    TabbedPaneUtils.initSampleTabs2(sub2);
 
     tabbedPane.setName("JTabbedPane#main");
     sub.setName("JTabbedPane#sub1");
@@ -82,11 +69,6 @@ public final class MainPanel extends JPanel {
     add(p);
     add(makeCheckBoxPanel(), BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private void setTabComponent(int i) {
-    tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
-    tabbedPane.setToolTipTextAt(i, "tooltip: " + i);
   }
 
   private Component makeCheckBoxPanel() {
@@ -873,5 +855,40 @@ final class TabButton extends JButton {
     g2.drawLine(DELTA, DELTA, getWidth() - DELTA - 1, getHeight() - DELTA - 1);
     g2.drawLine(getWidth() - DELTA - 1, DELTA, DELTA, getHeight() - DELTA - 1);
     g2.dispose();
+  }
+}
+
+final class TabbedPaneUtils {
+  private TabbedPaneUtils() {
+    /* Singleton */
+  }
+
+  public static void initSampleTabs0(JTabbedPane tabbedPane) {
+    tabbedPane.addTab("JTree 00", new JScrollPane(new JTree()));
+    tabbedPane.addTab("JLabel 01", new JLabel("Test"));
+    tabbedPane.addTab("JTable 02", new JScrollPane(new JTable(10, 3)));
+    tabbedPane.addTab("JTextArea 03", new JScrollPane(new JTextArea("JTextArea 03")));
+    tabbedPane.addTab("JLabel 04", new JLabel("<html>11111111<br>13412341234123446745"));
+    tabbedPane.addTab("null 05", null);
+    tabbedPane.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
+  }
+
+  public static void initSampleTabs1(JTabbedPane tabbedPane) {
+    tabbedPane.addTab("Title aa", new JLabel("aaa"));
+    tabbedPane.addTab("Title bb", new JScrollPane(new JTree()));
+    tabbedPane.addTab("Title cc", new JScrollPane(new JTextArea("JTextArea cc")));
+  }
+
+  public static void initSampleTabs2(JTabbedPane tabbedPane) {
+    tabbedPane.addTab("Title aaa", new JLabel("aaa"));
+    tabbedPane.addTab("Title bbb", new JScrollPane(new JTree()));
+    tabbedPane.addTab("Title ccc", new JScrollPane(new JTextArea("JTextArea ccc")));
+  }
+
+  public static void initCloseButtonAtAllTab(JTabbedPane tabbedPane) {
+    IntStream.range(0, tabbedPane.getTabCount()).forEach(i -> {
+      tabbedPane.setTabComponentAt(i, new ButtonTabComponent(tabbedPane));
+      tabbedPane.setToolTipTextAt(i, "tooltip: " + i);
+    });
   }
 }
