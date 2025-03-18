@@ -31,31 +31,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTree tree = new JTree() {
-      @Override public void updateUI() {
-        setCellRenderer(null);
-        setCellEditor(null);
-        super.updateUI();
-        // ???#1: JDK 1.6.0 bug??? Nimbus LnF
-        setCellRenderer(new CheckBoxNodeRenderer());
-        setCellEditor(new CheckBoxNodeEditor());
-      }
-    };
-    TreeModel model = tree.getModel();
-    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-    // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
-    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .forEach(n -> {
-          String title = Objects.toString(n.getUserObject(), "");
-          n.setUserObject(new CheckBoxNode(title, Status.DESELECTED));
-        });
-    model.addTreeModelListener(new CheckBoxStatusUpdateListener());
-
+    JTree tree = new TriStateCheckBoxTree();
     tree.setEditable(true);
     tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-
     tree.expandRow(0);
     // tree.setToggleClickCount(1);
 
@@ -129,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -138,6 +116,35 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TriStateCheckBoxTree extends JTree {
+  protected TriStateCheckBoxTree() {
+    this(getDefaultTreeModel());
+  }
+
+  protected TriStateCheckBoxTree(TreeModel model) {
+    super(model);
+    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+    // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .forEach(n -> {
+          String title = Objects.toString(n.getUserObject(), "");
+          n.setUserObject(new CheckBoxNode(title, Status.DESELECTED));
+        });
+    model.addTreeModelListener(new CheckBoxStatusUpdateListener());
+  }
+
+  @Override public void updateUI() {
+    setCellRenderer(null);
+    setCellEditor(null);
+    super.updateUI();
+    // ???#1: JDK 1.6.0 bug??? Nimbus LnF
+    setCellRenderer(new CheckBoxNodeRenderer());
+    setCellEditor(new CheckBoxNodeEditor());
   }
 }
 
