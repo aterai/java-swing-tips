@@ -18,19 +18,34 @@ import javax.swing.table.DefaultTableModel;
 
 public final class MainPanel extends JPanel {
   private static final String[] COMPONENTS = {
+      // "javax.swing.JApplet",
+      "javax.swing.JButton",
+      "javax.swing.JCheckBox",
+      "javax.swing.JCheckBoxMenuItem",
+      "javax.swing.JColorChooser",
       "javax.swing.JComboBox",
+      // "javax.swing.JComponent",
       "javax.swing.JDesktopPane",
+      "javax.swing.JDialog",
+      "javax.swing.JEditorPane",
+      "javax.swing.JFileChooser",
       "javax.swing.JFormattedTextField",
-      // "JFileChooser",
+      "javax.swing.JFrame",
       "javax.swing.JInternalFrame",
       "javax.swing.JLabel",
+      "javax.swing.JLayer",
       "javax.swing.JLayeredPane",
       "javax.swing.JList",
+      "javax.swing.JMenu",
       "javax.swing.JMenuBar",
+      "javax.swing.JMenuItem",
       "javax.swing.JOptionPane",
       "javax.swing.JPanel",
+      "javax.swing.JPasswordField",
       "javax.swing.JPopupMenu",
       "javax.swing.JProgressBar",
+      "javax.swing.JRadioButton",
+      "javax.swing.JRadioButtonMenuItem",
       "javax.swing.JRootPane",
       "javax.swing.JScrollBar",
       "javax.swing.JScrollPane",
@@ -40,13 +55,16 @@ public final class MainPanel extends JPanel {
       "javax.swing.JSplitPane",
       "javax.swing.JTabbedPane",
       "javax.swing.JTable",
-      "javax.swing.table.JTableHeader",
+      "javax.swing.JTextArea",
+      "javax.swing.JTextField",
+      "javax.swing.JTextPane",
+      "javax.swing.JToggleButton",
       "javax.swing.JToolBar",
       "javax.swing.JToolTip",
       "javax.swing.JTree",
-      "javax.swing.JEditorPane",
-      "javax.swing.JTextArea",
-      "javax.swing.JTextField"
+      "javax.swing.JViewport",
+      "javax.swing.JWindow",
+      "javax.swing.table.JTableHeader"
   };
   private final BindingMapModel model = new BindingMapModel();
   private final JComboBox<String> compChoices = new JComboBox<>(COMPONENTS);
@@ -80,8 +98,9 @@ public final class MainPanel extends JPanel {
           loadBindingMap(f, c.getInputMap(f.getId()), c.getActionMap());
         }
       }
-    } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException
-             | InstantiationException | IllegalAccessException ex) {
+    } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException ex) {
+      Logger.getGlobal().info(ex::getMessage);
+    } catch (InvocationTargetException | IllegalAccessException ex) {
       Logger.getGlobal().severe(ex::getMessage);
     }
   }
