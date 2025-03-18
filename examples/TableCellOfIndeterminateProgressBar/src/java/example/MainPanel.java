@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -21,8 +22,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"No.", "Name", "Progress", ""};
-  private final DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+  private final DefaultTableModel model = makeModel();
   private final JTable table = new JTable(model) {
     @Override public void updateUI() {
       super.updateUI();
@@ -85,18 +85,18 @@ public final class MainPanel extends JPanel {
   //   if (Objects.nonNull(url)) {
   //     ImageIcon icon = new ImageIcon(url);
   //     // Wastefulness: icon.setImageObserver((ImageObserver) table);
-  //     icon.setImageObserver((img, infoflags, x, y, w, h) -> {
+  //     icon.setImageObserver((img, flags, x, y, w, h) -> {
   //       // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
   //       if (!table.isShowing()) {
   //         return false; // @see javax.swing.JLabel#imageUpdate(...)
   //       }
   //       // @see java.awt.Component#imageUpdate(...)
-  //       if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) {
+  //       if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
   //         int vr = table.convertRowIndexToView(row); // JDK 1.6.0
   //         int vc = table.convertColumnIndexToView(col);
   //         table.repaint(table.getCellRect(vr, vc, false));
   //       }
-  //       return (infoflags & (ALLBITS | ABORT)) == 0;
+  //       return (flags & (ALLBITS | ABORT)) == 0;
   //     });
   //     return icon;
   //   } else {
@@ -140,6 +140,11 @@ public final class MainPanel extends JPanel {
     };
     addProgressValue("example", 0, worker);
     worker.execute();
+  }
+
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"No.", "Name", "Progress", ""};
+    return new DefaultTableModel(columnNames, 0);
   }
 
   private final class TablePopupMenu extends JPopupMenu {
@@ -218,7 +223,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

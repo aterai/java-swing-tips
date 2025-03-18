@@ -14,6 +14,7 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -23,8 +24,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final String[] columnNames = {"No.", "Name", "Progress", ""};
-  private final DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+  private final DefaultTableModel model = makeModel();
   private final JTable table = new JTable(model) {
     @Override public void updateUI() {
       super.updateUI();
@@ -139,6 +139,11 @@ public final class MainPanel extends JPanel {
     executor.execute(worker);
   }
 
+  private static DefaultTableModel makeModel() {
+    String[] columnNames = {"No.", "Name", "Progress", ""};
+    return new DefaultTableModel(columnNames, 0);
+  }
+
   private final class TablePopupMenu extends JPopupMenu {
     private final JMenuItem cancelMenuItem;
     private final JMenuItem deleteMenuItem;
@@ -220,7 +225,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -31,14 +32,9 @@ public final class MainPanel extends JPanel {
   private final JButton prev = new JButton("<");
   private final JButton next = new JButton(">");
   private final JButton last = new JButton(">|");
-  private final String[] columnNames = {"Year", "String", "Comment"};
-  public final DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-    @Override public Class<?> getColumnClass(int column) {
-      return column == 0 ? Integer.class : Object.class;
-    }
-  };
-  public final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-  public final JTable table = new JTable(model);
+  private final DefaultTableModel model = makeModel();
+  private final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+  private final JTable table = new JTable(model);
   private int maxPageIndex;
   private int currentPageIndex;
 
@@ -115,6 +111,15 @@ public final class MainPanel extends JPanel {
     initFilterAndButtons();
   }
 
+  public static DefaultTableModel makeModel() {
+    String[] columnNames = {"Year", "String", "Comment"};
+    return new DefaultTableModel(columnNames, 0) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column == 0 ? Integer.class : Object.class;
+      }
+    };
+  }
+
   /* default */ class TableUpdateTask extends LoadTask {
     protected TableUpdateTask(int max, int itemsPerPage) {
       super(max, itemsPerPage);
@@ -185,7 +190,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
