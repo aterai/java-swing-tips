@@ -55,39 +55,7 @@ public final class MainPanel extends JPanel {
     statusPanel.add(bar);
     statusPanel.revalidate();
     bar.setIndeterminate(true);
-    worker = new BackgroundTask() {
-      @Override protected void process(List<String> chunks) {
-        // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-        if (isDisplayable() && !isCancelled()) {
-          chunks.forEach(MainPanel.this::appendLine);
-        } else {
-          cancel(true);
-        }
-      }
-
-      @Override protected void done() {
-        // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-        if (!isDisplayable()) {
-          cancel(true);
-          return;
-        }
-        loadingLabel.stopAnimation();
-        runButton.setEnabled(true);
-        cancelButton.setEnabled(false);
-        statusPanel.remove(bar);
-        statusPanel.revalidate();
-        appendLine("\n");
-        try {
-          appendLine(isCancelled() ? "Cancelled" : get());
-        } catch (InterruptedException ex) {
-          appendLine("Interrupted");
-          Thread.currentThread().interrupt();
-        } catch (ExecutionException ex) {
-          appendLine("Error");
-        }
-        appendLine("\n\n");
-      }
-    };
+    worker = new ForegroundTask();
     worker.addPropertyChangeListener(new ProgressListener(bar));
     worker.execute();
   }
@@ -100,6 +68,40 @@ public final class MainPanel extends JPanel {
   // private boolean isCancelled() {
   //   return Objects.isNull(worker) && worker.isCancelled();
   // }
+
+  private final class ForegroundTask extends BackgroundTask {
+    @Override protected void process(List<String> chunks) {
+      // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
+      if (isDisplayable() && !isCancelled()) {
+        chunks.forEach(MainPanel.this::appendLine);
+      } else {
+        cancel(true);
+      }
+    }
+
+    @Override protected void done() {
+      // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
+      if (!isDisplayable()) {
+        cancel(true);
+        return;
+      }
+      loadingLabel.stopAnimation();
+      runButton.setEnabled(true);
+      cancelButton.setEnabled(false);
+      statusPanel.remove(bar);
+      statusPanel.revalidate();
+      appendLine("\n");
+      try {
+        appendLine(isCancelled() ? "Cancelled" : get());
+      } catch (InterruptedException ex) {
+        appendLine("Interrupted");
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException ex) {
+        appendLine("Error");
+      }
+      appendLine("\n\n");
+    }
+  }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
