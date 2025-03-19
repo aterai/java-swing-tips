@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +23,7 @@ public final class MainPanel extends JPanel {
     table1.setAutoCreateRowSorter(true);
     table1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-    JTable table2 = makeTable(model);
+    JTable table2 = new CheckBoxTable(model);
     table2.setAutoCreateRowSorter(true);
     table2.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
@@ -50,43 +51,6 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JTable makeTable(TableModel model) {
-    return new JTable(model) {
-      @Override public void updateUI() {
-        // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-        // https://bugs.openjdk.org/browse/JDK-6788475
-        // Set a temporary ColorUIResource to avoid this issue
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        super.updateUI();
-        updateRenderer();
-        TableCellEditor editor = new DefaultCellEditor(new BooleanCellEditor());
-        setDefaultEditor(Boolean.class, editor);
-      }
-
-      private void updateRenderer() {
-        TableModel m = getModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
-          TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-          if (r instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component) r);
-          }
-        }
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          JCheckBox b = (JCheckBox) c;
-          b.setBackground(getSelectionBackground());
-          b.setHorizontalAlignment(SwingConstants.CENTER);
-          b.setBorderPainted(true);
-        }
-        return c;
-      }
-    };
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -97,7 +61,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -106,6 +70,45 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class CheckBoxTable extends JTable {
+  protected CheckBoxTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+    // https://bugs.openjdk.org/browse/JDK-6788475
+    // Set a temporary ColorUIResource to avoid this issue
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    super.updateUI();
+    updateRenderer();
+    TableCellEditor editor = new DefaultCellEditor(new BooleanCellEditor());
+    setDefaultEditor(Boolean.class, editor);
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JCheckBox) {
+      JCheckBox b = (JCheckBox) c;
+      b.setBackground(getSelectionBackground());
+      b.setHorizontalAlignment(SwingConstants.CENTER);
+      b.setBorderPainted(true);
+    }
+    return c;
+  }
+
+  private void updateRenderer() {
+    TableModel m = getModel();
+    for (int i = 0; i < m.getColumnCount(); i++) {
+      TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+      if (r instanceof Component) {
+        SwingUtilities.updateComponentTreeUI((Component) r);
+      }
+    }
   }
 }
 
@@ -118,36 +121,38 @@ class BooleanCellEditor extends JCheckBox {
     // setHorizontalAlignment(SwingConstants.CENTER);
     // setBorderPainted(true);
     setOpaque(true);
-    handler = new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        JCheckBox cb = (JCheckBox) e.getComponent();
-        JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
-        int editingRow = table.getEditingRow();
-        ButtonModel m = cb.getModel();
-        if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
-          if (editingRow % 2 == 0) {
-            cb.setOpaque(false);
-            // cb.setBackground(getBackground());
-          } else {
-            cb.setOpaque(true);
-            cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-          }
-        } else {
-          cb.setBackground(table.getSelectionBackground());
-          cb.setOpaque(true);
-        }
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        // in order to drag table row selection
-        JCheckBox cb = (JCheckBox) e.getComponent();
-        JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
-        if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
-          table.getCellEditor().cancelCellEditing();
-        }
-      }
-    };
+    handler = new MouseHandler();
     addMouseListener(handler);
+  }
+
+  private static final class MouseHandler extends MouseAdapter {
+    @Override public void mousePressed(MouseEvent e) {
+      JCheckBox cb = (JCheckBox) e.getComponent();
+      JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
+      int editingRow = table.getEditingRow();
+      ButtonModel m = cb.getModel();
+      if (m.isPressed() && table.isRowSelected(editingRow) && e.isControlDown()) {
+        if (editingRow % 2 == 0) {
+          cb.setOpaque(false);
+          // cb.setBackground(getBackground());
+        } else {
+          cb.setOpaque(true);
+          cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+        }
+      } else {
+        cb.setBackground(table.getSelectionBackground());
+        cb.setOpaque(true);
+      }
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      // in order to drag table row selection
+      JCheckBox cb = (JCheckBox) e.getComponent();
+      JTable table = (JTable) SwingUtilities.getAncestorOfClass(JTable.class, cb);
+      if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+        table.getCellEditor().cancelCellEditing();
+      }
+    }
   }
 }
 
@@ -192,7 +197,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
