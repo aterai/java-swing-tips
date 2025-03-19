@@ -80,11 +80,6 @@ final class TablePopupMenu extends JPopupMenu {
     add("add").addActionListener(e -> {
       JTable table = (JTable) getInvoker();
       DefaultTableModel model = (DefaultTableModel) table.getModel();
-      // if (MainPanel.DEBUG && model.getRowCount() == 0) {
-      //   table.setRowSorter(new TableRowSorter<>(model));
-      //   // table.setRowSorter(sorter);
-      //   model.fireTableDataChanged();
-      // }
       model.addRow(new Object[] {"", model.getRowCount(), false});
       Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
       table.scrollRectToVisible(r);

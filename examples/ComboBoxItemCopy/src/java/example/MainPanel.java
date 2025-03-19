@@ -48,8 +48,6 @@ public final class MainPanel extends JPanel {
         JComboBox<?> combo = (JComboBox<?>) c;
         Action act = combo.getActionMap().get(COPY_KEY);
         act.actionPerformed(new ActionEvent(combo, e.getID(), e.getActionCommand()));
-        // SwingUtilities.notifyAction(
-        //     act, keyStroke, new KeyEvent(combo, 0, 0, 0, 0, 'C'), combo, modifiers);
       }
     });
     combo1.setComponentPopupMenu(popup);
