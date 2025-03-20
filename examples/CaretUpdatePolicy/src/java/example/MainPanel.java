@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -62,24 +63,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  // private class BackgroundTask extends SwingWorker<String, String> {
-  //   @Override protected String doInBackground() throws InterruptedException {
-  //     while (!isCancelled()) {
-  //       doSomething();
-  //       if (check.isSelected()) {
-  //         publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
-  //       } else {
-  //         test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
-  //       }
-  //     }
-  //     return "Cancelled";
-  //   }
-  //
-  //   protected void doSomething() throws InterruptedException {
-  //     Thread.sleep(500);
-  //   }
-  // }
-
   private static Component makeTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
@@ -117,37 +100,39 @@ public final class MainPanel extends JPanel {
     //   thread.start();
     // }
     if (Objects.isNull(worker) || worker.isDone()) {
-      worker = new SwingWorker<String, String>() {
-        @Override protected String doInBackground() throws InterruptedException {
-          while (!isCancelled()) {
-            doSomething();
-            if (check.isSelected()) {
-              publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
-            } else {
-              test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
-            }
-          }
-          return "Cancelled";
-        }
-
-        private void doSomething() throws InterruptedException {
-          Thread.sleep(500);
-        }
-
-        @Override protected void process(List<String> chunks) {
-          chunks.forEach(MainPanel.this::test);
-        }
-
-        @Override protected void done() {
-          check.setEnabled(true);
-          start.setEnabled(true);
-          stop.setEnabled(false);
-        }
-      };
+      worker = new BackgroundTask();
       check.setEnabled(false);
       start.setEnabled(false);
       stop.setEnabled(true);
       worker.execute();
+    }
+  }
+
+  private final class BackgroundTask extends SwingWorker<String, String> {
+    @Override protected String doInBackground() throws InterruptedException {
+      while (!isCancelled()) {
+        doSomething();
+        if (check.isSelected()) {
+          publish(LocalDateTime.now(ZoneId.systemDefault()).toString()); // On EDT
+        } else {
+          test(LocalDateTime.now(ZoneId.systemDefault()).toString()); // Not on EDT
+        }
+      }
+      return "Cancelled";
+    }
+
+    private void doSomething() throws InterruptedException {
+      Thread.sleep(500);
+    }
+
+    @Override protected void process(List<String> chunks) {
+      chunks.forEach(MainPanel.this::test);
+    }
+
+    @Override protected void done() {
+      check.setEnabled(true);
+      start.setEnabled(true);
+      stop.setEnabled(false);
     }
   }
 
@@ -161,7 +146,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
