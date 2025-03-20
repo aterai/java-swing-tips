@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ScrollableListMenu" />
+  <property name="jnlp.Name"     value="ScrollableListMenu" />
+  <property name="jnlp.name"     value="scrollablelistmenu" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollablelistmenu/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollableListMenu.html" />
+</project>
