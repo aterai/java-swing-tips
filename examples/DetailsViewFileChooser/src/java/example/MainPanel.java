@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -25,32 +26,32 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    String cmd = "viewTypeDetails";
     JButton detailsView = new JButton("Details View");
     detailsView.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      // sun.swing.FilePane filePane = findChildComponent(chooser, sun.swing.FilePane.class);
-      // filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
-
-      // if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
-      //   Dimension d = chooser.getPreferredSize();
-      //   chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
-      // }
-
-      // java - How can I start the JFileChooser in the Details view? - Stack Overflow
-      // https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
-      // for (Object key : chooser.getActionMap().allKeys()) {
-      //   System.out.println(key);
-      // }
-
-      String cmd = "viewTypeDetails";
       Optional.ofNullable(chooser.getActionMap().get(cmd))
           .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), cmd)));
-
       int retValue = chooser.showOpenDialog(p);
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
+    // detailsView.addActionListener(e -> {
+    //   JFileChooser chooser = new JFileChooser();
+    //   sun.swing.FilePane filePane = findChildComponent(chooser, sun.swing.FilePane.class);
+    //   filePane.setViewType(sun.swing.FilePane.VIEWTYPE_DETAILS);
+    //   if (searchAndClick(chooser, UIManager.getIcon("FileChooser.detailsViewIcon"))) {
+    //     Dimension d = chooser.getPreferredSize();
+    //     chooser.setPreferredSize(new Dimension(d.width + 20, d.height)); // XXX
+    //   }
+    //   // java - How can I start the JFileChooser in the Details view? - Stack Overflow
+    //   https://stackoverflow.com/questions/16292502/how-can-i-start-the-jfilechooser-in-the-details-view
+    //   for (Object key : chooser.getActionMap().allKeys()) {
+    //     System.out.println(key);
+    //   }
+    //   // ...
+    // });
 
     p.add(listView);
     p.add(detailsView);
@@ -114,7 +115,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

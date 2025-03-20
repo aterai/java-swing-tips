@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
@@ -55,12 +56,10 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("make");
     button.addActionListener(e -> {
       try {
-        File file = createAnimatedGifFile(list, size);
-        String path = file.getAbsolutePath();
+        String path = createAnimatedGifFile(list, size).getAbsolutePath();
         label.setText(path);
         label.setIcon(new ImageIcon(path));
       } catch (IOException ex) {
-        ex.printStackTrace();
         label.setText(ex.getMessage());
         label.setIcon(null);
       }
@@ -153,7 +152,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

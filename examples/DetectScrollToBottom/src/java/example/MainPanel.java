@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -29,15 +30,11 @@ public final class MainPanel extends JPanel {
     check.setEnabled(false);
     JPanel p = new JPanel(new BorderLayout());
     JScrollPane scroll = new JScrollPane(c);
+    // https://stackoverflow.com/questions/12916192/how-to-know-if-a-jscrollbar-has-reached-the-bottom-of-the-jscrollpane
+    // https://ateraimemo.com/Swing/ScrollBarAsSlider.html
     scroll.getVerticalScrollBar().getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      int extent = m.getExtent();
-      int maximum = m.getMaximum();
-      int value = m.getValue();
-      // https://stackoverflow.com/questions/12916192/how-to-know-if-a-jscrollbar-has-reached-the-bottom-of-the-jscrollpane
-      // System.out.println("2. Value: " + (value + extent) + " Max: " + maximum);
-      // https://ateraimemo.com/Swing/ScrollBarAsSlider.html
-      if (value + extent >= maximum) {
+      if (m.getValue() + m.getExtent() >= m.getMaximum()) {
         check.setEnabled(true);
       }
     });
@@ -56,7 +53,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

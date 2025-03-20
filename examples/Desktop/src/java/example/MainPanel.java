@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 
@@ -27,23 +28,23 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JEditorPane makeEditorPane(String html, JTextArea textArea) {
+  private static JEditorPane makeEditorPane(String html, JTextArea log) {
     JEditorPane editor = new JEditorPane("text/html", html);
-    editor.setOpaque(false);
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setEditable(false);
-    editor.addHyperlinkListener(e -> {
-      boolean activated = e.getEventType() == HyperlinkEvent.EventType.ACTIVATED;
-      if (Desktop.isDesktopSupported() && activated) {
-        try {
-          Desktop.getDesktop().browse(new URI(SITE));
-        } catch (IOException | URISyntaxException ex) {
-          ex.printStackTrace();
-          textArea.setText(ex.getMessage());
+    editor.setOpaque(false);
+    if (Desktop.isDesktopSupported()) {
+      editor.addHyperlinkListener(e -> {
+        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+          try {
+            Desktop.getDesktop().browse(new URI(SITE));
+            log.setText(e.toString());
+          } catch (IOException | URISyntaxException ex) {
+            log.setText(ex.getMessage());
+          }
         }
-        textArea.setText(e.toString());
-      }
-    });
+      });
+    }
     return editor;
   }
 
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

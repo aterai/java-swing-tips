@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -52,15 +53,14 @@ public final class MainPanel extends JPanel {
     SwingUtils.descendants(chooser)
         .filter(JLabel.class::isInstance)
         .map(JLabel.class::cast)
+        .filter(label -> txt.equals(label.getText()))
         .forEach(label -> {
-          if (txt.equals(label.getText())) {
-            Component c = label.getLabelFor();
-            label.setEnabled(f);
-            if (c instanceof JComboBox) {
-              JComboBox<?> combo = (JComboBox<?>) c;
-              combo.setEnabled(f);
-              ((JComponent) combo.getRenderer()).setOpaque(f);
-            }
+          Component c = label.getLabelFor();
+          label.setEnabled(f);
+          if (c instanceof JComboBox) {
+            JComboBox<?> combo = (JComboBox<?>) c;
+            combo.setEnabled(f);
+            ((JComponent) combo.getRenderer()).setOpaque(f);
           }
         });
   }
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

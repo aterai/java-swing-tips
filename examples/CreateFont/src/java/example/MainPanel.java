@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -26,11 +27,9 @@ public final class MainPanel extends JPanel {
 
     Optional.ofNullable(cl.getResource("example/bar.utf8.txt"))
         .ifPresent(url -> {
-          try {
-            // try (Reader br = new InputStreamReader(url.openStream(), UTF_8)) {
-            try (Reader br = Files.newBufferedReader(Paths.get(url.toURI()))) {
-              textPane.read(br, "text");
-            }
+          // try (Reader br = new InputStreamReader(url.openStream(), UTF_8)) {
+          try (Reader br = Files.newBufferedReader(Paths.get(url.toURI()))) {
+            textPane.read(br, "text");
           } catch (IOException | URISyntaxException ex) {
             UIManager.getLookAndFeel().provideErrorFeedback(textPane);
             textPane.setText(ex.getMessage());
@@ -129,7 +128,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

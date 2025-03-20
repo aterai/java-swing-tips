@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -77,14 +78,12 @@ public final class MainPanel extends JPanel {
     return Optional.ofNullable(str)
         .filter(s -> !s.isEmpty())
         .map(item -> {
-          combo.setVisible(false);
           model.removeElement(item);
           model.insertElementAt(item, 0);
           if (model.getSize() > max) {
             model.removeElementAt(max);
           }
           combo.setSelectedIndex(0);
-          combo.setVisible(true);
           return true;
         })
         .orElse(false);
@@ -121,7 +120,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
