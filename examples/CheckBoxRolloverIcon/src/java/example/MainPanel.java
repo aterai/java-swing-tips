@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -39,22 +40,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check3 = new JCheckBox("UIDefaults CheckBox[MouseOver].iconPainter") {
       @Override public void updateUI() {
         super.updateUI();
-        UIDefaults d = UIManager.getLookAndFeelDefaults();
-        Painter<JCheckBox> painter0 = getIconPainter(d, "Focused+Selected");
-        Painter<JCheckBox> painter1 = getIconPainter(d, "MouseOver");
-        Painter<JCheckBox> painter2 = (g, object, width, height) -> {
-          painter1.paint(g, object, width, height);
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setPaint(Color.WHITE);
-          g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
-          object.setSelected(true);
-          painter0.paint(g2, object, width, height);
-          object.setSelected(false);
-          g2.dispose();
-        };
-        d.put("CheckBox[MouseOver].iconPainter", painter2);
-        d.put("CheckBox[Focused+MouseOver].iconPainter", painter2);
-        putClientProperty("Nimbus.Overrides", d);
+        putClientProperty("Nimbus.Overrides", makeNimbusUIDefault());
         putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
       }
     };
@@ -67,6 +53,25 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static UIDefaults makeNimbusUIDefault() {
+    UIDefaults d = UIManager.getLookAndFeelDefaults();
+    Painter<JCheckBox> painter0 = getIconPainter(d, "Focused+Selected");
+    Painter<JCheckBox> painter1 = getIconPainter(d, "MouseOver");
+    Painter<JCheckBox> painter2 = (g, object, width, height) -> {
+      painter1.paint(g, object, width, height);
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(Color.WHITE);
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
+      object.setSelected(true);
+      painter0.paint(g2, object, width, height);
+      object.setSelected(false);
+      g2.dispose();
+    };
+    d.put("CheckBox[MouseOver].iconPainter", painter2);
+    d.put("CheckBox[Focused+MouseOver].iconPainter", painter2);
+    return d;
   }
 
   @SuppressWarnings("unchecked")
@@ -84,7 +89,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -198,7 +203,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
