@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -29,9 +30,7 @@ public final class MainPanel extends JPanel {
       UIManager.put(key, b);
       JFileChooser fileChooser = new JFileChooser();
       // fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-      // fileChooser.setMultiSelectionEnabled(true);
-      int retValue = fileChooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
+      if (fileChooser.showOpenDialog(getRootPane()) == JFileChooser.APPROVE_OPTION) {
         log.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -60,7 +59,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -113,7 +112,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

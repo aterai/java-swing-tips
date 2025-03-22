@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.io.File;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -71,27 +72,11 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       fileChooser.setSelectedFile(new File(field.getText().trim()));
       if (radio.isSelected()) {
-        EventQueue.invokeLater(() -> {
-          // findFileNameTextField(fileChooser).ifPresent(c -> {
-          //   ((JTextField) c).selectAll();
-          //   c.requestFocusInWindow();
-          // });
-          Class<JTextField> clz = JTextField.class;
-          descendants(fileChooser)
-              .filter(clz::isInstance)
-              .map(clz::cast)
-              .findFirst()
-              .ifPresent(tf -> {
-                tf.selectAll();
-                tf.requestFocusInWindow();
-              });
-        });
+        EventQueue.invokeLater(() -> requestFocusAndSelectAll(fileChooser));
       }
-      int ret = fileChooser.showOpenDialog(getRootPane());
-      if (ret == JFileChooser.APPROVE_OPTION) {
-        String path = fileChooser.getSelectedFile().getAbsolutePath();
-        field.setText(path);
-        log.append(path + "\n");
+      if (fileChooser.showOpenDialog(getRootPane()) == JFileChooser.APPROVE_OPTION) {
+        field.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        log.append(field.getText() + "\n");
       }
     });
 
@@ -107,6 +92,21 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void requestFocusAndSelectAll(JFileChooser fileChooser) {
+    // findFileNameTextField(fileChooser).ifPresent(c -> {
+    //   ((JTextField) c).selectAll();
+    //   c.requestFocusInWindow();
+    // });
+    descendants(fileChooser)
+        .filter(JTextField.class::isInstance)
+        .map(JTextField.class::cast)
+        .findFirst()
+        .ifPresent(field -> {
+          field.selectAll();
+          field.requestFocusInWindow();
+        });
   }
 
   public static Stream<Component> descendants(Container parent) {
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

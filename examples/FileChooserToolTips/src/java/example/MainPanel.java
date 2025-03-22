@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -29,11 +30,10 @@ public final class MainPanel extends JPanel {
   }
 
   private JButton makeButton1() {
+    JFileChooser chooser = new JFileChooser();
     JButton button = new JButton("Default");
     button.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
+      if (chooser.showOpenDialog(log.getRootPane()) == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -41,15 +41,13 @@ public final class MainPanel extends JPanel {
   }
 
   private JButton makeButton2() {
+    JFileChooser chooser = new JFileChooser();
     JButton button = new JButton("JList tooltips");
     button.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
       descendants(chooser)
-          .filter(JList.class::isInstance)
-          .map(JList.class::cast)
+          .filter(JList.class::isInstance).map(JList.class::cast)
           .forEach(MainPanel::setCellRenderer);
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
+      if (chooser.showOpenDialog(log.getRootPane()) == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -57,25 +55,27 @@ public final class MainPanel extends JPanel {
   }
 
   private JButton makeButton3() {
+    JFileChooser chooser = new JFileChooser();
     JButton button = new JButton("JTable tooltips");
     button.addActionListener(e -> {
-      String key = "viewTypeDetails";
-      JFileChooser chooser = new JFileChooser();
-      Optional.ofNullable(chooser.getActionMap().get(key)).ifPresent(a -> {
-        ActionEvent ae = new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, key);
-        a.actionPerformed(ae);
-      });
+      viewTypeDetails(chooser, e.getSource());
       descendants(chooser)
-          .filter(JTable.class::isInstance)
-          .map(JTable.class::cast)
-          .findFirst()
-          .ifPresent(MainPanel::setCellRenderer);
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
+          .filter(JTable.class::isInstance).map(JTable.class::cast)
+          .findFirst().ifPresent(MainPanel::setCellRenderer);
+      if (chooser.showOpenDialog(log.getRootPane()) == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
     return button;
+  }
+
+  private static void viewTypeDetails(JFileChooser chooser, Object src) {
+    String key = "viewTypeDetails";
+    Optional.ofNullable(chooser.getActionMap().get(key))
+        .ifPresent(a -> {
+          int id = ActionEvent.ACTION_PERFORMED;
+          a.actionPerformed(new ActionEvent(src, id, key));
+        });
   }
 
   public static Stream<Component> descendants(Container parent) {
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

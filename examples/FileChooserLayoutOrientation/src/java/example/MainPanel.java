@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -43,12 +44,9 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       descendants(chooser)
-          .filter(JList.class::isInstance)
-          .map(JList.class::cast)
-          .findFirst()
-          .ifPresent(MainPanel::addHierarchyListener);
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
+          .filter(JList.class::isInstance).map(JList.class::cast)
+          .findFirst().ifPresent(MainPanel::addHierarchyListener);
+      if (chooser.showOpenDialog(log.getRootPane()) == JFileChooser.APPROVE_OPTION) {
         log.setText(chooser.getSelectedFile().getAbsolutePath());
       }
     });
@@ -81,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -135,7 +133,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

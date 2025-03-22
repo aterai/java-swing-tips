@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -53,42 +54,48 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         removeAncestorListener(handler);
         super.updateUI();
-        handler = new AncestorListener() {
-          @Override public void ancestorAdded(AncestorEvent e) {
-            JFileChooser fc = (JFileChooser) e.getComponent();
-            SwingUtils.setViewTypeDetails(fc);
-            SwingUtils.descendants(fc)
-                .filter(JTable.class::isInstance)
-                .map(JTable.class::cast)
-                .findFirst()
-                .ifPresent(table -> {
-                  List<?> sortKeys = table.getRowSorter().getSortKeys();
-                  int col = model.getNumber().intValue();
-                  if (col < 0) {
-                    table.getRowSorter().setSortKeys(Collections.emptyList());
-                  } else if (sortKeys.isEmpty() && col < table.getColumnCount()) {
-                    SortOrder order = combo.getItemAt(combo.getSelectedIndex());
-                    RowSorter.SortKey key = new RowSorter.SortKey(col, order);
-                    table.getRowSorter().setSortKeys(Collections.singletonList(key));
-                  }
-                });
-          }
-
-          @Override public void ancestorRemoved(AncestorEvent e) {
-            // SwingUtils.descendants(e.getComponent())
-            //     .filter(JTable.class::isInstance)
-            //     .map(JTable.class::cast)
-            //     .findFirst()
-            //     .ifPresent(table -> sortKeys = table.getRowSorter().getSortKeys());
-          }
-
-          @Override public void ancestorMoved(AncestorEvent e) {
-            // not need
-          }
-        };
+        handler = new TableSortKeyHandler();
         addAncestorListener(handler);
       }
     };
+  }
+
+  private static void setTableSortKey(JTable table, int column, SortOrder order) {
+    List<?> sortKeys = table.getRowSorter().getSortKeys();
+    if (column < 0) {
+      table.getRowSorter().setSortKeys(Collections.emptyList());
+    } else if (sortKeys.isEmpty() && column < table.getColumnCount()) {
+      RowSorter.SortKey key = new RowSorter.SortKey(column, order);
+      table.getRowSorter().setSortKeys(Collections.singletonList(key));
+    }
+  }
+
+  private final class TableSortKeyHandler implements AncestorListener {
+    @Override public void ancestorAdded(AncestorEvent e) {
+      JFileChooser fc = (JFileChooser) e.getComponent();
+      SwingUtils.setViewTypeDetails(fc);
+      SwingUtils.descendants(fc)
+          .filter(JTable.class::isInstance)
+          .map(JTable.class::cast)
+          .findFirst()
+          .ifPresent(t -> {
+            int col = model.getNumber().intValue();
+            SortOrder order = combo.getItemAt(combo.getSelectedIndex());
+            setTableSortKey(t, col, order);
+          });
+    }
+
+    @Override public void ancestorRemoved(AncestorEvent e) {
+      // SwingUtils.descendants(e.getComponent())
+      //     .filter(JTable.class::isInstance)
+      //     .map(JTable.class::cast)
+      //     .findFirst()
+      //     .ifPresent(table -> sortKeys = table.getRowSorter().getSortKeys());
+    }
+
+    @Override public void ancestorMoved(AncestorEvent e) {
+      // not need
+    }
   }
 
   public static void main(String[] args) {
@@ -101,7 +108,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
