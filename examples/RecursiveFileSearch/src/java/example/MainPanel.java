@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -108,45 +109,6 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private final class FileSearchTask extends RecursiveFileSearchTask {
-    protected FileSearchTask(File dir) {
-      super(dir);
-    }
-
-    @Override protected void process(List<Message> chunks) {
-      // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
-      if (isDisplayable() && !isCancelled()) {
-        chunks.forEach(MainPanel.this::updateMessage);
-      } else {
-        // System.out.println("process: DISPOSE_ON_CLOSE");
-        cancel(true);
-      }
-    }
-
-    @Override protected void done() {
-      // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-      if (!isDisplayable()) {
-        // System.out.println("done: DISPOSE_ON_CLOSE");
-        cancel(true);
-        return;
-      }
-      updateComponentStatus(false);
-      String text;
-      if (isCancelled()) {
-        text = "Cancelled";
-      } else {
-        try {
-          text = get();
-        } catch (InterruptedException | ExecutionException ex) {
-          text = "Interrupted";
-          Thread.currentThread().interrupt();
-        }
-      }
-      appendLine("----------------");
-      appendLine(text);
-    }
-  }
-
   public void updateComponentStatus(boolean start) {
     if (start) {
       addItem(dirCombo, Objects.toString(dirCombo.getEditor().getItem()), 4);
@@ -182,7 +144,25 @@ public final class MainPanel extends JPanel {
   }
 
   public void executeWorker(File dir) {
-    worker = new FileSearchTask(dir);
+    worker = new RecursiveFileSearchTask(dir) {
+      @Override protected void process(List<Message> chunks) {
+        if (isDisplayable() && !isCancelled()) {
+          chunks.forEach(MainPanel.this::updateMessage);
+        } else {
+          cancel(true);
+        }
+      }
+
+      @Override protected void done() {
+        if (!isDisplayable()) {
+          cancel(true);
+          return;
+        }
+        updateComponentStatus(false);
+        appendLine("----------------");
+        appendLine(getDoneMessage());
+      }
+    };
     worker.addPropertyChangeListener(new ProgressListener(progress));
     worker.execute();
   }
@@ -210,7 +190,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -365,6 +345,19 @@ class RecursiveFileSearchTask extends SwingWorker<String, Message> {
         return FileVisitResult.CONTINUE;
       }
     });
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "ExecutionException: " + ex.getMessage();
+    }
+    return msg;
   }
 }
 
