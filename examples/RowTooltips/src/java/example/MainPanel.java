@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -27,21 +28,22 @@ public final class MainPanel extends JPanel {
         }
         return txt;
       }
-
-      // public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-      //   Component c = super.prepareRenderer(tcr, row, column);
-      //   if (c instanceof JComponent) {
-      //     int mr = convertRowIndexToModel(row);
-      //     int mc = convertColumnIndexToModel(column);
-      //     Object o = getModel().getValueAt(mr, mc);
-      //     String s = Objects.toString(o, "");
-      //     ((JComponent) c).setToolTipText(s.isEmpty() ? null : s);
-      //   }
-      //   return c;
-      // }
     };
     table.setAutoCreateRowSorter(true);
     table.setFillsViewportHeight(true);
+    // JTable table2 = new JTable(makeModel()) {
+    //   public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
+    //     Component c = super.prepareRenderer(tcr, row, column);
+    //     if (c instanceof JComponent) {
+    //       int mr = convertRowIndexToModel(row);
+    //       int mc = convertColumnIndexToModel(column);
+    //       Object o = getModel().getValueAt(mr, mc);
+    //       String s = Objects.toString(o, "");
+    //       ((JComponent) c).setToolTipText(s.isEmpty() ? null : s);
+    //     }
+    //     return c;
+    //   }
+    // };
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -68,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
@@ -13,40 +14,16 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    add(new JScrollPane(makeList()));
-    add(makeTranslucentScrollBar(makeList()));
+    add(new JScrollPane(makeTable()));
+    add(new OverlapScrollPane(makeTable()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeList() {
+  private static JTable makeTable() {
     JTable table = new JTable(new DefaultTableModel(30, 5));
     table.setAutoCreateRowSorter(true);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     return table;
-  }
-
-  private static JScrollPane makeTranslucentScrollBar(JTable c) {
-    return new JScrollPane(c) {
-      @Override public boolean isOptimizedDrawingEnabled() {
-        return false; // JScrollBar is overlap
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        EventQueue.invokeLater(() -> {
-          getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
-          getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
-          setComponentZOrder(getVerticalScrollBar(), 0);
-          setComponentZOrder(getHorizontalScrollBar(), 1);
-          setComponentZOrder(getViewport(), 2);
-          getVerticalScrollBar().setOpaque(false);
-          getHorizontalScrollBar().setOpaque(false);
-        });
-        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
-        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-        setLayout(new OverlapScrollPaneLayout());
-      }
-    };
   }
 
   public static void main(String[] args) {
@@ -59,7 +36,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -68,6 +45,32 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class OverlapScrollPane extends JScrollPane {
+  protected OverlapScrollPane(Component view) {
+    super(view);
+  }
+
+  @Override public boolean isOptimizedDrawingEnabled() {
+    return false; // JScrollBar is overlap
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    EventQueue.invokeLater(() -> {
+      getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
+      getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
+      setComponentZOrder(getVerticalScrollBar(), 0);
+      setComponentZOrder(getHorizontalScrollBar(), 1);
+      setComponentZOrder(getViewport(), 2);
+      getVerticalScrollBar().setOpaque(false);
+      getHorizontalScrollBar().setOpaque(false);
+    });
+    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+    setLayout(new OverlapScrollPaneLayout());
   }
 }
 
