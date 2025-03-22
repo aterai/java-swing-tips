@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -38,18 +39,7 @@ public final class MainPanel extends JPanel {
         @Override protected void done() {
           runButton.setEnabled(true);
           monitor.close();
-          try {
-            if (isCancelled()) {
-              area.append("Cancelled\n");
-            } else {
-              area.append(get() + "\n");
-            }
-          } catch (InterruptedException ex) {
-            area.append("Interrupted\n");
-            Thread.currentThread().interrupt();
-          } catch (ExecutionException ex) {
-            area.append("ExecutionException\n");
-          }
+          area.append(getDoneMessage() + "\n");
           area.setCaretPosition(area.getDocument().getLength());
         }
       };
@@ -80,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -108,6 +98,19 @@ class BackgroundTask extends SwingWorker<String, String> {
 
   protected void doSomething() throws InterruptedException {
     Thread.sleep(50);
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "ExecutionException";
+    }
+    return msg;
   }
 }
 

@@ -14,41 +14,21 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final transient ProgressMonitor monitor;
+  private final JTextArea area = new JTextArea();
+  private final JButton runButton = new JButton("run");
+
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    ProgressMonitor monitor = new ProgressMonitor(this, "message", "note", 0, 100);
-
-    JTextArea area = new JTextArea();
     area.setEditable(false);
-
-    JButton runButton = new JButton("run");
+    monitor = new ProgressMonitor(this, "message", "note", 0, 100);
     runButton.addActionListener(e -> {
-      // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
       runButton.setEnabled(false);
       monitor.setProgress(0);
-      SwingWorker<String, String> worker = new BackgroundTask() {
-        @Override protected void process(List<String> chunks) {
-          chunks.forEach(monitor::setNote);
-        }
-
-        @Override protected void done() {
-          runButton.setEnabled(true);
-          monitor.close();
-          try {
-            area.append(isCancelled() ? "Cancelled\n" : get() + "\n");
-          } catch (InterruptedException ex) {
-            area.append("Interrupted\n");
-            Thread.currentThread().interrupt();
-          } catch (ExecutionException ex) {
-            area.append("ExecutionException\n");
-          }
-          area.setCaretPosition(area.getDocument().getLength());
-        }
-      };
+      SwingWorker<String, String> worker = new ProgressMonitorTask();
       worker.addPropertyChangeListener(new ProgressListener(monitor));
       worker.execute();
     });
-
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(runButton);
@@ -56,6 +36,19 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private final class ProgressMonitorTask extends BackgroundTask {
+    @Override protected void process(List<String> chunks) {
+      chunks.forEach(monitor::setNote);
+    }
+
+    @Override protected void done() {
+      runButton.setEnabled(true);
+      monitor.close();
+      area.append(getDoneMessage() + "\n");
+      area.setCaretPosition(area.getDocument().getLength());
+    }
   }
 
   public static void main(String[] args) {
@@ -97,6 +90,19 @@ class BackgroundTask extends SwingWorker<String, String> {
 
   protected void doSomething() throws InterruptedException {
     Thread.sleep(50);
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "ExecutionException: " + ex.getMessage();
+    }
+    return msg;
   }
 }
 

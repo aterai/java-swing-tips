@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -28,12 +29,9 @@ public final class MainPanel extends JPanel {
     JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {
       Window w = SwingUtilities.getWindowAncestor(runButton);
-      int toDecideToPopup = msToDecide.getNumber().intValue();
-      int toPopup = msToPopup.getNumber().intValue();
       ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
-      monitor.setMillisToDecideToPopup(toDecideToPopup);
-      monitor.setMillisToPopup(toPopup);
-
+      monitor.setMillisToDecideToPopup(msToDecide.getNumber().intValue());
+      monitor.setMillisToPopup(msToPopup.getNumber().intValue());
       runButton.setEnabled(false);
       executeWorker(monitor, runButton, area);
     });
@@ -70,33 +68,18 @@ public final class MainPanel extends JPanel {
         if (isDisplayable()) { //  && !isCancelled()) {
           chunks.forEach(monitor::setNote);
         } else {
-          // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
         }
       }
 
       @Override protected void done() {
         if (!isDisplayable()) {
-          // System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
           return;
         }
         button.setEnabled(true);
         monitor.close();
-        if (isCancelled()) {
-          area.append("Cancelled\n");
-        } else {
-          try {
-            String text = get();
-            area.append(text + "\n");
-          } catch (InterruptedException ex) {
-            area.append("Interrupted\n");
-            Thread.currentThread().interrupt();
-          } catch (ExecutionException ex) {
-            ex.printStackTrace();
-            area.append(String.format("Error: %s%n", ex.getMessage()));
-          }
-        }
+        area.append(getDoneMessage() + "\n");
         area.setCaretPosition(area.getDocument().getLength());
       }
     };
@@ -114,7 +97,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -147,6 +130,19 @@ class BackgroundTask extends SwingWorker<String, String> {
     int iv = rnd.nextInt(10) + 1;
     Thread.sleep(iv);
     return iv;
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      Thread.currentThread().interrupt();
+      msg = "Interrupted";
+    } catch (ExecutionException ex) {
+      msg = String.format("Error: %s", ex.getMessage());
+    }
+    return msg;
   }
 }
 

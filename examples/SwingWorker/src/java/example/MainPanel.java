@@ -72,17 +72,7 @@ public final class MainPanel extends JPanel {
         return;
       }
       updateComponentDone();
-      String msg;
-      try {
-        msg = isCancelled() ? "Cancelled" : get();
-      } catch (InterruptedException ex) {
-        msg = "Interrupted";
-        Thread.currentThread().interrupt();
-      } catch (ExecutionException ex) {
-        // ex.printStackTrace();
-        msg = "Error: " + ex.getMessage();
-      }
-      appendText("\n" + msg + "\n");
+      appendText(String.format("%n%s%n", getDoneMessage()));
     }
   }
 
@@ -157,6 +147,19 @@ class BackgroundTask extends SwingWorker<String, String> {
     setProgress(progress);
     publish(".");
     return iv;
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "Error: " + ex.getMessage();
+    }
+    return msg;
   }
 }
 

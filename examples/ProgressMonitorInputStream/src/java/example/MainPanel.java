@@ -81,9 +81,18 @@ public final class MainPanel extends JPanel {
       monitor.setMillisToPopup(0);
       monitor.setMinimum(0);
       monitor.setMaximum(length);
-      MonitorTask task = new MonitorTask(pms, cs, length) {
+      SwingWorker<String, Chunk> task = new BackgroundTask(pms, cs, length) {
+        @Override protected void process(List<Chunk> chunks) {
+          if (isDisplayable() && !isCancelled()) {
+            chunks.forEach(MainPanel.this::update);
+          } else {
+            cancel(true);
+          }
+        }
+
         @Override protected void done() {
-          super.done();
+          runButton.setEnabled(true);
+          append(getDoneMessage());
           loop.exit();
         }
       };
@@ -112,40 +121,6 @@ public final class MainPanel extends JPanel {
     }
     // System.out.println(cs);
     return cs;
-  }
-
-  private class MonitorTask extends BackgroundTask {
-    protected MonitorTask(ProgressMonitorInputStream pms, Charset cs, int length) {
-      super(pms, cs, length);
-    }
-
-    @Override protected void process(List<Chunk> chunks) {
-      if (isDisplayable() && !isCancelled()) {
-        chunks.forEach(MainPanel.this::update);
-      } else {
-        cancel(true);
-      }
-    }
-
-    @Override protected void done() {
-      updateComponentDone();
-      String text;
-      try {
-        closeStream();
-        text = isCancelled() ? "Cancelled" : get();
-      } catch (InterruptedException ex) {
-        text = "Interrupted";
-        Thread.currentThread().interrupt();
-      } catch (IOException | ExecutionException ex) {
-        // ex.printStackTrace();
-        text = "Error:" + ex.getMessage();
-      }
-      append(text);
-    }
-  }
-
-  public void updateComponentDone() {
-    runButton.setEnabled(true);
   }
 
   private void update(Chunk c) {
@@ -253,9 +228,19 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     return size;
   }
 
-  protected void closeStream() throws IOException {
-    if (Objects.nonNull(pms)) {
-      pms.close();
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      if (Objects.nonNull(pms)) {
+        pms.close();
+      }
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (IOException | ExecutionException ex) {
+      msg = "Error:" + ex.getMessage();
     }
+    return msg;
   }
 }

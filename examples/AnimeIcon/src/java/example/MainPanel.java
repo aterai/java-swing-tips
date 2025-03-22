@@ -90,16 +90,7 @@ public final class MainPanel extends JPanel {
       cancelButton.setEnabled(false);
       statusPanel.remove(bar);
       statusPanel.revalidate();
-      appendLine("\n");
-      try {
-        appendLine(isCancelled() ? "Cancelled" : get());
-      } catch (InterruptedException ex) {
-        appendLine("Interrupted");
-        Thread.currentThread().interrupt();
-      } catch (ExecutionException ex) {
-        appendLine("Error");
-      }
-      appendLine("\n\n");
+      appendLine(String.format("%n%s%n%n", getDoneMessage()));
     }
   }
 
@@ -145,6 +136,19 @@ class BackgroundTask extends SwingWorker<String, String> {
 
   protected void doSomething() throws InterruptedException {
     Thread.sleep(50);
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "Error";
+    }
+    return msg;
   }
 }
 

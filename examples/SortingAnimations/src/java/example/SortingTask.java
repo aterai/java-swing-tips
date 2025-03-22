@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 // SortAnim.java -- Animate sorting algorithms
@@ -65,6 +66,19 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
         throw new AssertionError("Unknown SortAlgorithms");
     }
     return "Done";
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "Error: " + ex.getMessage();
+    }
+    return msg;
   }
 
   private void swap(int i, int j) throws InterruptedException {

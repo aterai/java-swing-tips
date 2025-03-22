@@ -103,21 +103,7 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void done() {
-      try {
-        File nf = get();
-        if (Objects.isNull(nf)) {
-          log.append(mkMsg("Failed to create backup file.", MessageType.ERROR));
-        } else if (nf.createNewFile()) {
-          log.append(mkMsg("Generated " + nf.getName() + ".", MessageType.REGULAR));
-        } else {
-          log.append(mkMsg("Failed to generate " + nf.getName() + ".", MessageType.ERROR));
-        }
-      } catch (InterruptedException ex) {
-        log.append(mkMsg(ex.getMessage(), MessageType.ERROR));
-        Thread.currentThread().interrupt();
-      } catch (ExecutionException | IOException ex) {
-        log.append(mkMsg(ex.getMessage(), MessageType.ERROR));
-      }
+      log.append(getDoneMessage());
       log.append(mkMsg("----------------------------------", MessageType.REGULAR));
     }
   }
@@ -318,6 +304,26 @@ class BackgroundTask extends SwingWorker<File, Message> {
       return false;
     }
     return true;
+  }
+
+  protected Message getDoneMessage() {
+    Message msg;
+    try {
+      File nf = get();
+      if (Objects.isNull(nf)) {
+        msg = mkMsg("Failed to create backup file.", MessageType.ERROR);
+      } else if (nf.createNewFile()) {
+        msg = mkMsg("Generated " + nf.getName() + ".", MessageType.REGULAR);
+      } else {
+        msg = mkMsg("Failed to generate " + nf.getName() + ".", MessageType.ERROR);
+      }
+    } catch (InterruptedException ex) {
+      msg = mkMsg(ex.getMessage(), MessageType.ERROR);
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException | IOException ex) {
+      msg = mkMsg(ex.getMessage(), MessageType.ERROR);
+    }
+    return msg;
   }
 
   protected static Message mkMsg(String text, MessageType type) {

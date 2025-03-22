@@ -10,7 +10,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -128,29 +128,17 @@ public final class MainPanel extends JPanel {
         if (isDisplayable() && !isCancelled()) {
           chunks.forEach(panel::repaint);
         } else {
-          // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
         }
       }
 
       @Override protected void done() {
         if (!isDisplayable()) {
-          // System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
           return;
         }
         setComponentEnabled(true);
-        String text;
-        try {
-          text = isCancelled() ? "Cancelled" : get();
-        } catch (InterruptedException ex) {
-          text = "Interrupted";
-          Thread.currentThread().interrupt();
-        } catch (ExecutionException ex) {
-          ex.printStackTrace();
-          text = "Error: " + ex.getMessage();
-        }
-        panel.setToolTipText(text);
+        panel.setToolTipText(getDoneMessage());
         repaint();
       }
     };
@@ -167,7 +155,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

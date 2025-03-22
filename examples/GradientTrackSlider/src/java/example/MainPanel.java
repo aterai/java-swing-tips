@@ -11,6 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
@@ -107,7 +108,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -284,7 +285,7 @@ final class GradientPalletUtils {
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
-      ex.printStackTrace();
+      // ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
       Thread.currentThread().interrupt();
     }

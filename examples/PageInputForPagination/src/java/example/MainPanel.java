@@ -145,20 +145,10 @@ public final class MainPanel extends JPanel {
 
     @Override protected void done() {
       if (!isDisplayable()) {
-        // System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
         return;
       }
-      String text;
-      try {
-        text = get();
-      } catch (InterruptedException ex) {
-        text = "Interrupted";
-        Thread.currentThread().interrupt();
-      } catch (ExecutionException ex) {
-        text = "ExecutionException";
-      }
-      label.setToolTipText(text);
+      label.setToolTipText(getDoneMessage());
       table.setEnabled(true);
       field.setEditable(true);
     }
@@ -260,6 +250,19 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
   //   publish(result);
   //   return current + result.size();
   // }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "ExecutionException";
+    }
+    return msg;
+  }
 }
 
 class IntegerDocumentFilter extends DocumentFilter {

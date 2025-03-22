@@ -11,6 +11,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -48,7 +49,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -79,29 +80,18 @@ class ProgressTabbedPane extends JTabbedPane {
     SwingWorker<String, Integer> worker = new BackgroundTask() {
       @Override protected void process(List<Integer> chunks) {
         if (!isDisplayable()) {
-          // System.out.println("process: DISPOSE_ON_CLOSE");
           cancel(true);
         }
       }
 
       @Override protected void done() {
         if (!isDisplayable()) {
-          // System.out.println("done: DISPOSE_ON_CLOSE");
           cancel(true);
           return;
         }
         setTabComponentAt(currentIndex, label);
         setComponentAt(currentIndex, content);
-        String txt;
-        try {
-          txt = get();
-        } catch (InterruptedException ex) {
-          txt = "Interrupted";
-          Thread.currentThread().interrupt();
-        } catch (ExecutionException ex) {
-          txt = "Exception";
-        }
-        label.setToolTipText(txt);
+        label.setToolTipText(getDoneMessage());
       }
     };
     worker.addPropertyChangeListener(new ProgressListener(bar));
@@ -130,6 +120,19 @@ class BackgroundTask extends SwingWorker<String, Integer> {
     int iv = rnd.nextInt(20) + 1;
     Thread.sleep(iv);
     return iv;
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "ExecutionException: " + ex.getMessage();
+    }
+    return msg;
   }
 }
 

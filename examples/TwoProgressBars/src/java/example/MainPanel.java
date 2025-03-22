@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -24,7 +25,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(5, 5));
     area.setEditable(false);
     runButton.addActionListener(e -> {
-      initStatusPanel(true);
+      updateButtonsAndStatusPanel(true);
       executeWorker();
     });
     cancelButton.addActionListener(e -> {
@@ -52,17 +53,15 @@ public final class MainPanel extends JPanel {
     worker.execute();
   }
 
-  public void initStatusPanel(boolean start) {
-    if (start) {
-      runButton.setEnabled(false);
-      cancelButton.setEnabled(true);
+  public void updateButtonsAndStatusPanel(boolean running) {
+    runButton.setEnabled(!running);
+    cancelButton.setEnabled(running);
+    if (running) {
       bar1.setValue(0);
       bar2.setValue(0);
       statusPanel.add(bar1, BorderLayout.NORTH);
       statusPanel.add(bar2, BorderLayout.SOUTH);
     } else {
-      runButton.setEnabled(true);
-      cancelButton.setEnabled(false);
       statusPanel.removeAll();
     }
     statusPanel.revalidate();
@@ -82,19 +81,12 @@ public final class MainPanel extends JPanel {
         cancel(true);
         return;
       }
-      initStatusPanel(false);
-      try {
-        appendLine(isCancelled() ? "\nCancelled\n" : get() + "\n");
-      } catch (InterruptedException ex) {
-        appendLine("\nInterrupted\n");
-        Thread.currentThread().interrupt();
-      } catch (ExecutionException ex) {
-        appendLine("\nException\n");
-      }
+      updateButtonsAndStatusPanel(false);
+      appendLine(String.format("%n%s%n", getDoneMessage()));
     }
   }
 
-  public void updateProgress(Progress s) {
+  private void updateProgress(Progress s) {
     switch (s.getComponentType()) {
       case TOTAL:
         bar1.setValue((Integer) s.getValue());
@@ -125,7 +117,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -164,7 +156,6 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   private final Random rnd = new Random();
 
   @Override protected String doInBackground() throws InterruptedException {
-    // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
     int current = 0;
     int numOfFiles = 12; // fileList.size();
     publish(new Progress(ComponentType.LOG, "Total number of files: " + numOfFiles));
@@ -191,6 +182,19 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   protected void doSomething(int iv) throws InterruptedException {
     publish(new Progress(ComponentType.FILE, iv + 1));
     Thread.sleep(20);
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    try {
+      msg = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      msg = "ExecutionException: " + ex.getMessage();
+    }
+    return msg;
   }
 }
 

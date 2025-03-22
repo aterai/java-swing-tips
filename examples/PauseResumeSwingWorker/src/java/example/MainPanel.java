@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -31,33 +32,19 @@ public final class MainPanel extends JPanel {
     area.setEditable(false);
 
     runButton.addActionListener(e -> {
-      // System.out.println("actionPerformed() is EDT?: " + EventQueue.isDispatchThread());
-      runButton.setEnabled(false);
-      cancelButton.setEnabled(true);
-      pauseButton.setEnabled(true);
-      bar1.setValue(0);
-      bar2.setValue(0);
-      statusPanel.add(bar1, BorderLayout.NORTH);
-      statusPanel.add(bar2, BorderLayout.SOUTH);
-      statusPanel.revalidate();
-      // bar1.setIndeterminate(true);
+      updateButtonsAndStatusPanel(true);
       worker = new ProgressTask();
       worker.execute();
     });
 
     pauseButton.setEnabled(false);
     pauseButton.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      // String pause = (String) getValue(Action.NAME);
+      JButton btn = (JButton) e.getSource();
       if (Objects.nonNull(worker)) {
-        if (worker.isCancelled() || worker.isPaused) {
-          b.setText(PAUSE);
-        } else {
-          b.setText(RESUME);
-        }
+        btn.setText(worker.isCancelled() || worker.isPaused ? PAUSE : RESUME);
         worker.isPaused ^= true;
       } else {
-        b.setText(PAUSE);
+        btn.setText(PAUSE);
       }
     });
 
@@ -81,46 +68,40 @@ public final class MainPanel extends JPanel {
 
   private final class ProgressTask extends BackgroundTask {
     @Override protected void process(List<Progress> chunks) {
-      // System.out.println("process() is EDT?: " + EventQueue.isDispatchThread());
       if (isDisplayable() && !isCancelled()) {
         chunks.forEach(MainPanel.this::updateProgress);
       } else {
-        // System.out.println("process: DISPOSE_ON_CLOSE");
         cancel(true);
       }
     }
 
     @Override protected void done() {
       if (!isDisplayable()) {
-        // System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
         return;
       }
-      // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-      updateComponentDone();
-      String message;
-      try {
-        message = isCancelled() ? "Cancelled" : get();
-      } catch (InterruptedException ex) {
-        message = "Interrupted";
-        Thread.currentThread().interrupt();
-      } catch (ExecutionException ex) {
-        message = "ExecutionException";
-      }
-      appendLine(String.format("%n%s%n", message));
+      updateButtonsAndStatusPanel(false);
+      appendLine(String.format("%n%s%n", getDoneMessage()));
     }
   }
 
-  public void updateComponentDone() {
-    runButton.requestFocusInWindow();
-    runButton.setEnabled(true);
-    cancelButton.setEnabled(false);
-    pauseButton.setEnabled(false);
-    statusPanel.removeAll();
+  private void updateButtonsAndStatusPanel(boolean running) {
+    runButton.setEnabled(!running);
+    cancelButton.setEnabled(running);
+    pauseButton.setEnabled(running);
+    if (running) {
+      bar1.setValue(0);
+      bar2.setValue(0);
+      statusPanel.add(bar1, BorderLayout.NORTH);
+      statusPanel.add(bar2, BorderLayout.SOUTH);
+    } else {
+      runButton.requestFocusInWindow();
+      statusPanel.removeAll();
+    }
     statusPanel.revalidate();
   }
 
-  public void updateProgress(Progress s) {
+  private void updateProgress(Progress s) {
     switch (s.getComponent()) {
       case TOTAL:
         bar1.setValue((Integer) s.getValue());
@@ -198,7 +179,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -278,6 +259,19 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   protected void doSomething(int progress) throws InterruptedException {
     Thread.sleep(20);
     publish(new Progress(ProgressType.FILE, progress + 1));
+  }
+
+  protected String getDoneMessage() {
+    String message;
+    try {
+      message = isCancelled() ? "Cancelled" : get();
+    } catch (InterruptedException ex) {
+      message = "Interrupted";
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException ex) {
+      message = "ExecutionException";
+    }
+    return message;
   }
 }
 
