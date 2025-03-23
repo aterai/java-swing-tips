@@ -7,8 +7,10 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
@@ -32,7 +34,6 @@ public final class MainPanel extends JPanel {
     table.setShowGrid(false);
     table.setIntercellSpacing(new Dimension());
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
     table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -103,11 +104,11 @@ class LineFocusTable extends JTable {
     setSelectionForeground(new ColorUIResource(Color.RED));
     setSelectionBackground(new ColorUIResource(Color.RED));
     super.updateUI();
-    updateRenderer();
-    remakeBooleanEditor();
+    initDefaultRenderer();
+    setDefaultEditor(Boolean.class, makeBooleanEditor());
   }
 
-  private void updateRenderer() {
+  private void initDefaultRenderer() {
     TableModel m = getModel();
     for (int i = 0; i < m.getColumnCount(); i++) {
       TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
@@ -117,37 +118,21 @@ class LineFocusTable extends JTable {
     }
   }
 
-  private void remakeBooleanEditor() {
-    JCheckBox checkBox = new JCheckBox();
-    checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-    checkBox.setBorderPainted(true);
-    checkBox.setOpaque(true);
-    checkBox.addMouseListener(new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        JCheckBox cb = (JCheckBox) e.getComponent();
-        ButtonModel m = cb.getModel();
-        if (m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
-          if (getEditingRow() % 2 == 0) {
-            cb.setOpaque(false);
-            // cb.setBackground(getBackground());
-          } else {
-            cb.setOpaque(true);
-            cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
-          }
-        } else {
-          cb.setBackground(getSelectionBackground());
-          cb.setOpaque(true);
-        }
-      }
+  private TableCellEditor makeBooleanEditor() {
+    JCheckBox checkBox = new JCheckBox() {
+      private transient MouseListener handler;
 
-      @Override public void mouseExited(MouseEvent e) {
-        // in order to drag table row selection
-        if (isEditing() && !getCellEditor().stopCellEditing()) {
-          getCellEditor().cancelCellEditing();
-        }
+      @Override public void updateUI() {
+        removeMouseListener(handler);
+        super.updateUI();
+        setBorderPainted(true);
+        setOpaque(true);
+        handler = new CellClickHandler();
+        addMouseListener(handler);
       }
-    });
-    setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
+    };
+    checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+    return new DefaultCellEditor(checkBox);
   }
 
   private void updateBorderType(DotBorder border, int column) {
@@ -187,6 +172,32 @@ class LineFocusTable extends JTable {
       // b.setBackground(getSelectionBackground());
     }
     return c;
+  }
+
+  private final class CellClickHandler extends MouseAdapter {
+    @Override public void mousePressed(MouseEvent e) {
+      JCheckBox cb = (JCheckBox) e.getComponent();
+      ButtonModel m = cb.getModel();
+      if (m.isPressed() && isRowSelected(getEditingRow()) && e.isControlDown()) {
+        if (getEditingRow() % 2 == 0) {
+          cb.setOpaque(false);
+          // cb.setBackground(getBackground());
+        } else {
+          cb.setOpaque(true);
+          cb.setBackground(UIManager.getColor("Table.alternateRowColor"));
+        }
+      } else {
+        cb.setBackground(getSelectionBackground());
+        cb.setOpaque(true);
+      }
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      // in order to drag table row selection
+      if (isEditing() && !getCellEditor().stopCellEditing()) {
+        getCellEditor().cancelCellEditing();
+      }
+    }
   }
 }
 
