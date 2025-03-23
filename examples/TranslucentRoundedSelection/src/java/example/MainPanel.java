@@ -83,6 +83,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         // setSelectedTextColor(null);
         // setSelectionColor(new Color(0x64_88_AA_AA, true));
+        setBackground(new Color(0xEE_EE_EE));
         Caret caret = new RoundedSelectionCaret();
         caret.setBlinkRate(UIManager.getInt("TextArea.caretBlinkRate"));
         setCaret(caret);
@@ -93,7 +94,6 @@ public final class MainPanel extends JPanel {
     htmlEditorKit.setStyleSheet(makeStyleSheet());
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
-    editor.setBackground(new Color(0xEE_EE_EE));
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Optional.ofNullable(cl.getResource("example/test.html"))
         .ifPresent(url -> {
@@ -163,8 +163,7 @@ class RoundedSelectionCaret extends DefaultCaret {
         Rectangle p0 = mapper.modelToView(c, startOffset);
         Rectangle p1 = mapper.modelToView(c, endOffset);
         int h = (int) (p1.getMaxY() - p0.getMinY());
-        Rectangle rr = new Rectangle(0, p0.y, c.getWidth(), h);
-        c.repaint(rr);
+        c.repaint(new Rectangle(0, p0.y, c.getWidth(), h));
       } catch (BadLocationException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
