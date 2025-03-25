@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -37,33 +38,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       JButton b = (JButton) e.getSource();
       b.setEnabled(false);
-      ExecutorService executor = Executors.newCachedThreadPool();
-      new SwingWorker<Boolean, Void>() {
-        @Override protected Boolean doInBackground() throws InterruptedException {
-          DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-          DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-          // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
-          Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
-              .filter(DefaultMutableTreeNode.class::isInstance)
-              .map(DefaultMutableTreeNode.class::cast)
-              .filter(node -> !Objects.equals(root, node) && !model.isLeaf(node))
-              .forEach(node -> executor.execute(makeWorker(tree, node)));
-          // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
-          // Enumeration<?> e = root.breadthFirstEnumeration();
-          // while (e.hasMoreElements()) {
-          //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-          //   if (!root.equals(node) && !model.isLeaf(node)) {
-          //     executor.execute(makeWorker(tree, node));
-          //   }
-          // }
-          executor.shutdown();
-          return executor.awaitTermination(1, TimeUnit.MINUTES);
-        }
-
-        private SwingWorker<TreeNode, Integer> makeWorker(JTree t, DefaultMutableTreeNode n) {
-          return new NodeProgressWorker(t, n);
-        }
-
+      new BackgroundTask(tree) {
         @Override protected void done() {
           b.setEnabled(true);
         }
@@ -120,7 +95,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -129,6 +104,41 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class BackgroundTask extends SwingWorker<Boolean, Void> {
+  private final ExecutorService executor = Executors.newCachedThreadPool();
+  private final JTree tree;
+
+  protected BackgroundTask(JTree tree) {
+    super();
+    this.tree = tree;
+  }
+
+  @Override protected Boolean doInBackground() throws InterruptedException {
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+    // Java 9: Collections.list(root.breadthFirstEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .filter(node -> !Objects.equals(root, node) && !model.isLeaf(node))
+        .forEach(node -> executor.execute(makeWorker(tree, node)));
+    // // Java 9: Enumeration<TreeNode> e = root.breadthFirstEnumeration();
+    // Enumeration<?> e = root.breadthFirstEnumeration();
+    // while (e.hasMoreElements()) {
+    //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+    //   if (!root.equals(node) && !model.isLeaf(node)) {
+    //     executor.execute(makeWorker(tree, node));
+    //   }
+    // }
+    executor.shutdown();
+    return executor.awaitTermination(1, TimeUnit.MINUTES);
+  }
+
+  private SwingWorker<TreeNode, Integer> makeWorker(JTree t, DefaultMutableTreeNode n) {
+    return new NodeProgressWorker(t, n);
   }
 }
 
@@ -178,7 +188,6 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
       UIManager.getLookAndFeel().provideErrorFeedback(tree);
       Thread.currentThread().interrupt();
     } catch (ExecutionException ex) {
-      ex.printStackTrace();
       UIManager.getLookAndFeel().provideErrorFeedback(tree);
     }
   }

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -68,42 +69,43 @@ public final class MainPanel extends JPanel {
 }
 
 final class InternalFramePopupMenu extends JPopupMenu {
+  private final JTextField field = new JTextField(24) {
+    private transient AncestorListener listener;
+    @Override public void updateUI() {
+      removeAncestorListener(listener);
+      super.updateUI();
+      listener = new FocusAncestorListener();
+      addAncestorListener(listener);
+    }
+  };
+
   /* default */ InternalFramePopupMenu() {
     super();
-    JTextField field = new JTextField(24) {
-      private transient AncestorListener listener;
-      @Override public void updateUI() {
-        removeAncestorListener(listener);
-        super.updateUI();
-        listener = new FocusAncestorListener();
-        addAncestorListener(listener);
-      }
-    };
     String cmd = "Edit Title";
     add(cmd).addActionListener(e -> {
       Component c = getInternalFrame(getInvoker());
       if (c instanceof JInternalFrame) {
-        JInternalFrame frame = (JInternalFrame) c;
-        field.setText(frame.getTitle());
-        Container p = frame.getDesktopPane();
-        int ret = JOptionPane.showConfirmDialog(
-            p, field, cmd, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (ret == JOptionPane.OK_OPTION) {
-          renameInternalFrameTitle(frame, field.getText().trim());
-        }
+        openFrameTitleEditor((JInternalFrame) c, cmd);
       }
     });
-  }
-
-  private static void renameInternalFrameTitle(JInternalFrame frame, String title) {
-    if (!title.equals(frame.getTitle())) {
-      frame.setTitle(title);
-    }
   }
 
   @Override public void show(Component c, int x, int y) {
     if (getInternalFrame(c) instanceof JInternalFrame) {
       super.show(c, x, y);
+    }
+  }
+
+  private void openFrameTitleEditor(JInternalFrame frame, String cmd) {
+    field.setText(frame.getTitle());
+    Container p = frame.getDesktopPane();
+    int ret = JOptionPane.showConfirmDialog(
+        p, field, cmd, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (ret == JOptionPane.OK_OPTION) {
+      String title = field.getText().trim();
+      if (!title.equals(frame.getTitle())) {
+        frame.setTitle(title);
+      }
     }
   }
 

@@ -17,22 +17,7 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridLayout(0, 1, 0, 2));
     List<JTabbedPane> list = Arrays.asList(new JTabbedPane(), makeTabs1(), makeTabs2());
     list.forEach(tabs -> {
-      tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-      tabs.addTab("00000000", new JLabel("0"));
-      tabs.addTab("11111111", new JLabel("1"));
-      tabs.addTab("22222222", new JLabel("2"));
-      tabs.addTab("33333333", new JLabel("3"));
-      tabs.addTab("44444444", new JLabel("4"));
-      tabs.addTab("55555555", new JLabel("5"));
-      tabs.addTab("66666666", new JLabel("6"));
-      tabs.addTab("77777777", new JLabel("7"));
-      tabs.addTab("88888888", new JLabel("8"));
-      tabs.addTab("99999999", new JLabel("9"));
-      tabs.setSelectedIndex(tabs.getTabCount() - 1);
-      // // TEST:
-      // EventQueue.invokeLater(() -> {
-      //   tabs.setSelectedIndex(tabs.getTabCount() - 1);
-      // });
+      initTabbedPane(tabs);
       p.add(tabs);
     });
 
@@ -44,6 +29,25 @@ public final class MainPanel extends JPanel {
     add(p);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void initTabbedPane(JTabbedPane tabs) {
+    tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    tabs.addTab("00000000", new JLabel("0"));
+    tabs.addTab("11111111", new JLabel("1"));
+    tabs.addTab("22222222", new JLabel("2"));
+    tabs.addTab("33333333", new JLabel("3"));
+    tabs.addTab("44444444", new JLabel("4"));
+    tabs.addTab("55555555", new JLabel("5"));
+    tabs.addTab("66666666", new JLabel("6"));
+    tabs.addTab("77777777", new JLabel("7"));
+    tabs.addTab("88888888", new JLabel("8"));
+    tabs.addTab("99999999", new JLabel("9"));
+    tabs.setSelectedIndex(tabs.getTabCount() - 1);
+    // // TEST:
+    // EventQueue.invokeLater(() -> {
+    //   tabs.setSelectedIndex(tabs.getTabCount() - 1);
+    // });
   }
 
   private static JTabbedPane makeTabs1() {
