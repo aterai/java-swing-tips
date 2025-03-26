@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,33 +15,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     ComboBoxModel<String> model = makeModel();
-    int rowCount = (model.getSize() + 1) / 2;
-    JComboBox<String> combo = new JComboBox<String>(model) {
-      @Override public Dimension getPreferredSize() {
-        Insets i = getInsets();
-        Dimension d = super.getPreferredSize();
-        int w = Math.max(100, d.width);
-        int h = d.height;
-        int buttonWidth = 20; // ???
-        return new Dimension(buttonWidth + w + i.left + i.right, h + i.top + i.bottom);
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setMaximumRowCount(rowCount);
-        setPrototypeDisplayValue("12345");
-        Accessible o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof ComboPopup) {
-          JList<?> list = ((ComboPopup) o).getList();
-          list.setLayoutOrientation(JList.VERTICAL_WRAP);
-          list.setVisibleRowCount(rowCount);
-          Border b0 = list.getBorder();
-          Border b1 = new ColumnRulesBorder();
-          list.setBorder(BorderFactory.createCompoundBorder(b0, b1));
-          list.setFixedCellWidth((getPreferredSize().width - 2) / 2);
-        }
-      }
-    };
+    // int rowCount = (model.getSize() + 1) / 2;
+    JComboBox<String> combo = new TwoColumnsComboBox<>(model);
 
     add(new JComboBox<>(makeModel()));
     add(combo);
@@ -81,7 +57,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -90,6 +66,41 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TwoColumnsComboBox<E> extends JComboBox<E> {
+  protected TwoColumnsComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public Dimension getPreferredSize() {
+    Insets i = getInsets();
+    Dimension d = super.getPreferredSize();
+    int w = Math.max(100, d.width);
+    int h = d.height;
+    int buttonWidth = 20; // ???
+    return new Dimension(buttonWidth + w + i.left + i.right, h + i.top + i.bottom);
+  }
+
+  @Override public void setModel(ComboBoxModel<E> model) {
+    super.setModel(model);
+    int rowCount = (model.getSize() + 1) / 2;
+    setMaximumRowCount(rowCount);
+    EventQueue.invokeLater(() -> updateComboPopupList(rowCount));
+  }
+
+  private void updateComboPopupList(int rowCount) {
+    Accessible o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof ComboPopup) {
+      JList<?> list = ((ComboPopup) o).getList();
+      list.setLayoutOrientation(JList.VERTICAL_WRAP);
+      list.setVisibleRowCount(rowCount);
+      Border b0 = list.getBorder();
+      Border b1 = new ColumnRulesBorder();
+      list.setBorder(BorderFactory.createCompoundBorder(b0, b1));
+      list.setFixedCellWidth((getPreferredSize().width - 2) / 2);
+    }
   }
 }
 
@@ -162,7 +173,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
