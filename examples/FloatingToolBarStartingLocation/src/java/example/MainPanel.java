@@ -15,11 +15,11 @@ public final class MainPanel extends JPanel {
     toolBar.add(new JCheckBox("JCheckBox"));
     toolBar.add(new JTextField(10));
 
+    // Setting a specific location for a floating JToolBar
+    // https://stackoverflow.com/questions/41701664/setting-a-specific-location-for-a-floating-jtoolBar
     EventQueue.invokeLater(() -> {
       Container w = getTopLevelAncestor();
       if (w instanceof Window) {
-        // Setting a specific location for a floating JToolBar
-        // https://stackoverflow.com/questions/41701664/setting-a-specific-location-for-a-floating-jtoolBar
         Point pt = w.getLocation();
         BasicToolBarUI ui = (BasicToolBarUI) toolBar.getUI();
         ui.setFloatingLocation(pt.x + 120, pt.y + 160);

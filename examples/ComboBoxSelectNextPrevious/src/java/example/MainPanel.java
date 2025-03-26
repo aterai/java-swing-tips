@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -77,27 +78,28 @@ class LookAndFeelComboBox extends JComboBox<LookAndFeelInfo> {
     listener = e -> {
       Object o = e.getItem();
       if (e.getStateChange() == ItemEvent.SELECTED && o instanceof LookAndFeelInfo) {
-        setLookAndFeel(((LookAndFeelInfo) o).getClassName());
+        EventQueue.invokeLater(() -> {
+          String lookAndFeelName = ((LookAndFeelInfo) o).getClassName();
+          setLookAndFeel(lookAndFeelName);
+        });
       }
     };
     addItemListener(listener);
   }
 
   private static void setLookAndFeel(String lookAndFeelName) {
-    EventQueue.invokeLater(() -> {
-      String current = UIManager.getLookAndFeel().getClass().getName();
-      if (!Objects.equals(current, lookAndFeelName)) {
-        try {
-          UIManager.setLookAndFeel(lookAndFeelName);
-          updateLookAndFeel();
-        } catch (UnsupportedLookAndFeelException ignored) {
-          Toolkit.getDefaultToolkit().beep();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-          Toolkit.getDefaultToolkit().beep();
-          ex.printStackTrace();
-        }
+    String current = UIManager.getLookAndFeel().getClass().getName();
+    if (!Objects.equals(current, lookAndFeelName)) {
+      try {
+        UIManager.setLookAndFeel(lookAndFeelName);
+        updateLookAndFeel();
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        Toolkit.getDefaultToolkit().beep();
+        Logger.getGlobal().severe(ex::getMessage);
       }
-    });
+    }
   }
 
   private static void updateLookAndFeel() {
