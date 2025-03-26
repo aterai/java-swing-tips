@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -155,38 +156,7 @@ public final class MainPanel extends JPanel {
 
     Component box = makeCenterBox(button1, button2);
 
-    JPanel panel = new JPanel(new BorderLayout(0, 0) {
-      @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-      @Override public void layoutContainer(Container target) {
-        synchronized (target.getTreeLock()) {
-          Insets insets = target.getInsets();
-          int top = insets.top;
-          int bottom = target.getHeight() - insets.bottom;
-          int left = insets.left;
-          int right = target.getWidth() - insets.right;
-          int hgap = getHgap();
-          int wc = right - left;
-          int we = wc / 2;
-          int ww = wc - we;
-          Component c = getLayoutComponent(CENTER);
-          if (Objects.nonNull(c)) {
-            Dimension d = c.getPreferredSize();
-            wc -= d.width + hgap + hgap;
-            we = wc / 2;
-            ww = wc - we;
-            c.setBounds(left + hgap + ww, top, wc, bottom - top);
-          }
-          c = getLayoutComponent(EAST);
-          if (Objects.nonNull(c)) {
-            c.setBounds(right - we, top, we, bottom - top);
-          }
-          c = getLayoutComponent(WEST);
-          if (Objects.nonNull(c)) {
-            c.setBounds(left, top, ww, bottom - top);
-          }
-        }
-      }
-    });
+    JPanel panel = new JPanel(new ThreeColumnsLayout(0, 0));
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     panel.add(lsp, BorderLayout.WEST);
     panel.add(box, BorderLayout.CENTER);
@@ -204,7 +174,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -213,5 +183,42 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ThreeColumnsLayout extends BorderLayout {
+  protected ThreeColumnsLayout(int hgp, int vgp) {
+    super(hgp, vgp);
+  }
+
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
+  @Override public void layoutContainer(Container target) {
+    synchronized (target.getTreeLock()) {
+      Insets insets = target.getInsets();
+      int top = insets.top;
+      int bottom = target.getHeight() - insets.bottom;
+      int left = insets.left;
+      int right = target.getWidth() - insets.right;
+      int hgp = getHgap();
+      int wc = right - left;
+      int we = wc / 2;
+      int ww = wc - we;
+      Component c = getLayoutComponent(CENTER);
+      if (Objects.nonNull(c)) {
+        Dimension d = c.getPreferredSize();
+        wc -= d.width + hgp + hgp;
+        we = wc / 2;
+        ww = wc - we;
+        c.setBounds(left + hgp + ww, top, wc, bottom - top);
+      }
+      c = getLayoutComponent(EAST);
+      if (Objects.nonNull(c)) {
+        c.setBounds(right - we, top, we, bottom - top);
+      }
+      c = getLayoutComponent(WEST);
+      if (Objects.nonNull(c)) {
+        c.setBounds(left, top, ww, bottom - top);
+      }
+    }
   }
 }

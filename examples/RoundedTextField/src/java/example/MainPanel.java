@@ -21,9 +21,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field1 = makeRoundedTextField1();
+    JTextField field1 = new RoundedTextField(20);
     field1.setText("1111111111111111");
-    JTextField field2 = makeRoundedTextField2();
+    JTextField field2 = makeRoundedTextField();
     field2.setText("2222222222222");
     JRadioButton r1 = new JRadioButton("default", true);
     JRadioButton r2 = new JRadioButton("setOpaque(false) + TexturePaint");
@@ -50,35 +50,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTextField makeRoundedTextField1() {
-    return new JTextField(20) {
-      // Unleash Your Creativity with Swing and the Java 2D API!
-      // https://web.archive.org/web/20091205092230/http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
-      @Override protected void paintComponent(Graphics g) {
-        if (!isOpaque()) {
-          int w = getWidth() - 1;
-          int h = getHeight() - 1;
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-          g2.setPaint(UIManager.getColor("TextField.background"));
-          g2.fillRoundRect(0, 0, w, h, h, h);
-          g2.setPaint(Color.GRAY);
-          g2.drawRoundRect(0, 0, w, h, h, h);
-          g2.dispose();
-        }
-        super.paintComponent(g);
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        // setBackground(new Color(0x0, true));
-        setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-      }
-    };
-  }
-
-  private JTextField makeRoundedTextField2() {
+  private JTextField makeRoundedTextField() {
     return new JTextField(20) {
       @Override protected void paintComponent(Graphics g) {
         Border b = getBorder();
@@ -142,6 +114,36 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RoundedTextField extends JTextField {
+  protected RoundedTextField(int columns) {
+    super(columns);
+  }
+
+  // Unleash Your Creativity with Swing and the Java 2D API!
+  // https://web.archive.org/web/20091205092230/http://java.sun.com/products/jfc/tsc/articles/swing2d/index.html
+  @Override protected void paintComponent(Graphics g) {
+    if (!isOpaque()) {
+      int w = getWidth() - 1;
+      int h = getHeight() - 1;
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setPaint(UIManager.getColor("TextField.background"));
+      g2.fillRoundRect(0, 0, w, h, h, h);
+      g2.setPaint(Color.GRAY);
+      g2.drawRoundRect(0, 0, w, h, h, h);
+      g2.dispose();
+    }
+    super.paintComponent(g);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    // setBackground(new Color(0x0, true));
+    setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
   }
 }
 

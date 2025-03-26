@@ -83,6 +83,11 @@ class TwoColumnsComboBox<E> extends JComboBox<E> {
     return new Dimension(buttonWidth + w + i.left + i.right, h + i.top + i.bottom);
   }
 
+  @Override public void updateUI() {
+    super.updateUI();
+    setModel(getModel());
+  }
+
   @Override public void setModel(ComboBoxModel<E> model) {
     super.setModel(model);
     int rowCount = (model.getSize() + 1) / 2;

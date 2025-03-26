@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -49,36 +50,13 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("start");
     button.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      b.setEnabled(false);
-      int lengthOfTask = progress2.getMaximum() - progress2.getMinimum();
-      SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
-        private final Random rnd = new Random();
-
-        @Override protected String doInBackground() throws InterruptedException {
-          int current = 0;
-          int total = 0;
-          while (current <= lengthOfTask && !isCancelled()) {
-            total += doSomething();
-            setProgress(100 * current++ / lengthOfTask);
-          }
-          return String.format("Done(%dms)", total);
-        }
-
-        @Override protected void done() {
-          if (b.isDisplayable()) {
-            b.setEnabled(true);
-          }
-        }
-
-        protected int doSomething() throws InterruptedException {
-          int iv = rnd.nextInt(10) + 1;
-          Thread.sleep(iv);
-          return iv;
-        }
-      };
-      worker.addPropertyChangeListener(new ProgressListener(progress2));
-      worker.execute();
+      Object src = e.getSource();
+      if (src instanceof JButton) {
+        int lengthOfTask = progress2.getMaximum() - progress2.getMinimum();
+        SwingWorker<?, ?> worker = makeWorker((JButton) e.getSource(), lengthOfTask);
+        worker.addPropertyChangeListener(new ProgressListener(progress2));
+        worker.execute();
+      }
     });
 
     JPanel p = new JPanel(new GridLayout(2, 1));
@@ -89,6 +67,17 @@ public final class MainPanel extends JPanel {
     add(p);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static SwingWorker<?, ?> makeWorker(JButton button, int lengthOfTask) {
+    button.setEnabled(false);
+    return new BackgroundTask(lengthOfTask) {
+      @Override protected void done() {
+        if (button.isDisplayable()) {
+          button.setEnabled(true);
+        }
+      }
+    };
   }
 
   // private static String getString(JProgressBar progress) {
@@ -105,7 +94,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -203,7 +192,7 @@ class SolidGaugeUI extends BasicProgressBarUI {
     try {
       pg.grabPixels();
     } catch (InterruptedException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       Toolkit.getDefaultToolkit().beep();
       Thread.currentThread().interrupt();
     }
@@ -223,6 +212,32 @@ class SolidGaugeUI extends BasicProgressBarUI {
   // @Override protected Color getSelectionBackground() {
   //   return new Color(0xAA_75_FF_3C, true); // a progress string color
   // }
+}
+
+class BackgroundTask extends SwingWorker<String, Void> {
+  private final Random rnd = new Random();
+  private final int lengthOfTask;
+
+  protected BackgroundTask(int lengthOfTask) {
+    super();
+    this.lengthOfTask = lengthOfTask;
+  }
+
+  @Override protected String doInBackground() throws InterruptedException {
+    int current = 0;
+    int total = 0;
+    while (current <= lengthOfTask && !isCancelled()) {
+      total += doSomething();
+      setProgress(100 * current++ / lengthOfTask);
+    }
+    return String.format("Done(%dms)", total);
+  }
+
+  protected int doSomething() throws InterruptedException {
+    int iv = rnd.nextInt(10) + 1;
+    Thread.sleep(iv);
+    return iv;
+  }
 }
 
 class ProgressListener implements PropertyChangeListener {
