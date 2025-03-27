@@ -205,12 +205,10 @@ class RoundedSelectionHighlightPainter extends DefaultHighlightPainter {
       int endOffset = Utilities.getRowEnd(c, cur);
       Rectangle p0 = mapper.modelToView(c, Math.max(startOffset, offs0));
       Rectangle p1 = mapper.modelToView(c, Math.min(endOffset, offs1));
-      if (p0.x == p1.x) {
-        p0.width += 6;
-        addRectToArea(area, p0);
-      } else {
-        addRectToArea(area, p0.union(p1));
+      if (offs1 > endOffset) {
+        p1.width += 6;
       }
+      addRectToArea(area, p0.union(p1));
       cur = endOffset + 1;
     } while (cur < offs1);
     return area;
