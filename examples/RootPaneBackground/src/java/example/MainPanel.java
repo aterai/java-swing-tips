@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
@@ -74,14 +75,13 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     PopupFactory.setSharedInstance(new TranslucentPopupFactory());
     JFrame frame = new JFrame("@title@") {
       @Override protected JRootPane createRootPane() {
         return new JRootPane() {
-          // private final Paint texture = makeCheckerTexture();
           @Override protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
@@ -92,10 +92,7 @@ public final class MainPanel extends JPanel {
 
           @Override public void updateUI() {
             super.updateUI();
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            URL url = cl.getResource("example/test.jpg");
-            BufferedImage bi = ImageUtils.getFilteredImage(url);
-            setBorder(new CentredBackgroundBorder(bi));
+            setBorder(ImageUtils.makeBackgroundBorder("example/test.jpg"));
             setOpaque(false);
           }
         };
@@ -152,6 +149,13 @@ final class ImageUtils {
     menu.add("JMenuItem1");
     menu.add("JMenuItem2");
     return menu;
+  }
+
+  public static Border makeBackgroundBorder(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    URL url = cl.getResource(path);
+    BufferedImage bi = getFilteredImage(url);
+    return new CentredBackgroundBorder(bi);
   }
 
   public static BufferedImage getFilteredImage(URL url) {
@@ -348,11 +352,8 @@ class TransparentMenu extends JMenu {
   }
 }
 
-/*
-<a href="http://today.java.net/pub/a/today/2008/03/18/translucent-and-shaped-swing-windows.html">
-Translucent and Shaped Swing Windows | Java.net
-</a>
-*/
+// http://today.java.net/pub/a/today/2008/03/18/translucent-and-shaped-swing-windows.html
+// Translucent and Shaped Swing Windows | Java.net
 class TranslucentPopupFactory extends PopupFactory {
   @Override public Popup getPopup(Component owner, Component contents, int x, int y) {
     return new TranslucentPopup(owner, contents, x, y);

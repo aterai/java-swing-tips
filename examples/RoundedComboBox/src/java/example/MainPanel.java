@@ -142,7 +142,6 @@ public final class MainPanel extends JPanel {
     UIManager.put("ComboBox.border", new KamabokoBorder());
     JComboBox<String> combo2 = new JComboBox<String>(makeModel()) {
       private transient MouseAdapter handler;
-
       @Override public void updateUI() {
         removeMouseListener(handler);
         super.updateUI();
