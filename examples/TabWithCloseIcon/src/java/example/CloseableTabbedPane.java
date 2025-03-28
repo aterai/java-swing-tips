@@ -391,6 +391,7 @@ class CloseableTabIconHandler extends MouseAdapter {
  * The listener that's notified when an tab should be closed in the
  * <code>CloseableTabbedPane</code>.
  */
+@FunctionalInterface
 interface CloseableTabbedPaneListener extends EventListener {
   /**
    * Informs all <code>CloseableTabbedPaneListener</code>s when a tab should be closed.

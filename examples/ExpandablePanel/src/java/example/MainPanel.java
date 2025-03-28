@@ -10,6 +10,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 // import javax.swing.event.EventListenerList;
@@ -67,45 +68,45 @@ public final class MainPanel extends JPanel {
 
   private List<? extends AbstractExpansionPanel> makeList() {
     return Arrays.asList(
-      new AbstractExpansionPanel("Panel1") {
-        @Override public Container makePanel() {
-          Box p = Box.createVerticalBox();
-          p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-          p.add(new JCheckBox("11111"));
-          p.add(new JCheckBox("2222222222"));
-          return p;
-        }
-      },
-      new AbstractExpansionPanel("Panel2") {
-        @Override public Container makePanel() {
-          Box p = Box.createVerticalBox();
-          p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-          for (int i = 0; i < 16; i++) {
-            p.add(makeLabel(i));
+        new AbstractExpansionPanel("Panel1") {
+          @Override public Container makePanel() {
+            Box p = Box.createVerticalBox();
+            p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            p.add(new JCheckBox("11111"));
+            p.add(new JCheckBox("2222222222"));
+            return p;
           }
-          return p;
-        }
+        },
+        new AbstractExpansionPanel("Panel2") {
+          @Override public Container makePanel() {
+            Box p = Box.createVerticalBox();
+            p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            for (int i = 0; i < 16; i++) {
+              p.add(makeLabel(i));
+            }
+            return p;
+          }
 
-        private JLabel makeLabel(int i) {
-          return new JLabel(String.format("%02d", i));
-        }
-      },
-      new AbstractExpansionPanel("Panel3") {
-        @Override public Container makePanel() {
-          Box p = Box.createVerticalBox();
-          p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-          ButtonGroup bg = new ButtonGroup();
-          Stream.of(
-            new JRadioButton("aa"),
-            new JRadioButton("bb"),
-            new JRadioButton("cc", true)
-          ).forEach(b -> {
-            p.add(b);
-            bg.add(b);
-          });
-          return p;
-        }
-      });
+          private JLabel makeLabel(int i) {
+            return new JLabel(String.format("%02d", i));
+          }
+        },
+        new AbstractExpansionPanel("Panel3") {
+          @Override public Container makePanel() {
+            Box p = Box.createVerticalBox();
+            p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            ButtonGroup bg = new ButtonGroup();
+            Stream.of(
+                new JRadioButton("aa"),
+                new JRadioButton("bb"),
+                new JRadioButton("cc", true)
+            ).forEach(b -> {
+              p.add(b);
+              bg.add(b);
+            });
+            return p;
+          }
+        });
   }
 
   public static void main(String[] args) {
@@ -118,7 +119,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -212,6 +213,7 @@ class ExpansionEvent extends EventObject {
   }
 }
 
+@FunctionalInterface
 interface ExpansionListener extends EventListener {
   void expansionStateChanged(ExpansionEvent e);
 }
