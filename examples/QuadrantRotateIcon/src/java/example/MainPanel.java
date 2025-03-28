@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -51,7 +52,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -65,14 +66,14 @@ public final class MainPanel extends JPanel {
 
 enum QuadrantRotate {
   CLOCKWISE(1), HORIZONTAL_FLIP(2), COUNTER_CLOCKWISE(-1);
-  private final int numquadrants;
+  private final int numQuadrants;
 
-  QuadrantRotate(int numquadrants) {
-    this.numquadrants = numquadrants;
+  QuadrantRotate(int numQuadrants) {
+    this.numQuadrants = numQuadrants;
   }
 
   public int getNumQuadrants() {
-    return numquadrants;
+    return numQuadrants;
   }
 }
 
@@ -85,6 +86,7 @@ class QuadrantRotateIcon implements Icon {
     this.rotate = rotate;
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     int w = icon.getIconWidth();
     int h = icon.getIconHeight();
@@ -100,8 +102,6 @@ class QuadrantRotateIcon implements Icon {
       case COUNTER_CLOCKWISE:
         g2.translate(0, w);
         break;
-      default:
-        throw new AssertionError("Unknown QuadrantRotateIcon");
     }
     // AffineTransform at = g2.getTransform();
     // at.quadrantRotate(rotate.getNumQuadrants());

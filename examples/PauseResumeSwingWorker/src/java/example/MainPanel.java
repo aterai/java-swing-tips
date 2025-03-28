@@ -101,6 +101,7 @@ public final class MainPanel extends JPanel {
     statusPanel.revalidate();
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   private void updateProgress(Progress s) {
     switch (s.getComponent()) {
       case TOTAL:
@@ -115,8 +116,6 @@ public final class MainPanel extends JPanel {
       case PAUSE:
         textProgress((Boolean) s.getValue());
         break;
-      default:
-        throw new AssertionError("Unknown Progress");
     }
   }
 

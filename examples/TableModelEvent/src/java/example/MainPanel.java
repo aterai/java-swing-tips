@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +29,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTable table = new JTable(model) {
-      protected static final int CHECKBOX_COLUMN = 0;
+      public static final int CHECKBOX_COLUMN = 0;
       private transient HeaderCheckBoxHandler handler;
       @Override public void updateUI() {
         // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -101,6 +102,7 @@ class HeaderRenderer implements TableCellRenderer {
   private final JCheckBox check = new JCheckBox("");
   private final JLabel label = new JLabel("Check All");
 
+  @SuppressWarnings("MissingSwitchDefault")
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (value instanceof Status) {
       switch ((Status) value) {
@@ -116,8 +118,6 @@ class HeaderRenderer implements TableCellRenderer {
           check.setSelected(true);
           check.setEnabled(false);
           break;
-        default:
-          throw new AssertionError("Unknown Status");
       }
     } else {
       check.setSelected(true);

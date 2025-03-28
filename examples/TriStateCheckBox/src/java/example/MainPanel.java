@@ -173,6 +173,7 @@ class TriStateCheckBox extends JCheckBox {
     super(title);
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   public void updateStatus(Status s) {
     switch (s) {
       case SELECTED:
@@ -187,8 +188,6 @@ class TriStateCheckBox extends JCheckBox {
         setSelected(false);
         setIcon(icon);
         break;
-      default:
-        throw new AssertionError("Unknown Status");
     }
   }
 

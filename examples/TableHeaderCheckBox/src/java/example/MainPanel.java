@@ -119,6 +119,7 @@ class HeaderRenderer implements TableCellRenderer {
   private final JCheckBox check = new JCheckBox("");
   private final JLabel label = new JLabel("Check All");
 
+  @SuppressWarnings("MissingSwitchDefault")
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (value instanceof Status) {
       switch ((Status) value) {
@@ -134,8 +135,6 @@ class HeaderRenderer implements TableCellRenderer {
           check.setSelected(true);
           check.setEnabled(false);
           break;
-        default:
-          throw new AssertionError("Unknown Status");
       }
     } else {
       check.setSelected(true);

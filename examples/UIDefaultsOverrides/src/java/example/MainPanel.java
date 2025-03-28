@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.nimbus.AbstractRegionPainter;
@@ -123,7 +124,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -157,6 +158,7 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     this.ctx = new PaintContext(ins, dim, false, null, 1d, 1d);
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] keys) {
     switch (state) {
       case ENABLED:
@@ -170,8 +172,6 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
         break;
       case SELECTED_MOUSEOVER:
         paintCheckIconSelectedAndMouseOver(g);
-        break;
-      default:
         break;
     }
   }

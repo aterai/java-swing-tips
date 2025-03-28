@@ -128,6 +128,7 @@ class HeaderRenderer implements TableCellRenderer {
     return c;
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   private static void updateCheckBox(Component c, Object value) {
     if (c instanceof JCheckBox) {
       JCheckBox check = (JCheckBox) c;
@@ -148,8 +149,6 @@ class HeaderRenderer implements TableCellRenderer {
             check.setSelected(true);
             check.setEnabled(false);
             break;
-          default:
-            throw new AssertionError("Unknown Status");
         }
       }
     }

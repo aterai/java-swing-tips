@@ -86,6 +86,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   private void updateProgress(Progress s) {
     switch (s.getComponentType()) {
       case TOTAL:
@@ -97,8 +98,6 @@ public final class MainPanel extends JPanel {
       case LOG:
         area.append(Objects.toString(s.getValue()));
         break;
-      default:
-        throw new AssertionError("Unknown Progress");
     }
   }
 

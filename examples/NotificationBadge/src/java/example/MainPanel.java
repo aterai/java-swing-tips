@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -53,7 +54,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -130,29 +131,29 @@ class BadgeLayerUI extends LayerUI<BadgeLabel> {
     return new BadgeIcon(count, Color.WHITE, new Color(0xAA_FF_16_16, true));
   }
 
+  @SuppressWarnings("MissingSwitchDefault")
   protected Point getBadgeLocation(BadgePosition pos, Icon icon) {
-    int x;
-    int y;
+    assert pos != null;
+    Point pt = new Point();
     switch (pos) {
       case NORTH_WEST:
-        x = iconRect.x - OFFSET.x;
-        y = iconRect.y - OFFSET.y;
+        pt.x = iconRect.x - OFFSET.x;
+        pt.y = iconRect.y - OFFSET.y;
         break;
       case NORTH_EAST:
-        x = iconRect.x + iconRect.width - icon.getIconWidth() + OFFSET.x;
-        y = iconRect.y - OFFSET.y;
+        pt.x = iconRect.x + iconRect.width - icon.getIconWidth() + OFFSET.x;
+        pt.y = iconRect.y - OFFSET.y;
         break;
       case SOUTH_WEST:
-        x = iconRect.x - OFFSET.x;
-        y = iconRect.y + iconRect.height - icon.getIconHeight() + OFFSET.y;
+        pt.x = iconRect.x - OFFSET.x;
+        pt.y = iconRect.y + iconRect.height - icon.getIconHeight() + OFFSET.y;
         break;
       case SOUTH_EAST:
-      default:
-        x = iconRect.x + iconRect.width - icon.getIconWidth() + OFFSET.x;
-        y = iconRect.y + iconRect.height - icon.getIconHeight() + OFFSET.y;
+        pt.x = iconRect.x + iconRect.width - icon.getIconWidth() + OFFSET.x;
+        pt.y = iconRect.y + iconRect.height - icon.getIconHeight() + OFFSET.y;
         break;
     }
-    return new Point(x, y);
+    return pt;
   }
 }
 
