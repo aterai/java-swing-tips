@@ -12,6 +12,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,55 +24,62 @@ public final class MainPanel extends JPanel {
     super();
     JTextField textField = new JTextField("★", 20);
     JLabel label = new JLabel("", SwingConstants.CENTER);
-
-    JToggleButton button = new JToggleButton("show");
-    button.addActionListener(e -> {
-      AbstractButton btn = (AbstractButton) e.getSource();
+    EventQueue.invokeLater(() -> {
       if (Objects.isNull(frame)) {
-        frame = new JFrame();
-        frame.setUndecorated(true);
-        frame.setAlwaysOnTop(true);
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.getContentPane().add(label);
-        frame.getContentPane().setBackground(Color.GREEN);
-        frame.pack();
-      }
-      if (btn.isSelected()) {
-        String str = textField.getText().trim();
-        // label.setText(str);
-        TextLayout tl = new TextLayout(str, FONT, FRC);
-        Rectangle2D b = tl.getBounds();
-        Shape shape = tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(), -b.getY()));
-
-        // int w = 300;
-        // int h = 300;
-        // GeneralPath p = new GeneralPath();
-        // p.moveTo(-w / 4f, -h / 12f);
-        // p.lineTo(+w / 4f, -h / 12f);
-        // p.lineTo(-w / 6f, +h /  4f);
-        // p.lineTo(   0f, -h /  4f);
-        // p.lineTo(+w / 6f, +h /  4f);
-        // p.closePath();
-        // AffineTransform at = AffineTransform.getTranslateInstance(w / 4, h / 4);
-        // shape = at.createTransformedShape(p);
-
-        frame.setBounds(shape.getBounds());
-        // frame.setSize(shape.getBounds().width, shape.getBounds().height);
-        // AWTUtilities.setWindowShape(frame, shape); // JDK 1.6.0
-        frame.setShape(shape); // JDK 1.7.0
-        frame.setLocationRelativeTo(btn.getRootPane());
-        frame.setVisible(true);
-      } else {
-        frame.setVisible(false);
+        frame = makeFrame(label);
       }
     });
-
+    JToggleButton button = new JToggleButton("show");
+    button.addActionListener(e -> {
+      boolean b = ((AbstractButton) e.getSource()).isSelected();
+      if (b) {
+        setFrameShape(frame, createTextShape(textField.getText().trim()));
+        frame.setLocationRelativeTo(textField.getRootPane());
+      }
+      frame.setVisible(b);
+    });
     add(textField);
     add(button);
     DragWindowListener dwl = new DragWindowListener();
     label.addMouseListener(dwl);
     label.addMouseMotionListener(dwl);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JFrame makeFrame(Container c) {
+    JFrame frame = new JFrame();
+    frame.setUndecorated(true);
+    frame.setAlwaysOnTop(true);
+    frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+    frame.getContentPane().add(c);
+    frame.getContentPane().setBackground(Color.GREEN);
+    frame.pack();
+    return frame;
+  }
+
+  private void setFrameShape(JFrame frame, Shape shape) {
+    frame.setBounds(shape.getBounds());
+    // AWTUtilities.setWindowShape(frame, shape); // JDK 1.6.0
+    frame.setShape(shape); // JDK 1.7.0
+  }
+
+  private static Shape createTextShape(String str) {
+    // label.setText(str);
+    TextLayout tl = new TextLayout(str, FONT, FRC);
+    Rectangle2D b = tl.getBounds();
+    return tl.getOutline(AffineTransform.getTranslateInstance(-b.getX(), -b.getY()));
+    // int w = 300;
+    // int h = 300;
+    // GeneralPath p = new GeneralPath();
+    // p.moveTo(-w / 4f, -h / 12f);
+    // p.lineTo(+w / 4f, -h / 12f);
+    // p.lineTo(-w / 6f, +h /  4f);
+    // p.lineTo(   0f, -h /  4f);
+    // p.lineTo(+w / 6f, +h /  4f);
+    // p.closePath();
+    // AffineTransform at = AffineTransform.getTranslateInstance(w / 4, h / 4);
+    // shape = at.createTransformedShape(p);
+    // return shape;
   }
 
   public static void main(String[] args) {
@@ -84,7 +92,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

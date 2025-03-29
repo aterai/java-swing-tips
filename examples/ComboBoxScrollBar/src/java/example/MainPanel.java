@@ -12,59 +12,18 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
-  public static final Color BACKGROUND = Color.WHITE;
-  public static final Color FOREGROUND = Color.BLACK;
-  public static final Color SELECTION_FGC = Color.BLUE;
-  public static final Color THUMB = new Color(0xCD_CD_CD);
-  public static final String KEY = "ComboBox.border";
-
   private MainPanel() {
     super(new BorderLayout(15, 15));
     JPanel p = new JPanel(new GridLayout(0, 1, 16, 16));
     p.setOpaque(true);
     JComboBox<String> combo1 = new JComboBox<>(makeModel());
     p.add(combo1);
-    JComboBox<String> combo2 = makeFlatComboBox();
-    combo2.setModel(makeModel());
+    JComboBox<String> combo2 = new SimpleComboBox<>(makeModel());
     p.add(combo2);
     setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
     add(p, BorderLayout.NORTH);
     setOpaque(true);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static <E> JComboBox<E> makeFlatComboBox() {
-    return new JComboBox<E>() {
-      @Override public void updateUI() {
-        UIManager.put(KEY, BorderFactory.createLineBorder(Color.GRAY));
-        UIManager.put("ScrollBar.width", 10);
-        UIManager.put("ScrollBar.thumbHeight", 20); // SynthLookAndFeel(GTK, Nimbus)
-        UIManager.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));
-        UIManager.put("ScrollBar.incrementButtonGap", 0);
-        UIManager.put("ScrollBar.decrementButtonGap", 0);
-        UIManager.put("ScrollBar.thumb", THUMB);
-        UIManager.put("ScrollBar.track", BACKGROUND);
-
-        UIManager.put("ComboBox.foreground", FOREGROUND);
-        UIManager.put("ComboBox.background", BACKGROUND);
-        UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
-        UIManager.put("ComboBox.selectionBackground", BACKGROUND);
-        UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
-        UIManager.put("ComboBox.buttonBackground", FOREGROUND);
-        UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
-        UIManager.put("ComboBox.buttonShadow", FOREGROUND);
-
-        super.updateUI();
-        setUI(new SimpleComboBoxUI());
-        Object o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof JComponent) {
-          JComponent c = (JComponent) o;
-          c.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.GRAY));
-          c.setForeground(FOREGROUND);
-          c.setBackground(BACKGROUND);
-        }
-      }
-    };
   }
 
   private static DefaultComboBoxModel<String> makeModel() {
@@ -106,9 +65,53 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class SimpleComboBox<E> extends JComboBox<E> {
+  public static final Color BACKGROUND = Color.WHITE;
+  public static final Color FOREGROUND = Color.BLACK;
+  public static final Color SELECTION_FGC = Color.BLUE;
+  public static final Color THUMB = new Color(0xCD_CD_CD);
+  public static final String KEY = "ComboBox.border";
+
+  protected SimpleComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    UIManager.put(KEY, BorderFactory.createLineBorder(Color.GRAY));
+    UIManager.put("ScrollBar.width", 10);
+    UIManager.put("ScrollBar.thumbHeight", 20); // SynthLookAndFeel(GTK, Nimbus)
+    UIManager.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));
+    UIManager.put("ScrollBar.incrementButtonGap", 0);
+    UIManager.put("ScrollBar.decrementButtonGap", 0);
+    UIManager.put("ScrollBar.thumb", THUMB);
+    UIManager.put("ScrollBar.track", BACKGROUND);
+
+    UIManager.put("ComboBox.foreground", FOREGROUND);
+    UIManager.put("ComboBox.background", BACKGROUND);
+    UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
+    UIManager.put("ComboBox.selectionBackground", BACKGROUND);
+    UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
+    UIManager.put("ComboBox.buttonBackground", FOREGROUND);
+    UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
+    UIManager.put("ComboBox.buttonShadow", FOREGROUND);
+
+    super.updateUI();
+    setUI(new SimpleComboBoxUI());
+    Object o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof JComponent) {
+      JComponent c = (JComponent) o;
+      c.setBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, Color.GRAY));
+      c.setForeground(FOREGROUND);
+      c.setBackground(BACKGROUND);
+    }
+  }
+}
+
 class SimpleComboBoxUI extends BasicComboBoxUI {
   @Override protected JButton createArrowButton() {
-    ArrowIcon icon = new ArrowIcon(MainPanel.BACKGROUND, MainPanel.FOREGROUND);
+    Color bgc = SimpleComboBox.BACKGROUND;
+    Color fgc = SimpleComboBox.FOREGROUND;
+    ArrowIcon icon = new ArrowIcon(bgc, fgc);
     JButton b = new JButton(icon);
     b.setContentAreaFilled(false);
     b.setFocusPainted(false);
