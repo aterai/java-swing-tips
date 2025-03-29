@@ -55,33 +55,7 @@ public final class MainPanel extends JPanel {
         UIManager.put("ComboBox.buttonShadow", FOREGROUND);
 
         super.updateUI();
-        setUI(new BasicComboBoxUI() {
-          @Override protected JButton createArrowButton() {
-            JButton b = new JButton(new ArrowIcon(BACKGROUND, FOREGROUND));
-            b.setContentAreaFilled(false);
-            b.setFocusPainted(false);
-            b.setBorder(BorderFactory.createEmptyBorder());
-            return b;
-          }
-
-          @Override protected ComboPopup createPopup() {
-            return new BasicComboPopup(comboBox) {
-              @Override protected JScrollPane createScroller() {
-                JScrollPane sp = new JScrollPane(list) {
-                  @Override public void updateUI() {
-                    super.updateUI();
-                    getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                    getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                  }
-                };
-                sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-                sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                sp.setHorizontalScrollBar(null);
-                return sp;
-              }
-            };
-          }
-        });
+        setUI(new SimpleComboBoxUI());
         Object o = getAccessibleContext().getAccessibleChild(0);
         if (o instanceof JComponent) {
           JComponent c = (JComponent) o;
@@ -129,6 +103,34 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class SimpleComboBoxUI extends BasicComboBoxUI {
+  @Override protected JButton createArrowButton() {
+    ArrowIcon icon = new ArrowIcon(MainPanel.BACKGROUND, MainPanel.FOREGROUND);
+    JButton b = new JButton(icon);
+    b.setContentAreaFilled(false);
+    b.setFocusPainted(false);
+    b.setBorder(BorderFactory.createEmptyBorder());
+    return b;
+  }
+
+  @Override protected ComboPopup createPopup() {
+    return new BasicComboPopup(comboBox) {
+      @Override protected JScrollPane createScroller() {
+        return new JScrollPane(list) {
+          @Override public void updateUI() {
+            super.updateUI();
+            getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+            getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+            setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+            setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+            setHorizontalScrollBar(null);
+          }
+        };
+      }
+    };
   }
 }
 
