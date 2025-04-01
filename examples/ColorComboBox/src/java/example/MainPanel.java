@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -72,7 +73,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -125,15 +126,11 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
       return c;
     });
     itemColorListener = e -> {
-      if (e.getStateChange() != ItemEvent.SELECTED) {
-        return;
-      }
-      JComboBox<?> cb = (JComboBox<?>) e.getItemSelectable();
-      Color rc = getAlternateRowColor(cb.getSelectedIndex());
-      if (cb.isEditable()) {
-        cb.getEditor().getEditorComponent().setBackground(rc);
-      } else {
-        cb.setBackground(rc);
+      ItemSelectable o = e.getItemSelectable();
+      if (e.getStateChange() == ItemEvent.SELECTED && o instanceof JComboBox) {
+        JComboBox<?> cb = (JComboBox<?>) o;
+        Component c = cb.isEditable() ? cb.getEditor().getEditorComponent() : cb;
+        c.setBackground(getAlternateRowColor(cb.getSelectedIndex()));
       }
     };
     addItemListener(itemColorListener);

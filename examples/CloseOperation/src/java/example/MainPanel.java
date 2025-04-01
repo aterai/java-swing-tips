@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -18,17 +19,14 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JButton button = new JButton("New Frame");
     button.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      JFrame f = createFrame(null);
-      f.getContentPane().add(new MainPanel());
-      f.pack();
-      Container c = b.getTopLevelAncestor();
+      JFrame frame = createFrame(null);
+      frame.getContentPane().add(new MainPanel());
+      frame.pack();
+      Container c = ((JComponent) e.getSource()).getTopLevelAncestor();
       if (c instanceof Window) {
-        Point pt = c.getLocation();
-        f.setLocation(pt.x, pt.y + f.getSize().height);
+        frame.setLocation(c.getX(), c.getY() + frame.getSize().height);
       }
-      // f.setLocationByPlatform(true);
-      f.setVisible(true);
+      frame.setVisible(true);
     });
     add(button);
     setPreferredSize(new Dimension(320, 100));
@@ -61,7 +59,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = createFrame("@title@"); // new JFrame("@title@");
