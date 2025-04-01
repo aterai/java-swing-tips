@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -52,34 +53,17 @@ public final class MainPanel extends JPanel {
     digitalClock.pack();
     digitalClock.setLocationRelativeTo(null);
 
-    JComboBox<TexturePaints> combo = new JComboBox<TexturePaints>(TexturePaints.values()) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.width = Math.max(150, d.width);
-        return d;
-      }
-    };
-    // XXX: combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
-    // combo.setPrototypeDisplayValue(TexturePaints.Checker);
-    combo.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        TexturePaints t = (TexturePaints) e.getItem();
-        tp.setTexturePaint(t.getTexturePaint());
-        repaintWindowAncestor(tp);
-      }
-    });
-
+    JComboBox<TexturePaints> combo = makeComboBox(tp);
     JToggleButton button = new JToggleButton("timer");
     button.addActionListener(e -> {
-      if (((AbstractButton) e.getSource()).isSelected()) {
-        TexturePaints t = combo.getItemAt(combo.getSelectedIndex());
-        tp.setTexturePaint(t.getTexturePaint());
+      boolean b = ((AbstractButton) e.getSource()).isSelected();
+      if (b) {
+        tp.setTexturePaint(getTexturePaint(combo));
         timer.start();
-        digitalClock.setVisible(true);
       } else {
         timer.stop();
-        digitalClock.setVisible(false);
       }
+      digitalClock.setVisible(b);
     });
     JPanel p = new JPanel();
     p.add(combo);
@@ -89,11 +73,41 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static Paint getTexturePaint(JComboBox<TexturePaints> combo) {
+    int index = combo.getSelectedIndex();
+    TexturePaints item = combo.getItemAt(index);
+    return item.getTexturePaint();
+  }
+
+  private JComboBox<TexturePaints> makeComboBox(TexturePanel tp) {
+    JComboBox<TexturePaints> c = new JComboBox<TexturePaints>(TexturePaints.values()) {
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.width = Math.max(150, d.width);
+        return d;
+      }
+    };
+    // XXX: c.setPrototypeDisplayValue(String.join("", Collections.nCopies(16, "M")));
+    // c.setPrototypeDisplayValue(TexturePaints.Checker);
+    c.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        TexturePaints t = (TexturePaints) e.getItem();
+        tp.setTexturePaint(t.getTexturePaint());
+        repaintWindowAncestor(tp);
+      }
+    });
+    return c;
+  }
+
   public static void repaintWindowAncestor(JComponent c) {
     Optional.ofNullable(c.getRootPane())
-        .ifPresent(rp -> rp.repaint(SwingUtilities.convertRectangle(c, c.getBounds(), rp)));
+        .ifPresent(rootPane -> {
+          Rectangle r = SwingUtilities.convertRectangle(c, c.getBounds(), rootPane);
+          rootPane.repaint(r);
+        });
 
   }
+
   // protected void repaintWindowAncestor(Component c) {
   //   Window w = SwingUtilities.getWindowAncestor(c);
   //   if (w instanceof JFrame) {
@@ -120,7 +134,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
