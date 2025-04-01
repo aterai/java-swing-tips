@@ -72,30 +72,37 @@ class GroupCheckBox extends JCheckBox {
 
   @Override public void updateUI() {
     super.updateUI();
-    setModel(new ToggleButtonModel() {
-      private static final int GROUP_SIZE = 3;
+    setModel(new ButtonGroupModel(3));
+  }
 
-      @Override public void setSelected(boolean selected) {
-        if (selected) {
-          if (getSelectedObjects().length == GROUP_SIZE) {
-            UIManager.getLookAndFeel().provideErrorFeedback(GroupCheckBox.this);
-          } else {
-            super.setSelected(true);
-          }
+  private class ButtonGroupModel extends ToggleButtonModel {
+    private final int groupSize;
+
+    protected ButtonGroupModel(int groupSize) {
+      super();
+      this.groupSize = groupSize;
+    }
+
+    @Override public void setSelected(boolean selected) {
+      if (selected) {
+        if (getSelectedObjects().length == groupSize) {
+          UIManager.getLookAndFeel().provideErrorFeedback(GroupCheckBox.this);
         } else {
-          super.setSelected(false);
+          super.setSelected(true);
         }
+      } else {
+        super.setSelected(false);
       }
+    }
 
-      @Override public Object[] getSelectedObjects() {
-        Container parent = getParent();
-        return Arrays.stream(parent.getComponents())
-            .filter(AbstractButton.class::isInstance)
-            .map(AbstractButton.class::cast)
-            .filter(AbstractButton::isSelected)
-            .toArray();
-      }
-    });
+    @Override public Object[] getSelectedObjects() {
+      Container parent = getParent();
+      return Arrays.stream(parent.getComponents())
+          .filter(AbstractButton.class::isInstance)
+          .map(AbstractButton.class::cast)
+          .filter(AbstractButton::isSelected)
+          .toArray();
+    }
   }
 }
 
@@ -157,29 +164,36 @@ class GroupCheckComboBox<E extends CheckItem> extends JComboBox<E> {
     JCheckBox check = new JCheckBox();
     check.setOpaque(false);
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      panel.removeAll();
       Component c = renderer.getListCellRendererComponent(
           list, value, index, isSelected, cellHasFocus);
-      if (index < 0) {
-        String txt = Arrays.stream(getSelectedObjects())
-            .map(Objects::toString)
-            .sorted()
-            .collect(Collectors.joining(", "));
-        JLabel l = (JLabel) c;
-        l.setText(txt.isEmpty() ? " " : txt);
-        l.setOpaque(false);
-        l.setForeground(list.getForeground());
-        panel.setOpaque(false);
-      } else {
-        check.setSelected(value.isSelected());
-        panel.add(check, BorderLayout.WEST);
-        panel.setOpaque(true);
-        panel.setBackground(c.getBackground());
-      }
-      panel.add(c);
+      updatePanel(value, index < 0, c, check, list.getForeground());
       return panel;
     });
     initActionMap();
+  }
+
+  private void updatePanel(E value, boolean b, Component c, JCheckBox check, Color fgc) {
+    panel.removeAll();
+    if (b && c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setText(makeSelectedText(getSelectedObjects()));
+      l.setOpaque(false);
+      l.setForeground(fgc);
+      panel.setOpaque(false);
+    } else {
+      check.setSelected(value.isSelected());
+      panel.add(check, BorderLayout.WEST);
+      panel.setOpaque(true);
+      panel.setBackground(c.getBackground());
+    }
+    panel.add(c);
+  }
+
+  public static String makeSelectedText(Object... selectedObjects) {
+    String txt = Arrays.stream(selectedObjects)
+        .map(Objects::toString)
+        .collect(Collectors.joining(", "));
+    return txt.isEmpty() ? " " : txt;
   }
 
   protected void initActionMap() {
