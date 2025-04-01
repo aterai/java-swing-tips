@@ -6,59 +6,14 @@ package example;
 
 import java.awt.*;
 import java.util.Collections;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
 public final class MainPanel extends JPanel {
-  // https://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
-  private final JTextArea textArea = new JTextArea(1, 1) {
-    @Override public void updateUI() {
-      super.updateUI();
-      setLineWrap(true);
-      setWrapStyleWord(true);
-      setEditable(false);
-      setOpaque(false);
-      // setBorder(BorderFactory.createLineBorder(Color.RED));
-      setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-    }
-
-    @Override public void setText(String t) {
-      super.setText(t);
-      try {
-        // System.out.println("fw: " + getColumnWidth());
-        // int cc = Math.round(300f / getColumnWidth());
-        // setColumns(cc);
-        // System.out.format("Columns: %d%n", cc);
-
-        setColumns(50);
-        // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-
-        // i.e. layout cannot be computed until the component has been sized.
-        // The component does not have to be visible or painted.
-        setSize(super.getPreferredSize()); // setSize: looks like ugly hack...
-        // System.out.println(super.getPreferredSize());
-
-        Rectangle r = modelToView(t.length());
-        // Java 9: Rectangle rect = modelToView2D(t.length()).getBounds();
-        int rc = Math.round((float) r.getMaxY() / getRowHeight());
-        setRows(rc);
-        // System.out.format("Rows: %d%n", rc);
-        // System.out.println(super.getPreferredSize());
-        boolean isOnlyOneColumn = rc == 1;
-        if (isOnlyOneColumn) {
-          setSize(getPreferredSize());
-          setColumns(1);
-        }
-      } catch (BadLocationException ex) {
-        // should never happen
-        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-        wrap.initCause(ex);
-        throw wrap;
-      }
-    }
-  };
-
   private MainPanel() {
     super();
+    JTextArea textArea = new LineWrapTextArea();
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.setBorder(BorderFactory.createEmptyBorder());
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
@@ -94,7 +49,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -103,5 +58,56 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+// https://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
+class LineWrapTextArea extends JTextArea {
+  public LineWrapTextArea() {
+    super(1, 1);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setLineWrap(true);
+    setWrapStyleWord(true);
+    setEditable(false);
+    setOpaque(false);
+    // setBorder(BorderFactory.createLineBorder(Color.RED));
+    setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+  }
+
+  @Override public void setText(String t) {
+    super.setText(t);
+    try {
+      // System.out.println("fw: " + getColumnWidth());
+      // int cc = Math.round(300f / getColumnWidth());
+      // setColumns(cc);
+      // System.out.format("Columns: %d%n", cc);
+
+      setColumns(50);
+      // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-
+      // i.e. layout cannot be computed until the component has been sized.
+      // The component does not have to be visible or painted.
+      setSize(super.getPreferredSize()); // setSize: looks like ugly hack...
+      // System.out.println(super.getPreferredSize());
+
+      Rectangle r = modelToView(t.length());
+      // Java 9: Rectangle rect = modelToView2D(t.length()).getBounds();
+      int rc = Math.round((float) r.getMaxY() / getRowHeight());
+      setRows(rc);
+      // System.out.format("Rows: %d%n", rc);
+      // System.out.println(super.getPreferredSize());
+      boolean isOnlyOneColumn = rc == 1;
+      if (isOnlyOneColumn) {
+        setSize(getPreferredSize());
+        setColumns(1);
+      }
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
   }
 }
