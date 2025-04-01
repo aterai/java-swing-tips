@@ -8,14 +8,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 public final class MainPanel extends JPanel {
-  public static final Color SELECTED_BG = new Color(0xFF_96_00);
-  public static final Color UNSELECTED_BG = new Color(0xFF_32_00);
-
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("TabbedPane.tabInsets", new Insets(5, 10, 5, 10));
@@ -34,40 +32,10 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabs = new JTabbedPane() {
       @Override public void updateUI() {
         super.updateUI();
-        setUI(new BasicTabbedPaneUI() {
-          @Override protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
-            // Do not paint anything
-          }
-
-          @Override protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-            // Do not paint anything
-          }
-
-          @Override protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-            g.setColor(isSelected ? SELECTED_BG : UNSELECTED_BG);
-            g.fillRect(x, y, w, h);
-          }
-
-          @Override protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            g.setColor(SELECTED_BG);
-            g.fillRect(x, y, w, h);
-          }
-
-          @Override protected void paintContentBorderRightEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
-          }
-
-          @Override protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
-          }
-
-          @Override protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-            paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
-          }
-        });
+        setUI(new FlatTabbedPaneUI());
         setOpaque(true);
         setForeground(Color.WHITE);
-        setBackground(UNSELECTED_BG);
+        setBackground(FlatTabbedPaneUI.UNSELECTED_BG);
         setTabPlacement(LEFT);
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
       }
@@ -108,7 +76,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -117,5 +85,40 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FlatTabbedPaneUI extends BasicTabbedPaneUI {
+  public static final Color SELECTED_BG = new Color(0xFF_96_00);
+  public static final Color UNSELECTED_BG = new Color(0xFF_32_00);
+
+  @Override protected void paintFocusIndicator(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect, boolean isSelected) {
+    // Do not paint anything
+  }
+
+  @Override protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
+    // Do not paint anything
+  }
+
+  @Override protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
+    g.setColor(isSelected ? SELECTED_BG : UNSELECTED_BG);
+    g.fillRect(x, y, w, h);
+  }
+
+  @Override protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+    g.setColor(SELECTED_BG);
+    g.fillRect(x, y, w, h);
+  }
+
+  @Override protected void paintContentBorderRightEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+    paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+  }
+
+  @Override protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+    paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+  }
+
+  @Override protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+    paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
   }
 }
