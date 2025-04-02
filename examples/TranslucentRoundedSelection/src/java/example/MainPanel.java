@@ -152,26 +152,26 @@ class RoundedSelectionCaret extends DefaultCaret {
 
   @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
   @Override protected synchronized void damage(Rectangle r) {
+    super.damage(r);
     JTextComponent c = getComponent();
     int startOffset = c.getSelectionStart();
     int endOffset = c.getSelectionEnd();
-    if (startOffset == endOffset) {
-      super.damage(r);
-    } else {
-      TextUI mapper = c.getUI();
-      try {
-        Rectangle p0 = mapper.modelToView(c, startOffset);
-        Rectangle p1 = mapper.modelToView(c, endOffset);
-        int h = (int) (p1.getMaxY() - p0.getMinY());
-        c.repaint(new Rectangle(0, p0.y, c.getWidth(), h));
-      } catch (BadLocationException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(c);
-      }
+    TextUI mapper = c.getUI();
+    try {
+      Rectangle p0 = mapper.modelToView(c, startOffset);
+      Rectangle p1 = mapper.modelToView(c, endOffset);
+      int w = c.getWidth();
+      int h = (int) (p1.getMaxY() - p0.getMinY());
+      c.repaint(new Rectangle(0, p0.y, w, h));
+    } catch (BadLocationException ex) {
+      UIManager.getLookAndFeel().provideErrorFeedback(c);
     }
   }
 }
 
 class RoundedSelectionHighlightPainter extends DefaultHighlightPainter {
+  public static final int ARC = 3;
+
   protected RoundedSelectionHighlightPainter() {
     super(null);
   }
@@ -179,14 +179,16 @@ class RoundedSelectionHighlightPainter extends DefaultHighlightPainter {
   @Override public void paint(Graphics g, int offs0, int offs1, Shape bounds, JTextComponent c) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Color color = c.getSelectionColor();
-    g2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 64));
+    // Color color = c.getSelectionColor();
+    // g2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 64));
+    int rgba = c.getSelectionColor().getRGB() & 0xFF_FF_FF | (64 << 24);
+    g2.setColor(new Color(rgba, true));
     try {
       Area area = getLinesArea(c, offs0, offs1);
       for (Area a : GeomUtils.singularization(area)) {
         List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
-        GeomUtils.flatteningStepsOnRightSide(lst, 3d * 2d);
-        g2.fill(GeomUtils.convertRoundedPath(lst, 3d));
+        GeomUtils.flatteningStepsOnRightSide(lst, ARC * 2d);
+        g2.fill(GeomUtils.convertRoundedPath(lst, ARC));
       }
     } catch (BadLocationException ex) {
       // can't render
