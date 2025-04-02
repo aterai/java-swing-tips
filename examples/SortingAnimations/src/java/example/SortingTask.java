@@ -68,7 +68,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     return "Done";
   }
 
-  protected String getDoneMessage() {
+  protected final String getDoneMessage() {
     String msg;
     try {
       msg = isCancelled() ? "Cancelled" : get();
