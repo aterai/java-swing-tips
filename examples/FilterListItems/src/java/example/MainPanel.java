@@ -96,16 +96,15 @@ public final class MainPanel extends JPanel {
   }
 
   public void filter(String txt) {
+    List<ListItem> selected = list.getSelectedValuesList();
     getPattern(txt).ifPresent(pattern -> {
-      List<ListItem> selected = list.getSelectedValuesList();
       model.clear();
       Stream.of(defaultModel)
           .filter(item -> pattern.matcher(item.getTitle()).find())
           .forEach(model::addElement);
-      selected.forEach(item -> {
-        int i = model.indexOf(item);
-        list.addSelectionInterval(i, i);
-      });
+      selected.stream()
+          .map(model::indexOf)
+          .forEach(i -> list.addSelectionInterval(i, i));
     });
   }
 

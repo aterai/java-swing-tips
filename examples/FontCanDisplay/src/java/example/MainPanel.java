@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +20,6 @@ public final class MainPanel extends JPanel {
     label.setFont(label.getFont().deriveFont(24f));
     label.setHorizontalAlignment(SwingConstants.CENTER);
     label.setVerticalAlignment(SwingConstants.CENTER);
-
     Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
     JTable table = new JTable(makeModel(fonts, code));
     table.getSelectionModel().addListSelectionListener(e -> {
@@ -27,7 +27,6 @@ public final class MainPanel extends JPanel {
         label.setFont(fonts[table.getSelectedRow()].deriveFont(24f));
       }
     });
-
     add(label, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
@@ -36,17 +35,7 @@ public final class MainPanel extends JPanel {
   private TableModel makeModel(Font[] fonts, int code) {
     String[] columnNames = {"family", "name", "postscript name", "canDisplay", "isEmpty"};
     Object[][] data = Stream.of(fonts)
-        .map(f -> {
-          String txt = String.valueOf(Character.toChars(code));
-          FontRenderContext frc = getFontMetrics(f).getFontRenderContext();
-          return new Object[] {
-              f.getFamily(),
-              f.getName(),
-              f.getPSName(),
-              f.canDisplay(code),
-              f.createGlyphVector(frc, txt).getVisualBounds().isEmpty()
-          };
-        })
+        .map(font -> getFontInfo(font, code))
         .toArray(Object[][]::new);
     return new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
@@ -56,6 +45,18 @@ public final class MainPanel extends JPanel {
       @Override public Class<?> getColumnClass(int column) {
         return column > 2 ? Boolean.class : String.class;
       }
+    };
+  }
+
+  private Object[] getFontInfo(Font font, int code) {
+    String txt = String.valueOf(Character.toChars(code));
+    FontRenderContext frc = getFontMetrics(font).getFontRenderContext();
+    return new Object[] {
+        font.getFamily(),
+        font.getName(),
+        font.getPSName(),
+        font.canDisplay(code),
+        font.createGlyphVector(frc, txt).getVisualBounds().isEmpty()
     };
   }
 
@@ -69,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
