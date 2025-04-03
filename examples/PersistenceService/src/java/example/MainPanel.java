@@ -53,8 +53,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void createAndShowGui() {
-    WindowState windowState = new WindowState();
-    SwingWorker<WindowListener, Void> worker = new LoadSaveTask(windowState) {
+    SwingWorker<WindowListener, Void> worker = new LoadSaveTask() {
       @Override protected void done() {
         try {
           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -75,6 +74,7 @@ public final class MainPanel extends JPanel {
           ex.printStackTrace();
           Toolkit.getDefaultToolkit().beep();
         }
+        WindowState windowState = getWindowState();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().add(new MainPanel());
         frame.setSize(windowState.getSize());
@@ -87,11 +87,10 @@ public final class MainPanel extends JPanel {
 }
 
 class LoadSaveTask extends SwingWorker<WindowListener, Void> {
-  protected final WindowState windowState;
+  private final WindowState windowState = new WindowState();
 
-  protected LoadSaveTask(WindowState windowState) {
+  protected LoadSaveTask() {
     super();
-    this.windowState = windowState;
   }
 
   @Override public WindowListener doInBackground() {
@@ -100,6 +99,10 @@ class LoadSaveTask extends SwingWorker<WindowListener, Void> {
     return ps instanceof PersistenceService && bs instanceof BasicService
         ? makeWindowAdapter((PersistenceService) ps, ((BasicService) bs).getCodeBase())
         : null;
+  }
+
+  protected WindowState getWindowState() {
+    return windowState;
   }
 
   private static Object getService(String service) {
