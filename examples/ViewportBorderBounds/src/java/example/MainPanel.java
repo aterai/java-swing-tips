@@ -6,19 +6,8 @@ package example;
 
 import java.awt.*;
 import java.io.IOException;
-import java.io.Reader;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.text.html.HTMLEditorKit;
@@ -35,16 +24,16 @@ public final class MainPanel extends JPanel {
     editor.setSelectedTextColor(null);
     editor.setSelectionColor(new Color(0x64_88_AA_AA, true));
     editor.setBackground(new Color(0x64_64_64)); // 0x33_33_33
-
-    ScriptEngine engine = ScriptEngineUtils.createEngine();
-    JButton button = new JButton("open");
-    button.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser();
-      int ret = fileChooser.showOpenDialog(getRootPane());
-      if (ret == JFileChooser.APPROVE_OPTION) {
-        loadFile(fileChooser.getSelectedFile().getAbsolutePath(), engine, editor);
-      }
-    });
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Optional.ofNullable(cl.getResource("example/test.html"))
+        .ifPresent(url -> {
+          try {
+            editor.setPage(url);
+          } catch (IOException ex) {
+            UIManager.getLookAndFeel().provideErrorFeedback(editor);
+            editor.setText(ex.getMessage());
+          }
+        });
 
     JScrollPane scroll = new JScrollPane(editor) {
       @Override public void updateUI() {
@@ -62,23 +51,10 @@ public final class MainPanel extends JPanel {
 
     JPanel box = new JPanel();
     box.add(check);
-    box.add(button);
 
     add(new JLayer<>(scroll, new ScrollPaneLayerUI()));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static void loadFile(String path, ScriptEngine engine, JEditorPane editor) {
-    try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
-      String txt = lines
-          .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
-          .collect(Collectors.joining("\n"));
-      editor.setText("<pre>" + ScriptEngineUtils.prettify(engine, txt) + "\n</pre>");
-    } catch (IOException ex) {
-      // ex.printStackTrace();
-      editor.setText(ex.getMessage());
-    }
   }
 
   private static StyleSheet makeStyleSheet() {
@@ -149,38 +125,3 @@ class ScrollPaneLayerUI extends LayerUI<JScrollPane> {
   }
 }
 
-final class ScriptEngineUtils {
-  private ScriptEngineUtils() {
-    /* Singleton */
-  }
-
-  public static ScriptEngine createEngine() {
-    ScriptEngineManager manager = new ScriptEngineManager();
-    ScriptEngine engine = manager.getEngineByName("JavaScript");
-
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL url = cl.getResource("example/prettify.js");
-    try {
-      assert url != null;
-      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
-        engine.eval("var window={}, navigator=null;");
-        engine.eval(reader);
-      }
-    } catch (IOException | ScriptException | URISyntaxException ex) {
-      Logger.getGlobal().severe(ex::getMessage);
-      Toolkit.getDefaultToolkit().beep();
-    }
-    return engine;
-  }
-
-  public static String prettify(ScriptEngine engine, String src) {
-    String printTxt;
-    try {
-      Object w = engine.get("window");
-      printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
-    } catch (ScriptException | NoSuchMethodException ex) {
-      printTxt = ex.getMessage();
-    }
-    return printTxt;
-  }
-}
