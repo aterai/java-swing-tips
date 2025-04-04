@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -50,7 +51,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -63,6 +64,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class TablePopupMenu extends JPopupMenu {
+  private final JTextField editor = new JTextField();
   private final String[] columnNames;
   private int index = -1;
 
@@ -71,45 +73,46 @@ final class TablePopupMenu extends JPopupMenu {
     // columnNames = new String[arrays.length];
     // System.arraycopy(arrays, 0, columnNames, 0, arrays.length);
     columnNames = Arrays.copyOf(arrays, arrays.length);
+    editor.addAncestorListener(new FocusAncestorListener());
+    add("Edit: setHeaderValue").addActionListener(e -> editHeaderValue());
+    add("Edit: setColumnIdentifiers").addActionListener(e -> editColumnIdentifiers());
+  }
 
-    JTextField textField = new JTextField();
-    textField.addAncestorListener(new FocusAncestorListener());
+  private void editHeaderValue() {
+    JTableHeader header = (JTableHeader) getInvoker();
+    TableColumn column = header.getColumnModel().getColumn(index);
+    String name = column.getHeaderValue().toString();
+    editor.setText(name);
+    int result = JOptionPane.showConfirmDialog(
+        header.getTable(), editor, "Edit: setHeaderValue",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (result == JOptionPane.OK_OPTION) {
+      String str = editor.getText().trim();
+      if (!str.equals(name)) {
+        column.setHeaderValue(str);
+        header.repaint(header.getHeaderRect(index));
+      }
+    }
+  }
 
-    add("Edit: setHeaderValue").addActionListener(e -> {
-      JTableHeader header = (JTableHeader) getInvoker();
-      TableColumn column = header.getColumnModel().getColumn(index);
-      String name = column.getHeaderValue().toString();
-      textField.setText(name);
-      int result = JOptionPane.showConfirmDialog(
-          header.getTable(), textField, "Edit: setHeaderValue",
-          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (result == JOptionPane.OK_OPTION) {
-        String str = textField.getText().trim();
-        if (!str.equals(name)) {
-          column.setHeaderValue(str);
-          header.repaint(header.getHeaderRect(index));
-        }
+  private void editColumnIdentifiers() {
+    JTableHeader header = (JTableHeader) getInvoker();
+    JTable table = header.getTable();
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    String name = table.getColumnName(index);
+    editor.setText(name);
+    int result = JOptionPane.showConfirmDialog(
+        table, editor, "Edit: setColumnIdentifiers",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (result == JOptionPane.OK_OPTION) {
+      String str = editor.getText().trim();
+      if (!str.equals(name)) {
+        columnNames[table.convertColumnIndexToModel(index)] = str;
+        // Bug?: if (header.getDraggedColumn() != null): ArrayIndexOutOfBoundsException: -1
+        // @see bookmark_1: header.setDraggedColumn(null);
+        model.setColumnIdentifiers(columnNames);
       }
-    });
-    add("Edit: setColumnIdentifiers").addActionListener(e -> {
-      JTableHeader header = (JTableHeader) getInvoker();
-      JTable table = header.getTable();
-      DefaultTableModel model = (DefaultTableModel) table.getModel();
-      String name = table.getColumnName(index);
-      textField.setText(name);
-      int result = JOptionPane.showConfirmDialog(
-          table, textField, "Edit: setColumnIdentifiers",
-          JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (result == JOptionPane.OK_OPTION) {
-        String str = textField.getText().trim();
-        if (!str.equals(name)) {
-          columnNames[table.convertColumnIndexToModel(index)] = str;
-          // Bug?: if (header.getDraggedColumn() != null): ArrayIndexOutOfBoundsException: -1
-          // @see bookmark_1: header.setDraggedColumn(null);
-          model.setColumnIdentifiers(columnNames);
-        }
-      }
-    });
+    }
   }
 
   @Override public void show(Component c, int x, int y) {
