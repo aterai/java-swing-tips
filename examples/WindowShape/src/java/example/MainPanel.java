@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     return frame;
   }
 
-  private void setFrameShape(JFrame frame, Shape shape) {
+  private static void setFrameShape(JFrame frame, Shape shape) {
     frame.setBounds(shape.getBounds());
     // AWTUtilities.setWindowShape(frame, shape); // JDK 1.6.0
     frame.setShape(shape); // JDK 1.7.0

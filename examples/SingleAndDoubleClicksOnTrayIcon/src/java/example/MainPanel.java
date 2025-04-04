@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -24,10 +23,12 @@ public final class MainPanel extends JPanel {
     boolean supported = SystemTray.isSupported();
     add(new JScrollPane(new JTextArea("SystemTray.isSupported(): " + supported)));
     setPreferredSize(new Dimension(320, 240));
-    EventQueue.invokeLater(() -> Optional.ofNullable(getTopLevelAncestor())
-        .filter(Frame.class::isInstance)
-        .map(Frame.class::cast)
-        .ifPresent(this::makePopupMenu));
+    EventQueue.invokeLater(() -> {
+      Container top = getTopLevelAncestor();
+      if (top instanceof Frame) {
+        makePopupMenu((Frame) top);
+      }
+    });
   }
 
   private void openLookAndFeelBox(JPopupMenu lnf, JDialog tmp, Point pt) {
@@ -308,20 +309,24 @@ final class LookAndFeelUtils {
   public static Component makeLookAndFeelBox(JPopupMenu popup) {
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createVerticalBox();
-    String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+    String lnfName = UIManager.getLookAndFeel().getClass().getName();
     Stream.of(UIManager.getInstalledLookAndFeels())
         .forEach(info -> {
-          AbstractButton rb = makeButton(info, lookAndFeel);
-          rb.addActionListener(e -> EventQueue.invokeLater(() -> {
-            SwingUtilities.updateComponentTreeUI(popup);
-            popup.pack();
-          }));
+          AbstractButton rb = makeButton(info, lnfName);
+          rb.addActionListener(e -> updateUI(popup));
           bg.add(rb);
           box.add(rb);
         });
     box.add(Box.createVerticalGlue());
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     return box;
+  }
+
+  private static void updateUI(JPopupMenu popup) {
+    EventQueue.invokeLater(() -> {
+      SwingUtilities.updateComponentTreeUI(popup);
+      popup.pack();
+    });
   }
 
   private static JRadioButton makeButton(UIManager.LookAndFeelInfo info, String laf) {

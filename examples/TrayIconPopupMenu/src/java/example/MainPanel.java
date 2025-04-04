@@ -274,20 +274,24 @@ final class LookAndFeelUtils {
   public static Component makeLookAndFeelBox(JPopupMenu popup) {
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createVerticalBox();
-    String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+    String lnfName = UIManager.getLookAndFeel().getClass().getName();
     Stream.of(UIManager.getInstalledLookAndFeels())
         .forEach(info -> {
-          AbstractButton rb = makeButton(info, lookAndFeel);
-          rb.addActionListener(e -> EventQueue.invokeLater(() -> {
-            SwingUtilities.updateComponentTreeUI(popup);
-            popup.pack();
-          }));
+          AbstractButton rb = makeButton(info, lnfName);
+          rb.addActionListener(e -> updateUI(popup));
           bg.add(rb);
           box.add(rb);
         });
     box.add(Box.createVerticalGlue());
     box.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
     return box;
+  }
+
+  private static void updateUI(JPopupMenu popup) {
+    EventQueue.invokeLater(() -> {
+      SwingUtilities.updateComponentTreeUI(popup);
+      popup.pack();
+    });
   }
 
   private static JRadioButton makeButton(UIManager.LookAndFeelInfo info, String laf) {
