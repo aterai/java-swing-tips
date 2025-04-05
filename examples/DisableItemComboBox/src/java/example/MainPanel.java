@@ -132,30 +132,29 @@ class DisableItemComboBox<E> extends JComboBox<E> {
   @Override public void updateUI() {
     setRenderer(null);
     super.updateUI();
-    ListCellRenderer<? super E> renderer = getRenderer();
+    ListCellRenderer<? super E> r = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c;
-      if (isEnabledIndex(index)) {
-        c = renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        c.setEnabled(true);
-      } else {
-        c = renderer.getListCellRendererComponent(list, value, index, false, false);
-        c.setEnabled(false);
-      }
+      boolean isEnabled = isEnabledIndex(index);
+      Component c = isEnabled
+          ? r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
+          : r.getListCellRendererComponent(list, value, index, false, false);
+      c.setEnabled(isEnabled);
       return c;
     });
-    EventQueue.invokeLater(() -> {
-      String selectPrev = "selectPrevious3";
-      String selectNext = "selectNext3";
-      ActionMap am = getActionMap();
-      am.put(selectPrev, up);
-      am.put(selectNext, down);
-      InputMap im = getInputMap();
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrev);
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrev);
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNext);
-      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNext);
-    });
+    EventQueue.invokeLater(this::initInputMap);
+  }
+
+  private void initInputMap() {
+    String selectPrev = "selectPrevious3";
+    String selectNext = "selectNext3";
+    ActionMap am = getActionMap();
+    am.put(selectPrev, up);
+    am.put(selectNext, down);
+    InputMap im = getInputMap();
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrev);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrev);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNext);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNext);
   }
 
   @Override public void setPopupVisible(boolean v) {
