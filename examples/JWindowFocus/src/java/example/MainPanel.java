@@ -10,6 +10,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -20,108 +21,98 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new FlowLayout(FlowLayout.LEADING, 50, 50));
     JTextArea editor = makeEditor();
-    add(makeButton1(editor));
-    add(makeButton2(editor));
-    add(makeButton3(editor));
-    add(makeButton4(editor));
-    EventQueue.invokeLater(() -> {
-      Window window = SwingUtilities.getWindowAncestor(this);
-      window.addMouseListener(new MouseAdapter() {
-        @Override public void mousePressed(MouseEvent e) {
-          resetEditor(editor, null);
-        }
-      });
-      window.addComponentListener(new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) {
-          resetEditor(editor, null);
-        }
-
-        @Override public void componentMoved(ComponentEvent e) {
-          resetEditor(editor, null);
-        }
-      });
-    });
+    JButton b1 = new JButton("JPopupMenu");
+    b1.addActionListener(e -> startEditing1(editor, (JButton) e.getSource()));
+    add(b1);
+    JButton b2 = new JButton("JFrame#setUndecorated(true)");
+    b2.addActionListener(e -> startEditing2(editor, (JButton) e.getSource()));
+    add(b2);
+    JButton b3 = new JButton("JWindow()");
+    b3.addActionListener(e -> startEditing3(editor, (JButton) e.getSource()));
+    add(b3);
+    JButton b4 = new JButton("JWindow(owner)");
+    b4.addActionListener(e -> startEditing4(editor, (JButton) e.getSource()));
+    add(b4);
+    EventQueue.invokeLater(() -> initEditorListener(editor));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JButton makeButton1(JTextArea editor) {
-    JButton button1 = new JButton("JPopupMenu");
-    button1.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      resetEditor(editor, b);
-      JPopupMenu popup = new JPopupMenu();
-      popup.setBorder(BorderFactory.createEmptyBorder());
-      popup.add(editor);
-      popup.pack();
-      Point p = b.getLocation();
-      p.y += b.getHeight();
-      popup.show(this, p.x, p.y);
-      editor.requestFocusInWindow();
-    });
-    return button1;
+  private void startEditing1(JTextArea editor, JButton b) {
+    resetEditor(editor, b);
+    JPopupMenu popup = new JPopupMenu();
+    popup.setBorder(BorderFactory.createEmptyBorder());
+    popup.add(editor);
+    popup.pack();
+    Point p = b.getLocation();
+    p.y += b.getHeight();
+    popup.show(this, p.x, p.y);
+    editor.requestFocusInWindow();
   }
 
-  private static JButton makeButton2(JTextArea editor) {
-    JButton button2 = new JButton("JFrame#setUndecorated(true)");
-    button2.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      resetEditor(editor, b);
-      JFrame window = new JFrame();
-      window.setUndecorated(true);
-      window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-      // window.setAlwaysOnTop(true);
-      window.add(editor);
-      window.pack();
-      Point p = b.getLocation();
-      p.y += b.getHeight();
-      SwingUtilities.convertPointToScreen(p, b.getParent());
-      window.setLocation(p);
-      window.setVisible(true);
-      editor.requestFocusInWindow();
-    });
-    return button2;
+  private static void startEditing2(JTextArea editor, JButton b) {
+    resetEditor(editor, b);
+    JFrame window = new JFrame();
+    window.setUndecorated(true);
+    window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+    // window.setAlwaysOnTop(true);
+    window.add(editor);
+    window.pack();
+    Point p = b.getLocation();
+    p.y += b.getHeight();
+    SwingUtilities.convertPointToScreen(p, b.getParent());
+    window.setLocation(p);
+    window.setVisible(true);
+    editor.requestFocusInWindow();
   }
 
-  private static JButton makeButton3(JTextArea editor) {
-    JButton button3 = new JButton("JWindow()");
-    button3.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      resetEditor(editor, b);
-      Window window = new JWindow();
-      window.setFocusableWindowState(true);
-      window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-      // window.setAlwaysOnTop(true);
-      window.add(editor);
-      window.pack();
-      Point p = b.getLocation();
-      p.y += b.getHeight();
-      SwingUtilities.convertPointToScreen(p, b.getParent());
-      window.setLocation(p);
-      window.setVisible(true);
-      editor.requestFocusInWindow();
-    });
-    return button3;
+  private static void startEditing3(JTextArea editor, JButton b) {
+    resetEditor(editor, b);
+    Window window = new JWindow();
+    window.setFocusableWindowState(true);
+    window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+    // window.setAlwaysOnTop(true);
+    window.add(editor);
+    window.pack();
+    Point p = b.getLocation();
+    p.y += b.getHeight();
+    SwingUtilities.convertPointToScreen(p, b.getParent());
+    window.setLocation(p);
+    window.setVisible(true);
+    editor.requestFocusInWindow();
   }
 
-  private static JButton makeButton4(JTextArea editor) {
-    JButton button4 = new JButton("JWindow(owner)");
-    button4.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      resetEditor(editor, b);
-      Point p = b.getLocation();
-      p.y += b.getHeight();
-      SwingUtilities.convertPointToScreen(p, b.getParent());
-      Window window = new JWindow(SwingUtilities.getWindowAncestor(b));
-      window.setFocusableWindowState(true);
-      window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-      // window.setAlwaysOnTop(true);
-      window.add(editor);
-      window.pack();
-      window.setLocation(p);
-      window.setVisible(true);
-      editor.requestFocusInWindow();
+  private static void startEditing4(JTextArea editor, JButton b) {
+    resetEditor(editor, b);
+    Point p = b.getLocation();
+    p.y += b.getHeight();
+    SwingUtilities.convertPointToScreen(p, b.getParent());
+    Window window = new JWindow(SwingUtilities.getWindowAncestor(b));
+    window.setFocusableWindowState(true);
+    window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+    // window.setAlwaysOnTop(true);
+    window.add(editor);
+    window.pack();
+    window.setLocation(p);
+    window.setVisible(true);
+    editor.requestFocusInWindow();
+  }
+
+  private void initEditorListener(JTextArea editor) {
+    Window window = SwingUtilities.getWindowAncestor(this);
+    window.addMouseListener(new MouseAdapter() {
+      @Override public void mousePressed(MouseEvent e) {
+        resetEditor(editor, null);
+      }
     });
-    return button4;
+    window.addComponentListener(new ComponentAdapter() {
+      @Override public void componentResized(ComponentEvent e) {
+        resetEditor(editor, null);
+      }
+
+      @Override public void componentMoved(ComponentEvent e) {
+        resetEditor(editor, null);
+      }
+    });
   }
 
   public static JTextArea makeEditor() {
@@ -130,42 +121,7 @@ public final class MainPanel extends JPanel {
     editor.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     editor.setLineWrap(true);
     editor.setComponentPopupMenu(new TextComponentPopupMenu());
-    editor.getDocument().addDocumentListener(new DocumentListener() {
-      private int prev = -1;
-      private void update() {
-        EventQueue.invokeLater(() -> {
-          int h = editor.getPreferredSize().height;
-          if (prev != h) {
-            Rectangle rect = editor.getBounds();
-            rect.height = h;
-            editor.setBounds(rect);
-            Container p = SwingUtilities.getAncestorOfClass(JPopupMenu.class, editor);
-            if (p instanceof JPopupMenu) {
-              ((JPopupMenu) p).pack();
-              editor.requestFocusInWindow();
-            } else {
-              Window w = SwingUtilities.getWindowAncestor(editor);
-              if (w != null) {
-                w.pack();
-              }
-            }
-          }
-          prev = h;
-        });
-      }
-
-      @Override public void insertUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void removeUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void changedUpdate(DocumentEvent e) {
-        update();
-      }
-    });
+    editor.getDocument().addDocumentListener(new EditorResizeHandler(editor));
     return editor;
   }
 
@@ -191,7 +147,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -200,6 +156,47 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class EditorResizeHandler implements DocumentListener {
+  private final JTextArea editor;
+  private int prev = -1;
+
+  protected EditorResizeHandler(JTextArea editor) {
+    this.editor = editor;
+  }
+
+  private void update() {
+    int h = editor.getPreferredSize().height;
+    if (prev != h) {
+      Rectangle rect = editor.getBounds();
+      rect.height = h;
+      editor.setBounds(rect);
+      Container p = SwingUtilities.getAncestorOfClass(JPopupMenu.class, editor);
+      if (p instanceof JPopupMenu) {
+        ((JPopupMenu) p).pack();
+        editor.requestFocusInWindow();
+      } else {
+        Window w = SwingUtilities.getWindowAncestor(editor);
+        if (w != null) {
+          w.pack();
+        }
+      }
+    }
+    prev = h;
+  }
+
+  @Override public void insertUpdate(DocumentEvent e) {
+    EventQueue.invokeLater(this::update);
+  }
+
+  @Override public void removeUpdate(DocumentEvent e) {
+    EventQueue.invokeLater(this::update);
+  }
+
+  @Override public void changedUpdate(DocumentEvent e) {
+    EventQueue.invokeLater(this::update);
   }
 }
 
