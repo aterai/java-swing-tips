@@ -409,7 +409,7 @@ class CloseableWindowsTabbedPaneUI extends WindowsTabbedPaneUI {
   private static final String HTML = "html";
 
   /**
-   * the horizontal position of the text.
+   * The horizontal position of the text.
    */
   private int horizTextPosition = LEFT;
 
@@ -487,7 +487,7 @@ class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
   private static final String HTML = "html";
 
   /**
-   * the horizontal position of the text.
+   * The horizontal position of the text.
    */
   private int horizTextPosition = LEFT;
 
