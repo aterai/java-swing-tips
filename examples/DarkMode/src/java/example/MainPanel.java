@@ -8,6 +8,8 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -201,14 +203,14 @@ final class ThemeUtils {
     } else if (os.contains("linux")) {
       isDark = isLinuxDarkMode();
     } else if (os.contains("mac")) {
-      isDark = isMackDarkMode();
+      isDark = isMacDarkMode();
     } else {
       isDark = false;
     }
     return isDark;
   }
 
-  public static String getProcessOutput(String... cmd) throws IOException, InterruptedException {
+  public static String getProcessOutput(List<String> cmd) throws IOException, InterruptedException {
     ProcessBuilder builder = new ProcessBuilder(cmd);
     builder.redirectErrorStream(true);
     Process p = builder.start();
@@ -220,18 +222,17 @@ final class ThemeUtils {
   }
 
   public static boolean isWindowsDarkMode() {
-    String[] cmd = {
+    List<String> cmd = Arrays.asList(
         "powershell.exe",
         "Get-ItemPropertyValue",
         "-Path",
         "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
         "-Name",
         "AppsUseLightTheme;"
-    };
+    );
     boolean isDarkMode;
     try {
-      String str = getProcessOutput(cmd).trim();
-      isDarkMode = Objects.equals("0", str);
+      isDarkMode = Objects.equals("0", getProcessOutput(cmd).trim());
     } catch (IOException | InterruptedException ex) {
       Logger.getGlobal().severe(ex::getMessage);
       isDarkMode = false;
@@ -245,7 +246,7 @@ final class ThemeUtils {
     return Objects.toString(theme).contains("dark");
   }
 
-  public static boolean isMackDarkMode() {
+  public static boolean isMacDarkMode() {
     return false;
   }
 
