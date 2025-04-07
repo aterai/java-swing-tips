@@ -42,8 +42,8 @@ public final class MainPanel extends JPanel {
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setText(text);
     StyleSheet style = kit.getStyleSheet();
-    style.addRule("span {color: orange;}");
-    style.addRule("img {align: middle; valign: middle; vertical-align: middle;}");
+    style.addRule("span{color:orange;}");
+    style.addRule("img{align:middle;valign:middle;vertical-align:middle;}");
     return editor;
   }
 

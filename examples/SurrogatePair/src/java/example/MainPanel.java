@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     StyleSheet styleSheet = new StyleSheet();
-    // styleSheet.addRule("body {font-size: 24pt; font-family: IPAexGothic;}");
+    // styleSheet.addRule("body{font-size:24pt;font-family:IPAexGothic;}");
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
     JEditorPane editor1 = new JEditorPane();

@@ -13,8 +13,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule("body {font-size: 12pt;}");
-    styleSheet.addRule(".highlight {color: red; background: green}");
+    styleSheet.addRule("body{font-size:12pt;}");
+    styleSheet.addRule(".highlight{color:red;background:green}");
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
     // HTMLDocument htmlDocument = (HTMLDocument) htmlEditorKit.createDefaultDocument();

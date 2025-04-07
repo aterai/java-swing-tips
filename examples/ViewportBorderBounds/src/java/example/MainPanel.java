@@ -60,17 +60,17 @@ public final class MainPanel extends JPanel {
   private static StyleSheet makeStyleSheet() {
     // https://github.com/google/code-prettify/blob/master/styles/desert.css
     StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule(".str {color:#ffa0a0}");
-    styleSheet.addRule(".kwd {color:#f0e68c;font-weight:bold}");
-    styleSheet.addRule(".com {color:#87ceeb}");
-    styleSheet.addRule(".typ {color:#98fb98}");
-    styleSheet.addRule(".lit {color:#cd5c5c}");
-    styleSheet.addRule(".pun {color:#ffffff}");
-    styleSheet.addRule(".pln {color:#ffffff}");
-    styleSheet.addRule(".tag {color:#f0e68c;font-weight:bold}");
-    styleSheet.addRule(".atn {color:#bdb76b;font-weight:bold}");
-    styleSheet.addRule(".atv {color:#ffa0a0}");
-    styleSheet.addRule(".dec {color:#98fb98}");
+    styleSheet.addRule(".str{color:#ffa0a0}");
+    styleSheet.addRule(".kwd{color:#f0e68c;font-weight:bold}");
+    styleSheet.addRule(".com{color:#87ceeb}");
+    styleSheet.addRule(".typ{color:#98fb98}");
+    styleSheet.addRule(".lit{color:#cd5c5c}");
+    styleSheet.addRule(".pun{color:#ffffff}");
+    styleSheet.addRule(".pln{color:#ffffff}");
+    styleSheet.addRule(".tag{color:#f0e68c;font-weight:bold}");
+    styleSheet.addRule(".atn{color:#bdb76b;font-weight:bold}");
+    styleSheet.addRule(".atv{color:#ffa0a0}");
+    styleSheet.addRule(".dec{color:#98fb98}");
     return styleSheet;
   }
 

@@ -47,17 +47,17 @@ public final class MainPanel extends JPanel {
 
   private static StyleSheet makeStyleSheet() {
     StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule(".str {color:#008800}");
-    styleSheet.addRule(".kwd {color:#000088}");
-    styleSheet.addRule(".com {color:#880000}");
-    styleSheet.addRule(".typ {color:#660066}");
-    styleSheet.addRule(".lit {color:#006666}");
-    styleSheet.addRule(".pun {color:#666600}");
-    styleSheet.addRule(".pln {color:#000000}");
-    styleSheet.addRule(".tag {color:#000088}");
-    styleSheet.addRule(".atn {color:#660066}");
-    styleSheet.addRule(".atv {color:#008800}");
-    styleSheet.addRule(".dec {color:#660066}");
+    styleSheet.addRule(".str{color:#008800}");
+    styleSheet.addRule(".kwd{color:#000088}");
+    styleSheet.addRule(".com{color:#880000}");
+    styleSheet.addRule(".typ{color:#660066}");
+    styleSheet.addRule(".lit{color:#006666}");
+    styleSheet.addRule(".pun{color:#666600}");
+    styleSheet.addRule(".pln{color:#000000}");
+    styleSheet.addRule(".tag{color:#000088}");
+    styleSheet.addRule(".atn{color:#660066}");
+    styleSheet.addRule(".atv{color:#008800}");
+    styleSheet.addRule(".dec{color:#660066}");
     return styleSheet;
   }
 
