@@ -43,17 +43,30 @@ public final class MainPanel extends JPanel {
             MouseEvent me = SwingUtilities.convertMouseEvent(list, e, c);
             me.translatePoint(pt.x - r.x - me.getX(), pt.y - r.y - me.getY());
             c.dispatchEvent(me);
-            // TEST1:
-            // c.dispatchEvent(SwingUtilities.convertMouseEvent(list, e, c));
-            // TEST2:
-            // pt.translate(-r.x, -r.y);
-            // int modifiers = e.getModifiers() | e.getModifiersEx();
-            // c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), modifiers,
-            //     pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
           }
         }
       }
     });
+    // list.addMouseListener(new MouseAdapter() {
+    //   @Override public void mouseClicked(MouseEvent e) {
+    //     Point pt = e.getPoint();
+    //     int idx = list.locationToIndex(pt);
+    //     if (idx >= 0) {
+    //       SiteItem item = list.getModel().getElementAt(idx);
+    //       ListCellRenderer<? super SiteItem> renderer = list.getCellRenderer();
+    //       Component c = renderer.getListCellRendererComponent(list, item, idx, false, false);
+    //       if (c instanceof JEditorPane) {
+    //         Rectangle r = list.getCellBounds(idx, idx);
+    //         c.setBounds(r);
+    //         // c.dispatchEvent(SwingUtilities.convertMouseEvent(list, e, c));
+    //         pt.translate(-r.x, -r.y);
+    //         int modifiers = e.getModifiers() | e.getModifiersEx();
+    //         c.dispatchEvent(new MouseEvent(c, e.getID(), e.getWhen(), modifiers,
+    //             pt.x, pt.y, e.getClickCount(), e.isPopupTrigger()));
+    //       }
+    //     }
+    //   }
+    // });
 
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
