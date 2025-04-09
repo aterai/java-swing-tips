@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -123,25 +124,23 @@ class ScrollAction extends AbstractAction {
     if (scroller.isRunning()) {
       return;
     }
-    JViewport vport = scrollPane.getViewport();
-    JComponent v = (JComponent) vport.getView();
-    int w = vport.getWidth();
-    int h = vport.getHeight();
-    int sx = vport.getViewPosition().x;
-    int sy = vport.getViewPosition().y;
+    JViewport viewport = scrollPane.getViewport();
+    JComponent v = (JComponent) viewport.getView();
+    int w = viewport.getWidth();
+    int h = viewport.getHeight();
+    int sx = viewport.getViewPosition().x;
+    int sy = viewport.getViewPosition().y;
     Rectangle rect = new Rectangle(w, h);
     scroller.removeActionListener(listener);
     AtomicInteger counter = new AtomicInteger((int) SIZE);
     listener = e -> {
       double a = easeInOut(counter.getAndDecrement() / SIZE);
-      int dx = (int) (w - a * w + .5);
-      int dy = (int) (h - a * h + .5);
+      Point d = new Point((int) (w - a * w + .5), (int) (h - a * h + .5));
       if (counter.get() <= 0) {
-        dx = w;
-        dy = h;
+        d.setLocation(w, h);
         scroller.stop();
       }
-      rect.setLocation(sx + vec.x * dx, sy + vec.y * dy);
+      rect.setLocation(sx + vec.x * d.x, sy + vec.y * d.y);
       v.scrollRectToVisible(rect);
     };
     scroller.addActionListener(listener);
