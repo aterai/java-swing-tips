@@ -16,16 +16,16 @@ public final class MainPanel extends JPanel {
 
     HTMLEditorKit htmlEditorKit = (HTMLEditorKit) editor.getEditorKit();
     StyleSheet styles = htmlEditorKit.getStyleSheet();
-    styles.addRule(".number {font-size: 14}");
-    styles.addRule(".pt {font-size: 14pt}");
-    styles.addRule(".em {font-size: 1.2em}");
-    styles.addRule(".percentage {font-size: 120%}");
+    styles.addRule(".number{font-size:14}");
+    styles.addRule(".pt{font-size:14pt}");
+    styles.addRule(".em{font-size:1.2em}");
+    styles.addRule(".percentage{font-size:120%}");
 
-    String html = "<html><h3>h3 {font-size: medium}</h3>"
-        + "<h3 class='number'>h3 {font-size: 14}</h3>"
-        + "<h3 class='pt'>h3 {font-size: 14pt}</h3>"
-        + "<h3 class='em'>h3 {font-size: 1.2em}</h3>"
-        + "<h3 class='percentage'>h3 {font-size: 120%}</h3>";
+    String html = "<html><h3>h3{font-size:medium}</h3>"
+        + "<h3 class='number'>h3{font-size:14}</h3>"
+        + "<h3 class='pt'>h3{font-size:14pt}</h3>"
+        + "<h3 class='em'>h3{font-size:1.2em}</h3>"
+        + "<h3 class='percentage'>h3{font-size:120%}</h3>";
     editor.setText(html);
 
     // StringBuilder buf = new StringBuilder(300);
