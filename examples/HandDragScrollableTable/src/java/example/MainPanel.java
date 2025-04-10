@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -84,10 +85,9 @@ class DragScrollingListener extends MouseAdapter {
   protected DragScrollingListener(JComponent c) {
     super();
     this.scrollTimer = new Timer(DELAY, e -> {
-      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(c);
-      Point vp = viewport.getViewPosition();
-      vp.translate(-delta.x, -delta.y);
-      c.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+      Rectangle visibleRect = c.getVisibleRect();
+      visibleRect.translate(-delta.x, -delta.y);
+      c.scrollRectToVisible(visibleRect);
       if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
         delta.setLocation((int) (delta.x * GRAVITY), (int) (delta.y * GRAVITY));
       } else {

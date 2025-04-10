@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -18,42 +19,43 @@ public final class MainPanel extends JPanel {
     textPane.setComponentPopupMenu(new HtmlColorPopupMenu());
     // textPane.setEditorKit(new HTMLEditorKit());
     textPane.setContentType("text/html");
-
+    // JEditorPane editorPane = new JEditorPane("text/html", "");
     JTextArea textArea = new JTextArea();
     textArea.setText(textPane.getText());
-
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.addTab("JTextPane", new JScrollPane(textPane));
     tabbedPane.addTab("JTextArea", new JScrollPane(textArea));
     tabbedPane.addChangeListener(e -> {
-      JTabbedPane t = (JTabbedPane) e.getSource();
-      boolean isHtmlMode = t.getSelectedIndex() == 0;
-      if (isHtmlMode) {
-        textPane.setText(textArea.getText());
-        // textPane.setText("");
-        // HTMLEditorKit hek = (HTMLEditorKit) textPane.getEditorKit();
-        // HTMLDocument doc = (HTMLDocument) textPane.getStyledDocument();
-        // hek.insertHTML(doc, 0, textArea.getText(), 0, 0, null);
-      } else {
-        String str = textPane.getText();
-        textArea.setText(str);
-        // // Removing HTML from a Java String - Stack Overflow
-        // // https://stackoverflow.com/questions/240546/removing-html-from-a-java-string
-        // // Test >>>>
-        // ParserDelegator delegator = new ParserDelegator();
-        // StringBuilder s = new StringBuilder();
-        // delegator.parse(new StringReader(str), new HTMLEditorKit.ParserCallback() {
-        //   @Override public void handleText(char[] text, int pos) {
-        //     s.append(text);
-        //   }
-        // }, Boolean.TRUE);
-        // System.out.println(s.toString());
-        // // <<<<
-      }
-      t.revalidate();
+      JTabbedPane tabs = (JTabbedPane) e.getSource();
+      tabChanged(tabs.getSelectedIndex() == 0, textPane, textArea);
+      tabs.revalidate();
     });
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void tabChanged(boolean html, JTextPane textPane, JTextArea textArea) {
+    if (html) {
+      textPane.setText(textArea.getText());
+      // HTMLEditorKit hek = (HTMLEditorKit) textPane.getEditorKit();
+      // HTMLDocument doc = (HTMLDocument) textPane.getStyledDocument();
+      // hek.insertHTML(doc, 0, textArea.getText(), 0, 0, null);
+    } else {
+      String str = textPane.getText();
+      textArea.setText(str);
+      // Removing HTML from a Java String - Stack Overflow
+      // https://stackoverflow.com/questions/240546/removing-html-from-a-java-string
+      // private static void removeHtmlTest(String str) {
+      //   ParserDelegator delegator = new ParserDelegator();
+      //   StringBuilder s = new StringBuilder();
+      //   delegator.parse(new StringReader(str), new HTMLEditorKit.ParserCallback() {
+      //     @Override public void handleText(char[] text, int pos) {
+      //       s.append(text);
+      //     }
+      //   }, Boolean.TRUE);
+      //   // System.out.println(s.toString());
+      // }
+    }
   }
 
   public static void main(String[] args) {
@@ -66,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
