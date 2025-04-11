@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -26,52 +27,7 @@ public final class MainPanel extends JPanel {
     textPane.setEditorKit(new StyledEditorKit());
 
     StyledDocument doc = textPane.getStyledDocument();
-    doc.addDocumentListener(new DocumentListener() {
-      @Override public void changedUpdate(DocumentEvent e) {
-        /* not needed */
-      }
-
-      @Override public void insertUpdate(DocumentEvent e) {
-        update((DefaultStyledDocument) e.getDocument(), e.getOffset());
-      }
-
-      @Override public void removeUpdate(DocumentEvent e) {
-        update((DefaultStyledDocument) e.getDocument(), e.getOffset());
-      }
-
-      private void update(DefaultStyledDocument doc, int offset) {
-        Element elm = doc.getCharacterElement(offset);
-        EventQueue.invokeLater(() -> {
-          try {
-            int start = elm.getStartOffset();
-            int end = elm.getEndOffset();
-            // System.out.format("start: %d, end: %d%n", start, end);
-            String text = doc.getText(start, end - start);
-            // int pos = text.lastIndexOf(faceMark);
-            // while (pos > -1) {
-            //   Style face = doc.getStyle(faceMark);
-            //   doc.replace(start + pos, faceMark.length(), " ", face);
-            //   pos = text.lastIndexOf(faceMark, pos - 1);
-            //   textPane.getInputAttributes().removeAttributes(face);
-            // }
-            int pos = text.indexOf(faceMark);
-            while (pos > -1) {
-              Style face = doc.getStyle(faceMark);
-              doc.setCharacterAttributes(start + pos, faceMark.length(), face, false);
-              pos = text.indexOf(faceMark, pos + faceMark.length());
-              // textPane.getInputAttributes().removeAttributes(face);
-            }
-          } catch (BadLocationException ex) {
-            // should never happen
-            RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-            wrap.initCause(ex);
-            throw wrap;
-          }
-          // MutableAttributeSet inputAttributes = textPane.getInputAttributes();
-          // inputAttributes.removeAttributes(inputAttributes);
-        });
-      }
-    });
+    doc.addDocumentListener(new FaceMarkDocumentListener(faceMark));
     Style face = doc.addStyle(faceMark, doc.getStyle(StyleContext.DEFAULT_STYLE));
     StyleConstants.setIcon(face, new FaceIcon());
     // StyleConstants.setForeground(face, Color.RED);
@@ -93,7 +49,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -102,6 +58,52 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FaceMarkDocumentListener implements DocumentListener {
+  private final String faceMark;
+
+  protected FaceMarkDocumentListener(String faceMark) {
+    this.faceMark = faceMark;
+  }
+
+  @Override public void changedUpdate(DocumentEvent e) {
+    /* not needed */
+  }
+
+  @Override public void insertUpdate(DocumentEvent e) {
+    update((DefaultStyledDocument) e.getDocument(), e.getOffset());
+  }
+
+  @Override public void removeUpdate(DocumentEvent e) {
+    update((DefaultStyledDocument) e.getDocument(), e.getOffset());
+  }
+
+  private void update(StyledDocument doc, int offset) {
+    Element elm = doc.getCharacterElement(offset);
+    EventQueue.invokeLater(() -> {
+      try {
+        updateFaceStyle(doc, elm);
+      } catch (BadLocationException ex) {
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
+      }
+    });
+  }
+
+  private void updateFaceStyle(StyledDocument doc, Element elm) throws BadLocationException {
+    int start = elm.getStartOffset();
+    int end = elm.getEndOffset();
+    String text = doc.getText(start, end - start);
+    int pos = text.indexOf(faceMark);
+    while (pos > -1) {
+      Style face = doc.getStyle(faceMark);
+      doc.setCharacterAttributes(start + pos, faceMark.length(), face, false);
+      pos = text.indexOf(faceMark, pos + faceMark.length());
+    }
   }
 }
 
