@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     String[] array = {
         "1111", "1111222", "111122233", "111122233444",
         "12345", "67890", "55551", "555512"};
-    JComboBox<String> combo = makeComboBox(array);
+    JComboBox<String> combo = new HighlightComboBox(new DefaultComboBoxModel<>(array));
     combo.setEditable(true);
     combo.setSelectedIndex(-1);
     JTextField field = (JTextField) combo.getEditor().getEditorComponent();
@@ -44,50 +44,6 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static JComboBox<String> makeComboBox(String... model) {
-    HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
-    return new JComboBox<String>(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        JTextField field = new JTextField(" ");
-        field.setOpaque(true);
-        field.setBorder(BorderFactory.createEmptyBorder());
-        ListCellRenderer<? super String> renderer = getRenderer();
-        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          String pattern = ((JTextField) getEditor().getEditorComponent()).getText();
-          if (index >= 0 && !pattern.isEmpty()) {
-            Highlighter highlighter = field.getHighlighter();
-            highlighter.removeAllHighlights();
-            String txt = Objects.toString(value, "");
-            field.setText(txt);
-            addHighlight(highlighter, Pattern.compile(pattern).matcher(txt));
-            field.setBackground(isSelected ? new Color(0xAA_64_AA_FF, true) : Color.WHITE);
-            return field;
-          }
-          return renderer.getListCellRendererComponent(
-              list, value, index, isSelected, cellHasFocus);
-        });
-      }
-
-      private void addHighlight(Highlighter highlighter, Matcher matcher) {
-        int pos = 0;
-        try {
-          while (matcher.find(pos) && !matcher.group().isEmpty()) {
-            int start = matcher.start();
-            int end = matcher.end();
-            highlighter.addHighlight(start, end, highlightPainter);
-            pos = end;
-          }
-        } catch (BadLocationException ex) {
-          // should never happen
-          RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-          wrap.initCause(ex);
-          throw wrap;
-        }
-      }
-    };
   }
 
   private static JPanel makeHelpPanel() {
@@ -141,6 +97,54 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class HighlightComboBox extends JComboBox<String> {
+  private final HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
+
+  public HighlightComboBox(ComboBoxModel<String> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    JTextField field = new JTextField(" ");
+    field.setOpaque(true);
+    field.setBorder(BorderFactory.createEmptyBorder());
+    ListCellRenderer<? super String> renderer = getRenderer();
+    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+      String pattern = ((JTextField) getEditor().getEditorComponent()).getText();
+      if (index >= 0 && !pattern.isEmpty()) {
+        updateHighlight(value, field, pattern);
+        field.setBackground(isSelected ? new Color(0xAA_64_AA_FF, true) : Color.WHITE);
+        return field;
+      }
+      return renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
+    });
+  }
+
+  private void updateHighlight(String value, JTextField field, String pattern) {
+    Highlighter highlighter = field.getHighlighter();
+    highlighter.removeAllHighlights();
+    String txt = Objects.toString(value, "");
+    field.setText(txt);
+    Matcher matcher = Pattern.compile(pattern).matcher(txt);
+    int pos = 0;
+    try {
+      while (matcher.find(pos) && !matcher.group().isEmpty()) {
+        int start = matcher.start();
+        int end = matcher.end();
+        highlighter.addHighlight(start, end, highlightPainter);
+        pos = end;
+      }
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
+  }
+}
+
 class ComboKeyHandler extends KeyAdapter {
   private final JComboBox<String> combo;
   private final List<String> list = new ArrayList<>();
@@ -155,23 +159,25 @@ class ComboKeyHandler extends KeyAdapter {
   }
 
   @Override public void keyTyped(KeyEvent e) {
-    EventQueue.invokeLater(() -> {
-      String text = ((JTextField) e.getComponent()).getText();
-      ComboBoxModel<String> m;
-      if (text.isEmpty()) {
-        m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
-        setSuggestionModel(m, "");
+    EventQueue.invokeLater(() -> updatePopup(e));
+  }
+
+  private void updatePopup(KeyEvent e) {
+    String text = ((JTextField) e.getComponent()).getText();
+    if (text.isEmpty()) {
+      String[] array = list.toArray(new String[0]);
+      ComboBoxModel<String> m = new DefaultComboBoxModel<>(array);
+      setSuggestionModel(m, "");
+      combo.hidePopup();
+    } else {
+      ComboBoxModel<String> m = getSuggestedModel(list, text);
+      if (m.getSize() == 0 || shouldHide) {
         combo.hidePopup();
       } else {
-        m = getSuggestedModel(list, text);
-        if (m.getSize() == 0 || shouldHide) {
-          combo.hidePopup();
-        } else {
-          setSuggestionModel(m, text);
-          combo.showPopup();
-        }
+        setSuggestionModel(m, text);
+        combo.showPopup();
       }
-    });
+    }
   }
 
   @Override public void keyPressed(KeyEvent e) {
