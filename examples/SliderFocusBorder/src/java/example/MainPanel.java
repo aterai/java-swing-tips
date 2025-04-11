@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -16,53 +17,17 @@ public final class MainPanel extends JPanel {
     // UIManager.put("Slider.border", BorderFactory.createLineBorder(Color.GREEN));
     // UIManager.put("Slider.focus", UIManager.get("Slider.background"));
     // UIManager.put("Slider.focusInsets", new Insets(5, 15, 5, 15));
-
     JSlider slider1 = new JSlider(0, 100, 0);
     initSlider(slider1);
     // TEST: slider1.setBorder(BorderFactory.createLineBorder(Color.RED));
-
-    JSlider slider2 = new JSlider(0, 100, 0) {
-      private transient FocusListener listener;
-      @Override public void updateUI() {
-        removeFocusListener(listener);
-        super.updateUI();
-        if (getUI() instanceof WindowsSliderUI) {
-          setUI(new WindowsSliderUI(this) {
-            @Override public void paintFocus(Graphics g) {
-              // // TEST:
-              // Graphics2D g2 = (Graphics2D) g.create();
-              // g2.setPaint(new Color(255, 255, 255, 100));
-              // g2.fill(focusRect);
-              // g2.dispose();
-            }
-            // @Override protected Color getHighlightColor() {
-            //   Color c = super.getHighlightColor();
-            //   return slider.hasFocus() ? Color.GREEN : Color.RED;
-            // }
-          });
-          Color bgc = getBackground();
-          listener = new FocusListener() {
-            @Override public void focusGained(FocusEvent e) {
-              setBackground(bgc.brighter());
-            }
-
-            @Override public void focusLost(FocusEvent e) {
-              setBackground(bgc);
-            }
-          };
-          addFocusListener(listener);
-        }
-      }
-    };
+    JSlider slider2 = new EmptyFocusBorderSlider(0, 100, 0);
     initSlider(slider2);
-
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(20));
     box.add(makeTitledPanel("Default", slider1));
     box.add(Box.createVerticalStrut(20));
     box.add(makeTitledPanel("Override SliderUI#paintFocus(...)", slider2));
     box.add(Box.createVerticalGlue());
-
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
@@ -91,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -101,4 +66,50 @@ public final class MainPanel extends JPanel {
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
+}
+
+class EmptyFocusBorderSlider extends JSlider {
+  private transient FocusListener listener;
+
+  protected EmptyFocusBorderSlider(int min, int max, int value) {
+    super(min, max, value);
+  }
+
+  @Override public void updateUI() {
+    removeFocusListener(listener);
+    super.updateUI();
+    if (getUI() instanceof WindowsSliderUI) {
+      setUI(new EmptyFocusBorderSliderUI(this));
+      Color bgc = getBackground();
+      listener = new FocusListener() {
+        @Override public void focusGained(FocusEvent e) {
+          setBackground(bgc.brighter());
+        }
+
+        @Override public void focusLost(FocusEvent e) {
+          setBackground(bgc);
+        }
+      };
+      addFocusListener(listener);
+    }
+  }
+}
+
+class EmptyFocusBorderSliderUI extends WindowsSliderUI {
+  protected EmptyFocusBorderSliderUI(JSlider b) {
+    super(b);
+  }
+
+  @Override public void paintFocus(Graphics g) {
+    // // TEST:
+    // Graphics2D g2 = (Graphics2D) g.create();
+    // g2.setPaint(new Color(255, 255, 255, 100));
+    // g2.fill(focusRect);
+    // g2.dispose();
+  }
+
+  // @Override protected Color getHighlightColor() {
+  //   Color c = super.getHighlightColor();
+  //   return slider.hasFocus() ? Color.GREEN : Color.RED;
+  // }
 }
