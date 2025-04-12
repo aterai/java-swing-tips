@@ -22,42 +22,46 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JCheckBox check = new JCheckBox(BOLD_KEY);
     check.addActionListener(e -> {
-      // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/metal/DefaultMetalTheme.html
       JCheckBox c = (JCheckBox) e.getSource();
       UIManager.put(BOLD_KEY, c.isSelected());
-      // re-install the Metal Look and Feel
-      try {
-        UIManager.setLookAndFeel(new MetalLookAndFeel());
-      } catch (UnsupportedLookAndFeelException ex) {
-        throw new IllegalStateException(ex); // should never happen
-      }
-      // Update the ComponentUIs for all Components. This
-      // needs to be invoked for all windows.
-      SwingUtilities.updateComponentTreeUI(c.getTopLevelAncestor());
+      reinstallMetalLookAndFeel(c);
     });
-
     JTree tree = new JTree();
     tree.setComponentPopupMenu(new TreePopupMenu());
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
-    tabbedPane.addTab(TAG + "JTree", new JScrollPane(tree));
-    tabbedPane.addTab("JLabel", new JLabel("JLabel"));
-    tabbedPane.addTab("JTextArea", new JScrollPane(new JTextArea("JTextArea")));
-    tabbedPane.addTab("JButton", new JScrollPane(new JButton("JButton")));
-    tabbedPane.addChangeListener(e -> {
-      JTabbedPane t = (JTabbedPane) e.getSource();
-      for (int i = 0; i < t.getTabCount(); i++) {
-        String title = t.getTitleAt(i);
-        if (i == t.getSelectedIndex()) {
-          t.setTitleAt(i, TAG + title);
-        } else if (title.startsWith(TAG)) {
-          t.setTitleAt(i, title.substring(TAG.length()));
-        }
-      }
-    });
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
+    tabs.addTab(TAG + "JTree", new JScrollPane(tree));
+    tabs.addTab("JLabel", new JLabel("JLabel"));
+    tabs.addTab("JTextArea", new JScrollPane(new JTextArea("JTextArea")));
+    tabs.addTab("JButton", new JScrollPane(new JButton("JButton")));
+    tabs.addChangeListener(e -> updateTabTitle((JTabbedPane) e.getSource()));
     add(check, BorderLayout.NORTH);
-    add(tabbedPane);
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/metal/DefaultMetalTheme.html
+  private static void reinstallMetalLookAndFeel(JComponent c) {
+    // re-install the Metal Look and Feel
+    try {
+      UIManager.setLookAndFeel(new MetalLookAndFeel());
+    } catch (UnsupportedLookAndFeelException ex) {
+      throw new IllegalStateException(ex); // should never happen
+    }
+    // Update the ComponentUIs for all Components. This
+    // needs to be invoked for all windows.
+    SwingUtilities.updateComponentTreeUI(c.getTopLevelAncestor());
+  }
+
+  private static void updateTabTitle(JTabbedPane tabbedPane) {
+    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+      String title = tabbedPane.getTitleAt(i);
+      if (i == tabbedPane.getSelectedIndex()) {
+        tabbedPane.setTitleAt(i, TAG + title);
+      } else if (title.startsWith(TAG)) {
+        tabbedPane.setTitleAt(i, title.substring(TAG.length()));
+      }
+    }
   }
 
   public static void main(String[] args) {
@@ -77,54 +81,59 @@ public final class MainPanel extends JPanel {
 }
 
 final class TreePopupMenu extends JPopupMenu {
+  private final JTextField editor = new JTextField(24) {
+    private transient AncestorListener listener;
+
+    @Override public void updateUI() {
+      removeAncestorListener(listener);
+      super.updateUI();
+      listener = new FocusAncestorListener();
+      addAncestorListener(listener);
+    }
+  };
   private TreePath path;
 
-  /* default */ TreePopupMenu() {
+  public TreePopupMenu() {
     super();
-    JTextField textField = new JTextField(24) {
-      private transient AncestorListener listener;
-      @Override public void updateUI() {
-        removeAncestorListener(listener);
-        super.updateUI();
-        listener = new FocusAncestorListener();
-        addAncestorListener(listener);
-      }
-    };
+    add("add").addActionListener(e -> addTab());
+    add("edit").addActionListener(e -> editTab());
+    addSeparator();
+    add("remove").addActionListener(e -> removeTab());
+  }
 
-    add("add").addActionListener(e -> {
-      // https://ateraimemo.com/Swing/ScrollRectToVisible.html
-      JTree tree = (JTree) getInvoker();
-      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-      DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
-      model.insertNodeInto(child, parent, parent.getChildCount());
-      tree.scrollPathToVisible(new TreePath(child.getPath()));
-    });
-    add("edit").addActionListener(e -> {
-      Object node = path.getLastPathComponent();
-      if (!(node instanceof DefaultMutableTreeNode)) {
-        return;
-      }
+  private void addTab() {
+    // https://ateraimemo.com/Swing/ScrollRectToVisible.html
+    JTree tree = (JTree) getInvoker();
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
+    model.insertNodeInto(child, parent, parent.getChildCount());
+    tree.scrollPathToVisible(new TreePath(child.getPath()));
+  }
+
+  private void editTab() {
+    Object node = path.getLastPathComponent();
+    if (node instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-      textField.setText(leaf.getUserObject().toString());
+      editor.setText(leaf.getUserObject().toString());
       JTree tree = (JTree) getInvoker();
       int ret = JOptionPane.showConfirmDialog(
-          tree, textField, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+          tree, editor, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (ret == JOptionPane.OK_OPTION) {
-        tree.getModel().valueForPathChanged(path, textField.getText());
+        tree.getModel().valueForPathChanged(path, editor.getText());
         // leaf.setUserObject(str);
         // model.nodeChanged(leaf);
       }
-    });
-    addSeparator();
-    add("remove").addActionListener(e -> {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-      if (!node.isRoot()) {
-        JTree tree = (JTree) getInvoker();
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.removeNodeFromParent(node);
-      }
-    });
+    }
+  }
+
+  private void removeTab() {
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+    if (!node.isRoot()) {
+      JTree tree = (JTree) getInvoker();
+      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+      model.removeNodeFromParent(node);
+    }
   }
 
   @Override public void show(Component c, int x, int y) {
