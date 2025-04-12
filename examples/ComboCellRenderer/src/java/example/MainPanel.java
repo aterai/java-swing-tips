@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
-import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.DefaultTableModel;
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -117,7 +117,30 @@ public final class MainPanel extends JPanel {
 class ComboCellRenderer implements TableCellRenderer {
   protected static final Color EVEN_COLOR = new Color(0xF0_F0_FA);
   protected JButton button;
-  protected final JComboBox<String> combo = new JComboBox<String>() {
+  protected final JComboBox<String> combo = new StringComboBox();
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    JTextField editor = (JTextField) combo.getEditor().getEditorComponent();
+    editor.setBorder(BorderFactory.createEmptyBorder());
+    editor.setOpaque(true);
+    combo.removeAllItems();
+    if (button != null) {
+      if (isSelected) {
+        editor.setForeground(table.getSelectionForeground());
+        editor.setBackground(table.getSelectionBackground());
+        button.setBackground(table.getSelectionBackground());
+      } else {
+        editor.setForeground(table.getForeground());
+        Color bg = row % 2 == 0 ? EVEN_COLOR : table.getBackground();
+        editor.setBackground(bg);
+        button.setBackground(bg);
+      }
+    }
+    combo.addItem(Objects.toString(value, ""));
+    return combo;
+  }
+
+  protected class StringComboBox extends JComboBox<String> {
     @Override public void updateUI() {
       super.updateUI();
       setBorder(BorderFactory.createEmptyBorder());
@@ -141,27 +164,6 @@ class ComboCellRenderer implements TableCellRenderer {
       boolean colorMatch = bgc != null && bgc.equals(t.getBackground()) && t.isOpaque();
       return !colorMatch && super.isOpaque();
     }
-  };
-
-  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    JTextField editor = (JTextField) combo.getEditor().getEditorComponent();
-    editor.setBorder(BorderFactory.createEmptyBorder());
-    editor.setOpaque(true);
-    combo.removeAllItems();
-    Optional.ofNullable(button).ifPresent(b -> {
-      if (isSelected) {
-        editor.setForeground(table.getSelectionForeground());
-        editor.setBackground(table.getSelectionBackground());
-        b.setBackground(table.getSelectionBackground());
-      } else {
-        editor.setForeground(table.getForeground());
-        Color bg = row % 2 == 0 ? EVEN_COLOR : table.getBackground();
-        editor.setBackground(bg);
-        b.setBackground(bg);
-      }
-    });
-    combo.addItem(Objects.toString(value, ""));
-    return combo;
   }
 }
 
