@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -25,7 +26,7 @@ public final class MainPanel extends JPanel {
     p.add(makeComboBox1(model));
     p.add(Box.createVerticalStrut(15));
     p.add(new JLabel("+enterPressed Action:", SwingConstants.LEFT));
-    p.add(makeComboBox2(model));
+    p.add(new StringComboBox(model));
     add(p, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     setPreferredSize(new Dimension(320, 240));
@@ -45,44 +46,6 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JComboBox<String> makeComboBox2(String... model) {
-    return new JComboBox<String>(model) {
-      private static final int MAX_HISTORY = 10;
-      private static final String ENTER_PRESSED = "enterPressed";
-      private transient PopupMenuListener handler;
-
-      @Override public void updateUI() {
-        removePopupMenuListener(handler);
-        getActionMap().put(ENTER_PRESSED, null);
-        super.updateUI();
-        Action defaultAction = getActionMap().get(ENTER_PRESSED);
-        Action a = new AbstractAction() {
-          @Override public void actionPerformed(ActionEvent e) {
-            boolean isPopupVisible = isPopupVisible();
-            setPopupVisible(false);
-            DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) getModel();
-            String str = Objects.toString(getEditor().getItem(), "");
-            if (m.getIndexOf(str) < 0) {
-              m.removeElement(str);
-              m.insertElementAt(str, 0);
-              if (m.getSize() > MAX_HISTORY) {
-                m.removeElementAt(MAX_HISTORY);
-              }
-              setSelectedIndex(0);
-              setPopupVisible(isPopupVisible);
-            } else {
-              defaultAction.actionPerformed(e);
-            }
-          }
-        };
-        getActionMap().put(ENTER_PRESSED, a);
-        setEditable(true);
-        handler = new SelectItemMenuListener();
-        addPopupMenuListener(handler);
-      }
-    };
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -93,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -102,6 +65,46 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class StringComboBox extends JComboBox<String> {
+  private static final int MAX_HISTORY = 10;
+  private static final String ENTER_PRESSED = "enterPressed";
+  private transient PopupMenuListener handler;
+
+  protected StringComboBox(String... model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removePopupMenuListener(handler);
+    getActionMap().put(ENTER_PRESSED, null);
+    super.updateUI();
+    Action defaultAction = getActionMap().get(ENTER_PRESSED);
+    Action a = new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        boolean isPopupVisible = isPopupVisible();
+        setPopupVisible(false);
+        DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) getModel();
+        String str = Objects.toString(getEditor().getItem(), "");
+        if (m.getIndexOf(str) < 0) {
+          m.removeElement(str);
+          m.insertElementAt(str, 0);
+          if (m.getSize() > MAX_HISTORY) {
+            m.removeElementAt(MAX_HISTORY);
+          }
+          setSelectedIndex(0);
+          setPopupVisible(isPopupVisible);
+        } else {
+          defaultAction.actionPerformed(e);
+        }
+      }
+    };
+    getActionMap().put(ENTER_PRESSED, a);
+    setEditable(true);
+    handler = new SelectItemMenuListener();
+    addPopupMenuListener(handler);
   }
 }
 
