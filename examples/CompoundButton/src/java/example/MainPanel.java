@@ -9,6 +9,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -34,7 +35,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -100,35 +101,7 @@ class CompoundButton extends JButton {
     super();
     this.dim = d;
     this.bl = bl;
-    setIcon(new Icon() {
-      private final Color fc = new Color(100, 150, 255, 200);
-      private final Color ac = new Color(230, 230, 230);
-      private final Color rc = new Color(255, 165, 100);
-      @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        if (getModel().isArmed()) {
-          g2.setPaint(ac);
-          g2.fill(shape);
-        } else if (isRolloverEnabled() && getModel().isRollover()) {
-          paintFocusAndRollover(g2, rc);
-        } else if (hasFocus()) {
-          paintFocusAndRollover(g2, fc);
-        } else {
-          g2.setPaint(getBackground());
-          g2.fill(shape);
-        }
-        g2.dispose();
-      }
-
-      @Override public int getIconWidth() {
-        return dim.width;
-      }
-
-      @Override public int getIconHeight() {
-        return dim.height;
-      }
-    });
+    setIcon(new ShapeIcon());
     initShape();
   }
 
@@ -198,5 +171,36 @@ class CompoundButton extends JButton {
     return Optional.ofNullable(shape)
         .map(s -> s.contains(x, y))
         .orElseGet(() -> super.contains(x, y));
+  }
+
+  private final class ShapeIcon implements Icon {
+    private final Color fc = new Color(100, 150, 255, 200);
+    private final Color ac = new Color(230, 230, 230);
+    private final Color rc = new Color(255, 165, 100);
+
+    @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      if (getModel().isArmed()) {
+        g2.setPaint(ac);
+        g2.fill(shape);
+      } else if (isRolloverEnabled() && getModel().isRollover()) {
+        paintFocusAndRollover(g2, rc);
+      } else if (hasFocus()) {
+        paintFocusAndRollover(g2, fc);
+      } else {
+        g2.setPaint(getBackground());
+        g2.fill(shape);
+      }
+      g2.dispose();
+    }
+
+    @Override public int getIconWidth() {
+      return dim.width;
+    }
+
+    @Override public int getIconHeight() {
+      return dim.height;
+    }
   }
 }
