@@ -543,11 +543,9 @@ class TabDropTargetListener implements DropTargetListener {
     Component c = e.getDropTargetContext().getComponent();
     getGhostGlassPane(c).ifPresent(glassPane -> {
       Point glassPt = e.getLocation();
-
       DnDTabbedPane tabbedPane = glassPane.tabbedPane;
       tabbedPane.initTargetLine(tabbedPane.getTargetTabIndex(glassPt));
       tabbedPane.autoScrollTest(glassPt);
-
       glassPane.setPoint(glassPt);
       glassPane.repaint();
     });
@@ -555,21 +553,23 @@ class TabDropTargetListener implements DropTargetListener {
 
   @Override public void drop(DropTargetDropEvent e) {
     Component c = e.getDropTargetContext().getComponent();
-    getGhostGlassPane(c).ifPresent(glassPane -> {
-      DnDTabbedPane tabbedPane = glassPane.tabbedPane;
-      Transferable t = e.getTransferable();
-      DataFlavor[] f = t.getTransferDataFlavors();
-      int prev = tabbedPane.dragTabIndex;
-      int next = tabbedPane.getTargetTabIndex(e.getLocation());
-      if (t.isDataFlavorSupported(f[0]) && prev != next) {
-        tabbedPane.convertTab(prev, next);
-        e.dropComplete(true);
-      } else {
-        e.dropComplete(false);
-      }
-      glassPane.setVisible(false);
-      // tabbedPane.dragTabIndex = -1;
-    });
+    getGhostGlassPane(c).ifPresent(glass -> dropTab(e, glass));
+  }
+
+  private static void dropTab(DropTargetDropEvent e, GhostGlassPane glassPane) {
+    DnDTabbedPane tabbedPane = glassPane.tabbedPane;
+    Transferable t = e.getTransferable();
+    DataFlavor[] f = t.getTransferDataFlavors();
+    int prev = tabbedPane.dragTabIndex;
+    int next = tabbedPane.getTargetTabIndex(e.getLocation());
+    if (t.isDataFlavorSupported(f[0]) && prev != next) {
+      tabbedPane.convertTab(prev, next);
+      e.dropComplete(true);
+    } else {
+      e.dropComplete(false);
+    }
+    glassPane.setVisible(false);
+    // tabbedPane.dragTabIndex = -1;
   }
 }
 
