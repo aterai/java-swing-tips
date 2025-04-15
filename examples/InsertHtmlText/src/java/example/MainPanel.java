@@ -8,9 +8,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
@@ -24,42 +24,47 @@ public final class MainPanel extends JPanel {
     editor.setEditorKit(htmlEditorKit);
     editor.setText("<html><body>head<table id='log' border='1'></table>tail</body>");
     editor.setEditable(false);
-
-    JButton insertAfterStart = new JButton("insertAfterStart");
-    insertAfterStart.addActionListener(e -> {
-      HTMLDocument doc = (HTMLDocument) editor.getDocument();
-      Element element = doc.getElement("log");
-      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
-      String tag = String.format(ROW_TEXT, "#AEEEEE", "insertAfterStart", date);
-      try {
-        doc.insertAfterStart(element, tag);
-      } catch (BadLocationException | IOException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(editor);
-      }
-    });
-
-    JButton insertBeforeEnd = new JButton("insertBeforeEnd");
-    insertBeforeEnd.addActionListener(e -> {
-      HTMLDocument doc = (HTMLDocument) editor.getDocument();
-      Element element = doc.getElement("log");
-      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
-      String tag = String.format(ROW_TEXT, "#FFFFFF", "insertBeforeEnd", date);
-      try {
-        doc.insertBeforeEnd(element, tag);
-      } catch (BadLocationException | IOException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(editor);
-      }
-    });
-
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     box.add(Box.createHorizontalGlue());
-    box.add(insertAfterStart);
+    box.add(makeInsertAfterStart(editor));
     box.add(Box.createHorizontalStrut(5));
-    box.add(insertBeforeEnd);
+    box.add(makeInsertBeforeEnd(editor));
     add(new JScrollPane(editor));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JButton makeInsertAfterStart(JEditorPane editor) {
+    String title = "insertAfterStart";
+    JButton button = new JButton(title);
+    button.addActionListener(e -> {
+      HTMLDocument doc = (HTMLDocument) editor.getDocument();
+      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
+      String tag = String.format(ROW_TEXT, "#AEEEEE", title, date);
+      try {
+        doc.insertAfterStart(doc.getElement("log"), tag);
+      } catch (BadLocationException | IOException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback(editor);
+      }
+    });
+    return button;
+  }
+
+  private static JButton makeInsertBeforeEnd(JEditorPane editor) {
+    String title = "insertBeforeEnd";
+    JButton button = new JButton(title);
+    button.addActionListener(e -> {
+      HTMLDocument doc = (HTMLDocument) editor.getDocument();
+      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
+      String tag = String.format(ROW_TEXT, "#FFFFFF", title, date);
+      try {
+        doc.insertBeforeEnd(doc.getElement("log"), tag);
+      } catch (BadLocationException | IOException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback(editor);
+      }
+    });
+    return button;
   }
 
   public static void main(String[] args) {
@@ -72,7 +77,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
