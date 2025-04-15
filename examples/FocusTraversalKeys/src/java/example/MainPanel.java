@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -70,8 +71,7 @@ public final class MainPanel extends JPanel {
   private static JButton makeShowOptionDialogButton(JTextArea info) {
     JButton button = new JButton("showOptionDialog");
     button.addActionListener(e -> {
-      JComponent c = (JComponent) e.getSource();
-      int retValue = JOptionPane.showConfirmDialog(c.getRootPane(), HELP1 + HELP2);
+      int retValue = JOptionPane.showConfirmDialog(info.getRootPane(), HELP1 + HELP2);
       if (retValue == JOptionPane.YES_OPTION) {
         info.append("YES_OPTION\n");
       } else if (retValue == JOptionPane.NO_OPTION) {
@@ -138,7 +138,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

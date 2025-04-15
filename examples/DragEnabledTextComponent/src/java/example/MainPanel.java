@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -34,19 +35,9 @@ public final class MainPanel extends JPanel {
     });
 
     EventQueue.invokeLater(() -> {
-      // Component c = SwingUtilities.getRoot(getRootPane());
       Container c = getTopLevelAncestor();
       if (c instanceof JFrame) {
-        ((JFrame) c).setTransferHandler(new TransferHandler() {
-          @Override public boolean canImport(TransferSupport info) {
-            return true;
-          }
-
-          @Override public boolean importData(TransferSupport support) {
-            // System.out.println(support.getTransferable());
-            return true;
-          }
-        });
+        ((JFrame) c).setTransferHandler(new FrameTransferHandler());
       }
     });
 
@@ -62,6 +53,16 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static final class FrameTransferHandler extends TransferHandler {
+    @Override public boolean canImport(TransferSupport info) {
+      return true;
+    }
+
+    @Override public boolean importData(TransferSupport support) {
+      return true;
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -72,7 +73,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
