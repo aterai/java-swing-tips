@@ -16,41 +16,24 @@ import javax.swing.*;
 // import javax.swing.event.EventListenerList;
 
 public final class MainPanel extends JPanel {
+  private final Box northBox = Box.createVerticalBox();
+  private final Box centerBox = Box.createVerticalBox();
+  private final Box southBox = Box.createVerticalBox();
+  private final List<? extends AbstractExpansionPanel> panelList = makeList();
+
   private MainPanel() {
     super(new BorderLayout());
-    Box northBox = Box.createVerticalBox();
-    Box centerBox = Box.createVerticalBox();
-    Box southBox = Box.createVerticalBox();
-    List<? extends AbstractExpansionPanel> panelList = makeList();
-
     ExpansionListener rl = e -> {
-      setVisible(false);
-      centerBox.removeAll();
-      northBox.removeAll();
-      southBox.removeAll();
-      boolean insertSouth = false;
-      Component source = (Component) e.getSource();
-      for (AbstractExpansionPanel exp : panelList) {
-        if (source.equals(exp) && exp.isExpanded()) {
-          centerBox.add(exp);
-          insertSouth = true;
-          continue;
-        }
-        exp.setExpanded(false);
-        if (insertSouth) {
-          southBox.add(exp);
-        } else {
-          northBox.add(exp);
-        }
+      Object c = e.getSource();
+      if (c instanceof Component) {
+        panelClicked((Component) c);
+        revalidate();
       }
-      setVisible(true);
     };
-
     panelList.forEach(exp -> {
       northBox.add(exp);
       exp.addExpansionListener(rl);
     });
-
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getMinimumSize() {
         Dimension d = super.getMinimumSize();
@@ -64,6 +47,20 @@ public final class MainPanel extends JPanel {
 
     add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, new JScrollPane(new JTree())));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void panelClicked(Component source) {
+    Arrays.asList(northBox, centerBox, southBox).forEach(Container::removeAll);
+    Container target = northBox;
+    for (AbstractExpansionPanel p : panelList) {
+      if (Objects.equals(p, source) && p.isExpanded()) {
+        centerBox.add(p);
+        target = southBox;
+      } else {
+        p.setExpanded(false);
+        target.add(p);
+      }
+    }
   }
 
   private List<? extends AbstractExpansionPanel> makeList() {
