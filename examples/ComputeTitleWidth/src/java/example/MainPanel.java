@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -35,59 +36,11 @@ public final class MainPanel extends JPanel {
 
   private static JInternalFrame createFrame(String t, int i) {
     JInternalFrame f = new JInternalFrame(t + i, true, true, true, true);
-    f.setDesktopIcon(createDesktopIcon(f));
+    f.setDesktopIcon(new DesktopIcon(f));
     f.setSize(200, 100);
     f.setLocation(5 + 40 * i, 5 + 50 * i);
     EventQueue.invokeLater(() -> f.setVisible(true));
     return f;
-  }
-
-  private static JInternalFrame.JDesktopIcon createDesktopIcon(JInternalFrame f) {
-    return new JInternalFrame.JDesktopIcon(f) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        JInternalFrame frame = getInternalFrame();
-        String title = frame.getTitle();
-        Font font = getFont();
-        if (Objects.nonNull(font)) {
-          // testWidth();
-          // @see javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
-          // Handler#minimumLayoutSize(Container)
-          // Calculate width.
-          int buttonsW = 22;
-          if (frame.isClosable()) {
-            buttonsW += 19;
-          }
-          if (frame.isMaximizable()) {
-            buttonsW += 19;
-          }
-          if (frame.isIconifiable()) {
-            buttonsW += 19;
-          }
-          // buttonsW = Math.max(buttonsW, buttonsW2);
-
-          FontMetrics fm = getFontMetrics(font);
-          int titleW = SwingUtilities.computeStringWidth(fm, title);
-          Insets i = getInsets();
-          // 2: Magic number of gap between icons
-          d.width = buttonsW + i.left + i.right + titleW + 2 + 2 + 2;
-          // 27: Magic number for NimbusLookAndFeel
-          d.height = Math.min(27, d.height);
-          // System.out.println("BasicInternalFrameTitlePane: " + d.width);
-        }
-        return d;
-      }
-
-      // private void testWidth() {
-      //   Dimension dim = getLayout().minimumLayoutSize(this);
-      //   System.out.println("minimumLayoutSize: " + dim.width);
-      //   int buttonsW = SwingUtils.descendants(this)
-      //       .filter(AbstractButton.class::isInstance)
-      //       .mapToInt(c -> c.getPreferredSize().width)
-      //       .sum();
-      //   System.out.println("Total width of all buttons: " + buttonsW);
-      // }
-    };
   }
 
   public static void main(String[] args) {
@@ -100,7 +53,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -109,6 +62,56 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+
+  private static final class DesktopIcon extends JInternalFrame.JDesktopIcon {
+    public DesktopIcon(JInternalFrame f) {
+      super(f);
+    }
+
+    @Override public Dimension getPreferredSize() {
+      Dimension d = super.getPreferredSize();
+      JInternalFrame frame = getInternalFrame();
+      String title = frame.getTitle();
+      Font font = getFont();
+      if (Objects.nonNull(font)) {
+        // testWidth();
+        // @see javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+        // Handler#minimumLayoutSize(Container)
+        // Calculate width.
+        int buttonsW = 22;
+        if (frame.isClosable()) {
+          buttonsW += 19;
+        }
+        if (frame.isMaximizable()) {
+          buttonsW += 19;
+        }
+        if (frame.isIconifiable()) {
+          buttonsW += 19;
+        }
+        // buttonsW = Math.max(buttonsW, buttonsW2);
+
+        FontMetrics fm = getFontMetrics(font);
+        int titleW = SwingUtilities.computeStringWidth(fm, title);
+        Insets i = getInsets();
+        // 2: Magic number of gap between icons
+        d.width = buttonsW + i.left + i.right + titleW + 2 + 2 + 2;
+        // 27: Magic number for NimbusLookAndFeel
+        d.height = Math.min(27, d.height);
+        // System.out.println("BasicInternalFrameTitlePane: " + d.width);
+      }
+      return d;
+    }
+
+    // private void testWidth() {
+    //   Dimension dim = getLayout().minimumLayoutSize(this);
+    //   System.out.println("minimumLayoutSize: " + dim.width);
+    //   int buttonsW = SwingUtils.descendants(this)
+    //       .filter(AbstractButton.class::isInstance)
+    //       .mapToInt(c -> c.getPreferredSize().width)
+    //       .sum();
+    //   System.out.println("Total width of all buttons: " + buttonsW);
+    // }
   }
 }
 
