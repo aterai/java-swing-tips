@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -15,43 +16,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(makeMenu("JMenu 1"));
-
     JMenu menu2 = makeMenu("JMenu 2");
-    menu2.addMenuListener(new MenuListener() {
-      private boolean isFloating(Component c) {
-        Container p = SwingUtilities.getAncestorOfClass(JToolBar.class, c);
-        return p instanceof JToolBar && ((BasicToolBarUI) ((JToolBar) p).getUI()).isFloating();
-      }
-
-      @Override public void menuSelected(MenuEvent e) {
-        JMenu menu = (JMenu) e.getSource();
-        if (menu.isTopLevelMenu() && !isFloating(menu)) {
-          Dimension d = menu.getPreferredSize();
-          Component cp = menu.getRootPane().getContentPane();
-          Point pt = SwingUtilities.convertPoint(menu.getParent(), menu.getLocation(), cp);
-          pt.y += d.height * 2;
-          if (!cp.getBounds().contains(pt)) {
-            EventQueue.invokeLater(() -> {
-              JPopupMenu popup = menu.getPopupMenu();
-              Rectangle bounds = popup.getBounds();
-              Point loc = menu.getLocationOnScreen();
-              loc.y -= bounds.height + UIManager.getInt("Menu.menuPopupOffsetY");
-              popup.setLocation(loc);
-            });
-          }
-        }
-      }
-
-      @Override public void menuDeselected(MenuEvent e) {
-        // Do nothing
-      }
-
-      @Override public void menuCanceled(MenuEvent e) {
-        // Do nothing
-      }
-    });
+    menu2.addMenuListener(new InsideMenuListener());
     menuBar.add(menu2);
-
     JToolBar toolBar = new JToolBar() {
       @Override public void updateUI() {
         super.updateUI();
@@ -90,7 +57,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -99,5 +66,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class InsideMenuListener implements MenuListener {
+  private boolean isFloating(Component c) {
+    Container p = SwingUtilities.getAncestorOfClass(JToolBar.class, c);
+    return p instanceof JToolBar && ((BasicToolBarUI) ((JToolBar) p).getUI()).isFloating();
+  }
+
+  @Override public void menuSelected(MenuEvent e) {
+    JMenu menu = (JMenu) e.getSource();
+    if (menu.isTopLevelMenu() && !isFloating(menu)) {
+      Dimension d = menu.getPreferredSize();
+      Component cp = menu.getRootPane().getContentPane();
+      Point pt = SwingUtilities.convertPoint(menu.getParent(), menu.getLocation(), cp);
+      pt.y += d.height * 2;
+      if (!cp.getBounds().contains(pt)) {
+        EventQueue.invokeLater(() -> {
+          JPopupMenu popup = menu.getPopupMenu();
+          Rectangle bounds = popup.getBounds();
+          Point loc = menu.getLocationOnScreen();
+          loc.y -= bounds.height + UIManager.getInt("Menu.menuPopupOffsetY");
+          popup.setLocation(loc);
+        });
+      }
+    }
+  }
+
+  @Override public void menuDeselected(MenuEvent e) {
+    // Do nothing
+  }
+
+  @Override public void menuCanceled(MenuEvent e) {
+    // Do nothing
   }
 }
