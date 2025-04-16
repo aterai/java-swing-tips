@@ -204,35 +204,8 @@ class ButtonTabComponent extends JPanel {
   protected ButtonTabComponent(JTabbedPane tabbedPane) {
     super(new BorderLayout());
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
-    add(makeTitleLabel());
+    add(new TitleLabel());
     add(makeCloseButton(), BorderLayout.EAST);
-  }
-
-  private JLabel makeTitleLabel() {
-    return new JLabel() {
-      @Override public String getText() {
-        String txt = null;
-        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
-        if (i != -1) {
-          txt = tabbedPane.getTitleAt(i);
-        }
-        return txt;
-      }
-
-      @Override public Icon getIcon() {
-        Icon icn = null;
-        int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
-        if (i != -1) {
-          icn = tabbedPane.getIconAt(i);
-        }
-        return icn;
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
-      }
-    };
   }
 
   private JButton makeCloseButton() {
@@ -284,6 +257,31 @@ class ButtonTabComponent extends JPanel {
         AbstractButton button = (AbstractButton) component;
         button.setBorderPainted(false);
       }
+    }
+  }
+
+  private final class TitleLabel extends JLabel {
+    @Override public String getText() {
+      String txt = null;
+      int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+      if (i != -1) {
+        txt = tabbedPane.getTitleAt(i);
+      }
+      return txt;
+    }
+
+    @Override public Icon getIcon() {
+      Icon icn = null;
+      int i = tabbedPane.indexOfTabComponent(ButtonTabComponent.this);
+      if (i != -1) {
+        icn = tabbedPane.getIconAt(i);
+      }
+      return icn;
+    }
+
+    @Override public void updateUI() {
+      super.updateUI();
+      setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
     }
   }
 }
