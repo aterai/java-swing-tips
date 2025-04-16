@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
@@ -37,13 +38,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       JButton b = (JButton) e.getSource();
       b.setEnabled(false);
-      SwingWorker<Void, Void> worker = new BackgroundTask() {
-        @Override protected void done() {
-          if (b.isDisplayable()) {
-            b.setEnabled(true);
-          }
-        }
-      };
+      SwingWorker<?, ?> worker = makeTask(b);
       worker.addPropertyChangeListener(new ProgressListener(progressBar));
       worker.execute();
     });
@@ -62,6 +57,16 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
+  private static SwingWorker<?, ?> makeTask(JButton b) {
+    return new BackgroundTask() {
+      @Override protected void done() {
+        if (b.isDisplayable()) {
+          b.setEnabled(true);
+        }
+      }
+    };
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -72,7 +77,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
