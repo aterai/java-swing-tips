@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -26,27 +25,8 @@ public final class MainPanel extends JPanel {
     @Override public void updateUI() {
       super.updateUI();
       removeColumn(getColumnModel().getColumn(3));
-      JProgressBar progress = new JProgressBar();
-      TableCellRenderer renderer = new DefaultTableCellRenderer();
       TableColumn tc = getColumnModel().getColumn(2);
-      tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-        String text;
-        if (value instanceof Integer) {
-          text = "Done(0ms)";
-          int i = (int) value;
-          if (i < 0) {
-            text = "Canceled";
-          } else if (i < progress.getMaximum()) { // < 100
-            progress.setValue(i);
-            progress.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-            return progress;
-          }
-        } else {
-          text = Objects.toString(value);
-        }
-        return renderer.getTableCellRendererComponent(
-            tbl, text, isSelected, hasFocus, row, column);
-      });
+      tc.setCellRenderer(new ProgressRenderer());
     }
   };
   // TEST: ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
@@ -100,39 +80,22 @@ public final class MainPanel extends JPanel {
         if (isDisplayable() && !isCancelled()) {
           c.forEach(v -> model.setValueAt(v, key, 2));
         } else {
-          // System.out.println("process: DISPOSE_ON_CLOSE");
-          cancel(true);
-          // executor.shutdown();
+          cancel(true); // executor.shutdown();
         }
       }
 
       @Override protected void done() {
         // if (!isDisplayable()) {
-        //   System.out.println("done: DISPOSE_ON_CLOSE");
         //   cancel(true);
         //   // executor.shutdown();
         //   return;
         // }
-        String text;
-        int i = -1;
-        if (isCancelled()) {
-          text = "Cancelled";
-        } else {
-          try {
-            i = get();
-            text = i >= 0 ? "Done" : "Disposed";
-          } catch (InterruptedException | ExecutionException ex) {
-            text = ex.getMessage();
-            Thread.currentThread().interrupt();
-          }
-        }
-        model.setValueAt(String.format("%s(%dms)%n", text, i), key, 2);
-        // executor.remove(this);
+        String text = isCancelled() ? "Cancelled" : getMessage();
+        model.setValueAt(text, key, 2); // executor.remove(this);
       }
     };
     addProgressValue("example", 0, worker);
-    // executor.execute(worker);
-    worker.execute();
+    worker.execute(); // executor.execute(worker);
   }
 
   private static DefaultTableModel makeModel() {
@@ -234,6 +197,30 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class ProgressRenderer extends DefaultTableCellRenderer {
+  private final JProgressBar progress = new JProgressBar();
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    Component c;
+    if (value instanceof Integer) {
+      int i = (int) value;
+      if (0 <= i && i < progress.getMaximum()) { // < 100
+        progress.setValue(i);
+        progress.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        c = progress;
+      } else {
+        String text = i < 0 ? "Canceled" : "Done(0ms)";
+        c = super.getTableCellRendererComponent(
+            table, text, isSelected, hasFocus, row, column);
+      }
+    } else {
+      c = super.getTableCellRendererComponent(
+          table, Objects.toString(value), isSelected, hasFocus, row, column);
+    }
+    return c;
+  }
+}
+
 class BackgroundTask extends SwingWorker<Integer, Integer> {
   private final Random rnd = new Random();
 
@@ -247,6 +234,18 @@ class BackgroundTask extends SwingWorker<Integer, Integer> {
       current++;
     }
     return total;
+  }
+
+  protected String getMessage() {
+    String text;
+    try {
+      int i = get();
+      text = String.format("%s(%dms)%n", i >= 0 ? "Done" : "Disposed", i);
+    } catch (InterruptedException | ExecutionException ex) {
+      text = ex.getMessage();
+      Thread.currentThread().interrupt();
+    }
+    return text;
   }
 
   private int doSomething() throws InterruptedException {
