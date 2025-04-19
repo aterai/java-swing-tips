@@ -13,10 +13,11 @@ import java.awt.event.MouseListener;
 import java.util.EventObject;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
@@ -32,7 +33,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTable makeTable() {
+  private static TableModel makeModel() {
     String[] columnNames = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
     Boolean[][] data = {
         {true, false, true, false, true, true, false, true, true},
@@ -45,12 +46,15 @@ public final class MainPanel extends JPanel {
         {true, false, true, false, true, true, false, true, true},
         {true, false, true, false, true, true, false, true, true}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return Boolean.class;
       }
     };
-    return new JTable(model) {
+  }
+
+  private JTable makeTable() {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         setDefaultEditor(Boolean.class, null);
         super.updateUI();
@@ -58,19 +62,19 @@ public final class MainPanel extends JPanel {
         setCellSelectionEnabled(true);
         setAutoResizeMode(AUTO_RESIZE_OFF);
         setAutoCreateRowSorter(true);
-        setComponentPopupMenu(new TablePopupMenu());
         TableColumnModel m = getColumnModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
-          TableColumn col = m.getColumn(i);
-          col.setPreferredWidth(CELL_SIZE);
-          col.setResizable(false);
-        }
+        IntStream.range(0, m.getColumnCount()).mapToObj(m::getColumn).forEach(c -> {
+          c.setPreferredWidth(CELL_SIZE);
+          c.setResizable(false);
+        });
       }
 
       @Override public Dimension getPreferredScrollableViewportSize() {
         return super.getPreferredSize();
       }
     };
+    table.setComponentPopupMenu(new TablePopupMenu());
+    return table;
   }
 
   public static void main(String[] args) {
@@ -83,7 +87,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
