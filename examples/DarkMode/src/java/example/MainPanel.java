@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -23,18 +24,19 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JRadioButtonMenuItem sys = new JRadioButtonMenuItem("System", true);
     JEditorPane editor = new JEditorPane() {
       @Override public void updateUI() {
         super.updateUI();
-        ThemeUtils.updateTheme(this);
-        loadHtml(this);
+        if (sys.isSelected()) {
+          ThemeUtils.updateTheme(this);
+          loadHtml(this);
+        }
         setEditable(false);
         setSelectedTextColor(null);
         setSelectionColor(new Color(0x64_88_AA_AA, true));
       }
     };
-
-    JRadioButtonMenuItem sys = new JRadioButtonMenuItem("System", true);
     sys.addActionListener(e -> {
       ThemeUtils.updateTheme(editor);
       loadHtml(editor);
@@ -100,7 +102,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -215,7 +217,8 @@ final class ThemeUtils {
     builder.redirectErrorStream(true);
     Process p = builder.start();
     String str;
-    try (BufferedReader pr = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+    try (BufferedReader pr = new BufferedReader(
+        new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
       str = pr.lines().collect(Collectors.joining(System.lineSeparator()));
     }
     return str;
