@@ -66,16 +66,7 @@ public final class MainPanel extends JPanel {
         setUI(new GradientPalletSliderUI());
         setBackground(Color.GRAY);
         setOpaque(false);
-        handler = new MouseAdapter() {
-          @Override public void mouseDragged(MouseEvent e) {
-            e.getComponent().repaint();
-          }
-
-          @Override public void mouseWheelMoved(MouseWheelEvent e) {
-            BoundedRangeModel m = ((JSlider) e.getComponent()).getModel();
-            m.setValue(m.getValue() - e.getWheelRotation());
-          }
-        };
+        handler = new WheelMouseHandler();
         addMouseMotionListener(handler);
         addMouseWheelListener(handler);
       }
@@ -260,6 +251,20 @@ class GradientPalletSliderUI extends MetalSliderUI {
 
   private static Color makeColor(float alpha) {
     return new Color(1f, 1f, 1f, alpha);
+  }
+}
+
+final class WheelMouseHandler extends MouseAdapter {
+  @Override public void mouseDragged(MouseEvent e) {
+    e.getComponent().repaint();
+  }
+
+  @Override public void mouseWheelMoved(MouseWheelEvent e) {
+    Component c = e.getComponent();
+    if (c instanceof JSlider) {
+      BoundedRangeModel m = ((JSlider) c).getModel();
+      m.setValue(m.getValue() - e.getWheelRotation());
+    }
   }
 }
 
