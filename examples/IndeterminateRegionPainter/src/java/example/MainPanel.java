@@ -10,7 +10,9 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.AbstractRegionPainter;
 
@@ -20,19 +22,19 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     BoundedRangeModel model = new DefaultBoundedRangeModel();
-    JProgressBar progressBar0 = new JProgressBar(model);
+    JProgressBar progress0 = new JProgressBar(model);
 
-    JProgressBar progressBar1 = new JProgressBar(model);
+    JProgressBar progress1 = new JProgressBar(model);
     UIDefaults d = new UIDefaults();
     d.put(
         "ProgressBar[Enabled+Indeterminate].foregroundPainter",
         new IndeterminateRegionPainter()
     );
-    progressBar1.putClientProperty("Nimbus.Overrides", d);
+    progress1.putClientProperty("Nimbus.Overrides", d);
 
     // UIManager.put("ProgressBar.cycleTime", 1000);
     // UIManager.put("ProgressBar.repaintInterval", 10);
-    // progressBar1.setUI(new BasicProgressBarUI() {
+    // progress1.setUI(new BasicProgressBarUI() {
     //   @Override protected int getBoxLength(int availableLength, int otherDimension) {
     //     return availableLength; // (int) Math.round(availableLength / 6d);
     //   }
@@ -76,19 +78,16 @@ public final class MainPanel extends JPanel {
     // });
 
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("Default", progressBar0));
-    p.add(makeTitledPanel("ProgressBar[Indeterminate].foregroundPainter", progressBar1));
+    p.add(makeTitledPanel("Default", progress0));
+    p.add(makeTitledPanel("ProgressBar[Indeterminate].foregroundPainter", progress1));
 
     JButton button = new JButton("Test start");
     button.addActionListener(e -> {
       if (Objects.nonNull(worker) && !worker.isDone()) {
         worker.cancel(true);
       }
-      progressBar0.setIndeterminate(true);
-      progressBar1.setIndeterminate(true);
       worker = new BackgroundTask();
-      worker.addPropertyChangeListener(new ProgressListener(progressBar0));
-      worker.addPropertyChangeListener(new ProgressListener(progressBar1));
+      Arrays.asList(progress0, progress1).forEach(this::initProgressBar);
       worker.execute();
     });
 
@@ -109,6 +108,11 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void initProgressBar(JProgressBar progressBar) {
+    progressBar.setIndeterminate(true);
+    worker.addPropertyChangeListener(new ProgressListener(progressBar));
   }
 
   private static Component makeTitledPanel(String title, Component cmp) {
@@ -133,7 +137,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
