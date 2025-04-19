@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
 
@@ -32,33 +33,31 @@ public final class MainPanel extends JPanel {
         } else {
           setUI(new MetalSnapToTicksDragSliderUI());
         }
-        getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "RIGHT_ARROW");
-        getActionMap().put("RIGHT_ARROW", new AbstractAction() {
-          @Override public void actionPerformed(ActionEvent e) {
-            JSlider s = (JSlider) e.getSource();
-            s.setValue(s.getValue() + s.getMajorTickSpacing());
-          }
-        });
-        getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "LEFT_ARROW");
-        getActionMap().put("LEFT_ARROW", new AbstractAction() {
-          @Override public void actionPerformed(ActionEvent e) {
-            JSlider s = (JSlider) e.getSource();
-            s.setValue(s.getValue() - s.getMajorTickSpacing());
-          }
-        });
         handler = e -> {
           JSlider s = (JSlider) e.getComponent();
           boolean hasMinorTickSp = s.getMinorTickSpacing() > 0;
           int tickSpacing = hasMinorTickSp ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
           s.setValue(s.getValue() - e.getWheelRotation() * tickSpacing);
-          // int v = s.getValue() - e.getWheelRotation() * tickSpacing;
-          // BoundedRangeModel m = s.getModel();
-          // s.setValue(Math.min(m.getMaximum(), Math.max(v, m.getMinimum())));
         };
         addMouseWheelListener(handler);
       }
     };
     slider1.setBorder(BorderFactory.createTitledBorder("Custom SnapToTicks"));
+    slider1.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "RIGHT_ARROW");
+    slider1.getActionMap().put("RIGHT_ARROW", new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        JSlider s = (JSlider) e.getSource();
+        s.setValue(s.getValue() + s.getMajorTickSpacing());
+      }
+    });
+    slider1.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "LEFT_ARROW");
+    slider1.getActionMap().put("LEFT_ARROW", new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        JSlider s = (JSlider) e.getSource();
+        s.setValue(s.getValue() - s.getMajorTickSpacing());
+      }
+    });
+
 
     List<JSlider> list = Arrays.asList(initSlider(slider0), initSlider(slider1));
     JCheckBox check = new JCheckBox("JSlider.setMinorTickSpacing(5)");
@@ -98,7 +97,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -116,41 +115,7 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
   }
 
   @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mouseDragged(MouseEvent e) {
-        if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
-          super.mouseDragged(e);
-          return;
-        }
-        // case HORIZONTAL:
-        int halfThumbWidth = thumbRect.width / 2;
-        int trackLength = trackRect.width;
-        int trackLeft = trackRect.x - halfThumbWidth;
-        int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-        int pos = e.getX();
-        int snappedPos;
-        if (pos <= trackLeft) {
-          snappedPos = trackLeft;
-        } else if (pos >= trackRight) {
-          snappedPos = trackRight;
-        } else {
-          float tickPixels = getTickPixels(slider, trackLength);
-          pos -= trackLeft;
-          // snappedPos = (int) (Math.round(pos / tickPixels) * tickPixels + .5) + trackLeft;
-          snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
-          offset = 0;
-          // System.out.println(snappedPos);
-        }
-        e.translatePoint(snappedPos - e.getX(), 0);
-        super.mouseDragged(e);
-        // MouseEvent me = new MouseEvent(
-        //   e.getComponent(), e.getID(), e.getWhen(), e.getModifiers() | e.getModifiersEx(),
-        //   snappedPos, e.getY(),
-        //   e.getXOnScreen(), e.getYOnScreen(),
-        //   e.getClickCount(), e.isPopupTrigger(), e.getButton());
-        // super.mouseDragged(me);
-      }
-    };
+    return new SnapTrackListener(slider);
   }
 
   private static float getTickPixels(JSlider slider, int trackLength) {
@@ -165,37 +130,46 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
     int tickSp = isMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
     return trackLength * tickSp / (float) possibleTickPos;
   }
+
+  private class SnapTrackListener extends TrackListener {
+    private final JSlider slider;
+
+    public SnapTrackListener(JSlider slider) {
+      super();
+      this.slider = slider;
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
+        super.mouseDragged(e);
+        return;
+      }
+      // case HORIZONTAL:
+      int halfThumbWidth = thumbRect.width / 2;
+      int trackLength = trackRect.width;
+      int trackLeft = trackRect.x - halfThumbWidth;
+      int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
+      int pos = e.getX();
+      int snappedPos;
+      if (pos <= trackLeft) {
+        snappedPos = trackLeft;
+      } else if (pos >= trackRight) {
+        snappedPos = trackRight;
+      } else {
+        float tickPixels = getTickPixels(slider, trackLength);
+        pos -= trackLeft;
+        snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
+        offset = 0;
+      }
+      e.translatePoint(snappedPos - e.getX(), 0);
+      super.mouseDragged(e);
+    }
+  }
 }
 
 class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mouseDragged(MouseEvent e) {
-        if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
-          super.mouseDragged(e);
-          return;
-        }
-        // case HORIZONTAL:
-        int halfThumbWidth = thumbRect.width / 2;
-        int trackLength = trackRect.width;
-        int trackLeft = trackRect.x - halfThumbWidth;
-        int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-        int pos = e.getX();
-        int snappedPos;
-        if (pos <= trackLeft) {
-          snappedPos = trackLeft;
-        } else if (pos >= trackRight) {
-          snappedPos = trackRight;
-        } else {
-          float tickPixels = getTickPixels(slider, trackLength);
-          pos -= trackLeft;
-          snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
-          offset = 0;
-        }
-        e.translatePoint(snappedPos - e.getX(), 0);
-        super.mouseDragged(e);
-      }
-    };
+    return new SnapTrackListener(slider);
   }
 
   private static float getTickPixels(JSlider slider, int trackLength) {
@@ -203,5 +177,40 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
     boolean isMinorTickSp = slider.getMinorTickSpacing() > 0;
     int tickSp = isMinorTickSp ? slider.getMinorTickSpacing() : slider.getMajorTickSpacing();
     return trackLength * tickSp / (float) possibleTickPos;
+  }
+
+  private class SnapTrackListener extends TrackListener {
+    private final JSlider slider;
+
+    public SnapTrackListener(JSlider slider) {
+      super();
+      this.slider = slider;
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
+        super.mouseDragged(e);
+        return;
+      }
+      // case HORIZONTAL:
+      int halfThumbWidth = thumbRect.width / 2;
+      int trackLength = trackRect.width;
+      int trackLeft = trackRect.x - halfThumbWidth;
+      int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
+      int pos = e.getX();
+      int snappedPos;
+      if (pos <= trackLeft) {
+        snappedPos = trackLeft;
+      } else if (pos >= trackRight) {
+        snappedPos = trackRight;
+      } else {
+        float tickPixels = getTickPixels(slider, trackLength);
+        pos -= trackLeft;
+        snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
+        offset = 0;
+      }
+      e.translatePoint(snappedPos - e.getX(), 0);
+      super.mouseDragged(e);
+    }
   }
 }
