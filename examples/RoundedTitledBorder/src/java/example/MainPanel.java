@@ -159,6 +159,25 @@ class TitleLayerUI extends LayerUI<JScrollPane> {
     SwingUtilities.updateComponentTreeUI(label);
   }
 
+  @Override public void installUI(JComponent c) {
+    super.installUI(c);
+    if (c instanceof JLayer) {
+      ((JLayer<?>) c).setLayerEventMask(AWTEvent.FOCUS_EVENT_MASK);
+    }
+  }
+
+  @Override public void uninstallUI(JComponent c) {
+    if (c instanceof JLayer) {
+      ((JLayer<?>) c).setLayerEventMask(0);
+    }
+    super.uninstallUI(c);
+  }
+
+  @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends JScrollPane> l) {
+    super.processFocusEvent(e, l);
+    l.getView().repaint();
+  }
+
   private static class RoundedLabel extends JLabel {
     private final int arc;
 
