@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -28,15 +27,6 @@ public final class MainPanel extends JPanel {
     p2.setBorder(makeRoundedTitledBorder("Title(2)", 8));
     p2.add(new JScrollPane(new JTable(5, 3)));
     JScrollPane scroll = new JScrollPane(new JTextArea(10, 20));
-    scroll.getViewport().getView().addFocusListener(new FocusListener() {
-      @Override public void focusGained(FocusEvent e) {
-        scrollRepaint(e);
-      }
-
-      @Override public void focusLost(FocusEvent e) {
-        scrollRepaint(e);
-      }
-    });
     scroll.setBorder(new RoundedBorder(8));
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
     JLayer<JScrollPane> p3 = new JLayer<>(scroll, new TitleLayerUI("Title: 3", 8));
@@ -50,14 +40,6 @@ public final class MainPanel extends JPanel {
     b.setTitlePosition(TitledBorder.BELOW_TOP);
     b.setTitleColor(Color.WHITE);
     return b;
-  }
-
-  private static void scrollRepaint(FocusEvent e) {
-    Component c = e.getComponent();
-    Container s = SwingUtilities.getAncestorOfClass(JScrollPane.class, c);
-    if (s instanceof JScrollPane) {
-      s.repaint();
-    }
   }
 
   public static void main(String[] args) {
