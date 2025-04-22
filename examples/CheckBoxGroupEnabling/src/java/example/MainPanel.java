@@ -46,27 +46,7 @@ public final class MainPanel extends JPanel {
           String title = Objects.toString(n.getUserObject(), "");
           n.setUserObject(new CheckBoxNode(title, false, !n.isLeaf()));
           if (!n.isRoot()) {
-            JCheckBox c = new JCheckBox(title, false);
-            map.put(title, c);
-            if (!n.isLeaf()) {
-              verticalBox.add(Box.createVerticalStrut(5));
-              c.addActionListener(e -> {
-                boolean selected = ((JCheckBox) e.getSource()).isSelected();
-                Collections.list((Enumeration<?>) n.children()).stream()
-                    .filter(DefaultMutableTreeNode.class::isInstance)
-                    .map(DefaultMutableTreeNode.class::cast)
-                    .forEach(child -> {
-                      CheckBoxNode cn = (CheckBoxNode) child.getUserObject();
-                      map.get(cn.getText()).setEnabled(selected);
-                    });
-              });
-            }
-            c.setEnabled(!n.isLeaf());
-            Box box = Box.createHorizontalBox();
-            box.add(Box.createHorizontalStrut((n.getLevel() - 1) * 16));
-            box.setAlignmentX(LEFT_ALIGNMENT);
-            box.add(c);
-            verticalBox.add(box);
+            addCheckBox(n, new JCheckBox(title), map, verticalBox);
           }
         });
 
@@ -75,6 +55,34 @@ public final class MainPanel extends JPanel {
     add(makeTitledPanel("Box", new JScrollPane(p)));
     add(makeTitledPanel("JTree", new JScrollPane(tree)));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void addCheckBox(
+      DefaultMutableTreeNode n, JCheckBox c, Map<String, Component> map, Box box) {
+    map.put(c.getText(), c);
+    if (!n.isLeaf()) {
+      box.add(Box.createVerticalStrut(5));
+      c.addActionListener(e -> {
+        boolean enabled = ((JCheckBox) e.getSource()).isSelected();
+        Collections.list((Enumeration<?>) n.children()).stream()
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .map(child -> (CheckBoxNode) child.getUserObject())
+            .map(CheckBoxNode::getText)
+            .map(map::get)
+            .forEach(cbx -> cbx.setEnabled(enabled));
+      });
+    }
+    c.setEnabled(!n.isLeaf());
+    box.add(makeLevelBox(n, c));
+  }
+
+  private static Box makeLevelBox(DefaultMutableTreeNode n, Component c) {
+    Box box = Box.createHorizontalBox();
+    box.add(Box.createHorizontalStrut((n.getLevel() - 1) * 16));
+    box.setAlignmentX(LEFT_ALIGNMENT);
+    box.add(c);
+    return box;
   }
 
   private static JTree makeTree() {
