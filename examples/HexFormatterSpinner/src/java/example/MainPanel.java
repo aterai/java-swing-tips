@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -153,8 +152,7 @@ public final class MainPanel extends JPanel {
     DefaultFormatter formatter = new DefaultFormatter() {
       @Override public Object stringToValue(String text) throws ParseException {
         Pattern pattern = Pattern.compile("^\\s*(\\p{XDigit}{1,6})\\s*$");
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.find()) {
+        if (pattern.matcher(text).find()) {
           Integer iv = Integer.valueOf(text, 16);
           if (iv <= Character.MAX_CODE_POINT) {
             return iv;
@@ -162,11 +160,7 @@ public final class MainPanel extends JPanel {
         }
         Toolkit.getDefaultToolkit().beep();
         throw new ParseException(text, 0);
-        // try {
-        //   return Integer.valueOf(text, 16);
-        // } catch (NumberFormatException ex) {
-        //   Toolkit.getDefaultToolkit().beep();
-        // }
+        // try { return Integer.valueOf(text, 16); } catch (Exception ex) {...}
       }
 
       @Override public String valueToString(Object value) {
