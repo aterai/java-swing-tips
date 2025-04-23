@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -24,28 +25,7 @@ public final class MainPanel extends JPanel {
     JTextField field = new JTextField("asd", 10);
 
     JTree tree = new JTree(makeModel());
-    Action findNextAction = new AbstractAction("Find Next") {
-      private final List<TreePath> rollOverPathLists = new ArrayList<>();
-      @Override public void actionPerformed(ActionEvent e) {
-        rollOverPathLists.clear();
-        TreePath selectedPath = tree.getSelectionPath();
-        tree.clearSelection();
-        TreeUtils.searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPathLists);
-        if (!rollOverPathLists.isEmpty()) {
-          int nextIndex = 0;
-          int size = rollOverPathLists.size();
-          for (int i = 0; i < size; i++) {
-            if (rollOverPathLists.get(i).equals(selectedPath)) {
-              nextIndex = i + 1 < size ? i + 1 : 0;
-              break;
-            }
-          }
-          TreePath p = rollOverPathLists.get(nextIndex);
-          tree.addSelectionPath(p);
-          tree.scrollPathToVisible(p);
-        }
-      }
-    };
+    Action findNextAction = new FindNextAction(tree, field);
 
     JButton button = new JButton();
     button.setAction(findNextAction);
@@ -114,7 +94,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -124,6 +104,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FindNextAction extends AbstractAction {
+  private final List<TreePath> rollOverPaths;
+  private final JTree tree;
+  private final JTextField field;
+
+  protected FindNextAction(JTree tree, JTextField field) {
+    super("Find Next");
+    this.tree = tree;
+    this.field = field;
+    rollOverPaths = new ArrayList<>();
+  }
+
+  @Override public void actionPerformed(ActionEvent e) {
+    rollOverPaths.clear();
+    TreePath selectedPath = tree.getSelectionPath();
+    tree.clearSelection();
+    TreeUtils.searchTree(tree, tree.getPathForRow(0), field.getText(), rollOverPaths);
+    if (!rollOverPaths.isEmpty()) {
+      int nextIndex = 0;
+      int size = rollOverPaths.size();
+      for (int i = 0; i < size; i++) {
+        if (rollOverPaths.get(i).equals(selectedPath)) {
+          nextIndex = i + 1 < size ? i + 1 : 0;
+          break;
+        }
+      }
+      TreePath p = rollOverPaths.get(nextIndex);
+      tree.addSelectionPath(p);
+      tree.scrollPathToVisible(p);
+    }
   }
 }
 
