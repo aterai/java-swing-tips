@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -17,28 +18,9 @@ public final class MainPanel extends JPanel {
     split.setResizeWeight(.4);
 
     JCheckBox check = new JCheckBox("Keep DividerLocation", true);
-
     JButton button = new JButton("swap");
     button.setFocusable(false);
-    button.addActionListener(e -> {
-      Component left = split.getLeftComponent();
-      Component right = split.getRightComponent();
-
-      // split.removeAll(); // Divider is also removed
-      split.remove(left);
-      split.remove(right);
-      // or:
-      // split.setLeftComponent(null);
-      // split.setRightComponent(null);
-
-      split.setLeftComponent(right);
-      split.setRightComponent(left);
-
-      split.setResizeWeight(1d - split.getResizeWeight());
-      if (check.isSelected()) {
-        split.setDividerLocation(split.getDividerLocation());
-      }
-    });
+    button.addActionListener(e -> swap(split, check.isSelected()));
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
@@ -51,6 +33,26 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void swap(JSplitPane split, boolean keepDividerLocation) {
+    Component left = split.getLeftComponent();
+    Component right = split.getRightComponent();
+
+    // split.removeAll(); // Divider is also removed
+    split.remove(left);
+    split.remove(right);
+    // or:
+    // split.setLeftComponent(null);
+    // split.setRightComponent(null);
+
+    split.setLeftComponent(right);
+    split.setRightComponent(left);
+
+    split.setResizeWeight(1d - split.getResizeWeight());
+    if (keepDividerLocation) {
+      split.setDividerLocation(split.getDividerLocation());
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -61,7 +63,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
