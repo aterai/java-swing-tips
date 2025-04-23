@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -32,16 +33,10 @@ public final class MainPanel extends JPanel {
     };
     slider.addChangeListener(e -> {
       int iv = slider.getValue();
-      int pct;
-      if (iv >= 0) {
-        pct = 100 + iv;
-        slider.setMajorTickSpacing(1);
-      } else {
-        pct = 100 + iv / 10;
-        slider.setMajorTickSpacing(10);
-      }
+      int tickSpacing = iv >= 0 ? 1 : 10;
+      slider.setMajorTickSpacing(tickSpacing);
+      int pct = 100 + iv / tickSpacing;
       label.setText(pct + "%");
-      label.repaint();
     });
 
     Box box = Box.createHorizontalBox();
@@ -75,20 +70,24 @@ public final class MainPanel extends JPanel {
     if (labelTable instanceof Map) {
       ((Map<?, ?>) labelTable).forEach((key, value) -> {
         if (key instanceof Integer && value instanceof JLabel) {
-          int iv = (Integer) key;
-          String txt = " ";
-          if (iv == 0) {
-            txt = "100%";
-          } else if (iv == slider.getMinimum()) {
-            txt = "10%";
-          } else if (iv == slider.getMaximum()) {
-            txt = "1000%";
-          }
-          ((JLabel) value).setText(txt);
+          updateLabel(slider, (Integer) key, (JLabel) value);
         }
       });
     }
     slider.setLabelTable(slider.getLabelTable()); // Update LabelTable
+  }
+
+  private static void updateLabel(JSlider slider, Integer key, JLabel value) {
+    int iv = key;
+    String txt = " ";
+    if (iv == 0) {
+      txt = "100%";
+    } else if (iv == slider.getMinimum()) {
+      txt = "10%";
+    } else if (iv == slider.getMaximum()) {
+      txt = "1000%";
+    }
+    value.setText(txt);
   }
 
   public static void main(String[] args) {
@@ -101,7 +100,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
