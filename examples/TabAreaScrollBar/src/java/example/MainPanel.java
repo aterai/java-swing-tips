@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.LayerUI;
@@ -48,7 +49,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -61,42 +62,12 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
-  public static final int TABAREA_SIZE = 28;
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
   private final JButton hiddenTabs = new JButton("⊽");
   private final ButtonGroup group = new ButtonGroup();
-  private final JScrollPane tabArea = new JScrollPane(tabPanel) {
-    @Override public boolean isOptimizedDrawingEnabled() {
-      return false; // JScrollBar is overlap
-    }
-
-    @Override public void updateUI() {
-      super.updateUI();
-      EventQueue.invokeLater(() -> {
-        getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
-        getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
-        setLayout(new OverlapScrollPaneLayout());
-        setComponentZOrder(getVerticalScrollBar(), 0);
-        setComponentZOrder(getHorizontalScrollBar(), 1);
-        setComponentZOrder(getViewport(), 2);
-      });
-      setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
-      setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-      getVerticalScrollBar().setOpaque(false);
-      getHorizontalScrollBar().setOpaque(false);
-      setBackground(Color.DARK_GRAY);
-      setViewportBorder(BorderFactory.createEmptyBorder());
-      setBorder(BorderFactory.createEmptyBorder());
-    }
-
-    @Override public Dimension getPreferredSize() {
-      Dimension d = super.getPreferredSize();
-      d.height = TABAREA_SIZE;
-      return d;
-    }
-  };
+  private final JScrollPane tabArea = new TabAreaScroller(tabPanel);
 
   protected CardLayoutTabbedPane() {
     super(new BorderLayout());
@@ -146,34 +117,25 @@ class CardLayoutTabbedPane extends JPanel {
     label.setIcon(icon);
     label.setOpaque(false);
 
+    tab.add(label);
+    tab.add(makeCloseButton(tab, comp), BorderLayout.EAST);
+    return tab;
+  }
+
+  private JButton makeCloseButton(Container tab, Component c) {
     JButton close = new JButton(new CloseTabIcon(new Color(0xB0_B0_B0))) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(12, 12);
       }
     };
-    close.addActionListener(e -> {
-      tabPanel.remove(tab);
-      contentsPanel.remove(comp);
-      boolean oneOrMore = tabPanel.getComponentCount() > 1;
-      if (oneOrMore) {
-        tabPanel.revalidate();
-        TabButton b = (TabButton) tabPanel.getComponent(0);
-        b.setSelected(true);
-        cardLayout.first(contentsPanel);
-      }
-      tabPanel.revalidate();
-    });
+    close.addActionListener(e -> removeTab(tab, c));
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusable(false);
     close.setOpaque(false);
-    // close.setFocusPainted(false);
     close.setContentAreaFilled(false);
     close.setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
     close.setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
-
-    tab.add(label);
-    tab.add(close, BorderLayout.EAST);
-    return tab;
+    return close;
   }
 
   public void addTab(String title, Icon icon, Component comp) {
@@ -184,6 +146,20 @@ class CardLayoutTabbedPane extends JPanel {
     EventQueue.invokeLater(() -> tabPanel.scrollRectToVisible(tab.getBounds()));
   }
 
+  public void removeTab(Container tab, Component c) {
+    tabPanel.remove(tab);
+    contentsPanel.remove(c);
+    boolean oneOrMore = tabPanel.getComponentCount() > 1;
+    if (oneOrMore) {
+      TabButton tabButton = (TabButton) tabPanel.getComponent(0);
+      tabButton.setSelected(true);
+      tabPanel.scrollRectToVisible(tabButton.getBounds());
+      cardLayout.first(contentsPanel);
+    }
+    tabPanel.revalidate();
+    tabPanel.repaint();
+  }
+
   public JScrollPane getTabArea() {
     return tabArea;
   }
@@ -192,6 +168,43 @@ class CardLayoutTabbedPane extends JPanel {
     BoundedRangeModel m = tabArea.getHorizontalScrollBar().getModel();
     hiddenTabs.setVisible(m.getMaximum() - m.getExtent() > 0);
     super.doLayout();
+  }
+}
+
+class TabAreaScroller extends JScrollPane {
+  public static final int TABAREA_SIZE = 28;
+
+  protected TabAreaScroller(Component view) {
+    super(view);
+  }
+
+  @Override public boolean isOptimizedDrawingEnabled() {
+    return false; // JScrollBar is overlap
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    EventQueue.invokeLater(() -> {
+      getVerticalScrollBar().setUI(new OverlappedScrollBarUI());
+      getHorizontalScrollBar().setUI(new OverlappedScrollBarUI());
+      setLayout(new OverlapScrollPaneLayout());
+      setComponentZOrder(getVerticalScrollBar(), 0);
+      setComponentZOrder(getHorizontalScrollBar(), 1);
+      setComponentZOrder(getViewport(), 2);
+    });
+    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
+    getVerticalScrollBar().setOpaque(false);
+    getHorizontalScrollBar().setOpaque(false);
+    setBackground(Color.DARK_GRAY);
+    setViewportBorder(BorderFactory.createEmptyBorder());
+    setBorder(BorderFactory.createEmptyBorder());
+  }
+
+  @Override public Dimension getPreferredSize() {
+    Dimension d = super.getPreferredSize();
+    d.height = TABAREA_SIZE;
+    return d;
   }
 }
 
@@ -219,7 +232,7 @@ class TabButton extends JToggleButton {
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    d.height = CardLayoutTabbedPane.TABAREA_SIZE;
+    d.height = TabAreaScroller.TABAREA_SIZE;
     return d;
   }
 
@@ -421,10 +434,10 @@ class HorizontalScrollLayerUI extends LayerUI<JScrollPane> {
   @Override protected void processMouseWheelEvent(MouseWheelEvent e, JLayer<? extends JScrollPane> l) {
     JScrollPane scroll = l.getView();
     JScrollBar hsb = scroll.getHorizontalScrollBar();
-    JViewport vport = scroll.getViewport();
-    Point vp = vport.getViewPosition();
+    JViewport viewport = scroll.getViewport();
+    Point vp = viewport.getViewPosition();
     vp.translate(hsb.getBlockIncrement() * e.getWheelRotation(), 0);
-    JComponent v = (JComponent) SwingUtilities.getUnwrappedView(vport);
-    v.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+    JComponent v = (JComponent) SwingUtilities.getUnwrappedView(viewport);
+    v.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
   }
 }
