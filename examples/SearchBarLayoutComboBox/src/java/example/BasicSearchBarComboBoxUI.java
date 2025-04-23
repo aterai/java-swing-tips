@@ -52,7 +52,9 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
    */
   @Override protected void installListeners() {
     super.installListeners();
-    popupMenuListener = createPopupMenuListener();
+    if (Objects.isNull(popupMenuListener)) {
+      popupMenuListener = new SearchBarPopupListener();
+    }
     comboBox.addPopupMenuListener(popupMenuListener);
   }
 
@@ -62,34 +64,6 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   @Override protected void uninstallListeners() {
     super.uninstallListeners();
     comboBox.removePopupMenuListener(popupMenuListener);
-  }
-
-  protected final PopupMenuListener createPopupMenuListener() {
-    if (Objects.isNull(popupMenuListener)) {
-      popupMenuListener = new PopupMenuListener() {
-        private String str;
-        @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-          JComboBox<?> combo = (JComboBox<?>) e.getSource();
-          str = combo.getEditor().getItem().toString();
-        }
-
-        @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-          JComboBox<?> combo = (JComboBox<?>) e.getSource();
-          Object o = listBox.getSelectedValue();
-          if (o instanceof SearchEngine) {
-            SearchEngine se = (SearchEngine) o;
-            arrowButton.setIcon(se.getFavicon());
-            arrowButton.setRolloverIcon(makeRolloverIcon(se.getFavicon()));
-          }
-          combo.getEditor().setItem(str);
-        }
-
-        @Override public void popupMenuCanceled(PopupMenuEvent e) {
-          /* not needed */
-        }
-      };
-    }
-    return popupMenuListener;
   }
 
   // // NullPointerException at BasicComboBoxUI#isNavigationKey(int keyCode, int modifiers)
@@ -244,6 +218,30 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     RescaleOp op = new RescaleOp(scaleFactors, offsets, g2.getRenderingHints());
     g2.dispose();
     return new ImageIcon(op.filter(img, null));
+  }
+
+  private final class SearchBarPopupListener implements PopupMenuListener {
+    private String str;
+
+    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      JComboBox<?> combo = (JComboBox<?>) e.getSource();
+      str = combo.getEditor().getItem().toString();
+    }
+
+    @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+      JComboBox<?> combo = (JComboBox<?>) e.getSource();
+      Object o = listBox.getSelectedValue();
+      if (o instanceof SearchEngine) {
+        SearchEngine se = (SearchEngine) o;
+        arrowButton.setIcon(se.getFavicon());
+        arrowButton.setRolloverIcon(makeRolloverIcon(se.getFavicon()));
+      }
+      combo.getEditor().setItem(str);
+    }
+
+    @Override public void popupMenuCanceled(PopupMenuEvent e) {
+      /* not needed */
+    }
   }
 }
 
