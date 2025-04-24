@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void swap(JSplitPane split, boolean keepDividerLocation) {
+  private static void swap(JSplitPane split, boolean keepDividerLoc) {
     Component left = split.getLeftComponent();
     Component right = split.getRightComponent();
 
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     split.setRightComponent(left);
 
     split.setResizeWeight(1d - split.getResizeWeight());
-    if (keepDividerLocation) {
+    if (keepDividerLoc) {
       split.setDividerLocation(split.getDividerLocation());
     }
   }
