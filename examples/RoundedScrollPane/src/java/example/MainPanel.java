@@ -29,7 +29,6 @@ public final class MainPanel extends JPanel {
   public static final Color FOREGROUND = Color.BLACK;
   public static final Color SELECTION_FGC = Color.BLUE;
   public static final Color THUMB = new Color(0xCD_CD_CD);
-  public static final String KEY = "ComboBox.border";
 
   private MainPanel() {
     super(new BorderLayout(15, 15));
@@ -44,7 +43,7 @@ public final class MainPanel extends JPanel {
     p.setOpaque(true);
     p.add(makeComboBox());
     add(p, BorderLayout.NORTH);
-    add(makeScrollPane());
+    add(makeScrollPane(makeTree()));
     setOpaque(true);
     setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     setPreferredSize(new Dimension(320, 240));
@@ -59,71 +58,28 @@ public final class MainPanel extends JPanel {
     UIManager.put("ComboBox.buttonBackground", FOREGROUND);
     UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
     UIManager.put("ComboBox.buttonShadow", FOREGROUND);
-    return new JComboBox<String>(makeModel()) {
-      private transient MouseListener handler;
-      private transient PopupMenuListener listener;
-      @Override public void updateUI() {
-        removeMouseListener(handler);
-        removePopupMenuListener(listener);
-        UIManager.put(KEY, new TopRoundedCornerBorder());
-        super.updateUI();
-        setUI(new BasicComboBoxUI() {
-          @Override protected JButton createArrowButton() {
-            JButton b = new JButton(new ArrowIcon(BACKGROUND, FOREGROUND));
-            b.setContentAreaFilled(false);
-            b.setFocusPainted(false);
-            b.setBorder(BorderFactory.createEmptyBorder());
-            return b;
-          }
-
-          @Override protected ComboPopup createPopup() {
-            return new BasicComboPopup(comboBox) {
-              @Override protected JScrollPane createScroller() {
-                JScrollPane sp = new JScrollPane(list) {
-                  @Override public void updateUI() {
-                    super.updateUI();
-                    getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                    getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
-                  }
-                };
-                sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-                sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-                sp.setHorizontalScrollBar(null);
-                return sp;
-              }
-            };
-          }
-        });
-        handler = new ComboRolloverHandler();
-        addMouseListener(handler);
-        listener = new HeavyWeightContainerListener();
-        addPopupMenuListener(listener);
-        Object o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof JComponent) {
-          JComponent c = (JComponent) o;
-          c.setBorder(new BottomRoundedCornerBorder());
-          c.setForeground(FOREGROUND);
-          c.setBackground(BACKGROUND);
-        }
-      }
-    };
+    return new RoundedComboBox<>(makeModel());
   }
 
-  private static JScrollPane makeScrollPane() {
+  private static JTree makeTree() {
     JTree tree = new JTree();
     int row = 0;
     while (row < tree.getRowCount()) {
       tree.expandRow(row);
       row++;
     }
-    JScrollPane scroll = new JScrollPane(tree) {
+    return tree;
+  }
+
+  private static JScrollPane makeScrollPane(Component view) {
+    JScrollPane scroll = new JScrollPane(view) {
       @Override public void updateUI() {
         super.updateUI();
         getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
         getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
       }
     };
-    scroll.setBackground(tree.getBackground());
+    scroll.setBackground(view.getBackground());
     scroll.setBorder(new RoundedCornerBorder());
     return scroll;
   }
@@ -167,22 +123,88 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class SimpleScrollPane extends JScrollPane {
+  public SimpleScrollPane(Component view) {
+    super(view);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    getVerticalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+    getHorizontalScrollBar().setUI(new WithoutArrowButtonScrollBarUI());
+    setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+    setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+    setHorizontalScrollBar(null);
+  }
+}
+
+class RoundedComboBox<E> extends JComboBox<E> {
+  public static final String KEY = "ComboBox.border";
+  private transient MouseListener handler;
+  private transient PopupMenuListener listener;
+
+  protected RoundedComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removePopupMenuListener(listener);
+    UIManager.put(KEY, new TopRoundedCornerBorder());
+    super.updateUI();
+    setUI(new BasicComboBoxUI() {
+      @Override protected JButton createArrowButton() {
+        Color bgc = UIManager.getColor("ComboBox.background");
+        Color fgc = UIManager.getColor("ComboBox.foreground");
+        JButton b = new JButton(new ArrowIcon(bgc, fgc));
+        b.setContentAreaFilled(false);
+        b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createEmptyBorder());
+        return b;
+      }
+
+      @Override protected ComboPopup createPopup() {
+        return new BasicComboPopup(comboBox) {
+          @Override protected JScrollPane createScroller() {
+            return new SimpleScrollPane(list);
+          }
+        };
+      }
+    });
+    handler = new ComboRolloverHandler();
+    addMouseListener(handler);
+    listener = new HeavyWeightContainerListener();
+    addPopupMenuListener(listener);
+    Object o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof JComponent) {
+      JComponent c = (JComponent) o;
+      c.setBorder(new BottomRoundedCornerBorder());
+      c.setForeground(UIManager.getColor("ComboBox.foreground"));
+      c.setBackground(UIManager.getColor("ComboBox.background"));
+    }
+  }
+}
+
 class HeavyWeightContainerListener implements PopupMenuListener {
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     EventQueue.invokeLater(() -> {
       JComboBox<?> combo = (JComboBox<?>) e.getSource();
       Accessible a = combo.getUI().getAccessibleChild(combo, 0);
       if (a instanceof JPopupMenu) {
-        // https://ateraimemo.com/Swing/DropShadowPopup.html
-        Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
-            .ifPresent(w -> w.setBackground(new Color(0x0, true)));
+        setTransparent((Component) a);
       }
     });
+  }
+
+  // https://ateraimemo.com/Swing/DropShadowPopup.html
+  private static void setTransparent(Component c) {
+    Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
+        .filter(w -> {
+          boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+          GraphicsConfiguration gc = w.getGraphicsConfiguration();
+          return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+        })
+        .ifPresent(w -> w.setBackground(new Color(0x0, true)));
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
