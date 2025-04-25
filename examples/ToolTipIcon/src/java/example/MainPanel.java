@@ -45,18 +45,12 @@ public final class MainPanel extends JPanel {
   }
 
   private JLabel makeLabel1(Icon icon) {
+    JLabel iconLabel = new JLabel(icon);
+    iconLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     return new JLabel("ToolTip icon using JLabel") {
       @Override public JToolTip createToolTip() {
-        JLabel iconLabel = new JLabel(icon);
-        iconLabel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         JToolTip tip = new JToolTip() {
           @Override public Dimension getPreferredSize() {
-            // if (getLayout() == null) {
-            //   Insets i = getInsets();
-            //   Dimension d = iconLabel.getPreferredSize();
-            //   d.width += i.left + i.right;
-            //   d.height += i.top + i.bottom;
-            //   return d;
             return getLayout().preferredLayoutSize(this);
           }
 
