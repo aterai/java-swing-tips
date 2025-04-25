@@ -20,7 +20,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
@@ -30,8 +29,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 public final class MainPanel extends JPanel {
-  private final JEditorPane editor = new JEditorPane();
-
   private MainPanel() {
     super(new BorderLayout(2, 2));
     Icon emptyIcon = new EmptyIcon();
@@ -44,36 +41,19 @@ public final class MainPanel extends JPanel {
     UIManager.put("Tree.rightChildIndent", 0);
     UIManager.put("Tree.paintLines", false);
 
-    HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
+    String html = "<html><body><h1>Scrollspy</h1><p id='main'></p><p id='bottom'>id=bottom</p>";
+    JEditorPane editor = new JEditorPane("text/html", html);
     editor.setEditable(false);
-    editor.setEditorKit(htmlEditorKit);
-    editor.setText("<html><body><h1>Scrollspy</h1><p id='main'></p><p id='bottom'>id=bottom</p>");
-
-    HTMLDocument doc = (HTMLDocument) editor.getDocument();
-    JTree tree = makeTocSideTree(doc);
+    // editor.setEditorKit(new HTMLEditorKit());
+    // editor.setText(html);
 
     // scroll to top of page
     EventQueue.invokeLater(() -> editor.scrollRectToVisible(editor.getBounds()));
 
+    JTree tree = makeTocSideTree(editor);
     JScrollPane scroll = new JScrollPane(editor);
-    scroll.getVerticalScrollBar().getModel().addChangeListener(e -> {
-      // Document d = editor.getDocument();
-      // if (d instanceof HTMLDocument) {
-      //   HTMLDocument htmlDocument = (HTMLDocument) d;
-      HTMLDocument.Iterator itr = doc.getIterator(HTML.Tag.A);
-      for (; itr.isValid(); itr.next()) {
-        try {
-          // Java 9: Rectangle r = editor.modelToView2D(itr.getStartOffset()).getBounds();
-          Rectangle r = editor.modelToView(itr.getStartOffset());
-          if (r != null && editor.getVisibleRect().contains(r.getLocation())) {
-            searchTreeNode(tree, itr.getAttributes().getAttribute(HTML.Attribute.NAME));
-            break;
-          }
-        } catch (BadLocationException ex) {
-          UIManager.getLookAndFeel().provideErrorFeedback(editor);
-        }
-      }
-    });
+    BoundedRangeModel model = scroll.getVerticalScrollBar().getModel();
+    model.addChangeListener(e -> htmlDocScroll(editor, tree));
 
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), scroll);
     split.setResizeWeight(.5);
@@ -81,7 +61,28 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTree makeTocSideTree(HTMLDocument doc) {
+  private static void htmlDocScroll(JEditorPane editor, JTree tree) {
+    HTMLDocument doc = (HTMLDocument) editor.getDocument();
+    // Document d = editor.getDocument();
+    // if (d instanceof HTMLDocument) {
+    //   HTMLDocument htmlDocument = (HTMLDocument) d;
+    HTMLDocument.Iterator itr = doc.getIterator(HTML.Tag.A);
+    for (; itr.isValid(); itr.next()) {
+      try {
+        // Java 9: Rectangle r = editor.modelToView2D(itr.getStartOffset()).getBounds();
+        Rectangle r = editor.modelToView(itr.getStartOffset());
+        if (r != null && editor.getVisibleRect().contains(r.getLocation())) {
+          searchTreeNode(tree, itr.getAttributes().getAttribute(HTML.Attribute.NAME));
+          break;
+        }
+      } catch (BadLocationException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback(editor);
+      }
+    }
+  }
+
+  private static JTree makeTocSideTree(JEditorPane editor) {
+    HTMLDocument doc = (HTMLDocument) editor.getDocument();
     Element element = doc.getElement("main");
     TreeModel model = makeModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
