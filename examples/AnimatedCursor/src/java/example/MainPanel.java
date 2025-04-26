@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -22,7 +23,15 @@ public final class MainPanel extends JPanel {
     List<Cursor> list = Stream.of("00", "01", "02")
         .map(s -> tk.createCustomCursor(tk.createImage(clz.getResource(s + ".png")), pt, s))
         .collect(Collectors.toList());
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createEmptyBorder(32, 32, 32, 32));
+    p.add(makeStartButton(list));
+    add(p);
+    setBorder(BorderFactory.createTitledBorder("delay=100ms"));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JButton makeStartButton(List<Cursor> list) {
     Timer animator = new Timer(100, null);
     JButton button = new JButton("Start");
     button.setCursor(list.get(0));
@@ -43,13 +52,7 @@ public final class MainPanel extends JPanel {
       }
     });
     animator.addActionListener(new CursorActionListener(button, list));
-
-    JPanel p = new JPanel(new BorderLayout());
-    p.setBorder(BorderFactory.createEmptyBorder(32, 32, 32, 32));
-    p.add(button);
-    add(p);
-    setBorder(BorderFactory.createTitledBorder("delay=100ms"));
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static void main(String[] args) {
@@ -62,7 +65,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
