@@ -1,0 +1,128 @@
+// -*- mode:java; encoding:utf-8 -*-
+// vim:set fileencoding=utf-8:
+// @homepage@
+
+package example;
+
+import java.awt.*;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
+public final class MainPanel extends JPanel {
+  private MainPanel() {
+    super(new BorderLayout());
+    JTextPane textPane = new JTextPane();
+    textPane.setComponentPopupMenu(new HtmlColorPopupMenu());
+    // textPane.setEditorKit(new HTMLEditorKit());
+    textPane.setContentType("text/html");
+    // JEditorPane editorPane = new JEditorPane("text/html", "");
+    JTextArea textArea = new JTextArea();
+    textArea.setText(textPane.getText());
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addTab("JTextPane", new JScrollPane(textPane));
+    tabbedPane.addTab("JTextArea", new JScrollPane(textArea));
+    tabbedPane.addChangeListener(e -> {
+      JTabbedPane tabs = (JTabbedPane) e.getSource();
+      tabChanged(tabs.getSelectedIndex() == 0, textPane, textArea);
+      tabs.revalidate();
+    });
+    add(tabbedPane);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void tabChanged(boolean html, JTextPane textPane, JTextArea textArea) {
+    if (html) {
+      textPane.setText(textArea.getText());
+      // HTMLEditorKit hek = (HTMLEditorKit) textPane.getEditorKit();
+      // HTMLDocument doc = (HTMLDocument) textPane.getStyledDocument();
+      // hek.insertHTML(doc, 0, textArea.getText(), 0, 0, null);
+    } else {
+      String str = textPane.getText();
+      textArea.setText(str);
+      // Removing HTML from a Java String - Stack Overflow
+      // https://stackoverflow.com/questions/240546/removing-html-from-a-java-string
+      // private static void removeHtmlTest(String str) {
+      //   ParserDelegator delegator = new ParserDelegator();
+      //   StringBuilder s = new StringBuilder();
+      //   delegator.parse(new StringReader(str), new HTMLEditorKit.ParserCallback() {
+      //     @Override public void handleText(char[] text, int pos) {
+      //       s.append(text);
+      //     }
+      //   }, Boolean.TRUE);
+      //   // System.out.println(s.toString());
+      // }
+    }
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+final class HtmlColorPopupMenu extends JPopupMenu {
+  /* default */ HtmlColorPopupMenu() {
+    super();
+    MutableAttributeSet red = new SimpleAttributeSet();
+    StyleConstants.setForeground(red, Color.RED);
+    MutableAttributeSet green = new SimpleAttributeSet();
+    StyleConstants.setForeground(green, Color.GREEN);
+    MutableAttributeSet blue = new SimpleAttributeSet();
+    StyleConstants.setForeground(blue, Color.BLUE);
+
+    add("Red").addActionListener(e -> {
+      JTextPane t = (JTextPane) getInvoker();
+      StyledDocument doc = t.getStyledDocument();
+      int start = t.getSelectionStart();
+      int end = t.getSelectionEnd();
+      doc.setCharacterAttributes(start, end - start, red, false);
+    });
+    add("Green").addActionListener(e -> {
+      JTextPane t = (JTextPane) getInvoker();
+      StyledDocument doc = t.getStyledDocument();
+      int start = t.getSelectionStart();
+      int end = t.getSelectionEnd();
+      doc.setCharacterAttributes(start, end - start, green, false);
+    });
+    add("Blue").addActionListener(e -> {
+      JTextPane t = (JTextPane) getInvoker();
+      StyledDocument doc = t.getStyledDocument();
+      int start = t.getSelectionStart();
+      int end = t.getSelectionEnd();
+      doc.setCharacterAttributes(start, end - start, blue, false);
+    });
+  }
+
+  @Override public void show(Component c, int x, int y) {
+    if (c instanceof JTextPane) {
+      JTextPane t = (JTextPane) c;
+      int start = t.getSelectionStart();
+      int end = t.getSelectionEnd();
+      boolean flag = end - start > 0;
+      for (MenuElement me : getSubElements()) {
+        me.getComponent().setEnabled(flag);
+      }
+      super.show(c, x, y);
+    }
+  }
+}
