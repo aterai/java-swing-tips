@@ -105,7 +105,7 @@ import javax.swing.table.TableModel;
  * @author Parwinder Sekhon
  * @version 2.0 02/27/04
  */
-@SuppressWarnings({"PMD.TooManyMethods", "DesignForExtension"})
+@SuppressWarnings("PMD.TooManyMethods")
 public class TableSorter extends AbstractTableModel {
   public static final int DESCENDING = -1;
   public static final int NOT_SORTED = 0;
@@ -191,10 +191,8 @@ public class TableSorter extends AbstractTableModel {
           .filter(SortableHeaderRenderer.class::isInstance)
           .map(SortableHeaderRenderer.class::cast)
           .ifPresent(renderer -> h.setDefaultRenderer(renderer.cellRenderer));
-      // TableCellRenderer defaultRenderer = h.getDefaultRenderer();
-      // if (defaultRenderer instanceof SortableHeaderRenderer) {
+      // if (defaultRenderer instanceof SortableHeaderRenderer)
       //   h.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
-      // }
     });
     tableHeader = header;
     Optional.ofNullable(tableHeader).ifPresent(h -> {
