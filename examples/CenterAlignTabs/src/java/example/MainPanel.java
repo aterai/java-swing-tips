@@ -51,7 +51,10 @@ public final class MainPanel extends JPanel {
 
 class CenteredTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
-    EventQueue.invokeLater(this::updateTabAreaMargins);
+    int placement = getTabPlacement();
+    if (placement == TOP || placement == BOTTOM) {
+      EventQueue.invokeLater(this::updateTabAreaMargins);
+    }
     super.doLayout();
   }
 
