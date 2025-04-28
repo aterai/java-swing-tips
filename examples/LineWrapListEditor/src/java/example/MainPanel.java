@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -56,7 +57,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -213,21 +214,15 @@ class EditableList<E extends ListItem> extends JList<E> {
   private final JTextArea editor = new JTextArea();
   private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
-      // getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
       editingIndex = idx;
       Rectangle rect = getCellBounds(idx, idx);
-      // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
-      // rect.setLocation(p);
       editor.setText(getSelectedValue().getTitle());
       int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
       rect.y += rect.height - rowHeight - 2 - 1;
       rect.height = editor.getPreferredSize().height;
       editor.setBounds(rect);
       editor.selectAll();
-      // glassPane.add(editor);
-      // glassPane.setVisible(true);
-      // popup.show(EditableList.this, rect.x, rect.y);
       Point p = new Point(rect.getLocation());
       SwingUtilities.convertPointToScreen(p, EditableList.this);
       window.setLocation(p);
@@ -238,8 +233,6 @@ class EditableList<E extends ListItem> extends JList<E> {
   };
   protected final Action cancelEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
-      // glassPane.setVisible(false);
-      // popup.setVisible(false);
       window.setVisible(false);
       editingIndex = -1;
     }
@@ -298,35 +291,7 @@ class EditableList<E extends ListItem> extends JList<E> {
     editor.setLineWrap(true);
     editor.setFont(UIManager.getFont("TextField.font"));
     editor.setComponentPopupMenu(new TextComponentPopupMenu());
-    editor.getDocument().addDocumentListener(new DocumentListener() {
-      private int prev = -1;
-      private void update() {
-        EventQueue.invokeLater(() -> {
-          int h = editor.getPreferredSize().height;
-          if (prev != h) {
-            Rectangle rect = editor.getBounds();
-            rect.height = h;
-            editor.setBounds(rect);
-            // popup.pack();
-            window.pack();
-            editor.requestFocusInWindow();
-          }
-          prev = h;
-        });
-      }
-
-      @Override public void insertUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void removeUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void changedUpdate(DocumentEvent e) {
-        update();
-      }
-    });
+    editor.getDocument().addDocumentListener(new EditorDocumentListener());
 
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(WHEN_FOCUSED);
@@ -373,6 +338,34 @@ class EditableList<E extends ListItem> extends JList<E> {
       }
     };
     addMouseListener(handler);
+  }
+
+  private final class EditorDocumentListener implements DocumentListener {
+    private int prev = -1;
+
+    private void update() {
+      int h = editor.getPreferredSize().height;
+      if (prev != h) {
+        Rectangle rect = editor.getBounds();
+        rect.height = h;
+        editor.setBounds(rect);
+        window.pack();
+        editor.requestFocusInWindow();
+      }
+      prev = h;
+    }
+
+    @Override public void insertUpdate(DocumentEvent e) {
+      EventQueue.invokeLater(this::update);
+    }
+
+    @Override public void removeUpdate(DocumentEvent e) {
+      EventQueue.invokeLater(this::update);
+    }
+
+    @Override public void changedUpdate(DocumentEvent e) {
+      EventQueue.invokeLater(this::update);
+    }
   }
 }
 
