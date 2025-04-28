@@ -142,10 +142,14 @@
     </module>
     <module name="SuppressionXpathSingleFilter">
       <property name="checks" value="WhitespaceAround"/>
-      <property name="query" value="//*[self::LITERAL_IF or self::LITERAL_ELSE or self::STATIC_INIT
-                                 or self::LITERAL_TRY or self::LITERAL_CATCH]/SLIST[count(./*)=1]
+      <property name="query" value="//*[self::LITERAL_IF or self::LITERAL_ELSE or
+                                 self::STATIC_INIT]/SLIST[count(./*)=1]
                                  | //*[self::STATIC_INIT or self::LITERAL_TRY or self::LITERAL_IF]
-                                 //*[self::RCURLY][parent::SLIST[count(./*)=1]]"/>
+                                 //*[self::RCURLY][parent::SLIST[count(./*)=1]]
+                                 | //SLIST[count(./*)=1][parent::LITERAL_TRY and
+                                 not(following-sibling::*)]
+                                 | //SLIST[count(./*)=1][parent::LITERAL_CATCH and
+                                 not(parent::LITERAL_CATCH/following-sibling::*)]"/>
     </module>
     <module name="RegexpSinglelineJava">
       <property name="format" value="\{[ ]+\}"/>
@@ -183,6 +187,7 @@
     <module name="StringLiteralEquality"/>
     <module name="SuperClone"/>
     <module name="SuperFinalize"/>
+    <module name="SingleSpaceSeparator" />
 
     <module name="EmptyLineSeparator">
       <property name="tokens"
@@ -191,7 +196,6 @@
                     COMPACT_CTOR_DEF"/>
       <property name="allowNoEmptyLineBetweenFields" value="true"/>
     </module>
-    <module name="SingleSpaceSeparator" />
     <module name="SeparatorWrap">
       <property name="id" value="SeparatorWrapDot"/>
       <property name="tokens" value="DOT"/>
@@ -304,6 +308,7 @@
       <property name="lineWrappingIndentation" value="4"/>
       <property name="arrayInitIndent" value="2"/>
     </module>
+
     <module name="AbbreviationAsWordInName">
       <property name="ignoreFinal" value="false"/>
       <property name="allowedAbbreviationLength" value="0"/>
