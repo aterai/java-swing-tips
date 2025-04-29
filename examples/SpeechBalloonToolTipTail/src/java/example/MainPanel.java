@@ -90,19 +90,33 @@ class BalloonToolTipTabbedPane extends JTabbedPane {
 
   @Override public Point getToolTipLocation(MouseEvent e) {
     int idx = indexAtLocation(e.getX(), e.getY());
+    Point pt = null;
     String txt = idx >= 0 ? getToolTipTextAt(idx) : null;
-    return Optional.ofNullable(txt).map(toolTipText -> {
+    if (txt != null) {
       JToolTip toolTip = createToolTip();
-      toolTip.setTipText(toolTipText);
+      toolTip.setTipText(txt);
       Component c = toolTip.getComponent(0);
       if (c instanceof JLabel) {
-        ((JLabel) c).setText(toolTipText);
+        ((JLabel) c).setText(txt);
       }
       if (toolTip instanceof BalloonToolTip) {
         ((BalloonToolTip) toolTip).updateBalloonShape(getTabPlacement());
       }
-      return getToolTipPoint(getBoundsAt(idx), toolTip.getPreferredSize());
-    }).orElse(null);
+      pt = getToolTipPoint(getBoundsAt(idx), toolTip.getPreferredSize());
+    }
+    return pt;
+    // return Optional.ofNullable(txt).map(toolTipText -> {
+    //   JToolTip toolTip = createToolTip();
+    //   toolTip.setTipText(toolTipText);
+    //   Component c = toolTip.getComponent(0);
+    //   if (c instanceof JLabel) {
+    //     ((JLabel) c).setText(toolTipText);
+    //   }
+    //   if (toolTip instanceof BalloonToolTip) {
+    //     ((BalloonToolTip) toolTip).updateBalloonShape(getTabPlacement());
+    //   }
+    //   return getToolTipPoint(getBoundsAt(idx), toolTip.getPreferredSize());
+    // }).orElse(null);
   }
 
   private Point getToolTipPoint(Rectangle r, Dimension d) {
@@ -168,11 +182,7 @@ class BalloonToolTip extends JToolTip {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
         Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
+            .filter(BalloonToolTip::isHeavyWeight)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };
@@ -184,6 +194,12 @@ class BalloonToolTip extends JToolTip {
     // putClientProperty("Nimbus.Overrides", d);
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(SIZE, SIZE, SIZE, SIZE));
+  }
+
+  private static boolean isHeavyWeight(Window w) {
+    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+    GraphicsConfiguration gc = w.getGraphicsConfiguration();
+    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
   }
 
   @Override public Dimension getPreferredSize() {
