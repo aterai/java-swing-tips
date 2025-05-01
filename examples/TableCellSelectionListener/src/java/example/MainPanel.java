@@ -72,29 +72,37 @@ public final class MainPanel extends JPanel {
     table2.setCellSelectionEnabled(true);
     table2.getSelectionModel().addListSelectionListener(e -> {
       if (!e.getValueIsAdjusting()) {
-        int firstIndex = e.getFirstIndex();
-        int lastIndex = e.getLastIndex();
-        textArea.append(String.format("row first, last: %d, %d%n", firstIndex, lastIndex));
-        ListSelectionModel m = (ListSelectionModel) e.getSource();
-        int asi = m.getAnchorSelectionIndex();
-        int lsi = m.getLeadSelectionIndex();
-        textArea.append(String.format("row anchor->lead: %d->%d%n", asi, lsi));
-        textArea.setCaretPosition(textArea.getDocument().getLength());
+        rowInfo(textArea, e);
       }
     });
     table2.getColumnModel().getSelectionModel().addListSelectionListener(e -> {
       if (!e.getValueIsAdjusting()) {
-        int firstIndex = e.getFirstIndex();
-        int lastIndex = e.getLastIndex();
-        textArea.append(String.format("column first, last: %d, %d%n", firstIndex, lastIndex));
-        ListSelectionModel m = (ListSelectionModel) e.getSource();
-        int asi = m.getAnchorSelectionIndex();
-        int lsi = m.getLeadSelectionIndex();
-        textArea.append(String.format("column anchor->lead: %d->%d%n", asi, lsi));
-        textArea.setCaretPosition(textArea.getDocument().getLength());
+        columnInfo(textArea, e);
       }
     });
     return table2;
+  }
+
+  private static void rowInfo(JTextArea log, ListSelectionEvent e) {
+    int firstIndex = e.getFirstIndex();
+    int lastIndex = e.getLastIndex();
+    log.append(String.format("row first, last: %d, %d%n", firstIndex, lastIndex));
+    ListSelectionModel m = (ListSelectionModel) e.getSource();
+    int asi = m.getAnchorSelectionIndex();
+    int lsi = m.getLeadSelectionIndex();
+    log.append(String.format("row anchor->lead: %d->%d%n", asi, lsi));
+    log.setCaretPosition(log.getDocument().getLength());
+  }
+
+  private static void columnInfo(JTextArea log, ListSelectionEvent e) {
+    int firstIndex = e.getFirstIndex();
+    int lastIndex = e.getLastIndex();
+    log.append(String.format("column first, last: %d, %d%n", firstIndex, lastIndex));
+    ListSelectionModel m = (ListSelectionModel) e.getSource();
+    int asi = m.getAnchorSelectionIndex();
+    int lsi = m.getLeadSelectionIndex();
+    log.append(String.format("column anchor->lead: %d->%d%n", asi, lsi));
+    log.setCaretPosition(log.getDocument().getLength());
   }
 
   private static JTable makeTable3(TableModel model, JTextArea textArea) {
