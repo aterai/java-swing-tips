@@ -6,6 +6,7 @@ package example;
 
 import com.sun.java.swing.plaf.windows.WindowsScrollBarUI;
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalScrollBarUI;
@@ -48,30 +49,7 @@ public final class MainPanel extends JPanel {
     // };
 
     JScrollPane s1 = new JScrollPane(new JTextArea("override\ngetMinimumThumbSize()\n" + txt));
-    s1.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL) {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsScrollBarUI) {
-          setUI(new WindowsScrollBarUI() {
-            @Override protected Dimension getMinimumThumbSize() {
-              Dimension d = super.getMinimumThumbSize();
-              Rectangle r = SwingUtilities.calculateInnerArea(s1, null);
-              return new Dimension(d.width, Math.max(d.height, r.height / 12));
-            }
-          });
-        } else {
-          setUI(new MetalScrollBarUI() {
-            @Override protected Dimension getMinimumThumbSize() {
-              Dimension d = super.getMinimumThumbSize();
-              Rectangle r = SwingUtilities.calculateInnerArea(s1, null);
-              d.height = Math.max(d.height, r.height / 12);
-              return d;
-            }
-          });
-        }
-        putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
-      }
-    });
+    s1.setVerticalScrollBar(new VerticalScrollBar());
 
     JScrollPane s0 = new JScrollPane(new JTextArea("default\n\n" + txt));
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s0, s1);
@@ -94,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -103,5 +81,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class VerticalScrollBar extends JScrollBar {
+  protected VerticalScrollBar() {
+    super(VERTICAL);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    if (getUI() instanceof WindowsScrollBarUI) {
+      setUI(new WindowsScrollBarUI() {
+        @Override protected Dimension getMinimumThumbSize() {
+          return updateThumbSize(super.getMinimumThumbSize());
+        }
+      });
+    } else {
+      setUI(new MetalScrollBarUI() {
+        @Override protected Dimension getMinimumThumbSize() {
+          return updateThumbSize(super.getMinimumThumbSize());
+        }
+      });
+    }
+    putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
+  }
+
+  private Dimension updateThumbSize(Dimension d) {
+    Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
+    int height = d.height;
+    if (c instanceof JScrollPane) {
+      Rectangle r = SwingUtilities.calculateInnerArea((JScrollPane) c, null);
+      height = Math.max(height, r.height / 12);
+    }
+    return new Dimension(d.width, height);
   }
 }
