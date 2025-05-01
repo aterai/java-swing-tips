@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -48,13 +49,13 @@ public final class MainPanel extends JPanel {
     menu.add(new JCheckBoxMenuItem("JCheckBoxMenuItem 1"));
     menu.add(new JCheckBoxMenuItem("JCheckBoxMenuItem 2"));
 
-    JRadioButtonMenuItem rbmi1 = new JRadioButtonMenuItem("JRadioButtonMenuItem 1");
-    JRadioButtonMenuItem rbmi2 = new JRadioButtonMenuItem("JRadioButtonMenuItem 2");
+    JMenuItem mi1 = new JRadioButtonMenuItem("JRadioButtonMenuItem 1");
+    JMenuItem mi2 = new JRadioButtonMenuItem("JRadioButtonMenuItem 2");
     ButtonGroup bg = new ButtonGroup();
-    bg.add(rbmi1);
-    bg.add(rbmi2);
-    menu.add(rbmi1);
-    menu.add(rbmi2);
+    bg.add(mi1);
+    bg.add(mi2);
+    menu.add(mi1);
+    menu.add(mi2);
     return menu;
   }
 
@@ -69,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

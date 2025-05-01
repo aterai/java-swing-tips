@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -49,42 +50,42 @@ public final class MainPanel extends JPanel {
 
   private List<AbstractExpansionPanel> makeExpansionPanelList() {
     return Arrays.asList(
-      new AbstractExpansionPanel("System Tasks") {
-        @Override public JPanel makePanel() {
-          JPanel p = new JPanel(new GridLayout(0, 1));
-          Stream.of("1111", "222222")
-              .map(JCheckBox::new)
-              .forEach(b -> {
-                b.setOpaque(false);
-                p.add(b);
-              });
-          return p;
+        new AbstractExpansionPanel("System Tasks") {
+          @Override public JPanel makePanel() {
+            JPanel p = new JPanel(new GridLayout(0, 1));
+            Stream.of("1111", "222222")
+                .map(JCheckBox::new)
+                .forEach(b -> {
+                  b.setOpaque(false);
+                  p.add(b);
+                });
+            return p;
+          }
+        },
+        new AbstractExpansionPanel("Other Places") {
+          @Override public JPanel makePanel() {
+            JPanel p = new JPanel(new GridLayout(0, 1));
+            Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
+                .map(JLabel::new)
+                .forEach(p::add);
+            return p;
+          }
+        },
+        new AbstractExpansionPanel("Details") {
+          @Override public JPanel makePanel() {
+            JPanel p = new JPanel(new GridLayout(0, 1));
+            ButtonGroup bg = new ButtonGroup();
+            Stream.of("aaa", "bbb", "ccc", "ddd")
+                .map(JRadioButton::new)
+                .forEach(b -> {
+                  b.setSelected(p.getComponentCount() == 0);
+                  b.setOpaque(false);
+                  p.add(b);
+                  bg.add(b);
+                });
+            return p;
+          }
         }
-      },
-      new AbstractExpansionPanel("Other Places") {
-        @Override public JPanel makePanel() {
-          JPanel p = new JPanel(new GridLayout(0, 1));
-          Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
-              .map(JLabel::new)
-              .forEach(p::add);
-          return p;
-        }
-      },
-      new AbstractExpansionPanel("Details") {
-        @Override public JPanel makePanel() {
-          JPanel p = new JPanel(new GridLayout(0, 1));
-          ButtonGroup bg = new ButtonGroup();
-          Stream.of("aaa", "bbb", "ccc", "ddd")
-              .map(JRadioButton::new)
-              .forEach(b -> {
-                b.setSelected(p.getComponentCount() == 0);
-                b.setOpaque(false);
-                p.add(b);
-                bg.add(b);
-              });
-          return p;
-        }
-      }
     );
   }
 
@@ -98,7 +99,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
