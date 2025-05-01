@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,47 +24,11 @@ public final class MainPanel extends JPanel {
     JList<Color> list = makeList(model);
     JButton up = new JButton("▲");
     up.setFocusable(false);
-    up.addActionListener(e -> {
-      int[] pos = list.getSelectedIndices();
-      if (pos.length == 0) {
-        return;
-      }
-      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      int index0 = isShiftDown ? 0 : Math.max(0, pos[0] - 1);
-      int idx = index0;
-      for (int i : pos) {
-        model.add(idx, model.remove(i));
-        list.addSelectionInterval(idx, idx);
-        idx++;
-      }
-      Rectangle r = list.getCellBounds(index0, index0 + pos.length);
-      list.scrollRectToVisible(r);
-    });
+    up.addActionListener(e -> upItems(list, model, e));
 
     JButton down = new JButton("▼");
     down.setFocusable(false);
-    down.addActionListener(e -> {
-      int[] pos = list.getSelectedIndices();
-      if (pos.length == 0) {
-        return;
-      }
-      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      int max = model.getSize();
-      int index = isShiftDown ? max : Math.min(max, pos[pos.length - 1] + 1);
-      int index0 = index;
-      // copy
-      for (int i : pos) {
-        int idx = Math.min(model.getSize(), ++index);
-        model.add(idx, model.get(i));
-        list.addSelectionInterval(idx, idx);
-      }
-      // clean
-      for (int i = pos.length - 1; i >= 0; i--) {
-        model.remove(pos[i]);
-      }
-      Rectangle r = list.getCellBounds(index0 - pos.length, index0);
-      list.scrollRectToVisible(r);
-    });
+    down.addActionListener(e -> downItems(list, model, e));
 
     JToolBar tb = new JToolBar();
     tb.setFloatable(false);
@@ -73,6 +38,46 @@ public final class MainPanel extends JPanel {
     add(tb, BorderLayout.NORTH);
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static <E> void upItems(JList<E> list, DefaultListModel<E> m, ActionEvent e) {
+    int[] pos = list.getSelectedIndices();
+    if (pos.length == 0) {
+      return;
+    }
+    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+    int index0 = isShiftDown ? 0 : Math.max(0, pos[0] - 1);
+    int idx = index0;
+    for (int i : pos) {
+      m.add(idx, m.remove(i));
+      list.addSelectionInterval(idx, idx);
+      idx++;
+    }
+    Rectangle r = list.getCellBounds(index0, index0 + pos.length);
+    list.scrollRectToVisible(r);
+  }
+
+  private static <E> void downItems(JList<E> list, DefaultListModel<E> m, ActionEvent e) {
+    int[] pos = list.getSelectedIndices();
+    if (pos.length == 0) {
+      return;
+    }
+    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+    int max = m.getSize();
+    int index = isShiftDown ? max : Math.min(max, pos[pos.length - 1] + 1);
+    int index0 = index;
+    // copy
+    for (int i : pos) {
+      int idx = Math.min(m.getSize(), ++index);
+      m.add(idx, m.get(i));
+      list.addSelectionInterval(idx, idx);
+    }
+    // clean
+    for (int i = pos.length - 1; i >= 0; i--) {
+      m.remove(pos[i]);
+    }
+    Rectangle r = list.getCellBounds(index0 - pos.length, index0);
+    list.scrollRectToVisible(r);
   }
 
   private static DefaultListModel<Color> makeModel() {
@@ -118,7 +123,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
