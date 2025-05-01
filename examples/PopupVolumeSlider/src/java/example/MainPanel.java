@@ -55,65 +55,10 @@ public final class MainPanel extends JPanel {
   }
 
   private JToggleButton makeToggleButton(JPopupMenu popup, JSlider slider) {
-    JToggleButton button = new JToggleButton("🔊") {
-      @Override public JToolTip createToolTip() {
-        JToolTip tip = super.createToolTip();
-        tip.addHierarchyListener(e -> {
-          long flg = e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED;
-          if (flg != 0 && e.getComponent().isShowing()) {
-            Dimension d = popup.getPreferredSize();
-            popup.show(this, (getWidth() - d.width) / 2, -d.height);
-          }
-        });
-        return tip;
-      }
-
-      @Override public Point getToolTipLocation(MouseEvent e) {
-        return new Point(getWidth() / 2, -getHeight());
-      }
-
-      @Override public void setEnabled(boolean b) {
-        super.setEnabled(b);
-        setText(b ? "🔊" : "🔇");
-      }
-    };
+    JToggleButton button = new SoundButton(popup);
     button.setToolTipText("");
-    button.addMouseListener(new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        Component btn = e.getComponent();
-        if (!btn.isEnabled()) {
-          slider.setValue(80);
-          btn.setEnabled(true);
-        }
-        Dimension d = popup.getPreferredSize();
-        popup.show(btn, (btn.getWidth() - d.width) / 2, -d.height);
-      }
-
-      @Override public void mouseEntered(MouseEvent e) {
-        if (!popup.isVisible()) {
-          ToolTipManager.sharedInstance().setEnabled(true);
-        }
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        if (!popup.isVisible()) {
-          ToolTipManager.sharedInstance().setEnabled(true);
-        }
-      }
-    });
-    popup.addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        /* not needed */
-      }
-
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        EventQueue.invokeLater(() -> ToolTipManager.sharedInstance().setEnabled(false));
-      }
-
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        button.setSelected(false);
-      }
-    });
+    button.addMouseListener(new SoundButtonHandler(slider, popup));
+    popup.addPopupMenuListener(new PopupHandler(button));
     return button;
   }
 
@@ -136,5 +81,88 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+
+  private static class SoundButtonHandler extends MouseAdapter {
+    private final JSlider slider;
+    private final JPopupMenu popup;
+
+    public SoundButtonHandler(JSlider slider, JPopupMenu popup) {
+      super();
+      this.slider = slider;
+      this.popup = popup;
+    }
+
+    @Override public void mousePressed(MouseEvent e) {
+      Component btn = e.getComponent();
+      if (!btn.isEnabled()) {
+        slider.setValue(80);
+        btn.setEnabled(true);
+      }
+      Dimension d = popup.getPreferredSize();
+      popup.show(btn, (btn.getWidth() - d.width) / 2, -d.height);
+    }
+
+    @Override public void mouseEntered(MouseEvent e) {
+      if (!popup.isVisible()) {
+        ToolTipManager.sharedInstance().setEnabled(true);
+      }
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      if (!popup.isVisible()) {
+        ToolTipManager.sharedInstance().setEnabled(true);
+      }
+    }
+  }
+
+  private static class PopupHandler implements PopupMenuListener {
+    private final JToggleButton button;
+
+    public PopupHandler(JToggleButton button) {
+      this.button = button;
+    }
+
+    @Override public void popupMenuCanceled(PopupMenuEvent e) {
+      /* not needed */
+    }
+
+    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      EventQueue.invokeLater(() -> ToolTipManager.sharedInstance().setEnabled(false));
+    }
+
+    @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+      button.setSelected(false);
+    }
+  }
+}
+
+class SoundButton extends JToggleButton {
+  private final JPopupMenu popup;
+
+  protected SoundButton(JPopupMenu popup) {
+    super("🔊");
+    this.popup = popup;
+  }
+
+  @Override public JToolTip createToolTip() {
+    JToolTip tip = super.createToolTip();
+    tip.addHierarchyListener(e -> {
+      long flg = e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED;
+      if (flg != 0 && e.getComponent().isShowing()) {
+        Dimension d = popup.getPreferredSize();
+        popup.show(this, (getWidth() - d.width) / 2, -d.height);
+      }
+    });
+    return tip;
+  }
+
+  @Override public Point getToolTipLocation(MouseEvent e) {
+    return new Point(getWidth() / 2, -getHeight());
+  }
+
+  @Override public void setEnabled(boolean b) {
+    super.setEnabled(b);
+    setText(b ? "🔊" : "🔇");
   }
 }
