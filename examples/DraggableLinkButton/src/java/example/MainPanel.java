@@ -9,6 +9,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -111,7 +112,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -124,8 +125,6 @@ public final class MainPanel extends JPanel {
 }
 
 class LinkViewButtonUI extends BasicButtonUI {
-  // protected static final DataFlavor URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
-  protected static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
   // protected final Dimension size = new Dimension();
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
@@ -135,29 +134,7 @@ class LinkViewButtonUI extends BasicButtonUI {
     b.setForeground(Color.BLUE);
     b.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
     b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    b.setTransferHandler(new TransferHandler("text") {
-      @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
-        return flavors.length > 0 && URI_FLAVOR.equals(flavors[0]);
-      }
-
-      @Override protected Transferable createTransferable(JComponent c) {
-        return new Transferable() {
-          @Override public Object getTransferData(DataFlavor flavor) {
-            // System.out.println(flavor.getMimeType());
-            return href;
-          }
-
-          @Override public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[] {URI_FLAVOR};
-          }
-
-          @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-            // System.out.println(flavor.getMimeType());
-            return URI_FLAVOR.equals(flavor);
-          }
-        };
-      }
-    });
+    b.setTransferHandler(new UriTransferHandler(href));
     b.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         JButton button = (JButton) e.getComponent();
@@ -211,5 +188,36 @@ class LinkViewButtonUI extends BasicButtonUI {
     } else {
       paintText(g, b, textRect, text);
     }
+  }
+}
+
+class UriTransferHandler extends TransferHandler {
+  // ... URI_FLAVOR = new DataFlavor(String.class, "text/uri-list");
+  protected static final DataFlavor URI_FLAVOR = DataFlavor.stringFlavor;
+  private final String href;
+
+  protected UriTransferHandler(String href) {
+    super("text");
+    this.href = href;
+  }
+
+  @Override public boolean canImport(JComponent c, DataFlavor[] flavors) {
+    return flavors.length > 0 && URI_FLAVOR.equals(flavors[0]);
+  }
+
+  @Override protected Transferable createTransferable(JComponent c) {
+    return new Transferable() {
+      @Override public Object getTransferData(DataFlavor flavor) {
+        return href;
+      }
+
+      @Override public DataFlavor[] getTransferDataFlavors() {
+        return new DataFlavor[] {URI_FLAVOR};
+      }
+
+      @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
+        return URI_FLAVOR.equals(flavor);
+      }
+    };
   }
 }
