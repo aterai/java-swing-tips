@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -24,50 +25,25 @@ public final class MainPanel extends JPanel {
     c.insets = new Insets(5, 5, 5, 5);
     ActionListener al = e -> p.revalidate();
     ButtonGroup bg = new ButtonGroup();
-    Stream.of("a1", "a2", "a3").forEach(s -> {
-      JToggleButton b = new JToggleButton(s) {
-        @Override public Dimension getPreferredSize() {
-          int v = isSelected() ? 80 : 50;
-          return new Dimension(v, v);
-        }
-      };
-      b.addActionListener(al);
-      bg.add(b);
-      p.add(b, c);
-    });
+    Stream.of("a1", "a2", "a3")
+        .map(s -> new JToggleButton(s) {
+          @Override public Dimension getPreferredSize() {
+            int v = isSelected() ? 80 : 50;
+            return new Dimension(v, v);
+          }
+        })
+        .forEach(b -> {
+          b.addActionListener(al);
+          bg.add(b);
+          p.add(b, c);
+        });
     return p;
   }
 
   private static Component makeCmp2() {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder("Override FlowLayout#layoutContainer(...)"));
-    p.setLayout(new FlowLayout() {
-      @SuppressWarnings("PMD.AvoidSynchronizedStatement")
-      @Override public void layoutContainer(Container target) {
-        synchronized (target.getTreeLock()) {
-          int nmembers = target.getComponentCount();
-          if (nmembers <= 0) {
-            return;
-          }
-          Insets insets = target.getInsets();
-          // int vgap = getVgap();
-          int hgap = getHgap();
-          int rowHeight = target.getHeight();
-          int x = insets.left + hgap;
-          Dimension d = new Dimension();
-          for (Component m : target.getComponents()) {
-            if (m.isVisible() && m instanceof AbstractButton) {
-              int v = ((AbstractButton) m).isSelected() ? 80 : 50;
-              d.setSize(v, v);
-              m.setSize(d);
-              int y = (rowHeight - v) / 2;
-              m.setLocation(x, y);
-              x += d.width + hgap;
-            }
-          }
-        }
-      }
-    });
+    p.setLayout(new SelectedButtonSizeLayout());
     ActionListener al = e -> p.revalidate();
     ButtonGroup bg = new ButtonGroup();
     Stream.of("b1", "b2", "b3").forEach(s -> {
@@ -89,7 +65,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -98,5 +74,30 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class SelectedButtonSizeLayout extends FlowLayout {
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
+  @Override public void layoutContainer(Container target) {
+    synchronized (target.getTreeLock()) {
+      if (target.getComponentCount() <= 0) {
+        return;
+      }
+      Insets insets = target.getInsets();
+      int rowHeight = target.getHeight();
+      int x = insets.left + getHgap();
+      Dimension d = new Dimension();
+      for (Component m : target.getComponents()) {
+        if (m.isVisible() && m instanceof AbstractButton) {
+          int v = ((AbstractButton) m).isSelected() ? 80 : 50;
+          d.setSize(v, v);
+          m.setSize(d);
+          int y = (rowHeight - v) / 2;
+          m.setLocation(x, y);
+          x += d.width + getHgap();
+        }
+      }
+    }
   }
 }
