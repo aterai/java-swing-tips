@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -31,7 +32,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -54,8 +55,7 @@ final class TreePopupMenu extends JPopupMenu {
       DefaultMutableTreeNode self = (DefaultMutableTreeNode) path.getLastPathComponent();
       DefaultMutableTreeNode child = new DefaultMutableTreeNode("New child node");
       self.add(child);
-      model.reload(self);
-      // or: model.insertNodeInto(child, self, self.getChildCount());
+      model.reload(self); // or: model.insertNodeInto(child, self, self.getChildCount());
     });
     addSeparator();
     add("insert preceding sibling node").addActionListener(e -> {
@@ -66,8 +66,7 @@ final class TreePopupMenu extends JPopupMenu {
       MutableTreeNode child = new DefaultMutableTreeNode("New preceding sibling");
       int index = model.getIndexOfChild(parent, self);
       parent.insert(child, index);
-      model.reload(parent);
-      // or: model.insertNodeInto(child, parent, index);
+      model.reload(parent); // or: model.insertNodeInto(child, parent, index);
     });
     add("insert following sibling node").addActionListener(e -> {
       JTree tree = (JTree) getInvoker();
@@ -77,8 +76,7 @@ final class TreePopupMenu extends JPopupMenu {
       MutableTreeNode child = new DefaultMutableTreeNode("New following sibling");
       int index = model.getIndexOfChild(parent, self);
       parent.insert(child, index + 1);
-      model.reload(parent);
-      // or: model.insertNodeInto(child, parent, index + 1);
+      model.reload(parent); // or: model.insertNodeInto(child, parent, index + 1);
     });
   }
 
