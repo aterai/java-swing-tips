@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,43 +16,31 @@ public final class MainPanel extends JPanel {
     JButton b1 = new JButton("Default");
     b1.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      JComponent c = (JComponent) e.getSource();
-      int ret = chooser.showOpenDialog(c.getRootPane());
-      if (ret == JFileChooser.APPROVE_OPTION) {
-        log.append(chooser.getSelectedFile() + "\n");
-      }
+      showOpenDialog(chooser, log);
     });
 
     JButton b2 = new JButton("Resizable(false)");
     b2.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser() {
-        @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
+        @Override protected JDialog createDialog(Component parent) {
           JDialog dialog = super.createDialog(parent);
           dialog.setResizable(false);
           return dialog;
         }
       };
-      JComponent c = (JComponent) e.getSource();
-      int ret = chooser.showOpenDialog(c.getRootPane());
-      if (ret == JFileChooser.APPROVE_OPTION) {
-        log.append(chooser.getSelectedFile() + "\n");
-      }
+      showOpenDialog(chooser, log);
     });
 
     JButton b3 = new JButton("MinimumSize(640, 480)");
     b3.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser() {
-        @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
+        @Override protected JDialog createDialog(Component parent) {
           JDialog dialog = super.createDialog(parent);
           dialog.setMinimumSize(new Dimension(640, 480));
           return dialog;
         }
       };
-      JComponent c = (JComponent) e.getSource();
-      int ret = chooser.showOpenDialog(c.getRootPane());
-      if (ret == JFileChooser.APPROVE_OPTION) {
-        log.append(chooser.getSelectedFile() + "\n");
-      }
+      showOpenDialog(chooser, log);
     });
 
     JPanel p1 = new JPanel();
@@ -71,6 +60,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void showOpenDialog(JFileChooser chooser, JTextArea log) {
+    int ret = chooser.showOpenDialog(log.getRootPane());
+    if (ret == JFileChooser.APPROVE_OPTION) {
+      log.append(chooser.getSelectedFile() + "\n");
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -81,7 +77,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
