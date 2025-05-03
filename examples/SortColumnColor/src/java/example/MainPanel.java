@@ -5,26 +5,19 @@
 package example;
 
 import java.awt.*;
-import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private static final Color EVEN_COLOR = new Color(0xFA_E6_E6);
+
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"String", "Integer", "Boolean"};
-    Object[][] data = {
-        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model) {
-      private final Color evenColor = new Color(0xFA_E6_E6);
+    JTable table = new JTable(makeModel()) {
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (isRowSelected(row)) {
@@ -32,19 +25,16 @@ public final class MainPanel extends JPanel {
           c.setBackground(getSelectionBackground());
         } else {
           c.setForeground(getForeground());
-          c.setBackground(isSortingColumn(column) ? evenColor : getBackground());
+          c.setBackground(isSortingColumn(this, column) ? EVEN_COLOR : getBackground());
         }
         return c;
       }
 
-      private boolean isSortingColumn(int column) {
-        RowSorter<? extends TableModel> sorter = getRowSorter();
-        return sorter != null && sortingColumn(sorter, column);
-      }
-
-      private boolean sortingColumn(RowSorter<? extends TableModel> sorter, int col) {
-        List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
-        return !keys.isEmpty() && col == convertColumnIndexToView(keys.get(0).getColumn());
+      private boolean isSortingColumn(JTable table, int column) {
+        return Optional.ofNullable(table.getRowSorter()).map(RowSorter::getSortKeys)
+            .filter(keys -> !keys.isEmpty())
+            .map(keys -> keys.get(0).getColumn())
+            .map(i -> column == table.convertColumnIndexToView(i)).orElse(false);
       }
     };
     table.setAutoCreateRowSorter(true);
@@ -57,6 +47,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static TableModel makeModel() {
+    String[] columnNames = {"String", "Integer", "Boolean"};
+    Object[][] data = {
+        {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -67,7 +69,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
