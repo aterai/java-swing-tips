@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -21,74 +22,9 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeTable(makeModel());
+    JTable table = new StandingsTable(makeModel());
     add(new JLayer<>(new JScrollPane(table), new BorderPaintLayerUI()));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private JTable makeTable(TableModel model) {
-    return new JTable(model) {
-      @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component c = super.prepareRenderer(renderer, row, column);
-        int promotion = 2;
-        int playoffs = 6;
-        int relegation = 21;
-        boolean isSelected = isRowSelected(row);
-        if (!isSelected) {
-          Integer num = (Integer) model.getValueAt(convertRowIndexToModel(row), 0);
-          if (num <= promotion) {
-            c.setBackground(new Color(0xCF_F3_C0));
-          } else if (num <= playoffs) {
-            c.setBackground(new Color(0xCB_F7_F5));
-          } else if (num >= relegation) {
-            c.setBackground(new Color(0xFB_DC_DC));
-          } else if (row % 2 == 0) {
-            c.setBackground(Color.WHITE);
-          } else {
-            c.setBackground(new Color(0xF0_F0_F0));
-          }
-        }
-        c.setForeground(Color.BLACK);
-        if (c instanceof JLabel && column != 1) {
-          ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
-        }
-        return c;
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return false;
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setFillsViewportHeight(true);
-        setShowVerticalLines(false);
-        setShowHorizontalLines(false);
-        setIntercellSpacing(new Dimension());
-        setSelectionForeground(getForeground());
-        setSelectionBackground(new Color(0, 0, 100, 50));
-        setAutoCreateRowSorter(true);
-        setFocusable(false);
-        initTableHeader(this);
-      }
-    };
-  }
-
-  private static void initTableHeader(JTable table) {
-    JTableHeader header = table.getTableHeader();
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-    TableColumnModel columnModel = table.getColumnModel();
-    IntStream.range(0, columnModel.getColumnCount())
-        .filter(i -> i != 1)
-        .forEach(i -> columnModel.getColumn(i).setMaxWidth(26));
-    columnModel.getColumn(8).setCellRenderer(new DefaultTableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        String v = Objects.toString(value);
-        String txt = v.startsWith("-") || "0".equals(v) ? v : "+" + v;
-        setHorizontalAlignment(RIGHT);
-        return super.getTableCellRendererComponent(table, txt, isSelected, hasFocus, row, column);
-      }
-    });
   }
 
   private static TableModel makeModel() {
@@ -134,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -143,6 +79,74 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class StandingsTable extends JTable {
+  protected StandingsTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    Component c = super.prepareRenderer(renderer, row, column);
+    int promotion = 2;
+    int playoffs = 6;
+    int relegation = 21;
+    boolean isSelected = isRowSelected(row);
+    if (!isSelected) {
+      TableModel model = getModel();
+      Integer num = (Integer) model.getValueAt(convertRowIndexToModel(row), 0);
+      if (num <= promotion) {
+        c.setBackground(new Color(0xCF_F3_C0));
+      } else if (num <= playoffs) {
+        c.setBackground(new Color(0xCB_F7_F5));
+      } else if (num >= relegation) {
+        c.setBackground(new Color(0xFB_DC_DC));
+      } else if (row % 2 == 0) {
+        c.setBackground(Color.WHITE);
+      } else {
+        c.setBackground(new Color(0xF0_F0_F0));
+      }
+    }
+    c.setForeground(Color.BLACK);
+    if (c instanceof JLabel && column != 1) {
+      ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return c;
+  }
+
+  @Override public boolean isCellEditable(int row, int column) {
+    return false;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setFillsViewportHeight(true);
+    setShowVerticalLines(false);
+    setShowHorizontalLines(false);
+    setIntercellSpacing(new Dimension());
+    setSelectionForeground(getForeground());
+    setSelectionBackground(new Color(0, 0, 100, 50));
+    setAutoCreateRowSorter(true);
+    setFocusable(false);
+    initTableHeader(this);
+  }
+
+  private static void initTableHeader(JTable table) {
+    JTableHeader header = table.getTableHeader();
+    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableColumnModel columnModel = table.getColumnModel();
+    IntStream.range(0, columnModel.getColumnCount())
+        .filter(i -> i != 1)
+        .forEach(i -> columnModel.getColumn(i).setMaxWidth(26));
+    columnModel.getColumn(8).setCellRenderer(new DefaultTableCellRenderer() {
+      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        String v = Objects.toString(value);
+        String txt = v.startsWith("-") || "0".equals(v) ? v : "+" + v;
+        setHorizontalAlignment(RIGHT);
+        return super.getTableCellRendererComponent(table, txt, isSelected, hasFocus, row, column);
+      }
+    });
   }
 }
 
