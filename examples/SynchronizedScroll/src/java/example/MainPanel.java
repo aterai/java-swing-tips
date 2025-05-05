@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -28,36 +29,7 @@ public final class MainPanel extends JPanel {
     JScrollPane sp1 = new JScrollPane(lbl1);
     JScrollPane sp2 = new JScrollPane(lbl2);
 
-    ChangeListener cl = new ChangeListener() {
-      private final AtomicBoolean adjusting = new AtomicBoolean();
-      @Override public void stateChanged(ChangeEvent e) {
-        JViewport src = null;
-        JViewport tgt = null;
-        if (Objects.equals(e.getSource(), sp1.getViewport())) {
-          src = sp1.getViewport();
-          tgt = sp2.getViewport();
-        } else if (Objects.equals(e.getSource(), sp2.getViewport())) {
-          src = sp2.getViewport();
-          tgt = sp1.getViewport();
-        }
-        if (adjusting.get() || Objects.isNull(tgt) || Objects.isNull(src)) {
-          return;
-        }
-        adjusting.set(true);
-        Dimension dim1 = src.getViewSize();
-        Dimension siz1 = src.getSize();
-        Point pnt1 = src.getViewPosition();
-        Dimension dim2 = tgt.getViewSize();
-        Dimension siz2 = tgt.getSize();
-        // Point pnt2 = tgt.getViewPosition();
-        double dy = pnt1.getY() / (dim1.height - siz1.height) * (dim2.height - siz2.height);
-        pnt1.y = (int) dy;
-        double dx = pnt1.getX() / (dim1.width - siz1.width) * (dim2.width - siz2.width);
-        pnt1.x = (int) dx;
-        tgt.setViewPosition(pnt1);
-        adjusting.set(false);
-      }
-    };
+    ChangeListener cl = new ViewPositionChangeListener(sp1, sp2);
     sp1.getViewport().addChangeListener(cl);
     sp2.getViewport().addChangeListener(cl);
 
@@ -89,7 +61,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -98,5 +70,44 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+
+  private static class ViewPositionChangeListener implements ChangeListener {
+    private final AtomicBoolean adjusting = new AtomicBoolean();
+    private final JScrollPane sp1;
+    private final JScrollPane sp2;
+
+    public ViewPositionChangeListener(JScrollPane sp1, JScrollPane sp2) {
+      this.sp1 = sp1;
+      this.sp2 = sp2;
+    }
+
+    @Override public void stateChanged(ChangeEvent e) {
+      JViewport src = null;
+      JViewport tgt = null;
+      if (Objects.equals(e.getSource(), sp1.getViewport())) {
+        src = sp1.getViewport();
+        tgt = sp2.getViewport();
+      } else if (Objects.equals(e.getSource(), sp2.getViewport())) {
+        src = sp2.getViewport();
+        tgt = sp1.getViewport();
+      }
+      if (adjusting.get() || Objects.isNull(tgt) || Objects.isNull(src)) {
+        return;
+      }
+      adjusting.set(true);
+      Dimension dim1 = src.getViewSize();
+      Dimension siz1 = src.getSize();
+      Point pnt1 = src.getViewPosition();
+      Dimension dim2 = tgt.getViewSize();
+      Dimension siz2 = tgt.getSize();
+      // Point pnt2 = tgt.getViewPosition();
+      double dy = pnt1.getY() / (dim1.height - siz1.height) * (dim2.height - siz2.height);
+      pnt1.y = (int) dy;
+      double dx = pnt1.getX() / (dim1.width - siz1.width) * (dim2.width - siz2.width);
+      pnt1.x = (int) dx;
+      tgt.setViewPosition(pnt1);
+      adjusting.set(false);
+    }
   }
 }
