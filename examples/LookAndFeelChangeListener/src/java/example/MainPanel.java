@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -27,22 +28,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    EventQueue.invokeLater(() -> {
-      ActionListener al = e -> {
-        append("JMenuItem: actionPerformed");
-        Object o = e.getSource();
-        if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
-          updateCheckBox("JMenuItem: actionPerformed: invokeLater");
-        }
-      };
-      JMenuBar menuBar = new JMenuBar();
-      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
-      getRootPane().setJMenuBar(menuBar);
-      descendants(menuBar)
-          .filter(JRadioButtonMenuItem.class::isInstance)
-          .map(JRadioButtonMenuItem.class::cast)
-          .forEach(mi -> mi.addActionListener(al));
-    });
+    EventQueue.invokeLater(this::setMenuBar);
 
     String key1 = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
     check1.setText(key1);
@@ -87,6 +73,23 @@ public final class MainPanel extends JPanel {
     updateCheckBox("JPanel: updateUI: invokeLater");
   }
 
+  private void setMenuBar() {
+    ActionListener al = e -> {
+      append("JMenuItem: actionPerformed");
+      Object o = e.getSource();
+      if (o instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem) o).isSelected()) {
+        updateCheckBox("JMenuItem: actionPerformed: invokeLater");
+      }
+    };
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    getRootPane().setJMenuBar(menuBar);
+    descendants(menuBar)
+        .filter(JRadioButtonMenuItem.class::isInstance)
+        .map(JRadioButtonMenuItem.class::cast)
+        .forEach(mi -> mi.addActionListener(al));
+  }
+
   // public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
   //   if (me instanceof JRadioButtonMenuItem) {
   //     list.add((JRadioButtonMenuItem) me);
@@ -112,11 +115,9 @@ public final class MainPanel extends JPanel {
   private void updateCheckBox(String str) {
     EventQueue.invokeLater(() -> {
       append("--------\n" + str);
-
       String focusKey = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
       append(focusKey + ": " + UIManager.getBoolean(focusKey));
       check1.setSelected(UIManager.getBoolean(focusKey));
-
       String dashedKey = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
       append(dashedKey + ": " + UIManager.getBoolean(dashedKey));
       check2.setSelected(UIManager.getBoolean(dashedKey));
@@ -137,7 +138,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -219,7 +220,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
