@@ -34,34 +34,7 @@ public final class MainPanel extends JPanel {
       }
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
 
-    JButton button = new JButton(icon) {
-      private transient MouseListener handler;
-      @Override public void updateUI() {
-        removeMouseListener(handler);
-        super.updateUI();
-        setFocusable(false);
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-        // setAlignmentX(Component.LEFT_ALIGNMENT);
-        // setAlignmentY(Component.TOP_ALIGNMENT); // ???
-        handler = new MouseAdapter() {
-          @Override public void mouseEntered(MouseEvent e) {
-            setContentAreaFilled(true);
-          }
-
-          @Override public void mouseExited(MouseEvent e) {
-            setContentAreaFilled(false);
-          }
-        };
-        addMouseListener(handler);
-      }
-
-      @Override public float getAlignmentY() {
-        return TOP_ALIGNMENT;
-      }
-    };
-
+    JButton button = new TopAlignmentButton(icon);
     JTabbedPane tabs = makeTabbedPane(button);
     tabs.addTab("title1", new JLabel("12345"));
     tabs.addTab("title2", new JScrollPane(new JTree()));
@@ -82,32 +55,20 @@ public final class MainPanel extends JPanel {
   }
 
   private JTabbedPane makeTabbedPane(JButton button) {
+    String key = "TabbedPane.tabAreaInsets";
     return new ClippedTitleTabbedPane() {
       @Override public void updateUI() {
-        String key = "TabbedPane.tabAreaInsets";
         UIManager.put(key, null); // uninstall
         super.updateUI();
-        // setAlignmentX(Component.LEFT_ALIGNMENT);
-        // setAlignmentY(Component.TOP_ALIGNMENT);
-        // System.out.println(button.getAlignmentY());
-        // button.setAlignmentY(Component.TOP_ALIGNMENT);
-        // System.out.println(button.getAlignmentY());
-        UIManager.put(key, getButtonPaddingTabAreaInsets());
+        UIManager.put(key, getButtonPaddingTabAreaInsets(button.getPreferredSize()));
         super.updateUI(); // reinstall
+        setAlignmentX(LEFT_ALIGNMENT);
+        setAlignmentY(TOP_ALIGNMENT);
       }
 
-      @Override public float getAlignmentX() {
-        return LEFT_ALIGNMENT;
-      }
-
-      @Override public float getAlignmentY() {
-        return TOP_ALIGNMENT;
-      }
-
-      private Insets getButtonPaddingTabAreaInsets() {
+      private Insets getButtonPaddingTabAreaInsets(Dimension d) {
         Insets ti = getTabInsets();
         Insets ai = getTabAreaInsets();
-        Dimension d = button.getPreferredSize();
         FontMetrics fm = getFontMetrics(getFont());
         int tih = d.height - fm.getHeight() - ti.top - ti.bottom - ai.bottom;
         return new Insets(Math.max(ai.top, tih), d.width + ai.left, ai.bottom, ai.right);
@@ -135,6 +96,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TopAlignmentButton extends JButton {
+  private transient MouseListener handler;
+
+  protected TopAlignmentButton(Icon icon) {
+    super(icon);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    super.updateUI();
+    setFocusable(false);
+    setContentAreaFilled(false);
+    setFocusPainted(false);
+    setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+    // setAlignmentX(Component.LEFT_ALIGNMENT);
+    // setAlignmentY(Component.TOP_ALIGNMENT); // not work???
+    handler = new MouseAdapter() {
+      @Override public void mouseEntered(MouseEvent e) {
+        setContentAreaFilled(true);
+      }
+
+      @Override public void mouseExited(MouseEvent e) {
+        setContentAreaFilled(false);
+      }
+    };
+    addMouseListener(handler);
+  }
+
+  @Override public float getAlignmentY() {
+    return TOP_ALIGNMENT;
   }
 }
 
