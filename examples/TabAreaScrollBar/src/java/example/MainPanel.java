@@ -33,8 +33,12 @@ public final class MainPanel extends JPanel {
     popup.add("test: add");
     popup.add("test: delete");
     tabs.getTabArea().setComponentPopupMenu(popup);
-
     add(tabs);
+
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -219,11 +223,11 @@ class TabButton extends JToggleButton {
 
   protected TabButton() {
     super();
+    setLayout(new BorderLayout());
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    setLayout(new BorderLayout());
     setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
     setContentAreaFilled(false);
     setFocusPainted(false);
@@ -234,6 +238,10 @@ class TabButton extends JToggleButton {
     Dimension d = super.getPreferredSize();
     d.height = TabAreaScroller.TABAREA_SIZE;
     return d;
+  }
+
+  @Override public final void setLayout(LayoutManager mgr) {
+    super.setLayout(mgr);
   }
 
   @Override protected void fireStateChanged() {
@@ -435,9 +443,65 @@ class HorizontalScrollLayerUI extends LayerUI<JScrollPane> {
     JScrollPane scroll = l.getView();
     JScrollBar hsb = scroll.getHorizontalScrollBar();
     JViewport viewport = scroll.getViewport();
-    Point vp = viewport.getViewPosition();
-    vp.translate(hsb.getBlockIncrement() * e.getWheelRotation(), 0);
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(hsb.getBlockIncrement() * e.getWheelRotation(), 0);
     JComponent v = (JComponent) SwingUtilities.getUnwrappedView(viewport);
-    v.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+    v.scrollRectToVisible(rect);
+  }
+}
+
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = makeButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }

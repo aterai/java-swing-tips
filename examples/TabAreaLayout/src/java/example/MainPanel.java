@@ -383,15 +383,20 @@ class TabButton extends JToggleButton {
 
   protected TabButton() {
     super();
+    setLayout(new BorderLayout());
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    setLayout(new BorderLayout());
+    // setLayout(new BorderLayout()); // not work???
     setBorder(BorderFactory.createEmptyBorder(2, 4, 4, 4));
     setContentAreaFilled(false);
     setFocusPainted(false);
     setOpaque(true);
+  }
+
+  @Override public final void setLayout(LayoutManager mgr) {
+    super.setLayout(mgr);
   }
 
   @Override public Dimension getPreferredSize() {
