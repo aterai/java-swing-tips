@@ -19,40 +19,55 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int KEY_COL_IDX = 0;
-  public static final int COLOR_COL_IDX = 1;
-
   private MainPanel() {
     super(new BorderLayout());
-    add(new JScrollPane(makeTable(makeModel())));
+    add(new JScrollPane(new ColorChooserTable()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTable makeTable(TableModel tableModel) {
-    return new JTable(tableModel) {
-      private transient TableModelListener listener;
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
 
-      @Override public void updateUI() {
-        getModel().removeTableModelListener(listener);
-        super.updateUI();
-        setDefaultRenderer(Color.class, new ColorRenderer());
-        setDefaultEditor(Color.class, new ColorEditor());
-        listener = e -> {
-          if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COL_IDX) {
-            TableModel model = (TableModel) e.getSource();
-            int row = e.getFirstRow();
-            String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
-            Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
-            UIManager.put(key, new ColorUIResource(color));
-            EventQueue.invokeLater(() -> {
-              Container c = getTopLevelAncestor();
-              Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
-            });
-          }
-        };
-        getModel().addTableModelListener(listener);
+  private static void createAndShowGui() {
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class ColorChooserTable extends JTable {
+  public static final int KEY_COL_IDX = 0;
+  public static final int COLOR_COL_IDX = 1;
+  private transient TableModelListener listener;
+
+  protected ColorChooserTable() {
+    super(makeModel());
+  }
+
+  @Override public void updateUI() {
+    getModel().removeTableModelListener(listener);
+    super.updateUI();
+    setDefaultRenderer(Color.class, new ColorRenderer());
+    setDefaultEditor(Color.class, new ColorEditor());
+    listener = e -> {
+      if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == COLOR_COL_IDX) {
+        TableModel model = (TableModel) e.getSource();
+        int row = e.getFirstRow();
+        String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
+        Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
+        UIManager.put(key, new ColorUIResource(color));
+        EventQueue.invokeLater(() -> {
+          Container c = getTopLevelAncestor();
+          Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
+        });
       }
     };
+    getModel().addTableModelListener(listener);
   }
 
   private static TableModel makeModel() {
@@ -96,20 +111,6 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    JFrame.setDefaultLookAndFeelDecorated(true);
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
 
