@@ -604,10 +604,10 @@ class HorizontalScrollLayerUI extends LayerUI<JScrollPane> {
     JScrollPane scroll = l.getView();
     JScrollBar hsb = scroll.getHorizontalScrollBar();
     JViewport viewport = scroll.getViewport();
-    Point vp = viewport.getViewPosition();
-    vp.translate(hsb.getBlockIncrement() * e.getWheelRotation(), 0);
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(hsb.getBlockIncrement() * e.getWheelRotation(), 0);
     JComponent v = (JComponent) SwingUtilities.getUnwrappedView(viewport);
-    v.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+    v.scrollRectToVisible(rect);
   }
 }
 

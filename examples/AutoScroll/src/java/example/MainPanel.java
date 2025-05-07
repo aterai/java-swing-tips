@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -71,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -103,14 +104,14 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    JViewport vport = (JViewport) e.getComponent();
-    JComponent c = (JComponent) vport.getView();
+    JViewport viewport = (JViewport) e.getComponent();
+    JComponent c = (JComponent) viewport.getView();
     Point pt = e.getPoint();
     int dx = startPt.x - pt.x;
     int dy = startPt.y - pt.y;
-    Point vp = vport.getViewPosition();
-    vp.translate(dx, dy);
-    c.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(dx, dy);
+    c.scrollRectToVisible(rect);
     move.setLocation(SPEED * dx, SPEED * dy);
     startPt.setLocation(pt);
   }
@@ -127,13 +128,12 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
     Component c = e.getComponent();
     c.setCursor(DC);
     if (c instanceof JViewport) {
-      JViewport vport = (JViewport) c;
-      JComponent label = (JComponent) vport.getView();
+      JViewport viewport = (JViewport) c;
+      JComponent label = (JComponent) viewport.getView();
       listener = event -> {
-        Point vp = vport.getViewPosition(); // = SwingUtilities.convertPoint(vport, 0, 0, label);
-        vp.translate(move.x, move.y);
-        label.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-        // vport.setViewPosition(vp);
+        Rectangle rect = viewport.getViewRect();
+        rect.translate(move.x, move.y);
+        label.scrollRectToVisible(rect);
       };
       scroller.addActionListener(listener);
       scroller.start();
@@ -172,13 +172,13 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     JComponent jc = (JComponent) e.getComponent();
     Container c = SwingUtilities.getAncestorOfClass(JViewport.class, jc);
     if (c instanceof JViewport) {
-      JViewport vport = (JViewport) c;
-      Point cp = SwingUtilities.convertPoint(jc, e.getPoint(), vport);
+      JViewport viewport = (JViewport) c;
+      Point cp = SwingUtilities.convertPoint(jc, e.getPoint(), viewport);
       int dx = startPt.x - cp.x;
       int dy = startPt.y - cp.y;
-      Point vp = vport.getViewPosition();
-      vp.translate(dx, dy);
-      jc.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(dx, dy);
+      jc.scrollRectToVisible(rect);
       move.setLocation(SPEED * dx, SPEED * dy);
       startPt.setLocation(cp);
     }
@@ -203,10 +203,10 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     listener = event -> {
       Container p = SwingUtilities.getUnwrappedParent(c);
       if (p instanceof JViewport) {
-        JViewport vport = (JViewport) p;
-        Point vp = vport.getViewPosition();
-        vp.translate(move.x, move.y);
-        ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+        JViewport viewport = (JViewport) p;
+        Rectangle rect = viewport.getViewRect();
+        rect.translate(move.x, move.y);
+        ((JComponent) c).scrollRectToVisible(rect);
       }
     };
     scroller.addActionListener(listener);

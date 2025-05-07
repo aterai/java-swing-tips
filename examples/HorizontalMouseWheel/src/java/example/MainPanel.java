@@ -47,10 +47,10 @@ public final class MainPanel extends JPanel {
       Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, e.getComponent());
       if (c instanceof JScrollPane) {
         JViewport viewport = ((JScrollPane) c).getViewport();
-        Point pt = viewport.getViewPosition();
-        pt.translate(hsb.getUnitIncrement() * e.getWheelRotation(), 0);
+        Rectangle rect = viewport.getViewRect();
+        rect.translate(hsb.getUnitIncrement() * e.getWheelRotation(), 0);
         JComponent view = (JComponent) SwingUtilities.getUnwrappedView(viewport);
-        view.scrollRectToVisible(new Rectangle(pt, viewport.getSize()));
+        view.scrollRectToVisible(rect);
       }
     });
 

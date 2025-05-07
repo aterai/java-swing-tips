@@ -152,9 +152,9 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
 
   private void scroll(ActionEvent e) {
     JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-    Point vp = viewport.getViewPosition();
-    vp.translate(-delta.x, -delta.y);
-    label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(delta.x, delta.y);
+    label.scrollRectToVisible(rect);
     if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
       delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
     } else {
@@ -171,10 +171,12 @@ class KineticScrollingListener1 extends MouseAdapter implements HierarchyListene
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     JViewport viewport = (JViewport) e.getComponent(); // label.getParent();
-    Point vp = viewport.getViewPosition(); // SwingUtilities.convertPoint(viewport, 0, 0, label);
-    vp.translate(startPt.x - pt.x, startPt.y - pt.y);
-    delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
-    label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+    Rectangle rect = viewport.getViewRect();
+    int dx = startPt.x - pt.x;
+    int dy = startPt.y - pt.y;
+    rect.translate(dx, dy);
+    label.scrollRectToVisible(rect);
+    delta.setLocation(SPEED * dx, SPEED * dy);
     startPt.setLocation(pt);
   }
 

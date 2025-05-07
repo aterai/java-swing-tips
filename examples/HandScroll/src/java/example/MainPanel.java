@@ -120,13 +120,15 @@ class HandScrollListener extends MouseAdapter {
     JViewport viewport = (JViewport) e.getComponent();
     Point cp = e.getPoint();
     // Point vp = SwingUtilities.convertPoint(viewport, 0, 0, label);
-    Point vp = viewport.getViewPosition();
-    vp.translate(pp.x - cp.x, pp.y - cp.y);
+    // Point vp = viewport.getViewPosition();
+    // vp.translate(pp.x - cp.x, pp.y - cp.y);
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(pp.x - cp.x, pp.y - cp.y);
     Component c = SwingUtilities.getUnwrappedView(viewport);
     if (withinRangeMode && c instanceof JComponent) {
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+      ((JComponent) c).scrollRectToVisible(rect);
     } else {
-      viewport.setViewPosition(vp);
+      viewport.setViewPosition(rect.getLocation());
     }
     pp.setLocation(cp);
   }
@@ -154,11 +156,11 @@ class HandScrollListener extends MouseAdapter {
 //     Component c = e.getComponent();
 //     Container p = SwingUtilities.getUnwrappedParent(c);
 //     if (p instanceof JViewport) {
-//       JViewport vport = (JViewport) p;
-//       Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-//       Point vp = vport.getViewPosition();
+//       JViewport viewport = (JViewport) p;
+//       Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+//       Point vp = viewport.getViewPosition();
 //       vp.translate(pp.x - cp.x, pp.y - cp.y);
-//       ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+//       ((JComponent) c).scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
 //       pp.setLocation(cp);
 //     }
 //   }
@@ -168,8 +170,8 @@ class HandScrollListener extends MouseAdapter {
 //     c.setCursor(hndCursor);
 //     Container p = SwingUtilities.getUnwrappedParent(c);
 //     if (p instanceof JViewport) {
-//       JViewport vport = (JViewport) p;
-//       Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+//       JViewport viewport = (JViewport) p;
+//       Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
 //       pp.setLocation(cp);
 //     }
 //   }
