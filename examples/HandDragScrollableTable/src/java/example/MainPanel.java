@@ -113,13 +113,11 @@ class DragScrollingListener extends MouseAdapter {
     if (p instanceof JViewport) {
       JViewport viewport = (JViewport) p;
       Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
-      Point vp = viewport.getViewPosition();
       int dx = cp.x - startPt.x;
       int dy = cp.y - startPt.y;
-      vp.translate(-dx, -dy);
       delta.setLocation(dx * VELOCITY, dy * VELOCITY);
-      Rectangle rect = viewport.getBounds();
-      rect.setLocation(vp);
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(-dx, -dy);
       ((JComponent) c).scrollRectToVisible(rect);
       startPt.setLocation(cp);
     }

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -67,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -88,11 +89,11 @@ class DragScrollListener extends MouseInputAdapter {
     Component c = e.getComponent();
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      Point vp = vport.getViewPosition();
-      vp.translate(pp.x - cp.x, pp.y - cp.y);
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(pp.x - cp.x, pp.y - cp.y);
+      ((JComponent) c).scrollRectToVisible(rect);
       pp.setLocation(cp);
     }
   }
@@ -102,8 +103,8 @@ class DragScrollListener extends MouseInputAdapter {
     c.setCursor(hndCursor);
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
       pp.setLocation(cp);
     }
   }
@@ -114,7 +115,7 @@ class DragScrollListener extends MouseInputAdapter {
 }
 
 class DragScrollLayerUI extends LayerUI<JScrollPane> {
-  private final Point pp = new Point();
+  private final Point startPt = new Point();
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -137,9 +138,9 @@ class DragScrollLayerUI extends LayerUI<JScrollPane> {
       return;
     }
     if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-      JViewport vport = l.getView().getViewport();
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      pp.setLocation(cp);
+      JViewport viewport = l.getView().getViewport();
+      // Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      startPt.setLocation(viewport.getViewPosition());
     }
   }
 
@@ -149,13 +150,13 @@ class DragScrollLayerUI extends LayerUI<JScrollPane> {
       return;
     }
     if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-      JViewport vport = l.getView().getViewport();
-      JComponent cmp = (JComponent) vport.getView();
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      Point vp = vport.getViewPosition();
-      vp.translate(pp.x - cp.x, pp.y - cp.y);
-      cmp.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-      pp.setLocation(cp);
+      JViewport viewport = l.getView().getViewport();
+      JComponent cmp = (JComponent) viewport.getView();
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(startPt.x - cp.x, startPt.y - cp.y);
+      cmp.scrollRectToVisible(rect);
+      startPt.setLocation(cp);
     }
   }
 }

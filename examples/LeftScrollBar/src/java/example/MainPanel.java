@@ -88,18 +88,18 @@ public final class MainPanel extends JPanel {
 class DragScrollListener extends MouseAdapter {
   private final Cursor defCursor = Cursor.getDefaultCursor();
   private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  private final Point pp = new Point();
+  private final Point startPt = new Point();
 
   @Override public void mouseDragged(MouseEvent e) {
     Component c = e.getComponent();
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      Point vp = vport.getViewPosition();
-      vp.translate(pp.x - cp.x, pp.y - cp.y);
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
-      pp.setLocation(cp);
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(startPt.x - cp.x, startPt.y - cp.y);
+      ((JComponent) c).scrollRectToVisible(rect);
+      startPt.setLocation(cp);
     }
   }
 
@@ -108,9 +108,9 @@ class DragScrollListener extends MouseAdapter {
     c.setCursor(hndCursor);
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      pp.setLocation(cp);
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      startPt.setLocation(cp);
     }
   }
 

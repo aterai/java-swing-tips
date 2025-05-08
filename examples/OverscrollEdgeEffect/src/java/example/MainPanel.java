@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -84,9 +85,9 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
     this.dc = comp.getCursor();
     this.scroller = new Timer(DELAY, e -> {
       JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-      Point vp = viewport.getViewPosition();
-      vp.translate(-delta.x, -delta.y);
-      label.scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(-delta.x, -delta.y);
+      label.scrollRectToVisible(rect);
       if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
         delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
       } else {
@@ -103,11 +104,11 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
 
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
-    JViewport view = (JViewport) e.getComponent(); // label.getParent();
-    Point vp = view.getViewPosition(); // SwingUtilities.convertPoint(view, 0, 0, label);
-    vp.translate(startPt.x - pt.x, startPt.y - pt.y);
     delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
-    label.scrollRectToVisible(new Rectangle(vp, view.getSize()));
+    JViewport viewport = (JViewport) e.getComponent();
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(startPt.x - pt.x, startPt.y - pt.y);
+    label.scrollRectToVisible(rect);
     startPt.setLocation(pt);
   }
 

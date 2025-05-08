@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -154,7 +155,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -175,11 +176,11 @@ class DragScrollListener extends MouseAdapter {
     Component c = e.getComponent();
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      Point vp = vport.getViewPosition();
-      vp.translate(pp.x - cp.x, pp.y - cp.y);
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(pp.x - cp.x, pp.y - cp.y);
+      ((JComponent) c).scrollRectToVisible(rect);
       pp.setLocation(cp);
     }
   }
@@ -189,8 +190,8 @@ class DragScrollListener extends MouseAdapter {
     c.setCursor(hndCursor);
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
       pp.setLocation(cp);
     }
   }

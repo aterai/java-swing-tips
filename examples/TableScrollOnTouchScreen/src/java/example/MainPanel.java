@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -84,11 +85,10 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
   protected TableTouchScreenHandler(JTable table) {
     super();
     this.scroller = new Timer(DELAY, e -> {
-      // System.out.print(".");
-      JViewport vport = (JViewport) SwingUtilities.getUnwrappedParent(table);
-      Point vp = vport.getViewPosition();
-      vp.translate(-delta.x, -delta.y);
-      table.scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(table);
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(-delta.x, -delta.y);
+      table.scrollRectToVisible(rect);
       if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
         delta.setLocation((int) (delta.x * GRAVITY), (int) (delta.y * GRAVITY));
       } else {
@@ -113,12 +113,15 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
     Component c = e.getComponent();
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), vport);
-      Point vp = vport.getViewPosition();
-      vp.translate(startPt.x - cp.x, startPt.y - cp.y);
+      JViewport viewport = (JViewport) p;
+      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
       delta.setLocation(VELOCITY * (cp.x - startPt.x), VELOCITY * (cp.y - startPt.y));
-      ((JComponent) c).scrollRectToVisible(new Rectangle(vp, vport.getSize()));
+      // Point vp = viewport.getViewPosition();
+      // vp.translate(startPt.x - cp.x, startPt.y - cp.y);
+      // ((JComponent) c).scrollRectToVisible(new Rectangle(vp, viewport.getSize()));
+      Rectangle rect = viewport.getViewRect();
+      rect.translate(startPt.x - cp.x, startPt.y - cp.y);
+      ((JComponent) c).scrollRectToVisible(rect);
       startPt.setLocation(cp);
     }
   }
