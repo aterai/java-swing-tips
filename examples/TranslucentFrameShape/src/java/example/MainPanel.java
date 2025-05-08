@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -19,11 +20,8 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("use Window#setShape(...)");
     button1.addActionListener(e -> {
       JWindow window = new JWindow();
+      setTranslucencyBackground(window);
       window.getContentPane().add(makePanel(shape));
-      GraphicsConfiguration gc = window.getGraphicsConfiguration();
-      if (gc != null && gc.isTranslucencyCapable()) {
-        window.setBackground(new Color(0x0, true));
-      }
       window.setShape(shape);
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
@@ -33,10 +31,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("not use Window#setShape(...)");
     button2.addActionListener(e -> {
       JWindow window = new JWindow();
-      GraphicsConfiguration gc = window.getGraphicsConfiguration();
-      if (gc != null && gc.isTranslucencyCapable()) {
-        window.setBackground(new Color(0x0, true));
-      }
+      setTranslucencyBackground(window);
       window.getContentPane().add(makePanel(shape));
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
@@ -52,6 +47,13 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(new JTree()));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void setTranslucencyBackground(JWindow window) {
+    GraphicsConfiguration gc = window.getGraphicsConfiguration();
+    if (gc != null && gc.isTranslucencyCapable()) {
+      window.setBackground(new Color(0x0, true));
+    }
   }
 
   private Component makePanel(Shape shape) {
@@ -72,18 +74,26 @@ public final class MainPanel extends JPanel {
     };
     panel.setOpaque(false);
     panel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-
     DragWindowListener dwl = new DragWindowListener();
     panel.addMouseListener(dwl);
     panel.addMouseMotionListener(dwl);
+    panel.add(makeIconBox());
+    panel.add(makeCloseButton(), BorderLayout.EAST);
+    return panel;
+  }
 
+  private static Container makeIconBox() {
+    // Box p = Box.createHorizontalBox();
     JPanel p = new JPanel();
     p.setOpaque(false);
     p.add(new JLabel(UIManager.getIcon("OptionPane.errorIcon")));
     p.add(new JLabel(UIManager.getIcon("OptionPane.questionIcon")));
     p.add(new JLabel(UIManager.getIcon("OptionPane.warningIcon")));
     p.add(new JLabel(UIManager.getIcon("OptionPane.informationIcon")));
+    return p;
+  }
 
+  private static JButton makeCloseButton() {
     JButton close = new JButton("<html><b>X");
     close.setContentAreaFilled(false);
     close.setBorder(BorderFactory.createEmptyBorder());
@@ -92,10 +102,7 @@ public final class MainPanel extends JPanel {
       Component c = (Component) e.getSource();
       Optional.ofNullable(SwingUtilities.getWindowAncestor(c)).ifPresent(Window::dispose);
     });
-
-    panel.add(p);
-    panel.add(close, BorderLayout.EAST);
-    return panel;
+    return close;
   }
 
   public static void main(String[] args) {
@@ -108,7 +115,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
