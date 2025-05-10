@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -33,17 +34,14 @@ public final class MainPanel extends JPanel {
 
     spinner.addChangeListener(e -> {
       JSpinner source = (JSpinner) e.getSource();
-      Integer newValue = (Integer) source.getValue();
-      slider.setValue(newValue / 10);
+      slider.setValue((int) source.getValue() / 10);
     });
     spinner.addMouseWheelListener(e -> {
       JSpinner source = (JSpinner) e.getComponent();
-      SpinnerNumberModel model = (SpinnerNumberModel) source.getModel();
-      Integer oldValue = (Integer) source.getValue();
-      Integer intValue = oldValue - e.getWheelRotation() * model.getStepSize().intValue();
-      Integer max = (Integer) model.getMaximum(); // 1000
-      Integer min = (Integer) model.getMinimum(); // 0
-      if (min <= intValue && intValue <= max) {
+      SpinnerNumberModel m = (SpinnerNumberModel) source.getModel();
+      int oldValue = (int) source.getValue();
+      int intValue = oldValue - e.getWheelRotation() * m.getStepSize().intValue();
+      if ((Integer) m.getMinimum() <= intValue && intValue <= (Integer) m.getMaximum()) {
         source.setValue(intValue);
       }
     });
@@ -75,7 +73,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
