@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
@@ -17,33 +18,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2, 5, 5));
     JTree tree = new JTree();
-    tree.addTreeWillExpandListener(new TreeWillExpandListener() {
-      @Override public void treeWillExpand(TreeExpansionEvent e) {
-        JTree t = (JTree) e.getSource();
-        TreePath anchor = t.getAnchorSelectionPath();
-        TreePath lead = t.getLeadSelectionPath();
-        TreePath path = e.getPath();
-        Object o = path.getLastPathComponent();
-        if (o instanceof DefaultMutableTreeNode && t.isPathSelected(path)) {
-          DefaultMutableTreeNode n = (DefaultMutableTreeNode) o;
-          TreePath[] paths = Collections.list((Enumeration<?>) n.children())
-              .stream()
-              .filter(DefaultMutableTreeNode.class::isInstance)
-              .map(DefaultMutableTreeNode.class::cast)
-              .map(DefaultMutableTreeNode::getPath)
-              .map(TreePath::new)
-              .toArray(TreePath[]::new);
-          t.addSelectionPaths(paths);
-          t.setAnchorSelectionPath(anchor);
-          t.setLeadSelectionPath(lead);
-        }
-      }
-
-      @Override public void treeWillCollapse(TreeExpansionEvent e) {
-        /* do nothing */
-      }
-    });
-
+    tree.addTreeWillExpandListener(new TreeSelectExpandListener());
     add(new JScrollPane(new JTree()));
     add(new JScrollPane(tree));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -60,7 +35,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -69,5 +44,32 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TreeSelectExpandListener implements TreeWillExpandListener {
+  @Override public void treeWillExpand(TreeExpansionEvent e) {
+    JTree t = (JTree) e.getSource();
+    TreePath anchor = t.getAnchorSelectionPath();
+    TreePath lead = t.getLeadSelectionPath();
+    TreePath path = e.getPath();
+    Object o = path.getLastPathComponent();
+    if (o instanceof DefaultMutableTreeNode && t.isPathSelected(path)) {
+      DefaultMutableTreeNode n = (DefaultMutableTreeNode) o;
+      TreePath[] paths = Collections.list((Enumeration<?>) n.children())
+          .stream()
+          .filter(DefaultMutableTreeNode.class::isInstance)
+          .map(DefaultMutableTreeNode.class::cast)
+          .map(DefaultMutableTreeNode::getPath)
+          .map(TreePath::new)
+          .toArray(TreePath[]::new);
+      t.addSelectionPaths(paths);
+      t.setAnchorSelectionPath(anchor);
+      t.setLeadSelectionPath(lead);
+    }
+  }
+
+  @Override public void treeWillCollapse(TreeExpansionEvent e) {
+    /* do nothing */
   }
 }
