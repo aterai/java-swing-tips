@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -17,44 +18,7 @@ import javax.swing.tree.TreeModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTree tree = new JTree(makeModel()) {
-      private final Color rolloverRowColor = new Color(0xDC_F0_FF);
-      private int rollOverRowIndex = -1;
-      private transient MouseMotionListener listener;
-      @Override public void updateUI() {
-        removeMouseMotionListener(listener);
-        setCellRenderer(null);
-        super.updateUI();
-        DefaultTreeCellRenderer r = new DefaultTreeCellRenderer();
-        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(
-              tree, value, selected, expanded, leaf, row, hasFocus);
-          boolean isRollOver = row == rollOverRowIndex;
-          if (isRollOver) {
-            c.setBackground(rolloverRowColor);
-            if (selected) {
-              c.setForeground(r.getTextNonSelectionColor());
-            }
-          }
-          if (c instanceof JComponent) {
-            ((JComponent) c).setOpaque(isRollOver);
-          }
-          return c;
-        });
-        listener = new MouseAdapter() {
-          @Override public void mouseMoved(MouseEvent e) {
-            int row = getRowForLocation(e.getX(), e.getY());
-            if (row != rollOverRowIndex) {
-              rollOverRowIndex = row;
-              e.getComponent().repaint();
-            }
-          }
-        };
-        addMouseMotionListener(listener);
-      }
-    };
-
-    add(new JScrollPane(tree));
+    add(new JScrollPane(new RollOverTree(makeModel())));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -90,7 +54,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -99,5 +63,47 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RollOverTree extends JTree {
+  private final Color rolloverRowColor = new Color(0xDC_F0_FF);
+  private int rollOverRowIndex = -1;
+  private transient MouseMotionListener listener;
+
+  protected RollOverTree(TreeModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removeMouseMotionListener(listener);
+    setCellRenderer(null);
+    super.updateUI();
+    DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+    setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+      Component c = renderer.getTreeCellRendererComponent(
+          tree, value, selected, expanded, leaf, row, hasFocus);
+      boolean isRollOver = row == rollOverRowIndex;
+      if (isRollOver) {
+        c.setBackground(rolloverRowColor);
+        if (selected) {
+          c.setForeground(renderer.getTextNonSelectionColor());
+        }
+      }
+      if (c instanceof JComponent) {
+        ((JComponent) c).setOpaque(isRollOver);
+      }
+      return c;
+    });
+    listener = new MouseAdapter() {
+      @Override public void mouseMoved(MouseEvent e) {
+        int row = getRowForLocation(e.getX(), e.getY());
+        if (row != rollOverRowIndex) {
+          rollOverRowIndex = row;
+          e.getComponent().repaint();
+        }
+      }
+    };
+    addMouseMotionListener(listener);
   }
 }
