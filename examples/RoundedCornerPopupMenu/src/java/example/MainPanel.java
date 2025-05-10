@@ -5,9 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -24,21 +26,20 @@ public final class MainPanel extends JPanel {
   }
 
   private static JPopupMenu makePopupMenu() {
-    JPopupMenu p = new JPopupMenu();
-    p.add("add").addActionListener(e -> {
-      JTree tree = (JTree) p.getInvoker();
-      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    JPopupMenu popup = new JPopupMenu();
+    popup.add("add").addActionListener(e -> {
+      JTree tree = (JTree) popup.getInvoker();
       TreePath path = tree.getSelectionPath();
       if (path != null) {
-        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) path.getLastPathComponent();
-        DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
-        model.insertNodeInto(child, parent, parent.getChildCount());
-        tree.scrollPathToVisible(new TreePath(child.getPath()));
+        MutableTreeNode p = (MutableTreeNode) path.getLastPathComponent();
+        DefaultMutableTreeNode c = new DefaultMutableTreeNode("New node");
+        ((DefaultTreeModel) tree.getModel()).insertNodeInto(c, p, p.getChildCount());
+        tree.scrollPathToVisible(new TreePath(c.getPath()));
       }
     });
-    p.addSeparator();
-    p.add("remove").addActionListener(e -> {
-      JTree tree = (JTree) p.getInvoker();
+    popup.addSeparator();
+    popup.add("remove").addActionListener(e -> {
+      JTree tree = (JTree) popup.getInvoker();
       TreePath[] paths = tree.getSelectionPaths();
       if (paths != null) {
         for (TreePath path : paths) {
@@ -46,10 +47,10 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    p.addSeparator();
-    p.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
-    p.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
-    return p;
+    popup.addSeparator();
+    popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
+    popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
+    return popup;
   }
 
   private static void removeNode(JTree tree, TreePath path) {
@@ -71,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -168,7 +169,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
