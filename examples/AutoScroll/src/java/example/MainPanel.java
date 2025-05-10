@@ -105,13 +105,16 @@ class ViewportDragScrollListener extends MouseAdapter implements HierarchyListen
 
   @Override public void mouseDragged(MouseEvent e) {
     JViewport viewport = (JViewport) e.getComponent();
-    JComponent c = (JComponent) viewport.getView();
     Point pt = e.getPoint();
     int dx = startPt.x - pt.x;
     int dy = startPt.y - pt.y;
-    Rectangle rect = viewport.getViewRect();
-    rect.translate(dx, dy);
-    c.scrollRectToVisible(rect);
+    // JComponent c = (JComponent) viewport.getView();
+    // Rectangle rect = viewport.getViewRect();
+    // rect.translate(dx, dy);
+    // c.scrollRectToVisible(rect);
+    Point vp = viewport.getViewPosition();
+    vp.translate(dx, dy);
+    viewport.setViewPosition(vp);
     move.setLocation(SPEED * dx, SPEED * dy);
     startPt.setLocation(pt);
   }
