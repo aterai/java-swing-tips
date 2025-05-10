@@ -6,8 +6,8 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public final class MainPanel extends JPanel {
@@ -16,27 +16,19 @@ public final class MainPanel extends JPanel {
     JPanel panel1 = new JPanel() {
       private final JLabel label = new JLabel();
       @Override public String getToolTipText(MouseEvent e) {
-        Border b = getBorder();
-        return b instanceof TitledBorder ? getString(e, (TitledBorder) b) : null;
+        return getBorder() instanceof TitledBorder
+            ? getText(e, (TitledBorder) getBorder()) : super.getToolTipText(e);
       }
 
-      private String getString(MouseEvent e, TitledBorder titledBorder) {
-        // int edge = 2; // EDGE_SPACING;
-        Insets i = titledBorder.getBorderInsets(this);
-        String title = titledBorder.getTitle();
+      private String getText(MouseEvent e, TitledBorder titledBorder) {
+        label.setText(titledBorder.getTitle());
         label.setFont(titledBorder.getTitleFont());
-        label.setText(title);
-        Dimension size = label.getPreferredSize();
-        int labelX = i.left;
-        int labelY = 0;
-        int labelW = getSize().width - i.left - i.right;
-        int labelH = i.top;
-        String tipText = null;
-        if (size.width > labelW) {
-          Rectangle r = new Rectangle(labelX, labelY, labelW, labelH);
-          if (r.contains(e.getPoint())) {
-            tipText = title;
-          }
+        Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+        r.y = 0;
+        r.height = titledBorder.getBorderInsets(this).top;
+        String tipText = super.getToolTipText(e);
+        if (label.getPreferredSize().width > r.width && r.contains(e.getPoint())) {
+          tipText = label.getText();
         }
         return tipText;
       }
@@ -64,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
