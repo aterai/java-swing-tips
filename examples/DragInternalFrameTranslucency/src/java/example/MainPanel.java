@@ -5,66 +5,33 @@
 package example;
 
 import java.awt.*;
+import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private JComponent draggingFrame;
-
   private MainPanel() {
     super(new BorderLayout());
     JDesktopPane desktop = new JDesktopPane();
-    desktop.setDesktopManager(new DefaultDesktopManager() {
-      @Override public void beginDraggingFrame(JComponent f) {
-        setDraggingFrame(f);
-        super.beginDraggingFrame(f);
-      }
-
-      @Override public void endDraggingFrame(JComponent f) {
-        setDraggingFrame(null);
-        super.endDraggingFrame(f);
-        f.repaint();
-      }
-
-      @Override public void beginResizingFrame(JComponent f, int direction) {
-        setDraggingFrame(f);
-        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-        super.beginResizingFrame(f, direction);
-      }
-
-      @Override public void endResizingFrame(JComponent f) {
-        setDraggingFrame(null);
-        desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
-        super.endResizingFrame(f);
-      }
-    });
-
-    JInternalFrame frame1 = createFrame("Frame1");
+    desktop.setDesktopManager(new DragDesktopManager(desktop));
+    JInternalFrame frame1 = createFrame(desktop, "Frame1");
     desktop.add(frame1);
     frame1.setLocation(30, 10);
     frame1.setVisible(true);
-
-    JInternalFrame frame2 = createFrame("Frame2");
+    JInternalFrame frame2 = createFrame(desktop, "Frame2");
     desktop.add(frame2);
     frame2.setLocation(50, 30);
     frame2.setVisible(true);
-
     add(desktop);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void setDraggingFrame(JComponent f) {
-    draggingFrame = f;
-  }
-
-  public JComponent getDraggingFrame() {
-    return draggingFrame;
-  }
-
-  private JInternalFrame createFrame(String title) {
+  private JInternalFrame createFrame(JDesktopPane desktop, String title) {
     JInternalFrame frame = new JInternalFrame(title, true, true, true, true) {
       @Override protected void paintComponent(Graphics g) {
         // if (isDragging) { // JInternalFrame#isDragging: package private
-        if (getDraggingFrame() == this) {
+        DesktopManager m = desktop.getDesktopManager();
+        if (m instanceof DragDesktopManager && ((DragDesktopManager) m).isDraggingFrame(this)) {
           ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
         }
         super.paintComponent(g);
@@ -84,7 +51,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -93,5 +60,46 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class DragDesktopManager extends DefaultDesktopManager {
+  private final JDesktopPane desktop;
+  private JComponent draggingFrame;
+
+  public DragDesktopManager(JDesktopPane desktop) {
+    super();
+    this.desktop = desktop;
+  }
+
+  public void setDraggingFrame(JComponent f) {
+    draggingFrame = f;
+  }
+
+  public boolean isDraggingFrame(JInternalFrame f) {
+    return Objects.equals(draggingFrame, f);
+  }
+
+  @Override public void beginDraggingFrame(JComponent f) {
+    setDraggingFrame(f);
+    super.beginDraggingFrame(f);
+  }
+
+  @Override public void endDraggingFrame(JComponent f) {
+    setDraggingFrame(null);
+    super.endDraggingFrame(f);
+    f.repaint();
+  }
+
+  @Override public void beginResizingFrame(JComponent f, int direction) {
+    setDraggingFrame(f);
+    desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+    super.beginResizingFrame(f, direction);
+  }
+
+  @Override public void endResizingFrame(JComponent f) {
+    setDraggingFrame(null);
+    desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
+    super.endResizingFrame(f);
   }
 }
