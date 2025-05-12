@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -70,24 +71,11 @@ public final class MainPanel extends JPanel {
     Stream.of(fonts).map(Font::getFontName).forEach(m2::addElement);
     JComboBox<String> combo = new JComboBox<String>(m2) {
       private transient PopupMenuListener handler;
+
       @Override public void updateUI() {
         removePopupMenuListener(handler);
         super.updateUI();
-        handler = new PopupMenuListener() {
-          @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-            JComboBox<?> c = (JComboBox<?>) e.getSource();
-            list.setSelectedIndex(c.getSelectedIndex());
-            EventQueue.invokeLater(() -> popup.show(c, 0, c.getHeight()));
-          }
-
-          @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-            // rect.setSize(window.getSize());
-          }
-
-          @Override public void popupMenuCanceled(PopupMenuEvent e) {
-            // rect.setSize(window.getSize());
-          }
-        };
+        handler = new DropdownMenuListener(list, popup);
         addPopupMenuListener(handler);
       }
 
@@ -129,7 +117,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -138,6 +126,33 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class DropdownMenuListener implements PopupMenuListener {
+  private final JList<String> list;
+  private final JPopupMenu popup;
+
+  protected DropdownMenuListener(JList<String> list, JPopupMenu popup) {
+    this.list = list;
+    this.popup = popup;
+  }
+
+  @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+    Object o = e.getSource();
+    if (o instanceof JComboBox<?>) {
+      JComboBox<?> c = (JComboBox<?>) o;
+      list.setSelectedIndex(c.getSelectedIndex());
+      EventQueue.invokeLater(() -> popup.show(c, 0, c.getHeight()));
+    }
+  }
+
+  @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+    // rect.setSize(window.getSize());
+  }
+
+  @Override public void popupMenuCanceled(PopupMenuEvent e) {
+    // rect.setSize(window.getSize());
   }
 }
 

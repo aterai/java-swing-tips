@@ -10,6 +10,7 @@ import java.awt.event.FocusListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -20,43 +21,7 @@ public final class MainPanel extends JPanel {
     JTextField field1 = new JTextField(20);
     field1.setText("1111111111111111");
 
-    JTextField field2 = new JTextField(20) {
-      private transient FocusListener handler;
-
-      @Override public void updateUI() {
-        // setCaret(null);
-        removeFocusListener(handler);
-        super.updateUI();
-        setOpaque(false);
-        setBorder(new RoundedCornerBorder());
-        // setCaret(new DefaultCaret() {
-        //   @Override public void focusGained(FocusEvent e) {
-        //     super.focusGained(e);
-        //     getComponent().repaint();
-        //   }
-        //
-        //   @Override public void focusLost(FocusEvent e) {
-        //     super.focusLost(e);
-        //     getComponent().repaint();
-        //   }
-        // });
-        handler = new FocusBorderListener();
-        addFocusListener(handler);
-      }
-
-      @Override protected void paintComponent(Graphics g) {
-        Border b = getBorder();
-        if (!isOpaque() && b instanceof RoundedCornerBorder) {
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setPaint(getBackground());
-          int w = getWidth() - 1;
-          int h = getHeight() - 1;
-          g2.fill(((RoundedCornerBorder) b).getBorderShape(0, 0, w, h));
-          g2.dispose();
-        }
-        super.paintComponent(g);
-      }
-    };
+    JTextField field2 = new FocusBorderTextField(20);
     field2.setText("2222222222222");
 
     JCheckBox check = new JCheckBox("setEnabled", true);
@@ -105,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -114,6 +79,48 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FocusBorderTextField extends JTextField {
+  private transient FocusListener handler;
+
+  protected FocusBorderTextField(int column) {
+    super(column);
+  }
+
+  @Override public void updateUI() {
+    // setCaret(null);
+    removeFocusListener(handler);
+    super.updateUI();
+    setOpaque(false);
+    setBorder(new RoundedCornerBorder());
+    // setCaret(new DefaultCaret() {
+    //   @Override public void focusGained(FocusEvent e) {
+    //     super.focusGained(e);
+    //     getComponent().repaint();
+    //   }
+    //
+    //   @Override public void focusLost(FocusEvent e) {
+    //     super.focusLost(e);
+    //     getComponent().repaint();
+    //   }
+    // });
+    handler = new FocusBorderListener();
+    addFocusListener(handler);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    Border b = getBorder();
+    if (!isOpaque() && b instanceof RoundedCornerBorder) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(getBackground());
+      int w = getWidth() - 1;
+      int h = getHeight() - 1;
+      g2.fill(((RoundedCornerBorder) b).getBorderShape(0, 0, w, h));
+      g2.dispose();
+    }
+    super.paintComponent(g);
   }
 }
 
@@ -213,7 +220,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
