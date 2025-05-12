@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -14,7 +15,7 @@ public final class MainPanel extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel panel = new JPanel(cardLayout);
   private final JDesktopPane desktopPane = new JDesktopPane();
-  private final JTabbedPane tabbedPane = new JTabbedPane();
+  private final JTabbedPane tabs = new JTabbedPane();
   private int openFrameCount;
   private int row;
   private int col;
@@ -22,40 +23,19 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     panel.add(desktopPane, desktopPane.getClass().getName());
-    panel.add(tabbedPane, tabbedPane.getClass().getName());
+    panel.add(tabs, tabs.getClass().getName());
 
     JToggleButton swapButton = new JToggleButton("JDesktopPane <-> JTabbedPane");
     swapButton.addActionListener(e -> {
       if (((AbstractButton) e.getSource()).isSelected()) {
-        // tabbedPane.removeAll();
-        Stream.of(desktopPane.getAllFrames())
-            .sorted(Comparator.comparing(JInternalFrame::getTitle))
-            .forEach(f -> tabbedPane.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
-        Optional.ofNullable(desktopPane.getSelectedFrame())
-            .ifPresent(f -> tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(f.getTitle())));
-        cardLayout.show(panel, tabbedPane.getClass().getName());
+        internalFrameToTab();
       } else {
-        Stream.of(desktopPane.getAllFrames()).forEach(f -> {
-          int i = tabbedPane.indexOfTab(f.getTitle());
-          f.setContentPane((Container) tabbedPane.getComponentAt(i));
-        });
-        cardLayout.show(panel, desktopPane.getClass().getName());
+        tabToInternalFrame();
       }
     });
 
     JButton addButton = new JButton("add");
-    addButton.addActionListener(e -> {
-      JInternalFrame f = createInternalFrame();
-      desktopPane.add(f);
-      Icon icon = f.getFrameIcon();
-      String title = f.getTitle();
-      Component c = new JScrollPane(new JTextArea(title));
-      if (desktopPane.isShowing()) {
-        f.add(c);
-      } else {
-        tabbedPane.addTab(title, icon, c);
-      }
-    });
+    addButton.addActionListener(e -> addContent());
 
     JToolBar toolBar = new JToolBar();
     toolBar.setFloatable(false);
@@ -66,6 +46,37 @@ public final class MainPanel extends JPanel {
     add(panel);
     add(toolBar, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void addContent() {
+    JInternalFrame f = createInternalFrame();
+    desktopPane.add(f);
+    Icon icon = f.getFrameIcon();
+    String title = f.getTitle();
+    Component c = new JScrollPane(new JTextArea(title));
+    if (desktopPane.isShowing()) {
+      f.add(c);
+    } else {
+      tabs.addTab(title, icon, c);
+    }
+  }
+
+  private void tabToInternalFrame() {
+    Stream.of(desktopPane.getAllFrames()).forEach(f -> {
+      int i = tabs.indexOfTab(f.getTitle());
+      f.setContentPane((Container) tabs.getComponentAt(i));
+    });
+    cardLayout.show(panel, desktopPane.getClass().getName());
+  }
+
+  private void internalFrameToTab() {
+    // tabbedPane.removeAll();
+    Stream.of(desktopPane.getAllFrames())
+        .sorted(Comparator.comparing(JInternalFrame::getTitle))
+        .forEach(f -> tabs.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
+    Optional.ofNullable(desktopPane.getSelectedFrame())
+        .ifPresent(f -> tabs.setSelectedIndex(tabs.indexOfTab(f.getTitle())));
+    cardLayout.show(panel, tabs.getClass().getName());
   }
 
   private JInternalFrame createInternalFrame() {
@@ -96,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
