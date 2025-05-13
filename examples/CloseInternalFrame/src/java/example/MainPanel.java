@@ -65,9 +65,7 @@ public final class MainPanel extends JPanel {
       JInternalFrame frame = makeInternalFrame(desktop);
       try {
         frame.setSelected(true);
-        if (openFrameCount % 2 == 0) {
-          frame.setIcon(true);
-        }
+        frame.setIcon(openFrameCount % 2 == 0);
       } catch (PropertyVetoException ex) {
         throw new IllegalStateException(ex);
       }

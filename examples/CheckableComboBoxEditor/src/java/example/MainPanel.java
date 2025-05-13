@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.Objects;
@@ -196,7 +197,7 @@ class CheckComboBoxEditor implements ComboBoxEditor {
 final class EditorPanel extends JPanel {
   private final JCheckBox enabledCheck = new JCheckBox();
   private final JCheckBox editableCheck = new JCheckBox();
-  private final JTextField textField = new JTextField("", 16);
+  private final JTextField editor = new JTextField("", 16);
   private final transient ComboItem data;
   private int editingIndex = -1;
 
@@ -212,7 +213,7 @@ final class EditorPanel extends JPanel {
         ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
         item.setEnabled(((JCheckBox) e.getSource()).isSelected());
         editableCheck.setEnabled(item.isEnabled());
-        textField.setEnabled(item.isEnabled());
+        editor.setEnabled(item.isEnabled());
         combo.setSelectedIndex(editingIndex);
       }
     });
@@ -225,31 +226,33 @@ final class EditorPanel extends JPanel {
         JComboBox<?> combo = (JComboBox<?>) c;
         ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
         item.setEditable(((JCheckBox) e.getSource()).isSelected());
-        textField.setEditable(item.isEditable());
+        editor.setEditable(item.isEditable());
         combo.setSelectedIndex(editingIndex);
       }
     });
     editableCheck.setOpaque(false);
     editableCheck.setFocusable(false);
 
-    textField.addActionListener(e -> {
-      Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
-      if (c instanceof JComboBox) {
-        JComboBox<?> combo = (JComboBox<?>) c;
-        ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
-        item.setText(((JTextField) e.getSource()).getText());
-        combo.setSelectedIndex(editingIndex);
-      }
-    });
-    textField.setBorder(BorderFactory.createEmptyBorder());
-    textField.setOpaque(false);
+    editor.addActionListener(this::itemEdited);
+    editor.setBorder(BorderFactory.createEmptyBorder());
+    editor.setOpaque(false);
 
     setOpaque(false);
     setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
     add(enabledCheck);
     add(editableCheck);
-    add(textField);
+    add(editor);
+  }
+
+  private void itemEdited(ActionEvent e) {
+    Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
+    if (c instanceof JComboBox) {
+      JComboBox<?> combo = (JComboBox<?>) c;
+      ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
+      item.setText(((JTextField) e.getSource()).getText());
+      combo.setSelectedIndex(editingIndex);
+    }
   }
 
   public int getEditingIndex() {
@@ -263,7 +266,7 @@ final class EditorPanel extends JPanel {
   public ComboItem getItem() {
     data.setEnabled(enabledCheck.isSelected());
     data.setEditable(editableCheck.isSelected());
-    data.setText(textField.getText());
+    data.setText(editor.getText());
     return data;
   }
 
@@ -273,24 +276,24 @@ final class EditorPanel extends JPanel {
     editableCheck.setSelected(item.isEditable());
     editableCheck.setEnabled(item.isEnabled());
 
-    textField.setText(item.getText());
-    textField.setEnabled(item.isEnabled());
-    textField.setEditable(item.isEditable());
+    editor.setText(item.getText());
+    editor.setEnabled(item.isEnabled());
+    editor.setEditable(item.isEditable());
   }
 
   public void selectAll() {
-    textField.requestFocusInWindow();
-    textField.selectAll();
+    editor.requestFocusInWindow();
+    editor.selectAll();
   }
 
   public void addActionListener(ActionListener l) {
-    textField.addActionListener(l);
+    editor.addActionListener(l);
     enabledCheck.addActionListener(l);
     editableCheck.addActionListener(l);
   }
 
   public void removeActionListener(ActionListener l) {
-    textField.removeActionListener(l);
+    editor.removeActionListener(l);
     enabledCheck.removeActionListener(l);
     editableCheck.removeActionListener(l);
   }
