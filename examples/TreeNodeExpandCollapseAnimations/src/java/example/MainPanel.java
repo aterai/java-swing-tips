@@ -10,6 +10,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -43,35 +44,7 @@ public final class MainPanel extends JPanel {
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .forEach(n -> n.setUserObject(makeUserObject(n, END_HEIGHT)));
-    tree.addTreeWillExpandListener(new TreeWillExpandListener() {
-      @Override public void treeWillExpand(TreeExpansionEvent e) {
-        Object o = e.getPath().getLastPathComponent();
-        if (o instanceof DefaultMutableTreeNode) {
-          DefaultMutableTreeNode parent = (DefaultMutableTreeNode) o;
-          List<DefaultMutableTreeNode> list = getTreeNodes(parent);
-          parent.setUserObject(makeUserObject(parent, END_HEIGHT));
-          list.forEach(n -> n.setUserObject(makeUserObject(n, START_HEIGHT)));
-          startExpand(e, list);
-        }
-      }
-
-      @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
-        Object c = e.getPath().getLastPathComponent();
-        if (c instanceof DefaultMutableTreeNode) {
-          List<DefaultMutableTreeNode> list = getTreeNodes((DefaultMutableTreeNode) c);
-          boolean b = list
-              .stream()
-              .anyMatch(n -> {
-                Object uo = n.getUserObject();
-                return uo instanceof SizeNode && ((SizeNode) uo).height == END_HEIGHT;
-              });
-          if (b) {
-            startCollapse(e, list);
-            throw new ExpandVetoException(e);
-          }
-        }
-      }
-    });
+    tree.addTreeWillExpandListener(new AnimatedTreeWillExpandListener());
     add(makeTitledPanel("Default", new JScrollPane(new JTree())));
     add(makeTitledPanel("Expand/Collapse Animations", new JScrollPane(tree)));
     setPreferredSize(new Dimension(320, 240));
@@ -147,7 +120,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -156,6 +129,36 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+
+  private static final class AnimatedTreeWillExpandListener implements TreeWillExpandListener {
+    @Override public void treeWillExpand(TreeExpansionEvent e) {
+      Object o = e.getPath().getLastPathComponent();
+      if (o instanceof DefaultMutableTreeNode) {
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) o;
+        List<DefaultMutableTreeNode> list = getTreeNodes(parent);
+        parent.setUserObject(makeUserObject(parent, END_HEIGHT));
+        list.forEach(n -> n.setUserObject(makeUserObject(n, START_HEIGHT)));
+        startExpand(e, list);
+      }
+    }
+
+    @Override public void treeWillCollapse(TreeExpansionEvent e) throws ExpandVetoException {
+      Object c = e.getPath().getLastPathComponent();
+      if (c instanceof DefaultMutableTreeNode) {
+        List<DefaultMutableTreeNode> list = getTreeNodes((DefaultMutableTreeNode) c);
+        boolean b = list
+            .stream()
+            .anyMatch(n -> {
+              Object uo = n.getUserObject();
+              return uo instanceof SizeNode && ((SizeNode) uo).height == END_HEIGHT;
+            });
+        if (b) {
+          startCollapse(e, list);
+          throw new ExpandVetoException(e);
+        }
+      }
+    }
   }
 }
 
