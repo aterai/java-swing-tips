@@ -10,6 +10,9 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
@@ -35,31 +38,49 @@ public final class MainPanel extends JPanel {
     progress2.setFont(progress2.getFont().deriveFont(24f));
     progress2.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
+    String key = "Slider.clockwise";
+    progress1.putClientProperty(key, Boolean.TRUE);
+    progress2.putClientProperty(key, Boolean.TRUE);
+    JCheckBox check = new JCheckBox("Clockwise", true);
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      for (JProgressBar bar : Arrays.asList(progress1, progress2)) {
+        bar.putClientProperty(key, b);
+        bar.repaint();
+      }
+    });
+
     JSlider slider = new JSlider();
     slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
     progress1.setModel(slider.getModel());
 
     JButton button = new JButton("start");
-    button.addActionListener(e -> {
-      JButton b = (JButton) e.getSource();
-      b.setEnabled(false);
-      SwingWorker<String, Void> worker = new BackgroundTask() {
-        @Override protected void done() {
-          b.setEnabled(true);
-        }
-      };
-      worker.addPropertyChangeListener(new ProgressListener(progress2));
-      worker.execute();
-    });
+    button.addActionListener(e -> start((JButton) e.getSource(), progress2));
 
     JPanel p = new JPanel(new GridLayout(1, 2));
     p.add(progress1);
     p.add(progress2);
 
+    Box box = Box.createHorizontalBox();
+    box.add(check);
+    box.add(Box.createHorizontalGlue());
+    box.add(button);
+
     add(slider, BorderLayout.NORTH);
     add(p);
-    add(button, BorderLayout.SOUTH);
+    add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void start(JButton button, JProgressBar progress) {
+    button.setEnabled(false);
+    SwingWorker<String, Void> worker = new BackgroundTask() {
+      @Override protected void done() {
+        button.setEnabled(true);
+      }
+    };
+    worker.addPropertyChangeListener(new ProgressListener(progress));
+    worker.execute();
   }
 
   public static void main(String[] args) {
@@ -72,7 +93,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -107,8 +128,10 @@ class ProgressCircleUI extends BasicProgressBarUI {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+    Object o = progressBar.getClientProperty("Slider.clockwise");
+    int dir = Objects.equals(o, Boolean.TRUE) ? -1 : 1;
     double start = 90d;
-    double degree = 360d * progressBar.getPercentComplete();
+    double degree = dir * 360d * progressBar.getPercentComplete();
     double sz = Math.min(rect.width, rect.height);
     double cx = rect.getCenterX();
     double cy = rect.getCenterY();
