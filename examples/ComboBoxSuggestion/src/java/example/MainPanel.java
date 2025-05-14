@@ -155,26 +155,6 @@ class ComboKeyHandler extends KeyAdapter {
     }
   }
 
-  @Override public void keyTyped(KeyEvent e) {
-    EventQueue.invokeLater(() -> {
-      String text = ((JTextField) e.getComponent()).getText();
-      ComboBoxModel<String> m;
-      if (text.isEmpty()) {
-        m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
-        setSuggestionModel(comboBox, m, "");
-        comboBox.hidePopup();
-      } else {
-        m = getSuggestedModel(list, text);
-        if (m.getSize() == 0 || shouldHide) {
-          comboBox.hidePopup();
-        } else {
-          setSuggestionModel(comboBox, m, text);
-          comboBox.showPopup();
-        }
-      }
-    });
-  }
-
   @Override public void keyPressed(KeyEvent e) {
     JTextField textField = (JTextField) e.getComponent();
     String text = textField.getText();
@@ -204,6 +184,31 @@ class ComboKeyHandler extends KeyAdapter {
       default:
         shouldHide = false;
         break;
+    }
+  }
+
+  @Override public void keyTyped(KeyEvent e) {
+    Component c = e.getComponent();
+    if (c instanceof JTextField) {
+      JTextField textField = (JTextField) c;
+      EventQueue.invokeLater(() -> keyTyped(textField.getText()));
+    }
+  }
+
+  private void keyTyped(String text) {
+    ComboBoxModel<String> m;
+    if (text.isEmpty()) {
+      m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
+      setSuggestionModel(comboBox, m, "");
+      comboBox.hidePopup();
+    } else {
+      m = getSuggestedModel(list, text);
+      if (m.getSize() == 0 || shouldHide) {
+        comboBox.hidePopup();
+      } else {
+        setSuggestionModel(comboBox, m, text);
+        comboBox.showPopup();
+      }
     }
   }
 

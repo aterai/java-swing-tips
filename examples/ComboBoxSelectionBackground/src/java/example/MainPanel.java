@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
 
@@ -38,13 +39,8 @@ public final class MainPanel extends JPanel {
         setRenderer((list, value, index, isSelected, cellHasFocus) -> {
           Component c = renderer.getListCellRendererComponent(
               list, value, index, isSelected, cellHasFocus);
-          if (isSelected) {
-            c.setForeground(Color.WHITE);
-            c.setBackground(Color.ORANGE);
-          } else {
-            c.setForeground(Color.BLACK);
-            c.setBackground(Color.WHITE);
-          }
+          c.setForeground(isSelected ? Color.WHITE : Color.BLACK);
+          c.setBackground(isSelected ? Color.ORANGE : Color.WHITE);
           return c;
         });
       }
@@ -78,7 +74,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

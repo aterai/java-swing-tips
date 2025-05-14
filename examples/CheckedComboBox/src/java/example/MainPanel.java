@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,10 +27,9 @@ public final class MainPanel extends JPanel {
     p.add(Box.createVerticalStrut(20));
     p.add(new JLabel("CheckedComboBox:"));
     p.add(new CheckedComboBox<>(makeModel()));
-    // p.add(new CheckedComboBox<>(new CheckedComboBoxModel<>(m)));
-    p.add(Box.createVerticalStrut(20));
-    p.add(new JLabel("CheckedComboBox(Windows):"));
-    p.add(new WindowsCheckedComboBox<>(makeModel()));
+    // p.add(Box.createVerticalStrut(20));
+    // p.add(new JLabel("CheckedComboBox(WindowsLookAndFeel only?):"));
+    // p.add(new WindowsCheckedComboBox<>(makeModel()));
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -153,17 +151,9 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
   protected boolean keepOpen;
   private final JPanel panel = new JPanel(new BorderLayout());
 
-  //  protected CheckedComboBox() {
-  //    super();
-  //  }
-
   protected CheckedComboBox(ComboBoxModel<E> model) {
     super(model);
   }
-
-  // protected CheckedComboBox(E[] m) {
-  //   super(m);
-  // }
 
   @Override public Dimension getPreferredSize() {
     return new Dimension(200, 20);
@@ -172,7 +162,6 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
   @Override public void updateUI() {
     setRenderer(null);
     super.updateUI();
-
     Accessible a = getAccessibleContext().getAccessibleChild(0);
     if (a instanceof ComboPopup) {
       ((ComboPopup) a).getList().addMouseListener(new MouseAdapter() {
@@ -185,30 +174,7 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
         }
       });
     }
-
-    DefaultListCellRenderer renderer = new DefaultListCellRenderer();
-    JCheckBox check = new JCheckBox();
-    check.setOpaque(false);
-    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      panel.removeAll();
-      Component c = renderer.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
-      if (index < 0) {
-        String txt = getCheckItemString(list.getModel());
-        JLabel l = (JLabel) c;
-        l.setText(txt.isEmpty() ? " " : txt);
-        l.setOpaque(false);
-        l.setForeground(list.getForeground());
-        panel.setOpaque(false);
-      } else {
-        check.setSelected(value.isSelected());
-        panel.add(check, BorderLayout.WEST);
-        panel.setOpaque(true);
-        panel.setBackground(c.getBackground());
-      }
-      panel.add(c);
-      return panel;
-    });
+    setRenderer(new CheckItemListCellRenderer());
     initActionMap();
   }
 
@@ -257,47 +223,74 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
         .sorted()
         .collect(Collectors.joining(", "));
   }
-}
 
-class WindowsCheckedComboBox<E extends CheckItem> extends CheckedComboBox<E> {
-  private transient ActionListener listener;
+  private class CheckItemListCellRenderer implements ListCellRenderer<E> {
+    private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    private final JCheckBox check = new JCheckBox();
 
-  protected WindowsCheckedComboBox(ComboBoxModel<E> model) {
-    super(model);
-  }
-
-  @Override public void updateUI() {
-    setRenderer(null);
-    removeActionListener(listener);
-    super.updateUI();
-    listener = e -> {
-      if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
-        keepOpen = true;
-        updateItem(getSelectedIndex());
-      }
-    };
-    addActionListener(listener);
-
-    JLabel label = new JLabel(" ");
-    JCheckBox check = new JCheckBox(" ");
-    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+    @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+      panel.removeAll();
+      check.setOpaque(false);
+      Component c = renderer.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (index < 0) {
         String txt = getCheckItemString(list.getModel());
-        label.setText(txt.isEmpty() ? " " : txt);
-        return label;
+        JLabel l = (JLabel) c;
+        l.setText(txt.isEmpty() ? " " : txt);
+        l.setOpaque(false);
+        l.setForeground(list.getForeground());
+        panel.setOpaque(false);
       } else {
-        check.setText(Objects.toString(value, ""));
         check.setSelected(value.isSelected());
-        if (isSelected) {
-          check.setBackground(list.getSelectionBackground());
-          check.setForeground(list.getSelectionForeground());
-        } else {
-          check.setBackground(list.getBackground());
-          check.setForeground(list.getForeground());
-        }
-        return check;
+        panel.add(check, BorderLayout.WEST);
+        panel.setOpaque(true);
+        panel.setBackground(c.getBackground());
       }
-    });
-    initActionMap();
+      panel.add(c);
+      return panel;
+    }
   }
 }
+
+// class WindowsCheckedComboBox<E extends CheckItem> extends CheckedComboBox<E> {
+//   private transient ActionListener listener;
+//
+//   protected WindowsCheckedComboBox(ComboBoxModel<E> model) {
+//     super(model);
+//   }
+//
+//   @Override public void updateUI() {
+//     setRenderer(null);
+//     removeActionListener(listener);
+//     super.updateUI();
+//     listener = e -> {
+//       if ((e.getModifiers() & AWTEvent.MOUSE_EVENT_MASK) != 0) {
+//         keepOpen = true;
+//         updateItem(getSelectedIndex());
+//       }
+//     };
+//     addActionListener(listener);
+//
+//     JLabel label = new JLabel(" ");
+//     JCheckBox check = new JCheckBox(" ");
+//     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
+//       if (index < 0) {
+//         String txt = getCheckItemString(list.getModel());
+//         label.setText(txt.isEmpty() ? " " : txt);
+//         return label;
+//       } else {
+//         check.setText(Objects.toString(value, ""));
+//         check.setSelected(value.isSelected());
+//         if (isSelected) {
+//           check.setBackground(list.getSelectionBackground());
+//           check.setForeground(list.getSelectionForeground());
+//         } else {
+//           check.setBackground(list.getBackground());
+//           check.setForeground(list.getForeground());
+//         }
+//         return check;
+//       }
+//     });
+//     initActionMap();
+//   }
+// }
