@@ -7,6 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsInternalFrameUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.LayerUI;
@@ -62,23 +63,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame f = new JInternalFrame("WindowsInternalFrameUI", true, true, true, true) {
       @Override public void updateUI() {
         super.updateUI();
-        setUI(new WindowsInternalFrameUI(this) {
-          @Override protected MouseInputAdapter createBorderListener(JInternalFrame w) {
-            return new BorderListener() {
-              @Override public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                  super.mouseClicked(e);
-                }
-              }
-
-              @Override public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                  super.mousePressed(e);
-                }
-              }
-            };
-          }
-        });
+        setUI(new DisableRightClickInternalFrameUI(this));
       }
     };
     f.setSize(200, 100);
@@ -97,7 +82,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -106,6 +91,28 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class DisableRightClickInternalFrameUI extends WindowsInternalFrameUI {
+  protected DisableRightClickInternalFrameUI(JInternalFrame frame) {
+    super(frame);
+  }
+
+  @Override protected MouseInputAdapter createBorderListener(JInternalFrame w) {
+    return new BorderListener() {
+      @Override public void mouseClicked(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+          super.mouseClicked(e);
+        }
+      }
+
+      @Override public void mousePressed(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
+          super.mousePressed(e);
+        }
+      }
+    };
   }
 }
 
