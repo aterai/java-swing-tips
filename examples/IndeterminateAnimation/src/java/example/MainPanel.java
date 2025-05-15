@@ -34,17 +34,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     list.forEach(bar -> p.add(makePanel(bar)));
 
     JButton button = new JButton("Start");
-    button.addActionListener(e -> {
-      if (Objects.nonNull(worker) && !worker.isDone()) {
-        worker.cancel(true);
-      }
-      worker = new BackgroundTask();
-      list.forEach(bar -> {
-        bar.setIndeterminate(true);
-        worker.addPropertyChangeListener(new ProgressListener(bar));
-      });
-      worker.execute();
-    });
+    button.addActionListener(e -> start(list));
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -56,6 +46,18 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void start(List<JProgressBar> list) {
+    if (Objects.nonNull(worker) && !worker.isDone()) {
+      worker.cancel(true);
+    }
+    worker = new BackgroundTask();
+    list.forEach(bar -> {
+      bar.setIndeterminate(true);
+      worker.addPropertyChangeListener(new ProgressListener(bar));
+    });
+    worker.execute();
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {

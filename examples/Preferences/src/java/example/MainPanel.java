@@ -10,6 +10,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import javax.swing.*;
@@ -21,14 +22,13 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JButton clearButton = new JButton("Preferences#clear() and JFrame#dispose()");
     clearButton.addActionListener(e -> {
+      Component c = (Component) e.getSource();
       try {
         handler.pref.clear();
         handler.pref.flush();
       } catch (BackingStoreException ex) {
-        ex.printStackTrace();
-        Toolkit.getDefaultToolkit().beep();
+        UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
-      Component c = (Component) e.getSource();
       Optional.ofNullable(SwingUtilities.getWindowAncestor(c)).ifPresent(Window::dispose);
     });
 
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -120,7 +120,7 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
     try {
       pref.flush();
     } catch (BackingStoreException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       Toolkit.getDefaultToolkit().beep();
     }
   }

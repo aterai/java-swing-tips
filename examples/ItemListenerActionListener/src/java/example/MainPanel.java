@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -60,16 +61,12 @@ public final class MainPanel extends JPanel {
 
   private static Component makeCheckBoxes(JTextArea textArea) {
     ItemListener il = e -> {
-      // AbstractButton c = (AbstractButton) e.getItem();
-      AbstractButton c = (AbstractButton) e.getItemSelectable();
+      AbstractButton c = (AbstractButton) e.getItemSelectable(); // e.getItem();
       boolean b = e.getStateChange() == ItemEvent.SELECTED;
       String ac = c.getActionCommand();
       print(textArea, e, c.getClass(), b, ac);
-      // if (e.getStateChange() == ItemEvent.SELECTED) {
-      //   for (Object o : e.getItemSelectable().getSelectedObjects()) {
-      //     System.out.println(Objects.toString(o));
-      //   }
-      // }
+      // if (e.getStateChange() == ItemEvent.SELECTED)
+      //   for (Object o : e.getItemSelectable().getSelectedObjects()) ...;
     };
     ActionListener al = e -> {
       AbstractButton c = (AbstractButton) e.getSource();
@@ -145,7 +142,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

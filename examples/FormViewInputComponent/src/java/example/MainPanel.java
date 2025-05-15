@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.html.FormSubmitEvent;
 import javax.swing.text.html.HTMLEditorKit;
@@ -26,20 +27,23 @@ public final class MainPanel extends JPanel {
     editor.setEditable(false);
     editor.addHyperlinkListener(e -> {
       if (e instanceof FormSubmitEvent) {
-        String data = ((FormSubmitEvent) e).getData();
-        String charset = Charset.defaultCharset().toString();
-        try {
-          String para = URLDecoder.decode(data, charset);
-          JOptionPane.showMessageDialog(editor.getRootPane(), para);
-        } catch (UnsupportedEncodingException ex) {
-          UIManager.getLookAndFeel().provideErrorFeedback(editor);
-          ex.printStackTrace();
-        }
+        formSubmitted(((FormSubmitEvent) e).getData(), editor);
       }
     });
     editor.setText(makeHtml());
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void formSubmitted(String data, JEditorPane editor) {
+    String charset = Charset.defaultCharset().toString();
+    try {
+      String para = URLDecoder.decode(data, charset);
+      JOptionPane.showMessageDialog(editor.getRootPane(), para);
+    } catch (UnsupportedEncodingException ex) {
+      UIManager.getLookAndFeel().provideErrorFeedback(editor);
+      Logger.getGlobal().severe(ex::getMessage);
+    }
   }
 
   private static String makeHtml() {
@@ -93,7 +97,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
