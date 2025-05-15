@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -143,38 +144,14 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 
 class IconTable extends JTable {
   protected static final int CELL_SIZE = 50;
-  protected static final int OFFSET = 4;
   protected final JList<IconItem> editor;
-  protected final JComponent glassPane = new JComponent() {
-    @Override public void setVisible(boolean flag) {
-      super.setVisible(flag);
-      setFocusTraversalPolicyProvider(flag);
-      setFocusCycleRoot(flag);
-    }
-
-    @Override protected void paintComponent(Graphics g) {
-      g.setColor(new Color(0x64_FF_FF_FF, true));
-      int w = getWidth();
-      int h = getHeight();
-      g.fillRect(0, 0, w, h);
-      BufferedImage buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g2 = buffer.createGraphics();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
-      g2.setPaint(Color.BLACK);
-      Rectangle r = editor.getBounds();
-      for (int i = 0; i < OFFSET; i++) {
-        g2.fillRoundRect(r.x - i, r.y + OFFSET, r.width + i + i, r.height - OFFSET + i, 5, 5);
-      }
-      g2.dispose();
-      g.drawImage(buffer, 0, 0, this);
-    }
-  };
+  protected final JComponent glassPane;
   private transient MouseListener handler;
 
   protected IconTable(TableModel model, JList<IconItem> editor) {
     super(model);
     this.editor = editor;
+    this.glassPane = new EditorGlassPane(editor);
     KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
     editor.getInputMap(WHEN_FOCUSED).put(key, "cancel-editing");
     editor.getActionMap().put("cancel-editing", new AbstractAction() {
@@ -264,6 +241,40 @@ class IconTable extends JTable {
   }
 }
 
+class EditorGlassPane extends JComponent {
+  protected static final int OFFSET = 4;
+  private final JComponent parent;
+
+  protected EditorGlassPane(JComponent parent) {
+    super();
+    this.parent = parent;
+  }
+
+  @Override public void setVisible(boolean flag) {
+    super.setVisible(flag);
+    setFocusTraversalPolicyProvider(flag);
+    setFocusCycleRoot(flag);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    g.setColor(new Color(0x64_FF_FF_FF, true));
+    int w = getWidth();
+    int h = getHeight();
+    g.fillRect(0, 0, w, h);
+    BufferedImage buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = buffer.createGraphics();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
+    g2.setPaint(Color.BLACK);
+    Rectangle r = parent.getBounds();
+    for (int i = 0; i < OFFSET; i++) {
+      g2.fillRoundRect(r.x - i, r.y + OFFSET, r.width + i + i, r.height - OFFSET + i, 5, 5);
+    }
+    g2.dispose();
+    g.drawImage(buffer, 0, 0, this);
+  }
+}
+
 class EditorFromList<E extends IconItem> extends JList<E> {
   protected int rollOverRowIndex = -1;
   private final Dimension dim;
@@ -289,20 +300,24 @@ class EditorFromList<E extends IconItem> extends JList<E> {
     setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     JLabel renderer = new JLabel();
+    renderer.setOpaque(true);
+    renderer.setHorizontalAlignment(SwingConstants.CENTER);
     Color selectedColor = new Color(0xC8_C8_FF);
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      renderer.setOpaque(true);
-      renderer.setHorizontalAlignment(SwingConstants.CENTER);
-      if (index == rollOverRowIndex) {
-        renderer.setBackground(getSelectionBackground());
-      } else if (isSelected) {
-        renderer.setBackground(selectedColor);
-      } else {
-        renderer.setBackground(getBackground());
-      }
+      renderer.setBackground(getBackgroundColor(index, isSelected, selectedColor));
       renderer.setIcon(value.getSmallIcon());
       return renderer;
     });
+  }
+
+  private Color getBackgroundColor(int index, boolean isSelected, Color selectedColor) {
+    Color bgc = getBackground();
+    if (index == rollOverRowIndex) {
+      bgc = getSelectionBackground();
+    } else if (isSelected) {
+      bgc = selectedColor;
+    }
+    return bgc;
   }
 
   private final class RollOverListener extends MouseAdapter {
