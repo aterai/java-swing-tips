@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -16,36 +17,35 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String key = "List.lockToPositionOnScroll";
     // UIManager.put(key, Boolean.FALSE);
+    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key));
+    check.addActionListener(e -> UIManager.put(key, ((JCheckBox) e.getSource()).isSelected()));
+    add(check, BorderLayout.NORTH);
+    add(new JScrollPane(makeList()));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JList<String> makeList() {
     DefaultListModel<String> model = new DefaultListModel<>();
     IntStream.range(0, 1000).mapToObj(Objects::toString).forEach(model::addElement);
     JList<String> list = new JList<String>(model) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        ListCellRenderer<? super String> renderer = getCellRenderer();
-        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(
-              list, value, index, isSelected, cellHasFocus);
-          if (isSelected) {
-            c.setForeground(list.getSelectionForeground());
-            c.setBackground(list.getSelectionBackground());
-          } else {
-            c.setForeground(list.getForeground());
-            c.setBackground(index % 2 == 0 ? EVEN_BGC : list.getBackground());
-          }
+        ListCellRenderer<? super String> r = getCellRenderer();
+        setCellRenderer((l, v, i, isSelected, cellHasFocus) -> {
+          Component c = r.getListCellRendererComponent(l, v, i, isSelected, cellHasFocus);
+          c.setForeground(isSelected ? l.getSelectionForeground() : l.getForeground());
+          c.setBackground(isSelected ? l.getSelectionBackground() : getBgc(l, i));
           return c;
         });
       }
     };
     list.setFixedCellHeight(64);
+    return list;
+  }
 
-    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key));
-    check.addActionListener(e -> UIManager.put(key, ((JCheckBox) e.getSource()).isSelected()));
-
-    add(check, BorderLayout.NORTH);
-    add(new JScrollPane(list));
-    setPreferredSize(new Dimension(320, 240));
+  private static Color getBgc(JComponent c, int index) {
+    return index % 2 == 0 ? EVEN_BGC : c.getBackground();
   }
 
   public static void main(String[] args) {
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

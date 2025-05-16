@@ -18,11 +18,12 @@ public final class MainPanel extends JPanel {
         new JMenuItem("JMenuItem 3"),
         new JMenuItem("JMenuItem 4"),
         new JMenuItem("JMenuItem 5"));
+
+    // typo popupPostionFixDisabled should be popupPositionFixDisabled
+    // if (popupPositionFixDisabled || GraphicsEnvironment.isHeadless()) ...
     JPopupMenu popup = new JPopupMenu() {
       @Override public void show(Component c, int x, int y) {
         Point popupLocation = getInvokerOrigin(x, y, c.getLocationOnScreen());
-        // typo popupPostionFixDisabled should be popupPositionFixDisabled
-        // if (popupPositionFixDisabled || GraphicsEnvironment.isHeadless()) ...
         Rectangle scrBounds = getScreenBounds(c, popupLocation);
         Dimension popupSize = getPreferredSize();
         long ly = popupLocation.y;
