@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -51,7 +52,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -115,7 +116,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 }
 
 class ListItem {
-  private final String title;
+  private String title;
   private final Icon icon;
 
   protected ListItem(String title, Icon icon) {
@@ -125,6 +126,10 @@ class ListItem {
 
   public String getTitle() {
     return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public Icon getIcon() {
@@ -227,20 +232,16 @@ class EditableList<E extends ListItem> extends JList<E> {
   };
   protected final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
-      ListModel<E> m = getModel();
       String title = editor.getText().trim();
       int index = getSelectedIndex();
-      if (!title.isEmpty() && index >= 0 && m instanceof DefaultListModel<?>) {
-        @SuppressWarnings("unchecked")
-        DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
-        ListItem item = m.getElementAt(index);
-        model.remove(index);
-        model.add(index, new ListItem(editor.getText().trim(), item.getIcon()));
-        setSelectedIndex(index);
+      if (!title.isEmpty() && index >= 0) {
+        E item = getModel().getElementAt(index);
+        item.setTitle(title);
       }
       glassPane.setVisible(false);
     }
   };
+
   private transient MouseAdapter handler;
 
   protected EditableList(ListModel<E> model) {
@@ -249,7 +250,6 @@ class EditableList<E extends ListItem> extends JList<E> {
         BorderFactory.createLineBorder(Color.BLACK),
         BorderFactory.createEmptyBorder(0, 2, 0, 0)));
     editor.setHorizontalAlignment(SwingConstants.CENTER);
-    // editor.setOpaque(false);
     // editor.setLineWrap(true);
 
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);

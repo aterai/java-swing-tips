@@ -134,7 +134,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
 }
 
 class ListItem {
-  private final String title;
+  private String title;
   private final Icon icon;
 
   protected ListItem(String title, Icon icon) {
@@ -144,6 +144,10 @@ class ListItem {
 
   public String getTitle() {
     return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public Icon getIcon() {
@@ -329,20 +333,15 @@ class EditableList<E extends ListItem> extends JList<E> {
 
   private final class RenameAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
-      ListModel<E> m = getModel();
       String title = editor.getText().trim();
-      int index = editingIndex; // getSelectedIndex();
-      if (!title.isEmpty() && index >= 0 && m instanceof DefaultListModel<?>) {
-        @SuppressWarnings("unchecked")
-        DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) getModel();
-        ListItem item = m.getElementAt(index);
-        model.remove(index);
-        model.add(index, new ListItem(editor.getText().trim(), item.getIcon()));
-        setSelectedIndex(index); // 1. Both must be run
-        EventQueue.invokeLater(() -> setSelectedIndex(index)); // 2. Both must be run
-      }
-      // glassPane.setVisible(false);
+      int index = editingIndex;
       window.setVisible(false);
+      if (!title.isEmpty() && index >= 0) {
+        E item = getModel().getElementAt(index);
+        item.setTitle(title);
+        setSelectedIndex(index);
+        EventQueue.invokeLater(() -> setSelectedIndex(index));
+      }
       editingIndex = -1;
     }
   }
