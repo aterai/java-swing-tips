@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -45,22 +46,8 @@ public final class MainPanel extends JPanel {
           JTable table = (JTable) c;
           if (table.isEditing()) {
             table.removeEditor();
-            // table.editingCanceled(null);
-            // table.editingStopped(null);
-            // table.getCellEditor().cancelCellEditing();
-            // table.getCellEditor().stopCellEditing();
           }
-          Point pt = e.getPoint();
-          Rectangle r = TableUtils.getCellArea(table);
-          if (r.contains(pt)) {
-            int currentRow = table.rowAtPoint(pt);
-            int currentColumn = table.columnAtPoint(pt);
-            if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
-              table.changeSelection(currentRow, currentColumn, false, false);
-            }
-          } else {
-            table.clearSelection();
-          }
+          updateSelection(table, e.getPoint());
         }
       }
     });
@@ -78,16 +65,7 @@ public final class MainPanel extends JPanel {
         }
         SwingUtilities.invokeLater(() -> {
           Point pt = SwingUtilities.convertPoint(popup, new Point(), table);
-          Rectangle r = TableUtils.getCellArea(table);
-          if (r.contains(pt)) {
-            int currentRow = table.rowAtPoint(pt);
-            int currentColumn = table.columnAtPoint(pt);
-            if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
-              table.changeSelection(currentRow, currentColumn, false, false);
-            }
-          } else {
-            table.clearSelection();
-          }
+          updateSelection(table, pt);
         });
       }
 
@@ -101,6 +79,19 @@ public final class MainPanel extends JPanel {
     });
     table.setComponentPopupMenu(popup);
     return table;
+  }
+
+  private static void updateSelection(JTable table, Point pt) {
+    Rectangle cellArea = TableUtils.getCellArea(table);
+    if (cellArea.contains(pt)) {
+      int currentRow = table.rowAtPoint(pt);
+      int currentColumn = table.columnAtPoint(pt);
+      if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
+        table.changeSelection(currentRow, currentColumn, false, false);
+      }
+    } else {
+      table.clearSelection();
+    }
   }
 
   private static JPopupMenu makePopupMenu() {
@@ -126,7 +117,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
