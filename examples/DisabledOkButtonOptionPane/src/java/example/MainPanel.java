@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -44,8 +45,8 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(c::requestFocusInWindow);
       }
     });
-    field.getDocument().addDocumentListener(new DocumentListener() {
-      private void update() {
+    field.getDocument().addDocumentListener(new DocumentVerifyAdapter() {
+      @Override protected void update() {
         boolean verified = !field.getText().isEmpty();
         JButton b = field.getRootPane().getDefaultButton();
         if (verified) {
@@ -57,18 +58,6 @@ public final class MainPanel extends JPanel {
           field.setBorder(disabledBorder);
           label.setText(disabledMessage);
         }
-      }
-
-      @Override public void insertUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void removeUpdate(DocumentEvent e) {
-        update();
-      }
-
-      @Override public void changedUpdate(DocumentEvent e) {
-        update();
       }
     });
     JButton button = new JButton(makeAction(field, panel));
@@ -116,7 +105,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -125,5 +114,21 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+abstract class DocumentVerifyAdapter implements DocumentListener {
+  protected abstract void update();
+
+  @Override public void insertUpdate(DocumentEvent e) {
+    update();
+  }
+
+  @Override public void removeUpdate(DocumentEvent e) {
+    update();
+  }
+
+  @Override public void changedUpdate(DocumentEvent e) {
+    update();
   }
 }
