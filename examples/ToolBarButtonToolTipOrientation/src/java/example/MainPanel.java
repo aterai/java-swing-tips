@@ -15,6 +15,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
@@ -40,60 +41,102 @@ public final class MainPanel extends JPanel {
   }
 
   private Component createToolBarButton(ColorItem item) {
-    JButton button = new JButton(item.getIcon()) {
-      private transient JToolTip tip;
-
-      @Override public Point getToolTipLocation(MouseEvent e) {
-        String txt = getToolTipText();
-        return Optional.ofNullable(txt).map(toolTipText -> {
-          JToolTip toolTip = createToolTip();
-          toolTip.setTipText(toolTipText);
-          Component c = toolTip.getComponent(0);
-          if (c instanceof JLabel) {
-            ((JLabel) c).setText(toolTipText);
-          }
-          Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, this);
-          String constraint = calculateConstraint(bar.getParent(), bar);
-          if (toolTip instanceof BalloonToolTip) {
-            ((BalloonToolTip) toolTip).updateBalloonShape(constraint);
-          }
-          Dimension btnSize = getPreferredSize();
-          Dimension tipSize = toolTip.getPreferredSize();
-          return getToolTipPoint(btnSize, tipSize, constraint);
-        }).orElse(null);
-      }
-
-      @Override public JToolTip createToolTip() {
-        return tip;
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        BalloonToolTip toolTip = new BalloonToolTip();
-        JLabel label = new JLabel(" ", CENTER);
-        LookAndFeel.installColorsAndFont(
-            label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
-        toolTip.add(label);
-        toolTip.setComponent(this);
-        // EventQueue.invokeLater(() -> {
-        //   Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, this);
-        //   String constraint = calculateConstraint(bar.getParent(), bar);
-        //   toolTip.updateBalloonShape(constraint);
-        // });
-        tip = toolTip;
-      }
-    };
+    JButton button = new ToolBarButton(item);
     button.setOpaque(false);
     button.setToolTipText(item.getTitle());
     button.setFocusPainted(false);
     return button;
   }
 
+  private static List<ColorItem> makeList() {
+    return Arrays.asList(
+        new ColorItem("red", new ColorIcon(Color.RED)),
+        new ColorItem("green", new ColorIcon(Color.GREEN)),
+        new ColorItem("blue", new ColorIcon(Color.BLUE)),
+        new ColorItem("cyan", new ColorIcon(Color.CYAN)),
+        new ColorItem("magenta", new ColorIcon(Color.MAGENTA)),
+        new ColorItem("orange", new ColorIcon(Color.ORANGE)),
+        new ColorItem("pink", new ColorIcon(Color.PINK)),
+        new ColorItem("yellow", new ColorIcon(Color.YELLOW))
+    );
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class ToolBarButton extends JButton {
+  private transient JToolTip tip;
+
+  public ToolBarButton(ColorItem item) {
+    super(item.getIcon());
+  }
+
+  @Override public Point getToolTipLocation(MouseEvent e) {
+    return Optional.ofNullable(getToolTipText())
+        .map(txt -> getToolBarTipLocation(this, createToolTip(), txt))
+        .orElse(null);
+  }
+
+  @Override public JToolTip createToolTip() {
+    return tip;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    BalloonToolTip toolTip = new BalloonToolTip();
+    JLabel label = new JLabel(" ", CENTER);
+    LookAndFeel.installColorsAndFont(
+        label, "ToolTip.background", "ToolTip.foreground", "ToolTip.font");
+    toolTip.add(label);
+    toolTip.setComponent(this);
+    // EventQueue.invokeLater(() -> {
+    //   Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, this);
+    //   String constraint = calculateConstraint(bar.getParent(), bar);
+    //   toolTip.updateBalloonShape(constraint);
+    // });
+    tip = toolTip;
+  }
+
+  private static Point getToolBarTipLocation(Component comp, JToolTip tip, String txt) {
+    tip.setTipText(txt);
+    Component c = tip.getComponent(0);
+    if (c instanceof JLabel) {
+      ((JLabel) c).setText(txt);
+    }
+    Container bar = SwingUtilities.getAncestorOfClass(JToolBar.class, comp);
+    String constraint = calculateConstraint(bar.getParent(), bar);
+    if (tip instanceof BalloonToolTip) {
+      ((BalloonToolTip) tip).updateBalloonShape(constraint);
+    }
+    Dimension btnSize = comp.getPreferredSize();
+    Dimension tipSize = tip.getPreferredSize();
+    return getToolTipPoint(btnSize, tipSize, constraint);
+  }
+
   private static String calculateConstraint(Container source, Component toolBar) {
     String constraint = null;
     JToolBar bar = (JToolBar) toolBar;
     if (((BasicToolBarUI) bar.getUI()).isFloating()) {
-      if (bar.getOrientation() == SwingConstants.VERTICAL) {
+      if (bar.getOrientation() == VERTICAL) {
         boolean leftToRight = bar.getComponentOrientation().isLeftToRight();
         constraint = leftToRight ? BorderLayout.WEST : BorderLayout.EAST;
       }
@@ -128,40 +171,6 @@ public final class MainPanel extends JPanel {
     }
     return new Point((int) (dx + .5), (int) (dy + .5));
   }
-
-  private static List<ColorItem> makeList() {
-    return Arrays.asList(
-        new ColorItem("red", new ColorIcon(Color.RED)),
-        new ColorItem("green", new ColorIcon(Color.GREEN)),
-        new ColorItem("blue", new ColorIcon(Color.BLUE)),
-        new ColorItem("cyan", new ColorIcon(Color.CYAN)),
-        new ColorItem("magenta", new ColorIcon(Color.MAGENTA)),
-        new ColorItem("orange", new ColorIcon(Color.ORANGE)),
-        new ColorItem("pink", new ColorIcon(Color.PINK)),
-        new ColorItem("yellow", new ColorIcon(Color.YELLOW))
-    );
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
 }
 
 class BalloonToolTip extends JToolTip {
@@ -178,11 +187,7 @@ class BalloonToolTip extends JToolTip {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
         Optional.ofNullable(SwingUtilities.getWindowAncestor(c))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
+            .filter(BalloonToolTip::isHeavyWeight)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     };
@@ -207,6 +212,12 @@ class BalloonToolTip extends JToolTip {
     g2.draw(shape);
     g2.dispose();
     // super.paintComponent(g);
+  }
+
+  private static boolean isHeavyWeight(Window w) {
+    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+    GraphicsConfiguration gc = w.getGraphicsConfiguration();
+    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
   }
 
   public void updateBalloonShape(String placement) {
