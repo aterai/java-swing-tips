@@ -5,12 +5,14 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -30,24 +32,7 @@ public final class MainPanel extends JPanel {
     shape = new RoundRectangle2D.Double(0d, 0d, 100d, 80d, 50d, 30d);
     makePointList(shape, points);
     pos.setLocation(points.get(0));
-    Timer timer = new Timer(50, e -> {
-      if (startTime < 0) {
-        startTime = System.currentTimeMillis();
-      }
-      long playTime = System.currentTimeMillis() - startTime;
-      double progress = playTime / PLAY_TIME;
-      boolean stop = progress > 1d;
-      if (stop) {
-        progress = 1d;
-        ((Timer) e.getSource()).stop();
-        startTime = -1L;
-        button.setEnabled(true);
-      }
-      int index = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
-      pos.setLocation(points.get(index));
-      repaint();
-    });
-
+    Timer timer = new Timer(50, this::move);
     button.addActionListener(e -> {
       if (!timer.isRunning()) {
         timer.start();
@@ -56,6 +41,24 @@ public final class MainPanel extends JPanel {
     });
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void move(ActionEvent e) {
+    if (startTime < 0) {
+      startTime = System.currentTimeMillis();
+    }
+    long playTime = System.currentTimeMillis() - startTime;
+    double progress = playTime / PLAY_TIME;
+    boolean stop = progress > 1d;
+    if (stop) {
+      progress = 1d;
+      ((Timer) e.getSource()).stop();
+      startTime = -1L;
+      button.setEnabled(true);
+    }
+    int index = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
+    pos.setLocation(points.get(index));
+    repaint();
   }
 
   private static void makePointList(Shape shape, List<Point2D> points) {
@@ -146,7 +149,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

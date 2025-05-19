@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -142,18 +143,7 @@ class CardLayoutTabbedPane extends JPanel {
         return new Dimension(12, 12);
       }
     };
-    close.addActionListener(e -> {
-      tabPanel.remove(tab);
-      contentsPanel.remove(comp);
-      boolean oneOrMore = tabPanel.getComponentCount() > 1;
-      if (oneOrMore) {
-        tabPanel.revalidate();
-        TabButton b = (TabButton) tabPanel.getComponent(0);
-        b.setSelected(true);
-        cardLayout.first(contentsPanel);
-      }
-      tabPanel.revalidate();
-    });
+    close.addActionListener(e -> closeTab(tab, comp));
     close.setBorder(BorderFactory.createEmptyBorder());
     close.setFocusPainted(false);
     close.setContentAreaFilled(false);
@@ -169,13 +159,26 @@ class CardLayoutTabbedPane extends JPanel {
     return tab;
   }
 
-  public void addTab(String title, Component comp) {
+  public void addTab(String title, Component c) {
     tabPanel.remove(button);
-    tabPanel.add(createTabComponent(title, comp));
+    tabPanel.add(createTabComponent(title, c));
     tabPanel.add(button);
     tabPanel.revalidate();
-    contentsPanel.add(comp, title);
+    contentsPanel.add(c, title);
     cardLayout.show(contentsPanel, title);
+  }
+
+  private void closeTab(TabButton tab, Component c) {
+    tabPanel.remove(tab);
+    contentsPanel.remove(c);
+    boolean oneOrMore = tabPanel.getComponentCount() > 1;
+    if (oneOrMore) {
+      tabPanel.revalidate();
+      TabButton b = (TabButton) tabPanel.getComponent(0);
+      b.setSelected(true);
+      cardLayout.first(contentsPanel);
+    }
+    tabPanel.revalidate();
   }
 
   private Image makeImage(String path) {
