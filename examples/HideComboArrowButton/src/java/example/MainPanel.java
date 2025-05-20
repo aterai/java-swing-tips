@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
@@ -42,22 +43,7 @@ public final class MainPanel extends JPanel {
             return button;
           }
         });
-        ListCellRenderer<? super String> r = getRenderer();
-        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = r.getListCellRendererComponent(
-              list, value, index, isSelected, cellHasFocus);
-          if (isSelected) {
-            c.setForeground(list.getSelectionForeground());
-            c.setBackground(list.getSelectionBackground());
-          } else {
-            c.setForeground(list.getForeground());
-            c.setBackground(list.getBackground());
-          }
-          if (c instanceof JLabel) {
-            ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
-          }
-          return c;
-        });
+        setRenderer(new RightAlignmentListCellRenderer<>(getRenderer()));
         setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
         setOpaque(false);
         setFocusable(false);
@@ -78,7 +64,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     // UIManager.put("ComboBox.selectionForeground", new ColorUIResource(Color.BLUE));
@@ -89,5 +75,30 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RightAlignmentListCellRenderer<E> implements ListCellRenderer<E> {
+  private final ListCellRenderer<? super E> renderer;
+
+
+  protected RightAlignmentListCellRenderer(ListCellRenderer<? super E> renderer) {
+    this.renderer = renderer;
+  }
+
+  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
+    if (isSelected) {
+      c.setForeground(list.getSelectionForeground());
+      c.setBackground(list.getSelectionBackground());
+    } else {
+      c.setForeground(list.getForeground());
+      c.setBackground(list.getBackground());
+    }
+    if (c instanceof JLabel) {
+      ((JLabel) c).setHorizontalAlignment(SwingConstants.RIGHT);
+    }
+    return c;
   }
 }
