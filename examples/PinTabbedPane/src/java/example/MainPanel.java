@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -92,7 +94,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -118,33 +120,37 @@ final class PinTabPopupMenu extends JPopupMenu {
 
   /* default */ PinTabPopupMenu() {
     super();
-    add(pinTabMenuItem).addActionListener(e -> {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      JCheckBoxMenuItem check = (JCheckBoxMenuItem) e.getSource();
-      int idx = t.getSelectedIndex();
-      Component cmp = t.getComponentAt(idx);
-      Component tab = t.getTabComponentAt(idx);
-      Icon icon = t.getIconAt(idx);
-      String tip = t.getToolTipTextAt(idx);
-      boolean flg = t.isEnabledAt(idx);
-      int i = searchNewSelectedIndex(t, idx, check.isSelected());
-      t.remove(idx);
-      t.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
-      t.setTabComponentAt(i, tab);
-      t.setEnabledAt(i, flg);
-      if (flg) {
-        t.setSelectedIndex(i);
-      }
-    });
+    add(pinTabMenuItem).addActionListener(this::pinTab);
     addSeparator();
-    add("close all").addActionListener(e -> {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      for (int i = t.getTabCount() - 1; i >= 0; i--) {
-        if (!isEmpty(t.getTitleAt(i))) {
-          t.removeTabAt(i);
-        }
+    add("close all").addActionListener(e -> closeAll());
+  }
+
+  private void pinTab(ActionEvent e) {
+    JTabbedPane tabs = (JTabbedPane) getInvoker();
+    JCheckBoxMenuItem check = (JCheckBoxMenuItem) e.getSource();
+    int idx = tabs.getSelectedIndex();
+    Component cmp = tabs.getComponentAt(idx);
+    Component tab = tabs.getTabComponentAt(idx);
+    Icon icon = tabs.getIconAt(idx);
+    String tip = tabs.getToolTipTextAt(idx);
+    boolean flg = tabs.isEnabledAt(idx);
+    int i = searchNewSelectedIndex(tabs, idx, check.isSelected());
+    tabs.remove(idx);
+    tabs.insertTab(check.isSelected() ? "" : tip, icon, cmp, tip, i);
+    tabs.setTabComponentAt(i, tab);
+    tabs.setEnabledAt(i, flg);
+    if (flg) {
+      tabs.setSelectedIndex(i);
+    }
+  }
+
+  private void closeAll() {
+    JTabbedPane tabs = (JTabbedPane) getInvoker();
+    for (int i = tabs.getTabCount() - 1; i >= 0; i--) {
+      if (!isEmpty(tabs.getTitleAt(i))) {
+        tabs.removeTabAt(i);
       }
-    });
+    }
   }
 
   public static int searchNewSelectedIndex(JTabbedPane t, int idx, boolean dir) {
