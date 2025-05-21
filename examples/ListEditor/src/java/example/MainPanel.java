@@ -6,6 +6,8 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -318,6 +320,11 @@ class EditableList<E extends ListItem> extends JList<E> {
             Component c = e.getComponent();
             renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
           }
+        }
+      });
+      addComponentListener(new ComponentAdapter() {
+        @Override public void componentResized(ComponentEvent e) {
+          setVisible(false);
         }
       });
     }
