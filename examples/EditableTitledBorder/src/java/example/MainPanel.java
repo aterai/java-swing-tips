@@ -6,12 +6,16 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -68,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -84,34 +88,7 @@ class EditableTitledBorder extends TitledBorder {
   protected final JTextField editor = new JTextField();
   protected final JLabel renderer = new JLabel();
   protected final Rectangle rect = new Rectangle();
-  protected final Container glassPane = new JLabel() { // NG? : JComponent() {
-    private transient MouseListener listener;
-    @Override public void updateUI() {
-      removeMouseListener(listener);
-      super.updateUI();
-      setOpaque(false);
-      setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
-        @Override public boolean accept(Component c) {
-          return Objects.equals(c, editor);
-        }
-      });
-      listener = new MouseAdapter() {
-        @Override public void mouseClicked(MouseEvent e) {
-          if (!editor.getBounds().contains(e.getPoint())) {
-            Component c = e.getComponent();
-            renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
-          }
-        }
-      };
-      addMouseListener(listener);
-    }
-
-    @Override public void setVisible(boolean flag) {
-      super.setVisible(flag);
-      setFocusTraversalPolicyProvider(flag);
-      setFocusCycleRoot(flag);
-    }
-  };
+  protected final Container glassPane = new EditorGlassPane();
   protected Component comp;
 
   protected final Action startEditing = new AbstractAction() {
@@ -202,6 +179,7 @@ class EditableTitledBorder extends TitledBorder {
         }
       }
     });
+
     InputMap im = editor.getInputMap(JComponent.WHEN_FOCUSED);
     ActionMap am = editor.getActionMap();
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
@@ -323,5 +301,43 @@ class EditableTitledBorder extends TitledBorder {
       insets.set(i.top, i.left, i.bottom, i.right);
     }
     return insets;
+  }
+
+  private final class EditorGlassPane extends JLabel {  // NG? : JComponent() {
+    private transient MouseListener listener;
+    private transient ComponentListener componentHandler;
+
+    @Override public void updateUI() {
+      removeMouseListener(listener);
+      removeComponentListener(componentHandler);
+      super.updateUI();
+      setOpaque(false);
+      setFocusTraversalPolicy(new DefaultFocusTraversalPolicy() {
+        @Override public boolean accept(Component c) {
+          return Objects.equals(c, editor);
+        }
+      });
+      listener = new MouseAdapter() {
+        @Override public void mouseClicked(MouseEvent e) {
+          if (!editor.getBounds().contains(e.getPoint())) {
+            Component c = e.getComponent();
+            renameTitle.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+          }
+        }
+      };
+      addMouseListener(listener);
+      componentHandler = new ComponentAdapter() {
+        @Override public void componentResized(ComponentEvent e) {
+          setVisible(false);
+        }
+      };
+      addComponentListener(componentHandler);
+    }
+
+    @Override public void setVisible(boolean flag) {
+      super.setVisible(flag);
+      setFocusTraversalPolicyProvider(flag);
+      setFocusCycleRoot(flag);
+    }
   }
 }
