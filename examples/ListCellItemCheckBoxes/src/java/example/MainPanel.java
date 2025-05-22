@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.swing.*;
@@ -18,22 +19,7 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultListModel<ListItem> model = new DefaultListModel<>();
-    model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
-    model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
-    model.addElement(new ListItem("blue", new ColorIcon(Color.BLUE)));
-    model.addElement(new ListItem("cyan", new ColorIcon(Color.CYAN)));
-    model.addElement(new ListItem("darkGray", new ColorIcon(Color.DARK_GRAY)));
-    model.addElement(new ListItem("gray", new ColorIcon(Color.GRAY)));
-    model.addElement(new ListItem("lightGray", new ColorIcon(Color.LIGHT_GRAY)));
-    model.addElement(new ListItem("magenta", new ColorIcon(Color.MAGENTA)));
-    model.addElement(new ListItem("orange", new ColorIcon(Color.ORANGE)));
-    model.addElement(new ListItem("pink", new ColorIcon(Color.PINK)));
-    model.addElement(new ListItem("yellow", new ColorIcon(Color.YELLOW)));
-    model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
-    model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
-
-    JList<ListItem> list = new RubberBandSelectionList<>(model);
+    JList<ListItem> list = new RubberBandSelectionList<>(makeModel());
     list.setPrototypeCellValue(new ListItem("red", new ColorIcon(Color.RED)));
     list.setOpaque(false);
     list.setBackground(new Color(0x0, true));
@@ -66,6 +52,24 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static ListModel<ListItem> makeModel() {
+    DefaultListModel<ListItem> model = new DefaultListModel<>();
+    model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
+    model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
+    model.addElement(new ListItem("blue", new ColorIcon(Color.BLUE)));
+    model.addElement(new ListItem("cyan", new ColorIcon(Color.CYAN)));
+    model.addElement(new ListItem("darkGray", new ColorIcon(Color.DARK_GRAY)));
+    model.addElement(new ListItem("gray", new ColorIcon(Color.GRAY)));
+    model.addElement(new ListItem("lightGray", new ColorIcon(Color.LIGHT_GRAY)));
+    model.addElement(new ListItem("magenta", new ColorIcon(Color.MAGENTA)));
+    model.addElement(new ListItem("orange", new ColorIcon(Color.ORANGE)));
+    model.addElement(new ListItem("pink", new ColorIcon(Color.PINK)));
+    model.addElement(new ListItem("yellow", new ColorIcon(Color.YELLOW)));
+    model.addElement(new ListItem("black", new ColorIcon(Color.BLACK)));
+    model.addElement(new ListItem("white", new ColorIcon(Color.WHITE)));
+    return model;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -76,7 +80,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

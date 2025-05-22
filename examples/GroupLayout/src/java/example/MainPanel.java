@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 // import static javax.swing.GroupLayout.Alignment;
@@ -12,11 +13,16 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    // GroupLayout
-    JPanel p1 = new JPanel();
-    p1.setBorder(BorderFactory.createTitledBorder("GroupLayout"));
-    GroupLayout layout = new GroupLayout(p1);
-    p1.setLayout(layout);
+    add(makeGroupLayoutPanel());
+    add(makeGridBagLayoutPanel());
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeGroupLayoutPanel() {
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("GroupLayout"));
+    GroupLayout layout = new GroupLayout(p);
+    p.setLayout(layout);
     layout.setAutoCreateGaps(true);
     layout.setAutoCreateContainerGaps(true);
 
@@ -42,35 +48,34 @@ public final class MainPanel extends JPanel {
         .addComponent(label2)
         .addComponent(tf2));
     layout.setVerticalGroup(vgp);
+    return p;
+  }
 
-    // GridBagLayout
-    JPanel p2 = new JPanel(new GridBagLayout());
+  private static JPanel makeGridBagLayoutPanel() {
+    JPanel p = new JPanel(new GridBagLayout());
     Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
     Border outside = BorderFactory.createTitledBorder("GridBagLayout");
-    p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
+    p.setBorder(BorderFactory.createCompoundBorder(outside, inside));
     GridBagConstraints c = new GridBagConstraints();
 
     c.insets = new Insets(5, 5, 5, 0);
     c.anchor = GridBagConstraints.LINE_START;
     c.gridx = 0;
 
-    JLabel label3 = new JLabel("0123456789_0123456789abc:");
-    JLabel label4 = new JLabel("GridBagLayout:");
-    p2.add(label3, c);
-    p2.add(label4, c);
+    JLabel label1 = new JLabel("0123456789_0123456789abc:");
+    JLabel label2 = new JLabel("GridBagLayout:");
+    p.add(label1, c);
+    p.add(label2, c);
 
     c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 1d;
     c.gridx = 1;
 
-    JTextField tf3 = new JTextField();
-    JTextField tf4 = new JTextField();
-    p2.add(tf3, c);
-    p2.add(tf4, c);
-
-    add(p1);
-    add(p2);
-    setPreferredSize(new Dimension(320, 240));
+    JTextField tf1 = new JTextField();
+    JTextField tf2 = new JTextField();
+    p.add(tf1, c);
+    p.add(tf2, c);
+    return p;
   }
 
   public static void main(String[] args) {
@@ -83,7 +88,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

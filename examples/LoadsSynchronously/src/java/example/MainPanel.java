@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.Element;
@@ -33,37 +34,18 @@ public final class MainPanel extends JPanel {
     // String path = "https://raw.githubusercontent.com/aterai/java-swing-tips/master/LoadsSynchronously/src/java/example/GIANT_TCR1_2013.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     String path = Objects.toString(cl.getResource("example/GIANT_TCR1_2013.jpg"));
-
     String html1 = String.join("\n", Collections.nCopies(50, HTML));
     String html2 = String.join("\n", Collections.nCopies(3, HTML));
 
     JTabbedPane tabs = new JTabbedPane();
 
-    String img0 = String.format("<p><img src='%s'></p>", path);
-    String st0 = html1 + img0 + html2;
+    String st0 = makeHtml0(path, html1, html2);
     JEditorPane editor0 = new JEditorPane();
     editor0.setEditorKit(new HTMLEditorKit());
     editor0.setText(st0);
     tabs.addTab("default", new JScrollPane(editor0));
 
-    int w = 2048;
-    int h = 1360;
-    // Image img = Toolkit.getDefaultToolkit().createImage(path);
-    // MediaTracker tracker = new MediaTracker((Container) this);
-    // tracker.addImage(img, 0);
-    // try {
-    //   tracker.waitForID(0);
-    // } catch (InterruptedException ex) {
-    //   ex.printStackTrace();
-    // } finally {
-    //   if (!tracker.isErrorID(0)) {
-    //     w = img.getWidth(this);
-    //     h = img.getHeight(this);
-    //   }
-    //   tracker.removeImage(img);
-    // }
-    String img1 = String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h);
-    String st1 = html1 + img1 + html2;
+    String st1 = makeHtml1(path, html1, html2);
     JEditorPane editor1 = new JEditorPane();
     editor1.setEditorKit(new HTMLEditorKit());
     editor1.setText(st1);
@@ -76,20 +58,10 @@ public final class MainPanel extends JPanel {
     tabs.addTab("LoadsSynchronously", new JScrollPane(editor2));
 
     tabs.addChangeListener(e -> {
-      switch (tabs.getSelectedIndex()) {
-        case 2:
-          editor2.setText(st0);
-          saveImage(editor2);
-          break;
-        case 1:
-          editor1.setText(st1);
-          saveImage(editor1);
-          break;
-        default:
-          editor0.setText(st0);
-          saveImage(editor0);
-          break;
-      }
+      int i = tabs.getSelectedIndex();
+      JEditorPane editor = i == 0 ? editor0 : i == 1 ? editor1 : editor2;
+      editor.setText(i == 1 ? st1 : st0);
+      EventQueue.invokeLater(() -> saveImage(editor));
     });
 
     add(tabs);
@@ -97,27 +69,51 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static String makeHtml0(String path, String html1, String html2) {
+    String img = String.format("<p><img src='%s'></p>", path);
+    return html1 + img + html2;
+  }
+
+  private static String makeHtml1(String path, String html1, String html2) {
+    int w = 2048;
+    int h = 1360;
+    // Image image = Toolkit.getDefaultToolkit().createImage(path);
+    // MediaTracker tracker = new MediaTracker((Container) this);
+    // tracker.addImage(image, 0);
+    // try {
+    //   tracker.waitForID(0);
+    // } catch (InterruptedException ex) {
+    //   ex.printStackTrace();
+    // } finally {
+    //   if (!tracker.isErrorID(0)) {
+    //     w = image.getWidth(this);
+    //     h = image.getHeight(this);
+    //   }
+    //   tracker.removeImage(image);
+    // }
+    String img = String.format("<p><img src='%s' width='%d' height='%d'></p>", path, w, h);
+    return html1 + img + html2;
+  }
+
   private void saveImage(JComponent c) {
-    EventQueue.invokeLater(() -> {
-      float s = .02f;
-      int w = Math.round(c.getWidth() * s);
-      int h = Math.round(c.getHeight() * s);
-      BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-      Graphics2D g2 = image.createGraphics();
-      g2.scale(s, s);
-      c.print(g2);
-      g2.dispose();
-      try {
-        File tmp = File.createTempFile("jst_tmp", ".jpg");
-        tmp.deleteOnExit();
-        ImageIO.write(image, "jpeg", tmp);
-        label.setIcon(new ImageIcon(tmp.getAbsolutePath()));
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        label.setIcon(null);
-        UIManager.getLookAndFeel().provideErrorFeedback(c);
-      }
-    });
+    float s = .02f;
+    int w = Math.round(c.getWidth() * s);
+    int h = Math.round(c.getHeight() * s);
+    BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = image.createGraphics();
+    g2.scale(s, s);
+    c.print(g2);
+    g2.dispose();
+    try {
+      File tmp = File.createTempFile("jst_tmp", ".jpg");
+      tmp.deleteOnExit();
+      ImageIO.write(image, "jpeg", tmp);
+      label.setIcon(new ImageIcon(tmp.getAbsolutePath()));
+    } catch (IOException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      label.setIcon(null);
+      UIManager.getLookAndFeel().provideErrorFeedback(c);
+    }
   }
 
   public static void main(String[] args) {
@@ -130,7 +126,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -14,37 +15,54 @@ public final class MainPanel extends JPanel {
     super();
     UIManager.put("OptionPane.okButtonText", "back");
     // UIManager.put("Button.focus", new Color(0x0, true));
+    JButton button1 = makeButton1();
+    JButton button2 = makeButton2();
+    JButton button3 = makeButton3();
+    Stream.of(button1, button2, button3).forEach(this::add);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JButton button1 = new JButton("Default");
-    button1.addActionListener(e -> {
+  private static JButton makeButton1() {
+    JButton button = new JButton("Default");
+    button.addActionListener(e -> {
       Component p = ((JComponent) e.getSource()).getRootPane();
       JOptionPane.showMessageDialog(p, "Default", "title0", JOptionPane.PLAIN_MESSAGE);
     });
+    return button;
+  }
 
-    JLabel label2 = new JLabel("JButton#setFocusPainted(false)");
-    label2.addHierarchyListener(e -> {
+  private static JButton makeButton2() {
+    JLabel label = new JLabel("JButton#setFocusPainted(false)");
+    label.addHierarchyListener(e -> {
       Component c = e.getComponent();
       if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-        descendants(((JComponent) c).getRootPane())
-            .filter(JButton.class::isInstance)
-            .map(JButton.class::cast)
-            .findFirst()
-            .ifPresent(b -> {
-              b.setFocusPainted(false);
-              b.setText("back2");
-            });
+        setButtonText((JComponent) c, "back2");
       }
     });
-    JButton button2 = new JButton("showMessageDialog + HierarchyListener");
-    button2.addActionListener(e -> {
+    JButton button = new JButton("showMessageDialog + HierarchyListener");
+    button.addActionListener(e -> {
       Component p = ((JComponent) e.getSource()).getRootPane();
-      JOptionPane.showMessageDialog(p, label2, "title2", JOptionPane.PLAIN_MESSAGE);
+      JOptionPane.showMessageDialog(p, label, "title2", JOptionPane.PLAIN_MESSAGE);
     });
+    return button;
+  }
 
-    // Customizing Button Text - How to Make Dialogs (The Java™ Tutorials > ...)
+  public static void setButtonText(JComponent parent, String title) {
+    descendants(parent.getRootPane())
+        .filter(JButton.class::isInstance)
+        .map(JButton.class::cast)
+        .findFirst()
+        .ifPresent(b -> {
+          b.setFocusPainted(false);
+          b.setText(title);
+        });
+  }
+
+  private static JButton makeButton3() {
+    // Customizing Button Text - How to Make Dialogs (The Java? Tutorials > ...)
     // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html#button
-    JButton button3 = new JButton("showOptionDialog");
-    button3.addActionListener(e -> {
+    JButton button = new JButton("showOptionDialog");
+    button.addActionListener(e -> {
       Object[] options = {"Yes, please"}; // {"Yes, please", "No way!"};
       JOptionPane.showOptionDialog(
           ((JComponent) e.getSource()).getRootPane(),
@@ -54,9 +72,7 @@ public final class MainPanel extends JPanel {
           JOptionPane.PLAIN_MESSAGE,
           null, options, options[0]);
     });
-
-    Stream.of(button1, button2, button3).forEach(this::add);
-    setPreferredSize(new Dimension(320, 240));
+    return button;
   }
 
   public static Stream<Component> descendants(Container parent) {
@@ -75,7 +91,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

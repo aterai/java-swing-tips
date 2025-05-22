@@ -176,15 +176,15 @@ final class DocUtils {
     }
   }
 
-  public static int getHighlightIdx(JTextArea editor, JLabel hint, Pattern ptn, int idx) {
+  public static Highlighter updateHighlighter(JTextArea editor, Pattern pattern) {
     // clear the previous highlight:
     Highlighter highlighter = editor.getHighlighter();
     highlighter.removeAllHighlights();
     Document doc = editor.getDocument();
     // match highlighting:
     try {
-      Matcher matcher = ptn.matcher(doc.getText(0, doc.getLength()));
-      HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
+      Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
+      HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.ORANGE);
       int pos = 0;
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
@@ -198,6 +198,11 @@ final class DocUtils {
       wrap.initCause(ex);
       throw wrap;
     }
+    return highlighter;
+  }
+
+  public static int getHighlightIdx(JTextArea editor, JLabel hint, Pattern ptn, int idx) {
+    Highlighter highlighter = updateHighlighter(editor, ptn);
     Highlighter.Highlight[] array = highlighter.getHighlights();
     int hits = array.length;
     int i = idx;

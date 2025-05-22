@@ -53,6 +53,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     textPane.setEditable(false);
     textPane.setText(TEXT);
+
     JButton prevButton = new JButton("⋀");
     prevButton.setActionCommand("prev");
 
@@ -189,10 +190,9 @@ final class DocUtils {
     }
   }
 
-  public static int getHighlightIdx(JTextPane editor, JLabel hint, Pattern ptn, int idx) {
+  public static Highlighter updateHighlighter(JTextPane editor, Pattern pattern) {
     StyledDocument doc = editor.getStyledDocument();
     Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
-
     // clear the previous highlight:
     Highlighter highlighter = editor.getHighlighter();
     for (Highlighter.Highlight h : highlighter.getHighlights()) {
@@ -205,7 +205,7 @@ final class DocUtils {
 
     // match highlighting:
     try {
-      Matcher matcher = ptn.matcher(doc.getText(0, doc.getLength()));
+      Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
       int pos = 0;
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
@@ -220,6 +220,11 @@ final class DocUtils {
       wrap.initCause(ex);
       throw wrap;
     }
+    return highlighter;
+  }
+
+  public static int getHighlightIdx(JTextPane editor, JLabel hint, Pattern ptn, int idx) {
+    Highlighter highlighter = updateHighlighter(editor, ptn);
     Highlighter.Highlight[] array = highlighter.getHighlights();
     int hits = array.length;
     int i = idx;
@@ -233,6 +238,7 @@ final class DocUtils {
       highlighter.removeHighlight(hh);
       int start = hh.getStartOffset();
       int end = hh.getEndOffset();
+      StyledDocument doc = editor.getStyledDocument();
       Style s = doc.getStyle("highlight-text-foreground");
       try {
         highlighter.addHighlight(start, end, CURRENT_PAINTER);

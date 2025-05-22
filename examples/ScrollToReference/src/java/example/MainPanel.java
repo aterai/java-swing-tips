@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
@@ -24,15 +25,31 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 public final class MainPanel extends JPanel {
-  private final JEditorPane editor = new JEditorPane();
-
   private MainPanel() {
     super(new BorderLayout(2, 2));
+    JEditorPane editor = new JEditorPane();
+    editor.setEditable(false);
+    editor.setEditorKit(new HTMLEditorKit());
+    editor.setText("<html><body><p id='main'></p><p id='bottom'>id=bottom</p></body></html>");
+
+    JButton button = new JButton("bottom");
+    button.addActionListener(e -> scrollToId(editor, "bottom"));
+    EventQueue.invokeLater(() -> scrollToId(editor, "main"));
+
+    JScrollPane s1 = new JScrollPane(makeTree(editor));
+    JScrollPane s2 = new JScrollPane(editor);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    split.setResizeWeight(.5);
+    add(split);
+    add(button, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTree makeTree(JEditorPane editor) {
     Icon emptyIcon = new EmptyIcon();
     UIManager.put("Tree.openIcon", emptyIcon);
     UIManager.put("Tree.closedIcon", emptyIcon);
@@ -43,35 +60,8 @@ public final class MainPanel extends JPanel {
     UIManager.put("Tree.rightChildIndent", 0);
     UIManager.put("Tree.paintLines", false);
 
-    HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    editor.setEditable(false);
-    editor.setEditorKit(htmlEditorKit);
-    editor.setText("<html><body><p id='main'></p><p id='bottom'>id=bottom</p></body></html>");
-
-    HTMLDocument doc = (HTMLDocument) editor.getDocument();
-    Element element = doc.getElement("main");
-
-    TreeModel model = makeModel();
-    DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-    // Java 9: Collections.list(root.preorderEnumeration()).stream()
-    Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .filter(node -> !node.isRoot())
-        .map(node -> Objects.toString(node.getUserObject()))
-        .forEach(ref -> {
-          String br = String.join("", Collections.nCopies(12, "<br />"));
-          String tag = "<a name='%s' href='#'>%s</a>%s";
-          try {
-            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
-          } catch (BadLocationException | IOException ex) {
-            ex.printStackTrace();
-            UIManager.getLookAndFeel().provideErrorFeedback(editor);
-          }
-        });
-
     JTree tree = new RowSelectionTree();
-    tree.setModel(model);
+    tree.setModel(makeModel(editor));
     tree.setRowHeight(32);
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     // https://ateraimemo.com/Swing/ExpandAllNodes.html
@@ -88,18 +78,7 @@ public final class MainPanel extends JPanel {
         editor.scrollToReference(ref);
       }
     });
-
-    JButton button = new JButton("bottom");
-    button.addActionListener(e -> scrollToId(editor, "bottom"));
-    EventQueue.invokeLater(() -> scrollToId(editor, "main"));
-
-    JScrollPane s1 = new JScrollPane(tree);
-    JScrollPane s2 = new JScrollPane(editor);
-    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
-    split.setResizeWeight(.5);
-    add(split);
-    add(button, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    return tree;
   }
 
   private static void scrollToId(JEditorPane editor, String id) {
@@ -123,7 +102,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static DefaultTreeModel makeModel() {
+  private static DefaultTreeModel makeModel(JEditorPane editor) {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("1. Introduction");
     root.add(c1);
@@ -141,6 +120,26 @@ public final class MainPanel extends JPanel {
     c3.add(new DefaultMutableTreeNode("3.4. Section"));
     root.add(c3);
 
+    HTMLDocument doc = (HTMLDocument) editor.getDocument();
+    Element element = doc.getElement("main");
+    // DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+    // Java 9: Collections.list(root.preorderEnumeration()).stream()
+    Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .filter(node -> !node.isRoot())
+        .map(node -> Objects.toString(node.getUserObject()))
+        .forEach(ref -> {
+          String br = String.join("", Collections.nCopies(12, "<br />"));
+          String tag = "<a name='%s' href='#'>%s</a>%s";
+          try {
+            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
+          } catch (BadLocationException | IOException ex) {
+            Logger.getGlobal().severe(ex::getMessage);
+            UIManager.getLookAndFeel().provideErrorFeedback(editor);
+          }
+        });
+
     return new DefaultTreeModel(root);
   }
 
@@ -154,7 +153,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

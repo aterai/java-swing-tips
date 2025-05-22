@@ -6,9 +6,18 @@ package example;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final String INFO = String.join("\n",
+      "CheckBox.foreground, Color.RED",
+      "CheckBox.background, Color.GREEN",
+      "CheckBox.interiorBackground, Color.BLUE",
+      "RadioButton.foreground, Color.RED",
+      "RadioButton.background, Color.GREEN",
+      "RadioButton.interiorBackground, Color.BLUE");
+
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("CheckBox.foreground", Color.RED);
@@ -46,15 +55,7 @@ public final class MainPanel extends JPanel {
     p.add(box1);
     p.add(box2);
     add(p, BorderLayout.NORTH);
-
-    JTextArea info = new JTextArea();
-    info.append("CheckBox.foreground, Color.RED\n");
-    info.append("CheckBox.background, Color.GREEN\n");
-    info.append("CheckBox.interiorBackground, Color.BLUE\n");
-    info.append("RadioButton.foreground, Color.RED\n");
-    info.append("RadioButton.background, Color.GREEN\n");
-    info.append("RadioButton.interiorBackground, Color.BLUE\n");
-    add(new JScrollPane(info));
+    add(new JScrollPane(new JTextArea(INFO)));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -72,7 +73,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -126,7 +127,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

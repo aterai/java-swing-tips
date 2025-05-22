@@ -12,6 +12,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -43,7 +44,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -62,16 +63,8 @@ class DropCapLabel extends JLabel {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(getBackground());
-    g2.fillRect(0, 0, getWidth(), getHeight());
-
-    Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
-    float x0 = rect.x;
-    float y0 = rect.y;
-
     Font font = getFont();
     String txt = getText();
-
     FontRenderContext frc = g2.getFontRenderContext();
     Shape shape = new TextLayout(txt.substring(0, 1), font, frc).getOutline(null);
 
@@ -80,14 +73,16 @@ class DropCapLabel extends JLabel {
     Rectangle firstLetter = s1.getBounds();
     firstLetter.grow(6, 2);
 
-    AffineTransform at2 = AffineTransform.getTranslateInstance(x0, y0 + firstLetter.height);
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    AffineTransform at2 = AffineTransform.getTranslateInstance(
+        r.x, r.y + firstLetter.height);
     Shape s2 = at2.createTransformedShape(s1);
     g2.setPaint(getForeground());
     g2.fill(s2);
 
-    float x = x0 + firstLetter.width;
-    float y = y0;
-    int w = rect.width - firstLetter.width;
+    float x = r.x + firstLetter.width;
+    float y = r.y;
+    int w = r.width - firstLetter.width;
 
     AttributedString as = new AttributedString(txt.substring(1));
     as.addAttribute(TextAttribute.FONT, font);
@@ -97,9 +92,9 @@ class DropCapLabel extends JLabel {
       TextLayout tl = lbm.nextLayout(w);
       tl.draw(g2, x, y + tl.getAscent());
       y += tl.getDescent() + tl.getLeading() + tl.getAscent();
-      if (y0 + firstLetter.height < y) {
-        x = x0;
-        w = rect.width;
+      if (r.y + firstLetter.height < y) {
+        x = r.x;
+        w = r.width;
       }
     }
     g2.dispose();

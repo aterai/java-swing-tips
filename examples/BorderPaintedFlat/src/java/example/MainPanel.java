@@ -5,52 +5,57 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    Box box1 = Box.createVerticalBox();
-    box1.setBorder(BorderFactory.createTitledBorder("setBorderPainted: false"));
-
-    JCheckBox c0 = new JCheckBox("setBorderPaintedFlat: false");
-    c0.setBorderPainted(false);
-    c0.setBorderPaintedFlat(false);
-    box1.add(c0);
-    box1.add(Box.createVerticalStrut(5));
-
-    JCheckBox c1 = new JCheckBox("setBorderPaintedFlat: true");
-    c1.setBorderPainted(false);
-    c1.setBorderPaintedFlat(true);
-    box1.add(c1);
-
-    Box box2 = Box.createVerticalBox();
-    box2.setBorder(BorderFactory.createTitledBorder("setBorderPainted: true"));
-
-    JCheckBox c2 = new JCheckBox("setBorderPaintedFlat: true");
-    c2.setBorderPainted(true);
-    c2.setBorderPaintedFlat(true);
-    box2.add(c2);
-    box2.add(Box.createVerticalStrut(5));
-
-    JCheckBox c3 = new JCheckBox("setBorderPaintedFlat: false");
-    c3.setBorderPainted(true);
-    c3.setBorderPaintedFlat(false);
-    box2.add(c3);
-    box2.add(Box.createVerticalStrut(5));
-
     Box box = Box.createVerticalBox();
-    box.add(box1);
+    box.add(makeBox1());
     box.add(Box.createVerticalStrut(10));
-    box.add(box2);
-
+    box.add(makeBox2());
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Box makeBox1() {
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createTitledBorder("setBorderPainted: false"));
+
+    JCheckBox check1 = new JCheckBox("setBorderPaintedFlat: false");
+    check1.setBorderPainted(false);
+    check1.setBorderPaintedFlat(false);
+    box.add(check1);
+    box.add(Box.createVerticalStrut(5));
+
+    JCheckBox check2 = new JCheckBox("setBorderPaintedFlat: true");
+    check2.setBorderPainted(false);
+    check2.setBorderPaintedFlat(true);
+    box.add(check2);
+    return box;
+  }
+
+  private static Box makeBox2() {
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createTitledBorder("setBorderPainted: true"));
+
+    JCheckBox check1 = new JCheckBox("setBorderPaintedFlat: true");
+    check1.setBorderPainted(true);
+    check1.setBorderPaintedFlat(true);
+    box.add(check1);
+    box.add(Box.createVerticalStrut(5));
+
+    JCheckBox check2 = new JCheckBox("setBorderPaintedFlat: false");
+    check2.setBorderPainted(true);
+    check2.setBorderPaintedFlat(false);
+    box.add(check2);
+    box.add(Box.createVerticalStrut(5));
+    return box;
   }
 
   public static void main(String[] args) {
@@ -63,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -117,7 +122,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

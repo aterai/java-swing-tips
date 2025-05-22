@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
@@ -15,11 +16,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     // UIManager.put("TextPane.caretForeground", Color.ORANGE);
-    StyleSheet styleSheet = new StyleSheet();
-    styleSheet.addRule("body {font-size: 12pt}");
-    styleSheet.addRule(".highlight {color: red; background: green}");
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(styleSheet);
+    htmlEditorKit.setStyleSheet(makeStyleSheet());
     JEditorPane editor = new JEditorPane();
     // editor.setEditable(false);
     editor.setEditorKit(htmlEditorKit);
@@ -82,6 +80,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static StyleSheet makeStyleSheet() {
+    StyleSheet styleSheet = new StyleSheet();
+    styleSheet.addRule("body {font-size: 12pt}");
+    styleSheet.addRule(".highlight {color: red; background: green}");
+    return styleSheet;
+  }
+
   private static String makeTestHtml() {
     return String.join("\n",
         "<html><body>",
@@ -102,7 +107,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
