@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.InsetsUIResource;
 
@@ -24,14 +25,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JOptionPane makeOptionPane() {
-    JLabel label = new JLabel("message1");
-    label.setBorder(BorderFactory.createLineBorder(Color.RED));
-    Component[] msg = {label, new JTextField("22"), new JButton("333")};
-    return new JOptionPane(
-        msg, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
-  }
-
   private JButton makeButton1() {
     JOptionPane op = makeOptionPane();
     String title = "Default";
@@ -46,28 +39,40 @@ public final class MainPanel extends JPanel {
   }
 
   private JButton makeButton2() {
-    JOptionPane op = makeOptionPane();
     JButton button = new JButton("separatorPadding");
     button.addActionListener(e -> {
-      UIDefaults d = new UIDefaults();
-      int p = padding.getNumber().intValue();
-      d.put("OptionPane.separatorPadding", p);
-      int m = margin.getNumber().intValue();
-      d.put("OptionPane.contentMargins", new InsetsUIResource(m, m, m, m));
-      // Insets i = new InsetsUIResource(m, m, m, m);
-      // d.put("OptionPane:\"OptionPane.separator\".contentMargins", i);
-      // d.put("OptionPane:\"OptionPane.messageArea\".contentMargins", i);
-      // d.put("OptionPane:\"OptionPane.messageArea\":\"OptionPane.label\".contentMargins", i);
-      // d.put("OptionPane.buttonAreaBorder", BorderFactory.createMatteBorder(p, 0, 0, 0, bg));
-      op.putClientProperty("Nimbus.Overrides", d);
-      op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
-      SwingUtilities.updateComponentTreeUI(op);
-      String t1 = "separatorPadding: " + p;
-      String t2 = "contentMargins: " + m;
-      JDialog dialog = op.createDialog(getRootPane(), t1 + " / " + t2);
+      JDialog dialog = makeCustomOptionPane();
       dialog.setVisible(true);
     });
     return button;
+  }
+
+  private static JOptionPane makeOptionPane() {
+    JLabel label = new JLabel("message1");
+    label.setBorder(BorderFactory.createLineBorder(Color.RED));
+    Component[] msg = {label, new JTextField("22"), new JButton("333")};
+    return new JOptionPane(
+        msg, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
+  }
+
+  private JDialog makeCustomOptionPane() {
+    JOptionPane op = makeOptionPane();
+    UIDefaults d = new UIDefaults();
+    int p = padding.getNumber().intValue();
+    d.put("OptionPane.separatorPadding", p);
+    int m = margin.getNumber().intValue();
+    d.put("OptionPane.contentMargins", new InsetsUIResource(m, m, m, m));
+    // Insets i = new InsetsUIResource(m, m, m, m);
+    // d.put("OptionPane:\"OptionPane.separator\".contentMargins", i);
+    // d.put("OptionPane:\"OptionPane.messageArea\".contentMargins", i);
+    // d.put("OptionPane:\"OptionPane.messageArea\":\"OptionPane.label\".contentMargins", i);
+    // d.put("OptionPane.buttonAreaBorder", BorderFactory.createMatteBorder(p, 0, 0, 0, bg));
+    op.putClientProperty("Nimbus.Overrides", d);
+    op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    SwingUtilities.updateComponentTreeUI(op);
+    String t1 = "separatorPadding: " + p;
+    String t2 = "contentMargins: " + m;
+    return op.createDialog(getRootPane(), t1 + " / " + t2);
   }
 
   private Component makeBox() {
@@ -97,7 +102,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
