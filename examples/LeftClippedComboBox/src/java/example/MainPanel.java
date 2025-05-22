@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.ComboBoxUI;
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -79,42 +80,47 @@ class LeftClippedComboBox<E> extends JComboBox<E> {
   @Override public void updateUI() {
     setRenderer(null);
     super.updateUI();
-    setRenderer(makeComboBoxRenderer(this));
+    setRenderer(new LeftClippedListCellRenderer(this));
+  }
+}
+
+class LeftClippedListCellRenderer extends DefaultListCellRenderer {
+  private final JComboBox<?> combo;
+
+  public LeftClippedListCellRenderer(JComboBox<?> combo) {
+    super();
+    this.combo = combo;
   }
 
-  private DefaultListCellRenderer makeComboBoxRenderer(JComboBox<?> combo) {
-    return new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        Component c = super.getListCellRendererComponent(
-            list, value, index, isSelected, cellHasFocus);
-        if (c instanceof JLabel) {
-          String s = Objects.toString(value, "");
-          FontMetrics fm = c.getFontMetrics(c.getFont());
-          int w = getAvailableWidth(combo, index);
-          ((JLabel) c).setText(fm.stringWidth(s) <= w ? s : getLeftClippedText(s, fm, w));
-        }
-        return c;
-      }
+  @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component c = super.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
+    if (c instanceof JLabel) {
+      String s = Objects.toString(value, "");
+      FontMetrics fm = c.getFontMetrics(c.getFont());
+      int w = getAvailableWidth(combo, index);
+      ((JLabel) c).setText(fm.stringWidth(s) <= w ? s : getLeftClippedText(s, fm, w));
+    }
+    return c;
+  }
 
-      private int getAvailableWidth(JComboBox<?> combo, int index) {
-        Optional<JButton> arrowButtonOp = descendants(combo)
-            .filter(JButton.class::isInstance)
-            .map(JButton.class::cast)
-            .findFirst();
-        Insets rendererIns = getInsets();
-        Rectangle r = SwingUtilities.calculateInnerArea(combo, null);
-        int availableWidth = r.width - rendererIns.left - rendererIns.right;
-        availableWidth = getLookAndFeelDependWidth(combo, availableWidth);
-        if (index < 0) {
-          // @see BasicComboBoxUI#rectangleForCurrentValue
-          int buttonSize = arrowButtonOp
-              .map(JComponent::getWidth)
-              .orElse(r.height - rendererIns.top - rendererIns.bottom);
-          availableWidth -= buttonSize;
-        }
-        return availableWidth;
-      }
-    };
+  private int getAvailableWidth(JComboBox<?> combo, int index) {
+    Optional<JButton> arrowButtonOp = descendants(combo)
+        .filter(JButton.class::isInstance)
+        .map(JButton.class::cast)
+        .findFirst();
+    Insets rendererIns = getInsets();
+    Rectangle r = SwingUtilities.calculateInnerArea(combo, null);
+    int availableWidth = r.width - rendererIns.left - rendererIns.right;
+    availableWidth = getLookAndFeelDependWidth(combo, availableWidth);
+    if (index < 0) {
+      // @see BasicComboBoxUI#rectangleForCurrentValue
+      int buttonSize = arrowButtonOp
+          .map(JComponent::getWidth)
+          .orElse(r.height - rendererIns.top - rendererIns.bottom);
+      availableWidth -= buttonSize;
+    }
+    return availableWidth;
   }
 
   // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
@@ -236,7 +242,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
