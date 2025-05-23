@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageProducer;
 import java.awt.image.MemoryImageSource;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -30,7 +31,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -45,7 +46,6 @@ public final class MainPanel extends JPanel {
 
 class PaintPanel extends JPanel {
   private static final Paint TEXTURE = createCheckerTexture(6, new Color(0x32_C8_96_64, true));
-  private final Point startPoint = new Point();
   private final transient BufferedImage backImage;
   private final Rectangle rect = new Rectangle(320, 240);
   private final int[] pixels;
@@ -68,35 +68,7 @@ class PaintPanel extends JPanel {
     removeMouseMotionListener(handler);
     removeMouseListener(handler);
     super.updateUI();
-    handler = new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        startPoint.setLocation(e.getPoint());
-        penColor = SwingUtilities.isLeftMouseButton(e) ? 0xFF_00_00_00 : 0x0;
-      }
-
-      @Override public void mouseDragged(MouseEvent e) {
-        double dx = e.getX() - startPoint.getX();
-        double dy = e.getY() - startPoint.getY();
-        double delta = Math.max(Math.abs(dx), Math.abs(dy));
-
-        double ix = dx / delta;
-        double iy = dy / delta;
-        double sx = startPoint.x;
-        double sy = startPoint.y;
-        Point2D pt = new Point2D.Double();
-        for (int i = 0; i < delta; i++) {
-          pt.setLocation(sx, sy);
-          if (!rect.contains(pt)) {
-            break;
-          }
-          paintStamp(pt, penColor);
-          // src.newPixels(pt.x - 2, pt.y - 2, 4, 4);
-          sx += ix;
-          sy += iy;
-        }
-        startPoint.setLocation(e.getPoint());
-      }
-    };
+    handler = new MouseHandler();
     addMouseMotionListener(handler);
     addMouseListener(handler);
   }
@@ -141,6 +113,38 @@ class PaintPanel extends JPanel {
     }
     g2.dispose();
     return new TexturePaint(img, new Rectangle(size, size));
+  }
+
+  private class MouseHandler extends MouseAdapter {
+    private final Point startPoint = new Point();
+
+    @Override public void mousePressed(MouseEvent e) {
+      startPoint.setLocation(e.getPoint());
+      penColor = SwingUtilities.isLeftMouseButton(e) ? 0xFF_00_00_00 : 0x0;
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      double dx = e.getX() - startPoint.getX();
+      double dy = e.getY() - startPoint.getY();
+      double delta = Math.max(Math.abs(dx), Math.abs(dy));
+
+      double ix = dx / delta;
+      double iy = dy / delta;
+      double sx = startPoint.x;
+      double sy = startPoint.y;
+      Point2D pt = new Point2D.Double();
+      for (int i = 0; i < delta; i++) {
+        pt.setLocation(sx, sy);
+        if (!rect.contains(pt)) {
+          break;
+        }
+        paintStamp(pt, penColor);
+        // src.newPixels(pt.x - 2, pt.y - 2, 4, 4);
+        sx += ix;
+        sy += iy;
+      }
+      startPoint.setLocation(e.getPoint());
+    }
   }
 }
 

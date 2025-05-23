@@ -48,48 +48,7 @@ public final class MainPanel extends JPanel {
   private static SwingWorker<?, ?> makePlayer(JButton start, JButton pause, JButton reset) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/Mozart_toruko_k.mid");
-    return new AbstractPlayer(url) {
-      private long tickPos;
-
-      @Override protected void addListener(Sequencer sequencer) {
-        start.addActionListener(e -> {
-          sequencer.setTickPosition(tickPos);
-          sequencer.start();
-          initButtons(false);
-        });
-
-        pause.addActionListener(e -> {
-          publish(sequencer.getTickPosition());
-          sequencer.stop();
-          initButtons(true);
-        });
-
-        reset.addActionListener(e -> {
-          sequencer.stop();
-          tickPos = 0L;
-          initButtons(true);
-        });
-      }
-
-      @Override protected void process(List<Long> chunks) {
-        chunks.forEach(tp -> {
-          tickPos = tp;
-          if (Objects.equals(tp, 0L)) {
-            initButtons(true);
-          }
-        });
-      }
-
-      @Override protected void done() {
-        tickPos = 0L;
-        initButtons(true);
-      }
-
-      private void initButtons(boolean flg) {
-        start.setEnabled(flg);
-        pause.setEnabled(!flg);
-      }
-    };
+    return new MidiPlayer(url, start, pause, reset);
   }
 
   private static Component makeTitle(Color bgc) {
@@ -171,5 +130,58 @@ abstract class AbstractPlayer extends SwingWorker<Void, Long> {
       publish(sequencer.getTickPosition());
     }
     Thread.sleep(1000L);
+  }
+}
+
+class MidiPlayer extends AbstractPlayer {
+  private final JButton start;
+  private final JButton pause;
+  private final JButton reset;
+  private long tickPos;
+
+  protected MidiPlayer(URL url, JButton start, JButton pause, JButton reset) {
+    super(url);
+    this.start = start;
+    this.pause = pause;
+    this.reset = reset;
+  }
+
+  @Override protected void addListener(Sequencer sequencer) {
+    start.addActionListener(e -> {
+      sequencer.setTickPosition(tickPos);
+      sequencer.start();
+      initButtons(false);
+    });
+
+    pause.addActionListener(e -> {
+      publish(sequencer.getTickPosition());
+      sequencer.stop();
+      initButtons(true);
+    });
+
+    reset.addActionListener(e -> {
+      sequencer.stop();
+      tickPos = 0L;
+      initButtons(true);
+    });
+  }
+
+  @Override protected void process(List<Long> chunks) {
+    chunks.forEach(tp -> {
+      tickPos = tp;
+      if (Objects.equals(tp, 0L)) {
+        initButtons(true);
+      }
+    });
+  }
+
+  @Override protected void done() {
+    tickPos = 0L;
+    initButtons(true);
+  }
+
+  private void initButtons(boolean flg) {
+    start.setEnabled(flg);
+    pause.setEnabled(!flg);
   }
 }

@@ -6,50 +6,14 @@ package example;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     Icon icon = UIManager.getIcon("OptionPane.informationIcon");
-    JLabel label = new JLabel("OptionPane.informationIcon", icon, SwingConstants.LEADING) {
-      private final Rectangle viewRect = new Rectangle();
-      private final Rectangle iconRect = new Rectangle();
-      private final Rectangle textRect = new Rectangle();
-
-      @Override public String getToolTipText(MouseEvent e) {
-        SwingUtilities.calculateInnerArea(this, viewRect);
-        SwingUtilities.layoutCompoundLabel(
-            this,
-            this.getFontMetrics(this.getFont()),
-            this.getText(),
-            this.getIcon(),
-            this.getVerticalAlignment(),
-            this.getHorizontalAlignment(),
-            this.getVerticalTextPosition(),
-            this.getHorizontalTextPosition(),
-            viewRect,
-            iconRect,
-            textRect,
-            this.getIconTextGap());
-        String tip = super.getToolTipText(e);
-        Point pt = e.getPoint();
-        if (tip != null) {
-          String type;
-          if (iconRect.contains(pt)) {
-            type = "Icon";
-          } else if (textRect.contains(pt)) {
-            type = "Text";
-          } else if (viewRect.contains(pt)) {
-            type = "InnerArea";
-          } else {
-            type = "Border";
-          }
-          tip = String.format("%s: %s", type, tip);
-        }
-        return tip;
-      }
-    };
+    JLabel label = new ToolTipLabel(icon);
     label.setOpaque(true);
     label.setBackground(Color.GREEN);
     label.setBorder(BorderFactory.createMatteBorder(20, 10, 50, 30, Color.RED));
@@ -77,7 +41,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -86,6 +50,49 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ToolTipLabel extends JLabel {
+  private final Rectangle viewRect = new Rectangle();
+  private final Rectangle iconRect = new Rectangle();
+  private final Rectangle textRect = new Rectangle();
+
+  protected ToolTipLabel(Icon icon) {
+    super("OptionPane.informationIcon", icon, LEADING);
+  }
+
+  @Override public String getToolTipText(MouseEvent e) {
+    SwingUtilities.calculateInnerArea(this, viewRect);
+    SwingUtilities.layoutCompoundLabel(
+        this,
+        this.getFontMetrics(this.getFont()),
+        this.getText(),
+        this.getIcon(),
+        this.getVerticalAlignment(),
+        this.getHorizontalAlignment(),
+        this.getVerticalTextPosition(),
+        this.getHorizontalTextPosition(),
+        viewRect,
+        iconRect,
+        textRect,
+        this.getIconTextGap());
+    String tip = super.getToolTipText(e);
+    return tip == null ? null : String.format("%s: %s", getAreaName(e.getPoint()), tip);
+  }
+
+  private String getAreaName(Point pt) {
+    String type;
+    if (iconRect.contains(pt)) {
+      type = "Icon";
+    } else if (textRect.contains(pt)) {
+      type = "Text";
+    } else if (viewRect.contains(pt)) {
+      type = "InnerArea";
+    } else {
+      type = "Border";
+    }
+    return type;
   }
 }
 
