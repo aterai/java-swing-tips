@@ -46,14 +46,17 @@ public final class MainPanel extends JPanel {
     box2.add(Box.createVerticalStrut(5));
     box2.add(makeLabeledBox(password, new JPasswordField()));
 
+    add(makeBox(box1, box2), BorderLayout.NORTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Box makeBox(Box box1, Box box2) {
     Box box = Box.createVerticalBox();
     box.add(box1);
     box.add(Box.createVerticalStrut(10));
     box.add(box2);
-
-    add(box, BorderLayout.NORTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    return box;
   }
 
   private static Box makeLabeledBox(Component label, Component c) {

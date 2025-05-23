@@ -13,6 +13,15 @@ import javax.swing.text.DefaultCaret;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    add(makePanel(), BorderLayout.NORTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makePanel() {
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(8, 4, 8, 4);
     c.anchor = GridBagConstraints.WEST;
@@ -41,14 +50,7 @@ public final class MainPanel extends JPanel {
     p.add(makeTextField3(), c);
     c.gridy = 4;
     p.add(makeTextField4(), c);
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    add(p, BorderLayout.NORTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
   private static JTextField makeTextField0() {
