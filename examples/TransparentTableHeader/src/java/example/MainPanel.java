@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     TexturePaint texture = ImageUtils.makeImageTexture();
-    JTable table = makeTable();
+    JTable table = new TransparentTable(makeModel());
     JScrollPane scroll = new JScrollPane(table) {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -72,60 +72,6 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private JTable makeTable() {
-    return new JTable(makeModel()) {
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JComponent) {
-          ((JComponent) c).setOpaque(false);
-        }
-        return c;
-      }
-
-      @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component c = super.prepareRenderer(renderer, row, column);
-        c.setForeground(Color.BLACK);
-        return c;
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        // setAutoCreateRowSorter(true);
-        setRowSelectionAllowed(true);
-        setFillsViewportHeight(true);
-        setShowVerticalLines(false);
-        // setShowHorizontalLines(false);
-        setFocusable(false);
-        // setCellSelectionEnabled(false);
-        setIntercellSpacing(new Dimension(0, 1));
-        setRowHeight(24);
-        setSelectionForeground(getForeground());
-        setSelectionBackground(new Color(0, 0, 100, 50));
-
-        JCheckBox checkBox = new JCheckBox() {
-          @Override protected void paintComponent(Graphics g) {
-            g.setColor(new Color(0, 0, 100, 50));
-            g.fillRect(0, 0, getWidth(), getHeight());
-            super.paintComponent(g);
-          }
-        };
-        checkBox.setOpaque(false);
-        checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-        setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
-
-        setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
-        setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
-        setOpaque(false);
-        Color alphaZero = new Color(0x0, true);
-        setBackground(alphaZero);
-        // setGridColor(alphaZero);
-        getTableHeader().setDefaultRenderer(new TransparentHeader());
-        getTableHeader().setOpaque(false);
-        getTableHeader().setBackground(alphaZero);
-      }
-    };
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -145,6 +91,62 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TransparentTable extends JTable {
+  protected TransparentTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JComponent) {
+      ((JComponent) c).setOpaque(false);
+    }
+    return c;
+  }
+
+  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    Component c = super.prepareRenderer(renderer, row, column);
+    c.setForeground(Color.BLACK);
+    return c;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    // setAutoCreateRowSorter(true);
+    setRowSelectionAllowed(true);
+    setFillsViewportHeight(true);
+    setShowVerticalLines(false);
+    // setShowHorizontalLines(false);
+    setFocusable(false);
+    // setCellSelectionEnabled(false);
+    setIntercellSpacing(new Dimension(0, 1));
+    setRowHeight(24);
+    setSelectionForeground(getForeground());
+    setSelectionBackground(new Color(0, 0, 100, 50));
+
+    JCheckBox checkBox = new JCheckBox() {
+      @Override protected void paintComponent(Graphics g) {
+        g.setColor(new Color(0, 0, 100, 50));
+        g.fillRect(0, 0, getWidth(), getHeight());
+        super.paintComponent(g);
+      }
+    };
+    checkBox.setOpaque(false);
+    checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+    setDefaultEditor(Boolean.class, new DefaultCellEditor(checkBox));
+
+    setDefaultRenderer(Object.class, new TranslucentObjectRenderer());
+    setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
+    setOpaque(false);
+    Color alphaZero = new Color(0x0, true);
+    setBackground(alphaZero);
+    // setGridColor(alphaZero);
+    getTableHeader().setDefaultRenderer(new TransparentHeader());
+    getTableHeader().setOpaque(false);
+    getTableHeader().setBackground(alphaZero);
   }
 }
 

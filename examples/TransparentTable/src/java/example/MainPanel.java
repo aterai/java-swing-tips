@@ -20,51 +20,12 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final Color alphaZero = new Color(0x0, true);
-  private final Color color = new Color(0x32_FF_00_00, true);
-
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      @Override public void updateUI() {
-        // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-        // https://bugs.openjdk.org/browse/JDK-6788475
-        // Set a temporary ColorUIResource to avoid this issue
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        super.updateUI();
-        setAutoCreateRowSorter(true);
-        setRowSelectionAllowed(true);
-        setFillsViewportHeight(true);
-        setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
-        setOpaque(false);
-        setBackground(alphaZero);
-
-        TableModel m = getModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
-          TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-          if (r instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component) r);
-          }
-        }
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JTextField) {
-          JTextField tf = (JTextField) c;
-          tf.setOpaque(false);
-        } else if (c instanceof JCheckBox) {
-          JCheckBox cb = (JCheckBox) c;
-          cb.setBackground(getSelectionBackground());
-        }
-        return c;
-      }
-    };
-
-    TexturePaint texture = ImageUtils.makeImageTexture();
+    JTable table = new TransparentTable(makeModel());
     JScrollPane scroll = new JScrollPane(table) {
+      private final transient Paint texture = ImageUtils.makeImageTexture();
+
       @Override protected JViewport createViewport() {
         return new JViewport() {
           @Override protected void paintComponent(Graphics g) {
@@ -78,10 +39,15 @@ public final class MainPanel extends JPanel {
       }
     };
     scroll.getViewport().setOpaque(false);
-    scroll.getViewport().setBackground(alphaZero);
 
+    Color alphaZero = new Color(0x0, true);
+    Color color = new Color(0x32_FF_00_00, true);
+    scroll.getViewport().setBackground(alphaZero);
     JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
-    check.addActionListener(e -> table.setBackground(check.isSelected() ? color : alphaZero));
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      table.setBackground(b ? color : alphaZero);
+    });
 
     add(check, BorderLayout.NORTH);
     add(scroll);
@@ -119,6 +85,48 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TransparentTable extends JTable {
+  protected TransparentTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+    // https://bugs.openjdk.org/browse/JDK-6788475
+    // Set a temporary ColorUIResource to avoid this issue
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    super.updateUI();
+    setAutoCreateRowSorter(true);
+    setRowSelectionAllowed(true);
+    setFillsViewportHeight(true);
+    setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    setDefaultRenderer(Boolean.class, new TranslucentBooleanRenderer());
+    setOpaque(false);
+    setBackground(new Color(0x0, true));
+
+    TableModel m = getModel();
+    for (int i = 0; i < m.getColumnCount(); i++) {
+      TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+      if (r instanceof Component) {
+        SwingUtilities.updateComponentTreeUI((Component) r);
+      }
+    }
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JTextField) {
+      JTextField tf = (JTextField) c;
+      tf.setOpaque(false);
+    } else if (c instanceof JCheckBox) {
+      JCheckBox cb = (JCheckBox) c;
+      cb.setBackground(getSelectionBackground());
+    }
+    return c;
   }
 }
 
