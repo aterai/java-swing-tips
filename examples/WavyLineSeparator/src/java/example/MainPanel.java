@@ -89,8 +89,8 @@ class WavyLineSeparator extends JSeparator {
   @Override public Dimension getPreferredSize() {
     Insets i = getInsets();
     return getOrientation() == HORIZONTAL
-      ? new Dimension(30, ICON_WIDTH + i.top + i.bottom)
-      : new Dimension(ICON_WIDTH + i.left + i.right, 30);
+        ? new Dimension(30, ICON_WIDTH + i.top + i.bottom)
+        : new Dimension(ICON_WIDTH + i.left + i.right, 30);
   }
 
   private static class WavyLineIcon implements Icon {
