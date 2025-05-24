@@ -224,7 +224,7 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
         .collect(Collectors.joining(", "));
   }
 
-  private class CheckItemListCellRenderer implements ListCellRenderer<E> {
+  private final class CheckItemListCellRenderer implements ListCellRenderer<E> {
     private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
     private final JCheckBox check = new JCheckBox();
 

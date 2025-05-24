@@ -115,7 +115,7 @@ class PaintPanel extends JPanel {
     return new TexturePaint(img, new Rectangle(size, size));
   }
 
-  private class MouseHandler extends MouseAdapter {
+  private final class MouseHandler extends MouseAdapter {
     private final Point startPoint = new Point();
 
     @Override public void mousePressed(MouseEvent e) {
