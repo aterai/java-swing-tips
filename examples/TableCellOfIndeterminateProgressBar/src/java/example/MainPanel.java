@@ -27,31 +27,9 @@ public final class MainPanel extends JPanel {
     @Override public void updateUI() {
       super.updateUI();
       removeColumn(getColumnModel().getColumn(3));
-      // ClassLoader cl = Thread.currentThread().getContextClassLoader();
-      // URL url = cl.getResource("example/restore_to_background_color.gif");
-      // JLabel label = new JLabel(null, null, SwingConstants.CENTER);
       JProgressBar progress = new JProgressBar();
-      TableCellRenderer renderer = new DefaultTableCellRenderer();
       TableColumn tc = getColumnModel().getColumn(2);
-      tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-        Component c;
-        if (value instanceof JProgressBar) {
-          // label.setIcon(makeImageIcon(url, tbl, row, column));
-          // c = label;
-          c = (JProgressBar) value;
-        } else if (value instanceof Integer) {
-          progress.setValue((int) value);
-          c = progress;
-        } else {
-          c = renderer.getTableCellRendererComponent(
-              tbl, Objects.toString(value), isSelected, hasFocus, row, column);
-        }
-        return c;
-      });
-    }
-
-    @Override public boolean isCellEditable(int row, int column) {
-      return false;
+      tc.setCellRenderer(new ProgressTableCellRenderer(progress));
     }
   };
   private final Set<Integer> deletedRowSet = new TreeSet<>();
@@ -81,29 +59,6 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  // public static Icon makeImageIcon(URL url, JTable table, int row, int col) {
-  //   if (Objects.nonNull(url)) {
-  //     ImageIcon icon = new ImageIcon(url);
-  //     // Wastefulness: icon.setImageObserver((ImageObserver) table);
-  //     icon.setImageObserver((img, flags, x, y, w, h) -> {
-  //       // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
-  //       if (!table.isShowing()) {
-  //         return false; // @see javax.swing.JLabel#imageUpdate(...)
-  //       }
-  //       // @see java.awt.Component#imageUpdate(...)
-  //       if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
-  //         int vr = table.convertRowIndexToView(row); // JDK 1.6.0
-  //         int vc = table.convertColumnIndexToView(col);
-  //         table.repaint(table.getCellRect(vr, vc, false));
-  //       }
-  //       return (flags & (ALLBITS | ABORT)) == 0;
-  //     });
-  //     return icon;
-  //   } else {
-  //     return UIManager.getIcon("html.missingImage");
-  //   }
-  // }
-
   public void addProgressValue(String name, Integer iv, SwingWorker<?, ?> worker) {
     Object[] obj = {number, name, iv, worker};
     model.addRow(obj);
@@ -122,20 +77,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        String text;
-        int i = -1;
-        if (isCancelled()) {
-          text = "Cancelled";
+        if (isDisplayable()) {
+          model.setValueAt(getDoneMessage(), key, 2);
         } else {
-          try {
-            i = get();
-            text = i >= 0 ? "Done" : "Disposed";
-          } catch (InterruptedException | ExecutionException ex) {
-            text = ex.getMessage();
-            Thread.currentThread().interrupt();
-          }
+          cancel(true);
         }
-        model.setValueAt(String.format("%s(%dms)%n", text, i), key, 2);
       }
     };
     addProgressValue("example", 0, worker);
@@ -144,7 +90,11 @@ public final class MainPanel extends JPanel {
 
   private static DefaultTableModel makeModel() {
     String[] columnNames = {"No.", "Name", "Progress", ""};
-    return new DefaultTableModel(columnNames, 0);
+    return new DefaultTableModel(columnNames, 0) {
+      @Override public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
   }
 
   private final class TablePopupMenu extends JPopupMenu {
@@ -236,6 +186,58 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class ProgressTableCellRenderer implements TableCellRenderer {
+  private final TableCellRenderer renderer = new DefaultTableCellRenderer();
+  private final JProgressBar progress;
+  // private final JLabel label = new JLabel(null, null, SwingConstants.CENTER);
+  // private final URL url;
+
+  public ProgressTableCellRenderer(JProgressBar progress) {
+    this.progress = progress;
+    // ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    // url = cl.getResource("example/restore_to_background_color.gif");
+  }
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    Component c;
+    // label.setIcon(makeImageIcon(url, table, row, column));
+    // c = label;
+    if (value instanceof JProgressBar) {
+      c = (JProgressBar) value;
+    } else if (value instanceof Integer) {
+      progress.setValue((int) value);
+      c = progress;
+    } else {
+      c = renderer.getTableCellRendererComponent(
+          table, Objects.toString(value), isSelected, hasFocus, row, column);
+    }
+    return c;
+  }
+
+  // public static Icon makeImageIcon(URL url, JTable table, int row, int col) {
+  //   if (Objects.nonNull(url)) {
+  //     ImageIcon icon = new ImageIcon(url);
+  //     // Wastefulness: icon.setImageObserver((ImageObserver) table);
+  //     icon.setImageObserver((img, flags, x, y, w, h) -> {
+  //       // @see http://www2.gol.com/users/tame/swing/examples/SwingExamples.html
+  //       if (!table.isShowing()) {
+  //         return false; // @see javax.swing.JLabel#imageUpdate(...)
+  //       }
+  //       // @see java.awt.Component#imageUpdate(...)
+  //       if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
+  //         int vr = table.convertRowIndexToView(row); // JDK 1.6.0
+  //         int vc = table.convertColumnIndexToView(col);
+  //         table.repaint(table.getCellRect(vr, vc, false));
+  //       }
+  //       return (flags & (ALLBITS | ABORT)) == 0;
+  //     });
+  //     return icon;
+  //   } else {
+  //     return UIManager.getIcon("html.missingImage");
+  //   }
+  // }
+}
+
 class IndeterminateProgressBarUI extends BasicProgressBarUI {
   @Override public void incrementAnimationIndex() {
     super.incrementAnimationIndex();
@@ -281,5 +283,24 @@ class BackgroundTask extends SwingWorker<Integer, Object> {
     int iv = rnd.nextInt(50) + 1;
     Thread.sleep(iv);
     return iv;
+  }
+
+  protected String getDoneMessage() {
+    String msg;
+    int i = -1;
+    if (isCancelled()) {
+      msg = "Cancelled";
+    } else {
+      try {
+        i = get();
+        msg = i >= 0 ? "Done" : "Disposed";
+      } catch (InterruptedException ex) {
+        msg = "Interrupted";
+        Thread.currentThread().interrupt();
+      } catch (ExecutionException ex) {
+        msg = "ExecutionException: " + ex.getMessage();
+      }
+    }
+    return String.format("%s(%dms)%n", msg, i);
   }
 }
