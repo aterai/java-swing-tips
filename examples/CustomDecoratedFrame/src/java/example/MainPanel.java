@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -93,17 +94,7 @@ public final class MainPanel extends JPanel {
     if (gc != null && gc.isTranslucencyCapable()) {
       frame.setBackground(new Color(0x0, true));
     }
-    JPanel titlePane = new JPanel(new BorderLayout());
-    MouseInputListener dwl = new DragWindowListener();
-    titlePane.addMouseListener(dwl);
-    titlePane.addMouseMotionListener(dwl);
-    titlePane.setOpaque(false);
-    // titlePane.setBackground(Color.ORANGE);
-    titlePane.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
-
-    titlePane.add(new JLabel(title, SwingConstants.CENTER));
-    titlePane.add(makeCloseButton(), BorderLayout.EAST);
-    // titlePane.add(iconify, BorderLayout.WEST);
+    JPanel titleBar = makeTitleBar(title);
 
     MouseInputListener rwl = new ResizeWindowListener();
     Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight).forEach(c -> {
@@ -113,7 +104,7 @@ public final class MainPanel extends JPanel {
 
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(titlePane, BorderLayout.CENTER);
+    titlePanel.add(titleBar, BorderLayout.CENTER);
 
     JPanel northPanel = new JPanel(new BorderLayout());
     northPanel.add(topLeft, BorderLayout.WEST);
@@ -141,6 +132,20 @@ public final class MainPanel extends JPanel {
     return frame;
   }
 
+  private static JPanel makeTitleBar(String title) {
+    JPanel titleBar = new JPanel(new BorderLayout());
+    MouseInputListener dwl = new DragWindowListener();
+    titleBar.addMouseListener(dwl);
+    titleBar.addMouseMotionListener(dwl);
+    titleBar.setOpaque(false);
+    // titleBar.setBackground(Color.ORANGE);
+    titleBar.setBorder(BorderFactory.createEmptyBorder(W, W, W, W));
+    titleBar.add(new JLabel(title, SwingConstants.CENTER));
+    titleBar.add(makeCloseButton(), BorderLayout.EAST);
+    // titleBar.add(iconify, BorderLayout.WEST);
+    return titleBar;
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -151,7 +156,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     MainPanel p = new MainPanel();

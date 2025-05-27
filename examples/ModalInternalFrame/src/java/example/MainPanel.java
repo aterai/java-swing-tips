@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -39,21 +40,21 @@ public final class MainPanel extends JPanel {
     add(sampleBar, BorderLayout.NORTH);
     sampleBar.setVisible(false);
 
+    menuBar.add(makeMenu());
+
+    JButton b = new JButton(new DefaultEditorKit.BeepAction());
+    b.setMnemonic(KeyEvent.VK_B);
+    add(b, BorderLayout.SOUTH);
+    add(desktop);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JMenu makeMenu() {
     JMenu menu = new JMenu("Frame");
     menu.setMnemonic(KeyEvent.VK_F);
-    menuBar.add(menu);
 
-    JMenuItem menuItem = new JMenuItem(new AbstractAction("New Frame") {
-      private int openFrameCount;
-      @Override public void actionPerformed(ActionEvent e) {
-        JInternalFrame frame = new JInternalFrame("title", true, true, true, true);
-        frame.setSize(130, 100);
-        frame.setLocation(30 * openFrameCount, 30 * openFrameCount);
-        getDesktop().add(frame);
-        frame.setVisible(true);
-        openFrameCount++;
-      }
-    });
+    JMenuItem menuItem = new JMenuItem(new NewFrameAction("New Frame"));
     menuItem.setMnemonic(KeyEvent.VK_N);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
     menu.add(menuItem);
@@ -71,17 +72,28 @@ public final class MainPanel extends JPanel {
     menuItem = menu.add(new ModalInternalFrameAction3("InternalMessageDialog(Print)"));
     menuItem.setMnemonic(KeyEvent.VK_3);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.ALT_DOWN_MASK));
-
-    JButton b = new JButton(new DefaultEditorKit.BeepAction());
-    b.setMnemonic(KeyEvent.VK_B);
-    add(b, BorderLayout.SOUTH);
-    add(desktop);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
-    setPreferredSize(new Dimension(320, 240));
+    return menu;
   }
 
   public JDesktopPane getDesktop() {
     return desktop;
+  }
+
+  private final class NewFrameAction extends AbstractAction {
+    private int openFrameCount;
+
+    public NewFrameAction(String name) {
+      super(name);
+    }
+
+    @Override public void actionPerformed(ActionEvent e) {
+      JInternalFrame frame = new JInternalFrame("title", true, true, true, true);
+      frame.setSize(130, 100);
+      frame.setLocation(30 * openFrameCount, 30 * openFrameCount);
+      getDesktop().add(frame);
+      frame.setVisible(true);
+      openFrameCount++;
+    }
   }
 
   // menuItem = new JMenuItem(new ModalInternalFrameAction1("InternalMessageDialog(Normal)"));
@@ -223,7 +235,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

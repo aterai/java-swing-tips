@@ -1,6 +1,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -15,30 +16,23 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     // UIManager.put("Spinner.editorAlignment", SwingConstants.CENTER);
     // System.out.println(UIManager.get("Spinner.editorAlignment"));
-    JRadioButton r1 = new JRadioButton("LEADING");
-    JRadioButton r2 = new JRadioButton("CENTER");
-    JRadioButton r3 = new JRadioButton("TRAILING");
-    ItemListener il = e -> {
-      int alignment;
-      Object item = e.getItem();
-      // or: ItemSelectable item = e.getItemSelectable();
-      if (r1.equals(item)) {
-        alignment = SwingConstants.LEADING;
-      } else if (r2.equals(item)) {
-        alignment = SwingConstants.CENTER;
-      } else {
-        alignment = SwingConstants.TRAILING;
-      }
-      UIManager.put("Spinner.editorAlignment", alignment);
-      SwingUtilities.updateComponentTreeUI(this);
-    };
     ButtonGroup bg = new ButtonGroup();
+    ItemListener handler = e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        String name = bg.getSelection().getActionCommand();
+        int alignment = HorizontalAlignment.valueOf(name).getAlignment();
+        UIManager.put("Spinner.editorAlignment", alignment);
+        SwingUtilities.updateComponentTreeUI(this);
+      }
+    };
     Box box = Box.createHorizontalBox();
-    for (JRadioButton r : Arrays.asList(r1, r2, r3)) {
-      r.addItemListener(il);
+    Arrays.asList("LEADING", "CENTER", "TRAILING").forEach(cmd -> {
+      JRadioButton r = new JRadioButton(cmd);
+      r.setActionCommand(cmd);
+      r.addItemListener(handler);
       bg.add(r);
       box.add(r);
-    }
+    });
     JTextArea log = new JTextArea();
     log.setEditable(false);
 

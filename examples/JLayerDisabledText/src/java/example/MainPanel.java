@@ -13,12 +13,22 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    add(makeButtonPanel());
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeButtonPanel() {
     UIManager.put("Button.disabledText", Color.RED);
     JButton button1 = makeButton("Default");
     JButton button2 = makeButton("setForeground");
@@ -56,20 +66,15 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(new GridLayout(0, 1));
     panel.add(p1);
     panel.add(p2);
-    // panel.add(p3);
-    add(panel, BorderLayout.NORTH);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(check);
-    add(box, BorderLayout.SOUTH);
 
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    JPanel p = new JPanel(new BorderLayout());
+    p.add(panel, BorderLayout.NORTH);
+    p.add(box, BorderLayout.SOUTH);
+    return p;
   }
 
   private static JButton makeButton(String title) {
@@ -94,7 +99,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -128,8 +133,8 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       }
       layer.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
-          | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
-          | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
+              | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
+              | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
     }
   }
 
@@ -328,7 +333,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

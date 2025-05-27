@@ -31,7 +31,27 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private static final Color SELECTION = new Color(0xC8_64_64_FF, true);
   private static final Color HIGHLIGHT = new Color(0x64_FF_FF_32, true);
-  private final JEditorPane editorPane = new JEditorPane();
+  private static final String HTML = "<html><pre>" + String.join("<br />",
+      "private static void createAndShowGui() {",
+      "  <span class='highlight'>JFrame</span> frame = new JFrame();",
+      "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);",
+      "  frame.getContentPane().add(new MainPanel());",
+      "  frame.pack();",
+      "  frame.setLocationRelativeTo(null);",
+      "  frame.setVisible(true);",
+      "}");
+  private final JEditorPane editorPane = new JEditorPane() {
+    @Override public void updateUI() {
+      super.updateUI();
+      putClientProperty(HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+      setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+      setOpaque(false);
+      setForeground(new Color(0xC8_C8_C8));
+      setSelectedTextColor(Color.WHITE);
+      setBackground(new Color(0x0, true)); // Nimbus
+      setSelectionColor(SELECTION);
+    }
+  };
 
   private MainPanel() {
     super(new BorderLayout());
@@ -52,22 +72,7 @@ public final class MainPanel extends JPanel {
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
     htmlEditorKit.setStyleSheet(styleSheet);
     editorPane.setEditorKit(htmlEditorKit);
-    editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-    editorPane.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-    editorPane.setOpaque(false);
-    editorPane.setForeground(new Color(0xC8_C8_C8));
-    editorPane.setSelectedTextColor(Color.WHITE);
-    editorPane.setBackground(new Color(0x0, true)); // Nimbus
-    editorPane.setSelectionColor(SELECTION);
-    editorPane.setText("<html><pre>" + String.join("<br />",
-        "private static void createAndShowGui() {",
-        "  <span class='highlight'>JFrame</span> frame = new JFrame();",
-        "  frame.setDefaultCloseOperation(EXIT_ON_CLOSE);",
-        "  frame.getContentPane().add(new MainPanel());",
-        "  frame.pack();",
-        "  frame.setLocationRelativeTo(null);",
-        "  frame.setVisible(true);",
-        "}"));
+    editorPane.setText(HTML);
 
     // TEST: https://ateraimemo.com/Swing/DrawsLayeredHighlights.html
     // DefaultHighlighter dh = (DefaultHighlighter) area.getHighlighter();

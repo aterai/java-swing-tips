@@ -7,11 +7,20 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    add(makeSliderPanel());
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeSliderPanel() {
     BoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JSlider slider0 = new JSlider(SwingConstants.VERTICAL);
     JSlider slider1 = new JSlider(SwingConstants.VERTICAL);
@@ -50,15 +59,11 @@ public final class MainPanel extends JPanel {
     box2.add(makeTitledPanel("setInverted(true)", slider3));
     box2.add(Box.createVerticalGlue());
 
-    add(box1, BorderLayout.WEST);
-    add(box2);
-    add(check, BorderLayout.SOUTH);
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    setPreferredSize(new Dimension(320, 240));
+    JPanel p = new JPanel(new BorderLayout());
+    p.add(box1, BorderLayout.WEST);
+    p.add(box2);
+    p.add(check, BorderLayout.SOUTH);
+    return p;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -78,7 +83,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -132,7 +137,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

@@ -20,12 +20,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 @SuppressWarnings("PMD.ClassNamingConventions")
 public final class MainPanel {
   private MainPanel() {
     /* Singleton */
+  }
+
+  private static void addLabel(JPanel p) {
+    p.add(new JLabel(UIManager.getIcon("OptionPane.warningIcon")));
+    p.add(new JLabel(UIManager.getIcon("OptionPane.questionIcon")));
+    p.add(new JLabel(UIManager.getIcon("OptionPane.informationIcon")));
+    p.add(new JLabel(UIManager.getIcon("OptionPane.errorIcon")));
+    p.add(new JLabel("Text"));
   }
 
   public static void main(String[] args) {
@@ -38,41 +48,32 @@ public final class MainPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame f1 = new JFrame("@title@");
     JFrame f2 = new JFrame();
-    f1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    f2.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    Stream.of(f1, f2).forEach(f -> {
+      f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      f.setSize(320, 240);
+    });
 
     DragPanel p1 = new DragPanel();
+    addLabel(p1);
     DragPanel p2 = new DragPanel();
-
-    p1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    p2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-    p1.add(new JLabel(UIManager.getIcon("OptionPane.warningIcon")));
-    p1.add(new JLabel(UIManager.getIcon("OptionPane.questionIcon")));
-    p1.add(new JLabel(UIManager.getIcon("OptionPane.informationIcon")));
-    p1.add(new JLabel(UIManager.getIcon("OptionPane.errorIcon")));
-    p1.add(new JLabel("Text"));
-
     MouseListener handler = new Handler();
-    p1.addMouseListener(handler);
-    p2.addMouseListener(handler);
-
     LabelTransferHandler th = new LabelTransferHandler();
-    p1.setTransferHandler(th);
-    p2.setTransferHandler(th);
+    Stream.of(p1, p2).forEach(p -> {
+      p.addMouseListener(handler);
+      p.setTransferHandler(th);
+      p.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    });
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.add(new JScrollPane(new JTextArea()));
     p.add(p2);
     f1.getContentPane().add(p1);
     f2.getContentPane().add(p);
-    f1.setSize(320, 240);
-    f2.setSize(320, 240);
     f1.setLocationRelativeTo(null);
     Point pt = f1.getLocation();
     pt.translate(340, 0);
