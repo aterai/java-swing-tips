@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableModel;
@@ -42,16 +43,7 @@ public final class MainPanel extends JPanel {
             super.updateUI();
             EventQueue.invokeLater(() -> {
               TableCellRenderer renderer = getDefaultRenderer();
-              setDefaultRenderer((table, value, isSelected, hasFocus, row, column) -> {
-                Component c = renderer.getTableCellRendererComponent(
-                    table, value, isSelected, hasFocus, row, column);
-                if (c instanceof JLabel) {
-                  JLabel l = (JLabel) c;
-                  l.setText(convertToColumnTitle(column + 1));
-                  l.setHorizontalAlignment(SwingConstants.CENTER);
-                }
-                return c;
-              });
+              setDefaultRenderer(new BijectiveBase26Renderer(renderer));
             });
           }
         };
@@ -71,6 +63,46 @@ public final class MainPanel extends JPanel {
     return table;
   }
 
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class BijectiveBase26Renderer implements TableCellRenderer {
+  private final TableCellRenderer renderer;
+
+  protected BijectiveBase26Renderer(TableCellRenderer renderer) {
+    this.renderer = renderer;
+  }
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    Component c = renderer.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setText(convertToColumnTitle(column + 1));
+      l.setHorizontalAlignment(SwingConstants.CENTER);
+    }
+    return c;
+  }
+
   private static String convertToColumnTitle(int columnNumber) {
     assert columnNumber > 0 : "Input is not valid!";
     StringBuilder sb = new StringBuilder();
@@ -83,27 +115,6 @@ public final class MainPanel extends JPanel {
       num = (num - mod) / 26;
     }
     return sb.toString();
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
 
@@ -300,7 +311,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

@@ -5,72 +5,35 @@
 package example;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea textArea = new JTextArea();
-
   private MainPanel() {
     super(new BorderLayout());
     JInternalFrame frame = new JInternalFrame("title", true, true, true, true);
-    frame.addPropertyChangeListener(e -> {
-      String prop = e.getPropertyName();
-      if (Objects.equals(JInternalFrame.IS_MAXIMUM_PROPERTY, prop)) {
-        String str = Objects.equals(e.getNewValue(), Boolean.TRUE) ? "maximized" : "minimized";
-        textArea.append(String.format("* Internal frame %s: %s%n", str, e.getSource()));
-        textArea.setCaretPosition(textArea.getDocument().getLength());
-      }
-    });
-    frame.addInternalFrameListener(new InternalFrameListener() {
-      @Override public void internalFrameClosing(InternalFrameEvent e) {
-        displayMessage("Internal frame closing", e);
-      }
-
-      @Override public void internalFrameClosed(InternalFrameEvent e) {
-        displayMessage("Internal frame closed", e);
-      }
-
-      @Override public void internalFrameOpened(InternalFrameEvent e) {
-        displayMessage("Internal frame opened", e);
-      }
-
-      @Override public void internalFrameIconified(InternalFrameEvent e) {
-        displayMessage("Internal frame iconified", e);
-      }
-
-      @Override public void internalFrameDeiconified(InternalFrameEvent e) {
-        displayMessage("Internal frame deiconified", e);
-      }
-
-      @Override public void internalFrameActivated(InternalFrameEvent e) {
-        displayMessage("Internal frame activated", e);
-      }
-
-      @Override public void internalFrameDeactivated(InternalFrameEvent e) {
-        displayMessage("Internal frame deactivated", e);
-      }
-
-      private void displayMessage(String prefix, EventObject e) {
-        String s = prefix + ": " + e.getSource();
-        textArea.append(s + "\n");
-        textArea.setCaretPosition(textArea.getDocument().getLength());
-      }
-    });
     frame.setBounds(10, 10, 160, 100);
+
+    JTextArea log = new JTextArea();
+    InternalFrameMaximizedListener listener = new InternalFrameMaximizedListener(log);
+    frame.addPropertyChangeListener(listener);
+    frame.addInternalFrameListener(listener);
 
     JDesktopPane desktop = new JDesktopPane();
     desktop.add(frame);
     EventQueue.invokeLater(() -> frame.setVisible(true));
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(desktop);
-    sp.setBottomComponent(new JScrollPane(textArea));
-    sp.setResizeWeight(.8);
-    add(sp);
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    split.setTopComponent(desktop);
+    split.setBottomComponent(new JScrollPane(log));
+    split.setResizeWeight(.8);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -113,7 +76,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -122,5 +85,56 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class InternalFrameMaximizedListener implements PropertyChangeListener, InternalFrameListener {
+  private final JTextArea log;
+
+  protected InternalFrameMaximizedListener(JTextArea log) {
+    this.log = log;
+  }
+
+  @Override public void propertyChange(PropertyChangeEvent e) {
+    String prop = e.getPropertyName();
+    if (Objects.equals(JInternalFrame.IS_MAXIMUM_PROPERTY, prop)) {
+      String str = Objects.equals(e.getNewValue(), Boolean.TRUE) ? "maximized" : "minimized";
+      log.append(String.format("* Internal frame %s: %s%n", str, e.getSource()));
+      log.setCaretPosition(log.getDocument().getLength());
+    }
+  }
+
+  @Override public void internalFrameClosing(InternalFrameEvent e) {
+    displayMessage("Internal frame closing", e);
+  }
+
+  @Override public void internalFrameClosed(InternalFrameEvent e) {
+    displayMessage("Internal frame closed", e);
+  }
+
+  @Override public void internalFrameOpened(InternalFrameEvent e) {
+    displayMessage("Internal frame opened", e);
+  }
+
+  @Override public void internalFrameIconified(InternalFrameEvent e) {
+    displayMessage("Internal frame iconified", e);
+  }
+
+  @Override public void internalFrameDeiconified(InternalFrameEvent e) {
+    displayMessage("Internal frame deiconified", e);
+  }
+
+  @Override public void internalFrameActivated(InternalFrameEvent e) {
+    displayMessage("Internal frame activated", e);
+  }
+
+  @Override public void internalFrameDeactivated(InternalFrameEvent e) {
+    displayMessage("Internal frame deactivated", e);
+  }
+
+  private void displayMessage(String prefix, EventObject e) {
+    String s = prefix + ": " + e.getSource();
+    log.append(s + "\n");
+    log.setCaretPosition(log.getDocument().getLength());
   }
 }
