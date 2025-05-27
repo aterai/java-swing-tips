@@ -5,8 +5,10 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.stream.Stream;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -20,32 +22,26 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
     table.setRowHeight(16);
-
-    JRadioButton centerRadio = new JRadioButton("CENTER", true);
-    JRadioButton topRadio = new JRadioButton("TOP");
-    JRadioButton bottomRadio = new JRadioButton("BOTTOM");
-    ActionListener al = e -> {
-      TableCellRenderer r = table.getDefaultRenderer(String.class);
-      if (r instanceof JLabel) {
-        JLabel label = (JLabel) r;
-        if (topRadio.isSelected()) {
-          label.setVerticalAlignment(SwingConstants.TOP);
-        } else if (bottomRadio.isSelected()) {
-          label.setVerticalAlignment(SwingConstants.BOTTOM);
-        } else {
-          label.setVerticalAlignment(SwingConstants.CENTER);
-        }
+    ButtonGroup bg = new ButtonGroup();
+    ItemListener handler = e -> {
+      TableCellRenderer renderer = table.getDefaultRenderer(String.class);
+      if (renderer instanceof JLabel && e.getStateChange() == ItemEvent.SELECTED) {
+        String name = bg.getSelection().getActionCommand();
+        VerticalAlignment va = VerticalAlignment.valueOf(name);
+        ((JLabel) renderer).setVerticalAlignment(va.getAlignment());
         table.repaint();
       }
     };
-    ButtonGroup bg = new ButtonGroup();
     JPanel p = new JPanel();
-    Stream.of(centerRadio, topRadio, bottomRadio).forEach(b -> {
-      b.addActionListener(al);
-      bg.add(b);
-      p.add(b);
+    Arrays.asList(VerticalAlignment.values()).forEach(v -> {
+      String name = v.name();
+      boolean selected = v == VerticalAlignment.CENTER;
+      JRadioButton r = new JRadioButton(name, selected);
+      r.setActionCommand(name);
+      r.addItemListener(handler);
+      bg.add(r);
+      p.add(r);
     });
-
     add(new JScrollPane(table));
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
@@ -82,7 +78,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -91,5 +87,21 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+enum VerticalAlignment {
+  TOP(SwingConstants.TOP),
+  CENTER(SwingConstants.CENTER),
+  BOTTOM(SwingConstants.BOTTOM);
+
+  private final int alignment;
+
+  VerticalAlignment(int alignment) {
+    this.alignment = alignment;
+  }
+
+  public int getAlignment() {
+    return alignment;
   }
 }

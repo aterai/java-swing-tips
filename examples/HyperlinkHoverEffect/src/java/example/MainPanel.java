@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.AttributeSet;
@@ -23,29 +24,30 @@ public final class MainPanel extends JPanel {
     String s2 = String.format(format, "http://example.com/", "#0000FF", "example");
     JEditorPane editor = new JEditorPane("text/html", "<html>" + s1 + s2);
     editor.setEditable(false);
-    // @see: BasicEditorPaneUI#propertyChange(PropertyChangeEvent evt) {
-    //    if ("foreground".equals(name)) {
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-
     editor.addHyperlinkListener(e -> {
-      if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-        setElementColor(e.getSourceElement(), "red");
-      } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-        setElementColor(e.getSourceElement(), "blue");
-      } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        try {
-          Desktop.getDesktop().browse(e.getURL().toURI());
-        } catch (URISyntaxException | IOException ex) {
-          ex.printStackTrace();
-          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
-        }
-      }
+      fireHyperlinkEvent(e);
       // ??? call BasicTextUI#modelChanged() ???
       editor.setForeground(Color.WHITE);
       editor.setForeground(Color.BLACK);
     });
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void fireHyperlinkEvent(HyperlinkEvent e) {
+    if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+      setElementColor(e.getSourceElement(), "red");
+    } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+      setElementColor(e.getSourceElement(), "blue");
+    } else if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+      try {
+        Desktop.getDesktop().browse(e.getURL().toURI());
+      } catch (URISyntaxException | IOException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+      }
+    }
   }
 
   private static void setElementColor(Element element, String color) {
@@ -67,7 +69,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

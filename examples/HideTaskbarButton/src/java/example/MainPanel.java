@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -28,16 +29,21 @@ public final class MainPanel extends JPanel {
             e.getWindow().dispose();
           }
         });
-        // or
-        // ((Window) c).addWindowListener(new WindowAdapter() {
-        //   @Override public void windowIconified(WindowEvent e) {
-        //     if (check.isSelected()) {
-        //       e.getWindow().dispose();
-        //     }
-        //   }
-        // });
       }
     });
+    // or:
+    // EventQueue.invokeLater(() -> {
+    //   Container c = getTopLevelAncestor();
+    //   if (c instanceof Window) {
+    //     ((Window) c).addWindowListener(new WindowAdapter() {
+    //       @Override public void windowIconified(WindowEvent e) {
+    //         if (check.isSelected()) {
+    //           e.getWindow().dispose();
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
 
     MenuItem item1 = new MenuItem("OPEN");
     item1.addActionListener(e -> {
@@ -95,7 +101,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
