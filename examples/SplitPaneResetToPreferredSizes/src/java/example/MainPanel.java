@@ -16,41 +16,46 @@ public final class MainPanel extends JPanel {
     SpinnerNumberModel model1 = new SpinnerNumberModel(100, 10, 300, 10);
     JScrollPane scroll1 = makeScrollPane(new JTree(), model1);
     SpinnerNumberModel model2 = new SpinnerNumberModel(150, 10, 300, 10);
-    JTextArea textArea = new JTextArea();
-    JScrollPane scroll2 = makeScrollPane(textArea, model2);
+    JTextArea log = new JTextArea();
+    JScrollPane scroll2 = makeScrollPane(log, model2);
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll1, scroll2);
     split.setOneTouchExpandable(true);
     split.setContinuousLayout(true);
-    JMenu menu1 = new JMenu("JSplitPane");
-    menu1.add(makeSpinner("L: ", model1));
-    menu1.add(makeSpinner("R: ", model2));
-    menu1.addSeparator();
-    menu1.add("resetToPreferredSizes").addActionListener(e -> {
-      split.resetToPreferredSizes();
-      info(split, textArea);
-    });
-    menu1.addSeparator();
-    menu1.add("setDividerLocation(.5)").addActionListener(e -> split.setDividerLocation(.5));
-    menu1.add("selectMin").addActionListener(e -> selectMinMax(split, "selectMin"));
-    menu1.add("selectMax").addActionListener(e -> selectMinMax(split, "selectMax"));
 
-    JMenu menu2 = new JMenu("ResizeWeight");
+    JMenu menu = new JMenu("JSplitPane");
+    menu.add(makeSpinner("L: ", model1));
+    menu.add(makeSpinner("R: ", model2));
+    menu.addSeparator();
+    menu.add("resetToPreferredSizes").addActionListener(e -> {
+      split.resetToPreferredSizes();
+      info(split, log);
+    });
+    menu.addSeparator();
+    menu.add("setDividerLocation(.5)").addActionListener(e -> split.setDividerLocation(.5));
+    menu.add("selectMin").addActionListener(e -> selectMinMax(split, "selectMin"));
+    menu.add("selectMax").addActionListener(e -> selectMinMax(split, "selectMax"));
+
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(menu);
+    menuBar.add(makeResizeWeightMenu(split));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+    add(split);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JMenu makeResizeWeightMenu(JSplitPane split) {
+    JMenu menu = new JMenu("ResizeWeight");
     JRadioButtonMenuItem r0 = new JRadioButtonMenuItem("0.0", true);
-    menu2.add(r0).addActionListener(e -> split.setResizeWeight(0d));
+    menu.add(r0).addActionListener(e -> split.setResizeWeight(0d));
     JRadioButtonMenuItem r1 = new JRadioButtonMenuItem("0.5");
-    menu2.add(r1).addActionListener(e -> split.setResizeWeight(.5));
+    menu.add(r1).addActionListener(e -> split.setResizeWeight(.5));
     JRadioButtonMenuItem r2 = new JRadioButtonMenuItem("1.0");
-    menu2.add(r2).addActionListener(e -> split.setResizeWeight(1d));
+    menu.add(r2).addActionListener(e -> split.setResizeWeight(1d));
     ButtonGroup group = new ButtonGroup();
     for (AbstractButton r : Arrays.asList(r0, r1, r2)) {
       group.add(r);
     }
-    JMenuBar menuBar = new JMenuBar();
-    menuBar.add(menu1);
-    menuBar.add(menu2);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
-    add(split);
-    setPreferredSize(new Dimension(320, 240));
+    return menu;
   }
 
   private static void info(JSplitPane split, JTextArea textArea) {

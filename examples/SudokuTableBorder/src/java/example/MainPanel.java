@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -33,7 +34,6 @@ public final class MainPanel extends JPanel {
         {0, 0, 0, 4, 1, 9, 0, 0, 5},
         {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
-
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return Integer.class;
@@ -43,42 +43,10 @@ public final class MainPanel extends JPanel {
         return data[row][column] == 0;
       }
     };
-    JTable table = new JTable(model) {
-      @Override public Dimension getPreferredScrollableViewportSize() {
-        return super.getPreferredSize();
-      }
-    };
-    for (int i = 0; i < table.getRowCount(); i++) {
-      int a = (i + 1) % 3 == 0 ? BW2 : BW1;
-      table.setRowHeight(i, CELL_SZ + a);
-    }
-
-    table.setCellSelectionEnabled(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    table.getTableHeader().setReorderingAllowed(false);
-    table.setBorder(BorderFactory.createEmptyBorder());
-
-    table.setShowVerticalLines(false);
-    table.setShowHorizontalLines(false);
-
-    table.setIntercellSpacing(new Dimension());
-    table.setRowMargin(0);
-    table.getColumnModel().setColumnMargin(0);
-
+    JTable table = makeSudokuTable(model);
     JTextField editor = new JTextField();
     editor.setHorizontalAlignment(SwingConstants.CENTER);
-    // editor.setBorder(BorderFactory.createLineBorder(Color.RED));
-    table.setDefaultEditor(Integer.class, new DefaultCellEditor(editor) {
-      @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        Object v = Objects.equals(value, 0) ? "" : value;
-        return super.getTableCellEditorComponent(table, v, isSelected, row, column);
-      }
-
-      @Override public Object getCellEditorValue() {
-        return editor.getText().isEmpty() ? 0 : super.getCellEditorValue();
-      }
-    });
+    table.setDefaultEditor(Integer.class, new SudokuCellEditor(editor));
     table.setDefaultRenderer(Integer.class, new SudokuCellRenderer(data));
 
     TableColumnModel m = table.getColumnModel();
@@ -97,9 +65,53 @@ public final class MainPanel extends JPanel {
     scroll.setViewportBorder(BorderFactory.createMatteBorder(BW2, BW2, 0, 0, Color.BLACK));
     scroll.setColumnHeader(new JViewport());
     scroll.getColumnHeader().setVisible(false);
-
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTable makeSudokuTable(TableModel model) {
+    JTable table = new JTable(model) {
+      @Override public Dimension getPreferredScrollableViewportSize() {
+        return super.getPreferredSize();
+      }
+
+      @Override public void updateUI() {
+        super.updateUI();
+        setCellSelectionEnabled(true);
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setAutoResizeMode(AUTO_RESIZE_OFF);
+        getTableHeader().setReorderingAllowed(false);
+        setBorder(BorderFactory.createEmptyBorder());
+        setShowVerticalLines(false);
+        setShowHorizontalLines(false);
+        setIntercellSpacing(new Dimension());
+        setRowMargin(0);
+        getColumnModel().setColumnMargin(0);
+      }
+    };
+    for (int i = 0; i < table.getRowCount(); i++) {
+      int a = (i + 1) % 3 == 0 ? BW2 : BW1;
+      table.setRowHeight(i, CELL_SZ + a);
+    }
+    return table;
+  }
+
+  private static class SudokuCellEditor extends DefaultCellEditor {
+    private final JTextField editor;
+
+    public SudokuCellEditor(JTextField editor) {
+      super(editor);
+      this.editor = editor;
+    }
+
+    @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+      Object v = Objects.equals(value, 0) ? "" : value;
+      return super.getTableCellEditorComponent(table, v, isSelected, row, column);
+    }
+
+    @Override public Object getCellEditorValue() {
+      return editor.getText().isEmpty() ? 0 : super.getCellEditorValue();
+    }
   }
 
   private static class SudokuCellRenderer extends DefaultTableCellRenderer {
@@ -160,7 +172,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
