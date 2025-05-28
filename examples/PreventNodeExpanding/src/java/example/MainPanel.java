@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.io.File;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -18,6 +19,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
@@ -39,35 +41,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        DefaultTreeCellRenderer r = new DefaultTreeCellRenderer();
-        setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-          Component c = r.getTreeCellRendererComponent(
-              tree, value, selected, expanded, leaf, row, hasFocus);
-          if (selected) {
-            c.setForeground(r.getTextSelectionColor());
-          } else {
-            c.setForeground(r.getTextNonSelectionColor());
-            c.setBackground(r.getBackgroundNonSelectionColor());
-          }
-          if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-            Object o = node.getUserObject();
-            if (o instanceof File) {
-              File file = (File) o;
-              c.setEnabled(!file.getName().startsWith("."));
-              JLabel l = (JLabel) c;
-              l.setOpaque(!selected);
-              l.setIcon(fileSystemView.getSystemIcon(file));
-              l.setText(fileSystemView.getSystemDisplayName(file));
-              l.setToolTipText(file.getPath());
-              // StringIndexOutOfBoundsException:
-              // c.setEnabled(file.getName().codePointAt(0) != '.');
-              // String name = file.getName();
-              // c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
-            }
-          }
-          return c;
-        });
+        setCellRenderer(new FileSystemTreeCellRenderer(fileSystemView));
       }
     };
     tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -95,7 +69,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -105,6 +79,44 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FileSystemTreeCellRenderer implements TreeCellRenderer {
+  private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+  private final FileSystemView fileSystemView;
+
+  protected FileSystemTreeCellRenderer(FileSystemView fileSystemView) {
+    this.fileSystemView = fileSystemView;
+  }
+
+  @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    Component c = renderer.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, hasFocus);
+    if (selected) {
+      c.setForeground(renderer.getTextSelectionColor());
+    } else {
+      c.setForeground(renderer.getTextNonSelectionColor());
+      c.setBackground(renderer.getBackgroundNonSelectionColor());
+    }
+    if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+      Object o = node.getUserObject();
+      if (o instanceof File) {
+        File file = (File) o;
+        c.setEnabled(!file.getName().startsWith("."));
+        JLabel l = (JLabel) c;
+        l.setOpaque(!selected);
+        l.setIcon(fileSystemView.getSystemIcon(file));
+        l.setText(fileSystemView.getSystemDisplayName(file));
+        l.setToolTipText(file.getPath());
+        // StringIndexOutOfBoundsException:
+        // c.setEnabled(file.getName().codePointAt(0) != '.');
+        // String name = file.getName();
+        // c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
+      }
+    }
+    return c;
   }
 }
 

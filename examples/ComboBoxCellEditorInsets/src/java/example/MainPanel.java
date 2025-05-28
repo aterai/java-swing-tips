@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -27,7 +28,7 @@ public final class MainPanel extends JPanel {
         setRowHeight(36);
         setAutoCreateRowSorter(true);
         TableColumn column = getColumnModel().getColumn(0);
-        column.setCellRenderer(makeComboTableCellRenderer(makeComboBox()));
+        column.setCellRenderer(new ComboTableCellRenderer(makeComboBox()));
         column.setCellEditor(new DefaultCellEditor(makeComboBox()));
 
         column = getColumnModel().getColumn(1);
@@ -64,25 +65,6 @@ public final class MainPanel extends JPanel {
     return c;
   }
 
-  public static TableCellRenderer makeComboTableCellRenderer(JComboBox<String> combo) {
-    return (table, value, isSelected, hasFocus, row, column) -> {
-      combo.removeAllItems();
-      JComponent editor = (JComponent) combo.getEditor().getEditorComponent();
-      editor.setOpaque(true);
-      if (isSelected) {
-        editor.setForeground(table.getSelectionForeground());
-        editor.setBackground(table.getSelectionBackground());
-        // button.setBackground(table.getSelectionBackground());
-      } else {
-        editor.setForeground(table.getForeground());
-        editor.setBackground(table.getBackground());
-        // button.setBackground(bg);
-      }
-      combo.addItem(Objects.toString(value, ""));
-      return combo;
-    };
-  }
-
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -93,7 +75,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -102,6 +84,31 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ComboTableCellRenderer implements TableCellRenderer {
+  private final JComboBox<String> combo;
+
+  protected ComboTableCellRenderer(JComboBox<String> combo) {
+    this.combo = combo;
+  }
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    combo.removeAllItems();
+    JComponent editor = (JComponent) combo.getEditor().getEditorComponent();
+    editor.setOpaque(true);
+    if (isSelected) {
+      editor.setForeground(table.getSelectionForeground());
+      editor.setBackground(table.getSelectionBackground());
+      // button.setBackground(table.getSelectionBackground());
+    } else {
+      editor.setForeground(table.getForeground());
+      editor.setBackground(table.getBackground());
+      // button.setBackground(bg);
+    }
+    combo.addItem(Objects.toString(value, ""));
+    return combo;
   }
 }
 
