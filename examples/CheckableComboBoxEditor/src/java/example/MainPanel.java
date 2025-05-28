@@ -206,30 +206,11 @@ final class EditorPanel extends JPanel {
     this.data = data;
     setItem(data);
 
-    enabledCheck.addActionListener(e -> {
-      Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
-      if (c instanceof JComboBox) {
-        JComboBox<?> combo = (JComboBox<?>) c;
-        ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
-        item.setEnabled(((JCheckBox) e.getSource()).isSelected());
-        editableCheck.setEnabled(item.isEnabled());
-        editor.setEnabled(item.isEnabled());
-        combo.setSelectedIndex(editingIndex);
-      }
-    });
+    enabledCheck.addActionListener(this::updateEnabledCheck);
     enabledCheck.setOpaque(false);
     enabledCheck.setFocusable(false);
 
-    editableCheck.addActionListener(e -> {
-      Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
-      if (c instanceof JComboBox) {
-        JComboBox<?> combo = (JComboBox<?>) c;
-        ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
-        item.setEditable(((JCheckBox) e.getSource()).isSelected());
-        editor.setEditable(item.isEditable());
-        combo.setSelectedIndex(editingIndex);
-      }
-    });
+    editableCheck.addActionListener(this::updateEditableCheck);
     editableCheck.setOpaque(false);
     editableCheck.setFocusable(false);
 
@@ -243,6 +224,29 @@ final class EditorPanel extends JPanel {
     add(enabledCheck);
     add(editableCheck);
     add(editor);
+  }
+
+  private void updateEnabledCheck(ActionEvent e) {
+    Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
+    if (c instanceof JComboBox) {
+      JComboBox<?> combo = (JComboBox<?>) c;
+      ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
+      item.setEnabled(((JCheckBox) e.getSource()).isSelected());
+      editableCheck.setEnabled(item.isEnabled());
+      editor.setEnabled(item.isEnabled());
+      combo.setSelectedIndex(editingIndex);
+    }
+  }
+
+  private void updateEditableCheck(ActionEvent e) {
+    Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, this);
+    if (c instanceof JComboBox) {
+      JComboBox<?> combo = (JComboBox<?>) c;
+      ComboItem item = (ComboItem) combo.getItemAt(editingIndex);
+      item.setEditable(((JCheckBox) e.getSource()).isSelected());
+      editor.setEditable(item.isEditable());
+      combo.setSelectedIndex(editingIndex);
+    }
   }
 
   private void itemEdited(ActionEvent e) {

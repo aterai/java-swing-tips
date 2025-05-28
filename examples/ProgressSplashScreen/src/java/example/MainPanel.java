@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -24,6 +25,18 @@ public final class MainPanel extends JPanel {
 
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Image getImage() {
+    String path = "example/splash.png";
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
   }
 
   private static Image makeMissingImage() {
@@ -49,7 +62,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -59,17 +72,8 @@ public final class MainPanel extends JPanel {
     // System.out.println(splashScreen.getModalityType());
 
     EventQueue.invokeLater(() -> {
-      String path = "example/splash.png";
-      ClassLoader cl = Thread.currentThread().getContextClassLoader();
-      Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
-        try (InputStream s = url.openStream()) {
-          return ImageIO.read(s);
-        } catch (IOException ex) {
-          return makeMissingImage();
-        }
-      }).orElseGet(MainPanel::makeMissingImage);
       splashScreen.setUndecorated(true);
-      splashScreen.getContentPane().add(new JLabel(new ImageIcon(img)));
+      splashScreen.getContentPane().add(new JLabel(new ImageIcon(getImage())));
       splashScreen.getContentPane().add(progress, BorderLayout.SOUTH);
       splashScreen.pack();
       splashScreen.setLocationRelativeTo(null);

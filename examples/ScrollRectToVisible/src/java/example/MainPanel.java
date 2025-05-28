@@ -10,6 +10,7 @@ import java.awt.event.HierarchyListener;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -47,34 +48,40 @@ public final class MainPanel extends JPanel {
 
     timer = new Timer(1000, e -> {
       LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
-
-      // JTable
-      model.addRow(new Object[] {date.toString(), model.getRowCount(), false});
-      int i = table.convertRowIndexToView(model.getRowCount() - 1);
-      Rectangle r = table.getCellRect(i, 0, true);
-      table.scrollRectToVisible(r);
-
-      // JList
-      listModel.addElement(date);
-      int index = listModel.getSize() - 1;
-      list.ensureIndexIsVisible(index);
-      // Rectangle cellBounds = list.getCellBounds(index, index);
-      // if (Objects.nonNull(cellBounds)) {
-      //   list.scrollRectToVisible(cellBounds);
-      // }
-
-      // JTree
-      DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
-      DefaultMutableTreeNode parent = (DefaultMutableTreeNode) treeModel.getRoot();
-      DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(date);
-      treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
-      // tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
-      // tree.scrollRowToVisible(tree.getRowCount() - 1);
-      tree.scrollPathToVisible(new TreePath(newChild.getPath()));
+      tableScroll(table, model, date);
+      listScroll(list, listModel, date);
+      treeScroll(tree, date);
     });
     timer.start();
     add(t);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void tableScroll(JTable table, DefaultTableModel model, Object data) {
+    model.addRow(new Object[] {data.toString(), model.getRowCount(), false});
+    int i = table.convertRowIndexToView(model.getRowCount() - 1);
+    Rectangle r = table.getCellRect(i, 0, true);
+    table.scrollRectToVisible(r);
+  }
+
+  private static <E> void listScroll(JList<E> list, DefaultListModel<E> model, E item) {
+    model.addElement(item);
+    int index = model.getSize() - 1;
+    list.ensureIndexIsVisible(index);
+    // Rectangle cellBounds = list.getCellBounds(index, index);
+    // if (Objects.nonNull(cellBounds)) {
+    //   list.scrollRectToVisible(cellBounds);
+    // }
+  }
+
+  private static void treeScroll(JTree tree, Object data) {
+    DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) treeModel.getRoot();
+    DefaultMutableTreeNode newChild = new DefaultMutableTreeNode(data);
+    treeModel.insertNodeInto(newChild, parent, parent.getChildCount());
+    // tree.scrollRowToVisible(row) == tree.scrollPathToVisible(tree.getPathForRow(row))
+    // tree.scrollRowToVisible(tree.getRowCount() - 1);
+    tree.scrollPathToVisible(new TreePath(newChild.getPath()));
   }
 
   @Override public void updateUI() {
@@ -99,7 +106,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

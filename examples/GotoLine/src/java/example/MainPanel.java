@@ -8,12 +8,13 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collections;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.Element;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
   private static final int MIN = 1;
@@ -30,22 +31,9 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("Goto Line");
     button.addActionListener(e -> {
-      Document doc = textArea.getDocument();
-      Element root = doc.getDefaultRootElement();
-      // int i = Math.max(MIN, Math.min(root.getElementCount(), model.getNumber().intValue()));
-      int i = model.getNumber().intValue();
-      try {
-        Element elem = root.getElement(i - 1);
-        Rectangle rect = textArea.modelToView(elem.getStartOffset());
-        // Java 9: Rectangle rect = textArea.modelToView2D(elem.getStartOffset()).getBounds();
-        Rectangle vr = scroll.getViewport().getViewRect();
-        rect.setSize(10, vr.height);
-        textArea.scrollRectToVisible(rect);
-        textArea.setCaretPosition(elem.getStartOffset());
-        // textArea.requestFocus();
-      } catch (BadLocationException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-      }
+      int lineNum = model.getNumber().intValue();
+      // = Math.max(MIN, Math.min(root.getElementCount(), model.getNumber().intValue()));
+      gotoScroll(scroll, lineNum);
     });
     // frame.getRootPane().setDefaultButton(button);
     EventQueue.invokeLater(() -> getRootPane().setDefaultButton(button));
@@ -58,6 +46,24 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void gotoScroll(JScrollPane scroll, int lineNum) {
+    JTextComponent textArea = (JTextComponent) scroll.getViewport().getView();
+    Element root = textArea.getDocument().getDefaultRootElement();
+    Element elem = root.getElement(lineNum - 1);
+    int startOffset = elem.getStartOffset();
+    try {
+      Rectangle rect = textArea.modelToView(startOffset);
+      // Java 9: Rectangle rect = textArea.modelToView2D(startOffset).getBounds();
+      Rectangle vr = scroll.getViewport().getViewRect();
+      rect.setSize(vr.getSize());
+      textArea.scrollRectToVisible(rect);
+      textArea.setCaretPosition(startOffset);
+      // textArea.requestFocus();
+    } catch (BadLocationException ex) {
+      UIManager.getLookAndFeel().provideErrorFeedback(textArea);
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -68,7 +74,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

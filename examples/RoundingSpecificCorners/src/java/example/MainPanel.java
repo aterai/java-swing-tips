@@ -10,9 +10,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -22,35 +23,37 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     JPopupMenu popup = new JPopupMenu();
-    Arrays.asList(Corner.values())
-        .forEach(corner -> {
-          JCheckBoxMenuItem check = new JCheckBoxMenuItem(corner.name(), true);
-          check.addActionListener(e -> {
-            if (((AbstractButton) e.getSource()).isSelected()) {
-              corners.add(corner);
-            } else {
-              corners.remove(corner);
-            }
-            repaint();
-          });
-          popup.add(check);
-        });
+    Stream.of(Corner.values()).map(this::makeCornerCheckBox).forEach(popup::add);
     popup.addSeparator();
-    Arrays.asList(Type.values())
-        .forEach(type -> {
-          JCheckBoxMenuItem check = new JCheckBoxMenuItem(type.name(), true);
-          check.addActionListener(e -> {
-            if (((AbstractButton) e.getSource()).isSelected()) {
-              types.add(type);
-            } else {
-              types.remove(type);
-            }
-            repaint();
-          });
-          popup.add(check);
-        });
+    Stream.of(Type.values()).map(this::makeTypeCheckBox).forEach(popup::add);
     setComponentPopupMenu(popup);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JCheckBoxMenuItem makeCornerCheckBox(Corner corner) {
+    JCheckBoxMenuItem check = new JCheckBoxMenuItem(corner.name(), true);
+    check.addActionListener(e -> {
+      if (((AbstractButton) e.getSource()).isSelected()) {
+        corners.add(corner);
+      } else {
+        corners.remove(corner);
+      }
+      repaint();
+    });
+    return check;
+  }
+
+  private JCheckBoxMenuItem makeTypeCheckBox(Type type) {
+    JCheckBoxMenuItem check = new JCheckBoxMenuItem(type.name(), true);
+    check.addActionListener(e -> {
+      if (((AbstractButton) e.getSource()).isSelected()) {
+        types.add(type);
+      } else {
+        types.remove(type);
+      }
+      repaint();
+    });
+    return check;
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -102,7 +105,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
