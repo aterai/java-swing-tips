@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 
 public final class MainPanel extends JPanel {
@@ -79,8 +80,23 @@ class RollOverTree extends JTree {
     removeMouseMotionListener(listener);
     setCellRenderer(null);
     super.updateUI();
-    DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-    setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
+    setCellRenderer(new RollOverTreeCellRenderer());
+    listener = new MouseAdapter() {
+      @Override public void mouseMoved(MouseEvent e) {
+        int row = getRowForLocation(e.getX(), e.getY());
+        if (row != rollOverRowIndex) {
+          rollOverRowIndex = row;
+          e.getComponent().repaint();
+        }
+      }
+    };
+    addMouseMotionListener(listener);
+  }
+
+  private class RollOverTreeCellRenderer implements TreeCellRenderer {
+    private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+
+    @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
       Component c = renderer.getTreeCellRendererComponent(
           tree, value, selected, expanded, leaf, row, hasFocus);
       boolean isRollOver = row == rollOverRowIndex;
@@ -94,16 +110,6 @@ class RollOverTree extends JTree {
         ((JComponent) c).setOpaque(isRollOver);
       }
       return c;
-    });
-    listener = new MouseAdapter() {
-      @Override public void mouseMoved(MouseEvent e) {
-        int row = getRowForLocation(e.getX(), e.getY());
-        if (row != rollOverRowIndex) {
-          rollOverRowIndex = row;
-          e.getComponent().repaint();
-        }
-      }
-    };
-    addMouseMotionListener(listener);
+    }
   }
 }
