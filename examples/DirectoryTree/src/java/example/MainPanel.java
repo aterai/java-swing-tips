@@ -122,6 +122,14 @@ class FolderSelectionListener implements TreeSelectionListener {
   @Override public void valueChanged(TreeSelectionEvent e) {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
     File parent = (File) node.getUserObject();
+    // Java 9:
+    // if (fileSystemView.isLink(parent)) {
+    //   try {
+    //     parent = fileSystemView.getLinkLocation(parent);
+    //   } catch (FileNotFoundException ex) {
+    //     return;
+    //   }
+    // }
     if (!node.isLeaf() || !parent.isDirectory()) {
       return;
     }
