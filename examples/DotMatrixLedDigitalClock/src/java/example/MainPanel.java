@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -187,17 +188,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setLayoutOrientation(VERTICAL_WRAP);
         setFocusable(false);
-        ListCellRenderer<? super Boolean> renderer = getCellRenderer();
-        Icon on = new LedDotIcon(true, dim);
-        Icon off = new LedDotIcon(false, dim);
-        setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          Component c = renderer.getListCellRendererComponent(
-              list, null, index, false, false);
-          if (c instanceof JLabel) {
-            ((JLabel) c).setIcon(Objects.equals(Boolean.TRUE, value) ? on : off);
-          }
-          return c;
-        });
+        setCellRenderer(new LedListCellRenderer(getCellRenderer(), dim));
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setBackground(Color.BLACK);
       }
@@ -214,7 +205,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -223,6 +214,27 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class LedListCellRenderer implements ListCellRenderer<Boolean> {
+  private final ListCellRenderer<? super Boolean> renderer;
+  private final Icon on;
+  private final Icon off;
+
+  protected LedListCellRenderer(ListCellRenderer<? super Boolean> renderer, Dimension dim) {
+    this.renderer = renderer;
+    this.on = new LedDotIcon(true, dim);
+    this.off = new LedDotIcon(false, dim);
+  }
+
+  @Override public Component getListCellRendererComponent(JList<? extends Boolean> list, Boolean value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component c = renderer.getListCellRendererComponent(
+        list, null, index, false, false);
+    if (c instanceof JLabel) {
+      ((JLabel) c).setIcon(Objects.equals(Boolean.TRUE, value) ? on : off);
+    }
+    return c;
   }
 }
 
