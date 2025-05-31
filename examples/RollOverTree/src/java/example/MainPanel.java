@@ -93,7 +93,7 @@ class RollOverTree extends JTree {
     addMouseMotionListener(listener);
   }
 
-  private class RollOverTreeCellRenderer implements TreeCellRenderer {
+  private final class RollOverTreeCellRenderer implements TreeCellRenderer {
     private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
     @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
