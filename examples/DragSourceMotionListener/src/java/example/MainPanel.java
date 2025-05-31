@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
-@SuppressWarnings("PMD.ClassNamingConventions")
 public final class MainPanel {
   private MainPanel() {
     /* Singleton */
