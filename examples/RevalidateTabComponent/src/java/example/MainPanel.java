@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -43,7 +44,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -171,35 +172,42 @@ final class TabTitleRenamePopupMenu extends JPopupMenu {
 
   /* default */ TabTitleRenamePopupMenu() {
     super();
-    JTextField textField = new JTextField(10);
-    textField.addAncestorListener(new FocusAncestorListener());
-
+    JTextField editor = new JTextField(10);
+    editor.addAncestorListener(new FocusAncestorListener());
     rename = add("rename");
-    rename.addActionListener(e -> {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      int idx = t.getSelectedIndex();
-      String title = t.getTitleAt(idx);
-      textField.setText(title);
-      int ret = JOptionPane.showConfirmDialog(
-          t, textField, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-      if (ret == JOptionPane.OK_OPTION) {
-        String str = textField.getText().trim();
-        Component c = t.getTabComponentAt(idx);
-        if (!str.isEmpty() && c != null) {
-          t.setTitleAt(idx, str);
-          c.revalidate();
-        }
-      }
-    });
+    rename.addActionListener(e -> renameTab(editor));
     addSeparator();
-    add("new tab").addActionListener(e -> {
-      JTabbedPane t = (JTabbedPane) getInvoker();
-      int count = t.getTabCount();
-      String title = "Tab " + count;
-      t.addTab(title, new JLabel(title));
-      t.setTabComponentAt(count, new ButtonTabComponent(t));
-    });
-    add("close all").addActionListener(e -> ((JTabbedPane) getInvoker()).removeAll());
+    add("new tab").addActionListener(e -> newTab());
+    add("close all").addActionListener(e -> closeAll());
+  }
+
+  private void renameTab(JTextField editor) {
+    JTabbedPane tabs = (JTabbedPane) getInvoker();
+    int idx = tabs.getSelectedIndex();
+    String title = tabs.getTitleAt(idx);
+    editor.setText(title);
+    int ret = JOptionPane.showConfirmDialog(
+        tabs, editor, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    if (ret == JOptionPane.OK_OPTION) {
+      String str = editor.getText().trim();
+      Component c = tabs.getTabComponentAt(idx);
+      if (!str.isEmpty() && c != null) {
+        tabs.setTitleAt(idx, str);
+        c.revalidate();
+      }
+    }
+  }
+
+  private void newTab() {
+    JTabbedPane tabs = (JTabbedPane) getInvoker();
+    int count = tabs.getTabCount();
+    String title = "Tab " + count;
+    tabs.addTab(title, new JLabel(title));
+    tabs.setTabComponentAt(count, new ButtonTabComponent(tabs));
+  }
+
+  private void closeAll() {
+    ((JTabbedPane) getInvoker()).removeAll();
   }
 
   @Override public void show(Component c, int x, int y) {
