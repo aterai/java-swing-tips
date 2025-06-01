@@ -36,15 +36,7 @@ public final class MainPanel extends JPanel {
     updateBackground();
     EventQueue.invokeLater(() -> {
       Window f = SwingUtilities.getWindowAncestor(this);
-      f.addComponentListener(new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) {
-          repaint();
-        }
-
-        @Override public void componentMoved(ComponentEvent e) {
-          repaint();
-        }
-      });
+      f.addComponentListener(new RepaintAdapter());
       f.addWindowListener(new WindowAdapter() {
         @Override public void windowDeiconified(WindowEvent e) {
           updateBackground();
@@ -103,5 +95,15 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RepaintAdapter extends ComponentAdapter {
+  @Override public void componentResized(ComponentEvent e) {
+    e.getComponent().repaint();
+  }
+
+  @Override public void componentMoved(ComponentEvent e) {
+    e.getComponent().repaint();
   }
 }
