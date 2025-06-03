@@ -118,17 +118,7 @@ class AnalogClock extends JPanel {
     double hourMarkerLen = radius / 6d - 10d;
     Shape hourMarker = new Line2D.Double(0d, hourMarkerLen - radius, 0d, -radius);
     Shape minuteMarker = new Line2D.Double(0d, hourMarkerLen / 2d - radius, 0d, -radius);
-    AffineTransform at = AffineTransform.getRotateInstance(0d);
-    g2.setStroke(new BasicStroke(2f));
-    g2.setColor(Color.WHITE);
-    for (int i = 0; i < 60; i++) {
-      if (i % 5 == 0) {
-        g2.draw(at.createTransformedShape(hourMarker));
-      } else {
-        g2.draw(at.createTransformedShape(minuteMarker));
-      }
-      at.rotate(Math.PI / 30d);
-    }
+    paintHourMarkers(g2, hourMarker, minuteMarker);
 
     // Drawing the clock numbers
     paintClockNumbers(g2, radius, hourMarkerLen);
@@ -162,6 +152,20 @@ class AnalogClock extends JPanel {
     g2.fill(new Ellipse2D.Double(-r / 4d, -r / 4d, r / 2d, r / 2d));
 
     g2.dispose();
+  }
+
+  private static void paintHourMarkers(Graphics2D g2, Shape hourMarker, Shape minuteMarker) {
+    AffineTransform at = AffineTransform.getRotateInstance(0d);
+    g2.setStroke(new BasicStroke(2f));
+    g2.setColor(Color.WHITE);
+    for (int i = 0; i < 60; i++) {
+      if (i % 5 == 0) {
+        g2.draw(at.createTransformedShape(hourMarker));
+      } else {
+        g2.draw(at.createTransformedShape(minuteMarker));
+      }
+      at.rotate(Math.PI / 30d);
+    }
   }
 
   private void paintClockNumbers(Graphics2D g2, double radius, double hourMarkerLen) {
