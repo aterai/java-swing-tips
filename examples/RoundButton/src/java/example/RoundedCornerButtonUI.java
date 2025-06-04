@@ -20,6 +20,7 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
   private Shape shape;
   private Shape border;
   private Shape base;
+  private transient BasicButtonListener listener;
 
   @Override protected void installDefaults(AbstractButton b) {
     super.installDefaults(b);
@@ -32,35 +33,23 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
   }
 
   @Override protected void installListeners(AbstractButton button) {
-    BasicButtonListener listener = new BasicButtonListener(button) {
-      @Override public void mousePressed(MouseEvent e) {
-        AbstractButton b = (AbstractButton) e.getComponent();
-        initShape(b);
-        if (isShapeContains(e.getPoint())) {
-          super.mousePressed(e);
-        }
-      }
-
-      @Override public void mouseEntered(MouseEvent e) {
-        if (isShapeContains(e.getPoint())) {
-          super.mouseEntered(e);
-        }
-      }
-
-      @Override public void mouseMoved(MouseEvent e) {
-        if (isShapeContains(e.getPoint())) {
-          super.mouseEntered(e);
-        } else {
-          super.mouseExited(e);
-        }
-      }
-    };
-    // if (listener != null)
+    if (listener != null) {
+      listener = new RoundedCornerButtonListener(button);
+    }
     button.addMouseListener(listener);
     button.addMouseMotionListener(listener);
     button.addFocusListener(listener);
     button.addPropertyChangeListener(listener);
     button.addChangeListener(listener);
+  }
+
+  @Override protected void uninstallListeners(AbstractButton b) {
+    super.uninstallListeners(b);
+    b.removeMouseListener(listener);
+    b.removeMouseMotionListener(listener);
+    b.removeFocusListener(listener);
+    b.removePropertyChangeListener(listener);
+    b.removeChangeListener(listener);
   }
 
   @Override public void paint(Graphics g, JComponent c) {
@@ -115,5 +104,33 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
     g2.fill(shape);
     g2.setPaint(c.getBackground());
     g2.fill(border);
+  }
+
+  private class RoundedCornerButtonListener extends BasicButtonListener {
+    public RoundedCornerButtonListener(AbstractButton button) {
+      super(button);
+    }
+
+    @Override public void mousePressed(MouseEvent e) {
+      AbstractButton b = (AbstractButton) e.getComponent();
+      initShape(b);
+      if (isShapeContains(e.getPoint())) {
+        super.mousePressed(e);
+      }
+    }
+
+    @Override public void mouseEntered(MouseEvent e) {
+      if (isShapeContains(e.getPoint())) {
+        super.mouseEntered(e);
+      }
+    }
+
+    @Override public void mouseMoved(MouseEvent e) {
+      if (isShapeContains(e.getPoint())) {
+        super.mouseEntered(e);
+      } else {
+        super.mouseExited(e);
+      }
+    }
   }
 }
