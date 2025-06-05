@@ -22,107 +22,33 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
-  public static final Color BACKGROUND = Color.BLACK;
-  public static final Color FOREGROUND = Color.WHITE;
   public static final Color SELECTION_FGC = Color.ORANGE;
   public static final Color PANEL_BGC = Color.GRAY;
-  public static final String KEY = "ComboBox.border";
 
   private MainPanel() {
     super(new BorderLayout());
-    UIManager.put("ComboBox.foreground", FOREGROUND);
-    UIManager.put("ComboBox.background", BACKGROUND);
+    UIManager.put("ComboBox.foreground", DarkComboBox.FOREGROUND);
+    UIManager.put("ComboBox.background", DarkComboBox.BACKGROUND);
     UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
-    UIManager.put("ComboBox.selectionBackground", BACKGROUND);
+    UIManager.put("ComboBox.selectionBackground", DarkComboBox.BACKGROUND);
 
-    UIManager.put("ComboBox.buttonDarkShadow", BACKGROUND);
-    UIManager.put("ComboBox.buttonBackground", FOREGROUND);
-    UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
-    UIManager.put("ComboBox.buttonShadow", FOREGROUND);
+    UIManager.put("ComboBox.buttonDarkShadow", DarkComboBox.BACKGROUND);
+    UIManager.put("ComboBox.buttonBackground", DarkComboBox.FOREGROUND);
+    UIManager.put("ComboBox.buttonHighlight", DarkComboBox.FOREGROUND);
+    UIManager.put("ComboBox.buttonShadow", DarkComboBox.FOREGROUND);
 
     JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
     p.setOpaque(true);
     p.setBackground(PANEL_BGC);
     p.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-    p.add(makeComboBox0());
-    p.add(makeComboBox1());
-    p.add(makeComboBox2());
+    p.add(new DarkComboBox<>(makeModel()));
+    p.add(new BasicRoundedComboBox<>(makeModel()));
+    p.add(new RoundedComboBox<>(makeModel()));
 
     add(p, BorderLayout.NORTH);
     setOpaque(true);
     setBackground(PANEL_BGC);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static JComboBox<String> makeComboBox0() {
-    return new JComboBox<String>(makeModel()) {
-      @Override public void updateUI() {
-        UIManager.put(KEY, BorderFactory.createLineBorder(FOREGROUND));
-        super.updateUI();
-        setUI(new BasicComboBoxUI());
-        Object o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof JComponent) {
-          JComponent c = (JComponent) o;
-          c.setBorder(BorderFactory.createLineBorder(FOREGROUND));
-          c.setForeground(FOREGROUND);
-          c.setBackground(BACKGROUND);
-        }
-      }
-    };
-  }
-
-  private static JComboBox<String> makeComboBox1() {
-    return new JComboBox<String>(makeModel()) {
-      private transient PopupMenuListener listener;
-      @Override public void updateUI() {
-        removePopupMenuListener(listener);
-        UIManager.put(KEY, new RoundedCornerBorder());
-        super.updateUI();
-        setUI(new BasicComboBoxUI());
-        listener = new HeavyWeightContainerListener();
-        addPopupMenuListener(listener);
-        Object o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof JComponent) {
-          JComponent c = (JComponent) o;
-          c.setBorder(new RoundedCornerBorder());
-          c.setForeground(FOREGROUND);
-          c.setBackground(BACKGROUND);
-        }
-      }
-    };
-  }
-
-  private static JComboBox<String> makeComboBox2() {
-    return new JComboBox<String>(makeModel()) {
-      private transient MouseListener handler;
-      private transient PopupMenuListener listener;
-      @Override public void updateUI() {
-        removeMouseListener(handler);
-        removePopupMenuListener(listener);
-        UIManager.put(KEY, new TopRoundedCornerBorder());
-        super.updateUI();
-        setUI(new BasicComboBoxUI() {
-          @Override protected JButton createArrowButton() {
-            JButton b = new JButton(new ArrowIcon(BACKGROUND, FOREGROUND));
-            b.setContentAreaFilled(false);
-            b.setFocusPainted(false);
-            b.setBorder(BorderFactory.createEmptyBorder());
-            return b;
-          }
-        });
-        handler = new ComboRolloverHandler();
-        addMouseListener(handler);
-        listener = new HeavyWeightContainerListener();
-        addPopupMenuListener(listener);
-        Object o = getAccessibleContext().getAccessibleChild(0);
-        if (o instanceof JComponent) {
-          JComponent c = (JComponent) o;
-          c.setBorder(new BottomRoundedCornerBorder());
-          c.setForeground(FOREGROUND);
-          c.setBackground(BACKGROUND);
-        }
-      }
-    };
   }
 
   private static DefaultComboBoxModel<String> makeModel() {
@@ -157,6 +83,90 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class DarkComboBox<E> extends JComboBox<E> {
+  public static final Color BACKGROUND = Color.BLACK;
+  public static final Color FOREGROUND = Color.WHITE;
+  public static final String KEY = "ComboBox.border";
+
+  public DarkComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    UIManager.put(KEY, BorderFactory.createLineBorder(FOREGROUND));
+    super.updateUI();
+    setUI(new BasicComboBoxUI());
+    Object o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof JComponent) {
+      JComponent c = (JComponent) o;
+      c.setBorder(BorderFactory.createLineBorder(FOREGROUND));
+      c.setForeground(FOREGROUND);
+      c.setBackground(BACKGROUND);
+    }
+  }
+}
+
+class BasicRoundedComboBox<E> extends JComboBox<E> {
+  private transient PopupMenuListener listener;
+
+  public BasicRoundedComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removePopupMenuListener(listener);
+    UIManager.put(DarkComboBox.KEY, new RoundedCornerBorder());
+    super.updateUI();
+    setUI(new BasicComboBoxUI());
+    listener = new HeavyWeightContainerListener();
+    addPopupMenuListener(listener);
+    Object o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof JComponent) {
+      JComponent c = (JComponent) o;
+      c.setBorder(new RoundedCornerBorder());
+      c.setForeground(DarkComboBox.FOREGROUND);
+      c.setBackground(DarkComboBox.BACKGROUND);
+    }
+  }
+}
+
+class RoundedComboBox<E> extends JComboBox<E> {
+  private transient PopupMenuListener listener;
+  private transient MouseListener handler;
+
+  public RoundedComboBox(ComboBoxModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removePopupMenuListener(listener);
+    UIManager.put(DarkComboBox.KEY, new TopRoundedCornerBorder());
+    super.updateUI();
+    setUI(new BasicComboBoxUI() {
+      @Override protected JButton createArrowButton() {
+        Icon icon = new ArrowIcon(DarkComboBox.BACKGROUND, DarkComboBox.FOREGROUND);
+        JButton b = new JButton(icon);
+        b.setContentAreaFilled(false);
+        b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createEmptyBorder());
+        return b;
+      }
+    });
+    handler = new ComboRolloverHandler();
+    addMouseListener(handler);
+    listener = new HeavyWeightContainerListener();
+    addPopupMenuListener(listener);
+    Object o = getAccessibleContext().getAccessibleChild(0);
+    if (o instanceof JComponent) {
+      JComponent c = (JComponent) o;
+      c.setBorder(new BottomRoundedCornerBorder());
+      c.setForeground(DarkComboBox.FOREGROUND);
+      c.setBackground(DarkComboBox.BACKGROUND);
+    }
+  }
+}
+
 class HeavyWeightContainerListener implements PopupMenuListener {
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     EventQueue.invokeLater(() -> {
@@ -165,14 +175,16 @@ class HeavyWeightContainerListener implements PopupMenuListener {
       if (a instanceof JPopupMenu) {
         // https://ateraimemo.com/Swing/DropShadowPopup.html
         Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
-            .filter(w -> {
-              boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-              GraphicsConfiguration gc = w.getGraphicsConfiguration();
-              return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-            })
+            .filter(HeavyWeightContainerListener::isHeavyWeight)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
     });
+  }
+
+  private static boolean isHeavyWeight(Window w) {
+    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+    GraphicsConfiguration gc = w.getGraphicsConfiguration();
+    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
