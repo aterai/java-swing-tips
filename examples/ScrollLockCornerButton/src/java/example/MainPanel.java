@@ -7,9 +7,11 @@ package example;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -19,26 +21,17 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(16, 4);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     JScrollPane scroll = new JScrollPane(table);
-
-    JToggleButton lock = new JToggleButton("🔓");
-    lock.setBorder(BorderFactory.createEmptyBorder());
-    lock.setContentAreaFilled(false);
-    lock.setFocusPainted(false);
-    lock.setFocusable(false);
+    JToggleButton lock = new LockToggleButton();
     DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
     lock.addItemListener(e -> {
-      AbstractButton b = (AbstractButton) e.getItemSelectable();
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        b.setText("🔒");
         scrollLock(scroll, true);
         layerUI.setLocked(true);
       } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-        b.setText("🔓");
         scrollLock(scroll, false);
         layerUI.setLocked(false);
       }
     });
-
     JScrollBar verticalScrollBar = scroll.getVerticalScrollBar();
     JPanel verticalBox = new JPanel(new BorderLayout());
     verticalBox.setOpaque(false);
@@ -50,11 +43,9 @@ public final class MainPanel extends JPanel {
       verticalBox.setVisible(m.getMaximum() - m.getMinimum() > m.getExtent());
     });
     verticalBox.setVisible(model.getMaximum() - model.getMinimum() > model.getExtent());
-
     JPanel panel = new JPanel(new BorderLayout(0, 0));
     panel.add(scroll);
     panel.add(verticalBox, BorderLayout.EAST);
-
     add(panel);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -77,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -86,6 +77,31 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class LockToggleButton extends JToggleButton {
+  private transient ItemListener listener;
+
+  protected LockToggleButton() {
+    super("🔓");
+  }
+
+  @Override public void updateUI() {
+    removeItemListener(listener);
+    super.updateUI();
+    listener = e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        setText("🔒");
+      } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+        setText("🔓");
+      }
+    };
+    addItemListener(listener);
+    setBorder(BorderFactory.createEmptyBorder());
+    setContentAreaFilled(false);
+    setFocusPainted(false);
+    setFocusable(false);
   }
 }
 
