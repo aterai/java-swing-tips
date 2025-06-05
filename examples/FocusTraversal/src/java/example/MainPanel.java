@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -16,7 +17,6 @@ public final class MainPanel extends JPanel {
   private final JTextArea textArea = new JTextArea();
   private final JScrollPane scroll = new JScrollPane(textArea);
   private final Box box = Box.createHorizontalBox();
-  private final JCheckBox check = new JCheckBox("setEditable", true);
 
   private MainPanel() {
     super(new BorderLayout(5, 5));
@@ -25,12 +25,12 @@ public final class MainPanel extends JPanel {
     JButton wb = new JButton("WEST");
     JButton eb = new JButton("EAST");
 
-    panel.add(scroll);
     panel.add(nb, BorderLayout.NORTH);
     panel.add(sb, BorderLayout.SOUTH);
     panel.add(wb, BorderLayout.WEST);
     panel.add(eb, BorderLayout.EAST);
     panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    panel.add(scroll);
 
     setFocusTraversalPolicyProvider(true);
     // frame.setFocusTraversalPolicy(policy);
@@ -71,16 +71,21 @@ public final class MainPanel extends JPanel {
     });
     box.add(Box.createHorizontalGlue());
 
+    add(panel);
+    add(box, BorderLayout.NORTH);
+    add(makeCheckBox(), BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+    EventQueue.invokeLater(this::debugPrint);
+  }
+
+  private JCheckBox makeCheckBox() {
+    JCheckBox check = new JCheckBox("setEditable", true);
     check.setHorizontalAlignment(SwingConstants.RIGHT);
     check.addActionListener(e -> {
       textArea.setEditable(check.isSelected());
       debugPrint();
     });
-    add(panel);
-    add(box, BorderLayout.NORTH);
-    add(check, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
-    EventQueue.invokeLater(this::debugPrint);
+    return check;
   }
 
   public void debugPrint() {
@@ -112,7 +117,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

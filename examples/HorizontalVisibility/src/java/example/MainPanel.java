@@ -48,30 +48,33 @@ public final class MainPanel extends JPanel {
         field1.getDocument().removeDocumentListener(handler);
       }
     });
-
-    Box p = Box.createVerticalBox();
     JScrollPane scroll = new JScrollPane(new JTextField(js));
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-    p.add(new JLabel("JScrollPane + VERTICAL_SCROLLBAR_NEVER"));
-    p.add(scroll);
-    p.add(Box.createVerticalStrut(5));
-    p.add(new JLabel("BoundedRangeModel: textField.getHorizontalVisibility()"));
-    p.add(field1);
-    p.add(Box.createVerticalStrut(2));
-    p.add(scrollbar1);
-    p.add(Box.createVerticalStrut(2));
-    p.add(check);
-    p.add(Box.createVerticalStrut(5));
-    p.add(new JLabel("BoundedRangeModel+textField.ArrowButtonlessScrollBarUI"));
-    p.add(field2);
-    p.add(Box.createVerticalStrut(2));
-    p.add(scrollbar2);
-    p.add(Box.createVerticalStrut(5));
-    add(p, BorderLayout.NORTH);
+    add(makeBox(scroll, check), BorderLayout.NORTH);
     add(makeButtons(), BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private Box makeBox(JScrollPane scroll, JCheckBox check) {
+    Box box = Box.createVerticalBox();
+    box.add(new JLabel("JScrollPane + VERTICAL_SCROLLBAR_NEVER"));
+    box.add(scroll);
+    box.add(Box.createVerticalStrut(5));
+    box.add(new JLabel("BoundedRangeModel: textField.getHorizontalVisibility()"));
+    box.add(field1);
+    box.add(Box.createVerticalStrut(2));
+    box.add(scrollbar1);
+    box.add(Box.createVerticalStrut(2));
+    box.add(check);
+    box.add(Box.createVerticalStrut(5));
+    box.add(new JLabel("BoundedRangeModel+textField.ArrowButtonlessScrollBarUI"));
+    box.add(field2);
+    box.add(Box.createVerticalStrut(2));
+    box.add(scrollbar2);
+    box.add(Box.createVerticalStrut(5));
+    return box;
   }
 
   private Box makeButtons() {

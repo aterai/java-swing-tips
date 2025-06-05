@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,31 +24,7 @@ public final class MainPanel extends JPanel {
     JTextField field1 = editor1.getTextField();
     field1.setOpaque(false);
 
-    // JSpinner s2 = new JSpinner();
-    // Color bgc2 = UIManager.getColor("FormattedTextField.inactiveBackground");
-    // s2.setBorder(BorderFactory.createCompoundBorder(
-    //   BorderFactory.createLineBorder(new Color(127, 157, 185)),
-    //   BorderFactory.createLineBorder(bgc2, 2)));
-
-    JTextArea info = new JTextArea();
-    append(info, "TextField.shadow");
-    append(info, "TextField.darkShadow");
-    append(info, "TextField.light");
-    append(info, "TextField.highlight");
-    append(info, "Spinner.border");
-    append(info, "Spinner.editorBorderPainted");
-
-    JSpinner spinner2 = new JSpinner() {
-      @Override public void updateUI() {
-        super.updateUI();
-        setBorder(BorderFactory.createEmptyBorder());
-        Color borderColor = UIManager.getColor("TextField.shadow");
-        JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
-        editor.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, borderColor));
-        JTextField field = editor.getTextField();
-        field.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
-      }
-    };
+    JSpinner spinner2 = makeSpinner2();
     spinner2.setEnabled(false);
 
     JSpinner spinner3 = new SimpleBorderSpinner();
@@ -68,9 +45,39 @@ public final class MainPanel extends JPanel {
 
     setBorder(BorderFactory.createEmptyBorder(2, 20, 2, 20));
     add(box, BorderLayout.NORTH);
-    add(new JScrollPane(info));
+    add(new JScrollPane(makeInfoTextArea()));
     add(check, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTextArea makeInfoTextArea() {
+    JTextArea info = new JTextArea();
+    append(info, "TextField.shadow");
+    append(info, "TextField.darkShadow");
+    append(info, "TextField.light");
+    append(info, "TextField.highlight");
+    append(info, "Spinner.border");
+    append(info, "Spinner.editorBorderPainted");
+    return info;
+  }
+
+  private JSpinner makeSpinner2() {
+    // JSpinner s2 = new JSpinner();
+    // Color bgc2 = UIManager.getColor("FormattedTextField.inactiveBackground");
+    // s2.setBorder(BorderFactory.createCompoundBorder(
+    //   BorderFactory.createLineBorder(new Color(127, 157, 185)),
+    //   BorderFactory.createLineBorder(bgc2, 2)));
+    return new JSpinner() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder());
+        Color borderColor = UIManager.getColor("TextField.shadow");
+        DefaultEditor editor = (DefaultEditor) getEditor();
+        editor.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, borderColor));
+        JTextField field = editor.getTextField();
+        field.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
+      }
+    };
   }
 
   private static void addTestSpinner(Box box, JSpinner spinner, String title) {
@@ -95,7 +102,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
