@@ -41,14 +41,13 @@ public final class MainPanel extends JPanel {
 
     JTextField field = makeTextField();
     Action findNextAction = new FindNextAction(tree, field);
-    JButton button = new JButton(findNextAction);
-    button.setFocusable(false);
-    button.setToolTipText("Find next");
-    button.setText("v");
+    field.getActionMap().put("find-next", findNextAction);
+    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+    field.getInputMap(WHEN_FOCUSED).put(enterKey, "find-next");
 
     searchBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     searchBox.add(field);
-    searchBox.add(button, BorderLayout.EAST);
+    searchBox.add(makeButton(findNextAction), BorderLayout.EAST);
     searchBox.setVisible(false);
 
     Timer animator = new Timer(5, handler);
@@ -77,11 +76,16 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    field.getActionMap().put("find-next", findNextAction);
-    KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-    field.getInputMap(WHEN_FOCUSED).put(enterKey, "find-next");
     add(p);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JButton makeButton(Action findNextAction) {
+    JButton button = new JButton(findNextAction);
+    button.setFocusable(false);
+    button.setToolTipText("Find next");
+    button.setText("v");
+    return button;
   }
 
   private JTextField makeTextField() {

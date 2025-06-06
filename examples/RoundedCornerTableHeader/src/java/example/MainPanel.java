@@ -45,13 +45,6 @@ public final class MainPanel extends JPanel {
     monthLabel.setOpaque(false);
     monthLabel.setFont(monthLabel.getFont().deriveFont(Font.BOLD));
 
-    JTableHeader header = monthTable.getTableHeader();
-    header.setForeground(Color.WHITE);
-    header.setOpaque(false);
-    header.setDefaultRenderer(new RoundedHeaderRenderer());
-    header.setResizingAllowed(false);
-    header.setReorderingAllowed(false);
-
     updateMonthView(LocalDate.of(2021, 6, 21));
 
     JButton prev = new JButton("<");
@@ -121,6 +114,12 @@ public final class MainPanel extends JPanel {
       setIntercellSpacing(new Dimension(0, 1));
       setFont(getFont().deriveFont(Font.BOLD));
       setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
+      JTableHeader header = getTableHeader();
+      header.setForeground(Color.WHITE);
+      header.setOpaque(false);
+      header.setDefaultRenderer(new RoundedHeaderRenderer());
+      header.setResizingAllowed(false);
+      header.setReorderingAllowed(false);
     }
 
     @Override public void doLayout() {
