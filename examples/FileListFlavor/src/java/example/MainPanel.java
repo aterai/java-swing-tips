@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -27,40 +28,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     FileModel model = new FileModel();
     JTable table = new JTable(model);
-
-    DropTargetListener dtl = new DropTargetAdapter() {
-      @Override public void dragOver(DropTargetDragEvent e) {
-        if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          e.acceptDrag(DnDConstants.ACTION_COPY);
-          return;
-        }
-        e.rejectDrag();
-      }
-
-      @Override public void drop(DropTargetDropEvent e) {
-        try {
-          if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-            e.acceptDrop(DnDConstants.ACTION_COPY);
-            Transferable transferable = e.getTransferable();
-            List<?> list = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-            for (Object o : list) {
-              if (o instanceof File) {
-                model.addPath(((File) o).toPath());
-              }
-            }
-            e.dropComplete(true);
-          } else {
-            e.rejectDrop();
-          }
-        } catch (UnsupportedFlavorException | IOException ex) {
-          e.rejectDrop();
-        }
-      }
-    };
-
+    DropTargetListener dtl = new FileDropTargetAdapter(model);
     new DropTarget(table, DnDConstants.ACTION_COPY, dtl, true);
     // new DropTarget(scroll.getViewport(), DnDConstants.ACTION_COPY, dtl, true);
-
     // table.setDropMode(DropMode.INSERT_ROWS);
     // table.setTransferHandler(new FileTransferHandler());
 
@@ -86,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -95,6 +65,43 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class FileDropTargetAdapter extends DropTargetAdapter {
+  private final FileModel model;
+
+  protected FileDropTargetAdapter(FileModel model) {
+    super();
+    this.model = model;
+  }
+
+  @Override public void dragOver(DropTargetDragEvent e) {
+    if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+      e.acceptDrag(DnDConstants.ACTION_COPY);
+      return;
+    }
+    e.rejectDrag();
+  }
+
+  @Override public void drop(DropTargetDropEvent e) {
+    try {
+      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        e.acceptDrop(DnDConstants.ACTION_COPY);
+        Transferable t = e.getTransferable();
+        List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
+        for (Object o : list) {
+          if (o instanceof File) {
+            model.addPath(((File) o).toPath());
+          }
+        }
+        e.dropComplete(true);
+      } else {
+        e.rejectDrop();
+      }
+    } catch (UnsupportedFlavorException | IOException ex) {
+      e.rejectDrop();
+    }
   }
 }
 
