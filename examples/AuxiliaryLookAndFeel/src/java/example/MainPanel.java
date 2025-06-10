@@ -5,31 +5,21 @@
 package example;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JCheckBox check = new JCheckBox();
+  private final LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
+
   private MainPanel() {
     super(new BorderLayout());
     JComboBox<String> combo = makeComboBox();
     UIManager.put("ComboBox.font", combo.getFont());
-    String text = "<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)";
-    JCheckBox check = new JCheckBox(text);
-
-    LookAndFeel auxLookAndFeel = new AuxiliaryWindowsLookAndFeel();
-    UIManager.addPropertyChangeListener(e -> {
-      if (Objects.equals("lookAndFeel", e.getPropertyName())) {
-        if (isWindows(e.getNewValue())) {
-          if (check.isSelected()) {
-            UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
-          }
-          check.setEnabled(true);
-        } else {
-          UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
-          check.setEnabled(false);
-        }
-      }
-    });
+    UIManager.addPropertyChangeListener(this::updateLookAndFeel);
+    check.setText("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
     check.addActionListener(e -> {
       String lnf = UIManager.getLookAndFeel().getName();
       if (((JCheckBox) e.getSource()).isSelected() && lnf.contains("Windows")) {
@@ -39,9 +29,6 @@ public final class MainPanel extends JPanel {
       }
       SwingUtilities.updateComponentTreeUI(getRootPane());
     });
-
-    combo.setEditable(true);
-
     Box box = Box.createVerticalBox();
     box.add(check);
     box.add(Box.createVerticalStrut(5));
@@ -49,19 +36,31 @@ public final class MainPanel extends JPanel {
     box.add(Box.createVerticalStrut(5));
     box.add(makeComboBox());
     box.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private void updateLookAndFeel(PropertyChangeEvent e) {
+    if (Objects.equals("lookAndFeel", e.getPropertyName())) {
+      if (isWindows(e.getNewValue())) {
+        if (check.isSelected()) {
+          UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
+        }
+        check.setEnabled(true);
+      } else {
+        UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
+        check.setEnabled(false);
+      }
+    }
+  }
+
   private static boolean isWindows(Object info) {
     // boolean isWindows = Objects.equals("Windows", info);
-    return info instanceof String && info.toString().contains("Windows");
+    return Objects.toString(info).contains("Windows");
   }
 
   private static JComboBox<String> makeComboBox() {
@@ -72,7 +71,9 @@ public final class MainPanel extends JPanel {
     model.addElement("1354123451234513512");
     model.addElement("bbb1");
     model.addElement("bbb12");
-    return new JComboBox<>(model);
+    JComboBox<String> combo = new JComboBox<>(model);
+    combo.setEditable(true);
+    return combo;
   }
 
   public static void main(String[] args) {
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -139,7 +140,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
