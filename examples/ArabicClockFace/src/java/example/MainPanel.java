@@ -71,9 +71,15 @@ class AnalogClock extends JPanel {
   // private static final String[] EARTHLY_BRANCHES = {
   //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"
   // };
-  private LocalTime time = LocalTime.now(ZoneId.systemDefault());
+  private double secondRot;
+  private double minuteRot;
+  private double hourRot;
   private final Timer timer = new Timer(200, e -> {
-    time = LocalTime.now(ZoneId.systemDefault());
+    LocalTime time = LocalTime.now(ZoneId.systemDefault());
+    // Calculate the angle of rotation
+    secondRot = time.getSecond() * Math.PI / 30d;
+    minuteRot = time.getMinute() * Math.PI / 30d + secondRot / 60d;
+    hourRot = time.getHour() * Math.PI / 6d + minuteRot / 12d;
     repaint();
   });
   private transient HierarchyListener listener;
@@ -117,9 +123,9 @@ class AnalogClock extends JPanel {
     paintClockNumbers(g2, radius, hourMarkerLen);
 
     // Calculate the angle of rotation
-    double secondRot = time.getSecond() * Math.PI / 30d;
-    double minuteRot = time.getMinute() * Math.PI / 30d + secondRot / 60d;
-    double hourRot = time.getHour() * Math.PI / 6d + minuteRot / 12d;
+    // double secondRot = time.getSecond() * Math.PI / 30d;
+    // double minuteRot = time.getMinute() * Math.PI / 30d + secondRot / 60d;
+    // double hourRot = time.getHour() * Math.PI / 6d + minuteRot / 12d;
 
     // Drawing the hour hand
     double hourHandLen = radius / 2d;
@@ -166,7 +172,6 @@ class AnalogClock extends JPanel {
     g2.setColor(Color.WHITE);
     Font font = g2.getFont();
     FontRenderContext frc = g2.getFontRenderContext();
-
     if (isRotate) {
       for (String txt : ARABIC_NUMERALS) {
         double m00 = at.getScaleX();
