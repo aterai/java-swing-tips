@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -136,15 +137,18 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   private File getRealFile8(File file) {
+    Optional<File> op;
     try {
-      sun.awt.shell.ShellFolder sf = sun.awt.shell.ShellFolder.getShellFolder(file);
+      File f = file;
+      sun.awt.shell.ShellFolder sf = sun.awt.shell.ShellFolder.getShellFolder(f);
       if (sf.isLink()) {
-        file = sf.getLinkLocation();
+        f = sf.getLinkLocation();
       }
+      op = Optional.ofNullable(f);
     } catch (FileNotFoundException ex) {
-      file = null;
+      op = Optional.empty();
     }
-    return file;
+    return op.orElse(null);
   }
 
   // private File getRealFile9(File file) {
