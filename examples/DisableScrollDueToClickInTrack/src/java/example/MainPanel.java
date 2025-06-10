@@ -8,6 +8,7 @@ import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicSliderUI;
@@ -23,25 +24,9 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsSliderUI) {
-          setUI(new WindowsSliderUI(this) {
-            @Override protected TrackListener createTrackListener(JSlider slider) {
-              return new TrackListener() {
-                @Override public boolean shouldScroll(int direction) {
-                  return false;
-                }
-              };
-            }
-          });
+          setUI(new DisableTrackScrollWindowsSliderUI(this));
         } else {
-          setUI(new BasicSliderUI(this) {
-            @Override protected TrackListener createTrackListener(JSlider slider) {
-              return new TrackListener() {
-                @Override public boolean shouldScroll(int direction) {
-                  return false;
-                }
-              };
-            }
-          });
+          setUI(new DisableTrackScrollBasicSliderUI(this));
         }
       }
     };
@@ -87,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -96,6 +81,34 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class DisableTrackScrollWindowsSliderUI extends WindowsSliderUI {
+  protected DisableTrackScrollWindowsSliderUI(JSlider slider) {
+    super(slider);
+  }
+
+  @Override protected TrackListener createTrackListener(JSlider slider) {
+    return new TrackListener() {
+      @Override public boolean shouldScroll(int direction) {
+        return false;
+      }
+    };
+  }
+}
+
+class DisableTrackScrollBasicSliderUI extends BasicSliderUI {
+  protected DisableTrackScrollBasicSliderUI(JSlider slider) {
+    super(slider);
+  }
+
+  @Override protected TrackListener createTrackListener(JSlider slider) {
+    return new TrackListener() {
+      @Override public boolean shouldScroll(int direction) {
+        return false;
+      }
+    };
   }
 }
 
