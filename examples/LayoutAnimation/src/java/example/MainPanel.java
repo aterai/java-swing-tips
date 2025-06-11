@@ -7,62 +7,35 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private Timer animator;
-  private boolean isHidden = true;
-  private final JPanel controls = new JPanel(new BorderLayout(5, 5) {
-    private int controlsHeight;
-    @Override public Dimension preferredLayoutSize(Container target) {
-      // synchronized (target.getTreeLock()) {
-      Dimension ps = super.preferredLayoutSize(target);
-      int defaultHeight = ps.height;
-      if (Objects.nonNull(animator)) {
-        if (isHidden) {
-          if (controls.getHeight() < defaultHeight) {
-            controlsHeight += 5;
-          }
-        } else {
-          if (controls.getHeight() > 0) {
-            controlsHeight -= 5;
-          }
-        }
-        if (controlsHeight <= 0) {
-          controlsHeight = 0;
-          animator.stop();
-        } else if (controlsHeight >= defaultHeight) {
-          controlsHeight = defaultHeight;
-          animator.stop();
-        }
-      }
-      ps.height = controlsHeight;
-      return ps;
-    }
-  });
-
   private MainPanel() {
     super(new BorderLayout());
     JButton button = new JButton("Find Next(test)");
     button.setFocusable(false);
     JTextField field = new JTextField("", 10);
 
+    Timer animator = new Timer(5, null);
+    ControlsBorderLayout layout = new ControlsBorderLayout(animator);
+    JPanel controls = new JPanel(layout);
+    controls.setName("aaa");
     controls.setBorder(BorderFactory.createTitledBorder("Search down"));
     controls.add(new JLabel("Find what:"), BorderLayout.WEST);
     controls.add(field);
     controls.add(button, BorderLayout.EAST);
+    animator.addActionListener(e -> controls.revalidate());
 
     Action act = new AbstractAction("Show/Hide Search Box") {
       @Override public void actionPerformed(ActionEvent ev) {
-        if (Objects.nonNull(animator) && animator.isRunning()) {
-          return;
+        if (!animator.isRunning()) {
+          layout.isHidden = controls.getHeight() == 0;
+          animator.start();
         }
-        isHidden = controls.getHeight() == 0;
-        animator = new Timer(5, e -> controls.revalidate());
-        animator.start();
       }
     };
+
     JButton showHideButton = new JButton();
     showHideButton.setAction(act);
     showHideButton.setFocusable(false);
@@ -93,7 +66,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -103,5 +76,40 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ControlsBorderLayout extends BorderLayout {
+  private int controlsHeight;
+  private final Timer animator;
+  public boolean isHidden = true;
+
+  public ControlsBorderLayout(Timer animator) {
+    super(5, 5);
+    this.animator = animator;
+  }
+
+  @Override public Dimension preferredLayoutSize(Container target) {
+    // synchronized (target.getTreeLock()) {
+    Dimension ps = super.preferredLayoutSize(target);
+    int defaultHeight = animator.isRunning() ? ps.height : 0;
+    if (isHidden) {
+      if (target.getHeight() < defaultHeight) {
+        controlsHeight += 5;
+      }
+    } else {
+      if (target.getHeight() > 0) {
+        controlsHeight -= 5;
+      }
+    }
+    if (controlsHeight <= 0) {
+      controlsHeight = 0;
+      animator.stop();
+    } else if (controlsHeight >= defaultHeight) {
+      controlsHeight = defaultHeight;
+      animator.stop();
+    }
+    ps.height = controlsHeight;
+    return ps;
   }
 }
