@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
@@ -17,40 +18,7 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JTabbedPane tabbedPane = new JTabbedPane() {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsTabbedPaneUI) {
-          setUI(new WindowsTabbedPaneUI() {
-            @Override protected MouseListener createMouseListener() {
-              return new TabSelectionMouseListener(this) {
-                @Override public void mouseEntered(MouseEvent e) {
-                  setRolloverTab(tabForCoordinate(tabPane, e.getX(), e.getY()));
-                }
-
-                @Override public void mouseExited(MouseEvent e) {
-                  setRolloverTab(-1);
-                }
-              };
-            }
-          });
-        } else {
-          setUI(new MetalTabbedPaneUI() {
-            @Override protected MouseListener createMouseListener() {
-              return new TabSelectionMouseListener(this) {
-                @Override public void mouseEntered(MouseEvent e) {
-                  setRolloverTab(tabForCoordinate(tabPane, e.getX(), e.getY()));
-                }
-
-                @Override public void mouseExited(MouseEvent e) {
-                  setRolloverTab(-1);
-                }
-              };
-            }
-          });
-        }
-      }
-    };
+    JTabbedPane tabbedPane = new RequestFocusTabbedPane();
     // tabbedPane.addMouseListener(new MouseAdapter() {
     //   @Override public void mousePressed(MouseEvent e) {
     //     boolean b1 = SwingUtilities.isLeftMouseButton(e);
@@ -88,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -97,6 +65,41 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RequestFocusTabbedPane extends JTabbedPane {
+  @Override public void updateUI() {
+    super.updateUI();
+    if (getUI() instanceof WindowsTabbedPaneUI) {
+      setUI(new WindowsTabbedPaneUI() {
+        @Override protected MouseListener createMouseListener() {
+          return new TabSelectionMouseListener(this) {
+            @Override public void mouseEntered(MouseEvent e) {
+              setRolloverTab(tabForCoordinate(tabPane, e.getX(), e.getY()));
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+              setRolloverTab(-1);
+            }
+          };
+        }
+      });
+    } else {
+      setUI(new MetalTabbedPaneUI() {
+        @Override protected MouseListener createMouseListener() {
+          return new TabSelectionMouseListener(this) {
+            @Override public void mouseEntered(MouseEvent e) {
+              setRolloverTab(tabForCoordinate(tabPane, e.getX(), e.getY()));
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+              setRolloverTab(-1);
+            }
+          };
+        }
+      });
+    }
   }
 }
 
