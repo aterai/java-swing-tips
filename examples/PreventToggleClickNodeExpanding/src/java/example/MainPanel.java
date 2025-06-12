@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
@@ -71,18 +72,20 @@ public final class MainPanel extends JPanel {
     if (list == null) {
       return;
     }
-    Arrays.asList(list).forEach(file -> {
-      DefaultMutableTreeNode child = new DefaultMutableTreeNode(file);
-      node.add(child);
-      if (file.isDirectory()) {
-        createChildren(file, child);
-      } else if (Objects.equals("MainPanel.java", file.getName())) {
-        child.add(makeNode("MainPanel()"));
-        child.add(makeNode("createAndShowGui():void"));
-        child.add(makeNode("createChildren(File, DefaultMutableTreeNode):void"));
-        child.add(makeNode("main(String[]):void"));
-      }
-    });
+    Arrays.asList(list).forEach(file -> addFileNode(node, file));
+  }
+
+  private static void addFileNode(DefaultMutableTreeNode node, File file) {
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode(file);
+    node.add(child);
+    if (file.isDirectory()) {
+      createChildren(file, child);
+    } else if (Objects.equals("MainPanel.java", file.getName())) {
+      child.add(makeNode("MainPanel()"));
+      child.add(makeNode("createAndShowGui():void"));
+      child.add(makeNode("createChildren(File, DefaultMutableTreeNode):void"));
+      child.add(makeNode("main(String[]):void"));
+    }
   }
 
   private static DefaultMutableTreeNode makeNode(String txt) {
@@ -112,7 +115,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
