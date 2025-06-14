@@ -6,6 +6,7 @@ package example;
 
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
@@ -17,47 +18,20 @@ public final class MainPanel extends JPanel {
     UIManager.put("TabbedPane.labelShift", 0);
     // TabbedPane.selectedTabPadInsets : InsetsUIResource[top=2,left=2,bottom=2,right=1]
     UIManager.put("TabbedPane.selectedTabPadInsets", new Insets(0, 0, 0, 0));
-
-    JTabbedPane tabbedPane = new JTabbedPane() {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsTabbedPaneUI) {
-          setUI(new WindowsTabbedPaneUI() {
-            @Override protected boolean shouldRotateTabRuns(int tabPlacement) {
-              return false;
-            }
-          });
-        } else {
-          setUI(new MetalTabbedPaneUI() {
-            @Override protected boolean shouldRotateTabRuns(int tabPlacement) {
-              return false;
-            }
-
-            // This method with two arguments is not used at all elsewhere and may be a bug.
-            @Override protected boolean shouldRotateTabRuns(int tabPlacement, int selectedRun) {
-              return false;
-            }
-          });
-        }
-      }
-    };
-
     add(makeTabbedPane(new JTabbedPane()));
-    add(makeTabbedPane(tabbedPane));
-
+    add(makeTabbedPane(new NoRotationTabbedPane()));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
-    tabbedPane.addTab("111111111111111111111111", new ColorIcon(Color.RED), new JLabel());
-    tabbedPane.addTab("2", new ColorIcon(Color.GREEN), new JLabel());
-    tabbedPane.addTab("3333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
-    tabbedPane.addTab("444444444444", new ColorIcon(Color.ORANGE), new JLabel());
-    return tabbedPane;
+  private static JTabbedPane makeTabbedPane(JTabbedPane tabs) {
+    tabs.addTab("111111111111111111111111", new ColorIcon(Color.RED), new JLabel());
+    tabs.addTab("2", new ColorIcon(Color.GREEN), new JLabel());
+    tabs.addTab("3333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
+    tabs.addTab("444444444444", new ColorIcon(Color.ORANGE), new JLabel());
+    return tabs;
   }
 
   public static void main(String[] args) {
@@ -70,7 +44,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -79,6 +53,30 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class NoRotationTabbedPane extends JTabbedPane {
+  @Override public void updateUI() {
+    super.updateUI();
+    if (getUI() instanceof WindowsTabbedPaneUI) {
+      setUI(new WindowsTabbedPaneUI() {
+        @Override protected boolean shouldRotateTabRuns(int tabPlacement) {
+          return false;
+        }
+      });
+    } else {
+      setUI(new MetalTabbedPaneUI() {
+        @Override protected boolean shouldRotateTabRuns(int tabPlacement) {
+          return false;
+        }
+
+        // This method with two arguments is not used at all elsewhere and may be a bug.
+        @Override protected boolean shouldRotateTabRuns(int tabPlacement, int selectedRun) {
+          return false;
+        }
+      });
+    }
   }
 }
 
@@ -148,7 +146,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
