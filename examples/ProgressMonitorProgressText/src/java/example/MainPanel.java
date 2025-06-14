@@ -13,37 +13,24 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout(5, 5));
     String key = "ProgressMonitor.progressText";
-    JTextArea area = new JTextArea();
-    area.setEditable(false);
-    area.append(String.format("%s: %s%n", key, UIManager.getString(key)));
+    log.setEditable(false);
+    log.append(String.format("%s: %s%n", key, UIManager.getString(key)));
 
     JTextField textField = new JTextField("Title Progress...");
     JCheckBox check = new JCheckBox("Default");
     check.addActionListener(e -> textField.setEnabled(!((JCheckBox) e.getSource()).isSelected()));
 
-    ProgressMonitor monitor = new ProgressMonitor(this, "message", "note", 0, 100);
     JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {
-      runButton.setEnabled(false);
-      String title = check.isSelected() ? null : textField.getText();
-      UIManager.put(key, title);
-      monitor.setProgress(0);
-      SwingWorker<String, String> worker = new BackgroundTask() {
-        @Override protected void process(List<String> chunks) {
-          chunks.forEach(monitor::setNote);
-        }
-
-        @Override protected void done() {
-          runButton.setEnabled(true);
-          monitor.close();
-          area.append(getDoneMessage() + "\n");
-          area.setCaretPosition(area.getDocument().getLength());
-        }
-      };
-      worker.addPropertyChangeListener(new ProgressListener(monitor));
+      JButton b = (JButton) e.getSource();
+      b.setEnabled(false);
+      UIManager.put(key, check.isSelected() ? null : textField.getText());
+      SwingWorker<String, String> worker = getWorker(b);
       worker.execute();
     });
 
@@ -54,10 +41,29 @@ public final class MainPanel extends JPanel {
     box.add(textField);
     box.add(Box.createHorizontalStrut(2));
     box.add(runButton);
-    add(new JScrollPane(area));
+    add(new JScrollPane(log));
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private SwingWorker<String, String> getWorker(JButton runButton) {
+    ProgressMonitor monitor = new ProgressMonitor(this, "message", "note", 0, 100);
+    monitor.setProgress(0);
+    SwingWorker<String, String> worker = new BackgroundTask() {
+      @Override protected void process(List<String> chunks) {
+        chunks.forEach(monitor::setNote);
+      }
+
+      @Override protected void done() {
+        runButton.setEnabled(true);
+        monitor.close();
+        log.append(getDoneMessage() + "\n");
+        log.setCaretPosition(log.getDocument().getLength());
+      }
+    };
+    worker.addPropertyChangeListener(new ProgressListener(monitor));
+    return worker;
   }
 
   public static void main(String[] args) {
