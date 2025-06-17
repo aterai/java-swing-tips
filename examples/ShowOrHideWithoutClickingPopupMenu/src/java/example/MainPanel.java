@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -36,13 +37,12 @@ public final class MainPanel extends JPanel {
     popup.addMouseListener(new MouseAdapter() {
       @Override public void mouseExited(MouseEvent e) {
         EventQueue.invokeLater(() -> {
-          boolean b = false;
-          for (MenuElement me : popup.getSubElements()) {
-            if (me instanceof AbstractButton) {
-              b |= ((AbstractButton) me).getModel().isArmed();
-            }
-          }
-          if(!b) {
+          boolean isArmed = Stream.of(popup.getSubElements())
+              .filter(AbstractButton.class::isInstance)
+              .map(AbstractButton.class::cast)
+              .map(AbstractButton::getModel)
+              .anyMatch(ButtonModel::isArmed);
+          if (!isArmed) {
             popup.setVisible(false);
           }
         });
@@ -155,8 +155,8 @@ class AutoClosePopupMenu extends JPopupMenu {
     }
   }
 
-  private class AwtPopupMenuListener implements PopupMenuListener {
-    private final AWTEventListener a = e -> {
+  private final class AwtPopupMenuListener implements PopupMenuListener {
+    private final AWTEventListener handler = e -> {
       if (e instanceof MouseEvent) {
         int id = e.getID();
         if (id == MouseEvent.MOUSE_MOVED || id == MouseEvent.MOUSE_EXITED) {
@@ -167,11 +167,11 @@ class AutoClosePopupMenu extends JPopupMenu {
 
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
       long mask = AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK;
-      Toolkit.getDefaultToolkit().addAWTEventListener(a, mask);
+      Toolkit.getDefaultToolkit().addAWTEventListener(handler, mask);
     }
 
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-      Toolkit.getDefaultToolkit().removeAWTEventListener(a);
+      Toolkit.getDefaultToolkit().removeAWTEventListener(handler);
     }
 
     @Override public void popupMenuCanceled(PopupMenuEvent e) {
