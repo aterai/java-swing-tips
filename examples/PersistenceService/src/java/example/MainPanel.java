@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 import javax.jnlp.BasicService;
 import javax.jnlp.FileContents;
 import javax.jnlp.PersistenceService;
@@ -55,15 +56,7 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     SwingWorker<WindowListener, Void> worker = new LoadSaveTask() {
       @Override protected void done() {
-        try {
-          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (UnsupportedLookAndFeelException ignored) {
-          Toolkit.getDefaultToolkit().beep();
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-          ex.printStackTrace();
-          return;
-        }
-        JFrame frame = new JFrame("@title@");
+        JFrame frame = makeFrame();
         try {
           WindowListener windowListener = get();
           if (Objects.nonNull(windowListener)) {
@@ -71,18 +64,29 @@ public final class MainPanel extends JPanel {
           }
         } catch (InterruptedException | ExecutionException ex) {
           Thread.currentThread().interrupt();
-          ex.printStackTrace();
           Toolkit.getDefaultToolkit().beep();
         }
         WindowState windowState = getWindowState();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new MainPanel());
         frame.setSize(windowState.getSize());
         frame.setLocation(windowState.getLocation());
         frame.setVisible(true);
       }
     };
     worker.execute();
+  }
+
+  private static JFrame makeFrame() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    return frame;
   }
 }
 
