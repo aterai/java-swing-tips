@@ -144,7 +144,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     }
   }
 
-  private void siftdown(int l, int u) throws InterruptedException {
+  private void shiftDown(int l, int u) throws InterruptedException {
     int i = l;
     int c;
     for (;;) {
@@ -166,11 +166,11 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
   private void heapsort(int n) throws InterruptedException { // BEWARE!!! Sorts x[1..n-1]
     int i;
     for (i = n / 2; i > 0; i--) {
-      siftdown(i, n - 1);
+      shiftDown(i, n - 1);
     }
     for (i = n - 1; i >= 2; i--) {
       swap(1, i);
-      siftdown(1, i - 1);
+      shiftDown(1, i - 1);
     }
   }
 
