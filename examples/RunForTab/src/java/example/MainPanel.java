@@ -10,55 +10,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabs = new JTabbedPane() {
-      @Override public void addTab(String title, Icon icon, Component component) {
-        super.addTab(title, icon, component, title);
-      }
-
-      @Override public String getToolTipText(MouseEvent e) {
-        String tip = super.getToolTipText(e);
-        int idx = indexAtLocation(e.getX(), e.getY());
-        if (idx >= 0 && isHorizontalTabPlacement()) {
-          int run = getRunForTab(getTabCount(), idx);
-          tip = String.format("%s: Run: %d", tip, run);
-        }
-        return tip;
-      }
-
-      private int getRunForTab(int tabCount, int tabIndex) {
-        int runCount = getTabRunCount();
-        Rectangle taRect = getTabAreaRect(tabCount);
-        int runHeight = taRect.height / runCount;
-        Rectangle tabRect = getBoundsAt(tabIndex);
-        Point2D pt = new Point2D.Double(tabRect.getCenterX(), tabRect.getCenterY());
-        Rectangle runRect = new Rectangle(taRect.x, taRect.y, taRect.width, runHeight);
-        int run = -1;
-        for (int i = 0; i < runCount; i++) {
-          if (runRect.contains(pt)) {
-            run = i;
-          }
-          runRect.translate(0, runHeight);
-        }
-        return getTabPlacement() == TOP ? runCount - run - 1 : run;
-      }
-
-      private Rectangle getTabAreaRect(int tabCount) {
-        Rectangle rect = getBoundsAt(0);
-        for (int i = 0; i < tabCount; i++) {
-          rect.add(getBoundsAt(i));
-        }
-        return rect;
-      }
-
-      private boolean isHorizontalTabPlacement() {
-        return getTabPlacement() == TOP || getTabPlacement() == BOTTOM;
-      }
-    };
+    JTabbedPane tabs = new RunForTabTabbedPane();
     tabs.addTab("111111111111111111111111", new ColorIcon(Color.RED), new JLabel());
     tabs.addTab("2", new ColorIcon(Color.GREEN), new JLabel());
     tabs.addTab("33333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
@@ -104,7 +62,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -113,6 +71,51 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RunForTabTabbedPane extends JTabbedPane {
+  @Override public void addTab(String title, Icon icon, Component component) {
+    super.addTab(title, icon, component, title);
+  }
+
+  @Override public String getToolTipText(MouseEvent e) {
+    String tip = super.getToolTipText(e);
+    int idx = indexAtLocation(e.getX(), e.getY());
+    if (idx >= 0 && isHorizontalTabPlacement()) {
+      int run = getRunForTab(getTabCount(), idx);
+      tip = String.format("%s: Run: %d", tip, run);
+    }
+    return tip;
+  }
+
+  private int getRunForTab(int tabCount, int tabIndex) {
+    int runCount = getTabRunCount();
+    Rectangle taRect = getTabAreaRect(tabCount);
+    int runHeight = taRect.height / runCount;
+    Rectangle tabRect = getBoundsAt(tabIndex);
+    Point2D pt = new Point2D.Double(tabRect.getCenterX(), tabRect.getCenterY());
+    Rectangle runRect = new Rectangle(taRect.x, taRect.y, taRect.width, runHeight);
+    int run = -1;
+    for (int i = 0; i < runCount; i++) {
+      if (runRect.contains(pt)) {
+        run = i;
+      }
+      runRect.translate(0, runHeight);
+    }
+    return getTabPlacement() == TOP ? runCount - run - 1 : run;
+  }
+
+  private Rectangle getTabAreaRect(int tabCount) {
+    Rectangle rect = getBoundsAt(0);
+    for (int i = 0; i < tabCount; i++) {
+      rect.add(getBoundsAt(i));
+    }
+    return rect;
+  }
+
+  private boolean isHorizontalTabPlacement() {
+    return getTabPlacement() == TOP || getTabPlacement() == BOTTOM;
   }
 }
 
@@ -199,7 +202,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
