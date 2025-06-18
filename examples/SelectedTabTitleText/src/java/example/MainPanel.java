@@ -41,20 +41,23 @@ public final class MainPanel extends JPanel {
 
     tabs.addChangeListener(e -> {
       JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-      if (tabbedPane.getTabCount() <= 0) {
-        return;
-      }
-      int idx = tabbedPane.getSelectedIndex();
-      for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-        Component c = tabbedPane.getTabComponentAt(i);
-        if (c instanceof JLabel) {
-          ((JLabel) c).setText(i == idx ? tabbedPane.getTitleAt(i) : null);
-        }
+      if (tabbedPane.getTabCount() > 0) {
+        updateSelectedTabTitle(tabbedPane);
       }
     });
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void updateSelectedTabTitle(JTabbedPane tabs) {
+    int idx = tabs.getSelectedIndex();
+    for (int i = 0; i < tabs.getTabCount(); i++) {
+      Component c = tabs.getTabComponentAt(i);
+      if (c instanceof JLabel) {
+        ((JLabel) c).setText(i == idx ? tabs.getTitleAt(i) : null);
+      }
+    }
   }
 
   private static void addTab(JTabbedPane tabbedPane, TabTitle tt, Component c) {
