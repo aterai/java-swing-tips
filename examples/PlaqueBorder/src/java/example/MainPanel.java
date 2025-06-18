@@ -10,6 +10,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -17,63 +18,65 @@ import javax.swing.border.EmptyBorder;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    JScrollPane scroll = new JScrollPane(new JTable(8, 5)) {
-      private static final int ARC = 8;
-
-      @Override protected void paintComponent(Graphics g) {
-        Border b = getBorder();
-        if (!isOpaque() && b instanceof PlaqueBorder) {
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setPaint(getBackground());
-          int w = getWidth() - 1;
-          int h = getHeight() - 1;
-          g2.fill(((PlaqueBorder) b).getBorderShape(0, 0, w, h, ARC));
-          g2.dispose();
-        }
-        super.paintComponent(g);
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        setBackground(Color.WHITE);
-        getViewport().setBackground(getBackground());
-        setBorder(new PlaqueBorder(ARC) {
-          @Override protected Shape getBorderShape(double x, double y, double w, double h, double r) {
-            return makeBorderShape(x, y, w, h, r);
-          }
-        });
-      }
-    };
-
-    JTextField field = new JTextField("JTextField") {
-      private static final int ARC = 4;
-
-      @Override protected void paintComponent(Graphics g) {
-        Border b = getBorder();
-        if (!isOpaque() && b instanceof PlaqueBorder) {
-          Graphics2D g2 = (Graphics2D) g.create();
-          g2.setPaint(getBackground());
-          int w = getWidth() - 1;
-          int h = getHeight() - 1;
-          g2.fill(((PlaqueBorder) b).getBorderShape(0, 0, w, h, ARC));
-          g2.dispose();
-        }
-        super.paintComponent(g);
-      }
-
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        setBorder(new PlaqueBorder(ARC));
-      }
-    };
-
-    add(scroll);
-    add(field, BorderLayout.SOUTH);
-    // setBackground(Color.RED);
+    add(new PlaqueScrollPane(new JTable(8, 5)));
+    add(new PlaqueTextField("JTextField"), BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class PlaqueScrollPane extends JScrollPane {
+  private static final int ARC = 8;
+
+  protected PlaqueScrollPane(Component view) {
+    super(view);
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    Border b = getBorder();
+    if (!isOpaque() && b instanceof PlaqueBorder) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(getBackground());
+      int w = getWidth() - 1;
+      int h = getHeight() - 1;
+      g2.fill(((PlaqueBorder) b).getBorderShape(0, 0, w, h, ARC));
+      g2.dispose();
+    }
+    super.paintComponent(g);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    setBackground(Color.WHITE);
+    getViewport().setBackground(getBackground());
+    setBorder(new PlaqueBorder(ARC) {
+      @Override
+      protected Shape getBorderShape(double x, double y, double w, double h, double r) {
+        return makeBorderShape(x, y, w, h, r);
+      }
+    });
   }
 
   private static Shape makeBorderShape(double x, double y, double w, double h, double r) {
@@ -91,26 +94,32 @@ public final class MainPanel extends JPanel {
     path.closePath();
     return AffineTransform.getTranslateInstance(x, y).createTransformedShape(path);
   }
+}
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
+class PlaqueTextField extends JTextField {
+  private static final int ARC = 4;
+
+  protected PlaqueTextField(String text) {
+    super(text);
   }
 
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
+  @Override protected void paintComponent(Graphics g) {
+    Border b = getBorder();
+    if (!isOpaque() && b instanceof PlaqueBorder) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(getBackground());
+      int w = getWidth() - 1;
+      int h = getHeight() - 1;
+      g2.fill(((PlaqueBorder) b).getBorderShape(0, 0, w, h, ARC));
+      g2.dispose();
     }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
+    super.paintComponent(g);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    setBorder(new PlaqueBorder(ARC));
   }
 }
 
