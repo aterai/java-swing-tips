@@ -9,42 +9,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final transient Image bgImage;
+  private final transient Image bgImage = getImage();
 
   private MainPanel() {
     super(new BorderLayout());
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    bgImage = Optional.ofNullable(cl.getResource("example/test.png")).map(url -> {
-      try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-
-    Color bgc = new Color(110, 110, 0, 100);
-    Color fgc = new Color(255, 255, 0, 100);
-
-    UIManager.put("TabbedPane.shadow", fgc);
-    UIManager.put("TabbedPane.darkShadow", fgc);
-    UIManager.put("TabbedPane.light", fgc);
-    UIManager.put("TabbedPane.highlight", fgc);
-    UIManager.put("TabbedPane.tabAreaBackground", fgc);
-    UIManager.put("TabbedPane.unselectedBackground", fgc);
-    UIManager.put("TabbedPane.background", bgc);
-    UIManager.put("TabbedPane.foreground", Color.WHITE);
-    UIManager.put("TabbedPane.focus", fgc);
-    UIManager.put("TabbedPane.contentAreaColor", fgc);
-    UIManager.put("TabbedPane.selected", fgc);
-    UIManager.put("TabbedPane.selectHighlight", fgc);
-    // UIManager.put("TabbedPane.borderHighlightColor", fgc); // Do not work
-    // Maybe "TabbedPane.borderHightlightColor" is a typo,
-    // but this is defined in MetalTabbedPaneUI
-    UIManager.put("TabbedPane.borderHightlightColor", fgc);
+    initTabbedPaneColor();
 
     JPanel tab1panel = new JPanel();
     tab1panel.setBackground(new Color(0, 220, 220, 50));
@@ -78,6 +52,38 @@ public final class MainPanel extends JPanel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     g.drawImage(bgImage, 0, 0, getWidth(), getHeight(), this);
+  }
+
+  private static void initTabbedPaneColor() {
+    Color bgc = new Color(110, 110, 0, 100);
+    Color fgc = new Color(255, 255, 0, 100);
+    UIManager.put("TabbedPane.shadow", fgc);
+    UIManager.put("TabbedPane.darkShadow", fgc);
+    UIManager.put("TabbedPane.light", fgc);
+    UIManager.put("TabbedPane.highlight", fgc);
+    UIManager.put("TabbedPane.tabAreaBackground", fgc);
+    UIManager.put("TabbedPane.unselectedBackground", fgc);
+    UIManager.put("TabbedPane.background", bgc);
+    UIManager.put("TabbedPane.foreground", Color.WHITE);
+    UIManager.put("TabbedPane.focus", fgc);
+    UIManager.put("TabbedPane.contentAreaColor", fgc);
+    UIManager.put("TabbedPane.selected", fgc);
+    UIManager.put("TabbedPane.selectHighlight", fgc);
+    // UIManager.put("TabbedPane.borderHighlightColor", fgc); // Do not work
+    // Maybe "TabbedPane.borderHightlightColor" is a typo,
+    // but this is defined in MetalTabbedPaneUI
+    UIManager.put("TabbedPane.borderHightlightColor", fgc);
+  }
+
+  private static Image getImage() {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource("example/test.png")).map(url -> {
+      try (InputStream s = url.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
   }
 
   private static Image makeMissingImage() {
@@ -219,7 +225,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
