@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -16,7 +17,18 @@ public final class MainPanel extends JPanel {
     split.setResizeWeight(.5);
     split.setOneTouchExpandable(true);
     split.setDividerSize(32);
+    JCheckBox check = makeCheckBox(split);
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    mb.add(Box.createHorizontalStrut(2));
+    mb.add(check);
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    add(split);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JCheckBox makeCheckBox(JSplitPane split) {
     String key = "SplitPane.centerOneTouchButtons";
     JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
       @Override public void updateUI() {
@@ -33,16 +45,7 @@ public final class MainPanel extends JPanel {
       JCheckBox cb = (JCheckBox) e.getSource();
       updateCenterOneTouchButtons(split, cb.isSelected());
     });
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    mb.add(Box.createHorizontalStrut(2));
-    mb.add(check);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    add(split);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    return check;
   }
 
   public static void updateCenterOneTouchButtons(JSplitPane splitPane, boolean b) {
@@ -60,7 +63,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -114,7 +117,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

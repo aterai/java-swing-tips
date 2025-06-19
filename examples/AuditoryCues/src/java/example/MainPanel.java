@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -85,7 +86,7 @@ public final class MainPanel extends JPanel {
       JOptionPane.showMessageDialog(p, msg);
       loop.enter();
     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       UIManager.getLookAndFeel().provideErrorFeedback(p);
     }
   }
@@ -139,7 +140,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     // UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.allAuditoryCues"));
@@ -201,7 +202,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

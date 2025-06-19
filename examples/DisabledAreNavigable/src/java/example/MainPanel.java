@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicToolBarUI;
@@ -40,8 +41,8 @@ public final class MainPanel extends JPanel {
     //   });
     //   List<JRadioButtonMenuItem> list = new ArrayList<>();
     //   MenuBarUtils.searchAllMenuElements(getRootPane().getJMenuBar(), list);
-    //   for (JRadioButtonMenuItem mi : list) {
-    //     mi.addActionListener(al);
+    //   for (JRadioButtonMenuItem item : list) {
+    //     item.addActionListener(al);
     //   }
     // });
 
@@ -211,7 +212,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

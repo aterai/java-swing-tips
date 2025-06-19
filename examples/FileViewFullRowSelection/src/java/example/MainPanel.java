@@ -7,14 +7,15 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea log = new JTextArea();
-
     String cmd1 = "FileView.fullRowSelection";
     boolean b = UIManager.getLookAndFeelDefaults().getBoolean(cmd1);
     JCheckBox check = new JCheckBox(cmd1, b) {
@@ -24,37 +25,34 @@ public final class MainPanel extends JPanel {
       }
     };
     JButton button = new JButton("open");
-    button.addActionListener(e -> {
-      Boolean flg = check.isSelected();
-      UIManager.put("FileView.fullRowSelection", flg);
-      JFileChooser chooser = new JFileChooser();
-      // https://ateraimemo.com/Swing/DetailsViewFileChooser.html
-      String cmd2 = "viewTypeDetails";
-      Optional.ofNullable(chooser.getActionMap().get(cmd2))
-          .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), cmd2)));
-
-      // https://ateraimemo.com/Swing/GetComponentsRecursively.html
-      descendants(chooser)
-          .filter(JTable.class::isInstance).map(JTable.class::cast)
-          .findFirst()
-          .ifPresent(t -> t.putClientProperty("Table.isFileList", !flg));
-      int retValue = chooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
-      }
-    });
-
+    button.addActionListener(e -> showOpenDialog(e, check.isSelected()));
     JPanel p = new JPanel();
     p.add(check);
     p.add(button);
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showOpenDialog(ActionEvent e, boolean isFullRow) {
+    UIManager.put("FileView.fullRowSelection", isFullRow);
+    JFileChooser chooser = new JFileChooser();
+    // https://ateraimemo.com/Swing/DetailsViewFileChooser.html
+    String cmd2 = "viewTypeDetails";
+    Optional.ofNullable(chooser.getActionMap().get(cmd2))
+        .ifPresent(a -> a.actionPerformed(new ActionEvent(e.getSource(), e.getID(), cmd2)));
+    // https://ateraimemo.com/Swing/GetComponentsRecursively.html
+    descendants(chooser)
+        .filter(JTable.class::isInstance).map(JTable.class::cast)
+        .findFirst()
+        .ifPresent(t -> t.putClientProperty("Table.isFileList", !isFullRow));
+    int retValue = chooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.setText(chooser.getSelectedFile().getAbsolutePath());
+    }
   }
 
   public static Stream<Component> descendants(Container parent) {
@@ -73,7 +71,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -127,7 +125,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

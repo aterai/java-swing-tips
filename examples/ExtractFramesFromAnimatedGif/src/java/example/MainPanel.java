@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -42,7 +43,7 @@ public final class MainPanel extends JPanel {
       try (ImageInputStream iis = ImageIO.createImageInputStream(url.openStream())) {
         loadFromStream(iis).stream().map(ImageIcon::new).map(JLabel::new).forEach(box::add);
       } catch (IOException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         label.setText(ex.getMessage());
       }
     }
@@ -114,7 +115,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
