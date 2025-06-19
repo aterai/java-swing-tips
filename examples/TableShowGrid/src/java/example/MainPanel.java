@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
@@ -15,43 +16,11 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JTable table = new JTable(makeModel()) {
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          c.setBackground(getSelectionBackground());
-        }
-        return c;
-      }
-
-      @Override public void updateUI() {
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        super.updateUI();
-        UIDefaults def = UIManager.getLookAndFeelDefaults();
-        // Boolean showGrid = def.getBoolean("Table.showGrid");
-        Object showGrid = def.get("Table.showGrid");
-        Color gridColor = def.getColor("Table.gridColor");
-        // System.out.println(def.getDimension("Table.intercellSpacing"));
-        if (showGrid == null && gridColor != null) {
-          // initializeLocalVars();
-          setShowGrid(true);
-          setIntercellSpacing(new DimensionUIResource(1, 1));
-          createDefaultRenderers();
-          // createDefaultEditors();
-        } else if (showGrid instanceof Boolean) {
-          setShowGrid((boolean) showGrid);
-        }
-      }
-    };
-
     add(new JScrollPane(new JTable(makeModel())));
-    add(new JScrollPane(table));
-
+    add(new JScrollPane(new GridTable(makeModel())));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -77,7 +46,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -86,6 +55,40 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class GridTable extends JTable {
+  protected GridTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JCheckBox) {
+      c.setBackground(getSelectionBackground());
+    }
+    return c;
+  }
+
+  @Override public void updateUI() {
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    super.updateUI();
+    UIDefaults def = UIManager.getLookAndFeelDefaults();
+    // Boolean showGrid = def.getBoolean("Table.showGrid");
+    Object showGrid = def.get("Table.showGrid");
+    Color gridColor = def.getColor("Table.gridColor");
+    // System.out.println(def.getDimension("Table.intercellSpacing"));
+    if (showGrid == null && gridColor != null) {
+      // initializeLocalVars();
+      setShowGrid(true);
+      setIntercellSpacing(new DimensionUIResource(1, 1));
+      createDefaultRenderers();
+      // createDefaultEditors();
+    } else if (showGrid instanceof Boolean) {
+      setShowGrid((boolean) showGrid);
+    }
   }
 }
 
@@ -130,7 +133,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
