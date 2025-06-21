@@ -80,9 +80,9 @@ public final class MainPanel extends JPanel {
 }
 
 class ControlsBorderLayout extends BorderLayout {
-  private int controlsHeight;
-  private final Timer animator;
   public boolean isHidden = true;
+  private final Timer animator;
+  private int controlsHeight;
 
   public ControlsBorderLayout(Timer animator) {
     super(5, 5);
