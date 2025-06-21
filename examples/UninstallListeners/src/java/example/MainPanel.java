@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 
@@ -34,35 +35,6 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         uninstallListeners(this);
-      }
-
-      private void uninstallListeners(JSlider slider) {
-        AccessController.doPrivileged(new PrivilegedAction<Void>() {
-          @Override public Void run() {
-            try {
-              // https://community.oracle.com/thread/1360123
-              Method uninstall = getMethod("uninstallListeners");
-              uninstall.invoke(getUI(), slider);
-              Method uninstallKbdActs = getMethod("uninstallKeyboardActions");
-              uninstallKbdActs.invoke(getUI(), slider);
-            } catch (IllegalAccessException | InvocationTargetException ex) {
-              throw new UnsupportedOperationException(ex);
-            }
-            return null;
-          }
-
-          @SuppressWarnings("AvoidAccessibilityAlteration")
-          private Method getMethod(String name) {
-            Method method;
-            try {
-              method = BasicSliderUI.class.getDeclaredMethod(name, JSlider.class);
-            } catch (NoSuchMethodException ex) {
-              throw new UnsupportedOperationException(ex);
-            }
-            method.setAccessible(true);
-            return method;
-          }
-        });
       }
     };
     box.add(makeTitledSeparator("BasicSliderUI#uninstallListeners(...)", slider2));
@@ -96,6 +68,30 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static void uninstallListeners(JSlider slider) {
+    AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+      try {
+        getMethod("uninstallListeners").invoke(slider.getUI(), slider);
+        getMethod("uninstallKeyboardActions").invoke(slider.getUI(), slider);
+      } catch (IllegalAccessException | InvocationTargetException ex) {
+        throw new UnsupportedOperationException(ex);
+      }
+      return null;
+    });
+  }
+
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
+  private static Method getMethod(String name) {
+    Method method;
+    try {
+      method = BasicSliderUI.class.getDeclaredMethod(name, JSlider.class);
+    } catch (NoSuchMethodException ex) {
+      throw new UnsupportedOperationException(ex);
+    }
+    method.setAccessible(true);
+    return method;
+  }
+
   private static Component makeTitledSeparator(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
@@ -113,7 +109,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
