@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.jnlp.ClipboardService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
@@ -25,52 +26,11 @@ import javax.swing.undo.UndoManager;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    ClipboardService cs = getClipboardService();
-    JTextArea textArea = new JTextArea() {
-      @Override public void copy() {
-        if (Objects.nonNull(cs)) {
-          cs.setContents(new StringSelection(getSelectedText()));
-        } else {
-          super.copy();
-        }
-      }
-
-      @Override public void cut() {
-        if (Objects.nonNull(cs)) {
-          cs.setContents(new StringSelection(getSelectedText()));
-        } else {
-          super.cut();
-        }
-      }
-
-      @Override public void paste() {
-        if (Objects.nonNull(cs)) {
-          Transferable tr = cs.getContents();
-          if (tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-            getTransferHandler().importData(this, tr);
-          }
-        } else {
-          super.paste();
-        }
-      }
-    };
+    JTextArea textArea = new ClipboardTextArea();
     textArea.setComponentPopupMenu(new TextComponentPopupMenu(textArea));
-
     add(makeTitledPanel("ClipboardService", new JScrollPane(textArea)));
     add(makeTitledPanel("Default", new JScrollPane(new JTextArea())));
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static ClipboardService getClipboardService() {
-    Optional<Object> op;
-    try {
-      op = Optional.ofNullable(ServiceManager.lookup("javax.jnlp.ClipboardService"));
-    } catch (UnavailableServiceException ex) {
-      op = Optional.empty();
-    }
-    return op.filter(ClipboardService.class::isInstance)
-        .map(ClipboardService.class::cast)
-        .orElse(null);
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -90,7 +50,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -99,6 +59,49 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ClipboardTextArea extends JTextArea {
+  private final ClipboardService cs = getClipboardService();
+
+  @Override public void copy() {
+    if (Objects.nonNull(cs)) {
+      cs.setContents(new StringSelection(getSelectedText()));
+    } else {
+      super.copy();
+    }
+  }
+
+  @Override public void cut() {
+    if (Objects.nonNull(cs)) {
+      cs.setContents(new StringSelection(getSelectedText()));
+    } else {
+      super.cut();
+    }
+  }
+
+  @Override public void paste() {
+    if (Objects.nonNull(cs)) {
+      Transferable tr = cs.getContents();
+      if (tr.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+        getTransferHandler().importData(this, tr);
+      }
+    } else {
+      super.paste();
+    }
+  }
+
+  private static ClipboardService getClipboardService() {
+    Optional<Object> op;
+    try {
+      op = Optional.ofNullable(ServiceManager.lookup("javax.jnlp.ClipboardService"));
+    } catch (UnavailableServiceException ex) {
+      op = Optional.empty();
+    }
+    return op.filter(ClipboardService.class::isInstance)
+        .map(ClipboardService.class::cast)
+        .orElse(null);
   }
 }
 
