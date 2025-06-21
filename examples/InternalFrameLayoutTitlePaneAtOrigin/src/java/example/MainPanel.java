@@ -5,13 +5,25 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String key = "InternalFrame.layoutTitlePaneAtOrigin";
     JDesktopPane desktop = new JDesktopPane();
+    addFrame(desktop, 0, true);
+    addFrame(desktop, 1, false);
+    add(desktop);
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    mb.add(makeCheckBox(desktop));
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JCheckBox makeCheckBox(JDesktopPane desktop) {
+    String key = "InternalFrame.layoutTitlePaneAtOrigin";
     boolean b = UIManager.getBoolean(key);
     JCheckBox check = new JCheckBox("InternalFrame TitlePane layout", b) {
       @Override public void updateUI() {
@@ -27,17 +39,7 @@ public final class MainPanel extends JPanel {
       SwingUtilities.updateComponentTreeUI(desktop);
     });
     check.setOpaque(false);
-
-    addFrame(desktop, 0, true);
-    addFrame(desktop, 1, false);
-    add(desktop);
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    mb.add(check);
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    setPreferredSize(new Dimension(320, 240));
+    return check;
   }
 
   private static void addFrame(JDesktopPane desktop, int idx, boolean resizable) {
@@ -112,7 +114,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

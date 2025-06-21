@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,9 +14,20 @@ public final class MainPanel extends JPanel {
     JDesktopPane desktop = new JDesktopPane();
     addFrame(desktop, 0);
     addFrame(desktop, 1);
+    EventQueue.invokeLater(() -> {
+      JMenuBar menuBar = new JMenuBar();
+      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+      menuBar.add(makeCheckBox(desktop));
+      getRootPane().setJMenuBar(menuBar);
+    });
+    add(desktop);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private JCheckBox makeCheckBox(JDesktopPane desktop) {
     String key = "InternalFrame.titleButtonToolTipsOn";
-    JCheckBox check = new JCheckBox(key, UIManager.getLookAndFeelDefaults().getBoolean(key)) {
+    boolean b1 = UIManager.getLookAndFeelDefaults().getBoolean(key);
+    JCheckBox check = new JCheckBox(key, b1) {
       @Override public void updateUI() {
         super.updateUI();
         setOpaque(false);
@@ -26,20 +38,11 @@ public final class MainPanel extends JPanel {
       }
     };
     check.addActionListener(e -> {
-      JCheckBox checkBox = (JCheckBox) e.getSource();
-      UIManager.put(key, checkBox.isSelected());
+      boolean selected = ((JCheckBox) e.getSource()).isSelected();
+      UIManager.put(key, selected);
       SwingUtilities.updateComponentTreeUI(desktop);
     });
-
-    EventQueue.invokeLater(() -> {
-      JMenuBar menuBar = new JMenuBar();
-      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
-      menuBar.add(check);
-      getRootPane().setJMenuBar(menuBar);
-    });
-
-    add(desktop);
-    setPreferredSize(new Dimension(320, 240));
+    return check;
   }
 
   private static void addFrame(JDesktopPane desktop, int idx) {
@@ -68,7 +71,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -122,7 +125,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -13,7 +14,17 @@ public final class MainPanel extends JPanel {
     JDesktopPane desktop = new JDesktopPane();
     addFrame(desktop, 0);
     addFrame(desktop, 1);
+    EventQueue.invokeLater(() -> {
+      JMenuBar menuBar = new JMenuBar();
+      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+      menuBar.add(makeSpinner(desktop));
+      getRootPane().setJMenuBar(menuBar);
+    });
+    add(desktop);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JSpinner makeSpinner(JDesktopPane desktop) {
     // InternalFrame.titleFont
     // InternalFrame.titleButtonHeight
     // InternalFrame.titleButtonWidth
@@ -22,13 +33,12 @@ public final class MainPanel extends JPanel {
     int height = UIManager.getLookAndFeelDefaults().getInt(key);
     SpinnerNumberModel model = new SpinnerNumberModel(height, 0, 50, 1);
     model.addChangeListener(e -> {
-      int v = model.getNumber().intValue();
-      UIManager.put(key, v);
-      // UIManager.put("InternalFrame.titleButtonWidth", v);
-      // UIManager.put("InternalFrame.titleButtonHeight", v);
+      UIManager.put(key, model.getNumber().intValue());
+      // UIManager.put("InternalFrame.titleButtonWidth", iv);
+      // UIManager.put("InternalFrame.titleButtonHeight", iv);
       SwingUtilities.updateComponentTreeUI(desktop);
     });
-    JSpinner spinner = new JSpinner(model) {
+    return new JSpinner(model) {
       @Override public void updateUI() {
         super.updateUI();
         int h = UIManager.getLookAndFeelDefaults().getInt(key);
@@ -37,16 +47,6 @@ public final class MainPanel extends JPanel {
         SwingUtilities.updateComponentTreeUI(desktop);
       }
     };
-
-    EventQueue.invokeLater(() -> {
-      JMenuBar menuBar = new JMenuBar();
-      menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
-      menuBar.add(spinner);
-      getRootPane().setJMenuBar(menuBar);
-    });
-
-    add(desktop);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   private static void addFrame(JDesktopPane desktop, int idx) {
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -129,7 +129,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
