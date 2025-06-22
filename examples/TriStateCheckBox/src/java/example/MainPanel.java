@@ -20,75 +20,29 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JPanel p = new JPanel();
+    p.add(new TriStateCheckBox("TriState JCheckBox"));
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.addTab("JCheckBox", p);
+    tabs.addTab("JTableHeader", new JScrollPane(new HeaderCheckBoxTable(makeModel())));
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    add(tabs);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
         {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
-      private static final int CHECKBOX_COLUMN = 0;
-      private transient HeaderCheckBoxHandler handler;
-
-      @Override public void updateUI() {
-        // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-        // https://bugs.openjdk.org/browse/JDK-6788475
-        // Set a temporary ColorUIResource to avoid this issue
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        getTableHeader().removeMouseListener(handler);
-        TableModel m = getModel();
-        if (Objects.nonNull(m)) {
-          m.removeTableModelListener(handler);
-        }
-        super.updateUI();
-
-        m = getModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
-          TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-          if (r instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component) r);
-          }
-        }
-        TableColumn column = getColumnModel().getColumn(CHECKBOX_COLUMN);
-        column.setHeaderRenderer(new HeaderRenderer());
-        column.setHeaderValue(Status.INDETERMINATE);
-
-        handler = new HeaderCheckBoxHandler(this, CHECKBOX_COLUMN);
-        m.addTableModelListener(handler);
-        getTableHeader().addMouseListener(handler);
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          JCheckBox b = (JCheckBox) c;
-          b.setBackground(getSelectionBackground());
-          b.setBorderPainted(true);
-        }
-        return c;
-      }
-    };
-
-    JCheckBox checkBox = new TriStateCheckBox("TriState JCheckBox");
-
-    JPanel p = new JPanel();
-    p.add(checkBox);
-
-    JTabbedPane tp = new JTabbedPane();
-    tp.addTab("JCheckBox", p);
-    tp.addTab("JTableHeader", new JScrollPane(table));
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    add(tp);
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -110,6 +64,54 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class HeaderCheckBoxTable extends JTable {
+  private static final int CHECKBOX_COLUMN = 0;
+  private transient HeaderCheckBoxHandler handler;
+
+  protected HeaderCheckBoxTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+    // https://bugs.openjdk.org/browse/JDK-6788475
+    // Set a temporary ColorUIResource to avoid this issue
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    getTableHeader().removeMouseListener(handler);
+    TableModel m = getModel();
+    if (Objects.nonNull(m)) {
+      m.removeTableModelListener(handler);
+    }
+    super.updateUI();
+
+    m = getModel();
+    for (int i = 0; i < m.getColumnCount(); i++) {
+      TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+      if (r instanceof Component) {
+        SwingUtilities.updateComponentTreeUI((Component) r);
+      }
+    }
+    TableColumn column = getColumnModel().getColumn(CHECKBOX_COLUMN);
+    column.setHeaderRenderer(new HeaderRenderer());
+    column.setHeaderValue(Status.INDETERMINATE);
+
+    handler = new HeaderCheckBoxHandler(this, CHECKBOX_COLUMN);
+    m.addTableModelListener(handler);
+    getTableHeader().addMouseListener(handler);
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JCheckBox) {
+      JCheckBox b = (JCheckBox) c;
+      b.setBackground(getSelectionBackground());
+      b.setBorderPainted(true);
+    }
+    return c;
   }
 }
 

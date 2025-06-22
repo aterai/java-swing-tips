@@ -173,29 +173,31 @@ class HeaderRenderer extends JButton implements TableCellRenderer {
   private final class RolloverHandler extends MouseInputAdapter {
     @Override public void mouseClicked(MouseEvent e) {
       JTableHeader header = (JTableHeader) e.getComponent();
-      JTable table = header.getTable();
-      // TableColumnModel columnModel = table.getColumnModel();
-      // int vci = columnModel.getColumnIndexAtX(e.getX());
-      int vci = table.columnAtPoint(e.getPoint());
-      // int mci = table.convertColumnIndexToModel(vci);
-      // TableColumn column = table.getColumnModel().getColumn(mci);
-      // int w = column.getWidth(); // Nimbus???
-      // int h = header.getHeight();
-      Rectangle r = header.getHeaderRect(vci);
-      Container c = (Container) getTableCellRendererComponent(
-          table, "", true, true, -1, vci);
-      // if (!isNimbus) {
-      //   Insets i = c.getInsets();
-      //   r.translate(r.width - i.right, 0);
-      // } else {
-      r.translate(r.width - BUTTON_WIDTH, 0);
-      r.setSize(BUTTON_WIDTH, r.height);
-      Point pt = e.getPoint();
-      if (c.getComponentCount() > 0 && r.contains(pt)) {
-        popup.show(header, r.x, r.height);
-        JButton b = (JButton) c.getComponent(0);
-        b.doClick();
-        e.consume();
+      if (header.isEnabled()) {
+        JTable table = header.getTable();
+        // TableColumnModel columnModel = table.getColumnModel();
+        // int vci = columnModel.getColumnIndexAtX(e.getX());
+        int vci = table.columnAtPoint(e.getPoint());
+        // int mci = table.convertColumnIndexToModel(vci);
+        // TableColumn column = table.getColumnModel().getColumn(mci);
+        // int w = column.getWidth(); // Nimbus???
+        // int h = header.getHeight();
+        Rectangle r = header.getHeaderRect(vci);
+        Container c = (Container) getTableCellRendererComponent(
+            table, "", true, true, -1, vci);
+        // if (!isNimbus) {
+        //   Insets i = c.getInsets();
+        //   r.translate(r.width - i.right, 0);
+        // } else {
+        r.translate(r.width - BUTTON_WIDTH, 0);
+        r.setSize(BUTTON_WIDTH, r.height);
+        Point pt = e.getPoint();
+        if (c.getComponentCount() > 0 && r.contains(pt)) {
+          popup.show(header, r.x, r.height);
+          JButton b = (JButton) c.getComponent(0);
+          b.doClick();
+          e.consume();
+        }
       }
     }
 

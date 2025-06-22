@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -25,59 +26,23 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTable table = new HeaderCheckBoxTable(makeModel());
+    table.setFillsViewportHeight(true);
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
         {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"}
     };
-    TableModel model = new DefaultTableModel(data, columnNames) {
+    return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
         return getValueAt(0, column).getClass();
       }
     };
-    JTable table = new JTable(model) {
-      private static final int MODEL_COLUMN_IDX = 0;
-      private transient HeaderCheckBoxHandler handler;
-
-      @Override public void updateUI() {
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        getTableHeader().removeMouseListener(handler);
-        TableModel m = getModel();
-        if (Objects.nonNull(m)) {
-          m.removeTableModelListener(handler);
-        }
-        super.updateUI();
-
-        m = getModel();
-        for (int i = 0; i < m.getColumnCount(); i++) {
-          TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
-          if (r instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component) r);
-          }
-        }
-        TableColumn column = getColumnModel().getColumn(MODEL_COLUMN_IDX);
-        column.setHeaderRenderer(new HeaderRenderer());
-        column.setHeaderValue(Status.INDETERMINATE);
-
-        handler = new HeaderCheckBoxHandler(this, MODEL_COLUMN_IDX);
-        m.addTableModelListener(handler);
-        getTableHeader().addMouseListener(handler);
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          JCheckBox b = (JCheckBox) c;
-          b.setBackground(getSelectionBackground());
-          b.setBorderPainted(true);
-        }
-        return c;
-      }
-    };
-    table.setFillsViewportHeight(true);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   public static void main(String[] args) {
@@ -90,7 +55,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -99,6 +64,51 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class HeaderCheckBoxTable extends JTable {
+  private static final int MODEL_COLUMN_IDX = 0;
+  private transient HeaderCheckBoxHandler handler;
+
+  protected HeaderCheckBoxTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    getTableHeader().removeMouseListener(handler);
+    TableModel m = getModel();
+    if (Objects.nonNull(m)) {
+      m.removeTableModelListener(handler);
+    }
+    super.updateUI();
+
+    m = getModel();
+    for (int i = 0; i < m.getColumnCount(); i++) {
+      TableCellRenderer r = getDefaultRenderer(m.getColumnClass(i));
+      if (r instanceof Component) {
+        SwingUtilities.updateComponentTreeUI((Component) r);
+      }
+    }
+    TableColumn column = getColumnModel().getColumn(MODEL_COLUMN_IDX);
+    column.setHeaderRenderer(new HeaderRenderer());
+    column.setHeaderValue(Status.INDETERMINATE);
+
+    handler = new HeaderCheckBoxHandler(this, MODEL_COLUMN_IDX);
+    m.addTableModelListener(handler);
+    getTableHeader().addMouseListener(handler);
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JCheckBox) {
+      JCheckBox b = (JCheckBox) c;
+      b.setBackground(getSelectionBackground());
+      b.setBorderPainted(true);
+    }
+    return c;
   }
 }
 

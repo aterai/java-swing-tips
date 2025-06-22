@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
@@ -19,16 +20,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Object[] columnNames = {"String0", "String111", "String22222"};
-    Object[][] data = {
-        {"a", "bb", "ccc"}, {"dd", "ee", "ff"}, {"aa", "aaa", "a"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel());
     table.setShowVerticalLines(false);
     table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
@@ -56,6 +48,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static TableModel makeModel() {
+    Object[] columnNames = {"String0", "String111", "String22222"};
+    Object[][] data = {
+        {"a", "bb", "ccc"}, {"dd", "ee", "ff"}, {"aa", "aaa", "a"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -66,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -166,15 +170,17 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
 
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
-    JTable table = header.getTable();
-    int ci = header.columnAtPoint(e.getPoint());
-    int idx = table.convertColumnIndexToModel(ci);
-    if (getTextRect(header, ci).contains(e.getPoint())) {
-      RowSorter<?> sorter = table.getRowSorter();
-      if (sorter instanceof DefaultRowSorter) {
-        ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, true);
-        sorter.toggleSortOrder(idx);
-        ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, false);
+    if (header.isEnabled()) {
+      JTable table = header.getTable();
+      int ci = header.columnAtPoint(e.getPoint());
+      int idx = table.convertColumnIndexToModel(ci);
+      if (getTextRect(header, ci).contains(e.getPoint())) {
+        RowSorter<?> sorter = table.getRowSorter();
+        if (sorter instanceof DefaultRowSorter) {
+          ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, true);
+          sorter.toggleSortOrder(idx);
+          ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, false);
+        }
       }
     }
   }
