@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -21,32 +22,7 @@ public final class MainPanel extends JPanel {
         return Boolean.class;
       }
     };
-    JTable table = new JTable(model) {
-      private final Insets iconIns = new Insets(4, 4, 4, 4);
-      private final transient Icon checkIcon = new CheckBoxIcon();
-
-      @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component c = super.prepareRenderer(renderer, row, column);
-        if (c instanceof JCheckBox) {
-          int s = getRowHeight(row) - iconIns.top - iconIns.bottom;
-          JCheckBox cb = (JCheckBox) c;
-          cb.setIcon(new ScaledIcon(checkIcon, s, s));
-          cb.setBorderPainted(false);
-        }
-        return c;
-      }
-
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          int s = getRowHeight(row) - iconIns.top - iconIns.bottom;
-          JCheckBox cb = (JCheckBox) c;
-          cb.setIcon(new ScaledIcon(checkIcon, s, s));
-          cb.setBackground(getSelectionBackground());
-        }
-        return c;
-      }
-    };
+    JTable table = new BooleanTable(model);
     table.setRowHeight(40);
     table.setSelectionBackground(Color.WHITE);
     add(new JScrollPane(table));
@@ -63,7 +39,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -72,6 +48,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class BooleanTable extends JTable {
+  private final Insets iconIns;
+  private final transient Icon checkIcon;
+
+  protected BooleanTable(TableModel model) {
+    super(model);
+    iconIns = new Insets(4, 4, 4, 4);
+    checkIcon = new CheckBoxIcon();
+  }
+
+  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+    Component c = super.prepareRenderer(renderer, row, column);
+    if (c instanceof JCheckBox) {
+      int s = getRowHeight(row) - iconIns.top - iconIns.bottom;
+      JCheckBox cb = (JCheckBox) c;
+      cb.setIcon(new ScaledIcon(checkIcon, s, s));
+      cb.setBorderPainted(false);
+    }
+    return c;
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Component c = super.prepareEditor(editor, row, column);
+    if (c instanceof JCheckBox) {
+      int s = getRowHeight(row) - iconIns.top - iconIns.bottom;
+      JCheckBox cb = (JCheckBox) c;
+      cb.setIcon(new ScaledIcon(checkIcon, s, s));
+      cb.setBackground(getSelectionBackground());
+    }
+    return c;
   }
 }
 
