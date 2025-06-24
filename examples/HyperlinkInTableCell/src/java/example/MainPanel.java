@@ -25,42 +25,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      private final Color evenColor = new Color(0xFA_FA_FA);
-      private transient UriRenderer handler;
-
-      @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
-        Component c = super.prepareRenderer(tcr, row, column);
-        c.setForeground(getForeground());
-        c.setBackground(row % 2 == 0 ? evenColor : getBackground());
-        return c;
-      }
-
-      @Override public void updateUI() {
-        removeMouseListener(handler);
-        removeMouseMotionListener(handler);
-        super.updateUI();
-        setRowSelectionAllowed(true);
-        setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        setIntercellSpacing(new Dimension());
-        setShowGrid(false);
-        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        setAutoCreateRowSorter(true);
-
-        TableColumnModel cm = getColumnModel();
-        TableColumn col = cm.getColumn(0);
-        col.setMinWidth(50);
-        col.setMaxWidth(50);
-        col.setResizable(false);
-        cm.getColumn(1).setPreferredWidth(1000);
-        cm.getColumn(2).setPreferredWidth(2000);
-
-        handler = new UriRenderer();
-        setDefaultRenderer(URI.class, handler);
-        addMouseListener(handler);
-        addMouseMotionListener(handler);
-      }
-    };
+    JTable table = new HyperlinkTable(makeModel());
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.getViewport().setBackground(Color.WHITE);
     add(scrollPane);
@@ -115,6 +80,39 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class HyperlinkTable extends JTable {
+  private transient UriRenderer handler;
+
+  protected HyperlinkTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removeMouseMotionListener(handler);
+    super.updateUI();
+    setRowSelectionAllowed(true);
+    setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    setIntercellSpacing(new Dimension());
+    setShowGrid(false);
+    putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    setAutoCreateRowSorter(true);
+
+    TableColumnModel cm = getColumnModel();
+    TableColumn col = cm.getColumn(0);
+    col.setMinWidth(50);
+    col.setMaxWidth(50);
+    col.setResizable(false);
+    cm.getColumn(1).setPreferredWidth(1000);
+    cm.getColumn(2).setPreferredWidth(2000);
+
+    handler = new UriRenderer();
+    setDefaultRenderer(URI.class, handler);
+    addMouseListener(handler);
+    addMouseMotionListener(handler);
   }
 }
 
