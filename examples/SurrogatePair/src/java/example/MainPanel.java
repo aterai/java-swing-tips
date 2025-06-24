@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -76,7 +77,7 @@ public final class MainPanel extends JPanel {
         Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
         Desktop.getDesktop().browse(path.toUri());
       } catch (IOException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         Toolkit.getDefaultToolkit().beep();
       }
       // try {
@@ -114,7 +115,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

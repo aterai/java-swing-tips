@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicSliderUI;
@@ -77,7 +78,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -124,7 +125,7 @@ class VerticalFlipLayerUI extends LayerUI<JComponent> {
       try {
         pt = getAffineTransform(l.getSize()).inverseTransform(pt, null);
       } catch (NoninvertibleTransformException ex) {
-        ex.printStackTrace();
+        // ex.printStackTrace();
         UIManager.getLookAndFeel().provideErrorFeedback(me.getComponent());
       }
       // Horizontal: me.translatePoint((int) pt.getX() - me.getX(), 0);
