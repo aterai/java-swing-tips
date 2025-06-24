@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -26,9 +25,10 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new HyperlinkTable(makeModel());
-    JScrollPane scrollPane = new JScrollPane(table);
-    scrollPane.getViewport().setBackground(Color.WHITE);
-    add(scrollPane);
+    table.setFillsViewportHeight(true);
+    JScrollPane scroll = new JScrollPane(table);
+    scroll.setBackground(table.getBackground());
+    add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -192,11 +192,10 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   @Override public void mouseClicked(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
+    int row = table.rowAtPoint(pt);
     int col = table.columnAtPoint(pt);
-    if (isUriColumn(table, col)) {
-      int crow = table.rowAtPoint(pt);
-      URI uri = (URI) table.getValueAt(crow, col);
-      // System.out.println(uri);
+    if (row >= 0 && isUriColumn(table, col)) {
+      URI uri = (URI) table.getValueAt(row, col);
       try {
         // Web Start
         // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");
