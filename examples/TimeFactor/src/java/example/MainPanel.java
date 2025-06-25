@@ -5,25 +5,27 @@
 package example;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final SpinnerNumberModel spmodel;
+  private final SpinnerNumberModel numberModel;
 
   private MainPanel() {
     super(new BorderLayout());
     Object o = UIManager.get("Tree.timeFactor");
     Number lv = o instanceof Number ? (Number) o : 500L;
-    spmodel = new SpinnerNumberModel(lv, 0L, 5000L, 500L);
+    numberModel = new SpinnerNumberModel(lv, 0L, 5000L, 500L);
     UIManager.put("List.timeFactor", 5000L);
 
     String[] model = {"a", "aa", "b", "bbb", "bbc"};
     JComboBox<String> combo = new JComboBox<>(model);
-    combo.setPrototypeDisplayValue("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+    combo.setPrototypeDisplayValue(String.join("", Collections.nCopies(30, "M")));
 
     JPanel p = new JPanel();
-    p.add(new JSpinner(spmodel));
+    p.add(new JSpinner(numberModel));
     p.add(combo);
 
     JTabbedPane tabbedPane = new JTabbedPane();
@@ -41,7 +43,9 @@ public final class MainPanel extends JPanel {
   }
 
   @Override public void updateUI() {
-    Long lv = Optional.ofNullable(spmodel).map(m -> m.getNumber().longValue()).orElse(1000L);
+    Long lv = Optional.ofNullable(numberModel)
+        .map(m -> m.getNumber().longValue())
+        .orElse(1000L);
     UIManager.put("ComboBox.timeFactor", lv);
     UIManager.put("List.timeFactor", lv);
     UIManager.put("Table.timeFactor", lv);
@@ -59,7 +63,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -113,7 +117,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

@@ -6,39 +6,33 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(new DefaultTableModel(15, 3)) {
-      @Override public void updateUI() {
-        ColorUIResource reset = new ColorUIResource(Color.RED);
-        setSelectionForeground(reset);
-        setSelectionBackground(reset);
-        super.updateUI();
-        UIDefaults def = UIManager.getLookAndFeelDefaults();
-        Object showGrid = def.get("Table.showGrid");
-        Color gridColor = def.getColor("Table.gridColor");
-        if (showGrid == null && gridColor != null) {
-          setShowGrid(true);
-          setIntercellSpacing(new DimensionUIResource(1, 1));
-          createDefaultRenderers();
-        }
-      }
-    };
+    JTable table = new GridTable(new DefaultTableModel(15, 3));
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     table.setAutoCreateRowSorter(true);
-
     JScrollPane scroll = new JScrollPane(table);
     // scroll.setBorder(new BorderUIResource(BorderFactory.createLineBorder(Color.BLUE, 5)));
     add(scroll);
+    add(makeCheckBox(scroll), BorderLayout.SOUTH);
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JCheckBox makeCheckBox(JScrollPane scroll) {
     String key = "Table.scrollPaneBorder";
     JCheckBox check = new JCheckBox(key, Objects.nonNull(UIManager.getBorder(key))) {
       @Override public void updateUI() {
@@ -52,14 +46,7 @@ public final class MainPanel extends JPanel {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
       updateTableScrollPane(scroll, key, b);
     });
-    add(check, BorderLayout.SOUTH);
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    setPreferredSize(new Dimension(320, 240));
+    return check;
   }
 
   public static void updateTableScrollPane(Component scroll, String key, boolean lnf) {
@@ -83,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -92,6 +79,27 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class GridTable extends JTable {
+  protected GridTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    ColorUIResource reset = new ColorUIResource(Color.RED);
+    setSelectionForeground(reset);
+    setSelectionBackground(reset);
+    super.updateUI();
+    UIDefaults def = UIManager.getLookAndFeelDefaults();
+    Object showGrid = def.get("Table.showGrid");
+    Color gridColor = def.getColor("Table.gridColor");
+    if (showGrid == null && gridColor != null) {
+      setShowGrid(true);
+      setIntercellSpacing(new DimensionUIResource(1, 1));
+      createDefaultRenderers();
+    }
   }
 }
 
@@ -137,7 +145,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

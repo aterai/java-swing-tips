@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -20,7 +21,20 @@ public final class MainPanel extends JPanel {
     tabs2.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
     List<JTabbedPane> list = Arrays.asList(tabs1, tabs2);
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    list.forEach(p::add);
 
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+
+    add(p);
+    add(makeCheckBox(list), BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JCheckBox makeCheckBox(List<JTabbedPane> list) {
     String key = "TabbedPane.tabsOverlapBorder";
     JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
       @Override public void updateUI() {
@@ -36,18 +50,7 @@ public final class MainPanel extends JPanel {
       UIManager.put(key, b);
       list.forEach(SwingUtilities::updateComponentTreeUI);
     });
-
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    list.forEach(p::add);
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
-    add(p);
-    add(check, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    setPreferredSize(new Dimension(320, 240));
+    return check;
   }
 
   private static JTabbedPane makeTabbedPane() {
@@ -66,7 +69,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -120,7 +123,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();

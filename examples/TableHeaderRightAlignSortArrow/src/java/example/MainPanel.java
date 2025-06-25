@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -14,24 +15,6 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
-
-    String key = "TableHeader.rightAlignSortArrow";
-    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setOpaque(false);
-        EventQueue.invokeLater(() -> {
-          boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
-          setSelected(b);
-          updateSortAlign(table, key, b);
-        });
-      }
-    };
-    check.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
-      updateSortAlign(table, key, b);
-    });
-
     // // NimbusLookAndFeel TEST:
     // if (UIManager.getLookAndFeel().getClass().getName().contains("Nimbus")) {
     //   UIManager.put(key, Boolean.FALSE);
@@ -53,14 +36,33 @@ public final class MainPanel extends JPanel {
     //     cm.getColumn(i).setHeaderRenderer(renderer);
     //   }
     // }
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     mb.add(Box.createHorizontalGlue());
-    mb.add(check);
+    mb.add(makeCheckBox(table));
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JCheckBox makeCheckBox(JTable table) {
+    String key = "TableHeader.rightAlignSortArrow";
+    JCheckBox check = new JCheckBox(key, UIManager.getBoolean(key)) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setOpaque(false);
+        EventQueue.invokeLater(() -> {
+          boolean b = UIManager.getLookAndFeelDefaults().getBoolean(key);
+          setSelected(b);
+          updateSortAlign(table, key, b);
+        });
+      }
+    };
+    check.addActionListener(e -> {
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      updateSortAlign(table, key, b);
+    });
+    return check;
   }
 
   private static TableModel makeModel() {
@@ -91,7 +93,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -145,7 +147,7 @@ final class LookAndFeelUtils {
       } catch (UnsupportedLookAndFeelException ignored) {
         Toolkit.getDefaultToolkit().beep();
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-        ex.printStackTrace();
+        Logger.getGlobal().severe(ex::getMessage);
         return;
       }
       updateLookAndFeel();
