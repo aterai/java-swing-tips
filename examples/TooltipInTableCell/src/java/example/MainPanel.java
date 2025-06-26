@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -20,53 +21,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      private static final int LIST_ICON_COLUMN = 1;
-
-      @Override public String getToolTipText(MouseEvent e) {
-        String txt = super.getToolTipText(e);
-        Point pt = e.getPoint();
-        int row = rowAtPoint(pt);
-        int col = columnAtPoint(pt);
-        if (row >= 0 && col >= 0) {
-          TableCellRenderer tcr = getCellRenderer(row, col);
-          Component c = prepareRenderer(tcr, row, col);
-          int mci = convertColumnIndexToModel(col);
-          if (mci == LIST_ICON_COLUMN && c instanceof JPanel) {
-            txt = getToolTipText(e, c);
-          }
-        }
-        return txt;
-      }
-
-      private String getToolTipText(MouseEvent e, Component c) {
-        Point pt = e.getPoint();
-        int row = rowAtPoint(pt);
-        int col = columnAtPoint(pt);
-        Rectangle r = getCellRect(row, col, true);
-        c.setBounds(r);
-        // https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
-        c.doLayout();
-        pt.translate(-r.x, -r.y);
-        return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-            .filter(JLabel.class::isInstance)
-            .map(JLabel.class::cast)
-            .map(l -> ((ImageIcon) l.getIcon()).getDescription())
-            .orElseGet(() -> super.getToolTipText(e));
-      }
-
-      @Override public void updateUI() {
-        // [JDK-6788475]
-        // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
-        // https://bugs.openjdk.org/browse/JDK-6788475
-        setSelectionForeground(new ColorUIResource(Color.RED));
-        setSelectionBackground(new ColorUIResource(Color.RED));
-        super.updateUI();
-        getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
-        getColumnModel().getColumn(LIST_ICON_COLUMN).setCellRenderer(new ListIconRenderer());
-        setRowHeight(40);
-      }
-    };
+    JTable table = new IconTable(makeModel());
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
@@ -110,7 +65,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -119,6 +74,58 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class IconTable extends JTable {
+  private static final int LIST_ICON_COLUMN = 1;
+
+  protected IconTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public String getToolTipText(MouseEvent e) {
+    String txt = super.getToolTipText(e);
+    Point pt = e.getPoint();
+    int row = rowAtPoint(pt);
+    int col = columnAtPoint(pt);
+    if (row >= 0 && col >= 0) {
+      TableCellRenderer tcr = getCellRenderer(row, col);
+      Component c = prepareRenderer(tcr, row, col);
+      int mci = convertColumnIndexToModel(col);
+      if (mci == LIST_ICON_COLUMN && c instanceof JPanel) {
+        txt = getToolTipText(e, c);
+      }
+    }
+    return txt;
+  }
+
+  private String getToolTipText(MouseEvent e, Component c) {
+    Point pt = e.getPoint();
+    int row = rowAtPoint(pt);
+    int col = columnAtPoint(pt);
+    Rectangle r = getCellRect(row, col, true);
+    c.setBounds(r);
+    // https://stackoverflow.com/questions/10854831/tool-tip-in-jpanel-in-jtable-not-working
+    c.doLayout();
+    pt.translate(-r.x, -r.y);
+    return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
+        .filter(JLabel.class::isInstance)
+        .map(JLabel.class::cast)
+        .map(l -> ((ImageIcon) l.getIcon()).getDescription())
+        .orElseGet(() -> super.getToolTipText(e));
+  }
+
+  @Override public void updateUI() {
+    // [JDK-6788475]
+    // Changing to Nimbus LAF and back doesn't reset look and feel of JTable completely
+    // https://bugs.openjdk.org/browse/JDK-6788475
+    setSelectionForeground(new ColorUIResource(Color.RED));
+    setSelectionBackground(new ColorUIResource(Color.RED));
+    super.updateUI();
+    getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
+    getColumnModel().getColumn(LIST_ICON_COLUMN).setCellRenderer(new ListIconRenderer());
+    setRowHeight(40);
   }
 }
 
