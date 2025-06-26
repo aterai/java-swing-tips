@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -74,7 +75,7 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
   protected static final double D = .8;
   protected final Cursor dc;
   protected final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  protected final Timer scroller;
+  protected final Timer scroller = new Timer(DELAY, this::scroll);
   protected final JComponent label;
   protected final Point startPt = new Point();
   protected final Point delta = new Point();
@@ -83,17 +84,18 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
     super();
     this.label = comp;
     this.dc = comp.getCursor();
-    this.scroller = new Timer(DELAY, e -> {
-      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
-      Rectangle rect = viewport.getViewRect();
-      rect.translate(-delta.x, -delta.y);
-      label.scrollRectToVisible(rect);
-      if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
-        delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
-      } else {
-        ((Timer) e.getSource()).stop();
-      }
-    });
+  }
+
+  private void scroll(ActionEvent e) {
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(-delta.x, -delta.y);
+    label.scrollRectToVisible(rect);
+    if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+      delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
+    } else {
+      ((Timer) e.getSource()).stop();
+    }
   }
 
   @Override public void mousePressed(MouseEvent e) {
@@ -214,19 +216,20 @@ class OverscrollEdgeEffectLayerUI extends LayerUI<JScrollPane> {
 
   private void ovalShrinking(JLayer<? extends JScrollPane> l) {
     if (ovalHeight > 0d && !animator.isRunning()) {
-      ActionListener handler = e -> {
-        if (ovalHeight > 0d && animator.isRunning()) {
-          ovalHeight = Math.max(ovalHeight * .67 - .5, 0d);
-          l.repaint();
-        } else {
-          animator.stop();
-          for (ActionListener a : animator.getActionListeners()) {
-            animator.removeActionListener(a);
-          }
-        }
-      };
-      animator.addActionListener(handler);
+      animator.addActionListener(e -> shrinkAnimation(l));
       animator.start();
+    }
+  }
+
+  private void shrinkAnimation(JLayer<? extends JScrollPane> l) {
+    if (ovalHeight > 0d && animator.isRunning()) {
+      ovalHeight = Math.max(ovalHeight * .67 - .5, 0d);
+      l.repaint();
+    } else {
+      animator.stop();
+      for (ActionListener a : animator.getActionListeners()) {
+        animator.removeActionListener(a);
+      }
     }
   }
 }

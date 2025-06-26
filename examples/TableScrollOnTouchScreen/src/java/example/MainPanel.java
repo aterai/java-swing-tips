@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
@@ -84,17 +85,19 @@ class TableTouchScreenHandler extends MouseAdapter implements ListSelectionListe
 
   protected TableTouchScreenHandler(JTable table) {
     super();
-    this.scroller = new Timer(DELAY, e -> {
-      JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(table);
-      Rectangle rect = viewport.getViewRect();
-      rect.translate(-delta.x, -delta.y);
-      table.scrollRectToVisible(rect);
-      if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
-        delta.setLocation((int) (delta.x * GRAVITY), (int) (delta.y * GRAVITY));
-      } else {
-        ((Timer) e.getSource()).stop();
-      }
-    });
+    this.scroller = new Timer(DELAY, e -> scroll(table, e));
+  }
+
+  private void scroll(JTable table, ActionEvent e) {
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(table);
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(-delta.x, -delta.y);
+    table.scrollRectToVisible(rect);
+    if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
+      delta.setLocation((int) (delta.x * GRAVITY), (int) (delta.y * GRAVITY));
+    } else {
+      ((Timer) e.getSource()).stop();
+    }
   }
 
   @Override public void mousePressed(MouseEvent e) {

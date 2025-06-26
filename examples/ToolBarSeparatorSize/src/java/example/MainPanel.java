@@ -38,17 +38,7 @@ public final class MainPanel extends JPanel {
     mh.addChangeListener(cl);
 
     JButton button = new JButton("reset");
-    button.addActionListener(e -> {
-      Component[] list = bar.getComponents();
-      bar.removeAll();
-      for (Component c : list) {
-        if (c instanceof JToolBar.Separator) {
-          bar.addSeparator();
-        } else {
-          bar.add(c);
-        }
-      }
-    });
+    button.addActionListener(e -> reset(bar));
 
     JPanel p = new JPanel();
     p.add(new JLabel("width:"));
@@ -64,6 +54,18 @@ public final class MainPanel extends JPanel {
     add(bar, BorderLayout.NORTH);
     add(p);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void reset(JToolBar bar) {
+    Component[] list = bar.getComponents();
+    bar.removeAll();
+    for (Component c : list) {
+      if (c instanceof JToolBar.Separator) {
+        bar.addSeparator();
+      } else {
+        bar.add(c);
+      }
+    }
   }
 
   public static void main(String[] args) {
