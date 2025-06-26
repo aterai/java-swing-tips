@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -56,38 +57,29 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("Integer only", new JScrollPane(p));
-    tabbedPane.addTab("JTree", new JScrollPane(new JTree()));
-    tabbedPane.addTab("JSplitPane", new JSplitPane());
-    tabbedPane.setSelectedIndex(0);
-
-    add(makeCheckBox(tabbedPane, p), BorderLayout.NORTH);
-    add(tabbedPane);
+    JTabbedPane tabs = makeTabbedPane(p);
+    add(makeCheckBox(tabs, p), BorderLayout.NORTH);
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JCheckBox makeCheckBox(JTabbedPane tabbedPane, JPanel p) {
+  private static JTabbedPane makeTabbedPane(JPanel p) {
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.addTab("Integer only", new JScrollPane(p));
+    tabs.addTab("JTree", new JScrollPane(new JTree()));
+    tabs.addTab("JSplitPane", new JSplitPane());
+    tabs.setSelectedIndex(0);
+    return tabs;
+  }
+
+  private static JCheckBox makeCheckBox(JTabbedPane tabs, JPanel panel) {
     JCheckBox check = new JCheckBox("override SingleSelectionModel#setSelectedIndex(int)");
-    SingleSelectionModel ssm = tabbedPane.getModel();
+    SingleSelectionModel ssm = tabs.getModel();
     check.addActionListener(e -> {
       if (((JCheckBox) e.getSource()).isSelected()) {
-        // https://stackoverflow.com/questions/34315657/java-swing-jtextfield-setinputverifier-keep-focus-on-textfield
-        tabbedPane.setModel(new DefaultSingleSelectionModel() {
-          @Override public void setSelectedIndex(int index) {
-            InputVerifier verifier = p.getInputVerifier();
-            // Java 9:
-            // if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p, tabbedPane)) {
-            if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(p)) {
-              UIManager.getLookAndFeel().provideErrorFeedback(p);
-              JOptionPane.showMessageDialog(p, "InputVerifier#verify(...): false");
-              return;
-            }
-            super.setSelectedIndex(index);
-          }
-        });
+        tabs.setModel(new InputVerifierSelectionModel(panel));
       } else {
-        tabbedPane.setModel(ssm);
+        tabs.setModel(ssm);
       }
     });
     return check;
@@ -103,7 +95,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -112,6 +104,28 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+// https://stackoverflow.com/questions/34315657/java-swing-jtextfield-setinputverifier-keep-focus-on-textfield
+class InputVerifierSelectionModel extends DefaultSingleSelectionModel {
+  private final JPanel panel;
+
+  protected InputVerifierSelectionModel(JPanel panel) {
+    super();
+    this.panel = panel;
+  }
+
+  @Override public void setSelectedIndex(int index) {
+    InputVerifier verifier = panel.getInputVerifier();
+    // Java 9:
+    // if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(panel, tabs)) {
+    if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(panel)) {
+      UIManager.getLookAndFeel().provideErrorFeedback(panel);
+      JOptionPane.showMessageDialog(panel, "InputVerifier#verify(...): false");
+      return;
+    }
+    super.setSelectedIndex(index);
   }
 }
 
