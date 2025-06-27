@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 
@@ -13,32 +14,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table1 = new JTable(50, 50);
     table1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-    JTable table2 = new JTable(50, 50) {
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Rectangle r = getCellRect(row, column, true);
-        Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
-        if (p instanceof JViewport) {
-          Rectangle viewRect = ((JViewport) p).getViewRect();
-          if (viewRect.intersects(r)) {
-            r.grow(r.width / 4, 0);
-          } else {
-            r.grow((viewRect.width - r.width) / 2, 0);
-          }
-          scrollRectToVisible(r);
-        }
-        return super.prepareEditor(editor, row, column);
-      }
-
-      @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-        super.changeSelection(rowIndex, columnIndex, toggle, extend);
-        Rectangle r = getCellRect(rowIndex, columnIndex, true);
-        r.grow(r.width / 4, 0);
-        scrollRectToVisible(r);
-      }
-    };
+    JTable table2 = new ScrollEditRectTable(50, 50);
     table2.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
     String help1 = "Default: F2:startEditing not scroll";
     Component s1 = makeTitledPane(new JScrollPane(table1), help1);
     String help2 = "F2:startEditing scrollRectToVisible(...)";
@@ -66,7 +43,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -75,5 +52,33 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ScrollEditRectTable extends JTable {
+  protected ScrollEditRectTable(int numRows, int numColumns) {
+    super(numRows, numColumns);
+  }
+
+  @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+    Rectangle r = getCellRect(row, column, true);
+    Container p = SwingUtilities.getAncestorOfClass(JViewport.class, this);
+    if (p instanceof JViewport) {
+      Rectangle viewRect = ((JViewport) p).getViewRect();
+      if (viewRect.intersects(r)) {
+        r.grow(r.width / 4, 0);
+      } else {
+        r.grow((viewRect.width - r.width) / 2, 0);
+      }
+      scrollRectToVisible(r);
+    }
+    return super.prepareEditor(editor, row, column);
+  }
+
+  @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+    super.changeSelection(rowIndex, columnIndex, toggle, extend);
+    Rectangle r = getCellRect(rowIndex, columnIndex, true);
+    r.grow(r.width / 4, 0);
+    scrollRectToVisible(r);
   }
 }
