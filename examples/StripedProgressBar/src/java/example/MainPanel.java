@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
@@ -23,6 +24,35 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
   private MainPanel() {
     super(new BorderLayout());
+    List<JProgressBar> list = makeProgressBars();
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    list.forEach(bar -> p.add(makePanel(bar)));
+    JButton button = new JButton("Start");
+    button.addActionListener(e -> execute(list));
+    Box box = Box.createHorizontalBox();
+    box.add(Box.createHorizontalGlue());
+    box.add(button);
+    box.add(Box.createHorizontalStrut(5));
+    addHierarchyListener(this);
+    add(p);
+    add(box, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void execute(List<JProgressBar> list) {
+    if (Objects.nonNull(worker) && !worker.isDone()) {
+      worker.cancel(true);
+    }
+    worker = new BackgroundTask();
+    list.forEach(bar -> {
+      bar.setIndeterminate(true);
+      worker.addPropertyChangeListener(new ProgressListener(bar));
+    });
+    worker.execute();
+  }
+
+  private static List<JProgressBar> makeProgressBars() {
     UIManager.put("ProgressBar.cycleTime", 1000);
     UIManager.put("ProgressBar.repaintInterval", 10);
     BoundedRangeModel model = new DefaultBoundedRangeModel();
@@ -54,35 +84,8 @@ public final class MainPanel extends JPanel implements HierarchyListener {
       }
     };
 
-    List<JProgressBar> list = Arrays.asList(
+    return Arrays.asList(
         new JProgressBar(model), progress1, progress2, progress3, progress4);
-
-    JPanel p = new JPanel(new GridLayout(5, 1));
-    list.forEach(bar -> p.add(makePanel(bar)));
-
-    JButton button = new JButton("Test start");
-    button.addActionListener(e -> {
-      if (Objects.nonNull(worker) && !worker.isDone()) {
-        worker.cancel(true);
-      }
-      worker = new BackgroundTask();
-      list.forEach(bar -> {
-        bar.setIndeterminate(true);
-        worker.addPropertyChangeListener(new ProgressListener(bar));
-      });
-      worker.execute();
-    });
-
-    Box box = Box.createHorizontalBox();
-    box.add(Box.createHorizontalGlue());
-    box.add(button);
-    box.add(Box.createHorizontalStrut(5));
-
-    addHierarchyListener(this);
-    add(p);
-    add(box, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
@@ -99,7 +102,6 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     c.fill = GridBagConstraints.HORIZONTAL;
     c.insets = new Insets(5, 5, 5, 5);
     c.weightx = 1d;
-
     JPanel p = new JPanel(new GridBagLayout());
     p.add(cmp, c);
     return p;
@@ -115,7 +117,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
