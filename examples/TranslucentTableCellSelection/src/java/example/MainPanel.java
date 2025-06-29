@@ -225,7 +225,7 @@ class SynthBooleanTableCellRenderer2 extends JCheckBox implements TableCellRende
 }
 
 class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
-  private static final Color SELECTION_BGC = new Color(0x32_00_FE_64, true);
+  // private static final Color SELECTION_BGC = new Color(0x32_00_FE_64, true);
   private static final Stroke BORDER_STROKE = new BasicStroke(2f);
 
   @Override public void paint(Graphics g, JComponent c) {
@@ -245,13 +245,16 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
         }
       }
       Dimension ics = table.getIntercellSpacing();
+      Color v = table.getSelectionBackground();
+      // Color sbc = new Color(v.getRGB() & 0xFF_FF_FF | (0x32 << 24), true);
+      Color sbc = new Color(v.getRed(), v.getGreen(), v.getBlue(), 0x32);
       for (Area a : GeomUtils.singularization(area)) {
         Rectangle r = a.getBounds();
         r.width -= ics.width - 1;
         r.height -= ics.height - 1;
-        g2.setPaint(SELECTION_BGC);
+        g2.setPaint(sbc);
         g2.fill(r);
-        g2.setPaint(table.getSelectionBackground());
+        g2.setPaint(v);
         g2.setStroke(BORDER_STROKE);
         g2.draw(r);
       }
