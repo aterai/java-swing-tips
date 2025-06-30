@@ -151,25 +151,7 @@ class CheckBoxIcon implements Icon {
       }
       g2.fillRect(2, 2, CHECK_SIZE - 4, CHECK_SIZE - 4);
     } else {
-      // Outer top/left
-      g2.setColor(UIManager.getColor("CheckBox.shadow"));
-      g2.drawLine(0, 0, 11, 0);
-      g2.drawLine(0, 1, 0, 11);
-
-      // Outer bottom/right
-      g2.setColor(UIManager.getColor("CheckBox.highlight"));
-      g2.drawLine(12, 0, 12, 12);
-      g2.drawLine(0, 12, 11, 12);
-
-      // Inner top.left
-      g2.setColor(UIManager.getColor("CheckBox.darkShadow"));
-      g2.drawLine(1, 1, 10, 1);
-      g2.drawLine(1, 2, 1, 10);
-
-      // Inner bottom/right
-      g2.setColor(UIManager.getColor("CheckBox.light"));
-      g2.drawLine(1, 11, 11, 11);
-      g2.drawLine(11, 1, 11, 10);
+      paintBorderBevel(g2);
 
       // inside box
       Color color = new Color(255, 155, 155);
@@ -191,16 +173,7 @@ class CheckBoxIcon implements Icon {
 
     // paint check
     if (model.isSelected()) {
-      g2.setColor(Color.BLUE);
-      g2.drawLine(9, 3, 9, 3);
-      g2.drawLine(8, 4, 9, 4);
-      g2.drawLine(7, 5, 9, 5);
-      g2.drawLine(6, 6, 8, 6);
-      g2.drawLine(3, 7, 7, 7);
-      g2.drawLine(4, 8, 6, 8);
-      g2.drawLine(5, 9, 5, 9);
-      g2.drawLine(3, 5, 3, 5);
-      g2.drawLine(3, 6, 4, 6);
+      paintCheck(g2);
     }
 
     if (model.isRollover()) {
@@ -209,6 +182,41 @@ class CheckBoxIcon implements Icon {
       g2.drawLine(1, 1, 1, 1 + CHECK_SIZE - 3);
     }
     g2.dispose();
+  }
+
+  private static void paintBorderBevel(Graphics2D g2) {
+    // Outer top/left
+    g2.setColor(UIManager.getColor("CheckBox.shadow"));
+    g2.drawLine(0, 0, 11, 0);
+    g2.drawLine(0, 1, 0, 11);
+
+    // Outer bottom/right
+    g2.setColor(UIManager.getColor("CheckBox.highlight"));
+    g2.drawLine(12, 0, 12, 12);
+    g2.drawLine(0, 12, 11, 12);
+
+    // Inner top.left
+    g2.setColor(UIManager.getColor("CheckBox.darkShadow"));
+    g2.drawLine(1, 1, 10, 1);
+    g2.drawLine(1, 2, 1, 10);
+
+    // Inner bottom/right
+    g2.setColor(UIManager.getColor("CheckBox.light"));
+    g2.drawLine(1, 11, 11, 11);
+    g2.drawLine(11, 1, 11, 10);
+  }
+
+  private static void paintCheck(Graphics2D g2) {
+    g2.setColor(Color.BLUE);
+    g2.drawLine(9, 3, 9, 3);
+    g2.drawLine(8, 4, 9, 4);
+    g2.drawLine(7, 5, 9, 5);
+    g2.drawLine(6, 6, 8, 6);
+    g2.drawLine(3, 7, 7, 7);
+    g2.drawLine(4, 8, 6, 8);
+    g2.drawLine(5, 9, 5, 9);
+    g2.drawLine(3, 5, 3, 5);
+    g2.drawLine(3, 6, 4, 6);
   }
 
   @Override public int getIconWidth() {
