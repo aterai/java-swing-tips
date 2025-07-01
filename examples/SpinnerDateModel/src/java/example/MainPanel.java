@@ -9,18 +9,20 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String dateFormat = "yyyy/MM/dd";
+    JPanel p = new JPanel(new GridLayout(3, 1));
 
     @SuppressWarnings("JavaUtilDate")
     Date date = new Date();
+    String dateFormat = "yyyy/MM/dd";
     SpinnerDateModel model1 = new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH);
-    JSpinner spinner1 = new JSpinner(model1);
-    spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
+    JSpinner spinner1 = makeSpinner(model1, dateFormat);
+    p.add(makeTitledPanel("Calendar.DAY_OF_MONTH", spinner1));
 
     Calendar today = Calendar.getInstance();
     today.clear(Calendar.MILLISECOND);
@@ -34,13 +36,29 @@ public final class MainPanel extends JPanel {
     log.append(start + "\n");
 
     SpinnerDateModel model2 = new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH);
-    JSpinner spinner2 = new JSpinner(model2);
-    spinner2.setEditor(new JSpinner.DateEditor(spinner2, dateFormat));
+    JSpinner spinner2 = makeSpinner(model2, dateFormat);
+    p.add(makeTitledPanel("min: set(Calendar.HOUR_OF_DAY, 0)", spinner2));
 
     SpinnerDateModel model3 = new SpinnerDateModel(date, start, null, Calendar.DAY_OF_MONTH);
-    JSpinner spinner3 = new JSpinner(model3);
-    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner3, dateFormat);
-    spinner3.setEditor(editor);
+    JSpinner spinner3 = makeSpinner3(model3, dateFormat);
+    p.add(makeTitledPanel("JSpinner.DateEditor + FocusListener", spinner3));
+
+    add(p, BorderLayout.NORTH);
+    add(new JScrollPane(log));
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JSpinner makeSpinner(SpinnerDateModel model, String dateFormat) {
+    JSpinner spinner = new JSpinner(model);
+    spinner.setEditor(new JSpinner.DateEditor(spinner, dateFormat));
+    return spinner;
+  }
+
+  private static JSpinner makeSpinner3(SpinnerDateModel model, String dateFormat) {
+    JSpinner spinner = new JSpinner(model);
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, dateFormat);
+    spinner.setEditor(editor);
     editor.getTextField().addFocusListener(new FocusAdapter() {
       @Override public void focusGained(FocusEvent e) {
         EventQueue.invokeLater(() -> {
@@ -49,16 +67,7 @@ public final class MainPanel extends JPanel {
         });
       }
     });
-
-    JPanel p = new JPanel(new GridLayout(3, 1));
-    p.add(makeTitledPanel("Calendar.DAY_OF_MONTH", spinner1));
-    p.add(makeTitledPanel("min: set(Calendar.HOUR_OF_DAY, 0)", spinner2));
-    p.add(makeTitledPanel("JSpinner.DateEditor + FocusListener", spinner3));
-
-    add(p, BorderLayout.NORTH);
-    add(new JScrollPane(log));
-    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    setPreferredSize(new Dimension(320, 240));
+    return spinner;
   }
 
   private static Component makeTitledPanel(String title, Component cmp) {
@@ -82,7 +91,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

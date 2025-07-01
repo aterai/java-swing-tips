@@ -53,20 +53,23 @@ public final class MainPanel extends JPanel {
     p.add(box1);
     p.add(box2);
 
+    add(p, BorderLayout.NORTH);
+    add(makeTabbedPane(log));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getDefaultsText(String key) {
+    return String.format("%s: %s%n", key, UIManager.getLookAndFeelDefaults().get(key));
+  }
+
+  private static JTabbedPane makeTabbedPane(JTextArea log) {
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("title 0", new ColorIcon(Color.RED), new JScrollPane(log));
     tabs.addTab("title 1", new ColorIcon(Color.GREEN), new JButton("button"));
     tabs.addTab("title 2", new ColorIcon(Color.BLUE), new JLabel("label"));
     tabs.addTab("title 3", new JPanel());
     tabs.setTabComponentAt(3, new JLabel("lbl", new ColorIcon(Color.CYAN), SwingConstants.LEFT));
-
-    add(p, BorderLayout.NORTH);
-    add(tabs);
-    setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static String getDefaultsText(String key) {
-    return String.format("%s: %s%n", key, UIManager.getLookAndFeelDefaults().get(key));
+    return tabs;
   }
 
   public static void main(String[] args) {
