@@ -10,6 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -42,12 +43,7 @@ public final class MainPanel extends JPanel {
     // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
 
     DefaultListModel<Icon> model = new DefaultListModel<>();
-    JList<Icon> list = new JList<>(model);
-    list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-    list.setVisibleRowCount(0);
-    list.setFixedCellWidth(16);
-    list.setFixedCellHeight(16);
-    list.setCellRenderer(new IconListCellRenderer<>());
+    JList<Icon> list = new IconList(model);
     list.setTransferHandler(handler);
 
     JButton clearButton = new JButton("clear");
@@ -57,7 +53,8 @@ public final class MainPanel extends JPanel {
     });
 
     RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
-      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+      @Override
+      public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
         return model.isEmpty() || model.contains(o);
       }
@@ -103,20 +100,28 @@ public final class MainPanel extends JPanel {
       @SuppressWarnings("PMD.OnlyOneReturn")
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
-          case 0: return String.class;
-          case 1: return Icon.class;
-          case 2: return Boolean.class;
-          default: return super.getColumnClass(column);
+          case 0:
+            return String.class;
+          case 1:
+            return Icon.class;
+          case 2:
+            return Boolean.class;
+          default:
+            return super.getColumnClass(column);
         }
-        // Java 12
-        // return switch (column) {
-        //   case 0 -> String.class;
-        //   case 1 -> Icon.class;
-        //   case 2 -> Boolean.class;
-        //   default -> super.getColumnClass(column);
-        // };
       }
     };
+    // Java 12
+    // return new DefaultTableModel(data, columnNames) {
+    //   @Override public Class<?> getColumnClass1(int column) {
+    //     return switch (column) {
+    //       case 0 -> String.class;
+    //       case 1 -> Icon.class;
+    //       case 2 -> Boolean.class;
+    //       default -> super.getColumnClass(column);
+    //     };
+    //   }
+    // };
   }
 
   public static void main(String[] args) {
@@ -129,7 +134,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -138,6 +143,21 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class IconList extends JList<Icon> {
+  protected IconList(ListModel<Icon> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setLayoutOrientation(HORIZONTAL_WRAP);
+    setVisibleRowCount(0);
+    setFixedCellWidth(16);
+    setFixedCellHeight(16);
+    setCellRenderer(new IconListCellRenderer<>());
   }
 }
 
