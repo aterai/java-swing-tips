@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,28 +16,28 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JCheckBox checkbox = new JCheckBox("Fixed aspect ratio, Minimum size: " + MW + "*" + MH);
-    checkbox.addActionListener(e -> {
+    String txt1 = "Fixed aspect ratio, Minimum size: " + MW + "*" + MH;
+    JCheckBox check1 = new JCheckBox(txt1);
+    check1.addActionListener(e -> {
       Container c = getTopLevelAncestor();
-      if (c instanceof Window && checkbox.isSelected()) {
-        initWindowSize((Window) c);
+      if (c instanceof Window && check1.isSelected()) {
+        resetWindowSize((Window) c);
       }
+    });
+    EventQueue.invokeLater(() -> initWindowSize(check1));
+
+    Toolkit.getDefaultToolkit().setDynamicLayout(false);
+    String txt2 = "Toolkit.getDefaultToolkit().setDynamicLayout: ";
+    JCheckBox check2 = new JCheckBox(txt2);
+    check2.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      Toolkit.getDefaultToolkit().setDynamicLayout(c.isSelected());
     });
 
-    EventQueue.invokeLater(() -> {
-      Container c = getTopLevelAncestor();
-      if (c instanceof Window) {
-        Window window = (Window) c;
-        window.setMinimumSize(new Dimension(MW, MH)); // JDK 1.6.0
-        window.addComponentListener(new ComponentAdapter() {
-          @Override public void componentResized(ComponentEvent e) {
-            if (checkbox.isSelected()) {
-              initWindowSize(window);
-            }
-          }
-        });
-      }
-    });
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(check1);
+    p.add(check2);
+    add(p, BorderLayout.NORTH);
 
     JLabel label = new JLabel();
     label.addComponentListener(new ComponentAdapter() {
@@ -48,23 +49,26 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-
-    Toolkit.getDefaultToolkit().setDynamicLayout(false);
-    JCheckBox check = new JCheckBox("Toolkit.getDefaultToolkit().setDynamicLayout: ");
-    check.addActionListener(e -> {
-      JCheckBox c = (JCheckBox) e.getSource();
-      Toolkit.getDefaultToolkit().setDynamicLayout(c.isSelected());
-    });
-
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(checkbox);
-    p.add(check);
-    add(p, BorderLayout.NORTH);
     add(label);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void initWindowSize(Window window) {
+  private void initWindowSize(JCheckBox check) {
+    Container c = getTopLevelAncestor();
+    if (c instanceof Window) {
+      Window window = (Window) c;
+      window.setMinimumSize(new Dimension(MW, MH)); // JDK 1.6.0
+      window.addComponentListener(new ComponentAdapter() {
+        @Override public void componentResized(ComponentEvent e) {
+          if (check.isSelected()) {
+            resetWindowSize(window);
+          }
+        }
+      });
+    }
+  }
+
+  public static void resetWindowSize(Window window) {
     int fw = window.getSize().width;
     int fh = MH * fw / MW;
     window.setSize(Math.max(MW, fw), Math.max(MH, fh));
@@ -80,7 +84,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

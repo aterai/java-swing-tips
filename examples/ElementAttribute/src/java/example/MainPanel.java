@@ -66,24 +66,26 @@ public final class MainPanel extends JPanel {
     editor.setEditorKit(new TooltipEditorKit());
     editor.setText(htmlText);
     editor.setEditable(false);
-    editor.addHyperlinkListener(e -> {
-      JEditorPane editorPane = (JEditorPane) e.getSource();
-      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        String message = "You click the link with the URL " + e.getURL();
-        JOptionPane.showMessageDialog(editorPane, message);
-      } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-        tooltip = editorPane.getToolTipText();
-        String text = Optional.ofNullable(e.getURL())
-            .map(URL::toExternalForm)
-            .orElse(null);
-        editorPane.setToolTipText(text);
-        // URL url = e.getURL();
-        // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
-      } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-        editorPane.setToolTipText(tooltip);
-      }
-    });
+    editor.addHyperlinkListener(this::updateToolTip);
     return editor;
+  }
+
+  private void updateToolTip(HyperlinkEvent e) {
+    JEditorPane editorPane = (JEditorPane) e.getSource();
+    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+      String message = "You click the link with the URL " + e.getURL();
+      JOptionPane.showMessageDialog(editorPane, message);
+    } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+      tooltip = editorPane.getToolTipText();
+      String text = Optional.ofNullable(e.getURL())
+          .map(URL::toExternalForm)
+          .orElse(null);
+      editorPane.setToolTipText(text);
+      // URL url = e.getURL();
+      // editorPane.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+    } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+      editorPane.setToolTipText(tooltip);
+    }
   }
 
   public static void main(String[] args) {
