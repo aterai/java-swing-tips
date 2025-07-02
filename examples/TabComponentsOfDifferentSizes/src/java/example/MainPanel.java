@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -39,31 +40,13 @@ public final class MainPanel extends JPanel {
       Icon icon = UIManager.getIcon(String.format("FileView.%sIcon", title));
       JLabel label = new JLabel(title, icon, SwingConstants.CENTER);
       label.setPreferredSize(new Dimension(100, 100));
-      label.addComponentListener(new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) {
-          tabComponentResized(e, tabbedPane);
-        }
-      });
-      Icon tabIcon = makeVerticalTabIcon(title, icon);
-      tabbedPane.addTab(null, tabIcon, label, title);
+      label.addComponentListener(new TabResizedAdapter(tabbedPane, splitPane));
+      tabbedPane.addTab(null, makeVerticalTabIcon(title, icon), label, title);
     });
     splitPane.setLeftComponent(tabbedPane);
     splitPane.setRightComponent(new JScrollPane(new JTree()));
     add(splitPane);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  public void tabComponentResized(ComponentEvent e, JTabbedPane tabs) {
-    Component c = e.getComponent();
-    if (c.equals(tabs.getSelectedComponent())) {
-      Dimension d = c.getPreferredSize();
-      if (isTopBottomTabPlacement(tabs.getTabPlacement())) {
-        d.height = splitPane.getDividerLocation() - tabAreaSize.height;
-      } else {
-        d.width = splitPane.getDividerLocation() - tabAreaSize.width;
-      }
-      c.setPreferredSize(d);
-    }
   }
 
   public void updateDividerLocation(JTabbedPane tabs) {
@@ -73,6 +56,10 @@ public final class MainPanel extends JPanel {
     } else {
       splitPane.setDividerLocation(c.getPreferredSize().width + tabAreaSize.width);
     }
+  }
+
+  private static boolean isTopBottomTabPlacement(int tabPlacement) {
+    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 
   public void tabClicked(JTabbedPane tabs) {
@@ -90,10 +77,6 @@ public final class MainPanel extends JPanel {
         splitPane.setDividerLocation(tabAreaSize.width);
       }
     }
-  }
-
-  private static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 
   private Icon makeVerticalTabIcon(String title, Icon icon) {
@@ -122,7 +105,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -131,5 +114,34 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TabResizedAdapter extends ComponentAdapter {
+  private final JTabbedPane tabbedPane;
+  private final JSplitPane splitPane;
+
+  protected TabResizedAdapter(JTabbedPane tabbedPane, JSplitPane splitPane) {
+    super();
+    this.tabbedPane = tabbedPane;
+    this.splitPane = splitPane;
+  }
+
+  @Override public void componentResized(ComponentEvent e) {
+    Component c = e.getComponent();
+    if (c.equals(tabbedPane.getSelectedComponent())) {
+      Dimension d = c.getPreferredSize();
+      Dimension tabAreaSize = tabbedPane.getMinimumSize();
+      if (isTopBottomTabPlacement(tabbedPane.getTabPlacement())) {
+        d.height = splitPane.getDividerLocation() - tabAreaSize.height;
+      } else {
+        d.width = splitPane.getDividerLocation() - tabAreaSize.width;
+      }
+      c.setPreferredSize(d);
+    }
+  }
+
+  private static boolean isTopBottomTabPlacement(int tabPlacement) {
+    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 }
