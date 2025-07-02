@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
@@ -58,7 +59,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -79,7 +80,7 @@ class WatermarkTextField extends JTextField {
     super();
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     icon = Optional.ofNullable(cl.getResource("example/watermark.png"))
-        .<Icon>map(url -> new ImageIcon(url))
+        .<Icon>map(ImageIcon::new)
         .orElse(UIManager.getIcon("html.missingImage"));
   }
 
