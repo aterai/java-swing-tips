@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -46,7 +47,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -143,8 +144,8 @@ class VerticalTitledBorder extends TitledBorder {
   private Color getTitleColor(Component c) {
     return Optional.ofNullable(getTitleColor())
         .orElseGet(() -> Optional.ofNullable(UIManager.getColor("TitledBorder.titleColor"))
-        .orElseGet(() -> Optional.ofNullable(c).map(Component::getForeground)
-        .orElse(null)));
+            .orElseGet(() -> Optional.ofNullable(c).map(Component::getForeground)
+                .orElse(null)));
   }
 
   private JLabel getTitleLabel(Component c) {

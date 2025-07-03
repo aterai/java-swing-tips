@@ -11,6 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.util.Random;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel implements HierarchyListener {
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -29,12 +30,10 @@ public final class MainPanel extends JPanel {
     JTextArea textArea1 = new JTextArea("JTextArea#setMargin(Insets)\n\n" + TEXT);
     textArea1.setMargin(new Insets(5, 5, 5, 5));
     JScrollPane scroll1 = new JScrollPane(textArea1);
-
     JTextArea textArea2 = new JTextArea("JScrollPane#setViewportBorder(...)\n\n" + TEXT);
     textArea2.setMargin(new Insets(0, 0, 0, 1));
     JScrollPane scroll2 = new JScrollPane(textArea2) {
       @Override public void updateUI() {
-        // setViewportBorder(null);
         super.updateUI();
         EventQueue.invokeLater(() -> {
           Color c = getViewport().getView().getBackground();
@@ -42,12 +41,9 @@ public final class MainPanel extends JPanel {
         });
       }
     };
-    // scroll2.setViewportBorder(BorderFactory.createLineBorder(textArea2.getBackground(), 5));
-
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll1, scroll2);
     split.setResizeWeight(.5);
     add(split);
-
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -61,7 +57,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
