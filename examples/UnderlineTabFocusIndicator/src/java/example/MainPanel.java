@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -77,20 +78,22 @@ class UnderlineFocusTabbedPane extends JTabbedPane {
     //     }
     //   });
     // }
-    addChangeListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-      if (tabbedPane.getTabCount() <= 0) {
-        return;
-      }
-      int idx = tabbedPane.getSelectedIndex();
-      for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-        Component c = tabbedPane.getTabComponentAt(i);
+    addChangeListener(e -> updateTabBorder((JTabbedPane) e.getSource()));
+  }
+
+  private static void updateTabBorder(JTabbedPane tabs) {
+    int tabCount = tabs.getTabCount();
+    if (tabCount > 0) {
+      int selectedIndex = tabs.getSelectedIndex();
+      for (int i = 0; i < tabCount; i++) {
+        Component c = tabs.getTabComponentAt(i);
         if (c instanceof JComponent) {
-          Color color = i == idx ? SELECTION_COLOR : ALPHA_ZERO;
-          ((JComponent) c).setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, color));
+          Color color = i == selectedIndex ? SELECTION_COLOR : ALPHA_ZERO;
+          Border b = BorderFactory.createMatteBorder(0, 0, 3, 0, color);
+          ((JComponent) c).setBorder(b);
         }
       }
-    });
+    }
   }
 
   @Override public void insertTab(String title, Icon icon, Component component, String tip, int index) {

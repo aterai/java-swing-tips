@@ -9,6 +9,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -41,41 +42,45 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeButton(JTextField field, JTextArea textArea) {
+  private static JButton makeButton(JTextField field, JTextArea log) {
     JButton button = new JButton("show");
     button.addActionListener(e -> {
-      Component p = textArea.getRootPane();
+      Component p = log.getRootPane();
       int ret = JOptionPane.showConfirmDialog(
           p, field, "Input Text", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (ret == JOptionPane.OK_OPTION) {
-        textArea.setText(field.getText());
+        log.setText(field.getText());
       }
     });
     return button;
   }
 
-  private static JButton makeButton2(JTextField textField, JTextArea textArea) {
+  private static JButton makeButton2(JTextField textField, JTextArea log) {
     JButton button = new JButton("show");
     button.addActionListener(e -> {
-      JOptionPane op = new JOptionPane(
-          textField, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-      JDialog dialog = op.createDialog(textArea.getRootPane(), "Input Text");
-      dialog.addWindowListener(new WindowAdapter() {
-        @Override public void windowOpened(WindowEvent e) {
-          textField.requestFocusInWindow();
-        }
-      });
-      dialog.setVisible(true);
-      Object selectedValue = op.getValue();
       int result = JOptionPane.CLOSED_OPTION;
-      if (selectedValue instanceof Integer) {
-        result = (Integer) selectedValue;
+      Object rv = showOptionPane(textField, log.getRootPane());
+      if (rv instanceof Integer) {
+        result = (Integer) rv;
       }
       if (result == JOptionPane.OK_OPTION) {
-        textArea.setText(textField.getText());
+        log.setText(textField.getText());
       }
     });
     return button;
+  }
+
+  private static Object showOptionPane(JTextField textField, Component parent) {
+    JOptionPane op = new JOptionPane(
+        textField, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+    JDialog dialog = op.createDialog(parent, "Input Text");
+    dialog.addWindowListener(new WindowAdapter() {
+      @Override public void windowOpened(WindowEvent e) {
+        textField.requestFocusInWindow();
+      }
+    });
+    dialog.setVisible(true);
+    return op.getValue();
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -95,7 +100,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

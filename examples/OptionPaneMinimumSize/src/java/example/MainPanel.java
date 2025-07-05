@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -19,22 +20,7 @@ public final class MainPanel extends JPanel {
     });
 
     JLabel label1 = new JLabel("message1");
-    label1.addHierarchyListener(e -> {
-      Component c = e.getComponent();
-      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-        Container o = SwingUtilities.getAncestorOfClass(JOptionPane.class, c);
-        if (o instanceof JOptionPane) {
-          JOptionPane op = (JOptionPane) o;
-          // BasicOptionPaneUI ui = (BasicOptionPaneUI) op.getUI();
-          // System.out.println(ui.getMinimumOptionPaneSize());
-          // op.setMinimumSize(new Dimension(120, 120));
-          op.setPreferredSize(new Dimension(120, 120));
-        }
-        Window w = SwingUtilities.getWindowAncestor(c);
-        w.pack();
-        w.setLocationRelativeTo(getRootPane());
-      }
-    });
+    label1.addHierarchyListener(this::updateOptionPaneSize);
     JButton button1 = new JButton("HierarchyListener + setPreferredSize");
     button1.addActionListener(e -> {
       Component p = ((JComponent) e.getSource()).getRootPane();
@@ -64,6 +50,23 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private void updateOptionPaneSize(HierarchyEvent e) {
+    Component c = e.getComponent();
+    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
+      Container o = SwingUtilities.getAncestorOfClass(JOptionPane.class, c);
+      if (o instanceof JOptionPane) {
+        JOptionPane op = (JOptionPane) o;
+        // BasicOptionPaneUI ui = (BasicOptionPaneUI) op.getUI();
+        // System.out.println(ui.getMinimumOptionPaneSize());
+        // op.setMinimumSize(new Dimension(120, 120));
+        op.setPreferredSize(new Dimension(120, 120));
+      }
+      Window w = SwingUtilities.getWindowAncestor(c);
+      w.pack();
+      w.setLocationRelativeTo(getRootPane());
+    }
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
   }
@@ -74,7 +77,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
