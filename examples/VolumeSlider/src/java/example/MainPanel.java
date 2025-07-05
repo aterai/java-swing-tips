@@ -84,6 +84,9 @@ public final class MainPanel extends JPanel {
 }
 
 class TriSliderUI extends BasicSliderUI {
+  private final Color color1 = new Color(0, 100, 100);
+  private final Color color2 = new Color(0, 255, 100);
+
   protected TriSliderUI(JSlider slider) {
     super(slider);
   }
@@ -137,18 +140,11 @@ class TriSliderUI extends BasicSliderUI {
         fillRight = middleOfThumb;
       }
 
-      Color color1 = new Color(0, 100, 100);
-      Color color2 = new Color(0, 255, 100);
       g2.setPaint(new GradientPaint(0f, 0f, color1, cw, 0f, color2, true));
       g2.fillRect(0, -cy, fillRight - fillLeft, cy * 2);
 
       g2.setPaint(slider.getBackground());
-      Polygon polygon = new Polygon();
-      polygon.addPoint(0, cy);
-      polygon.addPoint(0, -cy);
-      polygon.addPoint(cw, -cy);
-      g2.fillPolygon(polygon);
-      polygon.reset();
+      paintRightTriangle(g2, cw, cy);
 
       g2.setPaint(Color.WHITE);
       g2.drawLine(0, cy, cw - 1, cy);
@@ -159,6 +155,15 @@ class TriSliderUI extends BasicSliderUI {
     } else {
       super.paintTrack(g);
     }
+  }
+
+  private static void paintRightTriangle(Graphics2D g2, int cw, int cy) {
+    Polygon polygon = new Polygon();
+    polygon.addPoint(0, cy);
+    polygon.addPoint(0, -cy);
+    polygon.addPoint(cw, -cy);
+    g2.fillPolygon(polygon);
+    polygon.reset();
   }
 }
 

@@ -12,12 +12,25 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    box.add(makePanel0());
+    box.add(Box.createVerticalStrut(10));
+    box.add(makePanel1());
+    box.add(Box.createVerticalStrut(10));
+    box.add(makePanel2());
+    add(box, BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makePanel0() {
     String text = "1234567890";
 
     Map<TextAttribute, Object> attr1 = new ConcurrentHashMap<>();
@@ -30,36 +43,30 @@ public final class MainPanel extends JPanel {
     JLabel l2 = new JLabel(text + " TRACKING_LOOSE (.04f)");
     l2.setFont(l2.getFont().deriveFont(attr2));
 
-    JPanel p0 = new JPanel(new GridLayout(0, 1, 5, 5));
-    p0.setBorder(BorderFactory.createTitledBorder("TextAttribute.TRACKING"));
-    Stream.of(new JLabel(text + " Default"), l1, l2).forEach(p0::add);
+    JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
+    p.setBorder(BorderFactory.createTitledBorder("TextAttribute.TRACKING"));
+    Stream.of(new JLabel(text + " Default"), l1, l2).forEach(p::add);
+    return p;
+  }
 
-    JLabel l3 = new JLabel(new BadgeIcon(128, Color.WHITE, new Color(0xAA_FF_32_32, true)));
-    JLabel l4 = new JLabel(new BadgeIcon(256, Color.BLACK, new Color(0xAA_64_FF_64, true)));
-    JLabel l5 = new JLabel(new BadgeIcon(1_024, Color.WHITE, new Color(0xAA_32_32_FF, true)));
+  private static JPanel makePanel1() {
+    Icon i1 = new ScaleBadgeIcon(128, Color.WHITE, new Color(0xAA_FF_32_32, true));
+    Icon i2 = new ScaleBadgeIcon(256, Color.BLACK, new Color(0xAA_64_FF_64, true));
+    Icon i3 = new ScaleBadgeIcon(1_024, Color.WHITE, new Color(0xAA_32_32_FF, true));
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("Scaled along the X axis direction: 0.95"));
+    Stream.of(i1, i2, i3).map(JLabel::new).forEach(p::add);
+    return p;
+  }
 
-    JPanel p1 = new JPanel();
-    p1.setBorder(BorderFactory.createTitledBorder("Tracking: -0.1"));
-    Stream.of(l3, l4, l5).forEach(p1::add);
-
-    JLabel l6 = new JLabel(new BadgeIcon2(128, Color.WHITE, new Color(0xAA_FF_32_32, true)));
-    JLabel l7 = new JLabel(new BadgeIcon2(256, Color.BLACK, new Color(0xAA_64_FF_64, true)));
-    JLabel l8 = new JLabel(new BadgeIcon2(1_024, Color.WHITE, new Color(0xAA_32_32_FF, true)));
-
-    JPanel p2 = new JPanel();
-    p2.setBorder(BorderFactory.createTitledBorder("Scaled along the X axis direction: 0.95"));
-    Stream.of(l6, l7, l8).forEach(p2::add);
-
-    Box box = Box.createVerticalBox();
-    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(p0);
-    box.add(Box.createVerticalStrut(10));
-    box.add(p2);
-    box.add(Box.createVerticalStrut(10));
-    box.add(p1);
-
-    add(box, BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
+  private static JPanel makePanel2() {
+    Icon i1 = new BadgeIcon(128, Color.WHITE, new Color(0xAA_FF_32_32, true));
+    Icon i2 = new BadgeIcon(256, Color.BLACK, new Color(0xAA_64_FF_64, true));
+    Icon i3 = new BadgeIcon(1_024, Color.WHITE, new Color(0xAA_32_32_FF, true));
+    JPanel p = new JPanel();
+    p.setBorder(BorderFactory.createTitledBorder("Tracking: -0.1"));
+    Stream.of(i1, i2, i3).map(JLabel::new).forEach(p::add);
+    return p;
   }
 
   public static void main(String[] args) {
@@ -72,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -144,8 +151,8 @@ class BadgeIcon implements Icon {
   }
 }
 
-class BadgeIcon2 extends BadgeIcon {
-  protected BadgeIcon2(int value, Color fgc, Color bgc) {
+class ScaleBadgeIcon extends BadgeIcon {
+  protected ScaleBadgeIcon(int value, Color fgc, Color bgc) {
     super(value, fgc, bgc);
   }
 
