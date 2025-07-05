@@ -10,6 +10,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -57,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -73,9 +74,9 @@ class JustifiedLabel extends JLabel {
   private transient GlyphVector gvText;
   private int prevWidth = -1;
 
-  protected JustifiedLabel() {
-    this(null);
-  }
+  // protected JustifiedLabel() {
+  //   this(null);
+  // }
 
   protected JustifiedLabel(String str) {
     super(str);
