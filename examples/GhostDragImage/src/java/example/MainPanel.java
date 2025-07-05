@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -64,7 +65,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -76,7 +77,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java? Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
