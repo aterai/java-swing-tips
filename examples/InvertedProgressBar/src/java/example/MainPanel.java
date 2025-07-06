@@ -36,23 +36,31 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     progress3.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
     progress3.setStringPainted(true);
 
-    JPanel p1 = new JPanel(new GridLayout(2, 2, 10, 10));
-    p1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    Stream.of(progress0, progress1, progress2, progress3).forEach(p1::add);
+    JPanel p = new JPanel(new GridLayout(2, 2, 10, 10));
+    p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    Stream.of(progress0, progress1, progress2, progress3).forEach(p::add);
 
-    JProgressBar progress4 = new JProgressBar(m);
-    progress4.setOrientation(SwingConstants.VERTICAL);
+    addHierarchyListener(this);
+    add(p, BorderLayout.NORTH);
+    add(makeVerticalProgress(m), BorderLayout.WEST);
+    add(makeBox(progress0), BorderLayout.EAST);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JProgressBar progress5 = new JProgressBar(m);
-    progress5.setOrientation(SwingConstants.VERTICAL);
-    progress5.setStringPainted(true);
+  private Box makeVerticalProgress(BoundedRangeModel m) {
+    JProgressBar progress0 = new JProgressBar(m);
+    progress0.setOrientation(SwingConstants.VERTICAL);
 
-    JProgressBar progress6 = new JProgressBar(m);
-    progress6.setOrientation(SwingConstants.VERTICAL);
-    progress6.setStringPainted(true);
-    progress6.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+    JProgressBar progress1 = new JProgressBar(m);
+    progress1.setOrientation(SwingConstants.VERTICAL);
+    progress1.setStringPainted(true);
 
-    JProgressBar progress7 = new JProgressBar(m) {
+    JProgressBar progress2 = new JProgressBar(m);
+    progress2.setOrientation(SwingConstants.VERTICAL);
+    progress2.setStringPainted(true);
+    progress2.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+    JProgressBar progress3 = new JProgressBar(m) {
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.scale(1, -1);
@@ -61,26 +69,21 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         g2.dispose();
       }
     };
-    progress7.setOrientation(SwingConstants.VERTICAL);
-    progress7.setStringPainted(true);
+    progress3.setOrientation(SwingConstants.VERTICAL);
+    progress3.setStringPainted(true);
 
-    JProgressBar progress8 = new JProgressBar(m);
-    progress8.setOrientation(SwingConstants.VERTICAL);
-    JLayer<JProgressBar> layer = new JLayer<>(progress8, new VerticalFlipLayerUI<>());
+    JProgressBar progress4 = new JProgressBar(m);
+    progress4.setOrientation(SwingConstants.VERTICAL);
+    JLayer<JProgressBar> layer = new JLayer<>(progress4, new VerticalFlipLayerUI<>());
 
-    Box p2 = Box.createHorizontalBox();
-    p2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    p2.add(Box.createHorizontalGlue());
-    Stream.of(progress4, progress5, progress6, progress7, layer).forEach(c -> {
-      p2.add(c);
-      p2.add(Box.createHorizontalStrut(25));
+    Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    box.add(Box.createHorizontalGlue());
+    Stream.of(progress0, progress1, progress2, progress3, layer).forEach(c -> {
+      box.add(c);
+      box.add(Box.createHorizontalStrut(25));
     });
-
-    addHierarchyListener(this);
-    add(p1, BorderLayout.NORTH);
-    add(p2, BorderLayout.WEST);
-    add(makeBox(progress0), BorderLayout.EAST);
-    setPreferredSize(new Dimension(320, 240));
+    return box;
   }
 
   private Box makeBox(JProgressBar progress0) {
