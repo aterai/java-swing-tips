@@ -5,7 +5,8 @@
 package example;
 
 import java.awt.*;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -33,24 +34,28 @@ public final class MainPanel extends JPanel {
     JComboBox<String> combo3 = new JComboBox<>();
     combo3.setToolTipText("setEditable(false), default");
 
+    Component[] list = {field, passwd, spinner, combo1, combo2, combo3};
+    add(makePanel(list));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makePanel(Component... c) {
     SpringLayout layout = new SpringLayout();
     JPanel p = new JPanel(layout);
-    layout.putConstraint(SpringLayout.WEST, field, 10, SpringLayout.WEST, p);
-    layout.putConstraint(SpringLayout.WEST, passwd, 10, SpringLayout.WEST, p);
-    layout.putConstraint(SpringLayout.WEST, spinner, 10, SpringLayout.WEST, p);
-    layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, p);
-    layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, p);
-    layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, p);
-    layout.putConstraint(SpringLayout.NORTH, field, 10, SpringLayout.NORTH, p);
-    layout.putConstraint(SpringLayout.NORTH, passwd, 10, SpringLayout.SOUTH, field);
-    layout.putConstraint(SpringLayout.NORTH, spinner, 10, SpringLayout.SOUTH, passwd);
-    layout.putConstraint(SpringLayout.NORTH, combo1, 10, SpringLayout.SOUTH, spinner);
-    layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
-    layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
-
-    Stream.of(field, passwd, spinner, combo1, combo2, combo3).forEach(p::add);
-    add(p);
-    setPreferredSize(new Dimension(320, 240));
+    layout.putConstraint(SpringLayout.WEST, c[0], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, c[1], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, c[2], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, c[3], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, c[4], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, c[5], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.NORTH, c[0], 10, SpringLayout.NORTH, p);
+    layout.putConstraint(SpringLayout.NORTH, c[1], 10, SpringLayout.SOUTH, c[0]);
+    layout.putConstraint(SpringLayout.NORTH, c[2], 10, SpringLayout.SOUTH, c[1]);
+    layout.putConstraint(SpringLayout.NORTH, c[3], 10, SpringLayout.SOUTH, c[2]);
+    layout.putConstraint(SpringLayout.NORTH, c[4], 10, SpringLayout.SOUTH, c[3]);
+    layout.putConstraint(SpringLayout.NORTH, c[5], 10, SpringLayout.SOUTH, c[4]);
+    Arrays.asList(c).forEach(p::add);
+    return p;
   }
 
   public static void main(String[] args) {
@@ -63,7 +68,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

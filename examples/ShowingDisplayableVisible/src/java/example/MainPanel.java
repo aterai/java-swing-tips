@@ -49,19 +49,7 @@ public final class MainPanel extends JPanel {
         printInfo(button, "DISPLAYABILITY_CHANGED");
       }
     });
-
     printInfo(button, "after: new JButton, before: add(button); frame.setVisible(true)");
-
-    JPanel panel = new JPanel();
-    panel.add(button);
-    IntStream.range(0, 15)
-        .mapToObj(i -> new JLabel("<html>JLabel<br>&nbsp;idx:" + i))
-        .forEach(panel::add);
-
-    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    tabs.addTab("Main", new JScrollPane(panel));
-    tabs.addTab("JTree", new JScrollPane(new JTree()));
-    tabs.addTab("JLabel", new JLabel("Test"));
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p1.add(new JLabel("JButton:"));
@@ -75,10 +63,24 @@ public final class MainPanel extends JPanel {
     p.add(p1);
     p.add(p2);
     add(p, BorderLayout.NORTH);
-    add(tabs);
+    add(makeTabbedPane(button));
 
     timer.start();
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTabbedPane makeTabbedPane(JButton button) {
+    JPanel panel = new JPanel();
+    panel.add(button);
+    IntStream.range(0, 15)
+        .mapToObj(i -> new JLabel("<html>JLabel<br>&nbsp;idx:" + i))
+        .forEach(panel::add);
+
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    tabs.addTab("Main", new JScrollPane(panel));
+    tabs.addTab("JTree", new JScrollPane(new JTree()));
+    tabs.addTab("JLabel", new JLabel("Test"));
+    return tabs;
   }
 
   public static void printInfo(Component c, String str) {
@@ -100,7 +102,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
