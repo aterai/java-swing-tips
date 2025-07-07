@@ -14,6 +14,7 @@ import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -143,27 +144,27 @@ public final class MainPanel extends JPanel {
         l.setHorizontalAlignment(CENTER);
         l.setText(Integer.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-          l.setForeground(Color.BLACK);
+          l.setForeground(table.getForeground());
         } else {
           l.setForeground(Color.GRAY);
         }
         if (d.isEqual(realLocalDate)) {
           l.setBackground(new Color(0xDC_FF_DC));
         } else {
-          l.setBackground(getDayOfWeekColor(d.getDayOfWeek()));
+          l.setBackground(getDayOfWeekColor(table, d.getDayOfWeek()));
         }
       }
       return c;
     }
 
-    private Color getDayOfWeekColor(DayOfWeek dow) {
+    private Color getDayOfWeekColor(JTable table, DayOfWeek dow) {
       Color color;
       if (dow == DayOfWeek.SUNDAY) {
         color = new Color(0xFF_DC_DC);
       } else if (dow == DayOfWeek.SATURDAY) {
         color = new Color(0xDC_DC_FF);
       } else {
-        color = Color.WHITE;
+        color = table.getBackground();
       }
       return color;
     }
@@ -179,7 +180,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -16,6 +16,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -118,21 +119,21 @@ public final class MainPanel extends JPanel {
         l.setHorizontalAlignment(CENTER);
         l.setText(Integer.toString(d.getDayOfMonth()));
         if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-          l.setForeground(Color.BLACK);
+          l.setForeground(table.getForeground());
         } else {
           l.setForeground(Color.GRAY);
         }
         if (d.isEqual(realLocalDate)) {
           l.setBackground(new Color(0xDC_FF_DC));
         } else {
-          l.setBackground(getDayOfWeekColor(d.getDayOfWeek()));
+          l.setBackground(getDayOfWeekColor(table, d.getDayOfWeek()));
         }
       }
       return c;
     }
 
-    private Color getDayOfWeekColor(DayOfWeek dow) {
-      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(Color.WHITE);
+    private Color getDayOfWeekColor(JTable table, DayOfWeek dow) {
+      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(table.getBackground());
     }
   }
 
@@ -146,7 +147,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

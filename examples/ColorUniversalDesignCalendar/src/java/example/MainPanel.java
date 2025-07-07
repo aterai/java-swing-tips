@@ -34,8 +34,8 @@ public final class MainPanel extends JPanel {
   public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {
-    private void updateRowsHeight(JViewport vport) {
-      int height = vport.getExtentSize().height;
+    private void updateRowsHeight(JViewport viewport) {
+      int height = viewport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
       int defaultRowHeight = height / rowCount;
       int remainder = height % rowCount;
@@ -110,7 +110,7 @@ public final class MainPanel extends JPanel {
 
       if (value instanceof LocalDate) {
         LocalDate d = (LocalDate) value;
-        updateEnclosedLabel(label, d);
+        updateEnclosedLabel(table, label, d);
         // if (isJapaneseNationalHoliday(d)) {
         //   holiday.setText(CIRCLED_IDEOGRAPH_CONGRATULATION);
         //   holiday.setForeground(Color.WHITE);
@@ -122,41 +122,41 @@ public final class MainPanel extends JPanel {
         } else if (d.isEqual(realLocalDate)) {
           renderer.setBackground(new Color(0xDC_FF_DC));
         } else {
-          renderer.setBackground(getDayOfWeekColor(d.getDayOfWeek()));
+          renderer.setBackground(getDayOfWeekColor(table, d.getDayOfWeek()));
         }
       }
       return renderer;
     }
 
-    private void updateEnclosedLabel(JLabel lbl, LocalDate d) {
+    private void updateEnclosedLabel(JTable table, JLabel lbl, LocalDate d) {
       String txt = Integer.toString(d.getDayOfMonth());
       lbl.setText("<html><b>" + txt);
       // label.setText(getDayOfWeekText(d));
       boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
       if (isThisMonth && (d.getDayOfWeek() == DayOfWeek.SUNDAY || isJapaneseNationalHoliday(d))) {
-        lbl.setForeground(Color.WHITE);
-        lbl.setBackground(Color.BLACK);
+        lbl.setForeground(table.getForeground());
+        lbl.setBackground(table.getBackground());
       } else if (isThisMonth && d.getDayOfWeek() == DayOfWeek.SATURDAY) {
-        lbl.setForeground(Color.WHITE);
+        lbl.setForeground(table.getForeground());
         lbl.setBackground(Color.BLUE);
       } else if (isThisMonth) {
-        lbl.setBackground(Color.WHITE);
-        lbl.setForeground(Color.BLACK);
+        lbl.setForeground(table.getBackground());
+        lbl.setBackground(table.getForeground());
       } else {
-        lbl.setBackground(Color.WHITE);
         lbl.setForeground(Color.GRAY);
+        lbl.setBackground(table.getForeground());
         lbl.setText(txt);
       }
     }
 
-    private Color getDayOfWeekColor(DayOfWeek dow) {
+    private Color getDayOfWeekColor(JTable table, DayOfWeek dow) {
       int code;
       if (dow == DayOfWeek.SUNDAY) {
         code = 0xFF_DC_DC;
       } else if (dow == DayOfWeek.SATURDAY) {
         code = 0xDC_DC_FF;
       } else {
-        code = 0xFF_FF_FF;
+        code = table.getBackground().getRGB();
       }
       return new Color(code);
     }
@@ -185,7 +185,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -15,6 +15,7 @@ import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,8 +27,8 @@ public final class MainPanel extends JPanel {
   private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {
-    private void updateRowsHeight(JViewport vport) {
-      int height = vport.getExtentSize().height;
+    private void updateRowsHeight(JViewport viewport) {
+      int height = viewport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
       int defaultRowHeight = height / rowCount;
       int remainder = height % rowCount;
@@ -105,7 +106,7 @@ public final class MainPanel extends JPanel {
         l.setText(Integer.toString(d.getDayOfMonth()));
         l.setVerticalAlignment(TOP);
         l.setHorizontalAlignment(LEFT);
-        updateCellWeekColor(d, c, c);
+        updateCellWeekColor(d, table, c, c);
 
         LocalDate nextWeekDay = d.plusDays(7);
         boolean isLastRow = row == table.getModel().getRowCount() - 1;
@@ -123,7 +124,7 @@ public final class MainPanel extends JPanel {
           panel.setBorder(l.getBorder());
           l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-          updateCellWeekColor(d, sub, panel);
+          updateCellWeekColor(d, table, sub, panel);
           c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
         }
       }
@@ -134,17 +135,17 @@ public final class MainPanel extends JPanel {
       return YearMonth.from(nextWeekDay).equals(YearMonth.from(getCurrentLocalDate()));
     }
 
-    private void updateCellWeekColor(LocalDate d, Component fgc, Component bgc) {
+    private void updateCellWeekColor(LocalDate d, JTable table, Component fgc, Component bgc) {
       if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-        fgc.setForeground(Color.BLACK);
+        fgc.setForeground(table.getForeground());
       } else {
         fgc.setForeground(Color.GRAY);
       }
-      bgc.setBackground(getDayOfWeekColor(d.getDayOfWeek()));
+      bgc.setBackground(getDayOfWeekColor(table, d.getDayOfWeek()));
     }
 
-    private Color getDayOfWeekColor(DayOfWeek dow) {
-      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(Color.WHITE);
+    private Color getDayOfWeekColor(JTable table, DayOfWeek dow) {
+      return Optional.ofNullable(holidayColorMap.get(dow)).orElse(table.getBackground());
     }
   }
 
@@ -158,7 +159,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
