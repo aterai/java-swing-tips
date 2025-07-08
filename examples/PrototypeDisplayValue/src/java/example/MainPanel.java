@@ -5,38 +5,28 @@
 package example;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final String PROTOTYPE = String.join("", Collections.nCopies(20, "M"));
 
   private MainPanel() {
-    super();
-    SpringLayout layout = new SpringLayout();
-    setLayout(layout);
-
+    super(new BorderLayout());
     ComboBoxModel<String> model1 = new DefaultComboBoxModel<>(new String[] {"a", "b", "c"});
     JComboBox<String> combo1 = new JComboBox<>(model1);
     combo1.setEditable(false);
     // ((JTextField) combo1.getEditor().getEditorComponent()).setColumns(20);
-    layout.putConstraint(SpringLayout.WEST, combo1, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.NORTH, combo1, 10, SpringLayout.NORTH, this);
-    add(combo1);
 
     JComboBox<String> combo2 = new JComboBox<>(model1);
     combo2.setPrototypeDisplayValue(PROTOTYPE);
-    add(combo2);
-    layout.putConstraint(SpringLayout.WEST, combo2, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.NORTH, combo2, 10, SpringLayout.SOUTH, combo1);
 
     JComboBox<String> combo3 = new JComboBox<>(model1);
     combo3.setPrototypeDisplayValue(PROTOTYPE);
     combo3.setEditable(true);
-    layout.putConstraint(SpringLayout.WEST, combo3, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.NORTH, combo3, 10, SpringLayout.SOUTH, combo2);
-    add(combo3);
 
     ComboBoxModel<WebSite> model2 = new DefaultComboBoxModel<>(new WebSite[] {
         new WebSite("a", new ColorIcon(Color.RED)),
@@ -49,9 +39,6 @@ public final class MainPanel extends JPanel {
         setRenderer(new SiteListCellRenderer<>());
       }
     };
-    layout.putConstraint(SpringLayout.WEST, combo4, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.NORTH, combo4, 10, SpringLayout.SOUTH, combo3);
-    add(combo4);
 
     JComboBox<WebSite> combo5 = new JComboBox<WebSite>(model2) {
       @Override public void updateUI() {
@@ -61,9 +48,6 @@ public final class MainPanel extends JPanel {
         setPrototypeDisplayValue(new WebSite(PROTOTYPE, new ColorIcon(Color.GRAY)));
       }
     };
-    layout.putConstraint(SpringLayout.WEST, combo5, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.NORTH, combo5, 10, SpringLayout.SOUTH, combo4);
-    add(combo5);
 
     JComboBox<WebSite> combo6 = new JComboBox<WebSite>() {
       @Override public void updateUI() {
@@ -73,11 +57,27 @@ public final class MainPanel extends JPanel {
         setPrototypeDisplayValue(new WebSite(PROTOTYPE, new ColorIcon(Color.GRAY)));
       }
     };
-    layout.putConstraint(SpringLayout.WEST, combo6, 10, SpringLayout.WEST, this);
-    layout.putConstraint(SpringLayout.NORTH, combo6, 10, SpringLayout.SOUTH, combo5);
-    add(combo6);
-
+    add(makeListPanel(combo1, combo2, combo3, combo4, combo5, combo6));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makeListPanel(Component... l) {
+    SpringLayout layout = new SpringLayout();
+    JPanel p = new JPanel(layout);
+    layout.putConstraint(SpringLayout.WEST, l[0], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, l[1], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, l[2], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, l[3], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, l[4], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.WEST, l[5], 10, SpringLayout.WEST, p);
+    layout.putConstraint(SpringLayout.NORTH, l[0], 10, SpringLayout.NORTH, p);
+    layout.putConstraint(SpringLayout.NORTH, l[1], 10, SpringLayout.SOUTH, l[0]);
+    layout.putConstraint(SpringLayout.NORTH, l[2], 10, SpringLayout.SOUTH, l[1]);
+    layout.putConstraint(SpringLayout.NORTH, l[3], 10, SpringLayout.SOUTH, l[2]);
+    layout.putConstraint(SpringLayout.NORTH, l[4], 10, SpringLayout.SOUTH, l[3]);
+    layout.putConstraint(SpringLayout.NORTH, l[5], 10, SpringLayout.SOUTH, l[4]);
+    Arrays.asList(l).forEach(p::add);
+    return p;
   }
 
   public static void main(String[] args) {
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -13,17 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    p.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy());
-    p.setFocusTraversalPolicyProvider(true);
-    p.setFocusable(false);
-    // p.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.gridx = 1;
-    gbc.insets.top = 5;
-    ButtonGroup group = new ButtonGroup();
     List<JComponent> list = Arrays.asList(
         new JRadioButton("JRadioButton1"),
         new JRadioButton("JRadioButton2"),
@@ -32,7 +21,27 @@ public final class MainPanel extends JPanel {
         new JLabel("JLabel2"),
         new JCheckBox("JCheckBox1"),
         new JCheckBox("JCheckBox2"));
+    JPanel p = makePanel(list);
+    p.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    p.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy());
+    p.setFocusTraversalPolicyProvider(true);
+    p.setFocusable(false);
+    // p.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    add(p, BorderLayout.NORTH);
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JPanel makePanel(List<JComponent> list) {
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 1;
+    gbc.insets.top = 5;
+    ButtonGroup group = new ButtonGroup();
     int gap = 0;
+    JPanel p = new JPanel(new GridBagLayout());
     boolean leftToRightParent = p.getComponentOrientation().isLeftToRight();
     for (JComponent c : list) {
       // c.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -64,11 +73,7 @@ public final class MainPanel extends JPanel {
     gbc.insets.left = 5;
     gbc.insets.right = 5;
     list.forEach(c -> p.add(new JTextField(), gbc));
-    add(p, BorderLayout.NORTH);
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
   private static int getIconSpace(JRadioButton button) {
