@@ -17,10 +17,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(2, 2));
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-
     int lci = UIManager.getInt("Tree.leftChildIndent");
     SpinnerNumberModel leftChildIndent = new SpinnerNumberModel(lci, -32, 32, 1);
-
     int rci = UIManager.getInt("Tree.rightChildIndent");
     SpinnerNumberModel rightChildIndent = new SpinnerNumberModel(rci, -32, 32, 1);
 
@@ -35,36 +33,40 @@ public final class MainPanel extends JPanel {
     box2.add(paintLines);
     box2.add(expandedIcon);
     JButton update = new JButton("update");
-    box2.add(update);
-
-    Icon emptyIcon = new EmptyIcon();
     update.addActionListener(e -> {
-      UIManager.put("Tree.leftChildIndent", leftChildIndent.getNumber().intValue());
-      UIManager.put("Tree.rightChildIndent", rightChildIndent.getNumber().intValue());
-      Icon ei;
-      Icon ci;
-      if (expandedIcon.isSelected()) {
-        UIDefaults lnfDef = UIManager.getLookAndFeelDefaults();
-        ei = lnfDef.getIcon("Tree.expandedIcon");
-        ci = lnfDef.getIcon("Tree.collapsedIcon");
-      } else {
-        ei = emptyIcon;
-        ci = emptyIcon;
-      }
-      UIManager.put("Tree.expandedIcon", new IconUIResource(ei));
-      UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
-      UIManager.put("Tree.paintLines", paintLines.isSelected());
-      SwingUtilities.updateComponentTreeUI(this);
+      int left = leftChildIndent.getNumber().intValue();
+      int right = rightChildIndent.getNumber().intValue();
+      updateTreeIconAndIndent(left, right);
     });
+    box2.add(update);
 
     JPanel p = new JPanel(new GridLayout(2, 1, 2, 2));
     p.add(box1);
     p.add(box2);
-
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void updateTreeIconAndIndent(int leftIndent, int rightIndent) {
+    UIManager.put("Tree.leftChildIndent", leftIndent);
+    UIManager.put("Tree.rightChildIndent", rightIndent);
+    Icon ei;
+    Icon ci;
+    if (expandedIcon.isSelected()) {
+      UIDefaults lnfDef = UIManager.getLookAndFeelDefaults();
+      ei = lnfDef.getIcon("Tree.expandedIcon");
+      ci = lnfDef.getIcon("Tree.collapsedIcon");
+    } else {
+      Icon emptyIcon = new EmptyIcon();
+      ei = emptyIcon;
+      ci = emptyIcon;
+    }
+    UIManager.put("Tree.expandedIcon", new IconUIResource(ei));
+    UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
+    UIManager.put("Tree.paintLines", paintLines.isSelected());
+    SwingUtilities.updateComponentTreeUI(this);
   }
 
   public static void main(String[] args) {

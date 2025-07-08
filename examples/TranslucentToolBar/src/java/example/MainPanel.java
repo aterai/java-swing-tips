@@ -168,26 +168,35 @@ class LabelWithToolBox extends JLabel {
   protected LabelWithToolBox(Icon icon, JToolBar toolBox) {
     super(icon);
     animator.addActionListener(e -> {
-      int height = toolBox.getPreferredSize().height;
       if (isHidden) {
-        double a = AnimationUtils.easeInOut(++counter / (double) height);
-        yy = (int) (.5 + a * height);
-        toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-        if (yy >= height) {
-          yy = height;
-          animator.stop();
-        }
+        show(toolBox);
       } else {
-        double a = AnimationUtils.easeInOut(--counter / (double) height);
-        yy = (int) (.5 + a * height);
-        toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
-        if (yy <= 0) {
-          yy = 0;
-          animator.stop();
-        }
+        hide(toolBox);
       }
       toolBox.revalidate();
     });
+  }
+
+  private void show(JToolBar toolBox) {
+    int height = toolBox.getPreferredSize().height;
+    double a = AnimationUtils.easeInOut(++counter / (double) height);
+    yy = (int) (.5 + a * height);
+    toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+    if (yy >= height) {
+      yy = height;
+      animator.stop();
+    }
+  }
+
+  private void hide(JToolBar toolBox) {
+    int height = toolBox.getPreferredSize().height;
+    double a = AnimationUtils.easeInOut(--counter / (double) height);
+    yy = (int) (.5 + a * height);
+    toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
+    if (yy <= 0) {
+      yy = 0;
+      animator.stop();
+    }
   }
 
   @Override public void updateUI() {
