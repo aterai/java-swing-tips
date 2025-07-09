@@ -50,9 +50,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
   //   this.tabViewButton = null;
   // }
 
-  // @Override public void installDefaults() {
-  //   /* nn */
-  // }
+  // @Override public void installDefaults() {}
 
   /**
    * {@inheritDoc}
@@ -86,29 +84,8 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         0); // b.getText() == null ? 0 : b.getIconTextGap());
 
     ButtonModel model = b.getModel();
-    if (model.isSelected() || model.isArmed()) {
-      g.setColor(Color.WHITE);
-    } else {
-      g.setColor(new Color(0xDC_DC_DC));
-    }
-    g.fillRect(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
+    paintTab(g, model);
 
-    Color color = new Color(0xFF_78_28);
-    if (model.isSelected()) {
-      g.setColor(color);
-      g.drawLine(viewRect.x + 1, viewRect.y - 2, viewRect.x + viewRect.width - 1, viewRect.y - 2);
-      g.setColor(color.brighter());
-      g.drawLine(viewRect.x + 0, viewRect.y - 1, viewRect.x + viewRect.width - 0, viewRect.y - 1);
-      g.setColor(color);
-      g.drawLine(viewRect.x + 0, viewRect.y - 0, viewRect.x + viewRect.width - 0, viewRect.y - 0);
-    } else if (model.isRollover()) {
-      g.setColor(color);
-      g.drawLine(viewRect.x + 1, viewRect.y + 0, viewRect.x + viewRect.width - 1, viewRect.y + 0);
-      g.setColor(color.brighter());
-      g.drawLine(viewRect.x + 0, viewRect.y + 1, viewRect.x + viewRect.width - 0, viewRect.y + 1);
-      g.setColor(color);
-      g.drawLine(viewRect.x + 0, viewRect.y + 2, viewRect.x + viewRect.width - 0, viewRect.y + 2);
-    }
     Object o = c.getClientProperty(BasicHTML.propertyKey);
     if (o instanceof View) {
       ((View) o).paint(g, textRect);
@@ -119,6 +96,31 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
       }
       textRect.x += 4;
       paintText(g, b, textRect, text);
+    }
+  }
+
+  private void paintTab(Graphics g, ButtonModel model) {
+    if (model.isSelected() || model.isArmed()) {
+      g.setColor(Color.WHITE);
+    } else {
+      g.setColor(new Color(0xDC_DC_DC));
+    }
+    g.fillRect(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
+    Color color = new Color(0xFF_78_28);
+    if (model.isSelected()) {
+      g.setColor(color);
+      g.drawLine(viewRect.x + 1, viewRect.y - 2, viewRect.x + viewRect.width - 1, viewRect.y - 2);
+      g.setColor(color.brighter());
+      g.drawLine(viewRect.x, viewRect.y - 1, viewRect.x + viewRect.width, viewRect.y - 1);
+      g.setColor(color);
+      g.drawLine(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y);
+    } else if (model.isRollover()) {
+      g.setColor(color);
+      g.drawLine(viewRect.x + 1, viewRect.y, viewRect.x + viewRect.width - 1, viewRect.y);
+      g.setColor(color.brighter());
+      g.drawLine(viewRect.x, viewRect.y + 1, viewRect.x + viewRect.width, viewRect.y + 1);
+      g.setColor(color);
+      g.drawLine(viewRect.x, viewRect.y + 2, viewRect.x + viewRect.width, viewRect.y + 2);
     }
   }
 }

@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.text.NumberFormat;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -21,56 +22,72 @@ import javax.swing.text.PlainDocument;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field1 = new JTextField("1000");
-    field1.setHorizontalAlignment(SwingConstants.RIGHT);
-    field1.setInputVerifier(new IntegerInputVerifier());
-
-    JTextField field2 = new JTextField();
-    field2.setDocument(new IntegerDocument());
-    field2.setText("2000");
-
-    JTextField field3 = new JTextField();
-    Document doc = field3.getDocument();
-    if (doc instanceof AbstractDocument) {
-      ((AbstractDocument) doc).setDocumentFilter(new IntegerDocumentFilter());
-    }
-    field3.setText("3000");
-
-    JFormattedTextField field4 = new JFormattedTextField();
-    field4.setFormatterFactory(new NumberFormatterFactory());
-    field4.setHorizontalAlignment(SwingConstants.RIGHT);
-    field4.setValue(4000);
-
-    JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-    ((JSpinner.NumberEditor) spinner.getEditor()).getFormat().setGroupingUsed(false);
-    spinner.setValue(5000);
-
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createTitledBorder("TextField"));
     box.add(new JLabel("InputVerifier"));
-    box.add(field1);
+    box.add(makeTextField1());
     box.add(Box.createVerticalStrut(10));
 
     box.add(new JLabel("Custom Document"));
-    box.add(field2);
+    box.add(makeTextField2());
     box.add(Box.createVerticalStrut(10));
 
     box.add(new JLabel("DocumentFilter"));
-    box.add(field3);
+    box.add(makeTextField3());
     box.add(Box.createVerticalStrut(10));
 
     box.add(new JLabel("FormatterFactory"));
-    box.add(field4);
+    box.add(makeFormattedTextField());
     box.add(Box.createVerticalStrut(10));
 
     JPanel p = new JPanel(new BorderLayout(5, 5));
     p.setBorder(BorderFactory.createTitledBorder("Spinner"));
     p.add(new JLabel("SpinnerNumberModel"), BorderLayout.NORTH);
-    p.add(spinner);
+    p.add(makeSpinner());
 
     add(box, BorderLayout.NORTH);
     add(Box.createRigidArea(new Dimension(320, 16)));
     add(p, BorderLayout.SOUTH);
+  }
+
+  private static JTextField makeTextField1() {
+    JTextField field = new JTextField("1000");
+    field.setHorizontalAlignment(SwingConstants.RIGHT);
+    field.setInputVerifier(new IntegerInputVerifier());
+    return field;
+  }
+
+  private static JTextField makeTextField2() {
+    JTextField field = new JTextField();
+    field.setDocument(new IntegerDocument());
+    field.setText("2000");
+    return field;
+  }
+
+  private static JTextField makeTextField3() {
+    JTextField field = new JTextField();
+    Document doc = field.getDocument();
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new IntegerDocumentFilter());
+    }
+    field.setText("3000");
+    return field;
+  }
+
+  private static JFormattedTextField makeFormattedTextField() {
+    JFormattedTextField field = new JFormattedTextField();
+    field.setFormatterFactory(new NumberFormatterFactory());
+    field.setHorizontalAlignment(SwingConstants.RIGHT);
+    field.setValue(4000);
+    return field;
+  }
+
+  private static JSpinner makeSpinner() {
+    SpinnerModel model = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+    JSpinner spinner = new JSpinner(model);
+    ((JSpinner.NumberEditor) spinner.getEditor()).getFormat().setGroupingUsed(false);
+    spinner.setValue(5000);
+    return spinner;
   }
 
   public static void main(String[] args) {
@@ -83,7 +100,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
