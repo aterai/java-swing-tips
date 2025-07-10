@@ -9,28 +9,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JScrollPane s1 = new JScrollPane(new JTable(6, 3)) {
-      @Override public Dimension getMinimumSize() {
-        return new Dimension(0, 100);
-      }
-    };
-    JScrollPane s2 = new JScrollPane(new JTree()) {
-      @Override public Dimension getMinimumSize() {
-        return new Dimension(0, 100);
-      }
-    };
-
-    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    splitPane.setTopComponent(s1);
-    splitPane.setBottomComponent(s2);
-    splitPane.setOneTouchExpandable(true);
-    // splitPane.setDividerLocation(0);
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    split.setTopComponent(new MinimumSizeScrollPane(new JTable(6, 3)));
+    split.setBottomComponent(new MinimumSizeScrollPane(new JTree()));
+    split.setOneTouchExpandable(true);
+    // split.setDividerLocation(0);
 
     // BasicService bs;
     // try {
@@ -39,30 +29,17 @@ public final class MainPanel extends JPanel {
     //   bs = null;
     // }
     // if (bs == null) {
-    AccessController.doPrivileged(new PrivilegedAction<Void>() {
-      @SuppressWarnings("AvoidAccessibilityAlteration")
-      @Override public Void run() {
-        try {
-          splitPane.setDividerLocation(0);
-          Method m = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", Boolean.TYPE);
-          m.setAccessible(true);
-          m.invoke(splitPane.getUI(), Boolean.TRUE);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-          throw new UnsupportedOperationException(ex);
-        }
-        return null;
-      }
-    });
+    AccessController.doPrivileged((PrivilegedAction<Void>) () -> keepHidden(split));
     // } else {
     //   // EventQueue.invokeLater(new Runnable() {
     //   //   @Override public void run() {
-    //   //     splitPane.setDividerLocation(1d);
-    //   //     splitPane.setResizeWeight(1d);
+    //   //     split.setDividerLocation(1d);
+    //   //     split.setResizeWeight(1d);
     //   //   }
     //   // });
     //   EventQueue.invokeLater(new Runnable() {
     //     @Override public void run() {
-    //       Container divider = ((BasicSplitPaneUI) splitPane.getUI()).getDivider();
+    //       Container divider = ((BasicSplitPaneUI) split.getUI()).getDivider();
     //       for (Component c : divider.getComponents()) {
     //         if (c instanceof JButton) {
     //           ((JButton) c).doClick();
@@ -72,8 +49,21 @@ public final class MainPanel extends JPanel {
     //     }
     //   });
     // }
-    add(splitPane);
+    add(split);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
+  private static Void keepHidden(JSplitPane split) {
+    try {
+      split.setDividerLocation(0);
+      Method m = BasicSplitPaneUI.class.getDeclaredMethod("setKeepHidden", Boolean.TYPE);
+      m.setAccessible(true);
+      m.invoke(split.getUI(), true);
+    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
+      throw new UnsupportedOperationException(ex);
+    }
+    return null;
   }
 
   public static void main(String[] args) {
@@ -86,7 +76,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -95,5 +85,15 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class MinimumSizeScrollPane extends JScrollPane {
+  protected MinimumSizeScrollPane(Component view) {
+    super(view);
+  }
+
+  @Override public Dimension getMinimumSize() {
+    return new Dimension(0, 100);
   }
 }
