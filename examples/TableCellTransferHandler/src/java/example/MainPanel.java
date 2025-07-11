@@ -53,8 +53,7 @@ public final class MainPanel extends JPanel {
     });
 
     RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
-      @Override
-      public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+      @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         Object o = entry.getModel().getValueAt(entry.getIdentifier(), 1);
         return model.isEmpty() || model.contains(o);
       }

@@ -72,8 +72,7 @@ class PlaqueScrollPane extends JScrollPane {
     setBackground(Color.WHITE);
     getViewport().setBackground(getBackground());
     setBorder(new PlaqueBorder(ARC) {
-      @Override
-      protected Shape getBorderShape(double x, double y, double w, double h, double r) {
+      @Override protected Shape getBorderShape(double x, double y, double w, double h, double r) {
         return makeBorderShape(x, y, w, h, r);
       }
     });

@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -21,10 +22,10 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(table);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-    JPanel panel = new JPanel(new BorderLayout());
-    panel.setOpaque(false);
-    panel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
-    panel.add(scroll.getHorizontalScrollBar());
+    JPanel scrollBox = new JPanel(new BorderLayout());
+    scrollBox.setOpaque(false);
+    scrollBox.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
+    scrollBox.add(scroll.getHorizontalScrollBar());
 
     JRadioButton r1 = new JRadioButton("a", true);
     r1.addItemListener(e -> {
@@ -51,30 +52,35 @@ public final class MainPanel extends JPanel {
     });
     box.add(Box.createHorizontalGlue());
 
-    JSplitPane horizontalBox = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    horizontalBox.setBackground(Color.WHITE);
-    horizontalBox.setLeftComponent(box);
-    horizontalBox.setRightComponent(panel);
-    horizontalBox.setContinuousLayout(true);
-    horizontalBox.setBorder(BorderFactory.createEmptyBorder());
-    EventQueue.invokeLater(() -> horizontalBox.setDividerLocation(.4));
+    JSplitPane horizontalSplit = makeScrollSplitPane();
+    horizontalSplit.setLeftComponent(box);
+    horizontalSplit.setRightComponent(scrollBox);
+
+    add(scroll);
+    add(horizontalSplit, BorderLayout.SOUTH);
+    setBackground(Color.WHITE);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JSplitPane makeScrollSplitPane() {
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    split.setBackground(Color.WHITE);
+    split.setContinuousLayout(true);
+    split.setBorder(BorderFactory.createEmptyBorder());
+    EventQueue.invokeLater(() -> split.setDividerLocation(.4));
 
     JLabel tripleColon = new JLabel("⫶");
     tripleColon.setForeground(Color.GRAY);
     tripleColon.setBorder(BorderFactory.createEmptyBorder(3, 2, 0, 4));
 
-    BasicSplitPaneDivider divider = ((BasicSplitPaneUI) horizontalBox.getUI()).getDivider();
+    BasicSplitPaneDivider divider = ((BasicSplitPaneUI) split.getUI()).getDivider();
     divider.setLayout(new BorderLayout());
     divider.setBorder(BorderFactory.createEmptyBorder());
     divider.setBackground(Color.WHITE);
     divider.add(tripleColon);
     divider.setDividerSize(tripleColon.getPreferredSize().width);
-
-    add(scroll);
-    add(horizontalBox, BorderLayout.SOUTH);
-    setBackground(Color.WHITE);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    return split;
   }
 
   public static void main(String[] args) {
@@ -87,7 +93,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

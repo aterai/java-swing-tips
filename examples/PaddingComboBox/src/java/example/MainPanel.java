@@ -12,37 +12,39 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
-  private final JPanel panel = new JPanel();
-  private final JCheckBox check = new JCheckBox("color");
 
   private MainPanel() {
     super(new BorderLayout());
-    panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    JPanel panel = new JPanel();
+    panel.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+
+    JCheckBox check = new JCheckBox("color");
+    check.setOpaque(false);
     check.addActionListener(e -> {
       layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
       panel.revalidate();
+      panel.repaint();
     });
     layoutComboBoxPanel(panel, initComboBoxes(check.isSelected()));
 
-    Box box = Box.createHorizontalBox();
-    box.add(check);
-    box.add(Box.createHorizontalGlue());
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    mb.add(Box.createHorizontalStrut(2));
+    mb.add(check);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
-    add(panel);
-    add(box, BorderLayout.SOUTH);
+    JScrollPane scroll = new JScrollPane(panel);
+    scroll.setBorder(BorderFactory.createEmptyBorder());
+    add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void layoutComboBoxPanel(JPanel p2, List<JComboBox<?>> list) {
-    p2.removeAll();
-    p2.setLayout(new GridBagLayout());
-    Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
-    Border outside = BorderFactory.createTitledBorder("JComboBox Padding Test");
-    p2.setBorder(BorderFactory.createCompoundBorder(outside, inside));
+  private void layoutComboBoxPanel(JPanel p, List<JComboBox<?>> list) {
+    p.removeAll();
+    p.setLayout(new GridBagLayout());
+    // Border inside = BorderFactory.createEmptyBorder(10, 5 + 2, 10, 10 + 2);
+    // Border outside = BorderFactory.createTitledBorder("JComboBox Padding Test");
+    // p.setBorder(BorderFactory.createCompoundBorder(outside, inside));
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(5, 5, 5, 0);
     c.anchor = GridBagConstraints.LINE_END;
@@ -50,13 +52,13 @@ public final class MainPanel extends JPanel {
       c.gridx = 0;
       c.weightx = 0d;
       c.fill = GridBagConstraints.NONE;
-      p2.add(makeLabel(i), c);
+      p.add(makeLabel(i), c);
       c.gridx = 1;
       c.weightx = 1d;
       c.fill = GridBagConstraints.HORIZONTAL;
-      p2.add(list.get(i), c);
+      p.add(list.get(i), c);
     }
-    p2.revalidate(); // ??? JDK 1.7.0 Nimbus ???
+    p.revalidate(); // ??? JDK 1.7.0 Nimbus ???
   }
 
   private static Component makeLabel(int num) {
@@ -69,10 +71,7 @@ public final class MainPanel extends JPanel {
     //   // https://bugs.openjdk.org/browse/JDK-7158712
     //   UIManager.put("ComboBox.padding", new InsetsUIResource(1, 15, 1, 1));
     // }
-    List<JComboBox<?>> list = new ArrayList<>();
-    for (int i = 0; i < 7; i++) {
-      list.add(makeComboBox());
-    }
+    List<JComboBox<?>> list = makeComboBoxes();
 
     // ---- 0 ----
     JComboBox<?> cb0 = list.get(0);
@@ -81,21 +80,21 @@ public final class MainPanel extends JPanel {
 
     // ---- 1 ----
     JComboBox<?> cb1 = list.get(1);
-    cb1.setEditable(true);
+    // cb1.setEditable(true);
     JTextField ed1 = (JTextField) cb1.getEditor().getEditorComponent();
     ed1.setBorder(BorderFactory.createCompoundBorder(ed1.getBorder(), getPaddingBorder(isColor)));
     cb1.setToolTipText("ed.setBorder(BorderFactory.createCompoundBorder(ed.getBorder(), pad))");
 
     // ---- 2 ----
     JComboBox<?> cb2 = list.get(2);
-    cb2.setEditable(true);
+    // cb2.setEditable(true);
     JTextField ed2 = (JTextField) cb2.getEditor().getEditorComponent();
     ed2.setBorder(getPaddingBorder(isColor));
     cb2.setToolTipText("editor.setBorder(padding);");
 
     // ---- 3 ----
     JComboBox<?> cb3 = list.get(3);
-    cb3.setEditable(true);
+    // cb3.setEditable(true);
     JTextField ed3 = (JTextField) cb3.getEditor().getEditorComponent();
     Insets i = ed3.getInsets();
     ed3.setMargin(new Insets(i.top, i.left + 5, i.bottom, i.right));
@@ -103,7 +102,7 @@ public final class MainPanel extends JPanel {
 
     // ---- 4 ----
     JComboBox<?> cb4 = list.get(4);
-    cb4.setEditable(true);
+    // cb4.setEditable(true);
     JTextField ed4 = (JTextField) cb4.getEditor().getEditorComponent();
     Insets m = ed4.getMargin();
     ed4.setMargin(new Insets(m.top, m.left + 5, m.bottom, m.right));
@@ -111,16 +110,21 @@ public final class MainPanel extends JPanel {
 
     // ---- 5 ----
     JComboBox<?> cb5 = list.get(5);
-    cb5.setEditable(true);
+    // cb5.setEditable(true);
     cb5.setBorder(BorderFactory.createCompoundBorder(cb5.getBorder(), getPaddingBorder(isColor)));
     cb5.setToolTipText("cb.setBorder(BorderFactory.createCompoundBorder(cb.getBorder(), pad))");
 
     // ---- 6 ----
     JComboBox<?> cb6 = list.get(6);
-    cb6.setEditable(true);
+    // cb6.setEditable(true);
     cb6.setBorder(BorderFactory.createCompoundBorder(getPaddingBorder(isColor), cb6.getBorder()));
     cb6.setToolTipText("cb.setBorder(BorderFactory.createCompoundBorder(pad, cb.getBorder()))");
 
+    initColor(isColor, list);
+    return list;
+  }
+
+  private static void initColor(boolean isColor, List<JComboBox<?>> list) {
     if (isColor) {
       Color c = new Color(.8f, 1f, .8f);
       for (JComboBox<?> cb : list) {
@@ -131,7 +135,6 @@ public final class MainPanel extends JPanel {
         editor.setBackground(c);
       }
     }
-    return list;
   }
 
   public static Border getPaddingBorder(boolean isColor) {
@@ -144,6 +147,14 @@ public final class MainPanel extends JPanel {
     return b;
   }
 
+  private static List<JComboBox<?>> makeComboBoxes() {
+    List<JComboBox<?>> list = new ArrayList<>();
+    for (int i = 0; i < 7; i++) {
+      list.add(makeComboBox());
+    }
+    return list;
+  }
+
   private static JComboBox<String> makeComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("11111111111111111111111111111");
@@ -152,7 +163,7 @@ public final class MainPanel extends JPanel {
     model.addElement("444444");
     model.addElement("555");
 
-    return new JComboBox<String>(model) {
+    JComboBox<String> combo = new JComboBox<String>(model) {
       @Override public void updateUI() {
         setRenderer(null);
         super.updateUI();
@@ -169,6 +180,8 @@ public final class MainPanel extends JPanel {
         // ((JComponent) r).setBorder(getPaddingBorder(false));
       }
     };
+    combo.setEditable(true);
+    return combo;
   }
 
   public static void main(String[] args) {
