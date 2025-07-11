@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -30,19 +31,8 @@ public final class MainPanel extends JPanel {
 
     JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
-      LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
-      DefaultTreeModel model1 = (DefaultTreeModel) tree1.getModel();
-      DefaultMutableTreeNode parent1 = (DefaultMutableTreeNode) model1.getRoot();
-      DefaultMutableTreeNode child1 = new DefaultMutableTreeNode(date);
-      parent1.add(child1);
-      model1.reload(parent1);
-      tree1.scrollPathToVisible(new TreePath(child1.getPath()));
-
-      DefaultTreeModel model2 = (DefaultTreeModel) tree2.getModel();
-      DefaultMutableTreeNode parent2 = (DefaultMutableTreeNode) model2.getRoot();
-      DefaultMutableTreeNode child2 = new DefaultMutableTreeNode(date);
-      model2.insertNodeInto(child2, parent2, parent2.getChildCount());
-      tree2.scrollPathToVisible(new TreePath(child2.getPath()));
+      addAndReload(tree1);
+      insertNodeInto(tree2);
     });
 
     JPanel p2 = new JPanel(new GridLayout(1, 2));
@@ -52,6 +42,25 @@ public final class MainPanel extends JPanel {
     add(p1);
     add(p2, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void addAndReload(JTree tree) {
+    LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) model.getRoot();
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode(date);
+    parent.add(child);
+    model.reload(parent);
+    tree.scrollPathToVisible(new TreePath(child.getPath()));
+  }
+
+  private static void insertNodeInto(JTree tree) {
+    LocalDateTime date = LocalDateTime.now(ZoneId.systemDefault());
+    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) model.getRoot();
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode(date);
+    model.insertNodeInto(child, parent, parent.getChildCount());
+    tree.scrollPathToVisible(new TreePath(child.getPath()));
   }
 
   public static void expandAll(JTree tree) {
@@ -78,7 +87,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
