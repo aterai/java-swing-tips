@@ -14,22 +14,9 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    JLabel label = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
+    JComponent c = makeLabel("FORCE_HEAVYWEIGHT_POPUP", Color.PINK);
     ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-    AccessController.doPrivileged(new PrivilegedAction<Void>() {
-      @SuppressWarnings("AvoidAccessibilityAlteration")
-      @Override public Void run() {
-        try {
-          Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
-          Field field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
-          field.setAccessible(true);
-          label.putClientProperty(field.get(null), Boolean.TRUE);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
-          throw new UnsupportedOperationException(ex);
-        }
-        return null;
-      }
-    });
+    AccessController.doPrivileged((PrivilegedAction<Void>) () -> forceHeavyPopup(c));
     // Java 1.7.0, 1.6.0
     // AccessController.doPrivileged(new PrivilegedAction<Void>() {
     //   @SuppressWarnings("AvoidAccessibilityAlteration")
@@ -46,7 +33,7 @@ public final class MainPanel extends JPanel {
     //         Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
     //         field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
     //       }
-    //       label.putClientProperty(field.get(null), Boolean.TRUE);
+    //       c.putClientProperty(field.get(null), Boolean.TRUE);
     //     } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
     //       throw new UnsupportedOperationException(ex);
     //     }
@@ -64,7 +51,7 @@ public final class MainPanel extends JPanel {
     };
     glass.setOpaque(false);
     glass.add(makeLabel("Default: ToolTipText", Color.ORANGE), BorderLayout.WEST);
-    glass.add(label, BorderLayout.EAST);
+    glass.add(c, BorderLayout.EAST);
     glass.add(Box.createVerticalStrut(60), BorderLayout.SOUTH);
     EventQueue.invokeLater(() -> {
       getRootPane().setGlassPane(glass);
@@ -73,11 +60,24 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("PMD.AvoidAccessibilityAlteration")
+  private static Void forceHeavyPopup(JComponent c) {
+    try {
+      Class<?> clazz = Class.forName("javax.swing.ClientPropertyKey");
+      Field field = clazz.getDeclaredField("PopupFactory_FORCE_HEAVYWEIGHT_POPUP");
+      field.setAccessible(true);
+      c.putClientProperty(field.get(null), true);
+    } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException ex) {
+      throw new UnsupportedOperationException(ex);
+    }
+    return null;
+  }
+
   private static JLabel makeLabel(String title, Color color) {
     JLabel label = new JLabel(title);
     label.setOpaque(true);
     label.setBackground(color);
-    label.setToolTipText("1234567890");
+    label.setToolTipText(title + ": 1234567890");
     return label;
   }
 
