@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.EditorKit;
 import javax.swing.text.html.HTMLEditorKit;
@@ -62,7 +63,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

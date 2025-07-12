@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -84,7 +85,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -115,7 +116,7 @@ class ShrinkLabel extends JLabel {
     this.selected = active;
   }
 
-  public boolean isSelected() {
-    return selected;
-  }
+  // public boolean isSelected() {
+  //   return selected;
+  // }
 }
