@@ -26,38 +26,39 @@ public final class MainPanel extends JPanel {
     slider1.setPaintTicks(true);
 
     String key = "Slider.paintThumbArrowShape";
-    slider2.putClientProperty(key, Boolean.TRUE);
+    slider2.putClientProperty(key, true);
 
     slider4.setMajorTickSpacing(20);
     slider4.setPaintTicks(true);
-    slider5.putClientProperty(key, Boolean.TRUE);
+    slider5.putClientProperty(key, true);
 
-    Box box1 = Box.createHorizontalBox();
-    box1.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
-    box1.add(slider0);
-    box1.add(Box.createHorizontalStrut(20));
-    box1.add(slider1);
-    box1.add(Box.createHorizontalStrut(20));
-    box1.add(slider2);
-    box1.add(Box.createHorizontalGlue());
+    Box box = Box.createVerticalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 5));
+    box.add(makeTitledPanel("Default", slider3));
+    box.add(Box.createVerticalStrut(20));
+    box.add(makeTitledPanel("setPaintTicks", slider4));
+    box.add(Box.createVerticalStrut(20));
+    box.add(makeTitledPanel(key, slider5));
+    box.add(Box.createVerticalGlue());
 
-    Box box2 = Box.createVerticalBox();
-    box2.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 5));
-    box2.add(makeTitledPanel("Default", slider3));
-    box2.add(Box.createVerticalStrut(20));
-    box2.add(makeTitledPanel("setPaintTicks", slider4));
-    box2.add(Box.createVerticalStrut(20));
-    box2.add(makeTitledPanel(key, slider5));
-    box2.add(Box.createVerticalGlue());
-
-    add(box1, BorderLayout.WEST);
-    add(box2);
+    add(getVerticalBox(slider0, slider1, slider2), BorderLayout.WEST);
+    add(box);
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Box getVerticalBox(JSlider... list) {
+    Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
+    Stream.of(list).forEach(slider -> {
+      box.add(slider);
+      box.add(Box.createHorizontalStrut(20));
+    });
+    return box;
   }
 
   private static Component makeTitledPanel(String title, Component c) {

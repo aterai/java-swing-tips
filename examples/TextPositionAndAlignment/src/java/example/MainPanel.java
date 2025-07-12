@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -18,7 +19,16 @@ public final class MainPanel extends JPanel {
     JLabel label = new JLabel("Test Test", new StarburstIcon(), SwingConstants.CENTER);
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder("JLabel Test"));
+    p.add(label);
+    add(p);
+    add(makeControlBox(label), BorderLayout.NORTH);
+    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JPanel makeControlBox(JLabel label) {
     JComboBox<Vertical> vertAlignment = new JComboBox<>(Vertical.values());
     vertAlignment.setSelectedItem(Vertical.CENTER);
 
@@ -43,33 +53,25 @@ public final class MainPanel extends JPanel {
     Stream.of(vertAlignment, vertTextPosition, horizAlignment, horizTextPosition)
         .forEach(c -> c.addItemListener(listener));
 
-    JPanel p1 = new JPanel(new BorderLayout());
-    p1.setBorder(BorderFactory.createTitledBorder("JLabel Test"));
-    p1.add(label);
-
     GridBagConstraints c = new GridBagConstraints();
     c.gridx = 0;
     c.insets = new Insets(5, 5, 5, 0);
     c.anchor = GridBagConstraints.LINE_END;
 
-    JPanel p2 = new JPanel(new GridBagLayout());
-    p2.add(new JLabel("setVerticalAlignment:"), c);
-    p2.add(new JLabel("setVerticalTextPosition:"), c);
-    p2.add(new JLabel("setHorizontalAlignment:"), c);
-    p2.add(new JLabel("setHorizontalTextPosition:"), c);
+    JPanel p = new JPanel(new GridBagLayout());
+    p.add(new JLabel("setVerticalAlignment:"), c);
+    p.add(new JLabel("setVerticalTextPosition:"), c);
+    p.add(new JLabel("setHorizontalAlignment:"), c);
+    p.add(new JLabel("setHorizontalTextPosition:"), c);
 
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p2.add(vertAlignment, c);
-    p2.add(vertTextPosition, c);
-    p2.add(horizAlignment, c);
-    p2.add(horizTextPosition, c);
-
-    add(p1);
-    add(p2, BorderLayout.NORTH);
-    setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    setPreferredSize(new Dimension(320, 240));
+    p.add(vertAlignment, c);
+    p.add(vertTextPosition, c);
+    p.add(horizAlignment, c);
+    p.add(horizTextPosition, c);
+    return p;
   }
 
   private static <E> E getSelectedItem(JComboBox<E> combo) {
@@ -86,7 +88,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

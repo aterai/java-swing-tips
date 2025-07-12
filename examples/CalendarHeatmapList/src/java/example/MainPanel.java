@@ -105,16 +105,21 @@ public final class MainPanel extends JPanel {
         colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
       }
     }
+    return makeScrollPane(weekList, colHeader);
+  }
 
-    JScrollPane scroll = new JScrollPane(weekList);
-    scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.setColumnHeaderView(colHeader);
-    scroll.setRowHeaderView(rowHeader);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    scroll.setBackground(Color.WHITE);
-
-    return scroll;
+  private static JScrollPane makeScrollPane(JList<Contribution> weekList, JPanel colHeader) {
+    return new JScrollPane(weekList) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(BorderFactory.createEmptyBorder());
+        setColumnHeaderView(colHeader);
+        setRowHeaderView(rowHeader);
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        setBackground(Color.WHITE);
+      }
+    };
   }
 
   // private class ContributionListRenderer implements ListCellRenderer<Contribution> {
