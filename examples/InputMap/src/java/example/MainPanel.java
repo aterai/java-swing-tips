@@ -7,53 +7,20 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
     JButton button1 = new JButton("JOptionPane.showMessageDialog");
-    button1.addActionListener(e -> {
-      Component c = ((JComponent) e.getSource()).getRootPane();
-      JOptionPane.showMessageDialog(c, "showMessageDialog");
-    });
+    button1.addActionListener(MainPanel::showMessageDialog1);
 
     JButton button2 = new JButton("Default");
-    button2.addActionListener(e -> {
-      Frame frame = JOptionPane.getFrameForComponent(getRootPane());
-      JDialog dialog = new JDialog(frame, "title", true);
-      Action act = new AbstractAction("OK") {
-        @Override public void actionPerformed(ActionEvent e) {
-          dialog.dispose();
-        }
-      };
-      dialog.getContentPane().add(makePanel(act));
-      dialog.pack();
-      dialog.setResizable(false);
-      dialog.setLocationRelativeTo(getRootPane());
-      dialog.setVisible(true);
-    });
+    button2.addActionListener(MainPanel::showMessageDialog2);
 
     JButton button3 = new JButton("close JDialog with ESC key");
-    button3.addActionListener(e -> {
-      Frame frame = JOptionPane.getFrameForComponent(getRootPane());
-      JDialog dialog = new JDialog(frame, "title", true);
-      Action act = new AbstractAction("OK") {
-        @Override public void actionPerformed(ActionEvent e) {
-          dialog.dispose();
-        }
-      };
-      JRootPane rp = dialog.getRootPane();
-      String cmd = "close-it";
-      rp.getActionMap().put(cmd, act);
-      KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-      rp.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, cmd);
-      dialog.getContentPane().add(makePanel(act));
-      dialog.pack();
-      dialog.setResizable(false);
-      dialog.setLocationRelativeTo(getRootPane());
-      dialog.setVisible(true);
-    });
+    button3.addActionListener(MainPanel::showMessageDialog3);
 
     JPanel p1 = new JPanel();
     p1.setBorder(BorderFactory.createTitledBorder("JOptionPane"));
@@ -68,6 +35,48 @@ public final class MainPanel extends JPanel {
     add(p2);
     setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void showMessageDialog1(ActionEvent e) {
+    Component c = ((JComponent) e.getSource()).getRootPane();
+    JOptionPane.showMessageDialog(c, "showMessageDialog");
+  }
+
+  private static void showMessageDialog2(ActionEvent e) {
+    Component root = ((JComponent) e.getSource()).getRootPane();
+    Frame frame = JOptionPane.getFrameForComponent(root);
+    JDialog dialog = new JDialog(frame, "title", true);
+    Action act = new AbstractAction("OK") {
+      @Override public void actionPerformed(ActionEvent e) {
+        dialog.dispose();
+      }
+    };
+    dialog.getContentPane().add(makePanel(act));
+    dialog.pack();
+    dialog.setResizable(false);
+    dialog.setLocationRelativeTo(root);
+    dialog.setVisible(true);
+  }
+
+  private static void showMessageDialog3(ActionEvent e) {
+    Component root = ((JComponent) e.getSource()).getRootPane();
+    Frame frame = JOptionPane.getFrameForComponent(root);
+    JDialog dialog = new JDialog(frame, "title", true);
+    Action act = new AbstractAction("OK") {
+      @Override public void actionPerformed(ActionEvent e) {
+        dialog.dispose();
+      }
+    };
+    JRootPane rp = dialog.getRootPane();
+    String cmd = "close-it";
+    rp.getActionMap().put(cmd, act);
+    KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+    rp.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(esc, cmd);
+    dialog.getContentPane().add(makePanel(act));
+    dialog.pack();
+    dialog.setResizable(false);
+    dialog.setLocationRelativeTo(root);
+    dialog.setVisible(true);
   }
 
   public static Component makePanel(Action act) {
@@ -107,7 +116,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
