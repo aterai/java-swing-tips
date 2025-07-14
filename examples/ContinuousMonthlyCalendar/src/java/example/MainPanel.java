@@ -24,7 +24,6 @@ import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
-  private final Locale locale1 = Locale.getDefault();
   private final JLabel dateLabel = new JLabel(realLocalDate.toString(), SwingConstants.CENTER);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable();
@@ -54,8 +53,10 @@ public final class MainPanel extends JPanel {
     };
     monthTable.getSelectionModel().addListSelectionListener(selectionListener);
     monthTable.getColumnModel().getSelectionModel().addListSelectionListener(selectionListener);
-    LocalDate date = getTopLeftCellDayOfMonth(realLocalDate, locale1);
-    CalendarViewTableModel model = new CalendarViewTableModel(date, locale1);
+
+    Locale dfaultLocale = Locale.getDefault();
+    LocalDate date = getTopLeftCellDayOfMonth(realLocalDate, dfaultLocale);
+    CalendarViewTableModel model = new CalendarViewTableModel(date, dfaultLocale);
     monthTable.setModel(model);
 
     JScrollBar verticalScrollBar = new JScrollBar(Adjustable.VERTICAL) {
@@ -70,24 +71,27 @@ public final class MainPanel extends JPanel {
     scroll.setVerticalScrollBar(verticalScrollBar);
     verticalScrollBar.getModel().addChangeListener(e -> verticalScrollChanged());
 
-    updateMonthView(realLocalDate, locale1);
+    updateMonthView(realLocalDate);
 
+    add(makeButtonBox(), BorderLayout.NORTH);
+    add(scroll);
+    add(dateLabel, BorderLayout.SOUTH);
+    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JPanel makeButtonBox() {
     JButton prev = new JButton("<");
-    prev.addActionListener(e -> updateMonthView(currentLocalDate.minusMonths(1), locale1));
+    prev.addActionListener(e -> updateMonthView(currentLocalDate.minusMonths(1)));
 
     JButton next = new JButton(">");
-    next.addActionListener(e -> updateMonthView(currentLocalDate.plusMonths(1), locale1));
+    next.addActionListener(e -> updateMonthView(currentLocalDate.plusMonths(1)));
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(monthLabel);
     p.add(prev, BorderLayout.WEST);
     p.add(next, BorderLayout.EAST);
-
-    add(p, BorderLayout.NORTH);
-    add(scroll);
-    add(dateLabel, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
   public LocalDate getCurrentLocalDate() {
@@ -102,18 +106,19 @@ public final class MainPanel extends JPanel {
       int col = 6; // monthTable.columnAtPoint(pt);
       LocalDate localDate = (LocalDate) monthTable.getValueAt(row, col);
       currentLocalDate = localDate;
-      updateMonthLabel(localDate, locale1);
+      updateMonthLabel(localDate);
       viewport.repaint();
     });
   }
 
-  public void updateMonthView(LocalDate localDate, Locale locale) {
+  public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
-    updateMonthLabel(localDate, locale);
+    Locale loc = monthTable.getLocale();
+    updateMonthLabel(localDate);
     TableModel model = monthTable.getModel();
     int v = model.getRowCount() / 2;
-    LocalDate startDate1 = getTopLeftCellDayOfMonth(realLocalDate, locale);
-    LocalDate startDate2 = getTopLeftCellDayOfMonth(localDate, locale);
+    LocalDate startDate1 = getTopLeftCellDayOfMonth(realLocalDate, loc);
+    LocalDate startDate2 = getTopLeftCellDayOfMonth(localDate, loc);
     int between = (int) ChronoUnit.WEEKS.between(startDate1, startDate2);
     // monthTable.revalidate();
     Rectangle r = monthTable.getCellRect(v + between, 0, false);
@@ -122,13 +127,14 @@ public final class MainPanel extends JPanel {
     scroll.repaint();
   }
 
-  private void updateMonthLabel(LocalDate localDate, Locale locale) {
+  private void updateMonthLabel(LocalDate localDate) {
+    Locale loc = monthTable.getLocale();
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    monthLabel.setText(localDate.format(fmt.withLocale(locale)));
+    monthLabel.setText(localDate.format(fmt.withLocale(loc)));
   }
 
-  private static LocalDate getTopLeftCellDayOfMonth(LocalDate date, Locale locale) {
-    WeekFields weekFields = WeekFields.of(locale);
+  private static LocalDate getTopLeftCellDayOfMonth(LocalDate date, Locale loc) {
+    WeekFields weekFields = WeekFields.of(loc);
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
     int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
     return firstDayOfMonth.minusDays(v);

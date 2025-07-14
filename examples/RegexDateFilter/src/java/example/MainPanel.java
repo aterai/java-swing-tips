@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -22,10 +23,11 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   @SuppressWarnings("JavaUtilDate")
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea log = new JTextArea();
     log.setEditable(false);
 
     Calendar cal = Calendar.getInstance();
@@ -36,35 +38,13 @@ public final class MainPanel extends JPanel {
     Date start = cal.getTime();
     cal.add(Calendar.DATE, 9);
     Date end = cal.getTime();
-    log.append(date + "\n"); // -> Tue Dec 31 10:30:15 JST 2002
+    info(date);
 
-    JTable table = new JTable(makeModel(date, start, end)) {
-      @Override public String getToolTipText(MouseEvent e) {
-        String txt = super.getToolTipText(e);
-        int idx = rowAtPoint(e.getPoint());
-        if (idx >= 0) {
-          int row = convertRowIndexToModel(idx);
-          txt = Optional.ofNullable(getModel().getValueAt(row, 0))
-              .map(Objects::toString)
-              .orElse(null);
-        }
-        return txt;
-      }
-    };
-    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(table.getModel());
+    TableModel model = makeModel(date, start, end);
+    JTable table = makeTable(model);
+    TableRowSorter<? extends TableModel> sorter = new TableRowSorter<>(model);
     table.setRowSorter(sorter);
     table.setFillsViewportHeight(true);
-
-    // RowFilter.regexFilter
-    Matcher m1 = Pattern.compile("12").matcher(date.toString());
-    log.append("String 12 find -> " + m1.find() + "\n"); // false
-
-    Matcher m2 = Pattern.compile("Dec").matcher(date.toString());
-    log.append("String Dec find -> " + m2.find() + "\n"); // true
-
-    // a customized RegexFilter
-    Matcher m3 = Pattern.compile("12").matcher(DateFormat.getDateInstance().format(date));
-    log.append("DateFormat 12 find -> " + m3.find() + "\n"); // true
 
     JTextField field = new JTextField("(?i)12");
 
@@ -98,6 +78,22 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("JavaUtilDate")
+  private void info(Date date) {
+    log.append(date + "\n"); // -> Tue Dec 31 10:30:15 JST 2002
+
+    // RowFilter.regexFilter
+    Matcher m1 = Pattern.compile("12").matcher(date.toString());
+    log.append("String 12 find -> " + m1.find() + "\n"); // false
+
+    Matcher m2 = Pattern.compile("Dec").matcher(date.toString());
+    log.append("String Dec find -> " + m2.find() + "\n"); // true
+
+    // a customized RegexFilter
+    Matcher m3 = Pattern.compile("12").matcher(DateFormat.getDateInstance().format(date));
+    log.append("DateFormat 12 find -> " + m3.find() + "\n"); // true
+  }
+
   private static TableModel makeModel(Date date, Date start, Date end) {
     Object[][] data = {
         {date}, {start}, {end}
@@ -120,6 +116,22 @@ public final class MainPanel extends JPanel {
     //     return column == 0 ? Date.class : column == 1 ? LocalDateTime.class : Object.class;
     //   }
     // };
+  }
+
+  private static JTable makeTable(TableModel model) {
+    return new JTable(model) {
+      @Override public String getToolTipText(MouseEvent e) {
+        String txt = super.getToolTipText(e);
+        int idx = rowAtPoint(e.getPoint());
+        if (idx >= 0) {
+          int row = convertRowIndexToModel(idx);
+          txt = Optional.ofNullable(getModel().getValueAt(row, 0))
+              .map(Objects::toString)
+              .orElse(null);
+        }
+        return txt;
+      }
+    };
   }
 
   private static Box makeRegexBox(JTextField field, JRadioButton... buttons) {
@@ -151,7 +163,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
