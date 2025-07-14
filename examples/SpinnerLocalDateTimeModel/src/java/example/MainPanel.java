@@ -26,6 +26,8 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.InternationalFormatter;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
     Calendar cal = Calendar.getInstance();
@@ -39,13 +41,9 @@ public final class MainPanel extends JPanel {
     cal.add(Calendar.DATE, 9);
     Date end = cal.getTime();
 
-    JTextArea info = new JTextArea();
-    info.append(date + "\n");
-    info.append(start + "\n");
-    info.append(end + "\n");
+    dateInfo(date, start, end);
 
     String dateFormat = "yyyy/MM/dd";
-
     JSpinner spinner0 = new JSpinner(makeSpinnerDateModel(date, start, end));
     spinner0.setEditor(new JSpinner.DateEditor(spinner0, dateFormat));
 
@@ -55,9 +53,7 @@ public final class MainPanel extends JPanel {
     // LocalDateTime e = d.plus(7, ChronoUnit.DAYS);
     LocalDateTime e = d.plusDays(7);
 
-    info.append(d + "\n");
-    info.append(s + "\n");
-    info.append(e + "\n");
+    localDateInfo(d, s, e);
 
     JSpinner spinner1 = new JSpinner(makeSpinnerDateModel(toDate(d), toDate(s), toDate(e)));
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, dateFormat));
@@ -80,9 +76,21 @@ public final class MainPanel extends JPanel {
     p.add(makeTitledPanel("SpinnerDateModel / toInstant", spinner1));
     p.add(makeTitledPanel("SpinnerLocalDateTimeModel", spinner2));
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(info));
-    setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    add(new JScrollPane(log));
+    // setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void dateInfo(Date date, Date start, Date end) {
+    log.append(date + "\n");
+    log.append(start + "\n");
+    log.append(end + "\n");
+  }
+
+  private void localDateInfo(LocalDateTime d, LocalDateTime s, LocalDateTime e) {
+    log.append(d + "\n");
+    log.append(s + "\n");
+    log.append(e + "\n");
   }
 
   private static SpinnerDateModel makeSpinnerDateModel(Date date, Date start, Date end) {
@@ -240,27 +248,28 @@ class LocalDateTimeEditor extends JSpinner.DefaultEditor {
     }
     dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormatPattern);
     model = (SpinnerLocalDateTimeModel) spinner.getModel();
-    DefaultFormatter formatter = new LocalDateTimeFormatter();
-
-    EventQueue.invokeLater(() -> {
-      formatter.setValueClass(LocalDateTime.class);
-      JFormattedTextField ftf = getTextField();
-      try {
-        String maxString = formatter.valueToString(model.getStart());
-        String minString = formatter.valueToString(model.getEnd());
-        ftf.setColumns(Math.max(maxString.length(), minString.length()));
-      } catch (ParseException ex) {
-        // PENDING: hmuller
-        UIManager.getLookAndFeel().provideErrorFeedback(ftf);
-      }
-      ftf.setHorizontalAlignment(SwingConstants.LEFT);
-      ftf.setEditable(true);
-      ftf.setFormatterFactory(new DefaultFormatterFactory(formatter));
-    });
+    EventQueue.invokeLater(this::initFormattedTextField);
   }
 
   public SpinnerLocalDateTimeModel getModel() {
     return model; // (SpinnerLocalDateTimeModel) getSpinner().getModel();
+  }
+
+  private void initFormattedTextField() {
+    DefaultFormatter formatter = new LocalDateTimeFormatter();
+    formatter.setValueClass(LocalDateTime.class);
+    JFormattedTextField ftf = getTextField();
+    try {
+      String maxString = formatter.valueToString(model.getStart());
+      String minString = formatter.valueToString(model.getEnd());
+      ftf.setColumns(Math.max(maxString.length(), minString.length()));
+    } catch (ParseException ex) {
+      // PENDING: hmuller
+      UIManager.getLookAndFeel().provideErrorFeedback(ftf);
+    }
+    ftf.setHorizontalAlignment(SwingConstants.LEFT);
+    ftf.setEditable(true);
+    ftf.setFormatterFactory(new DefaultFormatterFactory(formatter));
   }
 
   protected class LocalDateTimeFormatter extends InternationalFormatter {
