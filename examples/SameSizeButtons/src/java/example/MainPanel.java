@@ -7,44 +7,21 @@ package example;
 import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
+  private final JCheckBox borderCheck = new JCheckBox("OptionPane.buttonAreaBorder");
+
   private MainPanel() {
     super(new BorderLayout());
-    JCheckBox borderCheck = new JCheckBox("OptionPane.buttonAreaBorder");
-    JOptionPane op = new JOptionPane(
+    JOptionPane optionPane = new JOptionPane(
         "message", JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_CANCEL_OPTION);
 
     JButton button1 = new JButton("default");
-    button1.addActionListener(e -> {
-      UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", false);
-      // JOptionPane.showConfirmDialog(getRootPane(), "message");
-      // JOptionPane pane1 = new JOptionPane("...", QUESTION_MESSAGE, YES_NO_CANCEL_OPTION);
-      UIDefaults d = new UIDefaults();
-      d.put("OptionPane.sameSizeButtons", false);
-      op.putClientProperty("Nimbus.Overrides", d);
-      op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
-      SwingUtilities.updateComponentTreeUI(op);
-      op.createDialog(getRootPane(), "title").setVisible(true);
-    });
+    button1.addActionListener(e -> showDefaultDialog(optionPane));
 
     JButton button2 = new JButton("sameSizeButtons");
-    button2.addActionListener(e -> {
-      // UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
-      // UIManager.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(color, 10));
-      // JOptionPane.showConfirmDialog(getRootPane(), "message");
-      UIDefaults d = new UIDefaults();
-      if (borderCheck.isSelected()) {
-        d.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(Color.RED, 10));
-      } else {
-        d.put("OptionPane.buttonAreaBorder", BorderFactory.createEmptyBorder());
-      }
-      d.put("OptionPane.sameSizeButtons", true);
-      op.putClientProperty("Nimbus.Overrides", d);
-      op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
-      SwingUtilities.updateComponentTreeUI(op);
-      op.createDialog(getRootPane(), "title").setVisible(true);
-    });
+    button2.addActionListener(e -> showSameSizeButtonsDialog(optionPane));
 
     JPanel p1 = new JPanel();
     p1.add(button1);
@@ -56,6 +33,34 @@ public final class MainPanel extends JPanel {
     add(p1, BorderLayout.NORTH);
     add(p2, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showDefaultDialog(JOptionPane optionPane) {
+    UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", false);
+    // JOptionPane.showConfirmDialog(getRootPane(), "message");
+    // JOptionPane pane1 = new JOptionPane(..., QUESTION_MESSAGE, YES_NO_CANCEL_OPTION);
+    UIDefaults d = new UIDefaults();
+    d.put("OptionPane.sameSizeButtons", false);
+    optionPane.putClientProperty("Nimbus.Overrides", d);
+    optionPane.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+    SwingUtilities.updateComponentTreeUI(optionPane);
+    optionPane.createDialog(getRootPane(), "title").setVisible(true);
+  }
+
+  private void showSameSizeButtonsDialog(JOptionPane optionPane) {
+    // UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", true);
+    // UIManager.put("OptionPane.buttonAreaBorder", BorderFactory.createLineBorder(...));
+    // JOptionPane.showConfirmDialog(getRootPane(), "message");
+    UIDefaults d = new UIDefaults();
+    Border b = borderCheck.isSelected()
+        ? BorderFactory.createLineBorder(Color.RED, 10)
+        : BorderFactory.createEmptyBorder();
+    d.put("OptionPane.buttonAreaBorder", b);
+    d.put("OptionPane.sameSizeButtons", true);
+    optionPane.putClientProperty("Nimbus.Overrides", d);
+    optionPane.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+    SwingUtilities.updateComponentTreeUI(optionPane);
+    optionPane.createDialog(getRootPane(), "title").setVisible(true);
   }
 
   public static void main(String[] args) {

@@ -9,66 +9,80 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private final JTable table = new JTable(makeModel()) {
+    @Override public void updateUI() {
+      super.updateUI();
+      setAutoCreateRowSorter(true);
+      setRowSelectionAllowed(true);
+      setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+      // setFillsViewportHeight(true);
+      setIntercellSpacing(new Dimension());
+      setShowGrid(false);
+      // setShowHorizontalLines(false);
+      // setShowVerticalLines(false);
+      putClientProperty("terminateEditOnFocusLost", true);
+      Optional.ofNullable(getTableHeader())
+          .ifPresent(header -> header.setReorderingAllowed(false));
+      // TableColumn col = getColumnModel().getColumn(0);
+      // col.setMinWidth(50);
+      // col.setMaxWidth(50);
+      // col.setResizable(false);
+    }
+  };
+  private final TableCellRenderer defaultRenderer = table.getDefaultRenderer(Object.class);
+  private final TableCellEditor defaultEditor = table.getDefaultEditor(Object.class);
+  private final UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
+
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"A", "B", "C"};
-    Object[][] data = {
-        {"aaa", "eee", "ddd"}, {"bbb", "fff", "ggg"}, {"ccc", "hhh", "iii"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-    };
-    JTable table = new JTable(model);
-    table.setAutoCreateRowSorter(true);
-    table.setRowSelectionAllowed(true);
-    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    // table.setFillsViewportHeight(true);
-    table.setIntercellSpacing(new Dimension());
-    table.setShowGrid(false);
-    // table.setShowHorizontalLines(false);
-    // table.setShowVerticalLines(false);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-    JTableHeader tableHeader = table.getTableHeader();
-    tableHeader.setReorderingAllowed(false);
-
-    // TableColumn col = table.getColumnModel().getColumn(0);
-    // col.setMinWidth(50);
-    // col.setMaxWidth(50);
-    // col.setResizable(false);
-
-    TableCellRenderer defaultRenderer = table.getDefaultRenderer(Object.class);
-    UnderlineCellRenderer underlineRenderer = new UnderlineCellRenderer();
-    DefaultCellEditor ce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
-
     JCheckBox modelCheck = new JCheckBox("edit the cell on single click");
     modelCheck.addActionListener(e -> {
-      if (modelCheck.isSelected()) {
-        table.setDefaultRenderer(Object.class, underlineRenderer);
-        table.addMouseListener(underlineRenderer);
-        table.addMouseMotionListener(underlineRenderer);
-        ce.setClickCountToStart(1);
-      } else {
-        table.setDefaultRenderer(Object.class, defaultRenderer);
-        table.removeMouseListener(underlineRenderer);
-        table.removeMouseMotionListener(underlineRenderer);
-        ce.setClickCountToStart(2);
-      }
+      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      initClickCountToStart(b);
     });
     JScrollPane scrollPane = new JScrollPane(table);
     scrollPane.getViewport().setBackground(Color.WHITE);
     add(modelCheck, BorderLayout.NORTH);
     add(scrollPane);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"A", "B", "C"};
+    Object[][] data = {
+        {"aaa", "eee", "ddd"}, {"bbb", "fff", "ggg"}, {"ccc", "hhh", "iii"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+    };
+  }
+
+  private void initClickCountToStart(boolean isSingleClick) {
+    if (defaultEditor instanceof DefaultCellEditor) {
+      if (isSingleClick) {
+        table.setDefaultRenderer(Object.class, underlineRenderer);
+        table.addMouseListener(underlineRenderer);
+        table.addMouseMotionListener(underlineRenderer);
+        ((DefaultCellEditor) defaultEditor).setClickCountToStart(1);
+      } else {
+        table.setDefaultRenderer(Object.class, defaultRenderer);
+        table.removeMouseListener(underlineRenderer);
+        table.removeMouseMotionListener(underlineRenderer);
+        ((DefaultCellEditor) defaultEditor).setClickCountToStart(2);
+      }
+    }
   }
 
   public static void main(String[] args) {
@@ -81,7 +95,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

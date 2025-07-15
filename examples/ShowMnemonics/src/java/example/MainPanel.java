@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -26,10 +27,7 @@ public final class MainPanel extends JPanel {
         // System.out.println("isMnemonicHidden: " + WindowsLookAndFeel.isMnemonicHidden());
         WindowsLookAndFeel.setMnemonicHidden(true);
         // SwingUtilities.getRoot(this).repaint();
-        Container c = getTopLevelAncestor();
-        if (c != null) {
-          c.repaint();
-        }
+        Optional.ofNullable(getTopLevelAncestor()).ifPresent(Component::repaint);
       }
     });
     add(check);
