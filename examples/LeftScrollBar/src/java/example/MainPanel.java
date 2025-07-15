@@ -11,24 +11,37 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
+    Icon icon = new ImageIcon(makeImage());
+    JLabel label = makeImageLabel(icon);
+    Component scroll = makeTopLeftScrollPane(label);
+    add(scroll);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
-    JLabel label = new JLabel(new ImageIcon(img)) {
+  private static Component makeTopLeftScrollPane(Component view) {
+    JScrollPane scroll = new JScrollPane(view);
+    scroll.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+    int w = scroll.getVerticalScrollBar().getPreferredSize().width;
+    JPanel header = new JPanel(new BorderLayout());
+    header.add(Box.createHorizontalStrut(w), BorderLayout.WEST);
+    header.add(scroll.getHorizontalScrollBar());
+    JPanel p = new JPanel(new BorderLayout());
+    p.add(header, BorderLayout.NORTH);
+    p.add(scroll);
+    return p;
+  }
+
+  private static JLabel makeImageLabel(Icon icon) {
+    return new JLabel(icon) {
       private transient MouseAdapter listener;
+
       @Override public void updateUI() {
         removeMouseMotionListener(listener);
         removeMouseListener(listener);
@@ -38,18 +51,18 @@ public final class MainPanel extends JPanel {
         addMouseListener(listener);
       }
     };
+  }
 
-    JScrollPane scroll = new JScrollPane(label);
-    scroll.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-
-    int w = scroll.getVerticalScrollBar().getPreferredSize().width;
-    JPanel panel = new JPanel(new BorderLayout());
-    panel.add(Box.createHorizontalStrut(w), BorderLayout.WEST);
-    panel.add(scroll.getHorizontalScrollBar());
-
-    add(panel, BorderLayout.NORTH);
-    add(scroll);
-    setPreferredSize(new Dimension(320, 240));
+  private static Image makeImage() {
+    String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
   }
 
   private static Image makeMissingImage() {
@@ -73,7 +86,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
