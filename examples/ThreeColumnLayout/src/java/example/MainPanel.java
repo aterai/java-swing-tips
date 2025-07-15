@@ -69,23 +69,25 @@ public final class MainPanel extends JPanel {
     return button;
   }
 
-  private static Component makeCenterBox(JButton... buttons) {
+  private static <E> Component makeCenterBox(JList<E> leftList, JList<E> rightList) {
+    JButton button1 = makeButton(">");
+    button1.addActionListener(e -> move(leftList, rightList));
+
+    JButton button2 = makeButton("<");
+    button2.addActionListener(e -> move(rightList, leftList));
+
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     box.add(Box.createVerticalGlue());
-    for (JButton b : buttons) {
-      box.add(b);
-      box.add(Box.createVerticalStrut(20));
-    }
+    box.add(button1);
+    box.add(Box.createVerticalStrut(20));
+    box.add(button2);
     box.add(Box.createVerticalGlue());
     return box;
   }
 
   private Component makeCmp1() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("loooooooooooooooooooooooooooooooooooong");
-    IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
-    JList<String> leftList = makeList(model);
+    JList<String> leftList = makeList(makeModel());
     JScrollPane lsp = new JScrollPane(leftList);
     lsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -93,13 +95,7 @@ public final class MainPanel extends JPanel {
     JScrollPane rsp = new JScrollPane(rightList);
     rsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    JButton button1 = makeButton(">");
-    button1.addActionListener(e -> move(leftList, rightList));
-
-    JButton button2 = makeButton("<");
-    button2.addActionListener(e -> move(rightList, leftList));
-
-    Component box = makeCenterBox(button1, button2);
+    Component box = makeCenterBox(leftList, rightList);
 
     SpringLayout layout = new SpringLayout();
     JPanel panel = new JPanel(layout);
@@ -137,10 +133,7 @@ public final class MainPanel extends JPanel {
   }
 
   private Component makeCmp2() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    model.addElement("loooooooooooooooooooooooooooooooooooong");
-    IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
-    JList<String> leftList = makeList(model);
+    JList<String> leftList = makeList(makeModel());
     JScrollPane lsp = new JScrollPane(leftList);
     lsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -148,13 +141,7 @@ public final class MainPanel extends JPanel {
     JScrollPane rsp = new JScrollPane(rightList);
     rsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    JButton button1 = makeButton(">");
-    button1.addActionListener(e -> move(leftList, rightList));
-
-    JButton button2 = makeButton("<");
-    button2.addActionListener(e -> move(rightList, leftList));
-
-    Component box = makeCenterBox(button1, button2);
+    Component box = makeCenterBox(leftList, rightList);
 
     JPanel panel = new JPanel(new ThreeColumnsLayout(0, 0));
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -162,6 +149,13 @@ public final class MainPanel extends JPanel {
     panel.add(box, BorderLayout.CENTER);
     panel.add(rsp, BorderLayout.EAST);
     return panel;
+  }
+
+  private static ListModel<String> makeModel() {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    model.addElement("loooooooooooooooooooooooooooooooooooong");
+    IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
+    return model;
   }
 
   public static void main(String[] args) {

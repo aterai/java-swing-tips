@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.UndoableEditEvent;
@@ -25,7 +26,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UndoManager undoManager0 = new UndoManager();
-    JTextField field0 = new JTextField("default");
+    JTextField field0 = new JTextField("Default");
     field0.getDocument().addUndoableEditListener(undoManager0);
 
     UndoManager undoManager1 = new UndoManager();
@@ -70,18 +71,19 @@ public final class MainPanel extends JPanel {
     p.add(new JButton(redoAction));
     p.add(button);
 
+    add(makeTextFieldBox(field0, field1, field2), BorderLayout.NORTH);
+    add(p, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Box makeTextFieldBox(JTextField... list) {
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("Default", field0));
-    box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel(field1.getText(), field1));
-    box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel(field2.getText(), field2));
-
-    add(box, BorderLayout.NORTH);
-    add(p, BorderLayout.SOUTH);
-
-    setPreferredSize(new Dimension(320, 240));
+    for (JTextField field : list) {
+      box.add(makeTitledPanel(field.getText(), field));
+      box.add(Box.createVerticalStrut(10));
+    }
+    return box;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -101,7 +103,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
