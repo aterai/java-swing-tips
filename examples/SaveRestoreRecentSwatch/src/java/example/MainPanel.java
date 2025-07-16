@@ -184,12 +184,19 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     recentSwatchPanel.addKeyListener(recentSwatchKeyListener);
 
     JPanel mainHolder = new JPanel(new BorderLayout());
-    Border outside = BorderFactory.createLineBorder(Color.BLACK);
-    Border inside = BorderFactory.createLineBorder(Color.WHITE);
-    Border border = BorderFactory.createCompoundBorder(outside, inside);
-    mainHolder.setBorder(border);
+    mainHolder.setBorder(makeCellBorder());
     mainHolder.add(swatchPanel, BorderLayout.CENTER);
 
+    add(makeSuperHolder(mainHolder, recentStr));
+  }
+
+  private static Border makeCellBorder() {
+    Border outside = BorderFactory.createLineBorder(Color.BLACK);
+    Border inside = BorderFactory.createLineBorder(Color.WHITE);
+    return BorderFactory.createCompoundBorder(outside, inside);
+  }
+
+  private JPanel makeSuperHolder(JPanel mainHolder, String recentStr) {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.LAST_LINE_START;
     gbc.gridwidth = 1;
@@ -203,7 +210,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
 
     recentSwatchPanel.setInheritsPopupMenu(true);
     JPanel recentHolder = new JPanel(new BorderLayout());
-    recentHolder.setBorder(border);
+    recentHolder.setBorder(makeCellBorder());
     recentHolder.setInheritsPopupMenu(true);
     recentHolder.add(recentSwatchPanel, BorderLayout.CENTER);
 
@@ -220,8 +227,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     gbc.insets = new Insets(0, 0, 0, 2);
     superHolder.add(recentHolder, gbc);
     superHolder.setInheritsPopupMenu(true);
-
-    add(superHolder);
+    return superHolder;
   }
 
   @SuppressWarnings("PMD.NullAssignment")
@@ -484,13 +490,12 @@ class RecentSwatchPanel extends SwatchPanel {
   }
 
   @Override protected void initColors() {
-    Color defaultRecent = null;
-    // = UIManager.getColor("ColorChooser.swatchesDefaultRecentColor");
+    // Color defaultRecent = UIManager.getColor("ColorChooser.swatchesDefaultRecentColor");
     int numColors = numSwatches.width * numSwatches.height;
     colors = new Color[numColors];
-    for (int i = 0; i < numColors; i++) {
-      colors[i] = defaultRecent;
-    }
+    // for (int i = 0; i < numColors; i++) {
+    //   colors[i] = defaultRecent;
+    // }
   }
 
   public void setMostRecentColor(Color c) {
