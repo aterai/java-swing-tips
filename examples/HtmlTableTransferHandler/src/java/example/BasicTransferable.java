@@ -45,7 +45,7 @@ public class BasicTransferable implements Transferable {
     } catch (ClassNotFoundException ex) {
       // System.err.println("error initializing javax.swing.plaf.basic.BasicTransferable");
       UIManager.getLookAndFeel().provideErrorFeedback(null);
-      ex.printStackTrace();
+      // ex.printStackTrace();
     }
   }
 

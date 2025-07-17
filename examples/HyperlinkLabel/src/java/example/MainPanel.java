@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
@@ -50,7 +51,7 @@ public final class MainPanel extends JPanel {
             Desktop.getDesktop().browse(new URI(link));
           }
         } catch (IOException | URISyntaxException ex) {
-          ex.printStackTrace();
+          // Logger.getGlobal().severe(ex::getMessage);
           UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
         }
       }
@@ -90,7 +91,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
