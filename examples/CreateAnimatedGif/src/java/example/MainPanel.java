@@ -82,24 +82,6 @@ public final class MainPanel extends JPanel {
       writer.setOutput(stream);
       writer.prepareWriteSequence(null);
 
-      IIOMetadataNode gce = new IIOMetadataNode("GraphicControlExtension");
-      gce.setAttribute("disposalMethod", "none");
-      gce.setAttribute("userInputFlag", "FALSE");
-      gce.setAttribute("transparentColorFlag", "FALSE");
-      gce.setAttribute("transparentColorIndex", "0");
-      gce.setAttribute("delayTime", Integer.toString(DELAY));
-
-      IIOMetadataNode ae = new IIOMetadataNode("ApplicationExtension");
-      ae.setAttribute("applicationID", "NETSCAPE");
-      ae.setAttribute("authenticationCode", "2.0");
-      // last two bytes is an unsigned short (little endian) that
-      // indicates the number of times to loop.
-      // 0 means loop forever.
-      ae.setUserObject(new byte[]{0x1, 0x0, 0x0});
-
-      IIOMetadataNode aes = new IIOMetadataNode("ApplicationExtensions");
-      aes.appendChild(ae);
-
       // Create animated GIF using imageio | Oracle Community
       // https://community.oracle.com/thread/1264385
       BufferedImage img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
@@ -107,8 +89,8 @@ public final class MainPanel extends JPanel {
       IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(img), iwp);
       String metaFormat = metadata.getNativeMetadataFormatName();
       Node root = metadata.getAsTree(metaFormat);
-      root.appendChild(gce);
-      root.appendChild(aes);
+      root.appendChild(makeGraphicControlExtensionNode());
+      root.appendChild(makeApplicationExtensionsNode());
       metadata.setFromTree(metaFormat, root);
 
       // make frame
@@ -121,6 +103,29 @@ public final class MainPanel extends JPanel {
       writer.endWriteSequence();
     }
     return file;
+  }
+
+  private static IIOMetadataNode makeGraphicControlExtensionNode() {
+    IIOMetadataNode gce = new IIOMetadataNode("GraphicControlExtension");
+    gce.setAttribute("disposalMethod", "none");
+    gce.setAttribute("userInputFlag", "FALSE");
+    gce.setAttribute("transparentColorFlag", "FALSE");
+    gce.setAttribute("transparentColorIndex", "0");
+    gce.setAttribute("delayTime", Integer.toString(DELAY));
+    return gce;
+  }
+
+  private static IIOMetadataNode makeApplicationExtensionsNode() {
+    IIOMetadataNode ae = new IIOMetadataNode("ApplicationExtension");
+    ae.setAttribute("applicationID", "NETSCAPE");
+    ae.setAttribute("authenticationCode", "2.0");
+    // last two bytes is an unsigned short (little endian) that
+    // indicates the number of times to loop.
+    // 0 means loop forever.
+    ae.setUserObject(new byte[]{0x1, 0x0, 0x0});
+    IIOMetadataNode aes = new IIOMetadataNode("ApplicationExtensions");
+    aes.appendChild(ae);
+    return aes;
   }
 
   private static void paintFrame(BufferedImage image, List<Shape> list) {
