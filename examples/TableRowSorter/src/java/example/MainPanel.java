@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,11 +29,10 @@ public final class MainPanel extends JPanel {
       TableCellRenderer r = tbl.getTableHeader().getDefaultRenderer();
       Component c = r.getTableCellRendererComponent(
           tbl, value, isSelected, hasFocus, row, column);
-      RowSorter<? extends TableModel> rs = tbl.getRowSorter();
-      if (rs instanceof DefaultRowSorter) {
+      getDefaultRowSorter(tbl).ifPresent(rs -> {
         int cmi = tbl.convertColumnIndexToModel(column);
-        c.setForeground(((DefaultRowSorter<?, ?>) rs).isSortable(cmi) ? Color.BLACK : Color.GRAY);
-      }
+        c.setForeground(rs.isSortable(cmi) ? Color.BLACK : Color.GRAY);
+      });
       return c;
     };
     TableColumnModel columns = table.getColumnModel();
@@ -63,6 +63,12 @@ public final class MainPanel extends JPanel {
     add(button, BorderLayout.SOUTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static Optional<DefaultRowSorter<?, ?>> getDefaultRowSorter(JTable table) {
+    return Optional.ofNullable(table.getRowSorter())
+        .filter(DefaultRowSorter.class::isInstance)
+        .map(s -> (DefaultRowSorter<?, ?>) s);
   }
 
   private static TableModel makeModel() {

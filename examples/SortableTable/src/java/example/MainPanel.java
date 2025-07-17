@@ -83,10 +83,7 @@ final class TablePopupMenu extends JPopupMenu {
   /* default */ TablePopupMenu() {
     super();
     add("add").addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      if (table.isEditing()) {
-        table.getCellEditor().stopCellEditing();
-      }
+      JTable table = getTable();
       RowDataModel model = (RowDataModel) table.getModel();
       model.addRowData(new RowData("New row", ""));
       Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
@@ -95,16 +92,21 @@ final class TablePopupMenu extends JPopupMenu {
     addSeparator();
     delete = add("delete");
     delete.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      if (table.isEditing()) {
-        table.getCellEditor().stopCellEditing();
-      }
+      JTable table = getTable();
       DefaultTableModel model = (DefaultTableModel) table.getModel();
       int[] selection = table.getSelectedRows();
       for (int i = selection.length - 1; i >= 0; i--) {
         model.removeRow(selection[i]);
       }
     });
+  }
+
+  private JTable getTable() {
+    JTable table = (JTable) getInvoker();
+    if (table.isEditing()) {
+      table.getCellEditor().stopCellEditing();
+    }
+    return table;
   }
 
   @Override public void show(Component c, int x, int y) {

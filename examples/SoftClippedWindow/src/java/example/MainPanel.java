@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -48,8 +49,7 @@ public final class MainPanel extends JPanel {
     JButton button2 = new JButton("soft clipped window");
     button2.addActionListener(e -> {
       JWindow window = new JWindow();
-      GraphicsConfiguration gc = window.getGraphicsConfiguration();
-      if (gc != null && gc.isTranslucencyCapable()) {
+      if (isTranslucencyCapable(window)) {
         window.setBackground(new Color(0x0, true));
       }
       window.getContentPane().add(makePanel(clippedImage));
@@ -61,6 +61,11 @@ public final class MainPanel extends JPanel {
     add(button1);
     add(button2);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static boolean isTranslucencyCapable(JWindow window) {
+    GraphicsConfiguration gc = window.getGraphicsConfiguration();
+    return gc != null && gc.isTranslucencyCapable();
   }
 
   private Component makePanel(BufferedImage image) {
@@ -143,7 +148,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

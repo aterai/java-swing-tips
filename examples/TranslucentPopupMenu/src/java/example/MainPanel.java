@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 
@@ -48,7 +49,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -93,20 +94,23 @@ final class TranslucentPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     EventQueue.invokeLater(() -> {
       Container p = getTopLevelAncestor();
-      if (p instanceof JWindow && ((JWindow) p).getType() == Window.Type.POPUP) {
-        // Heavy weight
+      // Heavy weight
+      if (p instanceof JWindow && isTranslucencyCapable((JWindow) p)) {
         p.setBackground(ALPHA_ZERO);
-        // Java 1.6.0:
-        // JWindow w = (JWindow) p;
-        // if (System.getProperty("java.version").startsWith("1.6.0")) {
-        //   w.dispose();
-        //   if (AWTUtilities.isWindowOpaque(w)) {
-        //     AWTUtilities.setWindowOpaque(w, false);
-        //   }
-        //   w.setVisible(true);
-        // }
       }
     });
+    // // Java 1.6.0:
+    // EventQueue.invokeLater(() -> {
+    //   Container p = getTopLevelAncestor();
+    //   if (p instanceof JWindow && isTranslucencyCapable((JWindow) p)) {
+    //     JWindow w = (JWindow) p;
+    //     w.dispose();
+    //     if (AWTUtilities.isWindowOpaque(w)) {
+    //       AWTUtilities.setWindowOpaque(w, false);
+    //     }
+    //     w.setVisible(true);
+    //   }
+    // });
     super.show(c, x, y);
   }
 
@@ -118,5 +122,11 @@ final class TranslucentPopupMenu extends JPopupMenu {
     g2.fillRect(LEFT_WIDTH, 0, getWidth(), getHeight());
     g2.dispose();
     // super.paintComponent(g);
+  }
+
+  private static boolean isTranslucencyCapable(JWindow window) {
+    GraphicsConfiguration gc = window.getGraphicsConfiguration();
+    boolean isHeavyWeight = window.getType() == Window.Type.POPUP;
+    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
   }
 }
