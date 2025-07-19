@@ -22,14 +22,17 @@ public final class MainPanel extends JPanel implements HierarchyListener {
   private MainPanel() {
     super(new BorderLayout());
     BoundedRangeModel model = new DefaultBoundedRangeModel();
-    JProgressBar progressBar1 = new StringAlignmentProgressBar(model, SwingConstants.RIGHT);
-    JProgressBar progressBar2 = new StringAlignmentProgressBar(model, SwingConstants.LEFT);
-    progressBar2.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
+    JLabel label1 = new JLabel(" ", SwingConstants.RIGHT);
+    JProgressBar progress1 = new StringAlignmentProgressBar(model, label1);
+
+    JLabel label2 = new JLabel(" ", SwingConstants.RIGHT);
+    JProgressBar progress2 = new StringAlignmentProgressBar(model, label2);
+    progress2.setBorder(BorderFactory.createTitledBorder("TitledBorder"));
 
     JCheckBox check = new JCheckBox("setStringPainted");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
-      Stream.of(progressBar1, progressBar2).forEach(bar -> bar.setStringPainted(b));
+      Stream.of(progress1, progress2).forEach(bar -> bar.setStringPainted(b));
     });
 
     JButton button = new JButton("Test");
@@ -38,14 +41,14 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         worker.cancel(true);
       }
       worker = new BackgroundTask();
-      worker.addPropertyChangeListener(new ProgressListener(progressBar1));
+      worker.addPropertyChangeListener(new ProgressListener(progress1));
       worker.execute();
     });
 
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
-    p.add(progressBar1);
-    p.add(progressBar2);
+    p.add(progress1);
+    p.add(progress2);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -97,9 +100,9 @@ class StringAlignmentProgressBar extends JProgressBar {
   private final JLabel label;
   // private transient ChangeListener changeListener;
 
-  protected StringAlignmentProgressBar(BoundedRangeModel model, int horizAlignment) {
+  protected StringAlignmentProgressBar(BoundedRangeModel model, JLabel label) {
     super(model);
-    label = new JLabel(" ", horizAlignment);
+    this.label = label;
   }
 
   @Override public void updateUI() {
