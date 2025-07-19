@@ -20,25 +20,12 @@ public final class MainPanel extends JPanel {
     JRadioButton r3 = new JRadioButton("start cell editing only F2");
     JRadioButton r4 = new JRadioButton("isCellEditable return false");
 
-    String[] columnNames = {"CellEditable:false", "Integer", "String"};
-    Object[][] data = {
-        {"aaa", 12, "eee"}, {"bbb", 5, "ggg"}, {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int col) {
-        return col != 0 && !r4.isSelected();
-      }
-    };
-    JTable table = new JTable(model);
+    JTable table = new JTable(makeModel(r4));
     table.setAutoCreateRowSorter(true);
     table.setShowGrid(false);
     // table.setShowHorizontalLines(false);
     // table.setShowVerticalLines(false);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
 
     // // System.out.println(table.getActionMap().get("startEditing"));
     // InputMap im = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -66,6 +53,22 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel(JRadioButton radio) {
+    String[] columnNames = {"CellEditable:false", "Integer", "String"};
+    Object[][] data = {
+        {"aaa", 12, "eee"}, {"bbb", 5, "ggg"}, {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int col) {
+        return col != 0 && !radio.isSelected();
+      }
+    };
   }
 
   public static void main(String[] args) {
