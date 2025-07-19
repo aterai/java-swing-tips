@@ -34,7 +34,7 @@
 <!-- directory -->
 <property name="lib.dir"  value="lib" />
 <property name="src.dir"  value="src/java" />
-<property name="res.dir"  value="src/conf" />
+<property name="res.dir"  value="src/resources" />
 <property name="web.dir"  value="src/web" />
 <property name="conf.dir" value="src/conf" />
 <property name="bkup.dir" value="bkuptmp" />

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="example" default="compile" xmlns:if="ant:if" xmlns:unless="ant:unless">
+<project name="Java Swing Tips" default="compile" xmlns:if="ant:if" xmlns:unless="ant:unless">
   <!-- all properties are in build.properties -->
   <!--property file="build.properties" /-->
   <property environment="env" />
   <property name="config.dir" value="config" />
   <import file="${basedir}/${config.dir}/properties.xml" />
   <import file="${basedir}/${config.dir}/jnlp.xml" />
+
+  <condition property="have.resources">
+    <available file="${res.dir}" />
+  </condition>
 
   <condition property="jdk9orlater">
     <javaversion atleast="9" />
@@ -34,7 +38,7 @@
   <target name="usage">
     <echo message="" />
     <echo message="" />
-    <echo message="${Name} Build file" />
+    <echo message="Java Swing Tips Build file" />
     <echo message="-------------------------------------------------------------" />
     <echo message="" />
     <echo message=" available targets are:" />
@@ -55,9 +59,17 @@
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
   <target name="prepare">
-    <echo message="----------- ${Name} ${version} [${year}] ------------" />
     <mkdir dir="${build.dir}" />
     <mkdir dir="${build.dest}" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the resource                                               -->
+  <!-- =================================================================== -->
+  <target name="prepare-resource" depends="prepare" if="have.resources">
+    <copy todir="${build.dest}">
+      <fileset dir="${res.dir}" excludes="**/*.properties.*, **/*.bak" />
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -72,18 +84,12 @@
           outputencoding="${compile.encoding}">
       <fileset dir="${src.dir}" includes="**/*.java" />
     </copy>
-    <copy todir="${build.src}">
-      <fileset dir="${src.dir}" excludes="**/*.java, **/*.bak" />
-    </copy>
-    <copy todir="${build.dest}">
-      <fileset dir="${src.dir}" excludes="**/*.java, **/*.bak, **/*.utf8" />
-    </copy>
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare-src">
+  <target name="compile" depends="prepare-src, prepare-resource">
     <javac srcdir="${build.src}"
            includes="**/*.java"
            destdir="${build.dest}"
@@ -120,11 +126,11 @@
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <echo message="Creating the jar file ${build.dir}/${name}.jar" />
+    <echo message="Creating the jar file ${build.dir}/example.jar" />
     <tstamp>
       <format property="ts" pattern="yyyyMMdd-HHmmss-z" />
     </tstamp>
-    <jar jarfile="${build.dir}/${name}.jar" basedir="${build.dest}">
+    <jar jarfile="${build.dir}/example.jar" basedir="${build.dest}">
       <manifest>
         <attribute name="Main-Class" value="${main.class}" />
         <attribute name="Class-Path" value="${runtime.classpath}" />
