@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     });
 
     JSlider slider = new JSlider(0, 200, 0);
-    slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider.putClientProperty("Slider.paintThumbArrowShape", true);
     progress1.setModel(slider.getModel());
 
     JButton button = new JButton("start");
@@ -118,9 +118,9 @@ class SolidGaugeUI extends BasicProgressBarUI {
 
   @Override public void paint(Graphics g, JComponent c) {
     Rectangle rect = SwingUtilities.calculateInnerArea(progressBar, null);
-    if (rect.isEmpty()) {
-      return;
-    }
+    // if (rect.isEmpty()) {
+    //   return;
+    // }
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -152,9 +152,7 @@ class SolidGaugeUI extends BasicProgressBarUI {
     g2.fill(foreground);
 
     // Draw minimum, maximum
-    Font font = progressBar.getFont();
-    float fsz = font.getSize2D();
-    float min = (float) (cx - or - fsz);
+    float min = (float) (cx - or - progressBar.getFont().getSize2D());
     float max = (float) (cx + or + 4d);
     g2.setPaint(progressBar.getForeground());
     g2.drawString(Objects.toString(progressBar.getMinimum()), min, (float) cy);
@@ -162,17 +160,23 @@ class SolidGaugeUI extends BasicProgressBarUI {
 
     // Deal with possible text painting
     if (progressBar.isStringPainted()) {
-      float h = (float) cy - fsz;
-      String str = String.format("%d", progressBar.getValue());
-      float vx = (float) cx - g2.getFontMetrics().stringWidth(str) * .5f;
-      g2.drawString(str, vx, h);
-      float ksz = fsz * 2f / 3f;
-      g2.setFont(font.deriveFont(ksz));
-      String kmh = "㎞/h";
-      float tx = (float) cx - g2.getFontMetrics().stringWidth(kmh) * .5f;
-      g2.drawString(kmh, tx, h + ksz);
+      drawProgressString(g2, (float) cx, (float) cy);
     }
     g2.dispose();
+  }
+
+  private void drawProgressString(Graphics2D g2, float x, float y) {
+    Font font = progressBar.getFont();
+    float fontSize = font.getSize2D();
+    float h = y - fontSize;
+    String str = String.format("%d", progressBar.getValue());
+    float vx = x - g2.getFontMetrics().stringWidth(str) * .5f;
+    g2.drawString(str, vx, h);
+    float ksz = fontSize * 2f / 3f;
+    g2.setFont(font.deriveFont(ksz));
+    String kmh = "㎞/h";
+    float tx = x - g2.getFontMetrics().stringWidth(kmh) * .5f;
+    g2.drawString(kmh, tx, h + ksz);
   }
 
   private static int[] makeGradientPallet(int range) {
