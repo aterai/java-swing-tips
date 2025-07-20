@@ -10,13 +10,12 @@ import java.awt.geom.RoundRectangle2D;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -31,7 +30,7 @@ public final class MainPanel extends JPanel {
   //     "㉙", "㉚", "㉛"
   // };
   // public static final String CIRCLED_IDEOGRAPH_CONGRATULATION = "㊗"; // U+3297
-  public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
+  public final LocalDate realLocalDate = LocalDate.of(2020, 7, 27);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final JTable monthTable = new JTable() {
     private void updateRowsHeight(JViewport viewport) {
@@ -99,7 +98,7 @@ public final class MainPanel extends JPanel {
 
   private final class CalendarTableRenderer implements TableCellRenderer {
     private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEADING, 1, 1));
-    private final JLabel label = new EnclosedLabel();
+    private final EnclosedLabel label = new EnclosedLabel();
     // private final JLabel holiday = new EnclosedLabel();
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
@@ -128,21 +127,25 @@ public final class MainPanel extends JPanel {
       return renderer;
     }
 
-    private void updateEnclosedLabel(JTable table, JLabel lbl, LocalDate d) {
+    private void updateEnclosedLabel(JTable table, EnclosedLabel lbl, LocalDate d) {
       String txt = Integer.toString(d.getDayOfMonth());
       lbl.setText("<html><b>" + txt);
       // label.setText(getDayOfWeekText(d));
       boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
       if (isThisMonth && (d.getDayOfWeek() == DayOfWeek.SUNDAY || isJapaneseNationalHoliday(d))) {
-        lbl.setForeground(table.getForeground());
-        lbl.setBackground(table.getBackground());
-      } else if (isThisMonth && d.getDayOfWeek() == DayOfWeek.SATURDAY) {
-        lbl.setForeground(table.getForeground());
-        lbl.setBackground(Color.BLUE);
-      } else if (isThisMonth) {
+        lbl.setEnclosedShape(EnclosedShape.ROUNDED_RECTANGLE);
         lbl.setForeground(table.getBackground());
         lbl.setBackground(table.getForeground());
+      } else if (isThisMonth && d.getDayOfWeek() == DayOfWeek.SATURDAY) {
+        lbl.setEnclosedShape(EnclosedShape.ELLIPSE);
+        lbl.setForeground(table.getBackground().darker());
+        lbl.setBackground(table.getForeground().brighter());
+      } else if (isThisMonth) {
+        lbl.setEnclosedShape(EnclosedShape.NONE);
+        lbl.setForeground(table.getForeground());
+        lbl.setBackground(table.getBackground());
       } else {
+        lbl.setEnclosedShape(EnclosedShape.NONE);
         lbl.setForeground(Color.GRAY);
         lbl.setBackground(table.getForeground());
         lbl.setText(txt);
@@ -198,6 +201,8 @@ public final class MainPanel extends JPanel {
 }
 
 class EnclosedLabel extends JLabel {
+  private EnclosedShape enclosedShape = EnclosedShape.NONE;
+
   protected EnclosedLabel() {
     super("", CENTER);
   }
@@ -214,7 +219,7 @@ class EnclosedLabel extends JLabel {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    if (!Objects.equals(getBackground(), Color.WHITE)) {
+    if (enclosedShape != EnclosedShape.NONE) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(getBackground());
@@ -224,13 +229,21 @@ class EnclosedLabel extends JLabel {
     super.paintComponent(g);
   }
 
+  protected void setEnclosedShape(EnclosedShape enclosedShape) {
+    this.enclosedShape = enclosedShape;
+  }
+
   protected Shape getShape() {
     double w = getWidth() - 1d;
     double h = getHeight() - 1d;
-    return Objects.equals(getBackground(), Color.BLUE)
+    return enclosedShape == EnclosedShape.ELLIPSE
         ? new Ellipse2D.Double(0d, 0d, w, h)
         : new RoundRectangle2D.Double(0d, 0d, w, h, 8d, 8d);
   }
+}
+
+enum EnclosedShape {
+  ROUNDED_RECTANGLE, ELLIPSE, NONE
 }
 
 class CalendarViewTableModel extends DefaultTableModel {
