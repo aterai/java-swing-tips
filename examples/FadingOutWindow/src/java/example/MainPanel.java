@@ -38,14 +38,12 @@ public final class MainPanel extends JPanel {
     Timer animator = new Timer(50, null);
     animator.addActionListener(e -> {
       int a = alpha.addAndGet(-10);
-      if (a < 0) {
+      if (a >= 0) {
+        updateWindowOpacity(window, a / 100f);
+      } else {
         window.dispose();
         animator.stop();
         log.append("JWindow.dispose()\n");
-      } else {
-        float opacity = a / 100f;
-        window.setOpacity(opacity);
-        log.append(String.format("JWindow.setOpacity(%f)%n", opacity));
       }
     });
     Shape shape = new RoundRectangle2D.Float(0f, 0f, 240f, 64f, 32f, 32f);
@@ -53,6 +51,11 @@ public final class MainPanel extends JPanel {
     window.pack();
     window.setLocationRelativeTo(c.getRootPane());
     window.setVisible(true);
+  }
+
+  private void updateWindowOpacity(JWindow window, float opacity) {
+    window.setOpacity(opacity);
+    log.append(String.format("JWindow.setOpacity(%f)%n", opacity));
   }
 
   private Component makePanel(Shape shape, Timer animator) {

@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -17,15 +18,16 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private static final int DEFAULT_HEIGHT = 20;
+
   private MainPanel() {
     super(new BorderLayout());
-    int defaultHeight = 20;
     JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setAutoCreateRowSorter(true);
         setSurrendersFocusOnKeystroke(true);
-        setRowHeight(defaultHeight);
+        setRowHeight(DEFAULT_HEIGHT);
         setDefaultRenderer(RowHeader.class, new RowHeaderRenderer());
         setDefaultEditor(RowHeader.class, new RowHeaderEditor());
         TableColumn column = getColumnModel().getColumn(1);
@@ -33,24 +35,26 @@ public final class MainPanel extends JPanel {
         column.setPreferredWidth(160);
       }
     };
-    table.getModel().addTableModelListener(e -> {
-      int mc = e.getColumn();
-      int mr = e.getFirstRow();
-      int vc = table.convertColumnIndexToView(mc);
-      int vr = table.convertRowIndexToView(mr);
-      Object o = table.getValueAt(vr, vc);
-      if (mc == 0 && o instanceof RowHeader) {
-        RowHeader rh = (RowHeader) o;
-        int vc1 = table.convertColumnIndexToView(1);
-        TableCellRenderer r = table.getColumnModel().getColumn(vc1).getCellRenderer();
-        Object v = table.getValueAt(vr, vc1);
-        Component c = r.getTableCellRendererComponent(table, v, true, true, vr, vc1);
-        int h = rh.isSelected() ? c.getPreferredSize().height : defaultHeight;
-        table.setRowHeight(vr, h);
-      }
-    });
+    table.getModel().addTableModelListener(e -> updateRowHeight(e, table));
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void updateRowHeight(TableModelEvent e, JTable table) {
+    int mc = e.getColumn();
+    int mr = e.getFirstRow();
+    int vc = table.convertColumnIndexToView(mc);
+    int vr = table.convertRowIndexToView(mr);
+    Object o = table.getValueAt(vr, vc);
+    if (mc == 0 && o instanceof RowHeader) {
+      RowHeader rh = (RowHeader) o;
+      int vc1 = table.convertColumnIndexToView(1);
+      TableCellRenderer r = table.getColumnModel().getColumn(vc1).getCellRenderer();
+      Object v = table.getValueAt(vr, vc1);
+      Component c = r.getTableCellRendererComponent(table, v, true, true, vr, vc1);
+      int h = rh.isSelected() ? c.getPreferredSize().height : DEFAULT_HEIGHT;
+      table.setRowHeight(vr, h);
+    }
   }
 
   private static TableModel makeModel() {
