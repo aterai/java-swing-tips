@@ -22,6 +22,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("ExecutableStatementCount")
   private static JPanel makeNumericKeypad() {
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(1, 1, 1, 1);

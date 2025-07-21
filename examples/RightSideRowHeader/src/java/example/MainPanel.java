@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -60,7 +61,12 @@ public final class MainPanel extends JPanel {
       JViewport viewport = (JViewport) e.getSource();
       scroll.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
     });
+    add(scroll);
+    add(makeAddButton(table), BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private static JButton makeAddButton(JTable table) {
     JButton addButton = new JButton("add");
     addButton.addActionListener(e -> {
       table.getRowSorter().setSortKeys(null);
@@ -69,10 +75,7 @@ public final class MainPanel extends JPanel {
           .mapToObj(i -> new Object[] {i, i + 1, "A" + i, "B" + i})
           .forEach(m::addRow);
     });
-
-    add(scroll);
-    add(addButton, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    return addButton;
   }
 
   private static TableModel makeModel() {
@@ -150,7 +153,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -172,7 +175,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       "CyclomaticComplexity",
       "NPathComplexity",
       "MethodLength",
-      "JavaNCSS"
+      "JavaNCSS",
+      "ExecutableStatementCount"
   })
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JScrollPane)) {

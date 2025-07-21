@@ -12,6 +12,7 @@ import java.awt.geom.FlatteningPathIterator;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -39,6 +40,7 @@ public final class MainPanel extends JPanel {
 
   // [Fun with Java2D - Strokes](http://www.jhlabs.com/java/java2d/strokes/)
   // http://www.jhlabs.com/java/java2d/strokes/ShapeStroke.java
+  @SuppressWarnings("ExecutableStatementCount")
   public static Shape createTextOnPath(Shape shape, GlyphVector gv) {
     double[] points = new double[6];
     Point2D prevPt = new Point2D.Double();
@@ -109,7 +111,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -188,6 +188,7 @@
     <module name="SuperClone"/>
     <module name="SuperFinalize"/>
     <module name="SingleSpaceSeparator" />
+    <module name="ExecutableStatementCount"/>
 
     <module name="EmptyLineSeparator">
       <property name="tokens"
