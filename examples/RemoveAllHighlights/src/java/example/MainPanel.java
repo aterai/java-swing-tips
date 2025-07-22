@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -41,43 +42,63 @@ public final class MainPanel extends JPanel {
       " so you can test yourself on what you've learned.",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
       "");
-  private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
 
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea() {
-      private transient WordHighlightListener handler;
-      @Override public void updateUI() {
-        removeCaretListener(handler);
-        removeMouseListener(handler);
-        removeKeyListener(handler);
-        super.updateUI();
-        handler = new WordHighlightListener();
-        addCaretListener(handler);
-        addMouseListener(handler);
-        addKeyListener(handler);
-      }
-    };
+    JTextArea textArea = new WordHighlightTextArea();
     textArea.setSelectedTextColor(Color.BLACK);
     textArea.setLineWrap(true);
     textArea.setText(TEXT);
-
-    JButton button1 = new JButton("removeAllHighlights");
-    button1.setFocusable(false);
-    button1.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
-
-    JButton button2 = new JButton("removeWordHighlights");
-    button2.setFocusable(false);
-    button2.addActionListener(e -> removeWordHighlights(textArea));
-
+    JButton b1 = new JButton("removeAllHighlights");
+    b1.setFocusable(false);
+    b1.addActionListener(e -> textArea.getHighlighter().removeAllHighlights());
+    JButton b2 = new JButton("removeWordHighlights");
+    b2.setFocusable(false);
+    b2.addActionListener(e -> WordHighlightTextArea.removeWordHighlights(textArea));
     Box box = Box.createHorizontalBox();
-    box.add(button1);
+    box.add(b1);
     box.add(Box.createHorizontalStrut(2));
-    box.add(button2);
-
+    box.add(b2);
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  public static void main(String[] args) {
+    EventQueue.invokeLater(MainPanel::createAndShowGui);
+  }
+
+  private static void createAndShowGui() {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (UnsupportedLookAndFeelException ignored) {
+      Toolkit.getDefaultToolkit().beep();
+    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+      return;
+    }
+    JFrame frame = new JFrame("@title@");
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.getContentPane().add(new MainPanel());
+    frame.pack();
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+  }
+}
+
+class WordHighlightTextArea extends JTextArea {
+  private static final HighlightPainter HIGHLIGHT = new DefaultHighlightPainter(Color.YELLOW);
+  private transient WordHighlightListener handler;
+
+  @Override public void updateUI() {
+    removeCaretListener(handler);
+    removeMouseListener(handler);
+    removeKeyListener(handler);
+    super.updateUI();
+    handler = new WordHighlightListener();
+    addCaretListener(handler);
+    addMouseListener(handler);
+    addKeyListener(handler);
   }
 
   public static void setHighlight(JTextComponent tc, String pattern) {
@@ -169,26 +190,5 @@ public final class MainPanel extends JPanel {
         }
       }
     }
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(MainPanel::createAndShowGui);
-  }
-
-  private static void createAndShowGui() {
-    try {
-      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException ignored) {
-      Toolkit.getDefaultToolkit().beep();
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
-      return;
-    }
-    JFrame frame = new JFrame("@title@");
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().add(new MainPanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 }
