@@ -9,6 +9,7 @@ import java.awt.geom.Path2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -140,7 +141,7 @@ class SelectedIcon implements Icon {
     g2.drawRect(0, 0, getIconWidth(), getIconHeight());
     g2.setPaint(Color.WHITE);
     Font f = g2.getFont();
-    g2.drawString("✔", getIconWidth() - f.getSize(), getIconHeight() - 3);
+    g2.drawString("?", getIconWidth() - f.getSize(), getIconHeight() - 3);
     g2.dispose();
   }
 

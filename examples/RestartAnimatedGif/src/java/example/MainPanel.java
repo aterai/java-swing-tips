@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -20,15 +21,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/9-0.gif";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-    Image img = Optional.ofNullable(url).map(u -> {
-      try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
-      } catch (IOException ex) {
-        return makeMissingImage();
-      }
-    }).orElseGet(MainPanel::makeMissingImage);
-
-    ImageIcon icon9 = new ImageIcon(img);
+    ImageIcon icon9 = makeImageIcon(url);
     ImageIcon animatedIcon = url == null ? icon9 : new ImageIcon(url);
 
     JTextArea textArea = new JTextArea();
@@ -43,22 +36,7 @@ public final class MainPanel extends JPanel {
       }
     };
     button.setRolloverIcon(animatedIcon);
-    button.setPressedIcon(new Icon() {
-      @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(Color.BLACK);
-        g2.fillRect(x, y, getIconWidth(), getIconHeight());
-        g2.dispose();
-      }
-
-      @Override public int getIconWidth() {
-        return icon9.getIconWidth();
-      }
-
-      @Override public int getIconHeight() {
-        return icon9.getIconHeight();
-      }
-    });
+    button.setPressedIcon(new PressedIcon(icon9));
 
     JLabel label = new JLabel(animatedIcon);
     label.addMouseListener(new MouseAdapter() {
@@ -76,6 +54,17 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(textArea));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static ImageIcon makeImageIcon(URL url) {
+    Image img = Optional.ofNullable(url).map(u -> {
+      try (InputStream s = u.openStream()) {
+        return ImageIO.read(s);
+      } catch (IOException ex) {
+        return makeMissingImage();
+      }
+    }).orElseGet(MainPanel::makeMissingImage);
+    return new ImageIcon(img);
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -106,7 +95,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -115,5 +104,28 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class PressedIcon implements Icon {
+  private final ImageIcon icon;
+
+  protected PressedIcon(ImageIcon icon) {
+    this.icon = icon;
+  }
+
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(Color.BLACK);
+    g2.fillRect(x, y, getIconWidth(), getIconHeight());
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return icon.getIconWidth();
+  }
+
+  @Override public int getIconHeight() {
+    return icon.getIconHeight();
   }
 }
