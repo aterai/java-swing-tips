@@ -30,6 +30,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     log.setEditable(false);
 
+    @SuppressWarnings("PMD.ReplaceJavaUtilCalendar")
     Calendar cal = Calendar.getInstance();
     // cal.set(2002, 12 - 1, 31, 10, 30, 15);
     cal.set(2002, Calendar.DECEMBER, 31, 10, 30, 15);

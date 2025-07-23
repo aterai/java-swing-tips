@@ -20,6 +20,7 @@ import javax.swing.text.DefaultFormatterFactory;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
+    @SuppressWarnings("PMD.ReplaceJavaUtilCalendar")
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.HOUR_OF_DAY, 0);
     calendar.clear(Calendar.MINUTE);
@@ -62,6 +63,7 @@ public final class MainPanel extends JPanel {
         return getDateValue(1);
       }
 
+      @SuppressWarnings("PMD.ReplaceJavaUtilCalendar")
       private Date getDateValue(int dir) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(getDate());

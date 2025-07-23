@@ -24,6 +24,7 @@ public final class MainPanel extends JPanel {
     JSpinner spinner1 = makeSpinner(model1, dateFormat);
     p.add(makeTitledPanel("Calendar.DAY_OF_MONTH", spinner1));
 
+    @SuppressWarnings("PMD.ReplaceJavaUtilCalendar")
     Calendar today = Calendar.getInstance();
     today.clear(Calendar.MILLISECOND);
     today.clear(Calendar.SECOND);

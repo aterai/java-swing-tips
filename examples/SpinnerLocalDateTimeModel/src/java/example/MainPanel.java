@@ -28,7 +28,7 @@ import javax.swing.text.InternationalFormatter;
 public final class MainPanel extends JPanel {
   private final JTextArea log = new JTextArea();
 
-  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
+  @SuppressWarnings({"PMD.ReplaceJavaUtilDate", "PMD.ReplaceJavaUtilCalendar"})
   private MainPanel() {
     super(new BorderLayout());
     Calendar cal = Calendar.getInstance();
