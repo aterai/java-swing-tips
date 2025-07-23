@@ -43,6 +43,16 @@ public final class MainPanel extends JPanel {
     table.setRowSorter(sorter);
     sorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
 
+    Box box = Box.createHorizontalBox();
+    box.add(check1);
+    box.add(Box.createHorizontalStrut(5));
+    box.add(makeCheck2(table, sorter));
+    add(box, BorderLayout.NORTH);
+    add(new JScrollPane(table));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JCheckBox makeCheck2(JTable table, TableRowSorter<TableModel> sorter) {
     RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         int viewIndex = table.convertRowIndexToView(entry.getIdentifier());
@@ -54,22 +64,16 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check2 = new JCheckBox("viewRowIndex < " + MAXIMUM_ROW_COUNT);
     check2.addActionListener(e -> sorter.setRowFilter(check2.isSelected() ? filter : defFilter));
-
-    Box box = Box.createHorizontalBox();
-    box.add(check1);
-    box.add(Box.createHorizontalStrut(5));
-    box.add(check2);
-    add(box, BorderLayout.NORTH);
-    add(new JScrollPane(table));
-    setPreferredSize(new Dimension(320, 240));
+    return check2;
   }
 
   private static DefaultTableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
-        {"AA", 1, true}, {"BB", 2, false}, {"cc", 3, true}, {"dd", 4, false}, {"ee", 5, false},
-        {"FF", -1, true}, {"GG", -2, true}, {"HH", -3, true}, {"II", -4, true}, {"JJ", -5, true},
-        {"KK", 6, true}, {"LL", 7, false}, {"MM", 8, true}, {"NN", 9, false}, {"OO", 0, false},
+        {"AA", 1, true}, {"BB", 2, false}, {"cc", 3, true}, {"dd", 4, false},
+        {"ee", 5, false}, {"FF", -1, true}, {"GG", -2, true}, {"HH", -3, true},
+        {"II", -4, true}, {"JJ", -5, true}, {"KK", 6, true}, {"LL", 7, false},
+        {"MM", 8, true}, {"NN", 9, false}, {"OO", 0, false},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
