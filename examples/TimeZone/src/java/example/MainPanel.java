@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
   private final JTextArea log = new JTextArea();
   private final JTextField field = new JTextField(30);
 
-  @SuppressWarnings("JavaUtilDate")
+  @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
   private MainPanel() {
     super(new BorderLayout());
     log.setEditable(false);
@@ -63,6 +63,7 @@ public final class MainPanel extends JPanel {
 
   private void parseDate(SimpleDateFormat format, DateFormat df) {
     String str = field.getText().trim();
+    @SuppressWarnings("PMD.ReplaceJavaUtilDate")
     Date date = format.parse(str, new ParsePosition(0));
     // String o = Objects.nonNull(date) ? df.format(date) : "error";
     String o = Optional.ofNullable(date).map(df::format).orElse("error");

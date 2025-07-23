@@ -36,13 +36,13 @@ public final class MainPanel extends JPanel {
 
   private static TableModel makeModel() {
     String[] columnNames = {"Type", "Value"};
-    @SuppressWarnings("JavaUtilDate")
+    @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
     Object[][] data = {
         {"String", "text"},
         {"Date", new Date()},
         {"Integer", 12},
         {"Double", 3.45},
-        {"Boolean", Boolean.TRUE},
+        {"Boolean", true},
         {"Color", Color.RED}
     };
     return new DefaultTableModel(data, columnNames) {

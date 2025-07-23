@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -24,6 +25,7 @@ public final class MainPanel extends JPanel {
     c.clear(Calendar.MINUTE);
     c.clear(Calendar.SECOND);
     c.clear(Calendar.MILLISECOND);
+    @SuppressWarnings("PMD.ReplaceJavaUtilDate")
     Date d = c.getTime();
 
     SimpleDateFormat format = new SimpleDateFormat("mm:ss", Locale.getDefault());
@@ -68,7 +70,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -25,6 +25,7 @@ public final class MainPanel extends JPanel {
     calendar.clear(Calendar.MINUTE);
     calendar.clear(Calendar.SECOND);
     calendar.clear(Calendar.MILLISECOND);
+    @SuppressWarnings("PMD.ReplaceJavaUtilDate")
     Date d = calendar.getTime();
 
     SimpleDateFormat format = new SimpleDateFormat("mm:ss, SSS", Locale.getDefault());
@@ -44,6 +45,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   private static SpinnerDateModel makeSpinnerDateModel(Date d) {
     Map<Integer, Integer> stepSizeMap = new ConcurrentHashMap<>();
     stepSizeMap.put(Calendar.HOUR_OF_DAY, 1);

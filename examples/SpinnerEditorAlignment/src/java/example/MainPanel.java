@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     String str0 = getHorizontalAlignment((JSpinner.DefaultEditor) spinner0.getEditor());
     log.append("SpinnerListModel: " + str0 + "\n");
 
-    @SuppressWarnings("JavaUtilDate")
+    @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
     Date d = new Date();
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, d, null, Calendar.DAY_OF_MONTH));
     spinner1.setEditor(new JSpinner.DateEditor(spinner1, "yyyy/MM/dd"));

@@ -25,7 +25,7 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private final JTextArea log = new JTextArea();
 
-  @SuppressWarnings("JavaUtilDate")
+  @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
   private MainPanel() {
     super(new BorderLayout());
     log.setEditable(false);
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @SuppressWarnings("JavaUtilDate")
+  @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
   private void info(Date date) {
     log.append(date + "\n"); // -> Tue Dec 31 10:30:15 JST 2002
 
@@ -94,6 +94,7 @@ public final class MainPanel extends JPanel {
     log.append("DateFormat 12 find -> " + m3.find() + "\n"); // true
   }
 
+  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   private static TableModel makeModel(Date date, Date start, Date end) {
     Object[][] data = {
         {date}, {start}, {end}

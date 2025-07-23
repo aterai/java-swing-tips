@@ -13,11 +13,11 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(3, 1));
 
-    @SuppressWarnings("JavaUtilDate")
     Date date = new Date();
     String dateFormat = "yyyy/MM/dd";
     SpinnerDateModel model1 = new SpinnerDateModel(date, date, null, Calendar.DAY_OF_MONTH);

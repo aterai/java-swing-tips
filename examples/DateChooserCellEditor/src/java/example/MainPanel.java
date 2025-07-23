@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
 
   private static TableModel makeModel() {
     String[] columnNames = {"A", "B"};
-    @SuppressWarnings("JavaUtilDate")
+    @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
     Object[][] data = {
         {new Date(), ""},
         {new Date(), ""},
@@ -133,6 +133,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
     return Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
   }
 
+  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     if (value instanceof Date) {
       Date date = (Date) value;

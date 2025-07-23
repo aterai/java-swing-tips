@@ -28,6 +28,7 @@ import javax.swing.text.InternationalFormatter;
 public final class MainPanel extends JPanel {
   private final JTextArea log = new JTextArea();
 
+  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   private MainPanel() {
     super(new BorderLayout());
     Calendar cal = Calendar.getInstance();
@@ -81,6 +82,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   private void dateInfo(Date date, Date start, Date end) {
     log.append(date + "\n");
     log.append(start + "\n");
@@ -93,6 +95,7 @@ public final class MainPanel extends JPanel {
     log.append(e + "\n");
   }
 
+  @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   private static SpinnerDateModel makeSpinnerDateModel(Date date, Date start, Date end) {
     return new SpinnerDateModel(date, start, end, Calendar.DAY_OF_MONTH);
   }

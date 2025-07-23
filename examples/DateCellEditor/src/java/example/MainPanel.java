@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
 
   private static TableModel makeModel() {
     String[] columnNames = {"Integer", "String", "Date"};
-    @SuppressWarnings("JavaUtilDate")
+    @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
     Object[][] data = {
         {-1, "AAA", new Date()}, {2, "BBB", new Date()},
         {-9, "EEE", new Date()}, {1, "", new Date()},
