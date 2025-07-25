@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 
@@ -37,7 +38,7 @@ public final class MainPanel extends JPanel {
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = (Graphics2D) bi.getGraphics();
     AffineTransform at = clockwise ? AffineTransform.getTranslateInstance(w, 0)
-                                   : AffineTransform.getTranslateInstance(0, h);
+        : AffineTransform.getTranslateInstance(0, h);
     at.quadrantRotate(clockwise ? 1 : -1);
     g2.setTransform(at);
     SwingUtilities.paintComponent(g2, label, this, 0, 0, d.width, d.height);
@@ -55,7 +56,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
