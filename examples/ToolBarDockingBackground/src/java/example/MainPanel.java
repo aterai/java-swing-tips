@@ -27,14 +27,6 @@ public final class MainPanel extends JPanel {
     toolBar.add(Box.createGlue());
 
     check.addActionListener(e -> {
-      // if (((JCheckBox) e.getSource()).isSelected()) {
-      //   UIManager.put(dockingBackground, new Color(0xAA_FF_00_00, true));
-      //   UIManager.put(floatingBackground, new Color(0xAA_00_00_FF, true));
-      // } else {
-      //   UIManager.put(dockingBackground, Color.RED);
-      //   UIManager.put(floatingBackground, Color.BLUE);
-      // }
-      // toolBar.updateUI();
       BasicToolBarUI ui = (BasicToolBarUI) toolBar.getUI();
       if (((JCheckBox) e.getSource()).isSelected()) {
         ui.setDockingColor(new Color(0x64_FF_00_00, true));
@@ -44,6 +36,16 @@ public final class MainPanel extends JPanel {
         ui.setFloatingColor(Color.BLUE);
       }
     });
+    // check2.addActionListener(e -> {
+    //   if (((JCheckBox) e.getSource()).isSelected()) {
+    //     UIManager.put(dockingBackground, new Color(0xAA_FF_00_00, true));
+    //     UIManager.put(floatingBackground, new Color(0xAA_00_00_FF, true));
+    //   } else {
+    //     UIManager.put(dockingBackground, Color.RED);
+    //     UIManager.put(floatingBackground, Color.BLUE);
+    //   }
+    //   toolBar.updateUI();
+    // });
 
     add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
