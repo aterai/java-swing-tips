@@ -53,9 +53,9 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
   @Override public void actionPerformed(ActionEvent e) {
     PointerInfo pi = MouseInfo.getPointerInfo();
     Point pt = pi.getLocation();
-    absolute.setText("absolute:" + pt.toString());
+    absolute.setText("absolute:" + pt);
     SwingUtilities.convertPointFromScreen(pt, this);
-    relative.setText("relative:" + pt.toString());
+    relative.setText("relative:" + pt);
     racket.move(pt.x);
     repaint();
   }
