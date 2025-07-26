@@ -37,6 +37,11 @@ public final class MainPanel extends JPanel {
     // });
     add(layeredPane);
 
+    add(makeToolBar(pt, layeredPane), BorderLayout.NORTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JToolBar makeToolBar(Point pt, JLayeredPane layeredPane) {
     JButton addTable = new JButton("add table");
     addTable.addActionListener(e -> {
       pt.setLocation(pt.x + 20, pt.y + 20);
@@ -61,8 +66,7 @@ public final class MainPanel extends JPanel {
     toolBar.add(addTable);
     toolBar.addSeparator();
     toolBar.add(addTree);
-    add(toolBar, BorderLayout.NORTH);
-    setPreferredSize(new Dimension(320, 240));
+    return toolBar;
   }
 
   private static Component createTree() {
