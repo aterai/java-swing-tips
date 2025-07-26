@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.Serializable;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel implements ActionListener, HierarchyListener {
@@ -69,7 +70,7 @@ public final class MainPanel extends JPanel implements ActionListener, Hierarchy
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

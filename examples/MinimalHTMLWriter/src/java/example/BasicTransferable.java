@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 // Copied from javax/swing/plaf/basic/BasicTransferable.java
@@ -45,7 +46,7 @@ public class BasicTransferable implements Transferable {
     } catch (ClassNotFoundException ex) {
       // System.err.println("error initializing javax.swing.plaf.basic.BasicTransferable");
       UIManager.getLookAndFeel().provideErrorFeedback(null);
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
     }
   }
 
