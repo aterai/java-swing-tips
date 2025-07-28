@@ -82,7 +82,8 @@ class PopupMenuHeader extends JLabel {
     addMouseMotionListener(listener);
     // header.setAlignmentX(Component.CENTER_ALIGNMENT);
     setOpaque(true);
-    setBackground(Color.LIGHT_GRAY);
+    Color color = UIManager.getColor("Label.background");
+    setBackground(color.darker());
   }
 
   @Override public Dimension getMaximumSize() {
@@ -151,7 +152,12 @@ class MenuToggleButton extends JToggleButton {
   }
 
   public static AbstractButton makePopupButton(JPopupMenu popup, String title, Icon icon) {
-    AbstractButton button = new MenuToggleButton(title, icon);
+    AbstractButton button = new MenuToggleButton(title, icon) {
+      @Override public void updateUI() {
+        super.updateUI();
+        SwingUtilities.updateComponentTreeUI(popup);
+      }
+    };
     button.addActionListener(e -> {
       Component b = (Component) e.getSource();
       int y = popup.getPreferredSize().height;
