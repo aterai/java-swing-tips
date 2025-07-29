@@ -104,20 +104,23 @@ class PopupHeaderMouseListener extends MouseAdapter {
 
   @Override public void mousePressed(MouseEvent e) {
     if (SwingUtilities.isLeftMouseButton(e)) {
+      Component c = e.getComponent();
+      Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, c);
+      SwingUtilities.convertMouseEvent(c, e, popup);
       startPt.setLocation(e.getPoint());
     }
   }
 
   @Override public void mouseDragged(MouseEvent e) {
     Component c = e.getComponent();
-    Window w = SwingUtilities.getWindowAncestor(c);
-    if (w != null && SwingUtilities.isLeftMouseButton(e)) {
-      if (w.getType() == Window.Type.POPUP) { // Popup$HeavyWeightWindow
+    if (SwingUtilities.isLeftMouseButton(e)) {
+      Window w = SwingUtilities.getWindowAncestor(c);
+      if (w != null && w.getType() == Window.Type.POPUP) { // Popup$HeavyWeightWindow
         Point pt = e.getLocationOnScreen();
         w.setLocation(pt.x - startPt.x, pt.y - startPt.y);
       } else { // Popup$LightWeightWindow
         Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, c);
-        Point pt = popup.getLocation();
+        Point pt = popup.getLocationOnScreen();
         popup.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
       }
     }
