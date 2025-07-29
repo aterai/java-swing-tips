@@ -77,20 +77,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JMenu createTitledMenu(String title) {
-    JMenu menu = new JMenu(title) {
-      @Override public void setPopupMenuVisible(boolean b) {
-        JPopupMenu popup = getPopupMenu();
-        popup.setPopupSize(getParent().getPreferredSize());
-        Point p = getLocation();
-        setMenuLocation(-p.x, -p.y);
-        super.setPopupMenuVisible(b);
-      }
-
-      @Override public JMenuItem add(JMenuItem item) {
-        item.setMaximumSize(new Dimension(Short.MAX_VALUE, item.getPreferredSize().height));
-        return super.add(item);
-      }
-    };
+    JMenu menu = new TitledMenu(title);
     menu.setDelay(100_000);
     menu.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -145,5 +132,24 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class TitledMenu extends JMenu {
+  protected TitledMenu(String title) {
+    super(title);
+  }
+
+  @Override public void setPopupMenuVisible(boolean b) {
+    JPopupMenu popup = getPopupMenu();
+    popup.setPopupSize(getParent().getPreferredSize());
+    Point p = getLocation();
+    setMenuLocation(-p.x, -p.y);
+    super.setPopupMenuVisible(b);
+  }
+
+  @Override public JMenuItem add(JMenuItem item) {
+    item.setMaximumSize(new Dimension(Short.MAX_VALUE, item.getPreferredSize().height));
+    return super.add(item);
   }
 }
