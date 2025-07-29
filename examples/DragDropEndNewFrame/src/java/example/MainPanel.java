@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
@@ -99,7 +100,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -422,21 +423,24 @@ class TabDropTargetListener implements DropTargetListener {
   @Override public void drop(DropTargetDropEvent e) {
     Component c = e.getDropTargetContext().getComponent();
     getGhostGlassPane(c).ifPresent(glassPane -> {
-      DnDTabbedPane tabbedPane = glassPane.tabbedPane;
-      Transferable t = e.getTransferable();
-      DataFlavor[] f = t.getTransferDataFlavors();
-      int prev = tabbedPane.dragTabIndex;
-      int next = tabbedPane.getTargetTabIndex(e.getLocation());
-      if (t.isDataFlavorSupported(f[1])) {
-        e.dropComplete(true);
-      } else if (t.isDataFlavorSupported(f[0]) && prev != next) {
-        tabbedPane.convertTab(prev, next);
-        e.dropComplete(true);
-      } else {
-        e.dropComplete(false);
-      }
+      tabDrop(e, glassPane.tabbedPane);
       glassPane.setVisible(false);
     });
+  }
+
+  private static void tabDrop(DropTargetDropEvent e, DnDTabbedPane tabbedPane) {
+    Transferable t = e.getTransferable();
+    DataFlavor[] f = t.getTransferDataFlavors();
+    int prev = tabbedPane.dragTabIndex;
+    int next = tabbedPane.getTargetTabIndex(e.getLocation());
+    if (t.isDataFlavorSupported(f[1])) {
+      e.dropComplete(true);
+    } else if (t.isDataFlavorSupported(f[0]) && prev != next) {
+      tabbedPane.convertTab(prev, next);
+      e.dropComplete(true);
+    } else {
+      e.dropComplete(false);
+    }
   }
 }
 

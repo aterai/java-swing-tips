@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -16,20 +17,7 @@ public final class MainPanel extends JPanel {
     String deviceName = "con.txt";
 
     JButton b1 = new JButton("c:/" + deviceName);
-    b1.addActionListener(e -> {
-      File file = new File(deviceName);
-      try {
-        if (file.createNewFile()) {
-          log.append("the named file does not exist and was successfully created.\n");
-        } else {
-          log.append("the named file already exists.\n");
-        }
-      } catch (IOException ex) {
-        // ex.printStackTrace();
-        Object[] msg = {ex.getMessage()};
-        showMessageDialog(msg);
-      }
-    });
+    b1.addActionListener(e -> createNewDeviceNameFile(deviceName, log));
     Component p1 = makeTitledPanel("IOException: before 1.5", b1);
 
     JButton b2 = new JButton("c:/" + deviceName + ":getCanonicalPath");
@@ -60,6 +48,21 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void createNewDeviceNameFile(String deviceName, JTextArea log) {
+    File file = new File(deviceName);
+    try {
+      if (file.createNewFile()) {
+        log.append("the named file does not exist and was successfully created.\n");
+      } else {
+        log.append("the named file already exists.\n");
+      }
+    } catch (IOException ex) {
+      // ex.printStackTrace();
+      Object[] msg = {ex.getMessage()};
+      showMessageDialog(msg);
+    }
   }
 
   private void showMessageDialog(Object... obj) {
@@ -100,7 +103,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

@@ -188,7 +188,7 @@ final class MenuItemHelper {
 
   public static void paintIcon(
       Graphics g, sun.swing.MenuItemLayoutHelper lh,
-      sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdc) {
+      sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdColor) {
     Optional.ofNullable(lh.getIcon()).ifPresent(i -> {
       Icon icon;
       JMenuItem menuItem = lh.getMenuItem();
@@ -208,15 +208,16 @@ final class MenuItemHelper {
       }
       if (Objects.nonNull(icon)) {
         icon.paintIcon(menuItem, g, lr.getIconRect().x, lr.getIconRect().y);
-        // g.setColor(holdc);
+        // g.setColor(holdColor);
       }
     });
   }
 
   public static void paintCheckIcon(
       Graphics g, sun.swing.MenuItemLayoutHelper lh,
-      sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdc, Color foreground) {
-    Optional.ofNullable(lh.getCheckIcon()).ifPresent(checkIcon -> {
+      sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color holdColor, Color foreground) {
+    Icon checkIcon = lh.getCheckIcon();
+    if (checkIcon != null) {
       JMenuItem menuItem = lh.getMenuItem();
       ButtonModel model = menuItem.getModel();
       if (model.isArmed()) {
@@ -224,13 +225,13 @@ final class MenuItemHelper {
       } else if (menuItem instanceof JMenu && model.isSelected()) {
         g.setColor(foreground);
       } else {
-        g.setColor(holdc);
+        g.setColor(holdColor);
       }
       if (lh.useCheckAndArrow()) {
         checkIcon.paintIcon(menuItem, g, lr.getCheckRect().x, lr.getCheckRect().y);
       }
-      // g.setColor(holdc);
-    });
+      // g.setColor(holdColor);
+    }
   }
 
   public static void paintAccText(
@@ -334,8 +335,8 @@ final class MenuItemHelper {
 class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
   @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int textIconGap) {
     // // Save original graphics font and color
-    // Font holdf = g.getFont();
-    // Color holdc = g.getColor();
+    // Font holdFont = g.getFont();
+    // Color holdColor = g.getColor();
 
     Graphics2D g2 = (Graphics2D) g.create();
     // System.out.println(textIconGap);
@@ -359,8 +360,8 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
     MenuItemHelper.paintArrowIcon(g2, lh, lr, foreground);
 
     // // Restore original graphics font and color
-    // g.setColor(holdc);
-    // g.setFont(holdf);
+    // g.setColor(holdColor);
+    // g.setFont(holdFont);
   }
 
   private void paintText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
@@ -380,8 +381,8 @@ class RaaWindowsMenuItemUI extends WindowsMenuItemUI {
 class RaaBasicMenuItemUI extends BasicMenuItemUI {
   @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground, int textIconGap) {
     // // Save original graphics font and color
-    // Font holdf = g.getFont();
-    // Color holdc = g.getColor();
+    // Font holdFont = g.getFont();
+    // Color holdColor = g.getColor();
 
     Graphics2D g2 = (Graphics2D) g.create();
     // System.out.println(textIconGap);
@@ -405,8 +406,8 @@ class RaaBasicMenuItemUI extends BasicMenuItemUI {
     MenuItemHelper.paintArrowIcon(g2, lh, lr, foreground);
 
     // // Restore original graphics font and color
-    // g.setColor(holdc);
-    // g.setFont(holdf);
+    // g.setColor(holdColor);
+    // g.setFont(holdFont);
   }
 
   private void paintMenuText(Graphics g, sun.swing.MenuItemLayoutHelper lh,
