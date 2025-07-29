@@ -23,18 +23,8 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("JTree: paint expanded, collapsed Icon");
     check.addActionListener(e -> {
-      Icon ei;
-      Icon ci;
-      if (((JCheckBox) e.getSource()).isSelected()) {
-        UIDefaults lnfDef = UIManager.getLookAndFeelDefaults();
-        ei = lnfDef.getIcon("Tree.expandedIcon");
-        ci = lnfDef.getIcon("Tree.collapsedIcon");
-      } else {
-        ei = emptyIcon;
-        ci = emptyIcon;
-      }
-      UIManager.put("Tree.expandedIcon", new IconUIResource(ei));
-      UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
+      boolean useDefaultIcon = ((JCheckBox) e.getSource()).isSelected();
+      updateTreeIcon(useDefaultIcon, emptyIcon);
       SwingUtilities.updateComponentTreeUI(tree);
     });
 
@@ -45,6 +35,21 @@ public final class MainPanel extends JPanel {
     add(check, BorderLayout.NORTH);
     add(p);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void updateTreeIcon(boolean useDefaultIcon, Icon emptyIcon) {
+    Icon ei;
+    Icon ci;
+    if (useDefaultIcon) {
+      UIDefaults lnfDef = UIManager.getLookAndFeelDefaults();
+      ei = lnfDef.getIcon("Tree.expandedIcon");
+      ci = lnfDef.getIcon("Tree.collapsedIcon");
+    } else {
+      ei = emptyIcon;
+      ci = emptyIcon;
+    }
+    UIManager.put("Tree.expandedIcon", new IconUIResource(ei));
+    UIManager.put("Tree.collapsedIcon", new IconUIResource(ci));
   }
 
   public static void main(String[] args) {
