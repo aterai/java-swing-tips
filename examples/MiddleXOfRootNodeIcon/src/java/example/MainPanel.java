@@ -18,6 +18,24 @@ public final class MainPanel extends JPanel {
     int iw = 32;
     int ih = 24;
 
+    Icon icon1 = new ColorIcon(Color.GREEN, new Dimension(ow, ih));
+    Icon icon2 = new ColorIcon(new Color(0x55_00_00_AA, true), new Dimension(iw, ih));
+    JTree tree1 = makeTree1(icon1, iw, ow);
+    LayerUI<JTree> layerUI = new LayerUI<JTree>() {
+      @Override public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        Graphics2D g2 = (Graphics2D) g.create();
+        icon2.paintIcon(c, g2, 1, 1);
+        g2.dispose();
+      }
+    };
+
+    add(new JScrollPane(makeTree0(iw, ih)));
+    add(new JScrollPane(new JLayer<>(tree1, layerUI)));
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JTree makeTree0(int iw, int ih) {
     Icon icon0 = new ColorIcon(Color.GREEN, new Dimension(iw, ih));
     JTree tree0 = new JTree() {
       @Override public void updateUI() {
@@ -36,9 +54,10 @@ public final class MainPanel extends JPanel {
       }
     };
     tree0.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    return tree0;
+  }
 
-    Icon icon1 = new ColorIcon(Color.GREEN, new Dimension(ow, ih));
-    Icon icon2 = new ColorIcon(new Color(0x55_00_00_AA, true), new Dimension(iw, ih));
+  private static JTree makeTree1(Icon icon1, int iw, int ow) {
     JTree tree = new JTree() {
       @Override public void updateUI() {
         setCellRenderer(null);
@@ -60,19 +79,7 @@ public final class MainPanel extends JPanel {
     // TEST:
     // tree.setBorder(BorderFactory.createMatteBorder(1, 1 + (iw - ow) / 2, 1, 1, Color.RED));
     tree.setBorder(BorderFactory.createEmptyBorder(1, 1 + (iw - ow) / 2, 1, 1));
-
-    LayerUI<JTree> layerUI = new LayerUI<JTree>() {
-      @Override public void paint(Graphics g, JComponent c) {
-        super.paint(g, c);
-        Graphics2D g2 = (Graphics2D) g.create();
-        icon2.paintIcon(c, g2, 1, 1);
-        g2.dispose();
-      }
-    };
-
-    add(new JScrollPane(tree0));
-    add(new JScrollPane(new JLayer<>(tree, layerUI)));
-    setPreferredSize(new Dimension(320, 240));
+    return tree;
   }
 
   public static void main(String[] args) {
