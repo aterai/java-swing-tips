@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.text.ParseException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 
@@ -51,7 +52,7 @@ public final class MainPanel extends JPanel {
     } catch (ParseException ex) {
       // System.err.println("formatter is bad: " + ex.getMessage());
       UIManager.getLookAndFeel().provideErrorFeedback(null);
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
     }
     return formatter;
   }
@@ -73,7 +74,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");

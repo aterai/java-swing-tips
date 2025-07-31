@@ -7,18 +7,19 @@ package example;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextField field1 = new JTextField("aaaaaaaaaa");
+    JTextField field1 = new JTextField("0000000000");
     field1.addFocusListener(new BackgroundFocusListener(new Color(0xE6_E6_FF)));
 
-    JTextField field2 = new JTextField();
+    JTextField field2 = new JTextField("1111111111");
     field2.addFocusListener(new BackgroundFocusListener(new Color(0xFF_FF_E6)));
 
-    JTextField field3 = new JTextField("123465789735");
+    JTextField field3 = new JTextField("1234657890");
     field3.addFocusListener(new BackgroundFocusListener(new Color(0xFF_E6_E6)));
 
     Box box = Box.createVerticalBox();
@@ -49,7 +50,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
