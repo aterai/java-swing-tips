@@ -12,37 +12,15 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
     // UIManager.put("FileChooser.readOnly", Boolean.TRUE);
-    JTextArea log = new JTextArea();
-
-    JFileChooser fileChooser0 = new JFileChooser();
     JButton button0 = new JButton("default");
-    button0.addActionListener(e -> {
-      setViewTypeDetails(fileChooser0);
-      descendants(fileChooser0)
-          .filter(JTable.class::isInstance).map(JTable.class::cast).findFirst()
-          .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
-      int retValue = fileChooser0.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        append(log, fileChooser0.getSelectedFile().getAbsolutePath());
-      }
-    });
-
-    JFileChooser fileChooser1 = new JFileChooser();
+    button0.addActionListener(e -> showOpenDialog0());
     JButton button1 = new JButton("removeEditor");
-    button1.addActionListener(e -> {
-      setViewTypeDetails(fileChooser1);
-      descendants(fileChooser1)
-          .filter(JTable.class::isInstance).map(JTable.class::cast).findFirst()
-          .filter(JTable::isEditing).ifPresent(JTable::removeEditor);
-      int retValue = fileChooser1.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        append(log, fileChooser1.getSelectedFile().getAbsolutePath());
-      }
-    });
-
+    button1.addActionListener(e -> showOpenDialog1());
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser(viewTypeDetails)"));
     p.add(button0);
@@ -50,6 +28,30 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showOpenDialog0() {
+    JFileChooser fileChooser = new JFileChooser();
+    setViewTypeDetails(fileChooser);
+    descendants(fileChooser)
+        .filter(JTable.class::isInstance).map(JTable.class::cast).findFirst()
+        .ifPresent(table -> append(log, "isEditing: " + table.isEditing()));
+    int retValue = fileChooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      append(log, fileChooser.getSelectedFile().getAbsolutePath());
+    }
+  }
+
+  private void showOpenDialog1() {
+    JFileChooser fileChooser = new JFileChooser();
+    setViewTypeDetails(fileChooser);
+    descendants(fileChooser)
+        .filter(JTable.class::isInstance).map(JTable.class::cast).findFirst()
+        .filter(JTable::isEditing).ifPresent(JTable::removeEditor);
+    int retValue = fileChooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      append(log, fileChooser.getSelectedFile().getAbsolutePath());
+    }
   }
 
   private static void setViewTypeDetails(JFileChooser fileChooser) {

@@ -13,59 +13,18 @@ import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea log = new JTextArea();
     JButton button0 = new JButton("Default");
-    button0.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      int retValue = chooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
-      }
-    });
+    button0.addActionListener(e -> showOpenDialog0());
 
     JButton button1 = new JButton("System.getenv(\"SystemDrive\")");
-    button1.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      // https://stackoverflow.com/questions/10524376/how-to-make-jfilechooser-default-to-computer-view-instead-of-my-documents
-      // File systemDrive = new File("C:\\");
-      // String separator = System.getProperty("file.separator");
-      File systemDrive = new File(System.getenv("SystemDrive") + File.separatorChar);
-      File pcDir = chooser.getFileSystemView().getParentDirectory(systemDrive);
-      chooser.setCurrentDirectory(pcDir);
-      int retValue = chooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
-      }
-    });
+    button1.addActionListener(e -> showOpenDialog1());
 
     JButton button2 = new JButton("ShellFolder.get(\"fileChooserShortcutPanelFolders\")");
-    button2.addActionListener(e -> {
-      JFileChooser chooser = new JFileChooser();
-      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      FileSystemView fsv = chooser.getFileSystemView();
-      File[] files = (File[]) sun.awt.shell.ShellFolder.get("fileChooserShortcutPanelFolders");
-      for (File f : files) {
-        log.append(f.getAbsolutePath() + "\n");
-      }
-      chooser.addHierarchyListener(ev -> {
-        Component c = ev.getComponent();
-        if ((ev.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
-          Class<JToggleButton> clz = JToggleButton.class;
-          descendants(chooser)
-              .filter(clz::isInstance).map(clz::cast)
-              .filter(rb -> fsv.getSystemDisplayName(files[3]).equals(rb.getText()))
-              .findFirst().ifPresent(AbstractButton::doClick);
-        }
-      });
-      int retValue = chooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
-      }
-    });
+    button2.addActionListener(e -> showOpenDialog2());
 
     Box box1 = Box.createHorizontalBox();
     box1.add(button0);
@@ -80,6 +39,54 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showOpenDialog0() {
+    JFileChooser chooser = new JFileChooser();
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    int retValue = chooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
+    }
+  }
+
+  private void showOpenDialog1() {
+    JFileChooser chooser = new JFileChooser();
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    // https://stackoverflow.com/questions/10524376/how-to-make-jfilechooser-default-to-computer-view-instead-of-my-documents
+    // File systemDrive = new File("C:\\");
+    // String separator = System.getProperty("file.separator");
+    File systemDrive = new File(System.getenv("SystemDrive") + File.separatorChar);
+    File pcDir = chooser.getFileSystemView().getParentDirectory(systemDrive);
+    chooser.setCurrentDirectory(pcDir);
+    int retValue = chooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
+    }
+  }
+
+  private void showOpenDialog2() {
+    JFileChooser chooser = new JFileChooser();
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    FileSystemView fsv = chooser.getFileSystemView();
+    File[] files = (File[]) sun.awt.shell.ShellFolder.get("fileChooserShortcutPanelFolders");
+    for (File f : files) {
+      log.append(f.getAbsolutePath() + "\n");
+    }
+    chooser.addHierarchyListener(ev -> {
+      Component c = ev.getComponent();
+      if ((ev.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && c.isShowing()) {
+        Class<JToggleButton> clz = JToggleButton.class;
+        descendants(chooser)
+            .filter(clz::isInstance).map(clz::cast)
+            .filter(rb -> fsv.getSystemDisplayName(files[3]).equals(rb.getText()))
+            .findFirst().ifPresent(AbstractButton::doClick);
+      }
+    });
+    int retValue = chooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.append(chooser.getSelectedFile().getAbsolutePath() + "\n");
+    }
   }
 
   public static Stream<Component> descendants(Container parent) {
