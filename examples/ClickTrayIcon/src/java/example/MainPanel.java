@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -34,6 +35,26 @@ public final class MainPanel extends JPanel {
   }
 
   private static TrayIcon makeTrayIcon(JFrame frame) {
+    Dimension d = SystemTray.getSystemTray().getTrayIconSize();
+    Image image = makePreferredSizeImage(new StarIcon(), d.width, d.height);
+    PopupMenu popup = makePopupMenu(frame);
+    TrayIcon icon = new TrayIcon(image, "Click Test", popup);
+    icon.addMouseListener(new MouseAdapter() {
+      @Override public void mouseClicked(MouseEvent e) {
+        boolean isDoubleClick = e.getClickCount() >= 2;
+        if (SwingUtilities.isLeftMouseButton(e) && isDoubleClick) {
+          frame.setVisible(true);
+        } else if (frame.isVisible()) {
+          frame.setExtendedState(Frame.NORMAL);
+          frame.toFront();
+        }
+      }
+    });
+
+    return icon;
+  }
+
+  private static PopupMenu makePopupMenu(JFrame frame) {
     MenuItem open = new MenuItem("Option");
     open.addActionListener(e -> frame.setVisible(true));
 
@@ -51,23 +72,7 @@ public final class MainPanel extends JPanel {
     PopupMenu popup = new PopupMenu();
     popup.add(open);
     popup.add(exit);
-
-    Dimension d = SystemTray.getSystemTray().getTrayIconSize();
-    Image image = makePreferredSizeImage(new StarIcon(), d.width, d.height);
-    TrayIcon icon = new TrayIcon(image, "Click Test", popup);
-    icon.addMouseListener(new MouseAdapter() {
-      @Override public void mouseClicked(MouseEvent e) {
-        boolean isDoubleClick = e.getClickCount() >= 2;
-        if (SwingUtilities.isLeftMouseButton(e) && isDoubleClick) {
-          frame.setVisible(true);
-        } else if (frame.isVisible()) {
-          frame.setExtendedState(Frame.NORMAL);
-          frame.toFront();
-        }
-      }
-    });
-
-    return icon;
+    return popup;
   }
 
   private static Image makePreferredSizeImage(Icon icon, int w, int h) {
@@ -90,7 +95,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
