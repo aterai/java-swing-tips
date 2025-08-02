@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -26,7 +27,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -71,8 +72,7 @@ class ColorWheel extends JPanel {
   private Image makeColorWheelImage() {
     BufferedImage img = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
     int[] row = new int[SIZE];
-    float size = SIZE;
-    float radius = size / 2f;
+    float radius = SIZE / 2f;
     for (int yi = 0; yi < SIZE; yi++) {
       float y = yi - radius;
       for (int xi = 0; xi < SIZE; xi++) {

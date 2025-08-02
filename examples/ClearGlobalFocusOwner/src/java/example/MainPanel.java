@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -39,11 +40,11 @@ public final class MainPanel extends JPanel {
   }
 
   private static JMenuBar createMenuBar() {
-    JMenuBar menubar = new JMenuBar();
+    JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
     fileMenu.add("JMenuItem");
-    menubar.add(fileMenu);
-    return menubar;
+    menuBar.add(fileMenu);
+    return menuBar;
   }
 
   private static void createAndShowGui() {
@@ -52,7 +53,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
