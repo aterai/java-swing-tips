@@ -154,27 +154,30 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
         .map(DefaultMutableTreeNode::getUserObject)
         .filter(TableOfContents.class::isInstance)
         .map(TableOfContents.class::cast)
-        .<Component>map(toc -> {
-          renderer.removeAll();
-          renderer.add(c, BorderLayout.WEST);
-          if (isSynth) {
-            renderer.setForeground(c.getForeground());
-          }
-          int gap = c instanceof JLabel ? ((JLabel) c).getIconTextGap() : 0;
-          Dimension d = c.getPreferredSize();
-          d.height = tree.isFixedRowHeight() ? tree.getRowHeight() : d.height;
-          pnPt.setLocation(tree.getWidth() - gap, c.getBaseline(d.width, d.height));
+        .map(toc -> {
           pn = toc.getPage();
-          rxs = d.width + gap;
-          rxe = tree.getWidth() - tree.getInsets().right - gap;
-
-          renderer.setOpaque(false);
-          return renderer;
+          return getRendererComponent(tree, c);
         })
         .orElseGet(() -> {
           pn = -1;
           return c;
         });
+  }
+
+  private Component getRendererComponent(JTree tree, Component c) {
+    renderer.removeAll();
+    renderer.add(c, BorderLayout.WEST);
+    if (isSynth) {
+      renderer.setForeground(c.getForeground());
+    }
+    int gap = c instanceof JLabel ? ((JLabel) c).getIconTextGap() : 0;
+    Dimension d = c.getPreferredSize();
+    d.height = tree.isFixedRowHeight() ? tree.getRowHeight() : d.height;
+    pnPt.setLocation(tree.getWidth() - gap, c.getBaseline(d.width, d.height));
+    rxs = d.width + gap;
+    rxe = tree.getWidth() - tree.getInsets().right - gap;
+    renderer.setOpaque(false);
+    return renderer;
   }
 
   // @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {

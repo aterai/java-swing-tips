@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -55,34 +56,7 @@ public final class MainPanel extends JPanel {
     UIDefaults d = new UIDefaults();
     d.put("Slider.thumbWidth", 40);
     d.put("Slider.thumbHeight", 40);
-    d.put("Slider:SliderTrack[Enabled].backgroundPainter", (Painter<JSlider>) (g, c, w, h) -> {
-      int arc = 40;
-      int fillLeft = 2;
-      int fillTop = 2;
-      int trackWidth = w - fillLeft - fillLeft;
-      int trackHeight = h - fillTop - fillTop;
-      int baseline = trackHeight - fillTop - fillTop; // c.getBaseline(w, h);
-      String off = "Off";
-
-      g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g.setColor(Color.GRAY);
-      g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
-      g.setPaint(Color.WHITE);
-      g.drawString(off, w - g.getFontMetrics().stringWidth(off) - fillLeft * 5, baseline);
-
-      Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, trackHeight);
-      int fillRight = getPositionForValue(c, r);
-      g.setColor(Color.ORANGE);
-      g.fillRoundRect(fillLeft + 1, fillTop, fillRight - fillLeft, trackHeight, arc, arc);
-
-      g.setPaint(Color.WHITE);
-      if (fillRight - fillLeft > 0) {
-        g.drawString("On", fillLeft * 5, baseline);
-      }
-      g.setStroke(new BasicStroke(2.5f));
-      g.drawRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
-    });
-
+    d.put("Slider:SliderTrack[Enabled].backgroundPainter", new ToggleSwitchPainter());
     Painter<JSlider> thumbPainter = (g, c, w, h) -> {
       int fillLeft = 8;
       int fillTop = 8;
@@ -99,24 +73,6 @@ public final class MainPanel extends JPanel {
     d.put("Slider:SliderThumb[MouseOver].backgroundPainter", thumbPainter);
     d.put("Slider:SliderThumb[Pressed].backgroundPainter", thumbPainter);
     return d;
-  }
-
-  // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
-  private static int getPositionForValue(JSlider slider, Rectangle trackRect) {
-    int value = slider.getValue();
-    int min = slider.getMinimum();
-    int max = slider.getMaximum();
-    int trackLength = trackRect.width;
-    int valueRange = max - min;
-    float pixelsPerValue = trackLength / (float) valueRange;
-    int trackLeft = trackRect.x;
-    int trackRight = trackRect.x + trackRect.width - 1;
-
-    int xp = trackLeft;
-    xp += Math.round(pixelsPerValue * ((float) value - min));
-    xp = Math.max(trackLeft, xp);
-    xp = Math.min(trackRight, xp);
-    return xp;
   }
 
   private static Component makeTitledPanel(String title, Component c) {
@@ -136,7 +92,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -189,5 +145,53 @@ class ToggleSwitchLayerUI extends LayerUI<JSlider> {
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JSlider> l) {
     l.getView().repaint();
+  }
+}
+
+class ToggleSwitchPainter implements Painter<JSlider> {
+  @Override public void paint(Graphics2D g, JSlider c, int width, int height) {
+    int arc = 40;
+    int fillLeft = 2;
+    int fillTop = 2;
+    int trackWidth = width - fillLeft - fillLeft;
+    int trackHeight = height - fillTop - fillTop;
+    int baseline = trackHeight - fillTop - fillTop; // c.getBaseline(w, h);
+    String off = "Off";
+
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g.setColor(Color.GRAY);
+    g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
+    g.setPaint(Color.WHITE);
+    g.drawString(off, width - g.getFontMetrics().stringWidth(off) - fillLeft * 5, baseline);
+
+    Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, trackHeight);
+    int fillRight = getPositionForValue(c, r);
+    g.setColor(Color.ORANGE);
+    g.fillRoundRect(fillLeft + 1, fillTop, fillRight - fillLeft, trackHeight, arc, arc);
+
+    g.setPaint(Color.WHITE);
+    if (fillRight - fillLeft > 0) {
+      g.drawString("On", fillLeft * 5, baseline);
+    }
+    g.setStroke(new BasicStroke(2.5f));
+    g.drawRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
+  }
+
+  // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
+  private static int getPositionForValue(JSlider slider, Rectangle trackRect) {
+    int value = slider.getValue();
+    int min = slider.getMinimum();
+    int max = slider.getMaximum();
+    int trackLength = trackRect.width;
+    int valueRange = max - min;
+    float pixelsPerValue = trackLength / (float) valueRange;
+    int trackLeft = trackRect.x;
+    int trackRight = trackRect.x + trackRect.width - 1;
+
+    int xp = trackLeft;
+    xp += Math.round(pixelsPerValue * ((float) value - min));
+    xp = Math.max(trackLeft, xp);
+    xp = Math.min(trackRight, xp);
+    return xp;
   }
 }
