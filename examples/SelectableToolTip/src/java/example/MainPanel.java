@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.HierarchyEvent;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.AttributeSet;
@@ -27,58 +28,48 @@ public final class MainPanel extends JPanel {
     hint.setEditorKit(new HTMLEditorKit());
     hint.setEditable(false);
     hint.setOpaque(false);
-
     JCheckBox check = new JCheckBox();
     check.setOpaque(false);
-
-    JPanel panel = new JPanel(new BorderLayout());
-    panel.add(hint);
-    panel.add(check, BorderLayout.EAST);
-
+    JPanel tipPanel = new JPanel(new BorderLayout());
+    tipPanel.add(hint);
+    tipPanel.add(check, BorderLayout.EAST);
     JPopupMenu popup = new JPopupMenu();
-    popup.add(new JScrollPane(panel));
+    popup.add(new JScrollPane(tipPanel));
     popup.setBorder(BorderFactory.createEmptyBorder());
 
-    JEditorPane editor = new JEditorPane() {
-      @Override public JToolTip createToolTip() {
-        JToolTip tip = super.createToolTip();
-        tip.addHierarchyListener(e -> {
-          boolean showing = e.getComponent().isShowing();
-          if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && showing) {
-            panel.setBackground(tip.getBackground());
-            popup.show(tip, 0, 0);
-          }
-        });
-        return tip;
-      }
-    };
+    JEditorPane editor = new SelectableToolTipEditorPane(tipPanel);
     editor.setEditorKit(new HTMLEditorKit());
     editor.setText(HTML_TEXT);
     editor.setEditable(false);
-    editor.addHyperlinkListener(e -> {
-      JEditorPane editorPane = (JEditorPane) e.getSource();
-      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        String message = "You click the link with the URL " + e.getURL();
-        JOptionPane.showMessageDialog(editorPane, message);
-      } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-        editorPane.setToolTipText("");
-        Optional.ofNullable(e.getSourceElement())
-            .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
-            .ifPresent(attr -> {
-              String title = Objects.toString(attr.getAttribute(HTML.Attribute.TITLE));
-              String url = Objects.toString(e.getURL());
-              // String url = Objects.toString(attr.getAttribute(HTML.Attribute.HREF));
-              hint.setText(String.format("<html>%s: <a href='%s'>%s</a>", title, url, url));
-              popup.pack();
-            });
-      } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-        editorPane.setToolTipText(null);
-      }
-    });
+    editor.addHyperlinkListener(e -> linkEvent(e, hint));
 
     add(new JScrollPane(editor));
     add(new JScrollPane(new JTextArea(HTML_TEXT)));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void linkEvent(HyperlinkEvent e, JEditorPane hint) {
+    JEditorPane editorPane = (JEditorPane) e.getSource();
+    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+      String message = "You click the link with the URL " + e.getURL();
+      JOptionPane.showMessageDialog(editorPane, message);
+    } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+      editorPane.setToolTipText("");
+      Optional.ofNullable(e.getSourceElement())
+          .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
+          .ifPresent(attr -> {
+            String title = Objects.toString(attr.getAttribute(HTML.Attribute.TITLE));
+            String url = Objects.toString(e.getURL());
+            // String url = Objects.toString(attr.getAttribute(HTML.Attribute.HREF));
+            hint.setText(String.format("<html>%s: <a href='%s'>%s</a>", title, url, url));
+            Window popup = SwingUtilities.getWindowAncestor(hint);
+            if (popup != null) {
+              popup.pack();
+            }
+          });
+    } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+      editorPane.setToolTipText(null);
+    }
   }
 
   public static void main(String[] args) {
@@ -91,7 +82,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -100,5 +91,29 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class SelectableToolTipEditorPane extends JEditorPane {
+  private final JPanel panel;
+
+  protected SelectableToolTipEditorPane(JPanel panel) {
+    super();
+    this.panel = panel;
+  }
+
+  @Override public JToolTip createToolTip() {
+    JToolTip tip = super.createToolTip();
+    tip.addHierarchyListener(e -> {
+      boolean showing = e.getComponent().isShowing();
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && showing) {
+        panel.setBackground(tip.getBackground());
+        Container p = SwingUtilities.getAncestorOfClass(JPopupMenu.class, panel);
+        if (p instanceof JPopupMenu) {
+          ((JPopupMenu) p).show(tip, 0, 0);
+        }
+      }
+    });
+    return tip;
   }
 }
