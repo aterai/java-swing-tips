@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST DraggableToolTip" />
+  <property name="jnlp.Name"     value="DraggableToolTip" />
+  <property name="jnlp.name"     value="draggabletooltip" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/draggabletooltip/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DraggableToolTip.html" />
+</project>
