@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -18,41 +19,35 @@ public final class MainPanel extends JPanel {
       gp.setVisible(false);
       getRootPane().setGlassPane(gp);
     });
+    JButton button = new JButton("Stop 5sec");
+    button.addActionListener(MainPanel::stop);
     add(makeTestBox(), BorderLayout.NORTH);
-    add(makeStopButton(), BorderLayout.SOUTH);
+    add(button, BorderLayout.SOUTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeStopButton() {
-    JButton button = new JButton("Stop 5sec");
-    button.addActionListener(e -> {
-      // System.out.println("actionPerformed: " + EventQueue.isDispatchThread());
-      JComponent c = (JComponent) e.getSource();
-      c.getRootPane().getGlassPane().setVisible(true);
-      c.setEnabled(false);
-      new BackgroundTask() {
-        @Override protected void done() {
-          if (!c.isDisplayable()) {
-            // System.out.println("done: DISPOSE_ON_CLOSE");
-            cancel(true);
-            return;
-          }
-          c.getRootPane().getGlassPane().setVisible(false);
-          c.setEnabled(true);
+  private static void stop(ActionEvent e) {
+    JComponent c = (JComponent) e.getSource();
+    c.getRootPane().getGlassPane().setVisible(true);
+    c.setEnabled(false);
+    new BackgroundTask() {
+      @Override protected void done() {
+        if (!c.isDisplayable()) {
+          cancel(true);
+          return;
         }
-      }.execute();
-    });
-    return button;
+        c.getRootPane().getGlassPane().setVisible(false);
+        c.setEnabled(true);
+      }
+    }.execute();
   }
 
   private static Box makeTestBox() {
     JButton b = new JButton("Button & Mnemonic");
     b.setMnemonic(KeyEvent.VK_B);
-
     JTextField t = new JTextField("TextField & ToolTip");
     t.setToolTipText("ToolTip");
-
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     box.add(b);

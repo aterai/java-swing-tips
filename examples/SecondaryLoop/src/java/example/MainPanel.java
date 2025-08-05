@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -25,40 +26,43 @@ public final class MainPanel extends JPanel {
       }
     });
 
+    JButton button = new JButton("Stop 5sec");
+    button.addActionListener(e -> stop());
+
     JPanel p = new JPanel();
     p.add(new JCheckBox());
     p.add(new JTextField(10));
-    p.add(makeButton());
+    p.add(button);
     add(new JLayer<>(p, layerUI), BorderLayout.NORTH);
     add(new JScrollPane(logger));
     add(cancel, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JButton makeButton() {
-    JButton button = new JButton("Stop 5sec");
-    button.addActionListener(e -> {
-      setInputBlock(true);
-      EventQueue systemEventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
-      SecondaryLoop loop = systemEventQueue.createSecondaryLoop();
-      worker = new Thread(() -> {
-        String msg = "Done";
-        try {
-          Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-          msg = "Interrupted";
-          Thread.currentThread().interrupt();
-        }
-        append(msg);
-        setInputBlock(false);
-        loop.exit();
-      });
-      worker.start();
-      if (!loop.enter()) {
-        append("Error");
-      }
+  private void stop() {
+    setInputBlock(true);
+    EventQueue systemEventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+    SecondaryLoop loop = systemEventQueue.createSecondaryLoop();
+    worker = new Thread(() -> {
+      append(sleep());
+      setInputBlock(false);
+      loop.exit();
     });
-    return button;
+    worker.start();
+    if (!loop.enter()) {
+      append("Error");
+    }
+  }
+
+  private static String sleep() {
+    String msg = "Done";
+    try {
+      Thread.sleep(5000);
+    } catch (InterruptedException ex) {
+      msg = "Interrupted";
+      Thread.currentThread().interrupt();
+    }
+    return msg;
   }
 
   public void setInputBlock(boolean flg) {
@@ -80,7 +84,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -121,8 +125,8 @@ class DisableInputLayerUI<V extends JComponent> extends LayerUI<V> {
       l.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
       l.setLayerEventMask(
           AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK
-          | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
-          | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
+              | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.KEY_EVENT_MASK
+              | AWTEvent.FOCUS_EVENT_MASK | AWTEvent.COMPONENT_EVENT_MASK);
     }
   }
 
