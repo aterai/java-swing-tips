@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -17,13 +18,11 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(5, 5));
     // TEST: System.out.println(UIManager.getBoolean("ComboBox.noActionOnKeyNavigation"));
     // TEST: UIManager.put("ComboBox.noActionOnKeyNavigation", Boolean.TRUE);
-
     JPanel p = new JPanel(new GridLayout(0, 1));
     p.add(new JLabel("ComboBox.isEnterSelectablePopup: false(default)", SwingConstants.LEFT));
     p.add(makeComboBox(false));
     p.add(new JLabel("ComboBox.isEnterSelectablePopup: true", SwingConstants.LEFT));
     p.add(makeComboBox(true));
-
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -73,7 +72,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
