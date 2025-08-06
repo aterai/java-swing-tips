@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -63,7 +64,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -95,25 +96,31 @@ final class TreePopupMenu extends JPopupMenu {
 
     editDialogItem = add("Edit Dialog");
     editDialogItem.addActionListener(e -> {
-      if (Objects.isNull(path)) {
-        return;
-      }
-      Object node = path.getLastPathComponent();
-      if (node instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-        field.setText(leaf.getUserObject().toString());
-        JTree tree = (JTree) getInvoker();
-        int ret = JOptionPane.showConfirmDialog(
-            tree, field, "Rename", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        // if (ret == JOptionPane.OK_OPTION && !field.getText().trim().isEmpty()) {
-        //   tree.getModel().valueForPathChanged(path, field.getText().trim());
-        // }
-        if (ret == JOptionPane.OK_OPTION) {
-          tree.getModel().valueForPathChanged(path, field.getText());
+      if (Objects.nonNull(path)) {
+        Object node = path.getLastPathComponent();
+        if (node instanceof DefaultMutableTreeNode) {
+          DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
+          field.setText(leaf.getUserObject().toString());
+          rename(field);
         }
       }
     });
-    add("JMenuItem");
+    addSeparator();
+    add("JMenuItem1");
+    add("JMenuItem2");
+  }
+
+  private void rename(JTextField editor) {
+    JTree tree = (JTree) getInvoker();
+    String title = "Rename";
+    int ret = JOptionPane.showConfirmDialog(
+        tree, editor, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    // if (ret == JOptionPane.OK_OPTION && !editor.getText().trim().isEmpty()) {
+    //   tree.getModel().valueForPathChanged(path, editor.getText().trim());
+    // }
+    if (ret == JOptionPane.OK_OPTION) {
+      tree.getModel().valueForPathChanged(path, editor.getText());
+    }
   }
 
   @Override public void show(Component c, int x, int y) {
