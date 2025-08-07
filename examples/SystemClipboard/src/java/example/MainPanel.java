@@ -10,6 +10,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -17,32 +18,34 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JLabel label = new JLabel();
     JButton button = new JButton("get Clipboard DataFlavor");
-    button.addActionListener(e -> {
-      String str = "";
-      ImageIcon image = null;
-      try {
-        Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-        if (Objects.isNull(t)) {
-          Toolkit.getDefaultToolkit().beep();
-          return;
-        }
-        if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-          image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
-        } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-          str = Objects.toString(t.getTransferData(DataFlavor.stringFlavor));
-        }
-      } catch (UnsupportedFlavorException | IOException ex) {
-        Toolkit.getDefaultToolkit().beep();
-        str = ex.getMessage();
-        // image = null;
-      }
-      label.setText(str);
-      label.setIcon(image);
-    });
-
+    button.addActionListener(e -> updateLabel(label));
     add(new JScrollPane(label));
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void updateLabel(JLabel label) {
+    String str = "";
+    ImageIcon image = null;
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    try {
+      Transferable t = toolkit.getSystemClipboard().getContents(null);
+      if (Objects.isNull(t)) {
+        toolkit.beep();
+        return;
+      }
+      if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+        image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
+      } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+        str = Objects.toString(t.getTransferData(DataFlavor.stringFlavor));
+      }
+    } catch (UnsupportedFlavorException | IOException ex) {
+      toolkit.beep();
+      str = ex.getMessage();
+      // image = null;
+    }
+    label.setText(str);
+    label.setIcon(image);
   }
 
   public static void main(String[] args) {
@@ -55,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
