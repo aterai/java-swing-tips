@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -25,8 +26,8 @@ public final class MainPanel extends JPanel {
     label1.setBorder(BorderFactory.createTitledBorder("Default"));
 
     JLabel label2 = new JLabel(icon) {
-      @Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-        int info = infoflags;
+      @Override public boolean imageUpdate(Image img, int infoFlags, int x, int y, int w, int h) {
+        int info = infoFlags;
         if (!isEnabled()) {
           info &= ~FRAMEBITS;
         }
@@ -98,7 +99,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
