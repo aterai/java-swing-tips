@@ -190,4 +190,4 @@ class NoWrapEditorKit2 extends StyledEditorKit {
     return new NoWrapViewFactory();
   }
 }
-//*/
+// */
