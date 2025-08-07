@@ -38,29 +38,23 @@ public final class MainPanel extends JPanel {
     // }
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        // Object item = ((JComboBox) e.getSource()).getSelectedItem();
-        Object item = e.getItem();
-        TexturePaint texturePaint = null;
-        if (Objects.equals("ImageTexturePaint", item)) {
-          texturePaint = imageTexture;
-        } else if (Objects.equals("CheckerTexturePaint", item)) {
-          texturePaint = checkerTexture;
-        }
-        texture = texturePaint;
-        setOpaque(texturePaint == null);
+        texture = getTexturePaint(e.getItem());
+        setOpaque(texture == null);
         getRootPane().getContentPane().repaint();
-        // Window w = SwingUtilities.getWindowAncestor(getRootPane());
-        // if (w instanceof JFrame) { // XXX: JDK 1.7.0 ???
-        //   // ((JFrame) w).getRootPane().repaint();
-        //   ((JFrame) w).getContentPane().repaint();
-        // } else {
-        //   revalidate();
-        //   repaint();
-        // }
       }
     });
     add(combo);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private TexturePaint getTexturePaint(Object item) {
+    TexturePaint texturePaint = null;
+    if (Objects.equals("ImageTexturePaint", item)) {
+      texturePaint = imageTexture;
+    } else if (Objects.equals("CheckerTexturePaint", item)) {
+      texturePaint = checkerTexture;
+    }
+    return texturePaint;
   }
 
   @Override protected void paintComponent(Graphics g) {
