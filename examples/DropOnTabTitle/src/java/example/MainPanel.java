@@ -24,6 +24,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.io.IOException;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -75,9 +76,9 @@ public final class MainPanel extends JPanel {
 class DnDList<E> extends JList<E> implements DragGestureListener, Transferable {
   private static final String NAME = "test";
 
-  protected DnDList() {
-    this(null);
-  }
+  // protected DnDList() {
+  //   this(null);
+  // }
 
   protected DnDList(ListModel<E> model) {
     super(model);
@@ -180,9 +181,9 @@ class TabTitleDropTargetListener implements DropTargetListener {
 
   private boolean notOwnTab(JTabbedPane tabbedPane, Point pt) {
     targetTabIndex = IntStream.range(0, tabbedPane.getTabCount())
-      .filter(i -> tabbedPane.getBoundsAt(i).contains(pt))
-      .findFirst()
-      .orElse(-1);
+        .filter(i -> tabbedPane.getBoundsAt(i).contains(pt))
+        .findFirst()
+        .orElse(-1);
     return targetTabIndex >= 0 && targetTabIndex != tabbedPane.getSelectedIndex();
   }
 }
