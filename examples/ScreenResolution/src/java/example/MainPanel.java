@@ -17,6 +17,26 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JScrollPane s1 = new JScrollPane(makeTable());
+    JScrollPane s2 = new JScrollPane(makeTree());
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    // // TEST:
+    // JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2) {
+    //   @Override protected void paintComponent(Graphics g) {
+    //     Graphics2D g2 = (Graphics2D) g.create();
+    //     GraphicsConfiguration gc = g2.getDeviceConfiguration();
+    //     System.out.println(gc.getDefaultTransform());
+    //     g2.setTransform(gc.getDefaultTransform());
+    //     System.out.println(gc.getNormalizingTransform());
+    //     g2.transform(gc.getNormalizingTransform());
+    //     super.paintComponent(g2);
+    //   }
+    // };
+    split.setResizeWeight(.5);
+    add(split);
+  }
+
+  private static JTable makeTable() {
     JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
@@ -33,8 +53,12 @@ public final class MainPanel extends JPanel {
       }
     };
     table.setAutoCreateRowSorter(true);
+    return table;
+  }
 
-    JTree tree = new JTree() {
+  private static JTree makeTree() {
+    // System.out.println("Tree.rowHeight: " + getRowHeight());
+    return new JTree() {
       @Override public void updateUI() {
         super.updateUI();
         if (isFixedRowHeight()) {
@@ -43,24 +67,6 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    // tree.setRowHeight(0);
-    JScrollPane s1 = new JScrollPane(table);
-    JScrollPane s2 = new JScrollPane(tree);
-    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
-    // // TEST:
-    // JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2) {
-    //   @Override protected void paintComponent(Graphics g) {
-    //     Graphics2D g2 = (Graphics2D) g.create();
-    //     GraphicsConfiguration gc = g2.getDeviceConfiguration();
-    //     System.out.println(gc.getDefaultTransform());
-    //     g2.setTransform(gc.getDefaultTransform());
-    //     System.out.println(gc.getNormalizingTransform());
-    //     g2.transform(gc.getNormalizingTransform());
-    //     super.paintComponent(g2);
-    //   }
-    // };
-    split.setResizeWeight(.5);
-    add(split);
   }
 
   public static float getDpiScaling() {
