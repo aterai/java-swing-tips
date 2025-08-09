@@ -61,13 +61,17 @@ class ColorChooserTable extends JTable {
         String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
         Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
         UIManager.put(key, new ColorUIResource(color));
-        EventQueue.invokeLater(() -> {
-          Container c = getTopLevelAncestor();
-          Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
-        });
+        updateComponentTreeUI();
       }
     };
     getModel().addTableModelListener(listener);
+  }
+
+  private void updateComponentTreeUI() {
+    EventQueue.invokeLater(() -> {
+      Container c = getTopLevelAncestor();
+      Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
+    });
   }
 
   private static TableModel makeModel() {
@@ -118,11 +122,16 @@ class ColorRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
-    if (value instanceof Color && c instanceof JLabel) {
-      Color color = (Color) value;
+    if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
-      l.setIcon(new ColorIcon(color));
-      l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
+      if (value instanceof Color) {
+        Color color = (Color) value;
+        l.setIcon(new ColorIcon(color));
+        l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
+      } else {
+        l.setIcon(new NullIcon());
+        l.setText("null");
+      }
     }
     return c;
   }
@@ -184,12 +193,18 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
   // Implement the one method defined by TableCellEditor.
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    currentColor = (Color) value;
-    button.setIcon(new ColorIcon(currentColor));
-    int r = currentColor.getRed();
-    int g = currentColor.getGreen();
-    int b = currentColor.getBlue();
-    button.setText(String.format("(%d, %d, %d)", r, g, b));
+    if (value instanceof Color) {
+      currentColor = (Color) value;
+      button.setIcon(new ColorIcon(currentColor));
+      int r = currentColor.getRed();
+      int g = currentColor.getGreen();
+      int b = currentColor.getBlue();
+      button.setText(String.format("(%d, %d, %d)", r, g, b));
+    } else {
+      currentColor = Color.WHITE;
+      button.setIcon(new NullIcon());
+      button.setText("null");
+    }
     return button;
   }
 }
@@ -206,6 +221,29 @@ class ColorIcon implements Icon {
     g2.translate(x, y);
     g2.setPaint(color);
     g2.fillRect(0, 0, getIconWidth(), getIconHeight());
+    g2.dispose();
+  }
+
+  @Override public int getIconWidth() {
+    return 10;
+  }
+
+  @Override public int getIconHeight() {
+    return 10;
+  }
+}
+
+class NullIcon implements Icon {
+  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.translate(x, y);
+    g2.setPaint(Color.WHITE);
+    int width = getIconWidth();
+    int height = getIconHeight();
+    g2.fillRect(0, 0, width, height);
+    g2.setPaint(Color.BLACK);
+    g2.drawLine(1, 1, width - 2, height - 2);
+    g2.drawLine(width - 2, 1, 1, height - 2);
     g2.dispose();
   }
 
