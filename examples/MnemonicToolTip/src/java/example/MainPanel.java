@@ -5,7 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -13,19 +13,6 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ActionListener al = e -> {
-      JButton b = (JButton) e.getSource();
-      int mnemonic = b.getMnemonic();
-      if (mnemonic < KeyEvent.VK_A) {
-        mnemonic = KeyEvent.VK_A;
-      } else if (mnemonic < KeyEvent.VK_K) {
-        mnemonic++;
-      } else {
-        mnemonic = 0;
-      }
-      b.setMnemonic(mnemonic);
-    };
-
     JButton button1 = new JButton("Hello World");
     button1.addPropertyChangeListener(e -> {
       String prop = e.getPropertyName();
@@ -35,7 +22,7 @@ public final class MainPanel extends JPanel {
         b.setToolTipText("tooltip (Alt+" + str + ")");
       }
     });
-    button1.addActionListener(al);
+    button1.addActionListener(MainPanel::rotateMnemonic);
     button1.setMnemonic(KeyEvent.VK_E);
     String str = KeyEvent.getKeyText(button1.getMnemonic());
     button1.setToolTipText("tooltip (Alt+" + str + ")");
@@ -47,7 +34,7 @@ public final class MainPanel extends JPanel {
         return tip;
       }
     };
-    button2.addActionListener(al);
+    button2.addActionListener(MainPanel::rotateMnemonic);
     button2.setMnemonic(KeyEvent.VK_A);
     button2.setToolTipText("tooltip");
 
@@ -60,6 +47,19 @@ public final class MainPanel extends JPanel {
     add(box);
     setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void rotateMnemonic(ActionEvent e) {
+    JButton b = (JButton) e.getSource();
+    int mnemonic = b.getMnemonic();
+    if (mnemonic < KeyEvent.VK_A) {
+      mnemonic = KeyEvent.VK_A;
+    } else if (mnemonic < KeyEvent.VK_K) {
+      mnemonic++;
+    } else {
+      mnemonic = 0;
+    }
+    b.setMnemonic(mnemonic);
   }
 
   public static void main(String[] args) {
