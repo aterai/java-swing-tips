@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+  private final JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
+  private final JCheckBox check2 = new JCheckBox("isParent reset?");
   private final JFileChooser fc0 = new JFileChooser();
   private final JFileChooser fc1 = new JFileChooser();
   private final JFileChooser fc2 = new JFileChooser() {
@@ -44,57 +47,51 @@ public final class MainPanel extends JPanel {
 
     JTextField field = new JTextField(24);
     field.setText(getCanonicalFilePath(new File(".")));
-
-    JTextArea log = new JTextArea();
-    JCheckBox check1 = new JCheckBox("Change !dir.exists() case");
-    JButton button1 = new JButton("setCurrentDirectory");
-    button1.addActionListener(e -> {
-      File f = new File(field.getText().trim());
-      JFileChooser fc = check1.isSelected() ? fc2 : fc0;
-      fc.setCurrentDirectory(f);
-      int retValue = fc.showOpenDialog(p);
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fc.getSelectedFile().getAbsolutePath());
-      }
-    });
-
-    JCheckBox check2 = new JCheckBox("isParent reset?");
-    JButton button2 = new JButton("setSelectedFile");
-    button2.addActionListener(e -> {
-      File f = new File(field.getText().trim());
-      JFileChooser fc = fc1;
-      boolean b = !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f);
-      String str = String.format("isAbsolute: %s, isParent: %s%n", f.isAbsolute(), b);
-      log.append(str);
-      fc.setSelectedFile(f);
-      int retValue = fc.showOpenDialog(p);
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.append(fc.getSelectedFile().getAbsolutePath() + "\n");
-      }
-      if (check2.isSelected()) {
-        fc.setSelectedFile(f.getParentFile()); // XXX: reset???
-      }
-    });
+    JButton b1 = new JButton("setCurrentDirectory");
+    b1.addActionListener(e -> showOpenDialog1(new File(field.getText().trim())));
+    JButton b2 = new JButton("setSelectedFile");
+    b2.addActionListener(e -> showOpenDialog2(new File(field.getText().trim())));
 
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.HORIZONTAL;
     c.insets = new Insets(5, 0, 0, 0);
-
     c.gridwidth = 2;
     p.add(field, c);
-
     c.gridwidth = 1;
     c.gridy = 1;
-    p.add(button1, c);
+    p.add(b1, c);
     p.add(check1, c);
-
     c.gridy = 2;
-    p.add(button2, c);
+    p.add(b2, c);
     p.add(check2, c);
 
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showOpenDialog1(File f) {
+    JFileChooser fc = check1.isSelected() ? fc2 : fc0;
+    fc.setCurrentDirectory(f);
+    int retValue = fc.showOpenDialog(log.getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.setText(fc.getSelectedFile().getAbsolutePath());
+    }
+  }
+
+  private void showOpenDialog2(File f) {
+    JFileChooser fc = fc1;
+    boolean b = !fc.getFileSystemView().isParent(fc.getCurrentDirectory(), f);
+    String str = String.format("isAbsolute: %s, isParent: %s%n", f.isAbsolute(), b);
+    log.append(str);
+    fc.setSelectedFile(f);
+    int retValue = fc.showOpenDialog(log.getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.append(fc.getSelectedFile().getAbsolutePath() + "\n");
+    }
+    if (check2.isSelected()) {
+      fc.setSelectedFile(f.getParentFile()); // XXX: reset???
+    }
   }
 
   private static String getCanonicalFilePath(File file) {
