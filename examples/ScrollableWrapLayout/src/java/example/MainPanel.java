@@ -14,7 +14,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
     add(makePanel(new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10))));
-    add(makePanel(new ScrollableWrapPanel(new ScrollableWrapLayout(FlowLayout.LEFT, 10, 10))));
+    add(makePanel(new ScrollableWrapPanel(new ScrollableWrapLayout(10, 10))));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -97,8 +97,8 @@ class ScrollableWrapPanel extends JPanel implements Scrollable {
 class ScrollableWrapLayout extends FlowLayout {
   private final int fixedHorizGap;
 
-  protected ScrollableWrapLayout(int align, int hgap, int vgap) {
-    super(align, hgap, vgap);
+  protected ScrollableWrapLayout(int hgap, int vgap) {
+    super(LEADING, hgap, vgap);
     fixedHorizGap = hgap;
   }
 
