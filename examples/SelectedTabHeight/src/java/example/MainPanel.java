@@ -7,6 +7,7 @@ package example;
 import com.sun.java.swing.plaf.windows.WindowsTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 

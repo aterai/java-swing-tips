@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
