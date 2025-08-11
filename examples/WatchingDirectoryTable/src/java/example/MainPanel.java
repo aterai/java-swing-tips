@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -41,8 +42,9 @@ public final class MainPanel extends JPanel {
     // col.setMaxWidth(30);
     // col.setResizable(false);
 
-    SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
-    Thread worker = getThread(loop);
+    Toolkit tk = Toolkit.getDefaultToolkit();
+    SecondaryLoop loop = tk.getSystemEventQueue().createSecondaryLoop();
+    Thread worker = new Thread(new Watcher(loop));
     worker.start();
     if (!loop.enter()) {
       append("Error");
@@ -64,105 +66,16 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JPanel p = new JPanel();
-    p.add(button);
+    JPanel box = new JPanel();
+    box.add(button);
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(new JScrollPane(table));
-    sp.setBottomComponent(new JScrollPane(logger));
-    sp.setResizeWeight(.5f);
+    JPanel p = new JPanel(new GridLayout(2, 1));
+    p.add(new JScrollPane(table));
+    p.add(new JScrollPane(logger));
 
-    add(p, BorderLayout.NORTH);
-    add(sp);
+    add(box, BorderLayout.NORTH);
+    add(p);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private Thread getThread(SecondaryLoop loop) {
-    return new Thread(() -> {
-      try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
-        Path dir = Paths.get(System.getProperty("java.io.tmpdir"));
-        dir.register(
-            watcher,
-            StandardWatchEventKinds.ENTRY_CREATE,
-            StandardWatchEventKinds.ENTRY_DELETE);
-        append("register: " + dir);
-        processEvents(dir, watcher);
-        loop.exit();
-      } catch (IOException ex) {
-        Logger.getGlobal().severe(ex::getMessage);
-        // throw new UncheckedIOException(ex);
-      }
-    });
-  }
-
-  // Watching a Directory for Changes (The Java™ Tutorials > Essential Classes > Basic I/O)
-  // https://docs.oracle.com/javase/tutorial/essential/io/notification.html
-  // Process all events for keys queued to the watcher
-  public void processEvents(Path dir, WatchService watcher) {
-    for (;;) {
-      // wait for key to be signaled
-      WatchKey key;
-      try {
-        key = watcher.take();
-      } catch (InterruptedException ex) {
-        EventQueue.invokeLater(() -> append("Interrupted"));
-        Thread.currentThread().interrupt();
-        return;
-      }
-
-      for (WatchEvent<?> event : key.pollEvents()) {
-        WatchEvent.Kind<?> kind = event.kind();
-
-        // This key is registered only for ENTRY_CREATE events,
-        // but an OVERFLOW event can occur regardless if events
-        // are lost or discarded.
-        if (kind == StandardWatchEventKinds.OVERFLOW) {
-          continue;
-        }
-
-        // @SuppressWarnings("unchecked") WatchEvent<Path> ev = (WatchEvent<Path>) event;
-        // The filename is the context of the event.
-        Path filename = (Path) event.context();
-        Path child = dir.resolve(filename);
-        EventQueue.invokeLater(() -> {
-          append(String.format("%s: %s", kind, child));
-          updateTable(kind, child);
-        });
-      }
-
-      // Reset the key -- this step is critical if you want to
-      // receive further watch events.  If the key is no longer valid,
-      // the directory is inaccessible so exit the loop.
-      boolean valid = key.reset();
-      if (!valid) {
-        break;
-      }
-    }
-  }
-
-  public void updateTable(WatchEvent.Kind<?> kind, Path child) {
-    if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-      model.addPath(child);
-    } else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
-      for (int i = 0; i < model.getRowCount(); i++) {
-        Object value = model.getValueAt(i, 2);
-        String path = Objects.toString(value, "");
-        if (path.equals(child.toString())) {
-          deleteRowSet.add(i);
-          // model.removeRow(i);
-          break;
-        }
-      }
-      sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
-        @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-          return !isDeleteRow(entry.getIdentifier());
-        }
-      });
-    }
-  }
-
-  public boolean isDeleteRow(int row) {
-    return deleteRowSet.contains(row);
   }
 
   public void append(String str) {
@@ -189,6 +102,98 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+
+  private class Watcher implements Runnable {
+    private final SecondaryLoop loop;
+
+    public Watcher(SecondaryLoop loop) {
+      this.loop = loop;
+    }
+
+    @Override public void run() {
+      try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
+        Path dir = Paths.get(System.getProperty("java.io.tmpdir"));
+        dir.register(
+            watcher,
+            StandardWatchEventKinds.ENTRY_CREATE,
+            StandardWatchEventKinds.ENTRY_DELETE);
+        append("register: " + dir);
+        processEvents(dir, watcher);
+        loop.exit();
+      } catch (IOException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+      }
+    }
+
+    // Watching a Directory for Changes (The Java™ Tutorials > Essential Classes > Basic I/O)
+    // https://docs.oracle.com/javase/tutorial/essential/io/notification.html
+    // Process all events for keys queued to the watcher
+    public void processEvents(Path dir, WatchService watcher) {
+      for (;;) {
+        // wait for key to be signaled
+        WatchKey key;
+        try {
+          key = watcher.take();
+        } catch (InterruptedException ex) {
+          EventQueue.invokeLater(() -> append("Interrupted"));
+          Thread.currentThread().interrupt();
+          return;
+        }
+
+        for (WatchEvent<?> event : key.pollEvents()) {
+          WatchEvent.Kind<?> kind = event.kind();
+          // This key is registered only for ENTRY_CREATE events,
+          // but an OVERFLOW event can occur regardless if events
+          // are lost or discarded.
+          if (kind == StandardWatchEventKinds.OVERFLOW) {
+            continue;
+          }
+
+          // @SuppressWarnings("unchecked") WatchEvent<Path> ev = (WatchEvent<Path>) event;
+          // The filename is the context of the event.
+          Path filename = (Path) event.context();
+          Path child = dir.resolve(filename);
+          EventQueue.invokeLater(() -> {
+            append(String.format("%s: %s", kind, child));
+            updateTable(kind, child);
+          });
+        }
+
+        // Reset the key -- this step is critical if you want to
+        // receive further watch events.  If the key is no longer valid,
+        // the directory is inaccessible so exit the loop.
+        boolean valid = key.reset();
+        if (!valid) {
+          break;
+        }
+      }
+    }
+
+    public void updateTable(WatchEvent.Kind<?> kind, Path child) {
+      if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
+        model.addPath(child);
+      } else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+          Object value = model.getValueAt(i, 2);
+          String path = Objects.toString(value, "");
+          if (path.equals(child.toString())) {
+            deleteRowSet.add(i);
+            // model.removeRow(i);
+            break;
+          }
+        }
+        sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
+          @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+            return !isDeleteRow(entry.getIdentifier());
+          }
+        });
+      }
+    }
+
+    public boolean isDeleteRow(int row) {
+      return deleteRowSet.contains(row);
+    }
   }
 }
 
@@ -241,26 +246,28 @@ final class TablePopupMenu extends JPopupMenu {
   /* default */ TablePopupMenu() {
     super();
     delete = add("delete");
-    delete.addActionListener(e -> {
-      JTable table = (JTable) getInvoker();
-      DefaultTableModel model = (DefaultTableModel) table.getModel();
-      int[] selection = table.getSelectedRows();
-      for (int i = selection.length - 1; i >= 0; i--) {
-        int idx = table.convertRowIndexToModel(selection[i]);
-        Path path = Paths.get(Objects.toString(model.getValueAt(idx, 2)));
-        try {
-          Files.delete(path);
-        } catch (IOException ex) {
-          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
-        }
-      }
-    });
+    delete.addActionListener(this::fileDelete);
   }
 
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTable) {
       delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
       super.show(c, x, y);
+    }
+  }
+
+  private void fileDelete(ActionEvent e) {
+    JTable table = (JTable) getInvoker();
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    int[] selection = table.getSelectedRows();
+    for (int i = selection.length - 1; i >= 0; i--) {
+      int idx = table.convertRowIndexToModel(selection[i]);
+      Path path = Paths.get(Objects.toString(model.getValueAt(idx, 2)));
+      try {
+        Files.delete(path);
+      } catch (IOException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+      }
     }
   }
 }
