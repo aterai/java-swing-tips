@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -15,6 +16,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTabbedPane tabbedPane = new JTabbedPane() {
       private transient MouseMotionListener hoverHandler;
+
       @Override public void updateUI() {
         removeMouseMotionListener(hoverHandler);
         super.updateUI();
@@ -30,11 +32,11 @@ public final class MainPanel extends JPanel {
         addMouseMotionListener(hoverHandler);
       }
     };
-    tabbedPane.addTab("11111", new JScrollPane(new JTree()));
-    tabbedPane.addTab("22222", new JScrollPane(new JLabel("asdfasdfsadf")));
-    tabbedPane.addTab("33333", new JScrollPane(new JTree()));
-    tabbedPane.addTab("44444", new JScrollPane(new JLabel("qerwqerqwerqwe")));
-    tabbedPane.addTab("55555", new JScrollPane(new JTree()));
+    tabbedPane.addTab("JTree", new JScrollPane(new JTree()));
+    tabbedPane.addTab("JTable", new JScrollPane(new JTable(5, 3)));
+    tabbedPane.addTab("JSplitPane", new JSplitPane());
+    tabbedPane.addTab("JLabel", new JLabel("JLabel"));
+    tabbedPane.addTab("JPanel", new JScrollPane(new JPanel()));
 
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
@@ -50,7 +52,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
