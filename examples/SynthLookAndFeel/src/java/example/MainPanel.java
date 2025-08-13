@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
@@ -41,7 +42,7 @@ public final class MainPanel extends JPanel {
       synth.load(is, clz);
       UIManager.setLookAndFeel(synth);
     } catch (IOException | ParseException | UnsupportedLookAndFeelException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       Toolkit.getDefaultToolkit().beep();
     }
     // try {

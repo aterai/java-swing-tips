@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,21 +17,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    // <blockquote cite="FixedColumnExample.java">
+    // @see FixedColumnExample.java
     // @author Nobuo Tamemasa
-    Object[][] data = {
-        {1, 11, "A", ES, ES}, {2, 22, ES, "B", ES},
-        {3, 33, ES, ES, "C"}, {4, 1, ES, ES, ES},
-        {5, 55, ES, ES, ES}, {6, 66, ES, ES, ES}
-    };
-    String[] columnNames = {"1", "2", "a", "b", "c"};
-    // </blockquote>
-    DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return column < FIXED_RANGE ? Integer.class : Object.class;
-      }
-    };
-
+    DefaultTableModel model = makeModel();
     JTable leftTable = makeTable(model);
     JTable table = makeTable(model);
     table.setAutoCreateRowSorter(true);
@@ -74,6 +63,20 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static DefaultTableModel makeModel() {
+    Object[][] data = {
+        {1, 11, "A", ES, ES}, {2, 22, ES, "B", ES},
+        {3, 33, ES, ES, "C"}, {4, 1, ES, ES, ES},
+        {5, 55, ES, ES, ES}, {6, 66, ES, ES, ES}
+    };
+    String[] columnNames = {"1", "2", "a", "b", "c"};
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return column < FIXED_RANGE ? Integer.class : Object.class;
+      }
+    };
+  }
+
   private static JTable makeTable(TableModel model) {
     JTable table = new JTable(model);
     table.setShowVerticalLines(false);
@@ -95,7 +98,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
