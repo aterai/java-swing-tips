@@ -44,19 +44,7 @@ public final class MainPanel extends JPanel {
     editor.setContentType("text/html");
     editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
     editor.setText(HTML_TEXT);
-    editor.addHyperlinkListener(e -> {
-      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        JOptionPane.showMessageDialog(editor, "Clicked on the link " + e.getURL());
-      } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
-        tooltip = editor.getToolTipText();
-        // URL url = e.getURL();
-        // editor.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
-        String txt = Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null);
-        editor.setToolTipText(txt);
-      } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
-        editor.setToolTipText(tooltip);
-      }
-    });
+    editor.addHyperlinkListener(e -> linkEventPerformed(e, editor));
 
     HTMLDocument doc = (HTMLDocument) editor.getDocument();
     Style s = doc.addStyle("button", null);
@@ -78,6 +66,20 @@ public final class MainPanel extends JPanel {
       throw wrap;
     }
     return editor;
+  }
+
+  private static void linkEventPerformed(HyperlinkEvent e, JEditorPane editor) {
+    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+      JOptionPane.showMessageDialog(editor, "Clicked on the link " + e.getURL());
+    } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+      tooltip = editor.getToolTipText();
+      // URL url = e.getURL();
+      // editor.setToolTipText(Objects.nonNull(url) ? url.toExternalForm() : null);
+      String txt = Optional.ofNullable(e.getURL()).map(URL::toExternalForm).orElse(null);
+      editor.setToolTipText(txt);
+    } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+      editor.setToolTipText(tooltip);
+    }
   }
 
   public static void main(String[] args) {

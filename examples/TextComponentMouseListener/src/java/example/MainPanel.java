@@ -5,12 +5,14 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
@@ -56,7 +58,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -80,19 +82,21 @@ class TextComponentMouseHandler extends MouseAdapter {
   protected TextComponentMouseHandler(JTextComponent textArea) {
     super();
     holdTimer.setInitialDelay(500);
-    holdTimer.addActionListener(e -> {
-      Timer timer = (Timer) e.getSource();
-      if (timer.isRunning()) {
-        int i = count.getAndIncrement();
-        if (i < list.size()) {
-          String cmd = list.get(i);
-          textArea.getActionMap().get(cmd).actionPerformed(e);
-        } else {
-          timer.stop();
-          count.set(0);
-        }
+    holdTimer.addActionListener(e -> expandSelection(textArea, e));
+  }
+
+  private void expandSelection(JTextComponent textArea, ActionEvent e) {
+    Timer timer = (Timer) e.getSource();
+    if (timer.isRunning()) {
+      int i = count.getAndIncrement();
+      if (i < list.size()) {
+        String cmd = list.get(i);
+        textArea.getActionMap().get(cmd).actionPerformed(e);
+      } else {
+        timer.stop();
+        count.set(0);
       }
-    });
+    }
   }
 
   @Override public void mousePressed(MouseEvent e) {
