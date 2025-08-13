@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.geom.Path2D;
@@ -83,32 +84,7 @@ class AnimatedBorder extends EmptyBorder {
 
   protected AnimatedBorder(JComponent c) {
     super(BORDER, BORDER, BORDER + BOTTOM_SPACE, BORDER);
-    animator.addActionListener(e -> {
-      if (startTime < 0) {
-        startTime = System.currentTimeMillis();
-      }
-      long playTime = System.currentTimeMillis() - startTime;
-      double progress = playTime / PLAY_TIME;
-      boolean stop = progress > 1d || points.isEmpty();
-      if (stop) {
-        startTime = -1L;
-        ((Timer) e.getSource()).stop();
-        c.repaint();
-        return;
-      }
-      Point2D pos = new Point2D.Double();
-      pos.setLocation(points.get(0));
-      borderPath.reset();
-      borderPath.moveTo(pos.getX(), pos.getY());
-      int idx = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
-      for (int i = 0; i <= idx; i++) {
-        pos.setLocation(points.get(i));
-        borderPath.lineTo(pos.getX(), pos.getY());
-        borderPath.moveTo(pos.getX(), pos.getY());
-      }
-      borderPath.closePath();
-      c.repaint();
-    });
+    animator.addActionListener(e -> animation(c, e));
     c.addFocusListener(new FocusListener() {
       @Override public void focusGained(FocusEvent e) {
         Rectangle r = c.getBounds();
@@ -129,6 +105,33 @@ class AnimatedBorder extends EmptyBorder {
         c.repaint();
       }
     });
+  }
+
+  private void animation(JComponent c, ActionEvent e) {
+    if (startTime < 0) {
+      startTime = System.currentTimeMillis();
+    }
+    long playTime = System.currentTimeMillis() - startTime;
+    double progress = playTime / PLAY_TIME;
+    boolean stop = progress > 1d || points.isEmpty();
+    if (stop) {
+      startTime = -1L;
+      ((Timer) e.getSource()).stop();
+      c.repaint();
+      return;
+    }
+    Point2D pos = new Point2D.Double();
+    pos.setLocation(points.get(0));
+    borderPath.reset();
+    borderPath.moveTo(pos.getX(), pos.getY());
+    int idx = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
+    for (int i = 0; i <= idx; i++) {
+      pos.setLocation(points.get(i));
+      borderPath.lineTo(pos.getX(), pos.getY());
+      borderPath.moveTo(pos.getX(), pos.getY());
+    }
+    borderPath.closePath();
+    c.repaint();
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {

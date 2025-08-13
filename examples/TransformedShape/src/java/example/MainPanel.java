@@ -11,6 +11,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -30,7 +31,7 @@ public final class MainPanel extends JPanel {
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-      ex.printStackTrace();
+      Logger.getGlobal().severe(ex::getMessage);
       return;
     }
     JFrame frame = new JFrame("@title@");
@@ -55,23 +56,25 @@ class FontRotateAnimation extends JComponent {
     FontRenderContext frc = new FontRenderContext(null, true, true);
     Shape outline = new TextLayout(str, font, frc).getOutline(null);
     shape = outline;
-    animator.addActionListener(e -> {
-      repaint(shape.getBounds()); // clear prev
-      Rectangle2D b = outline.getBounds2D();
-      double ax = b.getCenterX();
-      double ay = b.getCenterY();
-      AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), ax, ay);
-      double cx = getWidth() / 2d - ax;
-      double cy = getHeight() / 2d - ay;
-      AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
-
-      Shape s1 = at.createTransformedShape(outline);
-      shape = toCenterAt.createTransformedShape(s1);
-      repaint(shape.getBounds());
-      // rotate = rotate >= 360 ? 0 : rotate + 2;
-      rotate = (rotate + 2) % 360;
-    });
+    animator.addActionListener(e -> rotate(outline));
     animator.start();
+  }
+
+  private void rotate(Shape outline) {
+    repaint(shape.getBounds()); // clear prev
+    Rectangle2D b = outline.getBounds2D();
+    double ax = b.getCenterX();
+    double ay = b.getCenterY();
+    AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(rotate), ax, ay);
+    double cx = getWidth() / 2d - ax;
+    double cy = getHeight() / 2d - ay;
+    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
+
+    Shape s1 = at.createTransformedShape(outline);
+    shape = toCenterAt.createTransformedShape(s1);
+    repaint(shape.getBounds());
+    // rotate = rotate >= 360 ? 0 : rotate + 2;
+    rotate = (rotate + 2) % 360;
   }
 
   @Override public void updateUI() {
