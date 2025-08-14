@@ -360,6 +360,22 @@
     <module name="BooleanExpressionComplexity">
       <property name="max" value="7"/>
     </module>
+    <!--
+    <module name="ClassDataAbstractionCoupling">
+      <property name="excludedClasses"
+                value="boolean, byte, char, double, float, int, long, short, void,
+                       Boolean, Byte, Character, Double, Float, Integer, Long, Short, Void,
+                       Object, Class, String, StringBuffer, StringBuilder,
+                       ArrayIndexOutOfBoundsException, Exception, RuntimeException,
+                       IllegalArgumentException, IllegalStateException,
+                       IndexOutOfBoundsException, NullPointerException, Throwable,
+                       SecurityException, UnsupportedOperationException, List, ArrayList,
+                       Deque, Queue, LinkedList, Set, HashSet, SortedSet, TreeSet, Map,
+                       HashMap, SortedMap, TreeMap, DetailsAST, CheckstyleException,
+                       UnsupportedEncodingException, BuildException, ConversionException,
+                       FileNotFoundException, TestException"/>
+    </module>
+    -->
     <module name="ClassFanOutComplexity">
       <property name="max" value="25"/>
       <!-- Default classes are also listed -->
@@ -385,6 +401,16 @@
     </module>
     <module name="JavaNCSS"/>
     <module name="NPathComplexity"/>
+    <module name="ExecutableStatementCount"/>
+
+    <!-- Size Violations -->
+    <module name="AnonInnerLength"/>
+    <!-- module name="LambdaBodyLength"/ -->
+    <!-- module name="OuterTypeNumber"/ -->
+    <module name="ParameterNumber">
+      <property name="ignoreOverriddenMethods" value="true"/>
+    </module>
+    <module name="RecordComponentNumber"/>
 
     <module name="AnnotationLocation">
       <property name="id" value="AnnotationLocationMostCases"/>
