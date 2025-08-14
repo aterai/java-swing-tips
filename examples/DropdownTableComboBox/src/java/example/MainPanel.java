@@ -37,24 +37,7 @@ public final class MainPanel extends JPanel {
       }
     });
     ListCellRenderer<? super PaperSize> renderer = combo.getRenderer();
-    combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
-      if (isSelected) {
-        c.setBackground(list.getSelectionBackground());
-        c.setForeground(list.getSelectionForeground());
-      } else {
-        c.setBackground(list.getBackground());
-        c.setForeground(list.getForeground());
-      }
-      if (c instanceof JLabel) {
-        JLabel l = (JLabel) c;
-        l.setOpaque(true);
-        l.setText(Objects.toString(value.getSeries(), ""));
-      }
-      return c;
-    });
-
+    combo.setRenderer(new PaperSizeListCellRenderer(renderer));
     EventQueue.invokeLater(() -> combo.setSelectedIndex(3));
 
     Box box = Box.createHorizontalBox();
@@ -143,6 +126,32 @@ enum PaperSize {
 
   @Override public String toString() {
     return String.format("%s(%dx%d)", series, width, height);
+  }
+}
+
+class PaperSizeListCellRenderer implements ListCellRenderer<PaperSize> {
+  private final ListCellRenderer<? super PaperSize> renderer;
+
+  protected PaperSizeListCellRenderer(ListCellRenderer<? super PaperSize> renderer) {
+    this.renderer = renderer;
+  }
+
+  @Override public Component getListCellRendererComponent(JList<? extends PaperSize> list, PaperSize value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component c = renderer.getListCellRendererComponent(
+        list, value, index, isSelected, cellHasFocus);
+    if (isSelected) {
+      c.setBackground(list.getSelectionBackground());
+      c.setForeground(list.getSelectionForeground());
+    } else {
+      c.setBackground(list.getBackground());
+      c.setForeground(list.getForeground());
+    }
+    if (c instanceof JLabel) {
+      JLabel l = (JLabel) c;
+      l.setOpaque(true);
+      l.setText(Objects.toString(value.getSeries(), ""));
+    }
+    return c;
   }
 }
 

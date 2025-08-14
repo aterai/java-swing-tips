@@ -190,27 +190,32 @@ final class MenuItemHelper {
       Graphics g, sun.swing.MenuItemLayoutHelper lh,
       sun.swing.MenuItemLayoutHelper.LayoutResult lr) { // , Color holdColor) {
     Optional.ofNullable(lh.getIcon()).ifPresent(i -> {
-      Icon icon;
       JMenuItem menuItem = lh.getMenuItem();
-      ButtonModel model = menuItem.getModel();
-      if (model.isEnabled()) {
-        if (model.isPressed() && model.isArmed()) {
-          icon = menuItem.getPressedIcon();
-          if (Objects.isNull(icon)) {
-            // Use default icon
-            icon = menuItem.getIcon();
-          }
-        } else {
-          icon = menuItem.getIcon();
-        }
-      } else {
-        icon = menuItem.getDisabledIcon();
-      }
+      Icon icon = getMenuItemIcon(menuItem);
       if (Objects.nonNull(icon)) {
         icon.paintIcon(menuItem, g, lr.getIconRect().x, lr.getIconRect().y);
         // g.setColor(holdColor);
       }
     });
+  }
+
+  private static Icon getMenuItemIcon(JMenuItem menuItem) {
+    Icon icon;
+    ButtonModel model = menuItem.getModel();
+    if (model.isEnabled()) {
+      if (model.isPressed() && model.isArmed()) {
+        icon = menuItem.getPressedIcon();
+        if (Objects.isNull(icon)) {
+          // Use default icon
+          icon = menuItem.getIcon();
+        }
+      } else {
+        icon = menuItem.getIcon();
+      }
+    } else {
+      icon = menuItem.getDisabledIcon();
+    }
+    return icon;
   }
 
   public static void paintCheckIcon(
@@ -288,11 +293,9 @@ final class MenuItemHelper {
   public static void paintArrowIcon(
       Graphics g, sun.swing.MenuItemLayoutHelper lh,
       sun.swing.MenuItemLayoutHelper.LayoutResult lr, Color foreground) {
-    Optional.ofNullable(lh.getArrowIcon()).ifPresent(arrowIcon -> {
-      JMenuItem menuItem = lh.getMenuItem();
-      if (!(menuItem instanceof JMenu)) {
-        return;
-      }
+    Icon arrowIcon = lh.getArrowIcon();
+    JMenuItem menuItem = lh.getMenuItem();
+    if (menuItem instanceof JMenu && arrowIcon != null) {
       ButtonModel model = menuItem.getModel();
       if (model.isArmed() || model.isSelected()) {
         g.setColor(foreground);
@@ -300,7 +303,7 @@ final class MenuItemHelper {
       if (lh.useCheckAndArrow()) {
         arrowIcon.paintIcon(menuItem, g, lr.getArrowRect().x, lr.getArrowRect().y);
       }
-    });
+    }
   }
 
   // public static void applyInsets(Rectangle rect, Insets insets) {
