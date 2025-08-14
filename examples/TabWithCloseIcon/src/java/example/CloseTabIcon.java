@@ -87,7 +87,7 @@ public class CloseTabIcon implements Icon {
     // }
     // // } catch (Exception ex) {
     // //   // Could probably be a ClassCastException
-    // //   ex.printStackTrace();
+    // //   Logger.getGlobal().severe(ex::getMessage);
     // // }
     // if (doPaintCloseIcon) {
     xpos = x;

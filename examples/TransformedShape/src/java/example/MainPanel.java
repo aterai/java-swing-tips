@@ -56,11 +56,11 @@ class FontRotateAnimation extends JComponent {
     FontRenderContext frc = new FontRenderContext(null, true, true);
     Shape outline = new TextLayout(str, font, frc).getOutline(null);
     shape = outline;
-    animator.addActionListener(e -> rotate(outline));
+    animator.addActionListener(e -> rotateShape(outline));
     animator.start();
   }
 
-  private void rotate(Shape outline) {
+  private void rotateShape(Shape outline) {
     repaint(shape.getBounds()); // clear prev
     Rectangle2D b = outline.getBounds2D();
     double ax = b.getCenterX();

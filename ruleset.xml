@@ -7,7 +7,6 @@
   <description>This ruleset checks my code for bad stuff</description>
 
   <rule ref="category/java/bestpractices.xml">
-    <exclude name="AvoidPrintStackTrace" />
     <exclude name="ReplaceHashtableWithMap" />
   </rule>
   <rule ref="category/java/bestpractices.xml/LooseCoupling">

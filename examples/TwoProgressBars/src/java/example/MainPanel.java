@@ -335,7 +335,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //     } catch (UnsupportedLookAndFeelException ignored) {
 //       Toolkit.getDefaultToolkit().beep();
 //     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-//       ex.printStackTrace();
+//       Logger.getGlobal().severe(ex::getMessage);
 //       return;
 //     }
 //     JFrame frame = new JFrame("@title@");
