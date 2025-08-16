@@ -14,18 +14,22 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final List<? extends JButton> buttons = Arrays.asList(
+      new RoundButton("005.png", "005d.png", "005g.png"),
+      new RoundButton("003.png", "003d.png", "003g.png"),
+      new RoundButton("001.png", "001d.png", "001g.png"),
+      new RoundButton("002.png", "002d.png", "002g.png"),
+      new RoundButton("004.png", "004d.png", "004g.png"));
+
   private MainPanel() {
     super(new BorderLayout());
-    List<? extends JButton> buttons = Arrays.asList(
-        new RoundButton("005.png", "005d.png", "005g.png"),
-        new RoundButton("003.png", "003d.png", "003g.png"),
-        new RoundButton("001.png", "001d.png", "001g.png"),
-        new RoundButton("002.png", "002d.png", "002g.png"),
-        new RoundButton("004.png", "004d.png", "004g.png"));
-    // TEST: buttons = makeButtonArray2(getClass()); // Set ButtonUI
-    Box box = makeBox(buttons);
+    Box box = makeBox();
     add(box, BorderLayout.NORTH);
+    add(makePanel(box), BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
 
+  private Component makePanel(Box box) {
     JCheckBox check = new JCheckBox("ButtonBorder Color");
     check.addActionListener(e -> {
       Color bgc = ((JCheckBox) e.getSource()).isSelected() ? Color.WHITE : Color.BLACK;
@@ -46,11 +50,10 @@ public final class MainPanel extends JPanel {
     alignmentsChoices.setSelectedIndex(1);
     p.add(alignmentsChoices);
     p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    add(p, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+    return p;
   }
 
-  private static Box makeBox(List<? extends JButton> buttons) {
+  private Box makeBox() {
     Box box = Box.createHorizontalBox();
     // JDK 5
     // new Box(BoxLayout.X_AXIS) {
