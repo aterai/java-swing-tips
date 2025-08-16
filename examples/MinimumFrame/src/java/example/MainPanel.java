@@ -40,17 +40,7 @@ public final class MainPanel extends JPanel {
       w.setMinimumSize(check2.isSelected() ? new Dimension(MW, MH2) : new Dimension());
     });
 
-    EventQueue.invokeLater(() -> {
-      Window w = SwingUtilities.getWindowAncestor(getRootPane());
-      w.setMinimumSize(new Dimension(MW, MH2));
-      w.addComponentListener(new ComponentAdapter() {
-        @Override public void componentResized(ComponentEvent e) {
-          if (check1.isSelected()) {
-            initFrameSize((Window) e.getComponent());
-          }
-        }
-      });
-    });
+    EventQueue.invokeLater(() -> initFrame(check1));
 
     Box box = Box.createVerticalBox();
     box.add(check1);
@@ -58,6 +48,18 @@ public final class MainPanel extends JPanel {
     add(box, BorderLayout.NORTH);
     add(label);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void initFrame(JCheckBox check) {
+    Window w = SwingUtilities.getWindowAncestor(getRootPane());
+    w.setMinimumSize(new Dimension(MW, MH2));
+    w.addComponentListener(new ComponentAdapter() {
+      @Override public void componentResized(ComponentEvent e) {
+        if (check.isSelected()) {
+          initFrameSize((Window) e.getComponent());
+        }
+      }
+    });
   }
 
   public static void initFrameSize(Window frame) {
