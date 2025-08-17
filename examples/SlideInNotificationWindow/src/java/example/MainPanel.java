@@ -110,14 +110,7 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     AtomicInteger count = new AtomicInteger();
     listener = e -> {
       double v = count.addAndGet(STEP) / (double) d.height;
-      double a;
-      if (slideInAnimation == SlideInAnimation.EASE_IN) {
-        a = AnimationUtils.easeIn(v);
-      } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
-        a = AnimationUtils.easeOut(v);
-      } else { // EASE_IN_OUT
-        a = AnimationUtils.easeInOut(v);
-      }
+      double a = next(slideInAnimation, v);
       int visibleHeight = (int) (.5 + a * d.height);
       if (visibleHeight >= d.height) {
         visibleHeight = d.height;
@@ -127,6 +120,18 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
     };
     animator.addActionListener(listener);
     animator.start();
+  }
+
+  private static double next(SlideInAnimation slideInAnimation, double v) {
+    double a;
+    if (slideInAnimation == SlideInAnimation.EASE_IN) {
+      a = AnimationUtils.easeIn(v);
+    } else if (slideInAnimation == SlideInAnimation.EASE_OUT) {
+      a = AnimationUtils.easeOut(v);
+    } else { // EASE_IN_OUT
+      a = AnimationUtils.easeInOut(v);
+    }
+    return a;
   }
 
   @Override public void propertyChange(PropertyChangeEvent e) {
