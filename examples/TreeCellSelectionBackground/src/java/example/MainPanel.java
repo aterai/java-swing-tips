@@ -39,19 +39,8 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
-        Color selectionBgc = new Color(0x39_69_8A);
-        TreeCellRenderer r = getCellRenderer();
-        setCellRenderer((tree, value, selected, expanded, isLeaf, row, focused) -> {
-          Component c = r.getTreeCellRendererComponent(
-              tree, value, selected, expanded, isLeaf, row, focused);
-          if (selected) {
-            c.setBackground(selectionBgc);
-          }
-          if (c instanceof JComponent) {
-            ((JComponent) c).setOpaque(selected);
-          }
-          return c;
-        });
+        TreeCellRenderer renderer = getCellRenderer();
+        setCellRenderer(new BgcTreeCellRenderer(renderer));
       }
     };
     tree.putClientProperty("Nimbus.Overrides", def);
@@ -86,5 +75,26 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class BgcTreeCellRenderer implements TreeCellRenderer {
+  private final Color selectionBgc = new Color(0x39_69_8A);
+  private final TreeCellRenderer renderer;
+
+  protected BgcTreeCellRenderer(TreeCellRenderer renderer) {
+    this.renderer = renderer;
+  }
+
+  @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean isLeaf, int row, boolean hasFocus) {
+    Component c = renderer.getTreeCellRendererComponent(
+        tree, value, selected, expanded, isLeaf, row, hasFocus);
+    if (selected) {
+      c.setBackground(selectionBgc);
+    }
+    if (c instanceof JComponent) {
+      ((JComponent) c).setOpaque(selected);
+    }
+    return c;
   }
 }
