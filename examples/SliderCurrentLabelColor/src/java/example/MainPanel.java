@@ -11,12 +11,14 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     JSlider slider1 = makeSlider();
-    setCurrentLabelListener(slider1);
+    slider1.getModel().addChangeListener(new SliderLabelChangeListener(slider1));
 
     // @SuppressWarnings("JdkObsolete")
     // Dictionary<Integer, Component> labelTable = new Hashtable<>();
@@ -26,7 +28,7 @@ public final class MainPanel extends JPanel {
     //     .forEach(i -> labelTable.put(i, list.get(i)));
     List<String> list2 = Arrays.asList("A", "B", "C", "D", "E");
     JSlider slider2 = new JSlider(0, list2.size() - 1, 0);
-    setCurrentLabelListener(slider2);
+    slider2.getModel().addChangeListener(new SliderLabelChangeListener(slider2));
     // slider2.setLabelTable(labelTable);
     slider2.setSnapToTicks(true);
     slider2.setPaintTicks(true);
@@ -76,31 +78,6 @@ public final class MainPanel extends JPanel {
     return slider;
   }
 
-  private static void setCurrentLabelListener(JSlider slider) {
-    AtomicInteger prev = new AtomicInteger(-1);
-    slider.getModel().addChangeListener(e -> {
-      BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      int i = m.getValue();
-      int mts = slider.getMajorTickSpacing();
-      if ((mts == 0 || i % mts == 0) && i != prev.get()) {
-        Object labelTable = slider.getLabelTable();
-        if (labelTable instanceof Map) {
-          Map<?, ?> map = (Map<?, ?>) labelTable;
-          resetForeground(map.get(i), Color.RED);
-          resetForeground(map.get(prev.get()), Color.BLACK);
-        }
-        slider.repaint();
-        prev.set(i);
-      }
-    });
-  }
-
-  private static void resetForeground(Object o, Color c) {
-    if (o instanceof Component) {
-      ((Component) o).setForeground(c);
-    }
-  }
-
   private static Component makeTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
@@ -127,5 +104,36 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class SliderLabelChangeListener implements ChangeListener {
+  private final AtomicInteger prev = new AtomicInteger(-1);
+  private final JSlider slider;
+
+  protected SliderLabelChangeListener(JSlider slider) {
+    this.slider = slider;
+  }
+
+  @Override public void stateChanged(ChangeEvent e) {
+    BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+    int i = m.getValue();
+    int mts = slider.getMajorTickSpacing();
+    if ((mts == 0 || i % mts == 0) && i != prev.get()) {
+      Object labelTable = slider.getLabelTable();
+      if (labelTable instanceof Map) {
+        Map<?, ?> map = (Map<?, ?>) labelTable;
+        resetForeground(map.get(i), Color.RED);
+        resetForeground(map.get(prev.get()), Color.BLACK);
+      }
+      slider.repaint();
+      prev.set(i);
+    }
+  }
+
+  private static void resetForeground(Object o, Color c) {
+    if (o instanceof Component) {
+      ((Component) o).setForeground(c);
+    }
   }
 }
