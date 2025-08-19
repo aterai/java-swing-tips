@@ -12,8 +12,8 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-    UIManager.put("Tree.paintLines", Boolean.TRUE);
-    UIManager.put("Tree.lineTypeDashed", Boolean.TRUE);
+    UIManager.put("Tree.paintLines", true);
+    UIManager.put("Tree.lineTypeDashed", true);
     UIManager.put("Tree.line", Color.GREEN);
     UIManager.put("Tree.hash", Color.RED);
 
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     JTree tree2 = new JTree() {
       @Override public void updateUI() {
         super.updateUI();
-        UIManager.put("Tree.lineTypeDashed", Boolean.FALSE);
+        UIManager.put("Tree.lineTypeDashed", false);
         setUI(new LineStyleTreeUI());
       }
     };
