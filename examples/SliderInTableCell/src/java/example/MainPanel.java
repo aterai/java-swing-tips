@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -17,20 +19,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] columnNames = {"Integer", "Integer", "Boolean"};
-    Object[][] data = {
-        {50, 50, false}, {13, 13, true}, {0, 0, false}, {20, 20, true}, {99, 99, false}
-    };
-    TableModel model = new DefaultTableModel(data, columnNames) {
-      @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
-      }
-
-      @Override public boolean isCellEditable(int row, int column) {
-        return column != 0;
-      }
-    };
-    JTable table = new JTable(model) {
+    JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
         putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
@@ -48,6 +37,22 @@ public final class MainPanel extends JPanel {
     };
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static TableModel makeModel() {
+    String[] columnNames = {"Integer", "Integer", "Boolean"};
+    Object[][] data = {
+        {50, 50, false}, {13, 13, true}, {0, 0, false}, {20, 20, true}, {99, 99, false}
+    };
+    return new DefaultTableModel(data, columnNames) {
+      @Override public Class<?> getColumnClass(int column) {
+        return getValueAt(0, column).getClass();
+      }
+
+      @Override public boolean isCellEditable(int row, int column) {
+        return column != 0;
+      }
+    };
   }
 
   public static void main(String[] args) {
@@ -92,7 +97,21 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
   protected SliderEditor() {
     super();
     renderer.setOpaque(true);
-    renderer.addChangeListener(e -> {
+    renderer.addChangeListener(new SliderEditorChangeListener());
+  }
+
+  @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+    renderer.setValue((Integer) value);
+    renderer.setBackground(table.getSelectionBackground());
+    return renderer;
+  }
+
+  @Override public Object getCellEditorValue() {
+    return renderer.getValue();
+  }
+
+  private final class SliderEditorChangeListener implements ChangeListener {
+    @Override public void stateChanged(ChangeEvent e) {
       Object o = SwingUtilities.getAncestorOfClass(JTable.class, renderer);
       if (o instanceof JTable) {
         JTable table = (JTable) o;
@@ -104,17 +123,7 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
           prev = value;
         }
       }
-    });
-  }
-
-  @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    renderer.setValue((Integer) value);
-    renderer.setBackground(table.getSelectionBackground());
-    return renderer;
-  }
-
-  @Override public Object getCellEditorValue() {
-    return renderer.getValue();
+    }
   }
 }
 
