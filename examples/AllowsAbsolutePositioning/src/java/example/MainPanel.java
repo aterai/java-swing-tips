@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(5, 5));
     // https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/synth/doc-files/componentProperties.html
-    UIManager.put("ScrollBar.allowsAbsolutePositioning", Boolean.TRUE);
+    UIManager.put("ScrollBar.allowsAbsolutePositioning", true);
 
     String txt1 = "middle mouse click in the track will set the position";
     String txt2 = "of the track to where the mouse is.";
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
         } else {
           setUI(new AbsolutePositioningBasicScrollBarUI());
         }
-        putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
+        putClientProperty("JScrollBar.fastWheelScrolling", true);
       }
     });
 
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
         } else {
           setUI(new AbsolutePositioningBasicScrollBarUI());
         }
-        putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
+        putClientProperty("JScrollBar.fastWheelScrolling", true);
       }
     });
 

@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     JEditorPane editor = new JEditorPane("text/html", href);
     editor.setOpaque(false);
     editor.setEditable(false);
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(5, 5, 5, 0);
