@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         TableColumn c = getColumnModel().getColumn(1);
         c.setCellRenderer(new CheckBoxesRenderer());
         c.setCellEditor(new CheckBoxesEditor());
-        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        putClientProperty("terminateEditOnFocusLost", true);
       }
     };
     // if (System.getProperty("java.version").startsWith("1.6.0")) {

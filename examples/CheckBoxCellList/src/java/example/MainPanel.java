@@ -146,7 +146,7 @@ class CheckBoxList extends JList<CheckBoxNode> {
     setCellRenderer(renderer);
     addMouseListener(renderer);
     addMouseMotionListener(renderer);
-    putClientProperty("List.isFileList", Boolean.TRUE);
+    putClientProperty("List.isFileList", true);
   }
 
   // @see SwingUtilities2.pointOutsidePrefSize(...)

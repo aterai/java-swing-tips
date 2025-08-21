@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     String help1 = "Default: IMEの一時ウィンドウからEnterキーで入力キャンセル";
     add(makeTitledPane(new JScrollPane(new JTable(4, 3)), help1));
     JTable table = new CompositionEnabledTable(4, 3);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
     // table.setSurrendersFocusOnKeystroke(true);
     String help2 = "IMEの一時ウィンドウからEnterキーでセルに文字列コピー+編集開始";
     add(makeTitledPane(new JScrollPane(table), help2));

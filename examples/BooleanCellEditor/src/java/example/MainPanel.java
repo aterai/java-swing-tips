@@ -21,11 +21,11 @@ public final class MainPanel extends JPanel {
     TableModel model = makeModel();
     JTable table1 = new JTable(model);
     table1.setAutoCreateRowSorter(true);
-    table1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table1.putClientProperty("terminateEditOnFocusLost", true);
 
     JTable table2 = new CheckBoxTable(model);
     table2.setAutoCreateRowSorter(true);
-    table2.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table2.putClientProperty("terminateEditOnFocusLost", true);
 
     JScrollPane s1 = new JScrollPane(table1);
     JScrollPane s2 = new JScrollPane(table2);

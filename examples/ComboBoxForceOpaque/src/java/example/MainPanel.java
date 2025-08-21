@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    UIManager.put("ComboBox.forceOpaque", Boolean.FALSE);
-    // UIManager.put("ComboBox.rendererUseListColors", Boolean.TRUE);
+    UIManager.put("ComboBox.forceOpaque", false);
+    // UIManager.put("ComboBox.rendererUseListColors", true);
     Insets ins = UIManager.getInsets("ComboBox.padding");
     ins.right = 0;
     UIManager.put("ComboBox.padding", ins);
@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
 
   private static void putClientProperty(JComponent c, UIDefaults d) {
     c.putClientProperty("Nimbus.Overrides", d);
-    c.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    c.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
   }
 
   private static Component makeTitledPanel(String title, Component cmp) {

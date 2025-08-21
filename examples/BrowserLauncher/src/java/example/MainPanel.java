@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     String html = String.format("<html><a href='%s'>%s</a>", SITE, SITE);
     JEditorPane editor = new JEditorPane("text/html", html);
     editor.setOpaque(false);
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.setEditable(false);
     editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {

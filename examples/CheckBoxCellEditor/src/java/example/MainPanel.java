@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         // setDefaultRenderer(Boolean.class, new CheckBoxPanelRenderer());
         setDefaultEditor(Boolean.class, new CheckBoxPanelEditor());
-        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        putClientProperty("terminateEditOnFocusLost", true);
         setRowHeight(24);
         setRowSelectionAllowed(true);
         setShowVerticalLines(false);

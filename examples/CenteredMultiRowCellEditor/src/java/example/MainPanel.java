@@ -232,7 +232,7 @@ class EditableList<E extends ListItem> extends JList<E> {
   private void initEditor() {
     editor.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     editor.setEditorKit(new WrapEditorKit());
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.setFont(UIManager.getFont("TextField.font"));
     // editor.setHorizontalAlignment(SwingConstants.CENTER); // JTextField
     // editor.setLineWrap(true); // JTextArea

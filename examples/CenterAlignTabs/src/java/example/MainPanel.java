@@ -67,7 +67,7 @@ class CenteredTabbedPane extends JTabbedPane {
     UIDefaults d = new UIDefaults();
     d.put("TabbedPane:TabbedPaneTabArea.contentMargins", ins);
     putClientProperty("Nimbus.Overrides", d);
-    putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    putClientProperty("Nimbus.Overrides.InheritDefaults", true);
   }
 }
 

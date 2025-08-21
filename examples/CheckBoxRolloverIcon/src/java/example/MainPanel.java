@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         putClientProperty("Nimbus.Overrides", makeNimbusUIDefault());
-        putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+        putClientProperty("Nimbus.Overrides.InheritDefaults", true);
       }
     };
     box.add(check3);

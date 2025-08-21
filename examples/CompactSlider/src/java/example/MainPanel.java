@@ -137,7 +137,7 @@ class FlatSpinner extends JSpinner {
     d.put(key + "[Focused].backgroundPainter", painter);
     d.put(key + "[Selected].backgroundPainter", painter);
     field.putClientProperty("Nimbus.Overrides", d);
-    field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    field.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
   }
 }
 
@@ -192,7 +192,7 @@ class ProgressBarSpinner extends JSpinner {
     d.put(key + "[Focused].backgroundPainter", painter);
     d.put(key + "[Selected].backgroundPainter", painter);
     field.putClientProperty("Nimbus.Overrides", d);
-    field.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    field.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
   }
 
   @Override protected void paintComponent(Graphics g) {
