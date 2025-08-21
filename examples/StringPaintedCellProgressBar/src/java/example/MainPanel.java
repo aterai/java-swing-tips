@@ -201,26 +201,33 @@ class ProgressTable extends JTable {
   @Override public void updateUI() {
     super.updateUI();
     removeColumn(getColumnModel().getColumn(3));
-    JProgressBar progress = new JProgressBar();
-    TableCellRenderer r = new DefaultTableCellRenderer();
     TableColumn tc = getColumnModel().getColumn(2);
-    tc.setCellRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
-      String msg = Objects.toString(value);
-      if (value instanceof ProgressValue) {
-        ProgressValue pv = (ProgressValue) value;
-        Integer current = pv.getProgress();
-        Integer lengthOfTask = pv.getLengthOfTask();
-        if (current < 0) {
-          msg = "Canceled";
-        } else if (current < lengthOfTask) {
-          progress.setValue(current * 100 / lengthOfTask);
-          progress.setStringPainted(true);
-          progress.setString(String.format("%d/%d", current, lengthOfTask));
-          return progress;
-        }
+    tc.setCellRenderer(new ProgressCellRenderer());
+  }
+}
+
+class ProgressCellRenderer implements TableCellRenderer {
+  private final JProgressBar progress = new JProgressBar();
+  private final TableCellRenderer renderer = new DefaultTableCellRenderer();
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    Component c = renderer.getTableCellRendererComponent(
+        table, value, isSelected, hasFocus, row, column);
+    if (value instanceof ProgressValue) {
+      ProgressValue pv = (ProgressValue) value;
+      Integer current = pv.getProgress();
+      Integer lengthOfTask = pv.getLengthOfTask();
+      if (current < 0) {
+        c = renderer.getTableCellRendererComponent(
+            table, "Canceled", isSelected, hasFocus, row, column);
+      } else if (current < lengthOfTask) {
+        progress.setValue(current * 100 / lengthOfTask);
+        progress.setStringPainted(true);
+        progress.setString(String.format("%d/%d", current, lengthOfTask));
+        c = progress;
       }
-      return r.getTableCellRendererComponent(tbl, msg, isSelected, hasFocus, row, column);
-    });
+    }
+    return c;
   }
 }
 
