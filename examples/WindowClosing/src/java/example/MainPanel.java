@@ -18,24 +18,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea textArea = new JTextArea("JFrame Conditional Close Test");
+  private final JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
+  private final JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea("JFrame Conditional Close Test");
-    JButton exitButton = new JButton(SaveHandler.CMD_EXIT);
-    JButton saveButton = new JButton(SaveHandler.CMD_SAVE);
-
-    EventQueue.invokeLater(() -> {
-      Component c = getTopLevelAncestor();
-      if (c instanceof Frame) {
-        Frame frame = (Frame) c;
-        SaveHandler handler = new SaveHandler(frame);
-        handler.addEnabledFlagComponent(saveButton);
-        frame.addWindowListener(handler);
-        textArea.getDocument().addDocumentListener(handler);
-        exitButton.addActionListener(handler);
-        saveButton.addActionListener(handler);
-      }
-    });
     exitButton.setActionCommand(SaveHandler.CMD_EXIT);
     saveButton.setActionCommand(SaveHandler.CMD_SAVE);
     saveButton.setEnabled(false);
@@ -45,10 +33,25 @@ public final class MainPanel extends JPanel {
     box.add(exitButton);
     box.add(Box.createHorizontalStrut(5));
     box.add(saveButton);
-
     add(box, BorderLayout.SOUTH);
     add(new JScrollPane(textArea));
+
+    EventQueue.invokeLater(() -> {
+      Component c = getTopLevelAncestor();
+      if (c instanceof Frame) {
+        initFrame((Frame) c);
+      }
+    });
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void initFrame(Frame frame) {
+    SaveHandler handler = new SaveHandler(frame);
+    handler.addEnabledFlagComponent(saveButton);
+    frame.addWindowListener(handler);
+    textArea.getDocument().addDocumentListener(handler);
+    exitButton.addActionListener(handler);
+    saveButton.addActionListener(handler);
   }
 
   public static void main(String[] args) {
