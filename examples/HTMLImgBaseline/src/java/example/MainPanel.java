@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     editor.setEditable(false);
     editor.setContentType("text/html");
     editor.setEditorKit(kit);
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.setText(text);
     StyleSheet style = kit.getStyleSheet();
     style.addRule("span{color:orange;}");

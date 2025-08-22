@@ -12,7 +12,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTextPane textPane = new JTextPane();
-    textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     textPane.replaceSelection(" Default: ");
     textPane.insertComponent(new JCheckBox("CheckBox"));
     // textPane.setEditable(false);

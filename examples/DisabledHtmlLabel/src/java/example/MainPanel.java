@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     JEditorPane editor2 = new JEditorPane("text/html", HTML);
     editor2.setOpaque(false);
     editor2.setEditable(false);
-    editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor2.setFont(UIManager.getFont("Label.font"));
     p.add(initTitledBorder("JEditorPane+", editor2));
 

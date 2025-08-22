@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     JEditorPane editor = new JEditorPane();
     editor.setEditable(editable);
     editor.setContentType("text/html");
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.setText(HTML_TEXT);
     editor.addHyperlinkListener(e -> linkEventPerformed(e, editor));
 

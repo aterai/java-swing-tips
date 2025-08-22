@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     JEditorPane editor = new JEditorPane("text/html", placeholder);
     editor.setOpaque(false);
     editor.setEditable(false);
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.addHyperlinkListener(e -> {
       if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());

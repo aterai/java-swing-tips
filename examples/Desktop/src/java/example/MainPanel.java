@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
   private static JEditorPane makeEditorPane(String html, JTextArea log) {
     JEditorPane editor = new JEditorPane("text/html", html);
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.setEditable(false);
     editor.setOpaque(false);
     if (Desktop.isDesktopSupported()) {

@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
     editor.setText(makeTestHtml());
     JEditorPane editor2 = new JEditorPane();
     editor2.setFont(font);
-    editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
-    editor2.setText("4: putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE)");
+    editor2.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+    editor2.setText("4: putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true)");
     JPanel p2 = new JPanel(new GridLayout(0, 1));
     p2.add(new JScrollPane(editor));
     p2.add(new JScrollPane(editor2));

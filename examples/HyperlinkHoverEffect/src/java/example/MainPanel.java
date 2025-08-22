@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     String s2 = String.format(format, "http://example.com/", "#0000FF", "example");
     JEditorPane editor = new JEditorPane("text/html", "<html>" + s1 + s2);
     editor.setEditable(false);
-    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+    editor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
     editor.addHyperlinkListener(e -> {
       fireHyperlinkEvent(e);
       // ??? call BasicTextUI#modelChanged() ???
