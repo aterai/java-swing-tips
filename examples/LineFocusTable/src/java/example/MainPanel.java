@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     table.setFillsViewportHeight(true);
     table.setShowGrid(false);
     table.setIntercellSpacing(new Dimension());
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
     table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));

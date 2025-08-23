@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
     table.setIntercellSpacing(new Dimension());
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     // table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    // table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    // table.putClientProperty("terminateEditOnFocusLost", true);
     return table;
   }
 

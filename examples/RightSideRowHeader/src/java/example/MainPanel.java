@@ -26,14 +26,14 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
 
     JTable fixedTable = new JTable(table.getModel());
     fixedTable.setSelectionModel(table.getSelectionModel());
     fixedTable.setRowSorter(table.getRowSorter());
     fixedTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     fixedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    fixedTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    fixedTable.putClientProperty("terminateEditOnFocusLost", true);
     fixedTable.setBorder(BORDER);
     fixedTable.getTableHeader().setBorder(BORDER);
     for (int i = table.getModel().getColumnCount() - 1; i >= 0; i--) {

@@ -98,7 +98,7 @@ class HyperlinkTable extends JTable {
     setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
     setIntercellSpacing(new Dimension());
     setShowGrid(false);
-    putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    putClientProperty("terminateEditOnFocusLost", true);
     setAutoCreateRowSorter(true);
 
     TableColumnModel cm = getColumnModel();

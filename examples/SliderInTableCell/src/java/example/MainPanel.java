@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
-        putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        putClientProperty("terminateEditOnFocusLost", true);
         setAutoCreateRowSorter(true);
         setRowHeight(26);
         TableColumn column = getColumnModel().getColumn(1);

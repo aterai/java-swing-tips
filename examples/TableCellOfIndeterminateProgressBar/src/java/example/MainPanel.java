@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     table.setFillsViewportHeight(true);
     table.setIntercellSpacing(new Dimension());
     table.setShowGrid(false);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
 
     TableColumn column = table.getColumnModel().getColumn(0);
     column.setMaxWidth(60);

@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
     table.setIntercellSpacing(new Dimension());
     table.setShowGrid(false);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
     table.setAutoCreateRowSorter(true);
 
     TableColumnModel cm = table.getColumnModel();

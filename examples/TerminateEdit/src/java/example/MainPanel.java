@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new JTable(makeModel());
     table.setAutoCreateRowSorter(true);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
 
     JCheckBox focusCheck = new JCheckBox("DefaultCellEditor:focusLost", true);
     DefaultCellEditor dce = (DefaultCellEditor) table.getDefaultEditor(Object.class);

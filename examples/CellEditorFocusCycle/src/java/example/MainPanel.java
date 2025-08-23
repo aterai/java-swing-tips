@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     return new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
-        // putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        // putClientProperty("terminateEditOnFocusLost", true);
         setSelectionForeground(Color.BLACK);
         setSelectionBackground(new Color(0xDC_DC_FF));
         TableColumn c = getColumnModel().getColumn(1);

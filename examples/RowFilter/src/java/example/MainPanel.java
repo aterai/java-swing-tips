@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
     table.setRowSorter(sorter);
     table.setComponentPopupMenu(new TablePopupMenu());
     table.setFillsViewportHeight(true);
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
 
     Collection<RowFilter<? super RowDataModel, ? super Integer>> filters = new HashSet<>(2);
     RowFilter<RowDataModel, Integer> filter1 = new RowFilter<RowDataModel, Integer>() {

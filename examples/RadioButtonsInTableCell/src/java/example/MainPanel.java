@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
         column.setCellEditor(new RadioButtonsEditor());
       }
     };
-    table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+    table.putClientProperty("terminateEditOnFocusLost", true);
     // if (System.getProperty("java.version").startsWith("1.6.0")) {
     //   // 1.6.0_xx bug? column header click -> edit cancel?
     //   table.getTableHeader().addMouseListener(new MouseAdapter() {
