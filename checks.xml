@@ -405,7 +405,7 @@
 
     <!-- Size Violations -->
     <module name="AnonInnerLength"/>
-    <!-- module name="LambdaBodyLength"/ -->
+    <module name="LambdaBodyLength"/>
     <!-- module name="OuterTypeNumber"/ -->
     <module name="ParameterNumber">
       <property name="ignoreOverriddenMethods" value="true"/>

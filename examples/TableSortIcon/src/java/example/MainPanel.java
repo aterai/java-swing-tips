@@ -5,18 +5,18 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.net.URL;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private static final Icon EMPTY_ICON = new EmptyIcon();
-
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(makeModel());
@@ -44,42 +44,30 @@ public final class MainPanel extends JPanel {
   }
 
   private Box makeRadioPane(JTable table) {
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL ascendingPath = cl.getResource("example/ascending.png");
-    URL descendingPath = cl.getResource("example/descending.png");
-    JRadioButton r0 = new JRadioButton("Default", true);
-    JRadioButton r1 = new JRadioButton("Empty");
-    JRadioButton r2 = new JRadioButton("Custom");
-    ActionListener al = e -> {
-      JRadioButton r = (JRadioButton) e.getSource();
-      Icon ascending;
-      Icon descending;
-      if (r.equals(r2) && ascendingPath != null && descendingPath != null) {
-        ascending = new IconUIResource(new ImageIcon(ascendingPath));
-        descending = new IconUIResource(new ImageIcon(descendingPath));
-      } else if (r.equals(r1)) {
-        ascending = new IconUIResource(EMPTY_ICON);
-        descending = new IconUIResource(EMPTY_ICON);
-      } else { // if (r.equals(r0)) { // default
-        ascending = UIManager.getLookAndFeelDefaults().getIcon("Table.ascendingSortIcon");
-        descending = UIManager.getLookAndFeelDefaults().getIcon("Table.descendingSortIcon");
-      }
-      UIManager.put("Table.ascendingSortIcon", ascending);
-      UIManager.put("Table.descendingSortIcon", descending);
-      table.getTableHeader().repaint();
-    };
-    Box box1 = Box.createHorizontalBox();
-    box1.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     ButtonGroup bg = new ButtonGroup();
-    box1.add(new JLabel("Table Sort Icon: "));
-    Stream.of(r0, r1, r2).forEach(rb -> {
-      box1.add(rb);
-      box1.add(Box.createHorizontalStrut(5));
-      bg.add(rb);
-      rb.addActionListener(al);
+    ItemListener handler = e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        String name = bg.getSelection().getActionCommand();
+        SortIconType type = SortIconType.valueOf(name);
+        UIManager.put("Table.ascendingSortIcon", type.getAscendingIcon());
+        UIManager.put("Table.descendingSortIcon", type.getDescendingIcon());
+        table.getTableHeader().repaint();
+      }
+    };
+    Box box = Box.createHorizontalBox();
+    box.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+    box.add(new JLabel("Table Sort Icon: "));
+    Arrays.asList(SortIconType.values()).forEach(type -> {
+      String name = type.name();
+      boolean selected = type == SortIconType.DEFAULT;
+      JRadioButton radio = new JRadioButton(name, selected);
+      radio.addItemListener(handler);
+      radio.setActionCommand(name);
+      box.add(radio);
+      bg.add(radio);
     });
-    box1.add(Box.createHorizontalGlue());
-    return box1;
+    box.add(Box.createHorizontalGlue());
+    return box;
   }
 
   public static void main(String[] args) {
@@ -115,5 +103,55 @@ class EmptyIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 0;
+  }
+}
+
+@SuppressWarnings("ImmutableEnumChecker")
+enum SortIconType {
+  DEFAULT(
+      UIManager.getLookAndFeelDefaults().getIcon("Table.ascendingSortIcon"),
+      UIManager.getLookAndFeelDefaults().getIcon("Table.descendingSortIcon")
+  ),
+  EMPTY(
+      new EmptyIcon(),
+      new EmptyIcon()
+  ),
+  CUSTOM(
+      makeIcon("example/ascending.png"),
+      makeIcon("example/descending.png")
+  );
+  private final Icon ascending;
+  private final Icon descending;
+
+  SortIconType(Icon ascending, Icon descending) {
+    this.ascending = ascending;
+    this.descending = descending;
+  }
+
+  public Icon getAscendingIcon() {
+    return ascending;
+  }
+
+  public Icon getDescendingIcon() {
+    return descending;
+  }
+
+  private static Icon makeIcon(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    ImageIcon icon = Optional.ofNullable(cl.getResource(path))
+        .map(ImageIcon::new)
+        .orElseGet(() -> new ImageIcon(makeMissingImage()));
+    return new IconUIResource(icon);
+  }
+
+  private static Image makeMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
   }
 }
