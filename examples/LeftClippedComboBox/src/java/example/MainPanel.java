@@ -104,15 +104,15 @@ class LeftClippedListCellRenderer extends DefaultListCellRenderer {
     return c;
   }
 
-  private int getAvailableWidth(JComboBox<?> combo, int index) {
-    Optional<JButton> arrowButtonOp = descendants(combo)
+  private int getAvailableWidth(JComboBox<?> comboBox, int index) {
+    Optional<JButton> arrowButtonOp = descendants(comboBox)
         .filter(JButton.class::isInstance)
         .map(JButton.class::cast)
         .findFirst();
     Insets rendererIns = getInsets();
-    Rectangle r = SwingUtilities.calculateInnerArea(combo, null);
+    Rectangle r = SwingUtilities.calculateInnerArea(comboBox, null);
     int availableWidth = r.width - rendererIns.left - rendererIns.right;
-    availableWidth = getLookAndFeelDependWidth(combo, availableWidth);
+    availableWidth = getLookAndFeelDependWidth(comboBox, availableWidth);
     if (index < 0) {
       // @see BasicComboBoxUI#rectangleForCurrentValue
       int buttonSize = arrowButtonOp

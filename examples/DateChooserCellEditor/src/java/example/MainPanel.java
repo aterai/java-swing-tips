@@ -134,18 +134,18 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
   }
 
   @SuppressWarnings("PMD.ReplaceJavaUtilDate")
-  @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+  @Override public Component getTableCellEditorComponent(JTable tbl, Object value, boolean isSelected, int row, int column) {
     if (value instanceof Date) {
       Date date = (Date) value;
       button.setText(formatter.format(date));
       button.setOpaque(true);
-      // button.setForeground(table.getSelectionForeground());
-      Color fgc = table.getSelectionForeground();
+      // button.setForeground(tbl.getSelectionForeground());
+      Color fgc = tbl.getSelectionForeground();
       button.setForeground(new Color(fgc.getRGB()));
-      button.setBackground(table.getSelectionBackground());
+      button.setBackground(tbl.getSelectionBackground());
       ZonedDateTime dateTime = date.toInstant().atZone(ZoneId.systemDefault());
       dateChooser.setLocalDate(dateTime.toLocalDate());
-      this.table = table;
+      this.table = tbl;
     }
     return button;
   }
