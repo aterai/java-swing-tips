@@ -81,7 +81,6 @@ public final class MainPanel extends JPanel {
 class RightAlignmentListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer;
 
-
   protected RightAlignmentListCellRenderer(ListCellRenderer<? super E> renderer) {
     this.renderer = renderer;
   }

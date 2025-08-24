@@ -110,7 +110,6 @@ class FileTreeCellRenderer implements TreeCellRenderer {
   }
 }
 
-
 class FolderSelectionListener implements TreeSelectionListener {
   // private JFrame frame = null;
   private final FileSystemView fileSystemView;

@@ -107,7 +107,6 @@ class FileTreeCellRenderer implements TreeCellRenderer {
   }
 }
 
-
 class FolderSelectionListener implements TreeSelectionListener {
   private final FileSystemView fileSystemView;
 

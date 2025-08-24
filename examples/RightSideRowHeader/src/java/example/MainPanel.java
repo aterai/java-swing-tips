@@ -307,10 +307,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
             hsbNeeded = newHsbNeeded;
             adjustForHsb(hsbNeeded, availR, hsbR, vpbInsets);
             if (Objects.nonNull(vsb) && !vsbNeeded && vsbPolicy != VERTICAL_SCROLLBAR_NEVER) {
-
               extentSize = viewport.toViewCoordinates(availR.getSize());
               vsbNeeded = viewPrefSize.height > extentSize.height;
-
               if (vsbNeeded) {
                 // adjustForVsb(true, availR, vsbR, vpbInsets, leftToRight);
                 adjustForVsb(true, rowHeadR, vsbR, vpbInsets, leftToRight);

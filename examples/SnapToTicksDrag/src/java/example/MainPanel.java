@@ -58,7 +58,6 @@ public final class MainPanel extends JPanel {
       }
     });
 
-
     List<JSlider> list = Arrays.asList(initSlider(slider0), initSlider(slider1));
     JCheckBox check = new JCheckBox("JSlider.setMinorTickSpacing(5)");
     check.addActionListener(e -> {
