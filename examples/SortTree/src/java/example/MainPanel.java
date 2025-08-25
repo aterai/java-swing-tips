@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -25,40 +26,32 @@ public final class MainPanel extends JPanel {
     DefaultMutableTreeNode root = TreeUtils.makeTreeRoot();
     JTree tree = new JTree(new DefaultTreeModel(TreeUtils.makeTreeRoot()));
     // JRadioButton sort0 = new JRadioButton("0: bubble sort");
-    JRadioButton sort1 = new JRadioButton("1: bubble sort");
-    JRadioButton sort2 = new JRadioButton("2: selection sort");
+    // JRadioButton sort1 = new JRadioButton("1: bubble sort");
+    // JRadioButton sort2 = new JRadioButton("2: selection sort");
     // JRadioButton sort3 = new JRadioButton("3: iterative merge sort"); // JDK 1.6.0
-    JRadioButton sort3 = new JRadioButton("3: TimSort"); // JDK 1.7.0
-    JRadioButton reset = new JRadioButton("reset");
+    // JRadioButton sort3 = new JRadioButton("3: TimSort"); // JDK 1.7.0
+    // JRadioButton reset = new JRadioButton("reset");
 
     JPanel box = new JPanel(new GridLayout(2, 2));
     ActionListener listener = e -> {
-      JRadioButton check = (JRadioButton) e.getSource();
-      if (check.equals(reset)) {
+      JRadioButton radio = (JRadioButton) e.getSource();
+      if (Objects.equals(radio.getActionCommand(), "Reset")) {
         tree.setModel(new DefaultTreeModel(root));
       } else {
-        TreeUtils.COMPARE_COUNTER.set(0);
-        TreeUtils.SWAP_COUNTER.set(0);
-        DefaultMutableTreeNode clone = (DefaultMutableTreeNode) root.clone();
-        DefaultMutableTreeNode r = TreeUtils.deepCopy(root, clone);
-        if (check.equals(sort1)) {
-          TreeUtils.sortTree1(r);
-        } else if (check.equals(sort2)) {
-          TreeUtils.sortTree2(r);
-        } else {
-          TreeUtils.sortTree3(r);
-        }
-        swapCounter(check);
+        MutableTreeNode r = sort(root, radio);
         tree.setModel(new DefaultTreeModel(r));
       }
       TreeUtils.expandAll(tree);
     };
     ButtonGroup bg = new ButtonGroup();
-    Stream.of(reset, sort1, sort2, sort3).forEach(check -> {
-      box.add(check);
-      bg.add(check);
-      check.addActionListener(listener);
-    });
+    Stream.of("Reset", "BubbleSort", "SelectionSort", "TimSort")
+        .map(JRadioButton::new)
+        .forEach(radio -> {
+          box.add(radio);
+          bg.add(radio);
+          radio.setActionCommand(radio.getText());
+          radio.addActionListener(listener);
+        });
     add(box, BorderLayout.SOUTH);
 
     JPanel p = new JPanel(new BorderLayout());
@@ -69,16 +62,44 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void swapCounter(JRadioButton check) {
-    String title = check.getText();
+  private static MutableTreeNode sort(DefaultMutableTreeNode r, AbstractButton b) {
+    TreeUtils.COMPARE_COUNTER.set(0);
+    TreeUtils.SWAP_COUNTER.set(0);
+    String cmd = b.getActionCommand();
+    MutableTreeNode sortedTreeNode = sortedTreeNode(r, cmd);
+    b.setToolTipText(swapCounter(cmd));
+    return sortedTreeNode;
+  }
+
+  private static MutableTreeNode sortedTreeNode(DefaultMutableTreeNode root, String cmd) {
+    DefaultMutableTreeNode clone = (DefaultMutableTreeNode) root.clone();
+    DefaultMutableTreeNode r = TreeUtils.deepCopy(root, clone);
+    switch (cmd) {
+      case "BubbleSort":
+        TreeUtils.bubbleSort(r);
+        break;
+
+      case "SelectionSort":
+        TreeUtils.selectionSort(r);
+        break;
+
+      default:
+        TreeUtils.timSort(r);
+    }
+    return r;
+  }
+
+  private static String swapCounter(String cmd) {
+    String txt;
     if (TreeUtils.SWAP_COUNTER.get() == 0) {
       int cc = TreeUtils.COMPARE_COUNTER.get();
-      check.setToolTipText(String.format("%-24s - compare: %3d, swap: ---%n", title, cc));
+      txt = String.format("%-24s - compare: %3d, swap: ---%n", cmd, cc);
     } else {
       int cc = TreeUtils.COMPARE_COUNTER.get();
       int sc = TreeUtils.SWAP_COUNTER.get();
-      check.setToolTipText(String.format("%-24s - compare: %3d, swap: %3d%n", title, cc, sc));
+      txt = String.format("%-24s - compare: %3d, swap: %3d%n", cmd, cc, sc);
     }
+    return txt;
   }
 
   public static void main(String[] args) {
@@ -155,14 +176,14 @@ final class TreeUtils {
   //   }
   // }
 
-  public static void sortTree1(DefaultMutableTreeNode root) {
+  public static void bubbleSort(DefaultMutableTreeNode root) {
     int n = root.getChildCount();
     for (int i = 0; i < n - 1; i++) {
       for (int j = n - 1; j > i; j--) {
         DefaultMutableTreeNode curNode = (DefaultMutableTreeNode) root.getChildAt(j);
         DefaultMutableTreeNode prevNode = (DefaultMutableTreeNode) root.getChildAt(j - 1);
         if (!prevNode.isLeaf()) {
-          sortTree1(prevNode);
+          bubbleSort(prevNode);
         }
         if (COMPARATOR.compare(prevNode, curNode) > 0) {
           SWAP_COUNTER.getAndIncrement();
@@ -196,7 +217,7 @@ final class TreeUtils {
     }
   }
 
-  public static void sortTree2(DefaultMutableTreeNode parent) {
+  public static void selectionSort(DefaultMutableTreeNode parent) {
     // Java 9: Collections.list(parent.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) parent.preorderEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
@@ -221,9 +242,10 @@ final class TreeUtils {
     children.forEach(parent::add);
   }
 
-  public static void sortTree3(DefaultMutableTreeNode parent) {
+  public static void timSort(DefaultMutableTreeNode parent) {
     // Java 9: Collections.list(parent.preorderEnumeration()).stream()
-    Collections.list((Enumeration<?>) parent.preorderEnumeration()).stream()
+    Collections.list((Enumeration<?>) parent.preorderEnumeration())
+        .stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !node.isLeaf())
