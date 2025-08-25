@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(c::requestFocusInWindow);
       }
     });
-    field.getDocument().addDocumentListener(new DocumentVerifyAdapter() {
+    field.getDocument().addDocumentListener(new AbstractVerifyDocumentListener() {
       @Override protected void update() {
         boolean verified = !field.getText().isEmpty();
         JButton b = field.getRootPane().getDefaultButton();
@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-abstract class DocumentVerifyAdapter implements DocumentListener {
+abstract class AbstractVerifyDocumentListener implements DocumentListener {
   protected abstract void update();
 
   @Override public void insertUpdate(DocumentEvent e) {
