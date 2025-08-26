@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
   private final JEditorPane editorPane = new JEditorPane() {
     @Override public void updateUI() {
       super.updateUI();
-      putClientProperty(HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+      putClientProperty(HONOR_DISPLAY_PROPERTIES, true);
       setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
       setOpaque(false);
       setForeground(new Color(0xC8_C8_C8));

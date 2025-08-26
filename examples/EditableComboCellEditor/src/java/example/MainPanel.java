@@ -90,7 +90,7 @@ class ComboCellEditor extends AbstractCellEditor implements TableCellEditor {
 
   protected ComboCellEditor() {
     super();
-    combo.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+    combo.putClientProperty("JComboBox.isTableCellEditor", true);
     combo.setEditable(true);
     combo.addActionListener(e -> fireEditingStopped());
   }

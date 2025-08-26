@@ -12,9 +12,9 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JLabel label1 = new JLabel();
-    label1.putClientProperty("html.disable", Boolean.TRUE);
+    label1.putClientProperty("html.disable", true);
     JButton button1 = new JButton();
-    button1.putClientProperty("html.disable", Boolean.TRUE);
+    button1.putClientProperty("html.disable", true);
 
     label1.setText("<html><font color=red>Html l1</font></html>");
     button1.setText("<html><font color=red>Html b1</font></html>");

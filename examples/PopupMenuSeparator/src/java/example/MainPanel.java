@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
         UIDefaults d = new UIDefaults();
         d.put("PopupMenuSeparator.contentMargins", new Insets(3, 0, 3, 0));
         putClientProperty("Nimbus.Overrides", d);
-        putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+        putClientProperty("Nimbus.Overrides.InheritDefaults", true);
       }
     });
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));

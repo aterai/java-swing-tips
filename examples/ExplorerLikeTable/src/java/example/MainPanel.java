@@ -226,7 +226,7 @@ class FileListTable extends JTable {
     setDefaultRenderer(Object.class, null);
     super.updateUI();
 
-    putClientProperty("Table.isFileList", Boolean.TRUE);
+    putClientProperty("Table.isFileList", true);
     setCellSelectionEnabled(true);
     setIntercellSpacing(new Dimension());
     setShowGrid(false);

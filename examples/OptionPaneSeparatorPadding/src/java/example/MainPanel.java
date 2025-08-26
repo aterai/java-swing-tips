@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
     // d.put("OptionPane:\"OptionPane.messageArea\":\"OptionPane.label\".contentMargins", i);
     // d.put("OptionPane.buttonAreaBorder", BorderFactory.createMatteBorder(p, 0, 0, 0, bg));
     op.putClientProperty("Nimbus.Overrides", d);
-    op.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    op.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
     SwingUtilities.updateComponentTreeUI(op);
     String t1 = "separatorPadding: " + p;
     String t2 = "contentMargins: " + m;

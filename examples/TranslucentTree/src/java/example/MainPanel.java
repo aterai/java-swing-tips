@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     // String key = "Tree:TreeCell[Enabled+Selected].backgroundPainter";
     // d.put(key, new TransparentTreeCellPainter());
     // tree2.putClientProperty("Nimbus.Overrides", d);
-    // tree2.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
+    // tree2.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 
     add(makeTranslucentScrollPane(tree1));
     add(makeTranslucentScrollPane(tree2));

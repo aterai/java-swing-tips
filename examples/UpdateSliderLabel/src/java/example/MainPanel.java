@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
 
   private JSlider makeSlider() {
     JSlider slider = new JSlider(0, 10_000);
-    slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider.putClientProperty("Slider.paintThumbArrowShape", true);
     slider.setMajorTickSpacing(2500);
     slider.setMinorTickSpacing(500);
     slider.setPaintLabels(true);

@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     TableModel model = makeModel();
     JTable table = new JTable(model);
-    table.putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+    table.putClientProperty("JTable.autoStartsEdit", false);
     table.setAutoCreateRowSorter(true);
     table.addKeyListener(new TableNextMatchKeyHandler());
     add(new JScrollPane(table));

@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
   private static JInternalFrame createFrame(Container panel, int idx) {
     JInternalFrame frame = new JInternalFrame("frame" + idx, true, true, true, true);
     // frame.putClientProperty("Nimbus.Overrides", d);
-    // // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
+    // // frame.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
     frame.setContentPane(panel);
     frame.getRootPane().setOpaque(false);
     frame.setOpaque(false);

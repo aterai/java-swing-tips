@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
   private static Component makeComponent(String str, Border border) {
     JLabel l = new JLabel();
     l.setBorder(border);
-    l.putClientProperty("html.disable", Boolean.TRUE);
+    l.putClientProperty("html.disable", true);
     l.setText(str);
     return l;
   }

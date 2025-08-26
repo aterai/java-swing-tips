@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     JInternalFrame palette = new JInternalFrame("Palette", true, false, true, true);
     palette.setBounds(0, 0, 120, 120);
     palette.setMinimumSize(new Dimension(50, 50));
-    palette.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
+    palette.putClientProperty("JInternalFrame.isPalette", true);
     palette.add(new JScrollPane(new JTree()));
     palette.setVisible(true);
 
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 
   private JInternalFrame createFrame(int i) {
     JInternalFrame f = new JInternalFrame("title: " + i, true, true, true, true);
-    f.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
+    f.putClientProperty("JInternalFrame.isPalette", true);
     f.setSize(160, 120);
     EventQueue.invokeLater(() -> f.setVisible(true));
     f.setLocation(100 + 20 * i, 10 + 20 * i);

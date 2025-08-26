@@ -12,13 +12,13 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
     // TEST: UIManager.put("TabbedPane.tabRunOverlay", -4);
-    // UIManager.put("TabbedPane.extendTabsToBase", Boolean.TRUE); // Default
-    // UIManager.put("TabbedPane.extendTabsToBase", Boolean.FALSE);
+    // UIManager.put("TabbedPane.extendTabsToBase", true); // Default
+    // UIManager.put("TabbedPane.extendTabsToBase", false);
     JTabbedPane tabbedPane = makeTabbedPane();
     UIDefaults d = UIManager.getLookAndFeelDefaults();
     d.put("TabbedPane.extendTabsToBase", Boolean.FALSE);
     tabbedPane.putClientProperty("Nimbus.Overrides", d);
-    tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
+    tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 
     add(makeTitledPanel("TabbedPane.extendTabsToBase: true", makeTabbedPane()));
     add(makeTitledPanel("TabbedPane.extendTabsToBase: false", tabbedPane));

@@ -112,7 +112,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
     @Override public void updateUI() {
       super.updateUI();
       UIManager.put("ComboBox.squareButton", Boolean.FALSE);
-      putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+      putClientProperty("JComboBox.isTableCellEditor", true);
       setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
       setOpaque(false);
       setRenderer(new LocalDateTimeCellRenderer());

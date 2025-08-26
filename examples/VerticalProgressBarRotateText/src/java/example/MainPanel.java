@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     // d.put("ProgressBar.vertictalSize", new Dimension(50, 150));
     d.put("ProgressBar.verticalSize", new Dimension(50, 150));
     progressBar2.putClientProperty("Nimbus.Overrides", d);
-    progressBar2.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    progressBar2.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
 
     JButton button = new JButton("Test");
     button.addActionListener(e -> {

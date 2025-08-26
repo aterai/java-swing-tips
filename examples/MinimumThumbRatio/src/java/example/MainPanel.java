@@ -104,7 +104,7 @@ class VerticalScrollBar extends JScrollBar {
         }
       });
     }
-    putClientProperty("JScrollBar.fastWheelScrolling", Boolean.TRUE);
+    putClientProperty("JScrollBar.fastWheelScrolling", true);
   }
 
   private Dimension updateThumbSize(Dimension d) {

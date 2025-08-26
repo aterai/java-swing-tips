@@ -95,7 +95,7 @@ class RoundedSelectionTree extends JTree {
     String key = "Tree:TreeCell[Enabled+Selected].backgroundPainter";
     d.put(key, new TransparentTreeCellPainter());
     putClientProperty("Nimbus.Overrides", d);
-    putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
+    putClientProperty("Nimbus.Overrides.InheritDefaults", false);
     addTreeSelectionListener(e -> repaint());
   }
 }
@@ -133,7 +133,7 @@ class RoundedSelectionTree0 extends JTree {
     String key = "Tree:TreeCell[Enabled+Selected].backgroundPainter";
     d.put(key, new TransparentTreeCellPainter());
     putClientProperty("Nimbus.Overrides", d);
-    putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
+    putClientProperty("Nimbus.Overrides.InheritDefaults", false);
     addTreeSelectionListener(e -> repaint());
   }
 }

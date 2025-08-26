@@ -96,7 +96,7 @@ class RoundedCellSelectionTable extends JTable {
       // if (r instanceof JComponent) {
       //   JComponent c = (JComponent) r;
       //   c.putClientProperty("Nimbus.Overrides", d);
-      //   c.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.FALSE);
+      //   c.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
       // }
     }
   }

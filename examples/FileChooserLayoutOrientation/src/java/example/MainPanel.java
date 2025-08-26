@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     list.addHierarchyListener(e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0;
       if (b && e.getComponent().isShowing()) {
-        list.putClientProperty("List.isFileList", Boolean.FALSE);
+        list.putClientProperty("List.isFileList", false);
         list.setLayoutOrientation(JList.VERTICAL);
       }
     });

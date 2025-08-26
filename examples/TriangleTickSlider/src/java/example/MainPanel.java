@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     slider.setMinorTickSpacing(5);
     slider.setPaintLabels(true);
     slider.setSnapToTicks(true);
-    slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider.putClientProperty("Slider.paintThumbArrowShape", true);
     Object labelTable = slider.getLabelTable();
     if (icon && labelTable instanceof Map) {
       Icon tick = new TickIcon();

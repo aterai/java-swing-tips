@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     //       UIDefaults d = new UIDefaults();
     //       d.put(key, Boolean.FALSE);
     //       l.putClientProperty("Nimbus.Overrides", d);
-    //       l.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    //       l.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
     //     }
     //     return c;
     //   };

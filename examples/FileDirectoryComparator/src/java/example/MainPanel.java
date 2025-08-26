@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
     return new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
-        putClientProperty("Table.isFileList", Boolean.TRUE);
+        putClientProperty("Table.isFileList", true);
         setCellSelectionEnabled(true);
         setIntercellSpacing(new Dimension());
         setComponentPopupMenu(new TablePopupMenu());

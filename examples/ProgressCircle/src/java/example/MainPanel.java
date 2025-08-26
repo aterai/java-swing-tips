@@ -39,8 +39,8 @@ public final class MainPanel extends JPanel {
     progress2.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
     String key = "Slider.clockwise";
-    progress1.putClientProperty(key, Boolean.TRUE);
-    progress2.putClientProperty(key, Boolean.TRUE);
+    progress1.putClientProperty(key, true);
+    progress2.putClientProperty(key, true);
     JCheckBox check = new JCheckBox("Clockwise", true);
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
     });
 
     JSlider slider = new JSlider();
-    slider.putClientProperty("Slider.paintThumbArrowShape", Boolean.TRUE);
+    slider.putClientProperty("Slider.paintThumbArrowShape", true);
     progress1.setModel(slider.getModel());
 
     JButton button = new JButton("start");

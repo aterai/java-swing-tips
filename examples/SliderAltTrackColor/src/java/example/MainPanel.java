@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     slider1.setInverted(true);
 
     JSlider slider2 = new JSlider();
-    slider2.putClientProperty("JSlider.isFilled", Boolean.FALSE);
+    slider2.putClientProperty("JSlider.isFilled", false);
 
     String txt = "Slider.altTrackColor: RED";
     Box box = Box.createVerticalBox();

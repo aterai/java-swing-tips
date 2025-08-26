@@ -226,7 +226,7 @@ class FileListTable extends JTable {
     addMouseMotionListener(rbl);
     addMouseListener(rbl);
 
-    putClientProperty("Table.isFileList", Boolean.TRUE);
+    putClientProperty("Table.isFileList", true);
     setCellSelectionEnabled(true);
     setIntercellSpacing(new Dimension());
     setShowGrid(false);

@@ -43,7 +43,7 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   @Override protected void installDefaults() {
     super.installDefaults();
     // comboBox.setEditable(true);
-    comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+    comboBox.putClientProperty("JComboBox.isTableCellEditor", true);
     // comboBox.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
   }
 

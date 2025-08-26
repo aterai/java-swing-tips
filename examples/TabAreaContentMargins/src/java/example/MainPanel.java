@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     UIDefaults d = new UIDefaults();
     d.put("TabbedPane:TabbedPaneTabArea.contentMargins", new Insets(3, 30, 4, 30));
     tabbedPane.putClientProperty("Nimbus.Overrides", d);
-    tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    tabbedPane.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
     add(makeTabbedPane());
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));

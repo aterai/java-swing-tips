@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     //     // UIDefaults d = new UIDefaults();
     //     // d.put("TabbedPane.textIconGap", 4);
     //     // putClientProperty("Nimbus.Overrides", d);
-    //     // putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+    //     // putClientProperty("Nimbus.Overrides.InheritDefaults", true);
     //   }
     // };
     JTabbedPane tabbedPane0 = new JTabbedPane();
