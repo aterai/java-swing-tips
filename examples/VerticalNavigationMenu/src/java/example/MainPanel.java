@@ -169,7 +169,7 @@ class RowSelectionTree extends JTree {
         return rect;
       }
     });
-    UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
+    UIManager.put("Tree.repaintWholeRow", true);
     TreeCellRenderer r = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
       Component c = r.getTreeCellRendererComponent(

@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
   private JButton makeButton1() {
     JButton button = new JButton("Default");
     button.addActionListener(e -> {
-      UIManager.put("FileChooser.noPlacesBar", Boolean.FALSE);
+      UIManager.put("FileChooser.noPlacesBar", false);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
   private JButton makeButton2() {
     JButton button = new JButton("noPlacesBar");
     button.addActionListener(e -> {
-      UIManager.put("FileChooser.noPlacesBar", Boolean.TRUE);
+      UIManager.put("FileChooser.noPlacesBar", true);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {

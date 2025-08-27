@@ -18,8 +18,8 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 0));
-    UIManager.put("Tree.paintLines", Boolean.TRUE);
-    UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
+    UIManager.put("Tree.paintLines", true);
+    UIManager.put("Tree.repaintWholeRow", true);
     UIManager.put("Tree.hash", Color.DARK_GRAY);
 
     JTree tree = new JTree() {

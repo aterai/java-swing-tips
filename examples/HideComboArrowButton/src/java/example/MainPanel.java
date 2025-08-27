@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     JComboBox<String> comboBox = new JComboBox<String>(items) {
       @Override public void updateUI() {
         super.updateUI();
-        UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+        UIManager.put("ComboBox.squareButton", false);
         UIManager.put("ComboBox.background", p.getBackground());
         setUI(new BasicComboBoxUI() {
           @Override protected JButton createArrowButton() {

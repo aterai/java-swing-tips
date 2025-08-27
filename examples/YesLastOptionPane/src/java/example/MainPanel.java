@@ -24,14 +24,14 @@ public final class MainPanel extends JPanel {
 
     JButton defaultButton = new JButton(KEY + ": false(default)");
     defaultButton.addActionListener(e -> {
-      UIManager.put(KEY, Boolean.FALSE);
+      UIManager.put(KEY, false);
       String str = JOptionPane.showInputDialog(getRootPane(), KEY + ": false");
       log.setText(str);
     });
 
     JButton yesLastButton = new JButton(KEY + ": true");
     yesLastButton.addActionListener(e -> {
-      UIManager.put(KEY, Boolean.TRUE);
+      UIManager.put(KEY, true);
       String str = JOptionPane.showInputDialog(getRootPane(), KEY + ": true");
       log.setText(str);
     });

@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     popup.setLayout(new BorderLayout());
     popup.addMouseWheelListener(InputEvent::consume);
 
-    UIManager.put("Slider.paintValue", Boolean.TRUE);
+    UIManager.put("Slider.paintValue", true);
     UIManager.put("Slider.focus", UIManager.get("Slider.background"));
     JSlider slider = new JSlider(SwingConstants.VERTICAL, 0, 100, 80) {
       @Override public Dimension getPreferredSize() {

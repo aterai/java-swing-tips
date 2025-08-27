@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextArea log = new JTextArea();
 
-    UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+    UIManager.put("FileChooser.readOnly", true);
     // Locale.setDefault(new Locale("en", "US"));
     // Locale defaultLocale = JFileChooser.getDefaultLocale();
     // JFileChooser.setDefaultLocale(defaultLocale);
