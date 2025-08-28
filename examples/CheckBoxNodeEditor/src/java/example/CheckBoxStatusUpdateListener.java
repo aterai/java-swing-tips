@@ -580,6 +580,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //         // Fixed: First mousepress doesn't start editing in JTree - Java Bug System
 //         //    https://bugs.openjdk.org/browse/JDK-8023474
 //         // if (Objects.isNull(str) && System.getProperty("java.version").startsWith("1.7.0")) {
+//         // boolean version = System.getProperty("java.version").startsWith("1.7.0");
+//         // if (Objects.isNull(str) && version) {
 //         //   System.out.println("XXX: Java 7, only on first run\n" + getBounds());
 //         //   check.setBounds(new Rectangle(d.width, r.height));
 //         // }
