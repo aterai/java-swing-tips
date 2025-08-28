@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         .map(DefaultMutableTreeNode.class::cast).map(DefaultMutableTreeNode::getUserObject)
         .ifPresent(uo -> updateListFiles(uo, listModel)));
 
-    UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
+    UIManager.put("PopupMenu.consumeEventOnClose", false);
     JPopupMenu popup = new JPopupMenu();
     popup.addPopupMenuListener(new TreePopupMenuListener(tree));
     popup.add("JMenuItem1");
@@ -136,7 +136,7 @@ class FileSystemViewTree extends JTree {
     removeMouseMotionListener(rolloverHandler);
     super.updateUI();
     setUI(new WholeRowSelectTreeUI());
-    UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
+    UIManager.put("Tree.repaintWholeRow", true);
     fileSystemView = FileSystemView.getFileSystemView();
     addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
     expandRow(0);

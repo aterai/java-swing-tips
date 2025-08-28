@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     // UIManager.put("MenuItem.border", BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    UIManager.put("MenuItem.borderPainted", Boolean.FALSE);
+    UIManager.put("MenuItem.borderPainted", false);
 
     JMenu sub = makeMenu();
     sub.setMnemonic('M');

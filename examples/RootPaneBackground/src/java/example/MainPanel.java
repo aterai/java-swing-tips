@@ -123,7 +123,7 @@ final class ImageUtils {
     UIManager.put("Menu.background", new Color(200, 0, 0, 0));
     UIManager.put("Menu.selectionBackground", new Color(100, 100, 255, 100));
     UIManager.put("Menu.selectionForeground", new Color(200, 200, 200));
-    UIManager.put("Menu.useMenuBarBackgroundForTopLevel", Boolean.TRUE);
+    UIManager.put("Menu.useMenuBarBackgroundForTopLevel", true);
     JMenuBar mb = new JMenuBar() {
       @Override protected void paintComponent(Graphics g) {
         // super.paintComponent(g);

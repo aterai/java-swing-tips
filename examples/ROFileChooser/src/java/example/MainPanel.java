@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
 
     JButton readOnlyButton = new JButton("readOnly");
     readOnlyButton.addActionListener(e -> {
-      UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+      UIManager.put("FileChooser.readOnly", true);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
 
     JButton defaultButton = new JButton("Default");
     defaultButton.addActionListener(e -> {
-      UIManager.put("FileChooser.readOnly", Boolean.FALSE);
+      UIManager.put("FileChooser.readOnly", false);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      // UIManager.put("FileChooser.readOnly", Boolean.TRUE);
+      // UIManager.put("FileChooser.readOnly", true);
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
