@@ -97,8 +97,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static JSlider makeSlider() {
-    UIManager.put("Slider.paintValue", Boolean.FALSE); // GTKLookAndFeel
-    UIManager.put("Slider.focus", UIManager.get("Slider.background"));
+    UIManager.put("Slider.paintValue", false); // GTKLookAndFeel
+    UIManager.put("Slider.focus", UIManager.getColor("Slider.background"));
     JSlider slider = new JSlider();
     slider.addMouseWheelListener(e -> {
       JSlider s = (JSlider) e.getComponent();

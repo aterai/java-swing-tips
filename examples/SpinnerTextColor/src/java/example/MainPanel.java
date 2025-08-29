@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component makeColorSpinner(String... items) {
-    UIManager.put("ComboBox.squareButton", Boolean.FALSE);
+    UIManager.put("ComboBox.squareButton", false);
     JComboBox<String> comboBox = new JComboBox<String>(items) {
       @Override public void updateUI() {
         super.updateUI();

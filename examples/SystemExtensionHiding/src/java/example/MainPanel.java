@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
 
     JButton button1 = new JButton("false");
     button1.addActionListener(e -> {
-      UIManager.put(key, Boolean.FALSE);
+      UIManager.put(key, false);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
 
     JButton button2 = new JButton("true");
     button2.addActionListener(e -> {
-      UIManager.put(key, Boolean.TRUE);
+      UIManager.put(key, true);
       JFileChooser fileChooser = new JFileChooser();
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {

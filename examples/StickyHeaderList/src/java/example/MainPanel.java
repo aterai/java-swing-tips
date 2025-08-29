@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(12, 20));
-    UIManager.put("List.lockToPositionOnScroll", Boolean.FALSE);
+    UIManager.put("List.lockToPositionOnScroll", false);
     ListModel<String> model = makeModel();
     add(makeScrollPane(makeList(model)));
     add(new JLayer<>(makeScrollPane(makeList(model)), new StickyLayerUI()));

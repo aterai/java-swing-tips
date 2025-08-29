@@ -13,7 +13,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    UIManager.put("Slider.onlyLeftMouseButtonDrag", Boolean.TRUE);
+    UIManager.put("Slider.onlyLeftMouseButtonDrag", true);
 
     JSlider slider1 = makeSlider(SwingConstants.HORIZONTAL);
     UIDefaults d = UIManager.getLookAndFeelDefaults();

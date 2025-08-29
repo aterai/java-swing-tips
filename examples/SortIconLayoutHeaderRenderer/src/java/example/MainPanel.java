@@ -25,7 +25,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    UIManager.put("TableHeader.rightAlignSortArrow", Boolean.FALSE);
+    UIManager.put("TableHeader.rightAlignSortArrow", false);
     JTable table = new JTable(makeModel()) {
       @Override public void updateUI() {
         super.updateUI();
