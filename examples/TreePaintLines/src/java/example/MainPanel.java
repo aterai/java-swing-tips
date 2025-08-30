@@ -11,7 +11,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    UIManager.put("Tree.paintLines", Boolean.FALSE);
+    UIManager.put("Tree.paintLines", false);
 
     JTree tree = new JTree();
     for (int i = 0; i < tree.getRowCount(); i++) {

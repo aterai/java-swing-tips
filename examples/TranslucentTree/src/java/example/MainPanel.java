@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 class TranslucentTree extends JTree {
   @Override public void updateUI() {
     super.updateUI();
-    UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
+    UIManager.put("Tree.repaintWholeRow", true);
     setCellRenderer(new TranslucentTreeCellRenderer());
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -107,7 +107,7 @@ class TransparentTree extends JTree {
 
   @Override public void updateUI() {
     super.updateUI();
-    UIManager.put("Tree.repaintWholeRow", Boolean.TRUE);
+    UIManager.put("Tree.repaintWholeRow", true);
     setCellRenderer(new TransparentTreeCellRenderer());
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

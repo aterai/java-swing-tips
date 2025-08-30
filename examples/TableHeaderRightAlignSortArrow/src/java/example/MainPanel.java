@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     // // NimbusLookAndFeel TEST:
     // if (UIManager.getLookAndFeel().getClass().getName().contains("Nimbus")) {
-    //   UIManager.put(key, Boolean.FALSE);
+    //   UIManager.put(key, false);
     //   TableCellRenderer renderer = (t, value, isSelected, hasFocus, row, column) -> {
     //     TableCellRenderer r = t.getTableHeader().getDefaultRenderer();
     //     Component c = r.getTableCellRendererComponent(
