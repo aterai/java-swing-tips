@@ -17,7 +17,7 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public class OneLineTextPane extends JTextPane {
-  @Override public void updateUI() {
+  @Override public final void updateUI() {
     super.updateUI();
     String key = "Do-Nothing";
     InputMap im = getInputMap(WHEN_FOCUSED);
@@ -31,7 +31,7 @@ public class OneLineTextPane extends JTextPane {
     enableInputMethods(false);
   }
 
-  @Override public void scrollRectToVisible(Rectangle rect) {
+  @Override public final void scrollRectToVisible(Rectangle rect) {
     rect.grow(getInsets().right, 0);
     super.scrollRectToVisible(rect);
   }
