@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static final class DesktopIcon extends JInternalFrame.JDesktopIcon {
-    public DesktopIcon(JInternalFrame f) {
+    private DesktopIcon(JInternalFrame f) {
       super(f);
     }
 

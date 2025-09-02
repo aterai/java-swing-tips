@@ -88,7 +88,7 @@ class DarkComboBox<E> extends JComboBox<E> {
   public static final Color FOREGROUND = Color.WHITE;
   public static final String KEY = "ComboBox.border";
 
-  public DarkComboBox(ComboBoxModel<E> model) {
+  protected DarkComboBox(ComboBoxModel<E> model) {
     super(model);
   }
 
@@ -109,7 +109,7 @@ class DarkComboBox<E> extends JComboBox<E> {
 class BasicRoundedComboBox<E> extends JComboBox<E> {
   private transient PopupMenuListener listener;
 
-  public BasicRoundedComboBox(ComboBoxModel<E> model) {
+  protected BasicRoundedComboBox(ComboBoxModel<E> model) {
     super(model);
   }
 
@@ -134,7 +134,7 @@ class RoundedComboBox<E> extends JComboBox<E> {
   private transient PopupMenuListener listener;
   private transient MouseListener handler;
 
-  public RoundedComboBox(ComboBoxModel<E> model) {
+  protected RoundedComboBox(ComboBoxModel<E> model) {
     super(model);
   }
 

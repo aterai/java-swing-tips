@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
   private final class ProgressWorker extends BackgroundTask {
     private final int key;
 
-    public ProgressWorker(int lengthOfTask, int key) {
+    private ProgressWorker(int lengthOfTask, int key) {
       super(lengthOfTask);
       this.key = key;
     }

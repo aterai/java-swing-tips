@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
   private final class NewFrameAction extends AbstractAction {
     private int openFrameCount;
 
-    public NewFrameAction(String name) {
+    /* default */ NewFrameAction(String name) {
       super(name);
     }
 

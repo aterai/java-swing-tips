@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class CompactSliderPanel1 extends JPanel {
-  public CompactSliderPanel1() {
+  /* default */ CompactSliderPanel1() {
     super(new GridLayout(0, 1, 10, 10));
     setOpaque(false);
     add(makeCompactSlider1());
@@ -206,7 +206,7 @@ class ProgressBarSpinner extends JSpinner {
 }
 
 final class CompactSliderPanel2 extends JPanel {
-  public CompactSliderPanel2() {
+  /* default */ CompactSliderPanel2() {
     super(new GridLayout(0, 1, 10, 10));
     setOpaque(false);
     add(makeCompactSlider3());

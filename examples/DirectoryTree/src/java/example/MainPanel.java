@@ -80,7 +80,7 @@ class FileTreeCellRenderer implements TreeCellRenderer {
   private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
   private final FileSystemView fileSystemView;
 
-  public FileTreeCellRenderer(FileSystemView fileSystemView) {
+  protected FileTreeCellRenderer(FileSystemView fileSystemView) {
     this.fileSystemView = fileSystemView;
   }
 

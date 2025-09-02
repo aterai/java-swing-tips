@@ -84,7 +84,7 @@ class ControlsBorderLayout extends BorderLayout {
   private final Timer animator;
   private int controlsHeight;
 
-  public ControlsBorderLayout(Timer animator) {
+  protected ControlsBorderLayout(Timer animator) {
     super(5, 5);
     this.animator = animator;
   }

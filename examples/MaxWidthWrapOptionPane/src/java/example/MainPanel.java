@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
 
 // https://stackoverflow.com/questions/35405672/use-width-and-max-width-to-wrap-text-in-joptionpane
 class LineWrapTextArea extends JTextArea {
-  public LineWrapTextArea() {
+  protected LineWrapTextArea() {
     super(1, 1);
   }
 

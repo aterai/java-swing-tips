@@ -178,10 +178,10 @@ class TitleLayerUI extends LayerUI<JScrollPane> {
     l.getView().repaint();
   }
 
-  private static class RoundedLabel extends JLabel {
+  private static final class RoundedLabel extends JLabel {
     private final int arc;
 
-    public RoundedLabel(String title, int arc) {
+    private RoundedLabel(String title, int arc) {
       super(title);
       this.arc = arc;
     }

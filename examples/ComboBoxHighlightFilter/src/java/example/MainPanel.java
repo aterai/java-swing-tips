@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
 class HighlightComboBox extends JComboBox<String> {
   private final HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
 
-  public HighlightComboBox(ComboBoxModel<String> model) {
+  protected HighlightComboBox(ComboBoxModel<String> model) {
     super(model);
   }
 

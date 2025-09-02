@@ -192,7 +192,7 @@ class ProgressTableCellRenderer implements TableCellRenderer {
   // private final JLabel label = new JLabel(null, null, SwingConstants.CENTER);
   // private final URL url;
 
-  public ProgressTableCellRenderer(JProgressBar progress) {
+  protected ProgressTableCellRenderer(JProgressBar progress) {
     this.progress = progress;
     // ClassLoader cl = Thread.currentThread().getContextClassLoader();
     // url = cl.getResource("example/restore_to_background_color.gif");

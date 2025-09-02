@@ -93,7 +93,7 @@ final class TreePopupMenu extends JPopupMenu {
   };
   private TreePath path;
 
-  public TreePopupMenu() {
+  /* default */ TreePopupMenu() {
     super();
     add("add").addActionListener(e -> addTab());
     add("edit").addActionListener(e -> editTab());

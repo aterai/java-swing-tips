@@ -83,11 +83,11 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 
-  private static class SoundButtonHandler extends MouseAdapter {
+  private static final class SoundButtonHandler extends MouseAdapter {
     private final JSlider slider;
     private final JPopupMenu popup;
 
-    public SoundButtonHandler(JSlider slider, JPopupMenu popup) {
+    private SoundButtonHandler(JSlider slider, JPopupMenu popup) {
       super();
       this.slider = slider;
       this.popup = popup;
@@ -116,10 +116,10 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class PopupHandler implements PopupMenuListener {
+  private static final class PopupHandler implements PopupMenuListener {
     private final JToggleButton button;
 
-    public PopupHandler(JToggleButton button) {
+    private PopupHandler(JToggleButton button) {
       this.button = button;
     }
 

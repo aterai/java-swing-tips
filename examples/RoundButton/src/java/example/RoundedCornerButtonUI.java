@@ -106,8 +106,8 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
     g2.fill(border);
   }
 
-  private class RoundedCornerButtonListener extends BasicButtonListener {
-    public RoundedCornerButtonListener(AbstractButton button) {
+  private final class RoundedCornerButtonListener extends BasicButtonListener {
+    private RoundedCornerButtonListener(AbstractButton button) {
       super(button);
     }
 

@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
 }
 
 final class ListEditorComboBox1 extends JPanel {
-  public ListEditorComboBox1(String title, ListModel<ListItem> model) {
+  /* default */ ListEditorComboBox1(String title, ListModel<ListItem> model) {
     super(new FlowLayout(FlowLayout.LEADING));
     setBorder(BorderFactory.createTitledBorder(title));
     add(makeListItemComboBox(model));
@@ -86,7 +86,7 @@ final class ListEditorComboBox1 extends JPanel {
 final class ListItemComboBox extends JComboBox<ListItem> {
   private final JList<ListItem> list;
 
-  public ListItemComboBox(ComboBoxModel<ListItem> model, JList<ListItem> list) {
+  /* default */ ListItemComboBox(ComboBoxModel<ListItem> model, JList<ListItem> list) {
     super(model);
     this.list = list;
     int fixedCellWidth = list.getFixedCellWidth();
@@ -119,7 +119,7 @@ final class ListItemComboBox extends JComboBox<ListItem> {
   public final class ListComboEditor implements ComboBoxEditor {
     private final Component scroll;
 
-    public ListComboEditor(JScrollPane scroll) {
+    /* default */ ListComboEditor(JScrollPane scroll) {
       this.scroll = scroll;
     }
 
@@ -150,7 +150,7 @@ final class ListItemComboBox extends JComboBox<ListItem> {
 }
 
 final class ListEditorComboBox2 extends JPanel {
-  public ListEditorComboBox2(String title, ListModel<ListItem> model) {
+  /* default */ ListEditorComboBox2(String title, ListModel<ListItem> model) {
     super(new FlowLayout(FlowLayout.LEADING));
     setBorder(BorderFactory.createTitledBorder(title));
     add(makeListEditorComboBox(model));

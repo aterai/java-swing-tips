@@ -72,12 +72,12 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 
-  private static class ViewPositionChangeListener implements ChangeListener {
+  private static final class ViewPositionChangeListener implements ChangeListener {
     private final AtomicBoolean adjusting = new AtomicBoolean();
     private final JScrollPane sp1;
     private final JScrollPane sp2;
 
-    public ViewPositionChangeListener(JScrollPane sp1, JScrollPane sp2) {
+    private ViewPositionChangeListener(JScrollPane sp1, JScrollPane sp2) {
       this.sp1 = sp1;
       this.sp2 = sp2;
     }

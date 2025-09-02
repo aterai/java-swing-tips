@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
   }
 
   private final class BackupTask extends BackgroundTask {
-    public BackupTask(File file, int oldIdx, int newIdx) {
+    private BackupTask(File file, int oldIdx, int newIdx) {
       super(file, oldIdx, newIdx);
     }
 

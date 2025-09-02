@@ -86,7 +86,7 @@ public final class MainPanel extends JPanel {
 class ToolBarButton extends JButton {
   private transient JToolTip tip;
 
-  public ToolBarButton(ColorItem item) {
+  protected ToolBarButton(ColorItem item) {
     super(item.getIcon());
   }
 

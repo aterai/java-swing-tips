@@ -104,10 +104,10 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 
-  private class Watcher implements Runnable {
+  private final class Watcher implements Runnable {
     private final SecondaryLoop loop;
 
-    public Watcher(SecondaryLoop loop) {
+    private Watcher(SecondaryLoop loop) {
       this.loop = loop;
     }
 
@@ -129,7 +129,7 @@ public final class MainPanel extends JPanel {
     // Watching a Directory for Changes (The Java™ Tutorials > Essential Classes > Basic I/O)
     // https://docs.oracle.com/javase/tutorial/essential/io/notification.html
     // Process all events for keys queued to the watcher
-    public void processEvents(Path dir, WatchService watcher) {
+    private void processEvents(Path dir, WatchService watcher) {
       for (;;) {
         // wait for key to be signaled
         WatchKey key;
@@ -170,7 +170,7 @@ public final class MainPanel extends JPanel {
       }
     }
 
-    public void updateTable(WatchEvent.Kind<?> kind, Path child) {
+    private void updateTable(WatchEvent.Kind<?> kind, Path child) {
       if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
         model.addPath(child);
       } else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
@@ -191,7 +191,7 @@ public final class MainPanel extends JPanel {
       }
     }
 
-    public boolean isDeleteRow(int row) {
+    private boolean isDeleteRow(int row) {
       return deleteRowSet.contains(row);
     }
   }
@@ -227,12 +227,12 @@ class FileModel extends DefaultTableModel {
     return COLUMN_ARRAY[column].columnName;
   }
 
-  private static class ColumnContext {
-    public final String columnName;
-    public final Class<?> columnClass;
-    public final boolean isEditable;
+  private static final class ColumnContext {
+    private final String columnName;
+    private final Class<?> columnClass;
+    private final boolean isEditable;
 
-    protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
+    private ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
       this.columnName = columnName;
       this.columnClass = columnClass;
       this.isEditable = isEditable;

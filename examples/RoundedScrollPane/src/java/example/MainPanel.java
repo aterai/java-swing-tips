@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
 }
 
 class SimpleScrollPane extends JScrollPane {
-  public SimpleScrollPane(Component view) {
+  protected SimpleScrollPane(Component view) {
     super(view);
   }
 

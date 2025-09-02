@@ -96,10 +96,10 @@ public final class MainPanel extends JPanel {
     return table;
   }
 
-  private static class SudokuCellEditor extends DefaultCellEditor {
+  private static final class SudokuCellEditor extends DefaultCellEditor {
     private final JTextField editor;
 
-    public SudokuCellEditor(JTextField editor) {
+    private SudokuCellEditor(JTextField editor) {
       super(editor);
       this.editor = editor;
     }
@@ -114,7 +114,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class SudokuCellRenderer extends DefaultTableCellRenderer {
+  private static final class SudokuCellRenderer extends DefaultTableCellRenderer {
     private final Border b0 = BorderFactory.createMatteBorder(0, 0, BW1, BW1, Color.GRAY);
     private final Border b1 = BorderFactory.createMatteBorder(0, 0, BW2, BW2, Color.BLACK);
     private final Border b2 = BorderFactory.createCompoundBorder(
@@ -126,7 +126,7 @@ public final class MainPanel extends JPanel {
     private final Integer[][] mask;
 
     @SuppressWarnings("PMD.UseVarargs")
-    protected SudokuCellRenderer(Integer[][] src) {
+    private SudokuCellRenderer(Integer[][] src) {
       super();
       Integer[][] dst = new Integer[src.length][src[0].length];
       for (int i = 0; i < src.length; i++) {

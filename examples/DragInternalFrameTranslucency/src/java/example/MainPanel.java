@@ -67,7 +67,7 @@ class DragDesktopManager extends DefaultDesktopManager {
   private final JDesktopPane desktop;
   private JComponent draggingFrame;
 
-  public DragDesktopManager(JDesktopPane desktop) {
+  protected DragDesktopManager(JDesktopPane desktop) {
     super();
     this.desktop = desktop;
   }

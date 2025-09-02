@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
 class RolloverTable extends JTable {
   private transient HighlightListener highlighter;
 
-  public RolloverTable(TableModel model) {
+  protected RolloverTable(TableModel model) {
     super(model);
   }
 

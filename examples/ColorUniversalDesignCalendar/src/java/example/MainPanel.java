@@ -229,8 +229,8 @@ class EnclosedLabel extends JLabel {
     super.paintComponent(g);
   }
 
-  protected void setEnclosedShape(EnclosedShape enclosedShape) {
-    this.enclosedShape = enclosedShape;
+  protected void setEnclosedShape(EnclosedShape shape) {
+    this.enclosedShape = shape;
   }
 
   protected Shape getShape() {

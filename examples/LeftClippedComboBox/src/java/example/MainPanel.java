@@ -87,7 +87,7 @@ class LeftClippedComboBox<E> extends JComboBox<E> {
 class LeftClippedListCellRenderer extends DefaultListCellRenderer {
   private final JComboBox<?> combo;
 
-  public LeftClippedListCellRenderer(JComboBox<?> combo) {
+  protected LeftClippedListCellRenderer(JComboBox<?> combo) {
     super();
     this.combo = combo;
   }
