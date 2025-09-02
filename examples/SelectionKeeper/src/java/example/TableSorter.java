@@ -106,7 +106,7 @@ import javax.swing.table.TableModel;
  * @version 2.0 02/27/04
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public class TableSorter extends AbstractTableModel {
+public final class TableSorter extends AbstractTableModel {
   public static final int DESCENDING = -1;
   public static final int NOT_SORTED = 0;
   public static final int ASCENDING = 1;
@@ -163,7 +163,7 @@ public class TableSorter extends AbstractTableModel {
   //   return tableModel;
   // }
 
-  public final void setTableModel(TableModel model) {
+  public void setTableModel(TableModel model) {
     Optional.ofNullable(tableModel).ifPresent(m -> m.removeTableModelListener(modelListener));
     // if (tableModel != null) {
     //   tableModel.removeTableModelListener(modelListener);
@@ -184,7 +184,7 @@ public class TableSorter extends AbstractTableModel {
   //   return tableHeader;
   // }
 
-  public final void setTableHeader(JTableHeader header) {
+  public void setTableHeader(JTableHeader header) {
     Optional.ofNullable(tableHeader).ifPresent(h -> {
       h.removeMouseListener(mouseListener);
       Optional.ofNullable(h.getDefaultRenderer())

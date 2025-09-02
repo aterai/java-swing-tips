@@ -130,10 +130,10 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
     return trackLength * tickSp / (float) possibleTickPos;
   }
 
-  private class SnapTrackListener extends TrackListener {
+  private final class SnapTrackListener extends TrackListener {
     private final JSlider slider;
 
-    public SnapTrackListener(JSlider slider) {
+    private SnapTrackListener(JSlider slider) {
       super();
       this.slider = slider;
     }
@@ -178,10 +178,10 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
     return trackLength * tickSp / (float) possibleTickPos;
   }
 
-  private class SnapTrackListener extends TrackListener {
+  private final class SnapTrackListener extends TrackListener {
     private final JSlider slider;
 
-    public SnapTrackListener(JSlider slider) {
+    private SnapTrackListener(JSlider slider) {
       super();
       this.slider = slider;
     }
