@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     parent.add(new DefaultMutableTreeNode("<html>blue<br>&nbsp;&nbsp;blue, blue"));
     parent.add(new DefaultMutableTreeNode("<html>violet<br>&ensp;&ensp;violet"));
     parent.add(new DefaultMutableTreeNode("<html>red<br>&emsp;red<br>&emsp;red"));
-    parent.add(new DefaultMutableTreeNode("<html>yellow<br>\u3000yellow"));
+    parent.add(new DefaultMutableTreeNode("<html>yellow<br>　yellow"));
 
     parent = new DefaultMutableTreeNode("sports");
     root.add(parent);
@@ -87,7 +87,7 @@ public final class MainPanel extends JPanel {
     parent.add(new DefaultMutableTreeNode("blue\n  blue, blue"));
     parent.add(new DefaultMutableTreeNode("violet\n  violet"));
     parent.add(new DefaultMutableTreeNode("red\n red\n red"));
-    parent.add(new DefaultMutableTreeNode("yellow\n\u3000yellow"));
+    parent.add(new DefaultMutableTreeNode("yellow\n　yellow"));
 
     parent = new DefaultMutableTreeNode("sports");
     root.add(parent);

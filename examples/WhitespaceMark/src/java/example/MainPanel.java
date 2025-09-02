@@ -33,9 +33,9 @@ public final class MainPanel extends JPanel {
   private static final String TAB_TXT = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
   private static final String IDEOGRAPHIC_SPACE = String.join("\n",
       "123456789012",
-      "bbb2\u3000\u3000\u30001 3 ccc3\n",
-      "\u300000000 \u300012345 ",
-      "\u3000\u3000日本語\u3000");
+      "bbb2　　　1 3 ccc3\n",
+      "　00000 　12345 ",
+      "　　日本語　");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -156,7 +156,7 @@ class ParagraphWithEopmView extends ParagraphView {
 }
 
 class WhitespaceLabelView extends LabelView {
-  private static final String IDEOGRAPHIC_SPACE = "\u3000";
+  private static final String IDEOGRAPHIC_SPACE = "　"; // "\u3000";
   private static final String TABULATION = "\t";
   private static final Color MARK_COLOR = new Color(0x78_82_6E);
   private static final BasicStroke DASHED = new BasicStroke(
