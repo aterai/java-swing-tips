@@ -144,7 +144,7 @@ class RoundedCellSelectionTable extends JTable {
       int arc = 8;
       // if (!area.isEmpty()) {
       for (Area a : GeomUtils.singularization(area)) {
-        // List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
+        // List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         // g2.fill(GeomUtils.convertRoundedPath(lst, arc / 2d));
         Rectangle r = a.getBounds();
         g2.fillRoundRect(r.x, r.y, r.width - 1, r.height - 1, arc, arc);
@@ -166,7 +166,7 @@ final class GeomUtils {
     /* Singleton */
   }
 
-  // public static List<Point2D> convertAreaToPoint2DList(Area area) {
+  // public static List<Point2D> convertAreaToListOfPoint2D(Area area) {
   //   List<Point2D> list = new ArrayList<>();
   //   PathIterator pi = area.getPathIterator(null);
   //   double[] coords = new double[6];

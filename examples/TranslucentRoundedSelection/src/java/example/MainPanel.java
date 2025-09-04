@@ -186,7 +186,7 @@ class RoundedSelectionHighlightPainter extends DefaultHighlightPainter {
     try {
       Area area = getLinesArea(c, offs0, offs1);
       for (Area a : GeomUtils.singularization(area)) {
-        List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
+        List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         GeomUtils.flatteningStepsOnRightSide(lst, ARC * 2d);
         g2.fill(GeomUtils.convertRoundedPath(lst, ARC));
       }
@@ -226,7 +226,7 @@ final class GeomUtils {
     /* Singleton */
   }
 
-  public static List<Point2D> convertAreaToPoint2DList(Area area) {
+  public static List<Point2D> convertAreaToListOfPoint2D(Area area) {
     List<Point2D> list = new ArrayList<>();
     PathIterator pi = area.getPathIterator(null);
     double[] cd = new double[6];

@@ -76,7 +76,7 @@ class RoundedSelectionTree extends JTree {
           .forEach(r -> area.add(new Area(r)));
       double arc = 4d;
       for (Area a : GeomUtils.singularization(area)) {
-        List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
+        List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         GeomUtils.flatteningStepsOnRightSide(lst, arc * 2d);
         g2.fill(GeomUtils.convertRoundedPath(lst, arc));
         // g2.fill(GeomUtils.drawRoundedPolygon(lst, arc));
@@ -115,7 +115,7 @@ class RoundedSelectionTree0 extends JTree {
           .forEach(r -> area.add(new Area(r)));
       double arc = 4d;
       for (Area a : GeomUtils.singularization(area)) {
-        List<Point2D> lst = GeomUtils.convertAreaToPoint2DList(a);
+        List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         // GeomUtils.convertFlatten(lst, arc * 2d);
         g2.fill(GeomUtils.convertRoundedPath(lst, arc));
       }
@@ -230,7 +230,7 @@ final class GeomUtils {
     /* Singleton */
   }
 
-  public static List<Point2D> convertAreaToPoint2DList(Area area) {
+  public static List<Point2D> convertAreaToListOfPoint2D(Area area) {
     List<Point2D> list = new ArrayList<>();
     PathIterator pi = area.getPathIterator(null);
     double[] coords = new double[6];
