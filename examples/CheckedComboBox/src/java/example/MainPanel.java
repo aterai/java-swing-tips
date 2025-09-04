@@ -148,8 +148,8 @@ class CheckItem {
 // }
 
 class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
-  protected boolean keepOpen;
   private final JPanel panel = new JPanel(new BorderLayout());
+  private boolean keepOpen;
 
   protected CheckedComboBox(ComboBoxModel<E> model) {
     super(model);
