@@ -114,11 +114,11 @@ public final class TableSorter extends AbstractTableModel {
   public static final Comparator<Object> LEXICAL_COMP = new LexicalComparator();
   private static final Directive EMPTY_DIRECTIVE = new Directive(-1, NOT_SORTED);
 
-  protected transient TableModel tableModel;
+  private transient TableModel tableModel;
 
-  protected final transient List<TableRow> viewToModel = new ArrayList<>();
-  protected final transient List<Integer> modelToView = new ArrayList<>();
-  protected final transient List<Directive> sortingColumns = new ArrayList<>();
+  private final transient List<TableRow> viewToModel = new ArrayList<>();
+  private final transient List<Integer> modelToView = new ArrayList<>();
+  private final transient List<Directive> sortingColumns = new ArrayList<>();
 
   private JTableHeader tableHeader;
   private final Map<Class<?>, Comparator<?>> columnComparators = new ConcurrentHashMap<>();
@@ -154,7 +154,7 @@ public final class TableSorter extends AbstractTableModel {
     return this;
   }
 
-  protected void clearSortingState() {
+  public void clearSortingState() {
     viewToModel.clear();
     modelToView.clear();
   }
@@ -249,7 +249,7 @@ public final class TableSorter extends AbstractTableModel {
         : new Arrow(d.direction == DESCENDING, size, sortingColumns.indexOf(d));
   }
 
-  protected void cancelSorting() {
+  public void cancelSorting() {
     sortingColumns.clear();
     sortingStatusChanged();
   }
@@ -266,7 +266,7 @@ public final class TableSorter extends AbstractTableModel {
   }
 
   @SuppressWarnings({"rawtypes", "PMD.OnlyOneReturn"})
-  protected Comparator getComparator(int column) {
+  public Comparator getComparator(int column) {
     Class<?> columnType = tableModel.getColumnClass(column);
     Comparator<?> comparator = columnComparators.get(columnType);
     if (Objects.nonNull(comparator)) {
@@ -299,7 +299,7 @@ public final class TableSorter extends AbstractTableModel {
     return getViewToModel().get(viewIndex).modelIndex;
   }
 
-  protected List<Integer> getModelToView() {
+  public List<Integer> getModelToView() {
     if (modelToView.isEmpty()) {
       // int n = getViewToModel().size();
       // for (int i = 0; i < n; i++) {
