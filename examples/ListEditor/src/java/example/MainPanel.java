@@ -130,8 +130,8 @@ class ListItem {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setTitle(String txt) {
+    this.title = txt;
   }
 
   public Icon getIcon() {
