@@ -156,7 +156,7 @@ class CheckItem {
 // https://ateraimemo.com/Swing/CheckedComboBox.html
 // https://github.com/aterai/java-swing-tips/blob/master/CheckedComboBox/src/java/example/MainPanel.java
 class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
-  protected boolean keepOpen;
+  private boolean keepOpen;
 
   protected CheckedComboBox(ComboBoxModel<E> model) {
     super(model);

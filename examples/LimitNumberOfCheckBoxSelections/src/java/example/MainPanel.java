@@ -131,9 +131,9 @@ class CheckItem {
 // https://ateraimemo.com/Swing/CheckedComboBox.html
 // https://github.com/aterai/java-swing-tips/blob/master/CheckedComboBox/src/java/example/MainPanel.java
 class GroupCheckComboBox<E extends CheckItem> extends JComboBox<E> {
-  protected boolean keepOpen;
   private final JPanel panel = new JPanel(new BorderLayout());
   private final int groupSize;
+  private boolean keepOpen;
 
   protected GroupCheckComboBox(ComboBoxModel<E> model, int groupSize) {
     super(model);
