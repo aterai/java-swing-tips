@@ -328,7 +328,7 @@ class ForegroundPainter extends DefaultHighlighter.DefaultHighlightPainter {
         // --- determine locations ---
         Shape shape = view.modelToView(
             offs0, Position.Bias.Forward, offs1, Position.Bias.Backward, bounds);
-        r.setBounds((shape instanceof Rectangle) ? (Rectangle) shape : shape.getBounds());
+        r.setBounds(shape instanceof Rectangle ? (Rectangle) shape : shape.getBounds());
       } catch (BadLocationException ex) {
         // can't render
         r.setSize(0, 0);
