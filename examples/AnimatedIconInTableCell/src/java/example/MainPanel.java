@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
         .orElseGet(() -> UIManager.getIcon("html.missingImage"));
     Object[][] data = {
         {"Default ImageIcon", icon},
-        {"ImageIcon#setImageObserver", makeAnimatedIcon(url, table, 1, 1)}
+        {"ImageIcon#setImageObserver", makeAnimatedIcon(url, table, 1, 1)},
     };
     String[] columnNames = {"String", "ImageIcon"};
     table.setModel(new DefaultTableModel(data, columnNames) {

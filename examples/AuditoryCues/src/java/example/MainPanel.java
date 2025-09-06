@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
   private static final String AUDITORY_KEY = "AuditoryCues.playList";
   private static final String[] AUDITORY_CUES = {
       "OptionPane.errorSound", "OptionPane.informationSound",
-      "OptionPane.questionSound", "OptionPane.warningSound"
+      "OptionPane.questionSound", "OptionPane.warningSound",
   };
 
   private MainPanel() {

@@ -42,8 +42,10 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel() {
     String[] columnNames = {"String", "Double", "ALIGN_DECIMAL"};
     Object[][] data = {
-        {"aaa", 1.4142, 1.4142}, {"bbb", 98.765, 98.765},
-        {"CCC", 1.73, 1.73}, {"DDD", 0d, 0d}
+        {"aaa", 1.4142, 1.4142},
+        {"bbb", 98.765, 98.765},
+        {"CCC", 1.73, 1.73},
+        {"DDD", 0d, 0d},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

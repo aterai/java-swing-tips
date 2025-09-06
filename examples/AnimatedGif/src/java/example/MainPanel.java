@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
         "no_disposal_specified",
         "do_not_dispose",
         "restore_to_background_color",
-        "restore_to_previous"
+        "restore_to_previous",
     };
     for (String s : list) {
       box.add(makeLabel(s));

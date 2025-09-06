@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
 
 class AnalogClock extends JPanel {
   private static final String[] ARABIC_NUMERALS = {
-      "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
+      "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
   };
   // private static final String[] EARTHLY_BRANCHES = {
   //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"

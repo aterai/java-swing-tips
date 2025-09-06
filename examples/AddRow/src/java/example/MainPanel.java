@@ -76,7 +76,7 @@ class RowDataModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
       new ColumnContext("No.", Integer.class, false),
       new ColumnContext("Name", String.class, true),
-      new ColumnContext("Comment", String.class, true)
+      new ColumnContext("Comment", String.class, true),
   };
   private int number;
 

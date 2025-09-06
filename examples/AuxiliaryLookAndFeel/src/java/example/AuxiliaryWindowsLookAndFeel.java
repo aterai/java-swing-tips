@@ -35,7 +35,7 @@ public final class AuxiliaryWindowsLookAndFeel extends LookAndFeel {
     };
     // String packageName = "example.AuxiliaryWindows";
     Object[] uiDefaults = {
-        "ComboBoxUI", "example.AuxiliaryWindowsComboBoxUI"
+        "ComboBoxUI", "example.AuxiliaryWindowsComboBoxUI",
     };
     table.putDefaults(uiDefaults);
     return table;
