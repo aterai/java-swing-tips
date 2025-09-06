@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel(JRadioButton radio) {
     String[] columnNames = {"CellEditable:false", "Integer", "String"};
     Object[][] data = {
-        {"aaa", 12, "eee"}, {"bbb", 5, "ggg"}, {"CCC", 92, "fff"}, {"DDD", 0, "hhh"}
+        {"aaa", 12, "eee"}, {"bbb", 5, "ggg"}, {"CCC", 92, "fff"}, {"DDD", 0, "hhh"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

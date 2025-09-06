@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"Integer", "String", "Boolean"};
     Object[][] data = {
         {0, "", true}, {1, "", false},
-        {2, "", true}, {3, "", false}
+        {2, "", true}, {3, "", false},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

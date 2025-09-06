@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel() {
     String[] columnNames = {"Default", "GlyphVector", "JTextArea"};
     Object[][] data = {
-        {STR0, STR1, STR2}, {STR0, STR1, STR2}, {STR3, STR3, STR3}, {STR3, STR3, STR3}
+        {STR0, STR1, STR2}, {STR0, STR1, STR2}, {STR3, STR3, STR3}, {STR3, STR3, STR3},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

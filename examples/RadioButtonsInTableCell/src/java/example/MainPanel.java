@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel() {
     String[] columnNames = {"Integer", "Answer"};
     Object[][] data = {
-        {1, Answer.A}, {2, Answer.B}, {3, Answer.C}, {4, Answer.C}, {5, Answer.A}
+        {1, Answer.A}, {2, Answer.B}, {3, Answer.C}, {4, Answer.C}, {5, Answer.A},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

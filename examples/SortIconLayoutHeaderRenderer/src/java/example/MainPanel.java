@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"Name", "CPU", "Memory", "Disk"};
     Object[][] data = {
         {"aaa", "1%", "1.6MB", "0MB/S"}, {"bbb", "1%", "2.4MB", "3MB/S"},
-        {"ccc", "2%", "0.3MB", "1MB/S"}, {"ddd", "3%", "0.5MB", "2MB/S"}
+        {"ccc", "2%", "0.3MB", "1MB/S"}, {"ddd", "3%", "0.5MB", "2MB/S"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         {Integer.MIN_VALUE, Integer.MIN_VALUE},
         {1, 1}, {1, 2}, {1, -1}, {1, 3}, {1, 0},
         {1, 5}, {1, 4}, {1, -5}, {1, 0}, {1, 6},
-        {Integer.MAX_VALUE, Integer.MAX_VALUE}
+        {Integer.MAX_VALUE, Integer.MAX_VALUE},
     };
     // getValueAt(0, column).getClass();
     return new DefaultTableModel(data, columnNames) {

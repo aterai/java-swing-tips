@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     String[][] arrays = {
         {"blue", "violet", "red", "yellow"},
         {"basketball", "soccer", "football", "hockey"},
-        {"hot dogs", "pizza", "ravioli", "bananas"}
+        {"hot dogs", "pizza", "ravioli", "bananas"},
     };
     JComboBox<String> combo1 = new JComboBox<>(new String[] {"colors", "sports", "food"});
     JComboBox<String> combo2 = new JComboBox<>();

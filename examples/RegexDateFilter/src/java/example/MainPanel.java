@@ -98,7 +98,7 @@ public final class MainPanel extends JPanel {
   @SuppressWarnings("PMD.ReplaceJavaUtilDate")
   private static TableModel makeModel(Date date, Date start, Date end) {
     Object[][] data = {
-        {date}, {start}, {end}
+        {date}, {start}, {end},
     };
     return new DefaultTableModel(data, new String[] {"Date"}) {
       @Override public Class<?> getColumnClass(int column) {

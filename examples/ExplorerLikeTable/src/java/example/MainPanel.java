@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
         {"33333.jpg", "123"},
         {"4444444444444444.mpg", "test"},
         {"5555555555555", ""},
-        {"test1.jpg", ""}
+        {"test1.jpg", ""},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

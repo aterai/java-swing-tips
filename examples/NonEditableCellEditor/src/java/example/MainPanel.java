@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"A", "B", "C"};
     Object[][] data = {
         {"aaa", "bb bb bb bb", "ccc ccc"}, {"bbb", "ff", "ggg oo pp"},
-        {"CCC", "kkk", "jj"}, {"DDD", "ii mm nn", "hhh hhh lll"}
+        {"CCC", "kkk", "jj"}, {"DDD", "ii mm nn", "hhh hhh lll"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

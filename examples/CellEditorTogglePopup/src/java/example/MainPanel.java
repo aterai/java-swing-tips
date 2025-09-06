@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     String[] model = {"Item 0", "Item 1", "Item 2"};
     String[] columnNames = {"Default", "setEnabled", "String"};
     Object[][] data = {
-        {model[0], model[0], "aaa"}, {model[1], model[2], "bbb"}
+        {model[0], model[0], "aaa"}, {model[1], model[2], "bbb"},
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setRowHeight(20);

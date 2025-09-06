@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     Object[][] data = {
         {new RowHeader("aaa", true), "0000\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10"},
         {new RowHeader("bbb", false), "1111111"},
-        {new RowHeader("ccc", true), "2222222222222\n1\n2\n3"}
+        {new RowHeader("ccc", true), "2222222222222\n1\n2\n3"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

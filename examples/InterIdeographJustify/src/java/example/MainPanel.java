@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         {"電話番号", ""},
         {"設立", ""},
         {"代表取締役", ""},
-        {"事業内容", ""}
+        {"事業内容", ""},
     };
     return new DefaultTableModel(data, columnNames);
   }

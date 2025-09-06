@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"String", "<html><span style='color:red'>Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"<html><span style='color:blue'>bbb", 5, false},
-        {"CCC", 92, true}, {"<html><span style='color:green'>DDD", 0, false}
+        {"CCC", 92, true}, {"<html><span style='color:green'>DDD", 0, false},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         {"1234567890123456789012345678901234567890", 12, true},
         {"BBB", 2, true}, {"EEE", 3, false},
         {"CCC", 4, true}, {"FFF", 5, false},
-        {"DDD", 6, true}, {"GGG", 7, false}
+        {"DDD", 6, true}, {"GGG", 7, false},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

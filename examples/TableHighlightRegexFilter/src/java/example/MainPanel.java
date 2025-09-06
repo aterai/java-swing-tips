@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
     Object[][] data = {
         {"aaa", "bb aa cc"}, {"bbb", "def"},
         {"ccc abc aa ab bb ada eab ee", "xxx"}, {"ddd aa abb bb", "cc bb aba"},
-        {"cc bac bb bb aa abc e", "xxx"}, {"ddd aa ab cab bb", "cc bab aab"}
+        {"cc bac bb bb aa abc e", "xxx"}, {"ddd aa ab cab bb", "cc bab aab"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

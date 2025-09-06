@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     Object[][] data = {
         {"owner", EnumSet.allOf(Permissions.class)},
         {"group", EnumSet.of(Permissions.READ)},
-        {"other", EnumSet.noneOf(Permissions.class)}
+        {"other", EnumSet.noneOf(Permissions.class)},
     };
     TableModel model = new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

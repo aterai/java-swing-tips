@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"LocalDateTime", "String", "Boolean"};
     Object[][] data = {
         {LocalDateTime.now(zid), "aaa", true}, {LocalDateTime.now(zid), "bbb", false},
-        {LocalDateTime.now(zid), "CCC", true}, {LocalDateTime.now(zid), "DDD", false}
+        {LocalDateTime.now(zid), "CCC", true}, {LocalDateTime.now(zid), "DDD", false},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

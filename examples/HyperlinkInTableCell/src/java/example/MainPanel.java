@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
         {0, "FrontPage", makeUri("https://ateraimemo.com/")},
         {1, "Java Swing Tips", makeUri("https://ateraimemo.com/Swing.html")},
         {2, "Example", makeUri("http://www.example.com/")},
-        {3, "example.jp", makeUri("http://www.example.jp/")}
+        {3, "example.jp", makeUri("http://www.example.jp/")},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

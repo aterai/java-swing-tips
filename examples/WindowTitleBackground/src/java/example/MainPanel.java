@@ -104,7 +104,7 @@ class ColorChooserTable extends JTable {
         {"textText", UIManager.getColor("textText")},
         {"window", UIManager.getColor("window")},
         {"windowBorder", UIManager.getColor("windowBorder")},
-        {"windowText", UIManager.getColor("windowText")}
+        {"windowText", UIManager.getColor("windowText")},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {

@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
         {"6, 0", "6, 1", "6, 2"},
         {"7, 0", "7, 1", "7, 2"},
         {"8, 0", "8, 1", "8, 2"},
-        {"9, 0", "9, 1", "9, 2"}
+        {"9, 0", "9, 1", "9, 2"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

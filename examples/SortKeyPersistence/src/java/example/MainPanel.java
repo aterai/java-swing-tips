@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"A", "B"};
     Object[][] data = {
         {"aaa", "1234567890"},
-        {"bbb", "☀☁☂☃"}
+        {"bbb", "☀☁☂☃"},
     };
     JTable table = new JTable(new DefaultTableModel(data, columnNames));
     table.setAutoCreateRowSorter(true);

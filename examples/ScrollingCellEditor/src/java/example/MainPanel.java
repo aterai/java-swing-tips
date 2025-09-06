@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"JTextField", "JTextArea"};
     Object[][] data = {
         {"aaa", "JTextArea+JScrollPane\nCtrl-Enter: stopCellEditing"},
-        {"bbb", "ccc"}, {"11112222", "333\n444\n555"}
+        {"bbb", "ccc"}, {"11112222", "333\n444\n555"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

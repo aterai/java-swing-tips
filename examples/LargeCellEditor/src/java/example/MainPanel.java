@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     Object[][] data = {
         {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2)},
         {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5)},
-        {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8)}
+        {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8)},
     };
     return new DefaultTableModel(data, null) {
       @Override public boolean isCellEditable(int row, int column) {

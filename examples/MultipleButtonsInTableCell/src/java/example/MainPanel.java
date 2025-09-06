@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     String empty = "";
     String[] columnNames = {"String", "Button"};
     Object[][] data = {
-        {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty}
+        {"AAA", empty}, {"CCC", empty}, {"BBB", empty}, {"ZZZ", empty},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

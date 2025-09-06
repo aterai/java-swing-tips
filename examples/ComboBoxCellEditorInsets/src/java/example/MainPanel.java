@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel() {
     String[] columnNames = {"Border", "JPanel+JComboBox"};
     Object[][] data = {
-        {"AAA", "a"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "dd"}
+        {"AAA", "a"}, {"CCC", "bbb"}, {"BBB", "c"}, {"ZZZ", "dd"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

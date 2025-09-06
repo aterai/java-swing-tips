@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel() {
     String[] columnNames = {"JSpinner", "Buttons"};
     Object[][] data = {
-        {50, 100}, {100, 50}, {30, 20}, {0, 100}
+        {50, 100}, {100, 50}, {30, 20}, {0, 100},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

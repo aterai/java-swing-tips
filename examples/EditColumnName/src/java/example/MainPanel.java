@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel(String... columnNames) {
     Object[][] data = {
         {"aaa", "eee", "fff"}, {"bbb", "lll", "kk"},
-        {"CCC", "g", "hh"}, {"DDD", "ii", "j"}
+        {"CCC", "g", "hh"}, {"DDD", "ii", "j"},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

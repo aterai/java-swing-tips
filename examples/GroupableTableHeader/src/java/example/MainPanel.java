@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"SNo.", "1", "2", "Native", "2", "3"};
     Object[][] data = {
         {"119", "foo", "bar", "ja", "ko", "zh"},
-        {"911", "bar", "foo", "en", "fr", "pt"}
+        {"911", "bar", "foo", "en", "fr", "pt"},
     };
     return new DefaultTableModel(data, columnNames);
   }

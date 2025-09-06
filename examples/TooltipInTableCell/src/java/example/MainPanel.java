@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         {"bb", Arrays.asList(errorIcon, informationIcon, warningIcon, questionIcon)},
         {"cc", Arrays.asList(questionIcon, errorIcon, warningIcon)},
         {"dd", Collections.singletonList(informationIcon)},
-        {"ee", Arrays.asList(warningIcon, questionIcon)}
+        {"ee", Arrays.asList(warningIcon, questionIcon)},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

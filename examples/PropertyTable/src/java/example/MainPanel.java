@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
         {"Integer", 12},
         {"Double", 3.45},
         {"Boolean", true},
-        {"Color", Color.RED}
+        {"Color", Color.RED},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

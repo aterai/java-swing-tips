@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         {"<html><font color=blue>font color blue</font> " + TEXT},
         {"<html><font color=black>font color black</font><br />  " + TEXT},
         {"<html><font color=orange>font color orange</font> " + TEXT},
-        {"<html><font color=gray>font color gray</font> " + TEXT}
+        {"<html><font color=gray>font color gray</font> " + TEXT},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

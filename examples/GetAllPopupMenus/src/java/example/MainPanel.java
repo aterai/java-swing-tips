@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"prev1: Ctrl+1", 1, true}, {"next1: Ctrl+2", 2, false},
-        {"prev2: Ctrl+3", 3, true}, {"next2: Ctrl+4", 4, false}
+        {"prev2: Ctrl+3", 3, true}, {"next2: Ctrl+4", 4, false},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
