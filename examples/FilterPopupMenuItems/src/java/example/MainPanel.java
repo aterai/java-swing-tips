@@ -23,12 +23,12 @@ public final class MainPanel extends JPanel {
   }
 
   private static JMenuBar makeMenuBar() {
-    JMenuBar menuBar = new JMenuBar();
     JMenu file = new JMenu("File");
     file.add("New");
     file.add("Open");
     file.addSeparator();
     file.add(makeRecentMenu());
+    JMenuBar menuBar = new JMenuBar();
     menuBar.add(file);
     menuBar.add(new JMenu("Edit"));
     return menuBar;
