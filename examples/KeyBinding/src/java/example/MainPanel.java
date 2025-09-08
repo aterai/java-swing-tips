@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
       "javax.swing.JTree",
       "javax.swing.JViewport",
       "javax.swing.JWindow",
-      "javax.swing.table.JTableHeader"
+      "javax.swing.table.JTableHeader",
   };
   private final BindingMapModel model = new BindingMapModel();
   private final JComboBox<String> compChoices = new JComboBox<>(COMPONENTS);

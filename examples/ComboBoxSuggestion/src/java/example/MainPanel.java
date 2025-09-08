@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String[] array = {
         "1111", "1111222", "111122233", "111122233444",
-        "12345", "67890", "55551", "555512"
+        "12345", "67890", "55551", "555512",
     };
     JComboBox<String> combo = makeComboBox(array);
     combo.setEditable(true);

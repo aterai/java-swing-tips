@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
         {"aaa", "aaa"}, {"ddd", "ddd"},
         {"bbb", "bbb"}, {"eee", "eee"},
         {"ccc", "ddd"}, {"fff", "fff"},
-        empty, empty, empty, empty, empty
+        empty, empty, empty, empty, empty,
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {

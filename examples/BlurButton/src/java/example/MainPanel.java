@@ -82,7 +82,7 @@ class BlurredButton extends JButton {
   private static final Kernel KNL = new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
-      .05f, .05f, .05f
+      .05f, .05f, .05f,
   });
   private static final ConvolveOp CONVOLVE = new ConvolveOp(KNL);
   private transient BufferedImage buf;
@@ -114,7 +114,7 @@ class BlurButton extends JButton {
   private static final Kernel KNL = new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
-      .05f, .05f, .05f
+      .05f, .05f, .05f,
   });
   private static final ConvolveOp CONVOLVE = new ConvolveOp(KNL, ConvolveOp.EDGE_NO_OP, null);
   private transient BufferedImage buf;
@@ -154,7 +154,7 @@ class BlurLayerUI<V extends AbstractButton> extends LayerUI<V> {
   private static final Kernel KNL = new Kernel(3, 3, new float[] {
       .05f, .05f, .05f,
       .05f, .60f, .05f,
-      .05f, .05f, .05f
+      .05f, .05f, .05f,
   });
   private static final ConvolveOp CONVOLVE = new ConvolveOp(KNL, ConvolveOp.EDGE_NO_OP, null);
   private transient BufferedImage buf;

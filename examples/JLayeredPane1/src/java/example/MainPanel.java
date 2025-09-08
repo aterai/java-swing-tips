@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
   private static final int[] COLORS = {
       0xDD_DD_DD, 0xAA_AA_FF, 0xFF_AA_AA, 0xAA_FF_AA,
-      0xFF_FF_AA, 0xFF_AA_FF, 0xAA_FF_FF
+      0xFF_FF_AA, 0xFF_AA_FF, 0xAA_FF_FF,
   };
 
   private MainPanel() {

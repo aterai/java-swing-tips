@@ -277,7 +277,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
         .5f * w + x, y, .5f * w + x, h + y,
         new float[] {
             .038709678f, .05483871f, .07096774f, .28064516f,
-            .4903226f, .6967742f, .9032258f, .9241935f, .9451613f
+            .4903226f, .6967742f, .9032258f, .9241935f, .9451613f,
         },
         new Color[] {
             color18,
@@ -288,7 +288,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
             decodeColor(color20, color21, .5f),
             color21,
             decodeColor(color21, color22, .5f),
-            color22
+            color22,
         });
   }
 
@@ -302,7 +302,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
         .5f * w + x, y, .5f * w + x, h + y,
         new float[] {
             .038709678f, .061290324f, .08387097f, .27258065f, .46129033f, .4903226f,
-            .5193548f, .71774197f, .91612905f, .92419356f, .93225807f
+            .5193548f, .71774197f, .91612905f, .92419356f, .93225807f,
         },
         new Color[] {
             color23,
@@ -315,7 +315,7 @@ class IndeterminateRegionPainter extends AbstractRegionPainter {
             decodeColor(color26, color27, .5f),
             color27,
             decodeColor(color27, color28, .5f),
-            color28
+            color28,
         });
   }
 }

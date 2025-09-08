@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     String[] scale = {
         "AAA", "AA+", "AA", "AA-", "A+", "A", "A-",
         "BBB+", "BBB", "BBB-", "BB+", "BB", "BB-", "B+", "B", "B-",
-        "CCC+", "CCC", "CCC-", "CC", "R", "D"
+        "CCC+", "CCC", "CCC-", "CC", "R", "D",
     };
     JSpinner spinner2 = new JSpinner(new SpinnerListModel(scale));
     box.add(makeTitledPanel("SpinnerListModel", spinner2));

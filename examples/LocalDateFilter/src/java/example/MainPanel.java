@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
         "within 3 days before",
         "within 1 week before",
         "1 week before and after",
-        "within 1 week after"
+        "within 1 week after",
     };
     combo.setModel(new DefaultComboBoxModel<>(cm));
     combo.addItemListener(e -> {

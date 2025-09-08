@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
 
     JComboBox<Object> combo = new JComboBox<>(new String[] {
         "public", "protected", "private",
-        "final", "transient", "super", "this", "return", "class"
+        "final", "transient", "super", "this", "return", "class",
     });
     BasicComboPopup popup = new EditorComboPopup(combo, textPane);
     ActionMap am = popup.getActionMap();

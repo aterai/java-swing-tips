@@ -803,7 +803,7 @@ class MainSwatchPanel extends SwatchPanel {
         0, 51, 51,
         0, 51, 51,
         0, 51, 51,
-        51, 51, 51
+        51, 51, 51,
     };
   }
 }

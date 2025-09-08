@@ -281,7 +281,7 @@ class TabTransferable implements Transferable {
   @Override public DataFlavor[] getTransferDataFlavors() {
     return new DataFlavor[] {
         new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, NAME),
-        DataFlavor.javaFileListFlavor
+        DataFlavor.javaFileListFlavor,
     };
   }
 

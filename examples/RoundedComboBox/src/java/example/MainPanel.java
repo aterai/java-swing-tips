@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     return new String[] {
         "1234",
         "5555555555555555555555",
-        "6789000000000"
+        "6789000000000",
     };
   }
 

@@ -12,7 +12,7 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private static final Color BACKGROUND = new Color(70, 80, 90);
   private static final String[] MODEL = {
-      "red", "pink", "orange", "yellow", "green", "magenta", "cyan", "blue"
+      "red", "pink", "orange", "yellow", "green", "magenta", "cyan", "blue",
   };
 
   private MainPanel() {

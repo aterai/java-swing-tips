@@ -69,10 +69,10 @@ public final class MainPanel extends JPanel {
 
 class AnalogClock extends JPanel {
   private static final String[] ARABIC_NUMERALS = {
-      "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
+      "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
   };
   private static final String[] ROMAN_NUMERALS = {
-      "XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI"
+      "XII", "I", "II", "III", "IIII", "V", "VI", "VII", "VIII", "IX", "X", "XI",
   };
   private double secondRot;
   private double minuteRot;

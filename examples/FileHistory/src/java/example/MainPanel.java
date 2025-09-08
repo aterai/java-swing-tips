@@ -101,7 +101,7 @@ public final class MainPanel extends JPanel {
       Object[] obj = {
           "Open the file.\n",
           "This example do nothing\n",
-          " and move the file to the beginning of the history."
+          " and move the file to the beginning of the history.",
       };
       String title = VersionAction.APP_NAME;
       JOptionPane.showMessageDialog(c, obj, title, JOptionPane.INFORMATION_MESSAGE);
@@ -118,7 +118,7 @@ public final class MainPanel extends JPanel {
         new NewAction(),
         new ExitAction(),
         new HelpAction(),
-        new VersionAction()
+        new VersionAction(),
     };
   }
 
@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
       Object[] msg = {
           "Create a new file.\n",
           "This example do nothing\n",
-          " and pretend to generate an appropriate file name and open it."
+          " and pretend to generate an appropriate file name and open it.",
       };
       String title = VersionAction.APP_NAME;
       JOptionPane.showMessageDialog(c, msg, title, JOptionPane.INFORMATION_MESSAGE);
