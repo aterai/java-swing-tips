@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
         new CheckItem("111", false),
         new CheckItem("33333", true),
         new CheckItem("2222", true),
-        new CheckItem("c", false)
+        new CheckItem("c", false),
     };
     return new DefaultComboBoxModel<>(m);
   }

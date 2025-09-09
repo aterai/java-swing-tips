@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
         new NewAction(),
         new ExitAction(),
         new HelpAction(),
-        new VersionAction()
+        new VersionAction(),
     };
     // return defaultActions;
   }

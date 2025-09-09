@@ -88,7 +88,7 @@ class RowDataModel extends DefaultTableModel {
       new ColumnContext("No.", Integer.class, false),
       new ColumnContext("Name", String.class, true),
       new ColumnContext("Comment", String.class, true),
-      new ColumnContext("", String.class, true)
+      new ColumnContext("", String.class, true),
   };
   private int number;
 

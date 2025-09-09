@@ -144,7 +144,7 @@ class FileModel extends DefaultTableModel {
 
   public void addRowData(RowData t) {
     Object[] obj = {
-        t.getId(), t.getName(), t.getAbsolutePath(), t.getWidth(), t.getHeight()
+        t.getId(), t.getName(), t.getAbsolutePath(), t.getWidth(), t.getHeight(),
     };
     super.addRow(obj);
   }

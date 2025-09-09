@@ -201,7 +201,7 @@ class FileModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
       new ColumnContext("No.", Integer.class, false),
       new ColumnContext("Name", String.class, false),
-      new ColumnContext("Full Path", String.class, false)
+      new ColumnContext("Full Path", String.class, false),
   };
   private int number;
 

@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
         new ComboItem(
             "Rebase and merge",
             "The 1 commit from this branch\nwill be rebased and added to the\nbase branch."
-        )
+        ),
     };
   }
 

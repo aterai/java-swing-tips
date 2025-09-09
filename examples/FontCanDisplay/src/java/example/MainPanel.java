@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
         font.getName(),
         font.getPSName(),
         font.canDisplay(code),
-        font.createGlyphVector(frc, txt).getVisualBounds().isEmpty()
+        font.createGlyphVector(frc, txt).getVisualBounds().isEmpty(),
     };
   }
 

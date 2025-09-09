@@ -62,7 +62,7 @@ class RadialGradientButton extends JButton {
   protected static final float[] DIST = {0f, 1f};
   protected static final Color[] COLORS = {
       new Color(0x64_44_05_F7, true),
-      new Color(0x00_F7_23_59, true)
+      new Color(0x00_F7_23_59, true),
   };
   protected int radius;
   protected final Timer timer1 = new Timer(10, e -> {

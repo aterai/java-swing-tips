@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
       new ListItem("wi0111-32.png"),
       new ListItem("wi0122-32.png"),
       new ListItem("wi0124-32.png"),
-      new ListItem("wi0126-32.png")
+      new ListItem("wi0126-32.png"),
   };
   private final DefaultListModel<ListItem> model = new DefaultListModel<>();
   private final JList<ListItem> list = new JList<ListItem>(model) {

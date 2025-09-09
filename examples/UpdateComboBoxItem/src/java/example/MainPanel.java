@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
         new CheckItem("111", false),
         new CheckItem("33333", true),
         new CheckItem("2222", true),
-        new CheckItem("ccc ccc", false)
+        new CheckItem("ccc ccc", false),
     };
 
     JComboBox<CheckItem> combo0 = new CheckedComboBox<>(new DefaultComboBoxModel<>(m));

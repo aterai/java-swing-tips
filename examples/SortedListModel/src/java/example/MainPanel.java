@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
       new ListItem("pink", Color.PINK),
       new ListItem("yellow", Color.YELLOW),
       new ListItem("black", Color.BLACK),
-      new ListItem("white", Color.WHITE)
+      new ListItem("white", Color.WHITE),
   };
   private final DefaultListModel<ListItem> model = new DefaultListModel<>();
   private final JList<ListItem> list = new JList<ListItem>(model) {

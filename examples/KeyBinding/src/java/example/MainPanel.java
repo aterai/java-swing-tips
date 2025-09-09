@@ -179,7 +179,7 @@ class BindingMapModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
       new ColumnContext("ActionName", String.class, false),
       new ColumnContext("KeyDescription", String.class, false),
-      new ColumnContext("Focus", String.class, false)
+      new ColumnContext("Focus", String.class, false),
   };
 
   public void addBinding(Binding t) {

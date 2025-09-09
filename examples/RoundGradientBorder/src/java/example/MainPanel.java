@@ -63,7 +63,7 @@ class GradientIcon implements Icon {
       new Color(0xFF_51_56),
       new Color(0xFF_DB_4E),
       new Color(0x00_FE_9B),
-      new Color(0x2D_D9_FE)
+      new Color(0x2D_D9_FE),
   };
   private final Dimension size;
 
@@ -97,7 +97,7 @@ class RoundGradientBorder extends EmptyBorder {
       new Color(0xFF_51_56),
       new Color(0xFF_DB_4E),
       new Color(0x00_FE_9B),
-      new Color(0x2D_D9_FE)
+      new Color(0x2D_D9_FE),
   };
 
   protected RoundGradientBorder(int top, int left, int bottom, int right) {

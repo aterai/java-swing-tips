@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     URL[] icons = {
-        getUrl("wi0062-16.png"), getUrl("wi0063-16.png"), getUrl("wi0064-16.png")
+        getUrl("wi0062-16.png"), getUrl("wi0063-16.png"), getUrl("wi0064-16.png"),
     };
     String[] columnNames = {"Column1", "Column2", "Column3"};
     JTable table = new JTable(new DefaultTableModel(columnNames, 8));
