@@ -25,10 +25,12 @@ public final class MainPanel extends JPanel {
       int col = idx % gl.getColumns();
       log.append(String.format("Row: %d, Column: %d%n", row + 1, col + 1));
     };
-    IntStream.range(0, gl.getRows() * gl.getColumns()).mapToObj(i -> new JButton()).forEach(b -> {
-      b.addActionListener(al);
-      p.add(b);
-    });
+    IntStream.range(0, gl.getRows() * gl.getColumns())
+        .mapToObj(i -> new JButton())
+        .forEach(b -> {
+          b.addActionListener(al);
+          p.add(b);
+        });
 
     add(p);
     add(new JScrollPane(log), BorderLayout.SOUTH);
