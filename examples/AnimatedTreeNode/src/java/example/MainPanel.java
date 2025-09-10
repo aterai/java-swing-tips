@@ -43,19 +43,19 @@ public final class MainPanel extends JPanel {
     };
     TreePath path = new TreePath(s1.getPath());
     // Wastefulness: icon.setImageObserver((ImageObserver) tree);
-    icon.setImageObserver((img, flags, x, y, w, h) -> {
-      if (!tree.isShowing()) {
-        return false;
-      }
-      Rectangle cellRect = tree.getPathBounds(path);
-      if ((flags & (FRAMEBITS | ALLBITS)) != 0 && Objects.nonNull(cellRect)) {
-        tree.repaint(cellRect);
-      }
-      return (flags & (ALLBITS | ABORT)) == 0;
-    });
+    icon.setImageObserver((img, flags, x, y, w, h) ->
+        tree.isShowing() && isStillLoading(flags, tree, path));
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static boolean isStillLoading(int flags, JTree tree, TreePath path) {
+    Rectangle cellRect = tree.getPathBounds(path);
+    if ((flags & (FRAMEBITS | ALLBITS)) != 0 && Objects.nonNull(cellRect)) {
+      tree.repaint(cellRect);
+    }
+    return (flags & (ALLBITS | ABORT)) == 0;
   }
 
   private static void updateLabel(JLabel label, Object o) {
