@@ -73,12 +73,12 @@ class KineticScrollingListener extends MouseAdapter implements HierarchyListener
   protected static final int SPEED = 4;
   protected static final int DELAY = 10;
   protected static final double D = .8;
-  protected final Cursor dc;
-  protected final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  protected final Timer scroller = new Timer(DELAY, this::scroll);
-  protected final JComponent label;
-  protected final Point startPt = new Point();
-  protected final Point delta = new Point();
+  private final Cursor dc;
+  private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+  private final Timer scroller = new Timer(DELAY, this::scroll);
+  private final JComponent label;
+  private final Point startPt = new Point();
+  private final Point delta = new Point();
 
   protected KineticScrollingListener(JComponent comp) {
     super();
