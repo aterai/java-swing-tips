@@ -49,14 +49,12 @@ public final class MainPanel extends JPanel {
         setRenderer(null);
         super.updateUI();
         ListCellRenderer<? super E> renderer = getRenderer();
-        setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-          if (value instanceof JSeparator) {
-            return (Component) value;
-          } else {
-            return renderer.getListCellRendererComponent(
-                list, value, index, isSelected, cellHasFocus);
-          }
-        });
+        setRenderer((list, value, index, isSelected, cellHasFocus) ->
+          value instanceof JSeparator
+              ? (Component) value
+              : renderer.getListCellRendererComponent(
+                  list, value, index, isSelected, cellHasFocus)
+        );
       }
     };
     ActionMap am = combo.getActionMap();

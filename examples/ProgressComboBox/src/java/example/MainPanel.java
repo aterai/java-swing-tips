@@ -22,13 +22,11 @@ public final class MainPanel extends JPanel {
       super.updateUI();
       bar.setBorder(BorderFactory.createEmptyBorder());
       ListCellRenderer<? super String> renderer = new DefaultListCellRenderer();
-      setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-        if (index < 0 && isWorking()) {
-          return bar;
-        }
-        return renderer.getListCellRendererComponent(
-            list, value, index, isSelected, cellHasFocus);
-      });
+      setRenderer((list, value, index, isSelected, cellHasFocus) ->
+          index < 0 && isWorking()
+              ? bar
+              : renderer.getListCellRendererComponent(
+                  list, value, index, isSelected, cellHasFocus));
     }
   };
   private final JButton button = new JButton("load");
