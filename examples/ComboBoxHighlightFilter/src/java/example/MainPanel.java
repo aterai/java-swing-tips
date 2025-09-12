@@ -112,22 +112,19 @@ class HighlightComboBox extends JComboBox<String> {
     ListCellRenderer<? super String> renderer = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
       String pattern = ((JTextField) getEditor().getEditorComponent()).getText();
-      if (index >= 0 && !pattern.isEmpty()) {
-        updateHighlight(value, field, pattern);
-        field.setBackground(isSelected ? new Color(0xAA_64_AA_FF, true) : Color.WHITE);
-        return field;
-      }
-      return renderer.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
+      return index >= 0 && !pattern.isEmpty()
+          ? updateHighlight(value, field, pattern, isSelected)
+          : renderer.getListCellRendererComponent(
+              list, value, index, isSelected, cellHasFocus);
     });
   }
 
-  private void updateHighlight(String value, JTextField field, String pattern) {
+  private Component updateHighlight(String v, JTextField field, String regex, boolean sel) {
     Highlighter highlighter = field.getHighlighter();
     highlighter.removeAllHighlights();
-    String txt = Objects.toString(value, "");
+    String txt = Objects.toString(v, "");
     field.setText(txt);
-    Matcher matcher = Pattern.compile(pattern).matcher(txt);
+    Matcher matcher = Pattern.compile(regex).matcher(txt);
     int pos = 0;
     try {
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
@@ -142,6 +139,8 @@ class HighlightComboBox extends JComboBox<String> {
       wrap.initCause(ex);
       throw wrap;
     }
+    field.setBackground(sel ? new Color(0xAA_64_AA_FF, true) : Color.WHITE);
+    return field;
   }
 }
 
