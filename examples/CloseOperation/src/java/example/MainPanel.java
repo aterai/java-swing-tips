@@ -33,9 +33,9 @@ public final class MainPanel extends JPanel {
   }
 
   public static JFrame createFrame(String title) {
-    JFrame frame = new JFrame(Objects.toString(title, "Frame #" + COUNTER));
+    int num = COUNTER.getAndIncrement();
+    JFrame frame = new JFrame(Objects.toString(title, "Frame #" + num));
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    COUNTER.getAndIncrement();
     frame.addWindowListener(new WindowAdapter() {
       @Override public void windowClosing(WindowEvent e) {
         if (COUNTER.getAndDecrement() == 0) {
