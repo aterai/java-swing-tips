@@ -186,7 +186,7 @@ final class TreeUtils {
           bubbleSort(prevNode);
         }
         if (COMPARATOR.compare(prevNode, curNode) > 0) {
-          SWAP_COUNTER.getAndIncrement();
+          SWAP_COUNTER.incrementAndGet();
           root.insert(curNode, j - 1);
           root.insert(prevNode, j);
         }
@@ -205,7 +205,7 @@ final class TreeUtils {
         }
       }
       if (i != min) {
-        SWAP_COUNTER.getAndIncrement();
+        SWAP_COUNTER.incrementAndGet();
         MutableTreeNode a = (MutableTreeNode) parent.getChildAt(i);
         MutableTreeNode b = (MutableTreeNode) parent.getChildAt(min);
         parent.insert(b, i);
