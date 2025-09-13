@@ -66,7 +66,10 @@ public final class MainPanel extends JPanel {
 
   private static Component makeCheckBoxPanel(DnDTabbedPane tabs) {
     JCheckBox check1 = new JCheckBox("Tab Ghost", true);
-    check1.addActionListener(e -> tabs.hasGhost = check1.isSelected());
+    check1.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      tabs.hasGhost = c.isSelected();
+    });
 
     JCheckBox check2 = new JCheckBox("Top", true);
     check2.addActionListener(e -> {
@@ -81,7 +84,10 @@ public final class MainPanel extends JPanel {
     });
 
     JCheckBox check4 = new JCheckBox("Debug Paint", true);
-    check4.addActionListener(e -> tabs.isPaintScrollArea = check4.isSelected());
+    check4.addActionListener(e -> {
+      JCheckBox c = (JCheckBox) e.getSource();
+      tabs.isPaintScrollArea = c.isSelected();
+    });
 
     JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p1.add(check1);
