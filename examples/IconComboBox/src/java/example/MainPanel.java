@@ -19,11 +19,13 @@ public final class MainPanel extends JPanel {
     String path = "example/16x16.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon i;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        i = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("html.missingImage");
+        i = UIManager.getIcon("html.missingImage");
       }
+      return i;
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
 
     // JComboBox<String> combo01 = new JComboBox<>(makeModel());

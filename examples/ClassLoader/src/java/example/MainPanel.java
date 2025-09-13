@@ -41,11 +41,13 @@ public final class MainPanel extends JPanel {
 
   private static Icon makeIcon(URL url) {
     return Optional.ofNullable(url).map(u -> {
+      Icon i;
       try (InputStream s = u.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        i = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("html.missingImage");
+        i = UIManager.getIcon("html.missingImage");
       }
+      return i;
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
   }
 

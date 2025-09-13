@@ -80,11 +80,13 @@ public final class MainPanel extends JPanel {
     String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      Icon i;
       try (InputStream s = u.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        i = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return new MissingIcon();
+        i = new MissingIcon();
       }
+      return i;
     }).orElseGet(MissingIcon::new);
   }
 

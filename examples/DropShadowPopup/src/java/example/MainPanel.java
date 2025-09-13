@@ -27,11 +27,13 @@ public final class MainPanel extends JPanel {
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon i;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        i = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return new MissingIcon();
+        i = new MissingIcon();
       }
+      return i;
     }).orElseGet(MissingIcon::new);
     JLabel label = new JLabel(icon);
     label.setComponentPopupMenu(popup1);

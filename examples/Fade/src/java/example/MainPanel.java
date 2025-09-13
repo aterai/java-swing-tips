@@ -24,11 +24,13 @@ public final class MainPanel extends JPanel {
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon i;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        i = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("OptionPane.errorIcon");
+        i = UIManager.getIcon("OptionPane.errorIcon");
       }
+      return i;
     }).orElseGet(() -> UIManager.getIcon("OptionPane.errorIcon"));
 
     Component fade = new JComponent() {
