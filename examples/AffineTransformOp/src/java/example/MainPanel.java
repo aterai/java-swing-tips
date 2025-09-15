@@ -35,11 +35,13 @@ public final class MainPanel extends JPanel {
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage bi;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        bi = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        bi = makeMissingImage();
       }
+      return bi;
     }).orElseGet(MainPanel::makeMissingImage);
     add(new ImageFlipPanel(img));
     add(box, BorderLayout.SOUTH);

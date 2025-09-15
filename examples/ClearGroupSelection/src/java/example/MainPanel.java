@@ -24,11 +24,13 @@ public final class MainPanel extends JPanel {
     String path = "example/wi0063-32.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
     Icon icon = new ImageIcon(image);
     ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());

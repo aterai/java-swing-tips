@@ -42,11 +42,13 @@ public final class MainPanel extends JPanel {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/16x16transparent.png");
     Image image = Optional.ofNullable(url).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
 
     JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)", true);

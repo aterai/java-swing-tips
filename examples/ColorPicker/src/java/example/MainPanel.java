@@ -35,11 +35,13 @@ public final class MainPanel extends JPanel {
     String path = "example/duke.gif";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage bi;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        bi = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        bi = makeMissingImage();
       }
+      return bi;
     }).orElseGet(MainPanel::makeMissingImage);
 
     JLabel label = new JLabel(new ImageIcon(image));

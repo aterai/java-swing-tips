@@ -21,14 +21,16 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+    Image image = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
-    add(new ImagePanel(img));
+    add(new ImagePanel(image));
     setPreferredSize(new Dimension(320, 240));
   }
 

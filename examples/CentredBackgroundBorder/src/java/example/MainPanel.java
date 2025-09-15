@@ -52,11 +52,13 @@ public final class MainPanel extends JPanel {
 
   private static BufferedImage getFilteredImage(URL url) {
     BufferedImage image = Optional.ofNullable(url).map(u -> {
+      BufferedImage bi;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        bi = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        bi = makeMissingImage();
       }
+      return bi;
     }).orElseGet(MainPanel::makeMissingImage);
 
     int w = image.getWidth();

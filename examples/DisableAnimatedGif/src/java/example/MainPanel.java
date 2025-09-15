@@ -42,11 +42,13 @@ public final class MainPanel extends JPanel {
     label3.setBorder(BorderFactory.createTitledBorder("setDisabledIcon"));
     String path = "example/duke.running_frame_0001.gif";
     Image image = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
     label3.setDisabledIcon(makeDisabledIcon(image));
 

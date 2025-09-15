@@ -26,11 +26,13 @@ public final class MainPanel extends JPanel {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     String path = "example/i03-10.gif";
     Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
     Icon icon = new ImageIcon(image);
 
