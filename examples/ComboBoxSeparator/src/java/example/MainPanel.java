@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         ListCellRenderer<? super E> renderer = getRenderer();
         setRenderer((list, value, index, isSelected, cellHasFocus) ->
-          value instanceof JSeparator
+            value instanceof JSeparator
               ? (Component) value
               : renderer.getListCellRendererComponent(
                   list, value, index, isSelected, cellHasFocus)
