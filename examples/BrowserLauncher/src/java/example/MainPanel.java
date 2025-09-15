@@ -62,17 +62,17 @@ public final class MainPanel extends JPanel {
   }
 }
 
-/////////////////////////////////////////////////////////
-//  Bare Bones Browser Launch                          //
-//  Version 1.5                                        //
-//  December 10, 2005                                  //
-//  Supports: Mac OS X, GNU/Linux, Unix, Windows XP    //
-//  Example Usage:                                     //
-//   String url = "https://www.centerkey.com/";        //
-//   BareBonesBrowserLaunch.openUrl(url);              //
-//  Public Domain Software -- Free to Use as You Like  //
-/////////////////////////////////////////////////////////
+/*
+- Bare Bones Browser Launch
+- Version 1.5
+- December 10, 2005
+- Supports: Mac OS X, GNU/Linux, Unix, Windows XP
+- Example Usage:
+    - String url = "https://www.centerkey.com/";
+    - BareBonesBrowserLaunch.openUrl(url);
+- Public Domain Software -- Free to Use as You Like
 // class BareBonesBrowserLaunch {
+*/
 final class BrowserLauncher {
   private static final String ERR_MSG = "Error attempting to launch web browser";
 
