@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -131,8 +132,7 @@ public final class MainPanel extends JPanel {
 
 class AlignedLabel extends JLabel {
   private static final int INDENT = 10;
-  // private AlignedLabel[] group;
-  private List<AlignedLabel> group;
+  private final List<AlignedLabel> group = new ArrayList<>();
   private int maxWidth;
 
   protected AlignedLabel(String text) {
@@ -146,12 +146,16 @@ class AlignedLabel extends JLabel {
     return d;
   }
 
+  private void setMaxWidth(int max) {
+    this.maxWidth = max;
+  }
+
   private int getMaxWidth() {
     if (maxWidth == 0 && Objects.nonNull(group)) {
       int max = group.stream()
           .map(AlignedLabel::getSuperPreferredWidth)
           .reduce(0, Integer::max);
-      group.forEach(al -> al.maxWidth = max);
+      group.forEach(al -> al.setMaxWidth(max));
     }
     return maxWidth;
   }
@@ -161,7 +165,10 @@ class AlignedLabel extends JLabel {
   }
 
   public static void groupLabels(AlignedLabel... list) {
-    List<AlignedLabel> group = Arrays.asList(list);
-    group.forEach(al -> al.group = group);
+    List<AlignedLabel> labels = Arrays.asList(list);
+    labels.forEach(al -> {
+      al.group.clear();
+      al.group.addAll(labels);
+    });
   }
 }

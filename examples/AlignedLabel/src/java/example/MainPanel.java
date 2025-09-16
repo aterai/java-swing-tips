@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -93,7 +94,7 @@ public final class MainPanel extends JPanel {
 class AlignedLabel extends JLabel {
   private static final int INDENT = 10;
   // private AlignedLabel[] group;
-  private List<AlignedLabel> group;
+  private final List<AlignedLabel> group = new ArrayList<>();
   private int maxWidth;
 
   protected AlignedLabel(String text) {
@@ -105,6 +106,10 @@ class AlignedLabel extends JLabel {
     // Align the width with all other labels in group.
     d.width = getMaxWidth() + INDENT;
     return d;
+  }
+
+  private void setMaxWidth(int max) {
+    this.maxWidth = max;
   }
 
   private int getMaxWidth() {
@@ -119,7 +124,7 @@ class AlignedLabel extends JLabel {
       int max = group.stream()
           .map(AlignedLabel::getSuperPreferredWidth)
           .reduce(0, Integer::max);
-      group.forEach(al -> al.maxWidth = max);
+      group.forEach(al -> al.setMaxWidth(max));
     }
     return maxWidth;
   }
@@ -129,7 +134,10 @@ class AlignedLabel extends JLabel {
   }
 
   public static void groupLabels(AlignedLabel... list) {
-    List<AlignedLabel> group = Arrays.asList(list);
-    group.forEach(al -> al.group = group);
+    List<AlignedLabel> labels = Arrays.asList(list);
+    labels.forEach(al -> {
+      al.group.clear();
+      al.group.addAll(labels);
+    });
   }
 }
