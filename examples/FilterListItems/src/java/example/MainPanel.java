@@ -207,11 +207,13 @@ class ListItem {
   public static Image makeImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(ListItem::makeMissingImage);
   }
 

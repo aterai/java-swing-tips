@@ -23,15 +23,18 @@ public final class MainPanel extends JPanel {
     split.setContinuousLayout(true);
     split.setResizeWeight(.5);
 
+    String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource("example/test.png")).map(u -> {
+    Image image = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
-    ImageIcon icon = new ImageIcon(img);
+    ImageIcon icon = new ImageIcon(image);
 
     Component beforeCanvas = new JComponent() {
       @Override protected void paintComponent(Graphics g) {

@@ -31,14 +31,16 @@ public final class MainPanel extends JPanel {
     split.setResizeWeight(.5);
 
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource("example/test.jpg")).map(u -> {
+    Image image = Optional.ofNullable(cl.getResource("example/test.jpg")).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
-    Icon imageIcon1 = new ImageIcon(img);
+    Icon imageIcon1 = new ImageIcon(image);
 
     Component beforeCanvas = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
@@ -49,7 +51,7 @@ public final class MainPanel extends JPanel {
     split.setLeftComponent(beforeCanvas);
 
     ImageFilter filter = new BufferedImageFilter(new MosaicImageFilter(16));
-    ImageProducer producer = new FilteredImageSource(img.getSource(), filter);
+    ImageProducer producer = new FilteredImageSource(image.getSource(), filter);
     Image result = Toolkit.getDefaultToolkit().createImage(producer);
     Icon imageIcon2 = new ImageIcon(result);
     Component afterCanvas = new JComponent() {

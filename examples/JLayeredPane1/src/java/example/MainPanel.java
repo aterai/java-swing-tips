@@ -33,15 +33,17 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/GIANT_TCR1_2013.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
 
-    JLayeredPane layer = new BackImageLayeredPane(img);
+    JLayeredPane layer = new BackImageLayeredPane(image);
     for (int i = 0; i < 7; i++) {
       JPanel p = createPanel(layer, i);
       p.setLocation(i * 20 + 10, i * 20 + 5);

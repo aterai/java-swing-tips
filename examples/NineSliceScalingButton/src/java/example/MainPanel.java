@@ -60,11 +60,13 @@ public final class MainPanel extends JPanel {
   private BufferedImage makeBufferedImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage bi;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        bi = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        bi = makeMissingImage();
       }
+      return bi;
     }).orElseGet(MainPanel::makeMissingImage);
     // ImageIcon ic = new ImageIcon(url);
     // int w = ic.getIconWidth();

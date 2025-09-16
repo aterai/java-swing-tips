@@ -29,15 +29,17 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(1, 2));
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(u -> {
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(u -> {
+      BufferedImage bi;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        bi = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        bi = makeMissingImage();
       }
+      return bi;
     }).orElseGet(MainPanel::makeMissingImage);
     EventQueue.invokeLater(() -> {
-      getRootPane().setGlassPane(new LightboxGlassPane(img));
+      getRootPane().setGlassPane(new LightboxGlassPane(image));
       getRootPane().getGlassPane().setVisible(false);
     });
     JButton button = new JButton("Open");

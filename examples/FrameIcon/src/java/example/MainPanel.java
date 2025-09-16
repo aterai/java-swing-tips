@@ -19,11 +19,13 @@ public final class MainPanel extends JPanel {
     String path = "example/16x16.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
 
     JCheckBox check = new JCheckBox("setIconImage");

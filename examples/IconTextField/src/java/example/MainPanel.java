@@ -18,15 +18,17 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/16x16.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
 
-    Icon icon = new ImageIcon(img);
+    Icon icon = new ImageIcon(image);
     JLabel label1 = new JLabel(icon);
     JTextField field1 = new JTextField("1111111111111111") {
       @Override public void updateUI() {

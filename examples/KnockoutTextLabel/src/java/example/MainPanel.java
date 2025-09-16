@@ -24,11 +24,13 @@ public final class MainPanel extends JPanel {
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
     JLabel label = new JLabel("ABC") {
       @Override protected void paintComponent(Graphics g) {
