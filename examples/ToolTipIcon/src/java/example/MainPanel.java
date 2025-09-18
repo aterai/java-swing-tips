@@ -20,11 +20,13 @@ public final class MainPanel extends JPanel {
     String path = "example/wi0124-48.png";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
     Icon icon = Optional.ofNullable(url).map(u -> {
+      Icon icn;
       try (InputStream s = u.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("html.missingImage");
+        icn = UIManager.getIcon("html.missingImage");
       }
+      return icn;
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
     JLabel l1 = makeLabel1(icon);
     l1.setToolTipText("Test1");

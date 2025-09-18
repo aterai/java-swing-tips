@@ -27,11 +27,13 @@ public final class MainPanel extends JPanel {
     String path = "example/page_new.gif"; // http://www.famfamfam.com/lab/icons/mini/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon icn;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("html.missingImage");
+        icn = UIManager.getIcon("html.missingImage");
       }
+      return icn;
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
 
     JButton button = new TopAlignmentButton(icon);

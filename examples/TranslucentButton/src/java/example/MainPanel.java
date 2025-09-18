@@ -258,11 +258,13 @@ final class ImageUtils {
   public static BufferedImage getFilteredImage(String path) {
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
     BufferedImage image = Optional.ofNullable(url).map(u -> {
+      BufferedImage buf;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(ImageUtils::makeMissingImage);
 
     int w = image.getWidth();

@@ -24,11 +24,13 @@ public final class MainPanel extends JPanel {
     String path = "example/wi0124-48.png";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
     Icon icon = Optional.ofNullable(url).map(u -> {
+      Icon icn;
       try (InputStream s = u.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("OptionPane.errorIcon");
+        icn = UIManager.getIcon("OptionPane.errorIcon");
       }
+      return icn;
     }).orElse(UIManager.getIcon("OptionPane.errorIcon"));
 
     JTabbedPane tabbedPane = new TabThumbnailTabbedPane();
@@ -41,14 +43,16 @@ public final class MainPanel extends JPanel {
 
   private static void addImageTab(JTabbedPane tabbedPane, String path) {
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-    Image img = Optional.ofNullable(url).map(u -> {
+    Image image = Optional.ofNullable(url).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
-    JScrollPane scroll = new JScrollPane(new JLabel(new ImageIcon(img)));
+    JScrollPane scroll = new JScrollPane(new JLabel(new ImageIcon(image)));
     File f = new File(path);
     tabbedPane.addTab(f.getName(), null, scroll, "tooltip");
   }

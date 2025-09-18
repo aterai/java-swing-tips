@@ -71,16 +71,16 @@ public final class MainPanel extends JPanel {
     // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
-      BufferedImage img;
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage buf;
       try (InputStream s = url.openStream()) {
-        img = ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        buf = makeMissingImage();
       }
-      return img;
+      return buf;
     }).orElseGet(MainPanel::makeMissingImage);
-    return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+    return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
   private static BufferedImage makeMissingImage() {

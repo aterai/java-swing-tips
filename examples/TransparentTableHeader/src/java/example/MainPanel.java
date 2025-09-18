@@ -232,14 +232,16 @@ final class ImageUtils {
     // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage buf;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(ImageUtils::makeMissingImage);
-    return new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+    return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
   public static BufferedImage makeMissingImage() {

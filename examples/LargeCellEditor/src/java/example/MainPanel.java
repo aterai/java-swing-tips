@@ -119,11 +119,13 @@ class IconItem {
   private static Icon makeIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon icn;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("html.missingImage");
+        icn = UIManager.getIcon("html.missingImage");
       }
+      return icn;
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
   }
 }

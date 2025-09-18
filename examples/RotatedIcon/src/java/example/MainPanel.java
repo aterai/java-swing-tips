@@ -20,11 +20,13 @@ public final class MainPanel extends JPanel {
     String path = "example/duke.gif";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon icn;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("OptionPane.warningIcon");
+        icn = UIManager.getIcon("OptionPane.warningIcon");
       }
+      return icn;
     }).orElseGet(() -> UIManager.getIcon("OptionPane.warningIcon"));
 
     add(makeLabel("Default", icon));
@@ -80,8 +82,8 @@ class RotateIcon implements Icon {
     icon.paintIcon(null, g, 0, 0);
     g.dispose();
 
-    int numquadrants = rotate / 90 % 4;
-    switch (numquadrants) {
+    int numQuadrants = rotate / 90 % 4;
+    switch (numQuadrants) {
       case 3:
       case -1:
         trans = AffineTransform.getTranslateInstance(0, dim.width);
@@ -99,11 +101,11 @@ class RotateIcon implements Icon {
         trans = AffineTransform.getTranslateInstance(0, 0);
         break;
     }
-    trans.rotate(Math.toRadians(90d * numquadrants));
+    trans.rotate(Math.toRadians(90d * numQuadrants));
     // or: trans.rotate(Math.toRadians(degrees));
     // https://ateraimemo.com/Swing/QuadrantRotateIcon.html
-    // or: trans.quadrantRotate(numquadrants);
-    // or: trans.concatenate(AffineTransform.getQuadrantRotateInstance(numquadrants));
+    // or: trans.quadrantRotate(numQuadrants);
+    // or: trans.concatenate(AffineTransform.getQuadrantRotateInstance(numQuadrants));
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {

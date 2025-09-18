@@ -19,11 +19,13 @@ public final class MainPanel extends JPanel {
     String path = "example/Burnstown Dam.ttf";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Font font = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Font fnt;
       try (InputStream s = url.openStream()) {
-        return Font.createFont(Font.TRUETYPE_FONT, s).deriveFont(12f);
+        fnt = Font.createFont(Font.TRUETYPE_FONT, s).deriveFont(12f);
       } catch (IOException | FontFormatException ex) {
-        return getFont();
+        fnt = getFont();
       }
+      return fnt;
     }).orElseGet(this::getFont);
     GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
 

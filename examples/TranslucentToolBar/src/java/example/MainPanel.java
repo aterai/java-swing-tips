@@ -25,11 +25,13 @@ public final class MainPanel extends JPanel {
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon icn;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return new MissingIcon();
+        icn = new MissingIcon();
       }
+      return icn;
     }).orElseGet(MissingIcon::new);
     JToolBar toolBar = makeToolBar();
     JLabel label = new LabelWithToolBox(icon, toolBar);
@@ -55,11 +57,13 @@ public final class MainPanel extends JPanel {
     String path = "example/" + name;
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
 
     ImageIcon icon = new ImageIcon(image);
@@ -273,14 +277,14 @@ final class AnimationUtils {
 
   // http://www.anima-entertainment.de/math-easein-easeout-easeinout-and-bezier-curves
   // Math: EaseIn EaseOut, EaseInOut and Bezier Curves | Anima Entertainment GmbH
-  public static double easeIn(double t) {
-    // range: 0.0 <= t <= 1.0
-    return Math.pow(t, N);
-  }
+  // public static double easeIn(double t) {
+  //   // range: 0.0 <= t <= 1.0
+  //   return Math.pow(t, N);
+  // }
 
-  public static double easeOut(double t) {
-    return Math.pow(t - 1d, N) + 1d;
-  }
+  // public static double easeOut(double t) {
+  //   return Math.pow(t - 1d, N) + 1d;
+  // }
 
   public static double easeInOut(double t) {
     boolean isFirstHalf = t < .5;

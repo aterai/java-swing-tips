@@ -34,11 +34,13 @@ public final class MainPanel extends JPanel {
     String path = "example/GIANT_TCR1_2013.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon icn;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return new MissingIcon();
+        icn = new MissingIcon();
       }
+      return icn;
     }).orElseGet(MissingIcon::new);
 
     JLabel label = new JLabel(icon);

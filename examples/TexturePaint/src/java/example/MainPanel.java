@@ -20,14 +20,16 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String path = "example/16x16.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage bi = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    BufferedImage img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage buf;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(MainPanel::makeMissingImage);
-    texture = new TexturePaint(bi, new Rectangle(bi.getWidth(), bi.getHeight()));
+    texture = new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
 
     add(new JLabel("@title@"));
     setOpaque(false);

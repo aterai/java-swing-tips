@@ -61,11 +61,13 @@ public final class MainPanel extends JPanel {
   private static Icon makeIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      Icon icn;
       try (InputStream s = u.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return new MissingIcon();
+        icn = new MissingIcon();
       }
+      return icn;
     }).orElseGet(MissingIcon::new);
   }
 

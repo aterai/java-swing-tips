@@ -112,11 +112,13 @@ class RightPopupWindowsComboBoxUI extends WindowsComboBoxUI {
     String path = "example/14x14.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Icon icn;
       try (InputStream s = url.openStream()) {
-        return new ImageIcon(ImageIO.read(s));
+        icn = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        return UIManager.getIcon("html.missingImage");
+        icn = UIManager.getIcon("html.missingImage");
       }
+      return icn;
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
     JButton button = new JButton(icon) {
       @Override public Dimension getPreferredSize() {

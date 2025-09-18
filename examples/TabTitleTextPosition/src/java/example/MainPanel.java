@@ -39,14 +39,16 @@ public final class MainPanel extends JPanel {
   private static void addTab(JTabbedPane tabbedPane, String title, String iconPath, Component c) {
     tabbedPane.addTab(title, c);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage bi = Optional.ofNullable(cl.getResource(iconPath)).map(url -> {
+    BufferedImage image = Optional.ofNullable(cl.getResource(iconPath)).map(url -> {
+      BufferedImage buf;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(MainPanel::makeMissingImage);
-    JLabel label = new JLabel(title, new ImageIcon(bi), SwingConstants.CENTER);
+    JLabel label = new JLabel(title, new ImageIcon(image), SwingConstants.CENTER);
     label.setVerticalTextPosition(SwingConstants.BOTTOM);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
     // label.setVerticalAlignment(SwingConstants.CENTER);
