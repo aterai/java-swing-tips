@@ -158,6 +158,8 @@ final class ImageUtils {
     return new CentredBackgroundBorder(bi);
   }
 
+  // Suspicious false positives in AssignmentInOperand
+  @SuppressWarnings("PMD.AssignmentInOperand")
   public static BufferedImage getFilteredImage(URL url) {
     BufferedImage image = Optional.ofNullable(url).map(u -> {
       BufferedImage buf;
