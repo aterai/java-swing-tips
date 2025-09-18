@@ -159,21 +159,23 @@ final class ImageUtils {
   }
 
   public static BufferedImage getFilteredImage(URL url) {
-    BufferedImage img = Optional.ofNullable(url).map(u -> {
+    BufferedImage image = Optional.ofNullable(url).map(u -> {
+      BufferedImage buf;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(ImageUtils::makeMissingImage);
 
-    int w = img.getWidth();
-    int h = img.getHeight();
+    int w = image.getWidth();
+    int h = image.getHeight();
     BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
     byte[] b = new byte[256];
     IntStream.range(0, b.length).forEach(i -> b[i] = (byte) (i * .5));
     BufferedImageOp op = new LookupOp(new ByteLookupTable(0, b), null);
-    op.filter(img, dst);
+    op.filter(image, dst);
     return dst;
   }
 
@@ -181,11 +183,11 @@ final class ImageUtils {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-    Graphics2D g2 = bi.createGraphics();
+    BufferedImage buf = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2 = buf.createGraphics();
     missingIcon.paintIcon(null, g2, 0, 0);
     g2.dispose();
-    return bi;
+    return buf;
   }
 
   public static TexturePaint makeCheckerTexture() {

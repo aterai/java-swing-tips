@@ -104,11 +104,13 @@ public final class MainPanel extends JPanel {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     String p = "example/" + path;
     return new ImageIcon(Optional.ofNullable(cl.getResource(p)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage));
   }
 

@@ -75,14 +75,16 @@ public final class MainPanel extends JPanel {
     LOGGER.info(() -> "splashScreen show start / EDT: " + EventQueue.isDispatchThread());
     String path = "example/splash.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image img = Optional.ofNullable(cl.getResource(path)).map(url -> {
+    Image image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
-    splashScreen.getContentPane().add(new JLabel(new ImageIcon(img)));
+    splashScreen.getContentPane().add(new JLabel(new ImageIcon(image)));
     splashScreen.pack();
     splashScreen.setLocationRelativeTo(null);
     splashScreen.setVisible(true);

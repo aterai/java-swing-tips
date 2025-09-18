@@ -184,11 +184,13 @@ final class ImageUtils {
   public static BufferedImage getImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      BufferedImage buf;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(ImageUtils::makeMissingImage);
   }
 

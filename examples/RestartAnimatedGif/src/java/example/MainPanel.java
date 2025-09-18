@@ -57,14 +57,16 @@ public final class MainPanel extends JPanel {
   }
 
   private static ImageIcon makeImageIcon(URL url) {
-    Image img = Optional.ofNullable(url).map(u -> {
+    Image image = Optional.ofNullable(url).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeMissingImage();
+        img = makeMissingImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeMissingImage);
-    return new ImageIcon(img);
+    return new ImageIcon(image);
   }
 
   private static Component makeTitledPanel(String title, Component c) {

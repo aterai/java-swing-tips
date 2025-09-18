@@ -22,12 +22,13 @@ public final class MainPanel extends JPanel {
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
+      BufferedImage buf;
       try (InputStream s = url.openStream()) {
-        return ImageIO.read(s);
+        buf = ImageIO.read(s);
       } catch (IOException ex) {
-        // ex.printStackTrace();
-        return makeMissingImage();
+        buf = makeMissingImage();
       }
+      return buf;
     }).orElseGet(MainPanel::makeMissingImage);
 
     int width = image.getWidth();
