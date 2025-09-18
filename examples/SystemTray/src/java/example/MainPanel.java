@@ -30,6 +30,12 @@ public final class MainPanel extends JPanel {
     // i.paintIcon(null, g2, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
     // g2.dispose();
 
+    Image image = makeImage("example/16x16.png");
+    PopupMenu popup = makePopupMenu(frame);
+    return new TrayIcon(image, "TRAY", popup);
+  }
+
+  private static PopupMenu makePopupMenu(JFrame frame) {
     MenuItem item1 = new MenuItem("OPEN");
     item1.addActionListener(e -> {
       frame.setExtendedState(Frame.NORMAL);
@@ -49,16 +55,20 @@ public final class MainPanel extends JPanel {
     PopupMenu popup = new PopupMenu();
     popup.add(item1);
     popup.add(item2);
+    return popup;
+  }
 
+  public static Image makeImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Image image = Optional.ofNullable(cl.getResource("example/16x16.png")).map(u -> {
+    return Optional.ofNullable(cl.getResource(path)).map(u -> {
+      Image img;
       try (InputStream s = u.openStream()) {
-        return ImageIO.read(s);
+        img = ImageIO.read(s);
       } catch (IOException ex) {
-        return makeDefaultTrayImage();
+        img = makeDefaultTrayImage();
       }
+      return img;
     }).orElseGet(MainPanel::makeDefaultTrayImage);
-    return new TrayIcon(image, "TRAY", popup);
   }
 
   private static Image makeDefaultTrayImage() {
