@@ -114,9 +114,9 @@ class SizeFilter extends DocumentFilter {
     int len = fb.getDocument().getLength();
     if (len + text.length() > MAX) {
       Toolkit.getDefaultToolkit().beep();
-      return;
+    } else {
+      fb.insertString(offset, text, attr);
     }
-    fb.insertString(offset, text, attr);
   }
 
   @Override public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
@@ -128,9 +128,9 @@ class SizeFilter extends DocumentFilter {
     int len = fb.getDocument().getLength();
     if (len - length + text.length() > MAX) {
       Toolkit.getDefaultToolkit().beep();
-      return;
+    } else {
+      fb.replace(offset, length, text, attrs);
     }
-    fb.replace(offset, length, text, attrs);
   }
 }
 
