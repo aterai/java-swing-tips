@@ -35,11 +35,11 @@ public final class MainPanel extends JPanel {
     dialog.setBackground(color);
     new BackgroundTask() {
       @Override protected void done() {
-        if (!isDisplayable()) {
+        if (isDisplayable()) {
+          dialog.setVisible(false);
+        } else {
           cancel(true);
-          return;
         }
-        dialog.setVisible(false);
       }
     }.execute();
     dialog.setVisible(true);

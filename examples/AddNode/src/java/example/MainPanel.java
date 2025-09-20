@@ -89,18 +89,17 @@ final class TreePopupMenu extends JPopupMenu {
 
   private void edit() {
     Object node = path.getLastPathComponent();
-    if (!(node instanceof DefaultMutableTreeNode)) {
-      return;
-    }
-    DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
-    field.setText(leaf.getUserObject().toString());
-    JTree tree = (JTree) getInvoker();
-    int ret = JOptionPane.showConfirmDialog(
-        tree, field, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-    if (ret == JOptionPane.OK_OPTION) {
-      tree.getModel().valueForPathChanged(path, field.getText());
-      // leaf.setUserObject(str);
-      // model.nodeChanged(leaf);
+    if (node instanceof DefaultMutableTreeNode) {
+      DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) node;
+      field.setText(leaf.getUserObject().toString());
+      JTree tree = (JTree) getInvoker();
+      int ret = JOptionPane.showConfirmDialog(
+          tree, field, "edit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+      if (ret == JOptionPane.OK_OPTION) {
+        tree.getModel().valueForPathChanged(path, field.getText());
+        // leaf.setUserObject(str);
+        // model.nodeChanged(leaf);
+      }
     }
   }
 
