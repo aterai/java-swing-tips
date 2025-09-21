@@ -79,9 +79,9 @@ class FileDropTargetAdapter extends DropTargetAdapter {
   @Override public void dragOver(DropTargetDragEvent e) {
     if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
       e.acceptDrag(DnDConstants.ACTION_COPY);
-      return;
+    } else {
+      e.rejectDrag();
     }
-    e.rejectDrag();
   }
 
   @Override public void drop(DropTargetDropEvent e) {
