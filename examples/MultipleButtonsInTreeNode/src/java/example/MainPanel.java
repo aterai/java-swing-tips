@@ -7,7 +7,9 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.EventObject;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -59,10 +61,10 @@ public final class MainPanel extends JPanel {
 }
 
 final class ButtonPanel extends JPanel {
-  public final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-  public final JButton b1 = new ColorButton(new ColorIcon(Color.RED));
-  public final JButton b2 = new ColorButton(new ColorIcon(Color.GREEN));
-  public final JButton b3 = new ColorButton(new ColorIcon(Color.BLUE));
+  private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+  private final JButton b1 = new ColorButton(new ColorIcon(Color.RED));
+  private final JButton b2 = new ColorButton(new ColorIcon(Color.GREEN));
+  private final JButton b3 = new ColorButton(new ColorIcon(Color.BLUE));
 
   // public ButtonPanel() {
   //   super();
@@ -75,10 +77,18 @@ final class ButtonPanel extends JPanel {
     return false;
   }
 
+  public DefaultTreeCellRenderer getRenderer() {
+    return renderer;
+  }
+
   public Component remakePanel(Component c) {
     removeAll();
     Stream.of(b1, b2, b3, c).forEach(this::add);
     return this;
+  }
+
+  public List<JButton> getButtons() {
+    return Arrays.asList(b1, b2, b3);
   }
 
   // public int getButtonAreaWidth() {
@@ -93,8 +103,7 @@ class ButtonCellRenderer implements TreeCellRenderer {
   private final ButtonPanel panel = new ButtonPanel();
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-    TreeCellRenderer r = panel.renderer;
-    Component c = r.getTreeCellRendererComponent(
+    Component c = panel.getRenderer().getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
     return panel.remakePanel(c);
   }
@@ -105,10 +114,8 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
 
   protected ButtonCellEditor() {
     super();
-    ActionListener al = e -> stopCellEditing();
-    panel.b1.addActionListener(al);
-    panel.b2.addActionListener(al);
-    panel.b3.addActionListener(al);
+    ActionListener listener = e -> stopCellEditing();
+    panel.getButtons().forEach(b -> b.addActionListener(listener));
     // panel.renderer.addMouseListener(new MouseAdapter() {
     //   @Override public void mousePressed(MouseEvent e) {
     //     stopCellEditing();
@@ -117,13 +124,13 @@ class ButtonCellEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
-    TreeCellRenderer r = panel.renderer;
-    Component c = r.getTreeCellRendererComponent(tree, value, true, expanded, leaf, row, true);
+    Component c = panel.getRenderer().getTreeCellRendererComponent(
+        tree, value, true, expanded, leaf, row, true);
     return panel.remakePanel(c);
   }
 
   @Override public Object getCellEditorValue() {
-    return panel.renderer.getText();
+    return panel.getRenderer().getText();
   }
 
   @Override public boolean isCellEditable(EventObject e) {
