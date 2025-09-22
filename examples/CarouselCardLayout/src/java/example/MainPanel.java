@@ -73,7 +73,7 @@ class CarouselCardPanel extends JPanel {
     for (Component c : getComponents()) {
       if (c.isVisible()) {
         paintSideComponents(g, getComponentZOrder(c));
-        return;
+        break;
       }
     }
   }
