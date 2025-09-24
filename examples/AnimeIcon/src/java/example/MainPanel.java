@@ -81,16 +81,16 @@ public final class MainPanel extends JPanel {
 
     @Override protected void done() {
       // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-      if (!isDisplayable()) {
+      if (isDisplayable()) {
+        loadingLabel.stopAnimation();
+        runButton.setEnabled(true);
+        cancelButton.setEnabled(false);
+        statusPanel.remove(bar);
+        statusPanel.revalidate();
+        appendLine(String.format("%n%s%n%n", getDoneMessage()));
+      } else {
         cancel(true);
-        return;
       }
-      loadingLabel.stopAnimation();
-      runButton.setEnabled(true);
-      cancelButton.setEnabled(false);
-      statusPanel.remove(bar);
-      statusPanel.revalidate();
-      appendLine(String.format("%n%s%n%n", getDoneMessage()));
     }
   }
 
