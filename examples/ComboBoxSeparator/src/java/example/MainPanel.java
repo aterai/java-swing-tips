@@ -53,10 +53,15 @@ public final class MainPanel extends JPanel {
             value instanceof JSeparator
                 ? (Component) value
                 : renderer.getListCellRendererComponent(
-                list, value, index, isSelected, cellHasFocus)
+                    list, value, index, isSelected, cellHasFocus)
         );
       }
     };
+    initActionMpa(combo);
+    return combo;
+  }
+
+  private static <E> void initActionMpa(JComboBox<E> combo) {
     ActionMap am = combo.getActionMap();
     String selectPrevKey = "selectPrevious3";
     am.put(selectPrevKey, new AbstractAction() {
@@ -94,8 +99,6 @@ public final class MainPanel extends JPanel {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey);
-
-    return combo;
   }
 
   public static void main(String[] args) {
