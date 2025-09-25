@@ -91,24 +91,24 @@ public final class MainPanel extends JPanel {
   }
 
   private static void decode(JTable table, JTextArea textArea) {
-    String text = textArea.getText();
-    if (text.isEmpty()) {
-      return;
-    }
-    try (XMLDecoder xd = new XMLDecoder(IoStreamUtils.getInputStream(text))) {
-      // @SuppressWarnings("unchecked")
-      // var keys = (List<? extends RowSorter.SortKey>) xd.readObject();
-      Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
-      List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject()).stream()
-          .filter(clz::isInstance)
-          .map(clz::cast)
-          .collect(Collectors.toList());
-      DefaultTableModel model = (DefaultTableModel) xd.readObject();
-      table.setModel(model);
-      table.setAutoCreateRowSorter(true);
-      table.getRowSorter().setSortKeys(keys);
-      DefaultTableColumnModel cm = (DefaultTableColumnModel) xd.readObject();
-      table.setColumnModel(cm);
+    String txt = textArea.getText();
+    if (!txt.isEmpty()) {
+      try (XMLDecoder xd = new XMLDecoder(IoStreamUtils.getInputStream(txt))) {
+        // @SuppressWarnings("unchecked")
+        // var keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
+        List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject())
+            .stream()
+            .filter(clz::isInstance)
+            .map(clz::cast)
+            .collect(Collectors.toList());
+        DefaultTableModel model = (DefaultTableModel) xd.readObject();
+        table.setModel(model);
+        table.setAutoCreateRowSorter(true);
+        table.getRowSorter().setSortKeys(keys);
+        DefaultTableColumnModel cm = (DefaultTableColumnModel) xd.readObject();
+        table.setColumnModel(cm);
+      }
     }
   }
 
