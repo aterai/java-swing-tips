@@ -162,7 +162,7 @@ final class TablePopupMenu extends JPopupMenu {
 // }
 
 class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
-  protected final Container renderer = new JPanel(new GridBagLayout()) {
+  private final Container renderer = new JPanel(new GridBagLayout()) {
     private transient MouseListener listener;
     @Override public void updateUI() {
       removeMouseListener(listener);
@@ -175,7 +175,7 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
       addMouseListener(listener);
     }
   };
-  protected final JCheckBox checkBox = new JCheckBox() {
+  private final JCheckBox checkBox = new JCheckBox() {
     private transient Handler handler;
     @Override public void updateUI() {
       removeActionListener(handler);
