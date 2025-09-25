@@ -38,10 +38,9 @@ public final class MainPanel extends JPanel {
 
     JTable table2 = new JTable(model) {
       @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-        if (convertColumnIndexToModel(columnIndex) != targetColIdx) {
-          return;
+        if (convertColumnIndexToModel(columnIndex) == targetColIdx) {
+          super.changeSelection(rowIndex, columnIndex, toggle, extend);
         }
-        super.changeSelection(rowIndex, columnIndex, toggle, extend);
       }
     };
     table2.setCellSelectionEnabled(true);
