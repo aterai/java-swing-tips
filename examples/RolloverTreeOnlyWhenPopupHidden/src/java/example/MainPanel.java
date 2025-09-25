@@ -94,8 +94,8 @@ public final class MainPanel extends JPanel {
 class FileSystemViewTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x00_78_D7);
   private static final Color ROLLOVER_COLOR = new Color(0x64_96_C8);
-  protected int rollOverRowIndex = -1;
-  protected transient MouseAdapter rolloverHandler;
+  private int rollOverRowIndex = -1;
+  private transient MouseAdapter rolloverHandler;
   private transient FileSystemView fileSystemView;
 
   protected FileSystemViewTree() {
