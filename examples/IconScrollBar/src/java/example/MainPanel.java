@@ -59,28 +59,26 @@ public final class MainPanel extends JPanel {
 class WindowsIconScrollBarUI extends WindowsScrollBarUI {
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
     super.paintThumb(g, c, thumbBounds);
-    JScrollBar sb = (JScrollBar) c;
-    if (!sb.isEnabled() || thumbBounds.width > thumbBounds.height) {
-      return;
+    if (c.isEnabled() && thumbBounds.width <= thumbBounds.height) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      Color oc;
+      Color ic;
+      if (isDragging) {
+        oc = SystemColor.activeCaption.darker();
+        ic = SystemColor.inactiveCaptionText.darker();
+      } else if (isThumbRollover()) {
+        oc = SystemColor.activeCaption.brighter();
+        ic = SystemColor.inactiveCaptionText.brighter();
+      } else {
+        oc = SystemColor.activeCaption;
+        ic = SystemColor.inactiveCaptionText;
+      }
+      paintCircle(g2, thumbBounds, 6, oc);
+      paintCircle(g2, thumbBounds, 10, ic);
+      g2.dispose();
     }
-
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Color oc;
-    Color ic;
-    if (isDragging) {
-      oc = SystemColor.activeCaption.darker();
-      ic = SystemColor.inactiveCaptionText.darker();
-    } else if (isThumbRollover()) {
-      oc = SystemColor.activeCaption.brighter();
-      ic = SystemColor.inactiveCaptionText.brighter();
-    } else {
-      oc = SystemColor.activeCaption;
-      ic = SystemColor.inactiveCaptionText;
-    }
-    paintCircle(g2, thumbBounds, 6, oc);
-    paintCircle(g2, thumbBounds, 10, ic);
-    g2.dispose();
   }
 
   private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
@@ -93,28 +91,26 @@ class WindowsIconScrollBarUI extends WindowsScrollBarUI {
 class BasicIconScrollBarUI extends BasicScrollBarUI {
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
     super.paintThumb(g, c, thumbBounds);
-    JScrollBar sb = (JScrollBar) c;
-    if (!sb.isEnabled() || thumbBounds.width > thumbBounds.height) {
-      return;
+    if (c.isEnabled() && thumbBounds.width <= thumbBounds.height) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      Color oc;
+      Color ic;
+      if (isDragging) {
+        oc = SystemColor.activeCaption.darker();
+        ic = SystemColor.inactiveCaptionText.darker();
+      } else if (isThumbRollover()) {
+        oc = SystemColor.activeCaption.brighter();
+        ic = SystemColor.inactiveCaptionText.brighter();
+      } else {
+        oc = SystemColor.activeCaption;
+        ic = SystemColor.inactiveCaptionText;
+      }
+      paintCircle(g2, thumbBounds, 6, oc);
+      paintCircle(g2, thumbBounds, 10, ic);
+      g2.dispose();
     }
-
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Color oc;
-    Color ic;
-    if (isDragging) {
-      oc = SystemColor.activeCaption.darker();
-      ic = SystemColor.inactiveCaptionText.darker();
-    } else if (isThumbRollover()) {
-      oc = SystemColor.activeCaption.brighter();
-      ic = SystemColor.inactiveCaptionText.brighter();
-    } else {
-      oc = SystemColor.activeCaption;
-      ic = SystemColor.inactiveCaptionText;
-    }
-    paintCircle(g2, thumbBounds, 6, oc);
-    paintCircle(g2, thumbBounds, 10, ic);
-    g2.dispose();
   }
 
   private void paintCircle(Graphics2D g2, Rectangle thumbBounds, int w, Color color) {
