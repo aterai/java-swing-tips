@@ -173,26 +173,24 @@ class ArrowToggleButtonBarCellIcon implements Icon {
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Container parent = c.getParent();
-    if (Objects.isNull(parent)) {
-      return;
-    }
-    shape = makeShape(parent, c, x, y);
-
-    Color bgc = parent.getBackground();
-    Color borderColor = Color.GRAY.brighter();
-    if (c instanceof AbstractButton) {
-      ButtonModel m = ((AbstractButton) c).getModel();
-      if (m.isSelected() || m.isRollover()) {
-        bgc = c.getBackground();
-        borderColor = Color.GRAY;
+    if (Objects.nonNull(parent)) {
+      shape = makeShape(parent, c, x, y);
+      Color bgc = parent.getBackground();
+      Color borderColor = Color.GRAY.brighter();
+      if (c instanceof AbstractButton) {
+        ButtonModel m = ((AbstractButton) c).getModel();
+        if (m.isSelected() || m.isRollover()) {
+          bgc = c.getBackground();
+          borderColor = Color.GRAY;
+        }
       }
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(bgc);
+      g2.fill(shape);
+      g2.setPaint(borderColor);
+      g2.draw(shape);
+      g2.dispose();
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(bgc);
-    g2.fill(shape);
-    g2.setPaint(borderColor);
-    g2.draw(shape);
-    g2.dispose();
   }
 
   @Override public int getIconWidth() {

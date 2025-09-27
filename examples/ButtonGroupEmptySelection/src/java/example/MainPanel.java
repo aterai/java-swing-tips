@@ -73,16 +73,15 @@ class ToggleButtonGroup extends ButtonGroup {
   private final AtomicBoolean isAdjusting = new AtomicBoolean();
 
   @Override public void setSelected(ButtonModel m, boolean b) {
-    if (isAdjusting.get()) {
-      return;
+    if (!isAdjusting.get()) {
+      if (m.equals(prevModel)) {
+        isAdjusting.set(true);
+        clearSelection();
+        isAdjusting.set(false);
+      } else {
+        super.setSelected(m, b);
+      }
+      prevModel = getSelection();
     }
-    if (m.equals(prevModel)) {
-      isAdjusting.set(true);
-      clearSelection();
-      isAdjusting.set(false);
-    } else {
-      super.setSelected(m, b);
-    }
-    prevModel = getSelection();
   }
 }
