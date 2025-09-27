@@ -117,10 +117,9 @@ class ViewPositionViewport extends JViewport {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void revalidate() {
-    if (!MIDDLEWEIGHT && adjusting != null && adjusting.get()) {
-      return;
+    if (MIDDLEWEIGHT || !adjusting.get()) {
+      super.revalidate();
     }
-    super.revalidate();
   }
 
   @Override public void setViewPosition(Point p) {
