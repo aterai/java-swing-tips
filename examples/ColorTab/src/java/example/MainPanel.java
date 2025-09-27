@@ -13,11 +13,11 @@ import javax.swing.event.ChangeListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.setComponentPopupMenu(new TabbedPanePopupMenu());
-    tabbedPane.addChangeListener(new TabChangeListener());
-    tabbedPane.addTab("Title", new JLabel("Tab"));
-    add(tabbedPane);
+    JTabbedPane tabs = new JTabbedPane();
+    tabs.setComponentPopupMenu(new TabbedPanePopupMenu());
+    tabs.addChangeListener(new TabChangeListener());
+    tabs.addTab("Title", new JLabel("Tab"));
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -45,19 +45,18 @@ public final class MainPanel extends JPanel {
 
 class TabChangeListener implements ChangeListener {
   @Override public void stateChanged(ChangeEvent e) {
-    JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-    if (tabbedPane.getTabCount() <= 0) {
-      return;
-    }
-    int sindex = tabbedPane.getSelectedIndex();
-    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-      if (i == sindex && tabbedPane.getTitleAt(sindex).endsWith("1")) {
-        tabbedPane.setForegroundAt(i, Color.GREEN);
-      } else if (i == sindex) {
-        Color sc = sindex % 2 == 0 ? Color.RED : Color.BLUE;
-        tabbedPane.setForegroundAt(i, sc);
-      } else {
-        tabbedPane.setForegroundAt(i, Color.BLACK);
+    JTabbedPane tabs = (JTabbedPane) e.getSource();
+    if (tabs.getTabCount() > 0) {
+      int selectedIdx = tabs.getSelectedIndex();
+      for (int i = 0; i < tabs.getTabCount(); i++) {
+        if (i == selectedIdx && tabs.getTitleAt(selectedIdx).endsWith("1")) {
+          tabs.setForegroundAt(i, Color.GREEN);
+        } else if (i == selectedIdx) {
+          Color sc = selectedIdx % 2 == 0 ? Color.RED : Color.BLUE;
+          tabs.setForegroundAt(i, sc);
+        } else {
+          tabs.setForegroundAt(i, Color.BLACK);
+        }
       }
     }
   }
@@ -72,41 +71,41 @@ final class TabbedPanePopupMenu extends JPopupMenu {
   /* default */ TabbedPanePopupMenu() {
     super();
     add("New tab").addActionListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      tabbedPane.addTab("Title: " + count, new JLabel("Tab: " + count));
-      tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+      JTabbedPane tabs = (JTabbedPane) getInvoker();
+      tabs.addTab("Title: " + count, new JLabel("Tab: " + count));
+      tabs.setSelectedIndex(tabs.getTabCount() - 1);
       count++;
     });
     addSeparator();
     closePage = add("Close");
     closePage.addActionListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      tabbedPane.remove(tabbedPane.getSelectedIndex());
+      JTabbedPane tabs = (JTabbedPane) getInvoker();
+      tabs.remove(tabs.getSelectedIndex());
     });
     addSeparator();
     closeAll = add("Close all");
     closeAll.addActionListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      tabbedPane.removeAll();
+      JTabbedPane tabs = (JTabbedPane) getInvoker();
+      tabs.removeAll();
     });
     closeAllButActive = add("Close all bat active");
     closeAllButActive.addActionListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) getInvoker();
-      int tabidx = tabbedPane.getSelectedIndex();
-      String title = tabbedPane.getTitleAt(tabidx);
-      Component cmp = tabbedPane.getComponentAt(tabidx);
-      tabbedPane.removeAll();
-      tabbedPane.addTab(title, cmp);
+      JTabbedPane tabs = (JTabbedPane) getInvoker();
+      int tabIdx = tabs.getSelectedIndex();
+      String title = tabs.getTitleAt(tabIdx);
+      Component cmp = tabs.getComponentAt(tabIdx);
+      tabs.removeAll();
+      tabs.addTab(title, cmp);
     });
   }
 
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JTabbedPane) {
-      JTabbedPane tabbedPane = (JTabbedPane) c;
-      // JDK 1.3: tabindex = tabbedPane.getUI().tabForCoordinate(tabbedPane, x, y);
-      closePage.setEnabled(tabbedPane.indexAtLocation(x, y) >= 0);
-      closeAll.setEnabled(tabbedPane.getTabCount() > 0);
-      closeAllButActive.setEnabled(tabbedPane.getTabCount() > 0);
+      JTabbedPane tabs = (JTabbedPane) c;
+      // JDK 1.3: tabIndex = tabs.getUI().tabForCoordinate(tabs, x, y);
+      closePage.setEnabled(tabs.indexAtLocation(x, y) >= 0);
+      closeAll.setEnabled(tabs.getTabCount() > 0);
+      closeAllButActive.setEnabled(tabs.getTabCount() > 0);
       super.show(c, x, y);
     }
   }
