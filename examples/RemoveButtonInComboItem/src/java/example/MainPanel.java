@@ -172,7 +172,8 @@ class CellButtonsMouseListener extends MouseAdapter {
     // }
     // prevIndex = index;
     ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) list.getCellRenderer();
-    renderer.rolloverIndex = Objects.nonNull(getButton(list, pt, index)) ? index : -1;
+    int idx = Objects.nonNull(getButton(list, pt, index)) ? index : -1;
+    renderer.setRolloverIndex(idx);
     list.repaint(); // repaint all cells
   }
 
@@ -201,13 +202,13 @@ class CellButtonsMouseListener extends MouseAdapter {
         // rectRepaint(list, r);
       }
     }
-    ((ButtonsRenderer<?>) list.getCellRenderer()).rolloverIndex = -1;
+    ((ButtonsRenderer<?>) list.getCellRenderer()).setRolloverIndex(-1);
     list.repaint(); // repaint all cells
   }
 
   @Override public void mouseExited(MouseEvent e) {
     JList<?> list = (JList<?>) e.getComponent();
-    ((ButtonsRenderer<?>) list.getCellRenderer()).rolloverIndex = -1;
+    ((ButtonsRenderer<?>) list.getCellRenderer()).setRolloverIndex(-1);
   }
 
   private static <E> JButton getButton(JList<E> list, Point pt, int index) {
@@ -225,8 +226,8 @@ class CellButtonsMouseListener extends MouseAdapter {
 
 class ButtonsRenderer<E> implements ListCellRenderer<E> {
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
-  protected int targetIndex;
-  protected int rolloverIndex = -1;
+  private int targetIndex;
+  private int rolloverIndex = -1;
   private final JPanel panel = new JPanel(new BorderLayout()) { // *1
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
@@ -261,6 +262,10 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
     });
     panel.setOpaque(true);
     panel.add(deleteButton, BorderLayout.EAST);
+  }
+
+  public void setRolloverIndex(int index) {
+    rolloverIndex = index;
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
