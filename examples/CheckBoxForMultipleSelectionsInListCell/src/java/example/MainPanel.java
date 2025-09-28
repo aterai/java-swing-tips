@@ -16,11 +16,14 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    JList<ListItem> list = new JList<>(makeModel());
-    list.setCellRenderer(new SimpleListItemCellRenderer());
-
+    JList<ListItem> list = new JList<ListItem>(makeModel()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setCellRenderer(new SimpleListItemCellRenderer());
+      }
+    };
     add(new JScrollPane(list));
-    add(new JScrollPane(new RubberBandSelectionList<>(makeModel())));
+    add(new JScrollPane(new MultipleSelectionList<>(makeModel())));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -64,14 +67,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RubberBandSelectionList<E extends ListItem> extends JList<E> {
+class MultipleSelectionList<E extends ListItem> extends JList<E> {
   protected static final Color SELECTED_COLOR = new Color(0x40_32_64_FF, true);
   protected static final Color ROLLOVER_COLOR = new Color(0x40_32_64_AA, true);
-  private transient ItemCheckBoxesListener rbl;
+  private transient ItemCheckBoxesListener checkListener;
   private int rollOverIndex = -1;
   private int checkedIndex = -1;
 
-  protected RubberBandSelectionList(ListModel<E> model) {
+  protected MultipleSelectionList(ListModel<E> model) {
     super(model);
   }
 
@@ -79,13 +82,13 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     setSelectionForeground(null); // Nimbus
     setSelectionBackground(null); // Nimbus
     setCellRenderer(null);
-    removeMouseListener(rbl);
-    removeMouseMotionListener(rbl);
+    removeMouseListener(checkListener);
+    removeMouseMotionListener(checkListener);
     super.updateUI();
     setCellRenderer(new ListItemCellRenderer());
-    rbl = new ItemCheckBoxesListener();
-    addMouseMotionListener(rbl);
-    addMouseListener(rbl);
+    checkListener = new ItemCheckBoxesListener();
+    addMouseMotionListener(checkListener);
+    addMouseListener(checkListener);
   }
 
   @Override public void setSelectionInterval(int anchor, int lead) {
@@ -177,7 +180,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
 
     private Optional<Component> getCheckBoxAt(MouseEvent e, int index) {
-      JList<E> list = RubberBandSelectionList.this;
+      JList<E> list = MultipleSelectionList.this;
       boolean b = e.isShiftDown() || e.isControlDown() || e.isAltDown();
       return b ? Optional.empty() : getDeepestBoxAt(list, index, e.getPoint());
     }
