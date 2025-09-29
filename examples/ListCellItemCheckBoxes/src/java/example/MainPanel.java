@@ -215,7 +215,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         idx = -1;
       }
       Rectangle rect = new Rectangle();
-      if (idx > 0) {
+      if (idx >= 0) {
         rect.add(getCellBounds(idx, idx));
         if (rollOverIndex >= 0 && idx != rollOverIndex) {
           rect.add(getCellBounds(rollOverIndex, rollOverIndex));
