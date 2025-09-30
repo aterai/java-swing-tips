@@ -163,10 +163,10 @@ class TranslucentToolBar extends JToolBar {
 
 class LabelWithToolBox extends JLabel {
   public static final int DELAY = 8;
-  protected final Timer animator = new Timer(DELAY, null);
-  protected boolean isHidden;
-  protected int counter;
-  protected int yy;
+  private final Timer animator = new Timer(DELAY, null);
+  private boolean isHidden;
+  private int counter;
+  private int yy;
   private transient ToolBoxHandler handler;
 
   protected LabelWithToolBox(Icon icon, JToolBar toolBox) {
