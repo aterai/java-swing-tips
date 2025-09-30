@@ -84,19 +84,18 @@ class SpinnerNumberModelGroup {
   }
 
   private void update(SpinnerNumberModel source) {
-    if (updating) {
-      return;
-    }
-    updating = true;
-    if (candidates.size() - 1 > 0) {
-      int delta = computeSum() - expectedSum;
-      if (delta > 0) {
-        distributeRemove(delta, source);
-      } else {
-        distributeAdd(delta, source);
+    if (!updating) {
+      updating = true;
+      if (candidates.size() - 1 > 0) {
+        int delta = computeSum() - expectedSum;
+        if (delta > 0) {
+          distributeRemove(delta, source);
+        } else {
+          distributeAdd(delta, source);
+        }
       }
+      updating = false;
     }
-    updating = false;
   }
 
   private void distributeRemove(int delta, SpinnerNumberModel source) {
