@@ -143,26 +143,29 @@ class ToggleButtonBarCellIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Container parent = c.getParent();
     if (Objects.nonNull(parent)) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(
-          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      Path2D path = makeButtonPath(c, parent, x, y);
-      Paint color = new Color(0x0, true);
-      Paint borderColor = Color.GRAY.brighter();
-      if (c instanceof AbstractButton) {
-        ButtonModel m = ((AbstractButton) c).getModel();
-        if (m.isPressed()) {
-          color = new Color(0xC8_C8_FF);
-        } else if (m.isSelected() || m.isRollover()) {
-          borderColor = Color.GRAY;
-        }
-      }
-      g2.setPaint(color);
-      g2.fill(path);
-      g2.setPaint(borderColor);
-      g2.draw(path);
-      g2.dispose();
+      paintPath(c, g, makeButtonPath(c, parent, x, y));
     }
+  }
+
+  private static void paintPath(Component c, Graphics g, Path2D path) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    Paint color = new Color(0x0, true);
+    Paint borderColor = Color.GRAY.brighter();
+    if (c instanceof AbstractButton) {
+      ButtonModel m = ((AbstractButton) c).getModel();
+      if (m.isPressed()) {
+        color = new Color(0xC8_C8_FF);
+      } else if (m.isSelected() || m.isRollover()) {
+        borderColor = Color.GRAY;
+      }
+    }
+    g2.setPaint(color);
+    g2.fill(path);
+    g2.setPaint(borderColor);
+    g2.draw(path);
+    g2.dispose();
   }
 
   private static Path2D makeButtonPath(Component c, Container parent, int x, int y) {

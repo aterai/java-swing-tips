@@ -154,22 +154,23 @@ class ArrowToggleButtonCellIcon implements Icon {
     Container parent = c.getParent();
     if (Objects.nonNull(parent)) {
       shape = makeShape(parent, c, x, y);
-      Color bgc = parent.getBackground();
-      Color borderColor = Color.GRAY.brighter();
-      if (c instanceof AbstractButton) {
-        ButtonModel m = ((AbstractButton) c).getModel();
-        if (m.isSelected() || m.isRollover()) {
-          bgc = c.getBackground();
-          borderColor = Color.GRAY;
-        }
-      }
+      boolean selected = isSelected(c);
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setPaint(bgc);
+      g2.setPaint(selected ? c.getBackground() : parent.getBackground());
       g2.fill(shape);
-      g2.setPaint(borderColor);
+      g2.setPaint(selected ? Color.GRAY : Color.GRAY.brighter());
       g2.draw(shape);
       g2.dispose();
     }
+  }
+
+  private static boolean isSelected(Component c) {
+    boolean b = false;
+    if (c instanceof AbstractButton) {
+      ButtonModel m = ((AbstractButton) c).getModel();
+      b = m.isSelected() || m.isRollover();
+    }
+    return b;
   }
 
   @Override public int getIconWidth() {
