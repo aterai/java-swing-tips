@@ -103,8 +103,8 @@ class PluginNode {
 }
 
 class PluginPanel extends JPanel {
-  protected final JLabel pluginName = new JLabel();
-  protected final JComboBox<String> combo;
+  private final JLabel pluginName = new JLabel();
+  private final JComboBox<String> combo;
 
   protected PluginPanel(JComboBox<String> combo) {
     super();
@@ -122,6 +122,14 @@ class PluginPanel extends JPanel {
     return false;
   }
 
+  protected JLabel getLabel() {
+    return pluginName;
+  }
+
+  protected JComboBox<String> getComboBox() {
+    return combo;
+  }
+
   protected PluginNode extractNode(Object value) {
     return Optional.ofNullable(value)
         .filter(DefaultMutableTreeNode.class::isInstance)
@@ -135,17 +143,17 @@ class PluginPanel extends JPanel {
 
   private PluginNode updatePluginNode(PluginNode node) {
     pluginName.setText(node.toString());
-    ComboBoxModel<String> model = combo.getModel();
-    if (model instanceof DefaultComboBoxModel) {
-      DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) model;
-      m.removeAllElements();
+    ComboBoxModel<String> m = combo.getModel();
+    if (m instanceof DefaultComboBoxModel) {
+      DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) m;
+      model.removeAllElements();
       List<String> plugins = node.getPlugins();
       if (plugins.isEmpty()) {
         remove(combo);
       } else {
         add(combo);
         for (String s : plugins) {
-          m.addElement(s);
+          model.addElement(s);
         }
         // Java 11: m1.addAll(plugins);
         combo.setSelectedIndex(node.getSelectedIndex());
@@ -186,8 +194,9 @@ class PluginCellEditor extends DefaultCellEditor {
   @Override public Object getCellEditorValue() {
     Object o = super.getCellEditorValue();
     return Optional.ofNullable(node).<Object>map(n -> {
-      DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) panel.combo.getModel();
-      PluginNode pn = new PluginNode(panel.pluginName.getText(), n.getPlugins());
+      JComboBox<String> combo = panel.getComboBox();
+      DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) combo.getModel();
+      PluginNode pn = new PluginNode(panel.getLabel().getText(), n.getPlugins());
       pn.setSelectedIndex(m.getIndexOf(o));
       return pn;
     }).orElse(o);
@@ -232,12 +241,13 @@ class PluginCellEditor extends DefaultCellEditor {
     Component cmp = e.getComponent();
     Point pt = SwingUtilities.convertPoint(cmp, e.getPoint(), panel);
     Component o = SwingUtilities.getDeepestComponentAt(panel, pt.x, pt.y);
+    JComboBox<String> combo = panel.getComboBox();
     if (o instanceof JComboBox) {
-      panel.combo.showPopup();
+      combo.showPopup();
     } else if (Objects.nonNull(o)) { // maybe ArrowButton in JComboBox
       Container c = SwingUtilities.getAncestorOfClass(JComboBox.class, o);
       if (c instanceof JComboBox) {
-        panel.combo.showPopup();
+        combo.showPopup();
       }
     }
   }
