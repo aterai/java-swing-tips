@@ -17,20 +17,18 @@ public final class MainPanel extends JPanel {
 
     JButton center = new JButton("frame.setLocationRelativeTo(null)");
     center.addActionListener(e -> {
-      if (frame.isVisible()) {
-        return;
+      if (!frame.isVisible()) {
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
       }
-      frame.setLocationRelativeTo(null);
-      frame.setVisible(true);
     });
 
     JButton relative = new JButton("frame.setLocationRelativeTo(button)");
     relative.addActionListener(e -> {
-      if (frame.isVisible()) {
-        return;
+      if (!frame.isVisible()) {
+        frame.setLocationRelativeTo((Component) e.getSource());
+        frame.setVisible(true);
       }
-      frame.setLocationRelativeTo((Component) e.getSource());
-      frame.setVisible(true);
     });
 
     add(makeTitledPanel("in center of screen", center));

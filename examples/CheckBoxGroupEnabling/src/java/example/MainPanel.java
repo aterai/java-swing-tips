@@ -265,24 +265,23 @@ class CheckBoxStatusUpdateListener implements TreeModelListener {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void treeNodesChanged(TreeModelEvent e) {
-    if (adjusting.get()) {
-      return;
-    }
-    adjusting.set(true);
-
-    DefaultTreeModel model = (DefaultTreeModel) e.getSource();
-    Object[] children = e.getChildren();
-    boolean isOneNodeSelected = Objects.nonNull(children) && children.length == 1;
-    Object current = isOneNodeSelected ? children[0] : model.getRoot();
-    if (current instanceof DefaultMutableTreeNode) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
-      CheckBoxNode c = (CheckBoxNode) node.getUserObject();
-      for (Object child : e.getChildren()) {
-        updateAllChildrenUserObject((DefaultMutableTreeNode) child, c.isSelected());
+    if (!adjusting.get()) {
+      adjusting.set(true);
+      DefaultTreeModel model = (DefaultTreeModel) e.getSource();
+      Object[] children = e.getChildren();
+      boolean isOneSelected = Objects.nonNull(children) && children.length == 1;
+      Object current = isOneSelected ? children[0] : model.getRoot();
+      if (current instanceof DefaultMutableTreeNode) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
+        boolean selected = ((CheckBoxNode) node.getUserObject()).isSelected();
+        for (Object child : e.getChildren()) {
+          updateAllChildrenUserObject((DefaultMutableTreeNode) child, selected);
+        }
+        TreePath treePath = e.getTreePath();
+        model.nodeChanged((DefaultMutableTreeNode) treePath.getLastPathComponent());
       }
-      model.nodeChanged((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());
+      adjusting.set(false);
     }
-    adjusting.set(false);
   }
 
   private void updateAllChildrenUserObject(DefaultMutableTreeNode parent, boolean enabled) {
