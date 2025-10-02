@@ -79,17 +79,19 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
-    if (!(c instanceof JTable)) {
-      return;
+    if (c instanceof JTable) {
+      updateRowHeight(e, (JTable) c);
     }
-    JTable table = (JTable) c;
+  }
+
+  private void updateRowHeight(MouseEvent e, JTable table) {
     if (e.getID() == MouseEvent.MOUSE_MOVED) {
-      boolean isResizing = RESIZE_CURSOR.equals(table.getCursor());
+      Cursor curCursor = table.getCursor();
+      boolean isResizing = RESIZE_CURSOR.equals(curCursor);
       int row = getResizeTargetRow(table, e.getPoint());
       if (row >= 0 != isResizing) {
-        Cursor tmp = table.getCursor();
         table.setCursor(otherCursor);
-        otherCursor = tmp;
+        otherCursor = curCursor;
       }
     } else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
       int newHeight = e.getY() - mouseOffsetY;
