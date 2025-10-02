@@ -235,13 +235,7 @@ class EditableList<E extends ListItem> extends JList<E> {
       editor.requestFocusInWindow();
     }
   };
-  protected final Action cancelEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      window.setVisible(false);
-      editingIndex = -1;
-    }
-  };
-  protected final Action renameTitle = new AbstractAction() {
+  private final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       String title = editor.getText().trim();
       int index = editingIndex;
@@ -299,6 +293,13 @@ class EditableList<E extends ListItem> extends JList<E> {
 
     ActionMap am = editor.getActionMap();
     am.put(RENAME, renameTitle);
+    Action cancelEditing = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        window.setVisible(false);
+        editingIndex = -1;
+      }
+    };
     am.put(CANCEL, cancelEditing);
 
     getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
@@ -322,16 +323,16 @@ class EditableList<E extends ListItem> extends JList<E> {
       @Override public void mouseClicked(MouseEvent e) {
         int idx = getSelectedIndex();
         Rectangle rect = getCellBounds(idx, idx);
-        if (rect == null) {
-          return;
-        }
-        int h = editor.getPreferredSize().height;
-        rect.y = rect.y + rect.height - h;
-        rect.height = h;
-        boolean isDoubleClick = e.getClickCount() >= 2;
-        if (isDoubleClick && rect.contains(e.getPoint())) {
-          Component c = e.getComponent();
-          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+        if (rect != null) {
+          int h = editor.getPreferredSize().height;
+          rect.y = rect.y + rect.height - h;
+          rect.height = h;
+          boolean isDoubleClick = e.getClickCount() >= 2;
+          if (isDoubleClick && rect.contains(e.getPoint())) {
+            Component c = e.getComponent();
+            ActionEvent ae = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
+            startEditing.actionPerformed(ae);
+          }
         }
       }
     };
