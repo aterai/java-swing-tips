@@ -145,14 +145,13 @@ class BasicComboPopup2 extends BasicComboPopup {
 
   private final class Handler2 extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
-      if (!SwingUtilities.isLeftMouseButton(e) || !comboBox.isEnabled()) {
-        return;
-      }
-      Component c = e.getComponent();
-      if (hasFocus(comboBox)) {
-        togglePopup();
-      } else if (c instanceof AbstractButton) {
-        ((AbstractButton) c).getModel().setPressed(false);
+      if (SwingUtilities.isLeftMouseButton(e) && comboBox.isEnabled()) {
+        Component c = e.getComponent();
+        if (hasFocus(comboBox)) {
+          togglePopup();
+        } else if (c instanceof AbstractButton) {
+          ((AbstractButton) c).getModel().setPressed(false);
+        }
       }
     }
 
