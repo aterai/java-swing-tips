@@ -68,24 +68,24 @@ public final class MainPanel extends JPanel {
 
   private final class TimerScrollBarLayerUI extends ScrollBarLayerUI {
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-      if (!(e.getComponent() instanceof JScrollBar)) {
-        return;
+      Component c = e.getComponent();
+      if (c instanceof JScrollBar) {
+        switch (e.getID()) {
+          case MouseEvent.MOUSE_ENTERED:
+            expandStart(isDragging());
+            break;
+          case MouseEvent.MOUSE_EXITED:
+            collapseStart(isDragging());
+            break;
+          case MouseEvent.MOUSE_RELEASED:
+            setDragging(false);
+            collapseStart(!c.getBounds().contains(e.getPoint()));
+            break;
+          default:
+            break;
+        }
+        l.getView().repaint();
       }
-      switch (e.getID()) {
-        case MouseEvent.MOUSE_ENTERED:
-          expandStart(isDragging());
-          break;
-        case MouseEvent.MOUSE_EXITED:
-          collapseStart(isDragging());
-          break;
-        case MouseEvent.MOUSE_RELEASED:
-          setDragging(false);
-          collapseStart(!e.getComponent().getBounds().contains(e.getPoint()));
-          break;
-        default:
-          break;
-      }
-      l.getView().repaint();
     }
 
     private void expandStart(boolean dragging) {
@@ -240,25 +240,25 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   }
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
-    JScrollBar sb = (JScrollBar) c;
-    Color color;
-    if (!sb.isEnabled() || r.width > r.height) {
-      return;
-    } else if (isDragging) {
-      color = DRAGGING_COLOR;
-    } else if (isThumbRollover()) {
-      color = ROLLOVER_COLOR;
-    } else {
-      color = DEFAULT_COLOR;
-      int dw = r.width - sb.getPreferredSize().width;
-      r.x += dw;
-      r.width -= dw;
+    if (c != null && c.isEnabled() && r.width <= r.height) {
+      Color color;
+      if (isDragging) {
+        color = DRAGGING_COLOR;
+      } else if (isThumbRollover()) {
+        color = ROLLOVER_COLOR;
+      } else {
+        color = DEFAULT_COLOR;
+        int dw = r.width - c.getPreferredSize().width;
+        r.x += dw;
+        r.width -= dw;
+      }
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setPaint(color);
+      g2.fillRect(r.x, r.y, r.width - 2, r.height - 1);
+      g2.dispose();
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(color);
-    g2.fillRect(r.x, r.y, r.width - 2, r.height - 1);
-    g2.dispose();
   }
 }
 
