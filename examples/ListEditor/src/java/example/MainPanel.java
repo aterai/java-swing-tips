@@ -207,9 +207,9 @@ class EditableList<E extends ListItem> extends JList<E> {
   public static final String RENAME = "rename-title";
   public static final String CANCEL = "cancel-editing";
   public static final String EDITING = "start-editing";
-  protected final Container glassPane = new EditorGlassPane();
-  protected final JTextField editor = new JTextField();
-  protected final Action startEditing = new AbstractAction() {
+  private final Container glassPane = new EditorGlassPane();
+  private final JTextField editor = new JTextField();
+  private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
@@ -285,16 +285,16 @@ class EditableList<E extends ListItem> extends JList<E> {
       @Override public void mouseClicked(MouseEvent e) {
         int idx = getSelectedIndex();
         Rectangle rect = getCellBounds(idx, idx);
-        if (rect == null) {
-          return;
-        }
-        int h = editor.getPreferredSize().height;
-        rect.y = rect.y + rect.height - h;
-        rect.height = h;
-        boolean isDoubleClick = e.getClickCount() >= 2;
-        if (isDoubleClick && rect.contains(e.getPoint())) {
-          Component c = e.getComponent();
-          startEditing.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, ""));
+        if (rect != null) {
+          int h = editor.getPreferredSize().height;
+          rect.y = rect.y + rect.height - h;
+          rect.height = h;
+          boolean isDoubleClick = e.getClickCount() >= 2;
+          if (isDoubleClick && rect.contains(e.getPoint())) {
+            Component c = e.getComponent();
+            ActionEvent ae = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
+            startEditing.actionPerformed(ae);
+          }
         }
       }
     };
