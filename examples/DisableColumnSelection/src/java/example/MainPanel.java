@@ -18,10 +18,9 @@ public final class MainPanel extends JPanel {
     TableModel model = makeModel();
     JTable table1 = new JTable(model) {
       @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-        if (convertColumnIndexToModel(columnIndex) != targetColIdx) {
-          return;
+        if (convertColumnIndexToModel(columnIndex) == targetColIdx) {
+          super.changeSelection(rowIndex, columnIndex, toggle, extend);
         }
-        super.changeSelection(rowIndex, columnIndex, toggle, extend);
       }
 
       @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {

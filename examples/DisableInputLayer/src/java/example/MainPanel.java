@@ -63,11 +63,10 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
   private boolean running;
 
   public void start() {
-    if (running) {
-      return;
+    if (!running) {
+      running = true;
+      firePropertyChange(CMD_REPAINT, false, true);
     }
-    running = true;
-    firePropertyChange(CMD_REPAINT, false, true);
   }
 
   public void stop() {
@@ -77,14 +76,13 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    if (!running) {
-      return;
+    if (running) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+      g2.setPaint(Color.GRAY);
+      g2.fillRect(0, 0, c.getWidth(), c.getHeight());
+      g2.dispose();
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
-    g2.setPaint(Color.GRAY);
-    g2.fillRect(0, 0, c.getWidth(), c.getHeight());
-    g2.dispose();
   }
 
   @Override public void installUI(JComponent c) {
