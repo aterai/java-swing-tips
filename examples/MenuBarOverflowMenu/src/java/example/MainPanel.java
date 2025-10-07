@@ -26,8 +26,8 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         LayoutManager lm = getLayout();
         if (lm instanceof OverflowMenuLayout) {
-          JMenu popupButton = ((OverflowMenuLayout) lm).overflowMenu;
-          SwingUtilities.updateComponentTreeUI(popupButton);
+          JMenu popupMenu = ((OverflowMenuLayout) lm).getOverflowMenu();
+          SwingUtilities.updateComponentTreeUI(popupMenu);
         }
       }
     };
@@ -103,10 +103,14 @@ public final class MainPanel extends JPanel {
 }
 
 class OverflowMenuLayout extends FlowLayout {
-  public final JMenu overflowMenu = new JMenu("...");
+  private final JMenu overflowMenu = new JMenu("...");
 
   protected OverflowMenuLayout() {
     super(LEADING, 0, 0);
+  }
+
+  public JMenu getOverflowMenu() {
+    return overflowMenu;
   }
 
   @Override public void layoutContainer(Container target) {
