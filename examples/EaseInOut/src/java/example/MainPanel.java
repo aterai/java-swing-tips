@@ -89,18 +89,16 @@ class ImageCaptionLabel extends JLabel {
     setLayout(new OverlayLayout(this) {
       @Override public void layoutContainer(Container parent) {
         // Insets insets = parent.getInsets();
-        int num = parent.getComponentCount();
-        if (num == 0) {
-          return;
+        if (parent.getComponentCount() > 0) {
+          int width = parent.getWidth(); // - insets.left - insets.right;
+          int height = parent.getHeight(); // - insets.left - insets.right;
+          int x = 0; // insets.left; int y = insets.top;
+          int tah = handler.getTextAreaHeight();
+          // for (int i = 0; i < num; i++) {
+          Component c = parent.getComponent(0); // = textArea;
+          c.setBounds(x, height - tah, width, c.getPreferredSize().height);
+          // }
         }
-        int width = parent.getWidth(); // - insets.left - insets.right;
-        int height = parent.getHeight(); // - insets.left - insets.right;
-        int x = 0; // insets.left; int y = insets.top;
-        int tah = handler.getTextAreaHeight();
-        // for (int i = 0; i < num; i++) {
-        Component c = parent.getComponent(0); // = textArea;
-        c.setBounds(x, height - tah, width, c.getPreferredSize().height);
-        // }
       }
     });
   }

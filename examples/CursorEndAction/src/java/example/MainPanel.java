@@ -89,13 +89,7 @@ class CursorEndAction extends AbstractAction {
     if (src instanceof JTextComponent) {
       JTextComponent target = (JTextComponent) src;
       int offs = target.getCaretPosition();
-      int rowEndOffs;
-      try {
-        rowEndOffs = Utilities.getRowEnd(target, offs);
-      } catch (BadLocationException ex) {
-        Logger.getGlobal().severe(ex::getMessage);
-        return;
-      }
+      int rowEndOffs = getRowEndOffsets(target, offs);
       if (rowEndOffs == offs) {
         int length = target.getDocument().getLength();
         int end = Utilities.getParagraphElement(target, offs).getEndOffset();
@@ -104,5 +98,16 @@ class CursorEndAction extends AbstractAction {
         target.setCaretPosition(rowEndOffs);
       }
     }
+  }
+
+  private static int getRowEndOffsets(JTextComponent target, int curOffs) {
+    int rowEndOffs = -1;
+    try {
+      rowEndOffs = Utilities.getRowEnd(target, curOffs);
+    } catch (BadLocationException ex) {
+      // Logger.getGlobal().severe(ex::getMessage);
+      UIManager.getLookAndFeel().provideErrorFeedback(target);
+    }
+    return rowEndOffs;
   }
 }
