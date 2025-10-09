@@ -25,9 +25,9 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
 public final class MainPanel extends JPanel {
-  public final JTextField field = new JTextField(2);
-  public final JLabel label = new JLabel("/ 1");
-  public final int itemsPerPage;
+  private final JTextField field = new JTextField(2);
+  private final JLabel label = new JLabel("/ 1");
+  private final int itemsPerPage;
   private final JButton first = new JButton("|<");
   private final JButton prev = new JButton("<");
   private final JButton next = new JButton(">");
@@ -144,13 +144,13 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void done() {
-      if (!isDisplayable()) {
+      if (isDisplayable()) {
+        label.setToolTipText(getDoneMessage());
+        table.setEnabled(true);
+        field.setEditable(true);
+      } else {
         cancel(true);
-        return;
       }
-      label.setToolTipText(getDoneMessage());
-      table.setEnabled(true);
-      field.setEditable(true);
     }
   }
 
