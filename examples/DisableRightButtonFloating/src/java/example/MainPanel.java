@@ -101,24 +101,21 @@ class DockingListener2 extends MouseInputAdapter {
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    if (cancelDrag(e)) {
-      return;
+    if (!cancelDrag(e)) {
+      listener.mousePressed(e);
     }
-    listener.mousePressed(e);
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    if (cancelDrag(e)) {
-      return;
+    if (!cancelDrag(e)) {
+      listener.mouseDragged(e);
     }
-    listener.mouseDragged(e);
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    if (cancelDrag(e)) {
-      return;
+    if (!cancelDrag(e)) {
+      listener.mouseReleased(e);
     }
-    listener.mouseReleased(e);
   }
 }
 
