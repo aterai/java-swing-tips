@@ -61,15 +61,15 @@ class EditableTabbedPane extends JTabbedPane {
   public static final String EDIT_KEY = "rename-tab";
   public static final String START_EDITING = "start-editing";
   public static final String CANCEL_EDITING = "cancel-editing";
-  protected final Container glassPane = new JComponent() {
+  private final Container glassPane = new JComponent() {
     @Override public void setVisible(boolean flag) {
       super.setVisible(flag);
       setFocusTraversalPolicyProvider(flag);
       setFocusCycleRoot(flag);
     }
   };
-  protected final JTextField editor = new JTextField();
-  protected final Action startEditing = new AbstractAction() {
+  private final JTextField editor = new JTextField();
+  private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       getRootPane().setGlassPane(glassPane);
       Rectangle rect = getBoundsAt(getSelectedIndex());
@@ -86,22 +86,6 @@ class EditableTabbedPane extends JTabbedPane {
       editor.requestFocusInWindow();
     }
   };
-  protected final Action cancelEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      glassPane.setVisible(false);
-    }
-  };
-  protected final Action renameTab = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      String str = editor.getText().trim();
-      if (!str.isEmpty()) {
-        setTitleAt(getSelectedIndex(), str);
-        Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
-            .ifPresent(Component::revalidate);
-      }
-      glassPane.setVisible(false);
-    }
-  };
   private transient MouseListener listener;
 
   protected EditableTabbedPane() {
@@ -114,7 +98,23 @@ class EditableTabbedPane extends JTabbedPane {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL_EDITING);
 
     ActionMap am = editor.getActionMap();
+    Action renameTab = new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        String str = editor.getText().trim();
+        if (!str.isEmpty()) {
+          setTitleAt(getSelectedIndex(), str);
+          Optional.ofNullable(getTabComponentAt(getSelectedIndex()))
+              .ifPresent(Component::revalidate);
+        }
+        glassPane.setVisible(false);
+      }
+    };
     am.put(EDIT_KEY, renameTab);
+    Action cancelEditing = new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        glassPane.setVisible(false);
+      }
+    };
     am.put(CANCEL_EDITING, cancelEditing);
 
     getInputMap(WHEN_FOCUSED).put(enterKey, START_EDITING);
