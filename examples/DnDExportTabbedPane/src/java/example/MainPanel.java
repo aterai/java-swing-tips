@@ -443,14 +443,14 @@ class DnDTabbedPane extends JTabbedPane {
       boolean isOnlyOneTab = src.getTabCount() <= 1;
       if (isOnlyOneTab) {
         startPt.setLocation(-1, -1);
-        return;
+      } else {
+        Point tabPt = e.getPoint(); // e.getDragOrigin();
+        int i = src.indexAtLocation(tabPt.x, tabPt.y);
+        // disabled tab, null component problem.
+        // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
+        boolean b = i < 0 || !src.isEnabledAt(i) || src.getComponentAt(i) == null;
+        startPt.setLocation(b ? new Point(-1, -1) : tabPt);
       }
-      Point tabPt = e.getPoint(); // e.getDragOrigin();
-      int idx = src.indexAtLocation(tabPt.x, tabPt.y);
-      // disabled tab, null component problem.
-      // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
-      boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
-      startPt.setLocation(flag ? new Point(-1, -1) : tabPt);
     }
 
     @Override public void mouseDragged(MouseEvent e) {
