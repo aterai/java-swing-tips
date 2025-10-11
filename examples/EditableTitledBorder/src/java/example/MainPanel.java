@@ -85,11 +85,11 @@ public final class MainPanel extends JPanel {
 }
 
 class EditableTitledBorder extends TitledBorder {
-  protected final JTextField editor = new JTextField();
-  protected final JLabel renderer = new JLabel();
-  protected final Rectangle rect = new Rectangle();
-  protected final Container glassPane = new EditorGlassPane();
-  protected Component comp;
+  private final JTextField editor = new JTextField();
+  private final JLabel renderer = new JLabel();
+  private final Rectangle rect = new Rectangle();
+  private final Container glassPane = new EditorGlassPane();
+  private final Component comp;
 
   protected final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
