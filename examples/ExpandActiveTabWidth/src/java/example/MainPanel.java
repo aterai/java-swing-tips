@@ -41,14 +41,13 @@ public final class MainPanel extends JPanel {
 
   private static void updateTabWidth(JTabbedPane tabs) {
     int tp = tabs.getTabPlacement();
-    if (tp == SwingConstants.LEFT || tp == SwingConstants.RIGHT) {
-      return;
-    }
-    int idx = tabs.getSelectedIndex();
-    for (int i = 0; i < tabs.getTabCount(); i++) {
-      Component c = tabs.getTabComponentAt(i);
-      if (c instanceof ShrinkLabel) {
-        ((ShrinkLabel) c).setSelected(i == idx);
+    if (tp == SwingConstants.TOP || tp == SwingConstants.BOTTOM) {
+      int idx = tabs.getSelectedIndex();
+      for (int i = 0; i < tabs.getTabCount(); i++) {
+        Component c = tabs.getTabComponentAt(i);
+        if (c instanceof ShrinkLabel) {
+          ((ShrinkLabel) c).setSelected(i == idx);
+        }
       }
     }
   }

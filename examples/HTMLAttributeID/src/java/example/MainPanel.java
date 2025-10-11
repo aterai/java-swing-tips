@@ -244,14 +244,12 @@ final class EditorPaneUtils {
     HTML.Tag tag;
     if (name instanceof HTML.Tag) {
       tag = (HTML.Tag) name;
-    } else {
-      return;
-    }
-    LOGGER.info(() -> String.format("%s%n", tag));
-    if (tag.isBlock()) { // block
-      blockHighlight(editorPane, element, attrs);
-    } else { // inline
-      inlineHighlight(editorPane, element, attrs);
+      LOGGER.info(() -> String.format("%s%n", tag));
+      if (tag.isBlock()) { // block
+        blockHighlight(editorPane, element, attrs);
+      } else { // inline
+        inlineHighlight(editorPane, element, attrs);
+      }
     }
   }
 

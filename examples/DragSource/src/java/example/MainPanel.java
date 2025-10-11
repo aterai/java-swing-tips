@@ -81,14 +81,11 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("Create Temp File");
     button.addActionListener(e -> {
-      File outfile;
       try {
-        outfile = createTempFile();
+        setFile(createTempFile());
       } catch (IOException ex) {
         errorFeedback((JComponent) e.getSource());
-        return;
       }
-      setFile(outfile);
     });
 
     JButton clearButton = new JButton("Clear");

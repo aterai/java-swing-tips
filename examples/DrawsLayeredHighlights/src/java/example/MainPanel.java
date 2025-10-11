@@ -97,26 +97,25 @@ public final class MainPanel extends JPanel {
     String pattern = field.getText().trim();
     Highlighter highlighter = textArea.getHighlighter();
     highlighter.removeAllHighlights();
-    if (pattern.isEmpty()) {
-      return;
-    }
-    Document doc = textArea.getDocument();
-    try {
-      String text = doc.getText(0, doc.getLength());
-      Matcher matcher = Pattern.compile(pattern).matcher(text);
-      HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.YELLOW);
-      int pos = 0;
-      while (matcher.find(pos) && !matcher.group().isEmpty()) {
-        int start = matcher.start();
-        int end = matcher.end();
-        highlighter.addHighlight(start, end, highlightPainter);
-        pos = end;
+    if (!pattern.isEmpty()) {
+      Document doc = textArea.getDocument();
+      try {
+        String text = doc.getText(0, doc.getLength());
+        Matcher matcher = Pattern.compile(pattern).matcher(text);
+        HighlightPainter painter = new DefaultHighlightPainter(Color.YELLOW);
+        int pos = 0;
+        while (matcher.find(pos) && !matcher.group().isEmpty()) {
+          int start = matcher.start();
+          int end = matcher.end();
+          highlighter.addHighlight(start, end, painter);
+          pos = end;
+        }
+      } catch (BadLocationException | PatternSyntaxException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback(field);
+        field.setBackground(WARNING_COLOR);
       }
-    } catch (BadLocationException | PatternSyntaxException ex) {
-      UIManager.getLookAndFeel().provideErrorFeedback(field);
-      field.setBackground(WARNING_COLOR);
+      repaint();
     }
-    repaint();
   }
 
   public static void main(String[] args) {
