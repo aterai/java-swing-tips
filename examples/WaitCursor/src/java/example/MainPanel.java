@@ -33,12 +33,12 @@ public final class MainPanel extends JPanel {
     c.setEnabled(false);
     new BackgroundTask() {
       @Override protected void done() {
-        if (!c.isDisplayable()) {
+        if (c.isDisplayable()) {
+          c.getRootPane().getGlassPane().setVisible(false);
+          c.setEnabled(true);
+        } else {
           cancel(true);
-          return;
         }
-        c.getRootPane().getGlassPane().setVisible(false);
-        c.setEnabled(true);
       }
     }.execute();
   }

@@ -125,26 +125,26 @@ class RowSelectionTree extends JTree {
   private transient TreeWillExpandListener listener;
 
   @Override protected void paintComponent(Graphics g) {
-    int[] sr = getSelectionRows();
-    if (sr == null) {
+    int[] selectionRows = getSelectionRows();
+    if (Objects.nonNull(selectionRows)) {
+      g.setColor(getBackground());
+      g.fillRect(0, 0, getWidth(), getHeight());
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(SELECTED_COLOR);
+      Arrays.stream(selectionRows).mapToObj(this::getRowBounds)
+          .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
       super.paintComponent(g);
-      return;
+      if (hasFocus()) {
+        Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
+          Rectangle r = getRowBounds(getRowForPath(path));
+          g2.setPaint(SELECTED_COLOR.darker());
+          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+        });
+      }
+      g2.dispose();
+    } else {
+      super.paintComponent(g);
     }
-    g.setColor(getBackground());
-    g.fillRect(0, 0, getWidth(), getHeight());
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(SELECTED_COLOR);
-    Arrays.stream(sr).mapToObj(this::getRowBounds)
-        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
-    super.paintComponent(g);
-    if (hasFocus()) {
-      Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-        Rectangle r = getRowBounds(getRowForPath(path));
-        g2.setPaint(SELECTED_COLOR.darker());
-        g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-      });
-    }
-    g2.dispose();
   }
 
   @Override public void updateUI() {
