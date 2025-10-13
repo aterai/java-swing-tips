@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ChangeSelectedTabAfterClicking" />
+  <property name="jnlp.Name"     value="ChangeSelectedTabAfterClicking" />
+  <property name="jnlp.name"     value="changeselectedtabafterclicking" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/changeselectedtabafterclicking/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ChangeSelectedTabAfterClicking.html" />
+</project>
