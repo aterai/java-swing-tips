@@ -178,29 +178,29 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
     //   return;
     // }
     Rectangle r = SwingUtilities.calculateInnerArea(progressBar, null);
-    if (r.isEmpty()) {
-      return;
-    }
-    // int cellLength = getCellLength();
-    // int cellSpacing = getCellSpacing();
-    // amount of progress to draw
-    int amountFull = getAmountFull(b, r.width, r.height);
+    if (r != null && !r.isEmpty()) {
+      // int cellLength = getCellLength();
+      // int cellSpacing = getCellSpacing();
+      // amount of progress to draw
+      int amountFull = getAmountFull(b, r.width, r.height);
+      // draw the cells
+      if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {
+        float x = amountFull / (float) r.width;
+        g.setColor(getColorFromPallet(pallet, x));
+        g.fillRect(r.x, r.y, amountFull, r.height);
+      } else { // VERTICAL
+        float y = amountFull / (float) r.height;
+        g.setColor(getColorFromPallet(pallet, y));
+        // g.fillRect(
+        //     b.left, barRectHeight + b.bottom - amountFull,
+        //     r.width, amountFull);
+        g.fillRect(r.x, r.y + r.height - amountFull, r.width, amountFull);
+      }
 
-    // draw the cells
-    if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {
-      float x = amountFull / (float) r.width;
-      g.setColor(getColorFromPallet(pallet, x));
-      g.fillRect(r.x, r.y, amountFull, r.height);
-    } else { // VERTICAL
-      float y = amountFull / (float) r.height;
-      g.setColor(getColorFromPallet(pallet, y));
-      // g.fillRect(b.left, barRectHeight + b.bottom - amountFull, r.width, amountFull);
-      g.fillRect(r.x, r.y + r.height - amountFull, r.width, amountFull);
-    }
-
-    // Deal with possible text painting
-    if (progressBar.isStringPainted()) {
-      paintString(g, r.x, r.y, r.width, r.height, amountFull, b);
+      // Deal with possible text painting
+      if (progressBar.isStringPainted()) {
+        paintString(g, r.x, r.y, r.width, r.height, amountFull, b);
+      }
     }
   }
 }

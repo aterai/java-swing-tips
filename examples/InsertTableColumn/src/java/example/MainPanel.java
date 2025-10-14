@@ -161,7 +161,7 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
     Dimension d = new Dimension(LINE_WIDTH, rect.height - scrollHeight);
     for (int i = 0; i < table.getColumnCount(); i++) {
       if (canInsert(header, loc, i, d)) {
-        return;
+        break;
       }
     }
   }
