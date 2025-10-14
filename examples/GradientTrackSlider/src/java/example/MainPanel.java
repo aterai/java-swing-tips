@@ -113,12 +113,12 @@ public final class MainPanel extends JPanel {
 
 class GradientPalletSliderUI extends MetalSliderUI {
   private static final int[] GRADIENT_PALLET = GradientPalletUtils.makeGradientPallet();
-  // protected Color controlDarkShadow = MetalLookAndFeel.getControlDarkShadow();
-  protected Color controlDarkShadow = new Color(0x64_64_64);
-  // protected Color controlHighlight = MetalLookAndFeel.getControlHighlight();
-  protected Color controlHighlight = new Color(0xC8_FF_C8);
-  // protected Color controlShadow = MetalLookAndFeel.getControlShadow();
-  protected Color controlShadow = new Color(0x00_64_00);
+  // private Color controlDarkShadow = MetalLookAndFeel.getControlDarkShadow();
+  private final Color controlDarkShadow = new Color(0x64_64_64);
+  // private Color controlHighlight = MetalLookAndFeel.getControlHighlight();
+  private final Color controlHighlight = new Color(0xC8_FF_C8);
+  // private Color controlShadow = MetalLookAndFeel.getControlShadow();
+  private final Color controlShadow = new Color(0x00_64_00);
 
   @Override public void paintTrack(Graphics g) {
     // Color trackColor = !slider.isEnabled() ? controlShadow : slider.getForeground();
