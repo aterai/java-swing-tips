@@ -65,8 +65,8 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderFooterComboPopup extends BasicComboPopup {
-  protected transient JLabel header;
-  protected transient JMenuItem footer;
+  private transient JLabel header;
+  private transient JMenuItem footer;
 
   // Java 8: protected HeaderFooterComboPopup(JComboBox<?> combo) {
   // Java 9: protected HeaderFooterComboPopup(JComboBox<Object> combo) {
