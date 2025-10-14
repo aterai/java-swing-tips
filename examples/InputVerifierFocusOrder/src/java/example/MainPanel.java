@@ -84,10 +84,9 @@ public final class MainPanel extends JPanel {
     });
     textField.addFocusListener(new FocusAdapter() {
       @Override public void focusLost(FocusEvent e) {
-        if (e.isTemporary()) {
-          return;
+        if (!e.isTemporary()) {
+          button.setEnabled(isAllValid());
         }
-        button.setEnabled(isAllValid());
       }
     });
     return textField;

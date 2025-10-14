@@ -113,14 +113,13 @@ class DnDTree extends JTree {
       // System.out.println("dragGestureRecognized");
       Point pt = e.getDragOrigin();
       TreePath path = getPathForLocation(pt.x, pt.y);
-      if (Objects.isNull(path) || Objects.isNull(path.getParentPath())) {
-        return;
+      if (Objects.nonNull(path) && Objects.nonNull(path.getParentPath())) {
+        // System.out.println("start " + path.toString());
+        draggedNode = (TreeNode) path.getLastPathComponent();
+        Transferable trans = new TreeNodeTransferable(draggedNode);
+        Cursor cursor = Cursor.getDefaultCursor();
+        DragSource.getDefaultDragSource().startDrag(e, cursor, trans, listener);
       }
-      // System.out.println("start " + path.toString());
-      draggedNode = (TreeNode) path.getLastPathComponent();
-      Transferable transferable = new TreeNodeTransferable(draggedNode);
-      Cursor cursor = Cursor.getDefaultCursor();
-      DragSource.getDefaultDragSource().startDrag(e, cursor, transferable, listener);
     }
   }
 

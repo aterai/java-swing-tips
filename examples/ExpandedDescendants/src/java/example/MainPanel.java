@@ -50,11 +50,10 @@ public final class MainPanel extends JPanel {
     JButton load = new JButton("Load");
     load.addActionListener(e -> {
       visitAll(tree, rootPath, false);
-      if (Objects.isNull(expandedState)) {
-        return;
+      if (Objects.nonNull(expandedState)) {
+        Collections.list(getExpandedState()).forEach(tree::expandPath);
+        setExpandedState(tree.getExpandedDescendants(rootPath));
       }
-      Collections.list(getExpandedState()).forEach(tree::expandPath);
-      setExpandedState(tree.getExpandedDescendants(rootPath));
     });
 
     JButton expand = new JButton("Expand");
