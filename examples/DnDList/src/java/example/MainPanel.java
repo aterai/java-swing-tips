@@ -152,15 +152,15 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
 
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
-    boolean oneOrMore = getSelectedIndices().length > 1;
+    boolean onlyOneSelected = getSelectedIndices().length == 1;
     draggedIndex = locationToIndex(e.getDragOrigin());
-    if (oneOrMore || draggedIndex < 0) {
-      return;
-    }
-    try {
-      e.startDrag(DragSource.DefaultMoveDrop, transferable, new ListDragSourceListener());
-    } catch (InvalidDnDOperationException ex) {
-      throw new IllegalStateException(ex);
+    if (onlyOneSelected && draggedIndex >= 0) {
+      ListDragSourceListener dsl = new ListDragSourceListener();
+      try {
+        e.startDrag(DragSource.DefaultMoveDrop, transferable, dsl);
+      } catch (InvalidDnDOperationException ex) {
+        throw new IllegalStateException(ex);
+      }
     }
   }
 
@@ -182,12 +182,11 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
     @Override public void dragOver(DropTargetDragEvent e) {
       if (isDragAcceptable(e)) {
         e.acceptDrag(e.getDropAction());
+        initTargetLine(e.getLocation());
+        repaint();
       } else {
         e.rejectDrag();
-        return;
       }
-      initTargetLine(e.getLocation());
-      repaint();
     }
 
     @Override public void dropActionChanged(DropTargetDragEvent e) {

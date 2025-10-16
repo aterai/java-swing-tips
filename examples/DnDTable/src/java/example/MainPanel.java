@@ -175,15 +175,14 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
 
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
-    boolean oneOrMore = getSelectedRowCount() > 1;
+    boolean onlyOneSelected = getSelectedRowCount() == 1;
     draggedIndex = rowAtPoint(e.getDragOrigin());
-    if (oneOrMore || draggedIndex < 0) {
-      return;
-    }
-    try {
-      e.startDrag(DragSource.DefaultMoveDrop, this, this);
-    } catch (InvalidDnDOperationException ex) {
-      throw new IllegalStateException(ex);
+    if (onlyOneSelected && draggedIndex >= 0) {
+      try {
+        e.startDrag(DragSource.DefaultMoveDrop, this, this);
+      } catch (InvalidDnDOperationException ex) {
+        throw new IllegalStateException(ex);
+      }
     }
   }
 
@@ -239,13 +238,12 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
       if (isDragAcceptable(e)) {
         e.acceptDrag(e.getDropAction());
         setCursor(DragSource.DefaultMoveDrop);
+        initTargetLine(e.getLocation());
+        repaint();
       } else {
         e.rejectDrag();
         setCursor(DragSource.DefaultMoveNoDrop);
-        return;
       }
-      initTargetLine(e.getLocation());
-      repaint();
     }
 
     @Override public void dropActionChanged(DropTargetDragEvent e) {
