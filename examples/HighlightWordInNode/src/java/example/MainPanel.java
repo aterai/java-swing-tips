@@ -69,16 +69,17 @@ public final class MainPanel extends JPanel {
   }
 
   private static void searchTree(JTree tree, TreePath path, String q) {
-    TreeNode node = (TreeNode) path.getLastPathComponent();
-    if (Objects.isNull(node)) {
-      return;
-    } else if (node.toString().startsWith(q)) {
-      tree.expandPath(path.getParentPath());
-    }
-    if (!node.isLeaf()) {
-      // Java 9: Collections.list(node.children())
-      Collections.list((Enumeration<?>) node.children())
-          .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
+    Object o = path.getLastPathComponent();
+    if (o instanceof TreeNode) {
+      TreeNode node = (TreeNode) o;
+      if (node.toString().startsWith(q)) {
+        tree.expandPath(path.getParentPath());
+      }
+      if (!node.isLeaf()) {
+        // Java 9: Collections.list(node.children())
+        Collections.list((Enumeration<?>) node.children())
+            .forEach(n -> searchTree(tree, path.pathByAddingChild(n), q));
+      }
     }
   }
 
