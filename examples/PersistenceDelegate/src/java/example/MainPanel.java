@@ -87,12 +87,11 @@ public final class MainPanel extends JPanel {
 
   private void decode(JTable table) {
     String text = log.getText();
-    if (text.isEmpty()) {
-      return;
-    }
-    try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
-      DefaultTableModel m = (DefaultTableModel) xd.readObject();
-      table.setModel(m);
+    if (!text.isEmpty()) {
+      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
+        DefaultTableModel m = (DefaultTableModel) xd.readObject();
+        table.setModel(m);
+      }
     }
   }
 
