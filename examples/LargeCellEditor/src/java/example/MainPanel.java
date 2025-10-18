@@ -145,9 +145,9 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 }
 
 class IconTable extends JTable {
-  protected static final int CELL_SIZE = 50;
-  protected final JList<IconItem> editor;
-  protected final JComponent glassPane;
+  private static final int CELL_SIZE = 50;
+  private final JList<IconItem> editor;
+  private final JComponent glassPane;
   private transient MouseListener handler;
 
   protected IconTable(TableModel model, JList<IconItem> editor) {
