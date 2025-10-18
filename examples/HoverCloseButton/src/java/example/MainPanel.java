@@ -68,18 +68,17 @@ class HoverCloseButtonTabbedPane extends JTabbedPane {
     hoverHandler = new MouseAdapter() {
       private int prev = -1;
       @Override public void mouseMoved(MouseEvent e) {
-        JTabbedPane source = (JTabbedPane) e.getComponent();
-        int focused = source.indexAtLocation(e.getX(), e.getY());
-        if (focused == prev) {
-          return;
-        }
-        for (int i = 0; i < source.getTabCount(); i++) {
-          Component c = source.getTabComponentAt(i);
-          if (c instanceof TabPanel) {
-            ((TabPanel) c).setButtonVisible(i == focused);
+        JTabbedPane src = (JTabbedPane) e.getComponent();
+        int focused = src.indexAtLocation(e.getX(), e.getY());
+        if (focused != prev) {
+          for (int i = 0; i < src.getTabCount(); i++) {
+            Component c = src.getTabComponentAt(i);
+            if (c instanceof TabPanel) {
+              ((TabPanel) c).setButtonVisible(i == focused);
+            }
           }
+          prev = focused;
         }
-        prev = focused;
       }
     };
     addMouseMotionListener(hoverHandler);

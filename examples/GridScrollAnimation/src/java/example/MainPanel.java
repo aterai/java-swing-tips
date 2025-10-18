@@ -121,30 +121,29 @@ class ScrollAction extends AbstractAction {
   }
 
   protected void start() {
-    if (scroller.isRunning()) {
-      return;
+    if (!scroller.isRunning()) {
+      JViewport viewport = scrollPane.getViewport();
+      JComponent v = (JComponent) viewport.getView();
+      int w = viewport.getWidth();
+      int h = viewport.getHeight();
+      int sx = viewport.getViewPosition().x;
+      int sy = viewport.getViewPosition().y;
+      Rectangle rect = new Rectangle(w, h);
+      scroller.removeActionListener(listener);
+      AtomicInteger counter = new AtomicInteger((int) SIZE);
+      listener = e -> {
+        double a = easeInOut(counter.getAndDecrement() / SIZE);
+        Point d = new Point((int) (w - a * w + .5), (int) (h - a * h + .5));
+        if (counter.get() <= 0) {
+          d.setLocation(w, h);
+          scroller.stop();
+        }
+        rect.setLocation(sx + vec.x * d.x, sy + vec.y * d.y);
+        v.scrollRectToVisible(rect);
+      };
+      scroller.addActionListener(listener);
+      scroller.start();
     }
-    JViewport viewport = scrollPane.getViewport();
-    JComponent v = (JComponent) viewport.getView();
-    int w = viewport.getWidth();
-    int h = viewport.getHeight();
-    int sx = viewport.getViewPosition().x;
-    int sy = viewport.getViewPosition().y;
-    Rectangle rect = new Rectangle(w, h);
-    scroller.removeActionListener(listener);
-    AtomicInteger counter = new AtomicInteger((int) SIZE);
-    listener = e -> {
-      double a = easeInOut(counter.getAndDecrement() / SIZE);
-      Point d = new Point((int) (w - a * w + .5), (int) (h - a * h + .5));
-      if (counter.get() <= 0) {
-        d.setLocation(w, h);
-        scroller.stop();
-      }
-      rect.setLocation(sx + vec.x * d.x, sy + vec.y * d.y);
-      v.scrollRectToVisible(rect);
-    };
-    scroller.addActionListener(listener);
-    scroller.start();
   }
 
   protected static double easeInOut(double t) {
