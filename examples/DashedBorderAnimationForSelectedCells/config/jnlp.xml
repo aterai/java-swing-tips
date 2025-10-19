@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST DashedBorderAnimationForSelectedCells" />
+  <property name="jnlp.Name"     value="DashedBorderAnimationForSelectedCells" />
+  <property name="jnlp.name"     value="dashedborderanimationforselectedcells" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/dashedborderanimationforselectedcells/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DashedBorderAnimationForSelectedCells.html" />
+</project>
