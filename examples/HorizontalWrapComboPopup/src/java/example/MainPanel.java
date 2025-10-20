@@ -173,20 +173,19 @@ class PopupMenuHandler implements PopupMenuListener {
     int columnCount = totalCount / rowCnt + (totalCount % rowCnt == 0 ? 0 : 1);
     int popupWidth = proto.getIconWidth() * columnCount + i.left + i.right;
     Dimension size = combo.getSize();
-    if (size.width >= popupWidth || adjusting.get()) {
-      return;
+    if (size.width < popupWidth && !adjusting.get()) {
+      adjusting.set(true);
+      combo.setSize(popupWidth, size.height);
+      combo.showPopup();
+      // // Java 8
+      // combo.setSize(size);
+      // adjusting.set(false);
+      // Java 21
+      EventQueue.invokeLater(() -> {
+        combo.setSize(size);
+        adjusting.set(false);
+      });
     }
-    adjusting.set(true);
-    combo.setSize(popupWidth, size.height);
-    combo.showPopup();
-    // // Java 8
-    // combo.setSize(size);
-    // adjusting.set(false);
-    // Java 21
-    EventQueue.invokeLater(() -> {
-      combo.setSize(size);
-      adjusting.set(false);
-    });
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

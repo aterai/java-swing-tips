@@ -42,42 +42,40 @@ public final class MainPanel extends JPanel {
 
   private static <E> void upItems(JList<E> list, DefaultListModel<E> m, ActionEvent e) {
     int[] pos = list.getSelectedIndices();
-    if (pos.length == 0) {
-      return;
+    if (pos.length > 0) {
+      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+      int index0 = isShiftDown ? 0 : Math.max(0, pos[0] - 1);
+      int idx = index0;
+      for (int i : pos) {
+        m.add(idx, m.remove(i));
+        list.addSelectionInterval(idx, idx);
+        idx++;
+      }
+      Rectangle r = list.getCellBounds(index0, index0 + pos.length);
+      list.scrollRectToVisible(r);
     }
-    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-    int index0 = isShiftDown ? 0 : Math.max(0, pos[0] - 1);
-    int idx = index0;
-    for (int i : pos) {
-      m.add(idx, m.remove(i));
-      list.addSelectionInterval(idx, idx);
-      idx++;
-    }
-    Rectangle r = list.getCellBounds(index0, index0 + pos.length);
-    list.scrollRectToVisible(r);
   }
 
   private static <E> void downItems(JList<E> list, DefaultListModel<E> m, ActionEvent e) {
     int[] pos = list.getSelectedIndices();
-    if (pos.length == 0) {
-      return;
+    if (pos.length > 0) {
+      boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
+      int max = m.getSize();
+      int index = isShiftDown ? max : Math.min(max, pos[pos.length - 1] + 1);
+      int index0 = index;
+      // copy
+      for (int i : pos) {
+        int idx = Math.min(m.getSize(), ++index);
+        m.add(idx, m.get(i));
+        list.addSelectionInterval(idx, idx);
+      }
+      // clean
+      for (int i = pos.length - 1; i >= 0; i--) {
+        m.remove(pos[i]);
+      }
+      Rectangle r = list.getCellBounds(index0 - pos.length, index0);
+      list.scrollRectToVisible(r);
     }
-    boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-    int max = m.getSize();
-    int index = isShiftDown ? max : Math.min(max, pos[pos.length - 1] + 1);
-    int index0 = index;
-    // copy
-    for (int i : pos) {
-      int idx = Math.min(m.getSize(), ++index);
-      m.add(idx, m.get(i));
-      list.addSelectionInterval(idx, idx);
-    }
-    // clean
-    for (int i = pos.length - 1; i >= 0; i--) {
-      m.remove(pos[i]);
-    }
-    Rectangle r = list.getCellBounds(index0 - pos.length, index0);
-    list.scrollRectToVisible(r);
   }
 
   private static DefaultListModel<Color> makeModel() {
@@ -135,7 +133,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java? Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
