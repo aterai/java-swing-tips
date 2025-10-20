@@ -131,25 +131,26 @@ public final class MainPanel extends JPanel {
 }
 
 class RoundButton extends JButton {
-  protected transient Shape shape;
-  protected transient Shape base;
+  private transient Shape shape;
+  private transient Shape base;
+
   // protected RoundButton() {
   //   super();
   // }
-  //
+
   // protected RoundButton(Icon icon) {
   //   super(icon);
   // }
-  //
+
   // protected RoundButton(String text) {
   //   super(text);
   // }
-  //
+
   // protected RoundButton(Action a) {
   //   super(a);
   //   // setAction(a);
   // }
-  //
+
   // protected RoundButton(String text, Icon icon) {
   //   super(text, icon);
   //   // setModel(new DefaultButtonModel());
