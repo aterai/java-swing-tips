@@ -111,16 +111,15 @@ class ReorderableList<E extends ListItem> extends JList<E> {
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if (getDragEnabled()) {
-      return;
+    if (!getDragEnabled()) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(getSelectionBackground());
+      g2.draw(rubberBand);
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f));
+      g2.setPaint(rubberBandColor);
+      g2.fill(rubberBand);
+      g2.dispose();
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(getSelectionBackground());
-    g2.draw(rubberBand);
-    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .1f));
-    g2.setPaint(rubberBandColor);
-    g2.fill(rubberBand);
-    g2.dispose();
   }
 
   private static Color makeRubberBandColor(Color c) {
@@ -145,23 +144,22 @@ class ReorderableList<E extends ListItem> extends JList<E> {
 
     @Override public void mouseDragged(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
-      if (l.getDragEnabled()) {
-        return;
-      }
-      Point dstPoint = e.getPoint();
-      Path2D rb = getRubberBand();
-      rb.reset();
-      rb.moveTo(srcPoint.x, srcPoint.y);
-      rb.lineTo(dstPoint.x, srcPoint.y);
-      rb.lineTo(dstPoint.x, dstPoint.y);
-      rb.lineTo(srcPoint.x, dstPoint.y);
-      rb.closePath();
+      if (!l.getDragEnabled()) {
+        Point dstPoint = e.getPoint();
+        Path2D rb = getRubberBand();
+        rb.reset();
+        rb.moveTo(srcPoint.x, srcPoint.y);
+        rb.lineTo(dstPoint.x, srcPoint.y);
+        rb.lineTo(dstPoint.x, dstPoint.y);
+        rb.lineTo(srcPoint.x, dstPoint.y);
+        rb.closePath();
 
-      // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-      int[] indices = IntStream.range(0, l.getModel().getSize())
-          .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
-      l.setSelectedIndices(indices);
-      l.repaint();
+        // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+        int[] indices = IntStream.range(0, l.getModel().getSize())
+            .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
+        l.setSelectedIndices(indices);
+        l.repaint();
+      }
     }
 
     @Override public void mouseReleased(MouseEvent e) {
