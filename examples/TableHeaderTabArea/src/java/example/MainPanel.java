@@ -50,8 +50,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TableHeaderTabbedPane extends JPanel {
-  protected transient Object selectedColumn;
-  protected int rolloverColumn = -1;
+  private transient Object selectedColumn;
+  private int rolloverColumn = -1;
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel contentsPanel = new JPanel(cardLayout);
   private final JTable table = new JTable(0, 0);
