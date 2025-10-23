@@ -24,13 +24,12 @@ public final class MainPanel extends JPanel {
     JCheckBox check2 = new JCheckBox("ClearSelectionOnSort", false);
     table.getTableHeader().addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        if (!check2.isSelected()) {
-          return;
+        if (check2.isSelected()) {
+          if (table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+          }
+          table.clearSelection();
         }
-        if (table.isEditing()) {
-          table.getCellEditor().stopCellEditing();
-        }
-        table.clearSelection();
       }
     });
 

@@ -22,10 +22,9 @@ public final class MainPanel extends JPanel {
     desktop.setDesktopManager(new ReIconifyDesktopManager());
     desktop.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
-        if (!check.isSelected()) {
-          return;
+        if (check.isSelected()) {
+          doReIconify((JDesktopPane) e.getComponent());
         }
-        doReIconify((JDesktopPane) e.getComponent());
       }
     });
 

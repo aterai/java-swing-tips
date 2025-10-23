@@ -136,27 +136,26 @@ final class DocumentUtils {
     String pattern = field.getText().trim();
     Highlighter highlighter = editor.getHighlighter();
     highlighter.removeAllHighlights();
-    if (pattern.isEmpty()) {
-      return;
-    }
-    Document doc = editor.getDocument();
-    try {
-      String text = doc.getText(0, doc.getLength());
-      Matcher matcher = Pattern.compile(pattern).matcher(text);
-      HighlightPainter highlightPainter = new RoundedHighlightPainter();
-      int pos = 0;
-      while (matcher.find(pos) && !matcher.group().isEmpty()) {
-        int start = matcher.start();
-        int end = matcher.end();
-        highlighter.addHighlight(start, end, highlightPainter);
-        pos = end;
+    if (!pattern.isEmpty()) {
+      Document doc = editor.getDocument();
+      try {
+        String text = doc.getText(0, doc.getLength());
+        Matcher matcher = Pattern.compile(pattern).matcher(text);
+        HighlightPainter highlightPainter = new RoundedHighlightPainter();
+        int pos = 0;
+        while (matcher.find(pos) && !matcher.group().isEmpty()) {
+          int start = matcher.start();
+          int end = matcher.end();
+          highlighter.addHighlight(start, end, highlightPainter);
+          pos = end;
+        }
+      } catch (BadLocationException | PatternSyntaxException ex) {
+        UIManager.getLookAndFeel().provideErrorFeedback(field);
+        field.setBackground(WARNING_COLOR);
       }
-    } catch (BadLocationException | PatternSyntaxException ex) {
-      UIManager.getLookAndFeel().provideErrorFeedback(field);
-      field.setBackground(WARNING_COLOR);
+      field.repaint();
+      editor.repaint();
     }
-    field.repaint();
-    editor.repaint();
   }
 }
 
