@@ -480,12 +480,11 @@ public final class TableSorter extends AbstractTableModel {
     // }
 
     private void loadSelectedRow(JTable table, List<?> list, int keyColIndex) {
-      if (list == null || list.isEmpty()) {
-        return;
-      }
-      for (int i = 0; i < tableModel.getRowCount(); i++) {
-        if (list.contains(tableModel.getValueAt(modelIndex(i), keyColIndex))) {
-          table.getSelectionModel().addSelectionInterval(i, i);
+      if (list != null && !list.isEmpty()) {
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+          if (list.contains(tableModel.getValueAt(modelIndex(i), keyColIndex))) {
+            table.getSelectionModel().addSelectionInterval(i, i);
+          }
         }
       }
     }

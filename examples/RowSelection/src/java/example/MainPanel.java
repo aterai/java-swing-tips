@@ -23,14 +23,13 @@ public final class MainPanel extends JPanel {
     table.setAutoCreateRowSorter(true);
     // table.setRowSorter(new TableRowSorter<>(model));
     table.getSelectionModel().addListSelectionListener(e -> {
-      if (e.getValueIsAdjusting()) {
-        return;
+      if (!e.getValueIsAdjusting()) {
+        label.setText(table.getSelectedRowCount() == 1 ? getInfo(table) : " ");
+        infoPanel.setVisible(false);
+        infoPanel.removeAll();
+        infoPanel.add(label);
+        infoPanel.setVisible(true);
       }
-      label.setText(table.getSelectedRowCount() == 1 ? getInfo(table) : " ");
-      infoPanel.setVisible(false);
-      infoPanel.removeAll();
-      infoPanel.add(label);
-      infoPanel.setVisible(true);
     });
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

@@ -135,21 +135,20 @@ class DragHandler extends MouseAdapter {
 
   @SuppressWarnings("PMD.NullAssignment")
   @Override public void mouseReleased(MouseEvent e) {
-    if (!window.isVisible() || Objects.isNull(draggingComponent)) {
-      return;
+    if (window.isVisible() && Objects.nonNull(draggingComponent)) {
+      Point pt = e.getPoint();
+      Container parent = (Container) e.getComponent();
+      int max = parent.getComponentCount();
+      Component cmp = draggingComponent;
+      draggingComponent = null;
+      window.setVisible(false);
+      int idx = IntStream.range(0, max)
+          .map(i -> getTargetIndex(parent, i, pt))
+          .filter(i -> i >= 0)
+          .findFirst()
+          .orElseGet(() -> parent.getBounds().contains(pt) ? max : index);
+      swapComponent(parent, gap, cmp, idx);
     }
-    Point pt = e.getPoint();
-    Container parent = (Container) e.getComponent();
-    int max = parent.getComponentCount();
-    Component cmp = draggingComponent;
-    draggingComponent = null;
-    window.setVisible(false);
-    int idx = IntStream.range(0, max)
-        .map(i -> getTargetIndex(parent, i, pt))
-        .filter(i -> i >= 0)
-        .findFirst()
-        .orElseGet(() -> parent.getBounds().contains(pt) ? max : index);
-    swapComponent(parent, gap, cmp, idx);
   }
 
   private int getTargetIndex(Container parent, int i, Point pt) {
