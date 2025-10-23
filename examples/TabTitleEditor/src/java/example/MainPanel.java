@@ -72,13 +72,13 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
   protected static final String START = "start-editing";
   protected static final String CANCEL = "cancel-editing";
   protected static final String RENAME = "rename-tab-title";
-  protected final JTextField editor = new JTextField();
-  protected final JTabbedPane tabbedPane;
-  protected int editingIdx = -1;
-  protected int len = -1;
-  protected Dimension dim;
-  protected Component tabComponent;
-  protected final Action startEditing = new AbstractAction() {
+  private final JTextField editor = new JTextField();
+  private final JTabbedPane tabbedPane;
+  private int editingIdx = -1;
+  private int len = -1;
+  private Dimension dim;
+  private Component tabComponent;
+  private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       editingIdx = tabbedPane.getSelectedIndex();
       tabComponent = tabbedPane.getTabComponentAt(editingIdx);
@@ -92,7 +92,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
       editor.setMinimumSize(dim);
     }
   };
-  protected final Action renameTabTitle = new AbstractAction() {
+  private final Action renameTabTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       String title = editor.getText().trim();
       if (editingIdx >= 0 && !title.isEmpty()) {
@@ -102,7 +102,7 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
       cancelEditing.actionPerformed(a);
     }
   };
-  protected final Action cancelEditing = new AbstractAction() {
+  private final Action cancelEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       if (editingIdx >= 0) {
         tabbedPane.setTabComponentAt(editingIdx, tabComponent);
