@@ -229,7 +229,9 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    JTable table = getTable(c);
+    if (table == null) {
+      table = getTable(c);
+    }
     int cc = table.getSelectedColumnCount();
     int rc = table.getSelectedRowCount();
     if (cc != 0 && rc != 0 && !table.isEditing()) {
