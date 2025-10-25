@@ -385,11 +385,11 @@ class EditableList<E extends ListItem> extends JList<E> {
 
     @Override public void mousePressed(MouseEvent e) {
       JList<?> list = (JList<?>) e.getComponent();
-      startOutside = !contains(list, e.getPoint());
+      setStartOutside(!contains(list, e.getPoint()));
       if (window != null && window.isVisible() && editingIndex >= 0) {
         ActionEvent ev = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, "");
         renameTitle.actionPerformed(ev);
-      } else if (startOutside) {
+      } else if (isStartOutside()) {
         clearSelectionAndFocus(list);
       }
     }
@@ -397,7 +397,7 @@ class EditableList<E extends ListItem> extends JList<E> {
 }
 
 class EditingMouseAdapter extends MouseAdapter {
-  protected boolean startOutside;
+  private boolean startOutside;
 
   @Override public void mouseReleased(MouseEvent e) {
     startOutside = false;
@@ -410,6 +410,14 @@ class EditingMouseAdapter extends MouseAdapter {
     } else if (startOutside) {
       clearSelectionAndFocus(list);
     }
+  }
+
+  protected boolean isStartOutside() {
+    return startOutside;
+  }
+
+  protected void setStartOutside(boolean outside) {
+    startOutside = outside;
   }
 
   protected boolean isStartEditingEvent(MouseEvent e, Dimension dim) {
