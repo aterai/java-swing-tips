@@ -128,19 +128,19 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public static void addItem(JComboBox<String> dirCombo, String str, int max) {
-    if (Objects.isNull(str) || str.isEmpty()) {
-      return;
+  public static void addItem(JComboBox<String> combo, String str, int max) {
+    ComboBoxModel<String> m = combo.getModel();
+    if (str != null && !str.isEmpty() && m instanceof DefaultComboBoxModel) {
+      DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) m;
+      combo.setVisible(false);
+      model.removeElement(str);
+      model.insertElementAt(str, 0);
+      if (model.getSize() > max) {
+        model.removeElementAt(max);
+      }
+      combo.setSelectedIndex(0);
+      combo.setVisible(true);
     }
-    dirCombo.setVisible(false);
-    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) dirCombo.getModel();
-    model.removeElement(str);
-    model.insertElementAt(str, 0);
-    if (model.getSize() > max) {
-      model.removeElementAt(max);
-    }
-    dirCombo.setSelectedIndex(0);
-    dirCombo.setVisible(true);
   }
 
   public void executeWorker(File dir) {
@@ -154,13 +154,13 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        if (!isDisplayable()) {
+        if (isDisplayable()) {
+          updateComponentStatus(false);
+          appendLine("----------------");
+          appendLine(getDoneMessage());
+        } else {
           cancel(true);
-          return;
         }
-        updateComponentStatus(false);
-        appendLine("----------------");
-        appendLine(getDoneMessage());
       }
     };
     worker.addPropertyChangeListener(new ProgressListener(progress));

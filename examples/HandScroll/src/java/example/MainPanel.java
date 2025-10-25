@@ -58,10 +58,9 @@ public final class MainPanel extends JPanel {
       private static final boolean WEIGHT_MIXING = false;
 
       @Override public void revalidate() {
-        if (!WEIGHT_MIXING && isAdjusting.get()) {
-          return;
+        if (WEIGHT_MIXING || !isAdjusting.get()) {
+          super.revalidate();
         }
-        super.revalidate();
       }
 
       @Override public void setViewPosition(Point p) {
