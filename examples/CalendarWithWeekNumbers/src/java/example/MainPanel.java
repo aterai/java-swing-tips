@@ -356,7 +356,6 @@ final class CalendarUtils {
     return txt;
   }
 
-
   public static String find(String str, Pattern ptn) {
     Matcher matcher = ptn.matcher(str);
     return matcher.find() ? matcher.group(1) : "";
