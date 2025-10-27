@@ -69,10 +69,9 @@ public final class MainPanel extends JPanel {
 
   private static void createChildren(File parent, DefaultMutableTreeNode node) {
     File[] list = parent.listFiles();
-    if (list == null) {
-      return;
+    if (list != null) {
+      Arrays.asList(list).forEach(file -> addFileNode(node, file));
     }
-    Arrays.asList(list).forEach(file -> addFileNode(node, file));
   }
 
   private static void addFileNode(DefaultMutableTreeNode node, File file) {
