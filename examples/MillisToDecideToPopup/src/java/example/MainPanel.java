@@ -73,14 +73,14 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        if (!isDisplayable()) {
+        if (isDisplayable()) {
+          button.setEnabled(true);
+          monitor.close();
+          area.append(getDoneMessage() + "\n");
+          area.setCaretPosition(area.getDocument().getLength());
+        } else {
           cancel(true);
-          return;
         }
-        button.setEnabled(true);
-        monitor.close();
-        area.append(getDoneMessage() + "\n");
-        area.setCaretPosition(area.getDocument().getLength());
       }
     };
     worker.addPropertyChangeListener(new ProgressListener(monitor));

@@ -70,15 +70,15 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        if (!isDisplayable()) {
+        if (isDisplayable()) {
+          if (!tracker.isErrorID(id)) {
+            Container c = MainPanel.this;
+            model.addRowData(new RowData(id, path, img.getWidth(c), img.getHeight(c)));
+          }
+          tracker.removeImage(img);
+        } else {
           cancel(true);
-          return;
         }
-        if (!tracker.isErrorID(id)) {
-          Container c = MainPanel.this;
-          model.addRowData(new RowData(id, path, img.getWidth(c), img.getHeight(c)));
-        }
-        tracker.removeImage(img);
       }
     }.execute();
   }
@@ -87,9 +87,9 @@ public final class MainPanel extends JPanel {
     @Override public void dragOver(DropTargetDragEvent e) {
       if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
         e.acceptDrag(DnDConstants.ACTION_COPY);
-        return;
+      } else {
+        e.rejectDrag();
       }
-      e.rejectDrag();
     }
 
     @Override public void drop(DropTargetDropEvent e) {
