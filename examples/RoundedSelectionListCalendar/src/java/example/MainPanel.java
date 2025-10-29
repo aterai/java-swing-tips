@@ -62,6 +62,11 @@ public final class MainPanel extends JPanel {
         setColumnHeaderView(new WeekHeaderList());
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        EventQueue.invokeLater(() -> {
+          Container p = SwingUtilities.getUnwrappedParent(this);
+          p.revalidate();
+          p.repaint();
+        });
       }
     };
     box.add(scroll);
@@ -248,7 +253,7 @@ class MonthList extends JList<LocalDate> {
       } else {
         fgc = Color.GRAY;
       }
-      c.setForeground(isSelected ? Color.WHITE : fgc);
+      c.setForeground(isSelected ? c.getForeground() : fgc);
       return c;
     }
   }
@@ -264,10 +269,11 @@ class WeekHeaderList extends JList<DayOfWeek> {
   @Override public void updateUI() {
     setCellRenderer(null);
     super.updateUI();
+    Color bgc = UIManager.getColor("TableHeader.background").darker();
     ListCellRenderer<? super DayOfWeek> r = getCellRenderer();
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(list, value, index, false, false);
-      c.setBackground(new Color(0xDC_DC_DC));
+      c.setBackground(bgc);
       if (c instanceof JLabel) {
         JLabel l = (JLabel) c;
         l.setHorizontalAlignment(SwingConstants.CENTER);
