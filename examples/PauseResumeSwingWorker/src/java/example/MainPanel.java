@@ -76,12 +76,12 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void done() {
-      if (!isDisplayable()) {
+      if (isDisplayable()) {
+        updateButtonsAndStatusPanel(false);
+        appendLine(String.format("%n%s%n", getDoneMessage()));
+      } else {
         cancel(true);
-        return;
       }
-      updateButtonsAndStatusPanel(false);
-      appendLine(String.format("%n%s%n", getDoneMessage()));
     }
   }
 
