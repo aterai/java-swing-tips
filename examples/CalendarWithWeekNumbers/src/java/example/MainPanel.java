@@ -60,11 +60,17 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         setColumnHeaderView(new WeekHeaderList());
+        setRowHeaderView(weekNumberList);
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        EventQueue.invokeLater(() -> {
+          Container p = SwingUtilities.getUnwrappedParent(this);
+          p.revalidate();
+          p.repaint();
+        });
       }
     };
-    scroll.setRowHeaderView(weekNumberList);
+    // scroll.setRowHeaderView(weekNumberList);
     box.add(scroll);
     add(box);
     setPreferredSize(new Dimension(320, 240));
@@ -222,9 +228,7 @@ class MonthList extends JList<LocalDate> {
 }
 
 class WeekHeaderList extends JList<DayOfWeek> {
-  public static final Dimension CELL_SIZE = new Dimension(36, 26);
-  public static final Color BACKGROUND = new Color(0xDC_DC_DC);
-  // public static final Color BACKGROUND = UIManager.getColor("TableHeader.background");
+  public static final Dimension CELL_SIZE = new Dimension(38, 26);
 
   protected WeekHeaderList() {
     super(makeDayOfWeekListModel());
@@ -233,10 +237,11 @@ class WeekHeaderList extends JList<DayOfWeek> {
   @Override public void updateUI() {
     setCellRenderer(null);
     super.updateUI();
+    Color bgc = UIManager.getColor("TableHeader.background").darker();
     ListCellRenderer<? super DayOfWeek> r = getCellRenderer();
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(list, value, index, false, false);
-      c.setBackground(BACKGROUND);
+      c.setBackground(bgc);
       if (c instanceof JLabel) {
         JLabel l = (JLabel) c;
         l.setHorizontalAlignment(SwingConstants.CENTER);
@@ -290,10 +295,11 @@ class WeekNumberList extends JList<Integer> {
     setFixedCellWidth(WeekHeaderList.CELL_SIZE.width);
     setFixedCellHeight(WeekHeaderList.CELL_SIZE.height);
     setFocusable(false);
+    Color bgc = UIManager.getColor("TableHeader.background").darker();
     ListCellRenderer<? super Integer> r = getCellRenderer();
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(list, value, index, false, false);
-      c.setBackground(WeekHeaderList.BACKGROUND);
+      c.setBackground(bgc);
       if (c instanceof JLabel) {
         JLabel l = (JLabel) c;
         l.setHorizontalAlignment(SwingConstants.CENTER);
