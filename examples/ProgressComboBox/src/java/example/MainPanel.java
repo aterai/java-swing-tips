@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
           index < 0 && isWorking()
               ? bar
               : renderer.getListCellRendererComponent(
-                  list, value, index, isSelected, cellHasFocus));
+              list, value, index, isSelected, cellHasFocus));
     }
   };
   private final JButton button = new JButton("load");
@@ -65,23 +65,23 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void done() {
-      if (!isDisplayable()) {
+      if (isDisplayable()) {
+        try {
+          if (!isCancelled()) {
+            String[] array = get();
+            combo.setModel(new DefaultComboBoxModel<>(array));
+            combo.setSelectedIndex(0);
+          }
+        } catch (InterruptedException | ExecutionException ex) {
+          // System.out.println("Interrupted");
+          Thread.currentThread().interrupt();
+        }
+        combo.setEnabled(true);
+        button.setEnabled(true);
+      } else {
         // System.out.println("done: DISPOSE_ON_CLOSE");
         cancel(true);
-        return;
       }
-      try {
-        if (!isCancelled()) {
-          String[] array = get();
-          combo.setModel(new DefaultComboBoxModel<>(array));
-          combo.setSelectedIndex(0);
-        }
-      } catch (InterruptedException | ExecutionException ex) {
-        // System.out.println("Interrupted");
-        Thread.currentThread().interrupt();
-      }
-      combo.setEnabled(true);
-      button.setEnabled(true);
     }
   }
 

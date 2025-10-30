@@ -193,25 +193,24 @@ class BadgeIcon implements Icon {
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (value <= 0) {
-      return;
-    }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.translate(x, y);
-    Shape badge = getBadgeShape();
-    g2.setPaint(badgeBgc);
-    g2.fill(badge);
-    g2.setPaint(badgeBgc.darker());
-    g2.draw(badge);
+    if (value > 0) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.translate(x, y);
+      Shape badge = getBadgeShape();
+      g2.setPaint(badgeBgc);
+      g2.fill(badge);
+      g2.setPaint(badgeBgc.darker());
+      g2.draw(badge);
 
-    g2.setPaint(badgeFgc);
-    Shape shape = getTextShape(g2);
-    Rectangle2D b = shape.getBounds2D();
-    double tx = getIconWidth() / 2d - b.getCenterX();
-    double ty = getIconHeight() / 2d - b.getCenterY();
-    AffineTransform toCenterAt = AffineTransform.getTranslateInstance(tx, ty);
-    g2.fill(toCenterAt.createTransformedShape(shape));
-    g2.dispose();
+      g2.setPaint(badgeFgc);
+      Shape shape = getTextShape(g2);
+      Rectangle2D b = shape.getBounds2D();
+      double tx = getIconWidth() / 2d - b.getCenterX();
+      double ty = getIconHeight() / 2d - b.getCenterY();
+      AffineTransform toCenterAt = AffineTransform.getTranslateInstance(tx, ty);
+      g2.fill(toCenterAt.createTransformedShape(shape));
+      g2.dispose();
+    }
   }
 
   @Override public int getIconWidth() {
