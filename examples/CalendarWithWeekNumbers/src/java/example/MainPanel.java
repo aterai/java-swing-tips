@@ -141,7 +141,7 @@ public final class MainPanel extends JPanel {
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
     String txt = localDate.format(fmt.withLocale(locale));
-    yearMonthLabel.setText(CalendarUtils.getLocalizedYearMonthSeparator(txt));
+    yearMonthLabel.setText(CalendarUtils.getLocalizedYearMonthText(txt));
     monthList.setCurrentLocalDate(localDate);
     weekNumberList.setModel(new WeekNumberListModel(localDate));
   }
@@ -348,7 +348,7 @@ final class CalendarUtils {
     return DateTimeFormatter.ofPattern(pattern);
   }
 
-  public static String getLocalizedYearMonthSeparator(String str) {
+  public static String getLocalizedYearMonthText(String str) {
     String[] list = str.split(" ");
     String txt;
     boolean isNumeric = Arrays.stream(list)

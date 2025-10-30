@@ -90,8 +90,9 @@ public final class MainPanel extends JPanel {
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
     Locale locale = Locale.getDefault();
-    DateTimeFormatter formatter = CalendarUtils.getLocalizedYearMonthFormatter(locale);
-    monthLabel.setText(localDate.format(formatter.withLocale(locale)));
+    DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
+    String txt = localDate.format(fmt.withLocale(locale));
+    monthLabel.setText(CalendarUtils.getLocalizedYearMonthText(txt));
     monthTable.setModel(new CalendarViewTableModel(localDate));
   }
 
@@ -200,8 +201,22 @@ final class CalendarUtils {
     String localizedPattern = getLocalizedPattern(locale);
     String year = find(localizedPattern, Pattern.compile("(y+)"));
     String month = find(localizedPattern, Pattern.compile("(M+)"));
-    String pattern = isYearFirst(locale) ? year + " / " + month : month + " / " + year;
+    String pattern = isYearFirst(locale) ? year + " " + month : month + " " + year;
     return DateTimeFormatter.ofPattern(pattern);
+  }
+
+  public static String getLocalizedYearMonthText(String str) {
+    String[] list = str.split(" ");
+    String txt;
+    boolean isNumeric = Arrays.stream(list)
+        .flatMapToInt(String::chars)
+        .allMatch(Character::isDigit);
+    if (isNumeric) {
+      txt = list[0] + " / " + list[1];
+    } else {
+      txt = str;
+    }
+    return txt;
   }
 
   public static String find(String str, Pattern ptn) {
