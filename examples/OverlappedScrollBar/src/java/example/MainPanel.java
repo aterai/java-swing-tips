@@ -137,23 +137,27 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
   }
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
-    JScrollBar sb = (JScrollBar) c;
+    if (!r.isEmpty() && c.isEnabled()) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setPaint(getThumbColor());
+      g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
+      g2.setPaint(Color.WHITE);
+      g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+      g2.dispose();
+    }
+  }
+
+  private Color getThumbColor() {
     Color color;
-    if (r.isEmpty() || !sb.isEnabled()) {
-      return;
-    } else if (isDragging) {
+    if (isDragging) {
       color = DRAGGING_COLOR;
     } else if (isThumbRollover()) {
       color = ROLLOVER_COLOR;
     } else {
       color = DEFAULT_COLOR;
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(color);
-    g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
-    g2.setPaint(Color.WHITE);
-    g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
-    g2.dispose();
+    return color;
   }
 }
