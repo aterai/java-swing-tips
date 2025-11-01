@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ColorUIResource;
@@ -84,25 +85,28 @@ class TabSelectionListener implements ChangeListener {
 
   @Override public void stateChanged(ChangeEvent e) {
     JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-    if (tabbedPane.getTabCount() <= 0) {
-      return;
-    }
-    int idx = tabbedPane.getSelectedIndex();
-    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-      Component tab = tabbedPane.getTabComponentAt(i);
-      if (tab instanceof JComponent) {
-        Color color;
-        if (i == idx) {
-          color = SELECTION_COLOR;
-        } else if (i == prev) {
-          color = PREV_COLOR;
-        } else {
-          color = ALPHA_ZERO;
+    if (tabbedPane.getTabCount() > 0) {
+      int idx = tabbedPane.getSelectedIndex();
+      for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+        Component tab = tabbedPane.getTabComponentAt(i);
+        if (tab instanceof JComponent) {
+          ((JComponent) tab).setBorder(getBorder(i, idx));
         }
-        ((JComponent) tab).setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, color));
       }
+      prev = idx;
     }
-    prev = idx;
+  }
+
+  private Border getBorder(int idx, int selectedIdx) {
+    Color color;
+    if (idx == selectedIdx) {
+      color = SELECTION_COLOR;
+    } else if (idx == prev) {
+      color = PREV_COLOR;
+    } else {
+      color = ALPHA_ZERO;
+    }
+    return BorderFactory.createMatteBorder(3, 0, 0, 0, color);
   }
 }
 

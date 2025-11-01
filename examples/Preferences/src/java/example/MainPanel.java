@@ -133,10 +133,9 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
     Frame frame = (Frame) e.getComponent();
     if (frame.getExtendedState() == Frame.NORMAL) {
       Point pt = frame.getLocationOnScreen();
-      if (pt.x < 0 || pt.y < 0) {
-        return;
+      if (pt.x >= 0 && pt.y >= 0) {
+        pos.setLocation(pt);
       }
-      pos.setLocation(pt);
     }
   }
 
