@@ -163,11 +163,8 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;
-        if (node.getStatus() == Status.INDETERMINATE) {
-          checkBox.setIcon(new IndeterminateIcon());
-        } else {
-          checkBox.setIcon(null);
-        }
+        boolean indeterminate = node.getStatus() == Status.INDETERMINATE;
+        checkBox.setIcon(indeterminate ? new IndeterminateIcon() : null);
         l.setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
       }
@@ -210,11 +207,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
         CheckBoxNode node = (CheckBoxNode) userObject;
-        if (node.getStatus() == Status.INDETERMINATE) {
-          checkBox.setIcon(new IndeterminateIcon());
-        } else {
-          checkBox.setIcon(null);
-        }
+        boolean indeterminate = node.getStatus() == Status.INDETERMINATE;
+        checkBox.setIcon(indeterminate ? new IndeterminateIcon() : null);
         ((JLabel) c).setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
         str = node.getLabel();

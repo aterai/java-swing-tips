@@ -126,18 +126,22 @@ class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Color color;
-        if (isDragging) {
-          color = thumbDarkShadowColor;
-        } else if (isThumbRollover()) {
-          color = thumbLightShadowColor;
-        } else {
-          color = thumbColor;
-        }
-        g2.setPaint(color);
+        g2.setPaint(getThumbColor());
         g2.fillRect(r.x + 1, r.y + 1, r.width - 2, r.height - 2);
         g2.dispose();
       }
     }
+  }
+
+  private Color getThumbColor() {
+    Color color;
+    if (isDragging) {
+      color = thumbDarkShadowColor;
+    } else if (isThumbRollover()) {
+      color = thumbLightShadowColor;
+    } else {
+      color = thumbColor;
+    }
+    return color;
   }
 }

@@ -419,25 +419,27 @@ class WithoutArrowButtonScrollBarUI extends BasicScrollBarUI {
   }
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
-    JScrollBar sb = (JScrollBar) c;
-    if (!sb.isEnabled()) {
-      return;
-    }
-    BoundedRangeModel m = sb.getModel();
-    if (m.getMaximum() - m.getMinimum() - m.getExtent() > 0) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      Color color;
-      if (isDragging) {
-        color = thumbDarkShadowColor;
-      } else if (isThumbRollover()) {
-        color = thumbLightShadowColor;
-      } else {
-        color = thumbColor;
+    if (c instanceof JScrollBar && c.isEnabled()) {
+      BoundedRangeModel m = ((JScrollBar) c).getModel();
+      if (m.getMaximum() - m.getMinimum() - m.getExtent() > 0) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setPaint(getThumbColor());
+        g2.fillRoundRect(r.x + 1, r.y + 1, r.width - 2, r.height - 2, 10, 10);
+        g2.dispose();
       }
-      g2.setPaint(color);
-      g2.fillRoundRect(r.x + 1, r.y + 1, r.width - 2, r.height - 2, 10, 10);
-      g2.dispose();
     }
+  }
+
+  private Color getThumbColor() {
+    Color color;
+    if (isDragging) {
+      color = thumbDarkShadowColor;
+    } else if (isThumbRollover()) {
+      color = thumbLightShadowColor;
+    } else {
+      color = thumbColor;
+    }
+    return color;
   }
 }
