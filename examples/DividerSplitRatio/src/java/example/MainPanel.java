@@ -81,16 +81,21 @@ class SplitPaneWrapper extends JPanel {
         EventQueue.invokeLater(() -> {
           int s = getOrientedSize(splitPane);
           int iv = Math.round(s * proportionalLoc);
-          Component c = SwingUtilities.getDeepestComponentAt(splitPane.getTopComponent(), 8, 8);
-          if (c instanceof JTextArea) {
-            ((JTextArea) c).append(String.format("DividerLocation: %d%n", iv));
-          }
+          debugInfo(splitPane, iv);
           splitPane.setDividerLocation(iv);
         });
         prevState = state;
       }
     } else {
       super.doLayout();
+    }
+  }
+
+  private static void debugInfo(JSplitPane splitPane, int iv) {
+    Component top = splitPane.getTopComponent();
+    Component c = SwingUtilities.getDeepestComponentAt(top, 8, 8);
+    if (c instanceof JTextArea) {
+      ((JTextArea) c).append(String.format("DividerLocation: %d%n", iv));
     }
   }
 }

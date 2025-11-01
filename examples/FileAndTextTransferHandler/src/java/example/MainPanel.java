@@ -139,18 +139,17 @@ public final class MainPanel extends JPanel {
       } else if (src instanceof DropTarget) {
         Component c = ((DropTarget) src).getComponent();
         if (c instanceof JTextArea) {
-          JTextArea textArea = (JTextArea) c;
-          TransferHandler textHandler = textArea.getTransferHandler();
-          if (textHandler != null) {
-            textHandler.importData(textArea, transferable);
-          }
+          importData((JTextArea) c, transferable);
         }
       } else if (src instanceof JTextArea) {
-        JTextArea textArea = (JTextArea) src;
-        TransferHandler textHandler = textArea.getTransferHandler();
-        if (textHandler != null) {
-          textHandler.importData(textArea, transferable);
-        }
+        importData((JTextArea) src, transferable);
+      }
+    }
+
+    private static void importData(JTextArea area, Transferable transferable) {
+      TransferHandler textHandler = area.getTransferHandler();
+      if (textHandler != null) {
+        textHandler.importData(area, transferable);
       }
     }
   }
