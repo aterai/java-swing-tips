@@ -184,8 +184,6 @@ class FilterableStatusUpdateListener implements TreeModelListener {
     // uo.status = false;
   }
 
-  // Suspicious false positives in AssignmentInOperand
-  @SuppressWarnings("PMD.AssignmentInOperand")
   private void updateAllChildrenUserObject(DefaultMutableTreeNode root, boolean match) {
     Collections.list((Enumeration<?>) root.breadthFirstEnumeration()).stream()
         .filter(n -> !Objects.equals(n, root))
