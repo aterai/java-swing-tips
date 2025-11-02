@@ -131,18 +131,9 @@ class RolloverLayerUI extends LayerUI<JScrollPane> {
       JList<?> list = (JList<?>) c;
       int id = e.getID();
       if (id == MouseEvent.MOUSE_CLICKED && SwingUtilities.isLeftMouseButton(e)) {
-        Rectangle r = list.getCellBounds(rolloverIdx, rolloverIdx);
-        Dimension d = button.getPreferredSize();
-        r.width = l.getView().getViewportBorderBounds().width - d.width;
-        JPopupMenu popup = ((JComponent) c).getComponentPopupMenu();
-        Point pt = e.getPoint();
-        if (popup != null && !r.contains(pt)) {
-          popup.show(c, pt.x, pt.y);
-        }
+        showPopup(l.getView(), list, e.getPoint());
       } else if (id == MouseEvent.MOUSE_EXITED && rolloverIdx >= 0) {
-        list.repaint(list.getCellBounds(rolloverIdx, rolloverIdx));
-        rolloverIdx = -1;
-        loc.setLocation(-100, -100);
+        hideButton(list);
       }
     }
   }
@@ -151,19 +142,7 @@ class RolloverLayerUI extends LayerUI<JScrollPane> {
     super.processMouseMotionEvent(e, l);
     Component c = e.getComponent();
     if (e.getID() == MouseEvent.MOUSE_MOVED && c instanceof JList) {
-      JList<?> list = (JList<?>) c;
-      Point pt = e.getPoint();
-      loc.setLocation(pt);
-      int prev = rolloverIdx;
-      rolloverIdx = list.locationToIndex(pt);
-      // #30 ThreeDotsMenuButton: If you scroll too fast, multiple layers will be displayed
-      if (rolloverIdx >= 0) {
-        Rectangle r = list.getCellBounds(rolloverIdx, rolloverIdx);
-        r.width = l.getView().getViewportBorderBounds().width;
-        r.grow(0, r.height);
-        Rectangle rr = prev >= 0 ? r.union(list.getCellBounds(prev, prev)) : r;
-        list.repaint(rr);
-      }
+      showButton(l.getView(), (JList<?>) c, e.getPoint());
     }
   }
 
@@ -187,6 +166,36 @@ class RolloverLayerUI extends LayerUI<JScrollPane> {
       g2.fill(rect);
       SwingUtilities.paintComponent(g2, button, renderer, rect);
       g2.dispose();
+    }
+  }
+
+  private void showPopup(JScrollPane scroll, JList<?> list, Point pt) {
+    Rectangle r = list.getCellBounds(rolloverIdx, rolloverIdx);
+    Dimension d = button.getPreferredSize();
+    r.width = scroll.getViewportBorderBounds().width - d.width;
+    JPopupMenu popup = list.getComponentPopupMenu();
+    if (popup != null && !r.contains(pt)) {
+      popup.show(list, pt.x, pt.y);
+    }
+  }
+
+  private void hideButton(JList<?> list) {
+    list.repaint(list.getCellBounds(rolloverIdx, rolloverIdx));
+    rolloverIdx = -1;
+    loc.setLocation(-100, -100);
+  }
+
+  private void showButton(JScrollPane scroll, JList<?> list, Point pt) {
+    loc.setLocation(pt);
+    int prev = rolloverIdx;
+    rolloverIdx = list.locationToIndex(pt);
+    // #30 ThreeDotsMenuButton: If you scroll too fast, multiple layers will be displayed
+    if (rolloverIdx >= 0) {
+      Rectangle r = list.getCellBounds(rolloverIdx, rolloverIdx);
+      r.width = scroll.getViewportBorderBounds().width;
+      r.grow(0, r.height);
+      Rectangle rr = prev >= 0 ? r.union(list.getCellBounds(prev, prev)) : r;
+      list.repaint(rr);
     }
   }
 
