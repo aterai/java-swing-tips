@@ -78,29 +78,29 @@ class RippleBorder extends EmptyBorder {
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-    if (!animator.isRunning()) {
+    if (animator.isRunning()) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(Color.WHITE); // c.getBackground().brighter());
+      float a = 1f / count;
+      boolean shouldBeHidden = .12f - a > 1.0e-2;
+      if (shouldBeHidden) {
+        a = 0f;
+      }
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
+      Insets i = getBorderInsets();
+      int xx = i.left - (int) count;
+      int yy = i.top - (int) count;
+      int ww = i.left + i.right - (int) (count * 2f);
+      int hh = i.top + i.bottom - (int) (count * 2f);
+      g2.setStroke(new BasicStroke(count * 1.2f));
+      g2.drawRoundRect(xx, yy, w - ww, h - hh, 10, 10);
+      if (xx < 0 && animator.isRunning()) {
+        count = 1f;
+        animator.stop();
+      }
+      g2.dispose();
+    } else {
       super.paintBorder(c, g, x, y, w, h);
-      return;
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(Color.WHITE); // c.getBackground().brighter());
-    float a = 1f / count;
-    boolean shouldBeHidden = .12f - a > 1.0e-2;
-    if (shouldBeHidden) {
-      a = 0f;
-    }
-    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
-    Insets i = getBorderInsets();
-    int xx = i.left - (int) count;
-    int yy = i.top - (int) count;
-    int ww = i.left + i.right - (int) (count * 2f);
-    int hh = i.top + i.bottom - (int) (count * 2f);
-    g2.setStroke(new BasicStroke(count * 1.2f));
-    g2.drawRoundRect(xx, yy, w - ww, h - hh, 10, 10);
-    if (xx < 0 && animator.isRunning()) {
-      count = 1f;
-      animator.stop();
-    }
-    g2.dispose();
   }
 }
