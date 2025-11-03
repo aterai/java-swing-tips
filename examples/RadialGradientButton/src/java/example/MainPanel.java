@@ -201,27 +201,24 @@ class RadialGradientPaintButton extends RadialGradientButton {
       }
       shape = new RoundRectangle2D.Double(0d, 0d, w - 1d, h - 1d, ARC, ARC);
     }
-    if (buf == null) {
-      return;
+    if (buf != null) {
+      Graphics2D g2 = buf.createGraphics();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setComposite(AlphaComposite.Clear);
+      g2.fillRect(0, 0, getWidth(), getHeight());
+      g2.setComposite(AlphaComposite.Src);
+      g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
+      g2.fill(shape);
+      if (radius > 0) {
+        int r2 = radius + radius;
+        g2.setPaint(new RadialGradientPaint(pt, r2, DIST, COLORS));
+        g2.setComposite(AlphaComposite.SrcAtop);
+        // g2.setClip(shape);
+        g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
+      }
+      g2.dispose();
     }
-
-    Graphics2D g2 = buf.createGraphics();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setComposite(AlphaComposite.Clear);
-    g2.fillRect(0, 0, getWidth(), getHeight());
-
-    g2.setComposite(AlphaComposite.Src);
-    g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
-    g2.fill(shape);
-
-    if (radius > 0) {
-      int r2 = radius + radius;
-      g2.setPaint(new RadialGradientPaint(pt, r2, DIST, COLORS));
-      g2.setComposite(AlphaComposite.SrcAtop);
-      // g2.setClip(shape);
-      g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
-    }
-    g2.dispose();
   }
 }
 
