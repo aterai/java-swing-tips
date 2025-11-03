@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -92,22 +93,32 @@ class AutomaticallyCloseListener implements HierarchyListener {
         atomicDown.set(SECONDS);
         l.setText(String.format("Closing in %d seconds", SECONDS));
         timer.removeActionListener(listener);
-        listener = event -> {
-          int i = atomicDown.decrementAndGet();
-          l.setText(String.format("Closing in %d seconds", i));
-          if (i <= 0 && timer.isRunning()) {
-            timer.stop();
-            Optional.ofNullable(l.getTopLevelAncestor())
-                .filter(Window.class::isInstance).map(Window.class::cast)
-                .ifPresent(Window::dispose);
-          }
-        };
+        listener = new TimerActionListener(l);
         timer.addActionListener(listener);
         timer.start();
       } else {
         if (timer.isRunning()) {
           timer.stop();
         }
+      }
+    }
+  }
+
+  private final class TimerActionListener implements ActionListener {
+    private final JLabel label;
+
+    private TimerActionListener(JLabel label) {
+      this.label = label;
+    }
+
+    @Override public void actionPerformed(ActionEvent e) {
+      int i = atomicDown.decrementAndGet();
+      label.setText(String.format("Closing in %d seconds", i));
+      if (i <= 0 && timer.isRunning()) {
+        timer.stop();
+        Optional.ofNullable(label.getTopLevelAncestor())
+            .filter(Window.class::isInstance).map(Window.class::cast)
+            .ifPresent(Window::dispose);
       }
     }
   }
