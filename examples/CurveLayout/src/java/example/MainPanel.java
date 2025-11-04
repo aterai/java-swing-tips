@@ -81,22 +81,22 @@ class CurveLayout extends FlowLayout {
   @Override public void layoutContainer(Container target) {
     synchronized (target.getTreeLock()) {
       int members = target.getComponentCount();
-      if (members <= 0 || !(target instanceof JComponent)) {
-        return;
-      }
-      Rectangle r = SwingUtilities.calculateInnerArea((JComponent) target, null);
-      int vg = getVgap();
-      int hg = getHgap();
-      int rh = (r.height - vg * 2) / members;
-      int x = r.x + hg;
-      int y = r.y + vg;
-      for (Component m : target.getComponents()) {
-        if (m.isVisible()) {
-          Dimension d = m.getPreferredSize();
-          m.setSize(d.width, d.height);
-          m.setLocation(x, y);
-          y += vg + Math.min(rh, d.height);
-          x = (int) (A2 * Math.sqrt(y));
+      if (members > 0 && target instanceof JComponent) {
+        JComponent tgt = (JComponent) target;
+        Rectangle r = SwingUtilities.calculateInnerArea(tgt, null);
+        int vg = getVgap();
+        int hg = getHgap();
+        int rh = (r.height - vg * 2) / members;
+        int x = r.x + hg;
+        int y = r.y + vg;
+        for (Component m : target.getComponents()) {
+          if (m.isVisible()) {
+            Dimension d = m.getPreferredSize();
+            m.setSize(d.width, d.height);
+            m.setLocation(x, y);
+            y += vg + Math.min(rh, d.height);
+            x = (int) (A2 * Math.sqrt(y));
+          }
         }
       }
     }
