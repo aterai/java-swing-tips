@@ -200,22 +200,15 @@ final class MenuItemHelper {
   }
 
   private static Icon getMenuItemIcon(JMenuItem menuItem) {
-    Icon icon;
-    ButtonModel model = menuItem.getModel();
-    if (model.isEnabled()) {
-      if (model.isPressed() && model.isArmed()) {
-        icon = menuItem.getPressedIcon();
-        if (Objects.isNull(icon)) {
-          // Use default icon
-          icon = menuItem.getIcon();
-        }
-      } else {
-        icon = menuItem.getIcon();
-      }
-    } else {
-      icon = menuItem.getDisabledIcon();
-    }
-    return icon;
+    boolean enabled = menuItem.getModel().isEnabled();
+    return enabled ? getPressedIcon(menuItem) : menuItem.getDisabledIcon();
+  }
+
+  private static Icon getPressedIcon(JMenuItem menuItem) {
+    ButtonModel m = menuItem.getModel();
+    return Optional.ofNullable(menuItem.getPressedIcon())
+        .filter(icon -> m.isPressed() && m.isArmed())
+        .orElseGet(menuItem::getIcon);
   }
 
   public static void paintCheckIcon(
