@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 
 public final class MainPanel extends JPanel {
@@ -119,27 +120,34 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    File parent = (File) node.getUserObject();
-    // Java 9:
-    // if (fileSystemView.isLink(parent)) {
-    //   try {
-    //     parent = fileSystemView.getLinkLocation(parent);
-    //   } catch (FileNotFoundException ex) {
-    //     return;
-    //   }
-    // }
-    if (!node.isLeaf() || !parent.isDirectory()) {
-      return;
+    Object c = e.getSource();
+    Object o = e.getPath().getLastPathComponent();
+    if (c instanceof JTree && o instanceof DefaultMutableTreeNode) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+      File parent = (File) node.getUserObject();
+      // Java 9:
+      // if (fileSystemView.isLink(parent)) {
+      //   try {
+      //     parent = fileSystemView.getLinkLocation(parent);
+      //   } catch (FileNotFoundException ex) {
+      //     return;
+      //   }
+      // }
+      if (node.isLeaf() && parent.isDirectory()) {
+        insertBackground((JTree) c, parent, node);
+      }
     }
-    JTree tree = (JTree) e.getSource();
-    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+  }
+
+  private void insertBackground(JTree tree, File parent, MutableTreeNode node) {
+    DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
     new BackgroundTask(fileSystemView, parent) {
       @Override protected void process(List<File> chunks) {
         if (tree.isDisplayable() && !isCancelled()) {
-          chunks.stream().map(DefaultMutableTreeNode::new)
-              .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
-          // model.reload(parent); // = model.nodeStructureChanged(parent);
+          chunks.stream()
+              .map(DefaultMutableTreeNode::new)
+              .forEach(c -> m.insertNodeInto(c, node, node.getChildCount()));
+          // m.reload(parent); // = m.nodeStructureChanged(parent);
           // tree.expandPath(path);
         } else {
           cancel(true);
