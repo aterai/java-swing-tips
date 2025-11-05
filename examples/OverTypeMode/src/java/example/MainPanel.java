@@ -128,19 +128,11 @@ class OverTypeTextArea extends JTextArea {
           // Java 9:
           // Rectangle rect = mapper.modelToView2D(c, pos, Position.Bias.Forward).getBounds();
           g.setColor(component.getCaretColor());
-          int width = g.getFontMetrics().charWidth('w');
-          // A patch for full width characters >>>>
+          FontMetrics fm = g.getFontMetrics();
+          int width = fm.charWidth('w');
           if (isOverTypeMode()) {
-            int pos = getCaretPosition();
-            if (pos < getDocument().getLength()) {
-              if (getSelectionStart() == getSelectionEnd()) {
-                String str = getText(pos, 1);
-                width = g.getFontMetrics().stringWidth(str);
-              } else {
-                width = 0;
-              }
-            }
-          } // <<<<
+            width = getOverCaretWidth(width, fm);
+          }
           int y = r.y + r.height - 2;
           g.drawLine(r.x, y, r.x + width - 2, y);
         } catch (BadLocationException ex) {
@@ -150,6 +142,18 @@ class OverTypeTextArea extends JTextArea {
           throw wrap;
         }
       }
+    }
+
+    private int getOverCaretWidth(int width, FontMetrics fm) throws BadLocationException {
+      int pos = getCaretPosition();
+      int length = getDocument().getLength();
+      int start = getSelectionStart();
+      int end = getSelectionEnd();
+      if (pos < length && start == end) {
+        // A patch for full width characters
+        width = fm.stringWidth(getText(pos, 1));
+      }
+      return width;
     }
 
     /*
