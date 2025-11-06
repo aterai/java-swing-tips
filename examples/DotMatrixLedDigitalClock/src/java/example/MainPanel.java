@@ -109,7 +109,7 @@ public final class MainPanel extends JPanel {
     int hours = time.getHour();
     int h1 = hours / ten;
     int start = 0;
-    int end = start + COLUMN;
+    int end = COLUMN;
     if (contains(index, start, end, h1)) {
       return hours >= ten;
     }
@@ -147,7 +147,7 @@ public final class MainPanel extends JPanel {
     int seconds = time.getSecond();
     int s1 = seconds / ten;
     int start = 0;
-    int end = start + COLUMN;
+    int end = COLUMN;
     if (contains(index, start, end, s1)) {
       return true;
     }
