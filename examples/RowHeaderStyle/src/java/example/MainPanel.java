@@ -116,11 +116,12 @@ class RowHeaderRenderer extends MouseAdapter implements TableCellRenderer {
     rollOverRowIndex = column == 0 ? row : -1;
     Rectangle repaintRect;
     if (column == 0 && row != prevRow) {
+      Rectangle prevRect = table.getCellRect(prevRow, col, false);
       if (rollOverRowIndex >= 0) {
         Rectangle r = table.getCellRect(rollOverRowIndex, col, false);
-        repaintRect = prevRow >= 0 ? r.union(table.getCellRect(prevRow, col, false)) : r;
+        repaintRect = prevRow >= 0 ? r.union(prevRect) : r;
       } else {
-        repaintRect = table.getCellRect(prevRow, col, false);
+        repaintRect = prevRect;
       }
     } else {
       repaintRect = table.getCellRect(prevRow, 0, false);

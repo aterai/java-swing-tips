@@ -131,15 +131,12 @@ class HighlightListener extends MouseAdapter {
     // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
     if (viewRowIndex != prevRow || viewColumnIndex != prevCol) {
       Rectangle repaintRect;
+      Rectangle prevRect = table.getCellRect(prevRow, prevCol, false);
       if (viewRowIndex >= 0) {
         Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
-        if (prevRow >= 0 && prevCol >= 0) {
-          repaintRect = r.union(table.getCellRect(prevRow, prevCol, false));
-        } else {
-          repaintRect = r;
-        }
+        repaintRect = prevRow >= 0 && prevCol >= 0 ? r.union(prevRect) : r;
       } else {
-        repaintRect = table.getCellRect(prevRow, prevCol, false);
+        repaintRect = prevRect;
       }
       table.repaint(repaintRect);
     }
