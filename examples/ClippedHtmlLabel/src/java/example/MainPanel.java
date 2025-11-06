@@ -229,21 +229,19 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     isRollover = isUriColumn(table, viewColumnIndex); // && pointInsidePrefSize(table, pt);
     boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
 
-    if (isSameCell && isNotRollover) {
-      return;
+    if (!isSameCell || !isNotRollover) {
+      // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+      Rectangle repaintRect;
+      Rectangle prevRect = table.getCellRect(prevRow, prevCol, false);
+      if (isRollover) {
+        Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
+        repaintRect = prevRollover ? r.union(prevRect) : r;
+      } else { // if (prevRollover) {
+        repaintRect = prevRect;
+      }
+      table.repaint(repaintRect);
+      // table.repaint();
     }
-    // >>>> HyperlinkCellRenderer.java
-    // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-    Rectangle repaintRect;
-    if (isRollover) {
-      Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
-      repaintRect = prevRollover ? r.union(table.getCellRect(prevRow, prevCol, false)) : r;
-    } else { // if (prevRollover) {
-      repaintRect = table.getCellRect(prevRow, prevCol, false);
-    }
-    table.repaint(repaintRect);
-    // <<<<
-    // table.repaint();
   }
 
   @Override public void mouseExited(MouseEvent e) {
