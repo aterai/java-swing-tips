@@ -91,8 +91,7 @@ class ColumnDragLayerUI extends LayerUI<JScrollPane> {
     if (c instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) c;
       if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-        Point pt = e.getPoint();
-        updateIconAndCursor(header, pt, l);
+        updateIconAndCursor(header, e.getPoint(), l);
       } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
         header.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         draggableRect.setSize(0, 0);
@@ -105,28 +104,36 @@ class ColumnDragLayerUI extends LayerUI<JScrollPane> {
     if (c instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) c;
       if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-        TableColumn draggedColumn = header.getDraggedColumn();
-        if (!draggableRect.isEmpty() && draggedColumn != null) {
-          EventQueue.invokeLater(() -> {
-            int modelIndex = draggedColumn.getModelIndex();
-            int viewIndex = header.getTable().convertColumnIndexToView(modelIndex);
-            Rectangle rect = header.getHeaderRect(viewIndex);
-            rect.x += header.getDraggedDistance();
-            draggableRect.setRect(SwingUtilities.convertRectangle(header, rect, l));
-            header.repaint(rect);
-          });
-        } else {
-          e.consume(); // Refuse to start drag
-        }
+        mousePressed(e, l, header);
       } else if (e.getID() == MouseEvent.MOUSE_MOVED) {
-        Point pt = e.getPoint();
-        updateIconAndCursor(header, pt, l);
-        header.repaint();
+        mouseMoved(e, l, header);
       }
     } else {
       c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
       draggableRect.setSize(0, 0);
     }
+  }
+
+  private void mousePressed(MouseEvent e, JLayer<? extends JScrollPane> l, JTableHeader header) {
+    TableColumn draggedColumn = header.getDraggedColumn();
+    if (!draggableRect.isEmpty() && draggedColumn != null) {
+      EventQueue.invokeLater(() -> {
+        int modelIndex = draggedColumn.getModelIndex();
+        int viewIndex = header.getTable().convertColumnIndexToView(modelIndex);
+        Rectangle rect = header.getHeaderRect(viewIndex);
+        rect.x += header.getDraggedDistance();
+        draggableRect.setRect(SwingUtilities.convertRectangle(header, rect, l));
+        header.repaint(rect);
+      });
+    } else {
+      e.consume(); // Refuse to start drag
+    }
+  }
+
+  private void mouseMoved(MouseEvent e, JLayer<? extends JScrollPane> l, JTableHeader header) {
+    Point pt = e.getPoint();
+    updateIconAndCursor(header, pt, l);
+    header.repaint();
   }
 
   private void updateIconAndCursor(JTableHeader header, Point pt, JLayer<?> l) {

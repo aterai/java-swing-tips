@@ -169,15 +169,14 @@ class ControlPanelLayout extends BorderLayout {
     Dimension ps = super.preferredLayoutSize(target);
     int defaultHeight = ps.height;
     if (animator.isRunning()) {
+      int height = controls.getHeight();
+      int diff;
       if (isHidden) {
-        if (controls.getHeight() < defaultHeight) {
-          controlsHeight += 5;
-        }
+        diff = height < defaultHeight ? 5 : 0;
       } else {
-        if (controls.getHeight() > 0) {
-          controlsHeight -= 5;
-        }
+        diff = height > 0 ? -5 : 0;
       }
+      controlsHeight += diff;
       if (controlsHeight <= 0) {
         controlsHeight = 0;
         animator.stop();
