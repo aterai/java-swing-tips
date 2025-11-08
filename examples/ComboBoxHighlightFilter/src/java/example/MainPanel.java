@@ -188,8 +188,7 @@ class ComboKeyHandler extends KeyAdapter {
         for (String s : list) {
           if (s.contains(text)) {
             textField.setText(s);
-            shouldHide = false;
-            return;
+            break;
           }
         }
         shouldHide = false;
@@ -209,6 +208,7 @@ class ComboKeyHandler extends KeyAdapter {
         shouldHide = false;
         break;
     }
+    textField.repaint();
   }
 
   private void setSuggestionModel(ComboBoxModel<String> model, String txt) {
