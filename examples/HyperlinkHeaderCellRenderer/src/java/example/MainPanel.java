@@ -169,19 +169,25 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
   }
 
   @Override public void mouseClicked(MouseEvent e) {
-    JTableHeader header = (JTableHeader) e.getComponent();
-    if (header.isEnabled()) {
+    Component c = e.getComponent();
+    if (c instanceof JTableHeader && c.isEnabled()) {
+      JTableHeader header = (JTableHeader) c;
       JTable table = header.getTable();
-      int ci = header.columnAtPoint(e.getPoint());
-      int idx = table.convertColumnIndexToModel(ci);
-      if (getTextRect(header, ci).contains(e.getPoint())) {
-        RowSorter<?> sorter = table.getRowSorter();
-        if (sorter instanceof DefaultRowSorter) {
-          ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, true);
-          sorter.toggleSortOrder(idx);
-          ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, false);
-        }
+      Point pt = e.getPoint();
+      int colIdx = header.columnAtPoint(pt);
+      if (getTextRect(header, colIdx).contains(pt)) {
+        toggleSortOrder(table, colIdx);
       }
+    }
+  }
+
+  private static void toggleSortOrder(JTable table, int columnIndex) {
+    RowSorter<?> sorter = table.getRowSorter();
+    if (sorter instanceof DefaultRowSorter) {
+      int idx = table.convertColumnIndexToModel(columnIndex);
+      ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, true);
+      sorter.toggleSortOrder(idx);
+      ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, false);
     }
   }
 

@@ -73,28 +73,27 @@ public final class MainPanel extends JPanel {
 class SpinnerNumberModelGroup {
   private final int expectedSum;
   private final Deque<SpinnerNumberModel> candidates = new ArrayDeque<>();
-  private final ChangeListener changeListener = e -> {
-    SpinnerNumberModel source = (SpinnerNumberModel) e.getSource();
-    update(source);
-  };
   private boolean updating;
+  private final ChangeListener changeListener = e -> {
+    if (!updating) {
+      updating = true;
+      update((SpinnerNumberModel) e.getSource());
+      updating = false;
+    }
+  };
 
   protected SpinnerNumberModelGroup(int expectedSum) {
     this.expectedSum = expectedSum;
   }
 
   private void update(SpinnerNumberModel source) {
-    if (!updating) {
-      updating = true;
-      if (candidates.size() - 1 > 0) {
-        int delta = computeSum() - expectedSum;
-        if (delta > 0) {
-          distributeRemove(delta, source);
-        } else {
-          distributeAdd(delta, source);
-        }
+    if (candidates.size() - 1 > 0) {
+      int delta = computeSum() - expectedSum;
+      if (delta > 0) {
+        distributeRemove(delta, source);
+      } else {
+        distributeAdd(delta, source);
       }
-      updating = false;
     }
   }
 
