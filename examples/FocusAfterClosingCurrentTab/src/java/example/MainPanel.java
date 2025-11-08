@@ -145,28 +145,20 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void doLayout() {
     int tabCount = getTabCount();
-    if (tabCount == 0 || !isVisible()) {
-      super.doLayout();
-      return;
+    if (tabCount > 0 && isVisible()) {
+      Insets tabIns = getTabInsets();
+      Insets tabAreaIns = getTabAreaInsets();
+      Insets i = getInsets();
+      int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      // int tabWidth = tabIns.left + tabIns.right + 3;
+      boolean b = isTopBottomTabPlacement(getTabPlacement());
+      int tw = b ? areaWidth / tabCount : areaWidth / 3;
+      int tabWidth = Math.min(MAX_TAB_WIDTH, Math.max(MIN_TAB_WIDTH, tw));
+      int gap = b && tabWidth < MAX_TAB_WIDTH ? areaWidth - tabWidth * tabCount : 0;
+      // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
+      tabWidth -= tabIns.left + tabIns.right + 3;
+      updateAllTabWidth(tabWidth, gap);
     }
-    Insets tabInsets = getTabInsets();
-    Insets tabAreaInsets = getTabAreaInsets();
-    Insets ins = getInsets();
-    int areaWidth = getWidth() - tabAreaInsets.left - tabAreaInsets.right - ins.left - ins.right;
-    // int tabWidth = tabInsets.left + tabInsets.right + 3;
-    int gap = 0;
-
-    boolean isTopBottom = isTopBottomTabPlacement(getTabPlacement());
-    int tw = isTopBottom ? areaWidth / tabCount : areaWidth / 3;
-    int tabWidth = Math.min(MAX_TAB_WIDTH, Math.max(MIN_TAB_WIDTH, tw));
-    if (isTopBottom && tabWidth < MAX_TAB_WIDTH) {
-      gap = areaWidth - tabWidth * tabCount;
-    }
-
-    // "3" is magic number @see BasicTabbedPaneUI#calculateTabWidth
-    tabWidth -= tabInsets.left + tabInsets.right + 3;
-    updateAllTabWidth(tabWidth, gap);
-
     super.doLayout();
   }
 
