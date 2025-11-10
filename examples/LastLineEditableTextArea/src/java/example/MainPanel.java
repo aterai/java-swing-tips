@@ -85,12 +85,10 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
         List<String> args = Stream.of(line.split(","))
             .map(String::trim)
             .filter(s -> !s.isEmpty())
-            .collect(Collectors.toList());
-        if (args.isEmpty() || args.get(0).isEmpty()) {
-          str = String.format("%n%s", PROMPT);
-        } else {
-          str = String.format("%n%s: command not found%n%s", args.get(0), PROMPT);
-        }
+            .collect(Collectors.toList()); // .toList();
+        str = args.isEmpty() || args.get(0).isEmpty()
+            ? String.format("%n%s", PROMPT)
+            : String.format("%n%s: command not found%n%s", args.get(0), PROMPT);
       }
       fb.replace(offset, length, str, attrs);
     }
