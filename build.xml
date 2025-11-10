@@ -102,6 +102,7 @@
            classpathref="project.class.path">
       <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
       <compilerarg value="-J-Duser.language=${user.language}" />
+      <compilerarg value="-J-Duser.country=${user.country}" />
       <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="--add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-Xlint:unchecked" />
@@ -115,6 +116,7 @@
     <java classname="${main.class}" classpathref="project.class.path" fork="true">
       <jvmarg value="-Dfile.encoding=${compile.encoding}" />
       <jvmarg value="-Duser.language=${user.language}" />
+      <jvmarg value="-Duser.country=${user.country}" />
       <jvmarg value="--add-opens=java.desktop/javax.swing=ALL-UNNAMED" if:set="jdk9orlater" />
       <jvmarg value="--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED" if:set="jdk9orlater" />
       <jvmarg value="--add-opens=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
