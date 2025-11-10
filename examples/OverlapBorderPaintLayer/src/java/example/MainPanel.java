@@ -164,28 +164,27 @@ class ArrowToggleButtonIcon implements Icon {
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Container parent = c.getParent();
-    if (Objects.isNull(parent)) {
-      return;
+    if (Objects.nonNull(parent)) {
+      shape = makeShape(parent, c, x, y);
+      boolean selected = isSelected(c);
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setPaint(selected ? c.getBackground() : parent.getBackground());
+      g2.fill(shape);
+      g2.setPaint(selected ? Color.GRAY : Color.GRAY.brighter());
+      g2.draw(shape);
+      g2.dispose();
     }
-    shape = makeShape(parent, c, x, y);
+  }
 
-    Color bgc = parent.getBackground();
-    Color borderColor = Color.GRAY.brighter();
+  private static boolean isSelected(Component c) {
+    boolean b = false;
     if (c instanceof AbstractButton) {
       ButtonModel m = ((AbstractButton) c).getModel();
-      if (m.isSelected() || m.isRollover()) {
-        bgc = c.getBackground();
-        borderColor = Color.GRAY;
-      }
+      b = m.isSelected() || m.isRollover();
     }
-
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(bgc);
-    g2.fill(shape);
-    g2.setPaint(borderColor);
-    g2.draw(shape);
-    g2.dispose();
+    return b;
   }
 
   @Override public int getIconWidth() {
