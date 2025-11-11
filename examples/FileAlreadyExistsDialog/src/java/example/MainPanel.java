@@ -14,21 +14,26 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JFileChooser fileChooser = new JFileChooser() {
       @Override public void approveSelection() {
-        File f = getSelectedFile();
-        if (f.exists() && getDialogType() == SAVE_DIALOG) {
-          // @see
-          // https://community.oracle.com/thread/1391852
-          // https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
-          // String m = "Replace file: " + f.getAbsolutePath() + "?";
-          // String m = "The file exists, overwrite?";
-          String format = "<html>%s already exists.<br>Do you want to replace it?";
-          String m = String.format(format, f.getAbsolutePath());
-          int rv = JOptionPane.showConfirmDialog(this, m, "Save As", JOptionPane.YES_NO_OPTION);
-          if (rv != JOptionPane.YES_OPTION) {
-            return;
+        File file = getSelectedFile();
+        if (file.exists() && getDialogType() == SAVE_DIALOG) {
+          if (showConfirmDialog(file) == JOptionPane.YES_OPTION) {
+            super.approveSelection();
           }
+        } else {
+          super.approveSelection();
         }
-        super.approveSelection();
+      }
+
+      // @see
+      // https://community.oracle.com/thread/1391852
+      // https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
+      private int showConfirmDialog(File file) {
+        String format = "<html>%s already exists.<br>Do you want to replace it?";
+        String m = String.format(format, file.getAbsolutePath());
+        // String m = "Replace file: " + file.getAbsolutePath() + "?";
+        // String m = "The file exists, overwrite?";
+        String title = "Save As";
+        return JOptionPane.showConfirmDialog(this, m, title, JOptionPane.YES_NO_OPTION);
       }
     };
 
@@ -68,7 +73,6 @@ public final class MainPanel extends JPanel {
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
-    frame.setResizable(false);
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
   }
