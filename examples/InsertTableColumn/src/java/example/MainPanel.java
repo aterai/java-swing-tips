@@ -236,24 +236,28 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     super.processMouseEvent(e, l);
     if (e.getID() == MouseEvent.MOUSE_CLICKED) {
-      JScrollPane scroll = l.getView();
-      Point pt = e.getPoint();
-      if (plus.contains(pt) && !line.isEmpty()) {
-        JTable table = (JTable) scroll.getViewport().getView();
-        TableModel model = table.getModel();
-        int columnCount = table.getColumnCount();
-        int maxColumn = model.getColumnCount();
-        if (columnCount < maxColumn) {
-          int idx = table.columnAtPoint(line.getBounds().getLocation());
-          TableColumn column = new TableColumn(columnCount);
-          column.setHeaderValue("Column" + columnCount);
-          table.addColumn(column);
-          table.moveColumn(columnCount, idx + 1);
-          updateLineLocation(scroll, pt);
-        }
-      }
-      l.repaint(scroll.getBounds());
+      mouseClicked(e, l);
     }
+  }
+
+  private void mouseClicked(MouseEvent e, JLayer<? extends JScrollPane> l) {
+    JScrollPane scroll = l.getView();
+    Point pt = e.getPoint();
+    if (plus.contains(pt) && !line.isEmpty()) {
+      JTable table = (JTable) scroll.getViewport().getView();
+      TableModel model = table.getModel();
+      int columnCount = table.getColumnCount();
+      int maxColumn = model.getColumnCount();
+      if (columnCount < maxColumn) {
+        int idx = table.columnAtPoint(line.getBounds().getLocation());
+        TableColumn column = new TableColumn(columnCount);
+        column.setHeaderValue("Column" + columnCount);
+        table.addColumn(column);
+        table.moveColumn(columnCount, idx + 1);
+        updateLineLocation(scroll, pt);
+      }
+    }
+    l.repaint(scroll.getBounds());
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
