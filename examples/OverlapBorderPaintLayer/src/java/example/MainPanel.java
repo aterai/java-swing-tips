@@ -282,23 +282,25 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
 
   private void update(MouseEvent e, JLayer<? extends V> l) {
     int id = e.getID();
-    Shape s = null;
-    if (id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED) {
-      Component c = e.getComponent();
-      if (c instanceof AbstractButton) {
-        AbstractButton b = (AbstractButton) c;
-        if (b.getIcon() instanceof ArrowToggleButtonIcon) {
-          ArrowToggleButtonIcon icon = (ArrowToggleButtonIcon) b.getIcon();
-          Rectangle r = c.getBounds();
-          AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
-          s = at.createTransformedShape(icon.getShape());
-        }
-      }
-    }
+    Component c = e.getComponent();
+    boolean b = id == MouseEvent.MOUSE_ENTERED || id == MouseEvent.MOUSE_MOVED;
+    Shape s = b && c instanceof AbstractButton ? getShape((AbstractButton) c) : null;
     if (!Objects.equals(s, shape)) {
       shape = s;
       l.getView().repaint();
     }
+  }
+
+  private static Shape getShape(AbstractButton b) {
+    Shape s = null;
+    Icon icon = b.getIcon();
+    if (icon instanceof ArrowToggleButtonIcon) {
+      ArrowToggleButtonIcon arrowIcon = (ArrowToggleButtonIcon) icon;
+      Rectangle r = b.getBounds();
+      AffineTransform at = AffineTransform.getTranslateInstance(r.x, r.y);
+      s = at.createTransformedShape(arrowIcon.getShape());
+    }
+    return s;
   }
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
