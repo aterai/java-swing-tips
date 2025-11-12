@@ -149,11 +149,9 @@ class OverTypeTextArea extends JTextArea {
       int length = getDocument().getLength();
       int start = getSelectionStart();
       int end = getSelectionEnd();
-      if (pos < length && start == end) {
-        // A patch for full width characters
-        width = fm.stringWidth(getText(pos, 1));
-      }
-      return width;
+      boolean b = pos < length && start == end;
+      // A patch for full width characters
+      return b ? fm.stringWidth(getText(pos, 1)) : width;
     }
 
     /*
