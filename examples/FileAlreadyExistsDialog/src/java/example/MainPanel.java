@@ -12,6 +12,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    // https://community.oracle.com/thread/1391852
+    // https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
     JFileChooser fileChooser = new JFileChooser() {
       @Override public void approveSelection() {
         File file = getSelectedFile();
@@ -24,14 +26,9 @@ public final class MainPanel extends JPanel {
         }
       }
 
-      // @see
-      // https://community.oracle.com/thread/1391852
-      // https://stackoverflow.com/questions/3651494/jfilechooser-with-confirmation-dialog
       private int showConfirmDialog(File file) {
         String format = "<html>%s already exists.<br>Do you want to replace it?";
         String m = String.format(format, file.getAbsolutePath());
-        // String m = "Replace file: " + file.getAbsolutePath() + "?";
-        // String m = "The file exists, overwrite?";
         String title = "Save As";
         return JOptionPane.showConfirmDialog(this, m, title, JOptionPane.YES_NO_OPTION);
       }
