@@ -168,15 +168,16 @@ public final class MainPanel extends JPanel {
 @SuppressWarnings("PMD.GodClass")
 class RightFixedScrollPaneLayout extends ScrollPaneLayout {
   @SuppressWarnings({
+      "PMD.CognitiveComplexity",
       "PMD.CyclomaticComplexity",
       "PMD.NPathComplexity",
       "PMD.NcssCount",
-      "PMD.CognitiveComplexity",
       "CyclomaticComplexity",
-      "NPathComplexity",
-      "MethodLength",
+      "ExecutableStatementCount",
       "JavaNCSS",
-      "ExecutableStatementCount"
+      "MethodLength",
+      "NPathComplexity",
+      "NestedIfDepth"
   })
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JScrollPane)) {
