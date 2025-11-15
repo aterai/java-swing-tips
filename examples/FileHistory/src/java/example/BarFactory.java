@@ -242,23 +242,11 @@ class Utf8ResourceBundleControl extends ResourceBundle.Control {
       String bundleName = toBundleName(
           Objects.requireNonNull(baseName, "baseName must not be null"),
           Objects.requireNonNull(locale, "locale must not be null"));
-      String resourceName = toResourceName(
+      String rn = toResourceName(
           bundleName,
           Objects.requireNonNull(format, "format must not be null"));
-      InputStream is = null;
       ClassLoader cl = Objects.requireNonNull(loader, "loader must not be null");
-      if (reload) {
-        URL url = cl.getResource(resourceName);
-        if (Objects.nonNull(url)) {
-          URLConnection connection = url.openConnection();
-          if (Objects.nonNull(connection)) {
-            connection.setUseCaches(false);
-            is = connection.getInputStream();
-          }
-        }
-      } else {
-        is = cl.getResourceAsStream(resourceName);
-      }
+      InputStream is = reload ? getInputStream(cl, rn) : cl.getResourceAsStream(rn);
       if (Objects.nonNull(is)) {
         // BufferedInputStream bis = new BufferedInputStream(is);
         try (Reader r = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
@@ -267,5 +255,18 @@ class Utf8ResourceBundleControl extends ResourceBundle.Control {
       }
     }
     return bundle;
+  }
+
+  private static InputStream getInputStream(ClassLoader cl, String rn) throws IOException {
+    InputStream is = null;
+    URL url = cl.getResource(rn);
+    if (Objects.nonNull(url)) {
+      URLConnection connection = url.openConnection();
+      if (Objects.nonNull(connection)) {
+        connection.setUseCaches(false);
+        is = connection.getInputStream();
+      }
+    }
+    return is;
   }
 }

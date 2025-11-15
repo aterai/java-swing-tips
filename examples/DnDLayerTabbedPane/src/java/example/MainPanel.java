@@ -656,21 +656,24 @@ class TabTransferHandler extends TransferHandler {
 
   @Override public int getSourceActions(JComponent c) {
     // System.out.println("getSourceActions");
-    int action = NONE;
-    if (c instanceof DnDTabbedPane) {
-      DnDTabbedPane src = (DnDTabbedPane) c;
-      if (src.dragTabIndex >= 0) {
-        if (mode == DragImageMode.HEAVYWEIGHT) {
-          label.setIcon(new ImageIcon(makeDragTabImage(src)));
-          dialog.pack();
-          dialog.setVisible(true);
-        } else {
-          setDragImage(makeDragTabImage(src));
-        }
-        action = MOVE;
-      }
+    int action;
+    if (c instanceof DnDTabbedPane && ((DnDTabbedPane) c).dragTabIndex >= 0) {
+      updateDragTabImage(makeDragTabImage((DnDTabbedPane) c));
+      action = MOVE;
+    } else {
+      action = NONE;
     }
     return action;
+  }
+
+  private void updateDragTabImage(BufferedImage image) {
+    if (mode == DragImageMode.HEAVYWEIGHT) {
+      label.setIcon(new ImageIcon(image));
+      dialog.pack();
+      dialog.setVisible(true);
+    } else {
+      setDragImage(image);
+    }
   }
 
   @Override public boolean importData(TransferSupport support) {
