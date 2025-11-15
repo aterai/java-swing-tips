@@ -209,34 +209,44 @@ class DnDTabbedPane extends JTabbedPane {
 
   private int getHorizontalIndex(int i, Point pt) {
     Rectangle r = getBoundsAt(i);
-    boolean contains = r.contains(pt);
-    boolean lastTab = i == getTabCount() - 1;
-    int idx = -1;
+    boolean withInTab = r.contains(pt);
     Rectangle2D cr = new Rectangle2D.Double(r.getCenterX(), r.getY(), .1, r.getHeight());
     int iv = cr.outcode(pt);
-    boolean isOutLeft = contains && (iv & Rectangle2D.OUT_LEFT) != 0;
-    if (cr.contains(pt) || isOutLeft) {
-      // First half.
+    boolean outLeft = (iv & Rectangle2D.OUT_LEFT) != 0;
+    boolean outRight = (iv & Rectangle2D.OUT_RIGHT) != 0;
+    boolean firstHalf = withInTab && outLeft;
+    boolean secondHalf = withInTab && outRight;
+    boolean centerLine = cr.contains(pt);
+    boolean lastTab = i == getTabCount() - 1;
+    int idx;
+    if (firstHalf || centerLine) {
       idx = i;
-    } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_RIGHT) != 0) {
-      // Second half.
+    } else if (secondHalf || lastTab) {
       idx = i + 1;
+    } else {
+      idx = -1;
     }
     return idx;
   }
 
   private int getVerticalIndex(int i, Point pt) {
     Rectangle r = getBoundsAt(i);
-    boolean contains = r.contains(pt);
-    boolean lastTab = i == getTabCount() - 1;
-    int idx = -1;
+    boolean withInTab = r.contains(pt);
     Rectangle2D cr = new Rectangle2D.Double(r.getX(), r.getCenterY(), r.getWidth(), .1);
     int iv = cr.outcode(pt);
-    boolean isOutTop = contains && (iv & Rectangle2D.OUT_TOP) != 0;
-    if (cr.contains(pt) || isOutTop) {
+    boolean outTop = (iv & Rectangle2D.OUT_TOP) != 0;
+    boolean outBottom = (iv & Rectangle2D.OUT_BOTTOM) != 0;
+    boolean firstHalf = withInTab && outTop;
+    boolean secondHalf = withInTab && outBottom;
+    boolean centerLine = cr.contains(pt);
+    boolean lastTab = i == getTabCount() - 1;
+    int idx;
+    if (firstHalf || centerLine) {
       idx = i;
-    } else if ((contains || lastTab) && (iv & Rectangle2D.OUT_BOTTOM) != 0) {
+    } else if (secondHalf || lastTab) {
       idx = i + 1;
+    } else {
+      idx = -1;
     }
     return idx;
   }
