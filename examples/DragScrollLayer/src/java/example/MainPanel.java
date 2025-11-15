@@ -133,23 +133,31 @@ class DragScrollLayerUI extends LayerUI<JScrollPane> {
   }
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
-    Component c = e.getComponent();
-    if (c instanceof JScrollBar || c instanceof JSlider) {
-      return;
-    }
     if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+      mousePressed(e, l);
+    }
+  }
+
+  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
+    if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
+      mouseDragged(e, l);
+    }
+  }
+
+  private void mousePressed(MouseEvent e, JLayer<? extends JScrollPane> l) {
+    Component c = e.getComponent();
+    boolean b = c instanceof JScrollBar || c instanceof JSlider;
+    if (!b) {
       JViewport viewport = l.getView().getViewport();
       // Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
       startPt.setLocation(viewport.getViewPosition());
     }
   }
 
-  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
+  private void mouseDragged(MouseEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
-    if (c instanceof JScrollBar || c instanceof JSlider) {
-      return;
-    }
-    if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
+    boolean b = c instanceof JScrollBar || c instanceof JSlider;
+    if (!b) {
       JViewport viewport = l.getView().getViewport();
       JComponent cmp = (JComponent) viewport.getView();
       Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
