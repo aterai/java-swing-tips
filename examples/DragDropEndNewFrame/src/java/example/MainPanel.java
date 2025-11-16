@@ -215,17 +215,17 @@ class DnDTabbedPane extends JTabbedPane {
     boolean isSideNeighbor = next < 0 || dragTabIndex == next || next - dragTabIndex == 1;
     if (isSideNeighbor) {
       glassPane.setTargetRect(0, 0, 0, 0);
-      return;
+    } else {
+      Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(boundsRect -> {
+        Rectangle r = SwingUtilities.convertRectangle(this, boundsRect, glassPane);
+        int a = Math.min(next, 1);
+        if (isTopBottomTabPlacement(getTabPlacement())) {
+          glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
+        } else {
+          glassPane.setTargetRect(r.x, r.y + r.height * a - LINE_SIZE / 2, r.width, LINE_SIZE);
+        }
+      });
     }
-    Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(boundsRect -> {
-      final Rectangle r = SwingUtilities.convertRectangle(this, boundsRect, glassPane);
-      int a = Math.min(next, 1);
-      if (isTopBottomTabPlacement(getTabPlacement())) {
-        glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
-      } else {
-        glassPane.setTargetRect(r.x, r.y + r.height * a - LINE_SIZE / 2, r.width, LINE_SIZE);
-      }
-    });
   }
 
   protected void initGlassPane(Point tabPt) {
