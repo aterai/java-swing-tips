@@ -172,6 +172,10 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
+      if (tabWidth > MAX_TAB_WIDTH) {
+        tabWidth = MAX_TAB_WIDTH;
+        gap = 0;
+      }
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);
