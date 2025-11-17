@@ -5,12 +5,12 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.MouseInputListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -31,11 +31,12 @@ public final class MainPanel extends JPanel {
       }
     }
 
-    HyperlinkHeaderCellRenderer handler = new HyperlinkHeaderCellRenderer();
-    table.getTableHeader().setDefaultRenderer(handler);
-    table.getTableHeader().addMouseListener(handler);
-    table.getTableHeader().addMouseMotionListener(handler);
-    table.getTableHeader().setBackground(table.getBackground());
+    HyperlinkHeaderCellRenderer renderer = new HyperlinkHeaderCellRenderer();
+    JTableHeader header = table.getTableHeader();
+    header.setDefaultRenderer(renderer);
+    header.addMouseListener(renderer.getHoverListener());
+    header.addMouseMotionListener(renderer.getHoverListener());
+    header.setBackground(table.getBackground());
 
     JScrollPane scroll = new JScrollPane(table);
     scroll.setBorder(BorderFactory.createEmptyBorder());
@@ -82,12 +83,16 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements MouseInputListener {
+class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer {
   private final Border border = BorderFactory.createCompoundBorder(
       BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY),
       BorderFactory.createEmptyBorder(4, 1, 3, 2));
   private final Color alphaZero = new Color(0x0, true);
-  private int col = -1;
+  private final transient HoverMouseListener handler = new HoverMouseListener();
+
+  public MouseAdapter getHoverListener() {
+    return handler;
+  }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     String str = Objects.toString(value, "");
@@ -104,7 +109,7 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
-      if (this.col == column) {
+      if (handler.getHoverColumn() == column) {
         l.setText("<html><u><font color='blue'>" + str + "</u>" + sort);
       } else if (hasFocus) {
         l.setText("<html><font color='blue'>" + str + sort);
@@ -124,6 +129,14 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
     Dimension d = super.getPreferredSize();
     d.height = 24;
     return d;
+  }
+}
+
+class HoverMouseListener extends MouseAdapter {
+  private int hoverColumn = -1;
+
+  public int getHoverColumn() {
+    return hoverColumn;
   }
 
   private Rectangle getTextRect(JTableHeader header, int idx) {
@@ -159,12 +172,12 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
   @Override public void mouseMoved(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
     int ci = header.columnAtPoint(e.getPoint());
-    col = getTextRect(header, ci).contains(e.getPoint()) ? ci : -1;
+    hoverColumn = getTextRect(header, ci).contains(e.getPoint()) ? ci : -1;
     header.repaint(header.getHeaderRect(ci));
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    col = -1;
+    hoverColumn = -1;
     e.getComponent().repaint();
   }
 
@@ -189,21 +202,5 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer implements Mo
       sorter.toggleSortOrder(idx);
       ((DefaultRowSorter<?, ?>) sorter).setSortable(idx, false);
     }
-  }
-
-  @Override public void mouseDragged(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseEntered(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mousePressed(MouseEvent e) {
-    /* not needed */
-  }
-
-  @Override public void mouseReleased(MouseEvent e) {
-    /* not needed */
   }
 }
