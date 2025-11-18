@@ -109,21 +109,22 @@ class GradientSeparator extends JSeparator {
 }
 
 class GradientSeparatorUI extends BasicSeparatorUI {
-  private Color bgc;
-  private Color ssc;
-  private Color shc;
+  private Color bgClr;
+  private Color shdClr;
+  private Color hltClr;
 
   public static ComponentUI createUI(JComponent c) {
     return new GradientSeparatorUI();
   }
 
-  private void updateColors(Component j) {
-    Color c = UIManager.getColor("Panel.background");
-    bgc = c instanceof ColorUIResource ? c : j.getBackground();
-    c = UIManager.getColor("Separator.shadow");
-    ssc = c instanceof ColorUIResource ? c : j.getBackground().brighter();
-    c = UIManager.getColor("Separator.highlight");
-    shc = c instanceof ColorUIResource ? c : j.getBackground().darker();
+  private void updateColors(Component c) {
+    Color bgc = c.getBackground();
+    Color c1 = UIManager.getColor("Panel.background");
+    bgClr = c1 instanceof ColorUIResource ? c1 : bgc;
+    Color c2 = UIManager.getColor("Separator.shadow");
+    shdClr = c2 instanceof ColorUIResource ? c2 : bgc.darker();
+    Color c3 = UIManager.getColor("Separator.highlight");
+    hltClr = c3 instanceof ColorUIResource ? c3 : bgc.brighter();
   }
 
   @Override public void installUI(JComponent c) {
@@ -134,18 +135,17 @@ class GradientSeparatorUI extends BasicSeparatorUI {
   @Override public void paint(Graphics g, JComponent c) {
     if (c instanceof JSeparator) {
       Graphics2D g2 = (Graphics2D) g.create();
-      Dimension s = c.getSize();
-      JSeparator js = (JSeparator) c;
-      if (js.getOrientation() == SwingConstants.VERTICAL) {
-        g2.setPaint(new GradientPaint(0f, 0f, ssc, 0f, s.height, bgc, true));
-        g2.fillRect(0, 0, 1, s.height);
-        g2.setPaint(new GradientPaint(0f, 0f, shc, 0f, s.height, bgc, true));
-        g2.fillRect(1, 0, 1, s.height);
+      Rectangle r = SwingUtilities.calculateInnerArea(c, null);
+      if (((JSeparator) c).getOrientation() == SwingConstants.HORIZONTAL) {
+        g2.setPaint(new GradientPaint(0f, 0f, shdClr, r.width, 0f, bgClr, true));
+        g2.fillRect(0, 0, r.width, 1);
+        g2.setPaint(new GradientPaint(0f, 0f, hltClr, r.width, 0f, bgClr, true));
+        g2.fillRect(0, 1, r.width, 1);
       } else {
-        g2.setPaint(new GradientPaint(0f, 0f, ssc, s.width, 0f, bgc, true));
-        g2.fillRect(0, 0, s.width, 1);
-        g2.setPaint(new GradientPaint(0f, 0f, shc, s.width, 0f, bgc, true));
-        g2.fillRect(0, 1, s.width, 1);
+        g2.setPaint(new GradientPaint(0f, 0f, shdClr, 0f, r.height, bgClr, true));
+        g2.fillRect(0, 0, 1, r.height);
+        g2.setPaint(new GradientPaint(0f, 0f, hltClr, 0f, r.height, bgClr, true));
+        g2.fillRect(1, 0, 1, r.height);
       }
       g2.dispose();
     }
