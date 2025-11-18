@@ -8,6 +8,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
@@ -158,13 +159,19 @@ class ProgressListener implements PropertyChangeListener {
     boolean isProgress = "progress".equals(e.getPropertyName());
     if (isProgress) {
       monitor.setProgress((Integer) e.getNewValue());
-      Object o = e.getSource();
-      if (o instanceof SwingWorker) {
-        SwingWorker<?, ?> task = (SwingWorker<?, ?>) o;
-        if (task.isDone() || monitor.isCanceled()) {
-          task.cancel(true);
-        }
-      }
+      getWorker(e.getSource())
+          .filter(task -> task.isDone() || monitor.isCanceled())
+          .ifPresent(task -> task.cancel(true));
     }
+  }
+
+  private Optional<SwingWorker<?, ?>> getWorker(Object src) {
+    Optional<SwingWorker<?, ?>> op;
+    if (src instanceof SwingWorker) {
+      op = Optional.of((SwingWorker<?, ?>) src);
+    } else {
+      op = Optional.empty();
+    }
+    return op;
   }
 }
