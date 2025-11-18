@@ -168,8 +168,9 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
 
   private boolean canInsert(JTableHeader header, Point loc, int i, Dimension d) {
     Rectangle r = header.getHeaderRect(i);
-    Rectangle r1 = getWestRect(r, i);
-    Rectangle r2 = getEastRect(r);
+    Rectangle center = plus.getBounds();
+    Rectangle r1 = RectUtils.getWestRect(r, center, i);
+    Rectangle r2 = RectUtils.getEastRect(r, center);
     boolean hit = false;
     if (r1.contains(loc)) {
       updateInsertLineLocation(r1, loc, d, header);
@@ -183,24 +184,6 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
       hit = true;
     }
     return hit;
-  }
-
-  private Rectangle getWestRect(Rectangle r, int i) {
-    Rectangle rect = r.getBounds();
-    Rectangle bounds = plus.getBounds();
-    if (i != 0) {
-      rect.x -= bounds.width / 2;
-    }
-    rect.setSize(bounds.getSize());
-    return rect;
-  }
-
-  private Rectangle getEastRect(Rectangle r) {
-    Rectangle rect = r.getBounds();
-    Rectangle bounds = plus.getBounds();
-    rect.x += rect.width - bounds.width / 2;
-    rect.setSize(bounds.getSize());
-    return rect;
   }
 
   private void updateInsertLineLocation(Rectangle r, Point loc, Dimension d, Component c) {
@@ -271,6 +254,28 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
       line.setFrame(0d, 0d, 0d, 0d);
     }
     l.repaint(scroll.getBounds());
+  }
+}
+
+final class RectUtils {
+  private RectUtils() {
+    /* Singleton */
+  }
+
+  public static Rectangle getWestRect(Rectangle cell, Rectangle center, int i) {
+    Rectangle rect = cell.getBounds();
+    if (i != 0) {
+      rect.x -= center.width / 2;
+    }
+    rect.setSize(center.getSize());
+    return rect;
+  }
+
+  public static Rectangle getEastRect(Rectangle cell, Rectangle center) {
+    Rectangle rect = cell.getBounds();
+    rect.x += rect.width - center.width / 2;
+    rect.setSize(center.getSize());
+    return rect;
   }
 }
 
