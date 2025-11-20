@@ -10,6 +10,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
@@ -236,7 +237,6 @@ class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
     }
   }
 
-  @SuppressWarnings("PMD.CyclomaticComplexity")
   private void paintSelectedBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
     int width = menuItem.getWidth();
     int height = menuItem.getHeight();
@@ -252,9 +252,8 @@ class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
         if (buffer == null
             || buffer.getWidth() != width || buffer.getHeight() != height
             || status == VolatileImage.IMAGE_INCOMPATIBLE) {
-          if (buffer != null) {
-            buffer.flush();
-          }
+          // if (buffer != null) { buffer.flush(); }
+          Optional.ofNullable(buffer).ifPresent(Image::flush);
           buffer = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
         }
         Graphics2D g2 = buffer.createGraphics();
