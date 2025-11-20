@@ -156,24 +156,29 @@ class BasicComboPopup2 extends BasicComboPopup {
     }
 
     @Override public void mouseReleased(MouseEvent e) {
-      Component source = (Component) e.getSource();
-      Dimension size = source.getSize();
+      Component src = (Component) e.getSource();
+      Dimension size = src.getSize();
       Rectangle bounds = new Rectangle(0, 0, size.width - 1, size.height - 1);
       if (!bounds.contains(e.getPoint())) {
-        MouseEvent newEvent = SwingUtilities.convertMouseEvent(e.getComponent(), e, list);
-        Point location = newEvent.getPoint();
+        Component c = e.getComponent();
+        MouseEvent newEvent = SwingUtilities.convertMouseEvent(c, e, list);
         Rectangle r = new Rectangle();
         list.computeVisibleRect(r);
-        if (r.contains(location)) {
-          if (comboBox.getSelectedIndex() == list.getSelectedIndex()) {
-            comboBox.getEditor().setItem(list.getSelectedValue());
-          }
-          comboBox.setSelectedIndex(list.getSelectedIndex());
+        if (r.contains(newEvent.getPoint())) {
+          updateSelectedIndex();
         }
         comboBox.setPopupVisible(false);
       }
       hasEntered = false;
       stopAutoScrolling();
+    }
+
+    private void updateSelectedIndex() {
+      int listSelectedIndex = list.getSelectedIndex();
+      if (comboBox.getSelectedIndex() == listSelectedIndex) {
+        comboBox.getEditor().setItem(list.getSelectedValue());
+      }
+      comboBox.setSelectedIndex(listSelectedIndex);
     }
   }
 
