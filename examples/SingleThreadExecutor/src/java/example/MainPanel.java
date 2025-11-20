@@ -38,7 +38,6 @@ public final class MainPanel extends JPanel {
   // Map<Integer, SwingWorker<Integer, Integer>> workerMap = new ConcurrentHashMap<>();
   private int number;
 
-  @SuppressWarnings("PMD.CloseResource")
   private MainPanel() {
     super(new BorderLayout());
     table.setRowSorter(new TableRowSorter<>(model));
