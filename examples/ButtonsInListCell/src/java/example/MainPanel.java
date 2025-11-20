@@ -23,20 +23,7 @@ public final class MainPanel extends JPanel {
     model.addElement("222222222222222\n222222222222222");
     model.addElement("3333333333333333333\n33333333333333333333\n33333333333333333");
     model.addElement("444");
-
-    add(new JScrollPane(new JList<String>(model) {
-      private transient MouseInputListener handler;
-      @Override public void updateUI() {
-        removeMouseListener(handler);
-        removeMouseMotionListener(handler);
-        super.updateUI();
-        setFixedCellHeight(-1);
-        handler = new CellButtonsMouseListener<>(this);
-        addMouseListener(handler);
-        addMouseMotionListener(handler);
-        setCellRenderer(new ButtonsRenderer<>(model));
-      }
-    }));
+    add(new JScrollPane(new ListWithButtons<>(model)));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -62,6 +49,26 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class ListWithButtons<E> extends JList<E> {
+  private transient MouseInputListener handler;
+
+  public ListWithButtons(ListModel<E> model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    removeMouseListener(handler);
+    removeMouseMotionListener(handler);
+    super.updateUI();
+    setFixedCellHeight(-1);
+    handler = new CellButtonsMouseListener<>(this);
+    addMouseListener(handler);
+    addMouseMotionListener(handler);
+    DefaultListModel<? super E> m = (DefaultListModel<? super E>) getModel();
+    setCellRenderer(new ButtonsRenderer<>(m));
+  }
+}
+
 class CellButtonsMouseListener<E> extends MouseInputAdapter {
   private int prevIndex = -1;
   // private JButton prevButton;
@@ -77,26 +84,29 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
     // JList<?> list = (JList<?>) e.getComponent();
     Point pt = e.getPoint();
     int index = list.locationToIndex(pt);
-    if (!list.getCellBounds(index, index).contains(pt)) {
+    if (list.getCellBounds(index, index).contains(pt)) {
+      ListCellRenderer<? super E> lcr = list.getCellRenderer();
+      if (index >= 0 && lcr instanceof ButtonsRenderer) {
+        repaintCurrentCell((ButtonsRenderer<?>) lcr, pt, index);
+      }
+      prevIndex = index;
+    } else {
       if (prevIndex >= 0) {
         rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
       }
       prevButtonRect.setSize(0, 0);
-      return;
     }
-    ListCellRenderer<? super E> lcr = list.getCellRenderer();
-    if (index >= 0 && lcr instanceof ButtonsRenderer) {
-      ButtonsRenderer<?> renderer = (ButtonsRenderer<?>) lcr;
-      JButton button = getButton(list, pt, index);
-      renderer.button = button;
-      if (Objects.nonNull(button)) {
-        button.getModel().setRollover(true);
-        repaintCell(renderer, button.getBounds(), index);
-      } else {
-        repaintPrevButton(renderer, index);
-      }
+  }
+
+  private void repaintCurrentCell(ButtonsRenderer<?> lcr, Point pt, int idx) {
+    JButton button = getButton(list, pt, idx);
+    lcr.button = button;
+    if (Objects.nonNull(button)) {
+      button.getModel().setRollover(true);
+      repaintCell(lcr, button.getBounds(), idx);
+    } else {
+      repaintPrevButton(lcr, idx);
     }
-    prevIndex = index;
   }
 
   private void repaintCell(ButtonsRenderer<?> renderer, Rectangle btnRect, int index) {
