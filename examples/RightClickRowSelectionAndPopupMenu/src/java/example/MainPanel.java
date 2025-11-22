@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
           if (table.isEditing()) {
             table.removeEditor();
           }
-          updateSelection(table, e.getPoint());
+          TableUtils.updateSelection(table, e.getPoint());
         }
       }
     });
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
         }
         SwingUtilities.invokeLater(() -> {
           Point pt = SwingUtilities.convertPoint(popup, new Point(), table);
-          updateSelection(table, pt);
+          TableUtils.updateSelection(table, pt);
         });
       }
 
@@ -79,19 +79,6 @@ public final class MainPanel extends JPanel {
     });
     table.setComponentPopupMenu(popup);
     return table;
-  }
-
-  private static void updateSelection(JTable table, Point pt) {
-    Rectangle cellArea = TableUtils.getCellArea(table);
-    if (cellArea.contains(pt)) {
-      int currentRow = table.rowAtPoint(pt);
-      int currentColumn = table.columnAtPoint(pt);
-      if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
-        table.changeSelection(currentRow, currentColumn, false, false);
-      }
-    } else {
-      table.clearSelection();
-    }
   }
 
   private static JPopupMenu makePopupMenu() {
@@ -151,17 +138,7 @@ class RightMouseButtonLayerUI extends LayerUI<JScrollPane> {
       if (table.isEditing()) {
         table.removeEditor();
       }
-      Point pt = e.getPoint();
-      Rectangle r = TableUtils.getCellArea(table);
-      if (r.contains(pt)) {
-        int currentRow = table.rowAtPoint(pt);
-        int currentColumn = table.columnAtPoint(pt);
-        if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
-          table.changeSelection(currentRow, currentColumn, false, false);
-        }
-      } else {
-        table.clearSelection();
-      }
+      TableUtils.updateSelection(table, e.getPoint());
     } else {
       super.processMouseEvent(e, l);
     }
@@ -179,6 +156,19 @@ final class TableUtils {
     int cc = table.getColumnCount();
     Rectangle end = table.getCellRect(rc - 1, cc - 1, true);
     return start.union(end);
+  }
+
+  public static void updateSelection(JTable table, Point pt) {
+    Rectangle cellArea = TableUtils.getCellArea(table);
+    if (cellArea.contains(pt)) {
+      int currentRow = table.rowAtPoint(pt);
+      int currentColumn = table.columnAtPoint(pt);
+      if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
+        table.changeSelection(currentRow, currentColumn, false, false);
+      }
+    } else {
+      table.clearSelection();
+    }
   }
 
   public static boolean noneMatch(int[] selectedRows, int currentRow) {
