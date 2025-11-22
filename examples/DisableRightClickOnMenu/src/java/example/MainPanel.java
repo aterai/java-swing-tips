@@ -95,13 +95,10 @@ class CustomWindowsMenuUI extends WindowsMenuUI {
   @Override protected MouseInputListener createMouseInputListener(JComponent c) {
     return new BasicMenuItemUI.MouseInputHandler() {
       @Override public void mousePressed(MouseEvent e) {
-        if (menuItem instanceof JMenu) {
-          JMenu menu = (JMenu) menuItem;
-          if (!menu.isEnabled() || SwingUtilities.isRightMouseButton(e)) {
-            return;
-          }
+        boolean isEnabled = menuItem instanceof JMenu && menuItem.isEnabled();
+        if (isEnabled && !SwingUtilities.isRightMouseButton(e)) {
+          super.mousePressed(e);
         }
-        super.mousePressed(e);
       }
     };
   }
@@ -111,10 +108,9 @@ class CustomWindowsMenuItemUI extends WindowsMenuItemUI {
   @Override protected MouseInputListener createMouseInputListener(JComponent c) {
     return new BasicMenuItemUI.MouseInputHandler() {
       @Override public void mouseReleased(MouseEvent e) {
-        if (!menuItem.isEnabled() || SwingUtilities.isRightMouseButton(e)) {
-          return;
+        if (menuItem.isEnabled() && !SwingUtilities.isRightMouseButton(e)) {
+          super.mouseReleased(e);
         }
-        super.mouseReleased(e);
       }
     };
   }
