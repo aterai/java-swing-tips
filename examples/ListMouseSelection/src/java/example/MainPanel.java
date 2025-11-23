@@ -134,18 +134,22 @@ class SingleClickSelectList<E> extends JList<E> {
 
   @Override public void setSelectionInterval(int anchor, int lead) {
     if (anchor == lead && lead >= 0) {
-      if (isDragging) {
-        addSelectionInterval(anchor, anchor);
-      } else if (!isInsideDragging) {
-        if (isSelectedIndex(anchor)) {
-          removeSelectionInterval(anchor, anchor);
-        } else {
-          addSelectionInterval(anchor, anchor);
-        }
-        isInsideDragging = true;
-      }
+      setDragSelection(anchor);
     } else {
       super.setSelectionInterval(anchor, lead);
+    }
+  }
+
+  private void setDragSelection(int index) {
+    if (isDragging) {
+      addSelectionInterval(index, index);
+    } else if (!isInsideDragging) {
+      if (isSelectedIndex(index)) {
+        removeSelectionInterval(index, index);
+      } else {
+        addSelectionInterval(index, index);
+      }
+      isInsideDragging = true;
     }
   }
 
