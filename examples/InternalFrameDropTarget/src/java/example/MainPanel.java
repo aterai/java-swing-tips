@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -355,15 +356,12 @@ class TableRowTransferHandler extends TransferHandler {
     getRootGlassPane(c).ifPresent(p -> p.setVisible(false));
     // c.setCursor(Cursor.getDefaultCursor());
     if (action == MOVE && !indices.isEmpty()) {
-      DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
       if (addCount > 0) {
-        for (int i = 0; i < indices.size(); i++) {
-          if (indices.get(i) >= addIndex) {
-            // indices[i] += addCount;
-            indices.set(i, indices.get(i) + addCount);
-          }
-        }
+        IntStream.range(0, indices.size())
+            .filter(i -> indices.get(i) >= addIndex)
+            .forEach(i -> indices.set(i, indices.get(i) + addCount));
       }
+      DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
       for (int i = indices.size() - 1; i >= 0; i--) {
         model.removeRow(indices.get(i));
       }

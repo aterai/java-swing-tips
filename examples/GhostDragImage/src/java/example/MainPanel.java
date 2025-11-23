@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -223,11 +224,9 @@ class ListItemTransferHandler extends TransferHandler {
       // need to adjust the indices accordingly, since those
       // after the insertion point have moved.
       if (addCount > 0) {
-        for (int i = 0; i < indices.size(); i++) {
-          if (indices.get(i) >= addIndex) {
-            indices.set(i, indices.get(i) + addCount);
-          }
-        }
+        IntStream.range(0, indices.size())
+            .filter(i -> indices.get(i) >= addIndex)
+            .forEach(i -> indices.set(i, indices.get(i) + addCount));
       }
       JList<?> src = (JList<?>) c;
       DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
