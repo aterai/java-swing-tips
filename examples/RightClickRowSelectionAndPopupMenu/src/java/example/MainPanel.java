@@ -159,11 +159,11 @@ final class TableUtils {
   }
 
   public static void updateSelection(JTable table, Point pt) {
-    Rectangle cellArea = TableUtils.getCellArea(table);
+    Rectangle cellArea = getCellArea(table);
     if (cellArea.contains(pt)) {
       int currentRow = table.rowAtPoint(pt);
       int currentColumn = table.columnAtPoint(pt);
-      if (TableUtils.noneMatch(table.getSelectedRows(), currentRow)) {
+      if (noneMatch(table.getSelectedRows(), currentRow)) {
         table.changeSelection(currentRow, currentColumn, false, false);
       }
     } else {
