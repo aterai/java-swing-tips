@@ -143,7 +143,7 @@ class SelectedIcon implements Icon {
     g2.drawRect(0, 0, getIconWidth(), getIconHeight());
     g2.setPaint(Color.WHITE);
     Font f = g2.getFont();
-    g2.drawString("?", getIconWidth() - f.getSize(), getIconHeight() - 3);
+    g2.drawString("✔", getIconWidth() - f.getSize(), getIconHeight() - 3);
     g2.dispose();
   }
 
