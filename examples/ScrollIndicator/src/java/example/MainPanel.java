@@ -62,7 +62,7 @@ class ScrollIndicator extends JProgressBar {
   @Override public double getPercentComplete() {
     long span = model.getMaximum() - model.getMinimum();
     double currentValue = model.getValue() + model.getExtent();
-    return  (currentValue - model.getMinimum()) / span;
+    return (currentValue - model.getMinimum()) / span;
   }
 
   @Override public Dimension getPreferredSize() {
