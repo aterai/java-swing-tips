@@ -18,7 +18,11 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JComboBox<String> combo = makeComboBox();
     UIManager.put("ComboBox.font", combo.getFont());
-    UIManager.addPropertyChangeListener(this::updateLookAndFeel);
+    UIManager.addPropertyChangeListener(e -> {
+      if (Objects.equals("lookAndFeel", e.getPropertyName())) {
+        updateLookAndFeel(e);
+      }
+    });
     check.setText("<html>addAuxiliaryLookAndFeel<br>(Disable Right Click)");
     check.addActionListener(e -> {
       String lnf = UIManager.getLookAndFeel().getName();
@@ -45,16 +49,14 @@ public final class MainPanel extends JPanel {
   }
 
   private void updateLookAndFeel(PropertyChangeEvent e) {
-    if (Objects.equals("lookAndFeel", e.getPropertyName())) {
-      if (isWindows(e.getNewValue())) {
-        if (check.isSelected()) {
-          UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
-        }
-        check.setEnabled(true);
-      } else {
-        UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
-        check.setEnabled(false);
+    if (isWindows(e.getNewValue())) {
+      if (check.isSelected()) {
+        UIManager.addAuxiliaryLookAndFeel(auxLookAndFeel);
       }
+      check.setEnabled(true);
+    } else {
+      UIManager.removeAuxiliaryLookAndFeel(auxLookAndFeel);
+      check.setEnabled(false);
     }
   }
 
