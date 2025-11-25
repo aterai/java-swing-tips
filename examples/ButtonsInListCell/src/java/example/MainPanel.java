@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
 class ListWithButtons<E> extends JList<E> {
   private transient MouseInputListener handler;
 
-  public ListWithButtons(ListModel<E> model) {
+  protected ListWithButtons(ListModel<E> model) {
     super(model);
   }
 
