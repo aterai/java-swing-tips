@@ -168,6 +168,7 @@ public final class MainPanel extends JPanel {
 @SuppressWarnings("PMD.GodClass")
 class RightFixedScrollPaneLayout extends ScrollPaneLayout {
   @SuppressWarnings({
+      "PMD.AvoidDeeplyNestedIfStmts",
       "PMD.CognitiveComplexity",
       "PMD.CyclomaticComplexity",
       "PMD.NPathComplexity",

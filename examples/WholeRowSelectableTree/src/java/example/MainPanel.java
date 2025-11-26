@@ -63,6 +63,7 @@ public final class MainPanel extends JPanel {
 
 class WholeRowSelectableTreeUI extends BasicTreeUI {
   @SuppressWarnings({
+      "PMD.AvoidDeeplyNestedIfStmts",
       "PMD.CyclomaticComplexity",
       "PMD.NPathComplexity",
       "PMD.NcssCount",
