@@ -14,9 +14,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Point hotSpot = new Point(16, 16);
 
-    BufferedImage bi1 = makeStringBufferedImage("?");
-    JButton button1 = new JButton("?");
-    button1.setCursor(getToolkit().createCustomCursor(bi1, hotSpot, "?"));
+    String str = "?";
+    BufferedImage bi1 = makeStringBufferedImage(str);
+    JButton button1 = new JButton(str);
+    button1.setCursor(getToolkit().createCustomCursor(bi1, hotSpot, str));
 
     BufferedImage bi2 = makeOvalBufferedImage();
     JButton button2 = new JButton("Oval");
