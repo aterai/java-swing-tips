@@ -261,19 +261,7 @@ class CloseableTabIconHandler extends MouseAdapter {
     if (isCloseTabIconRollover(tabbedPane, icon, e)) {
       int selIndex = tabbedPane.getSelectedIndex();
       if (tabbedPane.fireCloseTab(selIndex)) {
-        if (selIndex > 0) {
-          // to prevent uncatchable null-pointers
-          Rectangle rec = tabbedPane.getBoundsAt(selIndex - 1);
-          MouseEvent event = new MouseEvent(
-              e.getComponent(), e.getID() + 1,
-              System.currentTimeMillis(), e.getModifiersEx(),
-              rec.x, rec.y,
-              e.getClickCount(), e.isPopupTrigger(), e.getButton());
-          tabbedPane.dispatchEvent(event);
-        }
-        // the tab is being closed
-        // removeTabAt(tabNumber);
-        tabbedPane.remove(selIndex);
+        removeSelectedTab(tabbedPane, e, selIndex);
       } else {
         icon.mouseover = false;
         icon.mousepressed = false;
@@ -282,6 +270,22 @@ class CloseableTabIconHandler extends MouseAdapter {
       icon.mouseover = false;
     }
     tabbedPane.repaint(drawRect);
+  }
+
+  private static void removeSelectedTab(JTabbedPane tabs, MouseEvent e, int index) {
+    if (index > 0) {
+      // to prevent uncatchable null-pointers
+      Rectangle rec = tabs.getBoundsAt(index - 1);
+      MouseEvent event = new MouseEvent(
+          e.getComponent(), e.getID() + 1,
+          System.currentTimeMillis(), e.getModifiersEx(),
+          rec.x, rec.y,
+          e.getClickCount(), e.isPopupTrigger(), e.getButton());
+      tabs.dispatchEvent(event);
+    }
+    // the tab is being closed
+    // removeTabAt(tabNumber);
+    tabs.remove(index);
   }
 
   /**
