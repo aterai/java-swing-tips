@@ -91,7 +91,7 @@ class EditableTitledBorder extends TitledBorder {
   private final Container glassPane = new EditorGlassPane();
   private final Component comp;
 
-  protected final Action startEditing = new AbstractAction() {
+  private final Action startEditing = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       if (comp instanceof JComponent) {
         Optional.ofNullable(((JComponent) comp).getRootPane())
@@ -111,12 +111,7 @@ class EditableTitledBorder extends TitledBorder {
       editor.requestFocusInWindow();
     }
   };
-  protected final Action cancelEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      glassPane.setVisible(false);
-    }
-  };
-  protected final Action renameTitle = new AbstractAction() {
+  private final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       String str = editor.getText().trim();
       if (!str.isEmpty()) {
@@ -185,6 +180,11 @@ class EditableTitledBorder extends TitledBorder {
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "rename-title");
     am.put("rename-title", renameTitle);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel-editing");
+    Action cancelEditing = new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        glassPane.setVisible(false);
+      }
+    };
     am.put("cancel-editing", cancelEditing);
   }
 
