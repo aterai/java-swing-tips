@@ -267,25 +267,24 @@ class InitAction extends AbstractAction {
       table.getCellEditor().stopCellEditing();
     }
     int row = table.getRowCount();
-    if (row <= 0) {
-      return;
+    if (row > 0) {
+      RowDataModel model = (RowDataModel) table.getModel();
+      RowDataModel currentModel = new RowDataModel();
+      List<?> dv = model.getDataVector();
+      for (int i = 0; i < row; i++) {
+        currentModel.addRowData(makeRowData((List<?>) dv.get(i)));
+      }
+      JTableHeader h = table.getTableHeader();
+      TableCellRenderer tcr = h.getDefaultRenderer();
+      if (tcr instanceof SortButtonRenderer) {
+        SortButtonRenderer sbr = (SortButtonRenderer) tcr;
+        sbr.setPressedColumn(-1);
+        sbr.setSelectedColumn(-1);
+      }
+      table.setAutoCreateColumnsFromModel(false);
+      table.setModel(currentModel);
+      table.clearSelection();
     }
-    RowDataModel model = (RowDataModel) table.getModel();
-    RowDataModel currentModel = new RowDataModel();
-    List<?> dv = model.getDataVector();
-    for (int i = 0; i < row; i++) {
-      currentModel.addRowData(makeRowData((List<?>) dv.get(i)));
-    }
-    JTableHeader h = table.getTableHeader();
-    TableCellRenderer tcr = h.getDefaultRenderer();
-    if (tcr instanceof SortButtonRenderer) {
-      SortButtonRenderer sbr = (SortButtonRenderer) tcr;
-      sbr.setPressedColumn(-1);
-      sbr.setSelectedColumn(-1);
-    }
-    table.setAutoCreateColumnsFromModel(false);
-    table.setModel(currentModel);
-    table.clearSelection();
   }
 
   private static RowData makeRowData(List<?> list) {
