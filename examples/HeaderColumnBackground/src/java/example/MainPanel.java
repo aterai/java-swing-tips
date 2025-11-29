@@ -8,6 +8,7 @@ import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.chrono.Chronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -15,9 +16,7 @@ import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -33,30 +32,22 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  @SuppressWarnings("PMD.UseConcurrentHashMap")
-  private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
-  private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-  private final JTable monthTable = new MonthTable();
-  private LocalDate currentLocalDate;
-
   private MainPanel() {
     super(new BorderLayout());
-    monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
-    monthTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    monthTable.setCellSelectionEnabled(true);
-    monthTable.setFillsViewportHeight(true);
-
-    holidayColorMap.put(DayOfWeek.SUNDAY, WeekHeaderRenderer.SUNDAY_BGC);
-    holidayColorMap.put(DayOfWeek.SATURDAY, WeekHeaderRenderer.SATURDAY_BGC);
-
-    updateMonthView(LocalDate.of(2025, 11, 11));
+    JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
+    MonthTable monthTable = new MonthTable();
+    updateMonthView(monthTable, monthLabel, LocalDate.now(ZoneId.systemDefault()));
 
     JButton prev = new JButton("<");
-    prev.addActionListener(e -> updateMonthView(getCurrentLocalDate().minusMonths(1)));
-
+    prev.addActionListener(e -> {
+      LocalDate d = monthTable.getCurrentLocalDate().minusMonths(1);
+      updateMonthView(monthTable, monthLabel, d);
+    });
     JButton next = new JButton(">");
-    next.addActionListener(e -> updateMonthView(getCurrentLocalDate().plusMonths(1)));
-
+    next.addActionListener(e -> {
+      LocalDate d = monthTable.getCurrentLocalDate().plusMonths(1);
+      updateMonthView(monthTable, monthLabel, d);
+    });
     JPanel p = new JPanel(new BorderLayout());
     p.add(monthLabel);
     p.add(prev, BorderLayout.WEST);
@@ -74,75 +65,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public LocalDate getCurrentLocalDate() {
-    return currentLocalDate;
-  }
-
-  public void updateMonthView(LocalDate localDate) {
-    currentLocalDate = localDate;
+  private static void updateMonthView(MonthTable table, JLabel label, LocalDate date) {
+    table.setCurrentLocalDate(date);
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
-    String txt = localDate.format(fmt.withLocale(locale));
-    monthLabel.setText(CalendarUtils.getLocalizedYearMonthText(txt));
-    monthTable.setModel(new CalendarViewTableModel(localDate));
-  }
-
-  private final class CalendarTableRenderer extends DefaultTableCellRenderer {
-    private final JPanel panel = new JPanel(new BorderLayout());
-
-    @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
-      Component c = super.getTableCellRendererComponent(
-          table, value, selected, focused, row, column);
-      if (value instanceof LocalDate && c instanceof JLabel) {
-        LocalDate d = (LocalDate) value;
-        JLabel l = (JLabel) c;
-        l.setText(Integer.toString(d.getDayOfMonth()));
-        l.setVerticalAlignment(TOP);
-        l.setHorizontalAlignment(LEFT);
-        panel.setBackground(l.getBackground());
-        updateWeekColor(d, table, c, selected);
-
-        LocalDate nextWeekDay = d.plusDays(7);
-        boolean isLastRow = row == table.getModel().getRowCount() - 1;
-        if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
-          JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
-          sub.setFont(l.getFont());
-          sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-          sub.setOpaque(false);
-          sub.setVerticalAlignment(BOTTOM);
-          sub.setHorizontalAlignment(RIGHT);
-          updateWeekColor(d, table, sub, selected);
-
-          panel.removeAll();
-          panel.add(sub, BorderLayout.SOUTH);
-          panel.add(c, BorderLayout.NORTH);
-          panel.setBorder(l.getBorder());
-          l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-          c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
-        }
-      }
-      return c;
-    }
-
-    private boolean isDiagonallySplitCell(LocalDate nextWeekDay) {
-      return YearMonth.from(nextWeekDay).equals(YearMonth.from(getCurrentLocalDate()));
-    }
-
-    private void updateWeekColor(LocalDate d, JTable table, Component c, boolean selected) {
-      if (selected) {
-        c.setForeground(table.getSelectionForeground());
-      } else {
-        Color fgc = holidayColorMap.get(d.getDayOfWeek());
-        if (fgc != null) {
-          c.setForeground(fgc);
-        } else if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-          c.setForeground(table.getForeground());
-        } else {
-          c.setForeground(Color.GRAY);
-        }
-      }
-    }
+    String txt = date.format(fmt.withLocale(locale));
+    label.setText(CalendarUtils.getLocalizedYearMonthText(txt));
+    table.setModel(new CalendarViewTableModel(date));
   }
 
   public static void main(String[] args) {
@@ -168,8 +97,14 @@ public final class MainPanel extends JPanel {
 }
 
 class MonthTable extends JTable {
+  private LocalDate currentLocalDate;
+
   @Override public void updateUI() {
     super.updateUI();
+    setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
+    setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    setCellSelectionEnabled(true);
+    setFillsViewportHeight(true);
     JTableHeader header = getTableHeader();
     header.setResizingAllowed(false);
     header.setReorderingAllowed(false);
@@ -180,13 +115,7 @@ class MonthTable extends JTable {
     return new JTableHeader(columnModel) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        JTable tbl = getTable();
-        int rowCount = tbl.getModel().getRowCount() + 1;
-        Class<JViewport> clz = JViewport.class;
-        d.height = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, tbl))
-            .filter(clz::isInstance).map(clz::cast)
-            .map(JViewport::getExtentSize)
-            .map(dim -> dim.height / rowCount).orElse(24);
+        d.height = 24;
         return d;
       }
     };
@@ -195,6 +124,14 @@ class MonthTable extends JTable {
   @Override public void setModel(TableModel dataModel) {
     super.setModel(dataModel);
     EventQueue.invokeLater(this::updateWeekHeaderRenderer);
+  }
+
+  public void setCurrentLocalDate(LocalDate date) {
+    currentLocalDate = date;
+  }
+
+  public LocalDate getCurrentLocalDate() {
+    return currentLocalDate;
   }
 
   private void updateWeekHeaderRenderer() {
@@ -216,12 +153,75 @@ class MonthTable extends JTable {
 
   private void updateRowsHeight(JViewport viewport) {
     int height = viewport.getExtentSize().height;
-    int rowCount = getModel().getRowCount() + 1;
+    int rowCount = getModel().getRowCount();
     int defaultRowHeight = height / rowCount;
     int remainder = height % rowCount;
     for (int i = 0; i < rowCount; i++) {
       int a = Math.min(1, Math.max(0, remainder--));
       setRowHeight(i, defaultRowHeight + a);
+    }
+  }
+}
+
+class CalendarTableRenderer extends DefaultTableCellRenderer {
+  private static final Color SUNDAY_FGC = new Color(0xB0_12_1A);
+  private static final Color SATURDAY_FGC = new Color(0x1A_12_B0);
+  private final JPanel panel = new JPanel(new BorderLayout());
+  private LocalDate currentLocalDate;
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+    Component c = super.getTableCellRendererComponent(
+        table, value, selected, focused, row, column);
+    if (value instanceof LocalDate && c instanceof JLabel && table instanceof MonthTable) {
+      LocalDate d = (LocalDate) value;
+      JLabel l = (JLabel) c;
+      l.setText(Integer.toString(d.getDayOfMonth()));
+      l.setVerticalAlignment(TOP);
+      l.setHorizontalAlignment(LEFT);
+      panel.setBackground(l.getBackground());
+      currentLocalDate = ((MonthTable) table).getCurrentLocalDate();
+      updateWeekColor(d, table, c, selected);
+      LocalDate nextWeekDay = d.plusDays(7);
+      boolean isLastRow = row == table.getModel().getRowCount() - 1;
+      if (isLastRow && isDiagonallySplitCell(nextWeekDay, currentLocalDate)) {
+        JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
+        sub.setFont(l.getFont());
+        sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        sub.setOpaque(false);
+        sub.setVerticalAlignment(BOTTOM);
+        sub.setHorizontalAlignment(RIGHT);
+        updateWeekColor(d, table, sub, selected);
+
+        panel.removeAll();
+        panel.add(sub, BorderLayout.SOUTH);
+        panel.add(c, BorderLayout.NORTH);
+        panel.setBorder(l.getBorder());
+        l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+      }
+    }
+    return c;
+  }
+
+  private static boolean isDiagonallySplitCell(LocalDate nextWeekDay, LocalDate cur) {
+    return YearMonth.from(nextWeekDay).equals(YearMonth.from(cur));
+  }
+
+  private void updateWeekColor(LocalDate d, JTable table, Component c, boolean selected) {
+    if (selected) {
+      c.setForeground(table.getSelectionForeground());
+    } else {
+      DayOfWeek dayOfWeek = d.getDayOfWeek();
+      if (dayOfWeek == DayOfWeek.SUNDAY) {
+        c.setForeground(SUNDAY_FGC);
+      } else if (dayOfWeek == DayOfWeek.SATURDAY) {
+        c.setForeground(SATURDAY_FGC);
+      } else if (YearMonth.from(d).equals(YearMonth.from(currentLocalDate))) {
+        c.setForeground(table.getForeground());
+      } else {
+        c.setForeground(Color.GRAY);
+      }
     }
   }
 }
