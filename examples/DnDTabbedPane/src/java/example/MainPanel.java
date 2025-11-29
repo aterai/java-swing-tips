@@ -276,46 +276,44 @@ class DnDTabbedPane extends JTabbedPane {
   // }
 
   protected void convertTab(int prev, int next) {
-    if (next < 0 || prev == next) {
-      // This check is needed if tab content is null.
-      return;
+    if (next >= 0 && prev != next) {
+      final Component cmp = getComponentAt(prev);
+      final Component tab = getTabComponentAt(prev);
+      final String title = getTitleAt(prev);
+      final Icon icon = getIconAt(prev);
+      final String tip = getToolTipTextAt(prev);
+      final boolean isEnabled = isEnabledAt(prev);
+      int tgtIndex = prev > next ? next : next - 1;
+      remove(prev);
+      insertTab(title, icon, cmp, tip, tgtIndex);
+      setEnabledAt(tgtIndex, isEnabled);
+      // When you drag and drop a disabled tab, it finishes enabled and selected.
+      // pointed out by dlorde
+      if (isEnabled) {
+        setSelectedIndex(tgtIndex);
+      }
+      // I have a component in all tabs (JLabel with an X to close the tab)
+      // and when I move a tab the component disappear.
+      // pointed out by Daniel Dario Morales Salas
+      setTabComponentAt(tgtIndex, tab);
     }
-    final Component cmp = getComponentAt(prev);
-    final Component tab = getTabComponentAt(prev);
-    final String title = getTitleAt(prev);
-    final Icon icon = getIconAt(prev);
-    final String tip = getToolTipTextAt(prev);
-    final boolean isEnabled = isEnabledAt(prev);
-    int tgtIndex = prev > next ? next : next - 1;
-    remove(prev);
-    insertTab(title, icon, cmp, tip, tgtIndex);
-    setEnabledAt(tgtIndex, isEnabled);
-    // When you drag and drop a disabled tab, it finishes enabled and selected.
-    // pointed out by dlorde
-    if (isEnabled) {
-      setSelectedIndex(tgtIndex);
-    }
-    // I have a component in all tabs (JLabel with an X to close the tab)
-    // and when I move a tab the component disappear.
-    // pointed out by Daniel Dario Morales Salas
-    setTabComponentAt(tgtIndex, tab);
   }
 
   protected void initTargetLine(int next) {
     boolean isSideNeighbor = next < 0 || dragTabIndex == next || next - dragTabIndex == 1;
     if (isSideNeighbor) {
       glassPane.setTargetRect(0, 0, 0, 0);
-      return;
+    } else {
+      Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(rect -> {
+        final Rectangle r = SwingUtilities.convertRectangle(this, rect, glassPane);
+        int a = Math.min(next, 1); // a = (next == 0) ? 0 : 1;
+        if (isTopBottomTabPlacement(getTabPlacement())) {
+          glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
+        } else {
+          glassPane.setTargetRect(r.x, r.y + r.height * a - LINE_SIZE / 2, r.width, LINE_SIZE);
+        }
+      });
     }
-    Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(boundsRect -> {
-      final Rectangle r = SwingUtilities.convertRectangle(this, boundsRect, glassPane);
-      int a = Math.min(next, 1); // a = (next == 0) ? 0 : 1;
-      if (isTopBottomTabPlacement(getTabPlacement())) {
-        glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
-      } else {
-        glassPane.setTargetRect(r.x, r.y + r.height * a - LINE_SIZE / 2, r.width, LINE_SIZE);
-      }
-    });
   }
 
   protected void initGlassPane(Point tabPt) {
