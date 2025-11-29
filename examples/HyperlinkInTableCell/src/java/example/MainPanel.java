@@ -119,7 +119,7 @@ class HyperlinkTable extends JTable {
 class UriRenderer extends DefaultTableCellRenderer implements MouseListener, MouseMotionListener {
   private int viewRowIndex = -1;
   private int viewColumnIndex = -1;
-  private boolean isRollover;
+  private boolean isHover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = super.getTableCellRendererComponent(
@@ -129,7 +129,7 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
       // @see https://ateraimemo.com/Swing/ClippedHtmlLabel.html
       // String str = SwingUtilities.layoutCompoundLabel(...);
       String str = Objects.toString(value, "");
-      if (isRolloverCell(table, row, column)) {
+      if (isHoverCell(table, row, column)) {
         l.setText("<html><u><font color='blue'>" + str);
       } else if (hasFocus) {
         l.setText("<html><font color='blue'>" + str);
@@ -140,8 +140,8 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     return c;
   }
 
-  protected boolean isRolloverCell(JTable table, int row, int column) {
-    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isRollover;
+  protected boolean isHoverCell(JTable table, int row, int column) {
+    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isHover;
   }
 
   private static boolean isUriColumn(JTable table, int column) {
@@ -156,11 +156,11 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     viewRowIndex = table.rowAtPoint(pt);
     viewColumnIndex = table.columnAtPoint(pt);
     boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
-    boolean prevRollover = isRollover;
-    isRollover = isUriColumn(table, viewColumnIndex);
-    boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
-    if (!isSameCell || !isNotRollover) {
-      Rectangle repaintRect = getRepaintRect(table, prevRollover, prevRow, prevCol);
+    boolean prevHover = isHover;
+    isHover = isUriColumn(table, viewColumnIndex);
+    boolean isNotHover = isHover == prevHover && !isHover; // && !prevHover;
+    if (!isSameCell || !isNotHover) {
+      Rectangle repaintRect = getRepaintRect(table, prevRow, prevCol, prevHover);
       table.repaint(repaintRect);
     }
     // table.repaint();
@@ -168,14 +168,14 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
 
   // HyperlinkCellRenderer.java
   // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-  private Rectangle getRepaintRect(JTable tbl, boolean preRollover, int preRow, int preCol) {
+  private Rectangle getRepaintRect(JTable tbl, int preRow, int preCol, boolean preHover) {
     Rectangle repaintRect;
-    Rectangle prevRect = tbl.getCellRect(preRow, preCol, false);
-    if (isRollover) {
+    Rectangle preRect = tbl.getCellRect(preRow, preCol, false);
+    if (isHover) {
       Rectangle viewRect = tbl.getCellRect(viewRowIndex, viewColumnIndex, false);
-      repaintRect = preRollover ? viewRect.union(prevRect) : viewRect;
-    } else { // if (preRollover) {
-      repaintRect = prevRect;
+      repaintRect = preHover ? viewRect.union(preRect) : viewRect;
+    } else { // if (preHover) {
+      repaintRect = preRect;
     }
     return repaintRect;
   }
@@ -186,7 +186,7 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
       table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       viewRowIndex = -1;
       viewColumnIndex = -1;
-      isRollover = false;
+      isHover = false;
     }
   }
 
@@ -205,7 +205,6 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
           Desktop.getDesktop().browse(uri);
         }
       } catch (IOException ex) {
-        // Logger.getGlobal().severe(ex::getMessage);
         UIManager.getLookAndFeel().provideErrorFeedback(e.getComponent());
       }
     }

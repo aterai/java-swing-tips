@@ -134,7 +134,7 @@ class UriRenderer1 extends UriRenderer {
         table, value, isSelected, false, row, column);
     String str = Objects.toString(value, "");
     String html = "";
-    if (isRolloverCell(table, row, column)) {
+    if (isHoverCell(table, row, column)) {
       html = "<html><u><font color='blue'>";
     } else if (hasFocus) {
       html = "<html><font color='blue'>";
@@ -152,7 +152,7 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   private static final Rectangle TEXT_RECT = new Rectangle();
   private int viewRowIndex = -1;
   private int viewColumnIndex = -1;
-  private boolean isRollover;
+  private boolean isHover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = super.getTableCellRendererComponent(
@@ -182,7 +182,7 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
           TEXT_RECT, // text
           l.getIconTextGap());
 
-      if (isRolloverCell(table, row, column)) {
+      if (isHoverCell(table, row, column)) {
         l.setText("<html><u><font color='blue'>" + str);
       } else if (hasFocus) {
         l.setText("<html><font color='blue'>" + str);
@@ -193,24 +193,9 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     return c;
   }
 
-  protected boolean isRolloverCell(JTable table, int row, int column) {
-    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isRollover;
+  protected boolean isHoverCell(JTable table, int row, int column) {
+    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isHover;
   }
-
-  // @see SwingUtilities2.pointOutsidePrefSize(...)
-  // private static boolean pointInsidePrefSize(JTable table, Point p) {
-  //   int row = table.rowAtPoint(p);
-  //   int col = table.columnAtPoint(p);
-  //   TableCellRenderer tcr = table.getCellRenderer(row, col);
-  //   Object value = table.getValueAt(row, col);
-  //   Component cell = tcr.getTableCellRendererComponent(table, value, false, false, row, col);
-  //   Dimension itemSize = cell.getPreferredSize();
-  //   Insets i = ((JComponent) cell).getInsets();
-  //   Rectangle cellBounds = table.getCellRect(row, col, false);
-  //   cellBounds.width = itemSize.width - i.right - i.left;
-  //   cellBounds.translate(i.left, i.top);
-  //   return cellBounds.contains(p);
-  // }
 
   private static boolean isUriColumn(JTable table, int column) {
     return column >= 0 && table.getColumnClass(column).equals(URI.class);
@@ -224,24 +209,28 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     viewRowIndex = table.rowAtPoint(pt);
     viewColumnIndex = table.columnAtPoint(pt);
     boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
-
-    boolean prevRollover = isRollover;
-    isRollover = isUriColumn(table, viewColumnIndex); // && pointInsidePrefSize(table, pt);
-    boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
-
-    if (!isSameCell || !isNotRollover) {
-      // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-      Rectangle repaintRect;
-      Rectangle prevRect = table.getCellRect(prevRow, prevCol, false);
-      if (isRollover) {
-        Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
-        repaintRect = prevRollover ? r.union(prevRect) : r;
-      } else { // if (prevRollover) {
-        repaintRect = prevRect;
-      }
+    boolean prevHover = isHover;
+    isHover = isUriColumn(table, viewColumnIndex);
+    boolean isNotHover = isHover == prevHover && !isHover; // && !prevHover;
+    if (!isSameCell || !isNotHover) {
+      Rectangle repaintRect = getRepaintRect(table, prevRow, prevCol, prevHover);
       table.repaint(repaintRect);
-      // table.repaint();
     }
+    // table.repaint();
+  }
+
+  // HyperlinkCellRenderer.java
+  // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+  private Rectangle getRepaintRect(JTable tbl, int preRow, int preCol, boolean preHover) {
+    Rectangle repaintRect;
+    Rectangle preRect = tbl.getCellRect(preRow, preCol, false);
+    if (isHover) {
+      Rectangle viewRect = tbl.getCellRect(viewRowIndex, viewColumnIndex, false);
+      repaintRect = preHover ? viewRect.union(preRect) : viewRect;
+    } else { // if (preHover) {
+      repaintRect = preRect;
+    }
+    return repaintRect;
   }
 
   @Override public void mouseExited(MouseEvent e) {
@@ -250,18 +239,17 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
       table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       viewRowIndex = -1;
       viewColumnIndex = -1;
-      isRollover = false;
+      isHover = false;
     }
   }
 
   @Override public void mouseClicked(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
+    int row = table.rowAtPoint(pt);
     int col = table.columnAtPoint(pt);
-    if (isUriColumn(table, col)) { // && pointInsidePrefSize(table, pt)) {
-      int crow = table.rowAtPoint(pt);
-      URI uri = (URI) table.getValueAt(crow, col);
-      // System.out.println(uri);
+    if (row >= 0 && isUriColumn(table, col)) {
+      URI uri = (URI) table.getValueAt(row, col);
       try {
         // Web Start
         // BasicService bs = (BasicService) ServiceManager.lookup("javax.jnlp.BasicService");

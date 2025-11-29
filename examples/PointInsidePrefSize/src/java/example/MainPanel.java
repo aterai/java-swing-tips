@@ -130,7 +130,7 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   private static final Rectangle TEXT_RECT = new Rectangle();
   private int viewRowIndex = -1;
   private int viewColumnIndex = -1;
-  private boolean isRollover;
+  private boolean isHover;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = super.getTableCellRendererComponent(
@@ -170,7 +170,7 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
   }
 
   protected boolean isRolloverCell(JTable table, int row, int column) {
-    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isRollover;
+    return !table.isEditing() && viewRowIndex == row && viewColumnIndex == column && isHover;
   }
 
   // @see SwingUtilities2.pointOutsidePrefSize(...)
@@ -200,35 +200,28 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
     viewRowIndex = table.rowAtPoint(pt);
     viewColumnIndex = table.columnAtPoint(pt);
     boolean isSameCell = viewRowIndex == prevRow && viewColumnIndex == prevCol;
-
-    boolean prevRollover = isRollover;
-    isRollover = isUriColumn(table, viewColumnIndex) && pointInsidePrefSize(table, pt);
-    boolean isNotRollover = isRollover == prevRollover && !isRollover; // && !prevRollover;
-
-    if (isSameCell && isNotRollover) {
-      return;
+    boolean prevHover = isHover;
+    isHover = isUriColumn(table, viewColumnIndex) && pointInsidePrefSize(table, pt);
+    boolean isNotHover = isHover == prevHover && !isHover; // && !prevHover;
+    if (!isSameCell || !isNotHover) {
+      Rectangle repaintRect = getRepaintRect(table, prevRow, prevCol, prevHover);
+      table.repaint(repaintRect);
     }
-
-    // if (viewRowIndex == prevRow && viewColumnIndex == prevCol && isRollover == prevRollover) {
-    //   return;
-    // }
-    // if (!isRollover && !prevRollover) {
-    //   return;
-    // }
-
-    // >>>> HyperlinkCellRenderer.java
-    // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
-    Rectangle repaintRect;
-    Rectangle prevRect = table.getCellRect(prevRow, prevCol, false);
-    if (isRollover) {
-      Rectangle r = table.getCellRect(viewRowIndex, viewColumnIndex, false);
-      repaintRect = prevRollover ? r.union(prevRect) : r;
-    } else { // if (prevRollover) {
-      repaintRect = prevRect;
-    }
-    table.repaint(repaintRect);
-    // <<<<
     // table.repaint();
+  }
+
+  // HyperlinkCellRenderer.java
+  // @see https://github.com/sjas/swingset3/blob/master/trunk/SwingSet3/src/com/sun/swingset3/demos/table/HyperlinkCellRenderer.java
+  private Rectangle getRepaintRect(JTable tbl, int preRow, int preCol, boolean preHover) {
+    Rectangle repaintRect;
+    Rectangle preRect = tbl.getCellRect(preRow, preCol, false);
+    if (isHover) {
+      Rectangle viewRect = tbl.getCellRect(viewRowIndex, viewColumnIndex, false);
+      repaintRect = preHover ? viewRect.union(preRect) : viewRect;
+    } else { // if (preHover) {
+      repaintRect = preRect;
+    }
+    return repaintRect;
   }
 
   @Override public void mouseExited(MouseEvent e) {
@@ -237,17 +230,17 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
       table.repaint(table.getCellRect(viewRowIndex, viewColumnIndex, false));
       viewRowIndex = -1;
       viewColumnIndex = -1;
-      isRollover = false;
+      isHover = false;
     }
   }
 
   @Override public void mouseClicked(MouseEvent e) {
     JTable table = (JTable) e.getComponent();
     Point pt = e.getPoint();
+    int row = table.rowAtPoint(pt);
     int col = table.columnAtPoint(pt);
-    if (isUriColumn(table, col) && pointInsidePrefSize(table, pt)) {
-      int crow = table.rowAtPoint(pt);
-      URI uri = (URI) table.getValueAt(crow, col);
+    if (row >= 0 && isUriColumn(table, col) && pointInsidePrefSize(table, pt)) {
+      URI uri = (URI) table.getValueAt(row, col);
       if (Desktop.isDesktopSupported()) {
         try {
           Desktop.getDesktop().browse(uri);
