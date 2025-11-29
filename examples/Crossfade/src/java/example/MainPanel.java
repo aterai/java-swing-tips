@@ -113,7 +113,7 @@ public final class MainPanel extends JPanel {
 enum CrossFade {
   IN, OUT;
   public CrossFade toggle() {
-    return this.equals(IN) ? OUT : IN;
+    return this == IN ? OUT : IN;
   }
 }
 

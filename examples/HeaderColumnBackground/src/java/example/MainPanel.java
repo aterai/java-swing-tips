@@ -235,10 +235,10 @@ class WeekHeaderRenderer extends DefaultTableCellRenderer {
     Component c = super.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     DayOfWeek week = weekFields.getFirstDayOfWeek().plus(column);
-    if (week.equals(DayOfWeek.SUNDAY)) {
+    if (week == DayOfWeek.SUNDAY) {
       c.setForeground(table.getSelectionForeground());
       c.setBackground(SUNDAY_BGC);
-    } else if (week.equals(DayOfWeek.SATURDAY)) {
+    } else if (week == DayOfWeek.SATURDAY) {
       c.setForeground(table.getSelectionForeground());
       c.setBackground(SATURDAY_BGC);
     } else {

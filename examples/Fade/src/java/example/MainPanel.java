@@ -92,6 +92,6 @@ public final class MainPanel extends JPanel {
 enum Fade {
   IN, OUT;
   public Fade toggle() {
-    return this.equals(IN) ? OUT : IN;
+    return this == IN ? OUT : IN;
   }
 }
