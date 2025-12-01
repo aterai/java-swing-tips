@@ -236,12 +236,12 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
     private void updateRowsHeight(JViewport viewport) {
       int height = viewport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
-      int defaultRowHeight = height / rowCount;
-      if ((height != prevHeight || rowCount != prevCount) && defaultRowHeight > 0) {
+      int rowHeight = height / rowCount;
+      if ((height != prevHeight || rowCount != prevCount) && rowHeight > 0) {
         int remainder = height % rowCount;
         for (int i = 0; i < rowCount; i++) {
-          int a = Math.min(1, Math.max(0, remainder--));
-          setRowHeight(i, defaultRowHeight + a);
+          int a = rowHeight + Math.min(1, Math.max(0, remainder--));
+          setRowHeight(i, Math.max(1, a));
         }
       }
       prevHeight = height;

@@ -68,6 +68,8 @@ public final class MainPanel extends JPanel {
         return d;
       }
     });
+    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setBorder(BorderFactory.createEmptyBorder());
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
     scroll.getViewport().setBackground(Color.WHITE);
@@ -97,11 +99,11 @@ public final class MainPanel extends JPanel {
     private void updateRowsHeight(JViewport viewport) {
       int height = viewport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
-      int defaultRowHeight = height / rowCount;
+      int rowHeight = height / rowCount;
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = Math.min(1, Math.max(0, remainder--));
-        setRowHeight(i, defaultRowHeight + a);
+        int a = rowHeight + Math.min(1, Math.max(0, remainder--));
+        setRowHeight(i, Math.max(1, a));
       }
     }
 

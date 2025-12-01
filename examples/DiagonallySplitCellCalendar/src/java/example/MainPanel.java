@@ -30,11 +30,11 @@ public final class MainPanel extends JPanel {
     private void updateRowsHeight(JViewport viewport) {
       int height = viewport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
-      int defaultRowHeight = height / rowCount;
+      int rowHeight = height / rowCount;
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = Math.min(1, Math.max(0, remainder--));
-        setRowHeight(i, defaultRowHeight + a);
+        int a = rowHeight + Math.min(1, Math.max(0, remainder--));
+        setRowHeight(i, Math.max(1, a));
       }
     }
 
@@ -76,8 +76,15 @@ public final class MainPanel extends JPanel {
     p.add(prev, BorderLayout.WEST);
     p.add(next, BorderLayout.EAST);
 
+    JScrollPane scroll = new JScrollPane(monthTable) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+      }
+    };
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(monthTable));
+    add(scroll);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
