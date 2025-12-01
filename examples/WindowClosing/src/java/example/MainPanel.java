@@ -134,33 +134,36 @@ class SaveHandler extends WindowAdapter implements DocumentListener, ActionListe
     if (title.equals(frame.getTitle())) {
       LOGGER.info(() -> "The document has already been saved, exit without doing anything.");
       frame.dispose();
-      return;
-    }
-    Toolkit.getDefaultToolkit().beep();
-    Object[] options = {"Save", "Discard", "Cancel"};
-    int retValue = JOptionPane.showOptionDialog(
-        frame,
-        "<html>Save: Exit & Save Changes<br>Discard: Exit & Discard Changes<br>Cancel: Continue",
-        "Exit Options",
-        JOptionPane.YES_NO_CANCEL_OPTION,
-        JOptionPane.INFORMATION_MESSAGE,
-        null,
-        options,
-        options[0]);
-    if (retValue == JOptionPane.YES_OPTION) {
-      LOGGER.info(() -> "exit");
-      // boolean ret = sampleDocumentSaveMethod();
-      // if (ret) { // saved and exit
-      //   frame.dispose();
-      // } else { // error and cancel exit
-      //   return;
-      // }
-      frame.dispose();
-    } else if (retValue == JOptionPane.NO_OPTION) {
-      LOGGER.info(() -> "Exit without save");
-      frame.dispose();
-    } else if (retValue == JOptionPane.CANCEL_OPTION) {
-      LOGGER.info(() -> "Cancel exit");
+    } else {
+      Toolkit.getDefaultToolkit().beep();
+      Object[] options = {"Save", "Discard", "Cancel"};
+      String help1 = "Save: Exit & Save Changes";
+      String help2 = "Discard: Exit & Discard Changes";
+      String help3 = "Cancel: Continue";
+      int retValue = JOptionPane.showOptionDialog(
+          frame,
+          "<html>" + help1 + "<br>" + help2 + "<br>" + help3,
+          "Exit Options",
+          JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.INFORMATION_MESSAGE,
+          null,
+          options,
+          options[0]);
+      if (retValue == JOptionPane.YES_OPTION) {
+        LOGGER.info(() -> "exit");
+        // boolean ret = sampleDocumentSaveMethod();
+        // if (ret) { // saved and exit
+        //   frame.dispose();
+        // } else { // error and cancel exit
+        //   return;
+        // }
+        frame.dispose();
+      } else if (retValue == JOptionPane.NO_OPTION) {
+        LOGGER.info(() -> "Exit without save");
+        frame.dispose();
+      } else if (retValue == JOptionPane.CANCEL_OPTION) {
+        LOGGER.info(() -> "Cancel exit");
+      }
     }
   }
 
