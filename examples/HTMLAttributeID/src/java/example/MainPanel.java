@@ -266,7 +266,7 @@ final class EditorPaneUtils {
     // }
   }
 
-  public static void inlineHighlight(JEditorPane editorPane, Element element, AttributeSet attrs) {
+  public static void inlineHighlight(JEditorPane editor, Element elm, AttributeSet attrs) {
     Collections.list(attrs.getAttributeNames()).stream()
         .filter(AttributeSet.class::isInstance)
         .map(AttributeSet.class::cast)
@@ -274,7 +274,7 @@ final class EditorPaneUtils {
         .filter(Objects::nonNull)
         .forEach(id -> {
           LOGGER.info(() -> String.format("inline: id=%s%n", id));
-          addHighlight(editorPane, element, false);
+          addHighlight(editor, elm, false);
         });
     // Enumeration<?> e = attrs.getAttributeNames();
     // while (e.hasMoreElements()) {
@@ -285,7 +285,7 @@ final class EditorPaneUtils {
     //     Object iid = a.getAttribute(HTML.Attribute.ID);
     //     if (Objects.nonNull(iid)) {
     //       LOGGER.info(() -> String.format("inline: id=%s%n", iid));
-    //       addHighlight(element, false);
+    //       addHighlight(elm, false);
     //     }
     //   }
     // }
