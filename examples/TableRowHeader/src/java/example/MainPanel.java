@@ -178,24 +178,24 @@ class RowHeaderList<E> extends JList<E> {
 
     @Override public void mousePressed(MouseEvent e) {
       int row = locationToIndex(e.getPoint());
-      if (row == pressedRowIndex) {
-        return;
+      if (row != pressedRowIndex) {
+        listSelection.clearSelection();
+        table.changeSelection(row, 0, false, false);
+        int columnIndex = table.getColumnModel().getColumnCount() - 1;
+        table.changeSelection(row, columnIndex, false, true);
+        pressedRowIndex = row;
+        // table.setRowSelectionInterval(row, row);
+        // table.getSelectionModel().setSelectionInterval(row, row);
+        // tableSelection.clearSelection();
+        // table.getSelectionModel().setAnchorSelectionIndex(row);
+        // table.getSelectionModel().setLeadSelectionIndex(row);
+        // tableSelection.addSelectionInterval(row, row);
+        // listSelection.addSelectionInterval(row, row);
+        // ColumnModel cm = table.getColumnModel()
+        // cm.getSelectionModel().setAnchorSelectionIndex(0);
+        // cm.getSelectionModel().setLeadSelectionIndex(0);
+        // table.changeSelection(pressedRowIndex, cm.getColumnCount() - 1, false, true);
       }
-      listSelection.clearSelection();
-      table.changeSelection(row, 0, false, false);
-      table.changeSelection(row, table.getColumnModel().getColumnCount() - 1, false, true);
-      pressedRowIndex = row;
-      // table.setRowSelectionInterval(row, row);
-      // table.getSelectionModel().setSelectionInterval(row, row);
-      // tableSelection.clearSelection();
-      // table.getSelectionModel().setAnchorSelectionIndex(row);
-      // table.getSelectionModel().setLeadSelectionIndex(row);
-      // tableSelection.addSelectionInterval(row, row);
-      // listSelection.addSelectionInterval(row, row);
-      // ColumnModel cm = table.getColumnModel()
-      // cm.getSelectionModel().setAnchorSelectionIndex(0);
-      // cm.getSelectionModel().setLeadSelectionIndex(0);
-      // table.changeSelection(pressedRowIndex, cm.getColumnCount() - 1, false, true);
     }
 
     @Override public void mouseReleased(MouseEvent e) {
