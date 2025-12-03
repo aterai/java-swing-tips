@@ -26,10 +26,7 @@ public final class MainPanel extends JPanel {
     DefaultCellEditor dce = (DefaultCellEditor) table.getDefaultEditor(Object.class);
     dce.getComponent().addFocusListener(new FocusAdapter() {
       @Override public void focusLost(FocusEvent e) {
-        if (!focusCheck.isSelected()) {
-          return;
-        }
-        if (table.isEditing()) {
+        if (focusCheck.isSelected() && table.isEditing()) {
           table.getCellEditor().stopCellEditing();
         }
       }
@@ -38,10 +35,7 @@ public final class MainPanel extends JPanel {
     JCheckBox headerCheck = new JCheckBox("TableHeader:mousePressed", true);
     table.getTableHeader().addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        if (!headerCheck.isSelected()) {
-          return;
-        }
-        if (table.isEditing()) {
+        if (headerCheck.isSelected() && table.isEditing()) {
           table.getCellEditor().stopCellEditing();
         }
       }
@@ -51,7 +45,6 @@ public final class MainPanel extends JPanel {
     // // https://bugs.openjdk.org/browse/JDK-4330950
     // table.getTableHeader().addComponentListener(new ComponentAdapter() {
     //   @Override public void componentResized(ComponentEvent e) {
-    //     System.out.println("componentResized");
     //     if (table.isEditing()) {
     //       table.getCellEditor().stopCellEditing();
     //     }
