@@ -26,13 +26,12 @@ public final class MainPanel extends JPanel {
       private final AtomicBoolean isAdjusting = new AtomicBoolean();
       @Override public void treeWillExpand(TreeExpansionEvent e) { // throws ExpandVetoException {
         // collapseAll(tree); // StackOverflowError when collapsing nodes below 2nd level
-        if (isAdjusting.get()) {
-          return;
+        if (!isAdjusting.get()) {
+          isAdjusting.set(true);
+          collapseFirstHierarchy(tree);
+          tree.setSelectionPath(e.getPath());
+          isAdjusting.set(false);
         }
-        isAdjusting.set(true);
-        collapseFirstHierarchy(tree);
-        tree.setSelectionPath(e.getPath());
-        isAdjusting.set(false);
       }
 
       @Override public void treeWillCollapse(TreeExpansionEvent e) { // throws ExpandVetoException {
@@ -99,7 +98,7 @@ public final class MainPanel extends JPanel {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
       boolean isOverFirstLevel = node.getLevel() > 1;
       if (isOverFirstLevel) { // Collapse only nodes in the first hierarchy
-        return;
+        break;
       } else if (node.isLeaf() || node.isRoot()) {
         continue;
       }
