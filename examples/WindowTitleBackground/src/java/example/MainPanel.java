@@ -127,7 +127,10 @@ class ColorRenderer extends DefaultTableCellRenderer {
       if (value instanceof Color) {
         Color color = (Color) value;
         l.setIcon(new ColorIcon(color));
-        l.setText(String.format("(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue()));
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
+        l.setText(String.format("(%d, %d, %d)", r, g, b));
       } else {
         l.setIcon(new NullIcon());
         l.setText("null");
