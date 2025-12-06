@@ -12,22 +12,20 @@ import javax.swing.border.Border;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
-    super(new BorderLayout());
-    JButton button1 = makeButton("Default BevelBorder", new BevelBorder(BevelBorder.RAISED) {
+    super(new FlowLayout(FlowLayout.CENTER, 20, 20));
+    Border border1 = new BevelBorder(BevelBorder.RAISED) {
       @Override public Insets getBorderInsets(Component c, Insets insets) {
         insets.set(10, 10, 10, 10);
         return insets;
       }
-    });
-    JButton button2 = makeButton("Custom BevelBorder", new CustomBevelBorder(BevelBorder.RAISED));
+    };
+    add(makeButton("Default BevelBorder", border1));
 
-    JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-    p.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
-    p.add(button1);
-    p.add(button2);
+    Border border2 = new CustomBevelBorder(BevelBorder.RAISED);
+    add(makeButton("Custom BevelBorder", border2));
 
-    add(p);
-    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(p));
+    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(this));
+    setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
     setPreferredSize(new Dimension(320, 240));
   }
 
