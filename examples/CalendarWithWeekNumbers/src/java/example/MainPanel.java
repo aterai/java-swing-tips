@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     box.add(yearMonthPanel);
     box.add(Box.createVerticalStrut(2));
 
-    updateMonthView(monthList.realLocalDate);
+    updateMonthView(monthList.getRealLocalDate());
 
     JScrollPane scroll = new JScrollPane(monthList) {
       @Override public void updateUI() {
@@ -137,7 +137,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  public void updateMonthView(LocalDate localDate) {
+  private void updateMonthView(LocalDate localDate) {
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
     String txt = localDate.format(fmt.withLocale(locale));
@@ -169,7 +169,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MonthList extends JList<LocalDate> {
-  public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
+  private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
 
   protected MonthList() {
@@ -185,6 +185,10 @@ class MonthList extends JList<LocalDate> {
     setFixedCellHeight(WeekHeaderList.CELL_SIZE.height);
     setCellRenderer(new CalendarListRenderer());
     getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+  }
+
+  public LocalDate getRealLocalDate() {
+    return realLocalDate;
   }
 
   public void setCurrentLocalDate(LocalDate date) {
