@@ -22,23 +22,22 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JLabel yearMonthLabel = new JLabel("", SwingConstants.CENTER);
-  private final MonthList monthList = new MonthList();
-
   private MainPanel() {
     super();
-    installActions();
+    JLabel yearMonthLabel = new JLabel("", SwingConstants.CENTER);
+    MonthList monthList = new MonthList();
+    installActions(monthList, yearMonthLabel);
 
     JButton prev = new JButton("<");
     prev.addActionListener(e -> {
       LocalDate date = monthList.getCurrentLocalDate().minusMonths(1);
-      updateMonthView(date);
+      updateMonthView(monthList, yearMonthLabel, date);
     });
 
     JButton next = new JButton(">");
     next.addActionListener(e -> {
       LocalDate date = monthList.getCurrentLocalDate().plusMonths(1);
-      updateMonthView(date);
+      updateMonthView(monthList, yearMonthLabel, date);
     });
 
     JPanel yearMonthPanel = new JPanel(new BorderLayout());
@@ -49,7 +48,7 @@ public final class MainPanel extends JPanel {
     box.add(yearMonthPanel);
     box.add(Box.createVerticalStrut(2));
 
-    updateMonthView(monthList.realLocalDate);
+    updateMonthView(monthList, yearMonthLabel, monthList.getRealLocalDate());
 
     JScrollPane scroll = new JScrollPane(monthList) {
       @Override public void updateUI() {
@@ -57,6 +56,11 @@ public final class MainPanel extends JPanel {
         setColumnHeaderView(new WeekHeaderList());
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+        EventQueue.invokeLater(() -> {
+          Container p = SwingUtilities.getUnwrappedParent(this);
+          p.revalidate();
+          p.repaint();
+        });
       }
     };
     box.add(scroll);
@@ -65,21 +69,21 @@ public final class MainPanel extends JPanel {
     box.add(label);
     monthList.getSelectionModel().addListSelectionListener(e -> {
       ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-      label.setText(lsm.isSelectionEmpty() ? " " : between(lsm));
+      label.setText(lsm.isSelectionEmpty() ? " " : between(monthList, lsm));
     });
 
     add(box);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private String between(ListSelectionModel lsm) {
+  private String between(MonthList monthList, ListSelectionModel lsm) {
     ListModel<LocalDate> model = monthList.getModel();
     LocalDate from = model.getElementAt(lsm.getMinSelectionIndex());
     LocalDate to = model.getElementAt(lsm.getMaxSelectionIndex());
     return Period.between(from, to).toString();
   }
 
-  private void installActions() {
+  private void installActions(MonthList monthList, JLabel label) {
     InputMap im = monthList.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "selectNextIndex");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "selectPreviousIndex");
@@ -92,7 +96,8 @@ public final class MainPanel extends JPanel {
           monthList.setSelectedIndex(index - 1);
         } else {
           LocalDate d = monthList.getModel().getElementAt(0).minusDays(1);
-          updateMonthView(monthList.getCurrentLocalDate().minusMonths(1));
+          LocalDate date = monthList.getCurrentLocalDate().minusMonths(1);
+          updateMonthView(monthList, label, date);
           monthList.setSelectedValue(d, false);
         }
       }
@@ -105,7 +110,8 @@ public final class MainPanel extends JPanel {
         } else {
           int lastDayOfMonth = monthList.getModel().getSize() - 1;
           LocalDate d = monthList.getModel().getElementAt(lastDayOfMonth).plusDays(1);
-          updateMonthView(monthList.getCurrentLocalDate().plusMonths(1));
+          LocalDate date = monthList.getCurrentLocalDate().plusMonths(1);
+          updateMonthView(monthList, label, date);
           monthList.setSelectedValue(d, false);
         }
       }
@@ -117,7 +123,8 @@ public final class MainPanel extends JPanel {
         int weekLength = DayOfWeek.values().length; // 7
         if (index < weekLength) {
           LocalDate d = monthList.getModel().getElementAt(index).minusDays(weekLength);
-          updateMonthView(monthList.getCurrentLocalDate().minusMonths(1));
+          LocalDate date = monthList.getCurrentLocalDate().minusMonths(1);
+          updateMonthView(monthList, label, date);
           monthList.setSelectedValue(d, false);
         } else {
           selectPreviousRow.actionPerformed(e);
@@ -131,7 +138,8 @@ public final class MainPanel extends JPanel {
         int weekLength = DayOfWeek.values().length; // 7
         if (index > monthList.getModel().getSize() - weekLength) {
           LocalDate d = monthList.getModel().getElementAt(index).plusDays(weekLength);
-          updateMonthView(monthList.getCurrentLocalDate().plusMonths(1));
+          LocalDate date = monthList.getCurrentLocalDate().plusMonths(1);
+          updateMonthView(monthList, label, date);
           monthList.setSelectedValue(d, false);
         } else {
           selectNextRow.actionPerformed(e);
@@ -140,11 +148,11 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  public void updateMonthView(LocalDate localDate) {
-    monthList.setCurrentLocalDate(localDate);
+  private void updateMonthView(MonthList list, JLabel label, LocalDate localDate) {
+    list.setCurrentLocalDate(localDate);
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    yearMonthLabel.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
-    monthList.setModel(new CalendarViewListModel(localDate));
+    label.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
+    list.setModel(new CalendarViewListModel(localDate));
   }
 
   public static void main(String[] args) {
@@ -170,7 +178,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MonthList extends JList<LocalDate> {
-  public final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
+  private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
   private transient MouseAdapter handler;
 
@@ -192,6 +200,10 @@ class MonthList extends JList<LocalDate> {
     handler = new SingleIntervalMouseSelectionListener();
     addMouseListener(handler);
     addMouseMotionListener(handler);
+  }
+
+  public LocalDate getRealLocalDate() {
+    return realLocalDate;
   }
 
   public void setCurrentLocalDate(LocalDate date) {
@@ -243,10 +255,11 @@ class WeekHeaderList extends JList<DayOfWeek> {
   @Override public void updateUI() {
     setCellRenderer(null);
     super.updateUI();
+    Color bgc = UIManager.getColor("TableHeader.background").darker();
     ListCellRenderer<? super DayOfWeek> r = getCellRenderer();
     setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(list, value, index, false, false);
-      c.setBackground(new Color(0xDC_DC_DC));
+      c.setBackground(bgc);
       if (c instanceof JLabel) {
         JLabel l = (JLabel) c;
         l.setHorizontalAlignment(SwingConstants.CENTER);
