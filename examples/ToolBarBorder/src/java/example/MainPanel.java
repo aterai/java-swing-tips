@@ -67,15 +67,11 @@ class ToolBarDragBorder extends MetalBorders.ToolBarBorder {
   private static final Icon DRAG_ICON = new ToolBarDragIcon();
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-    if (!(c instanceof JToolBar)) {
-      return;
-    }
-    JToolBar tb = (JToolBar) c;
-    if (tb.isFloatable()) {
-      if (tb.getOrientation() == HORIZONTAL) {
+    if (c instanceof JToolBar && ((JToolBar) c).isFloatable()) {
+      if (((JToolBar) c).getOrientation() == HORIZONTAL) {
         int cy = (h - DRAG_ICON.getIconHeight()) / 2;
         DRAG_ICON.paintIcon(c, g, x, y + cy);
-      } else { // vertical
+      } else { // VERTICAL
         super.paintBorder(c, g, x, y, w, h);
       }
     }
