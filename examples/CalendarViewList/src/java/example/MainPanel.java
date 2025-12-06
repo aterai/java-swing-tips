@@ -20,9 +20,6 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final JLabel yearMonthLabel = new JLabel("", SwingConstants.CENTER);
-  private final MonthList monthList = new MonthList();
-
   private MainPanel() {
     super();
     JLabel yearMonthLabel = new JLabel("", SwingConstants.CENTER);
