@@ -210,17 +210,15 @@ class LabelWithToolBox extends JLabel {
     setLayout(new OverlayLayout(this) {
       @Override public void layoutContainer(Container parent) {
         // Insets insets = parent.getInsets();
-        int nc = parent.getComponentCount();
-        if (nc == 0) {
-          return;
+        if (parent.getComponentCount() > 0) {
+          int width = parent.getWidth(); // - insets.left - insets.right;
+          int height = parent.getHeight(); // - insets.left - insets.right;
+          int x = 0; // insets.left; int y = insets.top;
+          // for (int i = 0; i < nc; i++) {
+          Component c = parent.getComponent(0); // = toolBox;
+          c.setBounds(x, height - yy, width, c.getPreferredSize().height);
+          // }
         }
-        int width = parent.getWidth(); // - insets.left - insets.right;
-        int height = parent.getHeight(); // - insets.left - insets.right;
-        int x = 0; // insets.left; int y = insets.top;
-        // for (int i = 0; i < nc; i++) {
-        Component c = parent.getComponent(0); // = toolBox;
-        c.setBounds(x, height - yy, width, c.getPreferredSize().height);
-        // }
       }
     });
     handler = new ToolBoxHandler();
