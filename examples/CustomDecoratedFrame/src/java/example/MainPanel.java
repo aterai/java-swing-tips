@@ -97,10 +97,11 @@ public final class MainPanel extends JPanel {
     JPanel titleBar = makeTitleBar(title);
 
     MouseInputListener rwl = new ResizeWindowListener();
-    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight).forEach(c -> {
-      c.addMouseListener(rwl);
-      c.addMouseMotionListener(rwl);
-    });
+    Stream.of(left, right, top, bottom, topLeft, topRight, bottomLeft, bottomRight)
+        .forEach(c -> {
+          c.addMouseListener(rwl);
+          c.addMouseMotionListener(rwl);
+        });
 
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
