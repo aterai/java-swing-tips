@@ -278,7 +278,7 @@ class EditorGlassPane extends JComponent {
 }
 
 class EditorFromList<E extends IconItem> extends JList<E> {
-  protected int rollOverRowIndex = -1;
+  private int rollOverRowIndex = -1;
   private final Dimension dim;
   private transient RollOverListener handler;
 
