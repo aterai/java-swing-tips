@@ -662,14 +662,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   }
 }
 
-class IconTab {
+class ColorIconTab {
   public final String title;
   public final Icon icon;
   public final Component comp;
 
-  protected IconTab(String title, Icon icon, Component component) {
+  protected ColorIconTab(String title, Color color, Component component) {
     this.title = title;
-    this.icon = icon;
+    this.icon = new ColorIcon(color);
     this.comp = component;
   }
 }
@@ -679,15 +679,15 @@ final class TabbedPaneUtils {
     /* Singleton */
   }
 
-  public static List<IconTab> makeIconTabs() {
+  public static List<ColorIconTab> makeIconTabs() {
     return Arrays.asList(
-        new IconTab("1:JTree", new ColorIcon(Color.RED), new JScrollPane(new JTree())),
-        new IconTab("2:JTable", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(10, 3))),
-        new IconTab("3:JTextArea", new ColorIcon(Color.BLUE), new JScrollPane(new JTextArea())),
-        new IconTab("4:JButton", new ColorIcon(Color.CYAN), new JButton("JButton")),
-        new IconTab("5:JCheckBox", new ColorIcon(Color.ORANGE), new JCheckBox("JCheckBox")),
-        new IconTab("6:JRadioButton", new ColorIcon(Color.PINK), new JRadioButton("JRadioButton")),
-        new IconTab("7:JSplitPane", new ColorIcon(Color.YELLOW), new JSplitPane()));
+        new ColorIconTab("1:JTree", Color.RED, new JScrollPane(new JTree())),
+        new ColorIconTab("2:JTable", Color.GREEN, new JScrollPane(new JTable(10, 3))),
+        new ColorIconTab("3:JTextArea", Color.BLUE, new JScrollPane(new JTextArea())),
+        new ColorIconTab("4:JButton", Color.CYAN, new JButton("JButton")),
+        new ColorIconTab("5:JCheckBox", Color.ORANGE, new JCheckBox("JCheckBox")),
+        new ColorIconTab("6:JRadioButton", Color.PINK, new JRadioButton("JRadioButton")),
+        new ColorIconTab("7:JSplitPane", Color.YELLOW, new JSplitPane()));
   }
 
   public static Insets getSynthInsets(JTabbedPane tabs, Region region) {

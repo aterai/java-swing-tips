@@ -212,7 +212,8 @@ final class ThemeUtils {
     return isDark;
   }
 
-  public static String getProcessOutput(List<String> cmd) throws IOException, InterruptedException {
+  public static String getProcessOutput(List<String> cmd)
+      throws IOException, InterruptedException {
     ProcessBuilder builder = new ProcessBuilder(cmd);
     builder.redirectErrorStream(true);
     Process p = builder.start();
