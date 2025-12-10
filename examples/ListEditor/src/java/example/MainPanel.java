@@ -227,12 +227,7 @@ class EditableList<E extends ListItem> extends JList<E> {
       editor.requestFocusInWindow();
     }
   };
-  protected final Action cancelEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      glassPane.setVisible(false);
-    }
-  };
-  protected final Action renameTitle = new AbstractAction() {
+  private final Action renameTitle = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       String title = editor.getText().trim();
       int index = getSelectedIndex();
@@ -243,7 +238,6 @@ class EditableList<E extends ListItem> extends JList<E> {
       glassPane.setVisible(false);
     }
   };
-
   private transient MouseAdapter handler;
 
   protected EditableList(ListModel<E> model) {
@@ -262,6 +256,12 @@ class EditableList<E extends ListItem> extends JList<E> {
 
     ActionMap am = editor.getActionMap();
     am.put(RENAME, renameTitle);
+    Action cancelEditing = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        glassPane.setVisible(false);
+      }
+    };
     am.put(CANCEL, cancelEditing);
 
     getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
