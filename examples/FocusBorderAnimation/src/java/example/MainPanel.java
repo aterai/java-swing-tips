@@ -117,20 +117,20 @@ class AnimatedBorder extends EmptyBorder {
     if (stop) {
       startTime = -1L;
       ((Timer) e.getSource()).stop();
-      c.repaint();
-      return;
-    }
-    Point2D pos = new Point2D.Double();
-    pos.setLocation(points.get(0));
-    borderPath.reset();
-    borderPath.moveTo(pos.getX(), pos.getY());
-    int idx = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
-    for (int i = 0; i <= idx; i++) {
-      pos.setLocation(points.get(i));
-      borderPath.lineTo(pos.getX(), pos.getY());
+    } else {
+      Point2D pos = new Point2D.Double();
+      pos.setLocation(points.get(0));
+      borderPath.reset();
       borderPath.moveTo(pos.getX(), pos.getY());
+      int size = points.size();
+      int idx = Math.min(Math.max(0, (int) (size * progress)), size - 1);
+      for (int i = 0; i <= idx; i++) {
+        pos.setLocation(points.get(i));
+        borderPath.lineTo(pos.getX(), pos.getY());
+        borderPath.moveTo(pos.getX(), pos.getY());
+      }
+      borderPath.closePath();
     }
-    borderPath.closePath();
     c.repaint();
   }
 
