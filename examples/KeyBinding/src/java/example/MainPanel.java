@@ -9,8 +9,6 @@ import java.awt.event.ItemEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -127,24 +125,31 @@ public final class MainPanel extends JPanel {
   // }
   private void loadBindingMap(FocusType focusType, InputMap im, ActionMap am) {
     KeyStroke[] imKeys = im.allKeys();
-    if (Objects.isNull(imKeys)) {
-      return;
-    }
-    ActionMap tmpAm = new ActionMap();
-    for (Object actionMapKey : am.allKeys()) {
-      tmpAm.put(actionMapKey, am.get(actionMapKey));
-    }
-    for (KeyStroke ks : imKeys) {
-      Object actionMapKey = im.get(ks);
-      Action action = am.get(actionMapKey);
-      String name = String.format("%s%s", action == null ? "____" : "", actionMapKey);
-      model.addBinding(makeBinding(focusType, name, ks.toString()));
-      tmpAm.remove(actionMapKey);
-    }
-    Object[] keys = tmpAm.allKeys();
-    List<Object> list = Objects.nonNull(keys) ? Arrays.asList(keys) : Collections.emptyList();
-    for (Object actionMapKey : list) {
-      model.addBinding(makeBinding(focusType, actionMapKey.toString(), ""));
+    if (Objects.nonNull(imKeys)) {
+      ActionMap tmpAm = new ActionMap();
+      for (Object actionMapKey : am.allKeys()) {
+        tmpAm.put(actionMapKey, am.get(actionMapKey));
+      }
+      for (KeyStroke ks : imKeys) {
+        Object actionMapKey = im.get(ks);
+        Action action = am.get(actionMapKey);
+        String name = String.format("%s%s", action == null ? "____" : "", actionMapKey);
+        model.addBinding(makeBinding(focusType, name, ks.toString()));
+        tmpAm.remove(actionMapKey);
+      }
+      Object[] keys = tmpAm.allKeys();
+      if (Objects.nonNull(keys)) {
+        Arrays.stream(keys)
+            .map(Object::toString)
+            .map(key -> makeBinding(focusType, key, ""))
+            .forEach(model::addBinding);
+      }
+      // List<Object> list = Objects.nonNull(keys)
+      //     ? Arrays.asList(keys)
+      //     : Collections.emptyList();
+      // for (Object actionMapKey : list) {
+      //   model.addBinding(makeBinding(focusType, actionMapKey.toString(), ""));
+      // }
     }
   }
   // -->
