@@ -46,11 +46,11 @@ public final class MainPanel extends JPanel {
     controls.add(button, BorderLayout.EAST);
 
     JButton showHideButton = new JButton();
-    showHideButton.setAction(layout.showHideAction);
+    showHideButton.setAction(layout.getShowHideAction());
     showHideButton.setFocusable(false);
 
     String searchCmd = "open-search-box";
-    getActionMap().put(searchCmd, layout.showHideAction);
+    getActionMap().put(searchCmd, layout.getShowHideAction());
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     KeyStroke key = KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers);
@@ -141,7 +141,7 @@ class FindNextAction extends AbstractAction {
 }
 
 class ControlPanelLayout extends BorderLayout {
-  public final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
+  private final Action showHideAction = new AbstractAction("Show/Hide Search Box") {
     @Override public void actionPerformed(ActionEvent e) {
       showHideActionPerformed();
     }
@@ -162,6 +162,10 @@ class ControlPanelLayout extends BorderLayout {
       isHidden = controls.getHeight() == 0;
       animator.start();
     }
+  }
+
+  public Action getShowHideAction() {
+    return showHideAction;
   }
 
   @Override public Dimension preferredLayoutSize(Container target) {
