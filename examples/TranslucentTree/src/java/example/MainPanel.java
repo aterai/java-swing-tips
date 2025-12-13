@@ -85,14 +85,18 @@ class TransparentTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x64_64_64_FF, true);
 
   @Override protected void paintComponent(Graphics g) {
-    int[] sr = getSelectionRows();
-    if (sr == null) {
+    int[] selectionRows = getSelectionRows();
+    if (selectionRows == null) {
       super.paintComponent(g);
-      return;
+    } else {
+      paintSelectionRows(g, selectionRows);
     }
+  }
+
+  private void paintSelectionRows(Graphics g, int... selectionRows) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(SELECTED_COLOR);
-    Arrays.stream(getSelectionRows()).mapToObj(this::getRowBounds)
+    Arrays.stream(selectionRows).mapToObj(this::getRowBounds)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
     super.paintComponent(g);
     if (hasFocus()) {
