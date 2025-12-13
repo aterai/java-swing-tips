@@ -146,35 +146,41 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
-    if (value instanceof LocalDate && c instanceof JLabel && table instanceof MonthTable) {
-      JLabel l = (JLabel) c;
-      l.setHorizontalAlignment(CENTER);
+    if (value instanceof LocalDate && table instanceof MonthTable) {
       LocalDate d = (LocalDate) value;
-      l.setText(Integer.toString(d.getDayOfMonth()));
+      if (c instanceof JLabel) {
+        ((JLabel) c).setHorizontalAlignment(CENTER);
+        ((JLabel) c).setText(Integer.toString(d.getDayOfMonth()));
+      }
       LocalDate currentLocalDate = ((MonthTable) table).getCurrentLocalDate();
       if (selected) {
-        l.setForeground(table.getSelectionForeground());
+        c.setForeground(table.getSelectionForeground());
       } else if (YearMonth.from(d).equals(YearMonth.from(currentLocalDate))) {
-        l.setForeground(table.getForeground());
+        c.setForeground(table.getForeground());
       } else {
-        l.setForeground(Color.GRAY);
+        c.setForeground(Color.GRAY);
       }
       if (d.isEqual(realLocalDate)) {
-        l.setBackground(TODAY_BGC);
+        c.setBackground(TODAY_BGC);
       } else {
-        DayOfWeek dayOfWeek = d.getDayOfWeek();
-        if (selected) {
-          c.setBackground(table.getSelectionBackground());
-        } else if (dayOfWeek == DayOfWeek.SUNDAY) {
-          c.setBackground(SUNDAY_BGC);
-        } else if (dayOfWeek == DayOfWeek.SATURDAY) {
-          c.setBackground(SATURDAY_BGC);
-        } else {
-          c.setBackground(table.getBackground());
-        }
+        c.setBackground(getDayOfWeekColor(d.getDayOfWeek(), table, selected));
       }
     }
     return c;
+  }
+
+  private static Color getDayOfWeekColor(DayOfWeek dow, JTable table, boolean selected) {
+    Color color;
+    if (selected) {
+      color = table.getSelectionBackground();
+    } else if (dow == DayOfWeek.SUNDAY) {
+      color = SUNDAY_BGC;
+    } else if (dow == DayOfWeek.SATURDAY) {
+      color = SATURDAY_BGC;
+    } else {
+      color = table.getBackground();
+    }
+    return color;
   }
 }
 
