@@ -230,7 +230,6 @@ final class MenuBarUtils {
   }
 }
 
-
 // @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
 final class LookAndFeelUtils {
   private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
