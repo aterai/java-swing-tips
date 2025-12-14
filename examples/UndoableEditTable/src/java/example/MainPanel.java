@@ -99,7 +99,7 @@ class PropertyTable extends JTable {
     im.put(KeyStroke.getKeyStroke("ctrl Y"), redo);
   }
 
-  private class UndoAction extends AbstractAction {
+  private final class UndoAction extends AbstractAction {
     private UndoAction() {
       super("undo");
     }
@@ -113,7 +113,7 @@ class PropertyTable extends JTable {
     }
   }
 
-  private class RedoAction extends AbstractAction {
+  private final class RedoAction extends AbstractAction {
     private RedoAction() {
       super("redo");
     }
