@@ -266,8 +266,8 @@ class GroupableTableHeaderUI extends BasicTableHeaderUI {
  * @see <a href="http://www2.gol.com/users/tame/swing/examples/JTableExamples1.html">ColumnGroup</a>
  */
 class ColumnGroup {
-  protected final List<Object> list = new ArrayList<>();
-  protected final String text;
+  private final List<Object> list = new ArrayList<>();
+  private final String text;
 
   protected ColumnGroup(String text) {
     this.text = text;
