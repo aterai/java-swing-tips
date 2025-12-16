@@ -149,25 +149,27 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+    TreePath path = e.getPath();
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
     File parent = (File) node.getUserObject();
-    if (!node.isLeaf() || !parent.isDirectory()) {
-      return;
-    }
-
-    JTree tree = (JTree) e.getSource();
-    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-    new BackgroundTask(fileSystemView, parent) {
-      @Override protected void process(List<File> chunks) {
-        if (tree.isDisplayable() && !isCancelled()) {
-          chunks.stream().map(DefaultMutableTreeNode::new)
-              .forEach(child -> model.insertNodeInto(child, node, node.getChildCount()));
-          // model.reload(node);
-        } else {
-          cancel(true);
+    if (node.isLeaf() && parent.isDirectory()) {
+      JTree tree = (JTree) e.getSource();
+      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+      new BackgroundTask(fileSystemView, parent) {
+        @Override protected void process(List<File> chunks) {
+          if (tree.isDisplayable() && !isCancelled()) {
+            chunks.stream().map(DefaultMutableTreeNode::new)
+                .forEach(child -> {
+                  int count = node.getChildCount();
+                  model.insertNodeInto(child, node, count);
+                });
+            // model.reload(node);
+          } else {
+            cancel(true);
+          }
         }
-      }
-    }.execute();
+      }.execute();
+    }
   }
 }
 
