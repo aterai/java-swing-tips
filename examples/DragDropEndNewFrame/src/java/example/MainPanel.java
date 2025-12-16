@@ -192,23 +192,22 @@ class DnDTabbedPane extends JTabbedPane {
   }
 
   protected void convertTab(int prev, int next) {
-    if (next < 0 || prev == next) {
-      return;
+    if (next >= 0 && prev != next) {
+      final Component cmp = getComponentAt(prev);
+      final Component tab = getTabComponentAt(prev);
+      final String title = getTitleAt(prev);
+      final Icon icon = getIconAt(prev);
+      final String tip = getToolTipTextAt(prev);
+      final boolean isEnabled = isEnabledAt(prev);
+      int tgtIndex = prev > next ? next : next - 1;
+      remove(prev);
+      insertTab(title, icon, cmp, tip, tgtIndex);
+      setEnabledAt(tgtIndex, isEnabled);
+      if (isEnabled) {
+        setSelectedIndex(tgtIndex);
+      }
+      setTabComponentAt(tgtIndex, tab);
     }
-    final Component cmp = getComponentAt(prev);
-    final Component tab = getTabComponentAt(prev);
-    final String title = getTitleAt(prev);
-    final Icon icon = getIconAt(prev);
-    final String tip = getToolTipTextAt(prev);
-    final boolean isEnabled = isEnabledAt(prev);
-    int tgtIndex = prev > next ? next : next - 1;
-    remove(prev);
-    insertTab(title, icon, cmp, tip, tgtIndex);
-    setEnabledAt(tgtIndex, isEnabled);
-    if (isEnabled) {
-      setSelectedIndex(tgtIndex);
-    }
-    setTabComponentAt(tgtIndex, tab);
   }
 
   protected void initTargetLine(int next) {
@@ -388,20 +387,29 @@ class TabDropTargetListener implements DropTargetListener {
   }
 
   @Override public void dragEnter(DropTargetDragEvent e) {
-    getGhostGlassPane(e.getDropTargetContext().getComponent()).ifPresent(glassPane -> {
+    Component c = e.getDropTargetContext().getComponent();
+    getGhostGlassPane(c).ifPresent(glassPane -> {
       Transferable t = e.getTransferable();
-      for (DataFlavor flavor : e.getCurrentDataFlavors()) {
-        if (t.isDataFlavorSupported(flavor)) {
-          e.acceptDrag(e.getDropAction());
-          return;
-        }
+      boolean anyMatch = Arrays.stream(e.getCurrentDataFlavors())
+          .anyMatch(t::isDataFlavorSupported);
+      if (anyMatch) {
+        e.acceptDrag(e.getDropAction());
+      } else {
+        e.rejectDrag();
       }
-      e.rejectDrag();
+      // for (DataFlavor flavor : e.getCurrentDataFlavors()) {
+      //   if (t.isDataFlavorSupported(flavor)) {
+      //     e.acceptDrag(e.getDropAction());
+      //     return;
+      //   }
+      // }
+      // e.rejectDrag();
     });
   }
 
   @Override public void dragExit(DropTargetEvent e) {
-    getGhostGlassPane(e.getDropTargetContext().getComponent()).ifPresent(glassPane -> {
+    Component c = e.getDropTargetContext().getComponent();
+    getGhostGlassPane(c).ifPresent(glassPane -> {
       glassPane.setPoint(HIDDEN_POINT);
       glassPane.setTargetRect(0, 0, 0, 0);
       glassPane.repaint();
