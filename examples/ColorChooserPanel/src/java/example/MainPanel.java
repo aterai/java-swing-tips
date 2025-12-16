@@ -20,7 +20,7 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(10, 10));
-    // JDialog dialog = new JDialog(this, "JColorChooser", Dialog.ModalityType.APPLICATION_MODAL);
+    // var dialog = new JDialog(this, "JColorChooser", Dialog.ModalityType.APPLICATION_MODAL);
     // JPanel buttonPanel = new JPanel();
     // buttonPanel.add(new JButton("OK"));
     // buttonPanel.add(new JButton("Cancel"));

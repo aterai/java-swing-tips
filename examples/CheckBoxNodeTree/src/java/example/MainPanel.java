@@ -322,7 +322,6 @@ class CheckBoxNode {
 //   private JTree tree = null;
 //   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 //     this.tree = tree;
-//     // String strVal = tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
 //     if (leaf && value instanceof DefaultMutableTreeNode) {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //       if (userObject instanceof CheckBoxNode) {
