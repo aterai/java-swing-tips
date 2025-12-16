@@ -397,13 +397,6 @@ class TabDropTargetListener implements DropTargetListener {
       } else {
         e.rejectDrag();
       }
-      // for (DataFlavor flavor : e.getCurrentDataFlavors()) {
-      //   if (t.isDataFlavorSupported(flavor)) {
-      //     e.acceptDrag(e.getDropAction());
-      //     return;
-      //   }
-      // }
-      // e.rejectDrag();
     });
   }
 
