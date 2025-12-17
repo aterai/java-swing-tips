@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("make");
     button.addActionListener(e -> {
       try {
-        String path = createAnimatedGifFile(list, size).getAbsolutePath();
+        String path = createAnimatedGif(list, size).getAbsolutePath();
         label.setText(path);
         label.setIcon(new ImageIcon(path));
       } catch (IOException ex) {
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static File createAnimatedGifFile(List<Shape> list, Dimension size) throws IOException {
+  private static File createAnimatedGif(List<Shape> list, Dimension size) throws IOException {
     Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("gif");
     ImageWriter writer = it.hasNext() ? it.next() : null;
     if (Objects.isNull(writer)) {
@@ -84,7 +84,9 @@ public final class MainPanel extends JPanel {
 
       // Create animated GIF using imageio | Oracle Community
       // https://community.oracle.com/thread/1264385
-      BufferedImage img = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+      int w = size.width;
+      int h = size.height;
+      BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       ImageWriteParam iwp = writer.getDefaultWriteParam();
       IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(img), iwp);
       String metaFormat = metadata.getNativeMetadataFormatName();
