@@ -117,8 +117,8 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
   private static final DataFlavor FLAVOR = new DataFlavor(MIME_TYPE, NAME);
   private static final Color LINE_COLOR = new Color(0xFF_64_64);
   private static final Color EVEN_COLOR = new Color(0xF0_F0_F0);
-  protected int draggedIndex = -1;
-  protected int targetIndex = -1;
+  private int draggedIndex = -1;
+  private int targetIndex = -1;
   private final Rectangle targetLine = new Rectangle();
 
   protected DnDTable(TableModel model) {
