@@ -46,22 +46,21 @@ public final class ResizeMouseListener extends MouseInputAdapter {
 
   // @see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
   @Override public void mouseDragged(MouseEvent e) {
-    if (startRect.isEmpty()) {
-      return;
+    if (!startRect.isEmpty()) {
+      Component c = e.getComponent();
+      Point p = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
+      int deltaX = startPos.x - p.x;
+      int deltaY = startPos.y - p.y;
+      Container parent = SwingUtilities.getUnwrappedParent(c);
+      int cursorType = Optional.ofNullable(cursor)
+          .map(Cursor::getType)
+          .orElse(Cursor.DEFAULT_CURSOR);
+      Directions.getByCursorType(cursorType).ifPresent(dir -> {
+        Point delta = getLimitedDelta(cursorType, parent.getBounds(), deltaX, deltaY);
+        c.setBounds(dir.getBounds(startRect, delta));
+      });
+      parent.revalidate();
     }
-    Component c = e.getComponent();
-    Point p = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
-    int deltaX = startPos.x - p.x;
-    int deltaY = startPos.y - p.y;
-    Container parent = SwingUtilities.getUnwrappedParent(c);
-    int cursorType = Optional.ofNullable(cursor)
-        .map(Cursor::getType)
-        .orElse(Cursor.DEFAULT_CURSOR);
-    Directions.getByCursorType(cursorType).ifPresent(dir -> {
-      Point delta = getLimitedDelta(cursorType, parent.getBounds(), deltaX, deltaY);
-      c.setBounds(dir.getBounds(startRect, delta));
-    });
-    parent.revalidate();
   }
 
   private int getDeltaX(int dx) {
