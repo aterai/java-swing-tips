@@ -162,19 +162,18 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   private void startDragging(JComponent parent, Point pt) {
     Component c = parent.getComponentAt(pt);
     int index = parent.getComponentZOrder(c);
-    if (Objects.equals(c, parent) || index < 0) {
-      return;
+    if (!Objects.equals(c, parent) && index >= 0) {
+      draggingComponent = c;
+
+      Rectangle r = draggingComponent.getBounds();
+      DRAGGING_RECT.setBounds(r); // save draggingComponent size
+      dragOffset.setLocation(pt.x - r.x, pt.y - r.y);
+
+      fillerComponent = Box.createRigidArea(r.getSize());
+      swapComponent(parent, c, fillerComponent, index);
+
+      updateDraggingPanelLocation(parent, pt, dragOffset);
     }
-    draggingComponent = c;
-
-    Rectangle r = draggingComponent.getBounds();
-    DRAGGING_RECT.setBounds(r); // save draggingComponent size
-    dragOffset.setLocation(pt.x - r.x, pt.y - r.y);
-
-    fillerComponent = Box.createRigidArea(r.getSize());
-    swapComponent(parent, c, fillerComponent, index);
-
-    updateDraggingPanelLocation(parent, pt, dragOffset);
   }
 
   private static void updateDraggingPanelLocation(JComponent p, Point pt, Point offset) {

@@ -92,21 +92,20 @@ class DragHandler extends MouseAdapter {
   private void startDragging(Container parent, Point pt) {
     Component c = parent.getComponentAt(pt);
     index = parent.getComponentZOrder(c);
-    if (Objects.equals(c, parent) || index < 0) {
-      return;
+    if (!Objects.equals(c, parent) && index >= 0) {
+      draggingComponent = c;
+      gap = Box.createHorizontalStrut(c.getWidth());
+      swapComponent(parent, c, gap, index);
+
+      window.add(draggingComponent);
+      window.pack();
+
+      Dimension d = draggingComponent.getPreferredSize();
+      Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
+      SwingUtilities.convertPointToScreen(p, parent);
+      window.setLocation(p);
+      window.setVisible(true);
     }
-    draggingComponent = c;
-    gap = Box.createHorizontalStrut(c.getWidth());
-    swapComponent(parent, c, gap, index);
-
-    window.add(draggingComponent);
-    window.pack();
-
-    Dimension d = draggingComponent.getPreferredSize();
-    Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
-    SwingUtilities.convertPointToScreen(p, parent);
-    window.setLocation(p);
-    window.setVisible(true);
   }
 
   @Override public void mouseDragged(MouseEvent e) {
