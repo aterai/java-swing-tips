@@ -83,10 +83,14 @@ public final class MainPanel {
 }
 
 class DragPanel extends JPanel {
-  protected JLabel draggingLabel;
+  private JLabel draggingLabel;
 
-  protected DragPanel() {
-    super();
+  public JLabel getDraggingLabel() {
+    return draggingLabel;
+  }
+
+  public void setDraggingLabel(JLabel draggingLabel) {
+    this.draggingLabel = draggingLabel;
   }
 }
 
@@ -95,7 +99,7 @@ class Handler extends MouseAdapter {
     DragPanel p = (DragPanel) e.getComponent();
     Component c = SwingUtilities.getDeepestComponentAt(p, e.getX(), e.getY());
     if (c instanceof JLabel) {
-      p.draggingLabel = (JLabel) c;
+      p.setDraggingLabel((JLabel) c);
       p.getTransferHandler().exportAsDrag(p, e, TransferHandler.MOVE);
     }
   }
@@ -155,7 +159,7 @@ class LabelTransferHandler extends TransferHandler {
     // System.out.println("getSourceActions");
     if (c instanceof DragPanel) {
       DragPanel p = (DragPanel) c;
-      JLabel l = p.draggingLabel;
+      JLabel l = p.getDraggingLabel();
       label.setIcon(l.getIcon());
       label.setText(l.getText());
       window.pack();
@@ -180,8 +184,8 @@ class LabelTransferHandler extends TransferHandler {
     boolean b = tgt instanceof DragPanel;
     if (b) {
       JLabel l = new JLabel();
-      l.setIcon(src.draggingLabel.getIcon());
-      l.setText(src.draggingLabel.getText());
+      l.setIcon(src.getDraggingLabel().getIcon());
+      l.setText(src.getDraggingLabel().getText());
       DragPanel tgtPanel = (DragPanel) tgt;
       tgtPanel.add(l);
       tgtPanel.revalidate();
@@ -199,16 +203,15 @@ class LabelTransferHandler extends TransferHandler {
     return src;
   }
 
-  @SuppressWarnings("PMD.NullAssignment")
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     // System.out.println("exportDone");
     DragPanel src = (DragPanel) c;
     if (action == MOVE) {
-      src.remove(src.draggingLabel);
+      src.remove(src.getDraggingLabel());
       src.revalidate();
       src.repaint();
     }
-    src.draggingLabel = null;
+    src.setDraggingLabel(null);
     window.setVisible(false);
   }
 }
@@ -223,7 +226,7 @@ class LabelTransferable implements Transferable {
     // this.dh = dh;
     this.localObjectFlavor = localObjectFlavor;
     this.panel = panel;
-    String txt = panel.draggingLabel.getText();
+    String txt = panel.getDraggingLabel().getText();
     // this.ss = Objects.nonNull(txt) ? new StringSelection(txt + "\n") : null;
     this.ss = Optional.ofNullable(txt)
         .map(s -> new StringSelection(s + "\n"))
