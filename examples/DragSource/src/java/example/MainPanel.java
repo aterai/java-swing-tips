@@ -129,9 +129,8 @@ public final class MainPanel extends JPanel {
     label.setText("tmpFile#exists() = true; // draggable");
   }
 
-  @SuppressWarnings("PMD.NullAssignment")
   public void clearFile() {
-    file = null;
+    setFile(null);
     label.setIcon(i1);
     label.setText("tmpFile#exists() = false");
   }
