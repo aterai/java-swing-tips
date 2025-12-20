@@ -106,28 +106,40 @@ class FileSystemViewTree extends JTree {
     int[] sr = getSelectionRows();
     if (sr == null) {
       super.paintComponent(g);
-      return;
+    } else {
+      g.setColor(getBackground());
+      g.fillRect(0, 0, getWidth(), getHeight());
+      Graphics2D g2 = (Graphics2D) g.create();
+      paintRollover(g2);
+      paintRowSelection(g2, sr);
+      super.paintComponent(g);
+      if (hasFocus()) {
+        paintFocus(g2);
+      }
+      g2.dispose();
     }
-    g.setColor(getBackground());
-    g.fillRect(0, 0, getWidth(), getHeight());
-    Graphics2D g2 = (Graphics2D) g.create();
+  }
+
+  private void paintRollover(Graphics2D g2) {
     if (rollOverRowIndex >= 0) {
       g2.setPaint(ROLLOVER_COLOR);
       Rectangle rect = getRowBounds(rollOverRowIndex);
       g2.fillRect(0, rect.y, getWidth(), rect.height);
     }
+  }
+
+  private void paintRowSelection(Graphics2D g2, int[] selectedRows) {
     g2.setPaint(SELECTED_COLOR);
-    Arrays.stream(sr).mapToObj(this::getRowBounds)
+    Arrays.stream(selectedRows).mapToObj(this::getRowBounds)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
-    super.paintComponent(g);
-    if (hasFocus()) {
-      Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-        Rectangle r = getRowBounds(getRowForPath(path));
-        g2.setPaint(SELECTED_COLOR.darker());
-        g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-      });
-    }
-    g2.dispose();
+  }
+
+  private void paintFocus(Graphics2D g2) {
+    Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
+      Rectangle r = getRowBounds(getRowForPath(path));
+      g2.setPaint(SELECTED_COLOR.darker());
+      g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+    });
   }
 
   @Override public void updateUI() {
@@ -295,23 +307,26 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+    TreePath path = e.getPath();
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
     File parent = (File) node.getUserObject();
-    if (!node.isLeaf() || !parent.isDirectory()) {
-      return;
-    }
-    JTree tree = (JTree) e.getSource();
-    DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
-    new BackgroundTask(fileSystemView, parent) {
-      @Override protected void process(List<File> chunks) {
-        if (tree.isDisplayable() && !isCancelled()) {
-          chunks.stream().map(DefaultMutableTreeNode::new)
-              .forEach(child -> m.insertNodeInto(child, node, node.getChildCount()));
-        } else {
-          cancel(true);
+    if (node.isLeaf() && parent.isDirectory()) {
+      JTree tree = (JTree) e.getSource();
+      DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
+      new BackgroundTask(fileSystemView, parent) {
+        @Override protected void process(List<File> chunks) {
+          if (tree.isDisplayable() && !isCancelled()) {
+            chunks.stream().map(DefaultMutableTreeNode::new)
+                .forEach(child -> {
+                  int count = node.getChildCount();
+                  m.insertNodeInto(child, node, count);
+                });
+          } else {
+            cancel(true);
+          }
         }
-      }
-    }.execute();
+      }.execute();
+    }
   }
 }
 
