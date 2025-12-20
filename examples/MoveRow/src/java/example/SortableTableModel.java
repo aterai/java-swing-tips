@@ -30,8 +30,8 @@ public class SortableTableModel extends DefaultTableModel {
 
 class ColumnComparator implements Comparator<Object>, Serializable {
   private static final long serialVersionUID = 1L;
-  protected final int index;
-  protected final boolean ascending;
+  private final int index;
+  private final boolean ascending;
 
   protected ColumnComparator(int index, boolean ascending) {
     this.index = index;
