@@ -1,0 +1,253 @@
+package example
+
+import java.awt.*
+import java.awt.event.ActionEvent
+import java.awt.event.KeyEvent
+import javax.swing.*
+import javax.swing.border.Border
+import javax.swing.tree.TreeNode
+
+fun makeUI(): Component {
+  val title0 = "Box + Multiple JList + JSeparator"
+  val list0 = makeListBox()
+  val title1 = "JSeparator + ListModel"
+  val list1 = GroupList(makeModel1())
+  val title2 = "CellRenderer + MatteBorder"
+  val list2 = GroupBorderList(makeModel2())
+  return JPanel(GridLayout(1, 0)).also {
+    val mb = JMenuBar()
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu())
+    EventQueue.invokeLater { it.rootPane.jMenuBar = mb }
+    it.add(makeTitledPanel(title0, list0))
+    it.add(makeTitledPanel(title1, list1))
+    it.add(makeTitledPanel(title2, list2))
+    it.preferredSize = Dimension(320, 240)
+  }
+}
+
+private fun makeTitledPanel(
+  title: String,
+  c: Component,
+): Component {
+  val scroll = JScrollPane(c)
+  scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
+  val p = JPanel(BorderLayout())
+  p.border = BorderFactory.createTitledBorder(title)
+  p.add(scroll)
+  return p
+}
+
+private fun makeListBox(): Container {
+  val box = Box.createVerticalBox()
+  val tree = JTree()
+  val model = tree.model
+  val root = model.root as? TreeNode
+  root?.children()
+    ?.toList()
+    ?.forEach { node ->
+      if (!node.isLeaf) {
+        box.add(makeList(node.children().toList()))
+        box.add(JSeparator())
+      }
+    }
+  val p = JPanel(BorderLayout())
+  p.setBackground(UIManager.getColor("List.background"))
+  p.add(box, BorderLayout.NORTH)
+  return p
+}
+
+private fun makeList(list: List<Any>): JList<Any> {
+  val c = object : JList<Any>(list.toTypedArray()) {
+    override fun updateUI() {
+      setCellRenderer(null)
+      super.updateUI()
+      val r = cellRenderer
+      setCellRenderer { l, v, index, isSelected, cellHasFocus ->
+        val selected = isSelected && l.isFocusOwner
+        r.getListCellRendererComponent(l, v, index, selected, cellHasFocus)
+      }
+    }
+  }
+  val height = c.getPreferredSize().height
+  c.maximumSize = Dimension(Short.MAX_VALUE.toInt(), height)
+  return c
+}
+
+private fun makeModel1(): ListModel<Any> {
+  val tree = JTree()
+  val root = tree.model.root as? TreeNode
+  val model = DefaultListModel<Any>()
+  root?.children()
+    ?.toList()
+    ?.forEach { node ->
+      if (!node.isLeaf) {
+        node.children()
+          .toList()
+          .forEach { model.addElement(it) }
+        model.addElement(JSeparator())
+      }
+    }
+  val last = model.size - 1
+  if (model.getElementAt(last) is JSeparator) {
+    model.remove(last)
+  }
+  return model
+}
+
+private fun makeModel2(): ListModel<TreeNode> {
+  val tree = JTree()
+  val root = tree.model.root as? TreeNode
+  val model = DefaultListModel<TreeNode>()
+  root?.children()
+    ?.toList()
+    ?.forEach { node ->
+      if (!node.isLeaf) {
+        node.children()
+          .toList()
+          .forEach { model.addElement(it) }
+      }
+    }
+  return model
+}
+
+private class GroupList<E>(model: ListModel<E>) : JList<E>(model) {
+  init {
+    initActionMpa(this)
+  }
+
+  override fun updateUI() {
+    setCellRenderer(null)
+    super.updateUI()
+    val r = cellRenderer
+    setCellRenderer { l, v, index, isSelected, cellHasFocus ->
+      if (v is JSeparator) {
+        v as JSeparator
+      } else {
+        r.getListCellRendererComponent(l, v, index, isSelected, cellHasFocus)
+      }
+    }
+  }
+
+  companion object {
+    private fun <E> initActionMpa(list: JList<E>) {
+      val am = list.actionMap
+      val selectPrevKey = "selectPreviousRow"
+      val selectNextKey = "selectNextRow"
+      overrideAction(am, "selectPreviousRow")
+      overrideAction(am, "selectNextRow")
+      val im = list.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey)
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey)
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey)
+      im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey)
+    }
+  }
+}
+
+private fun overrideAction(am: ActionMap, key: String) {
+  val action = am.get(key)
+  am.put(key, object : AbstractAction() {
+    override fun actionPerformed(e: ActionEvent) {
+      action.actionPerformed(e)
+      val l = e.getSource() as? JList<*> ?: return
+      if (l.model.getElementAt(l.selectedIndex) is JSeparator) {
+        action.actionPerformed(e)
+      }
+    }
+  })
+}
+
+private class GroupBorderList<E : TreeNode>(model: ListModel<E>) : JList<E>(model) {
+  override fun updateUI() {
+    setCellRenderer(null)
+    super.updateUI()
+    val r = cellRenderer
+    setCellRenderer(ListCellRenderer { l, v, index, isSelected, cellHasFocus ->
+      val c = r.getListCellRendererComponent(l, v, index, isSelected, cellHasFocus)
+      if (c is JComponent) {
+        val outside = getOutsideBorder(l, v, index)
+        val key = if (isSelected) "List.focusCellHighlightBorder" else "List.noFocusBorder"
+        val inside = UIManager.getBorder(key)
+        c.setBorder(BorderFactory.createCompoundBorder(outside, inside))
+      }
+      c
+    })
+  }
+
+  private fun getOutsideBorder(l: JList<*>, v: TreeNode, index: Int): Border {
+    val max = l.getModel().size
+    val next = index + 1
+    val n = if (next < max) l.getModel().getElementAt(next) else null
+    return if (n is TreeNode && n.parent != v.parent) {
+      BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY)
+    } else {
+      BorderFactory.createMatteBorder(0, 0, 1, 0, l.getBackground())
+    }
+  }
+}
+
+private object LookAndFeelUtils {
+  private var lookAndFeel = UIManager.getLookAndFeel().javaClass.name
+
+  fun createLookAndFeelMenu(): JMenu {
+    val menu = JMenu("LookAndFeel")
+    val buttonGroup = ButtonGroup()
+    for (info in UIManager.getInstalledLookAndFeels()) {
+      val b = JRadioButtonMenuItem(info.name, info.className == lookAndFeel)
+      initLookAndFeelAction(info, b)
+      menu.add(b)
+      buttonGroup.add(b)
+    }
+    return menu
+  }
+
+  fun initLookAndFeelAction(
+    info: UIManager.LookAndFeelInfo,
+    b: AbstractButton,
+  ) {
+    val cmd = info.className
+    b.text = info.name
+    b.actionCommand = cmd
+    b.hideActionText = true
+    b.addActionListener { setLookAndFeel(cmd) }
+  }
+
+  @Throws(
+    ClassNotFoundException::class,
+    InstantiationException::class,
+    IllegalAccessException::class,
+    UnsupportedLookAndFeelException::class,
+  )
+  private fun setLookAndFeel(newLookAndFeel: String) {
+    val oldLookAndFeel = lookAndFeel
+    if (oldLookAndFeel != newLookAndFeel) {
+      UIManager.setLookAndFeel(newLookAndFeel)
+      lookAndFeel = newLookAndFeel
+      updateLookAndFeel()
+    }
+  }
+
+  private fun updateLookAndFeel() {
+    for (window in Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window)
+    }
+  }
+}
+
+fun main() {
+  EventQueue.invokeLater {
+    runCatching {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+    }.onFailure {
+      it.printStackTrace()
+      Toolkit.getDefaultToolkit().beep()
+    }
+    JFrame().apply {
+      defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+      contentPane.add(makeUI())
+      pack()
+      setLocationRelativeTo(null)
+      isVisible = true
+    }
+  }
+}
