@@ -157,10 +157,11 @@ class GroupList<E> extends JList<E> {
   @Override public void updateUI() {
     setCellRenderer(null);
     super.updateUI();
+    JSeparator separator = new JSeparator();
     ListCellRenderer<? super E> r = getCellRenderer();
     setCellRenderer((l, v, index, isSelected, cellHasFocus) ->
         v instanceof JSeparator
-            ? (JSeparator) v
+            ? separator
             : r.getListCellRendererComponent(l, v, index, isSelected, cellHasFocus)
     );
   }
