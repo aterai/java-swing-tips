@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
                 .filter(TreeNode.class::isInstance)
                 .map(TreeNode.class::cast)
                 .forEach(model::addElement);
-            // Java 9: model.addAll(Collections.list(node.children()));
+            // Java 11: model.addAll(Collections.list(node.children()));
             model.addElement(new JSeparator());
           }
         });
@@ -120,7 +120,7 @@ public final class MainPanel extends JPanel {
                 .filter(TreeNode.class::isInstance)
                 .map(TreeNode.class::cast)
                 .forEach(model::addElement);
-            // Java 9: model.addAll(Collections.list(node.children()));
+            // Java 11: model.addAll(Collections.list(node.children()));
           }
         });
     return model;
