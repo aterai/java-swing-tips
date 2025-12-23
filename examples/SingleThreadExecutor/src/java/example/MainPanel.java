@@ -119,7 +119,12 @@ public final class MainPanel extends JPanel {
       cancelMenuItem = add("cancel");
       cancelMenuItem.addActionListener(e -> cancelActionPerformed());
       deleteMenuItem = add("delete");
-      deleteMenuItem.addActionListener(e -> deleteActionPerformed());
+      deleteMenuItem.addActionListener(e -> {
+        int[] selection = table.getSelectedRows();
+        if (selection.length != 0) {
+          deleteActionPerformed(selection);
+        }
+      });
     }
 
     @Override public void show(Component c, int x, int y) {
@@ -137,11 +142,7 @@ public final class MainPanel extends JPanel {
       return (SwingWorker<?, ?>) model.getValueAt(identifier, 3);
     }
 
-    private void deleteActionPerformed() {
-      int[] selection = table.getSelectedRows();
-      if (selection.length == 0) {
-        return;
-      }
+    private void deleteActionPerformed(int... selection) {
       for (int i : selection) {
         int mi = table.convertRowIndexToModel(i);
         deletedRowSet.add(mi);
