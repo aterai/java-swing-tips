@@ -79,6 +79,7 @@ class RearrangingHandler extends MouseAdapter {
   private final Point startPt = new Point();
   private int index = -1;
   private Component draggingComponent;
+  private boolean isDragging;
   private Component gap;
   private final Point dragOffset = new Point();
 
@@ -94,6 +95,7 @@ class RearrangingHandler extends MouseAdapter {
     if (Objects.equals(c, parent) || index < 0) {
       return;
     }
+    isDragging = true;
     draggingComponent = c;
     Dimension d = draggingComponent.getSize();
 
@@ -116,7 +118,7 @@ class RearrangingHandler extends MouseAdapter {
   }
 
   private void updateWindowLocation(Point pt, Component parent) {
-    if (window.isVisible() && Objects.nonNull(draggingComponent)) {
+    if (window.isVisible() && isDragging) { // draggingComponent != null) {
       Point p = new Point(pt.x - dragOffset.x, pt.y - dragOffset.y);
       SwingUtilities.convertPointToScreen(p, parent);
       window.setLocation(p);
@@ -126,7 +128,7 @@ class RearrangingHandler extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
-    if (Objects.isNull(draggingComponent)) {
+    if (!isDragging) { // draggingComponent == null) {
       if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
@@ -146,7 +148,6 @@ class RearrangingHandler extends MouseAdapter {
     }
   }
 
-  @SuppressWarnings("PMD.NullAssignment")
   @Override public void mouseReleased(MouseEvent e) {
     dragOffset.setLocation(0, 0);
     PREV_RECT.setBounds(0, 0, 0, 0);
@@ -158,8 +159,8 @@ class RearrangingHandler extends MouseAdapter {
     Container parent = (Container) e.getComponent();
     Rectangle ppRect = parent.getParent().getBounds();
     int max = parent.getComponentCount();
-    Component cmp = draggingComponent;
-    draggingComponent = null;
+    // Component cmp = draggingComponent;
+    // draggingComponent = null;
     int idx = IntStream.range(0, max)
         .map(i -> {
           Component c = parent.getComponent(i);
@@ -168,7 +169,8 @@ class RearrangingHandler extends MouseAdapter {
         .filter(i -> i >= 0)
         .findFirst()
         .orElseGet(() -> ppRect.contains(pt) ? max : index);
-    swapComponent(parent, gap, cmp, idx);
+    swapComponent(parent, gap, draggingComponent, idx);
+    isDragging = false;
     // for (int i = 0; i < parent.getComponentCount(); i++) {
     //   Component c = parent.getComponent(i);
     //   if (Objects.equals(c, gap)) {
