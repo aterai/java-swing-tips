@@ -82,21 +82,21 @@ public final class MainPanel extends JPanel {
 
   private void decode(JTextArea textArea, JTable table) {
     String text = textArea.getText();
-    if (text.isEmpty()) {
-      return;
-    }
-    try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
-      // @SuppressWarnings("unchecked")
-      // var keys = (List<? extends RowSorter.SortKey>) xd.readObject();
-      Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
-      List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject()).stream()
-          .filter(clz::isInstance)
-          .map(clz::cast)
-          .collect(Collectors.toList());
-      DefaultTableModel model = (DefaultTableModel) xd.readObject();
-      table.setModel(model);
-      table.setAutoCreateRowSorter(true);
-      table.getRowSorter().setSortKeys(keys);
+    if (!text.isEmpty()) {
+      try (XMLDecoder xd = new XMLDecoder(getInputStream(text))) {
+        // @SuppressWarnings("unchecked")
+        // var keys = (List<? extends RowSorter.SortKey>) xd.readObject();
+        Class<RowSorter.SortKey> clz = RowSorter.SortKey.class;
+        List<? extends RowSorter.SortKey> keys = ((List<?>) xd.readObject())
+            .stream()
+            .filter(clz::isInstance)
+            .map(clz::cast)
+            .collect(Collectors.toList());
+        DefaultTableModel model = (DefaultTableModel) xd.readObject();
+        table.setModel(model);
+        table.setAutoCreateRowSorter(true);
+        table.getRowSorter().setSortKeys(keys);
+      }
     }
   }
 
