@@ -74,12 +74,13 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   private final Container canvas = new JPanel();
   private final int dragThreshold = DragSource.getDragThreshold();
 
+  private boolean isDragging;
   private Component draggingComponent;
   private Component fillerComponent;
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    if (c instanceof JLayer && Objects.nonNull(draggingComponent)) {
+    if (c instanceof JLayer && isDragging) {
       SwingUtilities.paintComponent(g, draggingComponent, canvas, DRAGGING_RECT);
     }
   }
@@ -99,7 +100,6 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     super.uninstallUI(c);
   }
 
-  @SuppressWarnings("PMD.NullAssignment")
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
     JComponent parent = l.getView();
     Component c = e.getComponent();
@@ -111,11 +111,12 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
         }
         break;
       case MouseEvent.MOUSE_RELEASED:
-        if (Objects.nonNull(draggingComponent)) {
+        if (isDragging) {
           // swap the dragging panel and the temporary filler
           int idx = parent.getComponentZOrder(fillerComponent);
           swapComponent(parent, fillerComponent, draggingComponent, idx);
-          draggingComponent = null;
+          // draggingComponent = null;
+          isDragging = false;
         }
         break;
       default:
@@ -132,7 +133,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
 
   private void mouseDragged(JLayer<? extends V> l, Point pt) {
     JComponent p = l.getView();
-    if (Objects.isNull(draggingComponent)) {
+    if (!isDragging) {
       // MotionThreshold
       if (startPt.distance(pt) > dragThreshold) {
         startDragging(p, pt);
@@ -164,6 +165,7 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
     int index = parent.getComponentZOrder(c);
     if (!Objects.equals(c, parent) && index >= 0) {
       draggingComponent = c;
+      isDragging = true;
 
       Rectangle r = draggingComponent.getBounds();
       DRAGGING_RECT.setBounds(r); // save draggingComponent size

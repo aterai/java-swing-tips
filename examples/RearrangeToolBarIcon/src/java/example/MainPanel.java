@@ -73,6 +73,7 @@ class DragHandler extends MouseAdapter {
   private static final Rectangle NEXT_AREA = new Rectangle();
   private final JWindow window = new JWindow();
   private Component draggingComponent;
+  private boolean isDragging;
   private int index = -1;
   private Component gap;
   private final Point startPt = new Point();
@@ -93,6 +94,7 @@ class DragHandler extends MouseAdapter {
     Component c = parent.getComponentAt(pt);
     index = parent.getComponentZOrder(c);
     if (!Objects.equals(c, parent) && index >= 0) {
+      isDragging = true;
       draggingComponent = c;
       gap = Box.createHorizontalStrut(c.getWidth());
       swapComponent(parent, c, gap, index);
@@ -112,7 +114,7 @@ class DragHandler extends MouseAdapter {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
 
-    if (!window.isVisible() || Objects.isNull(draggingComponent)) {
+    if (!window.isVisible() || !isDragging) { // draggingComponent == null) {
       if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
@@ -132,21 +134,21 @@ class DragHandler extends MouseAdapter {
     swapComponent(parent, gap, gap, idx);
   }
 
-  @SuppressWarnings("PMD.NullAssignment")
   @Override public void mouseReleased(MouseEvent e) {
-    if (window.isVisible() && Objects.nonNull(draggingComponent)) {
+    if (window.isVisible() && isDragging) { // draggingComponent != null) {
       Point pt = e.getPoint();
       Container parent = (Container) e.getComponent();
       int max = parent.getComponentCount();
-      Component cmp = draggingComponent;
-      draggingComponent = null;
+      // Component cmp = draggingComponent;
+      // draggingComponent = null;
       window.setVisible(false);
       int idx = IntStream.range(0, max)
           .map(i -> getTargetIndex(parent, i, pt))
           .filter(i -> i >= 0)
           .findFirst()
           .orElseGet(() -> parent.getBounds().contains(pt) ? max : index);
-      swapComponent(parent, gap, cmp, idx);
+      swapComponent(parent, gap, draggingComponent, idx);
+      isDragging = false;
     }
   }
 
