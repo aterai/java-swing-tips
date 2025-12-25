@@ -60,7 +60,6 @@ public final class MainPanel extends JPanel {
   private final JRadioButton descending = new JRadioButton("descending");
   private final List<JRadioButton> directionList = Arrays.asList(ascending, descending);
 
-  @SuppressWarnings("PMD.NullAssignment")
   private MainPanel() {
     super(new BorderLayout());
     Stream.of(defaultModel).forEach(model::addElement);
@@ -69,7 +68,7 @@ public final class MainPanel extends JPanel {
     JRadioButton r1 = new JRadioButton("None", true);
     r1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        comparator = null;
+        setComparator(null);
         sort();
       }
     });
@@ -77,7 +76,7 @@ public final class MainPanel extends JPanel {
     JRadioButton r2 = new JRadioButton("Name");
     r2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        comparator = Comparator.comparing(ListItem::getTitle);
+        setComparator(Comparator.comparing(ListItem::getTitle));
         reversed();
         sort();
       }
@@ -86,7 +85,7 @@ public final class MainPanel extends JPanel {
     JRadioButton r3 = new JRadioButton("Color");
     r3.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        comparator = Comparator.comparing(item -> item.getColor().getRGB());
+        setComparator(Comparator.comparing(item -> item.getColor().getRGB()));
         reversed();
         sort();
       }
@@ -106,7 +105,7 @@ public final class MainPanel extends JPanel {
     ButtonGroup bg2 = new ButtonGroup();
     ItemListener listener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED && comparator != null) {
-        comparator = comparator.reversed();
+        setComparator(comparator.reversed());
         sort();
       }
     };
@@ -126,6 +125,10 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void setComparator(Comparator<ListItem> comparator) {
+    this.comparator = comparator;
   }
 
   private void reversed() {
