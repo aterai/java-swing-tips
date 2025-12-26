@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
 class DnDTree extends JTree {
   private final transient DragSourceListener listener = new NodeDragSourceListener();
   private transient TreeNode dropTargetNode;
-  private transient TreeNode draggedNode;
+  // private transient TreeNode draggedNode;
   private transient DropTarget treeDropTarget;
 
   @Override public void updateUI() {
@@ -108,6 +108,10 @@ class DnDTree extends JTree {
     }
   }
 
+  private void setDropTargetNode(TreeNode node) {
+    this.dropTargetNode = node;
+  }
+
   private final class NodeDragGestureListener implements DragGestureListener {
     @Override public void dragGestureRecognized(DragGestureEvent e) {
       // System.out.println("dragGestureRecognized");
@@ -115,10 +119,14 @@ class DnDTree extends JTree {
       TreePath path = getPathForLocation(pt.x, pt.y);
       if (Objects.nonNull(path) && Objects.nonNull(path.getParentPath())) {
         // System.out.println("start " + path.toString());
-        draggedNode = (TreeNode) path.getLastPathComponent();
-        Transferable trans = new TreeNodeTransferable(draggedNode);
-        Cursor cursor = Cursor.getDefaultCursor();
-        DragSource.getDefaultDragSource().startDrag(e, cursor, trans, listener);
+        // draggedNode = (TreeNode) path.getLastPathComponent();
+        Object o = path.getLastPathComponent();
+        if (o instanceof TreeNode) {
+          TreeNode node = (TreeNode) o;
+          Transferable trans = new TreeNodeTransferable(node);
+          Cursor cursor = Cursor.getDefaultCursor();
+          DragSource.getDefaultDragSource().startDrag(e, cursor, trans, listener);
+        }
       }
     }
   }
@@ -179,12 +187,11 @@ class DnDTree extends JTree {
           return;
         }
       }
-      dropTargetNode = target; // (TreeNode) path.getLastPathComponent();
+      setDropTargetNode(target); // (TreeNode) path.getLastPathComponent();
       e.acceptDrag(e.getDropAction());
       repaint();
     }
 
-    @SuppressWarnings("PMD.NullAssignment")
     @Override public void drop(DropTargetDropEvent e) {
       // System.out.println("drop");
       // if (!isWebStart()) {
@@ -225,17 +232,16 @@ class DnDTree extends JTree {
         }
         e.dropComplete(true);
 
-        dropTargetNode = null;
-        draggedNode = null;
+        setDropTargetNode(null);
+        // draggedNode = null;
         repaint();
       }
     }
 
-    @SuppressWarnings("PMD.NullAssignment")
     private void rejectDrag(DropTargetDragEvent e) {
       e.rejectDrag();
-      dropTargetNode = null; // dropTargetNode as null,
-      repaint();             // and repaint the JTree(turn off the Rectangle2D and Line2D)
+      setDropTargetNode(null); // dropTargetNode as null,
+      repaint(); // and repaint the JTree(turn off the Rectangle2D and Line2D)
     }
   }
 
