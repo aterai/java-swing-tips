@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -22,10 +23,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JButton b1 = new JButton("play");
-    b1.addActionListener(e -> loadAndPlayAudio("example/notice1.wav"));
+    String p1 = "example/notice1.wav";
+    b1.addActionListener(e -> getUrl(p1).ifPresent(this::loadAndPlayAudio));
 
     JButton b2 = new JButton("play");
-    b2.addActionListener(e -> loadAndPlayAudio("example/notice2.wav"));
+    String p2 = "example/notice2.wav";
+    b2.addActionListener(e -> getUrl(p2).ifPresent(this::loadAndPlayAudio));
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -37,11 +40,12 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void loadAndPlayAudio(String path) {
+  public Optional<URL> getUrl(String path) {
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-    if (url == null) {
-      return;
-    }
+    return Optional.ofNullable(url);
+  }
+
+  public void loadAndPlayAudio(URL url) {
     try (AudioInputStream wav = AudioSystem.getAudioInputStream(url);
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, wav.getFormat()))) {
       EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
