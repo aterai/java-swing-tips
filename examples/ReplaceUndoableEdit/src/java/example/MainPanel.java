@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -119,47 +120,50 @@ class CustomUndoPlainDocument extends PlainDocument {
   private CompoundEdit compoundEdit;
 
   @Override protected void fireUndoableEditUpdate(UndoableEditEvent e) {
-    // FindBugs: UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR
-    // if (Objects.nonNull(compoundEdit)) {
-    //   compoundEdit.addEdit(e.getEdit());
-    // } else {
-    //   super.fireUndoableEditUpdate(e);
-    // }
-    Optional.ofNullable(compoundEdit).ifPresent(ce -> ce.addEdit(e.getEdit()));
-    // JDK9:
+    if (Objects.nonNull(compoundEdit)) {
+      compoundEdit.addEdit(e.getEdit());
+    } else {
+      super.fireUndoableEditUpdate(e);
+    }
+    // // JDK9:
     // Optional.ofNullable(compoundEdit)
-    //     .ifPresentOrElse(ce -> ce.addEdit(e.getEdit()), () -> super.fireUndoableEditUpdate(e));
+    //     .ifPresentOrElse(
+    //       ce -> ce.addEdit(e.getEdit()),
+    //       () -> super.fireUndoableEditUpdate(e));
   }
 
-  @SuppressWarnings("PMD.NullAssignment")
   @Override public void replace(int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
     if (length == 0) {
-      // System.out.println("insert");
       super.replace(offset, length, text, attrs);
     } else {
-      // System.out.println("replace");
-      compoundEdit = new CompoundEdit();
+      CompoundEdit edit = new CompoundEdit();
+      setCompoundEdit(edit);
       super.replace(offset, length, text, attrs);
-      compoundEdit.end();
-      super.fireUndoableEditUpdate(new UndoableEditEvent(this, compoundEdit));
-      compoundEdit = null;
+      edit.end();
+      super.fireUndoableEditUpdate(new UndoableEditEvent(this, edit));
+      setCompoundEdit(null);
     }
+  }
+
+  private void setCompoundEdit(CompoundEdit edit) {
+    this.compoundEdit = edit;
   }
 }
 
 class DocumentFilterUndoManager extends UndoManager {
   private CompoundEdit compoundEdit;
+
   private final transient DocumentFilter undoFilter = new DocumentFilter() {
-    @SuppressWarnings("PMD.NullAssignment")
     @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
       if (length == 0) {
         fb.insertString(offset, text, attrs);
       } else {
-        compoundEdit = new CompoundEdit();
+        CompoundEdit edit = new CompoundEdit();
+        setCompoundEdit(edit);
         fb.replace(offset, length, text, attrs);
-        compoundEdit.end();
-        addEdit(compoundEdit);
-        compoundEdit = null;
+        edit.end();
+        addEdit(edit);
+        setCompoundEdit(null);
       }
     }
   };
@@ -170,6 +174,10 @@ class DocumentFilterUndoManager extends UndoManager {
 
   @Override public void undoableEditHappened(UndoableEditEvent e) {
     Optional.ofNullable(compoundEdit).orElse(this).addEdit(e.getEdit());
+  }
+
+  private void setCompoundEdit(CompoundEdit edit) {
+    this.compoundEdit = edit;
   }
 }
 
