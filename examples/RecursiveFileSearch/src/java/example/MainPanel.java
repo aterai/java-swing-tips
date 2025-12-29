@@ -158,8 +158,6 @@ public final class MainPanel extends JPanel {
           updateComponentStatus(false);
           appendLine("----------------");
           appendLine(getDoneMessage());
-        } else {
-          cancel(true);
         }
       }
     };

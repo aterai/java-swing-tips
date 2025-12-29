@@ -76,8 +76,6 @@ public final class MainPanel extends JPanel {
             model.addRowData(new RowData(id, path, img.getWidth(c), img.getHeight(c)));
           }
           tracker.removeImage(img);
-        } else {
-          cancel(true);
         }
       }
     }.execute();

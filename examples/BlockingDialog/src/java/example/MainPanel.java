@@ -37,8 +37,6 @@ public final class MainPanel extends JPanel {
       @Override protected void done() {
         if (isDisplayable()) {
           dialog.setVisible(false);
-        } else {
-          cancel(true);
         }
       }
     }.execute();

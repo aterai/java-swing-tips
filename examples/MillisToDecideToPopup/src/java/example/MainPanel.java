@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
   private void executeWorker(ProgressMonitor monitor, JButton button, JTextArea area) {
     SwingWorker<String, String> worker = new BackgroundTask() {
       @Override protected void process(List<String> chunks) {
-        if (isDisplayable()) { //  && !isCancelled()) {
+        if (isDisplayable() && !isCancelled()) {
           chunks.forEach(monitor::setNote);
         } else {
           cancel(true);
@@ -79,8 +79,6 @@ public final class MainPanel extends JPanel {
           monitor.close();
           area.append(getDoneMessage() + "\n");
           area.setCaretPosition(area.getDocument().getLength());
-        } else {
-          cancel(true);
         }
       }
     };

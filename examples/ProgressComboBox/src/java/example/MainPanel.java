@@ -78,9 +78,6 @@ public final class MainPanel extends JPanel {
         }
         combo.setEnabled(true);
         button.setEnabled(true);
-      } else {
-        // System.out.println("done: DISPOSE_ON_CLOSE");
-        cancel(true);
       }
     }
   }

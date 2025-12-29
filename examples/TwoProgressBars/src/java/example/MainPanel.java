@@ -80,8 +80,6 @@ public final class MainPanel extends JPanel {
       if (isDisplayable()) {
         updateButtonsAndStatusPanel(false);
         appendLine(String.format("%n%s%n", getDoneMessage()));
-      } else {
-        cancel(true);
       }
     }
   }

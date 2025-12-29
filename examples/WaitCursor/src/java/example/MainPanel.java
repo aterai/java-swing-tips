@@ -36,8 +36,6 @@ public final class MainPanel extends JPanel {
         if (c.isDisplayable()) {
           c.getRootPane().getGlassPane().setVisible(false);
           c.setEnabled(true);
-        } else {
-          cancel(true);
         }
       }
     }.execute();

@@ -88,8 +88,6 @@ public final class MainPanel extends JPanel {
         statusPanel.remove(bar);
         statusPanel.revalidate();
         appendLine(String.format("%n%s%n%n", getDoneMessage()));
-      } else {
-        cancel(true);
       }
     }
   }

@@ -79,8 +79,6 @@ public final class MainPanel extends JPanel {
       @Override protected void done() {
         if (isDisplayable()) {
           model.setValueAt(getDoneMessage(), key, 2);
-        } else {
-          cancel(true);
         }
       }
     };

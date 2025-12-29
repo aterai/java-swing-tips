@@ -148,8 +148,6 @@ public final class MainPanel extends JPanel {
         label.setToolTipText(getDoneMessage());
         table.setEnabled(true);
         field.setEditable(true);
-      } else {
-        cancel(true);
       }
     }
   }
