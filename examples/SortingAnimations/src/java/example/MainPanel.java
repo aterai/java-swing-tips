@@ -133,13 +133,11 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        if (!isDisplayable()) {
-          cancel(true);
-          return;
+        if (isDisplayable()) {
+          setComponentEnabled(true);
+          panel.setToolTipText(getDoneMessage());
+          repaint();
         }
-        setComponentEnabled(true);
-        panel.setToolTipText(getDoneMessage());
-        repaint();
       }
     };
     worker.execute();

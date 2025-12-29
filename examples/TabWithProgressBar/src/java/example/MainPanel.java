@@ -85,13 +85,11 @@ class ProgressTabbedPane extends JTabbedPane {
       }
 
       @Override protected void done() {
-        if (!isDisplayable()) {
-          cancel(true);
-          return;
+        if (isDisplayable()) {
+          setTabComponentAt(currentIndex, label);
+          setComponentAt(currentIndex, content);
+          label.setToolTipText(getDoneMessage());
         }
-        setTabComponentAt(currentIndex, label);
-        setComponentAt(currentIndex, content);
-        label.setToolTipText(getDoneMessage());
       }
     };
     worker.addPropertyChangeListener(new ProgressListener(bar));

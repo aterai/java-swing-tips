@@ -66,13 +66,10 @@ public final class MainPanel extends JPanel {
 
     @Override protected void done() {
       // System.out.println("done() is EDT?: " + EventQueue.isDispatchThread());
-      if (!isDisplayable()) {
-        // System.out.println("done: DISPOSE_ON_CLOSE");
-        cancel(true);
-        return;
+      if (isDisplayable()) {
+        updateComponentDone();
+        appendText(String.format("%n%s%n", getDoneMessage()));
       }
-      updateComponentDone();
-      appendText(String.format("%n%s%n", getDoneMessage()));
     }
   }
 
