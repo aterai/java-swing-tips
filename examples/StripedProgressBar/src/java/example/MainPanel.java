@@ -146,8 +146,8 @@ class StripedProgressBarUI extends BasicProgressBarUI {
   @Override public void paintIndeterminate(Graphics g, JComponent c) {
     Rectangle r = SwingUtilities.calculateInnerArea(progressBar, null);
     // Paint the striped box.
-    boxRect = r.isEmpty() ? null : getBox(boxRect);
-    if (Objects.nonNull(boxRect)) {
+    boxRect = getBox(boxRect);
+    if (!r.isEmpty() && Objects.nonNull(boxRect)) {
       int w = 10;
       int x = getAnimationIndex();
       Shape p = makeIndeterminateBox(w);
