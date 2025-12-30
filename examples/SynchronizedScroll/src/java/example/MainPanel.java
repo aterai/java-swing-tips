@@ -92,22 +92,25 @@ public final class MainPanel extends JPanel {
         src = sp2.getViewport();
         tgt = sp1.getViewport();
       }
-      if (adjusting.get() || Objects.isNull(tgt) || Objects.isNull(src)) {
-        return;
+      if (!adjusting.get() && Objects.nonNull(tgt) && Objects.nonNull(src)) {
+        adjusting.set(true);
+        syncViewPosition(src, tgt);
+        adjusting.set(false);
       }
-      adjusting.set(true);
-      Dimension dim1 = src.getViewSize();
-      Dimension siz1 = src.getSize();
-      Point pnt1 = src.getViewPosition();
-      Dimension dim2 = tgt.getViewSize();
-      Dimension siz2 = tgt.getSize();
-      // Point pnt2 = tgt.getViewPosition();
-      double dy = pnt1.getY() / (dim1.height - siz1.height) * (dim2.height - siz2.height);
-      pnt1.y = (int) dy;
-      double dx = pnt1.getX() / (dim1.width - siz1.width) * (dim2.width - siz2.width);
-      pnt1.x = (int) dx;
-      tgt.setViewPosition(pnt1);
-      adjusting.set(false);
+    }
+
+    private static void syncViewPosition(JViewport src, JViewport tgt) {
+      Dimension dm1 = src.getViewSize();
+      Dimension sz1 = src.getSize();
+      Point pt1 = src.getViewPosition();
+      Dimension dm2 = tgt.getViewSize();
+      Dimension sz2 = tgt.getSize();
+      // Point pt2 = tgt.getViewPosition();
+      double dy = pt1.getY() / (dm1.height - sz1.height) * (dm2.height - sz2.height);
+      pt1.y = (int) dy;
+      double dx = pt1.getX() / (dm1.width - sz1.width) * (dm2.width - sz2.width);
+      pt1.x = (int) dx;
+      tgt.setViewPosition(pt1);
     }
   }
 }
