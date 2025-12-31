@@ -89,8 +89,8 @@ class DragPanel extends JPanel {
     return draggingLabel;
   }
 
-  public void setDraggingLabel(JLabel draggingLabel) {
-    this.draggingLabel = draggingLabel;
+  public void setDraggingLabel(JLabel label) {
+    this.draggingLabel = label;
   }
 }
 

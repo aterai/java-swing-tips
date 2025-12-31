@@ -127,8 +127,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void setComparator(Comparator<ListItem> comparator) {
-    this.comparator = comparator;
+  private void setComparator(Comparator<ListItem> comp) {
+    this.comparator = comp;
   }
 
   private void reversed() {
