@@ -38,9 +38,10 @@ public final class MainPanel extends JPanel {
     c0.setMaxWidth(60);
     c0.setResizable(false);
 
-    UIManager.put("ComboBox.buttonDarkShadow", UIManager.getColor("TextField.foreground"));
-    // ComboBoxModel<String> cm = new DefaultComboBoxModel<>(comboModel);
-    JComboBox<String> combo = new TableCellComboBox<>(comboModel);
+    Color color = UIManager.getColor("TextField.foreground");
+    UIManager.put("ComboBox.buttonDarkShadow", color);
+    ComboBoxModel<String> cm = new DefaultComboBoxModel<>(comboModel);
+    JComboBox<String> combo = new TableCellComboBox<>(cm);
     // combo.setBorder(BorderFactory.createEmptyBorder());
     // ((JTextField) combo.getEditor().getEditorComponent()).setBorder(null);
     // ((JTextField) combo.getEditor().getEditorComponent()).setMargin(null);
@@ -94,7 +95,7 @@ public final class MainPanel extends JPanel {
 }
 
 class TableCellComboBox<E> extends JComboBox<E> {
-  protected TableCellComboBox(E[] model) {
+  protected TableCellComboBox(ComboBoxModel<E> model) {
     super(model);
   }
 
