@@ -87,16 +87,15 @@ public final class MainPanel extends JPanel {
     Collections.list((Enumeration<?>) root.children())
         .stream().filter(TreeNode.class::isInstance)
         .map(TreeNode.class::cast)
+        .filter(node -> !node.isLeaf())
         .forEach(node -> {
-          if (!node.isLeaf()) {
-            Collections.list((Enumeration<?>) node.children())
-                .stream()
-                .filter(TreeNode.class::isInstance)
-                .map(TreeNode.class::cast)
-                .forEach(model::addElement);
-            // Java 11: model.addAll(Collections.list(node.children()));
-            model.addElement(new JSeparator());
-          }
+          Collections.list((Enumeration<?>) node.children())
+              .stream()
+              .filter(TreeNode.class::isInstance)
+              .map(TreeNode.class::cast)
+              .forEach(model::addElement);
+          // Java 11: model.addAll(Collections.list(node.children()));
+          model.addElement(new JSeparator());
         });
     int last = model.getSize() - 1;
     if (model.getElementAt(last) instanceof JSeparator) {
