@@ -103,7 +103,7 @@ class BorderPaintLayerUI extends LayerUI<JScrollPane> {
       double x1 = table.getCellRect(0, center, false).getMaxX();
       Rectangle r = SwingUtilities.calculateInnerArea(parent, null);
       g2.draw(new Line2D.Double(x1, r.getY(), x1, r.getHeight()));
-      double x2 = x1 + 2d; //table.getCellRect(0, center + 1, false).getMinX() + 2d;
+      double x2 = x1 + 2d; // table.getCellRect(0, center + 1, false).getMinX() + 2d;
       g2.draw(new Line2D.Double(x2, r.getY(), x2, r.getHeight()));
       g2.dispose();
     }
