@@ -39,7 +39,8 @@ public final class MainPanel extends JPanel {
     CardLayoutTabbedPane tabs = new CardLayoutTabbedPane();
     tabs.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     tabs.setBackground(new Color(16, 16, 16));
-    TabbedPaneUtils.makeIconTabs().forEach(t -> tabs.addTab(t.title, t.icon, t.comp));
+    TabbedPaneUtils.makeIconTabs()
+        .forEach(t -> tabs.addTab(t.getTitle(), t.getIcon(), t.getComponent()));
     EventQueue.invokeLater(() -> tabs.getTabArea().getHorizontalScrollBar().setVisible(false));
     JPopupMenu popup = new JPopupMenu();
     popup.add("add Tab");
@@ -67,8 +68,8 @@ public final class MainPanel extends JPanel {
         return TOP_ALIGNMENT;
       }
     };
-    TabbedPaneUtils.makeIconTabs().forEach(t -> tabs.addTab(t.title, t.icon, t.comp));
-
+    TabbedPaneUtils.makeIconTabs()
+        .forEach(t -> tabs.addTab(t.getTitle(), t.getIcon(), t.getComponent()));
     Box box = Box.createHorizontalBox();
     box.setAlignmentX(LEFT_ALIGNMENT);
     // TEST: box.setOpaque(true);
@@ -663,14 +664,26 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 }
 
 class ColorIconTab {
-  public final String title;
-  public final Icon icon;
-  public final Component comp;
+  private final String title;
+  private final Icon icon;
+  private final Component comp;
 
   protected ColorIconTab(String title, Color color, Component component) {
     this.title = title;
     this.icon = new ColorIcon(color);
     this.comp = component;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Icon getIcon() {
+    return icon;
+  }
+
+  public Component getComponent() {
+    return comp;
   }
 }
 
