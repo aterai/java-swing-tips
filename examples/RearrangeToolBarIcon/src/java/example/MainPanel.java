@@ -113,25 +113,22 @@ class DragHandler extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
-
-    if (!window.isVisible() || !isDragging) { // draggingComponent == null) {
+    if (window.isVisible() && isDragging) {
+      Dimension d = draggingComponent.getPreferredSize();
+      Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
+      SwingUtilities.convertPointToScreen(p, parent);
+      window.setLocation(p);
+      int idx = IntStream.range(0, parent.getComponentCount())
+          .map(i -> getTargetIndex(parent, i, pt))
+          .filter(i -> i >= 0)
+          .findFirst()
+          .orElse(-1);
+      swapComponent(parent, gap, gap, idx);
+    } else {
       if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
-      return;
     }
-
-    Dimension d = draggingComponent.getPreferredSize();
-    Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
-    SwingUtilities.convertPointToScreen(p, parent);
-    window.setLocation(p);
-
-    int idx = IntStream.range(0, parent.getComponentCount())
-        .map(i -> getTargetIndex(parent, i, pt))
-        .filter(i -> i >= 0)
-        .findFirst()
-        .orElse(-1);
-    swapComponent(parent, gap, gap, idx);
   }
 
   @Override public void mouseReleased(MouseEvent e) {

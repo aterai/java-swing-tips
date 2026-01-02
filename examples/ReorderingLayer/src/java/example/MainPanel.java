@@ -133,31 +133,29 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
 
   private void mouseDragged(JLayer<? extends V> l, Point pt) {
     JComponent p = l.getView();
-    if (!isDragging) {
+    if (isDragging) {
+      if (!PREV_RECT.contains(pt)) {
+        // update the filler panel location
+        // updateFillerLocation(p, fillerComponent, pt);
+        IntStream.range(0, p.getComponentCount())
+            .filter(i -> {
+              Component tc = p.getComponent(i);
+              return !Objects.equals(tc, fillerComponent) || !tc.getBounds().contains(pt);
+            })
+            .map(i -> getTargetIndex(p.getComponent(i), pt, i))
+            .filter(i -> i >= 0)
+            .findFirst()
+            .ifPresent(i -> swapComponent(p, fillerComponent, fillerComponent, i));
+      }
+      // update the dragging panel location
+      updateDraggingPanelLocation(p, pt, dragOffset);
+      p.repaint();
+    } else {
       // MotionThreshold
       if (startPt.distance(pt) > dragThreshold) {
         startDragging(p, pt);
       }
-      return;
     }
-
-    if (!PREV_RECT.contains(pt)) {
-      // update the filler panel location
-      // updateFillerLocation(p, fillerComponent, pt);
-      IntStream.range(0, p.getComponentCount())
-          .filter(i -> {
-            Component tc = p.getComponent(i);
-            return !Objects.equals(tc, fillerComponent) || !tc.getBounds().contains(pt);
-          })
-          .map(i -> getTargetIndex(p.getComponent(i), pt, i))
-          .filter(i -> i >= 0)
-          .findFirst()
-          .ifPresent(i -> swapComponent(p, fillerComponent, fillerComponent, i));
-    }
-
-    // update the dragging panel location
-    updateDraggingPanelLocation(p, pt, dragOffset);
-    p.repaint();
   }
 
   private void startDragging(JComponent parent, Point pt) {
