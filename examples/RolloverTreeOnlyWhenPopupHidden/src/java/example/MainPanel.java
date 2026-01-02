@@ -128,7 +128,7 @@ class FileSystemViewTree extends JTree {
     }
   }
 
-  private void paintRowSelection(Graphics2D g2, int[] selectedRows) {
+  private void paintRowSelection(Graphics2D g2, int... selectedRows) {
     g2.setPaint(SELECTED_COLOR);
     Arrays.stream(selectedRows).mapToObj(this::getRowBounds)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
