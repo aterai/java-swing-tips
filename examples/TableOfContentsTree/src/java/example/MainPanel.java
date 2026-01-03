@@ -109,14 +109,14 @@ class TableOfContents {
 }
 
 class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
-  protected static final BasicStroke READER = new BasicStroke(
+  public static final BasicStroke READER = new BasicStroke(
       1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
-  protected int pn = -1;
-  protected final Point pnPt = new Point();
-  protected int rxs;
-  protected int rxe;
-  protected boolean isSynth;
-  protected final JPanel renderer = new JPanel(new BorderLayout()) {
+  private int pn = -1;
+  private final Point pnPt = new Point();
+  private int rxs;
+  private int rxe;
+  private boolean isSynth;
+  private final JPanel renderer = new JPanel(new BorderLayout()) {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       if (pn >= 0) {
@@ -349,8 +349,7 @@ class TableOfContentsTree extends JTree {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
     Object o = node.getUserObject();
     if (o instanceof TableOfContents) {
-      TableOfContents toc = (TableOfContents) o;
-      String pn = Integer.toString(toc.getPage());
+      String pn = Integer.toString(((TableOfContents) o).getPage());
       TreeCellRenderer tcr = getCellRenderer();
       g2.setPaint(getTextSelectionColor(i, tcr));
 
