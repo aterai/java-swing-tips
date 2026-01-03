@@ -112,22 +112,24 @@ class TabSelectionMouseListener extends MouseAdapter {
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    JTabbedPane tabPane = (JTabbedPane) e.getComponent();
-    if (!tabPane.isEnabled() || SwingUtilities.isRightMouseButton(e)) {
-      return;
-    }
-    int tabIndex = ui.tabForCoordinate(tabPane, e.getX(), e.getY());
-    if (tabIndex >= 0 && tabPane.isEnabledAt(tabIndex)) {
-      if (tabIndex != tabPane.getSelectedIndex() && e.getClickCount() < 2) {
-        tabPane.setSelectedIndex(tabIndex);
+    JTabbedPane tabs = (JTabbedPane) e.getComponent();
+    boolean b = !SwingUtilities.isRightMouseButton(e); // && !e.isPopupTrigger();
+    int idx = ui.tabForCoordinate(tabs, e.getX(), e.getY());
+    if (b && isEnabledAt(tabs, idx)) {
+      if (idx != tabs.getSelectedIndex() && e.getClickCount() < 2) {
+        tabs.setSelectedIndex(idx);
         String cmd = "requestFocusForVisibleComponent";
-        ActionEvent a = new ActionEvent(tabPane, ActionEvent.ACTION_PERFORMED, cmd);
-        EventQueue.invokeLater(() -> tabPane.getActionMap().get(cmd).actionPerformed(a));
-      } else if (tabPane.isRequestFocusEnabled()) {
-        // tabPane.requestFocus();
-        tabPane.requestFocusInWindow();
+        ActionEvent a = new ActionEvent(tabs, ActionEvent.ACTION_PERFORMED, cmd);
+        EventQueue.invokeLater(() -> tabs.getActionMap().get(cmd).actionPerformed(a));
+      } else if (tabs.isRequestFocusEnabled()) {
+        // tabs.requestFocus();
+        tabs.requestFocusInWindow();
       }
     }
+  }
+
+  private static boolean isEnabledAt(JTabbedPane tabs, int index) {
+    return tabs.isEnabled() && index >= 0 && tabs.isEnabledAt(index);
   }
 }
 
