@@ -86,11 +86,11 @@ public final class MainPanel extends JPanel {
 }
 
 class RowHeaderList<E> extends JList<E> {
-  protected final JTable table;
-  protected final transient ListSelectionModel tableSelection;
-  protected final transient ListSelectionModel listSelection = getSelectionModel();
-  protected int rollOverRowIndex = -1;
-  protected int pressedRowIndex = -1;
+  private final JTable table;
+  private final transient ListSelectionModel tableSelection;
+  private final transient ListSelectionModel listSelection = getSelectionModel();
+  private int rollOverRowIndex = -1;
+  private int pressedRowIndex = -1;
   private transient MouseAdapter handler;
 
   protected RowHeaderList(ListModel<E> model, JTable table) {
