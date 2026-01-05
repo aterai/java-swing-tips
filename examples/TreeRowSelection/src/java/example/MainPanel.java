@@ -48,39 +48,6 @@ class RowSelectionTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x64_96_C8);
   // private Handler handler;
 
-  @Override protected void paintComponent(Graphics g) {
-    int[] sr = getSelectionRows();
-    if (sr == null) {
-      super.paintComponent(g);
-      return;
-    }
-    g.setColor(getBackground());
-    g.fillRect(0, 0, getWidth(), getHeight());
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(SELECTED_COLOR);
-    // for (int i : sr) {
-    //   Rectangle r = getRowBounds(i);
-    //   g2.fillRect(0, r.y, getWidth(), r.height);
-    // }
-    Arrays.stream(sr).mapToObj(this::getRowBounds)
-        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
-    super.paintComponent(g);
-    if (hasFocus()) {
-      Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-        Rectangle r = getRowBounds(getRowForPath(path));
-        g2.setPaint(SELECTED_COLOR.darker());
-        g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-      });
-      // TreePath path = getLeadSelectionPath();
-      // if (Objects.nonNull(path)) {
-      //   Rectangle r = getRowBounds(getRowForPath(path));
-      //   g2.setPaint(SELECTED_COLOR.darker());
-      //   g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-      // }
-    }
-    g2.dispose();
-  }
-
   @Override public void updateUI() {
     // removeFocusListener(handler);
     setCellRenderer(null);
@@ -118,6 +85,39 @@ class RowSelectionTree extends JTree {
     });
     setOpaque(false);
   }
+
+  @Override protected void paintComponent(Graphics g) {
+    int[] selectionRows = getSelectionRows();
+    if (selectionRows == null) {
+      super.paintComponent(g);
+    } else {
+      g.setColor(getBackground());
+      g.fillRect(0, 0, getWidth(), getHeight());
+      Graphics2D g2 = (Graphics2D) g.create();
+      paintRows(g2, selectionRows);
+      super.paintComponent(g);
+      if (hasFocus()) {
+        paintFocusRow(g2);
+      }
+      g2.dispose();
+    }
+  }
+
+  private void paintRows(Graphics2D g2, int... selectionRows) {
+    g2.setPaint(SELECTED_COLOR);
+    Arrays.stream(selectionRows)
+        .mapToObj(this::getRowBounds)
+        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+  }
+
+  private void paintFocusRow(Graphics2D g2) {
+    Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
+      Rectangle r = getRowBounds(getRowForPath(path));
+      g2.setPaint(SELECTED_COLOR.darker());
+      g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+    });
+  }
+
 }
 
 // class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
