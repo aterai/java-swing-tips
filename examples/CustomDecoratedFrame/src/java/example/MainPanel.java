@@ -231,9 +231,9 @@ enum Side {
     }
   };
 
-  /* default */ final int cursor;
-  /* default */ final int width;
-  /* default */ final int height;
+  private final int cursor;
+  private final int width;
+  private final int height;
 
   Side(int cursor, int width, int height) {
     this.cursor = cursor;
@@ -257,12 +257,16 @@ enum Side {
 }
 
 class SideLabel extends JLabel {
-  public final Side side;
+  private final Side side;
 
   protected SideLabel(Side side) {
     super();
     this.side = side;
     EventQueue.invokeLater(() -> setCursor(side.getCursor()));
+  }
+
+  public Side getSide() {
+    return side;
   }
 
   @Override public final void setCursor(Cursor cursor) {
@@ -296,7 +300,7 @@ class ResizeWindowListener extends MouseInputAdapter {
     Component c = e.getComponent();
     Component p = SwingUtilities.getRoot(c);
     if (!rect.isEmpty() && c instanceof SideLabel && p instanceof Window) {
-      Side side = ((SideLabel) c).side;
+      Side side = ((SideLabel) c).getSide();
       p.setBounds(side.getBounds(rect, e.getPoint()));
     }
   }
