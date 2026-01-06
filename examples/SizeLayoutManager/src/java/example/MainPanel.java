@@ -81,21 +81,20 @@ class SelectedButtonSizeLayout extends FlowLayout {
   @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public void layoutContainer(Container target) {
     synchronized (target.getTreeLock()) {
-      if (target.getComponentCount() <= 0) {
-        return;
-      }
-      Insets insets = target.getInsets();
-      int rowHeight = target.getHeight();
-      int x = insets.left + getHgap();
-      Dimension d = new Dimension();
-      for (Component m : target.getComponents()) {
-        if (m.isVisible() && m instanceof AbstractButton) {
-          int v = ((AbstractButton) m).isSelected() ? 80 : 50;
-          d.setSize(v, v);
-          m.setSize(d);
-          int y = (rowHeight - v) / 2;
-          m.setLocation(x, y);
-          x += d.width + getHgap();
+      if (target.getComponentCount() > 0) {
+        Insets insets = target.getInsets();
+        int rowHeight = target.getHeight();
+        int x = insets.left + getHgap();
+        Dimension d = new Dimension();
+        for (Component m : target.getComponents()) {
+          if (m.isVisible() && m instanceof AbstractButton) {
+            int v = ((AbstractButton) m).isSelected() ? 80 : 50;
+            d.setSize(v, v);
+            m.setSize(d);
+            int y = (rowHeight - v) / 2;
+            m.setLocation(x, y);
+            x += d.width + getHgap();
+          }
         }
       }
     }
