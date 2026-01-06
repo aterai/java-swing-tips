@@ -38,42 +38,12 @@ public final class MainPanel extends JPanel {
   public static final String LOGGER_NAME = MethodHandles.lookup().lookupClass().getName();
   public static final Logger LOGGER = Logger.getLogger(LOGGER_NAME);
   public static final String SEPARATOR = "----%n%s%n";
-  public final JEditorPane editorPane = new JEditorPane();
-  public final JTextField field = new JTextField("3");
-  public final Action elementIdAction = new AbstractAction("Element#getElement(id)") {
-    @Override public void actionPerformed(ActionEvent e) {
-      LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
-      String id = field.getText().trim();
-      HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
-      Element element = doc.getElement(id);
-      if (Objects.nonNull(element)) {
-        LOGGER.info(() -> String.format("found: %s%n", element));
-        editorPane.requestFocusInWindow();
-        editorPane.select(element.getStartOffset(), element.getEndOffset());
-      }
-    }
-  };
-  public final Action highlightAction = new AbstractAction("Highlight Element[@id]") {
-    @Override public void actionPerformed(ActionEvent e) {
-      LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
-      JToggleButton b = (JToggleButton) e.getSource();
-      if (b.isSelected()) {
-        for (Element root : editorPane.getDocument().getRootElements()) {
-          EditorPaneUtils.traverseElementById(editorPane, root);
-        }
-      } else {
-        editorPane.getHighlighter().removeAllHighlights();
-      }
-    }
-  };
-  public final Action parserAction = new AbstractAction("ParserDelegator") {
-    @Override public void actionPerformed(ActionEvent e) {
-      LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
-      String id = field.getText().trim();
-      String text = editorPane.getText();
-      EditorPaneUtils.parser(text, id);
-    }
-  };
+  public static final String SPAN2 = "<span id='2'>345678</span>";
+  public static final String SPAN0 = "<span class='insert' id='0'>6</span>";
+  public static final String SPAN1 = "<span id='1'>8</span>";
+  public static final String DIV3 = "<div class='fff' id='3'>123</div>";
+  private final JEditorPane editorPane = new JEditorPane();
+  private final JTextField field = new JTextField("3");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -84,12 +54,10 @@ public final class MainPanel extends JPanel {
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
     editorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-    String span2 = "<span id='2'>345678</span>";
-    String span0 = "<span class='insert' id='0'>6</span>";
-    String span1 = "<span id='1'>8</span>";
-    String div3 = "<div class='fff' id='3'>123</div>";
-    String html = "<html>12%s90<p>1<a href='..'>23</a>45%s7%s90%s4567890</p>";
-    editorPane.setText(String.format(html, span2, span0, span1, div3));
+    String txt = String.format(
+        "<html>12%s90<p>1<a href='..'>23</a>45%s7%s90%s4567890</p>",
+        SPAN2, SPAN0, SPAN1, DIV3);
+    editorPane.setText(txt);
     DefaultHighlighter dh = (DefaultHighlighter) editorPane.getHighlighter();
     dh.setDrawsLayeredHighlights(false);
 
@@ -100,12 +68,50 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
     p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     p.add(field);
-    p.add(new JButton(elementIdAction));
-    p.add(new JToggleButton(highlightAction));
-    p.add(new JButton(parserAction));
+    initActions(p);
     add(sp);
     add(p, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void initActions(JPanel panel) {
+    Action elementIdAction = new AbstractAction("Element#getElement(id)") {
+      @Override public void actionPerformed(ActionEvent e) {
+        LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
+        String id = field.getText().trim();
+        HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
+        Element element = doc.getElement(id);
+        if (Objects.nonNull(element)) {
+          LOGGER.info(() -> String.format("found: %s%n", element));
+          editorPane.requestFocusInWindow();
+          editorPane.select(element.getStartOffset(), element.getEndOffset());
+        }
+      }
+    };
+    panel.add(new JButton(elementIdAction));
+    Action highlightAction = new AbstractAction("Highlight Element[@id]") {
+      @Override public void actionPerformed(ActionEvent e) {
+        LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
+        JToggleButton b = (JToggleButton) e.getSource();
+        if (b.isSelected()) {
+          for (Element root : editorPane.getDocument().getRootElements()) {
+            EditorPaneUtils.traverseElementById(editorPane, root);
+          }
+        } else {
+          editorPane.getHighlighter().removeAllHighlights();
+        }
+      }
+    };
+    panel.add(new JToggleButton(highlightAction));
+    Action parserAction = new AbstractAction("ParserDelegator") {
+      @Override public void actionPerformed(ActionEvent e) {
+        LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
+        String id = field.getText().trim();
+        String text = editorPane.getText();
+        EditorPaneUtils.parser(text, id);
+      }
+    };
+    panel.add(new JButton(parserAction));
   }
 
   public static void main(String[] args) {
@@ -147,6 +153,7 @@ class TextAreaOutputStream extends OutputStream {
 
   @Override public void flush() throws IOException {
     textArea.append(buffer.toString("UTF-8"));
+    // Java 10: textArea.append(buffer.toString(StandardCharsets.UTF_8));
     buffer.reset();
   }
 
@@ -200,7 +207,7 @@ final class EditorPaneUtils {
             LOGGER.info(() -> String.format("%s%n", text.substring(pos, endOffs + 1)));
           }
         }
-      }, Boolean.TRUE);
+      }, true);
     } catch (IOException ex) {
       LOGGER.info(() -> String.format("%s%n", ex.getMessage()));
       // UIManager.getLookAndFeel().provideErrorFeedback(editorPane);
