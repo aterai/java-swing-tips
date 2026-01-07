@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
     Timer animator = new Timer(5, null);
     ControlsBorderLayout layout = new ControlsBorderLayout(animator);
     JPanel controls = new JPanel(layout);
-    controls.setName("aaa");
+    // controls.setName("controls");
     controls.setBorder(BorderFactory.createTitledBorder("Search down"));
     controls.add(new JLabel("Find what:"), BorderLayout.WEST);
     controls.add(field);
@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     Action act = new AbstractAction("Show/Hide Search Box") {
       @Override public void actionPerformed(ActionEvent ev) {
         if (!animator.isRunning()) {
-          layout.isHidden = controls.getHeight() == 0;
+          layout.setVisible(controls.getHeight() == 0);
           animator.start();
         }
       }
@@ -44,8 +44,8 @@ public final class MainPanel extends JPanel {
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = p.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-searchbox");
-    p.getActionMap().put("open-searchbox", act);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, modifiers), "open-search-box");
+    p.getActionMap().put("open-search-box", act);
     p.add(controls, BorderLayout.NORTH);
 
     JTree tree = new JTree();
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
 }
 
 class ControlsBorderLayout extends BorderLayout {
-  public boolean isHidden = true;
+  private boolean visible = true;
   private final Timer animator;
   private int controlsHeight;
 
@@ -93,7 +93,7 @@ class ControlsBorderLayout extends BorderLayout {
     // synchronized (target.getTreeLock()) {
     Dimension ps = super.preferredLayoutSize(target);
     int defaultHeight = animator.isRunning() ? ps.height : 0;
-    if (isHidden) {
+    if (isVisible()) {
       if (target.getHeight() < defaultHeight) {
         controlsHeight += 5;
       }
@@ -111,5 +111,13 @@ class ControlsBorderLayout extends BorderLayout {
     }
     ps.height = controlsHeight;
     return ps;
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+
+  public void setVisible(boolean b) {
+    visible = b;
   }
 }
