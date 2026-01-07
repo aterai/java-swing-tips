@@ -123,9 +123,9 @@ class InputVerifierSelectionModel extends DefaultSingleSelectionModel {
     if (Objects.nonNull(verifier) && !verifier.shouldYieldFocus(panel)) {
       UIManager.getLookAndFeel().provideErrorFeedback(panel);
       JOptionPane.showMessageDialog(panel, "InputVerifier#verify(...): false");
-      return;
+    } else {
+      super.setSelectedIndex(index);
     }
-    super.setSelectedIndex(index);
   }
 }
 
