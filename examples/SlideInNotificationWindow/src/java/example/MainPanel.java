@@ -81,45 +81,47 @@ class SlideInNotification implements PropertyChangeListener, HierarchyListener {
   private ActionListener listener;
 
   public void startSlideIn(SlideInAnimation slideInAnimation) {
-    if (animator.isRunning()) {
-      return;
-    }
-    if (dialog.isVisible()) {
-      dialog.setVisible(false);
-      dialog.getContentPane().removeAll();
-    }
+    if (!animator.isRunning()) {
+      if (dialog.isVisible()) {
+        dialog.setVisible(false);
+        dialog.getContentPane().removeAll();
+      }
+      dialog.getContentPane().add(makeOptionPane("Warning"));
+      dialog.pack();
 
-    JOptionPane optionPane = new JOptionPane("Warning", JOptionPane.WARNING_MESSAGE);
+      Dimension d = dialog.getContentPane().getPreferredSize();
+      GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      Rectangle desktopBounds = env.getMaximumWindowBounds();
+      int dx = desktopBounds.width - d.width;
+      int dy = desktopBounds.height;
+      dialog.setLocation(new Point(dx, dy));
+      dialog.setVisible(true);
+
+      animator.removeActionListener(listener);
+      AtomicInteger count = new AtomicInteger();
+      listener = e -> {
+        double v = count.addAndGet(STEP) / (double) d.height;
+        double a = next(slideInAnimation, v);
+        int visibleHeight = (int) (.5 + a * d.height);
+        if (visibleHeight >= d.height) {
+          visibleHeight = d.height;
+          animator.stop();
+        }
+        dialog.setLocation(new Point(dx, dy - visibleHeight));
+      };
+      animator.addActionListener(listener);
+      animator.start();
+    }
+  }
+
+  public JOptionPane makeOptionPane(String msg) {
+    JOptionPane optionPane = new JOptionPane(msg, JOptionPane.WARNING_MESSAGE);
     DragWindowListener dwl = new DragWindowListener();
     optionPane.addMouseListener(dwl);
     optionPane.addMouseMotionListener(dwl);
     optionPane.addPropertyChangeListener(this);
     optionPane.addHierarchyListener(this);
-    dialog.getContentPane().add(optionPane);
-    dialog.pack();
-
-    Dimension d = dialog.getContentPane().getPreferredSize();
-    GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    Rectangle desktopBounds = env.getMaximumWindowBounds();
-    int dx = desktopBounds.width - d.width;
-    int dy = desktopBounds.height;
-    dialog.setLocation(new Point(dx, dy));
-    dialog.setVisible(true);
-
-    animator.removeActionListener(listener);
-    AtomicInteger count = new AtomicInteger();
-    listener = e -> {
-      double v = count.addAndGet(STEP) / (double) d.height;
-      double a = next(slideInAnimation, v);
-      int visibleHeight = (int) (.5 + a * d.height);
-      if (visibleHeight >= d.height) {
-        visibleHeight = d.height;
-        animator.stop();
-      }
-      dialog.setLocation(new Point(dx, dy - visibleHeight));
-    };
-    animator.addActionListener(listener);
-    animator.start();
+    return optionPane;
   }
 
   private static double next(SlideInAnimation slideInAnimation, double v) {
