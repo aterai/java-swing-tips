@@ -117,13 +117,12 @@ class TableHeaderTabbedPane extends JPanel {
     @Override public void mousePressed(MouseEvent e) {
       JTableHeader h = (JTableHeader) e.getComponent();
       int idx = h.columnAtPoint(e.getPoint());
-      if (idx < 0) {
-        return;
+      if (idx >= 0) {
+        TableColumnModel m = h.getColumnModel();
+        Object title = m.getColumn(idx).getHeaderValue();
+        cardLayout.show(contentsPanel, Objects.toString(title));
+        selectedColumn = title;
       }
-      TableColumnModel m = h.getColumnModel();
-      Object title = m.getColumn(idx).getHeaderValue();
-      cardLayout.show(contentsPanel, Objects.toString(title));
-      selectedColumn = title;
     }
 
     @Override public void mouseEntered(MouseEvent e) {
