@@ -84,19 +84,22 @@ public final class MainPanel extends JPanel {
 }
 
 class EmptyIcon implements Icon {
-  protected int width = 5;
-  protected int height = 5;
+  private final Dimension size = new Dimension(5, 5);
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     /* do nothing */
   }
 
   @Override public int getIconWidth() {
-    return width;
+    return size.width;
   }
 
   @Override public int getIconHeight() {
-    return height;
+    return size.height;
+  }
+
+  public void setIconSize(Dimension dim) {
+    size.setSize(dim);
   }
 }
 
@@ -120,8 +123,9 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    emptyIcon.width = ascendingIcon.getIconWidth();
-    emptyIcon.height = ascendingIcon.getIconHeight();
+    int width = ascendingIcon.getIconWidth();
+    int height = ascendingIcon.getIconHeight();
+    emptyIcon.setIconSize(new Dimension(width, height));
     UIManager.put(ASCENDING, emptyIcon);
     UIManager.put(DESCENDING, emptyIcon);
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
