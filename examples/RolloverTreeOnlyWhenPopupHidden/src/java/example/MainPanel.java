@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
 
 class FileSystemViewTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x00_78_D7);
-  private static final Color ROLLOVER_COLOR = new Color(0x64_96_C8);
+  private static final Color HOVER_COLOR = new Color(0x64_96_C8);
   private int rollOverRowIndex = -1;
   private transient MouseAdapter rolloverHandler;
   private transient FileSystemView fileSystemView;
@@ -168,7 +168,7 @@ class FileSystemViewTree extends JTree {
 
   private void paintRollover(Graphics2D g2) {
     if (rollOverRowIndex >= 0) {
-      g2.setPaint(ROLLOVER_COLOR);
+      g2.setPaint(HOVER_COLOR);
       Rectangle rect = getRowBounds(rollOverRowIndex);
       g2.fillRect(0, rect.y, getWidth(), rect.height);
     }
@@ -195,14 +195,14 @@ class FileSystemViewTree extends JTree {
     }
   }
 
-  private void updateColor(Component c, Color fgc, Color bgc, boolean selected, boolean rollover) {
-    if (selected) {
+  private void updateColor(Component c, Color fg, Color bg, boolean select, boolean hover) {
+    if (select) {
       c.setBackground(SELECTED_COLOR);
-    } else if (rollover) {
-      c.setForeground(fgc);
-      c.setBackground(ROLLOVER_COLOR);
+    } else if (hover) {
+      c.setForeground(fg);
+      c.setBackground(HOVER_COLOR);
     } else {
-      c.setBackground(bgc);
+      c.setBackground(bg);
     }
     if (c instanceof JComponent) {
       ((JComponent) c).setOpaque(true);
