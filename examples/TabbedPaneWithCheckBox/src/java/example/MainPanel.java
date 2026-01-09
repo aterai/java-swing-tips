@@ -96,11 +96,10 @@ class TabbedPaneWithCompBorder implements Border, MouseListener, SwingConstants 
   }
 
   private void dispatchEvent(MouseEvent e) {
-    if (!rect.contains(e.getX(), e.getY())) {
-      return;
+    if (rect.contains(e.getX(), e.getY())) {
+      checkBox.setBounds(rect);
+      checkBox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, e, checkBox));
     }
-    checkBox.setBounds(rect);
-    checkBox.dispatchEvent(SwingUtilities.convertMouseEvent(tab, e, checkBox));
   }
 
   @Override public void mouseClicked(MouseEvent e) {
