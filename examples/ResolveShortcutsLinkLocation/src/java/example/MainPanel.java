@@ -118,21 +118,20 @@ class FolderSelectionListener implements TreeSelectionListener {
     TreePath path = e.getPath();
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
     File dir = getRealFile8((File) node.getUserObject());
-    if (!node.isLeaf() || dir == null || !dir.isDirectory()) {
-      return;
-    }
-    JTree tree = (JTree) e.getSource();
-    DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
-    new BackgroundTask(fileSystemView, dir) {
-      @Override protected void process(List<File> chunks) {
-        if (tree.isDisplayable() && !isCancelled()) {
-          chunks.stream().map(DefaultMutableTreeNode::new)
-              .forEach(c -> m.insertNodeInto(c, node, node.getChildCount()));
-        } else {
-          cancel(true);
+    if (node.isLeaf() && dir != null && dir.isDirectory()) {
+      JTree tree = (JTree) e.getSource();
+      DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
+      new BackgroundTask(fileSystemView, dir) {
+        @Override protected void process(List<File> chunks) {
+          if (tree.isDisplayable() && !isCancelled()) {
+            chunks.stream().map(DefaultMutableTreeNode::new)
+                .forEach(c -> m.insertNodeInto(c, node, node.getChildCount()));
+          } else {
+            cancel(true);
+          }
         }
-      }
-    }.execute();
+      }.execute();
+    }
   }
 
   private File getRealFile8(File file) {
