@@ -100,7 +100,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
 
   private void repaintCurrentCell(ButtonsRenderer<?> lcr, Point pt, int idx) {
     JButton button = getButton(list, pt, idx);
-    lcr.button = button;
+    lcr.setButton(button);
     if (Objects.nonNull(button)) {
       button.getModel().setRollover(true);
       repaintCell(lcr, button.getBounds(), idx);
@@ -110,7 +110,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
   }
 
   private void repaintCell(ButtonsRenderer<?> renderer, Rectangle btnRect, int index) {
-    renderer.rolloverIndex = index;
+    renderer.setRolloverIndex(index);
     if (!prevButtonRect.equals(btnRect)) {
       rectRepaint(list, list.getCellBounds(prevIndex, index));
     }
@@ -118,7 +118,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
   }
 
   private void repaintPrevButton(ButtonsRenderer<?> renderer, int index) {
-    renderer.rolloverIndex = -1;
+    renderer.setRolloverIndex(-1);
     if (prevIndex == index) {
       if (!prevButtonRect.isEmpty()) {
         rectRepaint(list, list.getCellBounds(prevIndex, prevIndex));
@@ -139,8 +139,8 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       ListCellRenderer<? super E> renderer = list.getCellRenderer();
       if (Objects.nonNull(button) && renderer instanceof ButtonsRenderer) {
         ButtonsRenderer<?> r = (ButtonsRenderer<?>) renderer;
-        r.pressedIndex = index;
-        r.button = button;
+        r.setPressedIndex(index);
+        r.setButton(button);
         rectRepaint(list, list.getCellBounds(index, index));
       }
     }
@@ -155,7 +155,7 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
       ListCellRenderer<? super E> renderer = list.getCellRenderer();
       if (Objects.nonNull(button) && renderer instanceof ButtonsRenderer) {
         ButtonsRenderer<?> r = (ButtonsRenderer<?>) renderer;
-        r.pressedIndex = -1;
+        r.setPressedIndex(-1);
         // r.button = null;
         button.doClick();
         rectRepaint(list, list.getCellBounds(index, index));
@@ -188,9 +188,6 @@ class CellButtonsMouseListener<E> extends MouseInputAdapter {
 
 class ButtonsRenderer<E> implements ListCellRenderer<E> {
   private static final Color EVEN_COLOR = new Color(0xE6_FF_E6);
-  protected int pressedIndex = -1;
-  protected int rolloverIndex = -1;
-  protected JButton button;
   private final JTextArea textArea = new JTextArea();
   private final JButton deleteButton = new JButton("delete");
   private final JButton copyButton = new JButton("copy");
@@ -203,6 +200,9 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
     }
   };
   private int targetIndex;
+  private int pressedIndex = -1;
+  private int rolloverIndex = -1;
+  private JButton button;
 
   protected ButtonsRenderer(DefaultListModel<E> model) {
     renderer.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
@@ -250,6 +250,18 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
       }
     }
     return renderer;
+  }
+
+  public void setButton(JButton button) {
+    this.button = button;
+  }
+
+  public void setPressedIndex(int idx) {
+    pressedIndex = idx;
+  }
+
+  public void setRolloverIndex(int idx) {
+    rolloverIndex = idx;
   }
 
   private static void resetButtonStatus(AbstractButton button) {
