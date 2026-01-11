@@ -293,6 +293,7 @@
       <compilerarg value="-processorpath" />
       <compilerarg pathref="processorpath.ref" />
       <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
+      <compilerarg value="-XDaddTypeAnnotationsToSymbol=true" />
       <compilerarg value="-J-Dfile.encoding=UTF-8" />
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED" if:set="jdk9orlater" />
