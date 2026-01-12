@@ -8,7 +8,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -242,8 +245,8 @@ class SpinnerEditor extends AbstractCellEditor implements TableCellEditor {
 // }
 
 class ButtonsPanel extends JPanel {
-  public final JButton[] buttons = {new JButton("+"), new JButton("-")};
-  public final JLabel label = new JLabel(" ", SwingConstants.RIGHT) {
+  private final List<JButton> buttons = Arrays.asList(new JButton("+"), new JButton("-"));
+  private final JLabel label = new JLabel(" ", SwingConstants.RIGHT) {
     @Override public Dimension getPreferredSize() {
       Dimension d = super.getPreferredSize();
       d.width = 50;
@@ -251,7 +254,7 @@ class ButtonsPanel extends JPanel {
     }
   };
   // /* default */ int counter = -1;
-  public final AtomicInteger counter = new AtomicInteger(-1);
+  private final AtomicInteger counter = new AtomicInteger(-1);
 
   protected ButtonsPanel() {
     super();
@@ -261,6 +264,20 @@ class ButtonsPanel extends JPanel {
       b.setRolloverEnabled(false);
       add(b);
     }
+  }
+
+  public Optional<JButton> getButton(int idx) {
+    return idx >= 0 && idx < buttons.size()
+        ? Optional.ofNullable(buttons.get(idx))
+        : Optional.empty();
+  }
+
+  public JLabel getLabel() {
+    return label;
+  }
+
+  public AtomicInteger getCounter() {
+    return counter;
   }
 
   @Override public final Component add(Component comp) {
@@ -279,8 +296,8 @@ class ButtonsRenderer implements TableCellRenderer {
     Color bgc = isSelected ? table.getSelectionBackground() : table.getBackground();
     renderer.setBackground(bgc);
     Color fgc = isSelected ? table.getSelectionForeground() : table.getForeground();
-    renderer.label.setForeground(fgc);
-    renderer.label.setText(Objects.toString(value, ""));
+    renderer.getLabel().setForeground(fgc);
+    renderer.getLabel().setText(Objects.toString(value, ""));
     return renderer;
   }
 }
@@ -290,17 +307,17 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 
   protected ButtonsEditor() {
     super();
-    renderer.buttons[0].addActionListener(e -> {
-      int i = renderer.counter.incrementAndGet();
-      renderer.label.setText(Integer.toString(i));
+    renderer.getButton(0).ifPresent(b -> b.addActionListener(e -> {
+      int i = renderer.getCounter().incrementAndGet();
+      renderer.getLabel().setText(Integer.toString(i));
       fireEditingStopped();
-    });
+    }));
 
-    renderer.buttons[1].addActionListener(e -> {
-      int i = renderer.counter.decrementAndGet();
-      renderer.label.setText(Integer.toString(i));
+    renderer.getButton(1).ifPresent(b -> b.addActionListener(e -> {
+      int i = renderer.getCounter().decrementAndGet();
+      renderer.getLabel().setText(Integer.toString(i));
       fireEditingStopped();
-    });
+    }));
 
     renderer.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -311,17 +328,17 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     renderer.setBackground(table.getSelectionBackground());
-    renderer.label.setForeground(table.getSelectionForeground());
+    renderer.getLabel().setForeground(table.getSelectionForeground());
     if (value instanceof Integer) {
       int i = (int) value;
-      renderer.counter.set(i);
-      renderer.label.setText(Integer.toString(i));
+      renderer.getCounter().set(i);
+      renderer.getLabel().setText(Integer.toString(i));
     }
     return renderer;
   }
 
   @Override public Object getCellEditorValue() {
-    return renderer.counter.intValue();
+    return renderer.getCounter().intValue();
   }
 
   // // AbstractCellEditor
