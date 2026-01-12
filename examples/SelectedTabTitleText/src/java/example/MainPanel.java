@@ -147,28 +147,26 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void doLayout() {
     int tabCount = getTabCount();
-    if (tabCount == 0 || !isVisible()) {
-      super.doLayout();
-      return;
+    if (tabCount >= 0 && isVisible()) {
+      Insets tabIns = getTabInsets();
+      Insets tabAreaIns = getTabAreaInsets();
+      Insets ins = getInsets();
+      int tabPlacement = getTabPlacement();
+      int tabSize;
+      int gap;
+      if (tabPlacement == LEFT || tabPlacement == RIGHT) {
+        int h = getHeight() - tabAreaIns.top - tabAreaIns.bottom - ins.top - ins.bottom;
+        tabSize = h / tabCount;
+        gap = h - tabSize * tabCount;
+        tabSize -= tabIns.top + tabIns.bottom + 3;
+      } else { // TOP || BOTTOM
+        int w = getWidth() - tabAreaIns.left - tabAreaIns.right - ins.left - ins.right;
+        tabSize = w / tabCount;
+        gap = w - tabSize * tabCount;
+        tabSize -= tabIns.left + tabIns.right + 3;
+      }
+      updateAllTabWidth(tabSize, gap);
     }
-    Insets tabInsets = getTabInsets();
-    Insets tabAreaInsets = getTabAreaInsets();
-    Insets insets = getInsets();
-    int tabPlacement = getTabPlacement();
-    int tabSize;
-    int gap;
-    if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      int h = getHeight() - tabAreaInsets.top - tabAreaInsets.bottom - insets.top - insets.bottom;
-      tabSize = h / tabCount;
-      gap = h - tabSize * tabCount;
-      tabSize -= tabInsets.top + tabInsets.bottom + 3;
-    } else { // TOP || BOTTOM
-      int w = getWidth() - tabAreaInsets.left - tabAreaInsets.right - insets.left - insets.right;
-      tabSize = w / tabCount;
-      gap = w - tabSize * tabCount;
-      tabSize -= tabInsets.left + tabInsets.right + 3;
-    }
-    updateAllTabWidth(tabSize, gap);
     super.doLayout();
   }
 
