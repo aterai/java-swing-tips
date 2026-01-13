@@ -139,16 +139,22 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
     }
 
     @Override public void mouseDragged(MouseEvent e) {
-      if (!slider.getSnapToTicks() || slider.getMajorTickSpacing() == 0) {
-        super.mouseDragged(e);
-        return;
+      if (slider.getSnapToTicks() && slider.getMajorTickSpacing() > 0) {
+        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
+          int snappedPos = getHorizontalSnapped(e.getX());
+          e.translatePoint(snappedPos - e.getX(), 0);
+          // } else { e.translatePoint(0, getVerticalSnapped(e.getY()) - e.getY()); }
+        }
       }
-      // case HORIZONTAL:
+      super.mouseDragged(e);
+    }
+
+    private int getHorizontalSnapped(int mouseXpt) {
       int halfThumbWidth = thumbRect.width / 2;
       int trackLength = trackRect.width;
       int trackLeft = trackRect.x - halfThumbWidth;
       int trackRight = trackRect.x + trackRect.width - 1 + halfThumbWidth;
-      int pos = e.getX();
+      int pos = mouseXpt;
       int snappedPos;
       if (pos <= trackLeft) {
         snappedPos = trackLeft;
@@ -160,8 +166,7 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
         snappedPos = Math.round(Math.round(pos / tickPixels) * tickPixels) + trackLeft;
         offset = 0;
       }
-      e.translatePoint(snappedPos - e.getX(), 0);
-      super.mouseDragged(e);
+      return snappedPos;
     }
   }
 }
