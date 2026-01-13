@@ -157,8 +157,8 @@ class RowHeader {
 }
 
 class RowHeaderPanel extends JPanel {
-  public final JLabel label = new JLabel(" ");
-  public final JCheckBox check = new JCheckBox();
+  private final JLabel label = new JLabel(" ");
+  private final JCheckBox check = new JCheckBox();
 
   protected RowHeaderPanel() {
     super(new BorderLayout());
@@ -177,6 +177,14 @@ class RowHeaderPanel extends JPanel {
     super.add(comp, constraints);
   }
 
+  public JLabel getLabel() {
+    return label;
+  }
+
+  public JCheckBox getCheckBox() {
+    return check;
+  }
+
   // @Override public void updateUI() {
   //   super.updateUI();
   //   setOpaque(true);
@@ -193,9 +201,9 @@ class RowHeaderRenderer implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (value instanceof RowHeader) {
       RowHeader rh = (RowHeader) value;
-      renderer.check.setVisible(rh.isExpandable());
-      renderer.check.setSelected(rh.isSelected());
-      renderer.label.setText(rh.getTitle());
+      renderer.getCheckBox().setVisible(rh.isExpandable());
+      renderer.getCheckBox().setSelected(rh.isSelected());
+      renderer.getLabel().setText(rh.getTitle());
     }
     return renderer;
   }
@@ -207,11 +215,11 @@ class RowHeaderEditor extends AbstractCellEditor implements TableCellEditor {
 
   protected RowHeaderEditor() {
     super();
-    renderer.check.addActionListener(e -> {
+    renderer.getCheckBox().addActionListener(e -> {
       if (rowHeader != null) {
         String title = rowHeader.getTitle();
         boolean expandable = rowHeader.isExpandable();
-        boolean selected = renderer.check.isSelected();
+        boolean selected = renderer.getCheckBox().isSelected();
         rowHeader = new RowHeader(title, expandable, selected);
       }
       fireEditingStopped();
@@ -226,11 +234,11 @@ class RowHeaderEditor extends AbstractCellEditor implements TableCellEditor {
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
     if (value instanceof RowHeader) {
       RowHeader rh = (RowHeader) value;
-      renderer.check.setVisible(rh.isExpandable());
-      renderer.label.setText(rh.getTitle());
+      renderer.getCheckBox().setVisible(rh.isExpandable());
+      renderer.getLabel().setText(rh.getTitle());
       String title = rh.getTitle();
       boolean expandable = rh.isExpandable();
-      boolean selected = rh.isExpandable() && renderer.check.isSelected();
+      boolean selected = rh.isExpandable() && renderer.getCheckBox().isSelected();
       rowHeader = new RowHeader(title, expandable, selected);
     }
     return renderer;
