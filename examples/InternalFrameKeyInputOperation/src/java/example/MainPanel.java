@@ -34,7 +34,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addFrame(JDesktopPane desktop, int idx, boolean resizable) {
-    JInternalFrame f = new JInternalFrame("resizable: " + resizable, resizable, true, true, true);
+    String title = "resizable: " + resizable;
+    JInternalFrame f = new JInternalFrame(title, resizable, true, true, true);
     f.add(makePanel());
     f.setSize(240, 100);
     f.setLocation(10 + 60 * idx, 10 + 120 * idx);

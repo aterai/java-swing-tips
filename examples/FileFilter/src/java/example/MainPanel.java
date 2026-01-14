@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     fileChooser.addChoosableFileFilter(filter);
     fileChooser.setFileFilter(filter);
 
-    // [JDK-4776197] JFileChooser has an easy-to-fix but serious performance bug - Java Bug System
+    // [JDK-4776197] JFileChooser has an easy-to-fix but serious performance bug
     // https://bugs.openjdk.org/browse/JDK-4776197
     // fileChooser.setFileFilter(fileChooser.getAcceptAllFileFilter());
 

@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
   public static final String SPAN0 = "<span class='insert' id='0'>6</span>";
   public static final String SPAN1 = "<span id='1'>8</span>";
   public static final String DIV3 = "<div class='fff' id='3'>123</div>";
-  private final JEditorPane editorPane = new JEditorPane();
+  private final JEditorPane editor = new JEditorPane();
   private final JTextField field = new JTextField("3");
 
   private MainPanel() {
@@ -53,16 +53,16 @@ public final class MainPanel extends JPanel {
     LOGGER.setLevel(Level.ALL);
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
-    editorPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+    editor.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
     String txt = String.format(
         "<html>12%s90<p>1<a href='..'>23</a>45%s7%s90%s4567890</p>",
         SPAN2, SPAN0, SPAN1, DIV3);
-    editorPane.setText(txt);
-    DefaultHighlighter dh = (DefaultHighlighter) editorPane.getHighlighter();
+    editor.setText(txt);
+    DefaultHighlighter dh = (DefaultHighlighter) editor.getHighlighter();
     dh.setDrawsLayeredHighlights(false);
 
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(new JScrollPane(editorPane));
+    sp.setTopComponent(new JScrollPane(editor));
     sp.setBottomComponent(new JScrollPane(textArea));
 
     JPanel p = new JPanel(new GridLayout(2, 2, 5, 5));
@@ -79,12 +79,12 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
         String id = field.getText().trim();
-        HTMLDocument doc = (HTMLDocument) editorPane.getDocument();
+        HTMLDocument doc = (HTMLDocument) editor.getDocument();
         Element element = doc.getElement(id);
         if (Objects.nonNull(element)) {
           LOGGER.info(() -> String.format("found: %s%n", element));
-          editorPane.requestFocusInWindow();
-          editorPane.select(element.getStartOffset(), element.getEndOffset());
+          editor.requestFocusInWindow();
+          editor.select(element.getStartOffset(), element.getEndOffset());
         }
       }
     };
@@ -94,11 +94,11 @@ public final class MainPanel extends JPanel {
         LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
         JToggleButton b = (JToggleButton) e.getSource();
         if (b.isSelected()) {
-          for (Element root : editorPane.getDocument().getRootElements()) {
-            EditorPaneUtils.traverseElementById(editorPane, root);
+          for (Element root : editor.getDocument().getRootElements()) {
+            EditorPaneUtils.traverseElementById(editor, root);
           }
         } else {
-          editorPane.getHighlighter().removeAllHighlights();
+          editor.getHighlighter().removeAllHighlights();
         }
       }
     };
@@ -107,7 +107,7 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         LOGGER.info(() -> String.format(SEPARATOR, getValue(NAME)));
         String id = field.getText().trim();
-        String text = editorPane.getText();
+        String text = editor.getText();
         EditorPaneUtils.parser(text, id);
       }
     };
@@ -210,32 +210,32 @@ final class EditorPaneUtils {
       }, true);
     } catch (IOException ex) {
       LOGGER.info(() -> String.format("%s%n", ex.getMessage()));
-      // UIManager.getLookAndFeel().provideErrorFeedback(editorPane);
+      // UIManager.getLookAndFeel().provideErrorFeedback(editor);
     }
   }
 
-  public static void traverseElementById(JEditorPane editorPane, Element element) {
+  public static void traverseElementById(JEditorPane editor, Element element) {
     if (element.isLeaf()) {
-      checkId(editorPane, element);
+      checkId(editor, element);
     } else {
       for (int i = 0; i < element.getElementCount(); i++) {
         Element child = element.getElement(i);
-        checkId(editorPane, child);
+        checkId(editor, child);
         if (!child.isLeaf()) {
-          traverseElementById(editorPane, child);
+          traverseElementById(editor, child);
         }
       }
     }
   }
 
-  public static void addHighlight(JEditorPane editorPane, Element element, boolean isBlock) {
-    // Highlighter highlighter = editorPane.getHighlighter();
+  public static void addHighlight(JEditorPane editor, Element element, boolean isBlock) {
+    // Highlighter highlighter = editor.getHighlighter();
     DefaultHighlightPainter painter = new DefaultHighlightPainter(Color.YELLOW);
     int start = element.getStartOffset();
     int lf = isBlock ? 1 : 0;
     int end = element.getEndOffset() - lf; // lf???, setDrawsLayeredHighlights(false) bug???
     try {
-      editorPane.getHighlighter().addHighlight(start, end, painter);
+      editor.getHighlighter().addHighlight(start, end, painter);
     } catch (BadLocationException ex) {
       // should never happen
       RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
@@ -244,7 +244,7 @@ final class EditorPaneUtils {
     }
   }
 
-  public static void checkId(JEditorPane editorPane, Element element) {
+  public static void checkId(JEditorPane editor, Element element) {
     AttributeSet attrs = element.getAttributes();
     Object elementName = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
     Object name = elementName == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
@@ -253,18 +253,18 @@ final class EditorPaneUtils {
       tag = (HTML.Tag) name;
       LOGGER.info(() -> String.format("%s%n", tag));
       if (tag.isBlock()) { // block
-        blockHighlight(editorPane, element, attrs);
+        blockHighlight(editor, element, attrs);
       } else { // inline
-        inlineHighlight(editorPane, element, attrs);
+        inlineHighlight(editor, element, attrs);
       }
     }
   }
 
-  public static void blockHighlight(JEditorPane editorPane, Element element, AttributeSet attrs) {
+  public static void blockHighlight(JEditorPane editor, Element element, AttributeSet attrs) {
     Optional.ofNullable(attrs.getAttribute(HTML.Attribute.ID))
         .ifPresent(id -> {
           LOGGER.info(() -> String.format("block: id=%s%n", id));
-          addHighlight(editorPane, element, true);
+          addHighlight(editor, element, true);
         });
     // Object bid = attrs.getAttribute(HTML.Attribute.ID);
     // if (Objects.nonNull(bid)) {
