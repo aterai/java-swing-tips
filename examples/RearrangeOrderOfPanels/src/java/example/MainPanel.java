@@ -92,29 +92,28 @@ class RearrangingHandler extends MouseAdapter {
   private void startDragging(Container parent, Point pt) {
     Component c = parent.getComponentAt(pt);
     index = parent.getComponentZOrder(c);
-    if (Objects.equals(c, parent) || index < 0) {
-      return;
+    if (!Objects.equals(c, parent) && index >= 0) {
+      isDragging = true;
+      draggingComponent = c;
+      Dimension d = draggingComponent.getSize();
+
+      Point dp = draggingComponent.getLocation();
+      dragOffset.setLocation(pt.x - dp.x, pt.y - dp.y);
+
+      gap = Box.createRigidArea(d);
+      swapComponent(parent, c, gap, index);
+
+      GraphicsConfiguration gc = window.getGraphicsConfiguration();
+      if (gc != null && gc.isTranslucencyCapable()) {
+        window.setBackground(new Color(0x0, true));
+      }
+      window.add(draggingComponent);
+      // window.setSize(d);
+      window.pack();
+
+      updateWindowLocation(pt, parent);
+      window.setVisible(true);
     }
-    isDragging = true;
-    draggingComponent = c;
-    Dimension d = draggingComponent.getSize();
-
-    Point dp = draggingComponent.getLocation();
-    dragOffset.setLocation(pt.x - dp.x, pt.y - dp.y);
-
-    gap = Box.createRigidArea(d);
-    swapComponent(parent, c, gap, index);
-
-    GraphicsConfiguration gc = window.getGraphicsConfiguration();
-    if (gc != null && gc.isTranslucencyCapable()) {
-      window.setBackground(new Color(0x0, true));
-    }
-    window.add(draggingComponent);
-    // window.setSize(d);
-    window.pack();
-
-    updateWindowLocation(pt, parent);
-    window.setVisible(true);
   }
 
   private void updateWindowLocation(Point pt, Component parent) {
@@ -132,19 +131,19 @@ class RearrangingHandler extends MouseAdapter {
       if (startPt.distance(pt) > dragThreshold) {
         startDragging(parent, pt);
       }
-      return;
-    }
-    updateWindowLocation(pt, parent);
-    if (!PREV_RECT.contains(pt)) {
-      IntStream.range(0, parent.getComponentCount())
-          .filter(i -> {
-            Component c = parent.getComponent(i);
-            return !Objects.equals(c, gap) || !c.getBounds().contains(pt);
-          })
-          .map(i -> getTargetIndex(parent.getComponent(i), pt, i))
-          .filter(i -> i >= 0)
-          .findFirst()
-          .ifPresent(i -> swapComponent(parent, gap, gap, i));
+    } else {
+      updateWindowLocation(pt, parent);
+      if (!PREV_RECT.contains(pt)) {
+        IntStream.range(0, parent.getComponentCount())
+            .filter(i -> {
+              Component c = parent.getComponent(i);
+              return !Objects.equals(c, gap) || !c.getBounds().contains(pt);
+            })
+            .map(i -> getTargetIndex(parent.getComponent(i), pt, i))
+            .filter(i -> i >= 0)
+            .findFirst()
+            .ifPresent(i -> swapComponent(parent, gap, gap, i));
+      }
     }
   }
 
