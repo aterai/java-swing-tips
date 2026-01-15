@@ -140,11 +140,10 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
 
     @Override public void mouseDragged(MouseEvent e) {
       if (slider.getSnapToTicks() && slider.getMajorTickSpacing() > 0) {
-        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
-          int snappedPos = getHorizontalSnapped(e.getX());
-          e.translatePoint(snappedPos - e.getX(), 0);
-          // } else { e.translatePoint(0, getVerticalSnapped(e.getY()) - e.getY()); }
-        }
+        boolean horizontal = slider.getOrientation() == SwingConstants.HORIZONTAL;
+        int sx = horizontal ? getHorizontalSnapped(e.getX()) - e.getX() : 0;
+        int sy = 0; // horizontal ? 0 : getVerticalSnapped(e.getY()) - e.getY();
+        e.translatePoint(sx, sy);
       }
       super.mouseDragged(e);
     }
@@ -193,11 +192,10 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
 
     @Override public void mouseDragged(MouseEvent e) {
       if (slider.getSnapToTicks() && slider.getMajorTickSpacing() > 0) {
-        if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
-          int snappedPos = getHorizontalSnapped(e.getX());
-          e.translatePoint(snappedPos - e.getX(), 0);
-          // } else { e.translatePoint(0, getVerticalSnapped(e.getY()) - e.getY()); }
-        }
+        boolean horizontal = slider.getOrientation() == SwingConstants.HORIZONTAL;
+        int sx = horizontal ? getHorizontalSnapped(e.getX()) - e.getX() : 0;
+        int sy = 0;
+        e.translatePoint(sx, sy);
       }
       super.mouseDragged(e);
     }
