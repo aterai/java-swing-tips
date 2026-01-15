@@ -127,23 +127,13 @@ class RearrangingHandler extends MouseAdapter {
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
     Container parent = (Container) e.getComponent();
-    if (!isDragging) { // draggingComponent == null) {
-      if (startPt.distance(pt) > dragThreshold) {
-        startDragging(parent, pt);
-      }
-    } else {
+    if (isDragging) { // draggingComponent == null) {
       updateWindowLocation(pt, parent);
       if (!PREV_RECT.contains(pt)) {
-        IntStream.range(0, parent.getComponentCount())
-            .filter(i -> {
-              Component c = parent.getComponent(i);
-              return !Objects.equals(c, gap) || !c.getBounds().contains(pt);
-            })
-            .map(i -> getTargetIndex(parent.getComponent(i), pt, i))
-            .filter(i -> i >= 0)
-            .findFirst()
-            .ifPresent(i -> swapComponent(parent, gap, gap, i));
+        updateFillerLocation(pt, parent);
       }
+    } else if (startPt.distance(pt) > dragThreshold) {
+      startDragging(parent, pt);
     }
   }
 
@@ -203,6 +193,18 @@ class RearrangingHandler extends MouseAdapter {
       idx = i;
     }
     return idx;
+  }
+
+  private void updateFillerLocation(Point pt, Container parent) {
+    IntStream.range(0, parent.getComponentCount())
+        .filter(i -> {
+          Component c = parent.getComponent(i);
+          return !Objects.equals(c, gap) || !c.getBounds().contains(pt);
+        })
+        .map(i -> getTargetIndex(parent.getComponent(i), pt, i))
+        .filter(i -> i >= 0)
+        .findFirst()
+        .ifPresent(i -> swapComponent(parent, gap, gap, i));
   }
 
   private static void swapComponent(Container p, Component remove, Component add, int i) {
