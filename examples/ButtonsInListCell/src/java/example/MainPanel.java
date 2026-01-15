@@ -252,8 +252,8 @@ class ButtonsRenderer<E> implements ListCellRenderer<E> {
     return renderer;
   }
 
-  public void setButton(JButton button) {
-    this.button = button;
+  public void setButton(JButton btn) {
+    this.button = btn;
   }
 
   public void setPressedIndex(int idx) {
