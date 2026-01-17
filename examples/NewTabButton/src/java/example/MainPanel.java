@@ -366,26 +366,25 @@ class TabLayout implements LayoutManager, Serializable {
   @Override public void layoutContainer(Container parent) {
     synchronized (parent.getTreeLock()) {
       int count = parent.getComponentCount();
-      if (count == 0) {
-        return;
-      }
-      // int rowCount = 1;
-      // boolean ltr = parent.getComponentOrientation().isLeftToRight();
-      Insets insets = parent.getInsets();
-      int colCount = count - 1;
-      int lastWidth = parent.getComponent(count - 1).getPreferredSize().width;
-      int width = parent.getWidth() - insets.left - insets.right - lastWidth;
-      int h = parent.getHeight() - insets.top - insets.bottom;
-      int w = width > TAB_WIDTH * colCount ? TAB_WIDTH : width / colCount;
-      int gap = width - w * colCount;
-      int x = insets.left;
-      int y = insets.top;
-      for (int i = 0; i < count; i++) {
-        int a = gap > 0 ? 1 : 0;
-        int cw = i == colCount ? lastWidth : w + a;
-        parent.getComponent(i).setBounds(x, y, cw, h);
-        x += cw;
-        gap--;
+      if (count > 0) {
+        // int rowCount = 1;
+        // boolean ltr = parent.getComponentOrientation().isLeftToRight();
+        Insets insets = parent.getInsets();
+        int colCount = count - 1;
+        int lastWidth = parent.getComponent(count - 1).getPreferredSize().width;
+        int width = parent.getWidth() - insets.left - insets.right - lastWidth;
+        int h = parent.getHeight() - insets.top - insets.bottom;
+        int w = width > TAB_WIDTH * colCount ? TAB_WIDTH : width / colCount;
+        int gap = width - w * colCount;
+        int x = insets.left;
+        int y = insets.top;
+        for (int i = 0; i < count; i++) {
+          int a = gap > 0 ? 1 : 0;
+          int cw = i == colCount ? lastWidth : w + a;
+          parent.getComponent(i).setBounds(x, y, cw, h);
+          x += cw;
+          gap--;
+        }
       }
     }
   }
