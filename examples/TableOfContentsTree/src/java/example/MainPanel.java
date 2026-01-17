@@ -278,7 +278,7 @@ class TableOfContentsTreeCellRenderer extends DefaultTreeCellRenderer {
 class TableOfContentsTree extends JTree {
   protected static final BasicStroke READER = new BasicStroke(
       1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, new float[] {1f}, 0f);
-  protected boolean isSynth;
+  private boolean isSynth;
 
   protected TableOfContentsTree(TreeModel model) {
     super(model);
