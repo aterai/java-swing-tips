@@ -84,7 +84,8 @@ public final class MainPanel extends JPanel {
   }
 
   private JPanel makeBox() {
-    JRadioButton r0 = new JRadioButton("Size: 0, shift pressed: Horizontal WheelScrolling", true);
+    String txt0 = "Size: 0, shift pressed: Horizontal WheelScrolling";
+    JRadioButton r0 = new JRadioButton(txt0, true);
     r0.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -94,7 +95,8 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JRadioButton r1 = new JRadioButton("SCROLLBAR_ALWAYS");
+    String txt1 = "SCROLLBAR_ALWAYS";
+    JRadioButton r1 = new JRadioButton(txt1);
     r1.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -104,7 +106,8 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JRadioButton r2 = new JRadioButton("SCROLLBAR_NEVER");
+    String txt2 = "SCROLLBAR_NEVER";
+    JRadioButton r2 = new JRadioButton(txt2);
     r2.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
