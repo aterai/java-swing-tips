@@ -104,7 +104,7 @@ enum Permissions {
 
 class CheckBoxesPanel extends JPanel {
   private static final String[] MODE = {"r", "w", "x"};
-  protected final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
+  private final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
     JCheckBox b = new JCheckBox(s);
     b.setOpaque(false);
     // b.setFocusPainted(false);
@@ -112,8 +112,8 @@ class CheckBoxesPanel extends JPanel {
     // b.setRolloverEnabled(false);
     return b;
   }).collect(Collectors.toList());
-  protected transient Border focusBorder;
-  protected transient Border noFocusBorder;
+  private transient Border focusBorder;
+  private transient Border noFocusBorder;
 
   @Override public void updateUI() {
     super.updateUI();
@@ -133,6 +133,10 @@ class CheckBoxesPanel extends JPanel {
 
   protected String[] getTitles() {
     return Arrays.copyOf(MODE, MODE.length);
+  }
+
+  protected Border getFocusBorder(boolean hasFocus) {
+    return hasFocus ? focusBorder : noFocusBorder;
   }
 
   private void initButtons() {
@@ -185,7 +189,7 @@ class CheckBoxesRenderer implements TableCellRenderer {
       renderer.setOpaque(true);
       renderer.setBackground(BGC);
     }
-    renderer.setBorder(hasFocus ? renderer.focusBorder : renderer.noFocusBorder);
+    renderer.setBorder(renderer.getFocusBorder(hasFocus));
     renderer.updateButtons(value);
     return renderer;
   }
@@ -213,7 +217,7 @@ class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
     //   }
     //
     //   @Override public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
-    //     // int i = order.indexOf(aComponent);
+    //     // int idx = order.indexOf(aComponent);
     //     System.out.println("getComponentAfter getComponentAfter getComponentAfter");
     //     return super.getComponentAfter(focusCycleRoot, aComponent);
     //   }
