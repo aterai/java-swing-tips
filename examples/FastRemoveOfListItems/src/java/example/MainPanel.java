@@ -56,7 +56,10 @@ public final class MainPanel extends JPanel {
         toModel.addElement(fromModel.get(i));
       }
       // if (from.getSelectionMode() != ListSelectionModel.MULTIPLE_INTERVAL_SELECTION) {
-      //   fromModel.removeRange(selectedIndices[0], selectedIndices[selectedIndices.length - 1]);
+      //   fromModel.removeRange(
+      //     selectedIndices[0],
+      //     selectedIndices[selectedIndices.length - 1]
+      //   );
       // }
       // TEST: Moving the first item is very slow.
       // fromModel.clear();

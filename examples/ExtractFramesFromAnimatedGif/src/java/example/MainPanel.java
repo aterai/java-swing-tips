@@ -51,7 +51,9 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(box));
     setPreferredSize(new Dimension(320, 240));
   }
-  // // https://community.oracle.com/thread/1271862 Reading gif animation frame rates and such?
+
+  // // https://community.oracle.com/thread/1271862
+  // // Reading gif animation frame rates and such?
   // private List<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
   //   String format = "gif";
   //   String meta = "javax_imageio_gif_image_1.0";

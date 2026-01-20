@@ -49,7 +49,8 @@ public final class MainPanel extends JPanel {
   private static String makeHtml() {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     String path = "example/16x16.png";
-    String src = Optional.ofNullable(cl.getResource(path)).map(URL::toString).orElse("not found");
+    String src = Optional.ofNullable(cl.getResource(path))
+        .map(URL::toString).orElse("not found");
     // https://docs.oracle.com/javase/8/docs/api/javax/swing/text/html/FormView.html
     return String.join(
         "\n",

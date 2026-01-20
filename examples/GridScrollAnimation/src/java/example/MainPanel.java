@@ -18,20 +18,20 @@ public final class MainPanel extends JPanel {
     for (int i = 0; i < gp.getColumns() * gp.getRows(); i++) {
       gp.add(makeSampleComponent(i));
     }
-    JScrollPane scrollPane = new JScrollPane(gp);
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    // scrollPane.getVerticalScrollBar().setEnabled(false);
-    // scrollPane.getHorizontalScrollBar().setEnabled(false);
-    // scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension());
-    // scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
+    JScrollPane scroll = new JScrollPane(gp);
+    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    // scroll.getVerticalScrollBar().setEnabled(false);
+    // scroll.getHorizontalScrollBar().setEnabled(false);
+    // scroll.getVerticalScrollBar().setPreferredSize(new Dimension());
+    // scroll.getHorizontalScrollBar().setPreferredSize(new Dimension());
     JPanel p = new JPanel();
-    p.add(scrollPane);
+    p.add(scroll);
     add(p);
-    add(new JButton(new ScrollAction("right", scrollPane, new Point(1, 0))), BorderLayout.EAST);
-    add(new JButton(new ScrollAction("left", scrollPane, new Point(-1, 0))), BorderLayout.WEST);
-    add(new JButton(new ScrollAction("bottom", scrollPane, new Point(0, 1))), BorderLayout.SOUTH);
-    add(new JButton(new ScrollAction("top", scrollPane, new Point(0, -1))), BorderLayout.NORTH);
+    add(new JButton(new ScrollAction("right", scroll, new Point(1, 0))), BorderLayout.EAST);
+    add(new JButton(new ScrollAction("left", scroll, new Point(-1, 0))), BorderLayout.WEST);
+    add(new JButton(new ScrollAction("bottom", scroll, new Point(0, 1))), BorderLayout.SOUTH);
+    add(new JButton(new ScrollAction("top", scroll, new Point(0, -1))), BorderLayout.NORTH);
   }
 
   private static Component makeSampleComponent(int idx) {

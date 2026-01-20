@@ -61,7 +61,8 @@ public final class MainPanel extends JPanel {
   //         KeyEvent.VK_F1, KeyEvent.VK_F4, KeyEvent.VK_F5, KeyEvent.VK_F6, KeyEvent.VK_F7,
   //         KeyEvent.VK_F9, KeyEvent.VK_F10, KeyEvent.VK_F11, KeyEvent.VK_F12);
   //
-  //     @Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+  //     @Override protected boolean processKeyBinding(
+  //           KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
   //       if (!check.isSelected()) {
   //         return super.processKeyBinding(ks, e, condition, pressed);
   //       }

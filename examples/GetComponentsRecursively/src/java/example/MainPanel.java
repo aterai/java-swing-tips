@@ -173,7 +173,8 @@ final class SwingUtils {
 
   // // import java.util.function.Function;
   // private static Optional<Component> findFileNameTextField(JFileChooser fc) {
-  //   return Stream.of(fc.getComponents()).flatMap(new Function<Component, Stream<Component>>() {
+  //   Component[] lst = fc.getComponents();
+  //   return Stream.of(lst).flatMap(new Function<Component, Stream<Component>>() {
   //     @Override public Stream<Component> apply(Component c) {
   //       if (c instanceof Container) {
   //         Component[] sub = ((Container) c).getComponents();
