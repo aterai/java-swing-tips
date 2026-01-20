@@ -156,13 +156,14 @@ class MyWindowsTableHeaderUI extends WindowsTableHeaderUI {
 
       @Override public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
-        if (!header.isEnabled()) {
-          return;
-        }
-        if (ResizeUtils.canResize(ResizeUtils.getResizeColumn(header, e.getPoint()), header)) {
-          header.setCursor(resizeCursor);
-        } else {
-          header.setCursor(defaultCursor);
+        if (header.isEnabled()) {
+          Point pt = e.getPoint();
+          TableColumn col = ResizeUtils.getResizeColumn(header, pt);
+          if (ResizeUtils.canResize(col, header)) {
+            header.setCursor(resizeCursor);
+          } else {
+            header.setCursor(defaultCursor);
+          }
         }
       }
     };
@@ -177,13 +178,14 @@ class MySynthTableHeaderUI extends SynthTableHeaderUI {
 
       @Override public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
-        if (!header.isEnabled()) {
-          return;
-        }
-        if (ResizeUtils.canResize(ResizeUtils.getResizeColumn(header, e.getPoint()), header)) {
-          header.setCursor(resizeCursor);
-        } else {
-          header.setCursor(defaultCursor);
+        if (header.isEnabled()) {
+          Point pt = e.getPoint();
+          TableColumn col = ResizeUtils.getResizeColumn(header, pt);
+          if (ResizeUtils.canResize(col, header)) {
+            header.setCursor(resizeCursor);
+          } else {
+            header.setCursor(defaultCursor);
+          }
         }
       }
     };
@@ -198,13 +200,14 @@ class MyBasicTableHeaderUI extends BasicTableHeaderUI {
 
       @Override public void mouseMoved(MouseEvent e) {
         super.mouseMoved(e);
-        if (!header.isEnabled()) {
-          return;
-        }
-        if (ResizeUtils.canResize(ResizeUtils.getResizeColumn(header, e.getPoint()), header)) {
-          header.setCursor(resizeCursor);
-        } else {
-          header.setCursor(defaultCursor);
+        if (header.isEnabled()) {
+          Point pt = e.getPoint();
+          TableColumn col = ResizeUtils.getResizeColumn(header, pt);
+          if (ResizeUtils.canResize(col, header)) {
+            header.setCursor(resizeCursor);
+          } else {
+            header.setCursor(defaultCursor);
+          }
         }
       }
     };
