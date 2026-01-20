@@ -151,7 +151,7 @@ public final class MainPanel extends JPanel {
             .stream()
             .anyMatch(n -> {
               Object uo = n.getUserObject();
-              return uo instanceof SizeNode && ((SizeNode) uo).height == END_HEIGHT;
+              return uo instanceof SizeNode && ((SizeNode) uo).getHeight() == END_HEIGHT;
             });
         if (b) {
           startCollapse(e, list);
@@ -172,7 +172,7 @@ class HeightTreeCellRenderer extends DefaultTreeCellRenderer {
       JLabel l = (JLabel) c;
       SizeNode n = (SizeNode) uo;
       l.setPreferredSize(null); // reset prev preferred size
-      l.setText(n.label); // recalculate preferred size
+      l.setText(n.getLabel()); // recalculate preferred size
       // Font font = l.getFont();
       // FontRenderContext frc = l.getFontMetrics(font).getFontRenderContext();
       // Rectangle2D r = font.getStringBounds(n.label, frc);
@@ -182,7 +182,7 @@ class HeightTreeCellRenderer extends DefaultTreeCellRenderer {
       // System.out.println(w + " : " + l.getPreferredSize().width);
       // l.setPreferredSize(new Dimension(w, h));
       Dimension d = l.getPreferredSize();
-      d.height = n.height;
+      d.height = n.getHeight();
       l.setPreferredSize(d);
     }
     return c;
@@ -190,12 +190,20 @@ class HeightTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 class SizeNode {
-  public final String label;
-  public final int height;
+  private final String label;
+  private final int height;
 
   protected SizeNode(String label, int height) {
     this.label = label;
     this.height = height;
+  }
+
+  public int getHeight() {
+    return height;
+  }
+
+  public String getLabel() {
+    return label;
   }
 
   @Override public String toString() {
