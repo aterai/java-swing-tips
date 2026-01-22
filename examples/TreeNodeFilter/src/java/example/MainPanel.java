@@ -106,17 +106,25 @@ public final class MainPanel extends JPanel {
 }
 
 class FilterableNode {
-  public final String label;
-  protected boolean status;
+  private final String label;
+  private boolean visible;
 
   protected FilterableNode(String label) {
     this.label = label;
-    status = false;
+    visible = false;
   }
 
-  protected FilterableNode(String label, boolean status) {
-    this.label = label;
-    this.status = status;
+  // protected FilterableNode(String label, boolean visible) {
+  //   this.label = label;
+  //   this.visible = visible;
+  // }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
+
+  public boolean isVisible() {
+    return visible;
   }
 
   @Override public String toString() {
@@ -156,7 +164,7 @@ class FilterableStatusUpdateListener implements TreeModelListener {
       node = (DefaultMutableTreeNode) model.getRoot();
       c = (FilterableNode) node.getUserObject();
     }
-    updateAllChildrenUserObject(node, c.status);
+    updateAllChildrenUserObject(node, c.isVisible());
     model.nodeChanged(node);
     adjusting.set(false);
   }
@@ -164,13 +172,13 @@ class FilterableStatusUpdateListener implements TreeModelListener {
   private void updateParentUserObject(DefaultMutableTreeNode parent) {
     FilterableNode uo = (FilterableNode) parent.getUserObject();
     // Java 9: Collections.list(node.children()).stream()
-    uo.status = Collections.list((Enumeration<?>) parent.children()).stream()
+    uo.setVisible(Collections.list((Enumeration<?>) parent.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .map(DefaultMutableTreeNode::getUserObject)
         .filter(FilterableNode.class::isInstance)
         .map(FilterableNode.class::cast)
-        .anyMatch(c -> c.status);
+        .anyMatch(FilterableNode::isVisible));
     // // Java 9: Enumeration<TreeNode> children = parent.children();
     // Enumeration<?> children = parent.children();
     // while (children.hasMoreElements()) {
@@ -192,7 +200,7 @@ class FilterableStatusUpdateListener implements TreeModelListener {
         .map(DefaultMutableTreeNode::getUserObject)
         .filter(FilterableNode.class::isInstance)
         .map(FilterableNode.class::cast)
-        .forEach(n -> n.status = match);
+        .forEach(n -> n.setVisible(match));
     // Enumeration<?> breadth = root.breadthFirstEnumeration();
     // while (breadth.hasMoreElements()) {
     //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) breadth.nextElement();
@@ -225,7 +233,7 @@ class FilterTreeCellRenderer extends DefaultTreeCellRenderer {
         tree, value, selected, expanded, leaf, row, hasFocus);
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
     FilterableNode uo = (FilterableNode) node.getUserObject();
-    return uo.status ? c : emptyLabel;
+    return uo.isVisible() ? c : emptyLabel;
   }
 }
 
@@ -239,12 +247,12 @@ final class TreeUtils {
     if (o instanceof DefaultMutableTreeNode) {
       DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
       FilterableNode uo = (FilterableNode) node.getUserObject();
-      uo.status = node.toString().startsWith(q);
+      uo.setVisible(node.toString().startsWith(q));
       ((DefaultTreeModel) tree.getModel()).nodeChanged(node);
-      if (uo.status) {
+      if (uo.isVisible()) {
         tree.expandPath(node.isLeaf() ? path.getParentPath() : path);
       }
-      if (!uo.status && !node.isLeaf()) {
+      if (!uo.isVisible() && !node.isLeaf()) {
         // Java 9: Collections.list(node.children()).stream()
         Collections.list((Enumeration<?>) node.children()).stream()
             .filter(TreeNode.class::isInstance).map(TreeNode.class::cast)
@@ -256,7 +264,7 @@ final class TreeUtils {
   public static void resetAll(TreePath parent, boolean match) {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) parent.getLastPathComponent();
     FilterableNode uo = (FilterableNode) node.getUserObject();
-    uo.status = match;
+    uo.setVisible(match);
     if (!node.isLeaf()) {
       // Java 9: Collections.list(node.children())
       Collections.list((Enumeration<?>) node.children())
