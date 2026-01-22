@@ -32,7 +32,8 @@ public final class MainPanel extends JPanel {
         // if (isDragging) { // JInternalFrame#isDragging: package private
         DesktopManager m = desktop.getDesktopManager();
         if (m instanceof DragDesktopManager && ((DragDesktopManager) m).isDraggingFrame(this)) {
-          ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
+          AlphaComposite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f);
+          ((Graphics2D) g).setComposite(comp);
         }
         super.paintComponent(g);
       }
