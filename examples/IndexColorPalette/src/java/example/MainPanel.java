@@ -58,19 +58,7 @@ public final class MainPanel extends JPanel {
 
     JPanel box = new JPanel(new GridBagLayout());
     if (Objects.nonNull(idxColorModel)) {
-      JList<IndexedColor> palette = new JList<IndexedColor>(new PaletteListModel(idxColorModel)) {
-        @Override public void updateUI() {
-          setCellRenderer(null);
-          super.updateUI();
-          setLayoutOrientation(HORIZONTAL_WRAP);
-          setVisibleRowCount(8);
-          setFixedCellWidth(CELL_SIZE.width);
-          setFixedCellHeight(CELL_SIZE.height);
-          setCellRenderer(new IndexedColorListRenderer());
-          getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-          setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        }
-      };
+      JList<IndexedColor> palette = makeIndexedColorList(idxColorModel);
       box.add(new JScrollPane(palette), new GridBagConstraints());
     } else {
       box.add(new JLabel("No IndexColorModel"), new GridBagConstraints());
@@ -80,6 +68,22 @@ public final class MainPanel extends JPanel {
     add(box);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JList<IndexedColor> makeIndexedColorList(IndexColorModel model) {
+    return new JList<IndexedColor>(new PaletteListModel(model)) {
+      @Override public void updateUI() {
+        setCellRenderer(null);
+        super.updateUI();
+        setLayoutOrientation(HORIZONTAL_WRAP);
+        setVisibleRowCount(8);
+        setFixedCellWidth(CELL_SIZE.width);
+        setFixedCellHeight(CELL_SIZE.height);
+        setCellRenderer(new IndexedColorListRenderer());
+        getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+      }
+    };
   }
 
   private static Image makeImage(DataBuffer buffer, ColorModel model, int w, int h, int idx) {

@@ -40,7 +40,9 @@ public final class MainPanel extends JPanel {
     desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     desktop.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
-        immovableFrame.setSize(immovableFrame.getSize().width, e.getComponent().getSize().height);
+        int width = immovableFrame.getSize().width;
+        int height = e.getComponent().getSize().height;
+        immovableFrame.setSize(width, height);
       }
     });
 

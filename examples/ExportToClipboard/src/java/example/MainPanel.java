@@ -23,7 +23,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(1, 2, 10, 0));
     TransferHandler h = new ListItemTransferHandler();
-    p.setBorder(BorderFactory.createTitledBorder("Drag & Drop(Copy, Cut, Paste) between JLists"));
+    String help = "Drag & Drop(Copy, Cut, Paste) between JLists";
+    p.setBorder(BorderFactory.createTitledBorder(help));
     p.add(new JScrollPane(makeList(makeModel(), h)));
     p.add(new JScrollPane(makeList(makeModel(), h)));
     add(p);

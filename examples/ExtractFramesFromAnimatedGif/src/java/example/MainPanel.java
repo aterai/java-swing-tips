@@ -54,11 +54,11 @@ public final class MainPanel extends JPanel {
 
   // // https://community.oracle.com/thread/1271862
   // // Reading gif animation frame rates and such?
-  // private List<BufferedImage> loadFromStream(ImageInputStream imageStream) throws IOException {
+  // private List<BufferedImage> loadFromStream(ImageInputStream imgStream) throws IOException {
   //   String format = "gif";
   //   String meta = "javax_imageio_gif_image_1.0";
   //   ImageReader reader = null;
-  //   Iterator<ImageReader> readers = ImageIO.getImageReaders(imageStream);
+  //   Iterator<ImageReader> readers = ImageIO.getImageReaders(imgStream);
   //   while (readers.hasNext()) {
   //     reader = readers.next();
   //     String metaFormat = reader.getOriginatingProvider().getNativeImageMetadataFormatName();
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
   //   }
   //   ImageReader imageReader = Objects.requireNonNull(reader, "Can not read image format!");
   //   boolean isGif = format.equalsIgnoreCase(imageReader.getFormatName());
-  //   imageReader.setInput(imageStream, false, !isGif);
+  //   imageReader.setInput(imgStream, false, !isGif);
   //   List<BufferedImage> list = new ArrayList<>();
   //   for (int i = 0; i < imageReader.getNumImages(true); i++) {
   //     IIOImage frame = imageReader.readAll(i, null);
