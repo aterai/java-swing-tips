@@ -39,7 +39,6 @@ public final class MainPanel extends JPanel {
     model.addElement("<<<<<<---->>>>>>");
     model.addElement("============");
     model.addElement("****");
-
     JList<String> list = new DnDList<>();
     list.setModel(model);
     return list;
@@ -73,9 +72,9 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
   private static final String MIME_TYPE = DataFlavor.javaJVMLocalObjectMimeType;
   private static final DataFlavor FLAVOR = new DataFlavor(MIME_TYPE, NAME);
   private static final Color EVEN_BGC = new Color(0xF0_F0_F0);
-  protected int draggedIndex = -1;
-  protected int targetIndex = -1;
-  protected final transient Transferable transferable = new Transferable() {
+  private int draggedIndex = -1;
+  private int targetIndex = -1;
+  private final transient Transferable transferable = new Transferable() {
     @Override public Object getTransferData(DataFlavor flavor) {
       return this;
     }
