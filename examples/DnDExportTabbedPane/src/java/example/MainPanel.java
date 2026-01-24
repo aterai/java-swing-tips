@@ -124,7 +124,7 @@ class DnDTabbedPane extends JTabbedPane {
   private static final Rectangle RECT_BACKWARD = new Rectangle();
   private static final Rectangle RECT_FORWARD = new Rectangle();
   // private final DropMode dropMode = DropMode.INSERT;
-  protected int dragTabIndex = -1;
+  private int dragTabIndex = -1;
   private transient DnDTabbedPane.DropLocation dropLocation;
   private transient Handler handler;
 
@@ -208,6 +208,10 @@ class DnDTabbedPane extends JTabbedPane {
     addMouseListener(handler);
     addMouseMotionListener(handler);
     addPropertyChangeListener(handler);
+  }
+
+  public int getDragTabIndex() {
+    return dragTabIndex;
   }
 
   private int getHorizontalIndex(int i, Point pt) {
@@ -519,16 +523,20 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 }
 
 class DnDTabData {
-  public final DnDTabbedPane tabbedPane;
+  private final DnDTabbedPane tabbedPane;
 
   protected DnDTabData(DnDTabbedPane tabbedPane) {
     this.tabbedPane = tabbedPane;
   }
+
+  public DnDTabbedPane getTabbedPane() {
+    return tabbedPane;
+  }
 }
 
 class TabTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
-  protected DnDTabbedPane source;
+  private final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
+  private DnDTabbedPane source;
 
   // protected TabTransferHandler() {
   //   super();
@@ -580,7 +588,7 @@ class TabTransferHandler extends TransferHandler {
     // if (!isWebStart()) {
     //   // System.out.println("local");
     //   try {
-    //     source = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
+    //     src = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
     //   } catch (Exception ex) {
     //     ex.printStackTrace();
     //   }
@@ -590,10 +598,9 @@ class TabTransferHandler extends TransferHandler {
     if (support.isDrop() && support.isDataFlavorSupported(localObjectFlavor)) {
       boolean inArea = target.getTabAreaBounds().contains(pt) && idx >= 0;
       if (target.equals(source)) {
-        // System.out.println("tgt == src");
-        canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+        int dragTabIndex = target.getDragTabIndex();
+        canDrop = inArea && idx != dragTabIndex && idx != dragTabIndex + 1;
       } else {
-        // System.out.format("tgt!=src%n tgt: %s%n src: %s", tgt.getName(), src.getName());
         canDrop = Optional.ofNullable(source)
             .map(c -> !c.isAncestorOf(target))
             .orElse(false) && inArea;
@@ -601,7 +608,7 @@ class TabTransferHandler extends TransferHandler {
     }
 
     // [JDK-6700748]
-    // Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+    // Cursor flickering during D&D when using CellRendererPane with validation
     // https://bugs.openjdk.org/browse/JDK-6700748
     Cursor cursor = canDrop ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop;
     Component glassPane = target.getRootPane().getGlassPane();
@@ -623,7 +630,7 @@ class TabTransferHandler extends TransferHandler {
   // }
 
   private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
-    Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
+    Rectangle rect = tabs.getBoundsAt(tabs.getDragTabIndex());
     int w = tabs.getWidth();
     int h = tabs.getHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -650,7 +657,7 @@ class TabTransferHandler extends TransferHandler {
     int action = NONE;
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane src = (DnDTabbedPane) c;
-      if (src.dragTabIndex >= 0) {
+      if (src.getDragTabIndex() >= 0) {
         c.getRootPane().setGlassPane(new GhostGlassPane(src));
         setDragImage(makeDragTabImage(src));
         c.getRootPane().getGlassPane().setVisible(true);
@@ -667,12 +674,13 @@ class TabTransferHandler extends TransferHandler {
     Object data = getTransferData(support, localObjectFlavor);
     boolean b = data instanceof DnDTabData;
     if (b) {
-      DnDTabbedPane src = ((DnDTabData) data).tabbedPane;
+      DnDTabbedPane src = ((DnDTabData) data).getTabbedPane();
       int index = dl.getIndex(); // boolean insert = dl.isInsert();
+      int dragTabIndex = src.getDragTabIndex();
       if (target.equals(src)) {
-        src.convertTab(src.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
+        src.convertTab(dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
       } else {
-        src.exportTab(src.dragTabIndex, target, index);
+        src.exportTab(dragTabIndex, target, index);
       }
     }
     return b;

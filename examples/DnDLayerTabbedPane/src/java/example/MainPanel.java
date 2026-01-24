@@ -135,7 +135,7 @@ class DnDTabbedPane extends JTabbedPane {
   private static final Rectangle RECT_BACKWARD = new Rectangle();
   private static final Rectangle RECT_FORWARD = new Rectangle();
   // private final DropMode dropMode = DropMode.INSERT;
-  protected int dragTabIndex = -1;
+  private int dragTabIndex = -1;
   private transient DnDTabbedPane.DropLocation dropLocation;
   private transient Handler handler;
 
@@ -219,6 +219,10 @@ class DnDTabbedPane extends JTabbedPane {
     addMouseListener(handler);
     addMouseMotionListener(handler);
     addPropertyChangeListener(handler);
+  }
+
+  public int getDragTabIndex() {
+    return dragTabIndex;
   }
 
   private int getHorizontalIndex(int i, Point pt) {
@@ -443,8 +447,8 @@ class DnDTabbedPane extends JTabbedPane {
         int i = src.indexAtLocation(tabPt.x, tabPt.y);
         // disabled tab, null component problem.
         // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
-        boolean flag = i < 0 || !src.isEnabledAt(i) || src.getComponentAt(i) == null;
-        startPt.setLocation(flag ? new Point(-1, -1) : tabPt);
+        boolean b = i < 0 || !src.isEnabledAt(i) || src.getComponentAt(i) == null;
+        startPt.setLocation(b ? new Point(-1, -1) : tabPt);
       }
     }
 
@@ -507,25 +511,29 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 }
 
 class DnDTabData {
-  public final DnDTabbedPane tabbedPane;
+  private final DnDTabbedPane tabbedPane;
 
   protected DnDTabData(DnDTabbedPane tabbedPane) {
     this.tabbedPane = tabbedPane;
   }
+
+  public DnDTabbedPane getTabbedPane() {
+    return tabbedPane;
+  }
 }
 
 class TabTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
-  protected DnDTabbedPane source;
-  protected final JLabel label = new JLabel() {
+  private final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
+  private DnDTabbedPane source;
+  private final JLabel label = new JLabel() {
     // Free the pixel: GHOST drag and drop, over multiple windows
     // https://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html
     @Override public boolean contains(int x, int y) {
       return false;
     }
   };
-  protected final JWindow dialog = new JWindow();
-  protected DragImageMode mode = DragImageMode.LIGHTWEIGHT;
+  private final JWindow dialog = new JWindow();
+  private DragImageMode mode = DragImageMode.LIGHTWEIGHT;
 
   protected TabTransferHandler() {
     super();
@@ -601,10 +609,9 @@ class TabTransferHandler extends TransferHandler {
     if (support.isDrop() && support.isDataFlavorSupported(localObjectFlavor)) {
       boolean inArea = target.getTabAreaBounds().contains(pt) && idx >= 0;
       if (target.equals(source)) {
-        // System.out.println("target == source");
-        canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+        int dragTabIndex = target.getDragTabIndex();
+        canDrop = inArea && idx != dragTabIndex && idx != dragTabIndex + 1;
       } else {
-        // System.out.format("tgt!=src%n tgt: %s%n src: %s", tgt.getName(), src.getName());
         canDrop = Optional.ofNullable(source)
             .map(c -> !c.isAncestorOf(target))
             .orElse(false) && inArea;
@@ -632,7 +639,7 @@ class TabTransferHandler extends TransferHandler {
   // }
 
   private BufferedImage makeDragTabImage(DnDTabbedPane tabs) {
-    Rectangle rect = tabs.getBoundsAt(tabs.dragTabIndex);
+    Rectangle rect = tabs.getBoundsAt(tabs.getDragTabIndex());
     int w = tabs.getWidth();
     int h = tabs.getHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -657,7 +664,7 @@ class TabTransferHandler extends TransferHandler {
   @Override public int getSourceActions(JComponent c) {
     // System.out.println("getSourceActions");
     int action;
-    if (c instanceof DnDTabbedPane && ((DnDTabbedPane) c).dragTabIndex >= 0) {
+    if (c instanceof DnDTabbedPane && ((DnDTabbedPane) c).getDragTabIndex() >= 0) {
       updateDragTabImage(makeDragTabImage((DnDTabbedPane) c));
       action = MOVE;
     } else {
@@ -683,12 +690,13 @@ class TabTransferHandler extends TransferHandler {
     Object data = getTransferData(support, localObjectFlavor);
     boolean b = data instanceof DnDTabData;
     if (b) {
-      DnDTabbedPane src = ((DnDTabData) data).tabbedPane;
+      DnDTabbedPane src = ((DnDTabData) data).getTabbedPane();
       int index = dl.getIndex(); // boolean insert = dl.isInsert();
+      int dragTabIndex = src.getDragTabIndex();
       if (target.equals(src)) {
-        src.convertTab(src.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
+        src.convertTab(dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
       } else {
-        src.exportTab(src.dragTabIndex, target, index);
+        src.exportTab(dragTabIndex, target, index);
       }
     }
     return b;
