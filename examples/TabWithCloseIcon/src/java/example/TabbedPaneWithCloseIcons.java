@@ -14,13 +14,12 @@ public final class TabbedPaneWithCloseIcons extends JTabbedPane {
     super();
     addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        int index = indexAtLocation(e.getX(), e.getY());
-        if (index < 0) {
-          return;
-        }
-        Rectangle rect = ((SimpleCloseTabIcon) getIconAt(index)).getBounds();
-        if (rect.contains(e.getPoint())) {
-          removeTabAt(index);
+        int idx = indexAtLocation(e.getX(), e.getY());
+        if (idx >= 0) {
+          Rectangle r = ((SimpleCloseTabIcon) getIconAt(idx)).getBounds();
+          if (r.contains(e.getPoint())) {
+            removeTabAt(idx);
+          }
         }
       }
     });
