@@ -190,7 +190,7 @@ public final class TableSorter extends AbstractTableModel {
       Optional.ofNullable(h.getDefaultRenderer())
           .filter(SortableHeaderRenderer.class::isInstance)
           .map(SortableHeaderRenderer.class::cast)
-          .ifPresent(renderer -> h.setDefaultRenderer(renderer.cellRenderer));
+          .ifPresent(r -> h.setDefaultRenderer(r.getCellRenderer()));
       // if (defaultRenderer instanceof SortableHeaderRenderer)
       //   h.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).cellRenderer);
     });
@@ -206,7 +206,7 @@ public final class TableSorter extends AbstractTableModel {
   }
 
   private Directive getDirective(int column) {
-    return sortingColumns.stream().filter(directive -> directive.column == column)
+    return sortingColumns.stream().filter(directive -> directive.getColumn() == column)
         .findFirst().orElse(EMPTY_DIRECTIVE);
     // for (Directive directive : sortingColumns) {
     //   if (directive.column == column) {
@@ -217,7 +217,7 @@ public final class TableSorter extends AbstractTableModel {
   }
 
   public int getSortingStatus(int column) {
-    return getDirective(column).direction;
+    return getDirective(column).getDirection();
   }
 
   private void sortingStatusChanged() {
@@ -246,7 +246,7 @@ public final class TableSorter extends AbstractTableModel {
     Directive d = getDirective(column);
     return EMPTY_DIRECTIVE.equals(d)
         ? null
-        : new Arrow(d.direction == DESCENDING, size, sortingColumns.indexOf(d));
+        : new Arrow(d.getDirection() == DESCENDING, size, sortingColumns.indexOf(d));
   }
 
   public void cancelSorting() {
@@ -296,7 +296,7 @@ public final class TableSorter extends AbstractTableModel {
   }
 
   public int modelIndex(int viewIndex) {
-    return getViewToModel().get(viewIndex).modelIndex;
+    return getViewToModel().get(viewIndex).getModelIndex();
   }
 
   public List<Integer> getModelToView() {
@@ -346,10 +346,10 @@ public final class TableSorter extends AbstractTableModel {
   private final class RowComparator<E extends TableRow> implements Comparator<E> {
     @SuppressWarnings("PMD.OnlyOneReturn")
     @Override public int compare(TableRow r1, TableRow r2) {
-      int row1 = r1.modelIndex;
-      int row2 = r2.modelIndex;
+      int row1 = r1.getModelIndex();
+      int row2 = r2.getModelIndex();
       for (Directive directive : sortingColumns) {
-        int column = directive.column;
+        int column = directive.getColumn();
         Object o1 = tableModel.getValueAt(row1, column);
         Object o2 = tableModel.getValueAt(row2, column);
         // int comparison;
@@ -372,7 +372,7 @@ public final class TableSorter extends AbstractTableModel {
         Comparator<Object> comparator = getComparator(column);
         int comparison = Objects.compare(o1, o2, Comparator.nullsFirst(comparator));
         if (comparison != 0) {
-          return directive.direction == DESCENDING ? ~comparison + 1 : comparison;
+          return directive.getDirection() == DESCENDING ? ~comparison + 1 : comparison;
         }
       }
       return row1 - row2;
@@ -464,10 +464,14 @@ public final class TableSorter extends AbstractTableModel {
 }
 
 class SortableHeaderRenderer implements TableCellRenderer {
-  protected final TableCellRenderer cellRenderer;
+  private final TableCellRenderer cellRenderer;
 
   protected SortableHeaderRenderer(TableCellRenderer cellRenderer) {
     this.cellRenderer = cellRenderer;
+  }
+
+  public TableCellRenderer getCellRenderer() {
+    return cellRenderer;
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -571,20 +575,32 @@ class Arrow implements Icon, Serializable {
 
 class Directive implements Serializable {
   private static final long serialVersionUID = 1L;
-  public final int column;
-  public final int direction;
+  private final int column;
+  private final int direction;
 
   protected Directive(int column, int direction) {
     this.column = column;
     this.direction = direction;
   }
+
+  public int getColumn() {
+    return column;
+  }
+
+  public int getDirection() {
+    return direction;
+  }
 }
 
 class TableRow implements Serializable {
   private static final long serialVersionUID = 1L;
-  public final int modelIndex;
+  private final int modelIndex;
 
   protected TableRow(int index) {
     this.modelIndex = index;
+  }
+
+  public int getModelIndex() {
+    return modelIndex;
   }
 }
