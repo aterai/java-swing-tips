@@ -157,8 +157,10 @@ class MultiLineCellRenderer implements TreeCellRenderer {
       bgc = rdr.getBackgroundSelectionColor();
       fgc = rdr.getTextSelectionColor();
     } else {
-      bgc = Optional.ofNullable(rdr.getBackgroundNonSelectionColor()).orElse(rdr.getBackground());
-      fgc = Optional.ofNullable(rdr.getTextNonSelectionColor()).orElse(rdr.getForeground());
+      bgc = Optional.ofNullable(rdr.getBackgroundNonSelectionColor())
+          .orElse(rdr.getBackground());
+      fgc = Optional.ofNullable(rdr.getTextNonSelectionColor())
+          .orElse(rdr.getForeground());
     }
     text.setForeground(fgc);
     text.setBackground(bgc);
