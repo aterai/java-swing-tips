@@ -19,9 +19,7 @@ import javax.swing.plaf.ComponentUI;
 @SuppressWarnings("PMD.TooManyMethods")
 public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
   private static final String LOUPE = "loupe";
-  protected PopupMenuListener popupMenuListener;
-  protected JButton loupeButton;
-  protected Action loupeAction = new AbstractAction() {
+  private final Action loupeAction = new AbstractAction() {
     @Override public void actionPerformed(ActionEvent e) {
       comboBox.setPopupVisible(false);
       Object o = listBox.getSelectedValue();
@@ -32,6 +30,8 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
       JOptionPane.showMessageDialog(comboBox.getRootPane(), msg);
     }
   };
+  private PopupMenuListener popupMenuListener;
+  private JButton loupeButton;
 
   public static ComponentUI createUI(JComponent c) {
     return new BasicSearchBarComboBoxUI();
