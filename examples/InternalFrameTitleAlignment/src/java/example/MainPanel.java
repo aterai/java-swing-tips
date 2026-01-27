@@ -20,13 +20,14 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addFrame(JDesktopPane desktop, int idx) {
-    String titleAlignment = idx == 0 ? "CENTER" : "LEADING";
-    JInternalFrame frame = new JInternalFrame("title: " + titleAlignment, true, true, true, true);
+    String alignment = idx == 0 ? "CENTER" : "LEADING";
+    String title = "title: " + alignment;
+    JInternalFrame frame = new JInternalFrame(title, true, true, true, true);
 
     BasicInternalFrameUI ui = (BasicInternalFrameUI) frame.getUI();
     JComponent titleBar = ui.getNorthPane();
     UIDefaults d = new UIDefaults();
-    d.put("InternalFrame:InternalFrameTitlePane.titleAlignment", titleAlignment);
+    d.put("InternalFrame:InternalFrameTitlePane.titleAlignment", alignment);
     titleBar.putClientProperty("Nimbus.Overrides", d);
 
     frame.add(makePanel());
