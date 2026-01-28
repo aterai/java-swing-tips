@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
   // public static final int BIT_LENGTH = 63;
   public static final int BIT_LENGTH = 72;
   public static final String ZERO_PAD = String.join("", Collections.nCopies(BIT_LENGTH, "0"));
-  public BitSet status = BitSet.valueOf(new long[] {Long.parseLong("111000111", 2)});
-  public final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
+  private BitSet status = BitSet.valueOf(new long[] {Long.parseLong("111000111", 2)});
+  private final transient UndoableEditSupport undoSupport = new UndoableEditSupport();
   private final JLabel label = new JLabel(print(status));
   private final JPanel panel = new JPanel(new GridLayout(0, 8));
 
@@ -89,11 +89,11 @@ public final class MainPanel extends JPanel {
     label.setText(print(status));
   }
 
-  private class StatusEdit extends AbstractUndoableEdit {
+  private final class StatusEdit extends AbstractUndoableEdit {
     private final BitSet oldValue;
     private final BitSet newValue;
 
-    protected StatusEdit(BitSet oldValue, BitSet newValue) {
+    private StatusEdit(BitSet oldValue, BitSet newValue) {
       super();
       this.oldValue = oldValue;
       this.newValue = newValue;
