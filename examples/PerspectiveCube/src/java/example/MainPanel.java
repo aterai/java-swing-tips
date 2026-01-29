@@ -67,22 +67,22 @@ public final class MainPanel extends JPanel {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     Path2D path = new Path2D.Double();
-    path.moveTo(cube.get(0).vx, cube.get(0).vy);
-    path.lineTo(cube.get(1).vx, cube.get(1).vy);
-    path.lineTo(cube.get(2).vx, cube.get(2).vy);
-    path.lineTo(cube.get(3).vx, cube.get(3).vy);
-    path.lineTo(cube.get(0).vx, cube.get(0).vy);
-    path.lineTo(cube.get(4).vx, cube.get(4).vy);
-    path.lineTo(cube.get(5).vx, cube.get(5).vy);
-    path.lineTo(cube.get(6).vx, cube.get(6).vy);
-    path.lineTo(cube.get(7).vx, cube.get(7).vy);
-    path.lineTo(cube.get(4).vx, cube.get(4).vy);
-    path.moveTo(cube.get(1).vx, cube.get(1).vy);
-    path.lineTo(cube.get(5).vx, cube.get(5).vy);
-    path.moveTo(cube.get(2).vx, cube.get(2).vy);
-    path.lineTo(cube.get(6).vx, cube.get(6).vy);
-    path.moveTo(cube.get(3).vx, cube.get(3).vy);
-    path.lineTo(cube.get(7).vx, cube.get(7).vy);
+    path.moveTo(cube.get(0).getX(), cube.get(0).getY());
+    path.lineTo(cube.get(1).getX(), cube.get(1).getY());
+    path.lineTo(cube.get(2).getX(), cube.get(2).getY());
+    path.lineTo(cube.get(3).getX(), cube.get(3).getY());
+    path.lineTo(cube.get(0).getX(), cube.get(0).getY());
+    path.lineTo(cube.get(4).getX(), cube.get(4).getY());
+    path.lineTo(cube.get(5).getX(), cube.get(5).getY());
+    path.lineTo(cube.get(6).getX(), cube.get(6).getY());
+    path.lineTo(cube.get(7).getX(), cube.get(7).getY());
+    path.lineTo(cube.get(4).getX(), cube.get(4).getY());
+    path.moveTo(cube.get(1).getX(), cube.get(1).getY());
+    path.lineTo(cube.get(5).getX(), cube.get(5).getY());
+    path.moveTo(cube.get(2).getX(), cube.get(2).getY());
+    path.lineTo(cube.get(6).getX(), cube.get(6).getY());
+    path.moveTo(cube.get(3).getX(), cube.get(3).getY());
+    path.lineTo(cube.get(7).getX(), cube.get(7).getY());
     Rectangle r = SwingUtilities.calculateInnerArea(this, null);
     g2.setPaint(Color.WHITE);
     g2.fill(r);
@@ -115,8 +115,8 @@ public final class MainPanel extends JPanel {
 }
 
 class Vertex {
-  public double vx;
-  public double vy;
+  private double vx;
+  private double vy;
   private double dx;
   private double dy;
   private double dz;
@@ -126,6 +126,14 @@ class Vertex {
     this.dy = dy;
     this.dz = dz;
     projectionTransformation();
+  }
+
+  public double getX() {
+    return vx;
+  }
+
+  public double getY() {
+    return vy;
   }
 
   private void projectionTransformation() {
