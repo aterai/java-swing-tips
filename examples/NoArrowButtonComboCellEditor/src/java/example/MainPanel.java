@@ -81,7 +81,9 @@ class LocalDateTimeTableCellRenderer extends DefaultTableCellRenderer {
     Component c = super.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel && value instanceof TemporalAccessor) {
-      ((JLabel) c).setText(DateTimeFormatter.ofPattern(PATTERN).format((TemporalAccessor) value));
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
+      String txt = formatter.format((TemporalAccessor) value);
+      ((JLabel) c).setText(txt);
     }
     return c;
   }
