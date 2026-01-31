@@ -24,8 +24,8 @@ public final class MainPanel extends JPanel {
     clearButton.addActionListener(e -> {
       Component c = (Component) e.getSource();
       try {
-        handler.pref.clear();
-        handler.pref.flush();
+        handler.getPreference().clear();
+        handler.getPreference().flush();
       } catch (BackingStoreException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback(c);
       }
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
   }
 
   @Override public Dimension getPreferredSize() {
-    return handler.dim;
+    return handler.getPreferredSize();
   }
 
   public static void main(String[] args) {
@@ -89,9 +89,9 @@ public final class MainPanel extends JPanel {
 
 class WindowPreferencesHandler extends WindowAdapter implements ComponentListener {
   private static final String PREFIX = "xxx_";
-  public final Preferences pref = Preferences.userNodeForPackage(getClass());
-  public final Dimension dim = new Dimension(320, 240);
-  public final Point pos = new Point();
+  private final Preferences pref = Preferences.userNodeForPackage(getClass());
+  private final Dimension dim = new Dimension(320, 240);
+  private final Point pos = new Point();
 
   public void initFrameSizeAndLocation(Window frame) {
     GraphicsConfiguration gc = frame.getGraphicsConfiguration();
@@ -161,6 +161,14 @@ class WindowPreferencesHandler extends WindowAdapter implements ComponentListene
   @Override public void windowClosing(WindowEvent e) {
     saveLocation();
     e.getWindow().dispose();
+  }
+
+  public Dimension getPreferredSize() {
+    return dim;
+  }
+
+  public Preferences getPreference() {
+    return pref;
   }
 
   // @Override public void windowDeactivated(WindowEvent e) {
