@@ -30,6 +30,7 @@
     <exclude name="LawOfDemeter" />
     <exclude name="LoosePackageCoupling" />
     <exclude name="CouplingBetweenObjects" />
+    <exclude name="PublicMemberInNonPublicType" />
   </rule>
   <rule ref="category/java/documentation.xml">
     <exclude name="CommentRequired" />
