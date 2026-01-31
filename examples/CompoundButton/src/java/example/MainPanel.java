@@ -86,16 +86,16 @@ enum ButtonLocation {
     this.degree = degree;
   }
 
-  public double getStartAngle() {
+  /* default */ double getStartAngle() {
     return degree;
   }
 }
 
 class CompoundButton extends JButton {
-  protected transient Shape shape;
-  protected transient Shape base;
-  protected final ButtonLocation bl;
-  protected final Dimension dim;
+  private transient Shape shape;
+  private transient Shape base;
+  private final ButtonLocation bl;
+  private final Dimension dim;
 
   protected CompoundButton(Dimension d, ButtonLocation bl) {
     super();
