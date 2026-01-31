@@ -14,15 +14,27 @@ import javax.swing.table.TableColumn;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    RowDataModel model = new RowDataModel();
-    model.addRowData(new RowData("Name 1", "comment..."));
-    model.addRowData(new RowData("Name 2", "Test"));
-    model.addRowData(new RowData("Name d", "ee"));
-    model.addRowData(new RowData("Name c", "Test cc"));
-    model.addRowData(new RowData("Name b", "Test bb"));
-    model.addRowData(new RowData("Name a", "ff"));
-    model.addRowData(new RowData("Name 0", "Test aa"));
+    RowDataModel model = makeModel();
+    JTable table = makeTable(model);
+    JTableHeader header = table.getTableHeader();
+    SortButtonRenderer headerRenderer = new SortButtonRenderer(header);
+    headerRenderer.setEnabledAt(0, false);
+    header.setDefaultRenderer(headerRenderer);
+    header.addMouseListener(new HeaderMouseListener());
 
+    TableColumn col = table.getColumnModel().getColumn(0);
+    col.setMinWidth(80);
+    col.setMaxWidth(80);
+
+    JCheckBox check = new JCheckBox("setEnabledAt(2, false)");
+    check.addActionListener(e -> headerRenderer.setEnabledAt(2, !check.isSelected()));
+
+    add(new JScrollPane(table));
+    add(check, BorderLayout.SOUTH);
+    setPreferredSize(new Dimension(320, 240));
+  }
+
+  private JTable makeTable(RowDataModel model) {
     JTable table = new JTable(model) {
       private final Color evenColor = new Color(0xFA_FA_FA);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
@@ -40,23 +52,19 @@ public final class MainPanel extends JPanel {
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
     table.getTableHeader().setReorderingAllowed(false);
+    return table;
+  }
 
-    JTableHeader header = table.getTableHeader();
-    SortButtonRenderer headerRenderer = new SortButtonRenderer(header);
-    headerRenderer.setEnabledAt(0, false);
-    header.setDefaultRenderer(headerRenderer);
-    header.addMouseListener(new HeaderMouseListener());
-
-    TableColumn col = table.getColumnModel().getColumn(0);
-    col.setMinWidth(80);
-    col.setMaxWidth(80);
-
-    JCheckBox check = new JCheckBox("setEnabledAt(2, false)");
-    check.addActionListener(e -> headerRenderer.setEnabledAt(2, !check.isSelected()));
-
-    add(new JScrollPane(table));
-    add(check, BorderLayout.SOUTH);
-    setPreferredSize(new Dimension(320, 240));
+  private static RowDataModel makeModel() {
+    RowDataModel model = new RowDataModel();
+    model.addRowData(new RowData("Name 1", "comment..."));
+    model.addRowData(new RowData("Name 2", "Test"));
+    model.addRowData(new RowData("Name d", "ee"));
+    model.addRowData(new RowData("Name c", "Test cc"));
+    model.addRowData(new RowData("Name b", "Test bb"));
+    model.addRowData(new RowData("Name a", "ff"));
+    model.addRowData(new RowData("Name 0", "Test aa"));
+    return model;
   }
 
   public static void main(String[] args) {
@@ -112,9 +120,9 @@ class RowDataModel extends SortableTableModel {
   }
 
   private static class ColumnContext {
-    public final String columnName;
-    public final Class<?> columnClass;
-    public final boolean isEditable;
+    private final String columnName;
+    private final Class<?> columnClass;
+    private final boolean isEditable;
 
     protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
       this.columnName = columnName;
