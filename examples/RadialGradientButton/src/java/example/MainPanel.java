@@ -64,19 +64,19 @@ class RadialGradientButton extends JButton {
       new Color(0x64_44_05_F7, true),
       new Color(0x00_F7_23_59, true),
   };
-  protected int radius;
-  protected final Timer timer1 = new Timer(10, e -> {
+  private int radius;
+  private final Timer timer1 = new Timer(10, e -> {
     radius = Math.min(200, radius + DELTA);
     repaint();
   });
-  protected final Timer timer2 = new Timer(10, e -> {
+  private final Timer timer2 = new Timer(10, e -> {
     radius = Math.max(0, radius - DELTA);
     repaint();
   });
-  protected final Point pt = new Point();
-  protected transient Shape shape;
-  protected Rectangle base;
-  protected transient MouseAdapter listener;
+  private final Point pt = new Point();
+  private transient Shape shape;
+  private Rectangle base;
+  private transient MouseAdapter listener;
 
   protected RadialGradientButton(String title) {
     super(title);
