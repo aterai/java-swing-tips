@@ -85,7 +85,8 @@ class CardLayoutTabbedPane extends JPanel {
     super(new BorderLayout());
     int left = 0;
     int right = 0;
-    tabPanel.setBorder(BorderFactory.createMatteBorder(0, left, 0, right, new Color(0x14_1E_32)));
+    Color color = new Color(0x14_1E_32);
+    tabPanel.setBorder(BorderFactory.createMatteBorder(0, left, 0, right, color));
     contentsPanel.setBorder(BorderFactory.createEmptyBorder(4, left, 2, right));
 
     tabPanel.setOpaque(true);
