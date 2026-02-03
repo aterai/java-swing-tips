@@ -20,7 +20,8 @@ public final class MainPanel extends JPanel {
 
   private static Component makeCmp1() {
     JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createTitledBorder("Override JToggleButton#getPreferredSize(...)"));
+    String title = "Override JToggleButton#getPreferredSize(...)";
+    p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
     c.insets = new Insets(5, 5, 5, 5);
     ActionListener al = e -> p.revalidate();
@@ -42,7 +43,8 @@ public final class MainPanel extends JPanel {
 
   private static Component makeCmp2() {
     JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createTitledBorder("Override FlowLayout#layoutContainer(...)"));
+    String title = "Override FlowLayout#layoutContainer(...)";
+    p.setBorder(BorderFactory.createTitledBorder(title));
     p.setLayout(new SelectedButtonSizeLayout());
     ActionListener al = e -> p.revalidate();
     ButtonGroup bg = new ButtonGroup();
