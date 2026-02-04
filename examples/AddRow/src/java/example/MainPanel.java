@@ -103,9 +103,9 @@ class RowDataModel extends DefaultTableModel {
   }
 
   private static class ColumnContext {
-    public final String columnName;
-    public final Class<?> columnClass;
-    public final boolean isEditable;
+    private final String columnName;
+    private final Class<?> columnClass;
+    private final boolean isEditable;
 
     protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
       this.columnName = columnName;
