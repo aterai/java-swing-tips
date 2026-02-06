@@ -204,7 +204,7 @@ class WarningDocumentListener implements DocumentListener {
 //     fb.replace(offset, length, text, attrs);
 //   }
 //
-//   private static int checkInput(String proposedValue, int offset) throws BadLocationException {
+//   private int checkInput(String proposedValue, int offset) throws BadLocationException {
 //     int newValue = 0;
 //     if (!proposedValue.isEmpty()) {
 //       try {

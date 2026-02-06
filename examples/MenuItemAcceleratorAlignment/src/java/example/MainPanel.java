@@ -44,24 +44,22 @@ public final class MainPanel extends JPanel {
     List<JMenuItem> list = new ArrayList<>();
     JMenuItem menuItem = new JMenuItem("MenuItem");
     menuItem.setMnemonic(KeyEvent.VK_N);
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke("alt N"));
     list.add(menuItem);
 
     menuItem = new JMenuItem("aaa");
     menuItem.setMnemonic(KeyEvent.VK_1);
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.ALT_DOWN_MASK));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke("alt ESCAPE"));
     list.add(menuItem);
 
     menuItem = new JMenuItem("12345");
     menuItem.setMnemonic(KeyEvent.VK_2);
-    int msk2 = InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK;
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, msk2));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke("alt ctrl SPACE"));
     list.add(menuItem);
 
     menuItem = new JMenuItem("c");
     menuItem.setMnemonic(KeyEvent.VK_3);
-    int msk3 = InputEvent.ALT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, msk3));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke("alt ctrl shift BACK_SPACE"));
     list.add(menuItem);
 
     for (JMenuItem mi : list) {

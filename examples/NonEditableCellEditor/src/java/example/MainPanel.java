@@ -44,7 +44,8 @@ public final class MainPanel extends JPanel {
     //       int col = t.columnAtPoint(pt);
     //       TableCellRenderer tcr = t.getCellRenderer(row, col);
     //       Object value = t.getValueAt(row, col);
-    //       Component cell = tcr.getTableCellRendererComponent(t, value, false, false, row, col);
+    //       Component cell = tcr.getTableCellRendererComponent(
+    //           t, value, false, false, row, col);
     //       Rectangle cellRect = t.getCellRect(row, col, false);
     //       cellRect.width = cell.getPreferredSize().width;
     //       return cellRect.contains(pt);

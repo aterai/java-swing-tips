@@ -12,11 +12,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(10, 10));
     JPasswordField password = new JPasswordField();
-    password.putClientProperty("JPasswordField.cutCopyAllowed", true);
+    String key = "JPasswordField.cutCopyAllowed";
+    password.putClientProperty(key, true);
 
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("JPasswordField.cutCopyAllowed: false(default)", new JPasswordField()));
-    p.add(makeTitledPanel("JPasswordField.cutCopyAllowed: true", password));
+    p.add(makeTitledPanel(key + ": false(default)", new JPasswordField()));
+    p.add(makeTitledPanel(key + ": true", password));
 
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));

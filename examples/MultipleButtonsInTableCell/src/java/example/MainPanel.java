@@ -220,7 +220,7 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 // // inheritance to extend a class
 // class ButtonsEditor extends ButtonsPanel implements TableCellEditor {
 //   private transient ChangeEvent changeEvent;
-//   protected final JTable table;
+//   protected final JTable tbl;
 //   private class EditingStopHandler extends MouseAdapter implements ActionListener {
 //     @Override public void mousePressed(MouseEvent e) {
 //       Object o = e.getSource();
@@ -231,8 +231,8 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //         // -> control key down + edit button(same cell) press
 //         // -> remain selection color???
 //         ButtonModel m = ((JButton) e.getComponent()).getModel();
-//         if (m.isPressed() && table.isRowSelected(table.getEditingRow()) && e.isControlDown()) {
-//           setBackground(table.getBackground());
+//         if (m.isPressed() && tbl.isRowSelected(tbl.getEditingRow()) && e.isControlDown()) {
+//           setBackground(tbl.getBackground());
 //         }
 //       }
 //     }

@@ -11,8 +11,9 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Dimension ICON_SZ = new Dimension(150, 40);
-  private final String info = String.format("JDesktopIcon: %dx%d", ICON_SZ.width, ICON_SZ.height);
+  private static final int ICON_WIDTH = 150;
+  private static final int ICON_HEIGHT = 40;
+  private final String info = String.format("JDesktopIcon: %dx%d", ICON_WIDTH, ICON_HEIGHT);
   private final JCheckBox check = new JCheckBox(info);
 
   private MainPanel() {
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel {
           if (isMotif) {
             d.setSize(64, 64 + 32);
           } else {
-            d.setSize(ICON_SZ);
+            d.setSize(ICON_WIDTH, ICON_HEIGHT);
           }
         }
         return d;
@@ -88,7 +89,7 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      UIManager.put("DesktopIcon.width", ICON_SZ.width);
+      UIManager.put("DesktopIcon.width", ICON_WIDTH);
       // TEST:
       // Font f = UIManager.getFont("InternalFrame.titleFont");
       // UIManager.put("InternalFrame.titleFont", f.deriveFont(30f));
