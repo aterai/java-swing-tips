@@ -38,34 +38,37 @@ public final class MainPanel extends JPanel {
   // Map<Integer, SwingWorker<Integer, Integer>> workerMap = new ConcurrentHashMap<>();
   private int number;
 
+  @SuppressWarnings("PMD.CloseResource")
   private MainPanel() {
     super(new BorderLayout());
-    table.setRowSorter(new TableRowSorter<>(model));
-    addProgressValue("Name 1", 100, null);
     ExecutorService executor = Executors.newSingleThreadExecutor();
-
-    JScrollPane scrollPane = new JScrollPane(table);
-    scrollPane.getViewport().setBackground(Color.WHITE);
     table.setComponentPopupMenu(new TablePopupMenu(executor));
+    table.setRowSorter(new TableRowSorter<>(model));
     table.setFillsViewportHeight(true);
     table.setIntercellSpacing(new Dimension());
     table.setShowGrid(false);
     table.putClientProperty("terminateEditOnFocusLost", true);
-
-    TableColumn column = table.getColumnModel().getColumn(0);
-    column.setMaxWidth(60);
-    column.setMinWidth(60);
-    column.setResizable(false);
-
-    addHierarchyListener(e -> {
+    table.addHierarchyListener(e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (b && !e.getComponent().isDisplayable()) {
         executor.shutdownNow();
       }
     });
 
+    TableColumn column = table.getColumnModel().getColumn(0);
+    column.setMaxWidth(60);
+    column.setMinWidth(60);
+    column.setResizable(false);
+
+    addProgressValue("Name 1", 100, null);
+
+
     JButton button = new JButton("add");
     button.addActionListener(e -> addActionPerformed(executor));
+
+    JScrollPane scrollPane = new JScrollPane(table);
+    scrollPane.getViewport().setBackground(Color.WHITE);
+
     add(button, BorderLayout.SOUTH);
     add(scrollPane);
     setPreferredSize(new Dimension(320, 240));
