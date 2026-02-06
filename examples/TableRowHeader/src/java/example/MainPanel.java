@@ -249,12 +249,12 @@ class RowDataModel extends DefaultTableModel {
     return COLUMN_ARRAY[column].columnName;
   }
 
-  private static class ColumnContext {
+  private static final class ColumnContext {
     private final String columnName;
     private final Class<?> columnClass;
     private final boolean isEditable;
 
-    protected ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
+    private ColumnContext(String columnName, Class<?> columnClass, boolean isEditable) {
       this.columnName = columnName;
       this.columnClass = columnClass;
       this.isEditable = isEditable;
