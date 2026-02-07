@@ -58,7 +58,8 @@ public final class MainPanel extends JPanel {
       pauseButton.setEnabled(false);
     });
 
-    Component box = makeRightAlignBox(Arrays.asList(pauseButton, cancelButton, runButton), 80, 5);
+    List<JButton> list = Arrays.asList(pauseButton, cancelButton, runButton);
+    Component box = makeRightAlignBox(list, 80, 5);
     add(new JScrollPane(area));
     add(box, BorderLayout.NORTH);
     add(statusPanel, BorderLayout.SOUTH);

@@ -50,7 +50,8 @@ public final class MainPanel extends JPanel {
       });
       loop.enter();
     } catch (IOException ex) {
-      JOptionPane.showMessageDialog(null, "An instance of the application is already running...");
+      String msg = "An instance of the application is already running...";
+      JOptionPane.showMessageDialog(null, msg);
     }
   }
 }

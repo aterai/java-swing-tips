@@ -13,13 +13,13 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    IntStream.range(0, 100).forEach(i -> tabbedPane.addTab("title" + i, new JLabel("label" + i)));
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    IntStream.range(0, 100).forEach(i -> tabs.addTab("title" + i, new JLabel("label" + i)));
 
     JCheckBox check = new JCheckBox("setSelectedIndex");
     check.setHorizontalAlignment(SwingConstants.RIGHT);
 
-    JSlider slider = new JSlider(0, tabbedPane.getTabCount() - 1, 50);
+    JSlider slider = new JSlider(0, tabs.getTabCount() - 1, 50);
     slider.setMajorTickSpacing(10);
     slider.setMinorTickSpacing(5);
     slider.setPaintTicks(true);
@@ -27,9 +27,9 @@ public final class MainPanel extends JPanel {
     slider.addChangeListener(e -> {
       int i = ((JSlider) e.getSource()).getValue();
       if (check.isSelected()) {
-        tabbedPane.setSelectedIndex(i);
+        tabs.setSelectedIndex(i);
       }
-      scrollTabAt(tabbedPane, i);
+      scrollTabAt(tabs, i);
     });
 
     JPanel p = new JPanel(new BorderLayout());
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     p.add(check, BorderLayout.SOUTH);
     p.add(slider, BorderLayout.NORTH);
     add(p, BorderLayout.NORTH);
-    add(tabbedPane);
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 

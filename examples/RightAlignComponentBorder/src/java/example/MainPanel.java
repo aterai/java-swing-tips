@@ -18,8 +18,8 @@ public final class MainPanel extends JPanel {
     add(makePanel(new JScrollPane(tree), c));
 
     JTextArea textArea = new JTextArea("aaaaaaaaaa");
-    // Border border = new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder());
-    // textArea.setBorder(border);
+    // Border b2 = new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder());
+    // textArea.setBorder(b2);
     JButton b = new JButton("Clear");
     b.setFocusable(false);
     b.addActionListener(e -> textArea.setText(""));

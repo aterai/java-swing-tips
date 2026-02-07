@@ -17,9 +17,10 @@ public final class MainPanel extends JPanel {
     JTable table = makeTable();
     JCheckBox check = new JCheckBox("DefaultRowSorter#setSortsOnUpdates");
     check.addActionListener(e -> {
+      Object o = e.getSource();
       RowSorter<? extends TableModel> rs = table.getRowSorter();
-      if (rs instanceof DefaultRowSorter) {
-        ((DefaultRowSorter<?, ?>) rs).setSortsOnUpdates(((JCheckBox) e.getSource()).isSelected());
+      if (rs instanceof DefaultRowSorter && o instanceof JCheckBox) {
+        ((DefaultRowSorter<?, ?>) rs).setSortsOnUpdates(((JCheckBox) o).isSelected());
       }
     });
     add(check, BorderLayout.NORTH);

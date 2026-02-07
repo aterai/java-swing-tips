@@ -23,7 +23,10 @@ public final class MainPanel extends JPanel {
 
     JTextField textField = new JTextField("Title Progress...");
     JCheckBox check = new JCheckBox("Default");
-    check.addActionListener(e -> textField.setEnabled(!((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      JCheckBox src = (JCheckBox) e.getSource();
+      textField.setEnabled(!src.isSelected());
+    });
 
     JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {

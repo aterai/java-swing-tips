@@ -14,9 +14,11 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Default ButtonGroup", new ButtonGroup()));
+    String title1 = "Default ButtonGroup";
+    box.add(makeTitledPanel(title1, new ButtonGroup()));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Custom ButtonGroup(clears the selection)", new ToggleButtonGroup()));
+    String title2 = "Custom ButtonGroup(clears the selection)";
+    box.add(makeTitledPanel(title2, new ToggleButtonGroup()));
     box.add(Box.createVerticalGlue());
     add(box);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

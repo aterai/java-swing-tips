@@ -221,7 +221,6 @@ class BackgroundTask extends SwingWorker<String, File> {
 //         c.setText(fileSystemView.getSystemDisplayName(file));
 //         c.setToolTipText(file.getPath());
 //         c.setEnabled(!file.getName().startsWith("."));
-//         // StringIndexOutOfBoundsException: c.setEnabled(file.getName().codePointAt(0) != '.');
 //         // String name = file.getName();
 //         // c.setEnabled(name.isEmpty() || name.codePointAt(0) != '.');
 //       }
