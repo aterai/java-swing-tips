@@ -4,6 +4,7 @@ Introduce the `GUI` program of `Java Swing` using **small source code examples**
 
 <img src="https://lh3.ggpht.com/_9Z4BYR88imo/TQslJy3MxYI/AAAAAAAAAts/xrxOCvbp-0A/s800/screenshots.png" />
 
+- https://ateraimemo.com/Swing.html
 - https://ateraimemo.com/astro/en/Swing.html
 - https://java-swing-tips.blogspot.com/
 
@@ -14,7 +15,7 @@ What is Swing?
 Licence
 ---------------
 - The source code is released under the MIT license.
-    - https://github.com/aterai/java-swing-tips/blob/master/LICENSE.txt
+    - https://github.com/aterai/java-swing-tips/blob/main/LICENSE.txt
 
 Policy
 ---------------
@@ -47,10 +48,10 @@ javax.swing.JComponent
 - [JLayer(60)](https://ateraimemo.com/astro/en/Swing/_JLayer.html)
 - [JList(58)](https://ateraimemo.com/astro/en/Swing/_JList.html)
 - [JFrame JDialog JWindow(49)](https://ateraimemo.com/astro/en/Swing/_JFrame.html)
-- [JLabel(47)](https://ateraimemo.com/astro/en/Swing/_JLabel.html)
+- [JLabel(48)](https://ateraimemo.com/astro/en/Swing/_JLabel.html)
 - [JToolTip(37)](https://ateraimemo.com/astro/en/Swing/_JToolTip.html)
 - [JInternalFrame JLayeredPane JDesktopPane(35)](https://ateraimemo.com/astro/en/Swing/_JInternalFrame.html)
-- [JSlider(34)](https://ateraimemo.com/astro/en/Swing/_JSlider.html)
+- [JSlider(35)](https://ateraimemo.com/astro/en/Swing/_JSlider.html)
 - [JProgressBar ProgressMonitor(34)](https://ateraimemo.com/astro/en/Swing/_JProgressBar.html)
 - [JFileChooser(34)](https://ateraimemo.com/astro/en/Swing/_JFileChooser.html)
 - [JSpinner(33)](https://ateraimemo.com/astro/en/Swing/_JSpinner.html)
@@ -80,6 +81,6 @@ Others
 - [Others(24)](https://ateraimemo.com/astro/en/Swing/_Others.html)
 
 [0]: https://docs.oracle.com/javase/tutorial/uiswing/start/about.html
-[1]: http://steps.dodgson.org/bn/2007/07/06/
-[2]: http://sscce.org/
+[1]: https://steps.dodgson.org/bn/2007/07/06/
+[2]: https://sscce.org/
 [3]: https://stackoverflow.com/help/mcve
