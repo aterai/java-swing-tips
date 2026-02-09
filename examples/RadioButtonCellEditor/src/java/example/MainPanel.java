@@ -80,7 +80,8 @@ class RadioButtonsRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (value instanceof Boolean) {
-      renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+      Color bgc = isSelected ? table.getSelectionBackground() : table.getBackground();
+      renderer.setBackground(bgc);
       renderer.setHorizontalAlignment(SwingConstants.CENTER);
       renderer.setSelected((Boolean) value);
     }

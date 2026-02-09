@@ -21,7 +21,7 @@ import javax.swing.text.html.ImageView;
 
 public final class MainPanel extends JPanel {
   private static final String TXT = "1111111111111111111111111";
-  private static final String HTML = "<span style='background-color:red'>" + TXT + "</span><br/>";
+  private static final String HTML = "<span style='background-color:red'>" + TXT + "<br/>";
   private final JLabel label = new JLabel("screenshot");
 
   private MainPanel() {

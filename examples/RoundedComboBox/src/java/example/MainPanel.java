@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.metal.MetalComboBoxUI;
@@ -358,11 +359,12 @@ final class SwingUtils {
       p.add(cmp);
     }
     if (Objects.nonNull(title)) {
-      TitledBorder b = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), title);
+      Border emptyBorder = BorderFactory.createEmptyBorder();
+      TitledBorder titledBorder = BorderFactory.createTitledBorder(emptyBorder, title);
       if (Objects.nonNull(bgc)) {
-        b.setTitleColor(new Color(~bgc.getRGB()));
+        titledBorder.setTitleColor(new Color(~bgc.getRGB()));
       }
-      p.setBorder(b);
+      p.setBorder(titledBorder);
     }
     if (Objects.nonNull(bgc)) {
       p.setOpaque(true);

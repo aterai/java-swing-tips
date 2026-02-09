@@ -14,7 +14,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    IntStream.range(0, 100).forEach(i -> tabs.addTab("title" + i, new JLabel("label" + i)));
+    IntStream.range(0, 100)
+        .forEach(i -> tabs.addTab("title" + i, new JLabel("label" + i)));
 
     JCheckBox check = new JCheckBox("setSelectedIndex");
     check.setHorizontalAlignment(SwingConstants.RIGHT);
