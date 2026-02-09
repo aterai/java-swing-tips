@@ -129,7 +129,6 @@ class DnDTabbedPane extends JTabbedPane {
   private static final int LINE_SIZE = 3;
   private static final int RWH = 20;
   private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
-  protected int dragTabIndex = -1;
   // For Debug: >>>
   protected boolean hasGhost = true;
   protected boolean isPaintScrollArea = true;
@@ -137,6 +136,7 @@ class DnDTabbedPane extends JTabbedPane {
   protected Rectangle rectBackward = new Rectangle();
   protected Rectangle rectForward = new Rectangle();
   private final GhostGlassPane glassPane = new GhostGlassPane(this);
+  private int dragTabIndex = -1;
 
   protected DnDTabbedPane() {
     super();
@@ -145,6 +145,14 @@ class DnDTabbedPane extends JTabbedPane {
         glassPane, DnDConstants.ACTION_COPY_OR_MOVE, new TabDropTargetListener(), true);
     DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
         this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
+  }
+
+  public int getDragTabIndex() {
+    return dragTabIndex;
+  }
+
+  public void setDragTabIndex(int dragTabIndex) {
+    this.dragTabIndex = dragTabIndex;
   }
 
   private void clickArrowButton(String actionKey) {
@@ -505,8 +513,9 @@ class TabDragGestureListener implements DragGestureListener {
     boolean isTabRunsRotated = !(tabs.getUI() instanceof MetalTabbedPaneUI)
         && tabs.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
         && idx != selIdx;
-    tabs.dragTabIndex = isTabRunsRotated ? selIdx : idx;
-    if (tabs.dragTabIndex >= 0 && tabs.isEnabledAt(tabs.dragTabIndex)) {
+    int dragTabIndex = isTabRunsRotated ? selIdx : idx;
+    tabs.setDragTabIndex(dragTabIndex);
+    if (dragTabIndex >= 0 && tabs.isEnabledAt(dragTabIndex)) {
       tabs.initGlassPane(tabPt);
       try {
         e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabs), handler);
@@ -574,7 +583,7 @@ class TabDropTargetListener implements DropTargetListener {
     DnDTabbedPane tabbedPane = glassPane.tabbedPane;
     Transferable t = e.getTransferable();
     DataFlavor[] f = t.getTransferDataFlavors();
-    int prev = tabbedPane.dragTabIndex;
+    int prev = tabbedPane.getDragTabIndex();
     int next = tabbedPane.getTargetTabIndex(e.getLocation());
     if (t.isDataFlavorSupported(f[0]) && prev != next) {
       tabbedPane.convertTab(prev, next);
