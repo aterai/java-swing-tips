@@ -18,34 +18,33 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JLabel label = new JLabel();
     JButton button = new JButton("get Clipboard DataFlavor");
-    button.addActionListener(e -> updateLabel(label));
+    button.addActionListener(e -> {
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      Transferable t = tk.getSystemClipboard().getContents(null);
+      if(t != null) {
+        updateLabel(label, t);
+      }
+    });
     add(new JScrollPane(label));
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void updateLabel(JLabel label) {
+  private static void updateLabel(JLabel label, Transferable trans) {
     String str = "";
-    ImageIcon image = null;
-    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    ImageIcon img = null;
     try {
-      Transferable t = toolkit.getSystemClipboard().getContents(null);
-      if (Objects.isNull(t)) {
-        toolkit.beep();
-        return;
-      }
-      if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-        image = new ImageIcon((Image) t.getTransferData(DataFlavor.imageFlavor));
-      } else if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-        str = Objects.toString(t.getTransferData(DataFlavor.stringFlavor));
+      if (trans.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+        img = new ImageIcon((Image) trans.getTransferData(DataFlavor.imageFlavor));
+      } else if (trans.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+        str = Objects.toString(trans.getTransferData(DataFlavor.stringFlavor));
       }
     } catch (UnsupportedFlavorException | IOException ex) {
-      toolkit.beep();
+      UIManager.getLookAndFeel().provideErrorFeedback(label);
       str = ex.getMessage();
-      // image = null;
     }
     label.setText(str);
-    label.setIcon(image);
+    label.setIcon(img);
   }
 
   public static void main(String[] args) {
