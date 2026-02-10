@@ -51,11 +51,12 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> editor.scrollRectToVisible(editor.getBounds()));
 
     JTree tree = makeTocSideTree(editor);
-    JScrollPane scroll = new JScrollPane(editor);
-    BoundedRangeModel model = scroll.getVerticalScrollBar().getModel();
+    JScrollPane right = new JScrollPane(editor);
+    BoundedRangeModel model = right.getVerticalScrollBar().getModel();
     model.addChangeListener(e -> htmlDocScroll(editor, tree));
+    JScrollPane left = new JScrollPane(tree);
 
-    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), scroll);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
     split.setResizeWeight(.5);
     add(split);
     setPreferredSize(new Dimension(320, 240));

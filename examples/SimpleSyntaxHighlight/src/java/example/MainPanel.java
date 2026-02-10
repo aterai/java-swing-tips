@@ -120,7 +120,8 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     String token = content.substring(startOffset, endOfToken);
     Style s = getStyle(token);
     // if (keywords.containsKey(token)) {
-    //  setCharacterAttributes(startOffset, endOfToken - startOffset, keywords.get(token), false);
+    //  setCharacterAttributes(
+    //    startOffset, endOfToken - startOffset, keywords.get(token), false);
     if (Objects.nonNull(s)) {
       setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
     }

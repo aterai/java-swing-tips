@@ -47,21 +47,25 @@ public final class MainPanel extends JPanel {
 
   private static DefaultTreeModel makeModel() {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
-    root.add(new DefaultMutableTreeNode(new TableOfContents("1. Introduction", 1)));
+    root.add(makeTreeNode("1. Introduction", 1));
 
-    DefaultMutableTreeNode s1 = new DefaultMutableTreeNode(new TableOfContents("2. Chapter", 1));
-    s1.add(new DefaultMutableTreeNode(new TableOfContents("2.1. Section", 2)));
-    s1.add(new DefaultMutableTreeNode(new TableOfContents("2.2. Section", 4)));
-    s1.add(new DefaultMutableTreeNode(new TableOfContents("2.3. Section", 8)));
+    DefaultMutableTreeNode s1 = makeTreeNode("2. Chapter", 1);
+    s1.add(makeTreeNode("2.1. Section", 2));
+    s1.add(makeTreeNode("2.2. Section", 4));
+    s1.add(makeTreeNode("2.3. Section", 8));
     root.add(s1);
 
-    DefaultMutableTreeNode s2 = new DefaultMutableTreeNode(new TableOfContents("3. Chapter", 10));
-    s2.add(new DefaultMutableTreeNode(new TableOfContents("ddd", 12)));
-    s2.add(new DefaultMutableTreeNode(new TableOfContents("eee", 24)));
-    s2.add(new DefaultMutableTreeNode(new TableOfContents("fff", 38)));
+    DefaultMutableTreeNode s2 = makeTreeNode("3. Chapter", 10);
+    s2.add(makeTreeNode("ddd", 12));
+    s2.add(makeTreeNode("eee", 24));
+    s2.add(makeTreeNode("fff", 38));
     root.add(s2);
 
     return new DefaultTreeModel(root);
+  }
+
+  private static DefaultMutableTreeNode makeTreeNode(String title, int page) {
+    return new DefaultMutableTreeNode(new TableOfContents(title, page));
   }
 
   public static void main(String[] args) {

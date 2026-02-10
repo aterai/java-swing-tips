@@ -35,22 +35,22 @@ public final class MainPanel extends JPanel {
         }
         handler = e -> {
           JSlider s = (JSlider) e.getComponent();
-          boolean hasMinorTickSp = s.getMinorTickSpacing() > 0;
-          int tickSpacing = hasMinorTickSp ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
+          boolean hasMinorTick = s.getMinorTickSpacing() > 0;
+          int tickSpacing = hasMinorTick ? s.getMinorTickSpacing() : s.getMajorTickSpacing();
           s.setValue(s.getValue() - e.getWheelRotation() * tickSpacing);
         };
         addMouseWheelListener(handler);
       }
     };
     slider1.setBorder(BorderFactory.createTitledBorder("Custom SnapToTicks"));
-    slider1.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "RIGHT_ARROW");
+    slider1.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "RIGHT_ARROW");
     slider1.getActionMap().put("RIGHT_ARROW", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         JSlider s = (JSlider) e.getSource();
         s.setValue(s.getValue() + s.getMajorTickSpacing());
       }
     });
-    slider1.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "LEFT_ARROW");
+    slider1.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "LEFT_ARROW");
     slider1.getActionMap().put("LEFT_ARROW", new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         JSlider s = (JSlider) e.getSource();
