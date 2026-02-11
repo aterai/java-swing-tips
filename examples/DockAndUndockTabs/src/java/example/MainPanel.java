@@ -108,10 +108,18 @@ class DnDTabbedPane extends JTabbedPane {
   private static final int BUTTON_SZ = 30; // XXX 30 is magic number of scroll button size
   private static final Rectangle RECT_BACKWARD = new Rectangle();
   private static final Rectangle RECT_FORWARD = new Rectangle();
-  protected int dragTabIndex = -1;
-  protected final Point pointOnScreen = new Point(-1, -1);
+  private int dragTabIndex = -1;
+  private final Point pointOnScreen = new Point(-1, -1);
   private transient DnDTabbedPane.DropLocation dropLocation;
   private transient Handler handler;
+
+  public int getDragTabIndex() {
+    return dragTabIndex;
+  }
+
+  public Point getPointOnScreen() {
+    return pointOnScreen;
+  }
 
   public static final class DropLocation extends TransferHandler.DropLocation {
     private final int index;
@@ -370,24 +378,28 @@ class TabDropTargetAdapter extends DropTargetAdapter {
 }
 
 class DnDTabData {
-  public final DnDTabbedPane tabbedPane;
+  private final DnDTabbedPane tabbedPane;
 
   protected DnDTabData(DnDTabbedPane tabbedPane) {
     this.tabbedPane = tabbedPane;
   }
+
+  public DnDTabbedPane getTabbedPane() {
+    return tabbedPane;
+  }
 }
 
 class TabTransferHandler extends TransferHandler {
-  protected final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
-  protected DnDTabbedPane source;
-  protected final JLabel label = new JLabel() {
+  private final DataFlavor localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
+  private DnDTabbedPane source;
+  private final JLabel label = new JLabel() {
     // Free the pixel: GHOST drag and drop, over multiple windows
     // https://free-the-pixel.blogspot.com/2010/04/ghost-drag-and-drop-over-multiple.html
     @Override public boolean contains(int x, int y) {
       return false;
     }
   };
-  protected JWindow dialog;
+  private JWindow dialog;
 
   protected TabTransferHandler() {
     super();
@@ -398,7 +410,7 @@ class TabTransferHandler extends TransferHandler {
       if (dialog != null) {
         dialog.setLocation(pt);
       }
-      source.pointOnScreen.setLocation(pt);
+      source.getPointOnScreen().setLocation(pt);
     });
   }
 
@@ -431,7 +443,8 @@ class TabTransferHandler extends TransferHandler {
       boolean inArea = target.getTabAreaBounds().contains(pt) && idx >= 0;
       if (target.equals(source)) {
         // System.out.println("target == source");
-        canDrop = inArea && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+        int dragTabIndex = target.getDragTabIndex();
+        canDrop = inArea && idx != dragTabIndex && idx != dragTabIndex + 1;
       } else {
         // System.out.format("tgt!=src%n tgt: %s%n src: %s", tgt.getName(), src.getName());
         canDrop = Optional.ofNullable(source)
@@ -456,7 +469,7 @@ class TabTransferHandler extends TransferHandler {
     int action = NONE;
     if (c instanceof DnDTabbedPane) {
       DnDTabbedPane src = (DnDTabbedPane) c;
-      int idx = src.dragTabIndex;
+      int idx = src.getDragTabIndex();
       if (idx >= 0) {
         label.setIcon(new ImageIcon(ImageUtils.getTabImage(src, idx)));
         dialog = new JWindow();
@@ -477,12 +490,13 @@ class TabTransferHandler extends TransferHandler {
     Object data = getTransferData(support, localObjectFlavor);
     boolean b = data instanceof DnDTabData;
     if (b) {
-      DnDTabbedPane src = ((DnDTabData) data).tabbedPane;
+      DnDTabbedPane src = ((DnDTabData) data).getTabbedPane();
+      int dragTabIndex = src.getDragTabIndex();
       int index = dl.getIndex(); // boolean insert = dl.isInsert();
       if (target.equals(src)) {
-        src.convertTab(src.dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
+        src.convertTab(dragTabIndex, index); // getTargetTabIndex(e.getLocation()));
       } else {
-        src.exportTab(src.dragTabIndex, target, index);
+        src.exportTab(dragTabIndex, target, index);
       }
     }
     return b;
@@ -501,7 +515,7 @@ class TabTransferHandler extends TransferHandler {
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
     // System.out.println("exportDone");
     DnDTabbedPane src = (DnDTabbedPane) c;
-    if (src.pointOnScreen.x > 0) {
+    if (src.getPointOnScreen().x > 0) {
       createNewFrame(src);
     }
     if (src.getTabCount() == 0) {
@@ -513,7 +527,7 @@ class TabTransferHandler extends TransferHandler {
   }
 
   private static void createNewFrame(DnDTabbedPane src) {
-    int index = src.dragTabIndex;
+    int index = src.getDragTabIndex();
     final Component cmp = src.getComponentAt(index);
     // final Component tab = src.getTabComponentAt(index);
     final String title = src.getTitleAt(index);
@@ -537,7 +551,7 @@ class TabTransferHandler extends TransferHandler {
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     frame.getContentPane().add(new JLayer<>(tabs, new DropLocationLayerUI()));
     frame.setSize(320, 240);
-    frame.setLocation(src.pointOnScreen);
+    frame.setLocation(src.getPointOnScreen());
     frame.setVisible(true);
     EventQueue.invokeLater(frame::toFront);
   }
