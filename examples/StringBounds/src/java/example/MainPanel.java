@@ -51,9 +51,12 @@ public final class MainPanel extends JPanel {
     log.setText("");
     String txt = field.getText().trim();
     label.setText(txt);
-    if (txt.isEmpty()) {
-      return;
+    if (!txt.isEmpty()) {
+      printStringBoundsInfo(txt);
     }
+  }
+
+  private void printStringBoundsInfo(String txt) {
     Font font = label.getFont();
     FontRenderContext frc = label.getFontMetrics(font).getFontRenderContext();
     append("Font#getStringBounds(...)", font.getStringBounds(txt, frc));
@@ -68,8 +71,11 @@ public final class MainPanel extends JPanel {
     append("GlyphVector#getLogicalBounds()", gv.getLogicalBounds());
     append("GlyphVector#getVisualBounds()", gv.getVisualBounds());
 
-    append("JLabel#getPreferredSize()", label.getPreferredSize());
-    append("SwingUtilities.layoutCompoundLabel(...)", getCompoundLabelBounds(label).getSize());
+    Dimension dim1 = label.getPreferredSize();
+    append("JLabel#getPreferredSize()", dim1);
+
+    Dimension dim2 = getCompoundLabelBounds(label).getSize();
+    append("SwingUtilities.layoutCompoundLabel(...)", dim2);
   }
 
   private void append(String s, Object o) {
