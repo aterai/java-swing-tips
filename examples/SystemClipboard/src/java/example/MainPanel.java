@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       Toolkit tk = Toolkit.getDefaultToolkit();
       Transferable t = tk.getSystemClipboard().getContents(null);
-      if(t != null) {
+      if (t != null) {
         updateLabel(label, t);
       }
     });

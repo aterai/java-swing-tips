@@ -162,7 +162,8 @@ class MissingIcon implements Icon {
 //       }
 //
 //       @Override protected void done() {
-//         System.out.println("splashScreen dispose start/EDT: " + EventQueue.isDispatchThread());
+//         System.out.println(
+//             "splashScreen dispose start/EDT: " + EventQueue.isDispatchThread());
 //         splashScreen.dispose();
 //         System.out.println("splashScreen dispose end");
 //         System.out.println("frame show start/EDT: " + EventQueue.isDispatchThread());

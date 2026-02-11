@@ -140,11 +140,11 @@ class StandingsTable extends JTable {
         .filter(i -> i != 1)
         .forEach(i -> columnModel.getColumn(i).setMaxWidth(26));
     columnModel.getColumn(8).setCellRenderer(new DefaultTableCellRenderer() {
-      @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+      @Override public Component getTableCellRendererComponent(JTable tbl, Object value, boolean selected, boolean hasFocus, int row, int col) {
         String v = Objects.toString(value);
         String txt = v.startsWith("-") || "0".equals(v) ? v : "+" + v;
         setHorizontalAlignment(RIGHT);
-        return super.getTableCellRendererComponent(table, txt, isSelected, hasFocus, row, column);
+        return super.getTableCellRendererComponent(tbl, txt, selected, hasFocus, row, col);
       }
     });
   }

@@ -151,8 +151,8 @@ class DnDTabbedPane extends JTabbedPane {
     return dragTabIndex;
   }
 
-  public void setDragTabIndex(int dragTabIndex) {
-    this.dragTabIndex = dragTabIndex;
+  public void setDragTabIndex(int dragTabIdx) {
+    this.dragTabIndex = dragTabIdx;
   }
 
   private void clickArrowButton(String actionKey) {
