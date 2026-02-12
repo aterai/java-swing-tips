@@ -62,7 +62,6 @@ public final class MainPanel extends JPanel {
 
     addProgressValue("Name 1", 100, null);
 
-
     JButton button = new JButton("add");
     button.addActionListener(e -> addActionPerformed(executor));
 
