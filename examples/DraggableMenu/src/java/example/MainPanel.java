@@ -137,7 +137,7 @@ class MenuDragLayerUI extends LayerUI<JMenuBar> {
     updateGhostLocation(e);
     Component[] menus = bar.getComponents();
     targetIndex = 0;
-    dividerX = (menus.length > 0) ? menus[0].getX() : 0;
+    dividerX = menus.length > 0 ? menus[0].getX() : 0;
     for (int i = 0; i < menus.length; i++) {
       Component m = menus[i];
       if (Objects.equals(m, draggingMenu)) {
