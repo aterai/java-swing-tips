@@ -51,7 +51,7 @@ public final class MainPanel extends JPanel {
   private static TableModel makeModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
+      @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0: return String.class;

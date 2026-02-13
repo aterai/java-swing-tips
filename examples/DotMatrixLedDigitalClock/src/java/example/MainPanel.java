@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
     return index < end * ROW && NUMBERS.get(num).contains(index - start * ROW);
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private static boolean getHoursMinutesDotMatrix(LocalTime time, int index) {
     int ten = 10;
     int hours = time.getHour();
@@ -141,7 +141,7 @@ public final class MainPanel extends JPanel {
     return contains(index, start, end, m2);
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private static boolean getSecondsDotMatrix(LocalTime time, int index) {
     int ten = 10;
     int seconds = time.getSecond();

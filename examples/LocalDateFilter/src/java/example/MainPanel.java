@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
     combo.setSelectedIndex(0);
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   public RowFilter<TableModel, Integer> makeRowFilter(String selected) {
     switch (selected) {
       case "within 3 days before":

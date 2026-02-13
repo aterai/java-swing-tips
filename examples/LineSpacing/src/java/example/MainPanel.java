@@ -106,7 +106,7 @@ class BottomInsetEditorKit extends StyledEditorKit {
 }
 
 class BottomInsetViewFactory implements ViewFactory {
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       // case AbstractDocument.ContentElementName:

@@ -144,7 +144,7 @@ class DnDTree extends JTree {
       /* not needed */
     }
 
-    @SuppressWarnings("PMD.OnlyOneReturn")
+    @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
     @Override public void dragOver(DropTargetDragEvent e) {
       DataFlavor[] dataFlavors = e.getCurrentDataFlavors();
       String name = dataFlavors[0].getHumanPresentableName();

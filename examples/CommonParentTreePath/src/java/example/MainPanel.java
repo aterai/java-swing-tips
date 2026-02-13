@@ -166,7 +166,7 @@ final class TreeUtils {
         .orElse(null);
   }
 
-  @SuppressWarnings({"PMD.UseVarargs", "PMD.OnlyOneReturn"})
+  @SuppressWarnings({"PMD.UseVarargs", "PMD.OnlyOneReturn", "ReturnCount"})
   public static <T> T[] getCommonPath(T[] node1, T[] node2) {
     int min = Math.min(node1.length, node2.length);
     for (int len = min; len > 0; len--) {

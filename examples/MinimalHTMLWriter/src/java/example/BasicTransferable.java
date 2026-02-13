@@ -112,7 +112,7 @@ public class BasicTransferable implements Transferable {
    * @exception UnsupportedFlavorException  if the requested data flavor is not supported.
    * @see DataFlavor#getRepresentationClass
    */
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   @Override public Object getTransferData(DataFlavor flavor)
       throws UnsupportedFlavorException, IOException {
     // DataFlavor[] richerFlavors = getRicherFlavors();
@@ -201,7 +201,7 @@ public class BasicTransferable implements Transferable {
     return htmlData;
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private Object getHtmlTransferData(DataFlavor flavor)
       throws IOException, UnsupportedFlavorException {
     // String data = getHtmlData();
@@ -246,7 +246,7 @@ public class BasicTransferable implements Transferable {
     return plainData;
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private Object getPlaneTransferData(DataFlavor flavor)
       throws IOException, UnsupportedFlavorException {
     // String data = getPlainData();

@@ -124,7 +124,7 @@ public final class ResizeMouseListener extends MouseInputAdapter {
     // return deltaY;
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private Point getLimitedDelta(int cursorType, Rectangle pr, int deltaX, int deltaY) {
     switch (cursorType) {
       case Cursor.N_RESIZE_CURSOR:

@@ -72,7 +72,7 @@ public final class MainPanel extends JPanel {
 class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
   @Override public ViewFactory getViewFactory() {
     return new HTMLEditorKit.HTMLFactory() {
-      @SuppressWarnings("PMD.OnlyOneReturn")
+      @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
       @Override public View create(Element elem) {
         AttributeSet attrs = elem.getAttributes();
         Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);

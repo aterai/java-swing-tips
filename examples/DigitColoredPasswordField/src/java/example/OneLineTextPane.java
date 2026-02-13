@@ -60,7 +60,7 @@ class NoWrapParagraphView extends ParagraphView {
 }
 
 class NoWrapViewFactory implements ViewFactory {
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       case AbstractDocument.ParagraphElementName:

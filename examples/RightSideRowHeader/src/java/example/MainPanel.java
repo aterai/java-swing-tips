@@ -178,7 +178,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       "JavaNCSS",
       "MethodLength",
       "NPathComplexity",
-      "NestedIfDepth"
+      "NestedIfDepth",
+      "ReturnCount"
   })
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JScrollPane)) {

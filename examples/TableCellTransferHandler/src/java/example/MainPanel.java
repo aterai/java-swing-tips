@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
         {"fff", new ColorIcon(Color.CYAN), true},
     };
     return new DefaultTableModel(data, columnNames) {
-      @SuppressWarnings("PMD.OnlyOneReturn")
+      @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
       @Override public Class<?> getColumnClass(int column) {
         switch (column) {
           case 0:

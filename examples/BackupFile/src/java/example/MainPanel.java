@@ -202,7 +202,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
     this.newIdx = newIdx;
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   @Override public File doInBackground() throws IOException {
     if (!orgFile.exists()) {
       return orgFile;
@@ -231,7 +231,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
     }
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private File renameAndBackup(File file, String newFileName) throws IOException {
     boolean simpleRename = false;
     File test = null;
@@ -267,7 +267,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
     return null;
   }
 
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private boolean renameAndShiftBackup(File file) {
     File parent = file.getParentFile();
     File tmpFile3 = new File(parent, makeBackupFileName(file.getName(), oldIdx + 1));

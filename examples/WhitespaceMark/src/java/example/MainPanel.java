@@ -102,7 +102,7 @@ class CustomEditorKit extends StyledEditorKit {
 }
 
 class CustomViewFactory implements ViewFactory {
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   @Override public View create(Element elem) {
     switch (elem.getName()) {
       // case AbstractDocument.ContentElementName:

@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
   }
 
   // Before 1.5
-  @SuppressWarnings("PMD.OnlyOneReturn")
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   public static boolean isCanonicalPath(File file) {
     if (file == null) {
       return false;

@@ -265,7 +265,7 @@ public final class TableSorter extends AbstractTableModel {
     }
   }
 
-  @SuppressWarnings({"rawtypes", "PMD.OnlyOneReturn"})
+  @SuppressWarnings({"rawtypes", "PMD.OnlyOneReturn", "ReturnCount"})
   public Comparator getComparator(int column) {
     Class<?> columnType = tableModel.getColumnClass(column);
     Comparator<?> comparator = columnComparators.get(columnType);
@@ -344,7 +344,7 @@ public final class TableSorter extends AbstractTableModel {
 
   // Helper classes
   private final class RowComparator<E extends TableRow> implements Comparator<E> {
-    @SuppressWarnings("PMD.OnlyOneReturn")
+    @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
     @Override public int compare(TableRow r1, TableRow r2) {
       int row1 = r1.getModelIndex();
       int row2 = r2.getModelIndex();
@@ -380,7 +380,7 @@ public final class TableSorter extends AbstractTableModel {
   }
 
   private final class TableModelHandler implements TableModelListener {
-    @SuppressWarnings("PMD.OnlyOneReturn")
+    @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
     @Override public void tableChanged(TableModelEvent e) {
       // If we're not sorting by anything, just pass the event along.
       if (!isSorting()) {
