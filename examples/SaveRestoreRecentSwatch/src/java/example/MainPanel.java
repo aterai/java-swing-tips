@@ -81,17 +81,17 @@ public final class MainPanel extends JPanel {
     AbstractColorChooserPanel[] panels = cc.getChooserPanels();
     // https://stackoverflow.com/questions/10793916/jcolorchooser-save-restore-recent-colors-in-swatches-panel
     List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
-    choosers.remove(0);
+    choosers.remove(0); // Java 21: choosers.removeFirst();
     MySwatchChooserPanel swatch = new MySwatchChooserPanel();
     swatch.addPropertyChangeListener("ancestor", event -> {
-      Color[] colors = swatch.recentSwatchPanel.colors;
+      Color[] colors = swatch.getRecentSwatchPanel().colors;
       if (event.getNewValue() == null) {
         System.arraycopy(colors, 0, switchPanel.colors, 0, colors.length);
       } else {
         System.arraycopy(switchPanel.colors, 0, colors, 0, colors.length);
       }
     });
-    choosers.add(0, swatch);
+    choosers.add(0, swatch); // Java 21: choosers.addFirst(swatch);
     return choosers;
   }
 
@@ -137,7 +137,7 @@ class ColorTracker implements ActionListener {
 // copied from javax/swing/colorchooser/DefaultSwatchChooserPanel.java
 @SuppressWarnings("PMD.LongVariable")
 class MySwatchChooserPanel extends AbstractColorChooserPanel {
-  protected RecentSwatchPanel recentSwatchPanel;
+  private RecentSwatchPanel recentSwatchPanel;
   private SwatchPanel swatchPanel;
   private transient MouseListener mainSwatchListener;
   private transient MouseListener recentSwatchListener;
@@ -255,6 +255,10 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     if (model != null) {
       model.setSelectedColor(color);
     }
+  }
+
+  public SwatchPanel getRecentSwatchPanel() {
+    return recentSwatchPanel;
   }
 
   private final class RecentSwatchKeyListener extends KeyAdapter {
