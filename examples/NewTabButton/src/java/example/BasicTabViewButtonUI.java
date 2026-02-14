@@ -13,9 +13,9 @@ import javax.swing.text.View;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
   // private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
-  private final Rectangle viewRect = new Rectangle();
-  private final Rectangle iconRect = new Rectangle();
-  private final Rectangle textRect = new Rectangle();
+  private final Rectangle viewRct = new Rectangle();
+  private final Rectangle iconRct = new Rectangle();
+  private final Rectangle textRct = new Rectangle();
 
   // protected TabButton tabViewButton;
 
@@ -65,9 +65,9 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     g.setColor(b.getBackground());
     g.fillRect(0, 0, b.getWidth(), b.getHeight());
 
-    SwingUtilities.calculateInnerArea(b, viewRect);
-    iconRect.setBounds(0, 0, 0, 0);
-    textRect.setBounds(0, 0, 0, 0);
+    SwingUtilities.calculateInnerArea(b, viewRct);
+    iconRct.setBounds(0, 0, 0, 0);
+    textRct.setBounds(0, 0, 0, 0);
 
     final String text = SwingUtilities.layoutCompoundLabel(
         b,
@@ -78,9 +78,9 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
         b.getHorizontalAlignment(),
         b.getVerticalTextPosition(),
         b.getHorizontalTextPosition(),
-        viewRect,
-        iconRect,
-        textRect,
+        viewRct,
+        iconRct,
+        textRct,
         0); // b.getText() == null ? 0 : b.getIconTextGap());
 
     ButtonModel model = b.getModel();
@@ -88,14 +88,14 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
 
     Object o = c.getClientProperty(BasicHTML.propertyKey);
     if (o instanceof View) {
-      ((View) o).paint(g, textRect);
+      ((View) o).paint(g, textRct);
     } else {
       if (model.isSelected()) {
-        textRect.y -= 2;
-        textRect.x -= 1;
+        textRct.y -= 2;
+        textRct.x -= 1;
       }
-      textRect.x += 4;
-      paintText(g, b, textRect, text);
+      textRct.x += 4;
+      paintText(g, b, textRct, text);
     }
   }
 
@@ -105,22 +105,22 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     } else {
       g.setColor(new Color(0xDC_DC_DC));
     }
-    g.fillRect(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y + viewRect.height);
+    g.fillRect(viewRct.x, viewRct.y, viewRct.x + viewRct.width, viewRct.y + viewRct.height);
     Color color = new Color(0xFF_78_28);
     if (model.isSelected()) {
       g.setColor(color);
-      g.drawLine(viewRect.x + 1, viewRect.y - 2, viewRect.x + viewRect.width - 1, viewRect.y - 2);
+      g.drawLine(viewRct.x + 1, viewRct.y - 2, viewRct.x + viewRct.width - 1, viewRct.y - 2);
       g.setColor(color.brighter());
-      g.drawLine(viewRect.x, viewRect.y - 1, viewRect.x + viewRect.width, viewRect.y - 1);
+      g.drawLine(viewRct.x, viewRct.y - 1, viewRct.x + viewRct.width, viewRct.y - 1);
       g.setColor(color);
-      g.drawLine(viewRect.x, viewRect.y, viewRect.x + viewRect.width, viewRect.y);
+      g.drawLine(viewRct.x, viewRct.y, viewRct.x + viewRct.width, viewRct.y);
     } else if (model.isRollover()) {
       g.setColor(color);
-      g.drawLine(viewRect.x + 1, viewRect.y, viewRect.x + viewRect.width - 1, viewRect.y);
+      g.drawLine(viewRct.x + 1, viewRct.y, viewRct.x + viewRct.width - 1, viewRct.y);
       g.setColor(color.brighter());
-      g.drawLine(viewRect.x, viewRect.y + 1, viewRect.x + viewRect.width, viewRect.y + 1);
+      g.drawLine(viewRct.x, viewRct.y + 1, viewRct.x + viewRct.width, viewRct.y + 1);
       g.setColor(color);
-      g.drawLine(viewRect.x, viewRect.y + 2, viewRect.x + viewRect.width, viewRect.y + 2);
+      g.drawLine(viewRct.x, viewRct.y + 2, viewRct.x + viewRct.width, viewRct.y + 2);
     }
   }
 }
