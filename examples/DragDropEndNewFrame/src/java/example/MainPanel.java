@@ -122,7 +122,6 @@ class DnDTabbedPane extends JTabbedPane {
   private static final int LINE_SIZE = 3;
   private static final int RWH = 20;
   private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
-  protected int dragTabIndex = -1;
   // For Debug: >>>
   protected boolean hasGhost = true;
   protected boolean isPaintScrollArea = true;
@@ -130,6 +129,7 @@ class DnDTabbedPane extends JTabbedPane {
   protected Rectangle rectBackward = new Rectangle();
   protected Rectangle rectForward = new Rectangle();
   private final GhostGlassPane glassPane = new GhostGlassPane(this);
+  private int dragTabIndex = -1;
 
   protected DnDTabbedPane() {
     super();
@@ -140,6 +140,14 @@ class DnDTabbedPane extends JTabbedPane {
         this, DnDConstants.ACTION_COPY_OR_MOVE, new TabDragGestureListener());
   }
 
+  public int getDragTabIndex() {
+    return dragTabIndex;
+  }
+
+  public void setDragTabIndex(int dragTabIdx) {
+    this.dragTabIndex = dragTabIdx;
+  }
+
   private void clickArrowButton(String actionKey) {
     JButton forwardButton = null;
     JButton backwardButton = null;
@@ -147,8 +155,9 @@ class DnDTabbedPane extends JTabbedPane {
       if (c instanceof JButton) {
         if (Objects.isNull(forwardButton)) {
           forwardButton = (JButton) c;
-        } else if (Objects.isNull(backwardButton)) {
+        } else {
           backwardButton = (JButton) c;
+          break;
         }
       }
     }
@@ -215,8 +224,8 @@ class DnDTabbedPane extends JTabbedPane {
     if (isSideNeighbor) {
       glassPane.setTargetRect(0, 0, 0, 0);
     } else {
-      Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(boundsRect -> {
-        Rectangle r = SwingUtilities.convertRectangle(this, boundsRect, glassPane);
+      Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(rect -> {
+        Rectangle r = SwingUtilities.convertRectangle(this, rect, glassPane);
         int a = Math.min(next, 1);
         if (isTopBottomTabPlacement(getTabPlacement())) {
           glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
@@ -329,7 +338,7 @@ class TabDragSourceListener implements DragSourceListener {
   }
 
   private static DnDTabbedPane makeDnDTabbedPane(DnDTabbedPane src) {
-    int index = src.dragTabIndex;
+    int index = src.getDragTabIndex();
     final Component cmp = src.getComponentAt(index);
     final Component tab = src.getTabComponentAt(index);
     final String title = src.getTitleAt(index);
@@ -366,8 +375,9 @@ class TabDragGestureListener implements DragGestureListener {
     boolean isTabRunsRotated = !(tabs.getUI() instanceof MetalTabbedPaneUI)
         && tabs.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT
         && idx != selIdx;
-    tabs.dragTabIndex = isTabRunsRotated ? selIdx : idx;
-    if (tabs.dragTabIndex >= 0 && tabs.isEnabledAt(tabs.dragTabIndex)) {
+    int dragTabIndex = isTabRunsRotated ? selIdx : idx;
+    tabs.setDragTabIndex(dragTabIndex);
+    if (dragTabIndex >= 0 && tabs.isEnabledAt(dragTabIndex)) {
       tabs.initGlassPane(tabPt);
       try {
         e.startDrag(DragSource.DefaultMoveDrop, new TabTransferable(tabs), handler);
@@ -438,7 +448,7 @@ class TabDropTargetListener implements DropTargetListener {
   private static void tabDrop(DropTargetDropEvent e, DnDTabbedPane tabbedPane) {
     Transferable t = e.getTransferable();
     DataFlavor[] f = t.getTransferDataFlavors();
-    int prev = tabbedPane.dragTabIndex;
+    int prev = tabbedPane.getDragTabIndex();
     int next = tabbedPane.getTargetTabIndex(e.getLocation());
     if (t.isDataFlavorSupported(f[1])) {
       e.dropComplete(true);

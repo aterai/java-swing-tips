@@ -313,7 +313,7 @@ class DnDTabbedPane extends JTabbedPane {
       glassPane.setTargetRect(0, 0, 0, 0);
     } else {
       Optional.ofNullable(getBoundsAt(Math.max(0, next - 1))).ifPresent(rect -> {
-        final Rectangle r = SwingUtilities.convertRectangle(this, rect, glassPane);
+        Rectangle r = SwingUtilities.convertRectangle(this, rect, glassPane);
         int a = Math.min(next, 1); // a = (next == 0) ? 0 : 1;
         if (isTopBottomTabPlacement(getTabPlacement())) {
           glassPane.setTargetRect(r.x + r.width * a - LINE_SIZE / 2, r.y, LINE_SIZE, r.height);
