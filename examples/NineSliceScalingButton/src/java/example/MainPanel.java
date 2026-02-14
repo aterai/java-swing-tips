@@ -31,21 +31,21 @@ public final class MainPanel extends JPanel {
     p1.add(b2);
 
     BufferedImage bi = makeBufferedImage("example/blue.png");
-    JButton b3 = new JButton("Scaling Icon", new NineSliceScalingIcon(bi, 0, 0, 0, 0));
+    JButton b3 = new JButton("Scaling Icon", new NineSliceIcon(bi, 0, 0, 0, 0));
     b3.setContentAreaFilled(false);
     b3.setBorder(BorderFactory.createEmptyBorder());
     b3.setForeground(Color.WHITE);
     b3.setHorizontalTextPosition(SwingConstants.CENTER);
-    b3.setPressedIcon(new NineSliceScalingIcon(makeImage(bi, new PressedFilter()), 0, 0, 0, 0));
-    b3.setRolloverIcon(new NineSliceScalingIcon(makeImage(bi, new RolloverFilter()), 0, 0, 0, 0));
+    b3.setPressedIcon(new NineSliceIcon(makeImage(bi, new PressedFilter()), 0, 0, 0, 0));
+    b3.setRolloverIcon(new NineSliceIcon(makeImage(bi, new RolloverFilter()), 0, 0, 0, 0));
 
-    JButton b4 = new JButton("9-Slice Scaling Icon", new NineSliceScalingIcon(bi, 8, 8, 8, 8));
+    JButton b4 = new JButton("9-Slice Scaling Icon", new NineSliceIcon(bi, 8, 8, 8, 8));
     b4.setContentAreaFilled(false);
     b4.setBorder(BorderFactory.createEmptyBorder());
     b4.setForeground(Color.WHITE);
     b4.setHorizontalTextPosition(SwingConstants.CENTER);
-    b4.setPressedIcon(new NineSliceScalingIcon(makeImage(bi, new PressedFilter()), 8, 8, 8, 8));
-    b4.setRolloverIcon(new NineSliceScalingIcon(makeImage(bi, new RolloverFilter()), 8, 8, 8, 8));
+    b4.setPressedIcon(new NineSliceIcon(makeImage(bi, new PressedFilter()), 8, 8, 8, 8));
+    b4.setRolloverIcon(new NineSliceIcon(makeImage(bi, new RolloverFilter()), 8, 8, 8, 8));
 
     JPanel p2 = new JPanel(new GridLayout(1, 2, 5, 5));
     p2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -147,7 +147,8 @@ class ScalingButton extends JButton {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     int bw = getWidth();
     int bh = getHeight();
     g2.drawImage(image, 0, 0, bw, bh, this);
@@ -180,7 +181,8 @@ class NineSliceScalingButton extends JButton {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     int iw = image.getWidth(this);
     int ih = image.getHeight(this);
@@ -226,7 +228,7 @@ class NineSliceScalingButton extends JButton {
   }
 }
 
-class NineSliceScalingIcon implements Icon {
+class NineSliceIcon implements Icon {
   private static final Rectangle RECT = new Rectangle();
   private final BufferedImage image;
   private final int lw;
@@ -236,7 +238,7 @@ class NineSliceScalingIcon implements Icon {
   private int width;
   private int height;
 
-  protected NineSliceScalingIcon(BufferedImage image, int lw, int rw, int th, int bh) {
+  protected NineSliceIcon(BufferedImage image, int lw, int rw, int th, int bh) {
     this.image = image;
     this.lw = lw;
     this.rw = rw;
@@ -254,7 +256,8 @@ class NineSliceScalingIcon implements Icon {
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     // g2.translate(x, y); // 1.8.0: work fine?
 
     JComponent jc = c instanceof JComponent ? (JComponent) c : null;
