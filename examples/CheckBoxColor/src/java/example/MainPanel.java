@@ -131,16 +131,18 @@ class CheckBoxIcon implements Icon {
   private static final int CHECK_SIZE = 13;
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (!(c instanceof JCheckBox)) {
-      return;
+    if (c instanceof JCheckBox) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.translate(x, y);
+      paintCheckIcon((JCheckBox) c, g2);
+      g2.dispose();
     }
-    JCheckBox cb = (JCheckBox) c;
-    ButtonModel model = cb.getModel();
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.translate(x, y);
+  }
 
+  private static void paintCheckIcon(JCheckBox checkBox, Graphics2D g2) {
+    ButtonModel model = checkBox.getModel();
     // outer bevel
-    if (cb.isBorderPaintedFlat()) {
+    if (checkBox.isBorderPaintedFlat()) {
       g2.setColor(UIManager.getColor("CheckBox.shadow"));
       g2.drawRect(1, 1, CHECK_SIZE - 3, CHECK_SIZE - 3);
 
@@ -181,7 +183,6 @@ class CheckBoxIcon implements Icon {
       g2.drawLine(1, 1, 1 + CHECK_SIZE - 3, 1);
       g2.drawLine(1, 1, 1, 1 + CHECK_SIZE - 3);
     }
-    g2.dispose();
   }
 
   private static void paintBorderBevel(Graphics2D g2) {
