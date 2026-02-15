@@ -25,7 +25,7 @@ Policy
 
 javax.swing.JComponent
 ---------------
-- [JTable(80)](https://ateraimemo.com/astro/en/Swing/_JTable.html)
+- [JTable(81)](https://ateraimemo.com/astro/en/Swing/_JTable.html)
     - [CellEditor CellRenderer(55)](https://ateraimemo.com/astro/en/Swing/_CellEditor.html)
     - [JTableHeader TableColumn(51)](https://ateraimemo.com/astro/en/Swing/_JTableHeader.html)
     - [TableRowSorter RowFilter(31)](https://ateraimemo.com/astro/en/Swing/_TableRowSorter.html)
@@ -45,7 +45,7 @@ javax.swing.JComponent
 - [JScrollPane JViewport JScrollBar(72)](https://ateraimemo.com/astro/en/Swing/_JScrollPane.html)
 - [JMenuBar JToolBar JMenu JMenuItem JSeparator(68)](https://ateraimemo.com/astro/en/Swing/_JMenuBar.html)
 - [JPopupMenu(61)](https://ateraimemo.com/astro/en/Swing/_JPopupMenu.html)
-- [JLayer(60)](https://ateraimemo.com/astro/en/Swing/_JLayer.html)
+- [JLayer(61)](https://ateraimemo.com/astro/en/Swing/_JLayer.html)
 - [JList(58)](https://ateraimemo.com/astro/en/Swing/_JList.html)
 - [JFrame JDialog JWindow(49)](https://ateraimemo.com/astro/en/Swing/_JFrame.html)
 - [JLabel(48)](https://ateraimemo.com/astro/en/Swing/_JLabel.html)
@@ -72,7 +72,7 @@ Others
 - [DragAndDrop(35)](https://ateraimemo.com/astro/en/Swing/_DnD.html)
 - [Font(30)](https://ateraimemo.com/astro/en/Swing/_Font.html)
 - [SwingWorker(22)](https://ateraimemo.com/astro/en/Swing/_SwingWorker.html)
-- [Calendar(19)](https://ateraimemo.com/astro/en/Swing/_Calendar.html)
+- [Calendar(20)](https://ateraimemo.com/astro/en/Swing/_Calendar.html)
 - [File(14)](https://ateraimemo.com/astro/en/Swing/_File.html)
 - [Cursor(9)](https://ateraimemo.com/astro/en/Swing/_Cursor.html)
 - [TrayIcon(8)](https://ateraimemo.com/astro/en/Swing/_TrayIcon.html)
