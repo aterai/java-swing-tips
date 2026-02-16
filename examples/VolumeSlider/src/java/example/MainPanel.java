@@ -27,8 +27,7 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setUI(new BasicSliderUI(this) {
           @Override protected void paintHorizontalLabel(Graphics g, int value, Component label) {
-            // [JDK-5099681]
-            // Windows/Motif L&F: JSlider should use foreground color for ticks. - Java Bug System
+            // Windows/Motif L&F: JSlider should use foreground color for ticks.
             // https://bugs.openjdk.org/browse/JDK-5099681
             label.setForeground(Color.GREEN);
             super.paintHorizontalLabel(g, value, label);
@@ -149,7 +148,8 @@ class TriSliderUI extends BasicSliderUI {
       g2.setPaint(Color.WHITE);
       g2.drawLine(0, cy, cw - 1, cy);
 
-      // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+      // g2.setRenderingHint(
+      //     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
       // g2.translate(-trackBounds.x, -(trackBounds.y + cy));
       g2.dispose();
     } else {

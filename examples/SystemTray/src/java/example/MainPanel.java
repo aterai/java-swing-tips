@@ -27,7 +27,9 @@ public final class MainPanel extends JPanel {
     // Graphics2D g2 = image.createGraphics();
     // g2.setBackground(new Color(0x0, true));
     // g2.clearRect(0, 0, d.width, d.height);
-    // i.paintIcon(null, g2, (d.width - i.getIconWidth()) / 2, (d.height - i.getIconWidth()) / 2);
+    // int cx = (d.width - i.getIconWidth()) / 2;
+    // int cy = (d.height - i.getIconWidth()) / 2;
+    // i.paintIcon(null, g2, cx, cy);
     // g2.dispose();
 
     Image image = makeImage("example/16x16.png");
