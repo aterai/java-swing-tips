@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
     pauseButton.addActionListener(e -> {
       JButton btn = (JButton) e.getSource();
       if (Objects.nonNull(worker)) {
-        btn.setText(worker.isCancelled() || worker.isPaused ? PAUSE : RESUME);
-        worker.isPaused ^= true;
+        btn.setText(worker.isCancelled() || worker.isPaused() ? PAUSE : RESUME);
+        worker.toggle();
       } else {
         btn.setText(PAUSE);
       }
@@ -213,7 +213,7 @@ class Progress {
 }
 
 class BackgroundTask extends SwingWorker<String, Progress> {
-  protected boolean isPaused;
+  private boolean paused;
   private final Random rnd = new Random();
 
   @Override protected String doInBackground() throws InterruptedException {
@@ -239,7 +239,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
     publish(new Progress(ProgressType.LOG, "*"));
 
     while (current <= lengthOfTask && !isCancelled()) {
-      if (isPaused) {
+      if (paused) {
         pause(blinking);
         blinking ^= true;
         continue;
@@ -247,6 +247,15 @@ class BackgroundTask extends SwingWorker<String, Progress> {
       doSomething(100 * current / lengthOfTask);
       current++;
     }
+  }
+
+  public boolean isPaused() {
+    return paused;
+  }
+
+  public void toggle() {
+    // paused = !paused;
+    paused ^= true;
   }
 
   private void pause(boolean blinking) throws InterruptedException {
