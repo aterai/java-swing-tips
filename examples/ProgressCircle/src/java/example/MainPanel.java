@@ -114,17 +114,20 @@ class ProgressCircleUI extends BasicProgressBarUI {
   }
 
   @Override public void paint(Graphics g, JComponent c) {
-    // Insets b = progressBar.getInsets(); // area for border
-    // int barRectWidth = progressBar.getWidth() - b.right - b.left;
-    // int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
-    // if (barRectWidth <= 0 || barRectHeight <= 0) {
-    //   return;
-    // }
     Rectangle rect = SwingUtilities.calculateInnerArea(progressBar, null);
-    if (rect.isEmpty()) {
-      return;
-    }
+    if (!rect.isEmpty()) {
+      // Draw the track and the circular sector
+      paintProgressCircle(g, rect);
 
+      // Deal with possible text painting
+      if (progressBar.isStringPainted()) {
+        Insets ins = progressBar.getInsets();
+        paintString(g, rect.x, rect.y, rect.width, rect.height, 0, ins);
+      }
+    }
+  }
+
+  private void paintProgressCircle(Graphics g, Rectangle rect) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -160,12 +163,6 @@ class ProgressCircleUI extends BasicProgressBarUI {
     g2.setPaint(progressBar.getForeground());
     g2.fill(foreground);
     g2.dispose();
-
-    // Deal with possible text painting
-    if (progressBar.isStringPainted()) {
-      Insets ins = progressBar.getInsets();
-      paintString(g, rect.x, rect.y, rect.width, rect.height, 0, ins);
-    }
   }
 
   // https://ateraimemo.com/Swing/ProgressBarSelectionColor.html
