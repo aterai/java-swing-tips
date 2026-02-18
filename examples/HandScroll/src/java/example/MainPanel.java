@@ -34,7 +34,10 @@ public final class MainPanel extends JPanel {
     viewport.addMouseListener(hsl1);
 
     JRadioButton radio = new JRadioButton("scrollRectToVisible", true);
-    radio.addItemListener(e -> hsl1.setWithinRangeMode(e.getStateChange() == ItemEvent.SELECTED));
+    radio.addItemListener(e -> {
+      boolean b = e.getStateChange() == ItemEvent.SELECTED;
+      hsl1.setWithinRangeMode(b);
+    });
 
     Box box = Box.createHorizontalBox();
     ButtonGroup bg = new ButtonGroup();

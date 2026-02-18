@@ -41,7 +41,8 @@ public final class MainPanel extends JPanel {
       }
     };
     table.setRowSorter(sorter);
-    sorter.setSortKeys(Collections.singletonList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
+    RowSorter.SortKey sortKey = new RowSorter.SortKey(1, SortOrder.DESCENDING);
+    sorter.setSortKeys(Collections.singletonList(sortKey));
 
     Box box = Box.createHorizontalBox();
     box.add(check1);
