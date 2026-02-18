@@ -566,7 +566,7 @@ class TabDropTargetListener implements DropTargetListener {
     Component c = e.getDropTargetContext().getComponent();
     getGhostGlassPane(c).ifPresent(glassPane -> {
       Point glassPt = e.getLocation();
-      DnDTabbedPane tabbedPane = glassPane.tabbedPane;
+      DnDTabbedPane tabbedPane = glassPane.getTabbedPane();
       tabbedPane.initTargetLine(tabbedPane.getTargetTabIndex(glassPt));
       tabbedPane.autoScrollTest(glassPt);
       glassPane.setPoint(glassPt);
@@ -580,7 +580,7 @@ class TabDropTargetListener implements DropTargetListener {
   }
 
   private static void dropTab(DropTargetDropEvent e, GhostGlassPane glassPane) {
-    DnDTabbedPane tabbedPane = glassPane.tabbedPane;
+    DnDTabbedPane tabbedPane = glassPane.getTabbedPane();
     Transferable t = e.getTransferable();
     DataFlavor[] f = t.getTransferDataFlavors();
     int prev = tabbedPane.getDragTabIndex();
@@ -597,7 +597,7 @@ class TabDropTargetListener implements DropTargetListener {
 }
 
 class GhostGlassPane extends JComponent {
-  public final DnDTabbedPane tabbedPane;
+  private final DnDTabbedPane tabbedPane;
   private final Rectangle lineRect = new Rectangle();
   private final Color lineColor = new Color(0, 100, 255);
   private final Point location = new Point();
@@ -653,6 +653,10 @@ class GhostGlassPane extends JComponent {
     g2.setPaint(lineColor);
     g2.fill(lineRect);
     g2.dispose();
+  }
+
+  public DnDTabbedPane getTabbedPane() {
+    return tabbedPane;
   }
 }
 
