@@ -82,7 +82,11 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
       paintText(g, b, textRect, text);
     }
 
-    Optional.ofNullable(icon).ifPresent(ic -> ic.paintIcon(c, g, iconRect.x + 4, iconRect.y + 2));
+    Optional.ofNullable(icon).ifPresent(icn -> {
+      int ix = iconRect.x + 4;
+      int iy = iconRect.y + 2;
+      icn.paintIcon(c, g, ix, iy);
+    });
 
     ButtonModel model = b.getModel();
     if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {

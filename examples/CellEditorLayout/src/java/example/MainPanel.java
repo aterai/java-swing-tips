@@ -11,6 +11,7 @@ import java.util.EventObject;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
@@ -18,9 +19,12 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new JTable(8, 4);
     TableColumnModel cm = table.getColumnModel();
-    cm.getColumn(0).setCellEditor(new CustomComponentCellEditor(new JTextField()));
-    cm.getColumn(1).setCellEditor(new CustomCellEditor(new JTextField()));
-    cm.getColumn(2).setCellEditor(new CustomComponentCellEditor2(CustomComponent.getComponent()));
+    TableColumn c0 = cm.getColumn(0);
+    c0.setCellEditor(new CustomComponentCellEditor(new JTextField()));
+    TableColumn c1 = cm.getColumn(1);
+    c1.setCellEditor(new CustomCellEditor(new JTextField()));
+    TableColumn c2 = cm.getColumn(2);
+    c2.setCellEditor(new CustomComponentCellEditor2(CustomComponent.getComponent()));
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
