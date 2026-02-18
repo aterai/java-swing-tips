@@ -136,20 +136,23 @@ class FilterableStatusUpdateListener implements TreeModelListener {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void treeNodesChanged(TreeModelEvent e) {
-    if (adjusting.get()) {
-      return;
+    if (!adjusting.get()) {
+      adjusting.set(true);
+      nodesFilterChanged(e);
+      adjusting.set(false);
     }
-    adjusting.set(true);
+  }
+
+  private void nodesFilterChanged(TreeModelEvent e) {
     Object[] children = e.getChildren();
     DefaultTreeModel model = (DefaultTreeModel) e.getSource();
-
     DefaultMutableTreeNode node;
     FilterableNode c;
     if (Objects.nonNull(children) && children.length == 1) {
       node = (DefaultMutableTreeNode) children[0];
       c = (FilterableNode) node.getUserObject();
-      TreePath parent = e.getTreePath();
-      DefaultMutableTreeNode n = (DefaultMutableTreeNode) parent.getLastPathComponent();
+      TreePath p = e.getTreePath();
+      DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.getLastPathComponent();
       while (Objects.nonNull(n)) {
         updateParentUserObject(n);
         DefaultMutableTreeNode tmp = (DefaultMutableTreeNode) n.getParent();
@@ -166,7 +169,6 @@ class FilterableStatusUpdateListener implements TreeModelListener {
     }
     updateAllChildrenUserObject(node, c.isVisible());
     model.nodeChanged(node);
-    adjusting.set(false);
   }
 
   private void updateParentUserObject(DefaultMutableTreeNode parent) {
