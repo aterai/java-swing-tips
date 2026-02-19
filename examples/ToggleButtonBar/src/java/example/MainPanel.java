@@ -133,31 +133,30 @@ class ToggleButtonBarCellIcon implements Icon {
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Container parent = c.getParent();
-    if (Objects.isNull(parent)) {
-      return;
+    if (parent != null && c instanceof AbstractButton) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.translate(x, y);
+      paintToggleCellIcon((AbstractButton) c, parent, g2);
+      g2.dispose();
     }
+  }
+
+  private static void paintToggleCellIcon(AbstractButton c, Container p, Graphics2D g2) {
     Color ssc = TL;
     Color bgc = BR;
-    if (c instanceof AbstractButton) {
-      ButtonModel m = ((AbstractButton) c).getModel();
-      if (m.isSelected() || m.isRollover()) {
-        ssc = ST;
-        bgc = SB;
-      }
+    ButtonModel m = c.getModel();
+    if (m.isSelected() || m.isRollover()) {
+      ssc = ST;
+      bgc = SB;
     }
-    Graphics2D g2 = (Graphics2D) g.create();
+    Area area = new Area(makeButtonPath(c, p));
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.translate(x, y);
-    Path2D path = makeButtonPath(c, parent);
-    // path.transform(AffineTransform.getTranslateInstance(x, y));
-    Area area = new Area(path);
     g2.setPaint(c.getBackground());
     g2.fill(area);
     g2.setPaint(new GradientPaint(0f, 0f, ssc, 0f, c.getHeight(), bgc, true));
     g2.fill(area);
     g2.setPaint(BR);
     g2.draw(area);
-    g2.dispose();
   }
 
   private static Path2D makeButtonPath(Component c, Container p) {
