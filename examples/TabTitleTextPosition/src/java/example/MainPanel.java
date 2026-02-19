@@ -36,10 +36,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void addTab(JTabbedPane tabbedPane, String title, String iconPath, Component c) {
-    tabbedPane.addTab(title, c);
+  private static void addTab(JTabbedPane tabs, String title, String path, Component c) {
+    tabs.addTab(title, c);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource(iconPath)).map(url -> {
+    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
       BufferedImage buf;
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
     label.setHorizontalTextPosition(SwingConstants.CENTER);
     // label.setVerticalAlignment(SwingConstants.CENTER);
     // label.setHorizontalAlignment(SwingConstants.CENTER);
-    tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
+    tabs.setTabComponentAt(tabs.getTabCount() - 1, label);
   }
 
   private static BufferedImage makeMissingImage() {

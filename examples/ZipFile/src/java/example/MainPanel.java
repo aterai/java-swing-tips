@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
@@ -201,6 +202,7 @@ final class ZipUtils {
     // noticeably poor performance in JDK 8
     // try (Stream<Path> s = Files.walk(srcDir).filter(Files::isRegularFile)) {
     try (Stream<Path> s = Files.walk(srcDir).filter(f -> f.toFile().isFile())) {
+      // Java 16: List<Path> files = s.toList();
       List<Path> files = s.collect(Collectors.toList());
       try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(zip))) {
         for (Path path : files) {
@@ -235,7 +237,8 @@ final class ZipUtils {
             Files.createDirectories(parent);
           }
           LOGGER.info(() -> String.format("copy: %s", path));
-          Files.copy(zipFile.getInputStream(zipEntry), path, StandardCopyOption.REPLACE_EXISTING);
+          InputStream inputStream = zipFile.getInputStream(zipEntry);
+          Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
         }
       }
     }
