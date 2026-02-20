@@ -184,7 +184,8 @@ class DragScrollListener extends MouseAdapter {
   }
 }
 
-// How to Use Icons (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
+// How to Use Icons
+// (The Java™ Tutorials > Creating a GUI With JFC/Swing > Using Swing Components)
 // https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
 class MissingIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
