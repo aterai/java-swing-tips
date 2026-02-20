@@ -117,12 +117,17 @@ class ScaledIcon implements Icon {
 
 class CheckBoxIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (!(c instanceof AbstractButton)) {
-      return;
+    if (c instanceof AbstractButton) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.translate(x, y);
+      paintCheckIcon(g2, ((AbstractButton) c).getModel().isSelected());
+      g2.dispose();
     }
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.translate(x, y);
+  }
+
+  private void paintCheckIcon(Graphics2D g2, boolean selected) {
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(Color.DARK_GRAY);
     float s = Math.min(getIconWidth(), getIconHeight()) * .05f;
     float w = getIconWidth() - s - s;
@@ -131,16 +136,14 @@ class CheckBoxIcon implements Icon {
     float gh = h / 8f;
     g2.setStroke(new BasicStroke(s));
     g2.draw(new Rectangle2D.Float(s, s, w, h));
-    AbstractButton b = (AbstractButton) c;
-    if (b.getModel().isSelected()) {
+    if (selected) {
       g2.setStroke(new BasicStroke(3f * s));
       Path2D p = new Path2D.Float();
-      p.moveTo(x + 2f * gw, y + .5f * h);
-      p.lineTo(x + .4f * w, y + h - 2f * gh);
-      p.lineTo(x + w - 2f * gw, y + 2f * gh);
+      p.moveTo(2f * gw, .5f * h);
+      p.lineTo(.4f * w, h - 2f * gh);
+      p.lineTo(w - 2f * gw, 2f * gh);
       g2.draw(p);
     }
-    g2.dispose();
   }
 
   @Override public int getIconWidth() {
