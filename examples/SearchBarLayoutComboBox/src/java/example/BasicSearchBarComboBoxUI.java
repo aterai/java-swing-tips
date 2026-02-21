@@ -279,21 +279,22 @@ class SearchBarLayout implements LayoutManager {
   }
 
   @Override public void layoutContainer(Container parent) {
-    if (!(parent instanceof JComboBox)) {
-      return;
+    if (parent instanceof JComboBox) {
+      layoutComboBox((JComboBox<?>) parent);
     }
-    JComboBox<?> cb = (JComboBox<?>) parent;
-    Rectangle r = SwingUtilities.calculateInnerArea(cb, null);
+  }
 
+  private static void layoutComboBox(JComboBox<?> combo) {
+    Rectangle r = SwingUtilities.calculateInnerArea(combo, null);
     int arrowSize = 0;
-    Component arrowButton = cb.getComponent(0);
+    Component arrowButton = combo.getComponent(0);
     if (arrowButton instanceof JButton) {
-      Insets arrowInsets = ((JComponent) arrowButton).getInsets();
-      int bw = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+      Insets arrowIns = ((JComponent) arrowButton).getInsets();
+      int bw = arrowButton.getPreferredSize().width + arrowIns.left + arrowIns.right;
       arrowButton.setBounds(r.x, r.y, bw, r.height);
       arrowSize = bw;
     }
-    Component loupeButton = Arrays.stream(cb.getComponents())
+    Component loupeButton = Arrays.stream(combo.getComponents())
         .filter(c -> Objects.equals("ComboBox.loupeButton", c.getName()))
         .findFirst().orElse(null);
     int loupeSize = 0;
@@ -301,7 +302,7 @@ class SearchBarLayout implements LayoutManager {
       loupeSize = r.height;
       loupeButton.setBounds(r.x + r.width - loupeSize, r.y, loupeSize, r.height);
     }
-    Component editor = cb.getEditor().getEditorComponent();
+    Component editor = combo.getEditor().getEditorComponent();
     if (editor instanceof JTextField) {
       editor.setBounds(r.x + arrowSize, r.y, r.width - arrowSize - loupeSize, r.height);
     }
