@@ -237,8 +237,9 @@ final class ZipUtils {
             Files.createDirectories(parent);
           }
           LOGGER.info(() -> String.format("copy: %s", path));
-          InputStream inputStream = zipFile.getInputStream(zipEntry);
-          Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+          try (InputStream inputStream = zipFile.getInputStream(zipEntry)) {
+            Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+          }
         }
       }
     }

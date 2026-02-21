@@ -172,7 +172,7 @@ class IndeterminateIcon implements Icon {
     g2.translate(x, y);
     icon.paintIcon(c, g2, 0, 0);
     g2.setPaint(FOREGROUND);
-    int iw = getIconWidth()
+    int iw = getIconWidth();
     int ih = getIconHeight();
     g2.fillRect(MARGIN, (ih - HEIGHT) / 2, iw - MARGIN - MARGIN, HEIGHT);
     g2.dispose();
