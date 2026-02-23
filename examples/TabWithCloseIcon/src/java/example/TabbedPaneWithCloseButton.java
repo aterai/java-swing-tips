@@ -32,7 +32,7 @@ public final class TabbedPaneWithCloseButton extends JTabbedPane {
 // JTabbedPane with close Icons | Oracle Forums
 // https://community.oracle.com/thread/1356993
 class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
-  public final List<JButton> closeButtons; // = new ArrayList<>();
+  private final List<JButton> closeButtons; // = new ArrayList<>();
 
   protected CloseButtonTabbedPaneUI(List<JButton> closeButtons) {
     super();
