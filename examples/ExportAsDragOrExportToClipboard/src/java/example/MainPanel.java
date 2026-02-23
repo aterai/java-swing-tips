@@ -234,7 +234,7 @@ class ListItemTransferHandler extends TransferHandler {
 
   // private static boolean canImportFromClipboard(JComponent c) {
   //   Object o = c.getClientProperty("canImportFromClipboard");
-  //   return o != null && Objects.equals(o, Boolean.TRUE);
+  //   return o != null && Objects.equals(o, true);
   // }
 
   @SuppressWarnings("unchecked")
@@ -257,7 +257,7 @@ class ListItemTransferHandler extends TransferHandler {
     // System.out.println("importData(TransferSupport)");
     JList<?> target = (JList<?>) info.getComponent();
     Object o = target.getClientProperty("canImportFromClipboard");
-    boolean b = o != null && Objects.equals(o, Boolean.TRUE);
+    boolean b = o != null && Objects.equals(o, true);
     // boolean b = canImportFromClipboard(target);
     return (info.isDrop() || b) && importListData(info, target);
   }
@@ -270,7 +270,7 @@ class ListItemTransferHandler extends TransferHandler {
   @Override public void exportAsDrag(JComponent comp, InputEvent e, int action) {
     // System.out.println("exportAsDrag");
     Object o = comp.getClientProperty("canExportAsDrag");
-    if (Objects.equals(o, Boolean.TRUE)) {
+    if (Objects.equals(o, true)) {
       super.exportAsDrag(comp, e, action);
     }
   }
@@ -278,7 +278,7 @@ class ListItemTransferHandler extends TransferHandler {
   @Override public void exportToClipboard(JComponent comp, Clipboard clip, int action) {
     // System.out.println("exportToClipboard");
     Object o = comp.getClientProperty("canExportToClipboard");
-    if (Objects.equals(o, Boolean.TRUE)) {
+    if (Objects.equals(o, true)) {
       super.exportToClipboard(comp, clip, action);
     }
   }
