@@ -176,8 +176,9 @@ class TranslucentSynthStyle extends SynthStyle {
   }
 
   @Override public boolean isOpaque(SynthContext context) {
-    return !Objects.equals(context.getRegion(), Region.INTERNAL_FRAME) && style.isOpaque(context);
-    // if (context.getRegion() == Region.INTERNAL_FRAME) {
+    Region region = context.getRegion();
+    return !Objects.equals(region, Region.INTERNAL_FRAME) && style.isOpaque(context);
+    // if (region == Region.INTERNAL_FRAME) {
     //   return false;
     // } else {
     //   return style.isOpaque(context);
