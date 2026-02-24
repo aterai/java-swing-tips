@@ -186,9 +186,9 @@ class ListItemTransferHandler extends TransferHandler {
     addIndex = index;
     List<?> values = getTransferData(info);
     for (Object o : values) {
-      int i = index++;
-      model.add(i, o);
-      target.addSelectionInterval(i, i);
+      model.add(index, o);
+      target.addSelectionInterval(index, index);
+      index += 1;
     }
     addCount = info.isDrop() && target.equals(source) ? values.size() : 0;
     target.requestFocusInWindow();

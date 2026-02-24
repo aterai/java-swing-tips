@@ -184,10 +184,10 @@ class TableRowTransferHandler extends TransferHandler {
     List<?> values = getTransferData(info);
     Object[] type = new Object[0];
     for (Object o : values) {
-      int row = index++;
-      // model.insertRow(row, (Vector<?>) o);
-      model.insertRow(row, ((List<?>) o).toArray(type));
-      target.getSelectionModel().addSelectionInterval(row, row);
+      // model.insertRow(index, (Vector<?>) o);
+      model.insertRow(index, ((List<?>) o).toArray(type));
+      target.getSelectionModel().addSelectionInterval(index, index);
+      index += 1;
     }
     target.requestFocusInWindow();
     addCount = info.isDrop() ? values.size() : 0;

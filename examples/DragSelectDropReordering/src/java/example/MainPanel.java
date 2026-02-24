@@ -422,9 +422,9 @@ class ListItemTransferHandler extends TransferHandler {
     addIndex = index;
     List<?> values = getTransferData(t);
     for (Object o : values) {
-      int i = index++;
-      model.add(i, o);
-      target.addSelectionInterval(i, i);
+      model.add(index, o);
+      target.addSelectionInterval(index, index);
+      index += 1;
     }
     addCount = values.size();
     return !values.isEmpty();
