@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
         Object o = entry.getModel().getValueAt(entry.getIdentifier(), 0);
-        return Objects.equals(o, Boolean.TRUE);
+        return Objects.equals(o, true);
       }
     });
     model.addTableModelListener(e -> {

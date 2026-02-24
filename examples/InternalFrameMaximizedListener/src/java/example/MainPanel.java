@@ -98,7 +98,7 @@ class InternalFrameMaximizedListener implements PropertyChangeListener, Internal
   @Override public void propertyChange(PropertyChangeEvent e) {
     String prop = e.getPropertyName();
     if (Objects.equals(JInternalFrame.IS_MAXIMUM_PROPERTY, prop)) {
-      String str = Objects.equals(e.getNewValue(), Boolean.TRUE) ? "maximized" : "minimized";
+      String str = Objects.equals(e.getNewValue(), true) ? "maximized" : "minimized";
       log.append(String.format("* Internal frame %s: %s%n", str, e.getSource()));
       log.setCaretPosition(log.getDocument().getLength());
     }

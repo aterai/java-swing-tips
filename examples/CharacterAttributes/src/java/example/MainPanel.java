@@ -36,12 +36,12 @@ public final class MainPanel extends JPanel {
       throw wrap;
     }
     MutableAttributeSet attr1 = new SimpleAttributeSet();
-    attr1.addAttribute(StyleConstants.Bold, Boolean.TRUE);
+    attr1.addAttribute(StyleConstants.Bold, true);
     attr1.addAttribute(StyleConstants.Foreground, Color.RED);
     doc.setCharacterAttributes(4, 11, attr1, false);
 
     MutableAttributeSet attr2 = new SimpleAttributeSet();
-    attr2.addAttribute(StyleConstants.Underline, Boolean.TRUE);
+    attr2.addAttribute(StyleConstants.Underline, true);
     doc.setCharacterAttributes(10, 20, attr2, false);
 
     JTextPane textPane = new JTextPane(doc);

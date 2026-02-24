@@ -192,7 +192,7 @@ class BooleanEditor extends AbstractCellEditor implements TableCellEditor {
   };
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    checkBox.setSelected(Objects.equals(value, Boolean.TRUE));
+    checkBox.setSelected(Objects.equals(value, true));
     renderer.add(checkBox);
     return renderer;
   }

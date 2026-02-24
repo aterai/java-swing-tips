@@ -232,7 +232,7 @@ class LedListCellRenderer implements ListCellRenderer<Boolean> {
     Component c = renderer.getListCellRendererComponent(
         list, null, index, false, false);
     if (c instanceof JLabel) {
-      ((JLabel) c).setIcon(Objects.equals(Boolean.TRUE, value) ? on : off);
+      ((JLabel) c).setIcon(Objects.equals(true, value) ? on : off);
     }
     return c;
   }
