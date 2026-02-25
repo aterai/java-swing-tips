@@ -180,8 +180,9 @@ class MonthTable extends JTable {
     int defaultRowHeight = height / rowCount;
     int remainder = height % rowCount;
     for (int i = 0; i < rowCount; i++) {
-      int a = defaultRowHeight + Math.min(1, Math.max(0, remainder--));
+      int a = defaultRowHeight + Math.min(1, Math.max(0, remainder));
       setRowHeight(i, Math.max(1, a));
+      remainder -= 1;
     }
   }
 }

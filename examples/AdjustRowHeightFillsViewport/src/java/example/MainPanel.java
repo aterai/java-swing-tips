@@ -110,8 +110,9 @@ class AdjustRowHeightTable extends JTable {
     if ((height != prevHeight || rowCount != prevCount) && rowHeight > 0) {
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = rowHeight + Math.min(1, Math.max(0, remainder--));
+        int a = rowHeight + Math.min(1, Math.max(0, remainder));
         setRowHeight(i, Math.max(1, a));
+        remainder -= 1;
       }
     }
     prevHeight = height;
