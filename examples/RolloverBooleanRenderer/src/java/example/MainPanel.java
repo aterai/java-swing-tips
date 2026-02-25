@@ -215,7 +215,7 @@ class RolloverBooleanRenderer implements TableCellRenderer, UIResource {
       check.setBackground(table.getBackground());
       // setBackground(row % 2 == 0 ? table.getBackground() : Color.WHITE); // Nimbus
     }
-    check.setSelected(Objects.equals(value, Boolean.TRUE));
+    check.setSelected(Objects.equals(value, true));
     return check;
   }
 }

@@ -132,7 +132,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     Object o = progressBar.getClientProperty("Slider.clockwise");
-    int dir = Objects.equals(o, Boolean.TRUE) ? -1 : 1;
+    int dir = Objects.equals(o, true) ? -1 : 1;
     double start = 90d;
     double degree = dir * 360d * progressBar.getPercentComplete();
     double sz = Math.min(rect.width, rect.height);

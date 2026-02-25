@@ -87,7 +87,7 @@ class FloatingToolBar extends JToolBar {
       setUI(new WindowsToolBarUI() {
         @Override public void setFloating(boolean b, Point p) {
           Object o = getClientProperty(DETACHABLE);
-          if (Objects.equals(o, Boolean.TRUE)) {
+          if (Objects.equals(o, true)) {
             super.setFloating(b, p);
           } else {
             super.setFloating(false, p);
@@ -98,7 +98,7 @@ class FloatingToolBar extends JToolBar {
       setUI(new BasicToolBarUI() {
         @Override public void setFloating(boolean b, Point p) {
           Object o = getClientProperty(DETACHABLE);
-          if (Objects.equals(o, Boolean.TRUE)) {
+          if (Objects.equals(o, true)) {
             super.setFloating(b, p);
           } else {
             super.setFloating(false, p);

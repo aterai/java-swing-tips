@@ -12,8 +12,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout());
     UIDefaults d = new UIDefaults();
-    d.put("Tree.drawVerticalLines", Boolean.TRUE);
-    d.put("Tree.drawHorizontalLines", Boolean.TRUE);
+    d.put("Tree.drawVerticalLines", true);
+    d.put("Tree.drawHorizontalLines", true);
     d.put("Tree.linesStyle", "dashed");
 
     JTree tree = new JTree();

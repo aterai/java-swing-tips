@@ -164,7 +164,7 @@ class TranslucentBooleanRenderer implements TableCellRenderer {
       renderer.setForeground(table.getForeground());
       renderer.setBackground(table.getBackground());
     }
-    renderer.setSelected(Objects.equals(value, Boolean.TRUE));
+    renderer.setSelected(Objects.equals(value, true));
     renderer.setHorizontalAlignment(SwingConstants.CENTER);
     return renderer;
   }
