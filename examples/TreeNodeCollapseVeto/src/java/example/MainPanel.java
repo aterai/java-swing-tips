@@ -31,7 +31,8 @@ public final class MainPanel extends JPanel {
     tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     int row = 0;
     while (row < tree.getRowCount()) {
-      tree.expandRow(row++);
+      tree.expandRow(row);
+      row += 1;
     }
 
     tree.addTreeWillExpandListener(new TreeWillExpandListener() {

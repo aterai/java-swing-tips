@@ -107,7 +107,8 @@ class BackgroundTask extends SwingWorker<Void, Void> {
     int current = 0;
     int lengthOfTask = 120;
     while (current < lengthOfTask && !isCancelled()) {
-      doSomething(100 * current++ / lengthOfTask);
+      doSomething(100 * current / lengthOfTask);
+      current += 1;
     }
     return null;
   }

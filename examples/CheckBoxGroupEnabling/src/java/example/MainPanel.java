@@ -89,7 +89,8 @@ public final class MainPanel extends JPanel {
     JTree tree = new CheckBoxTree();
     int row = 0;
     while (row < tree.getRowCount()) {
-      tree.expandRow(row++);
+      tree.expandRow(row);
+      row += 1;
     }
     tree.getModel().addTreeModelListener(new CheckBoxStatusUpdateListener());
     tree.addTreeWillExpandListener(new TreeWillExpandListener() {

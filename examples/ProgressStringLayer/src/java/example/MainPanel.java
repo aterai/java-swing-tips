@@ -132,7 +132,8 @@ class BackgroundTask extends SwingWorker<String, Void> {
     int total = 0;
     while (current <= lengthOfTask && !isCancelled()) {
       total += doSomething();
-      setProgress(100 * current++ / lengthOfTask);
+      setProgress(100 * current / lengthOfTask);
+      current += 1;
     }
     return String.format("Done(%dms)", total);
   }

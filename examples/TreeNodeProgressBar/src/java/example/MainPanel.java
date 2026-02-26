@@ -161,7 +161,8 @@ class NodeProgressWorker extends SwingWorker<TreeNode, Integer> {
     int current = 0;
     while (current <= lengthOfTask && !isCancelled()) {
       doSomething();
-      publish(100 * current++ / lengthOfTask);
+      publish(100 * current / lengthOfTask);
+      current += 1;
     }
     return treeNode;
   }

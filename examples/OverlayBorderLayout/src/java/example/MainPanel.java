@@ -143,13 +143,15 @@ class LayoutAnimator extends BorderLayout implements ActionListener {
     Timer animator = (Timer) e.getSource();
     int height = component.getPreferredSize().height;
     if (showing) {
-      yy = (int) (.5 + AnimationUtils.easeInOut(++counter / (double) height) * height);
+      counter += 1;
+      yy = (int) (.5 + AnimationUtils.easeInOut(counter / (double) height) * height);
       if (yy >= height) {
         yy = height;
         animator.stop();
       }
     } else {
-      yy = (int) (.5 + AnimationUtils.easeInOut(--counter / (double) height) * height);
+      counter -= 1;
+      yy = (int) (.5 + AnimationUtils.easeInOut(counter / (double) height) * height);
       if (yy <= 0) {
         yy = 0;
         animator.stop();

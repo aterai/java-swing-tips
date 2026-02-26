@@ -55,7 +55,8 @@ public final class MainPanel extends JPanel {
     // https://ateraimemo.com/Swing/ExpandAllNodes.html
     int row = 0;
     while (row < tree.getRowCount()) {
-      tree.expandRow(row++);
+      tree.expandRow(row);
+      row += 1;
     }
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.addTreeSelectionListener(e -> {
