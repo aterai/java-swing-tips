@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
     JSlider slider1 = makeSlider(SwingConstants.HORIZONTAL);
     UIDefaults d = UIManager.getLookAndFeelDefaults();
-    d.put("Slider.paintValue", Boolean.TRUE);
+    d.put("Slider.paintValue", true);
     slider1.putClientProperty("Nimbus.Overrides", d);
 
     JSlider slider2 = makeSlider(SwingConstants.VERTICAL);
@@ -107,14 +107,17 @@ class SliderPopupListener extends MouseAdapter {
 
   protected void updateToolTip(MouseEvent e) {
     JSlider slider = (JSlider) e.getComponent();
-    label.setText(String.format("%03d", slider.getValue()));
-    Point pt = e.getPoint();
-    pt.y = (int) SwingUtilities.calculateInnerArea(slider, null).getCenterY();
-    SwingUtilities.convertPointToScreen(pt, e.getComponent());
-    int h2 = slider.getPreferredSize().height / 2;
-    Dimension d = label.getPreferredSize();
-    pt.translate(-d.width / 2, -d.height - h2);
-    toolTip.setLocation(pt);
+    int v = slider.getValue();
+    label.setText(String.format("%03d", v));
+    if (slider.getMinimum() < v && v < slider.getMaximum()) {
+      Point pt = e.getPoint();
+      pt.y = (int) SwingUtilities.calculateInnerArea(slider, null).getCenterY();
+      SwingUtilities.convertPointToScreen(pt, e.getComponent());
+      int h2 = slider.getPreferredSize().height / 2;
+      Dimension d = label.getPreferredSize();
+      pt.translate(-d.width / 2, -d.height - h2);
+      toolTip.setLocation(pt);
+    }
   }
 
   @Override public void mouseDragged(MouseEvent e) {
