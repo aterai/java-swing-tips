@@ -66,7 +66,8 @@ public final class MainPanel extends JPanel {
       int index0 = index;
       // copy
       for (int i : pos) {
-        int idx = Math.min(m.getSize(), ++index);
+        index += 1;
+        int idx = Math.min(m.getSize(), index);
         m.add(idx, m.get(i));
         list.addSelectionInterval(idx, idx);
       }

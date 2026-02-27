@@ -183,7 +183,8 @@ class LabelWithToolBox extends JLabel {
 
   private void show(JToolBar toolBox) {
     int height = toolBox.getPreferredSize().height;
-    double a = AnimationUtils.easeInOut(++counter / (double) height);
+    counter += 1;
+    double a = AnimationUtils.easeInOut(counter / (double) height);
     yy = (int) (.5 + a * height);
     toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
     if (yy >= height) {
@@ -194,7 +195,8 @@ class LabelWithToolBox extends JLabel {
 
   private void hide(JToolBar toolBox) {
     int height = toolBox.getPreferredSize().height;
-    double a = AnimationUtils.easeInOut(--counter / (double) height);
+    counter -= 1;
+    double a = AnimationUtils.easeInOut(counter / (double) height);
     yy = (int) (.5 + a * height);
     toolBox.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
     if (yy <= 0) {

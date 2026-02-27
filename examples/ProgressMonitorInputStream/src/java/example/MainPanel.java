@@ -210,7 +210,8 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
       int i = 0;
       int readied = 0;
       while (scanner.hasNextLine()) {
-        readied = doSomething(scanner, i++, readied);
+        readied = doSomething(scanner, i, readied);
+        i += 1;
       }
     }
     return ret;

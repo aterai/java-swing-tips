@@ -72,7 +72,8 @@ public final class MainPanel extends JPanel {
   }
 
   private static JInternalFrame createFrame(JComponent c) {
-    String title = String.format("Frame #%s", ++openFrameCount);
+    openFrameCount += 1;
+    String title = String.format("Frame #%s", openFrameCount);
     JInternalFrame frame = new JInternalFrame(title, true, true, true, true);
     if (c instanceof JPanel) {
       JPanel p = (JPanel) c;

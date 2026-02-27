@@ -80,7 +80,8 @@ public final class MainPanel extends JPanel {
   }
 
   private JInternalFrame createInternalFrame() {
-    String title = String.format("Document #%s", ++openFrameCount);
+    openFrameCount += 1;
+    String title = String.format("Document #%s", openFrameCount);
     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     row += 1;
     f.setSize(240, 120);

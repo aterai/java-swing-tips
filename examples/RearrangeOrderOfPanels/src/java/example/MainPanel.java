@@ -28,7 +28,8 @@ public final class MainPanel extends JPanel {
         new JButton("22"),
         new JCheckBox("333"),
         new JScrollPane(new JTextArea(4, 12)))) {
-      box.add(createSortablePanel(idx++, c));
+      box.add(createSortablePanel(idx, c));
+      idx += 1;
     }
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));

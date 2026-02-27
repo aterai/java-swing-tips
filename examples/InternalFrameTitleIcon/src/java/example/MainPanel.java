@@ -15,7 +15,8 @@ public final class MainPanel extends JPanel {
     JDesktopPane desktop = new JDesktopPane();
     int idx = 0;
     for (Color c : Arrays.asList(Color.RED, Color.GREEN, Color.BLUE)) {
-      desktop.add(makeInternalFrame(c, ++idx));
+      idx += 1;
+      desktop.add(makeInternalFrame(c, idx));
     }
     EventQueue.invokeLater(() -> {
       JInternalFrame[] frames = desktop.getAllFrames();
