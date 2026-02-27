@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 
   public void loadAndPlayAudio(URL url) {
     try (AudioInputStream wav = AudioSystem.getAudioInputStream(url);
-         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, wav.getFormat()))) {
+         Clip clip = getLine(wav)) {
       EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
       SecondaryLoop loop = eventQueue.createSecondaryLoop();
       clip.addLineListener(e -> {
@@ -63,6 +63,10 @@ public final class MainPanel extends JPanel {
       // ex.printStackTrace();
       Toolkit.getDefaultToolkit().beep();
     }
+  }
+
+  private static Clip getLine(AudioInputStream wav) throws LineUnavailableException {
+    return (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, wav.getFormat()));
   }
 
   private static Component makeTitledPanel(String title, Component c) {
