@@ -156,7 +156,8 @@ class LeftClippedListCellRenderer extends DefaultListCellRenderer {
       if (textWidth > availableWidth) {
         break;
       }
-      acp[--j] = cp;
+      j -= 1;
+      acp[j] = cp;
     }
     return dots + new String(acp, j, acp.length - j);
   }

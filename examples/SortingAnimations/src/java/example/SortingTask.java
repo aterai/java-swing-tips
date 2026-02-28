@@ -181,7 +181,8 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     int m = l;
     for (int i = l + 1; i <= u; i++) {
       if (array.get(i) < array.get(l)) {
-        swap(++m, i);
+        m += 1;
+        swap(m, i);
       }
     }
     swap(l, m);
