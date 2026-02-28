@@ -26,27 +26,7 @@ public final class MainPanel extends JPanel {
   @SuppressWarnings("PMD.UseConcurrentHashMap")
   private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-  private final JTable monthTable = new JTable() {
-    private void updateRowsHeight(JViewport viewport) {
-      int height = viewport.getExtentSize().height;
-      int rowCount = getModel().getRowCount();
-      int rowHeight = height / rowCount;
-      int remainder = height % rowCount;
-      for (int i = 0; i < rowCount; i++) {
-        int a = rowHeight + Math.min(1, Math.max(0, remainder));
-        setRowHeight(i, Math.max(1, a));
-        remainder -= 1;
-      }
-    }
-
-    @Override public void doLayout() {
-      super.doLayout();
-      Class<JViewport> clz = JViewport.class;
-      Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-          .filter(clz::isInstance).map(clz::cast)
-          .ifPresent(this::updateRowsHeight);
-    }
-  };
+  private final JTable monthTable = new CalendarTable();
   private LocalDate currentLocalDate;
 
   private MainPanel() {
@@ -176,6 +156,28 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class CalendarTable extends JTable {
+  private void updateRowsHeight(JViewport viewport) {
+    int height = viewport.getExtentSize().height;
+    int rowCount = getModel().getRowCount();
+    int rowHeight = height / rowCount;
+    int remainder = height % rowCount;
+    for (int i = 0; i < rowCount; i++) {
+      int a = rowHeight + Math.min(Math.max(0, remainder), 1);
+      setRowHeight(i, Math.max(1, a));
+      remainder -= 1;
+    }
+  }
+
+  @Override public void doLayout() {
+    super.doLayout();
+    Class<JViewport> clz = JViewport.class;
+    Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
+        .filter(clz::isInstance).map(clz::cast)
+        .ifPresent(this::updateRowsHeight);
   }
 }
 
