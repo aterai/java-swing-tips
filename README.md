@@ -34,7 +34,7 @@ javax.swing.JComponent
     - [TreeCellEditor(11)](https://ateraimemo.com/astro/en/Swing/_TreeCellEditor.html)
     - [TreeCellRenderer(13)](https://ateraimemo.com/astro/en/Swing/_TreeCellRenderer.html)
 - [JTextComponent(36)](https://ateraimemo.com/astro/en/Swing/_JTextComponent.html)
-    - [JTextField JPasswordField JFormattedTextField(52)](https://ateraimemo.com/astro/en/Swing/_JTextField.html)
+    - [JTextField JPasswordField JFormattedTextField(53)](https://ateraimemo.com/astro/en/Swing/_JTextField.html)
     - [JTextPane JEditorPane(41)](https://ateraimemo.com/astro/en/Swing/_JTextPane.html)
     - [JTextArea(35)](https://ateraimemo.com/astro/en/Swing/_JTextArea.html)
 - [JButton AbstractButton(38)](https://ateraimemo.com/astro/en/Swing/_JButton.html)
@@ -54,11 +54,11 @@ javax.swing.JComponent
 - [JSlider(35)](https://ateraimemo.com/astro/en/Swing/_JSlider.html)
 - [JProgressBar ProgressMonitor(34)](https://ateraimemo.com/astro/en/Swing/_JProgressBar.html)
 - [JFileChooser(34)](https://ateraimemo.com/astro/en/Swing/_JFileChooser.html)
-- [JSpinner(33)](https://ateraimemo.com/astro/en/Swing/_JSpinner.html)
+- [JSpinner(34)](https://ateraimemo.com/astro/en/Swing/_JSpinner.html)
 - [JPanel(22)](https://ateraimemo.com/astro/en/Swing/_JPanel.html)
 - [JSplitPane(20)](https://ateraimemo.com/astro/en/Swing/_JSplitPane.html)
 - [JOptionPane(13)](https://ateraimemo.com/astro/en/Swing/_JOptionPane.html)
-- [JOptionPane(7)](https://ateraimemo.com/astro/en/Swing/_JColorChooser.html)
+- [JColorChooser(7)](https://ateraimemo.com/astro/en/Swing/_JColorChooser.html)
 
 Others
 ---------------
@@ -72,7 +72,7 @@ Others
 - [DragAndDrop(35)](https://ateraimemo.com/astro/en/Swing/_DnD.html)
 - [Font(30)](https://ateraimemo.com/astro/en/Swing/_Font.html)
 - [SwingWorker(22)](https://ateraimemo.com/astro/en/Swing/_SwingWorker.html)
-- [Calendar(20)](https://ateraimemo.com/astro/en/Swing/_Calendar.html)
+- [Calendar(21)](https://ateraimemo.com/astro/en/Swing/_Calendar.html)
 - [File(14)](https://ateraimemo.com/astro/en/Swing/_File.html)
 - [Cursor(9)](https://ateraimemo.com/astro/en/Swing/_Cursor.html)
 - [TrayIcon(8)](https://ateraimemo.com/astro/en/Swing/_TrayIcon.html)
