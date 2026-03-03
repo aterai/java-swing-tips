@@ -19,33 +19,32 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea();
-
     JPanel p = new JPanel(new GridLayout(0, 1));
-    p.add(makeComboBox(textArea));
-    p.add(makeCheckBoxes(textArea));
-    p.add(makeRadioButtons(textArea));
-
+    p.add(makeComboBox());
+    p.add(makeCheckBoxes());
+    p.add(makeRadioButtons());
     add(p, BorderLayout.NORTH);
-    add(new JScrollPane(textArea));
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeComboBox(JTextArea textArea) {
+  private Component makeComboBox() {
     JComboBox<DayOfWeek> combo = new JComboBox<>(DayOfWeek.values());
     combo.addItemListener(e -> {
       ItemSelectable c = e.getItemSelectable();
       DayOfWeek dow = (DayOfWeek) e.getItem();
       boolean b = e.getStateChange() == ItemEvent.SELECTED;
-      print(textArea, e, c.getClass(), b, dow);
+      print(e, c.getClass(), b, dow);
     });
     combo.addActionListener(e -> {
       Object c = e.getSource();
       DayOfWeek dow = combo.getItemAt(combo.getSelectedIndex());
       boolean b = Objects.equals("comboBoxChanged", e.getActionCommand());
-      print(textArea, e, c.getClass(), b, dow);
+      print(e, c.getClass(), b, dow);
     });
 
     JButton button0 = new JButton("0");
@@ -59,18 +58,18 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Component makeCheckBoxes(JTextArea textArea) {
+  private Component makeCheckBoxes() {
     ItemListener il = e -> {
       AbstractButton c = (AbstractButton) e.getItemSelectable(); // e.getItem();
       boolean b = e.getStateChange() == ItemEvent.SELECTED;
       String ac = c.getActionCommand();
-      print(textArea, e, c.getClass(), b, ac);
+      print(e, c.getClass(), b, ac);
       // if (e.getStateChange() == ItemEvent.SELECTED)
       //   for (Object o : e.getItemSelectable().getSelectedObjects()) ...;
     };
     ActionListener al = e -> {
       AbstractButton c = (AbstractButton) e.getSource();
-      print(textArea, e, c.getClass(), c.isSelected(), e.getActionCommand());
+      print(e, c.getClass(), c.isSelected(), e.getActionCommand());
     };
     List<AbstractButton> list = new ArrayList<>(7);
     Box p = Box.createHorizontalBox();
@@ -92,26 +91,29 @@ public final class MainPanel extends JPanel {
     return new JScrollPane(p);
   }
 
-  private static Component makeRadioButtons(JTextArea textArea) {
+  private Component makeRadioButtons() {
     ButtonGroup bg = new ButtonGroup();
     ItemListener il = e -> {
       AbstractButton c = (AbstractButton) e.getItemSelectable();
       String ac = Optional.ofNullable(bg.getSelection())
           .map(ButtonModel::getActionCommand)
           .orElse("NULL");
-      print(textArea, e, c.getClass(), e.getStateChange() == ItemEvent.SELECTED, ac);
+      print(e, c.getClass(), e.getStateChange() == ItemEvent.SELECTED, ac);
     };
     ActionListener al = e -> {
       AbstractButton c = (AbstractButton) e.getSource();
-      print(textArea, e, c.getClass(), c.isSelected(), e.getActionCommand());
+      print(e, c.getClass(), c.isSelected(), e.getActionCommand());
     };
     Box p = Box.createHorizontalBox();
-    Stream.of(DayOfWeek.values()).map(Objects::toString).map(JRadioButton::new).forEach(r -> {
-      r.addItemListener(il);
-      r.addActionListener(al);
-      p.add(r);
-      bg.add(r);
-    });
+    Stream.of(DayOfWeek.values())
+        .map(Objects::toString)
+        .map(JRadioButton::new)
+        .forEach(r -> {
+          r.addItemListener(il);
+          r.addActionListener(al);
+          p.add(r);
+          bg.add(r);
+        });
 
     JButton button0 = new JButton("clear");
     button0.addActionListener(e -> bg.clearSelection());
@@ -125,7 +127,7 @@ public final class MainPanel extends JPanel {
     return new JScrollPane(p);
   }
 
-  private static void print(JTextArea log, AWTEvent e, Class<?> clz, boolean selected, Object o) {
+  private void print(AWTEvent e, Class<?> clz, boolean selected, Object o) {
     String l = e.getClass().getSimpleName();
     String s = selected ? "SELECTED" : "DESELECTED";
     log.append(String.format("%-14s %s %-10s %s%n", l, clz.getSimpleName(), s, o));
