@@ -56,7 +56,9 @@ public final class MainPanel extends JPanel {
       startTime = -1L;
       button.setEnabled(true);
     }
-    int index = Math.min(Math.max(0, (int) (points.size() * progress)), points.size() - 1);
+    int size = points.size();
+    int index = Math.min(Math.max(0, (int) (size * progress)), size - 1);
+    // Java 21: int index = Math.clamp((int) (size * progress), 0, size - 1);
     pos.setLocation(points.get(index));
     repaint();
   }

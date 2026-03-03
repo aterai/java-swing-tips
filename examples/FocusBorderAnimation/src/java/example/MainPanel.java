@@ -120,10 +120,12 @@ class AnimatedBorder extends EmptyBorder {
     } else {
       Point2D pos = new Point2D.Double();
       pos.setLocation(points.get(0));
+      // Java 21: pos.setLocation(points.getFirst());
       borderPath.reset();
       borderPath.moveTo(pos.getX(), pos.getY());
       int size = points.size();
       int idx = Math.min(Math.max(0, (int) (size * progress)), size - 1);
+      // Java 21: int idx = Math.clamp((int) (size * progress), 0, size - 1);
       for (int i = 0; i <= idx; i++) {
         pos.setLocation(points.get(i));
         borderPath.lineTo(pos.getX(), pos.getY());

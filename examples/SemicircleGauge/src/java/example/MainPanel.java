@@ -210,6 +210,7 @@ class SolidGaugeUI extends BasicProgressBarUI {
     int i = (int) (pallet.length * pos);
     int max = pallet.length - 1;
     int index = Math.min(Math.max(i, 0), max);
+    // Java 21: int index = Math.clamp(i, 0, pallet.length - 1);
     return new Color(pallet[index] & 0x00_FF_FF_FF);
   }
 
