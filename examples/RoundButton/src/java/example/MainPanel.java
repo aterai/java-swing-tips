@@ -81,6 +81,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
+
+@SuppressWarnings("VisibilityModifier")
 class RoundedCornerButton extends JButton {
   protected static final int FOCUS_STROKE = 2;
   protected static final Color FC = new Color(100, 150, 255, 200);
@@ -229,7 +231,7 @@ class ShapeButton extends JButton {
   protected static final Color FC = new Color(100, 150, 255, 200);
   protected static final Color AC = new Color(230, 230, 230);
   protected static final Color RC = Color.ORANGE;
-  protected final transient Shape shape;
+  private final transient Shape shape;
 
   protected ShapeButton(Shape s) {
     super("Shape", new ShapeSizeIcon(s));
