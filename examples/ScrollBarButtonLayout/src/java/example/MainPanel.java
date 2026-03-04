@@ -219,6 +219,7 @@ final class ScrollBarUtils {
       int trackH, float extent, float range, int maxThumbH, int minThumbH) {
     int thumbH = range <= 0 ? maxThumbH : (int) (trackH * (extent / range));
     thumbH = Math.min(Math.max(thumbH, minThumbH), maxThumbH);
+    // Java 21: thumbH = Math.clamp(thumbH, minThumbH, maxThumbH);
     return thumbH;
   }
 

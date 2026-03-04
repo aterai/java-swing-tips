@@ -167,6 +167,7 @@ class CalendarTable extends JTable {
     int remainder = height % rowCount;
     for (int i = 0; i < rowCount; i++) {
       int a = rowHeight + Math.min(Math.max(0, remainder), 1);
+      // Java 21: int a = rowHeight + Math.clamp(remainder, 0, 1);
       setRowHeight(i, Math.max(1, a));
       remainder -= 1;
     }
