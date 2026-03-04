@@ -137,7 +137,8 @@ public class TitledBorder2 extends TitledBorder {
     }
   }
 
-  private void initJustification(int just, int x, int w, Rectangle lr, Dimension sz, Insets ins) {
+  private void initJustification(
+      int just, int x, int w, Rectangle lr, Dimension sz, Insets ins) {
     lr.x = x;
     lr.width = w - ins.left - ins.right;
     if (lr.width > sz.width) {

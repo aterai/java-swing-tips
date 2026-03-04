@@ -132,9 +132,12 @@ class SolidGaugeUI extends BasicProgressBarUI {
     double cy = rect.getMaxY();
     double sz = or * 2d;
     double ir = or * .6;
-    Shape inner = new Arc2D.Double(cx - ir, cy - ir, ir * 2d, ir * 2d, start, -extent, Arc2D.PIE);
-    Shape outer = new Arc2D.Double(cx - or, cy - or, sz, sz, start, -extent, Arc2D.PIE);
-    Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, start, -degree, Arc2D.PIE);
+    Shape inner = new Arc2D.Double(
+        cx - ir, cy - ir, ir * 2d, ir * 2d, start, -extent, Arc2D.PIE);
+    Shape outer = new Arc2D.Double(
+        cx - or, cy - or, sz, sz, start, -extent, Arc2D.PIE);
+    Shape sector = new Arc2D.Double(
+        cx - or, cy - or, sz, sz, start, -degree, Arc2D.PIE);
 
     Area foreground = new Area(sector);
     Area background = new Area(outer);

@@ -252,7 +252,8 @@ final class TreeUtils {
         .forEach(TreeUtils::sort3);
   }
 
-  public static DefaultMutableTreeNode deepCopy(MutableTreeNode src, DefaultMutableTreeNode tgt) {
+  public static DefaultMutableTreeNode deepCopy(
+      MutableTreeNode src, DefaultMutableTreeNode tgt) {
     // Java 9: Collections.list(src.children()).stream()
     Collections.list((Enumeration<?>) src.children()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)

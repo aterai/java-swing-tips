@@ -120,7 +120,8 @@ final class LookAndFeelUtils {
     return lafMenu;
   }
 
-  private static JMenuItem createLafMenuItem(JMenu menu, ButtonGroup bg, String txt, String laf) {
+  private static JMenuItem createLafMenuItem(
+      JMenu menu, ButtonGroup bg, String txt, String laf) {
     JMenuItem mi = menu.add(new JRadioButtonMenuItem(txt));
     bg.add(mi);
     mi.addActionListener(new ChangeLookAndFeelAction(laf));
