@@ -190,7 +190,7 @@
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>
-    <!-- module name="VisibilityModifier"/ -->
+    <module name="VisibilityModifier"/>
 
     <!-- Miscellaneous other checks.                       -->
     <!-- See https://checkstyle.org/checks/misc/index.html -->

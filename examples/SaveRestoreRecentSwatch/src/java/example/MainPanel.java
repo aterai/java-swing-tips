@@ -304,6 +304,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
   }
 }
 
+@SuppressWarnings("VisibilityModifier")
 class SwatchPanel extends JPanel {
   protected Color[] colors;
   protected Dimension swatchSize;

@@ -118,6 +118,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
+@SuppressWarnings("VisibilityModifier")
 class DnDTabbedPane extends JTabbedPane {
   private static final int LINE_SIZE = 3;
   private static final int RWH = 20;

@@ -15,6 +15,7 @@ import javax.swing.*;
  * accepts an icon which is extra to the 'X' icon, so you can have tabs
  * like in JBuilder. This value is null if no extra icon is required.
  */
+@SuppressWarnings("VisibilityModifier")
 public class CloseTabIcon implements Icon {
   /**
    * True whether the mouse is over this icon, false otherwise.
