@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -34,16 +35,10 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
 
     JButton button1 = new JButton("showMessageDialog1");
-    button1.addActionListener(e -> {
-      UIManager.put(AUDITORY_KEY, AUDITORY_CUES);
-      JOptionPane.showMessageDialog(panel, "showMessageDialog1");
-    });
+    button1.addActionListener(MainPanel::showMessageDialog1);
 
     JButton button2 = new JButton("showMessageDialog2");
-    button2.addActionListener(e -> {
-      UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.noAuditoryCues"));
-      showMessageDialogAndPlayAudio(panel, "showMessageDialog2", "example/notice2.wav");
-    });
+    button2.addActionListener(MainPanel::showMessageDialog2);
 
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     panel.add(makeTitledPanel("Look&Feel Default", button1));
@@ -57,26 +52,31 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
-    JPanel p = new JPanel(new BorderLayout());
-    p.setBorder(BorderFactory.createTitledBorder(title));
-    p.add(c);
-    return p;
+  private static void showMessageDialog1(ActionEvent e) {
+    UIManager.put(AUDITORY_KEY, AUDITORY_CUES);
+    Component p = SwingUtilities.getRoot((Component) e.getSource());
+    JOptionPane.showMessageDialog(p, "showMessageDialog1");
   }
 
-  public void showMessageDialogAndPlayAudio(Component p, String msg, String audioResource) {
-    URL url = Thread.currentThread().getContextClassLoader().getResource(audioResource);
-    if (url == null) {
+  private static void showMessageDialog2(ActionEvent e) {
+    UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.noAuditoryCues"));
+    Component p = SwingUtilities.getRoot((Component) e.getSource());
+    String path = "example/notice2.wav";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    if (Objects.nonNull(url)) {
+      showMessageDialogAndPlayAudio(p, "showMessageDialog2", url);
+    } else {
       UIManager.getLookAndFeel().provideErrorFeedback(p);
-      JOptionPane.showMessageDialog(p, audioResource + " not found");
-      return;
+      JOptionPane.showMessageDialog(p, path + " not found");
     }
+  }
+
+  public static void showMessageDialogAndPlayAudio(Component p, String msg, URL url) {
     try (AudioInputStream ss = AudioSystem.getAudioInputStream(url);
          Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, ss.getFormat()))) {
       SecondaryLoop loop = p.getToolkit().getSystemEventQueue().createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
-        // System.out.println(t);
         if (Objects.equals(t, LineEvent.Type.STOP) || Objects.equals(t, LineEvent.Type.CLOSE)) {
           loop.exit();
         }
@@ -129,6 +129,13 @@ public final class MainPanel extends JPanel {
   //   }
   //   return buffer;
   // }
+
+  private static Component makeTitledPanel(String title, Component c) {
+    JPanel p = new JPanel(new BorderLayout());
+    p.setBorder(BorderFactory.createTitledBorder(title));
+    p.add(c);
+    return p;
+  }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
