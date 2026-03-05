@@ -18,12 +18,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     List<String> list = Arrays.asList(
-                          "-Duser.country=JP",
-                          "-Duser.language=ja",
-                          "-Dfile.encoding=UTF-8",
-                          "--add-opens=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED",
-                          "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
-                          "--add-opens=java.desktop/sun.awt.shell=ALL-UNNAMED");
+        "-Duser.country=JP",
+        "-Duser.language=ja",
+        "-Dfile.encoding=UTF-8",
+        "--add-opens=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED",
+        "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+        "--add-opens=java.desktop/sun.awt.shell=ALL-UNNAMED");
     ExpandableTextField expandableField = new ExpandableTextField();
     expandableField.setText(String.join(" ", list));
     JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 20));

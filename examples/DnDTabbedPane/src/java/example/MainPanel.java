@@ -608,7 +608,7 @@ class GhostGlassPane extends JComponent {
     super();
     this.tabbedPane = tabbedPane;
     // [JDK-6700748]
-    // Cursor flickering during D&D when using CellRendererPane with validation - Java Bug System
+    // Cursor flickering during D&D when using CellRendererPane with validation
     // https://bugs.openjdk.org/browse/JDK-6700748
     // setCursor(null);
   }

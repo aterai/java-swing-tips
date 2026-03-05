@@ -63,7 +63,8 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     Box box = Box.createVerticalBox();
-    Stream.of(focusPainted, borderPainted, contentAreaFilled, rolloverEnabled).forEach(box::add);
+    Stream.of(focusPainted, borderPainted, contentAreaFilled, rolloverEnabled)
+        .forEach(box::add);
     add(box, BorderLayout.NORTH);
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

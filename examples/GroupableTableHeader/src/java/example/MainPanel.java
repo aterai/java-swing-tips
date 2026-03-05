@@ -304,7 +304,8 @@ class ColumnGroup {
   public Dimension getSize(JTableHeader header) {
     TableCellRenderer r = header.getDefaultRenderer();
     JTable table = header.getTable();
-    Component c = r.getTableCellRendererComponent(table, getHeaderValue(), false, false, -1, -1);
+    Component c = r.getTableCellRendererComponent(
+        table, getHeaderValue(), false, false, -1, -1);
     int width = 0;
     for (Object obj : list) {
       if (obj instanceof TableColumn) {

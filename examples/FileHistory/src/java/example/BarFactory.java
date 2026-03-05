@@ -60,7 +60,8 @@ public final class BarFactory {
   }
 
   public Optional<URL> getResource(String key) {
-    return Optional.ofNullable(getResourceString(key)).map(path -> getClass().getResource(path));
+    return Optional.ofNullable(getResourceString(key))
+        .map(path -> getClass().getResource(path));
   }
 
   private String getResourceString(String nm) {

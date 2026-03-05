@@ -69,7 +69,8 @@ class LookAndFeelComboBox extends JComboBox<LookAndFeelInfo> {
     super.updateUI();
     ListCellRenderer<? super LookAndFeelInfo> r = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = r.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (c instanceof JLabel && value != null) {
         ((JLabel) c).setText(value.getName());
       }

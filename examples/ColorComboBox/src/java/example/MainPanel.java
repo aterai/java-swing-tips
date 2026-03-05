@@ -116,7 +116,8 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     super.updateUI();
     ListCellRenderer<? super E> r = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = r.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (index >= 0 && c instanceof JComponent) {
         ((JComponent) c).setOpaque(true);
       }

@@ -210,7 +210,6 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
     super.paint(g, c);
     Optional.ofNullable(shape).ifPresent(s -> {
       Graphics2D g2 = (Graphics2D) g.create();
-      // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(Color.GRAY);
       g2.draw(shape);
       g2.dispose();

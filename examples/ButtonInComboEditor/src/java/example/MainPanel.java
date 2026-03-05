@@ -65,7 +65,8 @@ public final class MainPanel extends JPanel {
     combo.setEditable(true);
     ListCellRenderer<? super SiteItem> r = combo.getRenderer();
     combo.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = r.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (c instanceof JLabel) {
         ((JLabel) c).setIcon(value.getFavicon());
       }
