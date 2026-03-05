@@ -179,8 +179,10 @@ class ReorderingLayerUI<V extends JComponent> extends LayerUI<V> {
   private static void updateDraggingPanelLocation(JComponent p, Point pt, Point offset) {
     int y = pt.y - offset.y;
     Rectangle r = SwingUtilities.calculateInnerArea(p, TEMP_RECT);
+    int top = r.y;
     int bottom = r.y + r.height - DRAGGING_RECT.height;
-    DRAGGING_RECT.setLocation(r.x, Math.min(Math.max(y, r.y), bottom));
+    DRAGGING_RECT.setLocation(r.x, Math.min(Math.max(y, top), bottom));
+    // Java 21: DRAGGING_RECT.setLocation(r.x, Math.clamp(y, top, bottom));
   }
 
   // private static void updateFillerLocation(Container p, Component filler, Point pt) {

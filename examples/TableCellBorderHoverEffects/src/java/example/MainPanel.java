@@ -137,7 +137,8 @@ public final class MainPanel extends JPanel {
       int rowHeight = height / rowCount;
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = rowHeight + Math.min(1, Math.max(0, remainder));
+        int a = rowHeight + Math.min(Math.max(remainder, 0), 1);
+        // int a = rowHeight + Math.clamp(remainder, 0, 1);
         setRowHeight(i, Math.max(1, a));
         remainder -= 1;
       }
