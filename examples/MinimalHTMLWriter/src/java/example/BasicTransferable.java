@@ -143,7 +143,8 @@ public class BasicTransferable implements Transferable {
   private InputStream createInputStream(DataFlavor flavor, String data)
       throws IOException, UnsupportedFlavorException {
     String s = getTextCharset(flavor);
-    String cs = Optional.ofNullable(s).orElseThrow(() -> new UnsupportedFlavorException(flavor));
+    String cs = Optional.ofNullable(s)
+        .orElseThrow(() -> new UnsupportedFlavorException(flavor));
     return new ByteArrayInputStream(data.getBytes(cs));
   }
 

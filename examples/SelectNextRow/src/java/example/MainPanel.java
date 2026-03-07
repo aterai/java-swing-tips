@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -27,8 +26,10 @@ public final class MainPanel extends JPanel {
     });
     im.put(tab, im.get(enter));
 
-    KeyStroke shiftTab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
-    KeyStroke shiftEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
+    KeyStroke shiftTab = KeyStroke.getKeyStroke("shift TAB");
+    // KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
+    KeyStroke shiftEnter = KeyStroke.getKeyStroke("shift ENTER");
+    // KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK);
     im.put(shiftTab, im.get(shiftEnter));
 
     add(checkBox, BorderLayout.NORTH);

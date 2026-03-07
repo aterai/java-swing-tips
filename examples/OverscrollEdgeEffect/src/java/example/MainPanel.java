@@ -141,12 +141,15 @@ class OverscrollEdgeEffectLayerUI extends LayerUI<JScrollPane> {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
       Rectangle r = scroll.getViewport().getViewRect();
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(color);
+      double dx = oval.getX();
+      double dw = oval.getWidth();
       if (oval.getY() < 0) {
-        oval.setFrame(oval.getX(), -ovalHeight, oval.getWidth(), ovalHeight * 2d);
+        oval.setFrame(dx, -ovalHeight, dw, ovalHeight * 2d);
       } else { // if (r.height < oval.getY() + oval.getHeight()) {
-        oval.setFrame(oval.getX(), r.getHeight() - ovalHeight, oval.getWidth(), ovalHeight * 2d);
+        oval.setFrame(dx, r.getHeight() - ovalHeight, dw, ovalHeight * 2d);
       }
       g2.fill(oval);
       g2.dispose();

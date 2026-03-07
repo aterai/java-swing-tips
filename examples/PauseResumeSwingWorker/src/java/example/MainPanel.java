@@ -325,7 +325,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //         private final Random r = new Random();
 //
 //         @Override protected String doInBackground() {
-//           // System.out.println("doInBackground() is EDT?: " + EventQueue.isDispatchThread());
+//           // System.out.println("EDT?: " + EventQueue.isDispatchThread());
 //           int current = 0;
 //           int lengthOfTask = 12; // fileList.size();
 //           publish("Length Of Task: " + lengthOfTask);

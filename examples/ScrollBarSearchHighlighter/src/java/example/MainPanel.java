@@ -53,7 +53,10 @@ public final class MainPanel extends JPanel {
     scroll.setRowHeaderView(label);
 
     JCheckBox check = new JCheckBox("LineWrap");
-    check.addActionListener(e -> textArea.setLineWrap(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> {
+      JCheckBox cb = (JCheckBox) e.getSource();
+      textArea.setLineWrap(cb.isSelected());
+    });
 
     JButton highlight = new JButton("highlight");
     highlight.addActionListener(e -> {

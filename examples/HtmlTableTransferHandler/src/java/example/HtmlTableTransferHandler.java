@@ -54,7 +54,7 @@ public final class HtmlTableTransferHandler extends TransferHandler {
     }
   }
 
-  // @see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(JComponent)
+  // @see javax/swing/plaf/basic/BasicTableUI.TableTransferHandler#createTransferable(...)
   @Override protected Transferable createTransferable(JComponent c) {
     Transferable transferable = null;
     if (c instanceof JTable && canStartDrag((JTable) c)) {

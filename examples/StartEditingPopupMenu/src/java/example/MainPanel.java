@@ -132,7 +132,7 @@ final class TreePopupMenu extends JPopupMenu {
       //   super.show(c, x, y);
       // }
       TreePath[] tsp = tree.getSelectionPaths();
-      path = tree.getPathForLocation(x, y); // Test: path = tree.getClosestPathForLocation(x, y);
+      path = tree.getPathForLocation(x, y); // Test: tree.getClosestPathForLocation(x, y);
       boolean isEditable = tsp != null && tsp.length == 1 && tsp[0].equals(path);
       // Test: if (Objects.nonNull(path) && Arrays.asList(tsp).contains(path)) {
       editItem.setEnabled(isEditable);

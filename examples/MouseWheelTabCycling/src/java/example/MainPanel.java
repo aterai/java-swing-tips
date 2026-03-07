@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
       private transient MouseWheelListener handler;
 
       @Override public void updateUI() {
@@ -29,23 +29,23 @@ public final class MainPanel extends JPanel {
         addMouseWheelListener(handler);
       }
     };
-    tabbedPane.addTab("JLabel1", new JLabel("JLabel1"));
-    tabbedPane.addTab("JLabel2", new JLabel("JLabel2"));
-    tabbedPane.addTab("JLabel(disabled)", new JLabel("JLabel"));
-    tabbedPane.setEnabledAt(2, false);
-    tabbedPane.addTab("JSplitPane", new JSplitPane());
-    tabbedPane.addTab("JPanel", new JLabel("JPanel"));
-    tabbedPane.addTab("JTree", new JScrollPane(new JTree()));
-    tabbedPane.addTab("JTextArea", new JScrollPane(new JTextArea("JTextArea")));
+    tabs.addTab("JLabel1", new JLabel("JLabel1"));
+    tabs.addTab("JLabel2", new JLabel("JLabel2"));
+    tabs.addTab("JLabel(disabled)", new JLabel("JLabel"));
+    tabs.setEnabledAt(2, false);
+    tabs.addTab("JSplitPane", new JSplitPane());
+    tabs.addTab("JPanel", new JLabel("JPanel"));
+    tabs.addTab("JTree", new JScrollPane(new JTree()));
+    tabs.addTab("JTextArea", new JScrollPane(new JTextArea("JTextArea")));
     IntStream.range(0, 20).forEach(i -> {
       String title = "title" + i;
-      tabbedPane.addTab(title, new JScrollPane(new JLabel(title)));
+      tabs.addTab(title, new JScrollPane(new JLabel(title)));
     });
 
     JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).getTabPlacement());
+        tabs.setTabPlacement(((TabPlacements) e.getItem()).getTabPlacement());
       }
     });
     Box box = Box.createHorizontalBox();
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     box.add(comboBox);
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    add(tabbedPane);
+    add(tabs);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }

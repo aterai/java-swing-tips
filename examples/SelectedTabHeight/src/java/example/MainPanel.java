@@ -14,7 +14,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
+    JTabbedPane tabs = new JTabbedPane() {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsTabbedPaneUI) {
@@ -22,17 +22,18 @@ public final class MainPanel extends JPanel {
         } else {
           setUI(new BasicTabHeightTabbedPaneUI());
         }
+        setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
       }
     };
-    tabbedPane.addTab("00000", new JLabel("aaa aaa aaa aa"));
-    tabbedPane.addTab("111112", new JLabel("bbb bbb bbb bbb bb bb"));
-    tabbedPane.addTab("22222232", new JScrollPane(new JTree()));
-    tabbedPane.addTab("3333333333", new JSplitPane());
+    tabs.addTab("00000", new JLabel("aaa aaa aaa aa"));
+    tabs.addTab("111112", new JLabel("bbb bbb bbb bbb bb bb"));
+    tabs.addTab("22222232", new JScrollPane(new JTree()));
+    tabs.addTab("3333333333", new JSplitPane());
 
     JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        tabbedPane.setTabPlacement(((TabPlacements) e.getItem()).getTabPlacement());
+        tabs.setTabPlacement(((TabPlacements) e.getItem()).getTabPlacement());
       }
     });
     Box box = Box.createHorizontalBox();
@@ -42,7 +43,7 @@ public final class MainPanel extends JPanel {
     box.add(comboBox);
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    add(tabbedPane);
+    add(tabs);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }

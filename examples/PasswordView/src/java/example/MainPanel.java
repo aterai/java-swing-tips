@@ -86,7 +86,8 @@ class IconPasswordFieldUI extends BasicPasswordFieldUI {
 
     @Override protected int drawEchoCharacter(Graphics g, int x, int y, char c) {
       // Graphics2D g2 = (Graphics2D) g.create();
-      // g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      // g2.setRenderingHint(
+      //     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       // FontMetrics fm = g2.getFontMetrics();
       // int r = fm.charWidth(c) - 4;
       // // g2.setPaint(Color.GRAY);

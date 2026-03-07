@@ -149,7 +149,8 @@ class RoundedCornerListCellRenderer<E> implements ListCellRenderer<E> {
 //   @Override protected void paintComponent(Graphics g) {
 //     if (getIcon() != null) {
 //       Graphics2D g2 = (Graphics2D) g.create();
-//       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//       g2.setRenderingHint(
+//           RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //       g2.setPaint(getBackground());
 //       Rectangle r = SwingUtilities.calculateInnerArea(this, null);
 //       g2.fill(new RoundRectangle2D.Float(r.x, r.y, r.width, r.height, 10f, 10f));

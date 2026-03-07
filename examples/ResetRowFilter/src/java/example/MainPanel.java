@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JCheckBox check1 = new JCheckBox("Custom Sorting");
+    JCheckBox check = new JCheckBox("Custom Sorting");
     JTable table = new JTable(makeModel());
     table.setFillsViewportHeight(true);
     // XXX: sorter.setSortsOnUpdates(true);
@@ -26,11 +26,11 @@ public final class MainPanel extends JPanel {
       @Override public void toggleSortOrder(int column) {
         super.toggleSortOrder(column);
         TableModel m = getModel();
-        if (check1.isSelected() && m instanceof DefaultTableModel) {
+        if (check.isSelected() && m instanceof DefaultTableModel) {
           ((DefaultTableModel) m).fireTableDataChanged();
           sort(); // allRowsChanged();
         }
-        // if (check1.isSelected()) {
+        // if (check.isSelected()) {
         //   RowFilter<? super TableModel, ? super Integer> f = getRowFilter();
         //   setRowFilter(null);
         //   super.toggleSortOrder(column);
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     sorter.setSortKeys(Collections.singletonList(sortKey));
 
     Box box = Box.createHorizontalBox();
-    box.add(check1);
+    box.add(check);
     box.add(Box.createHorizontalStrut(5));
     box.add(makeCheck2(table, sorter));
     add(box, BorderLayout.NORTH);
@@ -63,9 +63,12 @@ public final class MainPanel extends JPanel {
     RowFilter<? super TableModel, ? super Integer> defFilter = sorter.getRowFilter();
     // System.out.println(defFilter); // -> null
 
-    JCheckBox check2 = new JCheckBox("viewRowIndex < " + MAXIMUM_ROW_COUNT);
-    check2.addActionListener(e -> sorter.setRowFilter(check2.isSelected() ? filter : defFilter));
-    return check2;
+    JCheckBox check = new JCheckBox("viewRowIndex < " + MAXIMUM_ROW_COUNT);
+    check.addActionListener(e -> {
+      JCheckBox cb = (JCheckBox) e.getSource();
+      sorter.setRowFilter(cb.isSelected() ? filter : defFilter);
+    });
+    return check;
   }
 
   private static DefaultTableModel makeModel() {
