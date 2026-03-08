@@ -91,7 +91,8 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     this.hasFocus = hasFocus;
     this.selected = selected;
-    return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, false);
+    return super.getTreeCellRendererComponent(
+        tree, value, selected, expanded, leaf, row, false);
   }
 
   @Override public void paint(Graphics g) {

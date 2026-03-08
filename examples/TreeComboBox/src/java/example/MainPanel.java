@@ -138,7 +138,8 @@ class TreeComboBox<E extends TreeNode> extends JComboBox<E> {
     super.updateUI();
     ListCellRenderer<? super E> r = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = r.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component c = r.getListCellRendererComponent(
+          list, value, index, isSelected, cellHasFocus);
       if (c instanceof JComponent) {
         updateColor(value, c);
         ((JComponent) c).setBorder(getIndentBorder(value, index));

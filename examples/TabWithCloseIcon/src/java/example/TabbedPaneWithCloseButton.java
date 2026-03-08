@@ -62,15 +62,15 @@ class CloseButtonTabbedPaneUI extends BasicTabbedPaneUI {
         closeButtons.add(createTabCloseButton(tabPane, closeButtons.size()));
       }
       Rectangle r = new Rectangle();
-      int tabPlacement = tabPane.getTabPlacement();
+      int tp = tabPane.getTabPlacement();
       int i;
       for (i = 0; i < tabPane.getTabCount(); i++) {
         getTabBounds(i, r);
         JButton closeButton = closeButtons.get(i);
         Dimension d = closeButton.getPreferredSize();
-        boolean isSelected = i == tabPane.getSelectedIndex();
-        int x = getTabLabelShiftX(tabPlacement, i, isSelected) + r.x + r.width - d.width - 2;
-        int y = getTabLabelShiftY(tabPlacement, i, isSelected) + r.y + (r.height - d.height) / 2;
+        boolean selected = i == tabPane.getSelectedIndex();
+        int x = getTabLabelShiftX(tp, i, selected) + r.x + r.width - d.width - 2;
+        int y = getTabLabelShiftY(tp, i, selected) + r.y + (r.height - d.height) / 2;
         closeButton.setBounds(x, y, d.width, d.height);
         tabPane.add(closeButton);
       }

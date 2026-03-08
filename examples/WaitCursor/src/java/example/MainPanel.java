@@ -105,7 +105,8 @@ class LockingGlassPane extends JPanel {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Optional.ofNullable(getRootPane()).ifPresent(rootPane -> rootPane.getLayeredPane().print(g));
+    Optional.ofNullable(getRootPane())
+        .ifPresent(rootPane -> rootPane.getLayeredPane().print(g));
     // JRootPane rootPane = getRootPane();
     // if (Objects.nonNull(rootPane)) {
     //   // http://weblogs.java.net/blog/alexfromsun/archive/2008/01/disabling_swing.html

@@ -359,7 +359,7 @@ class TextAreaHandler extends StreamHandler {
 //         displayPane.setCaretPosition(displayPane.getDocument().getLength());
 //       }
 //     } catch (IOException ex) {
-//       // JOptionPane.showMessageDialog(null, "Error redirecting output : " + ex.getMessage());
+//       // JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
 //     }
 //   }).start();
 // } catch (IOException ex) {}

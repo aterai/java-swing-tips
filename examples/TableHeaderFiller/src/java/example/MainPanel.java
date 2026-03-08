@@ -17,18 +17,14 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table1 = makeTable();
-    JTable table2 = makeTable();
-
     JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setTopComponent(new JScrollPane(table1));
-    sp.setBottomComponent(new JLayer<>(new JScrollPane(table2), new TableHeaderFillerLayerUI()));
+    sp.setTopComponent(new JScrollPane(makeTable()));
+    JScrollPane scroll = new JScrollPane(makeTable());
+    sp.setBottomComponent(new JLayer<>(scroll, new TableHeaderFillerLayerUI()));
     sp.setResizeWeight(.5);
-
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-
     add(sp);
     setPreferredSize(new Dimension(320, 240));
   }

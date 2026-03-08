@@ -24,7 +24,8 @@ public final class MainPanel extends JPanel {
     // JMenu menu = LookAndFeelUtils.createLookAndFeelMenu();
     // JPopupMenu popup = menu.getPopupMenu();
     // popup.setLayout(new GridLayout(0, 2, 8, 0));
-    // Border b = BorderFactory.createCompoundBorder(popup.getBorder(), new ColumnRulesBorder());
+    // Border b = BorderFactory.createCompoundBorder(
+    //     popup.getBorder(), new ColumnRulesBorder());
     // popup.setBorder(b);
 
     JMenuBar mb = new JMenuBar();

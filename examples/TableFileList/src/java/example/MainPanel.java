@@ -348,7 +348,8 @@ class FileListTable extends JTable {
   //   TableModel model = getModel();
   //   List<Integer> list = new ArrayList<>(model.getRowCount());
   //   for (int i = 0; i < getRowCount(); i++) {
-  //     if (path.intersects(getCellRect2(FileListTable.this, i, convertColumnIndexToView(0)))) {
+  //     if (path.intersects(
+  //          getCellRect2(FileListTable.this, i, convertColumnIndexToView(0)))) {
   //       list.add(i);
   //     }
   //   }

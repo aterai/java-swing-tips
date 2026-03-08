@@ -129,7 +129,8 @@ class InputVerifierSelectionModel extends DefaultSingleSelectionModel {
   }
 }
 
-// Validating Text and Filtering Documents and Accessibility and the Java Access Bridge Tech Tips
+// Validating Text and Filtering Documents and Accessibility
+// and the Java Access Bridge Tech Tips
 // https://web.archive.org/web/20050523001117/http://java.sun.com/developer/JDCTechTips/2005/tt0518.html
 // Validating with Input Verifiers
 class IntegerInputVerifier extends InputVerifier {
