@@ -60,7 +60,8 @@ public final class MainPanel extends JPanel {
     // }
     slider.getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      m.setValue(Math.max(MINI, Math.min(m.getValue(), MAXI)));
+      m.setValue(Math.min(Math.max(m.getValue(), MINI), MAXI));
+      // Java 21: m.setValue(Math.clamp(m.getValue(), MINI, MAXI));
     });
     return slider;
   }

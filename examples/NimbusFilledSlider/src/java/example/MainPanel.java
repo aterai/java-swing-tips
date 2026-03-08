@@ -92,6 +92,7 @@ class SliderTrackPainter implements Painter<JSlider> {
     int trackLeft = trackRect.x;
     int trackRight = trackRect.x + trackRect.width - 1;
     int pos = trackLeft + Math.round(pixelsPerValue * (value - min));
-    return Math.max(trackLeft, Math.min(trackRight, pos));
+    return Math.min(Math.max(pos, trackLeft), trackRight);
+    // Java 21: return Math.clamp(pos, trackLeft, trackRight);
   }
 }

@@ -86,7 +86,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   }
 
   public void setTabAreaWidth(int width) {
-    int w = Math.max(MIN_WIDTH, Math.min(width, getWidth() - MIN_WIDTH));
+    int w = Math.min(Math.max(width, MIN_WIDTH), getWidth() - MIN_WIDTH);
+    // Java 21: int w = Math.clamp(width, MIN_WIDTH, getWidth() - MIN_WIDTH);
     if (tabAreaWidth != w) {
       tabAreaWidth = w;
       revalidate(); // doLayout();

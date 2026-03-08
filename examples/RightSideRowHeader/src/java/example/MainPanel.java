@@ -403,7 +403,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       boolean wantsVsb, Rectangle avr, Rectangle vsbR, Insets vpbIns, boolean ltr) {
     int oldWidth = vsbR.width;
     if (wantsVsb) {
-      int vsbWidth = Math.max(0, Math.min(vsb.getPreferredSize().width, avr.width));
+      int vsbWidth = Math.min(Math.max(vsb.getPreferredSize().width, 0), avr.width);
+      // Java 21: = Math.clamp(vsb.getPreferredSize().width, 0, avr.width);
       avr.width -= vsbWidth;
       vsbR.width = vsbWidth;
 
@@ -422,7 +423,8 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
       boolean wantsHsb, Rectangle available, Rectangle hsbR, Insets vpbInsets) {
     int oldHeight = hsbR.height;
     if (wantsHsb) {
-      int hsbHeight = Math.max(0, Math.min(available.height, hsb.getPreferredSize().height));
+      int hsbHeight = Math.min(Math.max(hsb.getPreferredSize().height, 0), available.height);
+      // Java 21: = Math.clamp(hsb.getPreferredSize().height, 0, available.height);
       available.height -= hsbHeight;
       hsbR.y = available.y + available.height + vpbInsets.bottom;
       hsbR.height = hsbHeight;

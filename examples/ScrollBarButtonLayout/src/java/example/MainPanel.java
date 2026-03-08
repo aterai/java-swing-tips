@@ -162,7 +162,8 @@ class WindowsCustomScrollBarUI extends WindowsScrollBarUI {
       // if (thumbY < (decrButtonY + decrButtonH + decrGap)) {
       //   thumbY = decrButtonY + decrButtonH + decrGap + 1;
       // }
-      thumbY = Math.max(0, Math.min(thumbY, decrButtonY - decrGap - thumbH));
+      thumbY = Math.min(Math.max(thumbY, 0), decrButtonY - decrGap - thumbH);
+      // Java 21: thumbY = Math.clamp(thumbY, 0, decrButtonY - decrGap - thumbH);
       // setThumbBounds(itemX, thumbY, itemW, thumbH);
       setThumbBounds(r.x, thumbY, r.width, thumbH);
     }
@@ -204,7 +205,8 @@ class MetalCustomScrollBarUI extends MetalScrollBarUI {
     if (thumbH >= trackH) {
       setThumbBounds(0, 0, 0, 0);
     } else {
-      thumbY = Math.max(0, Math.min(thumbY, decrButtonY - decrGap - thumbH));
+      thumbY = Math.min(Math.max(thumbY, 0), decrButtonY - decrGap - thumbH);
+      // Java 21: thumbY = Math.clamp(thumbY, 0, decrButtonY - decrGap - thumbH);
       setThumbBounds(r.x, thumbY, r.width, thumbH);
     }
   }

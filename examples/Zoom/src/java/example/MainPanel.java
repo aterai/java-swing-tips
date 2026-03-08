@@ -107,7 +107,8 @@ class ZoomImage extends JPanel {
   }
 
   public void changeScale(double dv) {
-    scale = Math.max(.05, Math.min(5d, scale - dv * .05));
+    scale = Math.min(Math.min(scale - dv * .05, .05), 5d);
+    // Java 21: scale = Math.clamp(scale - dv * .05, .05, 5d);
     repaint();
     // double v = scale - dv * .1;
     // if (v - 1d > -1.0e-2) {

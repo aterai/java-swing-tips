@@ -20,6 +20,7 @@ public final class MainPanel extends JPanel {
     JButton button = new JButton("open JColorChooser");
     button.addActionListener(e -> {
       Color bgc = list1.get(0).getBackground();
+      // Java 21: Color bgc = list1.getFirst().getBackground();
       Color color = JColorChooser.showDialog(getRootPane(), "title", bgc);
       if (color != null) {
         makePalette1(list1, color);
@@ -224,7 +225,8 @@ final class ColorUtils {
 
   public static int to255(double v) {
     int vv = (int) Math.round(255d * v);
-    return Math.max(0, Math.min(vv, 255));
+    return Math.min(Math.max(vv, 0), 255);
+    // Java 21: return Math.clamp(vv, 0, 255);
   }
 
   public static double hueToRgb(double p, double q, double t) {
