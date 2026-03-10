@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
         }
       }
     });
-    // KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
+    // keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
     textPane.getInputMap().put(KeyStroke.getKeyStroke("shift TAB"), "popupInsert");
 
     add(new JScrollPane(textPane));

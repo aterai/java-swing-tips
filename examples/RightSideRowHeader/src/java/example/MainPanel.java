@@ -124,7 +124,8 @@ public final class MainPanel extends JPanel {
   //   });
   //
   //   JScrollPane rightScroll = new JScrollPane(rightTable);
-  //   rightScroll.getVerticalScrollBar().setModel(leftScroll.getVerticalScrollBar().getModel());
+  //   rightScroll.getVerticalScrollBar().setModel(
+  //       leftScroll.getVerticalScrollBar().getModel());
   //
   //   JSplitPane split = new JSplitPane();
   //   split.setResizeWeight(.7);

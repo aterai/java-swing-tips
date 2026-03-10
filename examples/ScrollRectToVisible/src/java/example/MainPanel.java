@@ -88,8 +88,8 @@ public final class MainPanel extends JPanel {
     removeHierarchyListener(handler);
     super.updateUI();
     handler = e -> {
-      boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (displayability && Objects.nonNull(timer) && !e.getComponent().isDisplayable()) {
+      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (b && Objects.nonNull(timer) && !e.getComponent().isDisplayable()) {
         timer.stop();
       }
     };

@@ -112,10 +112,12 @@ class QuadrantRotateIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return rotate == QuadrantRotate.HORIZONTAL_FLIP ? icon.getIconWidth() : icon.getIconHeight();
+    return rotate == QuadrantRotate.HORIZONTAL_FLIP
+        ? icon.getIconWidth() : icon.getIconHeight();
   }
 
   @Override public int getIconHeight() {
-    return rotate == QuadrantRotate.HORIZONTAL_FLIP ? icon.getIconHeight() : icon.getIconWidth();
+    return rotate == QuadrantRotate.HORIZONTAL_FLIP
+        ? icon.getIconHeight() : icon.getIconWidth();
   }
 }

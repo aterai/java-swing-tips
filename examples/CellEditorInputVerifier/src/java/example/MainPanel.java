@@ -75,7 +75,12 @@ public final class MainPanel extends JPanel {
   }
 
   private static TableModel makeModel() {
-    String[] columnNames = {"Default", "DocumentFilter", "InputVerifier", "JFormattedTextField"};
+    String[] columnNames = {
+      "Default",
+      "DocumentFilter",
+      "InputVerifier",
+      "JFormattedTextField",
+    };
     return new DefaultTableModel(columnNames, 10) {
       @Override public Class<?> getColumnClass(int column) {
         return Integer.class;

@@ -304,7 +304,8 @@ class EditableList<E extends ListItem> extends JList<E> {
       int idx = getSelectedIndex();
       editingIndex = idx;
       Rectangle rect = getCellBounds(idx, idx);
-      // Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
+      // Point p = SwingUtilities.convertPoint(
+      //     EditableList.this, rect.getLocation(), glassPane);
       // rect.setLocation(p);
       editorWidth = rect.width;
       editor.setText(getSelectedValue().getTitle());

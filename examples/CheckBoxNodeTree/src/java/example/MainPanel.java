@@ -395,7 +395,8 @@ class CheckBoxNode {
 //     // //     this, ui, "Tree.rendererFillBackground", true);
 //     // Insets margins = DefaultLookup.getInsets(this, ui, "Tree.rendererMargins");
 //     // if (Objects.nonNull(margins)) {
-//     //   setBorder(new EmptyBorder(margins.top, margins.left, margins.bottom, margins.right));
+//     //   setBorder(new EmptyBorder(
+//     //       margins.top, margins.left, margins.bottom, margins.right));
 //     //   // if (Objects.nonNull(leafRenderer)) {
 //     //   //   leafRenderer.setBorder(getBorder());
 //     //   // }

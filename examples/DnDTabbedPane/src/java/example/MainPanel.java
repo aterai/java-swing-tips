@@ -178,7 +178,8 @@ class DnDTabbedPane extends JTabbedPane {
     // Optional.ofNullable(getActionMap())
     //   .map(am -> am.get(actionKey))
     //   .filter(Action::isEnabled)
-    //   .ifPresent(a -> a.actionPerformed(new ActionEvent(this, ACTION_PERFORMED, null, 0, 0)));
+    //   .ifPresent(a -> a.actionPerformed(
+    //       new ActionEvent(this, ACTION_PERFORMED, null, 0, 0)));
     // // ActionMap map = getActionMap();
     // // if (Objects.nonNull(map)) {
     // //   Action action = map.get(actionKey);
