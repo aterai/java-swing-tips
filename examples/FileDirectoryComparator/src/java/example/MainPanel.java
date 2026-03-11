@@ -263,8 +263,10 @@ class FileGroupComparator extends DefaultFileComparator {
     int dir = 1;
     List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
     if (!keys.isEmpty()) {
-      RowSorter.SortKey sortKey = keys.get(0);
-      if (sortKey.getColumn() == getColumn() && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+      RowSorter.SortKey sortKey = keys.get(0); // Java 21: = keys.getFirst();
+      boolean b1 = sortKey.getColumn() == getColumn();
+      boolean b2 = sortKey.getSortOrder() == SortOrder.DESCENDING;
+      if (b1 && b2) {
         dir = -1;
       }
     }
