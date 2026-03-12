@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     int maskRange = 2;
     HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.GRAY);
     JTextArea textArea = new JTextArea();
-    textArea.setText("Non editable lines\naaa bbb ccc ddd eee\n1234567890\n1234567890987654321");
+    textArea.setText("Non editable lines\naaa bbb ccc ddd eee\n1234567890\n1234567890");
     DocumentFilter filter = new NonEditableLineDocumentFilter(maskRange);
     Document doc = textArea.getDocument();
     if (doc instanceof AbstractDocument) {
@@ -35,7 +35,9 @@ public final class MainPanel extends JPanel {
     try {
       for (int i = 0; i < maskRange; i++) { // root.getElementCount(); i++) {
         Element elm = root.getElement(i);
-        highlighter.addHighlight(elm.getStartOffset(), elm.getEndOffset() - 1, highlightPainter);
+        int p0 = elm.getStartOffset();
+        int p1 = elm.getEndOffset() - 1;
+        highlighter.addHighlight(p0, p1, highlightPainter);
       }
     } catch (BadLocationException ex) {
       // should never happen

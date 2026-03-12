@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
     tabs.addTab("title 1", new ColorIcon(Color.GREEN), new JButton("button"));
     tabs.addTab("title 2", new ColorIcon(Color.BLUE), new JLabel("label"));
     tabs.addTab("title 3", new JPanel());
-    tabs.setTabComponentAt(3, new JLabel("lbl", new ColorIcon(Color.CYAN), SwingConstants.LEFT));
+    JLabel lbl = new JLabel("lbl", new ColorIcon(Color.CYAN), SwingConstants.LEFT);
+    tabs.setTabComponentAt(3, lbl);
     return tabs;
   }
 
