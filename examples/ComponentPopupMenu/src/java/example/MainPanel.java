@@ -95,7 +95,8 @@ final class TextComponentPopupMenu extends JPopupMenu {
     deleteItem = add("delete");
     deleteItem.addActionListener(e -> getTextComponent().replaceSelection(null));
     addSeparator();
-    add(DefaultEditorKit.selectAllAction).addActionListener(e -> getTextComponent().selectAll());
+    add(DefaultEditorKit.selectAllAction)
+        .addActionListener(e -> getTextComponent().selectAll());
     // add(DefaultEditorKit.selectAllAction).addActionListener(e -> {
     //   JTextComponent tc = (JTextComponent) getInvoker();
     //   tc.getActionMap().get(DefaultEditorKit.selectAllAction).actionPerformed(e);

@@ -64,7 +64,8 @@ public final class MainPanel extends JPanel {
     //   }
     // });
 
-    // KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+    // KeyboardFocusManager focusManager =
+    //     KeyboardFocusManager.getCurrentKeyboardFocusManager();
     // focusManager.addPropertyChangeListener(new PropertyChangeListener() {
     //   @Override public void propertyChange(PropertyChangeEvent e) {
     //     String prop = e.getPropertyName();

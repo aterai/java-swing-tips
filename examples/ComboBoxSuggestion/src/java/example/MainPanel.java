@@ -212,10 +212,10 @@ class ComboKeyHandler extends KeyAdapter {
     }
   }
 
-  private static <E> void setSuggestionModel(JComboBox<E> combo, ComboBoxModel<E> mdl, E value) {
-    combo.setModel(mdl);
-    combo.setSelectedIndex(-1);
-    ((JTextField) combo.getEditor().getEditorComponent()).setText(Objects.toString(value));
+  private static <E> void setSuggestionModel(JComboBox<E> cmb, ComboBoxModel<E> mdl, E value) {
+    cmb.setModel(mdl);
+    cmb.setSelectedIndex(-1);
+    ((JTextField) cmb.getEditor().getEditorComponent()).setText(Objects.toString(value));
   }
 
   private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {

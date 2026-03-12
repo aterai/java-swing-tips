@@ -170,12 +170,13 @@ class DnDTabbedPane extends JTabbedPane {
 
   public void autoScrollTest(Point glassPt) {
     Rectangle r = getTabAreaBounds();
+    int size = RWH + BUTTON_SIZE;
     if (isTopBottomTabPlacement(getTabPlacement())) {
       rectBackward.setBounds(r.x, r.y, RWH, r.height);
-      rectForward.setBounds(r.x + r.width - RWH - BUTTON_SIZE, r.y, RWH + BUTTON_SIZE, r.height);
+      rectForward.setBounds(r.x + r.width - size, r.y, size, r.height);
     } else {
       rectBackward.setBounds(r.x, r.y, r.width, RWH);
-      rectForward.setBounds(r.x, r.y + r.height - RWH - BUTTON_SIZE, r.width, RWH + BUTTON_SIZE);
+      rectForward.setBounds(r.x, r.y + r.height - size, r.width, size);
     }
     rectBackward = SwingUtilities.convertRectangle(getParent(), rectBackward, glassPane);
     rectForward = SwingUtilities.convertRectangle(getParent(), rectForward, glassPane);
