@@ -115,14 +115,13 @@ class AlternateRowColorComboBox<E> extends JComboBox<E> {
     removeItemListener(itemColorListener);
     super.updateUI();
     ListCellRenderer<? super E> r = getRenderer();
-    setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = r.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
-      if (index >= 0 && c instanceof JComponent) {
+    setRenderer((lst, v, i, selected, focus) -> {
+      Component c = r.getListCellRendererComponent(lst, v, i, selected, focus);
+      if (i >= 0 && c instanceof JComponent) {
         ((JComponent) c).setOpaque(true);
       }
-      if (!isSelected) {
-        c.setBackground(getAlternateRowColor(index));
+      if (!selected) {
+        c.setBackground(getAlternateRowColor(i));
       }
       return c;
     });
