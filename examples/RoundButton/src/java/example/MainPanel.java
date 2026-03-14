@@ -81,7 +81,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-
 @SuppressWarnings("VisibilityModifier")
 class RoundedCornerButton extends JButton {
   protected static final int FOCUS_STROKE = 2;
