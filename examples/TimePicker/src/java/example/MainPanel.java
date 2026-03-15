@@ -11,6 +11,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.RoundRectangle2D;
 import java.text.ParseException;
 import java.time.LocalTime;
@@ -150,22 +152,22 @@ class RoundPanel extends JPanel {
 }
 
 class RoundFormattedTextField extends JFormattedTextField {
-  private transient FocusListener listener;
+  private transient Handler handler;
+  private final int step;
+  private final int min;
+  private final int max;
 
   protected RoundFormattedTextField(int value, int step, int min, int max) {
     super(String.format("%02d", value));
+    this.step = step;
+    this.min = min;
+    this.max = max;
     // setText(String.format("%02d", value));
-    addMouseWheelListener(e -> {
-      int delta = e.getWheelRotation() < 0 ? 1 : -1;
-      Component c = e.getComponent();
-      if (c instanceof JTextComponent) {
-        AutoRepeatHandler.adjust((JTextComponent) c, delta * step, min, max);
-      }
-    });
   }
 
   @Override public void updateUI() {
-    removeFocusListener(listener);
+    removeFocusListener(handler);
+    removeMouseWheelListener(handler);
     super.updateUI();
     // setFont(getFont().deriveFont(42f));
     // setHorizontalAlignment(CENTER);
@@ -183,17 +185,9 @@ class RoundFormattedTextField extends JFormattedTextField {
       }
     });
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    listener = new FocusListener() {
-      @Override public void focusGained(FocusEvent e) {
-        Component c = e.getComponent();
-        c.setForeground(UIManager.getColor("TextField.foreground"));
-      }
-
-      @Override public void focusLost(FocusEvent e) {
-        e.getComponent().setForeground(Color.DARK_GRAY);
-      }
-    };
-    addFocusListener(listener);
+    handler = new Handler();
+    addFocusListener(handler);
+    addMouseWheelListener(handler);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -208,6 +202,25 @@ class RoundFormattedTextField extends JFormattedTextField {
       g2.dispose();
     }
     super.paintComponent(g);
+  }
+
+  private class Handler implements FocusListener, MouseWheelListener {
+    @Override public void focusGained(FocusEvent e) {
+      Component c = e.getComponent();
+      c.setForeground(UIManager.getColor("TextField.foreground"));
+    }
+
+    @Override public void focusLost(FocusEvent e) {
+      e.getComponent().setForeground(Color.DARK_GRAY);
+    }
+
+    @Override public void mouseWheelMoved(MouseWheelEvent e) {
+      int delta = e.getWheelRotation() < 0 ? 1 : -1;
+      Component c = e.getComponent();
+      if (c instanceof JTextComponent) {
+        AutoRepeatHandler.adjust((JTextComponent) c, delta * step, min, max);
+      }
+    }
   }
 }
 
