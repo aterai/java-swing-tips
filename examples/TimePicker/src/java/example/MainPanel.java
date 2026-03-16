@@ -204,7 +204,7 @@ class RoundFormattedTextField extends JFormattedTextField {
     super.paintComponent(g);
   }
 
-  private class Handler implements FocusListener, MouseWheelListener {
+  private final class Handler implements FocusListener, MouseWheelListener {
     @Override public void focusGained(FocusEvent e) {
       Component c = e.getComponent();
       c.setForeground(UIManager.getColor("TextField.foreground"));
