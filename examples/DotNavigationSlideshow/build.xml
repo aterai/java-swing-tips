@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Java Swing Tips" default="compile" basedir=".">
+  <property environment="env" />
+  <property name="config.dir" value="config" />
+  <import file="${basedir}/${config.dir}/properties.xml" />
+  <import file="${basedir}/${config.dir}/jnlp.xml" />
+
+  <condition property="have.resources">
+    <available file="${res.dir}" />
+  </condition>
+
+  <!-- =================================================================== -->
+  <!-- classpath to use within project                                     -->
+  <!-- =================================================================== -->
+  <condition property="have.library">
+    <available file="${lib.dir}" />
+  </condition>
+  <path id="project.class.path">
+    <pathelement location="${build.dest}" />
+    <pathelement location="${res.dir}" />
+    <pathelement location="${java.home}/lib/javaws.jar" />
+    <pathelement path="${java.class.path}" />
+  </path>
+  <target name="init" if="have.library">
+    <path id="project.class.path">
+      <pathelement location="${build.dest}" />
+      <pathelement location="${res.dir}" />
+      <pathelement location="${java.home}/lib/javaws.jar" />
+      <fileset dir="${lib.dir}" includes="*.jar" />
+      <pathelement path="${java.class.path}" />
+    </path>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage">
+    <echo message="" />
+    <echo message="" />
+    <echo message="Java Swing Tips Build file" />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message=" available targets are:" />
+    <echo message="" />
+    <echo message="   compile  - compiles the source code (default)" />
+    <echo message="   run      - execute the example" />
+    <echo message="   package  - generates the example.jar file" />
+    <echo message="   clean    - cleans up the directory" />
+    <echo message="" />
+    <echo message=" See the comments inside the build.xml file for more details." />
+    <echo message="-------------------------------------------------------------" />
+    <echo message="" />
+    <echo message="" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="init">
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${build.dest}" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the resource                                               -->
+  <!-- =================================================================== -->
+  <target name="prepare-resource" depends="prepare" if="have.resources">
+    <copy todir="${build.dest}">
+      <fileset dir="${res.dir}" excludes="**/*.properties.*, **/*.bak" />
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the source code                                            -->
+  <!-- =================================================================== -->
+  <target name="prepare-src" depends="prepare">
+    <mkdir dir="${build.src}" />
+    <filter token="title"    value="${jnlp.title}" />
+    <filter token="homepage" value="${jnlp.homepage}" />
+    <copy todir="${build.src}" filtering="yes"
+          encoding="${compile.encoding}"
+          outputencoding="${compile.encoding}">
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile" depends="prepare-src, prepare-resource">
+    <javac srcdir="${src.dir}"
+           includes="**/*.java"
+           destdir="${build.dest}"
+           encoding="${compile.encoding}"
+           debug="${compile.debug}"
+           optimize="${compile.optimize}"
+           deprecation="${compile.deprecation}"
+           includeAntRuntime="no"
+           fork="true"
+           classpathref="project.class.path">
+      <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
+      <compilerarg value="-J-Duser.language=${user.language}" />
+      <compilerarg value="-Xlint:unchecked" />
+    </javac>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Execute the example                                                 -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile">
+    <java classname="${main.class}" classpathref="project.class.path" fork="true">
+      <jvmarg value="-Dfile.encoding=${compile.encoding}" />
+      <jvmarg value="-Duser.language=${user.language}" />
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the class package                                           -->
+  <!-- =================================================================== -->
+  <target name="package" depends="compile">
+    <echo message="Creating the jar file ${build.dir}/example.jar" />
+    <tstamp>
+      <format property="ts" pattern="yyyyMMdd-HHmmss-z" />
+    </tstamp>
+    <jar jarfile="${build.dir}/example.jar" basedir="${build.dest}">
+      <manifest>
+        <attribute name="Main-Class" value="${main.class}" />
+        <attribute name="Class-Path" value="${runtime.classpath}" />
+        <attribute name="Build-Id" value="${ts} [${os.name} ${os.version} ${os.arch}]" />
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean">
+    <delete dir="${build.dir}" />
+  </target>
+</project>
