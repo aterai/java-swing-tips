@@ -160,9 +160,9 @@ class FileDropListener extends DropTargetAdapter {
 
 // class FileTransferHandler extends TransferHandler {
 //   @Override public boolean importData(TransferSupport support) {
-//     Transferable transferable = support.getTransferable();
+//     Transferable t = support.getTransferable();
 //     try {
-//       for (Object o : (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor)) {
+//       for (Object o : (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor)) {
 //         if (o instanceof File) {
 //           File file = (File) o;
 //           System.out.println(file.getAbsolutePath());
