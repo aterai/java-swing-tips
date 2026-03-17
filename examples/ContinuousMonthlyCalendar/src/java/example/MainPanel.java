@@ -253,7 +253,7 @@ class CalendarViewTableModel extends DefaultTableModel {
   }
 
   @Override public int getColumnCount() {
-    return 7; // day
+    return DayOfWeek.values().length; // 7: day
   }
 
   @Override public Object getValueAt(int row, int column) {
