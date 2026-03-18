@@ -178,7 +178,8 @@ final class SwingUtils {
   //     @Override public Stream<Component> apply(Component c) {
   //       if (c instanceof Container) {
   //         Component[] sub = ((Container) c).getComponents();
-  //         return sub.length == 0 ? Stream.of(c) : Arrays.stream(sub).flatMap(cc -> apply(cc));
+  //         return sub.length == 0 ? Stream.of(c)
+  //                                : Arrays.stream(sub).flatMap(cc -> apply(cc));
   //       } else {
   //         return Stream.of(c);
   //       }

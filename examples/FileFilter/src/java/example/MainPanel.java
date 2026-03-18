@@ -33,8 +33,8 @@ public final class MainPanel extends JPanel {
       int retValue = fileChooser.showOpenDialog(getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
         log.append(String.format("%s%n", fileChooser.getSelectedFile()));
-        // File file = fileChooser.getSelectedFile();
-        // ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(file.getAbsolutePath(), 0);
+        // String path = fileChooser.getSelectedFile().getAbsolutePath();
+        // ((DefaultComboBoxModel) combo1.getModel()).insertElementAt(path, 0);
         // combo1.setSelectedIndex(0);
       }
     });
