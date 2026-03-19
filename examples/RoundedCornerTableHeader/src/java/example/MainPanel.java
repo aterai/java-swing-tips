@@ -22,6 +22,7 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private final List<Color> monthThemeColor = Arrays.asList(
@@ -186,8 +187,9 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
       panel.setBackground(l.getBackground());
       currentLocalDate = ((MonthTable) table).getCurrentLocalDate();
       updateWeekColor(d, table, c, selected);
-      LocalDate nextWeekDay = d.plusDays(7);
-      boolean isLastRow = row == table.getModel().getRowCount() - 1;
+      TableModel model = table.getModel();
+      LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days
+      boolean isLastRow = row == model.getRowCount() - 1;
       if (isLastRow && isDiagonallySplitCell(nextWeekDay, currentLocalDate)) {
         JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
         sub.setFont(l.getFont());
@@ -196,13 +198,11 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
         sub.setVerticalAlignment(BOTTOM);
         sub.setHorizontalAlignment(RIGHT);
         updateWeekColor(d, table, sub, selected);
-
         panel.removeAll();
         panel.add(sub, BorderLayout.SOUTH);
         panel.add(c, BorderLayout.NORTH);
         panel.setBorder(l.getBorder());
         l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
         c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
       }
     }

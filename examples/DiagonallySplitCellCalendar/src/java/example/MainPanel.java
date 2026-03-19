@@ -21,6 +21,7 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   @SuppressWarnings("PMD.UseConcurrentHashMap")
@@ -95,9 +96,9 @@ public final class MainPanel extends JPanel {
         l.setVerticalAlignment(TOP);
         l.setHorizontalAlignment(LEFT);
         updateCellWeekColor(d, table, c, c);
-
-        LocalDate nextWeekDay = d.plusDays(7);
-        boolean isLastRow = row == table.getModel().getRowCount() - 1;
+        TableModel model = table.getModel();
+        LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days
+        boolean isLastRow = row == model.getRowCount() - 1;
         if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
           JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
           sub.setFont(l.getFont());

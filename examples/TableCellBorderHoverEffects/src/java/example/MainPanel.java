@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   @SuppressWarnings("PMD.UseConcurrentHashMap")
@@ -185,9 +186,9 @@ public final class MainPanel extends JPanel {
         l.setVerticalAlignment(TOP);
         l.setHorizontalAlignment(CENTER);
         updateCellWeekColor(d, c);
-
-        LocalDate nextWeekDay = d.plusDays(7);
-        boolean isLastRow = row == table.getModel().getRowCount() - 1;
+        TableModel model = table.getModel();
+        LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days
+        boolean isLastRow = row == model.getRowCount() - 1;
         if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
           JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
           sub.setFont(table.getFont());
@@ -195,7 +196,6 @@ public final class MainPanel extends JPanel {
           sub.setOpaque(false);
           sub.setVerticalAlignment(BOTTOM);
           sub.setHorizontalAlignment(RIGHT);
-
           panel.removeAll();
           panel.setOpaque(false);
           panel.setForeground(getDayOfWeekColor(d.getDayOfWeek()));
@@ -204,7 +204,6 @@ public final class MainPanel extends JPanel {
           panel.setBorder(l.getBorder());
           l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
           l.setHorizontalAlignment(LEFT);
-
           updateCellWeekColor(d, sub);
           c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
         }
