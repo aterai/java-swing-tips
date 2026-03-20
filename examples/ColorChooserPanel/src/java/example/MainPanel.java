@@ -20,7 +20,7 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout(10, 10));
-    // var dialog = new JDialog(this, "JColorChooser", Dialog.ModalityType.APPLICATION_MODAL);
+    // var dialog = new JDialog(this, "...", Dialog.ModalityType.APPLICATION_MODAL);
     // JPanel buttonPanel = new JPanel();
     // buttonPanel.add(new JButton("OK"));
     // buttonPanel.add(new JButton("Cancel"));
@@ -29,12 +29,12 @@ public final class MainPanel extends JPanel {
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
 
-    Locale loc = getLocale();
-    JCheckBox swatches = new JCheckBox(UIManager.getString("ColorChooser.swatchesNameText", loc));
-    JCheckBox hsv = new JCheckBox(UIManager.getString("ColorChooser.hsvNameText", loc));
-    JCheckBox hsl = new JCheckBox(UIManager.getString("ColorChooser.hslNameText", loc));
-    JCheckBox rgb = new JCheckBox(UIManager.getString("ColorChooser.rgbNameText", loc));
-    JCheckBox cmyk = new JCheckBox(UIManager.getString("ColorChooser.cmykNameText", loc));
+    Locale l = getLocale();
+    JCheckBox swatches = new JCheckBox(getString("ColorChooser.swatchesNameText", l));
+    JCheckBox hsv = new JCheckBox(getString("ColorChooser.hsvNameText", l));
+    JCheckBox hsl = new JCheckBox(getString("ColorChooser.hslNameText", l));
+    JCheckBox rgb = new JCheckBox(getString("ColorChooser.rgbNameText", l));
+    JCheckBox cmyk = new JCheckBox(getString("ColorChooser.cmykNameText", l));
     List<JCheckBox> list = Arrays.asList(swatches, hsv, hsl, rgb, cmyk);
 
     JButton button = new JButton("open JColorChooser");
@@ -59,6 +59,10 @@ public final class MainPanel extends JPanel {
     add(button, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static String getString(String key, Locale locale) {
+    return UIManager.getString(key, locale);
   }
 
   public static Color openColorChooser(Component p, List<String> names, Color initColor) {

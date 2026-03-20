@@ -20,10 +20,10 @@ public final class MainPanel extends JPanel {
     JTextField field = new JTextField("1, 2, 5");
 
     DisableItemComboBox<String> combo = new DisableItemComboBox<>(makeModel());
-    combo.setDisableIndexSet(getDisableIndexFromTextField(field));
+    combo.setDisableIndexSet(getDisableIndex(field));
 
     JButton button = new JButton("init");
-    button.addActionListener(e -> combo.setDisableIndexSet(getDisableIndexFromTextField(field)));
+    button.addActionListener(e -> combo.setDisableIndexSet(getDisableIndex(field)));
 
     Box box = Box.createHorizontalBox();
     box.add(new JLabel("Disabled Item Index:"));
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static Set<Integer> getDisableIndexFromTextField(JTextField field) {
+  private static Set<Integer> getDisableIndex(JTextField field) {
     return Stream.of(getPara(field))
         .map(String::trim)
         .filter(s -> !s.isEmpty())

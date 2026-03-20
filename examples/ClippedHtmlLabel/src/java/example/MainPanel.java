@@ -84,6 +84,7 @@ public final class MainPanel extends JPanel {
   private static JTable makeTable(TableModel model) {
     JTable table = new JTable(model) {
       private final Color evenColor = new Color(0xFA_FA_FA);
+
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         c.setForeground(getForeground());
@@ -162,10 +163,11 @@ class UriRenderer extends DefaultTableCellRenderer implements MouseListener, Mou
       TableColumn col = cm.getColumn(column);
       JLabel l = (JLabel) c;
       Insets i = l.getInsets();
-      CELL_RECT.x = i.left;
-      CELL_RECT.y = i.top;
-      CELL_RECT.width = col.getWidth() - cm.getColumnMargin() - i.right - CELL_RECT.x;
-      CELL_RECT.height = table.getRowHeight(row) - table.getRowMargin() - i.bottom - CELL_RECT.y;
+      int colMargin = cm.getColumnMargin();
+      int rowMargin = table.getRowMargin();
+      int cellWidth = col.getWidth() - colMargin - i.right - CELL_RECT.x;
+      int cellHeight = table.getRowHeight(row) - rowMargin - i.bottom - CELL_RECT.y;
+      CELL_RECT.setBounds(i.left, i.top, cellWidth, cellHeight);
       ICON_RECT.setBounds(0, 0, 0, 0);
       TEXT_RECT.setBounds(0, 0, 0, 0);
       String str = SwingUtilities.layoutCompoundLabel(

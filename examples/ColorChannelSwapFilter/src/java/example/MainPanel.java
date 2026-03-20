@@ -19,17 +19,18 @@ import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
+  private static final Color PROGRESS_FGC = new Color(0x64_FF_00_00, true);
   private transient SwingWorker<String, Void> worker;
 
   private MainPanel() {
     super(new BorderLayout());
     BoundedRangeModel model = new DefaultBoundedRangeModel();
 
-    JProgressBar progress1 = new JProgressBar(model);
-    progress1.setStringPainted(true);
+    JProgressBar pg1 = new JProgressBar(model);
+    pg1.setStringPainted(true);
 
-    JProgressBar progress2 = new JProgressBar(model);
-    progress2.setStringPainted(true);
+    JProgressBar pg2 = new JProgressBar(model);
+    pg2.setStringPainted(true);
 
     JProgressBar progress3 = new JProgressBar(model);
     progress3.setOpaque(false);
@@ -39,13 +40,15 @@ public final class MainPanel extends JPanel {
 
     BlockedColorLayerUI<Component> layer = new BlockedColorLayerUI<>();
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("setStringPainted(true)", progress1, progress2));
-    p.add(makeTitledPanel("setStringPainted(false)", progress3, new JLayer<>(progress4, layer)));
+    String title1 = "setStringPainted(true)";
+    p.add(makeTitledPanel(title1, pg1, pg2));
+    String title2 = "setStringPainted(false)";
+    p.add(makeTitledPanel(title2, progress3, new JLayer<>(progress4, layer)));
 
     JCheckBox check = new JCheckBox("Turn the progress bar red");
     check.addActionListener(e -> {
       boolean b = ((JCheckBox) e.getSource()).isSelected();
-      progress2.setForeground(b ? new Color(0x64_FF_00_00, true) : progress1.getForeground());
+      pg2.setForeground(b ? PROGRESS_FGC : pg1.getForeground());
       layer.setBlocking(b);
       p.repaint();
     });
@@ -56,7 +59,7 @@ public final class MainPanel extends JPanel {
         worker.cancel(true);
       }
       worker = new BackgroundTask();
-      worker.addPropertyChangeListener(new ProgressListener(progress1));
+      worker.addPropertyChangeListener(new ProgressListener(pg1));
       worker.execute();
     });
 
