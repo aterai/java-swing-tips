@@ -32,18 +32,16 @@ public final class MainPanel extends JPanel {
     JProgressBar pg2 = new JProgressBar(model);
     pg2.setStringPainted(true);
 
-    JProgressBar progress3 = new JProgressBar(model);
-    progress3.setOpaque(false);
+    JProgressBar pg3 = new JProgressBar(model);
+    pg3.setOpaque(false);
 
-    JProgressBar progress4 = new JProgressBar(model);
-    progress4.setOpaque(true); // for NimbusLookAndFeel
+    JProgressBar pg4 = new JProgressBar(model);
+    pg4.setOpaque(true); // for NimbusLookAndFeel
 
     BlockedColorLayerUI<Component> layer = new BlockedColorLayerUI<>();
     JPanel p = new JPanel(new GridLayout(2, 1));
-    String title1 = "setStringPainted(true)";
-    p.add(makeTitledPanel(title1, pg1, pg2));
-    String title2 = "setStringPainted(false)";
-    p.add(makeTitledPanel(title2, progress3, new JLayer<>(progress4, layer)));
+    p.add(makeTitledPanel("setStringPainted(true)", pg1, pg2));
+    p.add(makeTitledPanel("setStringPainted(false)", pg3, new JLayer<>(pg4, layer)));
 
     JCheckBox check = new JCheckBox("Turn the progress bar red");
     check.addActionListener(e -> {
@@ -63,17 +61,13 @@ public final class MainPanel extends JPanel {
       worker.execute();
     });
 
-    Box box = Box.createHorizontalBox();
-    box.add(Box.createHorizontalGlue());
+    JPanel box = new JPanel(new FlowLayout(FlowLayout.TRAILING, 2, 2));
     box.add(check);
-    box.add(Box.createHorizontalStrut(2));
     box.add(button);
-    box.add(Box.createHorizontalStrut(2));
 
     addHierarchyListener(e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
       if (b && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
-        // System.out.println("DISPOSE_ON_CLOSE");
         worker.cancel(true);
         // worker = null;
       }
