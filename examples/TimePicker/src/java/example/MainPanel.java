@@ -104,7 +104,7 @@ class TimePickerSplitFieldDemo {
     panel.add(Box.createHorizontalGlue());
     panel.add(hour);
     JLabel colon = new JLabel(":");
-    colon.setFont(colon.getFont().deriveFont(42f));
+    colon.setFont(colon.getFont().deriveFont(Font.BOLD, 42f));
     colon.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 5));
     panel.add(colon);
     panel.add(minute);
@@ -121,7 +121,7 @@ class TimePickerSplitFieldDemo {
     } catch (ParseException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
     }
-    field.setFont(field.getFont().deriveFont(42f));
+    field.setFont(field.getFont().deriveFont(Font.BOLD, 42f));
     field.setHorizontalAlignment(JTextField.CENTER);
     field.setColumns(2);
     return field;
@@ -169,7 +169,7 @@ class RoundFormattedTextField extends JFormattedTextField {
     removeFocusListener(handler);
     removeMouseWheelListener(handler);
     super.updateUI();
-    // setFont(getFont().deriveFont(42f));
+    // setFont(getFont().deriveFont(Font.BOLD, 42f));
     // setHorizontalAlignment(CENTER);
     // setColumns(2);
     setFocusable(true);
@@ -298,7 +298,7 @@ class TimePickerSingleField {
       timeField = new JFormattedTextField();
     }
 
-    timeField.setFont(new Font("Monospaced", Font.BOLD, 42));
+    timeField.setFont(timeField.getFont().deriveFont(Font.BOLD, 42f));
     timeField.setHorizontalAlignment(JTextField.CENTER);
     timeField.setEditable(false);
     timeField.setFocusable(true);
