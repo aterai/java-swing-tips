@@ -187,7 +187,7 @@ class AnimationPanel extends JPanel {
   private double animationProgress; // 0.0 to 1.0
   private boolean moveRight = true;
 
-  public AnimationPanel(ImageIcon initialImage) {
+  protected AnimationPanel(ImageIcon initialImage) {
     super();
     this.currentImage = initialImage.getImage();
     int delay = 1000 / FRAME_RATE;
