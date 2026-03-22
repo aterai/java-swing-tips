@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST WeeklyScheduleCalendar" />
+  <property name="jnlp.Name"     value="WeeklyScheduleCalendar" />
+  <property name="jnlp.name"     value="weeklyschedulecalendar" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/weeklyschedulecalendar/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/WeeklyScheduleCalendar.html" />
+</project>
