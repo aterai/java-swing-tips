@@ -50,14 +50,14 @@ public final class MainPanel extends JPanel {
   private static ComboBoxModel<PairItem> makeModel() {
     String name = "loooooooooooooooooooooooooooooooooong.1234567890.1234567890";
     DefaultComboBoxModel<PairItem> m = new DefaultComboBoxModel<>();
-    m.addElement(new PairItem("asdfasdf", "846876"));
-    m.addElement(new PairItem("bxcvzx", "asdfaasdfasdfasdfasdfsasd"));
-    m.addElement(new PairItem(name, "qwerqwer.1234567890.1234567890.1234567890"));
+    m.addElement(new PairItem("ComboBoxModel", "846876"));
+    m.addElement(new PairItem("ComboBoxItem", "1111111111111111111111111"));
+    m.addElement(new PairItem(name, "test.1234567890.1234567890.1234567890"));
     m.addElement(new PairItem("14234125", "64345424543523452345234523684"));
-    m.addElement(new PairItem("hjklhjk", "addElement"));
-    m.addElement(new PairItem("aaaaaaaa", "ddd"));
-    m.addElement(new PairItem("bbbbbbbb", "eeeee"));
-    m.addElement(new PairItem("cccccccc", "fffffff"));
+    m.addElement(new PairItem("DefaultComboBoxModel", "addElement"));
+    m.addElement(new PairItem("aaa aaa aa", "ddd"));
+    m.addElement(new PairItem("bbb bbb bb", "eee ee"));
+    m.addElement(new PairItem("ccc ccc cc", "fff fff"));
     return m;
   }
 
@@ -127,19 +127,21 @@ class MultiColumnCellRenderer<E extends PairItem> implements ListCellRenderer<E>
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     leftLabel.setText(value.getLeftText());
     rightLabel.setText(value.getRightText());
-
     leftLabel.setFont(list.getFont());
     rightLabel.setFont(list.getFont());
-
     renderer.add(leftLabel);
     renderer.add(rightLabel, BorderLayout.EAST);
-
     if (index < 0) {
       leftLabel.setForeground(list.getForeground());
       renderer.setOpaque(false);
     } else {
-      leftLabel.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
-      renderer.setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
+      if (isSelected) {
+        leftLabel.setForeground(list.getSelectionForeground());
+        renderer.setBackground(list.getSelectionBackground());
+      } else {
+        leftLabel.setForeground(list.getForeground());
+        renderer.setBackground(list.getBackground());
+      }
       renderer.setOpaque(true);
     }
     return renderer;
