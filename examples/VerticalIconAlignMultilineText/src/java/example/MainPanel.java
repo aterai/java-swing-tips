@@ -123,7 +123,7 @@ class WindowsVerticalAlignmentCheckBoxUI extends WindowsCheckBoxUI {
 
   // [UnsynchronizedOverridesSynchronized]
   // Unsynchronized method damage overrides synchronized method in DefaultCaret
-  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @SuppressWarnings({"PMD.AvoidSynchronizedAtMethodLevel", "ReturnCount"})
   @Override public synchronized void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;
@@ -188,7 +188,7 @@ class BasicVerticalAlignmentCheckBoxUI extends BasicCheckBoxUI {
 
   // [UnsynchronizedOverridesSynchronized]
   // Unsynchronized method paint overrides synchronized method in BasicCheckBoxUI
-  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @SuppressWarnings({"PMD.AvoidSynchronizedAtMethodLevel", "ReturnCount"})
   @Override public synchronized void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;

@@ -185,6 +185,7 @@ class BasicLinkViewButtonUI extends LinkViewButtonUI {
     return LINKVIEW_UI;
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override public void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;

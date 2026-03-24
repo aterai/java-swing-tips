@@ -261,6 +261,7 @@ class SiteComboBoxLayout implements LayoutManager {
     return parent.getMinimumSize();
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override public void layoutContainer(Container parent) {
     if (!(parent instanceof JComboBox)) {
       return;

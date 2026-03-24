@@ -55,6 +55,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
   /**
    * {@inheritDoc}
    */
+  @SuppressWarnings("ReturnCount")
   @Override public void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;

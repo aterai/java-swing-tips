@@ -40,6 +40,7 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override public void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;

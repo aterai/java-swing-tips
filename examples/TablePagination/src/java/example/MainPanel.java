@@ -221,7 +221,7 @@ class LinkViewRadioButtonUI extends BasicRadioButtonUI {
 
   // [UnsynchronizedOverridesSynchronized]
   // Unsynchronized method paint overrides synchronized method in BasicRadioButtonUI
-  @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
+  @SuppressWarnings({"PMD.AvoidSynchronizedAtMethodLevel", "ReturnCount"})
   @Override public synchronized void paint(Graphics g, JComponent c) {
     if (!(c instanceof AbstractButton)) {
       return;
