@@ -15,19 +15,22 @@ import javax.swing.event.PopupMenuListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    AbstractButton button = MenuToggleButton.makePopupButton(makePopup(), "JToggleButton", null);
-
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box.add(Box.createHorizontalGlue());
-    box.add(button);
+    box.add(makePopupButton());
     box.add(Box.createHorizontalStrut(4));
     box.add(new JLabel("JFrame Footer"));
     box.add(Box.createHorizontalStrut(16));
-
     add(box, BorderLayout.SOUTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static AbstractButton makePopupButton() {
+    JPopupMenu popup = makePopup();
+    String title = "JToggleButton";
+    return MenuToggleButton.makePopupButton(popup, title, null);
   }
 
   private static JPopupMenu makePopup() {
