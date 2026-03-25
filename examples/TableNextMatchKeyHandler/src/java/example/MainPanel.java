@@ -93,6 +93,7 @@ class TableNextMatchKeyHandler extends KeyAdapter {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override public void keyTyped(KeyEvent e) {
     JTable src = (JTable) e.getComponent();
     int max = src.getRowCount();

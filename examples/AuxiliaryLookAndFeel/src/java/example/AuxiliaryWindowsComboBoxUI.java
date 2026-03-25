@@ -110,6 +110,7 @@ class BasicComboPopup2 extends BasicComboPopup {
   }
 
   private final class Handler2 extends MouseAdapter {
+    @SuppressWarnings("ReturnCount")
     @Override public void mouseReleased(MouseEvent e) {
       if (Objects.equals(e.getSource(), list) && list.getModel().getSize() > 0) {
         // <ins>

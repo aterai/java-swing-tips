@@ -236,6 +236,7 @@ class AnimationPanel extends JPanel {
     return t * (2d - t);
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     if (currentImage == null) {

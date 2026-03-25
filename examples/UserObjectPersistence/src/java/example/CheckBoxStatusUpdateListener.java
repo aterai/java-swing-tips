@@ -28,6 +28,7 @@ import javax.swing.tree.TreePath;
 public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
+  @SuppressWarnings("ReturnCount")
   @Override public void treeNodesChanged(TreeModelEvent e) {
     if (adjusting.get()) {
       return;

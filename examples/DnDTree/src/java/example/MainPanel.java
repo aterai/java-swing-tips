@@ -192,6 +192,7 @@ class DnDTree extends JTree {
       repaint();
     }
 
+    @SuppressWarnings("ReturnCount")
     @Override public void drop(DropTargetDropEvent e) {
       // System.out.println("drop");
       // if (!isWebStart()) {

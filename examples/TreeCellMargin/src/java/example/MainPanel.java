@@ -95,6 +95,7 @@ class MarginTreeCellRenderer extends DefaultTreeCellRenderer {
         tree, value, selected, expanded, leaf, row, false);
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override public void paint(Graphics g) {
     if (!getComponentOrientation().isLeftToRight()) {
       super.paint(g);
