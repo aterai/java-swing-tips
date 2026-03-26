@@ -144,11 +144,13 @@ final class DropShadowPopupMenu extends JPopupMenu {
     if (Objects.isNull(shadow) || shadow.getWidth() != w || shadow.getHeight() != h) {
       shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = shadow.createGraphics();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
       g2.setPaint(Color.BLACK);
       for (int i = 0; i < OFFSET; i++) {
-        g2.fillRoundRect(OFFSET, OFFSET, w - OFFSET - OFFSET + i, h - OFFSET - OFFSET + i, 4, 4);
+        g2.fillRoundRect(
+            OFFSET, OFFSET, w - OFFSET - OFFSET + i, h - OFFSET - OFFSET + i, 4, 4);
       }
       g2.dispose();
     }
@@ -249,17 +251,18 @@ final class DropShadowPopupMenu extends JPopupMenu {
 
   @Override public void show(Component c, int x, int y) {
     Dimension d = getPreferredSize();
-    int w = d.width;
-    int h = d.height;
-    if (dim.width != w || dim.height != h) {
-      dim.setSize(w, h);
-      shadow = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    if (dim.width != d.width || dim.height != d.height) {
+      dim.setSize(d.width, d.height);
+      shadow = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = shadow.createGraphics();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
       g2.setPaint(Color.BLACK);
+      int sw = d.width - OFFSET * 2;
+      int sh = d.height - OFFSET * 2;
       for (int i = 0; i < OFFSET; i++) {
-        g2.fillRoundRect(OFFSET, OFFSET, w - OFFSET - OFFSET + i, h - OFFSET - OFFSET + i, 4, 4);
+        g2.fillRoundRect(OFFSET, OFFSET, sw + i, sh + i, 4, 4);
       }
       g2.dispose();
     }
