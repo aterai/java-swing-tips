@@ -123,6 +123,7 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
       l.repaint();
     }
 
+    @SuppressWarnings("ReturnCount")
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       int index = l.locationToIndex(e.getPoint());
