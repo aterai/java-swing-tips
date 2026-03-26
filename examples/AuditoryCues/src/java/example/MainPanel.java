@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
 
   public static void showMessageDialogAndPlayAudio(Component p, String msg, URL url) {
     try (AudioInputStream ss = AudioSystem.getAudioInputStream(url);
-         Clip clip = (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, ss.getFormat()))) {
+         Clip clip = getLine(ss)) {
       SecondaryLoop loop = p.getToolkit().getSystemEventQueue().createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
@@ -89,6 +89,10 @@ public final class MainPanel extends JPanel {
       Logger.getGlobal().severe(ex::getMessage);
       UIManager.getLookAndFeel().provideErrorFeedback(p);
     }
+  }
+
+  private static Clip getLine(AudioInputStream ss) throws LineUnavailableException {
+    return (Clip) AudioSystem.getLine(new DataLine.Info(Clip.class, ss.getFormat()));
   }
 
   // import java.security.*;
