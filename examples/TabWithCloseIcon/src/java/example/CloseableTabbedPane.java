@@ -227,6 +227,7 @@ public final class CloseableTabbedPane extends JTabbedPane {
   }
 }
 
+@SuppressWarnings("ReturnCount")
 class CloseableTabIconHandler extends MouseAdapter {
   private final Rectangle drawRect = new Rectangle();
 
@@ -293,7 +294,6 @@ class CloseableTabIconHandler extends MouseAdapter {
    *
    * @param e  the <code>MouseEvent</code>
    */
-  @SuppressWarnings("ReturnCount")
   @Override public void mouseExited(MouseEvent e) {
     Component c = e.getComponent();
     if (!(c instanceof CloseableTabbedPane)) {
@@ -314,7 +314,6 @@ class CloseableTabIconHandler extends MouseAdapter {
    *
    * @param e  the <code>MouseEvent</code>
    */
-  @SuppressWarnings("ReturnCount")
   @Override public void mousePressed(MouseEvent e) {
     Component c = e.getComponent();
     if (!(c instanceof CloseableTabbedPane)) {
@@ -344,7 +343,6 @@ class CloseableTabIconHandler extends MouseAdapter {
    *
    * @param e  the <code>MouseEvent</code>
    */
-  @SuppressWarnings("ReturnCount")
   @Override public void mouseDragged(MouseEvent e) {
     Component c = e.getComponent();
     if (!(c instanceof CloseableTabbedPane)) {
@@ -369,7 +367,6 @@ class CloseableTabIconHandler extends MouseAdapter {
    *
    * @param e  the <code>MouseEvent</code>
    */
-  @SuppressWarnings("ReturnCount")
   @Override public void mouseMoved(MouseEvent e) {
     Component c = e.getComponent();
     if (!(c instanceof CloseableTabbedPane)) {
