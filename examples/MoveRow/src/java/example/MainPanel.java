@@ -202,6 +202,7 @@ class UpAction extends AbstractAction {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   private void upTo(RowDataModel model, int[] pos, boolean isShiftDown) {
     if (isShiftDown) { // Jump to the top
       model.moveRow(pos[0], pos[pos.length - 1], 0);
@@ -238,6 +239,7 @@ class DownAction extends AbstractAction {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   private void downTo(RowDataModel model, int[] pos, boolean isShiftDown) {
     if (isShiftDown) { // Jump to the end
       model.moveRow(pos[0], pos[pos.length - 1], model.getRowCount() - pos.length);

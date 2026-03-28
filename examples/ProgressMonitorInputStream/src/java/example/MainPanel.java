@@ -43,6 +43,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  @SuppressWarnings("ReturnCount")
   public void executeWorker(ActionEvent e) {
     JButton b = (JButton) e.getSource();
     b.setEnabled(false);

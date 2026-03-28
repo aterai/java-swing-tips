@@ -202,6 +202,7 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
   }
 
   // @see javax/swing/plaf/basic/BasicTreeUI#paintRow(...)
+  @SuppressWarnings("ReturnCount")
   @Override protected void paintRow(Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
     boolean isSelected = tree.isRowSelected(row);
 

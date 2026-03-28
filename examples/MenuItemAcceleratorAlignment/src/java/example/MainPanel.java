@@ -229,6 +229,7 @@ final class MenuItemHelper {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   public static void paintAccText(
       Graphics g, sun.swing.MenuItemLayoutHelper lh,
       sun.swing.MenuItemLayoutHelper.LayoutResult lr,

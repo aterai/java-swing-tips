@@ -174,6 +174,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   private void qsort(int l, int u) throws InterruptedException {
     if (l >= u) {
       return;
@@ -190,6 +191,7 @@ public class SortingTask extends SwingWorker<String, Rectangle> {
     qsort(m + 1, u);
   }
 
+  @SuppressWarnings("ReturnCount")
   private void qsort2(int l, int u) throws InterruptedException {
     if (l >= u) {
       return;

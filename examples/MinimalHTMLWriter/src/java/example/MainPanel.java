@@ -106,6 +106,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     checkForTokens(content, startOffset, endOffset);
   }
 
+  @SuppressWarnings("ReturnCount")
   private void checkForTokens(String content, int startOffset, int endOffset) {
     int index = startOffset;
     while (index <= endOffset) {

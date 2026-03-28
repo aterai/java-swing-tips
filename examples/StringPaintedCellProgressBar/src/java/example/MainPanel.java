@@ -129,6 +129,7 @@ public final class MainPanel extends JPanel {
       return (SwingWorker<?, ?>) model.getValueAt(identifier, 3);
     }
 
+    @SuppressWarnings("ReturnCount")
     private void deleteActionPerformed() {
       int[] selection = table.getSelectedRows();
       if (selection.length == 0) {

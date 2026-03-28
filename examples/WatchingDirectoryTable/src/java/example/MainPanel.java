@@ -129,6 +129,7 @@ public final class MainPanel extends JPanel {
     // Watching a Directory for Changes (The Java™ Tutorials > Essential Classes > Basic I/O)
     // https://docs.oracle.com/javase/tutorial/essential/io/notification.html
     // Process all events for keys queued to the watcher
+    @SuppressWarnings("ReturnCount")
     private void processEvents(Path dir, WatchService watcher) {
       for (;;) {
         // wait for key to be signaled

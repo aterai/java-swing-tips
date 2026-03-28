@@ -52,6 +52,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
+  @SuppressWarnings("ReturnCount")
   private void initLinkBox(int itemsPerPage, int currentPageIndex) {
     // assert currentPageIndex > 0;
     sorter.setRowFilter(new RowFilter<TableModel, Integer>() {

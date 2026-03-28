@@ -165,6 +165,7 @@ class SpinnerLayout implements LayoutManager {
     }
   }
 
+  @SuppressWarnings("ReturnCount")
   @Override public void layoutContainer(Container parent) {
     Rectangle r = SwingUtilities.calculateInnerArea((JComponent) parent, null);
     if (r != null && Objects.isNull(nextButton) && Objects.isNull(previousButton)) {

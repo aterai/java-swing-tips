@@ -80,6 +80,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
+  @SuppressWarnings("ReturnCount")
   private void zip(Path path, Path tgt) {
     // noticeably poor performance in JDK 8
     // if (Files.exists(tgt)) {
@@ -126,6 +127,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
+  @SuppressWarnings("ReturnCount")
   private void unzip(Path path, Path dir) {
     Component p = getRootPane();
     try {
