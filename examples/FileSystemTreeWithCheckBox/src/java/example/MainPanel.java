@@ -338,7 +338,8 @@ class FolderSelectionListener implements TreeSelectionListener {
       // if (!parent.isDirectory()) {
       //   return;
       // }
-      Status status = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
+      boolean b = check.getStatus() == Status.SELECTED;
+      Status status = b ? Status.SELECTED : Status.DESELECTED;
       BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
         @Override protected void process(List<File> chunks) {
           chunks.stream().map(file -> new CheckBoxNode(file, status))
