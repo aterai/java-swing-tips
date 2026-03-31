@@ -72,7 +72,8 @@ public final class MainPanel extends JPanel {
         if (c instanceof JTabbedPane) {
           int tp = ((JTabbedPane) c).getTabPlacement();
           if (tp == TOP || tp == BOTTOM) {
-            d.height = icon.getIconHeight() + tabbedPane.getFont().getSize() + getIconTextGap();
+            int fontSize = tabbedPane.getFont().getSize();
+            d.height = icon.getIconHeight() + fontSize + getIconTextGap();
           }
         }
         return d;
@@ -174,11 +175,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     boolean isSide = getTabPlacement() == LEFT || getTabPlacement() == RIGHT;
     Dimension dim = new Dimension();
     int rest = gap;
-    for (int i = 0; i < getTabCount(); i++) {
+    int tabCount = getTabCount();
+    for (int i = 0; i < tabCount; i++) {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = i == getTabCount() - 1 ? rest : 1;
+        int a = i == tabCount - 1 ? rest : 1;
         int w = rest > 0 ? tabSize + a : tabSize;
         if (isSide) {
           dim.setSize(tab.getPreferredSize().width, w);
