@@ -101,7 +101,7 @@ class ListItemTransferHandler extends TransferHandler {
     LABEL.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     LABEL.setHorizontalAlignment(SwingConstants.CENTER);
     LABEL.setForeground(Color.WHITE);
-    LABEL.setBackground(new Color(0, 0, 255, 200));
+    LABEL.setBackground(new Color(0xC8_00_00_FF, true));
   }
 
   @Override protected Transferable createTransferable(JComponent c) {
