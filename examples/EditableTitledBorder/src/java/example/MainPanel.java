@@ -169,7 +169,8 @@ class EditableTitledBorder extends TitledBorder {
           Component src = e.getComponent();
           rect.setBounds(getTitleBounds(src));
           if (rect.contains(e.getPoint())) {
-            startEditing.actionPerformed(new ActionEvent(src, ActionEvent.ACTION_PERFORMED, ""));
+            ActionEvent ae = new ActionEvent(src, ActionEvent.ACTION_PERFORMED, "");
+            startEditing.actionPerformed(ae);
           }
         }
       }
