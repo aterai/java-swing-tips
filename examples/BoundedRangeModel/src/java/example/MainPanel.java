@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
-  private static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
+  private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
   private static final String PATTERN = "Swing";
   private final List<Integer> emphasisIndices = new ArrayList<>();
   private final DefaultTableModel model = new DefaultTableModel(0, 2);

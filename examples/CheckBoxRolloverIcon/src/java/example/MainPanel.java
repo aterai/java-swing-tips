@@ -137,7 +137,7 @@ class CheckBoxRolloverIcon implements Icon {
     if (c instanceof AbstractButton) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.translate(x, y);
-      g2.setColor(new Color(255, 155, 155, 100));
+      g2.setColor(new Color(0x64_FF_9B_9B, true));
       g2.fillRect(2, 2, getIconWidth() - 4, getIconHeight() - 4);
       g2.setColor(Color.RED);
       g2.drawLine(9, 3, 9, 3);
