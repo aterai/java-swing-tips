@@ -83,8 +83,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TriSliderUI extends BasicSliderUI {
-  private final Color color1 = new Color(0, 100, 100);
-  private final Color color2 = new Color(0, 255, 100);
+  private final Color color1 = new Color(0x00_64_64);
+  private final Color color2 = new Color(0x00_FF_64);
 
   protected TriSliderUI(JSlider slider) {
     super(slider);

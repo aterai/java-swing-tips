@@ -120,7 +120,7 @@ class TagInputPanel extends JPanel {
   private void addTag(String text) {
     JPanel tag = new JPanel(new BorderLayout(5, 0));
     tag.setName(text);
-    tag.setBackground(new Color(230, 245, 255));
+    tag.setBackground(new Color(0xE6_F5_FF));
     // tag.setBackground(UIManager.getColor("Table.dropLineColor"));
     tag.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(UIManager.getColor("Table.selectionBackground")),
