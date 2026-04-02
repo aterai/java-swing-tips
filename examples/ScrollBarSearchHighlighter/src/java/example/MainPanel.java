@@ -147,7 +147,7 @@ class HighlightScrollBar extends JScrollBar {
 }
 
 class HighlightIcon implements Icon {
-  private static final Color THUMB_COLOR = new Color(0, 0, 255, 50);
+  private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
   private final Rectangle thumbRect = new Rectangle();
   private final JTextComponent textArea;
   private final JScrollBar scrollbar;

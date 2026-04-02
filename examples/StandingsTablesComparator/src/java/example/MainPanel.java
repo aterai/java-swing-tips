@@ -161,7 +161,7 @@ class StandingsTable extends JTable {
     setShowHorizontalLines(false);
     setIntercellSpacing(new Dimension());
     setSelectionForeground(getForeground());
-    setSelectionBackground(new Color(0, 0, 100, 50));
+    setSelectionBackground(new Color(0x32_00_00_64, true));
     setAutoCreateRowSorter(true);
     setFocusable(false);
     initTableHeader(this);
