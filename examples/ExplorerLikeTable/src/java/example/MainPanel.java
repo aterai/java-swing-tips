@@ -34,11 +34,13 @@ public final class MainPanel extends JPanel {
     JTable table = new FileListTable(makeModel());
     table.setComponentPopupMenu(new TablePopupMenu());
 
-    KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
-    KeyStroke stab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK);
     InputMap im = table.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(tab, im.get(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)));
-    im.put(stab, im.get(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_DOWN_MASK)));
+    KeyStroke tab = KeyStroke.getKeyStroke("TAB");
+    KeyStroke enter = KeyStroke.getKeyStroke("ENTER");
+    im.put(tab, im.get(enter));
+    KeyStroke tab2 = KeyStroke.getKeyStroke("shift TAB");
+    KeyStroke enter2 = KeyStroke.getKeyStroke("shift ENTER");
+    im.put(tab2, im.get(enter2));
 
     Color orgColor = table.getSelectionBackground();
     Color tflColor = this.getBackground();
