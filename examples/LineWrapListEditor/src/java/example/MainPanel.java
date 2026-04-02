@@ -262,7 +262,8 @@ class EditableList<E extends ListItem> extends JList<E> {
     //   }
     //
     //   @Override public void popupMenuCanceled(PopupMenuEvent e) {
-    //     renameTitle.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+    //     ActionEvent ae = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "");
+    //     renameTitle.actionPerformed(ae);
     //   }
     // });
     // popup.setBorder(BorderFactory.createEmptyBorder());
@@ -272,7 +273,8 @@ class EditableList<E extends ListItem> extends JList<E> {
     window.addWindowListener(new WindowAdapter() {
       @Override public void windowDeactivated(WindowEvent e) {
         if (editingIndex >= 0) {
-          renameTitle.actionPerformed(new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, ""));
+          ActionEvent ae = new ActionEvent(editor, ActionEvent.ACTION_PERFORMED, "");
+          renameTitle.actionPerformed(ae);
         }
         editingIndex = -1;
       }
