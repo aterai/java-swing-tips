@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
   };
   private static final Kernel KERNEL = new Kernel(3, 3, DATA);
   private static final ConvolveOp OP = new ConvolveOp(KERNEL, ConvolveOp.EDGE_NO_OP, null);
-  private static final Color BGC = new Color(255, 255, 255, 100);
+  private static final Color BGC = new Color(0x64_FF_FF_FF, true);
   private final transient Robot robot;
   private final Rectangle screenRect;
   private final Rectangle buf = new Rectangle();

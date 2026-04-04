@@ -104,7 +104,7 @@ class ResizeWindowListener extends MouseInputAdapter {
 
 // https://web.archive.org/web/20050609021916/http://today.java.net/pub/a/today/2005/06/07/pixelpushing.html
 class BottomRightCornerIcon implements Icon {
-  private static final Color SQUARE_COLOR = new Color(160, 160, 160, 160);
+  private static final Color SQUARE_COLOR = new Color(0xA0_A0_A0_A0, true);
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     int diff = 3;

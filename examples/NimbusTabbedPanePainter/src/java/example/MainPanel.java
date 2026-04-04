@@ -116,7 +116,7 @@ final class NimbusTabbedPanePainterUtils {
 
       // Paint tab shadow
       if (selected) {
-        g2.setPaint(new Color(0, 0, 0, 20));
+        g2.setPaint(new Color(0x14_00_00_00, true));
         RoundRectangle2D rect = new RoundRectangle2D.Double(0d, 0d, w, h, r, r);
         for (int i = 0; i < x; i++) {
           rect.setFrame((double) x - i, (double) y - i, w + i * 2d, h);
