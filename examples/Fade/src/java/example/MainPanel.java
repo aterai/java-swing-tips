@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setPaint(Color.BLACK);
         g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha.get() * .1f));
+        float v = alpha.get() * .1f;
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, v));
         icon.paintIcon(this, g2, 0, 0);
         g2.dispose();
       }
