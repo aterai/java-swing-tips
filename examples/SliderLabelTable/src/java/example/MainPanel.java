@@ -81,7 +81,7 @@ public final class MainPanel extends JPanel {
           int idx = (Integer) key;
           JLabel l = (JLabel) value;
           l.setText(list2[idx]);
-          l.setForeground(new Color(250, 100 - idx * 10, 10));
+          l.setForeground(new Color(250, Math.max(0, 100 - idx * 10), 10));
         }
       });
     }
