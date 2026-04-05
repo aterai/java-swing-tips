@@ -62,7 +62,7 @@ javax.swing.JComponent
 
 Others
 ---------------
-- [Graphics(68)](https://ateraimemo.com/astro/en/Swing/_Graphics.html)
+- [Graphics(69)](https://ateraimemo.com/astro/en/Swing/_Graphics.html)
 - [LayoutManager(55)](https://ateraimemo.com/astro/en/Swing/_Layout.html)
 - [Animation(50)](https://ateraimemo.com/astro/en/Swing/_Animation.html)
 - [Border(49)](https://ateraimemo.com/astro/en/Swing/_Border.html)
