@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
     JTextField field = new JTextField();
     Document doc = field.getDocument();
     if (doc instanceof AbstractDocument) {
-      ((AbstractDocument) doc).setDocumentFilter(new FirstCharToUpperCaseDocumentFilter(field));
+      DocumentFilter filter = new FirstCharToUpperCaseDocumentFilter(field);
+      ((AbstractDocument) doc).setDocumentFilter(filter);
     }
     field.setText("abc");
 
