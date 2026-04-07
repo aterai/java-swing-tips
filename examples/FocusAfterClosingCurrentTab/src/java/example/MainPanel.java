@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,6 +36,7 @@ public final class MainPanel extends JPanel {
         Component component = getComponentAt(index);
         history.remove(component);
         history.add(0, component);
+        // Java 21: history.addFirst(component);
       }
 
       @Override public void removeTabAt(int index) {
@@ -45,6 +45,7 @@ public final class MainPanel extends JPanel {
         history.remove(component);
         if (!history.isEmpty()) {
           setSelectedComponent(history.get(0));
+          // Java 21: setSelectedComponent(history.getFirst());
         }
       }
     };
@@ -59,7 +60,7 @@ public final class MainPanel extends JPanel {
     // Java 10: int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
     InputMap im = tabbedPane.getInputMap(WHEN_IN_FOCUSED_WINDOW);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, modifiers), CLOSE_CURRENT_TAB);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_DOWN_MASK), CLOSE_CURRENT_TAB);
+    im.put(KeyStroke.getKeyStroke("ctrl W"), CLOSE_CURRENT_TAB);
 
     tabbedPane.getActionMap().put(CLOSE_CURRENT_TAB, new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
