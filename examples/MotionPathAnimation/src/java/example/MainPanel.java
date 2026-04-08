@@ -32,6 +32,7 @@ public final class MainPanel extends JPanel {
     shape = new RoundRectangle2D.Double(0d, 0d, 100d, 80d, 50d, 30d);
     makePointList(shape, points);
     pos.setLocation(points.get(0));
+    // Java 21: pos.setLocation(points.getFirst());
     Timer timer = new Timer(50, this::move);
     button.addActionListener(e -> {
       if (!timer.isRunning()) {
@@ -57,8 +58,9 @@ public final class MainPanel extends JPanel {
       button.setEnabled(true);
     }
     int size = points.size();
-    int index = Math.min(Math.max((int) (size * progress)), 0, size - 1);
-    // Java 21: int index = Math.clamp((int) (size * progress), 0, size - 1);
+    int v = (int) (size * progress);
+    int index = Math.min(Math.max(v, 0), size - 1);
+    // Java 21: int index = Math.clamp(v, 0, size - 1);
     pos.setLocation(points.get(index));
     repaint();
   }
