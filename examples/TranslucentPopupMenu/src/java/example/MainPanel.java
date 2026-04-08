@@ -63,8 +63,8 @@ public final class MainPanel extends JPanel {
 
 final class TranslucentPopupMenu extends JPopupMenu {
   private static final Color ALPHA_ZERO = new Color(0x0, true);
-  private static final Paint POPUP_BACK = new Color(250, 250, 250, 200);
-  private static final Paint POPUP_LEFT = new Color(230, 230, 230, 200);
+  private static final Paint POPUP_BACK = new Color(0xC8_FA_FA_FA, true);
+  private static final Paint POPUP_LEFT = new Color(0xC8_E6_E6_E6, true);
   private static final int LEFT_WIDTH = 24;
 
   @Override public boolean isOpaque() {

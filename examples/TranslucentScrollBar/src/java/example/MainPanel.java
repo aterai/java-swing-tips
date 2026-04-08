@@ -101,9 +101,9 @@ class ZeroSizeButton extends JButton {
 }
 
 class TranslucentScrollBarUI extends BasicScrollBarUI {
-  private static final Color DEFAULT_COLOR = new Color(220, 100, 100, 100);
-  private static final Color DRAGGING_COLOR = new Color(200, 100, 100, 100);
-  private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
+  private static final Color DEFAULT_COLOR = new Color(0x64_DC_64_64, true);
+  private static final Color DRAGGING_COLOR = new Color(0x64_C8_64_64, true);
+  private static final Color ROLLOVER_COLOR = new Color(0x64_FF_78_64, true);
 
   @Override protected JButton createDecreaseButton(int orientation) {
     return new ZeroSizeButton();
