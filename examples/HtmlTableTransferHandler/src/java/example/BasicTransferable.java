@@ -107,8 +107,8 @@ public class BasicTransferable implements Transferable {
    * of the object returned is defined by the representation class of the flavor.
    *
    * @param flavor  the requested flavor for the data
-   * @exception IOException  if the data is no longer available in the requested flavor.
-   * @exception UnsupportedFlavorException  if the requested data flavor is not supported.
+   * @throws IOException  if the data is no longer available in the requested flavor.
+   * @throws UnsupportedFlavorException  if the requested data flavor is not supported.
    * @see DataFlavor#getRepresentationClass
    */
   @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
