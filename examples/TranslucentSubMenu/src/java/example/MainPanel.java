@@ -214,13 +214,10 @@ class TransparentMenu extends JMenu {
   }
 }
 
-/*
-<a href="http://today.java.net/pub/a/today/2008/03/18/translucent-and-shaped-swing-windows.html">
-Translucent and Shaped Swing Windows | Java.net
-</a>
-*/
+// Translucent and Shaped Swing Windows | Java.net
+// http://today.java.net/pub/a/today/2008/03/18/translucent-and-shaped-swing-windows.html
 class TranslucentPopupFactory extends PopupFactory {
-  @Override public Popup getPopup(Component owner, Component contents, int x, int y) { // throws IllegalArgumentException {
+  @Override public Popup getPopup(Component owner, Component contents, int x, int y) {
     return new TranslucentPopup(owner, contents, x, y);
   }
 }
