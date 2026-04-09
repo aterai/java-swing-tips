@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
   }
 
   private final class ScrollBarLayout extends BorderLayout {
-    public static final int MIN_WIDTH = 6;
+    private static final int MIN_WIDTH = 6;
     private int controlsWidth = MIN_WIDTH;
 
     @Override public Dimension preferredLayoutSize(Container target) {

@@ -130,7 +130,7 @@ final class TableHeaderPopupMenu extends JPopupMenu {
       this.dir = dir;
     }
 
-    public void setSortingIndex(int index) {
+    private void setSortingIndex(int index) {
       sortingIndex = index;
     }
 

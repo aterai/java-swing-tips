@@ -207,7 +207,7 @@ class MiniMapLabel extends JLabel {
       processMiniMapMouseEvent(e);
     }
 
-    public void processMiniMapMouseEvent(MouseEvent e) {
+    private void processMiniMapMouseEvent(MouseEvent e) {
       Point pt = e.getPoint();
       Component c = e.getComponent();
       BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();

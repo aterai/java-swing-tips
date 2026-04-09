@@ -132,7 +132,7 @@ class ImageCaptionLabel extends JLabel {
       p.repaint();
     }
 
-    public int getTextAreaHeight() {
+    private int getTextAreaHeight() {
       return areaHeight;
     }
 
