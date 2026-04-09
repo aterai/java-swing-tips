@@ -44,7 +44,8 @@ public final class MainPanel extends JPanel {
       debugPrint();
     });
 
-    FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(Arrays.asList(eb, wb, sb, nb));
+    List<JButton> list = Arrays.asList(eb, wb, sb, nb);
+    FocusTraversalPolicy policy1 = new CustomFocusTraversalPolicy(list);
     JRadioButton r1 = new JRadioButton("Custom");
     r1.addActionListener(e -> {
       setFocusTraversalPolicy(policy1);
@@ -53,7 +54,9 @@ public final class MainPanel extends JPanel {
 
     FocusTraversalPolicy policy2 = new LayoutFocusTraversalPolicy() {
       @Override protected boolean accept(Component c) {
-        return c instanceof JTextComponent ? ((JTextComponent) c).isEditable() : super.accept(c);
+        return c instanceof JTextComponent
+            ? ((JTextComponent) c).isEditable()
+            : super.accept(c);
       }
     };
     JRadioButton r2 = new JRadioButton("Layout");
@@ -139,10 +142,12 @@ class CustomFocusTraversalPolicy extends FocusTraversalPolicy {
 
   @Override public Component getFirstComponent(Container focusCycleRoot) {
     return order.get(0);
+    // Java 21: return order.getFirst();
   }
 
   @Override public Component getLastComponent(Container focusCycleRoot) {
     return order.get(order.size() - 1);
+    // Java 21: return order.getLast();
   }
 
   @Override public Component getComponentAfter(Container focusCycleRoot, Component cmp) {
@@ -157,5 +162,6 @@ class CustomFocusTraversalPolicy extends FocusTraversalPolicy {
 
   @Override public Component getDefaultComponent(Container focusCycleRoot) {
     return order.get(0);
+    // Java 21: return order.getFirst();
   }
 }
