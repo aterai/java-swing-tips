@@ -151,9 +151,9 @@ class TextAreaOutputStream extends OutputStream {
   //   buffer.reset();
   // }
 
+  @SuppressWarnings("JdkObsolete")
   @Override public void flush() throws IOException {
     textArea.append(buffer.toString("UTF-8"));
-    // Java 10: textArea.append(buffer.toString(StandardCharsets.UTF_8));
     buffer.reset();
   }
 
