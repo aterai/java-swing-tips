@@ -373,7 +373,8 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
     // Set up the dialog that the button brings up.
     colorChooser = new JColorChooser();
-    dialog = JColorChooser.createDialog(button, "Pick a Color", true, colorChooser, this, null);
+    dialog = JColorChooser.createDialog(
+        button, "Pick a Color", true, colorChooser, this, null);
   }
 
   /**

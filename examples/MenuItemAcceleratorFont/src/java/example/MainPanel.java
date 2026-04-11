@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -76,7 +77,9 @@ public final class MainPanel extends JPanel {
     Color color1;
     Color color2;
     Font font;
-    for (String prefix : Arrays.asList("MenuItem", "CheckBoxMenuItem", "RadioButtonMenuItem")) {
+    List<String> list = Arrays.asList(
+        "MenuItem", "CheckBoxMenuItem", "RadioButtonMenuItem");
+    for (String prefix : list) {
       String key1 = prefix + ".acceleratorForeground";
       String key2 = prefix + ".acceleratorSelectionForeground";
       String key3 = prefix + ".acceleratorFont";

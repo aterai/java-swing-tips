@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
     // // LnF NullPointerException
     // JTable table3 = makeTable();
     // TableCellRenderer r = table3.getTableHeader().getDefaultRenderer();
-    // table3.getTableHeader().setDefaultRenderer((t, v, isSelected, hasFocus, row, column) -> {
-    //   Component c = r.getTableCellRendererComponent(t, v, isSelected, hasFocus, row, column);
+    // table3.getTableHeader().setDefaultRenderer((t, v, selected, focus, row, column) -> {
+    //   Component c = r.getTableCellRendererComponent(t, v, selected, focus, row, column);
     //   if (t.convertColumnIndexToModel(column) == 0) {
     //     ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
     //   } else {

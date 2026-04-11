@@ -159,13 +159,15 @@ class LightboxGlassPane extends JPanel {
     Optional.ofNullable(getRootPane()).ifPresent(r -> r.getLayeredPane().print(g));
     super.paintComponent(g);
 
-    if (currentSize.height < image.getHeight() + BW + BW) {
-      currentSize.height += image.getHeight() / 16;
-    } else if (currentSize.width < image.getWidth() + BW + BW) {
-      currentSize.height = image.getHeight() + BW + BW;
-      currentSize.width += image.getWidth() / 16;
+    int imgWidth = image.getWidth();
+    int imgHeight = image.getHeight();
+    if (currentSize.height < imgHeight + BW + BW) {
+      currentSize.height += imgHeight / 16;
+    } else if (currentSize.width < imgWidth + BW + BW) {
+      currentSize.height = imgHeight + BW + BW;
+      currentSize.width += imgWidth / 16;
     } else if (1f - alpha > 0) {
-      currentSize.width = image.getWidth() + BW + BW;
+      currentSize.width = imgWidth + BW + BW;
       alpha = alpha + .1f;
     } else {
       animatedIcon.setRunning(false);
@@ -183,8 +185,9 @@ class LightboxGlassPane extends JPanel {
     g2.fill(rect);
 
     if (alpha > 0) {
-      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(alpha, 1f)));
-      g2.drawImage(image, rect.x + BW, rect.y + BW, image.getWidth(), image.getHeight(), this);
+      float a = Math.min(alpha, 1f);
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a));
+      g2.drawImage(image, rect.x + BW, rect.y + BW, imgWidth, imgHeight, this);
     } else {
       int cx = centerPt.x - animatedIcon.getIconWidth() / 2;
       int cy = centerPt.y - animatedIcon.getIconHeight() / 2;
