@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -57,27 +58,47 @@ class FadeScrollLayerUI extends LayerUI<JScrollPane> {
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(new Color(0x12_FF_FF_FF, true));
     if (c instanceof JLayer) {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
       Rectangle r = scroll.getViewportBorderBounds();
       BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
+
+      // 1. Dynamically get background color of JList
+      Color bgc = getBgColor(scroll);
+      Color transparent = new Color(bgc.getRGB() & 0x00_FF_FF_FF, true);
+
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setClip(r);
+
+      // 2. Top edge fade (background color → transparent)
       if (m.getMinimum() < m.getValue()) {
-        for (int i = OVERFLOW; i > 0; i--) {
-          g2.fillRect(0, r.y - i, r.width, OVERFLOW - i);
-        }
+        Paint topGrad = new GradientPaint(
+            0f, r.y, bgc, 0f, r.y + OVERFLOW, transparent);
+        g2.setPaint(topGrad);
+        g2.fillRect(r.x, r.y, r.width, OVERFLOW);
       }
+
+      // 3. Bottom edge fade (transparent → background color)
       if (m.getValue() + m.getExtent() < m.getMaximum()) {
-        g2.translate(r.x, r.y + r.height - OVERFLOW);
-        for (int i = 0; i < OVERFLOW; i++) {
-          g2.fillRect(0, i, r.width, OVERFLOW - i);
-        }
+        int fadeTop = r.y + r.height - OVERFLOW;
+        Paint btmGrad = new GradientPaint(
+            0f, fadeTop, transparent, 0f, r.y + r.height, bgc);
+        g2.setPaint(btmGrad);
+        g2.fillRect(r.x, fadeTop, r.width, OVERFLOW);
       }
+
+      g2.dispose();
     }
-    g2.dispose();
+  }
+
+  private static Color getBgColor(JScrollPane scroll) {
+    return Optional.ofNullable(scroll.getViewport().getView())
+        .map(Component::getBackground)
+        .orElseGet(() -> {
+          Color fallback = UIManager.getColor("List.background");
+          return fallback == null ? Color.WHITE : fallback;
+        });
   }
 }
