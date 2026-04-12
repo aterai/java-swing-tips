@@ -64,7 +64,7 @@ Others
 ---------------
 - [Graphics(69)](https://ateraimemo.com/astro/en/Swing/_Graphics.html)
 - [LayoutManager(55)](https://ateraimemo.com/astro/en/Swing/_Layout.html)
-- [Animation(50)](https://ateraimemo.com/astro/en/Swing/_Animation.html)
+- [Animation(51)](https://ateraimemo.com/astro/en/Swing/_Animation.html)
 - [Border(49)](https://ateraimemo.com/astro/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/astro/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/astro/en/Swing/_LookAndFeel.html)
@@ -76,7 +76,7 @@ Others
 - [File(14)](https://ateraimemo.com/astro/en/Swing/_File.html)
 - [Cursor(9)](https://ateraimemo.com/astro/en/Swing/_Cursor.html)
 - [TrayIcon(8)](https://ateraimemo.com/astro/en/Swing/_TrayIcon.html)
-- [Clock(6)](https://ateraimemo.com/astro/en/Swing/_Clock.html)
+- [Clock(7)](https://ateraimemo.com/astro/en/Swing/_Clock.html)
 - [Sound(5)](https://ateraimemo.com/astro/en/Swing/_Sound.html)
 - [Others(24)](https://ateraimemo.com/astro/en/Swing/_Others.html)
 
