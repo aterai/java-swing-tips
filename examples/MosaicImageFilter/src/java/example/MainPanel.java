@@ -149,7 +149,8 @@ class MosaicImageFilter implements BufferedImageOp {
     for (int by = 0; by < h; by++) {
       for (int bx = 0; bx < w; bx++) {
         int i = bx + by * w;
-        pixels[i] = pixels[i] & 0xFF_00_00_00 | rgb;
+        int alpha = pixels[i] & 0xFF_00_00_00;
+        pixels[i] = alpha | rgb;
       }
     }
   }
