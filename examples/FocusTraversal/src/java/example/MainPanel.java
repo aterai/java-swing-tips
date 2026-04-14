@@ -13,7 +13,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
-  private final JPanel panel = new JPanel(new BorderLayout(2, 2));
+  private final JPanel panel = makePanel();
   private final JTextArea textArea = new JTextArea();
   private final JScrollPane scroll = new JScrollPane(textArea);
   private final Box box = Box.createHorizontalBox();
@@ -24,12 +24,10 @@ public final class MainPanel extends JPanel {
     JButton sb = new JButton("SOUTH");
     JButton wb = new JButton("WEST");
     JButton eb = new JButton("EAST");
-
     panel.add(nb, BorderLayout.NORTH);
     panel.add(sb, BorderLayout.SOUTH);
     panel.add(wb, BorderLayout.WEST);
     panel.add(eb, BorderLayout.EAST);
-    panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     panel.add(scroll);
 
     setFocusTraversalPolicyProvider(true);
@@ -55,8 +53,7 @@ public final class MainPanel extends JPanel {
     FocusTraversalPolicy policy2 = new LayoutFocusTraversalPolicy() {
       @Override protected boolean accept(Component c) {
         return c instanceof JTextComponent
-            ? ((JTextComponent) c).isEditable()
-            : super.accept(c);
+            ? ((JTextComponent) c).isEditable() : super.accept(c);
       }
     };
     JRadioButton r2 = new JRadioButton("Layout");
@@ -79,6 +76,12 @@ public final class MainPanel extends JPanel {
     add(makeCheckBox(), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
     EventQueue.invokeLater(this::debugPrint);
+  }
+
+  private static JPanel makePanel() {
+    JPanel panel = new JPanel(new BorderLayout(2, 2));
+    panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    return panel;
   }
 
   private JCheckBox makeCheckBox() {
