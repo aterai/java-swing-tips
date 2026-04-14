@@ -79,7 +79,7 @@ class FlipPair extends JPanel {
   private boolean isAnimating;
   private final Timer animTimer = new Timer(15, null);
 
-  public FlipPair(int startValue) {
+  protected FlipPair(int startValue) {
     super();
     this.currentVal = startValue;
     this.nextVal = startValue;
