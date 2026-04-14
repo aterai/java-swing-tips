@@ -25,10 +25,6 @@ public final class MainPanel extends JPanel {
         g2.setPaint(Color.BLACK);
         FontRenderContext frc = g2.getFontRenderContext();
         Shape copyright = new TextLayout("©", font, frc).getOutline(null);
-        // Rectangle r = copyright.getBounds()
-        // at.translate(r.getWidth(), r.getHeight());
-        // AffineTransform at = new AffineTransform(
-        //     -1d, 0d, 0d, 1d, r.getWidth(), r.getHeight());
         Shape copyleft = at.createTransformedShape(copyright);
         Rectangle2D b = copyleft.getBounds2D();
         double cx = getWidth() / 2d - b.getCenterX();
