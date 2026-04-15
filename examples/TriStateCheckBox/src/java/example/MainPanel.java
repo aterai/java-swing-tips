@@ -242,7 +242,10 @@ class ComponentIcon implements Icon {
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
+    Container parent = c.getParent();
+    int iconWidth = getIconWidth();
+    int iconHeight = getIconHeight();
+    SwingUtilities.paintComponent(g, cmp, parent, x, y, iconWidth, iconHeight);
   }
 
   @Override public int getIconWidth() {

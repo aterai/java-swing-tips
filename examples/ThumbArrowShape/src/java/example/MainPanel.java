@@ -20,7 +20,8 @@ public final class MainPanel extends JPanel {
     JSlider slider5 = new JSlider(SwingConstants.HORIZONTAL);
 
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    Stream.of(slider0, slider1, slider2, slider3, slider4, slider5).forEach(s -> s.setModel(m));
+    Stream.of(slider0, slider1, slider2, slider3, slider4, slider5)
+        .forEach(s -> s.setModel(m));
 
     slider1.setMajorTickSpacing(20);
     slider1.setPaintTicks(true);

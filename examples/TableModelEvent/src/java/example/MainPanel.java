@@ -144,9 +144,9 @@ class HeaderRenderer implements TableCellRenderer {
       JLabel l = (JLabel) c;
       l.setIcon(new ComponentIcon(label));
       l.setText(null); // XXX: Nimbus???
-      // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
-      // System.out.println("getPreferredSize: " + l.getPreferredSize());
-      // System.out.println("getMaximumSize: " + l.getMaximumSize());
+      // System.out.println("HeaderRect:" + table.getTableHeader().getHeaderRect(column));
+      // System.out.println("PreferredSize:" + l.getPreferredSize());
+      // System.out.println("MaximumSize:" + l.getMaximumSize());
       // System.out.println("----");
       // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
       //   System.out.println(l.getPreferredSize().height);
@@ -166,7 +166,10 @@ class ComponentIcon implements Icon {
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
+    Container parent = c.getParent();
+    int iconWidth = getIconWidth();
+    int iconHeight = getIconHeight();
+    SwingUtilities.paintComponent(g, cmp, parent, x, y, iconWidth, iconHeight);
   }
 
   @Override public int getIconWidth() {

@@ -19,7 +19,9 @@ public final class MainPanel extends JPanel {
   }
 
   public Component makeUI(String prototypeValue, int visibleRowCount) {
-    String[] model1 = IntStream.range(0, 20).mapToObj(Objects::toString).toArray(String[]::new);
+    String[] model1 = IntStream.range(0, 20)
+        .mapToObj(Objects::toString)
+        .toArray(String[]::new);
     JList<String> list1 = new JList<>(model1);
     list1.setVisibleRowCount(visibleRowCount);
     list1.setPrototypeCellValue(prototypeValue);

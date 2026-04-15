@@ -108,7 +108,8 @@ class ScrollPaneLayerUI extends LayerUI<JScrollPane> {
       int value = m.getValue();
       if (value + extent < maximum) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(new Color(0x08_00_00_00, true));
         int shd = 6;
         int w = rect.width;
