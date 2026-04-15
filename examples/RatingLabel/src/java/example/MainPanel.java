@@ -230,9 +230,10 @@ class SelectedImageFilter extends RGBImageFilter {
   }
 
   @Override public int filterRGB(int x, int y, int argb) {
+    int a = argb & 0xFF_00_00_00;
     int r = Math.round(((argb >> 16) & 0xFF) * rf);
     int g = Math.round(((argb >> 8) & 0xFF) * gf);
     int b = Math.round((argb & 0xFF) * bf);
-    return argb & 0xFF_00_00_00 | r << 16 | g << 8 | b;
+    return a | r << 16 | g << 8 | b;
   }
 }
