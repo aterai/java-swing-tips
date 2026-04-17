@@ -19,20 +19,20 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
-  private static final JTextArea LOG = new JTextArea();
+  private final JTextArea logArea = new JTextArea();
 
   private MainPanel() {
     super(new BorderLayout());
-    LOG.setEditable(false);
-    JPopupMenu popup = new JPopupMenu();
-    popup.add("clear").addActionListener(e -> LOG.setText(""));
-    LOG.setComponentPopupMenu(popup);
+    logArea.setEditable(false);
+    JPopupMenu contextMenu = new JPopupMenu();
+    contextMenu.add("clear").addActionListener(e -> logArea.setText(""));
+    logArea.setComponentPopupMenu(contextMenu);
 
     JTree tree = new JTree() {
       @Override public void updateUI() {
         super.updateUI();
         setEditable(true);
-        setCellEditor(makeTreeCellEditor(this));
+        setCellEditor(createTreeCellEditor(this));
       }
 
       @Override public boolean isPathEditable(TreePath path) {
@@ -41,20 +41,20 @@ public final class MainPanel extends JPanel {
         return Optional.ofNullable(path.getLastPathComponent())
             .filter(TreeNode.class::isInstance)
             .map(TreeNode.class::cast)
-            .map(MainPanel::isLeaf)
+            .map(MainPanel.this::isLeafNode)
             .orElse(false);
       }
     };
 
-    JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    sp.setResizeWeight(.5);
-    sp.setTopComponent(new JScrollPane(tree));
-    sp.setBottomComponent(new JScrollPane(LOG));
-    add(sp);
+    JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    splitPane.setResizeWeight(.5);
+    splitPane.setTopComponent(new JScrollPane(tree));
+    splitPane.setBottomComponent(new JScrollPane(logArea));
+    add(splitPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static boolean isLeaf(TreeNode node) {
+  private boolean isLeafNode(TreeNode node) {
     boolean isLeaf = node.isLeaf();
     appendLog(String.format("  isLeaf: %s", isLeaf));
     if (node instanceof DefaultMutableTreeNode) {
@@ -64,28 +64,28 @@ public final class MainPanel extends JPanel {
     return isLeaf;
   }
 
-  private static TreeCellEditor makeTreeCellEditor(JTree tree) {
+  private TreeCellEditor createTreeCellEditor(JTree tree) {
     return new DefaultTreeCellEditor(tree, (DefaultTreeCellRenderer) tree.getCellRenderer()) {
       @Override public boolean isCellEditable(EventObject e) {
         appendLog("TreeCellEditor#isCellEditable(EventObject)");
-        boolean ret;
+        boolean editable;
         if (e instanceof MouseEvent) {
           MouseEvent me = (MouseEvent) e;
-          info(me);
-          ret = me.getClickCount() >= 2 || me.isShiftDown() || me.isControlDown();
+          logMouseEventDetails(me);
+          editable = me.getClickCount() >= 2 || me.isShiftDown() || me.isControlDown();
         } else if (e instanceof KeyEvent) {
           appendLog("  KeyEvent");
-          ret = super.isCellEditable(e);
+          editable = super.isCellEditable(e);
         } else { // e == null
           appendLog("  startEditing Action(F2)");
-          ret = super.isCellEditable(e);
+          editable = super.isCellEditable(e);
         }
-        return ret;
+        return editable;
       }
     };
   }
 
-  private static void info(MouseEvent e) {
+  private void logMouseEventDetails(MouseEvent e) {
     appendLog("  MouseEvent");
     appendLog(String.format("  getPoint(): %s", e.getPoint()));
     appendLog(String.format("  getClickCount: %d", e.getClickCount()));
@@ -93,8 +93,8 @@ public final class MainPanel extends JPanel {
     appendLog(String.format("  isControlDown: %s", e.isControlDown()));
   }
 
-  private static void appendLog(String str) {
-    LOG.append(str + "\n");
+  private void appendLog(String message) {
+    logArea.append(message + "\n");
   }
 
   public static void main(String[] args) {
