@@ -18,23 +18,25 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 0));
+    // Configure global Tree appearance
     UIManager.put("Tree.paintLines", true);
     UIManager.put("Tree.repaintWholeRow", true);
     UIManager.put("Tree.hash", Color.DARK_GRAY);
 
-    JTree tree = new JTree() {
+    JTree customTree = new JTree() {
       @Override public void updateUI() {
         super.updateUI();
+        // Apply the custom UI for whole-row selection
         setUI(new WholeRowSelectableTreeUI());
       }
     };
 
     add(new JScrollPane(new JTree()));
-    add(new JScrollPane(tree));
+    add(new JScrollPane(customTree));
 
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
     setPreferredSize(new Dimension(320, 240));
   }
@@ -61,18 +63,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
+/**
+ * A custom TreeUI that allows selection by clicking anywhere on the row.
+ */
+@SuppressWarnings("ReturnCount")
 class WholeRowSelectableTreeUI extends BasicTreeUI {
-  @SuppressWarnings({
-      "PMD.AvoidDeeplyNestedIfStmts",
-      "PMD.CyclomaticComplexity",
-      "PMD.NPathComplexity",
-      "PMD.NcssCount",
-      "PMD.CognitiveComplexity",
-      "CyclomaticComplexity",
-      "NPathComplexity",
-      "JavaNCSS",
-      "ExecutableStatementCount"
-  })
   @Override public void paint(Graphics g, JComponent c) {
     // @see javax/swing/plaf/synth/SynthTreeUI#paint(SynthContext ctx, Graphics g)
     // if (tree != c) {
@@ -90,159 +85,155 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
     Insets insets = tree.getInsets();
     TreePath initialPath = getClosestPathForLocation(tree, 0, paintBounds.y);
     Enumeration<?> paintingEnum = treeState.getVisiblePathsFrom(initialPath);
+
+    if (initialPath == null || paintingEnum == null) {
+      paintDropLine(g);
+      return;
+    }
+
+    drawingCache.clear();
+
+    // Pass 1: Draw row contents (background and renderer)
+    paintRows(g, paintBounds, insets, initialPath, paintingEnum);
+
+    // Pass 2: Draw connecting lines and expand/collapse controls
+    paintTreeStructure(g, paintBounds, insets, initialPath);
+
+    paintDropLine(g);
+    rendererPane.removeAll();
+    drawingCache.clear();
+  }
+
+  private void paintRows(
+      Graphics g, Rectangle paintBounds, Insets insets,
+      TreePath initialPath, Enumeration<?> paintingEnum) {
     int row = treeState.getRowForPath(initialPath);
     int endY = paintBounds.y + paintBounds.height;
     TreeModel treeModel = tree.getModel();
-    // SynthContext cellContext = getContext(tree, Region.TREE_CELL);
 
-    drawingCache.clear();
-    // setHashColor(context.getStyle().getColor(context, ColorType.FOREGROUND));
-
-    if (initialPath != null && paintingEnum != null) {
-      // First pass, draw the rows
-      boolean done = false;
-      boolean isExpanded;
-      boolean hasBeenExpanded;
-      boolean isLeaf;
-      // Rectangle rowBounds = new Rectangle(0, 0, tree.getWidth(), 0);
-      Rectangle bounds;
-      TreePath path;
-      // TreeCellRenderer renderer = tree.getCellRenderer();
-      // DefaultTreeCellRenderer tcr = null;
-      // if (renderer instanceof DefaultTreeCellRenderer) {
-      //   tcr = (DefaultTreeCellRenderer) renderer;
-      // }
-
-      // configureRenderer(cellContext);
-      while (!done && paintingEnum.hasMoreElements()) {
-        path = (TreePath) paintingEnum.nextElement();
-        bounds = getPathBounds(tree, path);
-        if (path != null && bounds != null) {
-          isLeaf = treeModel.isLeaf(path.getLastPathComponent());
-          if (isLeaf) {
-            isExpanded = false;
-            hasBeenExpanded = false;
-          } else {
-            isExpanded = treeState.getExpandedState(path);
-            hasBeenExpanded = tree.hasBeenExpanded(path);
-          }
-          // rowBounds.y = bounds.y;
-          // rowBounds.height = bounds.height;
-          // paintRow(renderer, tcr, context, cellContext, g,
-          //          paintBounds, insets, bounds, rowBounds, path,
-          //          row, isExpanded, hasBeenExpanded, isLeaf);
-          paintRow(
-              g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
-          if (bounds.y + bounds.height >= endY) {
-            done = true;
-          }
-        } else {
-          done = true;
-        }
-        row++;
+    while (paintingEnum.hasMoreElements()) {
+      TreePath path = (TreePath) paintingEnum.nextElement();
+      Rectangle bounds = getPathBounds(tree, path);
+      if (path == null || bounds == null) {
+        break;
       }
 
-      // Draw the connecting lines and controls.
-      // Find each parent and have them draw a line to their last child
-      // boolean rootVisible = tree.isRootVisible();
-      TreePath parentPath = initialPath;
+      boolean isLeaf = treeModel.isLeaf(path.getLastPathComponent());
+      boolean isExpanded = !isLeaf && treeState.getExpandedState(path);
+      boolean hasBeenExpanded = !isLeaf && tree.hasBeenExpanded(path);
+
+      paintRow(
+          g, paintBounds, insets, bounds, path, row,
+          isExpanded, hasBeenExpanded, isLeaf);
+
+      if (bounds.y + bounds.height >= endY) {
+        break;
+      }
+      row++;
+    }
+  }
+
+  private void paintTreeStructure(
+      Graphics g, Rectangle paintBounds, Insets insets, TreePath initialPath) {
+    // Cache vertical lines for parent paths
+    TreePath parentPath = initialPath.getParentPath();
+    while (parentPath != null) {
+      paintVerticalPartOfLeg(g, paintBounds, insets, parentPath);
+      drawingCache.put(parentPath, Boolean.TRUE);
       parentPath = parentPath.getParentPath();
-      while (parentPath != null) {
-        paintVerticalPartOfLeg(g, paintBounds, insets, parentPath);
-        drawingCache.put(parentPath, Boolean.TRUE);
-        parentPath = parentPath.getParentPath();
-      }
-      done = false;
-      paintingEnum = treeState.getVisiblePathsFrom(initialPath);
-      while (!done && paintingEnum.hasMoreElements()) {
-        path = (TreePath) paintingEnum.nextElement();
-        bounds = getPathBounds(tree, path);
-        if (path != null && bounds != null) {
-          isLeaf = treeModel.isLeaf(path.getLastPathComponent());
-          if (isLeaf) {
-            isExpanded = false;
-            hasBeenExpanded = false;
-          } else {
-            isExpanded = treeState.getExpandedState(path);
-            hasBeenExpanded = tree.hasBeenExpanded(path);
-          }
-          // See if the vertical line to the parent has been drawn.
-          parentPath = path.getParentPath();
-          if (parentPath != null) {
-            if (drawingCache.get(parentPath) == null) {
-              paintVerticalPartOfLeg(g, paintBounds, insets, parentPath);
-              drawingCache.put(parentPath, Boolean.TRUE);
-            }
-            paintHorizontalPartOfLeg(
-                g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
-          } else if (tree.isRootVisible() && row == 0) {
-            paintHorizontalPartOfLeg(
-                g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
-          }
-          if (shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded, isLeaf)) {
-            paintExpandControl(
-                g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
-          }
-          if (bounds.y + bounds.height >= endY) {
-            done = true;
-          }
-        } else {
-          done = true;
-        }
-        row++;
-      }
     }
 
-    paintDropLine(g);
+    // Draw structure lines for visible paths
+    Enumeration<?> paintingEnum = treeState.getVisiblePathsFrom(initialPath);
+    int row = treeState.getRowForPath(initialPath);
+    int endY = paintBounds.y + paintBounds.height;
+    TreeModel treeModel = tree.getModel();
 
-    // Empty out the renderer pane, allowing renderers to be gc'ed.
-    rendererPane.removeAll();
+    while (paintingEnum.hasMoreElements()) {
+      TreePath path = (TreePath) paintingEnum.nextElement();
+      Rectangle bounds = getPathBounds(tree, path);
+      if (path == null || bounds == null) {
+        break;
+      }
 
-    drawingCache.clear();
+      boolean isLeaf = treeModel.isLeaf(path.getLastPathComponent());
+      boolean isExpanded = !isLeaf && treeState.getExpandedState(path);
+      boolean hasBeenExpanded = !isLeaf && tree.hasBeenExpanded(path);
+
+      paintHorizontalLinesAndControls(
+          g, paintBounds, insets, bounds, path, row,
+          isExpanded, hasBeenExpanded, isLeaf);
+
+      if (bounds.y + bounds.height >= endY) {
+        break;
+      }
+      row++;
+    }
+  }
+
+  @SuppressWarnings("ParameterNumber")
+  private void paintHorizontalLinesAndControls(
+      Graphics g, Rectangle paintBounds, Insets insets, Rectangle bounds,
+      TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
+    TreePath parentPath = path.getParentPath();
+    if (parentPath != null) {
+      // Draw vertical line if not already in cache
+      if (drawingCache.get(parentPath) == null) {
+        paintVerticalPartOfLeg(g, paintBounds, insets, parentPath);
+        drawingCache.put(parentPath, Boolean.TRUE);
+      }
+      paintHorizontalPartOfLeg(
+          g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+    } else if (tree.isRootVisible() && row == 0) {
+      paintHorizontalPartOfLeg(
+          g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+    }
+
+    if (shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded, isLeaf)) {
+      paintExpandControl(
+          g, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf);
+    }
   }
 
   // @see javax/swing/plaf/basic/BasicTreeUI#paintRow(...)
   @SuppressWarnings("ReturnCount")
   @Override protected void paintRow(Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
     boolean isSelected = tree.isRowSelected(row);
+    int fullWidth = tree.getWidth();
 
-    // Don't paint the renderer if editing this row.
+    // Handle row background when editing
     if (editingComponent != null && editingRow == row) {
       if (isSelected) {
-        Color oldColor = g.getColor();
-        g.setColor(Color.PINK);
-        g.fillRect(0, bounds.y, tree.getWidth(), bounds.height);
-        g.setColor(oldColor);
+        drawSelectionBackground(g, 0, bounds.y, fullWidth, bounds.height, Color.PINK);
       }
       return;
     }
 
-    int leadIndex;
-    if (tree.hasFocus()) {
-      leadIndex = getLeadSelectionRow();
-    } else {
-      leadIndex = -1;
-    }
-    boolean hasFocus = leadIndex == row;
+    // Initialize cell renderer
+    Component renderer = currentCellRenderer.getTreeCellRendererComponent(
+        tree, path.getLastPathComponent(), isSelected, isExpanded, isLeaf, row, false);
 
-    Object lastPathComponent = path.getLastPathComponent();
-    Component component = currentCellRenderer.getTreeCellRendererComponent(
-        tree, lastPathComponent, isSelected, isExpanded, isLeaf, row, false);
-
+    // Draw selection highlight across the full width
     if (isSelected) {
-      Color oldColor = g.getColor();
-      g.setColor(getBackgroundSelectionColor(component));
-      g.fillRect(0, bounds.y, tree.getWidth(), bounds.height);
-      g.setColor(oldColor);
+      Color bsc = getBackgroundSelectionColor(renderer);
+      drawSelectionBackground(g, 0, bounds.y, fullWidth, bounds.height, bsc);
     }
 
     rendererPane.paintComponent(
-        g, component, tree, bounds.x, bounds.y, bounds.width, bounds.height, true);
+        g, renderer, tree, bounds.x, bounds.y, bounds.width, bounds.height, true);
 
-    if (hasFocus) {
+    // Draw focus indicator border
+    if (tree.hasFocus() && getLeadSelectionRow() == row) {
       g.setColor(UIManager.getColor("Tree.selectionBorderColor"));
-      g.drawRect(0, bounds.y, tree.getWidth() - 1, bounds.height - 1);
+      g.drawRect(0, bounds.y, fullWidth - 1, bounds.height - 1);
     }
+  }
+
+  private void drawSelectionBackground(Graphics g, int x, int y, int w, int h, Color color) {
+    Color oldColor = g.getColor();
+    g.setColor(color);
+    g.fillRect(x, y, w, h);
+    g.setColor(oldColor);
   }
 
   @Override protected MouseListener createMouseListener() {
@@ -261,28 +252,45 @@ class WholeRowSelectableTreeUI extends BasicTreeUI {
     };
   }
 
+  /**
+   * Converts mouse coordinates so that clicks outside the node label (but within the row)
+   * are treated as clicks on the node itself.
+   */
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private MouseEvent convertMouseEvent(MouseEvent e) {
-    boolean b1 = !tree.isEnabled() || !SwingUtilities.isLeftMouseButton(e) || e.isConsumed();
+    if (!tree.isEnabled() || !SwingUtilities.isLeftMouseButton(e) || e.isConsumed()) {
+      return e;
+    }
+
     int x = e.getX();
     int y = e.getY();
     TreePath path = getClosestPathForLocation(tree, x, y);
-    boolean b2 = path == null || isLocationInExpandControl(path, x, y);
+    if (path == null || isLocationInExpandControl(path, x, y)) {
+      return e;
+    }
+
     Rectangle bounds = getPathBounds(tree, path);
-    int newX = (int) bounds.getCenterX();
-    bounds.x = 0;
-    bounds.width = tree.getWidth();
-    return !b1 && !b2 && bounds.contains(e.getPoint()) ? new MouseEvent(
-        e.getComponent(), e.getID(), e.getWhen(),
-        e.getModifiers() | e.getModifiersEx(),
-        newX, e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton()) : e;
+    if (bounds == null) {
+      return e;
+    }
+
+    // Adjust the mouse X-coordinate to the center of the node bounds to trigger selection
+    int centerX = (int) bounds.getCenterX();
+    Rectangle rowExtendedBounds = new Rectangle(0, bounds.y, tree.getWidth(), bounds.height);
+
+    if (rowExtendedBounds.contains(e.getPoint())) {
+      return new MouseEvent(
+          (Component) e.getSource(), e.getID(), e.getWhen(),
+          e.getModifiers() | e.getModifiersEx(),
+          centerX, y, e.getClickCount(), e.isPopupTrigger(), e.getButton());
+    }
+    return e;
   }
 
-  private static Color getBackgroundSelectionColor(Component component) {
-    Color color = Color.LIGHT_GRAY;
-    if (component instanceof DefaultTreeCellRenderer) {
-      color = ((DefaultTreeCellRenderer) component).getBackgroundSelectionColor();
-    }
-    return color;
+  private static Color getBackgroundSelectionColor(Component c) {
+    return c instanceof DefaultTreeCellRenderer
+        ? ((DefaultTreeCellRenderer) c).getBackgroundSelectionColor()
+        : Color.LIGHT_GRAY;
   }
 }
 
