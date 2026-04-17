@@ -93,7 +93,7 @@ public final class MainPanel extends JPanel {
       if (o instanceof JComponent) {
         JComponent c = (JComponent) o;
         for (FocusType f : FocusType.values()) {
-          loadBindingMap(f, c.getInputMap(f.getId()), c.getActionMap());
+          loadBindingMap(f, f.getInputMap(c), c.getActionMap());
         }
       }
     } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException ex) {
@@ -249,11 +249,10 @@ class Binding {
   }
 }
 
-@SuppressWarnings("PMD.LongVariable")
 enum FocusType {
-  WHEN_FOCUSED(JComponent.WHEN_FOCUSED),
-  WHEN_IN_FOCUSED_WINDOW(JComponent.WHEN_IN_FOCUSED_WINDOW),
-  WHEN_ANCESTOR_OF_FOCUSED_COMPONENT(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+  FOCUSED(JComponent.WHEN_FOCUSED),
+  WINDOW(JComponent.WHEN_IN_FOCUSED_WINDOW),
+  ANCESTOR(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
   private final int id;
 
@@ -261,7 +260,7 @@ enum FocusType {
     this.id = id;
   }
 
-  public int getId() {
-    return id;
+  public InputMap getInputMap(JComponent c) {
+    return c.getInputMap(id);
   }
 }
