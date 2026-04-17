@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -101,14 +102,21 @@ class RandomDissolve extends JComponent implements ActionListener {
     return currentStage > 0 && copyNextStage();
   }
 
-  @SuppressWarnings("PMD.AvoidArrayLoops")
+  // @SuppressWarnings("PMD.AvoidArrayLoops")
+  // private boolean copyNextStage() {
+  //   currentStage -= 1;
+  //   for (int i = 0; i < step.length; i++) {
+  //     if (step[i] == currentStage) {
+  //       src[i] = dst[i];
+  //     }
+  //   }
+  //   return true;
+  // }
   private boolean copyNextStage() {
     currentStage -= 1;
-    for (int i = 0; i < step.length; i++) {
-      if (step[i] == currentStage) {
-        src[i] = dst[i];
-      }
-    }
+    IntStream.range(0, step.length)
+        .filter(i -> step[i] == currentStage)
+        .forEach(i -> src[i] = dst[i]);
     return true;
   }
 
@@ -136,9 +144,11 @@ class RandomDissolve extends JComponent implements ActionListener {
     dst = getData(copyImage(mode ? image1 : image2));
     step = new int[src.length];
     mode ^= true;
-    for (int i = 0; i < step.length; i++) {
-      step[i] = rnd.nextInt(currentStage);
-    }
+    // for (int i = 0; i < step.length; i++) {
+    //   step[i] = rnd.nextInt(currentStage);
+    // }
+    IntStream.range(0, step.length)
+        .forEach(i -> step[i] = rnd.nextInt(currentStage));
     animator.start();
   }
 
