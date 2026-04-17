@@ -38,58 +38,116 @@ public final class MainPanel extends JPanel {
     g2.dispose();
   }
 
-  // [Fun with Java2D - Strokes](http://www.jhlabs.com/java/java2d/strokes/)
-  // http://www.jhlabs.com/java/java2d/strokes/ShapeStroke.java
-  @SuppressWarnings("ExecutableStatementCount")
+  private static final class PathState {
+    private int idx;
+    private double next;
+    private double nextAdvance;
+    private final Point2D prevPt = new Point2D.Double();
+  }
+
   public static Shape createTextOnPath(Shape shape, GlyphVector gv) {
-    double[] points = new double[6];
-    Point2D prevPt = new Point2D.Double();
-    double nextAdvance = 0d;
-    double next = 0d;
     Path2D result = new Path2D.Double();
+    PathState state = new PathState();
     int length = gv.getNumGlyphs();
-    int idx = 0;
+    double[] points = new double[6];
     PathIterator pi = new FlatteningPathIterator(shape.getPathIterator(null), 1d);
-    while (idx < length && !pi.isDone()) {
-      switch (pi.currentSegment(points)) {
-        case PathIterator.SEG_MOVETO:
-          result.moveTo(points[0], points[1]);
-          prevPt.setLocation(points[0], points[1]);
-          nextAdvance = gv.getGlyphMetrics(idx).getAdvance() * .5;
-          next = nextAdvance;
-          break;
 
-        case PathIterator.SEG_LINETO:
-          double dx = points[0] - prevPt.getX();
-          double dy = points[1] - prevPt.getY();
-          double distance = Math.hypot(dx, dy);
-          if (distance >= next) {
-            double r = 1d / distance;
-            double angle = Math.atan2(dy, dx);
-            while (idx < length && distance >= next) {
-              double x = prevPt.getX() + next * dx * r;
-              double y = prevPt.getY() + next * dy * r;
-              double advance = nextAdvance;
-              nextAdvance = getNextAdvance(gv, idx, length);
-              AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-              at.rotate(angle);
-              Point2D pt = gv.getGlyphPosition(idx);
-              at.translate(-pt.getX() - advance, -pt.getY());
-              result.append(at.createTransformedShape(gv.getGlyphOutline(idx)), false);
-              next += advance + nextAdvance;
-              idx++;
-            }
-          }
-          next -= distance;
-          prevPt.setLocation(points[0], points[1]);
-          break;
-
-        default:
+    while (state.idx < length && !pi.isDone()) {
+      int type = pi.currentSegment(points);
+      if (type == PathIterator.SEG_MOVETO) {
+        result.moveTo(points[0], points[1]);
+        state.prevPt.setLocation(points[0], points[1]);
+        state.nextAdvance = gv.getGlyphMetrics(state.idx).getAdvance() * .5;
+        state.next = state.nextAdvance;
+      } else if (type == PathIterator.SEG_LINETO) {
+        appendGlyphsOnLine(result, state, points, gv, length);
       }
       pi.next();
     }
     return result;
   }
+
+  private static void appendGlyphsOnLine(
+      Path2D result, PathState s, double[] pts, GlyphVector gv, int len) {
+    double dx = pts[0] - s.prevPt.getX();
+    double dy = pts[1] - s.prevPt.getY();
+    double distance = Math.hypot(dx, dy);
+
+    if (distance >= s.next) {
+      double r = 1d / distance;
+      double angle = Math.atan2(dy, dx);
+      while (s.idx < len && distance >= s.next) {
+        double x = s.prevPt.getX() + s.next * dx * r;
+        double y = s.prevPt.getY() + s.next * dy * r;
+        double advance = s.nextAdvance;
+        s.nextAdvance = getNextAdvance(gv, s.idx, len);
+
+        AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+        at.rotate(angle);
+        Point2D p = gv.getGlyphPosition(s.idx);
+        at.translate(-p.getX() - advance, -p.getY());
+        result.append(at.createTransformedShape(gv.getGlyphOutline(s.idx)), false);
+
+        s.next += advance + s.nextAdvance;
+        s.idx++;
+      }
+    }
+    s.next -= distance;
+    s.prevPt.setLocation(pts[0], pts[1]);
+  }
+
+  // // [Fun with Java2D - Strokes](http://www.jhlabs.com/java/java2d/strokes/)
+  // // http://www.jhlabs.com/java/java2d/strokes/ShapeStroke.java
+  // @SuppressWarnings("ExecutableStatementCount")
+  // public static Shape createTextOnPath(Shape shape, GlyphVector gv) {
+  //   double[] points = new double[6];
+  //   Point2D prevPt = new Point2D.Double();
+  //   double nextAdvance = 0d;
+  //   double next = 0d;
+  //   Path2D result = new Path2D.Double();
+  //   int length = gv.getNumGlyphs();
+  //   int idx = 0;
+  //   PathIterator pi = new FlatteningPathIterator(shape.getPathIterator(null), 1d);
+  //   while (idx < length && !pi.isDone()) {
+  //     switch (pi.currentSegment(points)) {
+  //       case PathIterator.SEG_MOVETO:
+  //         result.moveTo(points[0], points[1]);
+  //         prevPt.setLocation(points[0], points[1]);
+  //         nextAdvance = gv.getGlyphMetrics(idx).getAdvance() * .5;
+  //         next = nextAdvance;
+  //         break;
+  //
+  //       case PathIterator.SEG_LINETO:
+  //         double dx = points[0] - prevPt.getX();
+  //         double dy = points[1] - prevPt.getY();
+  //         double distance = Math.hypot(dx, dy);
+  //         if (distance >= next) {
+  //           double r = 1d / distance;
+  //           double angle = Math.atan2(dy, dx);
+  //           while (idx < length && distance >= next) {
+  //             double x = prevPt.getX() + next * dx * r;
+  //             double y = prevPt.getY() + next * dy * r;
+  //             double advance = nextAdvance;
+  //             nextAdvance = getNextAdvance(gv, idx, length);
+  //             AffineTransform at = AffineTransform.getTranslateInstance(x, y);
+  //             at.rotate(angle);
+  //             Point2D pt = gv.getGlyphPosition(idx);
+  //             at.translate(-pt.getX() - advance, -pt.getY());
+  //             result.append(at.createTransformedShape(gv.getGlyphOutline(idx)), false);
+  //             next += advance + nextAdvance;
+  //             idx++;
+  //           }
+  //         }
+  //         next -= distance;
+  //         prevPt.setLocation(points[0], points[1]);
+  //         break;
+  //
+  //       default:
+  //     }
+  //     pi.next();
+  //   }
+  //   return result;
+  // }
 
   private static double getNextAdvance(GlyphVector gv, int idx, int length) {
     double na;
