@@ -38,7 +38,8 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(() -> {
           UIManager.getLookAndFeel().provideErrorFeedback(c);
           String msg = "paste is disabled";
-          JOptionPane.showMessageDialog(getRootPane(), msg, "Error", JOptionPane.ERROR_MESSAGE);
+          JRootPane root = getRootPane();
+          JOptionPane.showMessageDialog(root, msg, "Error", JOptionPane.ERROR_MESSAGE);
         });
       }
     });

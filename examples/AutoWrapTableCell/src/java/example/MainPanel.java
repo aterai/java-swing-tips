@@ -103,7 +103,8 @@ class AutoWrapTable extends JTable {
 //     super.updateUI();
 //     setEnabled(false);
 //     setShowGrid(false);
-//     getColumnModel().getColumn(AUTO_WRAP_COLUMN).setCellRenderer(new TextAreaCellRenderer());
+//     getColumnModel().getColumn(AUTO_WRAP_COLUMN)
+//         .setCellRenderer(new TextAreaCellRenderer());
 //   }
 //
 //   @Override public void doLayout() {

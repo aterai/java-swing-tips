@@ -12,7 +12,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JComboBox<String> combo = new JComboBox<>(new String[] {"AAAAA", "BBBB", "CCC", "DD", "E"});
+    String[] items = {"Item0", "Item1", "Item2", "Item3"};
+    JComboBox<String> combo = new JComboBox<>(items);
     combo.setSelectedIndex(-1);
 
     JButton b1 = new JButton("setSelectedIndex(0)");

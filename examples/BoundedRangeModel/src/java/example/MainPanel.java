@@ -115,8 +115,8 @@ public final class MainPanel extends JPanel {
       g.setColor(Color.WHITE);
       g.fillRect(cellRect.x, cellRect.y, cellRect.width, cellRect.height);
 
-      // JViewport viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, c);
       JViewport viewport = scroll.getViewport();
+      // viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, c);
       Rectangle viewRect = viewport.getBounds();
       Rectangle tableRect = table.getBounds();
 
