@@ -20,7 +20,7 @@ import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 
 public final class MainPanel extends JPanel {
-  private final transient ListItem[] defaultModel = {
+  private final transient ListItem[] defaultItems = {
       new ListItem("red", Color.RED),
       new ListItem("green", Color.GREEN),
       new ListItem("blue", Color.BLUE),
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
       setFixedCellWidth(64);
       setFixedCellHeight(64);
       setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-      setCellRenderer(new ListItemListCellRenderer<>());
+      setCellRenderer(new ListItemRenderer<>());
       handler = new ClearSelectionListener();
       addMouseListener(handler);
     }
@@ -58,69 +58,69 @@ public final class MainPanel extends JPanel {
   private transient Comparator<ListItem> comparator;
   private final JRadioButton ascending = new JRadioButton("ascending", true);
   private final JRadioButton descending = new JRadioButton("descending");
-  private final List<JRadioButton> directionList = Arrays.asList(ascending, descending);
+  private final List<JRadioButton> directions = Arrays.asList(ascending, descending);
 
   private MainPanel() {
     super(new BorderLayout());
-    Stream.of(defaultModel).forEach(model::addElement);
+    Stream.of(defaultItems).forEach(model::addElement);
     list.setModel(model);
 
-    JRadioButton r1 = new JRadioButton("None", true);
-    r1.addItemListener(e -> {
+    JRadioButton noneButton = new JRadioButton("None", true);
+    noneButton.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         setComparator(null);
-        sort();
+        sortList();
       }
     });
 
-    JRadioButton r2 = new JRadioButton("Name");
-    r2.addItemListener(e -> {
+    JRadioButton nameButton = new JRadioButton("Name");
+    nameButton.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         setComparator(Comparator.comparing(ListItem::getTitle));
-        reversed();
-        sort();
+        reverseComparatorIfNeeded();
+        sortList();
       }
     });
 
-    JRadioButton r3 = new JRadioButton("Color");
-    r3.addItemListener(e -> {
+    JRadioButton colorButton = new JRadioButton("Color");
+    colorButton.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         setComparator(Comparator.comparing(item -> item.getColor().getRGB()));
-        reversed();
-        sort();
+        reverseComparatorIfNeeded();
+        sortList();
       }
     });
 
-    Box box1 = Box.createHorizontalBox();
-    box1.add(new JLabel("Sort: "));
-    ButtonGroup bg1 = new ButtonGroup();
-    Stream.of(r1, r2, r3).forEach(r -> {
-      bg1.add(r);
-      box1.add(r);
+    Box sortBox = Box.createHorizontalBox();
+    sortBox.add(new JLabel("Sort: "));
+    ButtonGroup sortButtonGroup = new ButtonGroup();
+    Stream.of(noneButton, nameButton, colorButton).forEach(r -> {
+      sortButtonGroup.add(r);
+      sortBox.add(r);
     });
-    box1.add(Box.createHorizontalGlue());
+    sortBox.add(Box.createHorizontalGlue());
 
-    Box box2 = Box.createHorizontalBox();
-    box2.add(new JLabel("Direction: "));
-    ButtonGroup bg2 = new ButtonGroup();
-    ItemListener listener = e -> {
+    Box directionBox = Box.createHorizontalBox();
+    directionBox.add(new JLabel("Direction: "));
+    ButtonGroup dirButtonGroup = new ButtonGroup();
+    ItemListener directionListener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED && comparator != null) {
         setComparator(comparator.reversed());
-        sort();
+        sortList();
       }
     };
-    directionList.forEach(r -> {
-      bg2.add(r);
-      box2.add(r);
-      r.addItemListener(listener);
+    directions.forEach(r -> {
+      dirButtonGroup.add(r);
+      directionBox.add(r);
+      r.addItemListener(directionListener);
       r.setEnabled(false);
     });
-    box2.add(Box.createHorizontalGlue());
+    directionBox.add(Box.createHorizontalGlue());
 
     JPanel p = new JPanel(new GridLayout(2, 1));
     p.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
-    p.add(box1);
-    p.add(box2);
+    p.add(sortBox);
+    p.add(directionBox);
 
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(list));
@@ -131,23 +131,23 @@ public final class MainPanel extends JPanel {
     this.comparator = comp;
   }
 
-  private void reversed() {
+  private void reverseComparatorIfNeeded() {
     if (descending.isSelected()) {
       comparator = comparator.reversed();
     }
   }
 
-  private void sort() {
-    List<ListItem> selected = list.getSelectedValuesList();
+  private void sortList() {
+    List<ListItem> selectedItems = list.getSelectedValuesList();
     model.clear();
     if (comparator == null) {
-      Stream.of(defaultModel).forEach(model::addElement);
-      directionList.forEach(r -> r.setEnabled(false));
+      Stream.of(defaultItems).forEach(model::addElement);
+      directions.forEach(r -> r.setEnabled(false));
     } else {
-      Stream.of(defaultModel).sorted(comparator).forEach(model::addElement);
-      directionList.forEach(r -> r.setEnabled(true));
+      Stream.of(defaultItems).sorted(comparator).forEach(model::addElement);
+      directions.forEach(r -> r.setEnabled(true));
     }
-    for (ListItem item : selected) {
+    for (ListItem item : selectedItems) {
       int i = model.indexOf(item);
       list.addSelectionInterval(i, i);
     }
@@ -175,7 +175,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E> {
+class ListItemRenderer<E extends ListItem> implements ListCellRenderer<E> {
   protected static final Color SELECTED_COLOR = new Color(0x40_32_64_FF, true);
   private final JLabel label = new JLabel("", null, SwingConstants.CENTER) {
     @Override protected void paintComponent(Graphics g) {
@@ -192,7 +192,7 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
   private final Border focusBorder = UIManager.getBorder("List.focusCellHighlightBorder");
   private final Border noFocusBorder; // = UIManager.getBorder("List.noFocusBorder");
 
-  protected ListItemListCellRenderer() {
+  protected ListItemRenderer() {
     Border b = UIManager.getBorder("List.noFocusBorder");
     if (Objects.isNull(b)) { // Nimbus???
       Insets i = focusBorder.getBorderInsets(renderer);
@@ -283,13 +283,13 @@ class ColorIcon implements Icon {
 class ClearSelectionListener extends MouseInputAdapter {
   private boolean startOutside;
 
-  private static <E> void clearSelectionAndFocus(JList<E> list) {
+  private static <E> void clearSelectionAndResetFocus(JList<E> list) {
     list.clearSelection();
     list.getSelectionModel().setAnchorSelectionIndex(-1);
     list.getSelectionModel().setLeadSelectionIndex(-1);
   }
 
-  private static <E> boolean contains(JList<E> list, Point pt) {
+  private static <E> boolean containsPoint(JList<E> list, Point pt) {
     return IntStream.range(0, list.getModel().getSize())
         .mapToObj(i -> list.getCellBounds(i, i))
         .anyMatch(r -> r != null && r.contains(pt));
@@ -297,9 +297,9 @@ class ClearSelectionListener extends MouseInputAdapter {
 
   @Override public void mousePressed(MouseEvent e) {
     JList<?> list = (JList<?>) e.getComponent();
-    startOutside = !contains(list, e.getPoint());
+    startOutside = !containsPoint(list, e.getPoint());
     if (startOutside) {
-      clearSelectionAndFocus(list);
+      clearSelectionAndResetFocus(list);
     }
   }
 
@@ -309,10 +309,10 @@ class ClearSelectionListener extends MouseInputAdapter {
 
   @Override public void mouseDragged(MouseEvent e) {
     JList<?> list = (JList<?>) e.getComponent();
-    if (contains(list, e.getPoint())) {
+    if (containsPoint(list, e.getPoint())) {
       startOutside = false;
     } else if (startOutside) {
-      clearSelectionAndFocus(list);
+      clearSelectionAndResetFocus(list);
     }
   }
 }
