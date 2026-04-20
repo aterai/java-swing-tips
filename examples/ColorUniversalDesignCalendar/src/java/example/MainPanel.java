@@ -10,6 +10,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
@@ -35,8 +36,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
     MonthTable monthTable = new MonthTable();
-    LocalDate realLocalDate = LocalDate.of(2020, 7, 27);
-    updateMonthView(monthTable, monthLabel, realLocalDate);
+    LocalDate realDate = LocalDate.now(ZoneId.systemDefault());
+    updateMonthView(monthTable, monthLabel, realDate);
 
     JButton prev = new JButton("<");
     prev.addActionListener(e -> {
@@ -96,7 +97,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MonthTable extends JTable {
-  private LocalDate currentLocalDate;
+  private LocalDate currentDate;
 
   @Override public void updateUI() {
     super.updateUI();
@@ -110,11 +111,11 @@ class MonthTable extends JTable {
   }
 
   public void setCurrentLocalDate(LocalDate date) {
-    currentLocalDate = date;
+    currentDate = date;
   }
 
   public LocalDate getCurrentLocalDate() {
-    return currentLocalDate;
+    return currentDate;
   }
 
   @Override public void doLayout() {
@@ -122,18 +123,18 @@ class MonthTable extends JTable {
     Class<JViewport> clz = JViewport.class;
     Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
         .filter(clz::isInstance).map(clz::cast)
-        .ifPresent(this::updateRowsHeight);
+        .ifPresent(this::adjustRowHeights);
   }
 
-  private void updateRowsHeight(JViewport viewport) {
+  private void adjustRowHeights(JViewport viewport) {
     int height = viewport.getExtentSize().height;
     int rowCount = getModel().getRowCount();
-    int defaultRowHeight = height / rowCount;
+    int baseRowHeight = height / rowCount;
     int remainder = height % rowCount;
     for (int i = 0; i < rowCount; i++) {
-      int a = defaultRowHeight + Math.min(Math.max(remainder, 0), 1);
-      // Java 21: int a = defaultRowHeight + Math.clamp(remainder, 0, 1);
-      setRowHeight(i, Math.max(1, a));
+      int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
+      // Java 21: int adjustedHeight = baseRowHeight + Math.clamp(remainder, 0, 1);
+      setRowHeight(i, Math.max(1, adjustedHeight));
       remainder -= 1;
     }
   }
@@ -143,7 +144,8 @@ class CalendarTableRenderer implements TableCellRenderer {
   private final JPanel renderer = new JPanel(new FlowLayout(FlowLayout.LEADING, 1, 1));
   private final EnclosedLabel label = new EnclosedLabel();
   // private final JLabel holiday = new EnclosedLabel();
-  private LocalDate currentLocalDate;
+  private final LocalDate realDate = LocalDate.now(ZoneId.systemDefault());
+  private LocalDate currentDate;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     renderer.setOpaque(true);
@@ -151,7 +153,7 @@ class CalendarTableRenderer implements TableCellRenderer {
     renderer.add(label);
     label.setOpaque(false);
     if (value instanceof LocalDate && table instanceof MonthTable) {
-      currentLocalDate = ((MonthTable) table).getCurrentLocalDate();
+      currentDate = ((MonthTable) table).getCurrentLocalDate();
       LocalDate d = (LocalDate) value;
       updateEnclosedLabel(table, label, d);
       // if (isJapaneseNationalHoliday(d)) {
@@ -162,7 +164,7 @@ class CalendarTableRenderer implements TableCellRenderer {
       // }
       if (selected) {
         renderer.setBackground(table.getSelectionBackground());
-      } else if (d.isEqual(currentLocalDate)) {
+      } else if (d.isEqual(realDate)) {
         renderer.setBackground(new Color(0xDC_FF_DC));
       } else {
         renderer.setBackground(getDayOfWeekColor(table, d.getDayOfWeek()));
@@ -175,7 +177,7 @@ class CalendarTableRenderer implements TableCellRenderer {
     String txt = Integer.toString(d.getDayOfMonth());
     lbl.setText("<html><b>" + txt);
     // label.setText(getDayOfWeekText(d));
-    boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(currentLocalDate));
+    boolean isThisMonth = YearMonth.from(d).equals(YearMonth.from(currentDate));
     if (isThisMonth && (d.getDayOfWeek() == DayOfWeek.SUNDAY || isJapaneseNationalHoliday(d))) {
       lbl.setEnclosedShape(EnclosedShape.ROUNDED_RECTANGLE);
       lbl.setForeground(table.getBackground());

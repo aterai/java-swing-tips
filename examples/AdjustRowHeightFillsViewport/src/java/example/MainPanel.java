@@ -100,19 +100,19 @@ class AdjustRowHeightTable extends JTable {
     Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
         .filter(clz::isInstance)
         .map(clz::cast)
-        .ifPresent(this::updateRowsHeight);
+        .ifPresent(this::adjustRowHeights);
   }
 
-  private void updateRowsHeight(JViewport viewport) {
+  private void adjustRowHeights(JViewport viewport) {
     int height = viewport.getExtentSize().height;
     int rowCount = getModel().getRowCount();
-    int rowHeight = height / rowCount;
-    if ((height != prevHeight || rowCount != prevCount) && rowHeight > 0) {
+    int baseRowHeight = height / rowCount;
+    if ((height != prevHeight || rowCount != prevCount) && baseRowHeight > 0) {
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = rowHeight + Math.min(Math.max(remainder, 0), 1);
-        // Java 21: int a = rowHeight + Math.clamp(remainder, 0, 1);
-        setRowHeight(i, Math.max(1, a));
+        int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
+        // Java 21: int adjustedHeight = rowHeight + Math.clamp(remainder, 0, 1);
+        setRowHeight(i, Math.max(1, adjustedHeight));
         remainder -= 1;
       }
     }

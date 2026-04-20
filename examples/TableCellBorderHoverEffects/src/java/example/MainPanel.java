@@ -113,7 +113,7 @@ public final class MainPanel extends JPanel {
       Class<JViewport> clz = JViewport.class;
       Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
           .filter(clz::isInstance).map(clz::cast)
-          .ifPresent(this::updateRowsHeight);
+          .ifPresent(this::adjustRowHeights);
     }
 
     @Override protected void paintComponent(Graphics g) {
@@ -132,15 +132,15 @@ public final class MainPanel extends JPanel {
       super.paintComponent(g);
     }
 
-    private void updateRowsHeight(JViewport viewport) {
+    private void adjustRowHeights(JViewport viewport) {
       int height = viewport.getExtentSize().height;
       int rowCount = getModel().getRowCount();
-      int rowHeight = height / rowCount;
+      int baseRowHeight = height / rowCount;
       int remainder = height % rowCount;
       for (int i = 0; i < rowCount; i++) {
-        int a = rowHeight + Math.min(Math.max(remainder, 0), 1);
-        // int a = rowHeight + Math.clamp(remainder, 0, 1);
-        setRowHeight(i, Math.max(1, a));
+        int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
+        // int adjustedHeight = baseRowHeight + Math.clamp(remainder, 0, 1);
+        setRowHeight(i, Math.max(1, adjustedHeight));
         remainder -= 1;
       }
     }
