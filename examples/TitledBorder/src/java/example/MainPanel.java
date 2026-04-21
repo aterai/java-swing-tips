@@ -76,7 +76,7 @@ public final class MainPanel extends JPanel {
 }
 
 enum VerticalOrientation {
-  DEFAULT_POSITION(TitledBorder.DEFAULT_POSITION, "Default Position"),
+  DEFAULT(TitledBorder.DEFAULT_POSITION, "Default Position"),
   ABOVE_TOP(TitledBorder.ABOVE_TOP, "Above Top"),
   TOP(TitledBorder.TOP, "Top"),
   BELOW_TOP(TitledBorder.BELOW_TOP, "Below Top"),
@@ -100,9 +100,8 @@ enum VerticalOrientation {
   }
 }
 
-@SuppressWarnings("PMD.LongVariable")
 enum Justification {
-  DEFAULT_JUSTIFICATION(TitledBorder.DEFAULT_JUSTIFICATION, "Default Justification"),
+  DEFAULT(TitledBorder.DEFAULT_JUSTIFICATION, "Default Justification"),
   LEFT(TitledBorder.LEFT, "Left"),
   CENTER(TitledBorder.CENTER, "Center"),
   RIGHT(TitledBorder.RIGHT, "Right"),
