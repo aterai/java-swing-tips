@@ -90,11 +90,11 @@ public final class MainPanel extends JPanel {
     d.put("CheckBoxMenuItem[Enabled].checkIconPainter",
         new MyCheckBoxMenuItemPainter(CheckIcon.ENABLED));
     d.put("CheckBoxMenuItem[MouseOver].checkIconPainter",
-        new MyCheckBoxMenuItemPainter(CheckIcon.MOUSEOVER));
+        new MyCheckBoxMenuItemPainter(CheckIcon.HOVER));
     d.put("CheckBoxMenuItem[Enabled+Selected].checkIconPainter",
         new MyCheckBoxMenuItemPainter(CheckIcon.ENABLED_SELECTED));
     d.put("CheckBoxMenuItem[MouseOver+Selected].checkIconPainter",
-        new MyCheckBoxMenuItemPainter(CheckIcon.SELECTED_MOUSEOVER));
+        new MyCheckBoxMenuItemPainter(CheckIcon.SELECTED_HOVER));
     JMenuBar menuBar = new JMenuBar();
     JMenu menu = new JMenu("Menu");
     menuBar.add(menu);
@@ -136,9 +136,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings("PMD.LongVariable")
+// @SuppressWarnings("PMD.LongVariable")
+// enum CheckIcon {
+//   ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER
+// }
 enum CheckIcon {
-  ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER
+  ENABLED_SELECTED, SELECTED_HOVER, ENABLED, HOVER
 }
 
 // @see CheckBoxMenuItemPainter.java
@@ -164,13 +167,13 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
       case ENABLED:
         paintCheckIconEnabled(g);
         break;
-      case MOUSEOVER:
+      case HOVER:
         paintCheckIconMouseOver(g);
         break;
       case ENABLED_SELECTED:
         paintCheckIconEnabledAndSelected(g);
         break;
-      case SELECTED_MOUSEOVER:
+      case SELECTED_HOVER:
         paintCheckIconSelectedAndMouseOver(g);
         break;
     }
@@ -233,7 +236,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
       setBackground(table.getBackground());
     }
     setBounds(table.getCellRect(row, column, false));
-    int maxH = getAdjustedRowHeight(row, column);
+    int maxH = adjustedRowHeights(row, column);
     if (table.getRowHeight(row) != maxH) {
       table.setRowHeight(row, maxH);
     }
@@ -242,7 +245,7 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
 
   // Calculate the new preferred height for a given row, and sets the height on the table.
   // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
-  private int getAdjustedRowHeight(int row, int column) {
+  private int adjustedRowHeights(int row, int column) {
     // The trick for this to work properly is to set the width of the column to the
     // text area. The reason for this is that getPreferredSize(), without a width tries
     // to place all the text in one line. By setting the size with the width of the column,
