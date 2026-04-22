@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
 
     EventQueue.invokeLater(this::setMenuBar);
 
-    String key1 = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
+    String key1 = TreeDraws.FOCUS_ICON_BORDER.toString();
     check1.setText(key1);
     check1.setSelected(UIManager.getBoolean(key1));
     check1.addActionListener(e -> {
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
       SwingUtilities.updateComponentTreeUI(c.getRootPane());
     });
 
-    String key2 = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
+    String key2 = TreeDraws.DASHED_FOCUS_IND.toString();
     check2.setText(key2);
     check2.setSelected(UIManager.getBoolean(key2));
     check2.addActionListener(e -> {
@@ -115,10 +115,10 @@ public final class MainPanel extends JPanel {
   private void updateCheckBox(String str) {
     EventQueue.invokeLater(() -> {
       append("--------\n" + str);
-      String focusKey = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
+      String focusKey = TreeDraws.FOCUS_ICON_BORDER.toString();
       append(focusKey + ": " + UIManager.getBoolean(focusKey));
       check1.setSelected(UIManager.getBoolean(focusKey));
-      String dashedKey = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
+      String dashedKey = TreeDraws.DASHED_FOCUS_IND.toString();
       append(dashedKey + ": " + UIManager.getBoolean(dashedKey));
       check2.setSelected(UIManager.getBoolean(dashedKey));
     });
@@ -163,10 +163,9 @@ public final class MainPanel extends JPanel {
   // }
 }
 
-@SuppressWarnings("PMD.LongVariable")
 enum TreeDraws {
-  DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
-  DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
+  FOCUS_ICON_BORDER("Tree.drawsFocusBorderAroundIcon"),
+  DASHED_FOCUS_IND("Tree.drawDashedFocusIndicator");
   private final String key;
 
   /* default */ TreeDraws(String key) {

@@ -13,7 +13,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTree tree = new JTree();
 
-    String key1 = TreeDraws.DRAWS_FOCUS_BORDER_AROUND_ICON.toString();
+    String key1 = TreeDraws.FOCUS_ICON_BORDER.toString();
     JCheckBox check1 = new JCheckBox(key1, UIManager.getBoolean(key1));
     check1.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
       SwingUtilities.updateComponentTreeUI(c.getRootPane());
     });
 
-    String key2 = TreeDraws.DRAW_DASHED_FOCUS_INDICATOR.toString();
+    String key2 = TreeDraws.DASHED_FOCUS_IND.toString();
     JCheckBox check2 = new JCheckBox(key2, UIManager.getBoolean(key2));
     check2.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
@@ -73,10 +73,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings("PMD.LongVariable")
 enum TreeDraws {
-  DRAWS_FOCUS_BORDER_AROUND_ICON("Tree.drawsFocusBorderAroundIcon"),
-  DRAW_DASHED_FOCUS_INDICATOR("Tree.drawDashedFocusIndicator");
+  FOCUS_ICON_BORDER("Tree.drawsFocusBorderAroundIcon"),
+  DASHED_FOCUS_IND("Tree.drawDashedFocusIndicator");
   private final String key;
 
   /* default */ TreeDraws(String key) {
