@@ -602,7 +602,7 @@ class TabDropTargetListener implements DropTargetListener {
 class GhostGlassPane extends JComponent {
   private final DnDTabbedPane tabbedPane;
   private final Rectangle lineRect = new Rectangle();
-  private final Color lineColor = new Color(0, 100, 255);
+  private final Color lineColor = new Color(0x00_64_FF);
   private final Point location = new Point();
   private transient BufferedImage draggingGhost;
 
