@@ -151,10 +151,11 @@ class ImageFilterLayerUI<V extends Component> extends LayerUI<V> {
 
 class ColorFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
+    int a = argb & 0xFF_00_00_00;
     int r = 0xFF; // (argb >> 16) & 0xFF;
     int g = (argb >> 8) & 0xFF;
     int b = argb & 0xFF;
-    return argb & 0xFF_00_00_00 | r << 16 | g << 8 | b;
+    return a | r << 16 | g << 8 | b;
   }
 }
 
