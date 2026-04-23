@@ -78,7 +78,7 @@ class GroupCheckBox extends JCheckBox {
   private class ButtonGroupModel extends ToggleButtonModel {
     private final int groupSize;
 
-    protected ButtonGroupModel(int groupSize) {
+    private ButtonGroupModel(int groupSize) {
       super();
       this.groupSize = groupSize;
     }
