@@ -24,31 +24,31 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JEditorPane hint = new JEditorPane();
-    hint.setEditorKit(new HTMLEditorKit());
-    hint.setEditable(false);
-    hint.setOpaque(false);
+    JEditorPane hintEditor = new JEditorPane();
+    hintEditor.setEditorKit(new HTMLEditorKit());
+    hintEditor.setEditable(false);
+    hintEditor.setOpaque(false);
     JCheckBox check = new JCheckBox();
     check.setOpaque(false);
-    JPanel tipPanel = new JPanel(new BorderLayout());
-    tipPanel.add(hint);
-    tipPanel.add(check, BorderLayout.EAST);
+    JPanel tooltipContentPanel = new JPanel(new BorderLayout());
+    tooltipContentPanel.add(hintEditor);
+    tooltipContentPanel.add(check, BorderLayout.EAST);
     JPopupMenu popup = new JPopupMenu();
-    popup.add(new JScrollPane(tipPanel));
+    popup.add(new JScrollPane(tooltipContentPanel));
     popup.setBorder(BorderFactory.createEmptyBorder());
 
-    JEditorPane editor = new SelectableToolTipEditorPane(tipPanel);
+    JEditorPane editor = new RichToolTipEditorPane(tooltipContentPanel);
     editor.setEditorKit(new HTMLEditorKit());
     editor.setText(HTML_TEXT);
     editor.setEditable(false);
-    editor.addHyperlinkListener(e -> linkEvent(e, hint));
+    editor.addHyperlinkListener(e -> handleHyperlinkEvent(e, hintEditor));
 
     add(new JScrollPane(editor));
     add(new JScrollPane(new JTextArea(HTML_TEXT)));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void linkEvent(HyperlinkEvent e, JEditorPane hint) {
+  private static void handleHyperlinkEvent(HyperlinkEvent e, JEditorPane hintEditor) {
     JEditorPane editorPane = (JEditorPane) e.getSource();
     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
       String message = "You click the link with the URL " + e.getURL();
@@ -61,8 +61,8 @@ public final class MainPanel extends JPanel {
             String title = Objects.toString(attr.getAttribute(HTML.Attribute.TITLE));
             String url = Objects.toString(e.getURL());
             // String url = Objects.toString(attr.getAttribute(HTML.Attribute.HREF));
-            hint.setText(String.format("<html>%s: <a href='%s'>%s</a>", title, url, url));
-            Window popup = SwingUtilities.getWindowAncestor(hint);
+            hintEditor.setText(String.format("<html>%s: <a href='%s'>%s</a>", title, url, url));
+            Window popup = SwingUtilities.getWindowAncestor(hintEditor);
             if (popup != null) {
               popup.pack();
             }
@@ -94,10 +94,10 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class SelectableToolTipEditorPane extends JEditorPane {
+class RichToolTipEditorPane extends JEditorPane {
   private final JPanel panel;
 
-  protected SelectableToolTipEditorPane(JPanel panel) {
+  protected RichToolTipEditorPane(JPanel panel) {
     super();
     this.panel = panel;
   }
