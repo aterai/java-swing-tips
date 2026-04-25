@@ -16,28 +16,28 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-  private static final String ECHO_CHAR = "PasswordField.echoChar";
+  private static final String ECHO_CHAR_KEY = "PasswordField.echoChar";
 
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 2));
-    JPanel p1 = makePasswordPanel1();
-    add(makeTitledPanel("BorderLayout + JCheckBox", p1));
-    JPanel p2 = makePasswordPanel2();
-    add(makeTitledPanel("OverlayLayout + JToggleButton", p2));
-    JPanel p3 = makePasswordPanel3();
-    add(makeTitledPanel("CardLayout + JTextField(can copy) + ...", p3));
-    JPanel p4 = makePasswordPanel4();
-    add(makeTitledPanel("press and hold down the mouse button", p4));
+    JPanel p1 = createCheckBoxPasswordPanel();
+    add(createTitledPanel("BorderLayout + JCheckBox", p1));
+    JPanel p2 = createToggleButtonPasswordPanel();
+    add(createTitledPanel("OverlayLayout + JToggleButton", p2));
+    JPanel p3 = createCardLayoutPasswordPanel();
+    add(createTitledPanel("CardLayout + JTextField(can copy) + ...", p3));
+    JPanel p4 = createHoldToShowPasswordPanel();
+    add(createTitledPanel("press and hold down the mouse button", p4));
     setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPanel makePasswordPanel1() {
-    JPasswordField password = makePasswordField();
+  private static JPanel createCheckBoxPasswordPanel() {
+    JPasswordField password = createPasswordField();
     AbstractButton button = new JCheckBox("show passwords");
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
+      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
     JPanel p = new JPanel(new BorderLayout());
     p.add(password);
@@ -45,55 +45,55 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makePasswordPanel2() {
-    JPasswordField password = makePasswordField();
+  private static JPanel createToggleButtonPasswordPanel() {
+    JPasswordField password = createPasswordField();
     // AbstractDocument doc = (AbstractDocument) password.getDocument();
     // doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
+      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
-    initEyeButton(button);
-    JPanel p = makeOverlayLayoutPanel();
+    configureEyeButton(button);
+    JPanel p = createOverlayPanel();
     p.add(button);
     p.add(password);
     return p;
   }
 
-  private JPanel makePasswordPanel3() {
-    JPasswordField password = makePasswordField();
+  private JPanel createCardLayoutPasswordPanel() {
+    JPasswordField password = createPasswordField();
     JTextField field = new JTextField(24);
     field.setFont(FONT);
     field.enableInputMethods(false);
     field.setDocument(password.getDocument());
 
-    CardLayout cardLayout = new CardLayout();
-    JPanel p = new JPanel(cardLayout) {
+    CardLayout visibilityLayout = new CardLayout();
+    JPanel p = new JPanel(visibilityLayout) {
       @Override public void updateUI() {
         super.updateUI();
         setAlignmentX(RIGHT_ALIGNMENT);
       }
     };
-    p.add(password, PasswordField.HIDE.toString());
-    p.add(field, PasswordField.SHOW.toString());
+    p.add(password, PasswordVisibility.HIDDEN.toString());
+    p.add(field, PasswordVisibility.VISIBLE.toString());
 
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      PasswordField s = b ? PasswordField.SHOW : PasswordField.HIDE;
-      cardLayout.show(p, s.toString());
+      PasswordVisibility s = b ? PasswordVisibility.VISIBLE : PasswordVisibility.HIDDEN;
+      visibilityLayout.show(p, s.toString());
     });
-    initEyeButton(button);
+    configureEyeButton(button);
 
-    JPanel panel = makeOverlayLayoutPanel();
+    JPanel panel = createOverlayPanel();
     panel.add(button);
     panel.add(p);
     return panel;
   }
 
-  private static JPanel makePasswordPanel4() {
-    JPasswordField password = makePasswordField();
+  private static JPanel createHoldToShowPasswordPanel() {
+    JPasswordField password = createPasswordField();
     AbstractButton button = new JButton();
     button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
@@ -101,17 +101,17 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        password.setEchoChar((Character) UIManager.get(ECHO_CHAR));
+        password.setEchoChar((Character) UIManager.get(ECHO_CHAR_KEY));
       }
     });
-    initEyeButton(button);
-    JPanel p = makeOverlayLayoutPanel();
+    configureEyeButton(button);
+    JPanel p = createOverlayPanel();
     p.add(button);
     p.add(password);
     return p;
   }
 
-  private static void initEyeButton(AbstractButton b) {
+  private static void configureEyeButton(AbstractButton b) {
     b.setFocusable(false);
     b.setOpaque(false);
     b.setContentAreaFilled(false);
@@ -125,7 +125,7 @@ public final class MainPanel extends JPanel {
     b.setToolTipText("show/hide passwords");
   }
 
-  private static JPanel makeOverlayLayoutPanel() {
+  private static JPanel createOverlayPanel() {
     JPanel p = new JPanel() {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
@@ -135,14 +135,14 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPasswordField makePasswordField() {
+  private static JPasswordField createPasswordField() {
     JPasswordField pf = new JPasswordField(24);
     pf.setText("1234567890");
     pf.setAlignmentX(RIGHT_ALIGNMENT);
     return pf;
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
@@ -175,8 +175,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum PasswordField {
-  SHOW, HIDE
+enum PasswordVisibility {
+  VISIBLE, HIDDEN
 }
 
 // class ASCIIOnlyDocumentFilter extends DocumentFilter {
