@@ -22,11 +22,11 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
-    JScrollPane scroll = new JScrollPane(new RoundedCellSelectionTable(makeModel())) {
+    JScrollPane scroll = new JScrollPane(new RoundedSelectionTable(createModel())) {
       @Override public void updateUI() {
         super.updateUI();
         setBackground(Color.WHITE);
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -73,8 +73,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RoundedCellSelectionTable extends JTable {
-  protected RoundedCellSelectionTable(TableModel model) {
+class RoundedSelectionTable extends JTable {
+  protected RoundedSelectionTable(TableModel model) {
     super(model);
   }
 
@@ -89,7 +89,7 @@ class RoundedCellSelectionTable extends JTable {
     setBackground(new Color(0x0, true));
     setRowHeight(20);
     if (getUI() instanceof SynthTableUI) {
-      setDefaultRenderer(Boolean.class, new SynthBooleanTableCellRenderer2());
+      setDefaultRenderer(Boolean.class, new TransparentBooleanCellRenderer());
       // UIDefaults d = new UIDefaults();
       // d.put("Table:\"Table.cellRenderer\".opaque", Boolean.FALSE);
       // TableCellRenderer r = getDefaultRenderer(Boolean.class);
@@ -125,12 +125,13 @@ class RoundedCellSelectionTable extends JTable {
   @Override protected void paintComponent(Graphics g) {
     if (getSelectedColumnCount() != 0 && getSelectedRowCount() != 0) {
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(getSelectionBackground());
-      Area area = new Area();
+      Area selectionArea = new Area();
       for (int row : getSelectedRows()) {
         for (int col : getSelectedColumns()) {
-          addArea(area, row, col);
+          addArea(selectionArea, row, col);
         }
       }
       // Arrays.stream(getSelectedRows())
@@ -139,11 +140,11 @@ class RoundedCellSelectionTable extends JTable {
       //         .filter(col -> isCellSelected(row, col))
       //         .mapToObj(col -> getCellRect(row, col, true))
       //         .map(Area::new))
-      //     .forEach(area::add);
+      //     .forEach(selectionArea::add);
 
       int arc = 8;
-      // if (!area.isEmpty()) {
-      for (Area a : GeomUtils.singularization(area)) {
+      // if (!selectionArea.isEmpty()) {
+      for (Area a : GeomUtils.singularization(selectionArea)) {
         // List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         // g2.fill(GeomUtils.convertRoundedPath(lst, arc / 2d));
         Rectangle r = a.getBounds();
@@ -214,7 +215,7 @@ final class GeomUtils {
   // }
 
   public static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
+    List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
     double[] coords = new double[6];
@@ -234,7 +235,7 @@ final class GeomUtils {
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          list.add(new Area(path));
+          subAreas.add(new Area(path));
           path.reset();
           break;
         default:
@@ -242,28 +243,28 @@ final class GeomUtils {
       }
       pi.next();
     }
-    return list;
+    return subAreas;
   }
 }
 
-class SynthBooleanTableCellRenderer2 extends JCheckBox implements TableCellRenderer {
+class TransparentBooleanCellRenderer extends JCheckBox implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     // isRowSelected = isSelected;
     setHorizontalAlignment(CENTER);
     setName("Table.cellRenderer");
     if (isSelected) {
-      setForeground(unwrap(table.getSelectionForeground()));
-      setBackground(unwrap(table.getSelectionBackground()));
+      setForeground(resolveColor(table.getSelectionForeground()));
+      setBackground(resolveColor(table.getSelectionBackground()));
     } else {
-      setForeground(unwrap(table.getForeground()));
-      setBackground(unwrap(table.getBackground()));
+      setForeground(resolveColor(table.getForeground()));
+      setBackground(resolveColor(table.getBackground()));
     }
     setSelected(value != null && (Boolean) value);
     return this;
   }
 
-  private static Color unwrap(Color c) {
-    return c instanceof UIResource ? new Color(c.getRGB()) : c;
+  private static Color resolveColor(Color color) {
+    return color instanceof UIResource ? new Color(color.getRGB()) : color;
   }
 
   // @Override public boolean isOpaque() {
