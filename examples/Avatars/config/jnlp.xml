@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST Avatars" />
+  <property name="jnlp.Name"     value="Avatars" />
+  <property name="jnlp.name"     value="avatars" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/avatars/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Avatars.html" />
+</project>
