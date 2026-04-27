@@ -39,14 +39,12 @@
   </module>
 
   <!-- https://checkstyle.org/filters/suppresswithnearbytextfilter.html -->
-  <!--
   <module name="SuppressWithNearbyTextFilter">
     <property name="nearbyTextPattern"
               value="CHECKSTYLE.SUPPRESS\: (\w+) for ([+-]\d+) lines"/>
     <property name="checkPattern" value="$1"/>
     <property name="lineRange" value="$2"/>
   </module>
-  -->
 
   <!-- Checks for whitespace                                   -->
   <!-- See https://checkstyle.org/checks/whitespace/index.html -->
@@ -111,7 +109,7 @@
                     INTERFACE_DEF, LAMBDA, LITERAL_CATCH,
                     LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF,
                     LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHILE, METHOD_DEF,
-                    OBJBLOCK, STATIC_INIT, RECORD_DEF, COMPACT_CTOR_DEF"/>
+                    OBJBLOCK, STATIC_INIT, RECORD_DEF, COMPACT_CTOR_DEF, SWITCH_RULE"/>
     </module>
     <module name="LeftCurly">
       <property name="id" value="LeftCurlyNl"/>
@@ -383,10 +381,15 @@
                     TYPE_EXTENSION_AND "/>
     </module>
     <module name="AnnotationLocation">
-      <property name="id" value="AnnotationLocationMostCases"/>
+      <property name="id" value="AnnotationLocationTypeAndPackage"/>
       <property name="tokens"
-               value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF,
-                      RECORD_DEF, COMPACT_CTOR_DEF, PACKAGE_DEF"/>
+               value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, RECORD_DEF, PACKAGE_DEF"/>
+      <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
+    </module>
+    <module name="AnnotationLocation">
+      <property name="id" value="AnnotationLocationMethodsAndCtors"/>
+      <property name="tokens"
+               value="METHOD_DEF, CTOR_DEF, COMPACT_CTOR_DEF"/>
     </module>
     <module name="AnnotationLocation">
       <property name="id" value="AnnotationLocationVariables"/>
@@ -407,8 +410,8 @@
     <module name="RequireEmptyLineBeforeBlockTagGroup"/>
     <module name="AtclauseOrder">
       <property name="tagOrder" value="@param, @return, @throws, @deprecated"/>
-      <property name="target"
-               value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
+      <property name="target" value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF,
+                                  VARIABLE_DEF, RECORD_DEF, COMPACT_CTOR_DEF"/>
     </module>
     <!--
     <module name="JavadocMethod">

@@ -42,8 +42,6 @@
   <property name="severity" value="error"/>
 
   <property name="fileExtensions" value="java, properties, xml"/>
-  
-  <property name="localeLanguage" value="en"/>
 
   <!-- Excludes all 'module-info.java' files              -->
   <!-- See https://checkstyle.org/filefilters/index.html -->
