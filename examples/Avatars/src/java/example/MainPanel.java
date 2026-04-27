@@ -90,12 +90,12 @@ public final class MainPanel extends JPanel {
 class StackedLayout implements LayoutManager {
   private double gapFraction;
 
-  public StackedLayout(double gapFraction) {
+  protected StackedLayout(double gapFraction) {
     this.gapFraction = gapFraction;
   }
 
-  public void setGapFraction(double gapFraction) {
-    this.gapFraction = gapFraction;
+  public void setGapFraction(double gapFrac) {
+    this.gapFraction = gapFrac;
   }
 
   @Override public void layoutContainer(Container parent) {
@@ -160,7 +160,7 @@ class AvatarButton extends JButton {
   private static final Insets INSETS = new Insets(2, 2, 2, 2);
   private transient JToolTip tip;
 
-  public AvatarButton(Icon icon) {
+  protected AvatarButton(Icon icon) {
     super(icon);
   }
 
@@ -297,7 +297,7 @@ class UserIcon implements Icon {
   private final Color color;
   private final int size;
 
-  public UserIcon(String name, Color color, int size) {
+  protected UserIcon(String name, Color color, int size) {
     this.name = name;
     this.color = color;
     this.size = size;
