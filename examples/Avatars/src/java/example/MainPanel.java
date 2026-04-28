@@ -32,21 +32,29 @@ public final class MainPanel extends JPanel {
         new Color(0x4B_C0_C0),
         new Color(0x99_66_FF),
     };
-    JLayer<JPanel> layer1 = createAvatarGroup(names, colors);
-    JLayer<JPanel> layer2 = createAvatarGroup(names, colors);
+
+    // Create two groups: one with leading (left) foreground and one without
+    JLayer<JPanel> layer1 = createAvatarGroup(names, colors, true);
+    JLayer<JPanel> layer2 = createAvatarGroup(names, colors, false);
     add(layer1, BorderLayout.NORTH);
     add(layer2, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JLayer<JPanel> createAvatarGroup(String[] names, Color[] colors) {
+  private static JLayer<JPanel> createAvatarGroup(
+      String[] names, Color[] colors, boolean leftForeground) {
     // Container for displaying avatars
-    JPanel avatarPanel = new JPanel(new StackedLayout(0d));
+    JPanel avatarPanel = new JPanel(new StackedLayout(0d, leftForeground));
     avatarPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    // Create 5 avatars
-    for (int i = 0; i < colors.length; i++) {
+    // leftForeground = true -> 0, 1, 2... (Add from left -> Left is front)
+    // leftForeground = false -> n-1, n-2... (Add from right -> Right is front)
+    int n = colors.length;
+    int start = leftForeground ? 0 : n - 1;
+    int end = leftForeground ? n : -1;
+    int step = leftForeground ? 1 : -1;
+    for (int i = start; i != end; i += step) {
       avatarPanel.add(createAvatarButton(i, names[i], colors[i]));
     }
 
@@ -88,10 +96,12 @@ public final class MainPanel extends JPanel {
 // Custom Layout Manager
 // Arranges components based on gapFraction (0.0=stacked, 1.0=spread)
 class StackedLayout implements LayoutManager {
+  private final boolean leftForeground;
   private double gapFraction;
 
-  protected StackedLayout(double gapFraction) {
+  protected StackedLayout(double gapFraction, boolean leftForeground) {
     this.gapFraction = gapFraction;
+    this.leftForeground = leftForeground;
   }
 
   public void setGapFraction(double gapFrac) {
@@ -104,13 +114,19 @@ class StackedLayout implements LayoutManager {
       Insets insets = parent.getInsets();
       int x = insets.left;
       int y = insets.top;
-      for (int i = 0; i < n; i++) {
+
+      // leftForeground:
+      //   true -> Arrange from index 0 upwards (Add order = Display order)
+      //   false -> Arrange from index n-1 downwards (Reverse add order = Display order)
+      // setBounds only affects position, not Z-order, ensuring stability.
+      int start = leftForeground ? 0 : n - 1;
+      int end = leftForeground ? n : -1;
+      int step = leftForeground ? 1 : -1;
+      for (int i = start; i != end; i += step) {
         Component c = parent.getComponent(i);
         Dimension d = c.getPreferredSize();
         c.setBounds(x, y, d.width, d.height);
-        // Step calc: 60% of width as default overlap, 40% as animated spread
-        int step = (int) (d.width * .6 + (d.width * .4 * gapFraction));
-        x += step;
+        x += (int) (d.width * .6 + d.width * .4 * gapFraction);
       }
     }
   }
@@ -127,8 +143,7 @@ class StackedLayout implements LayoutManager {
         maxHeight = Math.max(maxHeight, d.height);
         if (i < n - 1) {
           // Add overlap for all but the last component
-          int step = (int) (d.width * .6 + (d.width * .4 * gapFraction));
-          totalWidth += step;
+          totalWidth += (int) (d.width * .6 + d.width * .4 * gapFraction);
         } else {
           totalWidth += d.width;
         }
@@ -146,11 +161,11 @@ class StackedLayout implements LayoutManager {
   }
 
   @Override public void addLayoutComponent(String name, Component comp) {
-    // empty
+    // not used
   }
 
   @Override public void removeLayoutComponent(Component comp) {
-    // empty
+    // not used
   }
 }
 
@@ -178,10 +193,7 @@ class AvatarButton extends JButton {
   }
 
   @Override public boolean contains(int x, int y) {
-    int w = getWidth();
-    int h = getHeight();
-    Ellipse2D circle = new Ellipse2D.Double(0, 0, w, h);
-    return circle.contains(x, y);
+    return new Ellipse2D.Double(0, 0, getWidth(), getHeight()).contains(x, y);
   }
 
   @Override public JToolTip createToolTip() {
@@ -196,11 +208,10 @@ class AvatarButton extends JButton {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
     int w = getWidth();
     int h = getHeight();
 
-    // 1. Draw the border with background color
+    // 1. Draw the background (matches parent background)
     g2.setColor(getParent().getBackground());
     g2.fill(new Ellipse2D.Double(0, 0, w, h));
 
@@ -247,7 +258,7 @@ class AvatarButton extends JButton {
   }
 }
 
-// LayerUI that controls animation on mouse hover
+// LayerUI that handles expansion animation on mouse hover
 class AvatarLayerUI extends LayerUI<JPanel> {
   private final Timer timer = new Timer(15, null);
   private double currentFraction;
@@ -257,11 +268,11 @@ class AvatarLayerUI extends LayerUI<JPanel> {
     super.installUI(c);
     JLayer<?> l = (JLayer<?>) c;
     l.setLayerEventMask(AWTEvent.MOUSE_EVENT_MASK);
-    timer.addActionListener(e -> animation((JPanel) l.getView()));
+    timer.addActionListener(e -> updateAnimation((JPanel) l.getView()));
   }
 
-  // Ease-Out: Moves 25% closer to target per frame
-  private void animation(JPanel panel) {
+  // Ease-Out animation: Moves 25% closer to target per frame
+  private void updateAnimation(JPanel panel) {
     double diff = targetFraction - currentFraction;
     boolean isEnd = Math.abs(diff) < .1;
     if (isEnd) {
@@ -310,6 +321,7 @@ class UserIcon implements Icon {
     g2.setColor(color);
     g2.fillRect(x, y, size, size);
 
+    // Placeholder cross lines
     g2.setColor(Color.RED);
     g2.drawLine(x, y + size / 2, x + size, y + size / 2);
     g2.drawLine(x + size / 2, y, x + size / 2, y + size);
@@ -387,8 +399,8 @@ class BalloonToolTip extends JToolTip {
   }
 
   private static boolean isHeavyWeight(Window w) {
-    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
+    boolean isPopup = w.getType() == Window.Type.POPUP;
     GraphicsConfiguration gc = w.getGraphicsConfiguration();
-    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+    return gc != null && gc.isTranslucencyCapable() && isPopup;
   }
 }
