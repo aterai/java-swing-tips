@@ -17,7 +17,7 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public class OneLineTextPane extends JTextPane {
-  @Override public final void updateUI() {
+  @Override public void updateUI() {
     super.updateUI();
     String key = "Do-Nothing";
     InputMap im = getInputMap(WHEN_FOCUSED);

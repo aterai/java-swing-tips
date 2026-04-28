@@ -27,7 +27,7 @@ import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-  private static final String ECHO_CHAR = "PasswordField.echoChar";
+  private static final String ECHO_CHAR_KEY = "PasswordField.echoChar";
 
   private MainPanel() {
     super(new BorderLayout());
@@ -36,16 +36,16 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 25));
-    JPanel p1 = makeTextField();
-    p.add(makeTitledPanel("JTextField + HighlightFilter", p1));
-    JPanel p2 = makePasswordPanel();
-    p.add(makeTitledPanel("JPasswordField + HighlightFilter", p2));
+    JPanel p1 = createTextField();
+    p.add(createTitledPanel("JTextField + HighlightFilter", p1));
+    JPanel p2 = createPasswordPanel();
+    p.add(createTitledPanel("JPasswordField + HighlightFilter", p2));
     add(p, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(25, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JPanel makeTextField() {
+  private JPanel createTextField() {
     String txt = "The quick brown fox jumps over the lazy dog.";
     JTextField field = new JTextField(txt) {
       @Override public void updateUI() {
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makePasswordPanel() {
+  private static JPanel createPasswordPanel() {
     JPasswordField password = new DigitHighlightPasswordField(40);
     password.setFont(FONT);
     password.setAlignmentX(RIGHT_ALIGNMENT);
@@ -79,16 +79,16 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
+      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
-    initEyeButton(button);
+    setupVisibilityToggleButton(button);
     JPanel p = new OverlayLayoutPanel();
     p.add(button);
     p.add(password);
     return p;
   }
 
-  private static void initEyeButton(AbstractButton b) {
+  private static void setupVisibilityToggleButton(AbstractButton b) {
     b.setFocusable(false);
     b.setOpaque(false);
     b.setContentAreaFilled(false);
@@ -102,7 +102,7 @@ public final class MainPanel extends JPanel {
     b.setToolTipText("show/hide passwords");
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -349,7 +349,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -357,7 +357,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,22 +29,22 @@ import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-  private static final String ECHO_CHAR = "PasswordField.echoChar";
+  private static final String ECHO_CHAR_KEY = "PasswordField.echoChar";
 
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 25));
-    JPanel p1 = makePasswordPanel1();
-    p.add(makeTitledPanel("JPasswordField#setEchoChar(...) + HighlightFilter", p1));
-    JPanel p2 = makePasswordPanel2();
-    p.add(makeTitledPanel("CardLayout + (JPasswordField <> JTextPane)", p2));
+    JPanel p1 = createEchoCharStrategyPanel();
+    p.add(createTitledPanel("JPasswordField#setEchoChar(...) + HighlightFilter", p1));
+    JPanel p2 = createCardLayoutStrategyPanel();
+    p.add(createTitledPanel("CardLayout + (JPasswordField <> JTextPane)", p2));
     add(p, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(25, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPanel makePasswordPanel1() {
-    JPasswordField password = new DigitHighlightPasswordField(40);
+  private static JPanel createEchoCharStrategyPanel() {
+    JPasswordField password = new DigitHighlightField(40);
     password.setFont(FONT);
     password.setAlignmentX(RIGHT_ALIGNMENT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
@@ -51,20 +52,20 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR));
+      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
-    initEyeButton(button);
-    JPanel p = new OverlayLayoutPanel();
+    setupVisibilityToggleButton(button);
+    JPanel p = new OverlapLayerPanel();
     p.add(button);
     p.add(password);
     return p;
   }
 
-  private JPanel makePasswordPanel2() {
+  private JPanel createCardLayoutStrategyPanel() {
     JPasswordField password = new JPasswordField(40);
     password.setFont(FONT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
-    JTextPane revealPassword = makeRevealPassword(password);
+    JTextPane visibleTextPane = createVisiblePasswordEditor(password);
     CardLayout cardLayout = new CardLayout();
     JPanel p = new JPanel(cardLayout) {
       @Override public void updateUI() {
@@ -72,29 +73,30 @@ public final class MainPanel extends JPanel {
         setAlignmentX(RIGHT_ALIGNMENT);
       }
     };
-    p.add(password, PasswordField.HIDE.toString());
-    p.add(revealPassword, PasswordField.SHOW.toString());
+    p.setOpaque(false);
+    p.add(password, PasswordVisibility.HIDDEN.toString());
+    p.add(visibleTextPane, PasswordVisibility.VISIBLE.toString());
 
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       if (b) {
-        copyText(password.getDocument(), revealPassword.getStyledDocument());
-        cardLayout.show(p, PasswordField.SHOW.toString());
+        syncDocumentContent(password.getDocument(), visibleTextPane.getStyledDocument());
+        cardLayout.show(p, PasswordVisibility.VISIBLE.toString());
       } else {
-        copyText(revealPassword.getStyledDocument(), password.getDocument());
-        cardLayout.show(p, PasswordField.HIDE.toString());
+        syncDocumentContent(visibleTextPane.getStyledDocument(), password.getDocument());
+        cardLayout.show(p, PasswordVisibility.HIDDEN.toString());
       }
     });
-    initEyeButton(button);
+    setupVisibilityToggleButton(button);
 
-    JPanel panel = new OverlayLayoutPanel();
+    JPanel panel = new OverlapLayerPanel();
     panel.add(button);
     panel.add(p);
     return panel;
   }
 
-  private static void copyText(Document src, Document dst) {
+  private static void syncDocumentContent(Document src, Document dst) {
     try {
       dst.remove(0, dst.getLength());
       String text = src.getText(0, src.getLength());
@@ -104,39 +106,49 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static void initEyeButton(AbstractButton b) {
+  private static void setupVisibilityToggleButton(AbstractButton b) {
     b.setFocusable(false);
     b.setOpaque(false);
     b.setContentAreaFilled(false);
     b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
     b.setAlignmentX(RIGHT_ALIGNMENT);
     b.setAlignmentY(CENTER_ALIGNMENT);
-    b.setIcon(new EyeIcon(Color.BLUE));
+    Color fgc = UIManager.getColor("List.selectionBackground");
+    b.setIcon(new EyeIcon(fgc));
     b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
-    b.setSelectedIcon(new EyeIcon(Color.BLUE));
-    b.setRolloverSelectedIcon(new EyeIcon(Color.BLUE));
+    b.setSelectedIcon(new EyeIcon(fgc));
+    b.setRolloverSelectedIcon(new EyeIcon(fgc));
     b.setToolTipText("show/hide passwords");
   }
 
-  private static JTextPane makeRevealPassword(JPasswordField password) {
-    JTextPane textPane = new OneLineTextPane();
-    textPane.setBorder(password.getBorder());
-    textPane.setFont(password.getFont());
-    StyledDocument doc = textPane.getStyledDocument();
+  private static JTextPane createVisiblePasswordEditor(JPasswordField password) {
+    JTextPane textPane = new OneLineTextPane() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(password.getBorder());
+        setFont(password.getFont());
+        setupPasswordDocument(getStyledDocument(), password);
+      }
+    };
+    setupPasswordDocument(textPane.getStyledDocument(), password);
+    return textPane;
+  }
+
+  private static void setupPasswordDocument(StyledDocument doc, JPasswordField password) {
+    // StyledDocument doc = getStyledDocument();
     if (doc instanceof AbstractDocument) {
-      ((AbstractDocument) doc).setDocumentFilter(new HighlightDocumentFilter());
+      ((AbstractDocument) doc).setDocumentFilter(new TextForegroundFilter());
       try {
         int length = password.getDocument().getLength();
         String text = password.getDocument().getText(0, length);
         doc.insertString(0, text, new SimpleAttributeSet());
       } catch (BadLocationException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(textPane);
+        UIManager.getLookAndFeel().provideErrorFeedback(password);
       }
     }
-    return textPane;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -165,12 +177,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum PasswordField {
-  SHOW, HIDE
+enum PasswordVisibility {
+  VISIBLE, HIDDEN
 }
 
-class DigitHighlightPasswordField extends JPasswordField {
-  protected DigitHighlightPasswordField(int columns) {
+class DigitHighlightField extends JPasswordField {
+  protected DigitHighlightField(int columns) {
     super(columns);
   }
 
@@ -180,27 +192,28 @@ class DigitHighlightPasswordField extends JPasswordField {
     if (doc instanceof AbstractDocument) {
       boolean reveal = c == '\u0000';
       if (reveal) {
-        ((AbstractDocument) doc).setDocumentFilter(new HighlightFilter(this));
+        ((AbstractDocument) doc).setDocumentFilter(new BackgroundHighlightFilter(this));
         try {
           doc.remove(0, 0);
         } catch (BadLocationException ex) {
           UIManager.getLookAndFeel().provideErrorFeedback(this);
         }
       } else {
-        getHighlighter().removeAllHighlights();
+        Optional.ofNullable(getHighlighter()).ifPresent(Highlighter::removeAllHighlights);
+        // getHighlighter().removeAllHighlights();
         ((AbstractDocument) doc).setDocumentFilter(null);
       }
     }
   }
 }
 
-class HighlightFilter extends DocumentFilter {
+class BackgroundHighlightFilter extends DocumentFilter {
   private final Highlighter.HighlightPainter painter =
       new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
   private final Pattern pattern = Pattern.compile("\\d");
   private final JTextComponent field;
 
-  protected HighlightFilter(JTextComponent field) {
+  protected BackgroundHighlightFilter(JTextComponent field) {
     super();
     this.field = field;
   }
@@ -238,12 +251,12 @@ class HighlightFilter extends DocumentFilter {
   }
 }
 
-class HighlightDocumentFilter extends DocumentFilter {
+class TextForegroundFilter extends DocumentFilter {
   private final SimpleAttributeSet defAttr = new SimpleAttributeSet();
   private final SimpleAttributeSet numAttr = new SimpleAttributeSet();
   private final Pattern pattern = Pattern.compile("\\d");
 
-  protected HighlightDocumentFilter() {
+  protected TextForegroundFilter() {
     super();
     StyleConstants.setForeground(defAttr, Color.BLACK);
     StyleConstants.setForeground(numAttr, Color.RED);
@@ -275,7 +288,7 @@ class HighlightDocumentFilter extends DocumentFilter {
   }
 }
 
-class OverlayLayoutPanel extends JPanel {
+class OverlapLayerPanel extends JPanel {
   @Override public void updateUI() {
     super.updateUI();
     setLayout(new OverlayLayout(this));
