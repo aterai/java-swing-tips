@@ -17,6 +17,7 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public class OneLineTextPane extends JTextPane {
+  @SuppressWarnings("DesignForExtension")
   @Override public void updateUI() {
     super.updateUI();
     String key = "Do-Nothing";
