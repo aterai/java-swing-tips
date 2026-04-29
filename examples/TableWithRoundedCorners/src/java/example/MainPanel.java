@@ -194,15 +194,15 @@ enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
 class CalendarTableRenderer extends DefaultTableCellRenderer {
   private final Set<Corner> roundedCorners = EnumSet.noneOf(Corner.class);
   private final LocalDate realDate = LocalDate.now(ZoneId.systemDefault());
-  private int row;
-  private int column;
+  private int curRow;
+  private int curColumn;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component renderer = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
     renderer.setBackground(table.getBackground());
-    this.row = row;
-    this.column = column;
+    this.curRow = row;
+    this.curColumn = column;
     updateCorners(table, row, column);
     if (value instanceof LocalDate && renderer instanceof JLabel && table instanceof MonthTable) {
       LocalDate date = (LocalDate) value;
@@ -261,7 +261,7 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     g2.setPaint(getBackground());
     g2.fill(bounds);
     g2.setPaint(UIManager.getColor("Table.gridColor"));
-    Shape shape = buildRoundedRectPath(bounds, 16d, 16d, row, column);
+    Shape shape = buildRoundedRectPath(bounds, 16d, 16d, curRow, curColumn);
     g2.draw(shape);
     g2.dispose();
     super.paintComponent(g);
