@@ -23,9 +23,9 @@ public final class MainPanel extends JPanel {
     JPanel container = new JPanel(new FlowLayout(FlowLayout.CENTER, 2, 2));
     container.setOpaque(false);
     container.add(hourPair);
-    container.add(FlipPair.makeColonLabel());
+    container.add(FlipPair.createColonLabel());
     container.add(minPair);
-    container.add(FlipPair.makeColonLabel());
+    container.add(FlipPair.createColonLabel());
     container.add(secPair);
     add(container);
     new Timer(100, e -> {
@@ -181,7 +181,7 @@ class FlipPair extends JPanel {
     }
   }
 
-  public static JLabel makeColonLabel() {
+  public static JLabel createColonLabel() {
     JLabel colon = new JLabel(":");
     colon.setFont(colon.getFont().deriveFont(Font.BOLD, FONT_SIZE));
     colon.setForeground(TEXT_COLOR);
