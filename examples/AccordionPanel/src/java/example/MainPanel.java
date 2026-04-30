@@ -17,17 +17,17 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Box accordion = Box.createVerticalBox();
-    accordion.setOpaque(true);
-    accordion.setBackground(new Color(0xB4_B4_FF));
-    accordion.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-    makeExpansionPanelList().forEach(p -> {
-      accordion.add(p);
-      accordion.add(Box.createVerticalStrut(5));
+    Box sideMenuBox = Box.createVerticalBox();
+    sideMenuBox.setOpaque(true);
+    sideMenuBox.setBackground(new Color(0xB4_B4_FF));
+    sideMenuBox.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+    initAccordionSections().forEach(p -> {
+      sideMenuBox.add(p);
+      sideMenuBox.add(Box.createVerticalStrut(5));
     });
-    accordion.add(Box.createVerticalGlue());
+    sideMenuBox.add(Box.createVerticalGlue());
 
-    JScrollPane scroll = new JScrollPane(accordion);
+    JScrollPane scroll = new JScrollPane(sideMenuBox);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.getVerticalScrollBar().setUnitIncrement(25);
 
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
   //   box.revalidate();
   // }
 
-  private List<AbstractExpansionPanel> makeExpansionPanelList() {
+  private List<AccordionSectionPanel> initAccordionSections() {
     return Arrays.asList(
-        new AbstractExpansionPanel("System Tasks") {
-          @Override public JPanel makePanel() {
+        new AccordionSectionPanel("System Tasks") {
+          @Override public JPanel createPanel() {
             JPanel p = new JPanel(new GridLayout(0, 1));
             Stream.of("1111", "222222")
                 .map(JCheckBox::new)
@@ -62,8 +62,8 @@ public final class MainPanel extends JPanel {
             return p;
           }
         },
-        new AbstractExpansionPanel("Other Places") {
-          @Override public JPanel makePanel() {
+        new AccordionSectionPanel("Other Places") {
+          @Override public JPanel createPanel() {
             JPanel p = new JPanel(new GridLayout(0, 1));
             Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
                 .map(JLabel::new)
@@ -71,8 +71,8 @@ public final class MainPanel extends JPanel {
             return p;
           }
         },
-        new AbstractExpansionPanel("Details") {
-          @Override public JPanel makePanel() {
+        new AccordionSectionPanel("Details") {
+          @Override public JPanel createPanel() {
             JPanel p = new JPanel(new GridLayout(0, 1));
             ButtonGroup bg = new ButtonGroup();
             Stream.of("aaa", "bbb", "ccc", "ddd")
@@ -111,15 +111,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-abstract class AbstractExpansionPanel extends JPanel {
+abstract class AccordionSectionPanel extends JPanel {
   private final String title;
-  private final JLabel label;
-  private final JPanel panel = makePanel();
+  private final JLabel headerLabel;
+  private final JPanel contentPanel = createPanel();
 
-  protected AbstractExpansionPanel(String title) {
+  protected AccordionSectionPanel(String title) {
     super(new BorderLayout());
     this.title = title;
-    label = new JLabel("▼ " + title) {
+    headerLabel = new JLabel("▼ " + title) {
       private final Color bgc = new Color(0xC8_C8_FF);
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
@@ -130,26 +130,25 @@ abstract class AbstractExpansionPanel extends JPanel {
         super.paintComponent(g);
       }
     };
-    label.addMouseListener(new MouseAdapter() {
+    headerLabel.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        initPanel();
+        toggleExpansion();
       }
     });
-    label.setForeground(Color.BLUE);
-    label.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
-    add(label, BorderLayout.NORTH);
+    headerLabel.setForeground(Color.BLUE);
+    headerLabel.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
+    add(headerLabel, BorderLayout.NORTH);
 
-    panel.setVisible(false);
-    panel.setOpaque(true);
-    panel.setBackground(new Color(0xF0_F0_FF));
-    Border outBorder = BorderFactory.createMatteBorder(0, 2, 2, 2, Color.WHITE);
-    Border inBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-    Border border = BorderFactory.createCompoundBorder(outBorder, inBorder);
-    panel.setBorder(border);
-    add(panel);
+    contentPanel.setVisible(false);
+    contentPanel.setOpaque(true);
+    contentPanel.setBackground(new Color(0xF0_F0_FF));
+    Border outside = BorderFactory.createMatteBorder(0, 2, 2, 2, Color.WHITE);
+    Border inside = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+    contentPanel.setBorder(BorderFactory.createCompoundBorder(outside, inside));
+    add(contentPanel);
   }
 
-  public abstract JPanel makePanel();
+  public abstract JPanel createPanel();
 
   @Override public final Component add(Component comp) {
     return super.add(comp);
@@ -160,9 +159,9 @@ abstract class AbstractExpansionPanel extends JPanel {
   }
 
   @Override public Dimension getPreferredSize() {
-    Dimension d = label.getPreferredSize();
-    if (panel.isVisible()) {
-      d.height += panel.getPreferredSize().height;
+    Dimension d = headerLabel.getPreferredSize();
+    if (contentPanel.isVisible()) {
+      d.height += contentPanel.getPreferredSize().height;
     }
     return d;
   }
@@ -173,12 +172,12 @@ abstract class AbstractExpansionPanel extends JPanel {
     return d;
   }
 
-  protected void initPanel() {
-    panel.setVisible(!panel.isVisible());
-    label.setText(String.format("%s %s", panel.isVisible() ? "△" : "▼", title));
+  protected void toggleExpansion() {
+    contentPanel.setVisible(!contentPanel.isVisible());
+    headerLabel.setText(String.format("%s %s", contentPanel.isVisible() ? "△" : "▼", title));
     revalidate();
     // fireExpansionEvent();
-    EventQueue.invokeLater(() -> panel.scrollRectToVisible(panel.getBounds()));
+    EventQueue.invokeLater(() -> contentPanel.scrollRectToVisible(contentPanel.getBounds()));
   }
 
   // protected Vector<ExpansionListener> expansionListenerList = new Vector<>();
