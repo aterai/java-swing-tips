@@ -18,7 +18,7 @@ import javax.swing.tree.TreeSelectionModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTree tree0 = new JTree(new DefaultTreeModel(makeTreeRoot())) {
+    JTree tree0 = new JTree(new DefaultTreeModel(createTreeRoot())) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
@@ -35,12 +35,12 @@ public final class MainPanel extends JPanel {
     };
     ToolTipManager.sharedInstance().registerComponent(tree0);
 
-    JTree tree1 = new TooltipTree(new DefaultTreeModel(makeTreeRoot()));
+    JTree tree1 = new TooltipTree(new DefaultTreeModel(createTreeRoot()));
     ToolTipManager.sharedInstance().registerComponent(tree1);
 
     JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(makeTitledPanel("Default location", tree0));
-    p.add(makeTitledPanel("Draw directly above the cell", tree1));
+    p.add(createTitledPanel("Default location", tree0));
+    p.add(createTitledPanel("Draw directly above the cell", tree1));
 
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, p, new JPanel());
     split.setResizeWeight(.5);
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultMutableTreeNode makeTreeRoot() {
+  private static DefaultMutableTreeNode createTreeRoot() {
     DefaultMutableTreeNode set4 = new DefaultMutableTreeNode("Set 00000004");
     set4.add(new DefaultMutableTreeNode("222222111111111111111122222"));
     set4.add(new DefaultMutableTreeNode("00000000000"));
@@ -85,7 +85,7 @@ public final class MainPanel extends JPanel {
     return root;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JScrollPane scroll = new JScrollPane(c);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     JPanel p = new JPanel(new BorderLayout());
