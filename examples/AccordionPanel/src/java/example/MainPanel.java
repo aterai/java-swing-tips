@@ -48,9 +48,9 @@ public final class MainPanel extends JPanel {
   //   box.revalidate();
   // }
 
-  private List<AccordionSectionPanel> initAccordionSections() {
+  private List<AbstractAccordionSectionPanel> initAccordionSections() {
     return Arrays.asList(
-        new AccordionSectionPanel("System Tasks") {
+        new AbstractAccordionSectionPanel("System Tasks") {
           @Override public JPanel createPanel() {
             JPanel p = new JPanel(new GridLayout(0, 1));
             Stream.of("1111", "222222")
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
             return p;
           }
         },
-        new AccordionSectionPanel("Other Places") {
+        new AbstractAccordionSectionPanel("Other Places") {
           @Override public JPanel createPanel() {
             JPanel p = new JPanel(new GridLayout(0, 1));
             Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
             return p;
           }
         },
-        new AccordionSectionPanel("Details") {
+        new AbstractAccordionSectionPanel("Details") {
           @Override public JPanel createPanel() {
             JPanel p = new JPanel(new GridLayout(0, 1));
             ButtonGroup bg = new ButtonGroup();
@@ -111,21 +111,23 @@ public final class MainPanel extends JPanel {
   }
 }
 
-abstract class AccordionSectionPanel extends JPanel {
+abstract class AbstractAccordionSectionPanel extends JPanel {
   private final String title;
   private final JLabel headerLabel;
   private final JPanel contentPanel = createPanel();
 
-  protected AccordionSectionPanel(String title) {
+  protected AbstractAccordionSectionPanel(String title) {
     super(new BorderLayout());
     this.title = title;
     headerLabel = new JLabel("▼ " + title) {
       private final Color bgc = new Color(0xC8_C8_FF);
+
       @Override protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        // Insets ins = getInsets();
-        g2.setPaint(new GradientPaint(50f, 0f, Color.WHITE, getWidth(), getHeight(), bgc));
-        g2.fillRect(0, 0, getWidth(), getHeight());
+        int w = getWidth();
+        int h = getHeight();
+        g2.setPaint(new GradientPaint(50f, 0f, Color.WHITE, w, h, bgc));
+        g2.fillRect(0, 0, w, h);
         g2.dispose();
         super.paintComponent(g);
       }
@@ -173,8 +175,9 @@ abstract class AccordionSectionPanel extends JPanel {
   }
 
   protected void toggleExpansion() {
-    contentPanel.setVisible(!contentPanel.isVisible());
-    headerLabel.setText(String.format("%s %s", contentPanel.isVisible() ? "△" : "▼", title));
+    boolean visible = !contentPanel.isVisible();
+    contentPanel.setVisible(visible);
+    headerLabel.setText(String.format("%s %s", visible ? "△" : "▼", title));
     revalidate();
     // fireExpansionEvent();
     EventQueue.invokeLater(() -> contentPanel.scrollRectToVisible(contentPanel.getBounds()));
