@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
-    setupVisibilityToggleButton(button);
+    PasswordUiUtils.setupVisibilityToggleButton(button);
     JPanel p = new OverlapLayerPanel();
     p.add(button);
     p.add(password);
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     JPasswordField password = new JPasswordField(40);
     password.setFont(FONT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
-    JTextPane visibleTextPane = createVisiblePasswordEditor(password);
+    JTextPane visibleTextPane = PasswordUiUtils.createVisiblePasswordEditor(password);
     CardLayout cardLayout = new CardLayout();
     JPanel p = new JPanel(cardLayout) {
       @Override public void updateUI() {
@@ -81,71 +81,19 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       if (b) {
-        syncDocumentContent(password.getDocument(), visibleTextPane.getStyledDocument());
+        PasswordUiUtils.sync(password.getDocument(), visibleTextPane.getStyledDocument());
         cardLayout.show(p, PasswordVisibility.VISIBLE.toString());
       } else {
-        syncDocumentContent(visibleTextPane.getStyledDocument(), password.getDocument());
+        PasswordUiUtils.sync(visibleTextPane.getStyledDocument(), password.getDocument());
         cardLayout.show(p, PasswordVisibility.HIDDEN.toString());
       }
     });
-    setupVisibilityToggleButton(button);
+    PasswordUiUtils.setupVisibilityToggleButton(button);
 
     JPanel panel = new OverlapLayerPanel();
     panel.add(button);
     panel.add(p);
     return panel;
-  }
-
-  private static void syncDocumentContent(Document src, Document dst) {
-    try {
-      dst.remove(0, dst.getLength());
-      String text = src.getText(0, src.getLength());
-      dst.insertString(0, text, null);
-    } catch (BadLocationException ex) {
-      Logger.getGlobal().severe(ex::getMessage);
-    }
-  }
-
-  private static void setupVisibilityToggleButton(AbstractButton b) {
-    b.setFocusable(false);
-    b.setOpaque(false);
-    b.setContentAreaFilled(false);
-    b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-    b.setAlignmentX(RIGHT_ALIGNMENT);
-    b.setAlignmentY(CENTER_ALIGNMENT);
-    Color fgc = UIManager.getColor("List.selectionBackground");
-    b.setIcon(new EyeIcon(fgc));
-    b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
-    b.setSelectedIcon(new EyeIcon(fgc));
-    b.setRolloverSelectedIcon(new EyeIcon(fgc));
-    b.setToolTipText("show/hide passwords");
-  }
-
-  private static JTextPane createVisiblePasswordEditor(JPasswordField password) {
-    JTextPane textPane = new OneLineTextPane() {
-      @Override public void updateUI() {
-        super.updateUI();
-        setBorder(password.getBorder());
-        setFont(password.getFont());
-        setupPasswordDocument(getStyledDocument(), password);
-      }
-    };
-    setupPasswordDocument(textPane.getStyledDocument(), password);
-    return textPane;
-  }
-
-  private static void setupPasswordDocument(StyledDocument doc, JPasswordField password) {
-    // StyledDocument doc = getStyledDocument();
-    if (doc instanceof AbstractDocument) {
-      ((AbstractDocument) doc).setDocumentFilter(new TextForegroundFilter());
-      try {
-        int length = password.getDocument().getLength();
-        String text = password.getDocument().getText(0, length);
-        doc.insertString(0, text, new SimpleAttributeSet());
-      } catch (BadLocationException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(password);
-      }
-    }
   }
 
   private static Component createTitledPanel(String title, Component c) {
@@ -345,5 +293,56 @@ class EyeIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 16;
+  }
+}
+
+final class PasswordUiUtils {
+  private PasswordUiUtils() {
+    // Singleton
+  }
+
+  public static void sync(Document src, Document dst) {
+    try {
+      dst.remove(0, dst.getLength());
+      dst.insertString(0, src.getText(0, src.getLength()), null);
+    } catch (BadLocationException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+    }
+  }
+
+  public static void setupVisibilityToggleButton(AbstractButton b) {
+    b.setFocusable(false);
+    b.setOpaque(false);
+    b.setContentAreaFilled(false);
+    b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+    b.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    b.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+    Color fgc = UIManager.getColor("List.selectionBackground");
+
+    b.setIcon(new EyeIcon(fgc));
+    b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
+    b.setSelectedIcon(new EyeIcon(fgc));
+    b.setRolloverSelectedIcon(new EyeIcon(fgc));
+  }
+
+  public static JTextPane createVisiblePasswordEditor(JPasswordField password) {
+    JTextPane textPane = new JTextPane() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setBorder(password.getBorder());
+        setFont(password.getFont());
+        setupDocument(getStyledDocument());
+      }
+    };
+
+    setupDocument(textPane.getStyledDocument());
+    return textPane;
+  }
+
+  private static void setupDocument(StyledDocument doc) {
+    if (doc instanceof AbstractDocument) {
+      ((AbstractDocument) doc).setDocumentFilter(new TextForegroundFilter());
+    }
   }
 }
