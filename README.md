@@ -37,7 +37,7 @@ javax.swing.JComponent
     - [JTextField JPasswordField JFormattedTextField(53)](https://ateraimemo.com/astro/en/Swing/_JTextField.html)
     - [JTextPane JEditorPane(41)](https://ateraimemo.com/astro/en/Swing/_JTextPane.html)
     - [JTextArea(35)](https://ateraimemo.com/astro/en/Swing/_JTextArea.html)
-- [JButton AbstractButton(40)](https://ateraimemo.com/astro/en/Swing/_JButton.html)
+- [JButton AbstractButton(41)](https://ateraimemo.com/astro/en/Swing/_JButton.html)
     - [JCheckBox JCheckBoxMenuItem(30)](https://ateraimemo.com/astro/en/Swing/_JCheckBox.html)
     - [JRadioButton JToggleButton ButtonGroup(24)](https://ateraimemo.com/astro/en/Swing/_JRadioButton.html)
 - [JComboBox(82)](https://ateraimemo.com/astro/en/Swing/_JComboBox.html)
@@ -63,7 +63,7 @@ javax.swing.JComponent
 Others
 ---------------
 - [Graphics(70)](https://ateraimemo.com/astro/en/Swing/_Graphics.html)
-- [LayoutManager(56)](https://ateraimemo.com/astro/en/Swing/_Layout.html)
+- [LayoutManager(57)](https://ateraimemo.com/astro/en/Swing/_Layout.html)
 - [Animation(52)](https://ateraimemo.com/astro/en/Swing/_Animation.html)
 - [Border(49)](https://ateraimemo.com/astro/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/astro/en/Swing/_Focus.html)
