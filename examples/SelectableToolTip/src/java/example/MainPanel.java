@@ -30,14 +30,14 @@ public final class MainPanel extends JPanel {
     hintEditor.setOpaque(false);
     JCheckBox check = new JCheckBox();
     check.setOpaque(false);
-    JPanel tooltipContentPanel = new JPanel(new BorderLayout());
-    tooltipContentPanel.add(hintEditor);
-    tooltipContentPanel.add(check, BorderLayout.EAST);
+    JPanel tooltipContent = new JPanel(new BorderLayout());
+    tooltipContent.add(hintEditor);
+    tooltipContent.add(check, BorderLayout.EAST);
     JPopupMenu popup = new JPopupMenu();
-    popup.add(new JScrollPane(tooltipContentPanel));
+    popup.add(new JScrollPane(tooltipContent));
     popup.setBorder(BorderFactory.createEmptyBorder());
 
-    JEditorPane editor = new RichToolTipEditorPane(tooltipContentPanel);
+    JEditorPane editor = new RichToolTipEditorPane(tooltipContent);
     editor.setEditorKit(new HTMLEditorKit());
     editor.setText(HTML_TEXT);
     editor.setEditable(false);
