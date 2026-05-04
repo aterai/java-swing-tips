@@ -27,13 +27,13 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    add(makeTitledPanel("setEchoChar('★')", pf1));
-    add(makeTitledPanel("drawEchoCharacter", pf2));
+    add(createTitledPanel("setEchoChar('★')", pf1));
+    add(createTitledPanel("drawEchoCharacter", pf2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
@@ -79,8 +79,8 @@ class IconPasswordFieldUI extends BasicPasswordFieldUI {
     return new IconPasswordView(elem);
   }
 
-  private static class IconPasswordView extends PasswordView {
-    protected IconPasswordView(Element element) {
+  private static final class IconPasswordView extends PasswordView {
+    private IconPasswordView(Element element) {
       super(element);
     }
 
@@ -116,9 +116,9 @@ class IconPasswordFieldUI extends BasicPasswordFieldUI {
 }
 
 class StarIcon implements Icon {
-  private final Shape star = makeStar(6, 3, 8);
+  private final Shape star = createStar(6, 3, 8);
 
-  public Path2D makeStar(int r1, int r2, int vc) {
+  public Path2D createStar(int r1, int r2, int vc) {
     double or = Math.max(r1, r2);
     double ir = Math.min(r1, r2);
     double agl = 0d;
