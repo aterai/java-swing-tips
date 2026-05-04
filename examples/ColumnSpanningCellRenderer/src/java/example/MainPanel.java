@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         setColumnCellRenderer(null);
         super.updateUI();
@@ -50,13 +50,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"A", "B"};
     Object[][] data = {
-        {makeOptionPaneDescription("error"), SEE},
-        {makeOptionPaneDescription("information"), SEE},
-        {makeOptionPaneDescription("question"), SEE},
-        {makeOptionPaneDescription("warning"), SEE},
+        {createOptionPaneDescription("error"), SEE},
+        {createOptionPaneDescription("information"), SEE},
+        {createOptionPaneDescription("question"), SEE},
+        {createOptionPaneDescription("warning"), SEE},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
@@ -65,11 +65,12 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static OptionPaneDescription makeOptionPaneDescription(String type) {
+  private static OptionPaneDescription createOptionPaneDescription(String type) {
     String key = type + "Icon";
     Icon icon = UIManager.getIcon("OptionPane." + key);
-    String fmt = "public static final int %s_MESSAGE%nUsed for %s messages.";
-    String msg = String.format(fmt, type.toUpperCase(Locale.ENGLISH), type);
+    String m1 = "public static final int " + type.toUpperCase(Locale.ENGLISH) + "_MESSAGE";
+    String m2 = "Used for " + type + "messages.";
+    String msg = String.join("\n", m1, m2);
     return new OptionPaneDescription(key, icon, msg);
   }
 
