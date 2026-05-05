@@ -34,13 +34,13 @@ public final class MainPanel extends JPanel {
     JEditorPane editor = new JEditorPane();
     editor.setEditable(false);
     editor.setEditorKit(new HTMLEditorKit());
-    editor.setText("<html><body><p id='main'></p><p id='bottom'>id=bottom</p></body></html>");
+    editor.setText("<html><body><p id='main'></p><p id='bottom'>id=bottom</p></body>");
 
     JButton button = new JButton("bottom");
     button.addActionListener(e -> scrollToId(editor, "bottom"));
     EventQueue.invokeLater(() -> scrollToId(editor, "main"));
 
-    JScrollPane s1 = new JScrollPane(makeTree(editor));
+    JScrollPane s1 = new JScrollPane(createTree(editor));
     JScrollPane s2 = new JScrollPane(editor);
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
     split.setResizeWeight(.5);
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTree makeTree(JEditorPane editor) {
+  private static JTree createTree(JEditorPane editor) {
     Icon emptyIcon = new EmptyIcon();
     UIManager.put("Tree.openIcon", emptyIcon);
     UIManager.put("Tree.closedIcon", emptyIcon);
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     UIManager.put("Tree.paintLines", false);
 
     JTree tree = new RowSelectionTree();
-    tree.setModel(makeModel(editor));
+    tree.setModel(createModel(editor));
     tree.setRowHeight(32);
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     // https://ateraimemo.com/Swing/ExpandAllNodes.html
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static DefaultTreeModel makeModel(JEditorPane editor) {
+  private static DefaultTreeModel createModel(JEditorPane editor) {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("1. Introduction");
     root.add(c1);
@@ -132,9 +132,9 @@ public final class MainPanel extends JPanel {
         .map(node -> Objects.toString(node.getUserObject()))
         .forEach(ref -> {
           String br = String.join("", Collections.nCopies(12, "<br />"));
-          String tag = "<a name='%s' href='#'>%s</a>%s";
           try {
-            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
+            String link = String.format("<a name='%s' href='#'>%s</a>%s", ref, ref, br);
+            doc.insertBeforeEnd(element, link);
           } catch (BadLocationException | IOException ex) {
             Logger.getGlobal().severe(ex::getMessage);
             UIManager.getLookAndFeel().provideErrorFeedback(editor);
