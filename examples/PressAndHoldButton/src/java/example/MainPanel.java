@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
     JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setLayout(new GridLayout(0, 3, 5, 5));
     ButtonGroup bg = new ButtonGroup();
-    makeMenuList().stream()
-        .map(MainPanel::makeMenuButton)
+    createMenuList().stream()
+        .map(MainPanel::createMenuButton)
         .forEach(b -> {
           b.addActionListener(e -> {
             String cmd = e.getActionCommand();
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static AbstractButton makeMenuButton(MenuContext m) {
+  private static AbstractButton createMenuButton(MenuContext m) {
     AbstractButton b = new JRadioButton(m.getCommand());
     b.setActionCommand(m.getCommand());
     b.setForeground(m.getColor());
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     return b;
   }
 
-  private static List<MenuContext> makeMenuList() {
+  private static List<MenuContext> createMenuList() {
     return Arrays.asList(
         new MenuContext("BLACK", Color.BLACK),
         new MenuContext("BLUE", Color.BLUE),
@@ -142,7 +142,7 @@ class PressAndHoldButton extends JButton {
       }
     });
 
-    protected PressAndHoldHandler() {
+    private PressAndHoldHandler() {
       super();
       holdTimer.setInitialDelay(1000);
     }
