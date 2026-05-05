@@ -17,20 +17,24 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
     UIManager.put("ScrollBar.minimumThumbSize", new Dimension(12, 20));
-    add(new JScrollPane(makeList()));
-    add(makeTranslucentScrollBar(makeList()));
+    add(new JScrollPane(createSampleList()));
+    add(createTranslucentScrollPane(createSampleList()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeList() {
+  private static Component createSampleList() {
     DefaultListModel<String> m = new DefaultListModel<>();
     IntStream.range(0, 500)
-        .mapToObj(i -> String.format("%03d: %s", i, LocalDateTime.now(ZoneId.systemDefault())))
+        .mapToObj(i -> String.format("%03d: %s", i, getNow()))
         .forEach(m::addElement);
     return new JList<>(m);
   }
 
-  private static Component makeTranslucentScrollBar(Component c) {
+  private static LocalDateTime getNow() {
+    return LocalDateTime.now(ZoneId.systemDefault());
+  }
+
+  private static Component createTranslucentScrollPane(Component c) {
     return new JScrollPane(c) {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false; // JScrollBar is overlap
@@ -92,7 +96,7 @@ class TranslucentScrollPaneLayout extends ScrollPaneLayout {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -106,11 +110,11 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   private static final Color ROLLOVER_COLOR = new Color(0x64_FF_78_64, true);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
@@ -121,15 +125,16 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
     Dimension min = UIManager.getDimension("ScrollBar.minimumThumbSize");
     r.height = Math.max(r.height, min.height);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setPaint(getThumbColor(c));
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setPaint(getCurrentThumbColor(c));
     g2.fill(r);
     g2.setPaint(Color.LIGHT_GRAY);
     g2.draw(r);
     g2.dispose();
   }
 
-  private Color getThumbColor(JComponent c) {
+  private Color getCurrentThumbColor(JComponent c) {
     Color color;
     if (c.isEnabled()) {
       if (isDragging) {
