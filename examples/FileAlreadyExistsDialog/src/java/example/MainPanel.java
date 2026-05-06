@@ -27,8 +27,9 @@ public final class MainPanel extends JPanel {
       }
 
       private int showConfirmDialog(File file) {
-        String format = "<html>%s already exists.<br>Do you want to replace it?";
-        String m = String.format(format, file.getAbsolutePath());
+        String msg1 = file.getAbsolutePath() + " already exists.";
+        String msg2 = "Do you want to replace it?";
+        String m = "<html>" + msg1 + "<br>" + msg2;
         String title = "Save As";
         return JOptionPane.showConfirmDialog(this, m, title, JOptionPane.YES_NO_OPTION);
       }
