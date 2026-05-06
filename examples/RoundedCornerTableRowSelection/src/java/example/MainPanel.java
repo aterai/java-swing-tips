@@ -14,36 +14,20 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setRowHeight(24);
-        setIntercellSpacing(new Dimension(0, 3));
-        setShowGrid(false);
-        setAutoCreateRowSorter(true);
-        setRowSelectionAllowed(true);
-        TableColumnModel columns = getColumnModel();
-        TableCellRenderer r = new RoundSelectionRenderer();
-        for (int i = 0; i < columns.getColumnCount(); i++) {
-          columns.getColumn(i).setCellRenderer(r);
-        }
-      }
-    };
+    JTable table = new RoundSelectionTable(createModel());
     JScrollPane scroll = new JScrollPane(table);
-    scroll.setBackground(Color.WHITE);
-    scroll.getViewport().setBackground(Color.WHITE);
     scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setOpaque(true);
-    setBackground(Color.WHITE);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultTableModel makeModel() {
+  private static DefaultTableModel createModel() {
     String[] columnNames = {"A", "B", "C", "Integer"};
     Object[][] data = {
         {"aaa", "aa", "a", 12},
@@ -77,6 +61,38 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class RoundSelectionTable extends JTable {
+  protected RoundSelectionTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setRowHeight(24);
+    setIntercellSpacing(new Dimension(0, 3));
+    setShowGrid(false);
+    setAutoCreateRowSorter(true);
+    setRowSelectionAllowed(true);
+    setFillsViewportHeight(true);
+    TableColumnModel columns = getColumnModel();
+    TableCellRenderer r = new RoundSelectionRenderer();
+    for (int i = 0; i < columns.getColumnCount(); i++) {
+      columns.getColumn(i).setCellRenderer(r);
+    }
+    updateParentBackground(this);
+  }
+
+  private static void updateParentBackground(JTable table) {
+    Container c = SwingUtilities.getAncestorOfClass(JScrollPane.class, table);
+    if (c instanceof JScrollPane) {
+      JScrollPane scroll = (JScrollPane) c;
+      Color bgc = UIManager.getColor("Table.background");
+      scroll.setBackground(bgc);
+      scroll.getViewport().setBackground(bgc);
+    }
   }
 }
 
@@ -132,7 +148,7 @@ class RoundSelectionRenderer extends DefaultTableCellRenderer {
   private enum Position {
     FIRST, MIDDLE, LAST;
 
-    public Area getArea(double w, double h, double arc) {
+    private Area getArea(double w, double h, double arc) {
       Area area = new Area();
       if (this == FIRST) {
         area.add(new Area(new Rectangle2D.Double(w - arc, 0d, arc + arc, h)));
