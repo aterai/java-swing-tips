@@ -128,12 +128,15 @@ class HighlightTableCellRenderer extends DefaultTableCellRenderer {
     if (!pattern.isEmpty() && !Objects.equals(pattern, prev)) {
       Matcher matcher = Pattern.compile(pattern).matcher(txt);
       int pos = 0;
-      StringBuilder buf = new StringBuilder("<html>");
+      StringBuilder buf = new StringBuilder(100);
+      buf.append("<html>");
       while (matcher.find(pos) && !matcher.group().isEmpty()) {
         int start = matcher.start();
         int end = matcher.end();
-        String span = "%s<span style='color:#000000; background-color:#FFFF00'>%s</span>";
-        buf.append(String.format(span, txt.substring(pos, start), txt.substring(start, end)));
+        buf.append(txt, pos, start)
+            .append("<span style='color:#000000; background-color:#FFFF00'>")
+            .append(txt, start, end)
+            .append("</span>");
         pos = end;
       }
       buf.append(txt.substring(pos));
