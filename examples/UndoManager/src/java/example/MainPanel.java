@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
     JTextField field2 = new JTextField("222222222");
     initUndoRedo(field2);
 
-    add(makeTitledPanel("undo:Ctrl-z, redo:Ctrl-y", field1));
-    add(makeTitledPanel("test", field2));
+    add(createTitledPanel("undo:Ctrl-z, redo:Ctrl-y", field1));
+    add(createTitledPanel("test", field2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -48,10 +48,10 @@ public final class MainPanel extends JPanel {
     // im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, m), redo);
   }
 
-  private static class UndoAction extends AbstractAction {
+  private static final class UndoAction extends AbstractAction {
     private final UndoManager undoManager;
 
-    protected UndoAction(UndoManager manager) {
+    private UndoAction(UndoManager manager) {
       super("undo");
       this.undoManager = manager;
     }
@@ -65,10 +65,10 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class RedoAction extends AbstractAction {
+  private static final class RedoAction extends AbstractAction {
     private final UndoManager undoManager;
 
-    protected RedoAction(UndoManager manager) {
+    private RedoAction(UndoManager manager) {
       super("redo");
       this.undoManager = manager;
     }
@@ -82,7 +82,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();

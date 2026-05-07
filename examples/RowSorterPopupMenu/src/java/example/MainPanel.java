@@ -20,7 +20,7 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel());
+    JTable table = new JTable(createModel());
     table.setRowSorter(new TableRowSorter<TableModel>(table.getModel()) {
       @Override public void toggleSortOrder(int column) {
         /* Disable header click sorting */
@@ -62,7 +62,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -121,11 +121,11 @@ final class TableHeaderPopupMenu extends JPopupMenu {
     }
   }
 
-  private class SortAction extends AbstractAction {
+  private final class SortAction extends AbstractAction {
     private final SortOrder dir;
     private int sortingIndex = -1;
 
-    protected SortAction(SortOrder dir) {
+    private SortAction(SortOrder dir) {
       super(dir.toString());
       this.dir = dir;
     }
