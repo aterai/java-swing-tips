@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     // scroll to top of page
     EventQueue.invokeLater(() -> editor.scrollRectToVisible(editor.getBounds()));
 
-    JTree tree = makeTocSideTree(editor);
+    JTree tree = createTocSideTree(editor);
     JScrollPane right = new JScrollPane(editor);
     BoundedRangeModel model = right.getVerticalScrollBar().getModel();
     model.addChangeListener(e -> htmlDocScroll(editor, tree));
@@ -82,10 +82,10 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static JTree makeTocSideTree(JEditorPane editor) {
+  private static JTree createTocSideTree(JEditorPane editor) {
     HTMLDocument doc = (HTMLDocument) editor.getDocument();
     Element element = doc.getElement("main");
-    TreeModel model = makeModel();
+    TreeModel model = createModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
@@ -95,9 +95,9 @@ public final class MainPanel extends JPanel {
         .map(node -> Objects.toString(node.getUserObject()))
         .forEach(ref -> {
           String br = String.join("", Collections.nCopies(12, "<br />"));
-          String tag = "<a name='%s' href='#'>%s</a>%s";
+          String link = String.format("<a name='%s' href='#'>%s</a>%s", ref, ref, br);
           try {
-            doc.insertBeforeEnd(element, String.format(tag, ref, ref, br));
+            doc.insertBeforeEnd(element, link);
           } catch (BadLocationException | IOException ex) {
             // Logger.getGlobal().severe(ex::getMessage);
             UIManager.getLookAndFeel().provideErrorFeedback(editor);
@@ -152,7 +152,7 @@ public final class MainPanel extends JPanel {
     // }
   }
 
-  private static DefaultTreeModel makeModel() {
+  private static DefaultTreeModel createModel() {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("1. Introduction");
     root.add(c1);
