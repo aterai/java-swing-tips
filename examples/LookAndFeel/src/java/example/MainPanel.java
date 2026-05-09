@@ -19,43 +19,43 @@ public final class MainPanel extends JPanel {
     menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
-    add(new JScrollPane(makeTestBox()));
+    add(new JScrollPane(createSampleBox()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Box makeTestBox() {
+  private static Box createSampleBox() {
     Box box = Box.createVerticalBox();
-    box.add(makeSystemColor(SystemColor.desktop, "desktop"));
-    box.add(makeSystemColor(SystemColor.activeCaption, "activeCaption"));
-    box.add(makeSystemColor(SystemColor.inactiveCaption, "inactiveCaption"));
-    box.add(makeSystemColor(SystemColor.activeCaptionText, "activeCaptionText"));
-    box.add(makeSystemColor(SystemColor.inactiveCaptionText, "inactiveCaptionText"));
-    box.add(makeSystemColor(SystemColor.activeCaptionBorder, "activeCaptionBorder"));
-    box.add(makeSystemColor(SystemColor.inactiveCaptionBorder, "inactiveCaptionBorder"));
-    box.add(makeSystemColor(SystemColor.window, "window"));
-    box.add(makeSystemColor(SystemColor.windowText, "windowText"));
-    box.add(makeSystemColor(SystemColor.menu, "menu"));
-    box.add(makeSystemColor(SystemColor.menuText, "menuText"));
-    box.add(makeSystemColor(SystemColor.text, "text"));
-    box.add(makeSystemColor(SystemColor.textHighlight, "textHighlight"));
-    box.add(makeSystemColor(SystemColor.textText, "textText"));
-    box.add(makeSystemColor(SystemColor.textHighlightText, "textHighlightText"));
-    box.add(makeSystemColor(SystemColor.control, "control"));
-    box.add(makeSystemColor(SystemColor.controlLtHighlight, "controlLtHighlight"));
-    box.add(makeSystemColor(SystemColor.controlHighlight, "controlHighlight"));
-    box.add(makeSystemColor(SystemColor.controlShadow, "controlShadow"));
-    box.add(makeSystemColor(SystemColor.controlDkShadow, "controlDkShadow"));
-    box.add(makeSystemColor(SystemColor.controlText, "controlText"));
-    // box.add(makeSystemColor(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
-    box.add(makeSystemColor(SystemColor.control, "control"));
-    box.add(makeSystemColor(SystemColor.scrollbar, "scrollbar"));
-    box.add(makeSystemColor(SystemColor.info, "info"));
-    box.add(makeSystemColor(SystemColor.infoText, "infoText"));
+    box.add(createSystemColor(SystemColor.desktop, "desktop"));
+    box.add(createSystemColor(SystemColor.activeCaption, "activeCaption"));
+    box.add(createSystemColor(SystemColor.inactiveCaption, "inactiveCaption"));
+    box.add(createSystemColor(SystemColor.activeCaptionText, "activeCaptionText"));
+    box.add(createSystemColor(SystemColor.inactiveCaptionText, "inactiveCaptionText"));
+    box.add(createSystemColor(SystemColor.activeCaptionBorder, "activeCaptionBorder"));
+    box.add(createSystemColor(SystemColor.inactiveCaptionBorder, "inactiveCaptionBorder"));
+    box.add(createSystemColor(SystemColor.window, "window"));
+    box.add(createSystemColor(SystemColor.windowText, "windowText"));
+    box.add(createSystemColor(SystemColor.menu, "menu"));
+    box.add(createSystemColor(SystemColor.menuText, "menuText"));
+    box.add(createSystemColor(SystemColor.text, "text"));
+    box.add(createSystemColor(SystemColor.textHighlight, "textHighlight"));
+    box.add(createSystemColor(SystemColor.textText, "textText"));
+    box.add(createSystemColor(SystemColor.textHighlightText, "textHighlightText"));
+    box.add(createSystemColor(SystemColor.control, "control"));
+    box.add(createSystemColor(SystemColor.controlLtHighlight, "controlLtHighlight"));
+    box.add(createSystemColor(SystemColor.controlHighlight, "controlHighlight"));
+    box.add(createSystemColor(SystemColor.controlShadow, "controlShadow"));
+    box.add(createSystemColor(SystemColor.controlDkShadow, "controlDkShadow"));
+    box.add(createSystemColor(SystemColor.controlText, "controlText"));
+    // box.add(createSystemColor(SystemColor.inactiveCaptionControlText, "inactiveControlText"));
+    box.add(createSystemColor(SystemColor.control, "control"));
+    box.add(createSystemColor(SystemColor.scrollbar, "scrollbar"));
+    box.add(createSystemColor(SystemColor.info, "info"));
+    box.add(createSystemColor(SystemColor.infoText, "infoText"));
     box.add(Box.createVerticalGlue());
     return box;
   }
 
-  private static Component makeSystemColor(Color color, String text) {
+  private static Component createSystemColor(Color color, String text) {
     String txt = String.format("%s RGB(#%06X)", text, color.getRGB() & 0xFF_FF_FF);
     JTextField field = new JTextField(txt);
     field.setEditable(false);
@@ -180,10 +180,10 @@ final class LookAndFeelUtils {
     return op.orElse(null);
   }
 
-  private static class ChangeLookAndFeelAction extends AbstractAction {
+  private static final class ChangeLookAndFeelAction extends AbstractAction {
     private final String laf;
 
-    protected ChangeLookAndFeelAction(String laf) {
+    private ChangeLookAndFeelAction(String laf) {
       super("ChangeTheme");
       this.laf = laf;
     }

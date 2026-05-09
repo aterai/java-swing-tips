@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     } else {
       fm.remove(noFile);
       for (int i = 0; i < RECENT_FILES.size(); i++) {
-        JMenuItem mi = makeHistoryMenuItem(RECENT_FILES.get(i), i);
+        JMenuItem mi = createHistoryMenuItem(RECENT_FILES.get(i), i);
         fileHistoryMenu.add(mi);
       }
     }
@@ -75,12 +75,12 @@ public final class MainPanel extends JPanel {
       RECENT_FILES.remove(RECENT_FILES.size() - 1);
     }
     for (int i = 0; i < RECENT_FILES.size(); i++) {
-      JMenuItem mi = makeHistoryMenuItem(RECENT_FILES.get(i), i);
+      JMenuItem mi = createHistoryMenuItem(RECENT_FILES.get(i), i);
       fileHistoryMenu.add(mi, i);
     }
   }
 
-  private JMenuItem makeHistoryMenuItem(Path name, int idx) {
+  private JMenuItem createHistoryMenuItem(Path name, int idx) {
     String num = Integer.toString(idx + 1);
     JMenuItem mi = new JMenuItem(new HistoryAction(name));
     mi.setText(num + ": " + name);
@@ -88,10 +88,10 @@ public final class MainPanel extends JPanel {
     return mi;
   }
 
-  private class HistoryAction extends AbstractAction {
+  private final class HistoryAction extends AbstractAction {
     private final transient Path path;
 
-    protected HistoryAction(Path path) {
+    private HistoryAction(Path path) {
       super();
       this.path = path;
     }
@@ -122,10 +122,10 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private class NewAction extends AbstractAction {
+  private final class NewAction extends AbstractAction {
     private int counter;
 
-    protected NewAction() {
+    private NewAction() {
       super("new");
     }
 
