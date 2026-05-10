@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
     JFormattedTextField ftf = editor.getTextField();
     ftf.setFont(new Font(Font.MONOSPACED, Font.PLAIN, ftf.getFont().getSize()));
-    ftf.setFormatterFactory(makeFormatterFactory());
+    ftf.setFormatterFactory(createFormatterFactory());
 
     JRadioButton exMi = new JRadioButton(FontPaint.IPA_EX_MINCHO.toString());
     exMi.addItemListener(e -> {
@@ -100,7 +100,7 @@ public final class MainPanel extends JPanel {
     private final Font ipaEx = new Font("IPAexMincho", Font.PLAIN, 200);
     private final Font ipaMj = new Font("IPAmjMincho", Font.PLAIN, 200);
 
-    public void setFontPaintFlag(Set<FontPaint> flg) {
+    private void setFontPaintFlag(Set<FontPaint> flg) {
       fontPaintFlag = flg;
     }
 
@@ -148,7 +148,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static DefaultFormatterFactory makeFormatterFactory() {
+  private static DefaultFormatterFactory createFormatterFactory() {
     DefaultFormatter formatter = new DefaultFormatter() {
       @Override public Object stringToValue(String text) throws ParseException {
         Pattern pattern = Pattern.compile("^\\s*(\\p{XDigit}{1,6})\\s*$");

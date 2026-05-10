@@ -132,7 +132,7 @@ class PressAndHoldButton extends JButton {
     ARROW_ICON.paintIcon(this, g, r.x + r.width, r.y + cy);
   }
 
-  private class PressAndHoldHandler extends AbstractAction implements MouseListener {
+  private final class PressAndHoldHandler extends AbstractAction implements MouseListener {
     private final Timer holdTimer = new Timer(1000, e -> {
       Timer timer = (Timer) e.getSource();
       if (popupMenu != null && getModel().isPressed() && timer.isRunning()) {

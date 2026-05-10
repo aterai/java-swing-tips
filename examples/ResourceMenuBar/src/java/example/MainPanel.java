@@ -52,8 +52,8 @@ public final class MainPanel extends JPanel {
   //   new VersionAction(),
   // };
 
-  private static class NewAction extends AbstractAction {
-    protected NewAction() {
+  private static final class NewAction extends AbstractAction {
+    private NewAction() {
       super("new");
     }
 
