@@ -22,7 +22,7 @@ import javax.swing.border.Border;
 // import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class MainPanel extends JPanel {
-  private static final Paint TEXTURE = ImageUtils.makeCheckerTexture();
+  private static final Paint TEXTURE = ImageUtils.createCheckerTexture();
 
   private MainPanel() {
     super();
@@ -30,15 +30,15 @@ public final class MainPanel extends JPanel {
     // https://www.deviantart.com/chrfb/art/ecqlipse-2-PNG-59941546
     String path1 = "example/RECYCLE BIN - EMPTY_16x16-32.png";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path1);
-    add(makeButton(makeTitleWithIcon(url, "align=top", "top")));
-    add(makeButton(makeTitleWithIcon(url, "align=middle", "middle")));
-    add(makeButton(makeTitleWithIcon(url, "align=bottom", "bottom")));
+    add(createButton(createTitleWithIcon(url, "align=top", "top")));
+    add(createButton(createTitleWithIcon(url, "align=middle", "middle")));
+    add(createButton(createTitleWithIcon(url, "align=bottom", "bottom")));
 
     Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
     JLabel label = new JLabel("JLabel", icon, SwingConstants.CENTER);
     label.setForeground(Color.WHITE);
     label.setAlignmentX(CENTER_ALIGNMENT);
-    AbstractButton b = makeButton("");
+    AbstractButton b = createButton("");
     b.setAlignmentX(CENTER_ALIGNMENT);
     JPanel p = new JPanel();
     p.setLayout(new OverlayLayout(p));
@@ -46,12 +46,12 @@ public final class MainPanel extends JPanel {
     p.add(label);
     p.add(b);
     add(p);
-    add(makeButton("☎ text"));
+    add(createButton("☎ text"));
     add(new TranslucentButton("TranslucentButton", icon));
-    add(makeButton("1"));
-    add(makeButton("22222222"));
-    add(makeButton("333333333333333333"));
-    add(makeButton("44444444444444444444444444444"));
+    add(createButton("1"));
+    add(createButton("22222222"));
+    add(createButton("333333333333333333"));
+    add(createButton("44444444444444444444444444444"));
 
     BufferedImage bi = ImageUtils.getFilteredImage("example/test.jpg");
     setBorder(new CentredBackgroundBorder(bi));
@@ -60,12 +60,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String makeTitleWithIcon(URL url, String title, String align) {
-    String html = "<html><p align='%s'><img src='%s' align='%s' />&nbsp;%s</p>";
-    return String.format(html, align, url, align, title);
+  private static String createTitleWithIcon(URL url, String title, String align) {
+    String p = String.format("<p align='%s'>", align);
+    String img = String.format("<img src='%s' align='%s' />", url, align);
+    return "<html>" + p + img + "&nbsp;" + title;
   }
 
-  private static AbstractButton makeButton(String title) {
+  private static AbstractButton createButton(String title) {
     return new JButton(title) {
       @Override public void updateUI() {
         super.updateUI();
@@ -262,10 +263,10 @@ final class ImageUtils {
       try (InputStream s = u.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
 
     int w = image.getWidth();
     int h = image.getHeight();
@@ -279,7 +280,7 @@ final class ImageUtils {
     return dst;
   }
 
-  public static BufferedImage makeMissingImage() {
+  public static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -290,7 +291,7 @@ final class ImageUtils {
     return bi;
   }
 
-  public static TexturePaint makeCheckerTexture() {
+  public static TexturePaint createCheckerTexture() {
     int cs = 6;
     int sz = cs * cs;
     BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);

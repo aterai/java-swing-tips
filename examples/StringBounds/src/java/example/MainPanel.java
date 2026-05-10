@@ -82,8 +82,11 @@ public final class MainPanel extends JPanel {
     log.append(s + ":\n  ");
     if (o instanceof Rectangle2D) {
       Rectangle2D r = (Rectangle2D) o;
-      String fmt = "x=%8.4f y=%8.4f w=%8.4f h=%8.4f%n";
-      log.append(String.format(fmt, r.getX(), r.getY(), r.getWidth(), r.getHeight()));
+      double dx = r.getX();
+      double dy = r.getY();
+      double dw = r.getWidth();
+      double dh = r.getHeight();
+      log.append(String.format("x=%8.4f y=%8.4f w=%8.4f h=%8.4f%n", dx, dy, dw, dh));
     } else {
       log.append(o + "\n");
     }

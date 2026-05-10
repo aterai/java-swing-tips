@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("TableHeader.rightAlignSortArrow", false);
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         DefaultTableCellRenderer cr = new DefaultTableCellRenderer();
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"Name", "CPU", "Memory", "Disk"};
     Object[][] data = {
         {"aaa", "1%", "1.6MB", "0MB/S"}, {"bbb", "1%", "2.4MB", "3MB/S"},
@@ -136,8 +136,14 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       // l.setHorizontalAlignment(SwingConstants.RIGHT);
-      URI sortUri;
       SortOrder sortOrder = getColumnSortOrder(table, column);
+      // Java 12:
+      // URI sortUri = switch (sortOrder) {
+      //   case ASCENDING -> ascendingUri;
+      //   case DESCENDING -> descendingUri;
+      //   default -> naturalUri;
+      // };
+      URI sortUri;
       switch (sortOrder) {
         case ASCENDING:
           sortUri = ascendingUri;
@@ -150,10 +156,13 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
           break;
       }
       int v = 10;
-      String img = String.format("<img src='%s'>", sortUri);
-      String pct = String.format("<td align='right'>%d%%", v);
-      String fmt = "<html><table><tr><td>%s%s<tr><td><td align='right'>%s";
-      l.setText(String.format(fmt, img, pct, Objects.toString(value, "")));
+      String td1 = String.format("<td><img src='%s'></td>", sortUri);
+      String td2 = String.format("<td align='right'>%d%%</td>", v);
+      String td3 = "<td></td>";
+      String td4 = String.format("<td align='right'>%s</td>", Objects.toString(value, ""));
+      String tr1 = "<tr>" + td1 + td2;
+      String tr2 = "<tr>" + td3 + td4;
+      l.setText("<html><table>" + tr1 + tr2);
     }
     return c;
   }
@@ -163,6 +172,10 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     if (table != null && table.getRowSorter() != null) {
       List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter().getSortKeys();
       int mi = table.convertColumnIndexToModel(column);
+      // Java 21:
+      // if (!sortKeys.isEmpty() && sortKeys.getFirst().getColumn() == mi) {
+      //   rv = sortKeys.getFirst().getSortOrder();
+      // }
       if (!sortKeys.isEmpty() && sortKeys.get(0).getColumn() == mi) {
         rv = sortKeys.get(0).getSortOrder();
       }
@@ -177,10 +190,10 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     Graphics2D g2 = img.createGraphics();
     icon.paintIcon(null, g2, 0, 0);
     g2.dispose();
-    return makeTempFile(img).map(File::toURI).orElse(null);
+    return createTempFile(img).map(File::toURI).orElse(null);
   }
 
-  private static Optional<File> makeTempFile(BufferedImage img) {
+  private static Optional<File> createTempFile(BufferedImage img) {
     Optional<File> op;
     try {
       File file = File.createTempFile("icon", ".png");
@@ -206,7 +219,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -214,7 +227,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
