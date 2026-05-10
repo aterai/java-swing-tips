@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
@@ -16,19 +15,19 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.LayerUI;
 
-public final class MainPanel extends JPanel implements HierarchyListener {
+public final class MainPanel extends JPanel {
   private transient SwingWorker<String, Void> worker;
 
   private MainPanel() {
     super(new BorderLayout());
     BoundedRangeModel m = new DefaultBoundedRangeModel();
-    JProgressBar progressBar = new JProgressBar(m);
-    progressBar.setOrientation(SwingConstants.VERTICAL);
+    JProgressBar progressBar1 = new JProgressBar(m);
+    progressBar1.setOrientation(SwingConstants.VERTICAL);
 
-    JProgressBar progressBar0 = new JProgressBar(m);
-    progressBar0.setOrientation(SwingConstants.VERTICAL);
-    progressBar0.setStringPainted(false);
-    progressBar0.setStringPainted(true);
+    JProgressBar progressBar2 = new JProgressBar(m);
+    progressBar2.setOrientation(SwingConstants.VERTICAL);
+    progressBar2.setStringPainted(false);
+    progressBar2.setStringPainted(true);
 
     JButton button = new JButton("Test");
     button.addActionListener(e -> {
@@ -36,24 +35,25 @@ public final class MainPanel extends JPanel implements HierarchyListener {
         worker.cancel(true);
       }
       worker = new BackgroundTask();
-      worker.addPropertyChangeListener(new ProgressListener(progressBar));
+      worker.addPropertyChangeListener(new ProgressListener(progressBar1));
       worker.execute();
     });
 
     JPanel p = new JPanel();
-    p.add(progressBar);
+    p.add(progressBar1);
     p.add(Box.createHorizontalStrut(5));
-    p.add(progressBar0);
+    p.add(progressBar2);
     p.add(Box.createHorizontalStrut(5));
-    p.add(makeProgressBar1(m));
+    p.add(createTextLabelBar(m));
     p.add(Box.createHorizontalStrut(5));
-    p.add(makeProgressBar2(m));
-    // p.add(new JButton(new AbstractAction("+10") {
-    //   private int i = 0;
-    //   @Override public void actionPerformed(ActionEvent e) {
-    //     m.setValue(i = (i >= 100) ? 0 : i + 10);
-    //   }
-    // }));
+    p.add(createOverlayBar(m));
+    p.addHierarchyListener(e -> {
+      long flags = e.getChangeFlags();
+      boolean displayability = (flags & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
+      if (displayability && !e.getComponent().isDisplayable() && worker != null) {
+        worker.cancel(true);
+      }
+    });
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -61,30 +61,20 @@ public final class MainPanel extends JPanel implements HierarchyListener {
     box.add(Box.createHorizontalStrut(5));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-    addHierarchyListener(this);
     add(new JProgressBar(m), BorderLayout.NORTH);
     add(p);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  @Override public void hierarchyChanged(HierarchyEvent e) {
-    boolean displayability = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-    if (displayability && !e.getComponent().isDisplayable() && Objects.nonNull(worker)) {
-      // System.out.println("DISPOSE_ON_CLOSE");
-      worker.cancel(true);
-      // worker = null;
-    }
-  }
-
-  private static Component makeProgressBar1(BoundedRangeModel model) {
-    JProgressBar progressBar = new TextLabelProgressBar(model);
+  private static Component createTextLabelBar(BoundedRangeModel model) {
+    JProgressBar progressBar = new LabeledProgressBar(model);
     progressBar.setOrientation(SwingConstants.VERTICAL);
     progressBar.setStringPainted(false);
     return progressBar;
   }
 
-  private static Component makeProgressBar2(BoundedRangeModel model) {
+  private static Component createOverlayBar(BoundedRangeModel model) {
     JLabel label = new JLabel("000/100");
     label.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     JProgressBar progressBar = new JProgressBar(model) {
@@ -139,9 +129,9 @@ class BackgroundTask extends SwingWorker<String, Void> {
   }
 
   protected int doSomething() throws InterruptedException {
-    int iv = rnd.nextInt(50) + 1;
-    Thread.sleep(iv);
-    return iv;
+    int progressPercent = rnd.nextInt(50) + 1;
+    Thread.sleep(progressPercent);
+    return progressPercent;
   }
 }
 
@@ -163,11 +153,11 @@ class ProgressListener implements PropertyChangeListener {
   }
 }
 
-class TextLabelProgressBar extends JProgressBar {
+class LabeledProgressBar extends JProgressBar {
   private final JLabel label = new JLabel("000/100", CENTER);
   // private transient ChangeListener changeListener;
 
-  protected TextLabelProgressBar(BoundedRangeModel model) {
+  protected LabeledProgressBar(BoundedRangeModel model) {
     super(model);
   }
 
@@ -177,8 +167,8 @@ class TextLabelProgressBar extends JProgressBar {
     super.updateUI();
     setLayout(new BorderLayout());
     // changeListener = e -> {
-    //   int iv = (int) (100 * getPercentComplete());
-    //   label.setText(String.format("%03d/100", iv));
+    //   int progressPercent = (int) (100 * getPercentComplete());
+    //   label.setText(String.format("%03d/100", progressPercent));
     //   // label.setText(getString());
     // };
     // addChangeListener(changeListener);
@@ -191,8 +181,8 @@ class TextLabelProgressBar extends JProgressBar {
 
   @Override protected ChangeListener createChangeListener() {
     return e -> {
-      int iv = (int) (100 * getPercentComplete());
-      label.setText(String.format("%03d/100", iv));
+      int progressPercent = (int) (100 * getPercentComplete());
+      label.setText(String.format("%03d/100", progressPercent));
       // label.setText(getString());
     };
   }
@@ -223,8 +213,8 @@ class ProgressBarLayerUI extends LayerUI<JProgressBar> {
     super.paint(g, c);
     if (c instanceof JLayer) {
       JProgressBar progress = (JProgressBar) ((JLayer<?>) c).getView();
-      int iv = (int) (100 * progress.getPercentComplete());
-      label.setText(String.format("%03d/100", iv));
+      int progressPercent = (int) (100 * progress.getPercentComplete());
+      label.setText(String.format("%03d/100", progressPercent));
 
       Dimension d = label.getPreferredSize();
       int x = (c.getWidth() - d.width) / 2;
