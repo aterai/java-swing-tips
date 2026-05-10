@@ -32,21 +32,21 @@ import javax.swing.text.ViewFactory;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-    JEditorPane editor0 = makeEditorPane("DefaultHighlightPainter");
+    JEditorPane editor0 = createEditorPane("DefaultHighlightPainter");
     Caret caret0 = new FocusCaret(
         new DefaultHighlightPainter(new Color(0xAA_CC_DD_FF, true)),
         new DefaultHighlightPainter(new Color(0xEE_EE_EE_EE, true)));
     caret0.setBlinkRate(editor0.getCaret().getBlinkRate());
     editor0.setCaret(caret0);
 
-    JEditorPane editor1 = makeEditorPane("ParagraphMarkHighlightPainter");
+    JEditorPane editor1 = createEditorPane("ParagraphMarkHighlightPainter");
     Caret caret1 = new FocusCaret(
         new ParagraphMarkHighlightPainter(new Color(0xAA_CC_DD_FF, true)),
         new ParagraphMarkHighlightPainter(new Color(0xEE_EE_EE_EE, true)));
     caret1.setBlinkRate(editor1.getCaret().getBlinkRate());
     editor1.setCaret(caret1);
 
-    JEditorPane editor2 = makeEditorPane("WholeLineHighlightPainter");
+    JEditorPane editor2 = createEditorPane("WholeLineHighlightPainter");
     Caret caret2 = new FocusCaret(
         new WholeLineHighlightPainter(new Color(0xAA_CC_DD_FF, true)),
         new WholeLineHighlightPainter(new Color(0xEE_EE_EE_EE, true)));
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JEditorPane makeEditorPane(String txt) {
+  private static JEditorPane createEditorPane(String txt) {
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(new ParagraphMarkEditorKit());
     editor.setText(txt + "\n\n123432543543\n");
@@ -157,8 +157,10 @@ class FocusCaret extends DefaultCaret {
   }
 
   @Override public String toString() {
-    String fmt = "FocusCaret{nonFocusPainter=%s, selectionPainter=%s}";
-    return String.format(fmt, nonFocusPainter, selectionPainter);
+    return String.format(
+        "FocusCaret{nonFocusPainter=%s, selectionPainter=%s}",
+        nonFocusPainter,
+        selectionPainter);
   }
 }
 
@@ -184,6 +186,17 @@ class ParagraphMarkEditorKit extends StyledEditorKit implements ViewFactory {
         return new LabelView(elem);
     }
   }
+
+  // Java 12:
+  // @Override public View create(Element elem) {
+  //   return switch (elem.getName()) {
+  //     case AbstractDocument.ParagraphElementName -> new ParagraphWithEndMarkView(elem);
+  //     case AbstractDocument.SectionElementName -> new BoxView(elem, View.Y_AXIS);
+  //     case StyleConstants.ComponentElementName -> new ComponentView(elem);
+  //     case StyleConstants.IconElementName -> new IconView(elem);
+  //     default -> new LabelView(elem);
+  //   };
+  // }
 }
 
 class ParagraphWithEndMarkView extends ParagraphView {
