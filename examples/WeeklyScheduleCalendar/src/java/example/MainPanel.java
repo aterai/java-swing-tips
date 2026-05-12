@@ -10,8 +10,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -26,22 +24,46 @@ import javax.swing.plaf.synth.SynthStyle;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabs = new ClippedTitleTabbedPane();
-    Locale locale = Locale.getDefault();
+    JTabbedPane tabs = new DayScheduleTabbedPane();
     LocalDate today = LocalDate.now(ZoneId.systemDefault());
-    DayOfWeek firstDay = WeekFields.of(locale).getFirstDayOfWeek();
-    LocalDate startOfWeek = today.with(TemporalAdjusters.previousOrSame(firstDay));
-    for (int i = 0; i < DayOfWeek.values().length; i++) {
-      LocalDate date = startOfWeek.plusDays(i);
-      tabs.addTab("", makeTabContent(date));
-      tabs.setTabComponentAt(i, makeDayTab(date, today, locale));
-    }
+    updateCalendar(tabs, today, today.minusDays(3));
+
+    JCheckBox check = new JCheckBox("Center Today", true);
+    check.addActionListener(e -> {
+      boolean selected = ((JCheckBox) e.getSource()).isSelected();
+      handleCenterModeToggle(tabs, selected);
+    });
+
     add(tabs);
+    add(check, BorderLayout.SOUTH);
     setBackground(ModernTabbedPaneUI.BG_DARK);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPanel makeTabContent(LocalDate date) {
+  private static void handleCenterModeToggle(JTabbedPane tabs, boolean centering) {
+    LocalDate today = LocalDate.now(ZoneId.systemDefault());
+    LocalDate start = centering
+        ? today.minusDays(3)
+        : today.minusDays(today.getDayOfWeek().getValue() - 1);
+    updateCalendar(tabs, today, start);
+  }
+
+  private static void updateCalendar(JTabbedPane tabs, LocalDate today, LocalDate startDay) {
+    tabs.removeAll();
+    Locale locale = Locale.getDefault();
+    int todayIdx = 0;
+    for (int i = 0; i < DayOfWeek.values().length; i++) {
+      LocalDate date = startDay.plusDays(i);
+      tabs.addTab("", createTabContent(date));
+      tabs.setTabComponentAt(i, createDayTab(date, today, locale));
+      if (date.equals(today)) {
+        todayIdx = i;
+      }
+    }
+    tabs.setSelectedIndex(todayIdx);
+  }
+
+  private static JPanel createTabContent(LocalDate date) {
     JLabel label = new JLabel("Schedule for " + date);
     label.setForeground(ModernTabbedPaneUI.TEXT_PRIMARY);
     JPanel content = new JPanel();
@@ -50,7 +72,7 @@ public final class MainPanel extends JPanel {
     return content;
   }
 
-  private static JPanel makeDayTab(LocalDate date, LocalDate today, Locale locale) {
+  private static JPanel createDayTab(LocalDate date, LocalDate today, Locale locale) {
     String dayName = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, locale);
     JLabel lblDay = new JLabel(dayName, SwingConstants.CENTER);
     lblDay.setFont(lblDay.getFont().deriveFont(11f));
@@ -66,11 +88,11 @@ public final class MainPanel extends JPanel {
     panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     panel.add(lblDay, BorderLayout.NORTH);
     panel.add(lblDate);
-    panel.add(makeIndicator(date, today), BorderLayout.SOUTH);
+    panel.add(createIndicator(date, today), BorderLayout.SOUTH);
     return panel;
   }
 
-  private static JLabel makeIndicator(LocalDate date, LocalDate today) {
+  private static JLabel createIndicator(LocalDate date, LocalDate today) {
     int iw = 20;
     int ih = 4;
     int ir = 2;
@@ -109,8 +131,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ClippedTitleTabbedPane extends JTabbedPane {
-  protected ClippedTitleTabbedPane() {
+class DayScheduleTabbedPane extends JTabbedPane {
+  protected DayScheduleTabbedPane() {
     super();
   }
 
