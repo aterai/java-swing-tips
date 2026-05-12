@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
   // How to add icon to JFrame's title bar - Oracle Forums
   // https://forums.oracle.com/ords/apexds/post/how-to-add-icon-to-jframe-s-title-bar-5581
-  private static JButton makeButton(String title, Icon icon) {
+  private static JButton createButton(String title, Icon icon) {
     JButton extraButton = new JButton(title, icon) {
       @Override public Dimension getPreferredSize() {
         Icon icon = UIManager.getIcon("InternalFrame.closeIcon");
@@ -42,15 +42,15 @@ public final class MainPanel extends JPanel {
     return extraButton;
   }
 
-  private static JWindow makeExtraBarWindow(JFrame frame) {
+  private static JWindow createExtraBarWindow(JFrame frame) {
     // JToolBar bar = new JToolBar();
     // bar.setFloatable(false);
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 4));
     box.setOpaque(false);
-    box.add(makeButton("...", null));
+    box.add(createButton("...", null));
     box.add(Box.createHorizontalStrut(5));
-    box.add(makeButton(null, new ExtraIcon()));
+    box.add(createButton(null, new ExtraIcon()));
     JWindow window = new JWindow(frame);
     // window.setAlwaysOnTop(true); // XXX
     // window.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
@@ -73,19 +73,49 @@ public final class MainPanel extends JPanel {
     frame.setMinimumSize(new Dimension(240, 120));
     frame.pack();
     frame.setLocationRelativeTo(null);
-    JWindow bar = makeExtraBarWindow(frame);
-    ExtraBarPositionHandler handler = new ExtraBarPositionHandler(bar);
-    frame.addComponentListener(handler);
-    frame.addWindowListener(handler);
+    JWindow bar = createExtraBarWindow(frame);
+    frame.addComponentListener(new ExtraBarComponentHandler(bar));
+    frame.addWindowListener(new ExtraBarHandler(bar));
     frame.setVisible(true);
   }
 }
 
-@SuppressWarnings("PMD.TooManyMethods")
-class ExtraBarPositionHandler extends WindowAdapter implements ComponentListener {
+class ExtraBarComponentHandler implements ComponentListener {
   private final JWindow extraBar;
 
-  protected ExtraBarPositionHandler(JWindow extraBar) {
+  protected ExtraBarComponentHandler(JWindow extraBar) {
+    super();
+    this.extraBar = extraBar;
+  }
+
+  @Override public void componentResized(ComponentEvent e) {
+    // System.out.println("componentResized");
+    // ???: setLocationRelativeTo(e.getComponent());
+    EventQueue.invokeLater(() -> relocateBar(e.getComponent()));
+  }
+
+  @Override public void componentMoved(ComponentEvent e) {
+    relocateBar(e.getComponent());
+  }
+
+  @Override public void componentShown(ComponentEvent e) {
+    relocateBar(e.getComponent());
+    extraBar.setVisible(true);
+  }
+
+  @Override public void componentHidden(ComponentEvent e) {
+    extraBar.setVisible(false);
+  }
+
+  private void relocateBar(Component p) {
+    EventQueue.invokeLater(() -> ExtraBarHandler.updateBarLocation(p, extraBar));
+  }
+}
+
+class ExtraBarHandler extends WindowAdapter {
+  private final JWindow extraBar;
+
+  protected ExtraBarHandler(JWindow extraBar) {
     super();
     this.extraBar = extraBar;
   }
@@ -99,7 +129,7 @@ class ExtraBarPositionHandler extends WindowAdapter implements ComponentListener
   }
 
   @Override public void windowOpened(WindowEvent e) {
-    setLocationRelativeTo(e.getWindow());
+    relocateBar(e.getWindow());
     extraBar.setVisible(true);
   }
 
@@ -112,54 +142,39 @@ class ExtraBarPositionHandler extends WindowAdapter implements ComponentListener
   }
 
   @Override public void windowDeiconified(WindowEvent e) {
-    setLocationRelativeTo(e.getWindow());
+    relocateBar(e.getWindow());
     extraBar.setVisible(true);
   }
 
-  @Override public void componentResized(ComponentEvent e) {
-    // System.out.println("componentResized");
-    // ???: setLocationRelativeTo(e.getComponent());
-    EventQueue.invokeLater(() -> setLocationRelativeTo(e.getComponent()));
+  private void relocateBar(Component p) {
+    EventQueue.invokeLater(() -> updateBarLocation(p, extraBar));
   }
 
-  @Override public void componentMoved(ComponentEvent e) {
-    setLocationRelativeTo(e.getComponent());
-  }
-
-  @Override public void componentShown(ComponentEvent e) {
-    setLocationRelativeTo(e.getComponent());
-    extraBar.setVisible(true);
-  }
-
-  @Override public void componentHidden(ComponentEvent e) {
-    extraBar.setVisible(false);
-  }
-
-  private void setLocationRelativeTo(Component p) {
-    EventQueue.invokeLater(() -> updateExtraBarLocation(p));
-  }
-
-  private void updateExtraBarLocation(Component p) {
+  public static void updateBarLocation(Component p, JWindow extraBar) {
     JRootPane root = SwingUtilities.getRootPane(p);
-    Icon iconifyIcon = UIManager.getIcon("InternalFrame.iconifyIcon");
+    Icon minIcon = UIManager.getIcon("InternalFrame.iconifyIcon");
     Insets zeroIns = new Insets(0, 0, 0, 0);
     Border bdr = root.getBorder();
     Insets ins = bdr == null ? zeroIns : bdr.getBorderInsets(root);
     if (p instanceof Frame && ((Frame) p).getExtendedState() == Frame.MAXIMIZED_BOTH) {
       ins = zeroIns;
     }
-    JButton iconifyIconButton = SwingUtils
-        .descendants(root)
-        .filter(JButton.class::isInstance)
-        .map(JButton.class::cast)
-        .filter(b -> Objects.equals(b.getIcon(), iconifyIcon))
-        .findFirst()
-        .orElse(null);
-    Point pt = iconifyIconButton == null ? new Point() : iconifyIconButton.getLocation();
+    JButton minButton = findMinimizeButton(root, minIcon);
+    Point pt = minButton == null ? new Point() : minButton.getLocation();
     SwingUtilities.convertPointToScreen(pt, root);
     int x = pt.x - extraBar.getWidth();
     int y = p.getY() + ins.top + 1;
     extraBar.setLocation(x, y);
+  }
+
+  private static JButton findMinimizeButton(JRootPane root, Icon minIcon) {
+    return SwingUtils
+        .descendants(root)
+        .filter(JButton.class::isInstance)
+        .map(JButton.class::cast)
+        .filter(b -> Objects.equals(b.getIcon(), minIcon))
+        .findFirst()
+        .orElse(null);
   }
 }
 
