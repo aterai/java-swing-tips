@@ -39,16 +39,16 @@ public final class MainPanel extends JPanel {
     label.setOpaque(true);
     label.setBackground(Color.WHITE);
 
-    RecentSwatchPanel switchPanel = new RecentSwatchPanel();
-    switchPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    switchPanel.colors[0] = Color.RED;
-    switchPanel.colors[1] = Color.GREEN;
-    switchPanel.colors[2] = Color.BLUE;
+    RecentSwatchPanel recentPanel = new RecentSwatchPanel();
+    recentPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    recentPanel.colors[0] = Color.RED;
+    recentPanel.colors[1] = Color.GREEN;
+    recentPanel.colors[2] = Color.BLUE;
 
     JButton button = new JButton("open JColorChooser");
-    button.addActionListener(e -> showColorChooser(switchPanel, label));
+    button.addActionListener(e -> showColorChooser(recentPanel, label));
 
-    add(switchPanel);
+    add(recentPanel);
     add(label);
     add(button);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -139,10 +139,10 @@ class ColorTracker implements ActionListener {
 class MySwatchChooserPanel extends AbstractColorChooserPanel {
   private RecentSwatchPanel recentSwatchPanel;
   private SwatchPanel swatchPanel;
-  private transient MouseListener mainSwatchListener;
-  private transient MouseListener recentSwatchListener;
-  private transient KeyListener mainSwatchKeyListener;
-  private transient KeyListener recentSwatchKeyListener;
+  private transient MouseListener swatchMouseListener;
+  private transient MouseListener recentMouseListener;
+  private transient KeyListener swatchKeyListener;
+  private transient KeyListener recentKeyListener;
 
   protected MySwatchChooserPanel() {
     super();
@@ -174,29 +174,29 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     recentSwatchPanel = new RecentSwatchPanel();
     recentSwatchPanel.putClientProperty(AccessibleContext.ACCESSIBLE_NAME_PROPERTY, recentStr);
 
-    mainSwatchKeyListener = new MainSwatchKeyListener();
-    mainSwatchListener = new MainSwatchListener();
-    swatchPanel.addMouseListener(mainSwatchListener);
-    swatchPanel.addKeyListener(mainSwatchKeyListener);
-    recentSwatchListener = new RecentSwatchListener();
-    recentSwatchKeyListener = new RecentSwatchKeyListener();
-    recentSwatchPanel.addMouseListener(recentSwatchListener);
-    recentSwatchPanel.addKeyListener(recentSwatchKeyListener);
+    swatchKeyListener = new MainSwatchKeyListener();
+    swatchMouseListener = new SwatchMouseListener();
+    swatchPanel.addMouseListener(swatchMouseListener);
+    swatchPanel.addKeyListener(swatchKeyListener);
+    recentMouseListener = new RecentSwatchListener();
+    recentKeyListener = new RecentSwatchKeyListener();
+    recentSwatchPanel.addMouseListener(recentMouseListener);
+    recentSwatchPanel.addKeyListener(recentKeyListener);
 
     JPanel mainHolder = new JPanel(new BorderLayout());
-    mainHolder.setBorder(makeCellBorder());
+    mainHolder.setBorder(createCellBorder());
     mainHolder.add(swatchPanel, BorderLayout.CENTER);
 
-    add(makeSuperHolder(mainHolder, recentStr));
+    add(createOuterPanel(mainHolder, recentStr));
   }
 
-  private static Border makeCellBorder() {
+  private static Border createCellBorder() {
     Border outside = BorderFactory.createLineBorder(Color.BLACK);
     Border inside = BorderFactory.createLineBorder(Color.WHITE);
     return BorderFactory.createCompoundBorder(outside, inside);
   }
 
-  private JPanel makeSuperHolder(JPanel mainHolder, String recentStr) {
+  private JPanel createOuterPanel(JPanel swatchHolder, String recentStr) {
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.LAST_LINE_START;
     gbc.gridwidth = 1;
@@ -204,13 +204,13 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     Insets oldInsets = gbc.insets;
     gbc.insets = new Insets(0, 0, 0, 10);
 
-    JPanel superHolder = new JPanel(new GridBagLayout());
-    superHolder.add(mainHolder, gbc);
+    JPanel outerPanel = new JPanel(new GridBagLayout());
+    outerPanel.add(swatchHolder, gbc);
     gbc.insets = oldInsets;
 
     recentSwatchPanel.setInheritsPopupMenu(true);
     JPanel recentHolder = new JPanel(new BorderLayout());
-    recentHolder.setBorder(makeCellBorder());
+    recentHolder.setBorder(createCellBorder());
     recentHolder.setInheritsPopupMenu(true);
     recentHolder.add(recentSwatchPanel, BorderLayout.CENTER);
 
@@ -220,29 +220,29 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     gbc.gridwidth = GridBagConstraints.REMAINDER;
     gbc.gridheight = 1;
     gbc.weighty = 1.0;
-    superHolder.add(l, gbc);
+    outerPanel.add(l, gbc);
 
     gbc.weighty = 0;
     gbc.gridheight = GridBagConstraints.REMAINDER;
     gbc.insets = new Insets(0, 0, 0, 2);
-    superHolder.add(recentHolder, gbc);
-    superHolder.setInheritsPopupMenu(true);
-    return superHolder;
+    outerPanel.add(recentHolder, gbc);
+    outerPanel.setInheritsPopupMenu(true);
+    return outerPanel;
   }
 
   @SuppressWarnings("PMD.NullAssignment")
   @Override public void uninstallChooserPanel(JColorChooser enclosingChooser) {
     super.uninstallChooserPanel(enclosingChooser);
-    swatchPanel.removeMouseListener(mainSwatchListener);
-    swatchPanel.removeKeyListener(mainSwatchKeyListener);
-    recentSwatchPanel.removeMouseListener(recentSwatchListener);
-    recentSwatchPanel.removeKeyListener(recentSwatchKeyListener);
+    swatchPanel.removeMouseListener(swatchMouseListener);
+    swatchPanel.removeKeyListener(swatchKeyListener);
+    recentSwatchPanel.removeMouseListener(recentMouseListener);
+    recentSwatchPanel.removeKeyListener(recentKeyListener);
     swatchPanel = null;
     recentSwatchPanel = null;
-    mainSwatchListener = null;
-    mainSwatchKeyListener = null;
-    recentSwatchListener = null;
-    recentSwatchKeyListener = null;
+    swatchMouseListener = null;
+    swatchKeyListener = null;
+    recentMouseListener = null;
+    recentKeyListener = null;
     removeAll();
   }
 
@@ -291,7 +291,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     }
   }
 
-  private final class MainSwatchListener extends MouseAdapter {
+  private final class SwatchMouseListener extends MouseAdapter {
     @Override public void mousePressed(MouseEvent e) {
       if (isEnabled()) {
         Color color = swatchPanel.getColorForLocation(e.getX(), e.getY());
@@ -511,6 +511,288 @@ class RecentSwatchPanel extends SwatchPanel {
 }
 
 class MainSwatchPanel extends SwatchPanel {
+  private static final int[] RAW_COLOR_VALUES = {
+      255, 255, 255, // first row.
+      204, 255, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      204, 204, 255,
+      255, 204, 255,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 204, 204,
+      255, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 255, 204,
+      204, 204, 204,  // second row.
+      153, 255, 255,
+      153, 204, 255,
+      153, 153, 255,
+      153, 153, 255,
+      153, 153, 255,
+      153, 153, 255,
+      153, 153, 255,
+      153, 153, 255,
+      153, 153, 255,
+      204, 153, 255,
+      255, 153, 255,
+      255, 153, 204,
+      255, 153, 153,
+      255, 153, 153,
+      255, 153, 153,
+      255, 153, 153,
+      255, 153, 153,
+      255, 153, 153,
+      255, 153, 153,
+      255, 204, 153,
+      255, 255, 153,
+      204, 255, 153,
+      153, 255, 153,
+      153, 255, 153,
+      153, 255, 153,
+      153, 255, 153,
+      153, 255, 153,
+      153, 255, 153,
+      153, 255, 153,
+      153, 255, 204,
+      204, 204, 204,  // third row
+      102, 255, 255,
+      102, 204, 255,
+      102, 153, 255,
+      102, 102, 255,
+      102, 102, 255,
+      102, 102, 255,
+      102, 102, 255,
+      102, 102, 255,
+      153, 102, 255,
+      204, 102, 255,
+      255, 102, 255,
+      255, 102, 204,
+      255, 102, 153,
+      255, 102, 102,
+      255, 102, 102,
+      255, 102, 102,
+      255, 102, 102,
+      255, 102, 102,
+      255, 153, 102,
+      255, 204, 102,
+      255, 255, 102,
+      204, 255, 102,
+      153, 255, 102,
+      102, 255, 102,
+      102, 255, 102,
+      102, 255, 102,
+      102, 255, 102,
+      102, 255, 102,
+      102, 255, 153,
+      102, 255, 204,
+      153, 153, 153, // fourth row
+      51, 255, 255,
+      51, 204, 255,
+      51, 153, 255,
+      51, 102, 255,
+      51, 51, 255,
+      51, 51, 255,
+      51, 51, 255,
+      102, 51, 255,
+      153, 51, 255,
+      204, 51, 255,
+      255, 51, 255,
+      255, 51, 204,
+      255, 51, 153,
+      255, 51, 102,
+      255, 51, 51,
+      255, 51, 51,
+      255, 51, 51,
+      255, 102, 51,
+      255, 153, 51,
+      255, 204, 51,
+      255, 255, 51,
+      204, 255, 51,
+      153, 255, 51,
+      102, 255, 51,
+      51, 255, 51,
+      51, 255, 51,
+      51, 255, 51,
+      51, 255, 102,
+      51, 255, 153,
+      51, 255, 204,
+      153, 153, 153, // Fifth row
+      0, 255, 255,
+      0, 204, 255,
+      0, 153, 255,
+      0, 102, 255,
+      0, 51, 255,
+      0, 0, 255,
+      51, 0, 255,
+      102, 0, 255,
+      153, 0, 255,
+      204, 0, 255,
+      255, 0, 255,
+      255, 0, 204,
+      255, 0, 153,
+      255, 0, 102,
+      255, 0, 51,
+      255, 0, 0,
+      255, 51, 0,
+      255, 102, 0,
+      255, 153, 0,
+      255, 204, 0,
+      255, 255, 0,
+      204, 255, 0,
+      153, 255, 0,
+      102, 255, 0,
+      51, 255, 0,
+      0, 255, 0,
+      0, 255, 51,
+      0, 255, 102,
+      0, 255, 153,
+      0, 255, 204,
+      102, 102, 102, // sixth row
+      0, 204, 204,
+      0, 204, 204,
+      0, 153, 204,
+      0, 102, 204,
+      0, 51, 204,
+      0, 0, 204,
+      51, 0, 204,
+      102, 0, 204,
+      153, 0, 204,
+      204, 0, 204,
+      204, 0, 204,
+      204, 0, 204,
+      204, 0, 153,
+      204, 0, 102,
+      204, 0, 51,
+      204, 0, 0,
+      204, 51, 0,
+      204, 102, 0,
+      204, 153, 0,
+      204, 204, 0,
+      204, 204, 0,
+      204, 204, 0,
+      153, 204, 0,
+      102, 204, 0,
+      51, 204, 0,
+      0, 204, 0,
+      0, 204, 51,
+      0, 204, 102,
+      0, 204, 153,
+      0, 204, 204,
+      102, 102, 102, // seventh row
+      0, 153, 153,
+      0, 153, 153,
+      0, 153, 153,
+      0, 102, 153,
+      0, 51, 153,
+      0, 0, 153,
+      51, 0, 153,
+      102, 0, 153,
+      153, 0, 153,
+      153, 0, 153,
+      153, 0, 153,
+      153, 0, 153,
+      153, 0, 153,
+      153, 0, 102,
+      153, 0, 51,
+      153, 0, 0,
+      153, 51, 0,
+      153, 102, 0,
+      153, 153, 0,
+      153, 153, 0,
+      153, 153, 0,
+      153, 153, 0,
+      153, 153, 0,
+      102, 153, 0,
+      51, 153, 0,
+      0, 153, 0,
+      0, 153, 51,
+      0, 153, 102,
+      0, 153, 153,
+      0, 153, 153,
+      51, 51, 51, // eighth row
+      0, 102, 102,
+      0, 102, 102,
+      0, 102, 102,
+      0, 102, 102,
+      0, 51, 102,
+      0, 0, 102,
+      51, 0, 102,
+      102, 0, 102,
+      102, 0, 102,
+      102, 0, 102,
+      102, 0, 102,
+      102, 0, 102,
+      102, 0, 102,
+      102, 0, 102,
+      102, 0, 51,
+      102, 0, 0,
+      102, 51, 0,
+      102, 102, 0,
+      102, 102, 0,
+      102, 102, 0,
+      102, 102, 0,
+      102, 102, 0,
+      102, 102, 0,
+      102, 102, 0,
+      51, 102, 0,
+      0, 102, 0,
+      0, 102, 51,
+      0, 102, 102,
+      0, 102, 102,
+      0, 102, 102,
+      0, 0, 0, // ninth row
+      0, 51, 51,
+      0, 51, 51,
+      0, 51, 51,
+      0, 51, 51,
+      0, 51, 51,
+      0, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 51,
+      51, 0, 0,
+      51, 51, 0,
+      51, 51, 0,
+      51, 51, 0,
+      51, 51, 0,
+      51, 51, 0,
+      51, 51, 0,
+      51, 51, 0,
+      51, 51, 0,
+      0, 51, 0,
+      0, 51, 51,
+      0, 51, 51,
+      0, 51, 51,
+      0, 51, 51,
+      51, 51, 51,
+  };
+
   @Override protected void initValues() {
     swatchSize = UIManager.getDimension("ColorChooser.swatchesSwatchSize", getLocale());
     numSwatches = new Dimension(31, 9);
@@ -527,288 +809,7 @@ class MainSwatchPanel extends SwatchPanel {
     }
   }
 
-  @SuppressWarnings("MethodLength")
   private int[] initRawValues() {
-    return new int[] {
-        255, 255, 255, // first row.
-        204, 255, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        204, 204, 255,
-        255, 204, 255,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 204, 204,
-        255, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 255, 204,
-        204, 204, 204,  // second row.
-        153, 255, 255,
-        153, 204, 255,
-        153, 153, 255,
-        153, 153, 255,
-        153, 153, 255,
-        153, 153, 255,
-        153, 153, 255,
-        153, 153, 255,
-        153, 153, 255,
-        204, 153, 255,
-        255, 153, 255,
-        255, 153, 204,
-        255, 153, 153,
-        255, 153, 153,
-        255, 153, 153,
-        255, 153, 153,
-        255, 153, 153,
-        255, 153, 153,
-        255, 153, 153,
-        255, 204, 153,
-        255, 255, 153,
-        204, 255, 153,
-        153, 255, 153,
-        153, 255, 153,
-        153, 255, 153,
-        153, 255, 153,
-        153, 255, 153,
-        153, 255, 153,
-        153, 255, 153,
-        153, 255, 204,
-        204, 204, 204,  // third row
-        102, 255, 255,
-        102, 204, 255,
-        102, 153, 255,
-        102, 102, 255,
-        102, 102, 255,
-        102, 102, 255,
-        102, 102, 255,
-        102, 102, 255,
-        153, 102, 255,
-        204, 102, 255,
-        255, 102, 255,
-        255, 102, 204,
-        255, 102, 153,
-        255, 102, 102,
-        255, 102, 102,
-        255, 102, 102,
-        255, 102, 102,
-        255, 102, 102,
-        255, 153, 102,
-        255, 204, 102,
-        255, 255, 102,
-        204, 255, 102,
-        153, 255, 102,
-        102, 255, 102,
-        102, 255, 102,
-        102, 255, 102,
-        102, 255, 102,
-        102, 255, 102,
-        102, 255, 153,
-        102, 255, 204,
-        153, 153, 153, // fourth row
-        51, 255, 255,
-        51, 204, 255,
-        51, 153, 255,
-        51, 102, 255,
-        51, 51, 255,
-        51, 51, 255,
-        51, 51, 255,
-        102, 51, 255,
-        153, 51, 255,
-        204, 51, 255,
-        255, 51, 255,
-        255, 51, 204,
-        255, 51, 153,
-        255, 51, 102,
-        255, 51, 51,
-        255, 51, 51,
-        255, 51, 51,
-        255, 102, 51,
-        255, 153, 51,
-        255, 204, 51,
-        255, 255, 51,
-        204, 255, 51,
-        153, 255, 51,
-        102, 255, 51,
-        51, 255, 51,
-        51, 255, 51,
-        51, 255, 51,
-        51, 255, 102,
-        51, 255, 153,
-        51, 255, 204,
-        153, 153, 153, // Fifth row
-        0, 255, 255,
-        0, 204, 255,
-        0, 153, 255,
-        0, 102, 255,
-        0, 51, 255,
-        0, 0, 255,
-        51, 0, 255,
-        102, 0, 255,
-        153, 0, 255,
-        204, 0, 255,
-        255, 0, 255,
-        255, 0, 204,
-        255, 0, 153,
-        255, 0, 102,
-        255, 0, 51,
-        255, 0, 0,
-        255, 51, 0,
-        255, 102, 0,
-        255, 153, 0,
-        255, 204, 0,
-        255, 255, 0,
-        204, 255, 0,
-        153, 255, 0,
-        102, 255, 0,
-        51, 255, 0,
-        0, 255, 0,
-        0, 255, 51,
-        0, 255, 102,
-        0, 255, 153,
-        0, 255, 204,
-        102, 102, 102, // sixth row
-        0, 204, 204,
-        0, 204, 204,
-        0, 153, 204,
-        0, 102, 204,
-        0, 51, 204,
-        0, 0, 204,
-        51, 0, 204,
-        102, 0, 204,
-        153, 0, 204,
-        204, 0, 204,
-        204, 0, 204,
-        204, 0, 204,
-        204, 0, 153,
-        204, 0, 102,
-        204, 0, 51,
-        204, 0, 0,
-        204, 51, 0,
-        204, 102, 0,
-        204, 153, 0,
-        204, 204, 0,
-        204, 204, 0,
-        204, 204, 0,
-        153, 204, 0,
-        102, 204, 0,
-        51, 204, 0,
-        0, 204, 0,
-        0, 204, 51,
-        0, 204, 102,
-        0, 204, 153,
-        0, 204, 204,
-        102, 102, 102, // seventh row
-        0, 153, 153,
-        0, 153, 153,
-        0, 153, 153,
-        0, 102, 153,
-        0, 51, 153,
-        0, 0, 153,
-        51, 0, 153,
-        102, 0, 153,
-        153, 0, 153,
-        153, 0, 153,
-        153, 0, 153,
-        153, 0, 153,
-        153, 0, 153,
-        153, 0, 102,
-        153, 0, 51,
-        153, 0, 0,
-        153, 51, 0,
-        153, 102, 0,
-        153, 153, 0,
-        153, 153, 0,
-        153, 153, 0,
-        153, 153, 0,
-        153, 153, 0,
-        102, 153, 0,
-        51, 153, 0,
-        0, 153, 0,
-        0, 153, 51,
-        0, 153, 102,
-        0, 153, 153,
-        0, 153, 153,
-        51, 51, 51, // eighth row
-        0, 102, 102,
-        0, 102, 102,
-        0, 102, 102,
-        0, 102, 102,
-        0, 51, 102,
-        0, 0, 102,
-        51, 0, 102,
-        102, 0, 102,
-        102, 0, 102,
-        102, 0, 102,
-        102, 0, 102,
-        102, 0, 102,
-        102, 0, 102,
-        102, 0, 102,
-        102, 0, 51,
-        102, 0, 0,
-        102, 51, 0,
-        102, 102, 0,
-        102, 102, 0,
-        102, 102, 0,
-        102, 102, 0,
-        102, 102, 0,
-        102, 102, 0,
-        102, 102, 0,
-        51, 102, 0,
-        0, 102, 0,
-        0, 102, 51,
-        0, 102, 102,
-        0, 102, 102,
-        0, 102, 102,
-        0, 0, 0, // ninth row
-        0, 51, 51,
-        0, 51, 51,
-        0, 51, 51,
-        0, 51, 51,
-        0, 51, 51,
-        0, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 51,
-        51, 0, 0,
-        51, 51, 0,
-        51, 51, 0,
-        51, 51, 0,
-        51, 51, 0,
-        51, 51, 0,
-        51, 51, 0,
-        51, 51, 0,
-        51, 51, 0,
-        0, 51, 0,
-        0, 51, 51,
-        0, 51, 51,
-        0, 51, 51,
-        0, 51, 51,
-        51, 51, 51,
-    };
+    return RAW_COLOR_VALUES.clone();
   }
 }
