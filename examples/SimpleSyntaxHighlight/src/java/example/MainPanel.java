@@ -96,13 +96,13 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
   }
 
   private void checkForTokens(String content, int startOffset, int endOffset) {
-    int i = startOffset;
-    while (i <= endOffset) {
-      while (i <= endOffset && isDelimiter(content.substring(i, i + 1))) {
-        i++;
+    int index = startOffset;
+    while (index <= endOffset) {
+      while (index <= endOffset && isDelimiter(content.charAt(index))) {
+        index++;
       }
-      if (i <= endOffset) {
-        i = getOtherToken(content, i, endOffset);
+      if (index <= endOffset) {
+        index = getOtherToken(content, index, endOffset);
       }
     }
   }
@@ -110,23 +110,20 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
   private int getOtherToken(String content, int startOffset, int endOffset) {
     int endOfToken = startOffset + 1;
     while (endOfToken <= endOffset) {
-      if (isDelimiter(content.substring(endOfToken, endOfToken + 1))) {
+      if (isDelimiter(content.charAt(endOfToken))) {
         break;
       }
       endOfToken++;
     }
     String token = content.substring(startOffset, endOfToken);
-    Style s = getStyle(token);
-    // if (keywords.containsKey(token)) {
-    //   setCharacterAttributes(
-    //      startOffset, endOfToken - startOffset, keywords.get(token), false);
-    if (Objects.nonNull(s)) {
-      setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
+    Style style = getStyle(token);
+    if (Objects.nonNull(style)) {
+      setCharacterAttributes(startOffset, endOfToken - startOffset, style, false);
     }
     return endOfToken + 1;
   }
 
-  protected boolean isDelimiter(String character) {
-    return Character.isWhitespace(character.charAt(0)) || OPERANDS.contains(character);
+  protected boolean isDelimiter(char ch) {
+    return Character.isWhitespace(ch) || OPERANDS.indexOf(ch) >= 0;
   }
 }
