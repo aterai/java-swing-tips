@@ -95,18 +95,15 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     checkForTokens(content, startOffset, endOffset);
   }
 
-  @SuppressWarnings("ReturnCount")
   private void checkForTokens(String content, int startOffset, int endOffset) {
-    int index = startOffset;
-    while (index <= endOffset) {
-      while (isDelimiter(content.substring(index, index + 1))) {
-        if (index < endOffset) {
-          index++;
-        } else {
-          return;
-        }
+    int i = startOffset;
+    while (i <= endOffset) {
+      while (i <= endOffset && isDelimiter(content.substring(i, i + 1))) {
+        i++;
       }
-      index = getOtherToken(content, index, endOffset);
+      if (i <= endOffset) {
+        i = getOtherToken(content, i, endOffset);
+      }
     }
   }
 
@@ -121,8 +118,8 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     String token = content.substring(startOffset, endOfToken);
     Style s = getStyle(token);
     // if (keywords.containsKey(token)) {
-    //  setCharacterAttributes(
-    //    startOffset, endOfToken - startOffset, keywords.get(token), false);
+    //   setCharacterAttributes(
+    //      startOffset, endOfToken - startOffset, keywords.get(token), false);
     if (Objects.nonNull(s)) {
       setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
     }

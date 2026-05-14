@@ -87,13 +87,13 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    add(makeTitledPanel("JTextField", new JTextField(TXT)));
-    add(makeTitledPanel("JTextPane+StyledDocument+JScrollPane", scrollPane));
+    add(createTitledPanel("JTextField", new JTextField(TXT)));
+    add(createTitledPanel("JTextPane+StyledDocument+JScrollPane", scrollPane));
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
@@ -175,18 +175,15 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     checkForTokens(content, startOffset, endOffset);
   }
 
-  @SuppressWarnings("ReturnCount")
   private void checkForTokens(String content, int startOffset, int endOffset) {
-    int index = startOffset;
-    while (index <= endOffset) {
-      while (isDelimiter(content.substring(index, index + 1))) {
-        if (index < endOffset) {
-          index++;
-        } else {
-          return;
-        }
+    int i = startOffset;
+    while (i <= endOffset) {
+      while (i <= endOffset && isDelimiter(content.substring(i, i + 1))) {
+        i++;
       }
-      index = getOtherToken(content, index, endOffset);
+      if (i <= endOffset) {
+        i = getOtherToken(content, i, endOffset);
+      }
     }
   }
 
@@ -201,7 +198,7 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     String token = content.substring(startOffset, endOfToken);
     Style s = getStyle(token);
     // if (keywords.containsKey(token)) {
-    //  setCharacterAttributes(
+    //   setCharacterAttributes(
     //      startOffset, endOfToken - startOffset, keywords.get(token), false);
     if (Objects.nonNull(s)) {
       setCharacterAttributes(startOffset, endOfToken - startOffset, s, false);
