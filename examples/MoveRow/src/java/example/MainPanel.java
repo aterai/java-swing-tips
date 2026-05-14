@@ -19,7 +19,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel());
+    JTable table = new JTable(createModel());
     table.setFillsViewportHeight(true);
     table.setRowSelectionAllowed(true);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -35,11 +35,11 @@ public final class MainPanel extends JPanel {
     col.setMaxWidth(80);
 
     add(new JScrollPane(table));
-    add(makeToolBar(table), BorderLayout.NORTH);
+    add(createToolBar(table), BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     RowDataModel model = new RowDataModel();
     model.addRowData(new RowData("Name 1", "comment..."));
     model.addRowData(new RowData("Name 2", "Test"));
@@ -51,20 +51,20 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static JToolBar makeToolBar(JTable table) {
-    JToolBar tb = new JToolBar();
-    tb.setFloatable(true);
-    tb.add(makeToolButton(new UpAction("▲", table)));
-    tb.add(makeToolButton(new DownAction("▼", table)));
-    tb.add(Box.createHorizontalGlue());
-    tb.add(makeToolButton(new InitAction("OK", table)));
-    return tb;
+  private static JToolBar createToolBar(JTable table) {
+    JToolBar toolBar = new JToolBar();
+    toolBar.setFloatable(true);
+    toolBar.add(createToolButton(new UpAction("▲", table)));
+    toolBar.add(createToolButton(new DownAction("▼", table)));
+    toolBar.add(Box.createHorizontalGlue());
+    toolBar.add(createToolButton(new InitAction("OK", table)));
+    return toolBar;
   }
 
-  private static JButton makeToolButton(Action action) {
-    JButton b = new JButton(action);
-    b.setFocusable(false);
-    return b;
+  private static JButton createToolButton(Action action) {
+    JButton button = new JButton(action);
+    button.setFocusable(false);
+    return button;
   }
 
   public static void main(String[] args) {
@@ -116,17 +116,6 @@ final class TablePopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     int row = table.rowAtPoint(new Point(x, y));
     int count = table.getSelectedRowCount();
-    // int[] l = table.getSelectedRows();
-    // boolean flg = true;
-    // for (int i = 0; i < l.length; i++) {
-    //   if (l[i] == row) {
-    //     flg = false;
-    //     break;
-    //   }
-    // }
-    // if (row > 0 && flg) {
-    //   table.setRowSelectionInterval(row, row);
-    // }
     boolean flg = Arrays.stream(table.getSelectedRows()).anyMatch(i -> i == row);
     // Java 9: boolean flg = List.of(table.getSelectedRows()).contains(row);
     if (row > 0 && !flg) {
@@ -145,8 +134,8 @@ final class TablePopupMenu extends JPopupMenu {
 class RowDataCreateAction extends AbstractAction {
   private final JTable table;
 
-  protected RowDataCreateAction(String str, JTable table) {
-    super(str);
+  protected RowDataCreateAction(String label, JTable table) {
+    super(label);
     this.table = table;
   }
 
@@ -164,8 +153,8 @@ class RowDataCreateAction extends AbstractAction {
 class DeleteAction extends AbstractAction {
   private final JTable table;
 
-  protected DeleteAction(String str, JTable table) {
-    super(str);
+  protected DeleteAction(String label, JTable table) {
+    super(label);
     this.table = table;
   }
 
@@ -173,11 +162,10 @@ class DeleteAction extends AbstractAction {
     if (table.isEditing()) {
       table.getCellEditor().stopCellEditing();
     }
-    int[] selection = table.getSelectedRows();
+    int[] selectedRows = table.getSelectedRows();
     RowDataModel model = (RowDataModel) table.getModel();
-    for (int i = selection.length - 1; i >= 0; i--) {
-      // RowData isc = model.getRowData(selection[i]);
-      model.removeRow(selection[i]);
+    for (int i = selectedRows.length - 1; i >= 0; i--) {
+      model.removeRow(selectedRows[i]);
     }
   }
 }
@@ -185,8 +173,8 @@ class DeleteAction extends AbstractAction {
 class UpAction extends AbstractAction {
   private final JTable table;
 
-  protected UpAction(String str, JTable table) {
-    super(str);
+  protected UpAction(String label, JTable table) {
+    super(label);
     this.table = table;
   }
 
@@ -195,35 +183,32 @@ class UpAction extends AbstractAction {
       table.getCellEditor().stopCellEditing();
     }
     TableModel model = table.getModel();
-    int[] pos = table.getSelectedRows();
-    if (model instanceof RowDataModel && pos.length != 0) {
+    int[] selectedRows = table.getSelectedRows();
+    if (model instanceof RowDataModel && selectedRows.length != 0) {
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      upTo((RowDataModel) model, pos, isShiftDown);
+      moveUp((RowDataModel) model, selectedRows, isShiftDown);
     }
   }
 
-  @SuppressWarnings("ReturnCount")
-  private void upTo(RowDataModel model, int[] pos, boolean isShiftDown) {
-    if (isShiftDown) { // Jump to the top
-      model.moveRow(pos[0], pos[pos.length - 1], 0);
-      table.setRowSelectionInterval(0, pos.length - 1);
-    } else {
-      if (pos[0] == 0) {
-        return;
-      }
-      model.moveRow(pos[0], pos[pos.length - 1], pos[0] - 1);
-      table.setRowSelectionInterval(pos[0] - 1, pos[pos.length - 1] - 1);
+  private void moveUp(RowDataModel model, int[] selectedRows, boolean jumpToTop) {
+    int firstRow = selectedRows[0];
+    int lastRow = selectedRows[selectedRows.length - 1];
+    if (firstRow > 0) {
+      int selectionStart = jumpToTop ? 0 : firstRow - 1;
+      int selectionEnd = jumpToTop ? selectedRows.length - 1 : lastRow - 1;
+      model.moveRow(firstRow, lastRow, selectionStart);
+      table.setRowSelectionInterval(selectionStart, selectionEnd);
+      Rectangle visibleRect = table.getCellRect(table.getSelectedRow(), 0, true);
+      table.scrollRectToVisible(visibleRect);
     }
-    Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
-    table.scrollRectToVisible(r);
   }
 }
 
 class DownAction extends AbstractAction {
   private final JTable table;
 
-  protected DownAction(String str, JTable table) {
-    super(str);
+  protected DownAction(String label, JTable table) {
+    super(label);
     this.table = table;
   }
 
@@ -232,35 +217,34 @@ class DownAction extends AbstractAction {
       table.getCellEditor().stopCellEditing();
     }
     TableModel model = table.getModel();
-    int[] pos = table.getSelectedRows();
-    if (model instanceof RowDataModel && pos.length != 0) {
+    int[] selectedRows = table.getSelectedRows();
+    if (model instanceof RowDataModel && selectedRows.length != 0) {
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      downTo((RowDataModel) model, pos, isShiftDown);
+      moveDown((RowDataModel) model, selectedRows, isShiftDown);
     }
   }
 
-  @SuppressWarnings("ReturnCount")
-  private void downTo(RowDataModel model, int[] pos, boolean isShiftDown) {
-    if (isShiftDown) { // Jump to the end
-      model.moveRow(pos[0], pos[pos.length - 1], model.getRowCount() - pos.length);
-      table.setRowSelectionInterval(model.getRowCount() - pos.length, model.getRowCount() - 1);
-    } else {
-      if (pos[pos.length - 1] == model.getRowCount() - 1) {
-        return;
-      }
-      model.moveRow(pos[0], pos[pos.length - 1], pos[0] + 1);
-      table.setRowSelectionInterval(pos[0] + 1, pos[pos.length - 1] + 1);
+  private void moveDown(RowDataModel model, int[] selectedRows, boolean jumpToEnd) {
+    int firstRow = selectedRows[0];
+    int lastRow = selectedRows[selectedRows.length - 1];
+    int rowCount = model.getRowCount();
+    if (lastRow < rowCount - 1) {
+      int selectionStart = jumpToEnd ? rowCount - selectedRows.length : firstRow + 1;
+      int selectionEnd = jumpToEnd ? rowCount - 1 : lastRow + 1;
+      model.moveRow(firstRow, lastRow, selectionStart);
+      table.setRowSelectionInterval(selectionStart, selectionEnd);
+
+      Rectangle visibleRect = table.getCellRect(table.getSelectedRow(), 0, true);
+      table.scrollRectToVisible(visibleRect);
     }
-    Rectangle r = table.getCellRect(model.getRowCount() - 1, 0, true);
-    table.scrollRectToVisible(r);
   }
 }
 
 class InitAction extends AbstractAction {
   private final JTable table;
 
-  protected InitAction(String str, JTable table) {
-    super(str);
+  protected InitAction(String label, JTable table) {
+    super(label);
     this.table = table;
   }
 
@@ -274,7 +258,7 @@ class InitAction extends AbstractAction {
       RowDataModel currentModel = new RowDataModel();
       List<?> dv = model.getDataVector();
       for (int i = 0; i < row; i++) {
-        currentModel.addRowData(makeRowData((List<?>) dv.get(i)));
+        currentModel.addRowData(createRowData((List<?>) dv.get(i)));
       }
       JTableHeader h = table.getTableHeader();
       TableCellRenderer tcr = h.getDefaultRenderer();
@@ -289,7 +273,7 @@ class InitAction extends AbstractAction {
     }
   }
 
-  private static RowData makeRowData(List<?> list) {
+  private static RowData createRowData(List<?> list) {
     return new RowData(Objects.toString(list.get(1)), Objects.toString(list.get(2)));
   }
 }
