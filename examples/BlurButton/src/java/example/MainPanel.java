@@ -169,7 +169,7 @@ class BlurLayerUI<V extends AbstractButton> extends LayerUI<V> {
         Dimension d = view.getSize();
         BufferedImage img = Optional.ofNullable(buf)
             .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
-            .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+            .orElseGet(() -> createBufferedImage(d));
         Graphics2D g2 = img.createGraphics();
         view.paint(g2);
         g2.dispose();
@@ -177,6 +177,10 @@ class BlurLayerUI<V extends AbstractButton> extends LayerUI<V> {
         buf = img;
       }
     }
+  }
+
+  private static BufferedImage createBufferedImage(Dimension d) {
+    return new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
   }
 }
 
@@ -192,7 +196,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -200,7 +204,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
