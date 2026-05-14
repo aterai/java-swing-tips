@@ -30,20 +30,20 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     Icon icon = new ImageIcon(image);
 
     JPanel p1 = new JPanel(new GridLayout(1, 2));
-    p1.add(makeLabel(makeGrayIcon1(image), icon, "ColorConvertOp"));
-    p1.add(makeLabel(makeGrayIcon2(image), icon, "TYPE_BYTE_GRAY"));
+    p1.add(createLabel(createGrayIcon1(image), icon, "ColorConvertOp"));
+    p1.add(createLabel(createGrayIcon2(image), icon, "TYPE_BYTE_GRAY"));
     add(p1);
-    add(makeLabel(makeGrayIcon3(image), icon, "GrayFilter.createDisabledImage"));
+    add(createLabel(createGrayIcon3(image), icon, "GrayFilter.createDisabledImage"));
     JPanel p3 = new JPanel(new GridLayout(1, 2));
-    p3.add(makeLabel(makeGrayIcon4(image), icon, "GrayFilter(true, 50)"));
-    p3.add(makeLabel(makeGrayIcon5(image), icon, "GrayImageFilter"));
+    p3.add(createLabel(createGrayIcon4(image), icon, "GrayFilter(true, 50)"));
+    p3.add(createLabel(createGrayIcon5(image), icon, "GrayImageFilter"));
     add(p3);
 
     p1.setBackground(Color.WHITE);
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  private static JLabel makeLabel(Icon image, Icon orgImage, String str) {
+  private static JLabel createLabel(Icon image, Icon orgImage, String str) {
     JLabel label = new JLabel(str, image, SwingConstants.LEFT);
     label.addMouseListener(new MouseAdapter() {
       private boolean isGray;
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     return label;
   }
 
-  private static Icon makeGrayIcon1(Image img) {
+  private static Icon createGrayIcon1(Image img) {
     int w = img.getWidth(null);
     int h = img.getHeight(null);
     BufferedImage source = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     return new ImageIcon(ccOp.filter(source, null));
   }
 
-  private static Icon makeGrayIcon2(Image img) {
+  private static Icon createGrayIcon2(Image img) {
     int w = img.getWidth(null);
     int h = img.getHeight(null);
     BufferedImage dst = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
@@ -101,18 +101,18 @@ public final class MainPanel extends JPanel {
     return new ImageIcon(dst);
   }
 
-  private static Icon makeGrayIcon3(Image img) {
+  private static Icon createGrayIcon3(Image img) {
     // GrayFilter1
     return new ImageIcon(GrayFilter.createDisabledImage(img));
   }
 
-  private static Icon makeGrayIcon4(Image img) {
+  private static Icon createGrayIcon4(Image img) {
     // GrayFilter2
     ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayFilter(true, 50));
     return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 
-  private static Icon makeGrayIcon5(Image img) {
+  private static Icon createGrayIcon5(Image img) {
     // RGBImageFilter
     ImageProducer ip = new FilteredImageSource(img.getSource(), new GrayImageFilter());
     return new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
