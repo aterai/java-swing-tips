@@ -8,23 +8,25 @@ import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(new DefaultTableModel(15, 3));
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    table.getTableHeader().setBorder(BorderFactory.createMatteBorder(0, 5, 0, 5, Color.ORANGE));
     table.setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
+    table.setBackground(Color.WHITE);
+
+    JTableHeader header = table.getTableHeader();
+    header.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 5, Color.ORANGE));
+    header.setBackground(Color.MAGENTA);
 
     JScrollPane scroll = new JScrollPane(table);
     scroll.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
     scroll.setViewportBorder(BorderFactory.createLineBorder(Color.RED, 5));
-
     scroll.setBackground(Color.YELLOW);
     scroll.getViewport().setBackground(Color.PINK);
-    table.setBackground(Color.WHITE);
-    table.getTableHeader().setBackground(Color.MAGENTA);
 
     EventQueue.invokeLater(() -> {
       JViewport vp = scroll.getColumnHeader();

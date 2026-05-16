@@ -47,8 +47,8 @@ public final class MainPanel extends JPanel {
   }
 
   // // TEST:
-  // public String makeTitle(String title) {
-  //   return "<html><table width='100'><tr><td align='center'>" + title + "</td></tr></table>";
+  // public String createTitle(String title) {
+  //   return "<html><table width='100'><tr><td align='center'>" + title + "</td>";
   // }
 
   public static void main(String[] args) {

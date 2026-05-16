@@ -136,8 +136,8 @@ public final class CloseableTabbedPane extends JTabbedPane {
   //   //     doPaintCloseIcon = ((Boolean) prop).booleanValue();
   //   //   }
   //   // }
-  //   //
-  //   // super.addTab(title, doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null, component);
+  //   // Icon icon = doPaintCloseIcon ? new CloseTabIcon(extraIcon) : null;
+  //   // super.addTab(title, icon, component);
   //   super.addTab(title, new CloseTabIcon(extraIcon), component);
   //
   //   if (Objects.isNull(headerViewport)) {

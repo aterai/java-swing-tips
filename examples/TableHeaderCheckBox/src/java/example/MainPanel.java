@@ -26,13 +26,13 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new HeaderCheckBoxTable(makeModel());
+    JTable table = new HeaderCheckBoxTable(createModel());
     table.setFillsViewportHeight(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
@@ -261,7 +261,10 @@ class ComponentIcon implements Icon {
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
+    Container parent = c.getParent();
+    int iconWidth = getIconWidth();
+    int iconHeight = getIconHeight();
+    SwingUtilities.paintComponent(g, cmp, parent, x, y, iconWidth, iconHeight);
   }
 
   @Override public int getIconWidth() {
