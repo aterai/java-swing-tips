@@ -31,17 +31,17 @@ public final class MainPanel extends JPanel {
       }
     };
     layeredPane.setComponentPopupMenu(popup);
-    // ??? for 1.5.0
+    // Java 1.5.0:
     // layeredPane.addMouseListener(new MouseAdapter() {
     //   /* do nothing listener */
     // });
     add(layeredPane);
 
-    add(makeToolBar(pt, layeredPane), BorderLayout.NORTH);
+    add(createToolBar(pt, layeredPane), BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JToolBar makeToolBar(Point pt, JLayeredPane layeredPane) {
+  private static JToolBar createToolBar(Point pt, JLayeredPane layeredPane) {
     JButton addTable = new JButton("add table");
     addTable.addActionListener(e -> {
       pt.setLocation(pt.x + 20, pt.y + 20);
@@ -207,9 +207,9 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
       this.cursor = cursor;
     }
 
-    public abstract Point getPoint(Rectangle r);
+    /* default */ abstract Point getPoint(Rectangle r);
 
-    public Cursor getCursor() {
+    private Cursor getCursor() {
       return Cursor.getPredefinedCursor(cursor);
     }
   }
