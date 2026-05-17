@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setCellSelectionEnabled(true);
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"A", "B"};
     @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
     Object[][] data = {
@@ -197,11 +197,11 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
       return new Dimension(220, 143);
     }
 
-    public LocalDate getLocalDate() {
+    private LocalDate getLocalDate() {
       return currentLocalDate;
     }
 
-    public void setLocalDate(LocalDate date) {
+    private void setLocalDate(LocalDate date) {
       currentLocalDate = date;
       DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
       monthLabel.setText(date.format(fmt.withLocale(Locale.getDefault())));
@@ -245,14 +245,14 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
     }
   }
 
-  private static class CalendarTableRenderer extends DefaultTableCellRenderer {
+  private static final class CalendarTableRenderer extends DefaultTableCellRenderer {
     @SuppressWarnings("PMD.UseConcurrentHashMap")
     private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
     private final LocalDate realLocalDate;
     private final CalenderPanel calender;
     private final transient HighlightListener highlighter;
 
-    protected CalendarTableRenderer(CalenderPanel calender, HighlightListener highlighter) {
+    private CalendarTableRenderer(CalenderPanel calender, HighlightListener highlighter) {
       super();
       this.calender = calender;
       this.realLocalDate = calender.realLocalDate;
