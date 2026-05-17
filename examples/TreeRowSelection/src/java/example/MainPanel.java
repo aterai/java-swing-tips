@@ -139,7 +139,8 @@ class RowSelectionTree extends JTree {
 //   //   e.getComponent().repaint();
 //   //   // TEST:
 //   //   // if (Objects.nonNull(tree.getLeadSelectionPath())) {
-//   //   //   Rectangle r = tree.getRowBounds(tree.getRowForPath(tree.getLeadSelectionPath()));
+//   //   //   Rectangle r = tree.getRowBounds(
+//   //   //       tree.getRowForPath(tree.getLeadSelectionPath()));
 //   //   //   r.width += r.x;
 //   //   //   r.x = 0;
 //   //   //   tree.repaint(r);

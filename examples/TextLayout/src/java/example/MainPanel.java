@@ -70,7 +70,8 @@ class TextLayoutPanel extends JComponent {
     g2.draw(new Line2D.Float(0f, leading, w, leading));
 
     g2.setPaint(Color.CYAN);
-    float xh = baseline - (float) TEXT_LAYOUT.getBlackBoxBounds(23, 24).getBounds().getHeight();
+    Shape blackBoxBounds = TEXT_LAYOUT.getBlackBoxBounds(23, 24);
+    float xh = baseline - (float) blackBoxBounds.getBounds().getHeight();
     g2.draw(new Line2D.Float(0f, xh, w, xh));
 
     g2.setPaint(Color.BLACK);

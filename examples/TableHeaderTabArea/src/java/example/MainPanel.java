@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -103,10 +104,12 @@ class TableHeaderTabbedPane extends JPanel {
 
   public void addTab(String title, Component comp) {
     contentsPanel.add(comp, title);
-    TableColumnModel m = header.getColumnModel();
-    TableColumn tc = new TableColumn(m.getColumnCount(), 75, header.getDefaultRenderer(), null);
-    tc.setHeaderValue(title);
-    m.addColumn(tc);
+    TableColumnModel columnModel = header.getColumnModel();
+    int columnCount = columnModel.getColumnCount();
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    TableColumn tableColumn = new TableColumn(columnCount, 75, renderer, null);
+    tableColumn.setHeaderValue(title);
+    columnModel.addColumn(tableColumn);
     if (Objects.isNull(selectedColumn)) {
       cardLayout.show(contentsPanel, title);
       selectedColumn = title;
