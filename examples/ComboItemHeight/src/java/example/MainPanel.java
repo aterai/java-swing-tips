@@ -51,7 +51,8 @@ public final class MainPanel extends JPanel {
         // cellHeight = index < 0 ? d.height : 32;
         cellHeight = Optional.ofNullable(super.getPreferredSize())
             .filter(d -> index < 0).map(d -> d.height).orElse(32);
-        return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        return super.getListCellRendererComponent(
+            list, value, index, isSelected, cellHasFocus);
       }
 
       @Override public Dimension getPreferredSize() {

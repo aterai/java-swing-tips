@@ -205,7 +205,8 @@ class LoadTask extends SwingWorker<String, List<Object[]>> {
     // path = "C:/Users/.../AppData/Roaming/Mozilla/Firefox/Profiles/xx.default/places.sqlite";
     // File file = new File(path);
     // String db = "jdbc:sqlite:/" + file.getAbsolutePath();
-    // try (Connection c = DriverManager.getConnection(db); Statement s = c.createStatement()) {
+    // try (Connection c = DriverManager.getConnection(db);
+    //      Statement s = c.createStatement()) {
     int current = 1;
     int c = max / itemsPerPage;
     int i = 0;

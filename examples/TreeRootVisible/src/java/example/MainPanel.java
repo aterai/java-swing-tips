@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     tree.setRootVisible(false);
 
     JCheckBox check = new JCheckBox("JTree#setRootVisible(...)");
-    check.addActionListener(e -> tree.setRootVisible(((JCheckBox) e.getSource()).isSelected()));
+    check.addActionListener(e -> tree.setRootVisible(check.isSelected()));
 
     add(check, BorderLayout.NORTH);
     add(new JScrollPane(tree));
