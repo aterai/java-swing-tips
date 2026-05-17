@@ -32,28 +32,25 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
-    Graphics g = source.createGraphics();
-    g.drawImage(source, 0, 0, this);
-    g.dispose();
     ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
     ColorConvertOp colorConvert = new ColorConvertOp(colorSpace, null);
     Image destination = colorConvert.filter(source, null);
 
-    Component before = makeBeforeCanvas(source);
-    Component after = makeAfterCanvas(destination);
+    Component before = new BeforeCanvas(source);
+    Component after = new AfterCanvas(destination);
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, before, after);
     split.setContinuousLayout(true);
     split.setResizeWeight(.5);
     split.setDividerSize(0);
 
     DividerLocationDragLayerUI layerUI = new DividerLocationDragLayerUI();
-    JCheckBox check = new JCheckBox("Paint divider");
-    check.addActionListener(e -> layerUI.setPaintDividerEnabled(check.isSelected()));
+    JCheckBox check = new JCheckBox("Paint custom divider");
+    check.addActionListener(e -> layerUI.setCustomDividerEnabled(check.isSelected()));
 
     add(new JLayer<>(split, layerUI));
     add(check, BorderLayout.SOUTH);
@@ -61,43 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makeBeforeCanvas(Image source) {
-    return new JComponent() {
-      @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int iw = source.getWidth(this);
-        int ih = source.getHeight(this);
-        Component p = SwingUtilities.getUnwrappedParent(this);
-        Dimension dim = p.getSize();
-        int x = (dim.width - iw) / 2;
-        int y = (dim.height - ih) / 2;
-        g.drawImage(source, x, y, iw, ih, this);
-      }
-    };
-  }
-
-  private Component makeAfterCanvas(Image destination) {
-    return new JComponent() {
-      @Override protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Component c = SwingUtilities.getUnwrappedParent(this);
-        if (c instanceof JComponent) {
-          Graphics2D g2 = (Graphics2D) g.create();
-          JComponent p = (JComponent) c;
-          g2.translate(-getLocation().x + p.getInsets().left, 0);
-          int iw = destination.getWidth(this);
-          int ih = destination.getHeight(this);
-          Dimension dim = p.getSize();
-          int x = (dim.width - iw) / 2;
-          int y = (dim.height - ih) / 2;
-          g2.drawImage(destination, x, y, iw, ih, this);
-          g2.dispose();
-        }
-      }
-    };
-  }
-
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -106,6 +67,51 @@ public final class MainPanel extends JPanel {
     missingIcon.paintIcon(null, g2, 0, 0);
     g2.dispose();
     return bi;
+  }
+
+  private static Point calcCenterOffset(Dimension size, int iw, int ih) {
+    return new Point((size.width - iw) / 2, (size.height - ih) / 2);
+  }
+
+  private static final class BeforeCanvas extends JComponent {
+    private final Image image;
+
+    private BeforeCanvas(Image image) {
+      this.image = image;
+    }
+
+    @Override protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      int iw = image.getWidth(this);
+      int ih = image.getHeight(this);
+      Component parent = SwingUtilities.getUnwrappedParent(this);
+      Point center = calcCenterOffset(parent.getSize(), iw, ih);
+      g.drawImage(image, center.x, center.y, iw, ih, this);
+    }
+  }
+
+  private static final class AfterCanvas extends JComponent {
+    private final Image image;
+
+    private AfterCanvas(Image image) {
+      this.image = image;
+    }
+
+    @Override protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      Component c = SwingUtilities.getUnwrappedParent(this);
+      if (c instanceof JComponent) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        JComponent p = (JComponent) c;
+        g2.translate(-getLocation().x + p.getInsets().left, 0);
+        int iw = image.getWidth(this);
+        int ih = image.getHeight(this);
+        Component parent = SwingUtilities.getUnwrappedParent(this);
+        Point center = calcCenterOffset(parent.getSize(), iw, ih);
+        g2.drawImage(image, center.x, center.y, iw, ih, this);
+        g2.dispose();
+      }
+    }
   }
 
   public static void main(String[] args) {
@@ -131,7 +137,9 @@ public final class MainPanel extends JPanel {
 }
 
 class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
-  private static final double R = 25d;
+  public static final double THUMB_RADIUS = 25d;
+  public static final double ARROW_SIZE = 8d;
+  public static final int ICON_GAP_DIVISOR = 5;
   private final Point startPt = new Point();
   private final Cursor dc = Cursor.getDefaultCursor();
   private final Cursor wc = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
@@ -139,7 +147,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
   private int dividerLocation;
   private boolean isDragging;
   private boolean isEnter;
-  private boolean dividerEnabled;
+  private boolean isCustomDivider;
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -159,19 +167,19 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
     if ((isEnter || isDragging) && c instanceof JLayer) {
-      updateThumbLocation(((JLayer<?>) c).getView(), thumb);
+      updateThumbLocation((JSplitPane) ((JLayer<?>) c).getView(), thumb);
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(new Color(0x64_FF_64_64, true));
       g2.fill(thumb);
-      if (dividerEnabled) {
-        paintDivider(g2);
+      if (isCustomDivider) {
+        paintCustomDivider(g2);
       }
       g2.dispose();
     }
   }
 
-  private void paintDivider(Graphics2D g2) {
+  private void paintCustomDivider(Graphics2D g2) {
     g2.setStroke(new BasicStroke(5f));
     g2.setPaint(Color.WHITE);
     g2.draw(thumb);
@@ -182,13 +190,12 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     Line2D line = new Line2D.Double(cx, 0d, cx, thumb.getMinY());
     g2.draw(line);
 
-    double v = 8d;
-    double mx = cx - thumb.getWidth() / 4d + v / 2d;
+    double mx = cx - thumb.getWidth() / 4d + ARROW_SIZE / 2d;
     Path2D triangle = new Path2D.Double();
-    triangle.moveTo(mx, cy - v);
-    triangle.lineTo(mx - v, cy);
-    triangle.lineTo(mx, cy + v);
-    triangle.lineTo(mx, cy - v);
+    triangle.moveTo(mx, cy - ARROW_SIZE);
+    triangle.lineTo(mx - ARROW_SIZE, cy);
+    triangle.lineTo(mx, cy + ARROW_SIZE);
+    triangle.lineTo(mx, cy - ARROW_SIZE);
     triangle.closePath();
     g2.fill(triangle);
 
@@ -197,8 +204,8 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     g2.fill(at.createTransformedShape(triangle));
   }
 
-  public void setPaintDividerEnabled(boolean flg) {
-    this.dividerEnabled = flg;
+  public void setCustomDividerEnabled(boolean flg) {
+    this.isCustomDivider = flg;
   }
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JSplitPane> l) {
@@ -214,18 +221,29 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
         isDragging = false;
         break;
       case MouseEvent.MOUSE_PRESSED:
-        Component c = e.getComponent();
-        if (isDraggableComponent(splitPane, c)) {
-          Point pt = SwingUtilities.convertPoint(c, e.getPoint(), splitPane);
-          isDragging = thumb.contains(pt);
-          startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), splitPane));
-          dividerLocation = splitPane.getDividerLocation();
-        }
+        handleMousePressed(e, splitPane);
         break;
       default:
         break;
     }
+    // // Java 14:
+    // switch (e.getID()) {
+    //   case MouseEvent.MOUSE_ENTERED -> isEnter = true;
+    //   case MouseEvent.MOUSE_EXITED  -> isEnter = false;
+    //   case MouseEvent.MOUSE_RELEASED -> isDragging = false;
+    //   case MouseEvent.MOUSE_PRESSED -> handleMousePressed(e, splitPane);
+    // }
     splitPane.repaint();
+  }
+
+  private void handleMousePressed(MouseEvent e, JSplitPane splitPane) {
+    Component c = e.getComponent();
+    if (isDraggableComponent(splitPane, c)) {
+      Point pt = SwingUtilities.convertPoint(c, e.getPoint(), splitPane);
+      isDragging = thumb.contains(pt);
+      startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), splitPane));
+      dividerLocation = splitPane.getDividerLocation();
+    }
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JSplitPane> l) {
@@ -246,15 +264,14 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     return Objects.equals(sp, c) || Objects.equals(sp, SwingUtilities.getUnwrappedParent(c));
   }
 
-  private static void updateThumbLocation(Component c, Ellipse2D thumb) {
-    if (c instanceof JSplitPane) {
-      JSplitPane splitPane = (JSplitPane) c;
-      int pos = splitPane.getDividerLocation();
-      if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-        thumb.setFrame(pos - R, splitPane.getHeight() / 2d - R, R + R, R + R);
-      } else {
-        thumb.setFrame(splitPane.getWidth() / 2d - R, pos - R, R + R, R + R);
-      }
+  private static void updateThumbLocation(JSplitPane splitPane, Ellipse2D thumb) {
+    int pos = splitPane.getDividerLocation();
+    Dimension dim = splitPane.getSize();
+    double r2 = THUMB_RADIUS + THUMB_RADIUS;
+    if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
+      thumb.setFrame(pos - THUMB_RADIUS, (dim.height - r2)/ 2d, r2, r2);
+    } else {
+      thumb.setFrame((dim.width - r2) / 2d, pos - THUMB_RADIUS, r2, r2);
     }
   }
 }
@@ -264,7 +281,7 @@ class MissingIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     int w = getIconWidth();
     int h = getIconHeight();
-    int gap = w / 5;
+    int gap = w / DividerLocationDragLayerUI.ICON_GAP_DIVISOR;
     g2.setColor(Color.ORANGE);
     g2.translate(x, y);
     g2.fillRect(0, 0, w, h);
