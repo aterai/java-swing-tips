@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderCheckBoxTable extends JTable {
-  private static final int MODEL_COLUMN_IDX = 0;
+  private static final int CHECKBOX_COLUMN = 0;
   private transient HeaderCheckBoxHandler handler;
 
   protected HeaderCheckBoxTable(TableModel model) {
@@ -95,11 +95,11 @@ class HeaderCheckBoxTable extends JTable {
         SwingUtilities.updateComponentTreeUI((Component) r);
       }
     }
-    TableColumn column = getColumnModel().getColumn(MODEL_COLUMN_IDX);
+    TableColumn column = getColumnModel().getColumn(CHECKBOX_COLUMN);
     column.setHeaderRenderer(new HeaderRenderer());
     column.setHeaderValue(Status.INDETERMINATE);
 
-    handler = new HeaderCheckBoxHandler(this, MODEL_COLUMN_IDX);
+    handler = new HeaderCheckBoxHandler(this, CHECKBOX_COLUMN);
     m.addTableModelListener(handler);
     getTableHeader().addMouseListener(handler);
   }
@@ -136,9 +136,9 @@ class HeaderRenderer implements TableCellRenderer {
       l.setIcon(new ComponentIcon(label));
       l.setText(null); // XXX: Nimbus???
     }
-    // System.out.println("getHeaderRect: " + table.getTableHeader().getHeaderRect(column));
-    // System.out.println("getPreferredSize: " + l.getPreferredSize());
-    // System.out.println("getMaximumSize: " + l.getMaximumSize());
+    // System.out.println("HeaderRect: " + table.getTableHeader().getHeaderRect(column));
+    // System.out.println("PreferredSize: " + l.getPreferredSize());
+    // System.out.println("MaximumSize: " + l.getMaximumSize());
     // System.out.println("----");
     // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
     //   System.out.println(l.getPreferredSize().height);

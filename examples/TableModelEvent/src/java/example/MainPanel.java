@@ -18,14 +18,14 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new HeaderCheckBoxTable(makeModel());
+    JTable table = new HeaderCheckBoxTable(createModel());
     table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultTableModel makeModel() {
+  private static TableModel createModel() {
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
@@ -61,10 +61,10 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderCheckBoxTable extends JTable {
-  public static final int CHECKBOX_COLUMN = 0;
+  private static final int CHECKBOX_COLUMN = 0;
   private transient HeaderCheckBoxHandler handler;
 
-  protected HeaderCheckBoxTable(DefaultTableModel model) {
+  protected HeaderCheckBoxTable(TableModel model) {
     super(model);
   }
 
@@ -112,47 +112,22 @@ class HeaderRenderer implements TableCellRenderer {
   private final JCheckBox check = new JCheckBox("");
   private final JLabel label = new JLabel("Check All");
 
-  @SuppressWarnings("MissingSwitchDefault")
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (value instanceof Status) {
-      switch ((Status) value) {
-        case SELECTED:
-          check.setSelected(true);
-          check.setEnabled(true);
-          break;
-        case DESELECTED:
-          check.setSelected(false);
-          check.setEnabled(true);
-          break;
-        case INDETERMINATE:
-          check.setSelected(true);
-          check.setEnabled(false);
-          break;
-      }
+      ((Status) value).configureHeaderCheckBox(check);
     } else {
-      check.setSelected(true);
-      check.setEnabled(false);
+      Status.INDETERMINATE.configureHeaderCheckBox(check);
     }
     check.setOpaque(false);
     check.setFont(table.getFont());
-    label.setIcon(new ComponentIcon(check));
-
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
+      label.setIcon(new ComponentIcon(check));
       l.setIcon(new ComponentIcon(label));
       l.setText(null); // XXX: Nimbus???
-      // System.out.println("HeaderRect:" + table.getTableHeader().getHeaderRect(column));
-      // System.out.println("PreferredSize:" + l.getPreferredSize());
-      // System.out.println("MaximumSize:" + l.getMaximumSize());
-      // System.out.println("----");
-      // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
-      //   System.out.println(l.getPreferredSize().height);
-      //   Rectangle rect = table.getTableHeader().getHeaderRect(column);
-      //   l.setPreferredSize(new Dimension(0, rect.height));
-      // }
     }
     return c;
   }
@@ -182,7 +157,26 @@ class ComponentIcon implements Icon {
 }
 
 enum Status {
-  SELECTED, DESELECTED, INDETERMINATE
+  SELECTED {
+    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
+      check.setSelected(true);
+      check.setEnabled(true);
+    }
+  },
+  DESELECTED {
+    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
+      check.setSelected(false);
+      check.setEnabled(true);
+    }
+  },
+  INDETERMINATE {
+    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
+      check.setSelected(true);
+      check.setEnabled(false);
+    }
+  };
+
+  /* default */ abstract void configureHeaderCheckBox(JCheckBox check);
 }
 
 final class TablePopupMenu extends JPopupMenu {
