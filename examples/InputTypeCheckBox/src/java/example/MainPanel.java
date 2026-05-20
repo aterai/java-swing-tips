@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -20,19 +21,18 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new HeaderCheckBoxTable(makeModel());
+    JTable table = new HeaderCheckBoxTable(createModel());
     table.setFillsViewportHeight(true);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     Object[] columnNames = {Status.INDETERMINATE, "Integer", "String"};
     Object[][] data = {
         {true, 1, "BBB"}, {false, 12, "AAA"}, {true, 2, "DDD"}, {false, 5, "CCC"},
@@ -68,7 +68,7 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderCheckBoxTable extends JTable {
-  private static final int MODEL_COLUMN_IDX = 0;
+  private static final int CHECKBOX_COLUMN = 0;
   private transient HeaderCheckBoxHandler handler;
 
   protected HeaderCheckBoxTable(TableModel model) {
@@ -92,11 +92,11 @@ class HeaderCheckBoxTable extends JTable {
         SwingUtilities.updateComponentTreeUI((Component) r);
       }
     }
-    TableColumn column = getColumnModel().getColumn(MODEL_COLUMN_IDX);
+    TableColumn column = getColumnModel().getColumn(CHECKBOX_COLUMN);
     column.setHeaderRenderer(new HeaderRenderer());
     column.setHeaderValue(Status.INDETERMINATE);
 
-    handler = new HeaderCheckBoxHandler(this, MODEL_COLUMN_IDX);
+    handler = new HeaderCheckBoxHandler(this, CHECKBOX_COLUMN);
     m.addTableModelListener(handler);
     getTableHeader().addMouseListener(handler);
   }
@@ -122,7 +122,7 @@ class HeaderRenderer implements TableCellRenderer {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(
         table, INPUT, isSelected, hasFocus, row, column);
-    if (c instanceof JLabel) {
+    if (c instanceof JLabel && value instanceof Status) {
       // // TEST:
       // JCheckBox check = new JCheckBox();
       // updateCheckBox(check, value);
@@ -132,36 +132,18 @@ class HeaderRenderer implements TableCellRenderer {
 
       // https://stackoverflow.com/questions/7958378/listening-to-html-check-boxes-in-jtextpane-or-an-alternative
       for (Component cmp : ((JLabel) c).getComponents()) {
-        updateCheckBox(((Container) cmp).getComponent(0), value);
-      }
-    }
-    return c;
-  }
-
-  @SuppressWarnings("MissingSwitchDefault")
-  private static void updateCheckBox(Component c, Object value) {
-    if (c instanceof JCheckBox) {
-      JCheckBox check = (JCheckBox) c;
-      check.setOpaque(false);
-      check.setBorder(BorderFactory.createEmptyBorder());
-      // check.setText("Check All");
-      if (value instanceof Status) {
-        switch ((Status) value) {
-          case SELECTED:
-            check.setSelected(true);
-            check.setEnabled(true);
-            break;
-          case DESELECTED:
-            check.setSelected(false);
-            check.setEnabled(true);
-            break;
-          case INDETERMINATE:
-            check.setSelected(true);
-            check.setEnabled(false);
-            break;
+        Component cbx = ((Container) cmp).getComponent(0);
+        if (cbx instanceof JCheckBox) {
+          JCheckBox checkBox =  (JCheckBox) cbx;
+          ((Status) value).configureHeaderCheckBox(checkBox);
+          checkBox.setOpaque(false);
+          checkBox.setFont(table.getFont());
+          checkBox.setBorder(BorderFactory.createEmptyBorder());
+          break;
         }
       }
     }
+    return c;
   }
 }
 
@@ -181,52 +163,99 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
       TableColumn column = table.getColumnModel().getColumn(vci);
       Object status = column.getHeaderValue();
       TableModel m = table.getModel();
-      if (m instanceof DefaultTableModel && checkRepaint((DefaultTableModel) m, column, status)) {
+      if (updateHeaderState(m, column, status)) {
         JTableHeader h = table.getTableHeader();
         h.repaint(h.getHeaderRect(vci));
       }
     }
   }
 
-  private boolean checkRepaint(DefaultTableModel m, TableColumn column, Object status) {
+  private boolean updateHeaderState(TableModel model, TableColumn column, Object status) {
     boolean repaint;
     if (status == Status.INDETERMINATE) {
-      List<?> data = m.getDataVector();
-      List<Boolean> l = data.stream()
-          .map(v -> (Boolean) ((List<?>) v).get(targetColumnIndex))
-          .distinct()
-          .collect(Collectors.toList()); // Java 16: .toList();
-      repaint = l.size() == 1;
-      if (repaint) {
-        boolean isSelected = l.get(0); // Java 21: l.getFirst();
-        column.setHeaderValue(isSelected ? Status.SELECTED : Status.DESELECTED);
-      }
+      repaint = updateIndeterminateHeaderState(model, column);
     } else {
-      column.setHeaderValue(Status.INDETERMINATE);
+      setIndeterminateHeader(column);
       repaint = true;
     }
     return repaint;
   }
 
+  private void setIndeterminateHeader(TableColumn column) {
+    column.setHeaderValue(Status.INDETERMINATE);
+  }
+
+  private boolean updateIndeterminateHeaderState(TableModel model, TableColumn column) {
+    boolean repaint = false;
+    Status status = resolveHeaderState(model);
+    if (status != null) {
+      column.setHeaderValue(status);
+      repaint = true;
+    }
+    return repaint;
+  }
+
+  private Status resolveHeaderState(TableModel model) {
+    Status status = null;
+    int rowCount = model.getRowCount();
+    if (rowCount > 0) {
+      List<Boolean> values = IntStream.range(0, rowCount)
+          .mapToObj(i -> Objects.equals(model.getValueAt(i, targetColumnIndex), true))
+          .distinct()
+          .limit(2)
+          .collect(Collectors.toList()); // Java 16: .toList();
+      boolean repaintHeader = values.size() == 1;
+      if (repaintHeader) {
+        boolean isSelected = values.get(0); // Java 21: l.getFirst();
+        status = isSelected ? Status.SELECTED : Status.DESELECTED;
+      }
+    }
+    return status;
+  }
+
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
-    JTable tbl = header.getTable();
-    TableModel m = tbl.getModel();
-    int vci = tbl.columnAtPoint(e.getPoint());
-    int mci = tbl.convertColumnIndexToModel(vci);
-    if (mci == targetColumnIndex && m.getRowCount() > 0) {
-      TableColumnModel columnModel = tbl.getColumnModel();
-      TableColumn column = columnModel.getColumn(vci);
-      boolean b = column.getHeaderValue() == Status.DESELECTED;
-      for (int i = 0; i < m.getRowCount(); i++) {
-        m.setValueAt(b, i, mci);
+    if (header.isEnabled()) {
+      JTable tbl = header.getTable();
+      TableModel model = tbl.getModel();
+      int vci = tbl.columnAtPoint(e.getPoint());
+      int mci = tbl.convertColumnIndexToModel(vci);
+      if (mci == targetColumnIndex && model.getRowCount() > 0) {
+        TableColumn column = tbl.getColumnModel().getColumn(vci);
+        boolean select = column.getHeaderValue() == Status.DESELECTED;
+        toggleAllRows(model, mci, select);
+        column.setHeaderValue(select ? Status.SELECTED : Status.DESELECTED);
       }
-      column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
-      // header.repaint();
     }
   }
+
+  private void toggleAllRows(TableModel model, int columnIndex, boolean selected) {
+    for (int i = 0; i < model.getRowCount(); i++) {
+      model.setValueAt(selected, i, columnIndex);
+    }
+  }
+
 }
 
 enum Status {
-  SELECTED, DESELECTED, INDETERMINATE
+  SELECTED {
+    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
+      check.setSelected(true);
+      check.setEnabled(true);
+    }
+  },
+  DESELECTED {
+    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
+      check.setSelected(false);
+      check.setEnabled(true);
+    }
+  },
+  INDETERMINATE {
+    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
+      check.setSelected(true);
+      check.setEnabled(false);
+    }
+  };
+
+  /* default */ abstract void configureHeaderCheckBox(JCheckBox check);
 }
