@@ -11,7 +11,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
@@ -120,19 +119,24 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
 
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
-    JTable tbl = header.getTable();
-    TableColumnModel columnModel = tbl.getColumnModel();
-    TableModel m = tbl.getModel();
-    int vci = columnModel.getColumnIndexAtX(e.getX());
-    int mci = tbl.convertColumnIndexToModel(vci);
-    if (mci == targetColumnIndex && m.getRowCount() > 0) {
-      TableColumn column = columnModel.getColumn(vci);
-      boolean b = column.getHeaderValue() == Status.DESELECTED;
-      for (int i = 0; i < m.getRowCount(); i++) {
-        m.setValueAt(b, i, mci);
+    if (header.isEnabled()) {
+      JTable tbl = header.getTable();
+      TableModel model = tbl.getModel();
+      int vci = tbl.columnAtPoint(e.getPoint());
+      int mci = tbl.convertColumnIndexToModel(vci);
+      if (mci == targetColumnIndex && model.getRowCount() > 0) {
+        TableColumn column = tbl.getColumnModel().getColumn(vci);
+        boolean select = column.getHeaderValue() == Status.DESELECTED;
+        toggleAllRows(model, mci, select);
+        column.setHeaderValue(select ? Status.SELECTED : Status.DESELECTED);
+        // header.repaint();
       }
-      column.setHeaderValue(b ? Status.SELECTED : Status.DESELECTED);
-      // header.repaint();
+    }
+  }
+
+  private void toggleAllRows(TableModel model, int columnIndex, boolean selected) {
+    for (int i = 0; i < model.getRowCount(); i++) {
+      model.setValueAt(selected, i, columnIndex);
     }
   }
 }

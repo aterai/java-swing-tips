@@ -211,7 +211,8 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
           .distinct()
           .limit(2)
           .collect(Collectors.toList()); // Java 16: .toList();
-      if (values.size() == 1) {
+      boolean repaintHeader = values.size() == 1;
+      if (repaintHeader) {
         boolean isSelected = values.get(0); // Java 21: l.getFirst();
         status = isSelected ? Status.SELECTED : Status.DESELECTED;
       }
@@ -219,46 +220,20 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
     return status;
   }
 
-  // private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-  //   if (status == Status.INDETERMINATE) {
-  //     boolean selected = true;
-  //     boolean deselected = true;
-  //     for (int i = 0; i < m.getRowCount(); i++) {
-  //       Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-  //       selected &= b;
-  //       deselected &= !b;
-  //       if (selected == deselected) {
-  //         return false;
-  //       }
-  //     }
-  //     if (deselected) {
-  //       column.setHeaderValue(Status.DESELECTED);
-  //     } else if (selected) {
-  //       column.setHeaderValue(Status.SELECTED);
-  //     } else {
-  //       return false;
-  //     }
-  //   } else {
-  //     column.setHeaderValue(Status.INDETERMINATE);
-  //   }
-  //   return true;
-  // }
-
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
-    if (!header.isEnabled()) {
-      return;
-    }
-    JTable tbl = header.getTable();
-    TableModel model = tbl.getModel();
-    int vci = tbl.columnAtPoint(e.getPoint());
-    int mci = tbl.convertColumnIndexToModel(vci);
-    if (mci == targetColumnIndex && model.getRowCount() > 0) {
-      TableColumn column = tbl.getColumnModel().getColumn(vci);
-      boolean select = column.getHeaderValue() == Status.DESELECTED;
-      toggleAllRows(model, mci, select);
-      column.setHeaderValue(select ? Status.SELECTED : Status.DESELECTED);
-      // header.repaint();
+    if (header.isEnabled()) {
+      JTable tbl = header.getTable();
+      TableModel model = tbl.getModel();
+      int vci = tbl.columnAtPoint(e.getPoint());
+      int mci = tbl.convertColumnIndexToModel(vci);
+      if (mci == targetColumnIndex && model.getRowCount() > 0) {
+        TableColumn column = tbl.getColumnModel().getColumn(vci);
+        boolean select = column.getHeaderValue() == Status.DESELECTED;
+        toggleAllRows(model, mci, select);
+        column.setHeaderValue(select ? Status.SELECTED : Status.DESELECTED);
+        // header.repaint();
+      }
     }
   }
 
