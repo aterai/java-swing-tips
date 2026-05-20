@@ -120,8 +120,11 @@ class BadgeLayerUI extends LayerUI<BadgeLabel> {
           label.getIconTextGap());
 
       Icon badge = getBadgeIcon(label.getCounter());
-      Point pt = getBadgeLocation(label.getBadgePosition(), badge);
-      g2.translate(pt.x, pt.y);
+      BadgePosition badgePosition = label.getBadgePosition();
+      if (badgePosition != null) {
+        Point pt = badgePosition.getLocation(iconRect, badge, OFFSET);
+        g2.translate(pt.x, pt.y);
+      }
       badge.paintIcon(label, g2, 0, 0);
       g2.dispose();
     }
@@ -129,31 +132,6 @@ class BadgeLayerUI extends LayerUI<BadgeLabel> {
 
   protected Icon getBadgeIcon(int count) {
     return new BadgeIcon(count, Color.WHITE, new Color(0xAA_FF_16_16, true));
-  }
-
-  @SuppressWarnings("MissingSwitchDefault")
-  protected Point getBadgeLocation(BadgePosition pos, Icon icon) {
-    assert pos != null;
-    Point pt = new Point();
-    switch (pos) {
-      case NORTH_WEST:
-        pt.x = iconRect.x - OFFSET.x;
-        pt.y = iconRect.y - OFFSET.y;
-        break;
-      case NORTH_EAST:
-        pt.x = iconRect.x + iconRect.width - icon.getIconWidth() + OFFSET.x;
-        pt.y = iconRect.y - OFFSET.y;
-        break;
-      case SOUTH_WEST:
-        pt.x = iconRect.x - OFFSET.x;
-        pt.y = iconRect.y + iconRect.height - icon.getIconHeight() + OFFSET.y;
-        break;
-      case SOUTH_EAST:
-        pt.x = iconRect.x + iconRect.width - icon.getIconWidth() + OFFSET.x;
-        pt.y = iconRect.y + iconRect.height - icon.getIconHeight() + OFFSET.y;
-        break;
-    }
-    return pt;
   }
 }
 
@@ -223,5 +201,34 @@ class BadgeIcon implements Icon {
 }
 
 enum BadgePosition {
-  NORTH_WEST, NORTH_EAST, SOUTH_EAST, SOUTH_WEST
+  NORTH_WEST {
+    @Override public Point getLocation(Rectangle iconRect, Icon icon, Point offset) {
+      return new Point(
+          iconRect.x - offset.x,
+          iconRect.y - offset.y);
+    }
+  },
+  NORTH_EAST {
+    @Override public Point getLocation(Rectangle iconRect, Icon icon, Point offset) {
+      return new Point(
+          iconRect.x + iconRect.width - icon.getIconWidth() + offset.x,
+          iconRect.y - offset.y);
+    }
+  },
+  SOUTH_EAST {
+    @Override public Point getLocation(Rectangle iconRect, Icon icon, Point offset) {
+      return new Point(
+          iconRect.x + iconRect.width - icon.getIconWidth() + offset.x,
+          iconRect.y + iconRect.height - icon.getIconHeight() + offset.y);
+    }
+  },
+  SOUTH_WEST {
+    @Override public Point getLocation(Rectangle iconRect, Icon icon, Point offset) {
+      return new Point(
+          iconRect.x - offset.x,
+          iconRect.y + iconRect.height - icon.getIconHeight() + offset.y);
+    }
+  };
+
+  public abstract Point getLocation(Rectangle iconRect, Icon icon, Point offset);
 }
