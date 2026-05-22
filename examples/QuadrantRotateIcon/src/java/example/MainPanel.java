@@ -17,29 +17,41 @@ public final class MainPanel extends JPanel {
     Icon error = UIManager.getIcon("OptionPane.errorIcon");
     Icon question = UIManager.getIcon("OptionPane.questionIcon");
     Icon warning = UIManager.getIcon("OptionPane.warningIcon");
-    Stream.of(information, error, question, warning).map(this::makeBox).forEach(this::add);
+
+    Stream.of(information, error, question, warning)
+        .map(this::createBox)
+        .forEach(this::add);
+
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Box makeBox(Icon icon) {
+  private Box createBox(Icon icon) {
     Box box = Box.createHorizontalBox();
+
     box.add(Box.createHorizontalGlue());
-    box.add(makeLabel("0", icon));
+    box.add(createLabel("0", icon));
     box.add(Box.createHorizontalStrut(16));
-    box.add(makeLabel("180", new QuadrantRotateIcon(icon, QuadrantRotate.HORIZONTAL_FLIP)));
+    box.add(createLabel(
+        "180",
+        new QuadrantRotateIcon(icon, QuadrantRotate.HORIZONTAL_FLIP)));
     box.add(Box.createHorizontalStrut(16));
-    box.add(makeLabel("90", new QuadrantRotateIcon(icon, QuadrantRotate.CLOCKWISE)));
+    box.add(createLabel(
+        "90",
+        new QuadrantRotateIcon(icon, QuadrantRotate.CLOCKWISE)));
     box.add(Box.createHorizontalStrut(16));
-    box.add(makeLabel("-90", new QuadrantRotateIcon(icon, QuadrantRotate.COUNTER_CLOCKWISE)));
+    box.add(createLabel(
+        "-90",
+        new QuadrantRotateIcon(icon, QuadrantRotate.COUNTER_CLOCKWISE)));
     box.add(Box.createHorizontalGlue());
+
     return box;
   }
 
-  private static JLabel makeLabel(String title, Icon icon) {
-    JLabel l = new JLabel(title, icon, SwingConstants.CENTER);
-    l.setVerticalTextPosition(SwingConstants.BOTTOM);
-    l.setHorizontalTextPosition(SwingConstants.CENTER);
-    return l;
+  private static JLabel createLabel(String title, Icon icon) {
+    JLabel label = new JLabel(title, icon, SwingConstants.CENTER);
+    label.setVerticalTextPosition(SwingConstants.BOTTOM);
+    label.setHorizontalTextPosition(SwingConstants.CENTER);
+    return label;
   }
 
   public static void main(String[] args) {
@@ -65,15 +77,60 @@ public final class MainPanel extends JPanel {
 }
 
 enum QuadrantRotate {
-  CLOCKWISE(1), HORIZONTAL_FLIP(2), COUNTER_CLOCKWISE(-1);
-  private final int numQuadrants;
+  CLOCKWISE(1) {
+    @Override public void translate(Graphics2D g2, int w, int h) {
+      g2.translate(h, 0);
+    }
 
-  QuadrantRotate(int numQuadrants) {
-    this.numQuadrants = numQuadrants;
+    @Override public int getWidth(Icon icon) {
+      return icon.getIconHeight();
+    }
+
+    @Override public int getHeight(Icon icon) {
+      return icon.getIconWidth();
+    }
+  },
+
+  HORIZONTAL_FLIP(2) {
+    @Override public void translate(Graphics2D g2, int w, int h) {
+      g2.translate(w, h);
+    }
+  },
+
+  COUNTER_CLOCKWISE(-1) {
+    @Override public void translate(Graphics2D g2, int w, int h) {
+      g2.translate(0, w);
+    }
+
+    @Override public int getWidth(Icon icon) {
+      return icon.getIconHeight();
+    }
+
+    @Override public int getHeight(Icon icon) {
+      return icon.getIconWidth();
+    }
+  };
+
+  private final int quadrants;
+
+  QuadrantRotate(int quadrants) {
+    this.quadrants = quadrants;
   }
 
-  public int getNumQuadrants() {
-    return numQuadrants;
+  public int getQuadrants() {
+    return quadrants;
+  }
+
+  public void translate(Graphics2D g2, int w, int h) {
+    // do nothing
+  }
+
+  public int getWidth(Icon icon) {
+    return icon.getIconWidth();
+  }
+
+  public int getHeight(Icon icon) {
+    return icon.getIconHeight();
   }
 }
 
@@ -86,38 +143,24 @@ class QuadrantRotateIcon implements Icon {
     this.rotate = rotate;
   }
 
-  @SuppressWarnings("MissingSwitchDefault")
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    int w = icon.getIconWidth();
-    int h = icon.getIconHeight();
+    int width = icon.getIconWidth();
+    int height = icon.getIconHeight();
+
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
-    switch (rotate) {
-      case CLOCKWISE:
-        g2.translate(h, 0);
-        break;
-      case HORIZONTAL_FLIP:
-        g2.translate(w, h);
-        break;
-      case COUNTER_CLOCKWISE:
-        g2.translate(0, w);
-        break;
-    }
-    // AffineTransform at = g2.getTransform();
-    // at.quadrantRotate(rotate.getNumQuadrants());
-    // g2.setTransform(at);
-    g2.transform(AffineTransform.getQuadrantRotateInstance(rotate.getNumQuadrants()));
+    rotate.translate(g2, width, height);
+    g2.transform(AffineTransform.getQuadrantRotateInstance(rotate.getQuadrants()));
     icon.paintIcon(c, g2, 0, 0);
+
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    return rotate == QuadrantRotate.HORIZONTAL_FLIP
-        ? icon.getIconWidth() : icon.getIconHeight();
+    return rotate.getWidth(icon);
   }
 
   @Override public int getIconHeight() {
-    return rotate == QuadrantRotate.HORIZONTAL_FLIP
-        ? icon.getIconHeight() : icon.getIconWidth();
+    return rotate.getHeight(icon);
   }
 }
