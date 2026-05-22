@@ -130,7 +130,8 @@ class HeaderCheckBoxTable extends JTable {
 }
 
 class HeaderRenderer implements TableCellRenderer {
-  private final TriStateCheckBox check = new TriStateCheckBox("Check All");
+  private final TriStateCheckBox check = new TriStateCheckBox();
+  private final JLabel label = new JLabel("Check All");
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (value instanceof Status) {
@@ -138,15 +139,22 @@ class HeaderRenderer implements TableCellRenderer {
     } else {
       Status.INDETERMINATE.configureHeaderCheckBox(check);
     }
-    check.setOpaque(false);
-    check.setFont(table.getFont());
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
-      l.setIcon(new ComponentIcon(check));
-      l.setText(null); // XXX: Nimbus???
+      l.setOpaque(false);
+      check.setOpaque(false);
+      boolean isSynth = check.getUI().getClass().getName().contains("Synth");
+      if (isSynth) {
+        check.setText(" ");
+        check.setPreferredSize(l.getPreferredSize());
+      }
+      label.setOpaque(false);
+      label.setIcon(new ComponentIcon(check));
+      l.setIcon(new ComponentIcon(label));
+      l.setText(null);
     }
     return c;
   }
@@ -264,6 +272,10 @@ class TriStateActionListener implements ActionListener {
 class TriStateCheckBox extends JCheckBox {
   private transient TriStateActionListener listener;
 
+  protected TriStateCheckBox() {
+    super();
+  }
+
   protected TriStateCheckBox(String title) {
     super(title);
   }
@@ -329,6 +341,8 @@ class ComponentIcon implements Icon {
 
   @Override public int getIconHeight() {
     return cmp.getPreferredSize().height;
+    // Icon icon = UIManager.getIcon("CheckBox.icon");
+    // return icon == null ? 20 : icon.getIconHeight();
   }
 }
 
@@ -367,7 +381,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -375,7 +389,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

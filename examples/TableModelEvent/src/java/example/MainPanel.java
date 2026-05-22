@@ -109,7 +109,7 @@ class HeaderCheckBoxTable extends JTable {
 }
 
 class HeaderRenderer implements TableCellRenderer {
-  private final JCheckBox check = new JCheckBox("");
+  private final JCheckBox check = new JCheckBox();
   private final JLabel label = new JLabel("Check All");
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -118,16 +118,22 @@ class HeaderRenderer implements TableCellRenderer {
     } else {
       Status.INDETERMINATE.configureHeaderCheckBox(check);
     }
-    check.setOpaque(false);
-    check.setFont(table.getFont());
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
+      l.setOpaque(false);
+      check.setOpaque(false);
+      boolean isSynth = check.getUI().getClass().getName().contains("Synth");
+      if (isSynth) {
+        check.setText(" ");
+        check.setPreferredSize(l.getPreferredSize());
+      }
+      label.setOpaque(false);
       label.setIcon(new ComponentIcon(check));
       l.setIcon(new ComponentIcon(label));
-      l.setText(null); // XXX: Nimbus???
+      l.setText(null);
     }
     return c;
   }
@@ -153,6 +159,8 @@ class ComponentIcon implements Icon {
 
   @Override public int getIconHeight() {
     return cmp.getPreferredSize().height;
+    // Icon icon = UIManager.getIcon("CheckBox.icon");
+    // return icon == null ? 20 : icon.getIconHeight();
   }
 }
 

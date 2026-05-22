@@ -29,6 +29,11 @@ public final class MainPanel extends JPanel {
     JTable table = new HeaderCheckBoxTable(createModel());
     table.setFillsViewportHeight(true);
     add(new JScrollPane(table));
+
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -116,7 +121,7 @@ class HeaderCheckBoxTable extends JTable {
 }
 
 class HeaderRenderer implements TableCellRenderer {
-  private final JCheckBox check = new JCheckBox("");
+  private final JCheckBox check = new JCheckBox();
   private final JLabel label = new JLabel("Check All");
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -125,26 +130,23 @@ class HeaderRenderer implements TableCellRenderer {
     } else {
       Status.INDETERMINATE.configureHeaderCheckBox(check);
     }
-    check.setOpaque(false);
-    check.setFont(table.getFont());
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
+      l.setOpaque(false);
+      check.setOpaque(false);
+      boolean isSynth = check.getUI().getClass().getName().contains("Synth");
+      if (isSynth) {
+        check.setText(" ");
+        check.setPreferredSize(l.getPreferredSize());
+      }
+      label.setOpaque(false);
       label.setIcon(new ComponentIcon(check));
       l.setIcon(new ComponentIcon(label));
-      l.setText(null); // XXX: Nimbus???
+      l.setText(null);
     }
-    // System.out.println("HeaderRect: " + table.getTableHeader().getHeaderRect(column));
-    // System.out.println("PreferredSize: " + l.getPreferredSize());
-    // System.out.println("MaximumSize: " + l.getMaximumSize());
-    // System.out.println("----");
-    // if (l.getPreferredSize().height > 1000) { // XXX: Nimbus???
-    //   System.out.println(l.getPreferredSize().height);
-    //   Rectangle rect = table.getTableHeader().getHeaderRect(column);
-    //   l.setPreferredSize(new Dimension(0, rect.height));
-    // }
     return c;
   }
 }
@@ -232,7 +234,6 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
         boolean select = column.getHeaderValue() == Status.DESELECTED;
         toggleAllRows(model, mci, select);
         column.setHeaderValue(select ? Status.SELECTED : Status.DESELECTED);
-        // header.repaint();
       }
     }
   }
@@ -264,6 +265,8 @@ class ComponentIcon implements Icon {
 
   @Override public int getIconHeight() {
     return cmp.getPreferredSize().height;
+    // Icon icon = UIManager.getIcon("CheckBox.icon");
+    // return icon == null ? 20 : icon.getIconHeight();
   }
 }
 
@@ -288,4 +291,61 @@ enum Status {
   };
 
   /* default */ abstract void configureHeaderCheckBox(JCheckBox check);
+}
+
+// @see SwingSet3/src/com/sun/swingset3/SwingSet3.java
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = createButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
+  }
 }
