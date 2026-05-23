@@ -84,19 +84,20 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  @SuppressWarnings("MissingSwitchDefault")
-  private void updateProgress(Progress s) {
-    switch (s.getComponentType()) {
-      case TOTAL:
-        bar1.setValue((Integer) s.getValue());
-        break;
-      case FILE:
-        bar2.setValue((Integer) s.getValue());
-        break;
-      case LOG:
-        area.append(Objects.toString(s.getValue()));
-        break;
-    }
+  private void updateProgress(Progress progress) {
+    progress.getType().update(this, progress.getValue());
+  }
+
+  /* default */ void updateTotalProgress(int value) {
+    bar1.setValue(value);
+  }
+
+  /* default */ void updateFileProgress(int value) {
+    bar2.setValue(value);
+  }
+
+  /* default */ void appendLog(Object value) {
+    area.append(Objects.toString(value));
   }
 
   public void appendLine(String str) {
@@ -127,71 +128,87 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum ComponentType {
-  TOTAL, FILE, LOG
+enum ProgressType {
+  TOTAL {
+    @Override /* default */ void update(MainPanel panel, Object value) {
+      panel.updateTotalProgress((Integer) value);
+    }
+  },
+  FILE {
+    @Override /* default */ void update(MainPanel panel, Object value) {
+      panel.updateFileProgress((Integer) value);
+    }
+  },
+  LOG {
+    @Override /* default */ void update(MainPanel panel, Object value) {
+      panel.appendLog(value);
+    }
+  };
+
+  /* default */ abstract void update(MainPanel panel, Object value);
 }
 
-class Progress {
+final class Progress {
+  private final ProgressType type;
   private final Object value;
-  private final ComponentType componentType;
 
-  protected Progress(ComponentType componentType, Object value) {
-    this.componentType = componentType;
+  /* default */ Progress(ProgressType type, Object value) {
+    this.type = type;
     this.value = value;
+  }
+
+  public ProgressType getType() {
+    return type;
   }
 
   public Object getValue() {
     return value;
   }
-
-  public ComponentType getComponentType() {
-    return componentType;
-  }
 }
 
 class BackgroundTask extends SwingWorker<String, Progress> {
-  private final Random rnd = new Random();
+  private final Random random = new Random();
 
   @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
-    int numOfFiles = 12; // fileList.size();
-    publish(new Progress(ComponentType.LOG, "Total number of files: " + numOfFiles));
-    publish(new Progress(ComponentType.LOG, "\n------------------------------\n"));
-    while (current < numOfFiles && !isCancelled()) {
-      convertFileToSomething(100 * current / numOfFiles);
+    int lengthOfTask = 12;
+    publish(new Progress(ProgressType.LOG, "Length Of Task: " + lengthOfTask));
+    publish(new Progress(ProgressType.LOG, "\n------------------------------\n"));
+    while (current < lengthOfTask && !isCancelled()) {
+      convertFileToSomething(100 * current / lengthOfTask);
       current++;
     }
-    publish(new Progress(ComponentType.LOG, "\n"));
+    publish(new Progress(ProgressType.LOG, "\n"));
     return "Done";
   }
 
-  protected void convertFileToSomething(int iv) throws InterruptedException {
+  protected void convertFileToSomething(int progress) throws InterruptedException {
     int current = 0;
-    int lengthOfFile = 10 + rnd.nextInt(50); // long lengthOfFile = file.length();
-    publish(new Progress(ComponentType.LOG, "*"));
-    publish(new Progress(ComponentType.TOTAL, iv));
-    while (current <= lengthOfFile && !isCancelled()) {
-      doSomething(100 * current / lengthOfFile);
+    int lengthOfTask = 10 + random.nextInt(50);
+    publish(new Progress(ProgressType.TOTAL, progress));
+    publish(new Progress(ProgressType.LOG, "*"));
+    while (current <= lengthOfTask && !isCancelled()) {
+      doSomething(100 * current / lengthOfTask);
       current++;
     }
   }
 
-  protected void doSomething(int iv) throws InterruptedException {
-    publish(new Progress(ComponentType.FILE, iv + 1));
+  protected void doSomething(int progress) throws InterruptedException {
     Thread.sleep(20);
+    publish(new Progress(ProgressType.FILE, progress + 1));
   }
 
   protected String getDoneMessage() {
-    String msg;
+    String message;
     try {
-      msg = isCancelled() ? "Cancelled" : get();
+      message = isCancelled() ? "Cancelled" : get();
     } catch (InterruptedException ex) {
-      msg = "Interrupted";
+      message = "Interrupted";
       Thread.currentThread().interrupt();
     } catch (ExecutionException ex) {
-      msg = "ExecutionException: " + ex.getMessage();
+      message = "ExecutionException";
     }
-    return msg;
+    return message;
   }
 }
 
@@ -236,6 +253,7 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 //
 //       worker = new SwingWorker<String, String>() {
 //         private final Random r = new Random();
+//
 //         @Override protected String doInBackground() {
 //           // System.out.println("EDT?: " + EventQueue.isDispatchThread());
 //           int current = 0;
