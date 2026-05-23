@@ -134,7 +134,7 @@ class HeaderRenderer implements TableCellRenderer {
       for (Component cmp : ((JLabel) c).getComponents()) {
         Component cbx = ((Container) cmp).getComponent(0);
         if (cbx instanceof JCheckBox) {
-          JCheckBox checkBox =  (JCheckBox) cbx;
+          JCheckBox checkBox = (JCheckBox) cbx;
           ((Status) value).configureHeaderCheckBox(checkBox);
           checkBox.setOpaque(false);
           checkBox.setFont(table.getFont());
