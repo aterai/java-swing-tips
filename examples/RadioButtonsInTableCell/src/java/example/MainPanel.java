@@ -136,22 +136,29 @@ class RadioButtonsPanel extends JPanel {
   public void updateSelectedButton(Object v) {
     if (v instanceof Answer) {
       initButtons();
-      ((JRadioButton) getComponent(((Answer) v).ordinal())).setSelected(true);
-      // switch ((Answer) v) {
-      //   case A:
-      //     ((JRadioButton) getComponent(0)).setSelected(true);
-      //     break;
-      //   case B:
-      //     ((JRadioButton) getComponent(1)).setSelected(true);
-      //     break;
-      //   case C:
-      //     ((JRadioButton) getComponent(2)).setSelected(true);
-      //     break;
-      //   default:
-      //     break;
-      // }
+      String name = ((Answer) v).name();
+      for (Component c : getComponents()) {
+        if (c instanceof JRadioButton && isEquals((JRadioButton) c, name)) {
+          ((JRadioButton) c).setSelected(true);
+          break;
+        }
+      }
     }
   }
+
+  private static boolean isEquals(JRadioButton radioButton, String name) {
+    return name.equals(radioButton.getActionCommand());
+  }
+
+  // [EnumOrdinal]
+  // You should almost never invoke the Enum.ordinal() method or depend
+  // on the enum values by index.
+  // public void updateSelectedButton(Object v) {
+  //   if (v instanceof Answer) {
+  //     initButtons();
+  //     ((JRadioButton) getComponent(((Answer) v).ordinal())).setSelected(true);
+  //   }
+  // }
 
   @Override public final void setLayout(LayoutManager mgr) {
     super.setLayout(mgr);
