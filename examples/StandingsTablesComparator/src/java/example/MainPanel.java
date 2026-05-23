@@ -5,8 +5,11 @@
 package example;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -181,6 +184,22 @@ class StandingsTable extends JTable {
 }
 
 class RowData {
+  private static final List<Function<RowData, String>> COLUMN_CONVERTERS =
+      Collections.unmodifiableList(Arrays.asList(
+        r -> Integer.toString(r.getPosition()),
+        RowData::getTeam,
+        r -> Integer.toString(r.getMatches()),
+        r -> Integer.toString(r.getWins()),
+        r -> Integer.toString(r.getDraws()),
+        r -> Integer.toString(r.getLosses()),
+        r -> Integer.toString(r.getGoalsFor()),
+        r -> Integer.toString(r.getGoalsAgainst()),
+        r -> {
+          int d = r.getGoalDifference();
+          return d > 0 ? "+" + d : Integer.toString(d);
+        },
+        r -> Integer.toString(r.getPoints())
+      ));
   private final int position;
   private final String team;
   private final int wins;
@@ -246,41 +265,61 @@ class RowData {
     return wins * 3 + draws;
   }
 
-  @SuppressWarnings("PMD.CyclomaticComplexity")
   public String toString(int column) {
     String txt;
-    switch (column) {
-      case 0:
-        txt = Integer.toString(getPosition());
-        break;
-      case 1:
-        txt = getTeam();
-        break;
-      case 2:
-        txt = Integer.toString(getMatches());
-        break;
-      case 3:
-        txt = Integer.toString(getWins());
-        break;
-      case 4:
-        txt = Integer.toString(getDraws());
-        break;
-      case 5:
-        txt = Integer.toString(getLosses());
-        break;
-      case 6:
-        txt = Integer.toString(getGoalsFor());
-        break;
-      case 7:
-        txt = Integer.toString(getGoalsAgainst());
-        break;
-      case 8:
-        int d = getGoalDifference();
-        txt = d > 0 ? "+" + d : Integer.toString(d);
-        break;
-      default: // case 9:
-        txt = Integer.toString(getPoints());
+    if (column >= 0 && column < COLUMN_CONVERTERS.size()) {
+      txt = COLUMN_CONVERTERS.get(column).apply(this);
+    } else {
+      txt = Integer.toString(getPoints());
     }
     return txt;
   }
 }
+
+// // Java 17:
+// record RowData(
+//     int position,
+//     String team,
+//     int wins,
+//     int draws,
+//     int losses,
+//     int goalsFor,
+//     int goalsAgainst) {
+//   private static final List<Function<RowData, String>> COLUMN_CONVERTERS = List.of(
+//       r -> Integer.toString(r.position()),
+//       RowData::team,
+//       r -> Integer.toString(r.getMatches()),
+//       r -> Integer.toString(r.wins()),
+//       r -> Integer.toString(r.draws()),
+//       r -> Integer.toString(r.losses()),
+//       r -> Integer.toString(r.goalsFor()),
+//       r -> Integer.toString(r.goalsAgainst()),
+//       r -> {
+//         int d = r.getGoalDifference();
+//         return d > 0 ? "+" + d : Integer.toString(d);
+//       },
+//       r -> Integer.toString(r.getPoints())
+//   );
+//
+//   public int getMatches() {
+//     return wins + draws + losses;
+//   }
+//
+//   public int getGoalDifference() {
+//     return goalsFor - goalsAgainst;
+//   }
+//
+//   public int getPoints() {
+//     return wins * 3 + draws;
+//   }
+//
+//   public String toString(int column) {
+//     String txt;
+//     if (column >= 0 && column < COLUMN_CONVERTERS.size()) {
+//       txt = COLUMN_CONVERTERS.get(column).apply(this);
+//     } else {
+//       txt = Integer.toString(getPoints());
+//     }
+//     return txt;
+//   }
+// }
