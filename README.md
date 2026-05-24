@@ -51,7 +51,7 @@ javax.swing.JComponent
 - [JLabel(49)](https://ateraimemo.com/en/Swing/_JLabel.html)
 - [JToolTip(38)](https://ateraimemo.com/en/Swing/_JToolTip.html)
 - [JInternalFrame JLayeredPane JDesktopPane(37)](https://ateraimemo.com/en/Swing/_JInternalFrame.html)
-- [JSlider(35)](https://ateraimemo.com/en/Swing/_JSlider.html)
+- [JSlider(36)](https://ateraimemo.com/en/Swing/_JSlider.html)
 - [JProgressBar ProgressMonitor(34)](https://ateraimemo.com/en/Swing/_JProgressBar.html)
 - [JFileChooser(34)](https://ateraimemo.com/en/Swing/_JFileChooser.html)
 - [JSpinner(34)](https://ateraimemo.com/en/Swing/_JSpinner.html)
@@ -77,7 +77,7 @@ Others
 - [Cursor(9)](https://ateraimemo.com/en/Swing/_Cursor.html)
 - [TrayIcon(8)](https://ateraimemo.com/en/Swing/_TrayIcon.html)
 - [Clock(7)](https://ateraimemo.com/en/Swing/_Clock.html)
-- [Sound(5)](https://ateraimemo.com/en/Swing/_Sound.html)
+- [Sound(6)](https://ateraimemo.com/en/Swing/_Sound.html)
 - [Others(24)](https://ateraimemo.com/en/Swing/_Others.html)
 
 [0]: https://docs.oracle.com/javase/tutorial/uiswing/start/about.html
