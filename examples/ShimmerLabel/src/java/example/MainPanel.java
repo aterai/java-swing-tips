@@ -142,7 +142,6 @@ final class ShimmerLayout {
 abstract class AbstractShimmerLabel extends JLabel {
   protected static final Color TRANSPARENT = new Color(0x0, true);
   protected static final int ALPHA = 200;
-
   protected final float[] fractions = {0f, .5f, 1f};
   protected float animX;
 
@@ -250,9 +249,9 @@ class TextShimmerLabel extends AbstractShimmerLabel {
 
     // 3. Draw gradient inside clip
     Color[] colors = {
-      TRANSPARENT,
-      ShimmerColors.shimmerBright(getForeground(), ALPHA),
-      TRANSPARENT,
+        TRANSPARENT,
+        ShimmerColors.shimmerBright(getForeground(), ALPHA),
+        TRANSPARENT,
     };
     float endX = animX + BAND_WIDTH;
     g2.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, fractions, colors));
@@ -267,10 +266,9 @@ class TextCompositeShimmerLabel extends AbstractShimmerLabel {
   // NOTE: BAND_WIDTH intentionally wider here for a softer, more diffuse glow.
   private static final int BAND_WIDTH = 160;
   private static final float SPEED = 4f;
-
   private transient BufferedImage buffer;
 
-  public TextCompositeShimmerLabel(String text) {
+  protected TextCompositeShimmerLabel(String text) {
     super(text, FPS, SPEED, BAND_WIDTH);
   }
 
