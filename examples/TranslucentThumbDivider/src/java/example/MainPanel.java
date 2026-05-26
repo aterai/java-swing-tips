@@ -77,6 +77,7 @@ public final class MainPanel extends JPanel {
     private final Image image;
 
     private BeforeCanvas(Image image) {
+      super();
       this.image = image;
     }
 
@@ -94,6 +95,7 @@ public final class MainPanel extends JPanel {
     private final Image image;
 
     private AfterCanvas(Image image) {
+      super();
       this.image = image;
     }
 
@@ -269,7 +271,7 @@ class DividerLocationDragLayerUI extends LayerUI<JSplitPane> {
     Dimension dim = splitPane.getSize();
     double r2 = THUMB_RADIUS + THUMB_RADIUS;
     if (splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
-      thumb.setFrame(pos - THUMB_RADIUS, (dim.height - r2)/ 2d, r2, r2);
+      thumb.setFrame(pos - THUMB_RADIUS, (dim.height - r2) / 2d, r2, r2);
     } else {
       thumb.setFrame((dim.width - r2) / 2d, pos - THUMB_RADIUS, r2, r2);
     }
