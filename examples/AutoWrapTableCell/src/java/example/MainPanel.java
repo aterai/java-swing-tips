@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -17,7 +18,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new AutoWrapTable(makeModel());
+    JTable table = new AutoWrapTable(createModel());
     JScrollPane scroll = new JScrollPane(table) {
       @Override public void updateUI() {
         super.updateUI();
@@ -29,7 +30,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"Default", "AutoWrap"};
     Object[][] data = {
         {"123456789012345678901234567890", "123456789012345678901234567890"},
@@ -149,7 +150,7 @@ class AutoWrapTable extends JTable {
 class TextAreaCellRenderer implements TableCellRenderer {
   // public static class UIResource extends TextAreaCellRenderer implements UIResource {}
   private final JTextArea renderer = new JTextArea();
-  private final List<List<Integer>> rowAndCellHeights = new ArrayList<>();
+  private final List<List<Integer>> rowColHeight = new ArrayList<>();
 
   protected TextAreaCellRenderer() {
     super();
@@ -164,41 +165,38 @@ class TextAreaCellRenderer implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     renderer.setFont(table.getFont());
     renderer.setText(Objects.toString(value, ""));
-    adjustRowHeight(table, row, column);
+    renderer.setBounds(table.getCellRect(row, column, false));
+    // renderer.doLayout();
+    int maxHeight = adjustedRowHeights(row, column);
+    if (table.getRowHeight(row) != maxHeight) {
+      table.setRowHeight(row, maxHeight);
+    }
     return renderer;
   }
 
   // Calculate the new preferred height for a given row, and sets the height on the table.
   // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
-  private void adjustRowHeight(JTable table, int row, int column) {
-    // The trick for this to work properly is to set the width of the column to the
-    // text area. The reason for this is that getPreferredSize(), without a width tries
-    // to place all the text in one line. By setting the size with the width of the column,
-    // getPreferredSize() returns the proper height which the row should have in
-    // order to make room for the text.
-    // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-    // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
-    // renderer.setSize(new Dimension(cWidth, 1000));
-    renderer.setBounds(table.getCellRect(row, column, false));
-    // renderer.doLayout();
-
-    int preferredHeight = renderer.getPreferredSize().height;
-    while (rowAndCellHeights.size() <= row) {
-      rowAndCellHeights.add(createMutableList(column));
+  // The trick for this to work properly is to set the width of the column to the
+  // text area. The reason for this is that getPreferredSize(), without a width tries
+  // to place all the text in one line. By setting the size with the width of the column,
+  // getPreferredSize() returns the proper height which the row should have in
+  // order to make room for the text.
+  // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+  // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
+  // setSize(new Dimension(cWidth, 1000));
+  private int adjustedRowHeights(int row, int column) {
+    int prefH = renderer.getPreferredSize().height;
+    while (rowColHeight.size() <= row) {
+      rowColHeight.add(new ArrayList<>());
     }
-    List<Integer> list = rowAndCellHeights.get(row);
-    while (list.size() <= column) {
-      list.add(0);
+    List<Integer> colHeights = rowColHeight.get(row);
+    while (colHeights.size() <= column) {
+      colHeights.add(0);
     }
-    list.set(column, preferredHeight);
-    int max = list.stream().max(Integer::compare).orElse(0);
-    if (table.getRowHeight(row) != max) {
-      table.setRowHeight(row, max);
-    }
-  }
-
-  private static <E> List<E> createMutableList(int initialCapacity) {
-    return new ArrayList<>(initialCapacity);
+    colHeights.set(column, prefH);
+    // return colHeights.stream().max(Integer::compare).orElse(0);
+    return Collections.max(colHeights);
+    // return colHeights.isEmpty() ? prefH : Collections.max(colHeights);
   }
 }
 
