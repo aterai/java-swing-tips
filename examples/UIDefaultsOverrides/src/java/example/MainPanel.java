@@ -6,6 +6,7 @@ package example;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 0));
-    TableModel model = makeModel();
+    TableModel model = createModel();
     JTable table1 = new JTable(model);
     table1.setAutoCreateRowSorter(true);
     table1.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
@@ -60,7 +61,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"A", "B", "C"};
     Object[][] data = {
         {"A0, Line1\nA0, Line2\nA0, Line3", "B0, Line1\nB0, Line2", "C0, Line1"},
@@ -78,7 +79,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private JCheckBoxMenuItem makeCheckBoxMenuItem(String title, UIDefaults d) {
+  private JCheckBoxMenuItem createCheckBoxMenuItem(String title, UIDefaults d) {
     JCheckBoxMenuItem mi = new JCheckBoxMenuItem(title);
     mi.putClientProperty("Nimbus.Overrides", d);
     mi.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
@@ -99,18 +100,17 @@ public final class MainPanel extends JPanel {
     JMenu menu = new JMenu("Menu");
     menuBar.add(menu);
     menu.add(new JCheckBoxMenuItem("Default"));
-    menu.add(makeCheckBoxMenuItem("Test1", d));
-    menu.add(makeCheckBoxMenuItem("Test2", d));
-    menu.add(makeCheckBoxMenuItem("Test3", d));
-    JCheckBoxMenuItem cmi1 = makeCheckBoxMenuItem("Test4", d);
+    menu.add(createCheckBoxMenuItem("Test1", d));
+    menu.add(createCheckBoxMenuItem("Test2", d));
+    menu.add(createCheckBoxMenuItem("Test3", d));
+    JCheckBoxMenuItem cmi1 = createCheckBoxMenuItem("Test4", d);
     cmi1.setSelected(true);
     cmi1.setEnabled(false);
     menu.add(cmi1);
-    JCheckBoxMenuItem cmi2 = makeCheckBoxMenuItem("Test5", d);
+    JCheckBoxMenuItem cmi2 = createCheckBoxMenuItem("Test5", d);
     cmi2.setSelected(false);
     cmi2.setEnabled(false);
     menu.add(cmi2);
-    menuBar.add(menu);
     return menuBar;
   }
 
@@ -141,7 +141,32 @@ public final class MainPanel extends JPanel {
 //   ENABLED_SELECTED, SELECTED_MOUSEOVER, ENABLED, MOUSEOVER
 // }
 enum CheckIcon {
-  ENABLED_SELECTED, SELECTED_HOVER, ENABLED, HOVER
+  ENABLED {
+    @Override public void paint(Graphics2D g) {
+      g.setPaint(Color.GREEN);
+      g.drawOval(0, 0, 10, 10);
+    }
+  },
+  HOVER {
+    @Override public void paint(Graphics2D g) {
+      g.setPaint(Color.PINK);
+      g.drawOval(0, 0, 10, 10);
+    }
+  },
+  ENABLED_SELECTED {
+    @Override public void paint(Graphics2D g) {
+      g.setPaint(Color.ORANGE);
+      g.fillOval(0, 0, 10, 10);
+    }
+  },
+  SELECTED_HOVER {
+    @Override public void paint(Graphics2D g) {
+      g.setPaint(Color.CYAN);
+      g.fillOval(0, 0, 10, 10);
+    }
+  };
+
+  public abstract void paint(Graphics2D g);
 }
 
 // @see CheckBoxMenuItemPainter.java
@@ -161,46 +186,12 @@ class MyCheckBoxMenuItemPainter extends AbstractRegionPainter {
     this.ctx = new PaintContext(ins, dim, false, null, 1d, 1d);
   }
 
-  @SuppressWarnings("MissingSwitchDefault")
   @Override protected void doPaint(Graphics2D g, JComponent c, int width, int height, Object[] keys) {
-    switch (state) {
-      case ENABLED:
-        paintCheckIconEnabled(g);
-        break;
-      case HOVER:
-        paintCheckIconMouseOver(g);
-        break;
-      case ENABLED_SELECTED:
-        paintCheckIconEnabledAndSelected(g);
-        break;
-      case SELECTED_HOVER:
-        paintCheckIconSelectedAndMouseOver(g);
-        break;
-    }
+    state.paint(g);
   }
 
   @Override protected final PaintContext getPaintContext() {
     return ctx;
-  }
-
-  private void paintCheckIconEnabled(Graphics2D g) {
-    g.setPaint(Color.GREEN);
-    g.drawOval(0, 0, 10, 10);
-  }
-
-  private void paintCheckIconMouseOver(Graphics2D g) {
-    g.setPaint(Color.PINK);
-    g.drawOval(0, 0, 10, 10);
-  }
-
-  private void paintCheckIconEnabledAndSelected(Graphics2D g) {
-    g.setPaint(Color.ORANGE);
-    g.fillOval(0, 0, 10, 10);
-  }
-
-  private void paintCheckIconSelectedAndMouseOver(Graphics2D g) {
-    g.setPaint(Color.CYAN);
-    g.fillOval(0, 0, 10, 10);
   }
 }
 
@@ -236,44 +227,34 @@ class MultiLineTableCellRenderer extends JTextArea implements TableCellRenderer 
       setBackground(table.getBackground());
     }
     setBounds(table.getCellRect(row, column, false));
-    int maxH = adjustedRowHeights(row, column);
-    if (table.getRowHeight(row) != maxH) {
-      table.setRowHeight(row, maxH);
+    int maxHeight = adjustedRowHeights(row, column);
+    if (table.getRowHeight(row) != maxHeight) {
+      table.setRowHeight(row, maxHeight);
     }
     return this;
   }
 
   // Calculate the new preferred height for a given row, and sets the height on the table.
   // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
+  // The trick for this to work properly is to set the width of the column to the
+  // text area. The reason for this is that getPreferredSize(), without a width tries
+  // to place all the text in one line. By setting the size with the width of the column,
+  // getPreferredSize() returns the proper height which the row should have in
+  // order to make room for the text.
+  // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
+  // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
+  // setSize(new Dimension(cWidth, 1000));
   private int adjustedRowHeights(int row, int column) {
-    // The trick for this to work properly is to set the width of the column to the
-    // text area. The reason for this is that getPreferredSize(), without a width tries
-    // to place all the text in one line. By setting the size with the width of the column,
-    // getPreferredSize() returns the proper height which the row should have in
-    // order to make room for the text.
-    // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-    // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
-    // setSize(new Dimension(cWidth, 1000));
-
     int prefH = getPreferredSize().height;
     while (rowColHeight.size() <= row) {
-      rowColHeight.add(createMutableList(column));
+      rowColHeight.add(new ArrayList<>());
     }
     List<Integer> colHeights = rowColHeight.get(row);
     while (colHeights.size() <= column) {
       colHeights.add(0);
     }
     colHeights.set(column, prefH);
-    int maxH = prefH;
-    for (Integer colHeight : colHeights) {
-      if (colHeight > maxH) {
-        maxH = colHeight;
-      }
-    }
-    return maxH;
-  }
-
-  private static <E> List<E> createMutableList(int initialCapacity) {
-    return new ArrayList<>(initialCapacity);
+    return Collections.max(colHeights);
+    // return colHeights.isEmpty() ? prefH : Collections.max(colHeights);
   }
 }
