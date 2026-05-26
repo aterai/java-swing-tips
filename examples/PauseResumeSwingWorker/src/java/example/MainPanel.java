@@ -229,7 +229,7 @@ final class Progress {
   }
 }
 
-abstract class BackgroundTask extends SwingWorker<String, Progress> {
+class BackgroundTask extends SwingWorker<String, Progress> {
   private boolean paused;
   private final Random random = new Random();
 
