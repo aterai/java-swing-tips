@@ -42,31 +42,34 @@ public final class MainPanel extends JPanel {
     LOGGER.addHandler(new TextAreaHandler(new TextAreaOutputStream(textArea)));
 
     JPanel p = new JPanel(new GridLayout(2, 1, 10, 10));
-    p.add(makeZipPanel());
-    p.add(makeUnzipPanel());
+    p.add(createZipPanel());
+    p.add(createUnzipPanel());
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makeZipPanel() {
+  private Component createZipPanel() {
     JTextField field = new JTextField(20);
-    JButton button = new JButton("select directory");
-    button.addActionListener(e -> {
+
+    JButton selectButton = new JButton("select directory");
+    selectButton.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
       fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      int ret = fileChooser.showOpenDialog(button.getRootPane());
+      int ret = fileChooser.showOpenDialog(selectButton.getRootPane());
       if (ret == JFileChooser.APPROVE_OPTION) {
-        field.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        field.setText(
+            fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
 
-    JButton button1 = new JButton("zip");
-    button1.addActionListener(e -> {
-      String str = field.getText();
-      Path path = Paths.get(str);
+    JButton zipButton = new JButton("zip");
+    zipButton.addActionListener(e -> {
+      String text = field.getText();
+      Path path = Paths.get(text);
+
       // Files.notExists(path) noticeably poor performance in JDK 8
-      if (!str.isEmpty() && path.toFile().exists()) {
+      if (!text.isEmpty() && path.toFile().exists()) {
         String name = path.getFileName() + ".zip";
         zip(path, path.resolveSibling(name));
       }
@@ -75,89 +78,92 @@ public final class MainPanel extends JPanel {
     JPanel p = new JPanel(new BorderLayout(5, 2));
     p.setBorder(BorderFactory.createTitledBorder("Zip"));
     p.add(field);
-    p.add(button, BorderLayout.EAST);
-    p.add(button1, BorderLayout.SOUTH);
+    p.add(selectButton, BorderLayout.EAST);
+    p.add(zipButton, BorderLayout.SOUTH);
     return p;
   }
 
-  @SuppressWarnings("ReturnCount")
-  private void zip(Path path, Path tgt) {
-    // noticeably poor performance in JDK 8
-    // if (Files.exists(tgt)) {
-    Component p = getRootPane();
-    if (tgt.toFile().exists()) {
-      String s1 = String.format("%s already exists.", tgt);
-      String s2 = "Do you want to overwrite it?";
-      String m = String.format("<html>%s<br>%s", s1, s2);
-      int rv = JOptionPane.showConfirmDialog(p, m, "Zip", JOptionPane.YES_NO_OPTION);
-      if (rv != JOptionPane.YES_OPTION) {
-        return;
-      }
-    }
+  private void zip(Path srcDir, Path zipFile) {
+    Component parent = getRootPane();
     try {
-      ZipUtils.zip(path, tgt);
+      if (canOverwrite(parent, zipFile, "Zip")) {
+        ZipUtils.zip(srcDir, zipFile);
+      }
     } catch (IOException ex) {
-      LOGGER.info(() -> String.format("Cant zip! : %s", path));
-      UIManager.getLookAndFeel().provideErrorFeedback(p);
+      LOGGER.info(() -> String.format("Cant zip! : %s", srcDir));
+      UIManager.getLookAndFeel().provideErrorFeedback(parent);
     }
   }
 
-  private Component makeUnzipPanel() {
+  private Component createUnzipPanel() {
     JTextField field = new JTextField(20);
-    JButton button = new JButton("select .zip file");
-    button.addActionListener(e -> {
+    JButton selectButton = new JButton("select .zip file");
+    selectButton.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser();
-      int ret = fileChooser.showOpenDialog(button.getRootPane());
+      int ret = fileChooser.showOpenDialog(selectButton.getRootPane());
       if (ret == JFileChooser.APPROVE_OPTION) {
         field.setText(fileChooser.getSelectedFile().getAbsolutePath());
       }
     });
 
-    JButton button1 = new JButton("unzip");
-    button1.addActionListener(e -> {
-      String str = field.getText();
-      makeTargetDirPath(str).ifPresent(dir -> unzip(Paths.get(str), dir));
+    JButton unzipButton = new JButton("unzip");
+    unzipButton.addActionListener(e -> {
+      String text = field.getText();
+      createTargetDirPath(text).ifPresent(dir -> unzip(Paths.get(text), dir));
     });
 
     JPanel p = new JPanel(new BorderLayout(5, 2));
     p.setBorder(BorderFactory.createTitledBorder("Unzip"));
     p.add(field);
-    p.add(button, BorderLayout.EAST);
-    p.add(button1, BorderLayout.SOUTH);
+    p.add(selectButton, BorderLayout.EAST);
+    p.add(unzipButton, BorderLayout.SOUTH);
     return p;
   }
 
-  @SuppressWarnings("ReturnCount")
-  private void unzip(Path path, Path dir) {
-    Component p = getRootPane();
+  private void unzip(Path zipFile, Path targetDir) {
+    Component parent = getRootPane();
     try {
-      // noticeably poor performance in JDK 8
-      // if (Files.exists(dir)) {
-      if (dir.toFile().exists()) {
-        String s1 = String.format("%s already exists.", dir);
-        String s2 = "Do you want to overwrite it?";
-        String m = String.format("<html>%s<br>%s", s1, s2);
-        int rv = JOptionPane.showConfirmDialog(p, m, "Unzip", JOptionPane.YES_NO_OPTION);
-        if (rv != JOptionPane.YES_OPTION) {
-          return;
-        }
-      } else {
-        LOGGER.info(() -> String.format("mkdir0: %s", dir));
-        Files.createDirectories(dir);
+      if (canOverwrite(parent, targetDir, "Unzip")) {
+        createDirectoriesIfAbsent(targetDir);
+        ZipUtils.unzip(zipFile, targetDir);
       }
-      ZipUtils.unzip(path, dir);
     } catch (IOException ex) {
-      // ex.printStackTrace();
-      LOGGER.info(() -> String.format("Cant unzip! : %s", path));
-      UIManager.getLookAndFeel().provideErrorFeedback(p);
+      LOGGER.info(() -> String.format("Cant unzip! : %s", zipFile));
+      UIManager.getLookAndFeel().provideErrorFeedback(parent);
     }
   }
 
-  private static Optional<Path> makeTargetDirPath(String text) {
+  private static boolean canOverwrite(Component parent, Path path, String title) {
+    return !path.toFile().exists() || showOverwriteConfirm(parent, path, title);
+  }
+
+  private static boolean showOverwriteConfirm(Component parent, Path path, String title) {
+    String s1 = String.format("%s already exists.", path);
+    String s2 = "Do you want to overwrite it?";
+    String msg = String.format("<html>%s<br>%s", s1, s2);
+    int ret = JOptionPane.showConfirmDialog(
+        parent,
+        msg,
+        title,
+        JOptionPane.YES_NO_OPTION);
+    return ret == JOptionPane.YES_OPTION;
+  }
+
+  private static void createDirectoriesIfAbsent(Path dir)
+      throws IOException {
+
+    // Files.notExists(dir) noticeably poor performance in JDK 8
+    if (!dir.toFile().exists()) {
+      LOGGER.info(() -> String.format("mkdir0: %s", dir));
+      Files.createDirectories(dir);
+    }
+  }
+
+  private static Optional<Path> createTargetDirPath(String text) {
     Optional<Path> op;
     Path path = Paths.get(text);
-    // noticeably poor performance in JDK 8
-    // if (str.isEmpty() || Files.notExists(path)) {
+
+    // Files.notExists(path) noticeably poor performance in JDK 8
     if (text.isEmpty() || !path.toFile().exists()) {
       op = Optional.empty();
     } else {
