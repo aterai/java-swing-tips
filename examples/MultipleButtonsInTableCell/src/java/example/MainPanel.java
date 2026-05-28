@@ -182,13 +182,13 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
       }
     }
 
-    @SuppressWarnings("PMD.LambdaCanBeMethodReference")
+    // @SuppressWarnings("PMD.LambdaCanBeMethodReference")
     @Override public void actionPerformed(ActionEvent e) {
-      EventQueue.invokeLater(() -> fireEditingStopped());
+      // EventQueue.invokeLater(() -> fireEditingStopped());
       // https://bugs.openjdk.org/browse/JDK-8138667
       // java.lang.IllegalAccessError: tried to access method (for a protected method)
       // Fix Version/s: 9
-      // EventQueue.invokeLater(ButtonsEditor.this::fireEditingStopped);
+      EventQueue.invokeLater(ButtonsEditor.this::fireEditingStopped);
     }
   }
 
