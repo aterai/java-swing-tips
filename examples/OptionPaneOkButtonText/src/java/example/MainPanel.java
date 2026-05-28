@@ -15,14 +15,14 @@ public final class MainPanel extends JPanel {
     super();
     UIManager.put("OptionPane.okButtonText", "back");
     // UIManager.put("Button.focus", new Color(0x0, true));
-    JButton button1 = makeButton1();
-    JButton button2 = makeButton2();
-    JButton button3 = makeButton3();
+    JButton button1 = createButton1();
+    JButton button2 = createButton2();
+    JButton button3 = createButton3();
     Stream.of(button1, button2, button3).forEach(this::add);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeButton1() {
+  private static JButton createButton1() {
     JButton button = new JButton("Default");
     button.addActionListener(e -> {
       Component p = ((JComponent) e.getSource()).getRootPane();
@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
     return button;
   }
 
-  private static JButton makeButton2() {
+  private static JButton createButton2() {
     JLabel label = new JLabel("JButton#setFocusPainted(false)");
     label.addHierarchyListener(e -> {
       Component c = e.getComponent();
@@ -58,8 +58,8 @@ public final class MainPanel extends JPanel {
         });
   }
 
-  private static JButton makeButton3() {
-    // Customizing Button Text - How to Make Dialogs (The Java? Tutorials > ...)
+  private static JButton createButton3() {
+    // Customizing Button Text - How to Make Dialogs (The Java™ Tutorials > ...)
     // https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html#button
     JButton button = new JButton("showOptionDialog");
     button.addActionListener(e -> {

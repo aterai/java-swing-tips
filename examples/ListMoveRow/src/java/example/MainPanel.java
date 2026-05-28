@@ -21,8 +21,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultListModel<Color> model = makeModel();
-    JList<Color> list = makeList(model);
+    DefaultListModel<Color> model = createModel();
+    JList<Color> list = createList(model);
     JButton up = new JButton("▲");
     up.setFocusable(false);
     up.addActionListener(e -> upItems(list, model, e));
@@ -80,7 +80,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static DefaultListModel<Color> makeModel() {
+  private static DefaultListModel<Color> createModel() {
     DefaultListModel<Color> model = new DefaultListModel<>();
     model.addElement(Color.RED);
     model.addElement(Color.BLUE);
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static JList<Color> makeList(ListModel<Color> model) {
+  private static JList<Color> createList(ListModel<Color> model) {
     return new JList<Color>(model) {
       @Override public void updateUI() {
         setSelectionBackground(null); // Nimbus
@@ -135,7 +135,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// Demo - BasicDnD (The Java? Tutorials > ... > Drag and Drop and Data Transfer)
+// Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
   protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");

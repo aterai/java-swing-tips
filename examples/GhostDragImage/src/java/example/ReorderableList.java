@@ -41,7 +41,7 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
     removeMouseMotionListener(rbl);
     super.updateUI();
 
-    rubberBandColor = makeRubberBandColor(getSelectionBackground());
+    rubberBandColor = createRubberBandColor(getSelectionBackground());
     setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     setFixedCellWidth(62);
@@ -72,7 +72,7 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
     }
   }
 
-  private static Color makeRubberBandColor(Color c) {
+  private static Color createRubberBandColor(Color c) {
     int r = c.getRed();
     int g = c.getGreen();
     int b = c.getBlue();
@@ -123,17 +123,15 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
       l.repaint();
     }
 
-    @SuppressWarnings("ReturnCount")
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       int index = l.locationToIndex(e.getPoint());
       if (l.getCellBounds(index, index).contains(e.getPoint())) {
         l.setFocusable(true);
-        if (l.getDragEnabled()) {
-          return;
+        // Update the selection index only when dragging is disabled
+        if (!l.getDragEnabled()) {
+          l.setSelectedIndex(index);
         }
-        // System.out.println("ccc:" + startSelectedIndex);
-        l.setSelectedIndex(index);
       } else {
         l.clearSelection();
         l.getSelectionModel().setAnchorSelectionIndex(-1);
@@ -258,7 +256,7 @@ class ListItem implements Serializable {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    Image image = makeImage(path);
+    Image image = createImage(path);
     this.icon = new ImageIcon(image);
     ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
@@ -276,20 +274,20 @@ class ListItem implements Serializable {
     return selectedIcon;
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(ListItem::makeMissingImage);
+    }).orElseGet(ListItem::createMissingImage);
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
