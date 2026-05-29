@@ -147,9 +147,9 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
-      Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
+      Insets tabAreaIns = getTabAreaInsets();
+      Insets tabIns = getTabInsets();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
       // int tabWidth = tabIns.left + tabIns.right + 3;
       boolean b = isTopBottomTabPlacement(getTabPlacement());
@@ -200,10 +200,10 @@ class ButtonTabComponent extends JPanel {
     super(new BorderLayout());
     this.tabbedPane = Objects.requireNonNull(tabbedPane, "TabbedPane cannot be null");
     add(new TitleLabel());
-    add(makeCloseButton(), BorderLayout.EAST);
+    add(createCloseButton(), BorderLayout.EAST);
   }
 
-  private JButton makeCloseButton() {
+  private JButton createCloseButton() {
     JButton button = new JButton(new CloseTabIcon(Color.BLACK));
     button.setRolloverIcon(new CloseTabIcon(Color.ORANGE));
     button.setBorder(BorderFactory.createEmptyBorder());

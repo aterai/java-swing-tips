@@ -14,16 +14,15 @@ import javax.swing.text.Document;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
+    JTextField label = new JTextField();
+    label.setEditable(false);
+    label.setFont(label.getFont().deriveFont(32f));
+
     String u1F60x = "😀😁😂😃😄😅😆😇😈😉😊😋😌😍😎😏";
     String u1F61x = "😐😑😒😓😔😕😖😗😘😙😚😛😜😝😞😟";
     String u1F62x = "😠😡😢😣😤😥😦😧😨😩😪😫😬😭😮😯";
     String u1F63x = "😰😱😲😳😴😵😶😷😸😹😺😻😼😽😾😿";
     String u1F64x = "🙀🙁🙂🙃🙄🙅🙆🙇🙈🙉🙊🙋🙌🙍🙎🙏";
-
-    JTextField label = new JTextField();
-    label.setEditable(false);
-    label.setFont(label.getFont().deriveFont(32f));
-
     String str = String.join("\n", u1F60x, u1F61x, u1F62x, u1F63x, u1F64x);
     JTextArea textArea = new JTextArea(str);
     textArea.addCaretListener(e -> {

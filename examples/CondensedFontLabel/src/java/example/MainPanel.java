@@ -94,11 +94,6 @@ class WrappingLabel extends JLabel {
     g2.setPaint(getForeground());
     g2.setFont(getFont());
 
-    SwingUtilities.calculateInnerArea(this, RECT);
-    float x = RECT.x;
-    float y = RECT.y;
-    int w = RECT.width;
-
     AttributedString as = new AttributedString(getText());
     as.addAttribute(TextAttribute.FONT, getFont()); // TEST: .deriveFont(at));
     // TEST: as.addAttribute(TextAttribute.TRANSFORM, at);
@@ -106,6 +101,10 @@ class WrappingLabel extends JLabel {
     FontRenderContext frc = g2.getFontRenderContext();
     LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
 
+    SwingUtilities.calculateInnerArea(this, RECT);
+    float x = RECT.x;
+    float y = RECT.y;
+    int w = RECT.width;
     while (lbm.getPosition() < aci.getEndIndex()) {
       TextLayout tl = lbm.nextLayout(w);
       tl.draw(g2, x, y + tl.getAscent());

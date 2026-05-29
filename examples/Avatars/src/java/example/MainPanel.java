@@ -385,9 +385,9 @@ class BalloonToolTip extends JToolTip {
   }
 
   private Shape createBalloonShape() {
+    double centerX = getWidth() * .5d;
     double w = getWidth() - 1d;
     double h = getHeight() - TRI_HEIGHT - 1d;
-    double centerX = getWidth() * .5d;
     Path2D triangle = new Path2D.Double();
     triangle.moveTo(centerX - TRI_HEIGHT, h);
     triangle.lineTo(centerX, h + TRI_HEIGHT);

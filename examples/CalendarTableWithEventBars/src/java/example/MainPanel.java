@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     calendarTable.setCurrentLocalDate(date);
     calendarTable.setModel(new CalendarViewTableModel(date));
     YearMonth currentMonth = YearMonth.from(date);
-    List<EventPeriod> events = makeSampleEvents(currentMonth);
+    List<EventPeriod> events = createSampleEvents(currentMonth);
     JLayer<JTable> layer = new JLayer<>(calendarTable, new EventBarLayerUI(events));
     JScrollPane scroll = new JScrollPane(layer) {
       @Override public void updateUI() {
@@ -47,14 +47,14 @@ public final class MainPanel extends JPanel {
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
       }
     };
-    JScrollPane comp = new JScrollPane(makeLegendPanel(currentMonth, events));
+    JScrollPane comp = new JScrollPane(createLegendPanel(currentMonth, events));
     JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scroll, comp);
     split.setResizeWeight(.8);
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private List<EventPeriod> makeSampleEvents(YearMonth ym) {
+  private List<EventPeriod> createSampleEvents(YearMonth ym) {
     List<EventPeriod> events = new ArrayList<>();
     // Event 1: 3-day meeting
     events.add(new EventPeriod("Project Meeting",
@@ -88,7 +88,7 @@ public final class MainPanel extends JPanel {
     return events;
   }
 
-  private JPanel makeLegendPanel(YearMonth currentMonth, List<EventPeriod> events) {
+  private JPanel createLegendPanel(YearMonth currentMonth, List<EventPeriod> events) {
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
     String txt = currentMonth.format(fmt.withLocale(locale));
@@ -387,12 +387,9 @@ class EventBarLayerUI extends LayerUI<JTable> {
       Graphics2D g2, JTable tbl, EventPeriod ev, LocalDate cur) {
     LocalDate calendarStartDate = (LocalDate) tbl.getModel().getValueAt(0, 0);
     long sinceStart = ChronoUnit.DAYS.between(calendarStartDate, cur);
-    int trackOffset = ev.getTrack() * (BAR_HEIGHT + BAR_MARGIN);
-    int headerHeight = tbl.getTableHeader().getHeight();
     long daysInWeek = DayOfWeek.values().length;
     int weekRow = (int) (sinceStart / daysInWeek);
     int dayCol = (int) (sinceStart % daysInWeek);
-
     int consecutiveDays = 1;
     LocalDate nextDay = cur.plusDays(1);
     boolean notEndOfWeek = dayCol != daysInWeek - 1;
@@ -403,10 +400,10 @@ class EventBarLayerUI extends LayerUI<JTable> {
         break;
       }
     }
-
     Rectangle firstRect = tbl.getCellRect(weekRow, dayCol, false);
     Rectangle lastRect = tbl.getCellRect(weekRow, dayCol + consecutiveDays - 1, false);
-
+    int trackOffset = ev.getTrack() * (BAR_HEIGHT + BAR_MARGIN);
+    int headerHeight = tbl.getTableHeader().getHeight();
     int barX = firstRect.x + 5;
     int barY = firstRect.y + trackOffset + headerHeight;
     int barWidth = lastRect.x + lastRect.width - firstRect.x - 10;

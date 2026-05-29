@@ -22,7 +22,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new FishEyeTable(makeModel());
+    JTable table = new FishEyeTable(createModel());
     table.setRowSelectionInterval(0, 0);
     JScrollPane scroll = new JScrollPane(table) {
       @Override public void updateUI() {
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", -1, true},
@@ -228,7 +228,6 @@ class FishEyeTable extends JTable {
   }
 
   protected void initRowHeight(int height, int ccRow) {
-    int rd2 = (fishEyeRowList.size() - 1) / 2;
     int rowCount = getModel().getRowCount();
     int viewRc = getViewableColoredRowCount(ccRow);
     int viewH = getViewHeight(viewRc);
@@ -238,6 +237,7 @@ class FishEyeTable extends JTable {
     int restGap = restH - restRh * restRc;
     // System.out.format("%d-%d=%dx%d+%d=%d", height, viewH, restRc, restRh, restGap, restH);
     int index = -1;
+    int rd2 = (fishEyeRowList.size() - 1) / 2;
     for (int i = -rd2; i < rowCount; i++) {
       boolean b = ccRow - rd2 <= i && i <= ccRow + rd2;
       if (b) {

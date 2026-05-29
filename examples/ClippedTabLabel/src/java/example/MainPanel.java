@@ -21,8 +21,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     List<? extends JTabbedPane> list = Arrays.asList(
-        makeTestTabbedPane(new JTabbedPane()),
-        makeTestTabbedPane(new ClippedTitleTabbedPane()));
+        createTestTabbedPane(new JTabbedPane()),
+        createTestTabbedPane(new ClippedTitleTabbedPane()));
 
     JPanel p = new JPanel(new GridLayout(list.size(), 1));
     list.forEach(p::add);
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
+  private static JTabbedPane createTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
     jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("666666666"));
@@ -99,9 +99,9 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
-      Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
+      Insets tabAreaIns = getTabAreaInsets();
+      Insets tabIns = getTabInsets();
       int tabPlacement = getTabPlacement();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
