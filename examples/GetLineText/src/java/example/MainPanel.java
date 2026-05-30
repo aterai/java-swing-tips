@@ -20,7 +20,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea textArea = new JTextArea(makeText());
+    JTextArea textArea = new JTextArea(createText());
     textArea.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.setRowHeaderView(new LineNumberView(textArea));
@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String makeText() {
+  private static String createText() {
     StringBuilder sb = new StringBuilder();
     String txt = "1111111111111111\n";
     String comment = "#comment\n";
@@ -164,7 +164,6 @@ class LineNumberView extends JPanel {
     super.updateUI();
     setOpaque(true);
     EventQueue.invokeLater(() -> {
-      // Insets i = textArea.getInsets();
       Insets i = textArea.getMargin();
       setBorder(BorderFactory.createCompoundBorder(
           BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
@@ -200,15 +199,14 @@ class LineNumberView extends JPanel {
 
     Font font = textArea.getFont();
     g2.setFont(font);
-    FontMetrics fontMetrics = g2.getFontMetrics(font);
-    int fontAscent = fontMetrics.getAscent();
-    int fontDescent = fontMetrics.getDescent();
-    int fontLeading = fontMetrics.getLeading();
-
     g2.setColor(getForeground());
     int base = clip.y;
     int start = getLineAtPoint(base);
     int end = getLineAtPoint(base + clip.height);
+    FontMetrics fontMetrics = g2.getFontMetrics(font);
+    int fontAscent = fontMetrics.getAscent();
+    int fontDescent = fontMetrics.getDescent();
+    int fontLeading = fontMetrics.getLeading();
     int y = start * fontMetrics.getHeight();
     int rmg = getInsets().right;
     for (int i = start; i <= end; i++) {

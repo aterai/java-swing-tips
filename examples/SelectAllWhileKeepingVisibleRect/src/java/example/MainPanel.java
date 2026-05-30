@@ -19,19 +19,19 @@ import javax.swing.text.Element;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 0));
-    String txt = makeSampleText();
-    add(makeTitledPanel("Default", new JTextArea(txt)));
-    add(makeTitledPanel("Override selectAll", new CustomTextArea(txt)));
-    add(makeTitledPanel("move Caret top", new EmacsTextArea(txt)));
+    String txt = createSampleText();
+    add(createTitledPanel("Default", new JTextArea(txt)));
+    add(createTitledPanel("Override selectAll", new CustomTextArea(txt)));
+    add(createTitledPanel("move Caret top", new EmacsTextArea(txt)));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String makeSampleText() {
+  private static String createSampleText() {
     String s = "aaa\nbb bb\nc c c\nddd\n\n1234567890\n";
     return String.join("\n", Collections.nCopies(10, s));
   }
 
-  private static Component makeTitledPanel(String title, JTextArea editor) {
+  private static Component createTitledPanel(String title, JTextArea editor) {
     editor.setCaretPosition(0);
     editor.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
     JScrollPane scroll = new JScrollPane(editor);
@@ -241,15 +241,14 @@ class LineNumberView extends JPanel {
 
     Font font = textArea.getFont();
     g2.setFont(font);
-    FontMetrics fontMetrics = g2.getFontMetrics(font);
-    int fontAscent = fontMetrics.getAscent();
-    int fontDescent = fontMetrics.getDescent();
-    int fontLeading = fontMetrics.getLeading();
-
     g2.setColor(getForeground());
     int base = clip.y;
     int start = getLineAtPoint(base);
     int end = getLineAtPoint(base + clip.height);
+    FontMetrics fontMetrics = g2.getFontMetrics(font);
+    int fontAscent = fontMetrics.getAscent();
+    int fontDescent = fontMetrics.getDescent();
+    int fontLeading = fontMetrics.getLeading();
     int y = start * fontMetrics.getHeight();
     int rmg = getInsets().right;
     for (int i = start; i <= end; i++) {

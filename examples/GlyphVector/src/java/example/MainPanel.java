@@ -25,16 +25,16 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 0));
     JLabel lbl1 = new JLabel(TEXT);
-    lbl1.setBorder(makeTitledColorBorder("JLabel", Color.YELLOW));
+    lbl1.setBorder(createTitledColorBorder("JLabel", Color.YELLOW));
 
     JLabel lbl2 = new WrappedLabel(TEXT);
-    lbl2.setBorder(makeTitledColorBorder("GlyphVector", Color.GREEN));
+    lbl2.setBorder(createTitledColorBorder("GlyphVector", Color.GREEN));
 
     JLabel lbl3 = new WrappingLabel(TEXT);
-    lbl3.setBorder(makeTitledColorBorder("LineBreakMeasurer", Color.CYAN));
+    lbl3.setBorder(createTitledColorBorder("LineBreakMeasurer", Color.CYAN));
 
     JTextArea lbl4 = new JTextArea(TEXT);
-    lbl4.setBorder(makeTitledColorBorder("JTextArea", Color.ORANGE));
+    lbl4.setBorder(createTitledColorBorder("JTextArea", Color.ORANGE));
 
     // lbl2.setFont(new Font(Font.SERIF, Font.TRUETYPE_FONT, 20));
     lbl4.setFont(lbl1.getFont());
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Border makeTitledColorBorder(String title, Color color) {
+  private static Border createTitledColorBorder(String title, Color color) {
     return BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 5), title);
   }
 
@@ -83,15 +83,15 @@ class WrappingLabel extends JLabel {
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(getForeground());
-    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
-    float x = r.x;
-    float y = r.y;
-    int w = r.width;
     AttributedString as = new AttributedString(getText());
     as.addAttribute(TextAttribute.FONT, getFont());
     AttributedCharacterIterator aci = as.getIterator();
     FontRenderContext frc = g2.getFontRenderContext();
     LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    float x = r.x;
+    float y = r.y;
+    int w = r.width;
     while (lbm.getPosition() < aci.getEndIndex()) {
       TextLayout tl = lbm.nextLayout(w);
       tl.draw(g2, x, y + tl.getAscent());
