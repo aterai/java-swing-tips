@@ -16,7 +16,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     GridPanel gp = new GridPanel(4, 3);
     for (int i = 0; i < gp.getColumns() * gp.getRows(); i++) {
-      gp.add(makeSampleComponent(i));
+      gp.add(createSampleComponent(i));
     }
     JScrollPane scroll = new JScrollPane(gp);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -34,7 +34,7 @@ public final class MainPanel extends JPanel {
     add(new JButton(new ScrollAction("top", scroll, new Point(0, -1))), BorderLayout.NORTH);
   }
 
-  private static Component makeSampleComponent(int idx) {
+  private static Component createSampleComponent(int idx) {
     return idx % 2 == 0 ? new JButton("button" + idx) : new JScrollPane(new JTree());
   }
 
@@ -121,9 +121,9 @@ class ScrollAction extends AbstractAction {
   }
 
   protected void start() {
-    if (!scroller.isRunning()) {
-      JViewport viewport = scrollPane.getViewport();
-      JComponent v = (JComponent) viewport.getView();
+    JViewport viewport = scrollPane.getViewport();
+    Component view = viewport.getView();
+    if (!scroller.isRunning() && view instanceof JComponent) {
       int w = viewport.getWidth();
       int h = viewport.getHeight();
       int sx = viewport.getViewPosition().x;
@@ -139,7 +139,7 @@ class ScrollAction extends AbstractAction {
           scroller.stop();
         }
         rect.setLocation(sx + vec.x * d.x, sy + vec.y * d.y);
-        v.scrollRectToVisible(rect);
+        ((JComponent) view).scrollRectToVisible(rect);
       };
       scroller.addActionListener(listener);
       scroller.start();
