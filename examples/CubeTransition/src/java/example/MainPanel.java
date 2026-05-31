@@ -99,7 +99,7 @@ class CubeTransitionPanel extends JPanel {
       // Decelerate and snap to target if velocity is low
       boolean isVelocitySmall = Math.abs(velocity) < .1;
       if (isVelocitySmall) {
-        double target = (Math.abs(angle) > 45) ? (angle > 0 ? 90 : -90) : 0;
+        double target = Math.abs(angle) > 45 ? angle > 0 ? 90 : -90 : 0;
         angle += (target - angle) * .2;
       }
 
@@ -168,7 +168,7 @@ class CubeTransitionPanel extends JPanel {
     ensureBuffers(w, h);
 
     final double angCurr = angle;
-    final double angNext = (angle > 0) ? angle - 90 : angle + 90;
+    final double angNext = angle > 0 ? angle - 90 : angle + 90;
     boolean firstHalf = Math.abs(angle) < 45;
     int cx = w / 2;
     int cy = h / 2;
@@ -225,6 +225,7 @@ class CubeTransitionPanel extends JPanel {
   /**
    * Draws a single cube face into the offscreen buffer using perspective slicing.
    */
+  @SuppressWarnings("ReturnCount")
   private void renderFaceToBuffer(
       BufferedImage buf, BufferedImage img, double offsetAngle, int cx, int cy) {
     // 1. Calculate perspective projections for all X positions
