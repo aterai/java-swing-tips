@@ -19,7 +19,7 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JList<ListItem> list = new RubberBandSelectionList<>(makeModel());
+    JList<ListItem> list = new RubberBandSelectionList<>(createModel());
     list.setPrototypeCellValue(new ListItem("red", new ColorIcon(Color.RED)));
     list.setOpaque(false);
     list.setBackground(new Color(0x0, true));
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<ListItem> makeModel() {
+  private static ListModel<ListItem> createModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
@@ -113,7 +113,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     removeMouseMotionListener(rbl);
     super.updateUI();
 
-    rubberBandColor = makeRubberBandColor(getSelectionBackground());
+    rubberBandColor = createRubberBandColor(getSelectionBackground());
     setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     setFixedCellWidth(80);
@@ -159,7 +159,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     }
   }
 
-  private static Color makeRubberBandColor(Color c) {
+  private static Color createRubberBandColor(Color c) {
     int r = c.getRed();
     int g = c.getGreen();
     int b = c.getBlue();
@@ -186,8 +186,6 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
 
     @Override public void mouseDragged(MouseEvent e) {
       checkedIndex = -1;
-      JList<?> l = (JList<?>) e.getComponent();
-      // l.setFocusable(true);
       Point dstPoint = e.getPoint();
       Path2D rb = getRubberBand();
       rb.reset();
@@ -197,10 +195,15 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       rb.lineTo(srcPoint.x, dstPoint.y);
       rb.closePath();
 
-      int[] indices = IntStream.range(0, l.getModel().getSize())
-          .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
-      l.setSelectedIndices(indices);
-      l.repaint();
+      Component c = e.getComponent();
+      if (c instanceof JList) {
+        JList<?> l = (JList<?>) c;
+        // l.setFocusable(true);
+        int[] indices = IntStream.range(0, l.getModel().getSize())
+            .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
+        l.setSelectedIndices(indices);
+        l.repaint();
+      }
     }
 
     @Override public void mouseExited(MouseEvent e) {
