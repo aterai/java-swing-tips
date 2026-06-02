@@ -134,7 +134,7 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     UIManager.put(ASCENDING, ascendingIcon);
     UIManager.put(DESCENDING, descendingIcon);
     if (c instanceof JLabel) {
-      JLabel l = (JLabel) c;
+      // JLabel l = (JLabel) c;
       // l.setHorizontalAlignment(SwingConstants.RIGHT);
       SortOrder sortOrder = getColumnSortOrder(table, column);
       // Java 12:
@@ -162,7 +162,7 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
       String td4 = String.format("<td align='right'>%s</td>", Objects.toString(value, ""));
       String tr1 = "<tr>" + td1 + td2;
       String tr2 = "<tr>" + td3 + td4;
-      l.setText("<html><table>" + tr1 + tr2);
+      ((JLabel) c).setText("<html><table>" + tr1 + tr2);
     }
     return c;
   }

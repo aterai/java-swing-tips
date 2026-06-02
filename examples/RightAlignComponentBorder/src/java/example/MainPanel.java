@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree();
     JCheckBox c = new JCheckBox("setEnabled", true);
     c.addActionListener(e -> tree.setEnabled(((JCheckBox) e.getSource()).isSelected()));
-    add(makePanel(new JScrollPane(tree), c));
+    add(createPanel(new JScrollPane(tree), c));
 
     JTextArea textArea = new JTextArea("aaaaaaaaaa");
     // Border b2 = new ComponentTitledBorder(b, textArea, BorderFactory.createEtchedBorder());
@@ -23,14 +23,13 @@ public final class MainPanel extends JPanel {
     JButton b = new JButton("Clear");
     b.setFocusable(false);
     b.addActionListener(e -> textArea.setText(""));
-    add(makePanel(new JScrollPane(textArea), b));
+    add(createPanel(new JScrollPane(textArea), b));
 
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makePanel(JComponent m, Component c) {
-    int ir = 20; // inset.right
+  private static Component createPanel(JComponent m, Component c) {
     int ch = c.getPreferredSize().height / 2;
 
     // Border ib = BorderFactory.createMatteBorder(0, 0, ch, 0, Color.WHITE);
@@ -48,6 +47,7 @@ public final class MainPanel extends JPanel {
     JLayeredPane p = new JLayeredPane();
     p.setLayout(layout);
 
+    int ir = 20; // inset.right
     Spring x = layout.getConstraint(SpringLayout.WIDTH, p);
     Spring y = layout.getConstraint(SpringLayout.HEIGHT, p);
     Spring g = Spring.minus(Spring.constant(ir));

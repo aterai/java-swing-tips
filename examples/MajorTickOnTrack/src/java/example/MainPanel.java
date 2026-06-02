@@ -49,16 +49,16 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Default", new JSlider()));
+    box.add(createTitledPanel("Default", new JSlider()));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Paint major tick marks on the track", slider));
+    box.add(createTitledPanel("Paint major tick marks on the track", slider));
     box.add(Box.createVerticalGlue());
     add(box);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -91,10 +91,10 @@ public final class MainPanel extends JPanel {
 
 class SliderTrackPainter implements Painter<JSlider> {
   @Override public void paint(Graphics2D g, JSlider c, int w, int h) {
-    int arc = 10;
     int thumbSize = 24;
     int trackHeight = 8;
     int trackWidth = w - thumbSize;
+    int arc = 10;
     int fillTop = (thumbSize - trackHeight) / 2;
     int fillLeft = thumbSize / 2;
 
