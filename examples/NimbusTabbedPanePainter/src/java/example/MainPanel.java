@@ -64,7 +64,6 @@ final class NimbusTabbedPanePainterUtils {
   public static void configureUI() {
     String content = "TabbedPane:TabbedPaneContent";
     String tabArea = "TabbedPane:TabbedPaneTabArea";
-    String tab = "TabbedPane:TabbedPaneTab";
 
     UIDefaults d = UIManager.getLookAndFeelDefaults();
     d.put(content + ".contentMargins", new Insets(0, 5, 5, 5));
@@ -80,6 +79,7 @@ final class NimbusTabbedPanePainterUtils {
     d.put(tabArea + "[Enabled+MouseOver].backgroundPainter", tabAreaPainter);
     d.put(tabArea + "[Enabled+Pressed].backgroundPainter", tabAreaPainter);
 
+    String tab = "TabbedPane:TabbedPaneTab";
     Painter<JComponent> tabPainter = new TabPainter(false);
     d.put(tab + "[Enabled+MouseOver].backgroundPainter", tabPainter);
     d.put(tab + "[Enabled+Pressed].backgroundPainter", tabPainter);

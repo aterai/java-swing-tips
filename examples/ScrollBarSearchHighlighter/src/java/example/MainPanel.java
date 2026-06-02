@@ -162,7 +162,6 @@ class HighlightIcon implements Icon {
     // Dimension sbSize = scrollbar.getSize();
     // Insets sbInsets = scrollbar.getInsets();
     // double sy = (sbSize.height - sbInsets.top - sbInsets.bottom) / rect.getHeight();
-    int top = scrollbar.getInsets().top;
     BoundedRangeModel range = scrollbar.getModel();
     double sy = range.getExtent() / (double) (range.getMaximum() - range.getMinimum());
     AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
@@ -172,6 +171,7 @@ class HighlightIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
     g2.setPaint(Color.RED);
+    int top = scrollbar.getInsets().top;
     try {
       for (Highlighter.Highlight hh : highlighter.getHighlights()) {
         Rectangle r = textArea.modelToView(hh.getStartOffset());

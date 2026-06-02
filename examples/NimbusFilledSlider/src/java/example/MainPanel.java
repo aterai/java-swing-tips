@@ -17,16 +17,16 @@ public final class MainPanel extends JPanel {
     slider.putClientProperty("Nimbus.Overrides", d);
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Default", new JSlider()));
+    box.add(createTitledPanel("Default", new JSlider()));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Nimbus JSlider.isFilled", slider));
+    box.add(createTitledPanel("Nimbus JSlider.isFilled", slider));
     box.add(Box.createVerticalGlue());
     add(box);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -62,11 +62,11 @@ class SliderTrackPainter implements Painter<JSlider> {
     //   super.paint(g, c, w, h);
     //   return;
     // }
-    int arc = 10;
     int trackHeight = 8;
     int trackWidth = w - 2;
     int fillTop = 4;
     int fillLeft = 1;
+    int arc = 10;
 
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setStroke(new BasicStroke(1.5f));

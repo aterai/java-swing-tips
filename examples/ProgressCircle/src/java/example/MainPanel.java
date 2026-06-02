@@ -133,13 +133,13 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
     Object o = progressBar.getClientProperty("Slider.clockwise");
     int dir = Objects.equals(o, true) ? -1 : 1;
-    double start = 90d;
-    double degree = dir * 360d * progressBar.getPercentComplete();
     double sz = Math.min(rect.width, rect.height);
     double cx = rect.getCenterX();
     double cy = rect.getCenterY();
     double or = sz * .5;
     double ir = or * .5; // .8;
+    double start = 90d;
+    double degree = dir * 360d * progressBar.getPercentComplete();
     Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2d, ir * 2d);
     Shape outer = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
     Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, start, degree, Arc2D.PIE);

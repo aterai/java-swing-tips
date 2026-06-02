@@ -23,14 +23,14 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     JPopupMenu popup = new JPopupMenu();
-    Stream.of(Corner.values()).map(this::makeCornerCheckBox).forEach(popup::add);
+    Stream.of(Corner.values()).map(this::createCornerCheckBox).forEach(popup::add);
     popup.addSeparator();
-    Stream.of(Type.values()).map(this::makeTypeCheckBox).forEach(popup::add);
+    Stream.of(Type.values()).map(this::createTypeCheckBox).forEach(popup::add);
     setComponentPopupMenu(popup);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JCheckBoxMenuItem makeCornerCheckBox(Corner corner) {
+  private JCheckBoxMenuItem createCornerCheckBox(Corner corner) {
     JCheckBoxMenuItem check = new JCheckBoxMenuItem(corner.name(), true);
     check.addActionListener(e -> {
       if (((AbstractButton) e.getSource()).isSelected()) {
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
     return check;
   }
 
-  private JCheckBoxMenuItem makeTypeCheckBox(Type type) {
+  private JCheckBoxMenuItem createTypeCheckBox(Type type) {
     JCheckBoxMenuItem check = new JCheckBoxMenuItem(type.name(), true);
     check.addActionListener(e -> {
       if (((AbstractButton) e.getSource()).isSelected()) {
@@ -76,19 +76,19 @@ public final class MainPanel extends JPanel {
 
     if (types.contains(Type.SUBTRACT)) {
       g2.setColor(Color.RED);
-      Shape shape0 = ShapeUtils.makeRoundRect0(rect, aw, ah, corners);
+      Shape shape0 = ShapeUtils.createRoundRect0(rect, aw, ah, corners);
       g2.draw(shape0);
     }
 
     if (types.contains(Type.PATH2D1)) {
       g2.setColor(Color.GREEN);
-      Shape shape1 = ShapeUtils.makeRoundRect1(rect, aw, ah, corners);
+      Shape shape1 = ShapeUtils.createRoundRect1(rect, aw, ah, corners);
       g2.draw(shape1);
     }
 
     if (types.contains(Type.PATH2D2)) {
       g2.setColor(Color.BLUE);
-      Shape shape2 = ShapeUtils.makeRoundRect2(rect, aw, ah, corners);
+      Shape shape2 = ShapeUtils.createRoundRect2(rect, aw, ah, corners);
       g2.draw(shape2);
     }
 
@@ -117,7 +117,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// https://stackoverflow.com/questions/77889724/how-to-make-half-rounded-border
+// https://stackoverflow.com/questions/77889724/how-to-create-half-rounded-border
 enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
 
 enum Type { ROUND_RECTANGLE2D, SUBTRACT, PATH2D1, PATH2D2 }
@@ -127,7 +127,7 @@ final class ShapeUtils {
     /* Singleton */
   }
 
-  public static Shape makeRoundRect0(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape createRoundRect0(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
@@ -159,7 +159,7 @@ final class ShapeUtils {
     return area;
   }
 
-  public static Shape makeRoundRect1(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape createRoundRect1(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
@@ -196,17 +196,17 @@ final class ShapeUtils {
     return path;
   }
 
-  public static Shape makeRoundRect2(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
-    double x = r.getX();
-    double y = r.getY();
-    double w = r.getWidth();
-    double h = r.getHeight();
+  public static Shape createRoundRect2(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double arh = ah * .5;
     double arw = aw * .5;
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
     double akw = arw * kappa;
     double akh = arh * kappa;
     Path2D.Double p = new Path2D.Double();
+    double x = r.getX();
+    double y = r.getY();
+    double w = r.getWidth();
+    double h = r.getHeight();
     if (corners.contains(Corner.TOP_LEFT)) {
       p.moveTo(x, y + arh);
       p.curveTo(x, y + arh - akh, x + arw - akw, y, x + arw, y);

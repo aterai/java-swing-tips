@@ -125,13 +125,13 @@ class SolidGaugeUI extends BasicProgressBarUI {
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     // double extent = -150d;
-    double start = 90d + extent * .5;
-    double degree = extent * progressBar.getPercentComplete();
     double or = Math.min(rect.width, rect.height);
     double cx = rect.getCenterX();
     double cy = rect.getMaxY();
     double sz = or * 2d;
     double ir = or * .6;
+    double start = 90d + extent * .5;
+    double degree = extent * progressBar.getPercentComplete();
     Shape inner = new Arc2D.Double(
         cx - ir, cy - ir, ir * 2d, ir * 2d, start, -extent, Arc2D.PIE);
     Shape outer = new Arc2D.Double(

@@ -40,10 +40,10 @@ public final class MainPanel extends JPanel {
     };
 
     JPanel p = new JPanel(new GridLayout(2, 2));
-    p.add(makeTitledPanel("default", spinner0));
-    p.add(makeTitledPanel("Spinner.arrowButtonSize", spinner1));
-    p.add(makeTitledPanel("setPreferredSize", spinner2));
-    p.add(makeTitledPanel("setLayout", spinner3));
+    p.add(createTitledPanel("default", spinner0));
+    p.add(createTitledPanel("Spinner.arrowButtonSize", spinner1));
+    p.add(createTitledPanel("setPreferredSize", spinner2));
+    p.add(createTitledPanel("setLayout", spinner3));
 
     JSpinner spinner4 = new JSpinner(model) {
       @Override public void updateUI() {
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.add(p);
-    box.add(makeTitledPanel("setPreferredSize + setFont", spinner4));
+    box.add(createTitledPanel("setPreferredSize + setFont", spinner4));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -78,7 +78,7 @@ public final class MainPanel extends JPanel {
         .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -173,11 +173,6 @@ class SpinnerLayout implements LayoutManager {
       return;
     }
 
-    // Dimension nextD = preferredSize(nextButton);
-    // Dimension previousD = preferredSize(previousButton);
-    int buttonsWidth = 100; // Math.max(nextD.width, previousD.width);
-    int editorHeight = r == null ? parent.getHeight() : r.height;
-
     // The arrowButtonInsets value is used instead of the JSpinner's
     // insets if not null. Defining this to be (0, 0, 0, 0) causes the
     // buttons to be aligned with the outer edge of the spinner's
@@ -193,6 +188,8 @@ class SpinnerLayout implements LayoutManager {
     int editorX;
     int editorWidth;
     int buttonsX;
+    int buttonsWidth = 100; // Math.max(nextD.width, previousD.width);
+    int editorHeight = r == null ? parent.getHeight() : r.height;
     if (parent.getComponentOrientation().isLeftToRight()) {
       editorX = ins.left;
       editorWidth = parent.getWidth() - ins.left - buttonsWidth - buttonInsets.right;
@@ -227,7 +224,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -235,7 +232,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
