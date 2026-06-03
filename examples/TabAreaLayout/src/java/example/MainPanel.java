@@ -29,17 +29,17 @@ import javax.swing.plaf.synth.SynthStyle;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    add(makeOverlayTabbedPane());
-    add(makeCardLayoutTabbedPane());
+    add(createOverlayTabbedPane());
+    add(createCardLayoutTabbedPane());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makeCardLayoutTabbedPane() {
+  private Component createCardLayoutTabbedPane() {
     CardLayoutTabbedPane tabs = new CardLayoutTabbedPane();
     tabs.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     tabs.setBackground(new Color(16, 16, 16));
-    TabbedPaneUtils.makeIconTabs()
+    TabbedPaneUtils.createIconTabs()
         .forEach(t -> tabs.addTab(t.getTitle(), t.getIcon(), t.getComponent()));
     EventQueue.invokeLater(() -> tabs.getTabArea().getHorizontalScrollBar().setVisible(false));
     JPopupMenu popup = new JPopupMenu();
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     return tabs;
   }
 
-  private Component makeOverlayTabbedPane() {
+  private Component createOverlayTabbedPane() {
     int buttonSize = 20;
     JTabbedPane tabs = new ClippedTitleTabbedPane() {
       @Override public void updateUI() {
@@ -68,13 +68,13 @@ public final class MainPanel extends JPanel {
         return TOP_ALIGNMENT;
       }
     };
-    TabbedPaneUtils.makeIconTabs()
+    TabbedPaneUtils.createIconTabs()
         .forEach(t -> tabs.addTab(t.getTitle(), t.getIcon(), t.getComponent()));
     Box box = Box.createHorizontalBox();
     box.setAlignmentX(LEFT_ALIGNMENT);
     // TEST: box.setOpaque(true);
     box.add(Box.createHorizontalGlue());
-    box.add(makeDropdownButton(tabs, buttonSize));
+    box.add(createDropdownButton(tabs, buttonSize));
 
     JPanel p = new JPanel();
     p.setLayout(new OverlayLayout(p));
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
     return new Insets(Math.max(ai.top, tih), ai.left, ai.bottom, ai.left + buttonSize);
   }
 
-  private JButton makeDropdownButton(JTabbedPane tabs, int buttonSize) {
+  private JButton createDropdownButton(JTabbedPane tabs, int buttonSize) {
     JButton button = new DropdownButton("⊽") {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
@@ -110,14 +110,14 @@ public final class MainPanel extends JPanel {
     JPopupMenu popup = new JPopupMenu();
     int selected = tabs.getSelectedIndex();
     for (int i = 0; i < tabs.getTabCount(); i++) {
-      popup.add(makeRadioMenuItem(tabs, i, selected));
+      popup.add(createRadioMenuItem(tabs, i, selected));
     }
     p.x += b.getWidth() - popup.getPreferredSize().width - 1;
     p.y += b.getHeight();
     popup.show(b.getParent(), p.x, p.y);
   }
 
-  private JMenuItem makeRadioMenuItem(JTabbedPane tabs, int i, int selected) {
+  private JMenuItem createRadioMenuItem(JTabbedPane tabs, int i, int selected) {
     JMenuItem b = new JRadioButtonMenuItem(tabs.getTitleAt(i), i == selected);
     b.addActionListener(e -> tabs.setSelectedIndex(i));
     return b;
@@ -199,11 +199,11 @@ class CardLayoutTabbedPane extends JPanel {
     label.setOpaque(false);
 
     tab.add(label);
-    tab.add(makeCloseButton(comp, tab), BorderLayout.EAST);
+    tab.add(createCloseButton(comp, tab), BorderLayout.EAST);
     return tab;
   }
 
-  private JButton makeCloseButton(Component comp, JToggleButton tab) {
+  private JButton createCloseButton(Component comp, JToggleButton tab) {
     JButton close = new JButton(new CloseTabIcon(new Color(0xB0_B0_B0))) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(12, 12);
@@ -619,21 +619,41 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super();
   }
 
+  // protected ClippedTitleTabbedPane(int tabPlacement) {
+  //   super(tabPlacement);
+  // }
+
+  private Insets getSynthInsets(Region region) {
+    SynthStyle style = SynthLookAndFeel.getStyle(this, region);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
+  }
+
+  protected Insets getTabInsets() {
+    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
+        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
+  }
+
+  protected Insets getTabAreaInsets() {
+    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
+        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
+  }
+
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = TabbedPaneUtils.getTabInsets(this);
-      Insets tabAreaIns = TabbedPaneUtils.getTabAreaInsets(this);
-      Insets ins = getInsets();
-      int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - ins.left - ins.right;
-      int placement = getTabPlacement();
-      boolean isTopBottom = placement == TOP || placement == BOTTOM;
+      Insets tabAreaIns = getTabAreaInsets();
+      Insets i = getInsets();
+      int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
+      boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
       if (tabWidth > MAX_TAB_WIDTH) {
         tabWidth = MAX_TAB_WIDTH;
         gap = 0;
       }
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);
@@ -693,7 +713,7 @@ final class TabbedPaneUtils {
     /* Singleton */
   }
 
-  public static List<ColorIconTab> makeIconTabs() {
+  public static List<ColorIconTab> createIconTabs() {
     return Arrays.asList(
         new ColorIconTab("1:JTree", Color.RED, new JScrollPane(new JTree())),
         new ColorIconTab("2:JTable", Color.GREEN, new JScrollPane(new JTable(10, 3))),

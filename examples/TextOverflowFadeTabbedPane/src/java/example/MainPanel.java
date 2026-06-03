@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     List<? extends JTabbedPane> list = Arrays.asList(
-        makeTestTabbedPane(new ClippedTitleTabbedPane()),
-        makeTestTabbedPane(new TextOverflowFadeTabbedPane()));
+        createTestTabbedPane(new ClippedTitleTabbedPane()),
+        createTestTabbedPane(new TextOverflowFadeTabbedPane()));
 
     JPanel p = new JPanel(new GridLayout(list.size(), 1));
     list.forEach(p::add);
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
+  private static JTabbedPane createTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
     jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("666666666"));
@@ -78,14 +78,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super();
   }
 
-  // public ClippedTitleTabbedPane(int tabPlacement) {
+  // protected ClippedTitleTabbedPane(int tabPlacement) {
   //   super(tabPlacement);
   // }
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
   private Insets getTabInsets() {
@@ -101,14 +101,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
       Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
-      int tabPlacement = getTabPlacement();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);

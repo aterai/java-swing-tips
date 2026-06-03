@@ -29,8 +29,8 @@ public final class MainPanel extends JPanel {
     addTab(tabs, "Preference", "example/wi0062-32.png", new JScrollPane(new JTree()));
     addTab(tabs, "Help", "example/wi0063-32.png", new JScrollPane(new JTextArea()));
 
-    // tabs.addTab(makeTitle("Title", "wi0009-32.png"), new JLabel("a"));
-    // tabs.addTab(makeTitle("Help", "wi0054-32.png"), new JLabel("b"));
+    // tabs.addTab(createTitle("Title", "wi0009-32.png"), new JLabel("a"));
+    // tabs.addTab(createTitle("Help", "wi0054-32.png"), new JLabel("b"));
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
@@ -44,10 +44,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     JLabel label = new JLabel(title, new ImageIcon(image), SwingConstants.CENTER);
     label.setVerticalTextPosition(SwingConstants.BOTTOM);
     label.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     tabs.setTabComponentAt(tabs.getTabCount() - 1, label);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  // private String makeTitle(String t, String p) {
+  // private String createTitle(String t, String p) {
   //   return "<html><center><img src='" + getClass().getResource(p) + "'/><br/>" + t;
   // }
 
@@ -104,8 +104,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
   private Insets getTabInsets() {
@@ -121,14 +121,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
       Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
-      int tabPlacement = getTabPlacement();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);

@@ -162,14 +162,14 @@ class DayScheduleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
       Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
-      int tabPlacement = getTabPlacement();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);

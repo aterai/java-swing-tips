@@ -40,9 +40,9 @@ public final class MainPanel extends JPanel {
     };
 
     List<? extends JTabbedPane> list = Arrays.asList(
-        makeTestTabbedPane(new JTabbedPane(SwingConstants.LEFT)),
-        makeTestTabbedPane(tabbedPane),
-        makeTestTabbedPane(new ClippedTitleTabbedPane(SwingConstants.LEFT)));
+        createTestTabbedPane(new JTabbedPane(SwingConstants.LEFT)),
+        createTestTabbedPane(tabbedPane),
+        createTestTabbedPane(new ClippedTitleTabbedPane(SwingConstants.LEFT)));
 
     JPanel p = new JPanel(new GridLayout(list.size(), 1));
     list.forEach(p::add);
@@ -58,7 +58,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTestTabbedPane(JTabbedPane jtp) {
+  private static JTabbedPane createTestTabbedPane(JTabbedPane jtp) {
     jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     jtp.addTab("1111111111111111111", new ColorIcon(Color.RED), new JScrollPane(new JTree()));
     jtp.addTab("2", new ColorIcon(Color.GREEN), new JLabel("JLabel 2"));
@@ -102,16 +102,16 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
-  protected Insets getTabInsets() {
+  private Insets getTabInsets() {
     return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
         .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
   }
 
-  protected Insets getTabAreaInsets() {
+  private Insets getTabAreaInsets() {
     return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
         .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
   }
@@ -119,14 +119,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
       Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
-      int tabPlacement = getTabPlacement();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 3;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);
@@ -139,7 +139,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     setTabComponentAt(index, new ButtonTabComponent(this));
   }
 
-  protected void updateAllTabWidth(int tabWidth, int gap) {
+  private void updateAllTabWidth(int tabWidth, int gap) {
     Dimension dim = new Dimension();
     int rest = gap;
     int tabCount = getTabCount();

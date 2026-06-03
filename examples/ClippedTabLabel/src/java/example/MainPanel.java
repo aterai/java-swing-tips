@@ -82,8 +82,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
   protected Insets getTabInsets() {
@@ -99,14 +99,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets i = getInsets();
       Insets tabAreaIns = getTabAreaInsets();
-      Insets tabIns = getTabInsets();
-      int tabPlacement = getTabPlacement();
+      Insets i = getInsets();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);

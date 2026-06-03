@@ -130,8 +130,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
   protected Insets getTabInsets() {
@@ -149,7 +149,6 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     if (tabCount > 0 && isVisible()) {
       Insets i = getInsets();
       Insets tabAreaIns = getTabAreaInsets();
-      Insets tabIns = getTabInsets();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
       // int tabWidth = tabIns.left + tabIns.right + 3;
       boolean b = isTopBottomTabPlacement(getTabPlacement());
@@ -157,6 +156,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       int tabWidth = Math.min(Math.max(tw, MIN_TAB_WIDTH), MAX_TAB_WIDTH);
       // Java 21: int tabWidth = Math.clamp(tw, MIN_TAB_WIDTH, MAX_TAB_WIDTH);
       int gap = b && tabWidth < MAX_TAB_WIDTH ? areaWidth - tabWidth * tabCount : 0;
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);

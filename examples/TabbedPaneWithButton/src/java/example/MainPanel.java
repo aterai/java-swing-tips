@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     }).orElseGet(() -> UIManager.getIcon("html.missingImage"));
 
     JButton button = new TopAlignmentButton(icon);
-    JTabbedPane tabs = makeTabbedPane(button);
+    JTabbedPane tabs = createTabbedPane(button);
     tabs.addTab("title1", new JLabel("12345"));
     tabs.addTab("title2", new JScrollPane(new JTree()));
     tabs.addTab("title3", new JLabel("67890"));
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTabbedPane makeTabbedPane(JButton button) {
+  private JTabbedPane createTabbedPane(JButton button) {
     String key = "TabbedPane.tabAreaInsets";
     return new ClippedTitleTabbedPane() {
       @Override public void updateUI() {
@@ -147,8 +147,8 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
   protected Insets getTabInsets() {
@@ -164,11 +164,10 @@ class ClippedTitleTabbedPane extends JTabbedPane {
   @Override public void doLayout() {
     int tabCount = getTabCount();
     if (tabCount > 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
       Insets tabAreaIns = getTabAreaInsets();
       Insets i = getInsets();
-      int tabPlacement = getTabPlacement();
       int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
+      int tabPlacement = getTabPlacement();
       boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
       int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
       int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
@@ -176,6 +175,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         tabWidth = MAX_TAB_WIDTH;
         gap = 0;
       }
+      Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
       updateAllTabWidth(tabWidth, gap);
