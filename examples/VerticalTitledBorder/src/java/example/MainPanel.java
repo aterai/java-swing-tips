@@ -78,20 +78,16 @@ class VerticalTitledBorder extends TitledBorder {
       int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
       JLabel lbl = getTitleLabel(c);
       Dimension size = lbl.getPreferredSize();
-      Insets insets = makeComponentBorderInsets(border, c, new Insets(0, 0, 0, 0));
+      Insets ins = createComponentBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
+      int labelH = size.height;
+      int labelW = Math.min(height - ins.top - ins.bottom, size.width);
       int borderX = x + edge;
       int borderY = y + edge;
       int borderW = width - edge - edge;
       int borderH = height - edge - edge;
 
-      int labelH = size.height;
-      int labelW = height - insets.top - insets.bottom; // TEST: - (edge * 8);
-      if (labelW > size.width) {
-        labelW = size.width;
-      }
-
-      int left = edge + insets.left / 2 - labelH / 2;
+      int left = edge + ins.left / 2 - labelH / 2;
       if (left < edge) {
         borderX -= left;
         borderW += left;
@@ -111,7 +107,7 @@ class VerticalTitledBorder extends TitledBorder {
 
   @Override public Insets getBorderInsets(Component c, Insets insets) {
     Border border = getBorder();
-    Insets ins = makeComponentBorderInsets(border, c, insets);
+    Insets ins = createComponentBorderInsets(border, c, insets);
     String title = getTitle();
     if (Objects.nonNull(title) && !title.isEmpty()) {
       int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
@@ -161,7 +157,7 @@ class VerticalTitledBorder extends TitledBorder {
   }
 
   // @see javax/swing/border/TitledBorder.java#getBorderInsets(Border, Component, Insets)
-  private static Insets makeComponentBorderInsets(Border border, Component c, Insets i) {
+  private static Insets createComponentBorderInsets(Border border, Component c, Insets i) {
     Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
     if (Objects.isNull(border)) {
       ins.set(0, 0, 0, 0);
