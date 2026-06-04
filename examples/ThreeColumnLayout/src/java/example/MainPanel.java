@@ -188,13 +188,9 @@ class ThreeColumnsLayout extends BorderLayout {
   @SuppressWarnings("PMD.AvoidSynchronizedStatement")
   @Override public void layoutContainer(Container target) {
     synchronized (target.getTreeLock()) {
-      Insets insets = target.getInsets();
-      int top = insets.top;
-      int bottom = target.getHeight() - insets.bottom;
-      int left = insets.left;
-      int right = target.getWidth() - insets.right;
+      Rectangle r = SwingUtilities.calculateInnerArea((JComponent) target, null);
       int hgp = getHgap();
-      int wc = right - left;
+      int wc = r.width;
       int we = wc / 2;
       int ww = wc - we;
       Component c = getLayoutComponent(CENTER);
@@ -203,15 +199,15 @@ class ThreeColumnsLayout extends BorderLayout {
         wc -= d.width + hgp + hgp;
         we = wc / 2;
         ww = wc - we;
-        c.setBounds(left + hgp + ww, top, wc, bottom - top);
+        c.setBounds(r.x + hgp + ww, r.y, wc, r.height);
       }
       c = getLayoutComponent(EAST);
       if (Objects.nonNull(c)) {
-        c.setBounds(right - we, top, we, bottom - top);
+        c.setBounds(r.x + r.width - we, r.y, we, r.height);
       }
       c = getLayoutComponent(WEST);
       if (Objects.nonNull(c)) {
-        c.setBounds(left, top, ww, bottom - top);
+        c.setBounds(r.x, r.y, ww, r.height);
       }
     }
   }
