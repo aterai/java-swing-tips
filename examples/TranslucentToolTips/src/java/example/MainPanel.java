@@ -45,20 +45,20 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 0, 2, 0));
-    box.add(makeLabel("Less", font));
+    box.add(createLabel("Less", font));
     box.add(Box.createHorizontalStrut(2));
     activityIcons.forEach(icon -> {
       box.add(new JLabel(icon));
       box.add(Box.createHorizontalStrut(2));
     });
-    box.add(makeLabel("More", font));
+    box.add(createLabel("More", font));
 
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
     p.setBackground(Color.WHITE);
 
     GridBagConstraints c = new GridBagConstraints();
-    p.add(makeWeekCalendar(weekList, font), c);
+    p.add(createWeekCalendar(weekList, font), c);
 
     // c.insets = new Insets(10, 0, 2, 0);
     c.gridy = 1;
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeWeekCalendar(JList<Contribution> weekList, Font font) {
+  private static Component createWeekCalendar(JList<Contribution> weekList, Font font) {
     Locale l = Locale.getDefault();
     WeekFields weekFields = WeekFields.of(l);
 
@@ -108,13 +108,13 @@ public final class MainPanel extends JPanel {
       LocalDate date = contribution.getDate();
       boolean isFirst = date.getMonth() != date.minusWeeks(1L).getMonth();
       if (isFirst) {
-        colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
+        colHeader.add(createLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
       }
     }
-    return makeScrollPane(weekList, colHeader);
+    return createScrollPane(weekList, colHeader);
   }
 
-  private static JScrollPane makeScrollPane(JList<Contribution> weekList, JPanel colHeader) {
+  private static JScrollPane createScrollPane(JList<Contribution> weekList, JPanel colHeader) {
     return new JScrollPane(weekList) {
       @Override public void updateUI() {
         super.updateUI();
@@ -147,7 +147,7 @@ public final class MainPanel extends JPanel {
   //   }
   // }
 
-  private static JLabel makeLabel(String title, Font font) {
+  private static JLabel createLabel(String title, Font font) {
     JLabel label = new JLabel(title);
     label.setFont(font);
     label.setEnabled(false);
@@ -351,7 +351,7 @@ class BalloonToolTip extends JToolTip {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Shape s = makeBalloonShape();
+    Shape s = createBalloonShape();
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(getBackground());
@@ -360,8 +360,7 @@ class BalloonToolTip extends JToolTip {
     super.paintComponent(g);
   }
 
-  private Shape makeBalloonShape() {
-    double w = getWidth() - 1d;
+  private Shape createBalloonShape() {
     double h = getHeight() - TRI_HEIGHT - 1d;
     double cx = getWidth() * .5d;
     Path2D triangle = new Path2D.Double();
@@ -369,6 +368,7 @@ class BalloonToolTip extends JToolTip {
     triangle.lineTo(cx, h + TRI_HEIGHT);
     triangle.lineTo(cx + TRI_HEIGHT, h);
     double arc = 10d;
+    double w = getWidth() - 1d;
     Area area = new Area(new RoundRectangle2D.Double(0d, 0d, w, h, arc, arc));
     area.add(new Area(triangle));
     return area;

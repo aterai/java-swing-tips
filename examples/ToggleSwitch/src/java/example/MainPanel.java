@@ -18,10 +18,10 @@ public final class MainPanel extends JPanel {
     UIDefaults def = UIManager.getLookAndFeelDefaults();
     def.put("Slider.thumbWidth", 40);
     def.put("Slider.thumbHeight", 40);
-    JSlider slider0 = makeToggleSlider(def);
+    JSlider slider0 = createToggleSlider(def);
 
-    UIDefaults d = makeSliderPainter();
-    JSlider slider1 = makeToggleSlider(d);
+    UIDefaults d = createSliderPainter();
+    JSlider slider1 = createToggleSlider(d);
     slider1.addMouseMotionListener(new MouseAdapter() {
       @Override public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
@@ -29,17 +29,17 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    add(makeTitledPanel("Default", makeToggleSlider(null)));
-    add(makeTitledPanel("Thumb size", slider0));
-    add(makeTitledPanel("SliderTrack", slider1));
+    add(createTitledPanel("Default", createToggleSlider(null)));
+    add(createTitledPanel("Thumb size", slider0));
+    add(createTitledPanel("SliderTrack", slider1));
 
-    JSlider slider2 = makeToggleSlider(d);
-    add(makeTitledPanel("JSlider + JLayer", new JLayer<>(slider2, new ToggleSwitchLayerUI())));
+    JSlider slider2 = createToggleSlider(d);
+    add(createTitledPanel("JSlider + JLayer", new JLayer<>(slider2, new ToggleSwitchLayerUI())));
 
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider makeToggleSlider(UIDefaults d) {
+  private static JSlider createToggleSlider(UIDefaults d) {
     JSlider slider = new JSlider(0, 1, 0) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(100, 40);
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     return slider;
   }
 
-  private static UIDefaults makeSliderPainter() {
+  private static UIDefaults createSliderPainter() {
     UIDefaults d = new UIDefaults();
     d.put("Slider.thumbWidth", 40);
     d.put("Slider.thumbHeight", 40);
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     return d;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -150,18 +150,18 @@ class ToggleSwitchLayerUI extends LayerUI<JSlider> {
 
 class ToggleSwitchPainter implements Painter<JSlider> {
   @Override public void paint(Graphics2D g, JSlider c, int width, int height) {
-    int arc = 40;
     int fillLeft = 2;
     int fillTop = 2;
     int trackWidth = width - fillLeft - fillLeft;
     int trackHeight = height - fillTop - fillTop;
+    int arc = 40;
     int baseline = trackHeight - fillTop - fillTop; // c.getBaseline(w, h);
-    String off = "Off";
 
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setColor(Color.GRAY);
     g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
     g.setPaint(Color.WHITE);
+    String off = "Off";
     g.drawString(off, width - g.getFontMetrics().stringWidth(off) - fillLeft * 5, baseline);
 
     Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, trackHeight);
@@ -179,19 +179,17 @@ class ToggleSwitchPainter implements Painter<JSlider> {
 
   // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
   private static int getPositionForValue(JSlider slider, Rectangle trackRect) {
-    int value = slider.getValue();
     int min = slider.getMinimum();
     int max = slider.getMaximum();
     int trackLength = trackRect.width;
     int valueRange = max - min;
-    float pixelsPerValue = trackLength / (float) valueRange;
     int trackLeft = trackRect.x;
     int trackRight = trackRect.x + trackRect.width - 1;
-
-    int xp = trackLeft;
-    xp += Math.round(pixelsPerValue * ((float) value - min));
-    xp = Math.max(trackLeft, xp);
-    xp = Math.min(trackRight, xp);
+    float pixelsPerValue = trackLength / (float) valueRange;
+    int value = slider.getValue();
+    int xp = trackLeft + Math.round(pixelsPerValue * ((float) value - min));
+    // Java 21: xp = Math.clamp(xp, trackLeft, trackRight);
+    xp = Math.min(Math.max(xp, trackLeft), trackRight);
     return xp;
   }
 }

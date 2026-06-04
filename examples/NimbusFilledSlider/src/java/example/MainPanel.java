@@ -62,15 +62,15 @@ class SliderTrackPainter implements Painter<JSlider> {
     //   super.paint(g, c, w, h);
     //   return;
     // }
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g.setStroke(new BasicStroke(1.5f));
+    g.setColor(Color.GRAY);
+
     int trackHeight = 8;
     int trackWidth = w - 2;
     int fillTop = 4;
     int fillLeft = 1;
     int arc = 10;
-
-    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g.setStroke(new BasicStroke(1.5f));
-    g.setColor(Color.GRAY);
     g.fillRoundRect(fillLeft, fillTop, trackWidth, trackHeight, arc, arc);
 
     int fillBottom = fillTop + trackHeight;
