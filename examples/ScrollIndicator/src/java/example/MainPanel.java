@@ -22,7 +22,6 @@ public final class MainPanel extends JPanel {
     JProgressBar progress = new ScrollIndicator(model);
     scroll.setColumnHeaderView(progress);
     add(scroll);
-    // add(progress, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -59,11 +58,21 @@ class ScrollIndicator extends JProgressBar {
     setBorder(BorderFactory.createEmptyBorder());
   }
 
+  // Calculate the percentage within the range of motion considering
+  // the extent (length of the knob)
   @Override public double getPercentComplete() {
-    int span = model.getMaximum() - model.getMinimum();
-    double currentValue = model.getValue() + model.getExtent();
-    return (currentValue - model.getMinimum()) / span;
+    BoundedRangeModel m = getModel();
+    int max = m.getMaximum();
+    int min = m.getMinimum();
+    double maxExtent = Math.max(max - m.getExtent() - min, 0d);
+    return (m.getValue() - min) / maxExtent;
   }
+
+  // @Override public double getPercentComplete() {
+  //   int span = model.getMaximum() - model.getMinimum();
+  //   double currentValue = model.getValue() + model.getExtent();
+  //   return (currentValue - model.getMinimum()) / span;
+  // }
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
@@ -80,17 +89,17 @@ class ScrollIndicatorUI extends BasicProgressBarUI {
   @Override public void paintDeterminate(Graphics g, JComponent c) {
     Insets b = progressBar.getInsets();
     Rectangle r = SwingUtilities.calculateInnerArea(progressBar, null);
-    // BoundedRangeModel m = progressBar.getModel();
     if (!r.isEmpty()) {
-      // int range = m.getMaximum() - m.getMinimum();
-      // int extent = (int) Math.floor(r.width *  m.getExtent() / (float) range);
-      int amountFull = getAmountFull(b, r.width, r.height); // + extent;
+      int amountFull = getAmountFull(b, r.width, r.height);
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setColor(UIManager.getColor("ProgressBar.foreground"));
       if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {
         g2.fillRect(r.x, r.y, amountFull, r.height);
       } else { // VERTICAL
-        g2.fillRect(r.x, r.y + r.height - amountFull, r.width, amountFull);
+        // Draw progress from top to bottom
+        g2.fillRect(r.x, r.y, r.width, amountFull);
+        // Draw progress from bottom to top
+        // g2.fillRect(r.x, r.y + r.height - amountFull, r.width, amountFull);
       }
       // Deal with possible text painting
       if (progressBar.isStringPainted()) {
