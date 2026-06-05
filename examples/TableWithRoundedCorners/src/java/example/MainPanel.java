@@ -269,15 +269,15 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
 
   private Shape buildRoundedRectPath(
       Rectangle bounds, double arcWidth, double arcHeight, int row, int col) {
-    double x = bounds.getX();
-    double y = bounds.getY();
-    double w = bounds.getWidth() - (col == 6 ? 2d : 0d);
-    double h = bounds.getHeight() - (row == 5 ? 2d : 0d);
     double halfArcH = arcHeight * .5;
     double halfArcW = arcWidth * .5;
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // ≒ 0.55228
     double ctrlOffsetW = halfArcW * kappa;
     double ctrlOffsetH = halfArcH * kappa;
+    double x = bounds.getX();
+    double y = bounds.getY();
+    double w = bounds.getWidth() - (col == 6 ? 2d : 0d);
+    double h = bounds.getHeight() - (row == 5 ? 2d : 0d);
     Path2D.Double path = new Path2D.Double();
     if (roundedCorners.contains(Corner.TOP_LEFT)) {
       path.moveTo(x, y + halfArcH);
