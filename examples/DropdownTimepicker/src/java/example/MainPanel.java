@@ -22,7 +22,6 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.text.DefaultFormatter;
 import javax.swing.text.MaskFormatter;
 
 public final class MainPanel extends JPanel {
@@ -55,12 +54,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-/**
- * Dropdown time picker.
- * hh:mm aa format (12 hours + AM/PM)
- */
+// TimePickerField – composite widget: masked text field + dropdown button
+// hh:mm AA format (12 hours + AM/PM)
 class TimePickerField extends JPanel {
-  private static final Pattern TIME_DELIMITER = Pattern.compile("[:\\s]+");
   private final JFormattedTextField timeField;
   private final TimePickerPopup popup;
 
@@ -77,19 +73,13 @@ class TimePickerField extends JPanel {
     popup = new TimePickerPopup(this);
     dropdownButton.setComponentPopupMenu(popup);
 
-    MaskFormatter mask;
-    try {
-      mask = new MaskFormatter("##:## **");
-      mask.setPlaceholderCharacter('_');
-      mask.setCommitsOnValidEdit(false);
-    } catch (ParseException ex) {
-      Logger.getGlobal().severe(ex::getMessage);
-    }
-
-    timeField = new JFormattedTextField(createFormatter());
+    MaskFormatter mask = TimePickerUtils.createMaskFormatter();
+    timeField = mask != null
+        ? new JFormattedTextField(mask)
+        : new JFormattedTextField();
     timeField.setHorizontalAlignment(JTextField.LEFT);
     timeField.setFocusLostBehavior(JFormattedTextField.PERSIST);
-    timeField.setText(getNowString());
+    timeField.setText(TimePickerUtils.getNowString());
     timeField.setAlignmentX(RIGHT_ALIGNMENT);
     timeField.setColumns(10);
     add(timeField);
@@ -116,6 +106,10 @@ class TimePickerField extends JPanel {
     return timeField.getText();
   }
 
+  public void applyTime(String text) {
+    timeField.setText(text);
+  }
+
   private void togglePopup() {
     if (popup.isVisible()) {
       popup.setVisible(false);
@@ -125,92 +119,25 @@ class TimePickerField extends JPanel {
       popup.show(this, 0, getHeight());
     }
   }
-
-  public void applyTime(String text) {
-    timeField.setText(text);
-  }
-
-  private static JFormattedTextField.AbstractFormatter createFormatter() {
-    DefaultFormatter formatter = new DefaultFormatter();
-    formatter.setOverwriteMode(true);
-    formatter.setAllowsInvalid(true);
-    formatter.setCommitsOnValidEdit(false);
-    return formatter;
-  }
-
-  public static String getNowString() {
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
-    return LocalTime.now(ZoneId.systemDefault()).format(fmt).toUpperCase(Locale.ENGLISH);
-  }
-
-  // Parsing hours, minutes, and ampm from the text "hh:mm aa"
-  // text example: "03:45 PM"
-  public static int[] parseTime(String text) {
-    // String[] parts = text.trim().split("[:\\s]+");
-    String[] parts = TIME_DELIMITER.split(text.trim());
-    int hour = Integer.parseInt(parts[0].trim());
-    int min = Integer.parseInt(parts[1].trim());
-    // ampm index: 0=AM,1=PM
-    int ampmIndex = parts.length > 2 && "PM".equalsIgnoreCase(parts[2].trim()) ? 1 : 0;
-    return new int[] {hour, min, ampmIndex};
-  }
-
-  // Get AM/PM locale display name
-  public static String[] getAmPmStrings() {
-    DateFormatSymbols dfs = DateFormatSymbols.getInstance();
-    return dfs.getAmPmStrings();
-  }
 }
 
+// TimePickerPopup – JPopupMenu with hour / minute / AM-PM columns
 class TimePickerPopup extends JPopupMenu {
   private final TimePickerField owner;
-  private final JList<String> hourList;
-  private final JList<String> minList;
-  private final JList<String> ampmList;
-  private final List<String> hourModel;
-  private final List<String> minModel;
+  private final TimePickerPopupPanel panel;
   private transient PopupMenuListener handler;
 
   protected TimePickerPopup(TimePickerField owner) {
     super();
     this.owner = owner;
-    hourModel = IntStream.rangeClosed(1, 12)
+    List<String> hourModel = IntStream.rangeClosed(1, 12)
         .mapToObj(h -> String.format("%02d", h))
         .collect(Collectors.toList()); // Java 16: .toList();
-    minModel = IntStream.range(0, 60)
+    List<String> minModel = IntStream.range(0, 60)
         .mapToObj(m -> String.format("%02d", m))
         .collect(Collectors.toList()); // Java 16: .toList();
-
-    hourList = createList(hourModel.toArray(new String[0]));
-    minList = createList(minModel.toArray(new String[0]));
-    ampmList = createList(TimePickerField.getAmPmStrings());
-
-    JPanel listsPanel = new JPanel(new GridBagLayout());
-    listsPanel.setBorder(BorderFactory.createEmptyBorder(2, 6, 2, 6));
-
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 1d;
-    c.weighty = 1d;
-    c.insets = new Insets(0, 2, 0, 2);
-
-    c.gridx = GridBagConstraints.RELATIVE;
-    Locale loc = Locale.getDefault();
-    String hourLabel = ChronoField.HOUR_OF_DAY.getDisplayName(loc);
-    listsPanel.add(createColumn(hourLabel, hourList, true), c);
-
-    String minLabel = ChronoField.MINUTE_OF_HOUR.getDisplayName(loc);
-    listsPanel.add(createColumn(minLabel, minList, true), c);
-
-    String ampmLabel = getAmpmLabel(loc);
-    listsPanel.add(createColumn(ampmLabel, ampmList, false), c);
-
-    JPanel root = new JPanel(new BorderLayout(0, 0));
-    root.add(listsPanel, BorderLayout.CENTER);
-    root.add(createFooter(), BorderLayout.SOUTH);
-
-    setLayout(new BorderLayout());
-    add(root);
+    panel = new TimePickerPopupPanel(owner, hourModel, minModel);
+    add(panel);
   }
 
   @Override public void updateUI() {
@@ -219,19 +146,6 @@ class TimePickerPopup extends JPopupMenu {
     // Add a listener to monitor events right before the popup becomes visible
     handler = new TimePickerPopupListener();
     addPopupMenuListener(handler);
-  }
-
-  // Calculates the appropriate screen coordinates where the popup should be displayed.
-  private Point popupMenuLocation() {
-    Point p = null;
-    Component invoker = getInvoker();
-    if (invoker != null && invoker.isShowing()) {
-      // Regardless of which component is the invoker,
-      // always base it on the bottom-left edge of the TimePickerField
-      p = owner.getLocationOnScreen();
-      p.y += owner.getHeight();
-    }
-    return p;
   }
 
   // Override the default placement position determined by ComponentPopupMenu
@@ -248,24 +162,9 @@ class TimePickerPopup extends JPopupMenu {
     }
   }
 
-  // Fallback: Synthesize from DateFormatSymbols in "AM/PM" format
-  private static String getAmpmLabel(Locale loc) {
-    String ampmRaw = ChronoField.AMPM_OF_DAY.getDisplayName(loc);
-    String ampmLabel;
-    boolean b1 = !Objects.equals(ampmRaw, "AmPmOfDay");
-    boolean b2 = !Objects.equals(ampmRaw, "AMPM_OF_DAY");
-    if (ampmRaw != null && !ampmRaw.isEmpty() && b1 && b2) {
-      ampmLabel = ampmRaw;
-    } else {
-      String[] ap2 = DateFormatSymbols.getInstance(loc).getAmPmStrings();
-      ampmLabel = ap2[0] + "/" + ap2[1];
-    }
-    return ampmLabel;
-  }
-
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    d.width = 220;
+    d.width = 240;
     return d;
   }
 
@@ -277,101 +176,23 @@ class TimePickerPopup extends JPopupMenu {
     return super.add(comp);
   }
 
-  private JList<String> createList(String... model) {
-    JList<String> list = new JList<>(model);
-    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    list.setFixedCellHeight(20);
-    list.setFocusable(true);
-    list.setCellRenderer(new DefaultListCellRenderer() {
-      @Override public Component getListCellRendererComponent(JList<?> l, Object val, int idx, boolean sel, boolean focus) {
-        super.getListCellRendererComponent(l, val, idx, sel, focus);
-        setHorizontalAlignment(CENTER);
-        setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 4));
-        return this;
-      }
-    });
-    return list;
-  }
-
-  private JPanel createColumn(String label, JList<String> list, boolean alwaysScroll) {
-    JLabel lbl = new JLabel(label, SwingConstants.CENTER);
-    lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
-    Component sp;
-    if (alwaysScroll) {
-      sp = new TranslucentScrollPane(list);
-    } else {
-      sp = new JScrollPane(list) {
-        @Override public void updateUI() {
-          super.updateUI();
-          setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-        }
-      };
+  // Calculates the appropriate screen coordinates where the popup should be displayed.
+  private Point popupMenuLocation() {
+    Point p = null;
+    Component invoker = getInvoker();
+    if (invoker != null && invoker.isShowing()) {
+      // Regardless of which component is the invoker,
+      // always base it on the bottom-left edge of the TimePickerField
+      p = owner.getLocationOnScreen();
+      p.y += owner.getHeight();
     }
-    JPanel col = new JPanel(new BorderLayout(0, 1));
-    col.setOpaque(false);
-    col.add(lbl, BorderLayout.NORTH);
-    col.add(sp);
-    return col;
-  }
-
-  private JPanel createFooter() {
-    JButton resetBtn = new JButton("Now");
-    resetBtn.addActionListener(e -> synchronizeFromField(TimePickerField.getNowString()));
-    JButton okBtn = new JButton("OK");
-    okBtn.addActionListener(e -> applyAndClose());
-    JPanel footer = new JPanel(new FlowLayout(FlowLayout.TRAILING, 6, 1));
-    footer.add(resetBtn);
-    footer.add(okBtn);
-    return footer;
-  }
-
-  public void synchronizeFromField(String text) {
-    int[] t = TimePickerField.parseTime(text);
-    int hour = t[0]; // 1..12
-    int min = t[1]; // 0..59
-    int ampm = t[2]; // 0=AM, 1=PM
-    // hour: 01..12（index 0..11）
-    int hourIndex = Math.min(Math.max(hour - 1, 0), 11);
-    // Java 21: int hourIndex = Math.clamp(hour - 1, 0, 11);
-    hourList.setSelectedIndex(hourIndex);
-    minList.setSelectedIndex(min);
-    ampmList.setSelectedIndex(ampm);
-    EventQueue.invokeLater(() -> {
-      scrollToSelected(hourList);
-      scrollToSelected(minList);
-      scrollToSelected(ampmList);
-    });
-  }
-
-  private void scrollToSelected(JList<?> list) {
-    int idx = list.getSelectedIndex();
-    if (idx >= 0) {
-      // Center selected item as much as possible
-      Rectangle cell = list.getCellBounds(idx, idx);
-      if (cell != null) {
-        Rectangle vis = list.getVisibleRect();
-        vis.y = Math.max(0, cell.y + cell.height / 2 - vis.height / 2);
-        list.scrollRectToVisible(vis);
-      }
-    }
-  }
-
-  private void applyAndClose() {
-    int hourIndex = hourList.getSelectedIndex();
-    int minuteIndex = minList.getSelectedIndex();
-    int ampmIndex = ampmList.getSelectedIndex();
-    String hour = hourIndex >= 0 ? hourModel.get(hourIndex) : "12";
-    String min = minuteIndex >= 0 ? minModel.get(minuteIndex) : "00";
-    String[] ampmStrings = TimePickerField.getAmPmStrings();
-    String ampm = ampmIndex == 1 ? ampmStrings[1] : ampmStrings[0];
-    owner.applyTime(hour + ":" + min + " " + ampm.toUpperCase(Locale.ENGLISH));
-    setVisible(false);
+    return p;
   }
 
   private final class TimePickerPopupListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
       // Always synchronize with the field time before showing
-      synchronizeFromField(owner.getTimeText());
+      panel.synchronizeFromField(owner.getTimeText());
 
       // Force correction of unexpected display position shifts
       // caused by right-clicks, etc.
@@ -392,6 +213,143 @@ class TimePickerPopup extends JPopupMenu {
   }
 }
 
+/** Factory for lists/columns and small utilities for the time picker UI. */
+final class TimePickerListFactory {
+  private TimePickerListFactory() {
+    // utility
+  }
+
+  public static JList<String> createList(String... model) {
+    JList<String> list = new JList<>(model);
+    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    list.setFixedCellHeight(20);
+    list.setFocusable(true);
+    list.setCellRenderer(new DefaultListCellRenderer() {
+      @Override public Component getListCellRendererComponent(JList<?> l, Object val, int idx, boolean sel, boolean focus) {
+        super.getListCellRendererComponent(l, val, idx, sel, focus);
+        setHorizontalAlignment(CENTER);
+        setBorder(BorderFactory.createEmptyBorder(1, 4, 1, 4));
+        return this;
+      }
+    });
+    return list;
+  }
+
+  public static JPanel createColumn(String label, JList<String> list, boolean alwaysScroll) {
+    JLabel lbl = new JLabel(label, SwingConstants.CENTER);
+    lbl.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
+    Component sp = alwaysScroll ? new TranslucentScrollPane(list) : new JScrollPane(list);
+    JPanel col = new JPanel(new BorderLayout(0, 1));
+    col.setOpaque(false);
+    col.add(lbl, BorderLayout.NORTH);
+    col.add(sp);
+    return col;
+  }
+
+  public static void scrollToSelected(JList<?> list) {
+    int idx = list.getSelectedIndex();
+    if (idx >= 0) {
+      // Center selected item as much as possible
+      Rectangle cell = list.getCellBounds(idx, idx);
+      if (cell != null) {
+        Rectangle vis = list.getVisibleRect();
+        vis.y = Math.max(0, cell.y + cell.height / 2 - vis.height / 2);
+        list.scrollRectToVisible(vis);
+      }
+    }
+  }
+}
+
+/** Panel that contains the lists and footer actions extracted from the popup. */
+class TimePickerPopupPanel extends JPanel {
+  private final TimePickerField owner;
+  private final JList<String> hourList;
+  private final JList<String> minList;
+  private final JList<String> ampmList;
+  private final List<String> hourModel;
+  private final List<String> minModel;
+
+  protected TimePickerPopupPanel(
+      TimePickerField owner, List<String> hourModel, List<String> minModel) {
+    super(new BorderLayout(0, 0));
+    this.owner = owner;
+    this.hourModel = hourModel;
+    this.minModel = minModel;
+
+    hourList = TimePickerListFactory.createList(hourModel.toArray(new String[0]));
+    minList = TimePickerListFactory.createList(minModel.toArray(new String[0]));
+    ampmList = TimePickerListFactory.createList(TimePickerUtils.getAmPmStrings());
+
+    JPanel lists = new JPanel(new GridBagLayout());
+    lists.setBorder(BorderFactory.createEmptyBorder(2, 6, 2, 6));
+    GridBagConstraints c = new GridBagConstraints();
+    c.fill = GridBagConstraints.BOTH;
+    c.weightx = 1d;
+    c.weighty = 1d;
+    c.insets = new Insets(0, 2, 0, 2);
+    c.gridx = GridBagConstraints.RELATIVE;
+    Locale loc = Locale.getDefault();
+    String hourName = ChronoField.HOUR_OF_DAY.getDisplayName(loc);
+    lists.add(TimePickerListFactory.createColumn(hourName, hourList, true), c);
+    String minName = ChronoField.MINUTE_OF_HOUR.getDisplayName(loc);
+    lists.add(TimePickerListFactory.createColumn(minName, minList, true), c);
+    String ampmName = TimePickerUtils.getAmpmLabel(loc);
+    lists.add(TimePickerListFactory.createColumn(ampmName, ampmList, false), c);
+
+    add(lists, BorderLayout.CENTER);
+    add(buildFooter(), BorderLayout.SOUTH);
+  }
+
+  @Override public final void add(Component comp, Object constraints) {
+    super.add(comp, constraints);
+  }
+
+  private JPanel buildFooter() {
+    JButton resetBtn = new JButton("Now");
+    resetBtn.addActionListener(e -> synchronizeFromField(TimePickerUtils.getNowString()));
+    JButton okBtn = new JButton("OK");
+    okBtn.addActionListener(e -> applyAndClose());
+    JPanel footer = new JPanel(new FlowLayout(FlowLayout.TRAILING, 6, 1));
+    footer.add(resetBtn);
+    footer.add(okBtn);
+    return footer;
+  }
+
+  public void synchronizeFromField(String text) {
+    int[] t = TimePickerUtils.parseTime(text);
+    int hour = t[0]; // 1..12
+    int min = t[1]; // 0..59
+    int ampm = t[2]; // 0=AM, 1=PM
+    // hour: 01..12（index 0..11）
+    int hourIndex = Math.min(Math.max(hour - 1, 0), 11);
+    // Java 21: int hourIndex = Math.clamp(hour - 1, 0, 11);
+    hourList.setSelectedIndex(hourIndex);
+    minList.setSelectedIndex(min);
+    ampmList.setSelectedIndex(ampm);
+    EventQueue.invokeLater(() -> {
+      TimePickerListFactory.scrollToSelected(hourList);
+      TimePickerListFactory.scrollToSelected(minList);
+      TimePickerListFactory.scrollToSelected(ampmList);
+    });
+  }
+
+  private void applyAndClose() {
+    int hourIndex = hourList.getSelectedIndex();
+    int minuteIndex = minList.getSelectedIndex();
+    int ampmIndex = ampmList.getSelectedIndex();
+    String hour = hourIndex >= 0 ? hourModel.get(hourIndex) : "12";
+    String min = minuteIndex >= 0 ? minModel.get(minuteIndex) : "00";
+    String[] ampmStrings = TimePickerUtils.getAmPmStrings();
+    String ampm = ampmIndex == 1 ? ampmStrings[1] : ampmStrings[0];
+    owner.applyTime(hour + ":" + min + " " + ampm.toUpperCase(Locale.ENGLISH));
+    Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, this);
+    if (popup instanceof JPopupMenu) {
+      popup.setVisible(false);
+    }
+  }
+}
+
+// Remaining helper classes (unchanged)
 class DropdownButton extends JButton {
   @Override public void updateUI() {
     super.updateUI();
@@ -403,6 +361,71 @@ class DropdownButton extends JButton {
     setFocusPainted(false);
     setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
     setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+  }
+}
+
+// Static utility methods shared by TimePickerField and TimePickerPopup
+final class TimePickerUtils {
+  private static final Pattern TIME_DELIMITER = Pattern.compile("[:\\s]+");
+
+  private TimePickerUtils() {
+    // utility
+  }
+
+  /** Returns current time as "hh:mm AM" / "hh:mm PM" (English, uppercase). */
+  public static String getNowString() {
+    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+    return LocalTime.now(ZoneId.systemDefault()).format(fmt).toUpperCase(Locale.ENGLISH);
+  }
+
+  /**
+   * Parses "hh:mm AA" text into {hour, minute, ampmIndex}.
+   * ampmIndex: 0 = AM, 1 = PM.
+   */
+  public static int[] parseTime(String text) {
+    // String[] parts = text.trim().split("[:\\s]+");
+    String[] parts = TIME_DELIMITER.split(text.trim());
+    // List<String> parts = Splitter.on(TIME_DELIMITER).splitToList(text.trim());
+    int hour = Integer.parseInt(parts[0].trim());
+    int min = Integer.parseInt(parts[1].trim());
+    int ampm = parts.length > 2 && "PM".equalsIgnoreCase(parts[2].trim()) ? 1 : 0;
+    return new int[] {hour, min, ampm};
+  }
+
+  /** Returns locale-aware AM/PM strings from {@link DateFormatSymbols}. */
+  public static String[] getAmPmStrings() {
+    return DateFormatSymbols.getInstance().getAmPmStrings();
+  }
+
+  /**
+   * Returns a display label for the AM/PM column header.
+   * Falls back to "AM/PM" style when {@link ChronoField} returns a placeholder.
+   */
+  public static String getAmpmLabel(Locale loc) {
+    String ampmRaw = ChronoField.AMPM_OF_DAY.getDisplayName(loc);
+    String ampmLabel;
+    boolean b1 = !Objects.equals(ampmRaw, "AmPmOfDay");
+    boolean b2 = !Objects.equals(ampmRaw, "AMPM_OF_DAY");
+    if (ampmRaw != null && !ampmRaw.isEmpty() && b1 && b2) {
+      ampmLabel = ampmRaw;
+    } else {
+      String[] ap2 = DateFormatSymbols.getInstance(loc).getAmPmStrings();
+      ampmLabel = ap2[0] + "/" + ap2[1];
+    }
+    return ampmLabel;
+  }
+
+  /** Creates a {@link MaskFormatter} for the "##:## UU" pattern. */
+  public static MaskFormatter createMaskFormatter() {
+    MaskFormatter mask = null;
+    try {
+      mask = new MaskFormatter("##:## UU");
+      mask.setPlaceholderCharacter('_');
+      mask.setCommitsOnValidEdit(false);
+    } catch (ParseException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
+    }
+    return mask;
   }
 }
 
