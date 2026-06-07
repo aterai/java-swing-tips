@@ -111,7 +111,6 @@ class TimePickerField extends JPanel {
     super.setLayout(mgr);
   }
 
-  // テキストフィールドの文字列を取得するゲッターメソッド
   // Getter method to retrieve the text from the text field
   public String getTimeText() {
     return timeField.getText();
@@ -121,8 +120,8 @@ class TimePickerField extends JPanel {
     if (popup.isVisible()) {
       popup.setVisible(false);
     } else {
-      // 共通の同期処理はPopupMenuListener側に集約したため、ここでは位置を指定して表示のみ行う
-      // Since the common synchronization is consolidated in the PopupMenuListener, just show it at the specified position here
+      // Since the common synchronization is consolidated in the PopupMenuListener,
+      // just show it at the specified position here
       popup.show(this, 0, getHeight());
     }
   }
@@ -160,8 +159,6 @@ class TimePickerField extends JPanel {
   public static String[] getAmPmStrings() {
     DateFormatSymbols dfs = DateFormatSymbols.getInstance();
     return dfs.getAmPmStrings();
-    // String[] ampm = dfs.getAmPmStrings();
-    // return new String[] {ampm[0], ampm[1]};
   }
 }
 
@@ -172,11 +169,11 @@ class TimePickerPopup extends JPopupMenu {
   private final JList<String> ampmList;
   private final List<String> hourModel;
   private final List<String> minModel;
+  private transient PopupMenuListener handler;
 
   protected TimePickerPopup(TimePickerField owner) {
     super();
     this.owner = owner;
-
     hourModel = IntStream.rangeClosed(1, 12)
         .mapToObj(h -> String.format("%02d", h))
         .collect(Collectors.toList()); // Java 16: .toList();
@@ -214,57 +211,35 @@ class TimePickerPopup extends JPopupMenu {
 
     setLayout(new BorderLayout());
     add(root);
-
-    // ポップアップの表示直前イベントを監視するリスナーを追加
-    // Add a listener to monitor events right before the popup becomes visible
-    addPopupMenuListener(new PopupMenuListener() {
-      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        // 表示前に必ずフィールドの時刻と同期
-        // Always synchronize with the field time before showing
-        synchronizeFromField(owner.getTimeText());
-
-        // 右クリック等による予期せぬ表示位置のズレを強制補正
-        // Force correction of unexpected display position shifts caused by right-clicks, etc.
-        Point p = popupMenuLocation();
-        if (p != null) {
-          setInvoker(owner);
-          setLocation(p.x, p.y);
-        }
-      }
-
-      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        // 不要な処理は省略 / No operation needed
-      }
-
-      @Override public void popupMenuCanceled(PopupMenuEvent e) {
-        // 不要な処理は省略 / No operation needed
-      }
-    });
   }
 
-  /**
-   * ポップアップを表示すべき適正なスクリーン座標を計算します。
-   * Calculates the appropriate screen coordinates where the popup should be displayed.
-   */
+  @Override public void updateUI() {
+    removePopupMenuListener(handler);
+    super.updateUI();
+    // Add a listener to monitor events right before the popup becomes visible
+    handler = new TimePickerPopupListener();
+    addPopupMenuListener(handler);
+  }
+
+  // Calculates the appropriate screen coordinates where the popup should be displayed.
   private Point popupMenuLocation() {
+    Point p = null;
     Component invoker = getInvoker();
-    if (invoker == null || !invoker.isShowing()) {
-      return null;
+    if (invoker != null && invoker.isShowing()) {
+      // Regardless of which component is the invoker,
+      // always base it on the bottom-left edge of the TimePickerField
+      p = owner.getLocationOnScreen();
+      p.y += owner.getHeight();
     }
-    // どのコンポーネントがインボーカーであっても、常にTimePickerFieldの左下端を基準にする
-    // Regardless of which component is the invoker, always base it on the bottom-left edge of the TimePickerField
-    Point p = owner.getLocationOnScreen();
-    p.y += owner.getHeight();
     return p;
   }
 
-  // Windows LookAndFeel環境などのComponentPopupMenuによるデフォルトの配置位置決定を上書き
-  // Override the default placement position determined by ComponentPopupMenu in environments like Windows LookAndFeel
+  // Override the default placement position determined by ComponentPopupMenu
+  // in environments like Windows LookAndFeel
   @Override public void show(Component invoker, int x, int y) {
     setInvoker(invoker);
     Point p = popupMenuLocation();
     if (p != null) {
-      // スクリーン座標をsetLocationへ直接渡す
       // Pass screen coordinates directly to setLocation
       setLocation(p.x, p.y);
       setVisible(true);
@@ -391,6 +366,29 @@ class TimePickerPopup extends JPopupMenu {
     String ampm = ampmIndex == 1 ? ampmStrings[1] : ampmStrings[0];
     owner.applyTime(hour + ":" + min + " " + ampm.toUpperCase(Locale.ENGLISH));
     setVisible(false);
+  }
+
+  private final class TimePickerPopupListener implements PopupMenuListener {
+    @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      // Always synchronize with the field time before showing
+      synchronizeFromField(owner.getTimeText());
+
+      // Force correction of unexpected display position shifts
+      // caused by right-clicks, etc.
+      Point p = popupMenuLocation();
+      if (p != null) {
+        setInvoker(owner);
+        setLocation(p.x, p.y);
+      }
+    }
+
+    @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+      // No operation needed
+    }
+
+    @Override public void popupMenuCanceled(PopupMenuEvent e) {
+      // No operation needed
+    }
   }
 }
 
