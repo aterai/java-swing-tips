@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
+      password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
     PasswordUiUtils.setupVisibilityToggleButton(button);
     JPanel p = new OverlapLayerPanel();
@@ -138,7 +138,7 @@ class DigitHighlightField extends JPasswordField {
     super.setEchoChar(c);
     Document doc = getDocument();
     if (doc instanceof AbstractDocument) {
-      boolean reveal = c == '\u0000';
+      boolean reveal = c == 0; // '\u0000';
       if (reveal) {
         ((AbstractDocument) doc).setDocumentFilter(new BackgroundHighlightFilter(this));
         try {

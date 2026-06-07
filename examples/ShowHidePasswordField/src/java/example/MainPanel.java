@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JCheckBox("show passwords");
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
+      password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
     JPanel p = new JPanel(new BorderLayout());
     p.add(password);
@@ -52,7 +52,7 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? '\u0000' : (Character) UIManager.get(ECHO_CHAR_KEY));
+      password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
     configureEyeButton(button);
     JPanel p = createOverlayPanel();
@@ -97,7 +97,7 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JButton();
     button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        password.setEchoChar('\u0000');
+        password.setEchoChar(0);
       }
 
       @Override public void mouseReleased(MouseEvent e) {
