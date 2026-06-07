@@ -39,20 +39,20 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(10, 0, 2, 0));
-    box.add(makeLabel("Less", font));
+    box.add(createLabel("Less", font));
     box.add(Box.createHorizontalStrut(2));
     activityIcons.forEach(icon -> {
       box.add(new JLabel(icon));
       box.add(Box.createHorizontalStrut(2));
     });
-    box.add(makeLabel("More", font));
+    box.add(createLabel("More", font));
 
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
     p.setBackground(Color.WHITE);
 
     GridBagConstraints c = new GridBagConstraints();
-    p.add(makeWeekCalendar(weekList, font), c);
+    p.add(createWeekCalendar(weekList, font), c);
 
     // c.insets = new Insets(10, 0, 2, 0);
     c.gridy = 1;
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeWeekCalendar(JList<Contribution> weekList, Font font) {
+  private static Component createWeekCalendar(JList<Contribution> weekList, Font font) {
     Locale l = Locale.getDefault();
     WeekFields weekFields = WeekFields.of(l);
 
@@ -76,7 +76,8 @@ public final class MainPanel extends JPanel {
       if (isEven) {
         weekModel.add(i, "");
       } else {
-        weekModel.add(i, firstDayOfWeek.plus(i).getDisplayName(TextStyle.SHORT_STANDALONE, l));
+        DayOfWeek day = firstDayOfWeek.plus(i);
+        weekModel.add(i, day.getDisplayName(TextStyle.SHORT_STANDALONE, l));
       }
     }
     JList<String> rowHeader = new JList<>(weekModel);
@@ -96,20 +97,22 @@ public final class MainPanel extends JPanel {
     c.anchor = GridBagConstraints.LINE_START;
     c.gridy = 1;
     c.gridwidth = 3; // use 3 columns to display the name of the month
-    for (c.gridx = 0; c.gridx < CalendarViewListModel.WEEK_VIEW - c.gridwidth + 1; c.gridx++) {
+    int max = CalendarViewListModel.WEEK_VIEW - c.gridwidth + 1;
+    for (c.gridx = 0; c.gridx < max; c.gridx++) {
       int index = c.gridx * DayOfWeek.values().length;
       Contribution contribution = weekList.getModel().getElementAt(index);
       LocalDate date = contribution.getDate();
       boolean isFirst = date.getMonth() != date.minusWeeks(1L).getMonth();
       if (isFirst) {
-        colHeader.add(makeLabel(date.getMonth().getDisplayName(TextStyle.SHORT, l), font), c);
+        String displayName = date.getMonth().getDisplayName(TextStyle.SHORT, l);
+        colHeader.add(createLabel(displayName, font), c);
       }
     }
-    return makeScrollPane(weekList, colHeader);
+    return createScrollPane(weekList, colHeader);
   }
 
-  private static JScrollPane makeScrollPane(JList<Contribution> weekList, JPanel colHeader) {
-    return new JScrollPane(weekList) {
+  private static JScrollPane createScrollPane(Component view, Component colHeader) {
+    return new JScrollPane(view) {
       @Override public void updateUI() {
         super.updateUI();
         setBorder(BorderFactory.createEmptyBorder());
@@ -141,7 +144,7 @@ public final class MainPanel extends JPanel {
   //   }
   // }
 
-  private static JLabel makeLabel(String title, Font font) {
+  private static JLabel createLabel(String title, Font font) {
     JLabel label = new JLabel(title);
     label.setFont(font);
     label.setEnabled(false);
