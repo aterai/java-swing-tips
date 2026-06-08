@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Icon HSTRUT = new ColorIcon(new Color(0x0, true)); // MetalLookAndFeel
+  private static final Icon HSTRUT = new ColorIcon(new Color(0x0, true));
 
   private MainPanel() {
     super(new BorderLayout());
@@ -47,21 +47,21 @@ public final class MainPanel extends JPanel {
     });
 
     JMenuBar menuBar = new JMenuBar();
-    menuBar.add(makeMenu("Test0", item0));
-    menuBar.add(makeMenu("Test1", item1));
-    menuBar.add(makeMenu("Test2", item2));
-    menuBar.add(makeMenu("Test3", item3));
+    menuBar.add(createMenu("Test0", item0));
+    menuBar.add(createMenu("Test1", item1));
+    menuBar.add(createMenu("Test2", item2));
+    menuBar.add(createMenu("Test3", item3));
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
 
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JMenu makeMenu(String title, Component item) {
+  private static JMenu createMenu(String title, Component item) {
     JMenu menu = new JMenu(title);
     menu.add(item);
     menu.addSeparator();
-    menu.add("JMenuItem"); // .addActionListener(e -> System.out.println("actionPerformed"));
+    menu.add("JMenuItem");
     menu.add("JMenuItem + Icon").setIcon(new ColorIcon(Color.RED));
     menu.add("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return menu;
