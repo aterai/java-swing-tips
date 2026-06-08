@@ -66,21 +66,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component createWeekCalendar(JList<Contribution> weekList, Font font) {
-    Locale l = Locale.getDefault();
-    WeekFields weekFields = WeekFields.of(l);
-
-    DefaultListModel<String> weekModel = new DefaultListModel<>();
-    DayOfWeek firstDayOfWeek = weekFields.getFirstDayOfWeek();
-    for (int i = 0; i < DayOfWeek.values().length; i++) {
-      boolean isEven = i % 2 == 0;
-      if (isEven) {
-        weekModel.add(i, "");
-      } else {
-        DayOfWeek day = firstDayOfWeek.plus(i);
-        weekModel.add(i, day.getDisplayName(TextStyle.SHORT_STANDALONE, l));
-      }
-    }
-    JList<String> rowHeader = new JList<>(weekModel);
+    JList<String> rowHeader = new JList<>(createWeekModel());
     rowHeader.setEnabled(false);
     rowHeader.setFont(font);
     rowHeader.setLayoutOrientation(JList.VERTICAL_WRAP);
@@ -104,11 +90,29 @@ public final class MainPanel extends JPanel {
       LocalDate date = contribution.getDate();
       boolean isFirst = date.getMonth() != date.minusWeeks(1L).getMonth();
       if (isFirst) {
-        String displayName = date.getMonth().getDisplayName(TextStyle.SHORT, l);
+        Locale loc = Locale.getDefault();
+        String displayName = date.getMonth().getDisplayName(TextStyle.SHORT, loc);
         colHeader.add(createLabel(displayName, font), c);
       }
     }
     return createScrollPane(weekList, colHeader);
+  }
+
+  private static ListModel<String> createWeekModel() {
+    Locale loc = Locale.getDefault();
+    WeekFields weekFields = WeekFields.of(loc);
+    DefaultListModel<String> weekModel = new DefaultListModel<>();
+    DayOfWeek firstDayOfWeek = weekFields.getFirstDayOfWeek();
+    for (int i = 0; i < DayOfWeek.values().length; i++) {
+      boolean isEven = i % 2 == 0;
+      if (isEven) {
+        weekModel.add(i, "");
+      } else {
+        DayOfWeek day = firstDayOfWeek.plus(i);
+        weekModel.add(i, day.getDisplayName(TextStyle.SHORT_STANDALONE, loc));
+      }
+    }
+    return weekModel;
   }
 
   private static JScrollPane createScrollPane(Component view, Component colHeader) {
