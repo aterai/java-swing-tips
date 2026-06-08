@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    JMenuItem item3 = new JMenuItem("\u200B"); // , HSTRUT);
+    JMenuItem item3 = new JMenuItem("​"); // U+200B ZERO WIDTH SPACE
     // item3.setLayout(new BorderLayout());
     item3.setBorder(BorderFactory.createEmptyBorder()); // NimbusLookAndFeel
     item3.setEnabled(false);
