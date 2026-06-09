@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -19,35 +20,17 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JTable table0 = new JTable(makeModel());
-    table0.setAutoCreateRowSorter(true);
-    add(new JScrollPane(table0));
-
-    JTable table1 = new JTable(makeModel()) {
-      private transient MouseAdapter listener;
-
-      @Override public void updateUI() {
-        getTableHeader().removeMouseListener(listener);
-        getTableHeader().removeMouseMotionListener(listener);
-        super.updateUI();
-        setAutoCreateRowSorter(true);
-        JTableHeader header = getTableHeader();
-        header.setCursor(Cursor.getDefaultCursor()); // MotifLookAndFeel???
-        header.setDefaultRenderer(new ButtonHeaderRenderer());
-        listener = new HeaderMouseListener();
-        header.addMouseListener(listener);
-        header.addMouseMotionListener(listener);
-      }
-    };
-    add(new JScrollPane(table1));
-
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    JTable table = new JTable(createModel());
+    table.setAutoCreateRowSorter(true);
+    add(new JScrollPane(table));
+    add(new JScrollPane(new ButtonHeaderTable(createModel())));
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -81,6 +64,27 @@ public final class MainPanel extends JPanel {
   }
 }
 
+class ButtonHeaderTable extends JTable {
+  private transient MouseAdapter listener;
+
+  protected ButtonHeaderTable(TableModel model) {
+    super(model);
+  }
+
+  @Override public void updateUI() {
+    getTableHeader().removeMouseListener(listener);
+    getTableHeader().removeMouseMotionListener(listener);
+    super.updateUI();
+    setAutoCreateRowSorter(true);
+    JTableHeader header = getTableHeader();
+    header.setCursor(Cursor.getDefaultCursor()); // MotifLookAndFeel???
+    header.setDefaultRenderer(new ButtonHeaderRenderer());
+    listener = new HeaderMouseListener();
+    header.addMouseListener(listener);
+    header.addMouseMotionListener(listener);
+  }
+}
+
 class ButtonHeaderRenderer extends JButton implements TableCellRenderer {
   private int pressedColumn = -1;
   private int rolloverColumn = -1;
@@ -109,42 +113,13 @@ class ButtonHeaderRenderer extends JButton implements TableCellRenderer {
     if (table.getRowSorter() != null) {
       List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter().getSortKeys();
       if (!sortKeys.isEmpty() && sortKeys.get(0).getColumn() == modelColumn) {
-        SortOrder sortOrder = sortKeys.get(0).getSortOrder();
-        switch (sortOrder) {
-          case ASCENDING:
-            sortIcon = UIManager.getIcon("Table.ascendingSortIcon");
-            break;
-          case DESCENDING:
-            sortIcon = UIManager.getIcon("Table.descendingSortIcon");
-            break;
-          // case UNSORTED:
-          //   sortIcon = UIManager.getIcon("Table.naturalSortIcon");
-          //   break;
-          default:
-            sortIcon = UIManager.getIcon("Table.naturalSortIcon");
-        }
+        sortIcon = SortIconType.getIcon(sortKeys.get(0).getSortOrder());
+        // Java 21: = SortIconType.getIcon(sortKeys.getFirst().getSortOrder());
       }
     }
     setIcon(sortIcon);
     return this;
   }
-
-  // private void setColor(JTableHeader header, boolean hasFocus) {
-  //   Color fgColor = null;
-  //   Color bgColor = null;
-  //   if (hasFocus) {
-  //     fgColor = UIManager.getColor("TableHeader.focusCellForeground");
-  //     bgColor = UIManager.getColor("TableHeader.focusCellBackground");
-  //   }
-  //   if (fgColor == null) {
-  //     fgColor = header.getForeground();
-  //   }
-  //   if (bgColor == null) {
-  //     bgColor = header.getBackground();
-  //   }
-  //   setForeground(fgColor);
-  //   setBackground(bgColor);
-  // }
 
   public void setPressedColumn(int column) {
     pressedColumn = column;
@@ -152,6 +127,32 @@ class ButtonHeaderRenderer extends JButton implements TableCellRenderer {
 
   public void setRolloverColumn(int column) {
     rolloverColumn = column;
+  }
+}
+
+enum SortIconType {
+  ASCENDING(SortOrder.ASCENDING, "Table.ascendingSortIcon"),
+  DESCENDING(SortOrder.DESCENDING, "Table.descendingSortIcon"),
+  UNSORTED(null, "Table.naturalSortIcon");
+
+  private final SortOrder sortOrder;
+  private final String uiKey;
+
+  SortIconType(SortOrder sortOrder, String uiKey) {
+    this.sortOrder = sortOrder;
+    this.uiKey = uiKey;
+  }
+
+  public Icon getIcon() {
+    return UIManager.getIcon(uiKey);
+  }
+
+  public static Icon getIcon(SortOrder order) {
+    return Stream.of(values())
+        .filter(type -> type.sortOrder == order)
+        .findFirst()
+        .orElse(UNSORTED)
+        .getIcon();
   }
 }
 
@@ -209,7 +210,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -217,7 +218,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
