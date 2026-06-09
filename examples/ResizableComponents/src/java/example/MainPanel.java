@@ -7,9 +7,12 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 public final class MainPanel extends JPanel {
@@ -256,12 +259,185 @@ class DefaultResizableBorder implements ResizableBorder, SwingConstants {
           .orElse(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
     return cursor;
-    // for (Locations loc : Locations.values()) {
-    //   rect.setLocation(loc.getPoint(r));
-    //   if (rect.contains(pt)) {
-    //     return loc.getCursor();
-    //   }
-    // }
-    // return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+  }
+}
+
+class ResizeMouseListener extends MouseInputAdapter {
+  private final Point startPos = new Point();
+  private final Rectangle startRect = new Rectangle();
+  private Cursor cursor;
+
+  @Override public void mouseMoved(MouseEvent e) {
+    JComponent c = (JComponent) e.getComponent();
+    ResizableBorder border = (ResizableBorder) c.getBorder();
+    c.setCursor(border.getResizeCursor(e));
+  }
+
+  @Override public void mouseExited(MouseEvent e) {
+    e.getComponent().setCursor(Cursor.getDefaultCursor());
+  }
+
+  @Override public void mousePressed(MouseEvent e) {
+    JComponent c = (JComponent) e.getComponent();
+    ResizableBorder border = (ResizableBorder) c.getBorder();
+    cursor = border.getResizeCursor(e);
+    startPos.setLocation(SwingUtilities.convertPoint(c, e.getX(), e.getY(), null));
+    startRect.setBounds(c.getBounds());
+    Container parent = SwingUtilities.getAncestorOfClass(JLayeredPane.class, c);
+    if (parent instanceof JLayeredPane) {
+      ((JLayeredPane) parent).moveToFront(c);
+    }
+  }
+
+  @Override public void mouseReleased(MouseEvent e) {
+    startRect.setSize(0, 0);
+  }
+
+  // @see %JAVA_HOME%/src/javax/swing/plaf/basic/BasicInternalFrameUI.java
+  @Override public void mouseDragged(MouseEvent e) {
+    if (!startRect.isEmpty()) {
+      Component c = e.getComponent();
+      Point p = SwingUtilities.convertPoint(c, e.getX(), e.getY(), null);
+      int deltaX = startPos.x - p.x;
+      int deltaY = startPos.y - p.y;
+      Container parent = SwingUtilities.getUnwrappedParent(c);
+      int cursorType = Optional.ofNullable(cursor)
+          .map(Cursor::getType)
+          .orElse(Cursor.DEFAULT_CURSOR);
+      Directions.getByCursorType(cursorType).ifPresent(dir -> {
+        Point delta = dir.getLimitedDelta(startRect, parent.getBounds(), deltaX, deltaY);
+        c.setBounds(dir.getBounds(startRect, delta));
+      });
+      parent.revalidate();
+    }
+  }
+}
+
+enum Directions {
+  NORTH(Cursor.N_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y - d.y, r.width, r.height + d.y);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(0, DeltaUtils.limitLeft(dy, sr.y, sr.height));
+    }
+  },
+  SOUTH(Cursor.S_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width, r.height - d.y);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(0, DeltaUtils.limitRight(dy, sr.y, sr.height, pr.height));
+    }
+  },
+  WEST(Cursor.W_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(DeltaUtils.limitLeft(dx, sr.x, sr.width), 0);
+    }
+  },
+  EAST(Cursor.E_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width - d.x, r.height);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(DeltaUtils.limitRight(dx, sr.x, sr.width, pr.width), 0);
+    }
+  },
+  NORTH_WEST(Cursor.NW_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y - d.y, r.width + d.x, r.height + d.y);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(DeltaUtils.limitLeft(dx, sr.x, sr.width),
+          DeltaUtils.limitLeft(dy, sr.y, sr.height));
+    }
+  },
+  NORTH_EAST(Cursor.NE_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y - d.y, r.width - d.x, r.height + d.y);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(DeltaUtils.limitRight(dx, sr.x, sr.width, pr.width),
+          DeltaUtils.limitLeft(dy, sr.y, sr.height));
+    }
+  },
+  SOUTH_WEST(Cursor.SW_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y, r.width + d.x, r.height - d.y);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(DeltaUtils.limitLeft(dx, sr.x, sr.width),
+          DeltaUtils.limitRight(dy, sr.y, sr.height, pr.height));
+    }
+  },
+  SOUTH_EAST(Cursor.SE_RESIZE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x, r.y, r.width - d.x, r.height - d.y);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      return new Point(DeltaUtils.limitRight(dx, sr.x, sr.width, pr.width),
+          DeltaUtils.limitRight(dy, sr.y, sr.height, pr.height));
+    }
+  },
+  MOVE(Cursor.MOVE_CURSOR) {
+    @Override public Rectangle getBounds(Rectangle r, Point d) {
+      return new Rectangle(r.x - d.x, r.y - d.y, r.width, r.height);
+    }
+
+    @Override public Point getLimitedDelta(Rectangle sr, Rectangle pr, int dx, int dy) {
+      // MOVE has no restrictions
+      // parent boundary can be considered separately on the mouseDragged side
+      return new Point(dx, dy);
+    }
+  };
+
+  private final int cursor;
+
+  Directions(int cursor) {
+    this.cursor = cursor;
+  }
+
+  public abstract Rectangle getBounds(Rectangle rect, Point delta);
+
+  public abstract Point getLimitedDelta(
+      Rectangle startRect, Rectangle parentRect, int deltaX, int deltaY);
+
+  public static Optional<Directions> getByCursorType(int cursor) {
+    return EnumSet.allOf(Directions.class).stream()
+        .filter(d -> d.cursor == cursor).findFirst();
+  }
+}
+
+final class DeltaUtils {
+  private static final Dimension MIN = new Dimension(50, 50);
+  private static final Dimension MAX = new Dimension(500, 500);
+
+  private DeltaUtils() {
+    // utils
+  }
+
+  // Direction to shorten the left side (N/W)
+  /* default */ static int limitLeft(int dx, int startVal, int startSize) {
+    int top = Math.min(MAX.width - startSize, startVal);
+    return Math.max(Math.min(dx, top), MIN.width - startSize);
+    // Java 21: return Math.clamp(dx, MIN.width - startSize, top);
+  }
+
+  // Direction to shorten the right side (S/E)
+  /* default */ static int limitRight(int dx, int startVal, int startSize, int parentSize) {
+    int right = Math.max(startSize - MAX.width, startVal + startSize - parentSize);
+    return Math.min(Math.max(dx, right), startSize - MIN.width);
+    // Java 21: return Math.clamp(dx, right, startSize - MIN.width);
   }
 }
