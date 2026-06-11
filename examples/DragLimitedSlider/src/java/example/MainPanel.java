@@ -73,8 +73,8 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class WindowsDragLimitedSliderUI extends WindowsSliderUI {
-    protected WindowsDragLimitedSliderUI(JSlider slider) {
+  private static final class WindowsDragLimitedSliderUI extends WindowsSliderUI {
+    private WindowsDragLimitedSliderUI(JSlider slider) {
       super(slider);
     }
 
@@ -97,8 +97,8 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static class BasicDragLimitedSliderUI extends BasicSliderUI {
-    protected BasicDragLimitedSliderUI(JSlider slider) {
+  private static final class BasicDragLimitedSliderUI extends BasicSliderUI {
+    private BasicDragLimitedSliderUI(JSlider slider) {
       super(slider);
     }
 
