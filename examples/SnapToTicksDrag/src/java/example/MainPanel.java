@@ -113,7 +113,7 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
   }
 
   @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new SnapTrackListener(slider);
+    return new WindowsSnapTrackListener(slider);
   }
 
   private static float getTickPixels(JSlider slider, int trackLength) {
@@ -129,10 +129,10 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
     return trackLength * tickSp / (float) possibleTickPos;
   }
 
-  private final class SnapTrackListener extends TrackListener {
+  private final class WindowsSnapTrackListener extends TrackListener {
     private final JSlider slider;
 
-    private SnapTrackListener(JSlider slider) {
+    private WindowsSnapTrackListener(JSlider slider) {
       super();
       this.slider = slider;
     }
@@ -171,7 +171,7 @@ class WindowsSnapToTicksDragSliderUI extends WindowsSliderUI {
 
 class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
   @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new SnapTrackListener(slider);
+    return new MetalSnapTrackListener(slider);
   }
 
   private static float getTickPixels(JSlider slider, int trackLength) {
@@ -181,10 +181,10 @@ class MetalSnapToTicksDragSliderUI extends MetalSliderUI {
     return trackLength * tickSp / (float) possibleTickPos;
   }
 
-  private final class SnapTrackListener extends TrackListener {
+  private final class MetalSnapTrackListener extends TrackListener {
     private final JSlider slider;
 
-    private SnapTrackListener(JSlider slider) {
+    private MetalSnapTrackListener(JSlider slider) {
       super();
       this.slider = slider;
     }
