@@ -23,13 +23,14 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new GridLayout(1, 2));
-    add(makeScrollBarOnHoverScrollPane());
-    add(new JLayer<>(makeTranslucentScrollBar(makeList()), new ScrollBarOnHoverLayerUI()));
+    add(createAnimatedScrollBarScrollPane());
+    JScrollPane scroll = createTranslucentScrollBar(createList());
+    add(new JLayer<>(scroll, new StaticScrollBarHoverLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makeScrollBarOnHoverScrollPane() {
-    JScrollPane scroll = new JScrollPane(makeList());
+  private Component createAnimatedScrollBarScrollPane() {
+    JScrollPane scroll = new JScrollPane(createList());
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     scrollBar.setLayout(new ScrollBarLayout());
@@ -38,7 +39,7 @@ public final class MainPanel extends JPanel {
     JPanel wrap = new JPanel(new BorderLayout());
     wrap.add(scrollBar, BorderLayout.EAST);
     wrap.add(scroll);
-    return new JLayer<>(wrap, new TimerScrollBarLayerUI());
+    return new JLayer<>(wrap, new AnimatedScrollBarLayerUI());
   }
 
   private final class ScrollBarLayout extends BorderLayout {
@@ -66,7 +67,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private final class TimerScrollBarLayerUI extends ScrollBarLayerUI {
+  private final class AnimatedScrollBarLayerUI extends BaseScrollBarLayerUI {
     @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
       Component c = e.getComponent();
       if (c instanceof JScrollBar) {
@@ -103,7 +104,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static Component makeList() {
+  private static Component createList() {
     DefaultListModel<String> m = new DefaultListModel<>();
     IntStream.range(0, 50)
         .mapToObj(i -> String.format("%05d: %s", i, LocalDateTime.now(ZoneId.systemDefault())))
@@ -111,7 +112,7 @@ public final class MainPanel extends JPanel {
     return new JList<>(m);
   }
 
-  private static JScrollPane makeTranslucentScrollBar(Component c) {
+  private static JScrollPane createTranslucentScrollBar(Component c) {
     return new JScrollPane(c) {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false; // JScrollBar is overlap
@@ -155,11 +156,11 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ScrollBarLayerUI extends LayerUI<JPanel> {
+class BaseScrollBarLayerUI extends LayerUI<JPanel> {
   private boolean dragging;
 
-  public void setDragging(boolean isDragging) {
-    dragging = isDragging;
+  public void setDragging(boolean dragging) {
+    this.dragging = dragging;
   }
 
   public boolean isDragging() {
@@ -209,7 +210,7 @@ class TranslucentScrollPaneLayout extends ScrollPaneLayout {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -225,11 +226,11 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   private static final Color ROLLOVER_COLOR = new Color(100, 100, 100, 220);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
@@ -262,9 +263,9 @@ class TranslucentScrollBarUI extends BasicScrollBarUI {
   }
 }
 
-class ScrollBarOnHoverLayerUI extends LayerUI<JScrollPane> {
-  private final Timer timer = new Timer(2000, null);
-  private transient ActionListener listener;
+class StaticScrollBarHoverLayerUI extends LayerUI<JScrollPane> {
+  private final Timer delayTimer = new Timer(2000, null);
+  private transient ActionListener hoverListener;
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -287,15 +288,15 @@ class ScrollBarOnHoverLayerUI extends LayerUI<JScrollPane> {
       if (id == MouseEvent.MOUSE_ENTERED) {
         c.setPreferredSize(new Dimension(TranslucentScrollBarUI.MAX_WIDTH, 0));
       } else if (id == MouseEvent.MOUSE_EXITED) {
-        timer.removeActionListener(listener);
-        listener = ev -> {
+        delayTimer.removeActionListener(hoverListener);
+        hoverListener = ev -> {
           c.setPreferredSize(new Dimension(TranslucentScrollBarUI.MIN_WIDTH, 0));
           l.getView().revalidate();
           l.getView().repaint();
         };
-        timer.addActionListener(listener);
-        timer.setRepeats(false);
-        timer.start();
+        delayTimer.addActionListener(hoverListener);
+        delayTimer.setRepeats(false);
+        delayTimer.start();
       }
       l.getView().repaint();
     }
