@@ -9,9 +9,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -26,49 +26,108 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
+  private final JRadioButton check1 = new JRadioButton("Default", true);
+  private final JRadioButton check2 = new JRadioButton("Directory < File", false);
+  private final JRadioButton check3 = new JRadioButton("Group Sorting", false);
+  private final JTable table = createTable();
+
   private MainPanel() {
     super(new BorderLayout());
-    JRadioButton check1 = new JRadioButton("Default", true);
-    JRadioButton check2 = new JRadioButton("Directory < File", false);
-    JRadioButton check3 = new JRadioButton("Group Sorting", false);
 
-    JTable table = makeTable();
     RowSorter<? extends TableModel> sorter = table.getRowSorter();
     if (sorter instanceof TableRowSorter) {
       TableRowSorter<? extends TableModel> rs = (TableRowSorter<? extends TableModel>) sorter;
-      IntStream.range(0, 3).forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
-      check1.addItemListener(e -> {
+      setFileComparators(rs);
+      ItemListener listener = e -> {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-          IntStream.range(0, 3)
-              .forEach(i -> rs.setComparator(i, new DefaultFileComparator(i)));
+          setFileComparators(rs);
         }
-      });
-      check2.addItemListener(e -> {
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-          IntStream.range(0, 3)
-              .forEach(i -> rs.setComparator(i, new FileComparator(i)));
-        }
-      });
-      check3.addItemListener(e -> {
-        if (e.getStateChange() == ItemEvent.SELECTED) {
-          IntStream.range(0, 3)
-              .forEach(i -> rs.setComparator(i, new FileGroupComparator(table, i)));
-        }
-      });
+      };
+      Stream.of(check1, check2, check3).forEach(rb -> rb.addItemListener(listener));
     }
 
     JPanel p = new JPanel();
-    ButtonGroup bg = new ButtonGroup();
-    Stream.of(check1, check2, check3).forEach(rb -> {
-      bg.add(rb);
-      p.add(rb);
+    ButtonGroup group = new ButtonGroup();
+    Stream.of(check1, check2, check3).forEach(button -> {
+      group.add(button);
+      p.add(button);
     });
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable() {
+  // Set Comparator in TableRowSorter at once depending on the selected radio button
+  private void setFileComparators(TableRowSorter<? extends TableModel> sorter) {
+    IntStream.range(0, 3)
+        .forEach(i -> sorter.setComparator(i, getFileComparator(i)));
+  }
+
+  // Get the underlying Comparator for each column
+  private Comparator<File> getFileComparator(int index) {
+    Comparator<File> baseComp = getBaseFileComparator(index);
+    Comparator<File> finalComp;
+
+    if (check1.isSelected()) {
+      // Default:
+      finalComp = baseComp;
+    } else if (check2.isSelected()) {
+      // Directory < File: Always prioritize directories
+      // (fixed at the top regardless of ascending or descending order)
+      finalComp = Comparator
+          .comparing(File::isDirectory, Comparator.reverseOrder())
+          .thenComparing(baseComp);
+    } else if (check3.isSelected()) {
+      // Group Sorting: Group according to sort direction
+      finalComp = (a, b) -> {
+        int dir = getSortOrderDirection(table, index);
+        // Multiplying the directory priority comparison result by the current
+        // sort direction (dir) controls the directory to be on top
+        // when in ascending order and below when in descending order.
+        int v = Boolean.compare(b.isDirectory(), a.isDirectory());
+        return v == 0 ? baseComp.compare(a, b) : v * dir;
+      };
+    } else {
+      finalComp = baseComp;
+    }
+    return finalComp;
+  }
+
+  // Returns a basic File Comparator according to column index
+  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
+  private static Comparator<File> getBaseFileComparator(int column) {
+    switch (column) {
+      case 0:
+        return Comparator.comparing(File::getName, String.CASE_INSENSITIVE_ORDER);
+      case 1:
+        return Comparator.comparingLong(File::length);
+      default:
+        return Comparator.comparing(File::getAbsolutePath, String.CASE_INSENSITIVE_ORDER);
+    }
+  }
+
+  // Get the current sort direction of the specified column
+  // (ascending: 1, descending: -1)
+  private static int getSortOrderDirection(JTable table, int column) {
+    return table.getRowSorter().getSortKeys().stream()
+        .findFirst()
+        .filter(k -> k.getColumn() == column && k.getSortOrder() == SortOrder.DESCENDING)
+        .map(k -> -1)
+        .orElse(1);
+  }
+
+  // private static int getSortOrderDirection(JTable table, int column) {
+  //   List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
+  //   if (!keys.isEmpty()) {
+  //     RowSorter.SortKey sortKey = keys.get(0);
+  //     if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+  //       return -1;
+  //     }
+  //   }
+  //   return 1;
+  // }
+
+  private static JTable createTable() {
     String[] columnNames = {"Name", "Size", "Full Path"};
     TableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
@@ -183,143 +242,96 @@ class FileTransferHandler extends TransferHandler {
     }
     return list;
   }
+
+  // class DefaultFileComparator implements Comparator<File>, Serializable {
+  //   private static final long serialVersionUID = 1L;
+  //   private final int column;
+  //
+  //   protected DefaultFileComparator(int column) {
+  //     this.column = column;
+  //   }
+  //
+  //   @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
+  //   @Override public int compare(File a, File b) {
+  //     switch (column) {
+  //       case 0: return a.getName().compareToIgnoreCase(b.getName());
+  //       case 1: return Long.compare(a.length(), b.length());
+  //       default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());
+  //     }
+  //   }
+  //
+  //   public int getColumn() {
+  //     return column;
+  //   }
+  // }
+
+  // class FileComparator extends DefaultFileComparator {
+  //   private static final long serialVersionUID = 1L;
+  //
+  //   protected FileComparator(int column) {
+  //     super(column);
+  //   }
+  //
+  //   @Override public int compare(File a, File b) {
+  //     // if (a.isDirectory() && !b.isDirectory()) {
+  //     //   return -1;
+  //     // } else if (!a.isDirectory() && b.isDirectory()) {
+  //     //   return 1;
+  //     // } else {
+  //     //   return super.compare(a, b);
+  //     // }
+  //     int v = getWeight(a) - getWeight(b);
+  //     return v == 0 ? super.compare(a, b) : v;
+  //   }
+  //
+  //   private static int getWeight(File file) {
+  //     return file.isDirectory() ? 1 : 2;
+  //   }
+  // }
+
+  // // > dir /O:GN
+  // // > ls --group-directories-first
+  // class FileGroupComparator extends DefaultFileComparator {
+  //   private static final long serialVersionUID = 1L;
+  //   private final JTable table;
+  //
+  //   protected FileGroupComparator(JTable table, int column) {
+  //     super(column);
+  //     this.table = table;
+  //   }
+  //
+  //   @Override public int compare(File a, File b) {
+  //     // int flag = getSortOrderDirection();
+  //     // if (a.isDirectory() && !b.isDirectory()) {
+  //     //   return -1 * flag;
+  //     // } else if (!a.isDirectory() && b.isDirectory()) {
+  //     //   return flag;
+  //     // } else {
+  //     //   return super.compare(a, b);
+  //     // }
+  //     int v = getWeight(a) - getWeight(b);
+  //     return v == 0 ? super.compare(a, b) : v * getSortOrderDirection();
+  //   }
+  //
+  //   private static int getWeight(File file) {
+  //     return file.isDirectory() ? 1 : 2;
+  //   }
+  //
+  //   private int getSortOrderDirection() {
+  //     int dir = 1;
+  //     List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
+  //     if (!keys.isEmpty()) {
+  //       RowSorter.SortKey sortKey = keys.get(0);
+  //       boolean b1 = sortKey.getColumn() == getColumn();
+  //       boolean b2 = sortKey.getSortOrder() == SortOrder.DESCENDING;
+  //       if (b1 && b2) {
+  //         dir = -1;
+  //       }
+  //     }
+  //     return dir;
+  //   }
+  // }
 }
-
-class DefaultFileComparator implements Comparator<File>, Serializable {
-  private static final long serialVersionUID = 1L;
-  private final int column;
-
-  protected DefaultFileComparator(int column) {
-    this.column = column;
-  }
-
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public int compare(File a, File b) {
-    switch (column) {
-      case 0: return a.getName().compareToIgnoreCase(b.getName());
-      case 1: return Long.compare(a.length(), b.length());
-      default: return a.getAbsolutePath().compareToIgnoreCase(b.getAbsolutePath());
-    }
-  }
-
-  public int getColumn() {
-    return column;
-  }
-}
-
-class FileComparator extends DefaultFileComparator {
-  private static final long serialVersionUID = 1L;
-
-  protected FileComparator(int column) {
-    super(column);
-  }
-
-  @Override public int compare(File a, File b) {
-    // if (a.isDirectory() && !b.isDirectory()) {
-    //   return -1;
-    // } else if (!a.isDirectory() && b.isDirectory()) {
-    //   return 1;
-    // } else {
-    //   return super.compare(a, b);
-    // }
-    int v = getWeight(a) - getWeight(b);
-    return v == 0 ? super.compare(a, b) : v;
-  }
-
-  private static int getWeight(File file) {
-    return file.isDirectory() ? 1 : 2;
-  }
-}
-
-// > dir /O:GN
-// > ls --group-directories-first
-class FileGroupComparator extends DefaultFileComparator {
-  private static final long serialVersionUID = 1L;
-  private final JTable table;
-
-  protected FileGroupComparator(JTable table, int column) {
-    super(column);
-    this.table = table;
-  }
-
-  @Override public int compare(File a, File b) {
-    // int flag = getSortOrderDirection();
-    // if (a.isDirectory() && !b.isDirectory()) {
-    //   return -1 * flag;
-    // } else if (!a.isDirectory() && b.isDirectory()) {
-    //   return flag;
-    // } else {
-    //   return super.compare(a, b);
-    // }
-    int v = getWeight(a) - getWeight(b);
-    return v == 0 ? super.compare(a, b) : v * getSortOrderDirection();
-  }
-
-  private static int getWeight(File file) {
-    return file.isDirectory() ? 1 : 2;
-  }
-
-  private int getSortOrderDirection() {
-    int dir = 1;
-    List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
-    if (!keys.isEmpty()) {
-      RowSorter.SortKey sortKey = keys.get(0); // Java 21: = keys.getFirst();
-      boolean b1 = sortKey.getColumn() == getColumn();
-      boolean b2 = sortKey.getSortOrder() == SortOrder.DESCENDING;
-      if (b1 && b2) {
-        dir = -1;
-      }
-    }
-    return dir;
-  }
-}
-
-// class FileTableModel extends AbstractTableModel {
-//   private final String[] columnNames = {"Name", "Size", "Full Path"};
-//   private File[] files;
-//
-//   protected FileTableModel() {
-//     this(new File[0]);
-//   }
-//
-//   protected FileTableModel(File[] files) {
-//     this.files = files;
-//   }
-//
-//   @Override public Object getValueAt(int row, int column) {
-//     return files[row];
-//   }
-//
-//   @Override public int getColumnCount() {
-//     return columnNames.length;
-//   }
-//
-//   @Override public Class<?> getColumnClass(int column) {
-//     return File.class;
-//   }
-//
-//   @Override public String getColumnName(int column) {
-//     return columnNames[column];
-//   }
-//
-//   @Override public int getRowCount() {
-//     return files.length;
-//   }
-//
-//   public File getFile(int row) {
-//     return files[row];
-//   }
-//
-//   public void setFiles(File[] files) {
-//     this.files = files;
-//     fireTableDataChanged();
-//   }
-//
-//   // public void removeRow(int row) {
-//   //   files.removeElementAt(row);
-//   //   fireTableRowsDeleted(row, row);
-//   // }
-// }
 
 final class TablePopupMenu extends JPopupMenu {
   private final JMenuItem delete;
