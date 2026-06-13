@@ -96,25 +96,23 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     String str = Objects.toString(value, "");
-    String sort = "";
-    RowSorter<? extends TableModel> sorter = table.getRowSorter();
-    if (Objects.nonNull(sorter) && !sorter.getSortKeys().isEmpty()) {
-      RowSorter.SortKey sortKey = sorter.getSortKeys().get(0);
-      if (column == sortKey.getColumn()) {
-        String k = sortKey.getSortOrder() == SortOrder.ASCENDING ? "▴" : "▾";
-        sort = "<small>" + k;
-      }
-    }
+    int modelColumn = table.convertColumnIndexToModel(column);
+    String sortTxt = table.getRowSorter().getSortKeys().stream()
+        .findFirst()
+        .filter(key -> modelColumn == key.getColumn())
+        .map(key -> key.getSortOrder() == SortOrder.ASCENDING)
+        .map(a -> "<small> " + (a ? "▴" : "▾"))
+        .orElse("");
     Component c = super.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       if (handler.getHoverColumn() == column) {
-        l.setText("<html><u><font color='blue'>" + str + "</u>" + sort);
+        l.setText("<html><u><font color='blue'>" + str + "</u>" + sortTxt);
       } else if (hasFocus) {
-        l.setText("<html><font color='blue'>" + str + sort);
+        l.setText("<html><font color='blue'>" + str + sortTxt);
       } else {
-        l.setText("<html>" + str + sort);
+        l.setText("<html>" + str + sortTxt);
       }
       l.setHorizontalAlignment(LEADING);
       l.setOpaque(false);

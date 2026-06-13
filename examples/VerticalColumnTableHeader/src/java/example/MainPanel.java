@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -21,7 +20,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new VerticalHeaderTable(makeModel());
+    JTable table = new VerticalHeaderTable(createModel());
     // table.setRowSorter(new TableRowSorter<>(table.getModel()));
     // table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -37,7 +36,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"a", 12, true}, {"b", 5, false}, {"C", 92, true}, {"D", 0, false},
@@ -97,9 +96,9 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       l.setHorizontalAlignment(SwingConstants.CENTER);
-      SortOrder sortOrder = getColumnSortOrder(table, column);
+      int modelIndex = table.convertColumnIndexToModel(column);
       Icon sortIcon;
-      switch (sortOrder) {
+      switch (getColumnSortOrder(table, modelIndex)) {
         case ASCENDING:
           sortIcon = ascendingIcon;
           break;
@@ -116,7 +115,7 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
       label.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 
       // l.setIcon(new RotateIcon(new ComponentIcon(label), -90));
-      l.setIcon(makeVerticalHeaderIcon(label));
+      l.setIcon(createVerticalHeaderIcon(label));
       l.setText(null);
     }
     return c;
@@ -124,19 +123,15 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
 
   // https://github.com/aterai/java-swing-tips/blob/master/SortIconLayoutHeaderRenderer/src/java/example/MainPanel.java
   public static SortOrder getColumnSortOrder(JTable table, int column) {
-    SortOrder rv = SortOrder.UNSORTED;
-    if (table != null && table.getRowSorter() != null) {
-      List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter().getSortKeys();
-      int mi = table.convertColumnIndexToModel(column);
-      if (!sortKeys.isEmpty() && sortKeys.get(0).getColumn() == mi) {
-        rv = sortKeys.get(0).getSortOrder();
-      }
-    }
-    return rv;
+    return table.getRowSorter().getSortKeys().stream()
+        .findFirst()
+        .filter(k -> k.getColumn() == column)
+        .map(RowSorter.SortKey::getSortOrder)
+        .orElse(SortOrder.UNSORTED);
   }
 
   // https://github.com/aterai/java-swing-tips/blob/master/RotatedVerticalTextTabs/src/java/example/MainPanel.java
-  private Icon makeVerticalHeaderIcon(Component c) {
+  private Icon createVerticalHeaderIcon(Component c) {
     Dimension d = c.getPreferredSize();
     int w = d.height;
     int h = d.width;
@@ -293,7 +288,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -301,7 +296,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

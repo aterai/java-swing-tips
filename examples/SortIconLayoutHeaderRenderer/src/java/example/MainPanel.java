@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -136,7 +135,8 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
     if (c instanceof JLabel) {
       // JLabel l = (JLabel) c;
       // l.setHorizontalAlignment(SwingConstants.RIGHT);
-      SortOrder sortOrder = getColumnSortOrder(table, column);
+      int modelIndex = table.convertColumnIndexToModel(column);
+      SortOrder sortOrder = getColumnSortOrder(table, modelIndex);
       // Java 12:
       // URI sortUri = switch (sortOrder) {
       //   case ASCENDING -> ascendingUri;
@@ -168,19 +168,11 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
   }
 
   public static SortOrder getColumnSortOrder(JTable table, int column) {
-    SortOrder rv = SortOrder.UNSORTED;
-    if (table != null && table.getRowSorter() != null) {
-      List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter().getSortKeys();
-      int mi = table.convertColumnIndexToModel(column);
-      // Java 21:
-      // if (!sortKeys.isEmpty() && sortKeys.getFirst().getColumn() == mi) {
-      //   rv = sortKeys.getFirst().getSortOrder();
-      // }
-      if (!sortKeys.isEmpty() && sortKeys.get(0).getColumn() == mi) {
-        rv = sortKeys.get(0).getSortOrder();
-      }
-    }
-    return rv;
+    return table.getRowSorter().getSortKeys().stream()
+        .findFirst()
+        .filter(k -> k.getColumn() == column)
+        .map(RowSorter.SortKey::getSortOrder)
+        .orElse(SortOrder.UNSORTED);
   }
 
   public static URI getIconUri(Icon icon) {
