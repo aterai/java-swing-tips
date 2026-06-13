@@ -7,8 +7,8 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -108,15 +108,21 @@ class ButtonHeaderRenderer extends JButton implements TableCellRenderer {
       model.setSelected(isSelected);
       setFont(header.getFont());
     }
-
-    Icon sortIcon = null;
-    if (table.getRowSorter() != null) {
-      List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter().getSortKeys();
-      if (!sortKeys.isEmpty() && sortKeys.get(0).getColumn() == modelColumn) {
-        sortIcon = SortIconType.getIcon(sortKeys.get(0).getSortOrder());
-        // Java 21: = SortIconType.getIcon(sortKeys.getFirst().getSortOrder());
-      }
-    }
+    // Icon sortIcon = null;
+    // if (table.getRowSorter() != null) {
+    //   List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter().getSortKeys();
+    //   if (!sortKeys.isEmpty() && sortKeys.get(0).getColumn() == modelColumn) {
+    //     sortIcon = SortIconType.getIcon(sortKeys.get(0).getSortOrder());
+    //     // Java 21: = SortIconType.getIcon(sortKeys.getFirst().getSortOrder());
+    //   }
+    // }
+    Icon sortIcon = Optional
+        .ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .filter(k -> k.getColumn() == modelColumn)
+        .map(k -> SortIconType.getIcon(k.getSortOrder()))
+        .orElse(null);
     setIcon(sortIcon);
     return this;
   }
