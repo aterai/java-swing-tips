@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
         if (isRowSelected(row)) {
@@ -30,11 +30,12 @@ public final class MainPanel extends JPanel {
         return c;
       }
 
-      private boolean isSortingColumn(JTable table, int column) {
-        return Optional.ofNullable(table.getRowSorter()).map(RowSorter::getSortKeys)
-            .filter(keys -> !keys.isEmpty())
-            .map(keys -> keys.get(0).getColumn())
-            .map(i -> column == table.convertColumnIndexToView(i)).orElse(false);
+      private static boolean isSortingColumn(JTable table, int column) {
+        return Optional.ofNullable(table.getRowSorter())
+            .map(RowSorter::getSortKeys)
+            .flatMap(keys -> keys.stream().findFirst())
+            .map(k -> table.convertColumnIndexToView(k.getColumn()) == column)
+            .orElse(false);
       }
     };
     table.setAutoCreateRowSorter(true);
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},

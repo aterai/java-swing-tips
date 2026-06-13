@@ -5,10 +5,8 @@
 package example;
 
 import java.awt.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
@@ -82,13 +80,12 @@ class NonEditableLineDocumentFilter extends DocumentFilter {
       if (LB.equals(str)) {
         String line = doc.getText(promptPosition, offset - promptPosition);
         // String[] args = line.split("\\s");
-        List<String> args = Stream.of(line.split(","))
+        str = Stream.of(line.split(","))
             .map(String::trim)
             .filter(s -> !s.isEmpty())
-            .collect(Collectors.toList()); // .toList();
-        str = args.isEmpty() || args.get(0).isEmpty()
-            ? String.format("%n%s", PROMPT)
-            : String.format("%n%s: command not found%n%s", args.get(0), PROMPT);
+            .findFirst()
+            .map(v -> String.format("%n%s: command not found%n%s", v, PROMPT))
+            .orElseGet(() -> String.format("%n%s", PROMPT));
       }
       fb.replace(offset, length, str, attrs);
     }

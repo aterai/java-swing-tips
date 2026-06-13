@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -25,8 +24,8 @@ public final class MainPanel extends JPanel {
     p.add(r1);
     p.add(r2);
 
-    TableModel model = makeModel();
-    TableRowSorter<TableModel> sorter = makeSorter(model, r2);
+    TableModel model = createModel();
+    TableRowSorter<TableModel> sorter = createSorter(model, r2);
     JTable table = new JTable(model);
     table.setRowSorter(sorter);
     // sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(1, SortOrder.DESCENDING)));
@@ -37,7 +36,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -49,7 +48,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static TableRowSorter<TableModel> makeSorter(TableModel m, AbstractButton b) {
+  private static TableRowSorter<TableModel> createSorter(TableModel m, AbstractButton b) {
     return new TableRowSorter<TableModel>(m) {
       @Override public void toggleSortOrder(int column) {
         if (b.isSelected() && isSortable(column) && isDescending(column)) {
@@ -61,10 +60,10 @@ public final class MainPanel extends JPanel {
       }
 
       private boolean isDescending(int column) {
-        return Optional.of(getSortKeys())
-            .filter(keys -> !keys.isEmpty())
-            .map(keys -> keys.get(0))
-            .map(k -> k.getColumn() == column && k.getSortOrder() == SortOrder.DESCENDING)
+        return getSortKeys().stream()
+            .findFirst()
+            .filter(sortKey -> sortKey.getColumn() == column)
+            .map(k -> k.getSortOrder() == SortOrder.DESCENDING)
             .orElse(false);
       }
     };

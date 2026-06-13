@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -109,10 +110,12 @@ public final class MainPanel extends JPanel {
   // Get the current sort direction of the specified column
   // (ascending: 1, descending: -1)
   private static int getSortOrderDirection(JTable table, int column) {
-    return table.getRowSorter().getSortKeys().stream()
-        .findFirst()
-        .filter(k -> k.getColumn() == column && k.getSortOrder() == SortOrder.DESCENDING)
-        .map(k -> -1)
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .filter(key -> key.getColumn() == column)
+        .filter(key -> key.getSortOrder() == SortOrder.DESCENDING)
+        .map(key -> -1)
         .orElse(1);
   }
 

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -20,7 +21,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel());
+    JTable table = new JTable(createModel());
     table.setShowVerticalLines(false);
     table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
@@ -49,7 +50,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     Object[] columnNames = {"String0", "String111", "String22222"};
     Object[][] data = {
         {"a", "bb", "ccc"}, {"dd", "ee", "ff"}, {"aa", "aaa", "a"},
@@ -97,8 +98,9 @@ class HyperlinkHeaderCellRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     String str = Objects.toString(value, "");
     int modelColumn = table.convertColumnIndexToModel(column);
-    String sortTxt = table.getRowSorter().getSortKeys().stream()
-        .findFirst()
+    String sortTxt = Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
         .filter(key -> modelColumn == key.getColumn())
         .map(key -> key.getSortOrder() == SortOrder.ASCENDING)
         .map(a -> "<small> " + (a ? "▴" : "▾"))

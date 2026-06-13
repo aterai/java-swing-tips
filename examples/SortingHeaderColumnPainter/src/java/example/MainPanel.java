@@ -22,8 +22,8 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table1 = makeTable1();
-    JTable table2 = makeTable2();
+    JTable table1 = createTable1();
+    JTable table2 = createTable2();
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("HeaderRenderer", new JScrollPane(table1));
     tabs.addTab("JLayer", new JLayer<>(new JScrollPane(table2), new SortingLayerUI()));
@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable1() {
-    JTable table = new JTable(makeModel()) {
+  private static JTable createTable1() {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         TableColumnModel cm = getColumnModel();
@@ -53,13 +53,13 @@ public final class MainPanel extends JPanel {
     return table;
   }
 
-  private static JTable makeTable2() {
-    JTable table = new JTable(makeModel());
+  private static JTable createTable2() {
+    JTable table = new JTable(createModel());
     table.setAutoCreateRowSorter(true);
     return table;
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -106,11 +106,13 @@ class ColumnHeaderRenderer implements TableCellRenderer {
     return c;
   }
 
-  private static boolean isSortingColumn(JTable table, int column) {
-    return Optional.ofNullable(table.getRowSorter()).map(RowSorter::getSortKeys)
-        .filter(keys -> !keys.isEmpty())
-        .map(keys -> keys.get(0).getColumn())
-        .map(i -> column == table.convertColumnIndexToView(i)).orElse(false);
+  private static boolean isSortingColumn(JTable table, int viewColumn) {
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .map(key -> table.convertColumnIndexToView(key.getColumn()))
+        .map(viewIndex -> viewIndex == viewColumn)
+        .orElse(false);
   }
 }
 
@@ -171,20 +173,19 @@ class SortingLayerUI extends LayerUI<JScrollPane> {
         .map(JTable.class::cast);
   }
 
-  private static int getSortingColumnIndex(JTable table) {
-    return Optional.ofNullable(table.getRowSorter())
-        .map(RowSorter::getSortKeys)
-        .filter(keys -> !keys.isEmpty())
-        .map(keys -> keys.get(0).getColumn())
+  private static int getSortingViewColumnIndex(JTable table) {
+    return table.getRowSorter().getSortKeys().stream()
+        .findFirst()
+        .map(RowSorter.SortKey::getColumn)
         .map(table::convertColumnIndexToView)
         .orElse(-1);
   }
 
   private static Rectangle getSortingColumnBounds(JLayer<?> layer, JTable table) {
     Rectangle rect = new Rectangle();
-    int sortingColumn = getSortingColumnIndex(table);
-    if (sortingColumn >= 0) {
-      Rectangle r = getSortingRect(table, sortingColumn);
+    int sortingViewColumn = getSortingViewColumnIndex(table);
+    if (sortingViewColumn >= 0) {
+      Rectangle r = getSortingRect(table, sortingViewColumn);
       int h = r.height / 6;
       r.y += r.height - h;
       r.height = h;
@@ -219,7 +220,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -227,7 +228,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

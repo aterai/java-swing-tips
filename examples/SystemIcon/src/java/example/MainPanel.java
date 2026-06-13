@@ -25,8 +25,8 @@ import javax.swing.filechooser.FileSystemView;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    JLabel smallLabel = makeLabel(new Dimension(16, 16));
-    JLabel largeLabel = makeLabel(new Dimension(32, 32));
+    JLabel smallLabel = createLabel(new Dimension(16, 16));
+    JLabel largeLabel = createLabel(new Dimension(32, 32));
     DropTargetListener dtl = new FileIconDropTargetAdapter(smallLabel, largeLabel);
     setDropTarget(new DropTarget(this, DnDConstants.ACTION_COPY, dtl, true));
 
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JLabel makeLabel(Dimension size) {
+  private static JLabel createLabel(Dimension size) {
     return new JLabel() {
       @Override public Dimension getPreferredSize() {
         return new Dimension(size.width + 1, size.height + 1);
@@ -108,7 +108,7 @@ class FileIconDropTargetAdapter extends DropTargetAdapter {
         e.acceptDrop(DnDConstants.ACTION_COPY);
         Transferable t = e.getTransferable();
         List<?> list = (List<?>) t.getTransferData(DataFlavor.javaFileListFlavor);
-        Object o = list.get(0);
+        Object o = list.stream().findFirst().orElse(null);
         if (o instanceof File) {
           File file = (File) o;
           smallLabel.setIcon(FileSystemView.getFileSystemView().getSystemIcon(file));

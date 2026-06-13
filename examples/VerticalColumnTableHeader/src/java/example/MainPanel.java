@@ -123,9 +123,10 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
 
   // https://github.com/aterai/java-swing-tips/blob/master/SortIconLayoutHeaderRenderer/src/java/example/MainPanel.java
   public static SortOrder getColumnSortOrder(JTable table, int column) {
-    return table.getRowSorter().getSortKeys().stream()
-        .findFirst()
-        .filter(k -> k.getColumn() == column)
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .filter(key -> key.getColumn() == column)
         .map(RowSorter.SortKey::getSortOrder)
         .orElse(SortOrder.UNSORTED);
   }

@@ -136,15 +136,14 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
       // JLabel l = (JLabel) c;
       // l.setHorizontalAlignment(SwingConstants.RIGHT);
       int modelIndex = table.convertColumnIndexToModel(column);
-      SortOrder sortOrder = getColumnSortOrder(table, modelIndex);
       // Java 12:
-      // URI sortUri = switch (sortOrder) {
+      // URI sortUri = switch (getColumnSortOrder(table, modelIndex)) {
       //   case ASCENDING -> ascendingUri;
       //   case DESCENDING -> descendingUri;
       //   default -> naturalUri;
       // };
       URI sortUri;
-      switch (sortOrder) {
+      switch (getColumnSortOrder(table, modelIndex)) {
         case ASCENDING:
           sortUri = ascendingUri;
           break;
@@ -168,9 +167,10 @@ class SortIconLayoutHeaderRenderer implements TableCellRenderer {
   }
 
   public static SortOrder getColumnSortOrder(JTable table, int column) {
-    return table.getRowSorter().getSortKeys().stream()
-        .findFirst()
-        .filter(k -> k.getColumn() == column)
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .filter(key -> key.getColumn() == column)
         .map(RowSorter.SortKey::getSortOrder)
         .orElse(SortOrder.UNSORTED);
   }

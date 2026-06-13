@@ -1,9 +1,8 @@
 package example;
 
 import java.awt.*;
-import java.io.Serializable;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +12,7 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel());
+    JTable table = new JTable(createModel());
     table.setAutoCreateRowSorter(true);
     RowSorter<? extends TableModel> sorter = table.getRowSorter();
     if (sorter instanceof TableRowSorter) {
@@ -24,7 +23,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] empty = {"", ""};
     String[] columnNames = {"DefaultTableRowSorter", "EmptiesLastTableRowSorter"};
     Object[][] data = {
@@ -62,8 +61,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RowComparator implements Comparator<String>, Serializable {
-  private static final long serialVersionUID = 1L;
+class RowComparator implements Comparator<String> {
   private final int column;
   private final JTable table;
 
@@ -102,14 +100,25 @@ class RowComparator implements Comparator<String>, Serializable {
   }
 
   private int getSortOrderDirection() {
-    int dir = 1;
-    List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
-    if (!keys.isEmpty()) {
-      RowSorter.SortKey sortKey = keys.get(0);
-      if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
-        dir = -1;
-      }
-    }
-    return dir;
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .filter(key -> key.getColumn() == column)
+        .filter(key -> key.getSortOrder() == SortOrder.DESCENDING)
+        .map(key -> -1)
+        .orElse(1);
   }
+
+  // private int getSortOrderDirection() {
+  //   int dir = 1;
+  //   List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
+  //   if (!keys.isEmpty()) {
+  //     RowSorter.SortKey sortKey = keys.get(0);
+  //     if (sortKey.getColumn() == column
+  //         && sortKey.getSortOrder() == SortOrder.DESCENDING) {
+  //       dir = -1;
+  //     }
+  //   }
+  //   return dir;
+  // }
 }
