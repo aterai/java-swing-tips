@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
 
   // Set Comparator in TableRowSorter at once depending on the selected radio button
   private void setFileComparators(TableRowSorter<? extends TableModel> sorter) {
-    IntStream.range(0, 3)
+    IntStream.range(0, sorter.getModel().getColumnCount())
         .forEach(i -> sorter.setComparator(i, getFileComparator(i)));
   }
 
