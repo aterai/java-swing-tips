@@ -18,19 +18,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Color color = new Color(0x32_C8_32);
-    List<Icon> activityIcons = Arrays.asList(
-        new ContributionIcon(new Color(0xC8_C8_C8)),
-        new ContributionIcon(color.brighter()),
-        new ContributionIcon(color),
-        new ContributionIcon(color.darker()),
-        new ContributionIcon(color.darker().darker()));
+    List<Icon> activityIcons = ContributionCalendarList.createActivityIcons(color);
 
     LocalDate date = LocalDate.now(ZoneId.systemDefault());
     JList<Contribution> weekList = new ContributionCalendarList(date, activityIcons);
@@ -208,10 +202,9 @@ class CalendarViewListModel extends AbstractListModel<Contribution> {
     this.displayDays = DayOfWeek.values().length * (WEEK_VIEW - 1) + dow;
     this.contribution = new ConcurrentHashMap<>(displayDays);
     Random rnd = new Random();
-    IntStream.range(0, displayDays).forEach(i -> {
-      int iv = rnd.nextInt(5);
-      contribution.put(startDate.plusDays(i), iv);
-    });
+    for (int i = 0; i < displayDays; i++) {
+      contribution.put(startDate.plusDays(i), rnd.nextInt(5));
+    }
   }
 
   @Override public int getSize() {
@@ -298,5 +291,14 @@ class ContributionCalendarList extends JList<Contribution> {
     int activity = c.getActivity();
     String actTxt = activity == 0 ? "No" : Integer.toString(activity);
     return String.format("%s contribution on %s", actTxt, c.getDate());
+  }
+
+  public static List<Icon> createActivityIcons(Color color) {
+    return Arrays.asList(
+        new ContributionIcon(new Color(0xC8_C8_C8)),
+        new ContributionIcon(color.brighter()),
+        new ContributionIcon(color),
+        new ContributionIcon(color.darker()),
+        new ContributionIcon(color.darker().darker()));
   }
 }
