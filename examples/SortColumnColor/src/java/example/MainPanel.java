@@ -29,14 +29,6 @@ public final class MainPanel extends JPanel {
         }
         return c;
       }
-
-      private static boolean isSortingColumn(JTable table, int column) {
-        return Optional.ofNullable(table.getRowSorter())
-            .map(RowSorter::getSortKeys)
-            .flatMap(keys -> keys.stream().findFirst())
-            .map(k -> table.convertColumnIndexToView(k.getColumn()) == column)
-            .orElse(false);
-      }
     };
     table.setAutoCreateRowSorter(true);
 
@@ -46,6 +38,14 @@ public final class MainPanel extends JPanel {
     add(button, BorderLayout.SOUTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static boolean isSortingColumn(JTable table, int column) {
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
+        .map(key -> table.convertColumnIndexToView(key.getColumn()) == column)
+        .orElse(false);
   }
 
   private static TableModel createModel() {
