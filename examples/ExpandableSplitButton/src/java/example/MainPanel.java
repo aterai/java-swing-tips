@@ -310,12 +310,12 @@ class ExpandableSplitButton extends JButton {
     int arrowY = h / 2;
     int aw = 10;
     int ah = 6;
-    int[] xp = { arrowX - aw / 2, arrowX + aw / 2, arrowX };
-    int[] yp = { arrowY - ah / 2, arrowY - ah / 2, arrowY + ah / 2 };
+    int[] xp = {arrowX - aw / 2, arrowX + aw / 2, arrowX};
+    int[] yp = {arrowY - ah / 2, arrowY - ah / 2, arrowY + ah / 2};
     g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     g2.drawPolyline(
-        new int[] { xp[0], xp[2], xp[1] },
-        new int[] { yp[0], yp[2], yp[1] },
+        new int[] {xp[0], xp[2], xp[1]},
+        new int[] {yp[0], yp[2], yp[1]},
         3);
     g2.dispose();
   }
