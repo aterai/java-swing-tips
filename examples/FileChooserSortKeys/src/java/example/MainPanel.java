@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   // private transient List<? extends RowSorter.SortKey> sortKeys = null;
@@ -23,7 +24,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTextArea log = new JTextArea();
-    JFileChooser fileChooser = makeFileChooser();
+    JFileChooser fileChooser = createFileChooser();
     JButton button = new JButton("open") {
       @Override public void updateUI() {
         super.updateUI();
@@ -47,7 +48,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JFileChooser makeFileChooser() {
+  private JFileChooser createFileChooser() {
     return new JFileChooser() {
       private transient AncestorListener handler;
 
@@ -61,12 +62,15 @@ public final class MainPanel extends JPanel {
   }
 
   private static void setTableSortKey(JTable table, int column, SortOrder order) {
-    List<?> sortKeys = table.getRowSorter().getSortKeys();
-    if (column < 0) {
-      table.getRowSorter().setSortKeys(Collections.emptyList());
-    } else if (sortKeys.isEmpty() && column < table.getColumnCount()) {
-      RowSorter.SortKey key = new RowSorter.SortKey(column, order);
-      table.getRowSorter().setSortKeys(Collections.singletonList(key));
+    RowSorter<? extends TableModel> sorter = table.getRowSorter();
+    if (sorter != null) {
+      List<? extends RowSorter.SortKey> sortKeys = sorter.getSortKeys();
+      if (column < 0) {
+        sorter.setSortKeys(Collections.emptyList());
+      } else if (sortKeys.isEmpty() && column < table.getColumnCount()) {
+        RowSorter.SortKey key = new RowSorter.SortKey(column, order);
+        sorter.setSortKeys(Collections.singletonList(key));
+      }
     }
   }
 
