@@ -18,7 +18,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setCellSelectionEnabled(true);
@@ -36,11 +36,11 @@ public final class MainPanel extends JPanel {
     initMap(table, "descendant", "ctrl DOWN", SortOrder.DESCENDING);
     initMap(table, "unsorted", "F9", SortOrder.UNSORTED);
     add(new JScrollPane(table));
-    add(new JScrollPane(new JTextArea(makeHelp())));
+    add(new JScrollPane(new JTextArea(createHelp())));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String makeHelp() {
+  private static String createHelp() {
     return String.join("\n",
         "JTableHeader, toggleSortOrder, SPACE(default)",
         "JTableHeader, selectColumnToLeft, LEFT(default)",
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     );
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -106,9 +106,10 @@ public final class MainPanel extends JPanel {
   }
 
   private static void sort(JTable table, int col, SortOrder order) {
-    if (col >= 0) {
+    RowSorter<? extends TableModel> sorter = table.getRowSorter();
+    if (sorter != null && col >= 0) {
       RowSorter.SortKey sortKey = new RowSorter.SortKey(col, order);
-      table.getRowSorter().setSortKeys(Collections.singletonList(sortKey));
+      sorter.setSortKeys(Collections.singletonList(sortKey));
     }
   }
 

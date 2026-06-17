@@ -174,8 +174,9 @@ class SortingLayerUI extends LayerUI<JScrollPane> {
   }
 
   private static int getSortingViewColumnIndex(JTable table) {
-    return table.getRowSorter().getSortKeys().stream()
-        .findFirst()
+    return Optional.ofNullable(table.getRowSorter())
+        .map(RowSorter::getSortKeys)
+        .flatMap(keys -> keys.stream().findFirst())
         .map(RowSorter.SortKey::getColumn)
         .map(table::convertColumnIndexToView)
         .orElse(-1);
