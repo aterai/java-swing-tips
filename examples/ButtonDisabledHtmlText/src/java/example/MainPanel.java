@@ -21,15 +21,18 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("Button.disabledText", Color.RED);
-    String html = "<html>html <span style='color:#0000ff'>tag";
-    JButton button0 = makeButton(html);
-    DisableInputLayerUI<AbstractButton> layer1 = new DisableInputLayerUI<>();
-    JButton button2 = makeButton(html);
-
     JPanel p = new JPanel(new GridLayout(0, 1, 8, 8));
-    p.add(makeTitledPanel("Default", button0));
-    p.add(makeTitledPanel("JLayer1", new JLayer<>(makeButton(html), layer1)));
-    p.add(makeTitledPanel("JLayer2", new JLayer<>(button2, new DisabledHtmlTextLayerUI<>())));
+    String html = "<html>html <span style='color:#0000ff'>tag";
+    JButton button0 = createButton(html);
+    p.add(createTitledPanel("Default", button0));
+
+    JButton button1 = createButton(html);
+    DisableInputLayerUI<AbstractButton> layer1 = new DisableInputLayerUI<>();
+    p.add(createTitledPanel("JLayer1", new JLayer<>(button1, layer1)));
+
+    JButton button2 = createButton(html);
+    LayerUI<JButton> layer2 = new DisabledHtmlTextLayerUI<>();
+    p.add(createTitledPanel("JLayer2", new JLayer<>(button2, layer2)));
 
     JCheckBox check = new JCheckBox("setEnabled", true);
     check.addActionListener(e -> {
@@ -51,7 +54,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeButton(String title) {
+  private static JButton createButton(String title) {
     JPopupMenu pop = new JPopupMenu();
     pop.add(title);
     JButton button = new JButton(title);
@@ -64,7 +67,7 @@ public final class MainPanel extends JPanel {
     return button;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     Box box = Box.createHorizontalBox();
     box.add(new JLabel(title + ": "));
     box.add(c);
@@ -160,9 +163,11 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       Component view = ((JLayer<?>) c).getView();
       if (isBlocking) {
         Dimension d = view.getSize();
+        int w = d.width;
+        int h = d.height;
         BufferedImage img = Optional.ofNullable(buf)
-            .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
-            .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+            .filter(bi -> bi.getWidth() == w && bi.getHeight() == h)
+            .orElseGet(() -> new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB));
         Graphics2D g2 = img.createGraphics();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .25f));
         // NimbusLookAndFeel bug???: super.paint(g2, c);
@@ -231,7 +236,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -239,7 +244,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
