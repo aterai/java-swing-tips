@@ -46,7 +46,7 @@ public final class MainPanel {
     }.execute();
   }
 
-  private static Component makeUI() {
+  private static Component createUI() {
     JLabel label = new JLabel("Draggable Label (@title@)");
     DragWindowListener dwl = new DragWindowListener();
     label.addMouseListener(dwl);
@@ -92,7 +92,7 @@ public final class MainPanel {
   }
 
   public static void showFrame(JFrame frame) {
-    frame.getContentPane().add(makeUI());
+    frame.getContentPane().add(createUI());
     frame.setMinimumSize(new Dimension(100, 100));
     frame.setSize(320, 240);
     frame.setLocationRelativeTo(null);
@@ -107,22 +107,22 @@ public final class MainPanel {
   //
   //   JMenuItem menuItem = new JMenuItem("NNN");
   //   menuItem.setMnemonic(KeyEvent.VK_N);
-  //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
+  //   menuItem.setAccelerator(KeyStroke.getKeyStroke("alt N"));
   //   menu.add(menuItem);
   //
   //   menuItem = new JMenuItem("MMM");
   //   menuItem.setMnemonic(KeyEvent.VK_M);
-  //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_DOWN_MASK));
+  //   menuItem.setAccelerator(KeyStroke.getKeyStroke("alt M"));
   //   menu.add(menuItem);
   //
   //   menuItem = new JMenuItem("UUU");
   //   menuItem.setMnemonic(KeyEvent.VK_U);
-  //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.ALT_DOWN_MASK));
+  //   menuItem.setAccelerator(KeyStroke.getKeyStroke("alt U"));
   //   menu.add(menuItem);
   //
   //   menuItem = new JMenuItem("III");
   //   menuItem.setMnemonic(KeyEvent.VK_I);
-  //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.ALT_DOWN_MASK));
+  //   menuItem.setAccelerator(KeyStroke.getKeyStroke("alt I"));
   //   menu.add(menuItem);
   //
   //   return menuBar;

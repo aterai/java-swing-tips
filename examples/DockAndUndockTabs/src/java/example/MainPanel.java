@@ -203,7 +203,6 @@ class DnDTabbedPane extends JTabbedPane {
     return dropLocation;
   }
 
-  // public Object updateTabDropLocation(DropLocation location, Object state, boolean forDrop) {
   public void updateTabDropLocation(DnDTabbedPane.DropLocation location, boolean forDrop) {
     DnDTabbedPane.DropLocation old = dropLocation;
     if (Objects.isNull(location) || !forDrop) {

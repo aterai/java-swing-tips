@@ -16,7 +16,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       private transient RowHeaderRenderer handler;
       @Override public void updateUI() {
         getColumnModel().getColumn(0).setCellRenderer(null);
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"ccc", 92, true}, {"ddd", 0, false},
@@ -151,7 +151,10 @@ class ComponentIcon implements Icon {
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    SwingUtilities.paintComponent(g, cmp, c.getParent(), x, y, getIconWidth(), getIconHeight());
+    int iconWidth = getIconWidth();
+    int iconHeight = getIconHeight();
+    Container parent = c.getParent();
+    SwingUtilities.paintComponent(g, cmp, parent, x, y, iconWidth, iconHeight);
   }
 
   @Override public int getIconWidth() {

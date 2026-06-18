@@ -46,11 +46,11 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
-    label3.setDisabledIcon(makeDisabledIcon(image));
+    }).orElseGet(MainPanel::createMissingImage);
+    label3.setDisabledIcon(createDisabledIcon(image));
 
     JCheckBox check = new JCheckBox("setEnabled");
     check.addActionListener(e -> {
@@ -69,7 +69,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
@@ -80,12 +80,13 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  private static Icon makeDisabledIcon(Image img) {
+  private static Icon createDisabledIcon(Image img) {
     // BufferedImage source = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     // Graphics g = source.createGraphics();
     // g.drawImage(img, 0, 0, null);
     // g.dispose();
-    // ColorConvertOp cc = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+    // ColorConvertOp cc = new ColorConvertOp(
+    //     ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
     // BufferedImage dst = cc.filter(source, null);
     // return new ImageIcon(dst);
     return new ImageIcon(GrayFilter.createDisabledImage(img));

@@ -107,7 +107,8 @@ class SpinnerRenderer implements TableCellRenderer {
   private final SpinnerPanel renderer = new SpinnerPanel();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+    Color bg = isSelected ? table.getSelectionBackground() : table.getBackground();
+    renderer.setBackground(bg);
     renderer.getSpinner().setValue(value);
     return renderer;
   }
@@ -367,8 +368,10 @@ class ButtonsEditor extends AbstractCellEditor implements TableCellEditor {
 //   }
 //
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//     this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
-//     label.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+//     Color bg = isSelected ? table.getSelectionBackground() : table.getBackground();
+//     this.setBackground(bg);
+//     Color fg = isSelected ? table.getSelectionForeground() : table.getForeground();
+//     label.setForeground(fg);
 //     label.setText(Objects.toString(value, ""));
 //     return this;
 //   }

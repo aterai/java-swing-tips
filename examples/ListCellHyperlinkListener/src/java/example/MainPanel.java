@@ -55,7 +55,8 @@ public final class MainPanel extends JPanel {
     //     if (idx >= 0) {
     //       SiteItem item = list.getModel().getElementAt(idx);
     //       ListCellRenderer<? super SiteItem> renderer = list.getCellRenderer();
-    //       Component c = renderer.getListCellRendererComponent(list, item, idx, false, false);
+    //       Component c = renderer.getListCellRendererComponent(
+    //           list, item, idx, false, false);
     //       if (c instanceof JEditorPane) {
     //         Rectangle r = list.getCellBounds(idx, idx);
     //         c.setBounds(r);

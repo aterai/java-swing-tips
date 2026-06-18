@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -17,7 +18,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       private final Color evenColor = new Color(0xF5_F5_FF);
       @Override public Component prepareRenderer(TableCellRenderer tcr, int row, int column) {
         Component c = super.prepareRenderer(tcr, row, column);
@@ -48,7 +49,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"Justified", "Default"};
     Object[][] data = {
         {"会社名", ""},
@@ -117,7 +118,8 @@ class JustifiedLabel extends JLabel {
     int w = r.width;
     if (w != prevWidth) {
       prevWidth = w;
-      layout = new TextLayout(getText(), font, g2.getFontRenderContext()).getJustifiedLayout(w);
+      FontRenderContext frc = g2.getFontRenderContext();
+      layout = new TextLayout(getText(), font, frc).getJustifiedLayout(w);
     }
     g2.setPaint(getBackground());
     g2.fillRect(0, 0, getWidth(), getHeight());
@@ -151,7 +153,8 @@ class JustifiedLabel extends JLabel {
 //     Insets ins = getInsets();
 //     int w = getSize().width - ins.left - ins.right;
 //     if (w != prevWidth) {
-//       gvText = getJustifiedGlyphVector(w, getText(), getFont(), g2.getFontRenderContext());
+//       FontRenderContext frc = g2.getFontRenderContext();
+//       gvText = getJustifiedGlyphVector(w, getText(), getFont(), frc);
 //       prevWidth = w;
 //     }
 //     if (Objects.nonNull(gvText)) {

@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
     di = new DraggableImageMouseListener(new ImageIcon(image));
     addMouseListener(di);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -187,7 +187,9 @@ class DraggableImageMouseListener extends MouseAdapter {
     Point pt = e.getPoint();
     if (outer.contains(pt) && !inner.contains(pt)) {
       rotatorHover = true;
-      startRadian = radian - Math.atan2(e.getY() - centerPt.getY(), e.getX() - centerPt.getX());
+      double y = e.getY() - centerPt.getY();
+      double x = e.getX() - centerPt.getX();
+      startRadian = radian - Math.atan2(y, x);
       e.getComponent().repaint();
     } else if (inner.contains(pt)) {
       moverHover = true;

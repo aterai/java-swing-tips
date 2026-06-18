@@ -13,16 +13,16 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1, 5, 5));
-    add(makeTabbedPane("default", new JTabbedPane()));
-    add(makeTabbedPane("shouldPadTabRun: false", makeTabbedPane(false)));
-    add(makeTabbedPane("shouldPadTabRun: true", makeTabbedPane(true)));
+    add(createTabbedPane("default", new JTabbedPane()));
+    add(createTabbedPane("shouldPadTabRun: false", createTabbedPane(false)));
+    add(createTabbedPane("shouldPadTabRun: true", createTabbedPane(true)));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTabbedPane(boolean shouldPadTabRun) {
+  private static JTabbedPane createTabbedPane(boolean shouldPadTabRun) {
     return new JTabbedPane() {
       @Override public void updateUI() {
         super.updateUI();
@@ -45,12 +45,12 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JTabbedPane makeTabbedPane(String title, JTabbedPane tabbedPane) {
-    tabbedPane.addTab("111111111111111111111111", new ColorIcon(Color.RED), new JLabel(title));
-    tabbedPane.addTab("2", new ColorIcon(Color.GREEN), new JLabel());
-    tabbedPane.addTab("33333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
-    tabbedPane.addTab("444444444444", new ColorIcon(Color.ORANGE), new JLabel());
-    return tabbedPane;
+  private static JTabbedPane createTabbedPane(String title, JTabbedPane tabs) {
+    tabs.addTab("111111111111111111111111", new ColorIcon(Color.RED), new JLabel(title));
+    tabs.addTab("2", new ColorIcon(Color.GREEN), new JLabel());
+    tabs.addTab("33333333333333333333333333333", new ColorIcon(Color.BLUE), new JLabel());
+    tabs.addTab("444444444444", new ColorIcon(Color.ORANGE), new JLabel());
+    return tabs;
   }
 
   public static void main(String[] args) {
@@ -111,7 +111,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -119,7 +119,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

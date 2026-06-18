@@ -258,7 +258,7 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
     }
   }
 
-  // protected static <E extends CheckBoxItem> String getCheckedItemString(ListModel<E> model) {
+  // static <E extends CheckBoxItem> String getCheckedItemString(ListModel<E> model) {
   //   return IntStream.range(0, model.getSize())
   //       .mapToObj(model::getElementAt)
   //       .filter(CheckBoxItem::isSelected)

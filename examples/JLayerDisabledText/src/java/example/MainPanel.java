@@ -23,17 +23,17 @@ public final class MainPanel extends JPanel {
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-    add(makeButtonPanel());
+    add(createButtonPanel());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPanel makeButtonPanel() {
+  private static JPanel createButtonPanel() {
     UIManager.put("Button.disabledText", Color.RED);
-    JButton button1 = makeButton("Default");
-    JButton button2 = makeButton("setForeground");
+    JButton button1 = createButton("Default");
+    JButton button2 = createButton("setForeground");
     DisableInputLayerUI<AbstractButton> layer3 = new DisableInputLayerUI<>();
-    JButton button4 = makeButton("<html>html <font color='red'>tag");
+    JButton button4 = createButton("<html>html <font color='red'>tag");
     DisableInputLayerUI<AbstractButton> layer5 = new DisableInputLayerUI<>();
 
     JCheckBox check = new JCheckBox("setEnabled", true);
@@ -51,12 +51,12 @@ public final class MainPanel extends JPanel {
     p1.setBorder(BorderFactory.createTitledBorder("setEnabled"));
     p1.add(button1);
     p1.add(button2);
-    p1.add(new JLayer<>(makeButton("JLayer"), layer3));
+    p1.add(new JLayer<>(createButton("JLayer"), layer3));
 
     JPanel p2 = new JPanel();
     p2.setBorder(BorderFactory.createTitledBorder("html"));
     p2.add(button4);
-    p2.add(new JLayer<>(makeButton("<html>JLayer <font color='#0000ff'>html"), layer5));
+    p2.add(new JLayer<>(createButton("<html>JLayer <font color='#0000ff'>html"), layer5));
 
     // JPanel p3 = new JPanel();
     // p3.setBorder(BorderFactory.createTitledBorder("Focus test"));
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JButton makeButton(String title) {
+  private static JButton createButton(String title) {
     JPopupMenu pop = new JPopupMenu();
     pop.add(title);
     JButton button = new JButton(title);
@@ -189,9 +189,11 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       Component view = ((JLayer<?>) c).getView();
       if (isBlocking) {
         Dimension d = view.getSize();
+        int w = d.width;
+        int h = d.height;
         BufferedImage img = Optional.ofNullable(buf)
-            .filter(bi -> bi.getWidth() == d.width && bi.getHeight() == d.height)
-            .orElseGet(() -> new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB));
+            .filter(bi -> bi.getWidth() == w && bi.getHeight() == h)
+            .orElseGet(() -> new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB));
 
         Graphics2D g2 = img.createGraphics();
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .25f));
@@ -303,7 +305,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -311,7 +313,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

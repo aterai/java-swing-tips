@@ -171,7 +171,8 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
     int lineLength = endOffset - startOffset;
     int contentLength = content.length();
     endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
-    setCharacterAttributes(startOffset, lineLength, getStyle(StyleContext.DEFAULT_STYLE), true);
+    Style style = getStyle(StyleContext.DEFAULT_STYLE);
+    setCharacterAttributes(startOffset, lineLength, style, true);
     checkForTokens(content, startOffset, endOffset);
   }
 

@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     combo.setModel(new DefaultComboBoxModel<>(cm));
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        sorter.setRowFilter(makeRowFilter(Objects.toString(e.getItem())));
+        sorter.setRowFilter(createRowFilter(Objects.toString(e.getItem())));
       }
     });
 
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
   }
 
   @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  public RowFilter<TableModel, Integer> makeRowFilter(String selected) {
+  public RowFilter<TableModel, Integer> createRowFilter(String selected) {
     switch (selected) {
       case "within 3 days before":
         return new LocalDateFilter(realLocalDate.minusDays(3).plusDays(1), realLocalDate, 0);
@@ -229,7 +229,7 @@ class LocalDateFilter extends RowFilter<TableModel, Integer> {
   //   return false;
   // }
 
-  // protected boolean include(Entry<? extends TableModel, ? extends Integer> entry, int index) {
+  // boolean include(Entry<? extends TableModel, ? extends Integer> entry, int index) {
   //   Object v = entry.getValue(index);
   //   if (v instanceof LocalDate) {
   //     LocalDate date = (LocalDate) v;

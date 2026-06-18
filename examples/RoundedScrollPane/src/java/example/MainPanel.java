@@ -41,15 +41,15 @@ public final class MainPanel extends JPanel {
     UIManager.put("ScrollBar.track", BACKGROUND);
     JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
     p.setOpaque(true);
-    p.add(makeComboBox());
+    p.add(createComboBox());
     add(p, BorderLayout.NORTH);
-    add(makeScrollPane(makeTree()));
+    add(createScrollPane(createTree()));
     setOpaque(true);
     setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox() {
+  private static JComboBox<String> createComboBox() {
     UIManager.put("ComboBox.foreground", FOREGROUND);
     UIManager.put("ComboBox.background", BACKGROUND);
     UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
@@ -58,10 +58,10 @@ public final class MainPanel extends JPanel {
     UIManager.put("ComboBox.buttonBackground", FOREGROUND);
     UIManager.put("ComboBox.buttonHighlight", FOREGROUND);
     UIManager.put("ComboBox.buttonShadow", FOREGROUND);
-    return new RoundedComboBox<>(makeModel());
+    return new RoundedComboBox<>(createModel());
   }
 
-  private static JTree makeTree() {
+  private static JTree createTree() {
     JTree tree = new JTree();
     int row = 0;
     while (row < tree.getRowCount()) {
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
     return tree;
   }
 
-  private static JScrollPane makeScrollPane(Component view) {
+  private static JScrollPane createScrollPane(Component view) {
     JScrollPane scroll = new JScrollPane(view) {
       @Override public void updateUI() {
         super.updateUI();
@@ -84,7 +84,7 @@ public final class MainPanel extends JPanel {
     return scroll;
   }
 
-  private static DefaultComboBoxModel<String> makeModel() {
+  private static DefaultComboBoxModel<String> createModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("333333");
     model.addElement("aaa");
@@ -423,7 +423,8 @@ class WithoutArrowButtonScrollBarUI extends BasicScrollBarUI {
       BoundedRangeModel m = ((JScrollBar) c).getModel();
       if (m.getMaximum() - m.getMinimum() - m.getExtent() > 0) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(getThumbColor());
         g2.fillRoundRect(r.x + 1, r.y + 1, r.width - 2, r.height - 2, 10, 10);
         g2.dispose();

@@ -152,7 +152,8 @@ final class MenuBarUtils {
     p.add(new JMenuItem(new ExitAction()));
   }
 
-  // public static void searchAllMenuElements(MenuElement me, List<JRadioButtonMenuItem> list) {
+  // public static void searchAllMenuElements(
+  //     MenuElement me, List<JRadioButtonMenuItem> list) {
   //   if (me instanceof JRadioButtonMenuItem) {
   //     list.add((JRadioButtonMenuItem) me);
   //   }

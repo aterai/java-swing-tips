@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
   //   menuBar.add(menu);
   //   JMenuItem menuItem = new JMenuItem("New");
   //   menuItem.setMnemonic(KeyEvent.VK_N);
-  //   menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.ALT_DOWN_MASK));
+  //   menuItem.setAccelerator(KeyStroke.getKeyStroke("alt N"));
   //   menuItem.setActionCommand("new");
   //   menuItem.addActionListener(new ActionListener() {
   //     @Override public void actionPerformed(ActionEvent e) {

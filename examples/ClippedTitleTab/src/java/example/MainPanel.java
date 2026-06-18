@@ -35,8 +35,8 @@ public final class MainPanel extends JPanel {
       }
     };
     List<? extends JTabbedPane> list = Arrays.asList(
-        makeTabbedPane(new JTabbedPane()),
-        makeTabbedPane(tabbedPane));
+        createTabbedPane(new JTabbedPane()),
+        createTabbedPane(tabbedPane));
     JPanel p = new JPanel(new GridLayout(2, 1));
     list.forEach(p::add);
 
@@ -52,14 +52,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTabbedPane makeTabbedPane(JTabbedPane tabbedPane) {
-    // tabbedPane.setTabPlacement(SwingConstants.RIGHT);
-    // tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    tabbedPane.addTab("1111111111111111111111111111", new JLabel("1"));
-    tabbedPane.addTab("2", new JLabel("2"));
-    tabbedPane.addTab("33333333333333333333333333333333333333333333", new JLabel("3"));
-    tabbedPane.addTab("444444444444", new JLabel("4"));
-    return tabbedPane;
+  private static JTabbedPane createTabbedPane(JTabbedPane tabs) {
+    // tabs.setTabPlacement(SwingConstants.RIGHT);
+    // tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    tabs.addTab("1111111111111111111111111111", new JLabel("1"));
+    tabs.addTab("2", new JLabel("2"));
+    tabs.addTab("33333333333333333333333333333333333333333333", new JLabel("3"));
+    tabs.addTab("444444444444", new JLabel("4"));
+    return tabs;
   }
 
   public static void main(String[] args) {
@@ -91,8 +91,6 @@ class BasicClippedTitleTabbedPaneUI extends BasicTabbedPaneUI {
   // protected Insets contentBorderInsets;
 
   @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-    // Insets i = tabPane.getInsets();
-    // int w = tabPane.getWidth() - tabAreaInsets.left - tabAreaInsets.right - i.left - i.right;
     Rectangle r = SwingUtilities.calculateInnerArea(tabPane, null);
     r.width -= tabAreaInsets.left + tabAreaInsets.right;
     int tabWidth;

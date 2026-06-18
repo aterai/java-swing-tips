@@ -20,8 +20,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // if (tabbedPane.getUI() instanceof WindowsTabbedPaneUI) {
-    //   tabbedPane.setUI(new WindowsTabbedPaneUI() {
+    // if (tabs.getUI() instanceof WindowsTabbedPaneUI) {
+    //   tabs.setUI(new WindowsTabbedPaneUI() {
     //     @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
     //       int defaultWidth = super.calculateTabWidth(tabPlacement, tabIndex, metrics);
     //       int selectedIndex = tabPane.getSelectedIndex();
@@ -55,27 +55,27 @@ public final class MainPanel extends JPanel {
     List<String> icons = Arrays.asList(
         "wi0009-16.png", "wi0054-16.png", "wi0062-16.png",
         "wi0063-16.png", "wi0124-16.png", "wi0126-16.png");
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-    icons.forEach(s -> tabbedPane.addTab(s, new ImageIcon(makeImage(s)), new JLabel(s), s));
-    tabbedPane.setComponentPopupMenu(new PinTabPopupMenu());
-    add(tabbedPane);
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    icons.forEach(s -> tabs.addTab(s, new ImageIcon(createImage(s)), new JLabel(s), s));
+    tabs.setComponentPopupMenu(new PinTabPopupMenu());
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeImage(String path) {
+  private static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource("example/" + path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
