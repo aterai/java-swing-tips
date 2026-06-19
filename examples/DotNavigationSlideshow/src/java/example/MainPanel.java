@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +49,8 @@ public final class MainPanel extends JPanel {
     JPanel overlay = new JPanel(new BorderLayout());
     overlay.setOpaque(false);
     overlay.add(dotWrapper);
-    overlay.add(makeArrowButton(true), BorderLayout.WEST);
-    overlay.add(makeArrowButton(false), BorderLayout.EAST);
+    overlay.add(createArrowButton(true), BorderLayout.WEST);
+    overlay.add(createArrowButton(false), BorderLayout.EAST);
 
     layeredPane.add(overlay, JLayeredPane.PALETTE_LAYER);
 
@@ -61,7 +62,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JButton makeArrowButton(boolean moveRight) {
+  private JButton createArrowButton(boolean moveRight) {
     JButton button = new HoverArrowButton(moveRight);
     button.addActionListener(e -> {
       int totalImages = images.size();
@@ -78,13 +79,13 @@ public final class MainPanel extends JPanel {
     int totalImages = images.size();
     ButtonGroup group = new ButtonGroup();
     for (int i = 0; i < totalImages; i++) {
-      JToggleButton dot = makeDotButton(i);
+      JToggleButton dot = createDotButton(i);
       group.add(dot);
       dotPanel.add(dot);
     }
   }
 
-  private JToggleButton makeDotButton(int index) {
+  private JToggleButton createDotButton(int index) {
     JToggleButton dot = new JToggleButton(new DotIcon(), index == 0);
     dot.setBorderPainted(false);
     dot.setContentAreaFilled(false);
@@ -335,27 +336,31 @@ class HoverArrowButton extends JButton {
     if (isHovered) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-      Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
-      int arrowHeight = Math.min(25, rect.height / 2);
-      int arrowWidth = arrowHeight / 2;
-      int centerX = (int) rect.getCenterX();
-      int centerY = (int) rect.getCenterY();
-      int startX = centerX - (arrowWidth / 2);
-
-      int[] xpt;
-      int[] ypt;
-      if (isLeft) { // <
-        xpt = new int[] {startX + arrowWidth, startX, startX + arrowWidth};
-      } else { // >
-        xpt = new int[] {startX, startX + arrowWidth, startX};
-      }
-      ypt = new int[] {centerY - arrowHeight / 2, centerY, centerY + arrowHeight / 2};
-
       g2.setColor(Color.WHITE);
       g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-      g2.drawPolyline(xpt, ypt, 3);
+      Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
+      g2.draw(createArrowPath(rect, isLeft));
       g2.dispose();
     }
+  }
+
+  private static Path2D createArrowPath(Rectangle rect, boolean left) {
+    double arrowHeight = Math.min(25d, rect.height / 2d);
+    double arrowWidth = arrowHeight / 2d;
+    double centerX = rect.getCenterX();
+    double centerY = rect.getCenterY();
+    double startX = centerX - (arrowWidth / 2d);
+
+    Path2D path = new Path2D.Double();
+    if (left) { // <
+      path.moveTo(startX + arrowWidth, centerY - arrowHeight / 2);
+      path.lineTo(startX, centerY);
+      path.lineTo(startX + arrowWidth, centerY + arrowHeight / 2);
+    } else { // >
+      path.moveTo(startX, centerY - arrowHeight / 2);
+      path.lineTo(startX + arrowWidth, centerY);
+      path.lineTo(startX, centerY + arrowHeight / 2);
+    }
+    return path;
   }
 }

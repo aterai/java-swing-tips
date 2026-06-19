@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -303,20 +304,23 @@ class ExpandableSplitButton extends JButton {
 
   private void paintArrow(Graphics g, float progress, int h) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     Color hover = UIManager.getColor("List.selectionForeground");
     g2.setColor(mouseOnArrow ? getForeground() : hover.darker());
-    int arrowX = collapsedWidth + Math.round(EXTRA_WIDTH * progress) / 2;
-    int arrowY = h / 2;
-    int aw = 10;
-    int ah = 6;
-    int[] xp = {arrowX - aw / 2, arrowX + aw / 2, arrowX};
-    int[] yp = {arrowY - ah / 2, arrowY - ah / 2, arrowY + ah / 2};
+
+    float arrowX = collapsedWidth + (EXTRA_WIDTH * progress) / 2f;
+    float arrowY = h / 2f;
+    float aw = 10f;
+    float ah = 6f;
+
+    Path2D path = new Path2D.Float();
+    path.moveTo(arrowX - aw / 2f, arrowY - ah / 2f); // LeftEnd
+    path.lineTo(arrowX, arrowY + ah / 2f); // Tip
+    path.lineTo(arrowX + aw / 2f, arrowY - ah / 2f); // RightEnd
     g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-    g2.drawPolyline(
-        new int[] {xp[0], xp[2], xp[1]},
-        new int[] {yp[0], yp[2], yp[1]},
-        3);
+    g2.draw(path);
+
     g2.dispose();
   }
 
