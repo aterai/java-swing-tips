@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -69,19 +70,40 @@ class TriangleUI extends BasicSliderUI {
 
   @Override public void paintThumb(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setColor(new Color(40, 44, 52));
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setColor(new Color(0x28_2C_34));
+
     Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
-    int h = 8;
-    // int x = thumbRect.x + (thumbRect.width - w) / 2;
-    // int y = isUpward ? thumbRect.y : thumbRect.y + thumbRect.height - h;
-    int x = thumbRect.x; // + (thumbRect.width - w) / 2;
-    int y = isUpward ? r.y : r.y + r.height - h;
-    int[] xps = {x, x + thumbRect.width / 2, x + thumbRect.width};
-    int[] yps = isUpward ? new int[] {y + h, y, y + h} : new int[] {y, y + h, y};
-    g2.fillPolygon(xps, yps, xps.length);
+    double h = 8d;
+    double leftX = thumbRect.getX();
+    double centerX = leftX + thumbRect.width / 2d;
+    double rightX = leftX + thumbRect.width;
+    double topY = isUpward ? r.getY() : r.y + r.height - h;
+    double bottomY = topY + h;
+
+    Path2D triangle = new Path2D.Double();
+    triangle.moveTo(leftX, isUpward ? bottomY : topY);
+    triangle.lineTo(centerX, isUpward ? topY : bottomY);
+    triangle.lineTo(rightX, isUpward ? bottomY : topY);
+    triangle.closePath();
+
+    g2.fill(triangle);
     g2.dispose();
   }
+
+  // @Override public void paintThumb(Graphics g) {
+  //   Graphics2D g2 = (Graphics2D) g.create();
+  //   g2.setColor(new Color(40, 44, 52));
+  //   Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
+  //   int h = 8;
+  //   int x = thumbRect.x; // + (thumbRect.width - w) / 2;
+  //   int y = isUpward ? r.y : r.y + r.height - h;
+  //   int[] xps = {x, x + thumbRect.width / 2, x + thumbRect.width};
+  //   int[] yps = isUpward ? new int[] {y + h, y, y + h} : new int[] {y, y + h, y};
+  //   g2.fillPolygon(xps, yps, xps.length);
+  //   g2.dispose();
+  // }
 }
 
 class RangeSliderPanel extends JPanel {
@@ -141,10 +163,10 @@ class RangeSliderPanel extends JPanel {
 class RangeBar extends JLabel {
   public static final int BAR_HEIGHT = 24;
   public static final int PAD = 20;
-  private static final Color MAJOR_TICK_COLOR = new Color(180, 180, 185);
-  private static final Color MINOR_TICK_COLOR = new Color(210, 210, 215);
-  private static final Color TRACK_BGC = new Color(230, 230, 235);
-  private static final Color RANGE_COLOR = new Color(0, 180, 255, 120);
+  private static final Color MAJOR_TICK_COLOR = new Color(0xB4_B4_B9);
+  private static final Color MINOR_TICK_COLOR = new Color(0xD2_D2_D7);
+  private static final Color TRACK_BGC = new Color(0xE6_E6_EB);
+  private static final Color RANGE_COLOR = new Color(0x78_00_B4_FF, true);
   private final JSlider low;
   private final JSlider up;
   private final Point dragStartPt = new Point(0, 0);
