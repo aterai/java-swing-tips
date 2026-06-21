@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST CircularSpinner" />
+  <property name="jnlp.Name"     value="CircularSpinner" />
+  <property name="jnlp.name"     value="circularspinner" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/circularspinner/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/CircularSpinner.html" />
+</project>

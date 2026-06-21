@@ -64,7 +64,7 @@ Others
 ---------------
 - [Graphics(71)](https://ateraimemo.com/en/Swing/_Graphics.html)
 - [LayoutManager(57)](https://ateraimemo.com/en/Swing/_Layout.html)
-- [Animation(56)](https://ateraimemo.com/en/Swing/_Animation.html)
+- [Animation(57)](https://ateraimemo.com/en/Swing/_Animation.html)
 - [Border(50)](https://ateraimemo.com/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/en/Swing/_LookAndFeel.html)
