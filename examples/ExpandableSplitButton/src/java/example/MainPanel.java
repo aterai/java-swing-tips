@@ -309,7 +309,7 @@ class ExpandableSplitButton extends JButton {
     Color hover = UIManager.getColor("List.selectionForeground");
     g2.setColor(mouseOnArrow ? getForeground() : hover.darker());
 
-    float arrowX = collapsedWidth + (EXTRA_WIDTH * progress) / 2f;
+    float arrowX = collapsedWidth + EXTRA_WIDTH * progress / 2f;
     float arrowY = h / 2f;
     float aw = 10f;
     float ah = 6f;
