@@ -163,8 +163,8 @@ abstract class AbstractCircularSpinner extends JComponent {
 
 // Intermediate abstract class that summarizes angle calculations
 // for simple systems (uniform rotation)
-abstract class SimpleSpinner extends AbstractCircularSpinner {
-  protected SimpleSpinner(float size, float stroke) {
+abstract class AbstractSimpleSpinner extends AbstractCircularSpinner {
+  protected AbstractSimpleSpinner(float size, float stroke) {
     super(size, stroke);
   }
 
@@ -176,12 +176,12 @@ abstract class SimpleSpinner extends AbstractCircularSpinner {
 
 // Intermediate abstract class that summarizes angle calculations
 // for Material system (stretch/contract/rotate)
-abstract class MaterialSpinner extends AbstractCircularSpinner {
+abstract class AbstractMaterialSpinner extends AbstractCircularSpinner {
   private static final float CYCLE_DURATION = 1332f;
   private static final float MAX_SWEEP = 270f;
   private static final float MIN_SWEEP = 15f;
 
-  protected MaterialSpinner(float size, float stroke) {
+  protected AbstractMaterialSpinner(float size, float stroke) {
     super(size, stroke);
   }
 
@@ -215,7 +215,7 @@ abstract class MaterialSpinner extends AbstractCircularSpinner {
 }
 
 // 1. Constant speed rotation × line drawing
-class SimpleStrokeSpinner extends SimpleSpinner {
+class SimpleStrokeSpinner extends AbstractSimpleSpinner {
   protected SimpleStrokeSpinner(float size, float stroke) {
     super(size, stroke);
   }
@@ -231,7 +231,7 @@ class SimpleStrokeSpinner extends SimpleSpinner {
 }
 
 // 2. Constant speed rotation × Area drawing
-class SimpleAreaSpinner extends SimpleSpinner {
+class SimpleAreaSpinner extends AbstractSimpleSpinner {
   protected SimpleAreaSpinner(float size, float stroke) {
     super(size, stroke);
   }
@@ -246,7 +246,7 @@ class SimpleAreaSpinner extends SimpleSpinner {
 }
 
 // 3. Stretch/contract rotation × line drawing
-class MaterialStrokeSpinner extends MaterialSpinner {
+class MaterialStrokeSpinner extends AbstractMaterialSpinner {
   protected MaterialStrokeSpinner(float size, float stroke) {
     super(size, stroke);
   }
@@ -262,7 +262,7 @@ class MaterialStrokeSpinner extends MaterialSpinner {
 }
 
 // 4. Stretch/contract rotation × Area drawing
-class MaterialAreaSpinner extends MaterialSpinner {
+class MaterialAreaSpinner extends AbstractMaterialSpinner {
   protected MaterialAreaSpinner(float size, float stroke) {
     super(size, stroke);
   }
