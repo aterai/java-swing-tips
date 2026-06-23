@@ -159,8 +159,8 @@ public final class MainPanel extends JPanel {
 class BaseScrollBarLayerUI extends LayerUI<JPanel> {
   private boolean dragging;
 
-  public void setDragging(boolean dragging) {
-    this.dragging = dragging;
+  public void setDragging(boolean isDraggingNow) {
+    this.dragging = isDraggingNow;
   }
 
   public boolean isDragging() {
