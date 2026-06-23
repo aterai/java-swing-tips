@@ -47,23 +47,32 @@ public final class MainPanel extends JPanel {
 
 // A value object that only holds the starting angle
 // and sweep angle of the arc for one frame.
-final class ArcAngles {
-  /* default */ final float startAngle;
-  /* default */ final float sweepAngle;
+// record ArcAngles(float startAngle, float sweepAngle) {}
+class ArcAngles {
+  private final float startAngle;
+  private final float sweepAngle;
 
-  /* default */ ArcAngles(float startAngle, float sweepAngle) {
+  protected ArcAngles(float startAngle, float sweepAngle) {
     this.startAngle = startAngle;
     this.sweepAngle = sweepAngle;
+  }
+
+  public float getStartAngle() {
+    return startAngle;
+  }
+
+  public float getSweepAngle() {
+    return sweepAngle;
   }
 }
 
 // An abstract class that integrates size management
 // and timer management common to the four spinners.
 abstract class AbstractCircularSpinner extends JComponent {
-  protected final float size;
-  protected final float stroke;
-  protected final Timer timer = new Timer(16, e -> repaint());
-  protected final long startTime;
+  private final float size;
+  private final float stroke;
+  private final long startTime;
+  private final Timer timer = new Timer(16, e -> repaint());
 
   protected AbstractCircularSpinner(float size, float stroke) {
     super();
@@ -81,6 +90,14 @@ abstract class AbstractCircularSpinner extends JComponent {
   @Override public void removeNotify() {
     super.removeNotify();
     timer.stop();
+  }
+
+  protected float getDiameter() {
+    return size;
+  }
+
+  protected float getStroke() {
+    return stroke;
   }
 
   // Template method body
@@ -205,10 +222,11 @@ class SimpleStrokeSpinner extends SimpleSpinner {
 
   @Override protected void paintArc(Graphics2D g2, float x, float y, ArcAngles arc) {
     g2.setStroke(new BasicStroke(
-        stroke, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        getStroke(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     g2.setColor(new Color(0x34_98_DB));
     g2.draw(new Arc2D.Float(
-        x, y, size, size, arc.startAngle, arc.sweepAngle, Arc2D.OPEN));
+        x, y, getDiameter(), getDiameter(),
+        arc.getStartAngle(), arc.getSweepAngle(), Arc2D.OPEN));
   }
 }
 
@@ -223,7 +241,7 @@ class SimpleAreaSpinner extends SimpleSpinner {
     g2.setColor(Color.LIGHT_GRAY);
     g2.fill(ring);
     g2.setColor(new Color(0x34_98_DB));
-    g2.fill(createArcArea(ring, arc.startAngle, arc.sweepAngle));
+    g2.fill(createArcArea(ring, arc.getStartAngle(), arc.getSweepAngle()));
   }
 }
 
@@ -235,10 +253,11 @@ class MaterialStrokeSpinner extends MaterialSpinner {
 
   @Override protected void paintArc(Graphics2D g2, float x, float y, ArcAngles arc) {
     g2.setStroke(new BasicStroke(
-        stroke, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        getStroke(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     g2.setColor(new Color(0xFF_00_00));
     g2.draw(new Arc2D.Float(
-        x, y, size, size, arc.startAngle, arc.sweepAngle, Arc2D.OPEN));
+        x, y, getDiameter(), getDiameter(),
+        arc.getStartAngle(), arc.getSweepAngle(), Arc2D.OPEN));
   }
 }
 
@@ -253,6 +272,6 @@ class MaterialAreaSpinner extends MaterialSpinner {
     g2.setColor(Color.LIGHT_GRAY);
     g2.fill(ring);
     g2.setColor(new Color(0xFF_00_00));
-    g2.fill(createArcArea(ring, arc.startAngle, arc.sweepAngle));
+    g2.fill(createArcArea(ring, arc.getStartAngle(), arc.getSweepAngle()));
   }
 }
