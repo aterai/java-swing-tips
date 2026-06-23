@@ -14,89 +14,94 @@ import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
 public final class MainPanel extends JPanel {
+  private static final double INITIAL_VALUE = 8.85;
+  private static final double MIN_VALUE = 8.0;
+  private static final double MAX_VALUE = 72.0;
+  private static final double STEP_SIZE = 0.5;
+
   private final JTextArea textArea = new JTextArea();
 
   private MainPanel() {
     super(new BorderLayout());
-    JSpinner spinner0 = new JSpinner(new SpinnerNumberModel(8.85, 8.0, 72.0, .5));
-    JSpinner spinner1 = new JSpinner(new RoundToHalfSpinnerModel(8.85, 8.0, 72.0, .5));
-    JSpinner spinner2 = makeSpinner(makeDownFormatter());
-    JSpinner spinner3 = makeSpinner(makeUpFormatter());
-    JPanel p = new JPanel(new GridLayout(0, 2));
-    p.add(makeTitledPanel("Default, stepSize: 0.5", spinner0));
-    p.add(makeTitledPanel("Override SpinnerNumberModel", spinner1));
-    p.add(makeTitledPanel("Round down to half Formatter", spinner2));
-    p.add(makeTitledPanel("Round up to half Formatter", spinner3));
+    JSpinner defaultSpinner = createSpinner(
+        new SpinnerNumberModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
+        null
+    );
+    JSpinner downModelSpinner = createSpinner(
+        new RoundToHalfSpinnerModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
+        null
+    );
+    JSpinner downFmtSpinner = createSpinner(
+        new SpinnerNumberModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
+        createHalfFormatter(RoundingMode.DOWN)
+    );
+    JSpinner halfUpFmtSpinner = createSpinner(
+        new SpinnerNumberModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
+        createHalfFormatter(RoundingMode.HALF_UP)
+    );
+
+    JPanel p = new JPanel(new GridLayout(0, 2, 5, 5));
+    p.add(createTitledPanel("Default, stepSize: 0.5", defaultSpinner));
+    p.add(createTitledPanel("Override SpinnerNumberModel", downModelSpinner));
+    p.add(createTitledPanel("Round down to half Formatter", downFmtSpinner));
+    p.add(createTitledPanel("Round to half Formatter", halfUpFmtSpinner));
+
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JSpinner makeSpinner(DefaultFormatter formatter) {
-    SpinnerNumberModel model = new SpinnerNumberModel(8.85, 8.0, 72.0, .5);
+  private JSpinner createSpinner(SpinnerNumberModel model, DefaultFormatter formatter) {
     JSpinner spinner = new JSpinner(model);
-    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
-    JFormattedTextField ftf = editor.getTextField();
-    ftf.setFormatterFactory(new DefaultFormatterFactory(formatter));
-    info(formatter, model);
+    if (formatter != null) {
+      JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
+      editor.getTextField().setFormatterFactory(new DefaultFormatterFactory(formatter));
+      info(formatter, model);
+    }
     return spinner;
   }
 
   private void info(DefaultFormatter formatter, SpinnerNumberModel model) {
     try {
-      String v1 = model.getNumber().toString();
-      Object v2 = formatter.stringToValue(v1);
-      textArea.append(String.format("%s -> %s%n", v1, v2));
+      String valueText = model.getNumber().toString();
+      Object roundedValue = formatter.stringToValue(valueText);
+      textArea.append(String.format("%s -> %s%n", valueText, roundedValue));
     } catch (ParseException ex) {
-      textArea.append(String.format("%s%n", ex.getMessage()));
+      textArea.append(String.format("Parse error: %s%n", ex.getMessage()));
     }
   }
 
-  private static DefaultFormatter makeDownFormatter() {
+  private static DefaultFormatter createHalfFormatter(RoundingMode roundingMode) {
     return new DefaultFormatter() {
       @Override public Object stringToValue(String text) {
-        return roundToDown(new BigDecimal(text)).doubleValue();
+        return roundToHalf(new BigDecimal(text), roundingMode).doubleValue();
       }
 
-      @Override public String valueToString(Object value) {
-        return roundToDown(BigDecimal.valueOf((Double) value)).toString();
+      @Override public String valueToString(Object value) throws ParseException {
+        if (!(value instanceof Number)) {
+          throw new ParseException("value is not a Number: " + value, 0);
+        }
+        double doubleValue = ((Number) value).doubleValue();
+        return roundToHalf(BigDecimal.valueOf(doubleValue), roundingMode).toString();
       }
     };
   }
 
-  private static BigDecimal roundToDown(BigDecimal value) {
+  private static BigDecimal roundToHalf(BigDecimal value, RoundingMode roundingMode) {
     return value.multiply(BigDecimal.valueOf(2))
-        .setScale(0, RoundingMode.DOWN)
-        .multiply(BigDecimal.valueOf(.5));
+        .setScale(0, roundingMode)
+        .multiply(BigDecimal.valueOf(0.5));
   }
 
-  private static DefaultFormatter makeUpFormatter() {
-    return new DefaultFormatter() {
-      @Override public Object stringToValue(String text) {
-        return roundToUp(new BigDecimal(text)).doubleValue();
-      }
-
-      @Override public String valueToString(Object value) {
-        return roundToUp(BigDecimal.valueOf((Double) value)).toString();
-      }
-    };
-  }
-
-  private static BigDecimal roundToUp(BigDecimal value) {
-    return value.multiply(BigDecimal.valueOf(2))
-        .setScale(0, RoundingMode.HALF_UP)
-        .multiply(BigDecimal.valueOf(.5));
-  }
-
-  private static Component makeTitledPanel(String title, Component cmp) {
-    JPanel p = new JPanel(new GridBagLayout());
-    p.setBorder(BorderFactory.createTitledBorder(title));
+  private static Component createTitledPanel(String title, Component component) {
+    JPanel panel = new JPanel(new GridBagLayout());
+    panel.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
-    c.weightx = 1d;
+    c.weightx = 1.0;
     c.fill = GridBagConstraints.HORIZONTAL;
     c.insets = new Insets(5, 5, 5, 5);
-    p.add(cmp, c);
-    return p;
+    panel.add(component, c);
+    return panel;
   }
 
   public static void main(String[] args) {
@@ -127,22 +132,28 @@ class RoundToHalfSpinnerModel extends SpinnerNumberModel {
   }
 
   @Override public void setValue(Object value) {
-    if (value instanceof Double) {
-      Double v = roundDownToHalf((Double) value);
-      if (!v.equals(getValue())) {
-        super.setValue(v);
-        fireStateChanged();
-      }
-    } else {
-      throw new IllegalArgumentException("illegal value");
+    Number number = requireNumber(value);
+    Double roundedValue = roundDownToHalf(number.doubleValue());
+    if (!roundedValue.equals(getValue())) {
+      super.setValue(roundedValue);
+      fireStateChanged();
     }
   }
 
-  private static double roundDownToHalf(Double value) {
-    return BigDecimal.valueOf(value)
-        .multiply(BigDecimal.valueOf(2))
-        .setScale(0, RoundingMode.DOWN)
-        .multiply(BigDecimal.valueOf(.5))
-        .doubleValue();
+  private static Number requireNumber(Object value) {
+    if (value instanceof Number) {
+      return (Number) value;
+    }
+    throw new IllegalArgumentException("Value must be a Number: " + value);
+  }
+
+  private static double roundDownToHalf(double value) {
+    return roundToHalf(BigDecimal.valueOf(value), RoundingMode.DOWN).doubleValue();
+  }
+
+  public static BigDecimal roundToHalf(BigDecimal value, RoundingMode roundingMode) {
+    return value.multiply(BigDecimal.valueOf(2))
+        .setScale(0, roundingMode)
+        .multiply(BigDecimal.valueOf(0.5));
   }
 }
