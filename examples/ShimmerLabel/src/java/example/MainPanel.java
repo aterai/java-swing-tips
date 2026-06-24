@@ -142,10 +142,9 @@ final class ShimmerLayout {
 abstract class AbstractShimmerLabel extends JLabel {
   protected static final Color TRANSPARENT = new Color(0x0, true);
   protected static final int ALPHA = 200;
-  protected final float[] fractions = {0f, .5f, 1f};
-  protected float animX;
-
+  protected static final float[] FRACTIONS = {0f, .5f, 1f};
   private final Timer shimmerTimer;
+  private float animX;
 
   protected AbstractShimmerLabel(String text, int fps, float speed, int bandWidth) {
     super(text);
@@ -166,6 +165,10 @@ abstract class AbstractShimmerLabel extends JLabel {
   @Override public void removeNotify() {
     shimmerTimer.stop();
     super.removeNotify();
+  }
+
+  protected float getAnimX() {
+    return animX;
   }
 
   protected void clearTextRect(Graphics2D g2, Rectangle textRect) {
@@ -190,7 +193,7 @@ class ShimmerLabel extends AbstractShimmerLabel {
   private static final float SPEED = 4f;
   private static final Color SHIMMER_BASE = new Color(0x00_FF_FF_FF, true);
   private static final Color SHIMMER_BRIGHT = new Color(0xC8_FF_FF_FF, true);
-  private final Color[] colors = {SHIMMER_BASE, SHIMMER_BRIGHT, SHIMMER_BASE};
+  private static final Color[] COLORS = {SHIMMER_BASE, SHIMMER_BRIGHT, SHIMMER_BASE};
 
   protected ShimmerLabel(String text) {
     super(text, FPS, SPEED, BAND_WIDTH);
@@ -204,8 +207,9 @@ class ShimmerLabel extends AbstractShimmerLabel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    float endX = animX + BAND_WIDTH;
-    g2.setPaint(new LinearGradientPaint(animX, 0, endX, 0, fractions, colors));
+    float startX = getAnimX();
+    float endX = startX + BAND_WIDTH;
+    g2.setPaint(new LinearGradientPaint(startX, 0f, endX, 0f, FRACTIONS, COLORS));
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
   }
@@ -253,8 +257,9 @@ class TextShimmerLabel extends AbstractShimmerLabel {
         ShimmerColors.shimmerBright(getForeground(), ALPHA),
         TRANSPARENT,
     };
-    float endX = animX + BAND_WIDTH;
-    g2.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, fractions, colors));
+    float startX = getAnimX();
+    float endX = startX + BAND_WIDTH;
+    g2.setPaint(new LinearGradientPaint(startX, 0f, endX, 0f, FRACTIONS, colors));
     g2.fillRect(0, 0, getWidth(), getHeight());
     g2.dispose();
   }
@@ -319,8 +324,9 @@ class TextCompositeShimmerLabel extends AbstractShimmerLabel {
         ShimmerColors.shimmerBright(getForeground(), ALPHA),
         TRANSPARENT,
     };
-    float endX = animX + BAND_WIDTH;
-    g2.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, fractions, colors));
+    float startX = getAnimX();
+    float endX = startX + BAND_WIDTH;
+    g2.setPaint(new LinearGradientPaint(startX, 0f, endX, 0f, FRACTIONS, colors));
     g2.fillRect(0, 0, w, h);
     g2.dispose();
   }
@@ -335,8 +341,8 @@ class ShimmerLayerUI extends LayerUI<JLabel> {
   private static final float SPEED = 4f;
   private static final int ALPHA = 180;
   private static final Color TRANSPARENT = new Color(0x0, true);
+  private static final float[] FRACTIONS = {0f, .5f, 1f};
   private final Timer timer = new Timer(FPS, null);
-  private final float[] fractions = {0f, .5f, 1f};
   private float animX;
   private transient BufferedImage buffer;
 
@@ -423,7 +429,7 @@ class ShimmerLayerUI extends LayerUI<JLabel> {
         TRANSPARENT,
     };
     float endX = animX + BAND_WIDTH;
-    sg.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, fractions, colors));
+    sg.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, FRACTIONS, colors));
     sg.fillRect(0, 0, w, h);
     sg.dispose();
 
