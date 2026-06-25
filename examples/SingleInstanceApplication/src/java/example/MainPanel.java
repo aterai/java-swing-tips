@@ -33,7 +33,8 @@ public final class MainPanel extends JPanel {
       return;
     }
 
-    SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+    EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+    SecondaryLoop loop = eventQueue.createSecondaryLoop();
     // Java Swing Hacks #68
     try (ServerSocket ignored = new ServerSocket(38_765)) {
       JFrame frame = new JFrame("@title@");

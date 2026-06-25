@@ -90,7 +90,8 @@ class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
   private static final int TAB_AREA_HEIGHT = 32;
 
   @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-    return TAB_AREA_HEIGHT; // super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
+    return TAB_AREA_HEIGHT;
+    // return super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
   }
 
   // @Override public Rectangle getTabBounds(JTabbedPane pane, int i) {

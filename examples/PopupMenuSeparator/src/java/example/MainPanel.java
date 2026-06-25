@@ -22,7 +22,8 @@ public final class MainPanel extends JPanel {
 
   private static JPopupMenu makePopupMenu() {
     JPopupMenu popup = new JPopupMenu();
-    // Object off = popup.getClientProperty(new StringUIClientPropertyKey("GUTTER_OFFSET_KEY"));
+    // Object off = popup.getClientProperty(
+    //     new StringUIClientPropertyKey("GUTTER_OFFSET_KEY"));
     // System.out.println(off);
     popup.add("↓ add(new JSeparator()");
     popup.add(new JSeparator());

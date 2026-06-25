@@ -72,7 +72,8 @@ public final class MainPanel extends JPanel {
 
     Charset cs = getCharset(urlConnection);
     int length = urlConnection.getContentLength();
-    SecondaryLoop loop = Toolkit.getDefaultToolkit().getSystemEventQueue().createSecondaryLoop();
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    SecondaryLoop loop = toolkit.getSystemEventQueue().createSecondaryLoop();
     JRootPane rp = b.getRootPane();
     try (InputStream is = urlConnection.getInputStream();
          ProgressMonitorInputStream pms = new ProgressMonitorInputStream(rp, "Loading", is)) {
@@ -218,7 +219,8 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     return ret;
   }
 
-  protected int doSomething(Scanner scanner, int idx, int readied) throws InterruptedException {
+  protected int doSomething(
+      Scanner scanner, int idx, int readied) throws InterruptedException {
     if (idx % 50 == 0) {
       Thread.sleep(10);
     }

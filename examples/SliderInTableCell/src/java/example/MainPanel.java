@@ -19,7 +19,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         putClientProperty("terminateEditOnFocusLost", true);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"Integer", "Integer", "Boolean"};
     Object[][] data = {
         {50, 50, false}, {13, 13, true}, {0, 0, false}, {20, 20, true}, {99, 99, false},
@@ -82,7 +82,8 @@ class SliderRenderer implements TableCellRenderer {
   private final JSlider renderer = new JSlider();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    renderer.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+    Color bg = isSelected ? table.getSelectionBackground() : table.getBackground();
+    renderer.setBackground(bg);
     if (value instanceof Integer) {
       renderer.setValue((Integer) value);
     }
@@ -136,7 +137,8 @@ class SliderEditor extends AbstractCellEditor implements TableCellEditor {
 //   }
 //
 //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-//     this.setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+//     Color bg = isSelected ? table.getSelectionBackground() : table.getBackground();
+//     this.setBackground(bg);
 //     if (value instanceof Integer) {
 //       this.setValue(((Integer) value).intValue());
 //     }

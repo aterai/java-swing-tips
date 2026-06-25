@@ -24,13 +24,13 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new PropertyTable(makeModel());
+    JTable table = new PropertyTable(createModel());
 
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"Type", "Value"};
     @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
     Object[][] data = {
@@ -250,7 +250,8 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
     // Set up the dialog that the button brings up.
     colorChooser = new JColorChooser();
-    dialog = JColorChooser.createDialog(button, "Pick a Color", true, colorChooser, this, null);
+    String title = "Pick a Color";
+    dialog = JColorChooser.createDialog(button, title, true, colorChooser, this, null);
   }
 
   /**

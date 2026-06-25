@@ -32,11 +32,11 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("Default JComboBox", new JComboBox<>(model)));
+    box.add(createTitledPanel("Default JComboBox", new JComboBox<>(model)));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("RoundedCornerListCellRenderer", combo1));
+    box.add(createTitledPanel("RoundedCornerListCellRenderer", combo1));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("RoundedCornerListCellRenderer(editable)", combo2));
+    box.add(createTitledPanel("RoundedCornerListCellRenderer(editable)", combo2));
     add(box, BorderLayout.NORTH);
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
   //   combo.putClientProperty("Nimbus.Overrides", d);
   // }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -89,7 +89,8 @@ class RoundedCornerListCellRenderer<E> implements ListCellRenderer<E> {
     @Override protected void paintComponent(Graphics g) {
       if (getIcon() != null) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(getBackground());
         Rectangle r = SwingUtilities.calculateInnerArea(this, null);
         g2.fill(new RoundRectangle2D.Float(r.x, r.y, r.width, r.height, 10f, 10f));
@@ -187,7 +188,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -195,7 +196,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
