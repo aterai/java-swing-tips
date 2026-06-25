@@ -227,7 +227,8 @@ class DnDTree extends JTree {
 
         TreeNode parent = target.getParent();
         if (parent instanceof MutableTreeNode && target.isLeaf()) {
-          model.insertNodeInto(draggingNode, (MutableTreeNode) parent, parent.getIndex(target));
+          int index = parent.getIndex(target);
+          model.insertNodeInto(draggingNode, (MutableTreeNode) parent, index);
         } else {
           model.insertNodeInto(draggingNode, target, target.getChildCount());
         }

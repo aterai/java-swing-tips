@@ -32,7 +32,10 @@ public final class MainPanel extends JPanel {
       return i;
     }).orElseGet(MissingIcon::new);
 
-    String txt = "Mini-size 86Key Japanese Keyboard\n  Model No: DE-SK-86BK\n  SERIAL NO: 0000";
+    String txt = String.join("\n",
+        "Mini-size 86Key Japanese Keyboard",
+        "  Model No: DE-SK-86BK",
+        "  SERIAL NO: 0000");
     ImageCaptionLabel label = new ImageCaptionLabel(icon, txt);
     label.add(label.getTextArea());
 
