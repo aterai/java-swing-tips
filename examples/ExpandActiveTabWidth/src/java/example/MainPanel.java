@@ -18,7 +18,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+    CompactTabbedPane tabbedPane = new CompactTabbedPane();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
     List<String> icons = Arrays.asList(
         "example/wi0009-16.png",
@@ -27,53 +27,9 @@ public final class MainPanel extends JPanel {
         "example/wi0063-16.png",
         "example/wi0124-16.png",
         "example/wi0126-16.png");
-    icons.forEach(s -> {
-      Icon icon = new ImageIcon(makeImage(s));
-      ShrinkLabel label = new ShrinkLabel(s, icon);
-      tabbedPane.addTab(s, icon, new JLabel(s), s);
-      tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
-    });
-    updateTabWidth(tabbedPane);
-    tabbedPane.addChangeListener(e -> updateTabWidth((JTabbedPane) e.getSource()));
+    tabbedPane.initializeTabs(icons);
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
-  }
-
-  private static void updateTabWidth(JTabbedPane tabs) {
-    int tp = tabs.getTabPlacement();
-    if (tp == SwingConstants.TOP || tp == SwingConstants.BOTTOM) {
-      int idx = tabs.getSelectedIndex();
-      for (int i = 0; i < tabs.getTabCount(); i++) {
-        Component c = tabs.getTabComponentAt(i);
-        if (c instanceof ShrinkLabel) {
-          ((ShrinkLabel) c).setSelected(i == idx);
-        }
-      }
-    }
-  }
-
-  private static Image makeImage(String path) {
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    return Optional.ofNullable(cl.getResource(path)).map(url -> {
-      Image img;
-      try (InputStream s = url.openStream()) {
-        img = ImageIO.read(s);
-      } catch (IOException ex) {
-        img = makeMissingImage();
-      }
-      return img;
-    }).orElseGet(MainPanel::makeMissingImage);
-  }
-
-  private static Image makeMissingImage() {
-    Icon missingIcon = UIManager.getIcon("html.missingImage");
-    int iw = missingIcon.getIconWidth();
-    int ih = missingIcon.getIconHeight();
-    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = bi.createGraphics();
-    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
-    g2.dispose();
-    return bi;
   }
 
   public static void main(String[] args) {
@@ -98,26 +54,83 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ShrinkLabel extends JLabel {
-  private boolean selected;
+class CompactTabbedPane extends JTabbedPane {
+  @Override public void updateUI() {
+    super.updateUI();
+    setTabPlacement(TOP);
+    setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
+    // addChangeListener(e -> updateTabWidth());
+  }
 
-  protected ShrinkLabel(String title, Icon icon) {
+  @Override public void doLayout() {
+    super.doLayout();
+    updateTabSelectionState();
+  }
+
+  protected void initializeTabs(List<String> iconPaths) {
+    iconPaths.forEach(s -> {
+      Icon icon = new ImageIcon(loadImage(s));
+      CollapsibleTabLabel label = new CollapsibleTabLabel(s, icon);
+      addTab(s, icon, new JLabel(s), s);
+      setTabComponentAt(getTabCount() - 1, label);
+    });
+    updateTabSelectionState();
+  }
+
+  private static Image loadImage(String path) {
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    return Optional.ofNullable(cl.getResource(path)).map(url -> {
+      Image img;
+      try (InputStream s = url.openStream()) {
+        img = ImageIO.read(s);
+      } catch (IOException ex) {
+        img = createMissingImage();
+      }
+      return img;
+    }).orElseGet(CompactTabbedPane::createMissingImage);
+  }
+
+  private static Image createMissingImage() {
+    Icon missingIcon = UIManager.getIcon("html.missingImage");
+    int iw = missingIcon.getIconWidth();
+    int ih = missingIcon.getIconHeight();
+    BufferedImage bi = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = bi.createGraphics();
+    missingIcon.paintIcon(null, g2, (16 - iw) / 2, (16 - ih) / 2);
+    g2.dispose();
+    return bi;
+  }
+
+  private void updateTabSelectionState() {
+    int placement = getTabPlacement();
+    if (placement == TOP || placement == BOTTOM) {
+      int selectedIndex = getSelectedIndex();
+      for (int i = 0; i < getTabCount(); i++) {
+        Component c = getTabComponentAt(i);
+        if (c instanceof CollapsibleTabLabel) {
+          ((CollapsibleTabLabel) c).setTabSelected(i == selectedIndex);
+        }
+      }
+    }
+  }
+}
+
+class CollapsibleTabLabel extends JLabel {
+  private boolean tabSelected;
+
+  protected CollapsibleTabLabel(String title, Icon icon) {
     super(title, icon, LEFT);
   }
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    if (!selected && getIcon() != null) {
+    if (!tabSelected && getIcon() != null) {
       d.width = getIcon().getIconWidth();
     }
     return d;
   }
 
-  public void setSelected(boolean active) {
-    this.selected = active;
+  public void setTabSelected(boolean active) {
+    this.tabSelected = active;
   }
-
-  // public boolean isSelected() {
-  //   return selected;
-  // }
 }
