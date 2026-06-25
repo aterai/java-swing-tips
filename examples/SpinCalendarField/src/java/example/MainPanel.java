@@ -33,7 +33,10 @@ public final class MainPanel extends JPanel {
     DefaultFormatterFactory factory = new DefaultFormatterFactory(new DateFormatter(format));
 
     JSpinner spinner1 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND));
-    ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().setFormatterFactory(factory);
+    JComponent editor1 = spinner1.getEditor();
+    if (editor1 instanceof JSpinner.DefaultEditor) {
+      ((JSpinner.DefaultEditor) editor1).getTextField().setFormatterFactory(factory);
+    }
 
     JSpinner spinner2 = new JSpinner(new SpinnerDateModel(d, null, null, Calendar.SECOND) {
       @Override public void setCalendarField(int calendarField) {
@@ -44,13 +47,13 @@ public final class MainPanel extends JPanel {
     });
     ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
 
-    add(makeTitledPanel("Default SpinnerDateModel", spinner1));
-    add(makeTitledPanel("Override SpinnerDateModel#setCalendarField(...)", spinner2));
+    add(createTitledPanel("Default SpinnerDateModel", spinner1));
+    add(createTitledPanel("Override SpinnerDateModel#setCalendarField(...)", spinner2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
