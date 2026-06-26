@@ -17,37 +17,40 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    JTree t = new JTree(makeDefaultTreeModel());
+    JTree t = new JTree(createDefaultTreeModel());
     t.setComponentPopupMenu(new TreePopupMenu());
-    add(makeTitledPanel("Default", new JScrollPane(t)));
+    add(createTitledPanel("Default", new JScrollPane(t)));
 
-    DefaultTreeModel model = makeDefaultTreeModel();
+    DefaultTreeModel model = createDefaultTreeModel();
     JTree tree = new JTree(model);
     tree.setComponentPopupMenu(new TreePopupMenu());
     // model.setAsksAllowsChildren(true);
 
     JCheckBox check = new JCheckBox("setAsksAllowsChildren");
     check.addActionListener(e -> {
-      model.setAsksAllowsChildren(((JCheckBox) e.getSource()).isSelected());
-      tree.repaint();
+      Object src = e.getSource();
+      if (src instanceof JCheckBox) {
+        model.setAsksAllowsChildren(((JCheckBox) src).isSelected());
+        tree.repaint();
+      }
     });
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(tree));
     p.add(check, BorderLayout.SOUTH);
 
-    add(makeTitledPanel("setAsksAllowsChildren", p));
+    add(createTitledPanel("setAsksAllowsChildren", p));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
     return p;
   }
 
-  private static DefaultTreeModel makeDefaultTreeModel() {
+  private static DefaultTreeModel createDefaultTreeModel() {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
     DefaultMutableTreeNode parent;
 
@@ -161,13 +164,16 @@ final class TreePopupMenu extends JPopupMenu {
     if (c instanceof JTree) {
       JTree tree = (JTree) c;
       path = tree.getPathForLocation(x, y);
-      Optional.ofNullable(path).ifPresent(treePath -> {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-        boolean flag = node.getAllowsChildren();
-        addFolderItem.setEnabled(flag);
-        addNodeItem.setEnabled(flag);
-        super.show(c, x, y);
-      });
+      Optional.ofNullable(path)
+          .map(TreePath::getLastPathComponent)
+          .filter(DefaultMutableTreeNode.class::isInstance)
+          .map(DefaultMutableTreeNode.class::cast)
+          .map(DefaultMutableTreeNode::getAllowsChildren)
+          .ifPresent(flag -> {
+            addFolderItem.setEnabled(flag);
+            addNodeItem.setEnabled(flag);
+            super.show(c, x, y);
+          });
     }
   }
 }

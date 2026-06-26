@@ -32,8 +32,11 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("rotate", true);
     check.addActionListener(e -> {
-      clock.setRotate(((JCheckBox) e.getSource()).isSelected());
-      clock.repaint();
+      Object src = e.getSource();
+      if (src instanceof JCheckBox) {
+        clock.setRotate(((JCheckBox) src).isSelected());
+        clock.repaint();
+      }
     });
 
     add(clock);

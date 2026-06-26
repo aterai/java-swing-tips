@@ -77,16 +77,17 @@ final class TableHeaderPopupMenu extends JPopupMenu {
     super();
     TableColumnModel columnModel = table.getColumnModel();
     for (TableColumn tableColumn : Collections.list(columnModel.getColumns())) {
-      add(makeCheckBoxMenuItem(tableColumn, columnModel));
+      add(createCheckBoxMenuItem(tableColumn, columnModel));
     }
   }
 
-  private JMenuItem makeCheckBoxMenuItem(TableColumn column, TableColumnModel model) {
+  private JMenuItem createCheckBoxMenuItem(TableColumn column, TableColumnModel model) {
     String name = Objects.toString(column.getHeaderValue());
     // System.out.format("%s - %s%n", name, column.getIdentifier());
     JMenuItem item = new JCheckBoxMenuItem(name, true);
     item.addItemListener(e -> {
-      if (((AbstractButton) e.getItemSelectable()).isSelected()) {
+      ItemSelectable c = e.getItemSelectable();
+      if (c instanceof AbstractButton && ((AbstractButton) c).isSelected()) {
         model.addColumn(column);
       } else {
         model.removeColumn(column);
