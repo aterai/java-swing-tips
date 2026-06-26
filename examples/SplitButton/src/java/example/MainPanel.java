@@ -16,7 +16,7 @@ import javax.swing.event.PopupMenuListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new FlowLayout(FlowLayout.LEADING));
-    JComboBox<ComboItem> combo = new JComboBox<ComboItem>(makeModel()) {
+    JComboBox<ComboItem> combo = new JComboBox<ComboItem>(createModel()) {
       private transient PopupMenuListener listener;
 
       @Override public void updateUI() {
@@ -35,20 +35,28 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ComboItem[] makeModel() {
+  private static ComboItem[] createModel() {
     // https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
     return new ComboItem[] {
         new ComboItem(
             "Create a merge commit",
-            "All commits from this branch\nwill be added to the base branch\nvia a merge commit."
+            String.join("\n",
+                "All commits from this branch",
+                "will be added to the base branch",
+                "via a merge commit.")
         ),
         new ComboItem(
             "Squash and merge",
-            "The 1 commit from this branch\nwill be added to the base branch."
+            String.join("\n",
+                "The 1 commit from this branch",
+                "will be added to the base branch.")
         ),
         new ComboItem(
             "Rebase and merge",
-            "The 1 commit from this branch\nwill be rebased and added to the\nbase branch."
+            String.join("\n",
+                "The 1 commit from this branch",
+                "will be rebased and added to the",
+                "base branch.")
         ),
     };
   }
