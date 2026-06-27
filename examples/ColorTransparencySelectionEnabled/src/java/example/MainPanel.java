@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     //   label.setBackground(c);
     // });
 
-    add(makeBox(), BorderLayout.NORTH);
+    add(createBox(), BorderLayout.NORTH);
     add(label);
     add(button, BorderLayout.SOUTH);
     // box.add(button2, BorderLayout.SOUTH);
@@ -81,14 +81,17 @@ public final class MainPanel extends JPanel {
     JDialog dialog = JColorChooser.createDialog(rp, "title", true, cc, ok, null);
     dialog.addComponentListener(new ComponentAdapter() {
       @Override public void componentHidden(ComponentEvent e) {
-        ((Window) e.getComponent()).dispose();
+        Component c = e.getComponent();
+        if (c instanceof Window) {
+          ((Window) c).dispose();
+        }
       }
     });
     dialog.setVisible(true); // blocks until user brings dialog down...
     return ok.getColor();
   }
 
-  private Box makeBox() {
+  private Box createBox() {
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createTitledBorder("ColorTransparencySelectionEnabled"));
     ButtonGroup bg = new ButtonGroup();
@@ -103,6 +106,7 @@ public final class MainPanel extends JPanel {
   private void setTransparencySelectionEnabled(AbstractColorChooserPanel p) {
     String alphaName = UIManager.getString("ColorChooser.rgbAlphaText", p.getLocale());
     List<Component> list = SwingUtils.descendants(p).collect(Collectors.toList());
+    // Java 16: List<Component> list = SwingUtils.descendants(p).toList();
     int idx0 = 0;
     int idx1 = 0;
     int tgtIndex = 3; // rgbAlpha in RGB ColorChooserPanel

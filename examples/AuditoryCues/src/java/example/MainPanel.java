@@ -41,8 +41,8 @@ public final class MainPanel extends JPanel {
     button2.addActionListener(MainPanel::showMessageDialog2);
 
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    panel.add(makeTitledPanel("Look&Feel Default", button1));
-    panel.add(makeTitledPanel("notice2.wav", button2));
+    panel.add(createTitledPanel("Look&Feel Default", button1));
+    panel.add(createTitledPanel("notice2.wav", button2));
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -54,20 +54,26 @@ public final class MainPanel extends JPanel {
 
   private static void showMessageDialog1(ActionEvent e) {
     UIManager.put(AUDITORY_KEY, AUDITORY_CUES);
-    Component p = SwingUtilities.getRoot((Component) e.getSource());
-    JOptionPane.showMessageDialog(p, "showMessageDialog1");
+    Object src = e.getSource();
+    if (src instanceof Component) {
+      Component p = SwingUtilities.getRoot((Component) src);
+      JOptionPane.showMessageDialog(p, "showMessageDialog1");
+    }
   }
 
   private static void showMessageDialog2(ActionEvent e) {
     UIManager.put(AUDITORY_KEY, UIManager.get("AuditoryCues.noAuditoryCues"));
-    Component p = SwingUtilities.getRoot((Component) e.getSource());
-    String path = "example/notice2.wav";
-    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-    if (Objects.nonNull(url)) {
-      showMessageDialogAndPlayAudio(p, "showMessageDialog2", url);
-    } else {
-      UIManager.getLookAndFeel().provideErrorFeedback(p);
-      JOptionPane.showMessageDialog(p, path + " not found");
+    Object src = e.getSource();
+    if (src instanceof Component) {
+      Component p = SwingUtilities.getRoot((Component) src);
+      String path = "example/notice2.wav";
+      URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+      if (Objects.nonNull(url)) {
+        showMessageDialogAndPlayAudio(p, "showMessageDialog2", url);
+      } else {
+        UIManager.getLookAndFeel().provideErrorFeedback(p);
+        JOptionPane.showMessageDialog(p, path + " not found");
+      }
     }
   }
 
@@ -134,7 +140,7 @@ public final class MainPanel extends JPanel {
   //   return buffer;
   // }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -183,7 +189,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -191,7 +197,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

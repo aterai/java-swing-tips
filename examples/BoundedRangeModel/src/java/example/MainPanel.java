@@ -68,7 +68,8 @@ public final class MainPanel extends JPanel {
     JToggleButton button = new JToggleButton("highlight");
     button.addActionListener(e -> {
       emphasisIndices.clear();
-      if (((JToggleButton) e.getSource()).isSelected()) {
+      Object src = e.getSource();
+      if (src instanceof JToggleButton && ((JToggleButton) src).isSelected()) {
         updateHighlighter();
       }
       label.getRootPane().repaint();

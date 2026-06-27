@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.text.Format;
 import java.text.NumberFormat;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public final class MainPanel extends JPanel {
     initBorderAndAlignment(field3);
     field3.setFormatterFactory(new NumberFormatterFactory());
 
-    TableModel model = makeModel();
+    TableModel model = createModel();
     JTable table = new JTable(model) {
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
         Component c = super.prepareEditor(editor, row, column);
@@ -74,7 +75,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {
         "Default",
         "DocumentFilter",
@@ -184,7 +185,10 @@ class NumberFormatterFactory extends DefaultFormatterFactory {
 
   static {
     FORMATTER.setValueClass(Integer.class);
-    ((NumberFormat) FORMATTER.getFormat()).setGroupingUsed(false);
+    Format format = FORMATTER.getFormat();
+    if (format instanceof NumberFormat) {
+      ((NumberFormat) format).setGroupingUsed(false);
+    }
   }
 
   protected NumberFormatterFactory() {

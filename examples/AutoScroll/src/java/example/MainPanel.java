@@ -20,15 +20,15 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label1 = makeImageLabel();
-    JScrollPane scroll = makeScrollPane(label1);
+    JLabel label1 = createImageLabel();
+    JScrollPane scroll = createScrollPane(label1);
     ViewportDragScrollListener l = new ViewportDragScrollListener();
     JViewport v = scroll.getViewport();
     v.addMouseMotionListener(l);
     v.addMouseListener(l);
     v.addHierarchyListener(l);
 
-    JLabel label2 = makeImageLabel();
+    JLabel label2 = createImageLabel();
     ComponentDragScrollListener l2 = new ComponentDragScrollListener();
     label2.addMouseMotionListener(l2);
     label2.addMouseListener(l2);
@@ -36,13 +36,13 @@ public final class MainPanel extends JPanel {
 
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.addTab("ViewportDragScrollListener", scroll);
-    tabbedPane.addTab("ComponentDragScrollListener", makeScrollPane(label2));
+    tabbedPane.addTab("ComponentDragScrollListener", createScrollPane(label2));
 
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JLabel makeImageLabel() {
+  private static JLabel createImageLabel() {
     String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(u -> {
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     return new JLabel(icon);
   }
 
-  private static JScrollPane makeScrollPane(Component c) {
+  private static JScrollPane createScrollPane(Component c) {
     JScrollPane scroll = new JScrollPane(c);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -197,8 +197,8 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
     c.setCursor(HC);
     Container p = SwingUtilities.getUnwrappedParent(c);
     if (p instanceof JViewport) {
-      JViewport vport = (JViewport) p;
-      startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), vport));
+      JViewport v = (JViewport) p;
+      startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), v));
     }
   }
 
@@ -211,7 +211,7 @@ class ComponentDragScrollListener extends MouseAdapter implements HierarchyListe
         JViewport viewport = (JViewport) p;
         Rectangle rect = viewport.getViewRect();
         rect.translate(move.x, move.y);
-        ((JComponent) c).scrollRectToVisible(rect);
+        viewport.scrollRectToVisible(rect);
       }
     };
     scroller.addActionListener(listener);

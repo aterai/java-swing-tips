@@ -29,7 +29,8 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("LEFT");
     check.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
+      Object src = e.getSource();
+      boolean b = src instanceof JCheckBox && ((JCheckBox) src).isSelected();
       list.forEach(t -> t.setTabPlacement(b ? SwingConstants.LEFT : SwingConstants.TOP));
     });
 

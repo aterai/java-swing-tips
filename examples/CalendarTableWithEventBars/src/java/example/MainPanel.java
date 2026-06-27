@@ -309,14 +309,17 @@ class EventBarLayerUI extends LayerUI<JTable> {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    JTable table = (JTable) ((JLayer<?>) c).getView();
+    Component comp = ((JLayer<?>) c).getView();
+    if (comp instanceof JTable) {
+      JTable table = (JTable) comp;
 
-    // Assign tracks (lanes) to events
-    assignTracksToEvents();
+      // Assign tracks (lanes) to events
+      assignTracksToEvents();
 
-    // Draw a color bar for each event
-    for (EventPeriod ev : events) {
-      drawEventBars(g2, table, ev);
+      // Draw a color bar for each event
+      for (EventPeriod ev : events) {
+        drawEventBars(g2, table, ev);
+      }
     }
     g2.dispose();
   }

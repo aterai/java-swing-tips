@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
+import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 
 public final class MainPanel extends JPanel {
@@ -27,14 +28,23 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    ((DefaultCaret) textArea0.getCaret()).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT);
-    ((DefaultCaret) textArea1.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-    ((DefaultCaret) textArea2.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    Caret caret0 = textArea0.getCaret();
+    if (caret0 instanceof DefaultCaret) {
+      ((DefaultCaret) caret0).setUpdatePolicy(DefaultCaret.UPDATE_WHEN_ON_EDT);
+    }
+    Caret caret1 = textArea1.getCaret();
+    if (caret1 instanceof DefaultCaret) {
+      ((DefaultCaret) caret1).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+    }
+    Caret caret2 = textArea2.getCaret();
+    if (caret2 instanceof DefaultCaret) {
+      ((DefaultCaret) caret2).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    }
 
     JPanel p = new JPanel(new GridLayout(1, 0));
-    p.add(makeTitledPanel("UPDATE_WHEN_ON_EDT", new JScrollPane(textArea0)));
-    p.add(makeTitledPanel("ALWAYS_UPDATE", new JScrollPane(textArea1)));
-    p.add(makeTitledPanel("NEVER_UPDATE", new JScrollPane(textArea2)));
+    p.add(createTitledPanel("UPDATE_WHEN_ON_EDT", new JScrollPane(textArea0)));
+    p.add(createTitledPanel("ALWAYS_UPDATE", new JScrollPane(textArea1)));
+    p.add(createTitledPanel("NEVER_UPDATE", new JScrollPane(textArea2)));
 
     IntStream.range(0, 10).mapToObj(Integer::toString).forEach(this::test);
 
@@ -63,7 +73,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);

@@ -19,6 +19,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -105,7 +106,10 @@ class MonthTable extends JTable {
     JTableHeader header = getTableHeader();
     header.setResizingAllowed(false);
     header.setReorderingAllowed(false);
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer r = header.getDefaultRenderer();
+    if (r instanceof DefaultTableCellRenderer) {
+      ((JLabel) r).setHorizontalAlignment(SwingConstants.CENTER);
+    }
   }
 
   public LocalDate getRealLocalDate() {

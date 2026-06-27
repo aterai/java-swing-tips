@@ -34,20 +34,26 @@ public final class MainPanel extends JPanel {
 
     SpinnerDateModel model1 = new SpinnerDateModel(d, null, null, Calendar.SECOND);
     JSpinner spinner1 = new JSpinner(model1);
-    ((JSpinner.DefaultEditor) spinner1.getEditor()).getTextField().setFormatterFactory(factory);
+    JComponent editor1 = spinner1.getEditor();
+    if (editor1 instanceof JSpinner.DefaultEditor) {
+      ((JSpinner.DefaultEditor) editor1).getTextField().setFormatterFactory(factory);
+    }
 
-    SpinnerDateModel model2 = makeSpinnerDateModel(d);
+    SpinnerDateModel model2 = createSpinnerDateModel(d);
     JSpinner spinner2 = new JSpinner(model2);
-    ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
+    JComponent editor2 = spinner2.getEditor();
+    if (editor2 instanceof JSpinner.DefaultEditor) {
+      ((JSpinner.DefaultEditor) editor2).getTextField().setFormatterFactory(factory);
+    }
 
-    add(makeTitledPanel("Default SpinnerDateModel", spinner1));
-    add(makeTitledPanel("Override SpinnerDateModel#getNextValue(...)", spinner2));
+    add(createTitledPanel("Default SpinnerDateModel", spinner1));
+    add(createTitledPanel("Override SpinnerDateModel#getNextValue(...)", spinner2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
   @SuppressWarnings("PMD.ReplaceJavaUtilDate")
-  private static SpinnerDateModel makeSpinnerDateModel(Date d) {
+  private static SpinnerDateModel createSpinnerDateModel(Date d) {
     Map<Integer, Integer> stepSizeMap = new ConcurrentHashMap<>();
     stepSizeMap.put(Calendar.HOUR_OF_DAY, 1);
     stepSizeMap.put(Calendar.MINUTE, 1);
@@ -75,7 +81,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();

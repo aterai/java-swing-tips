@@ -73,7 +73,10 @@ public final class MainPanel extends JPanel {
     JDialog dialog = JColorChooser.createDialog(parent, title, true, cc, ok, null);
     dialog.addComponentListener(new ComponentAdapter() {
       @Override public void componentHidden(ComponentEvent e) {
-        ((Window) e.getComponent()).dispose();
+        Component c = e.getComponent();
+        if (c instanceof Window) {
+          ((Window) c).dispose();
+        }
       }
     });
     dialog.setVisible(true);
