@@ -308,6 +308,10 @@ final class TextureUtils {
     /* HideUtilityClassConstructor */
   }
 
+  public static TexturePaint createCheckerTexture(int cs) {
+    return createCheckerTexture(cs, DEFAULT_COLOR);
+  }
+
   public static TexturePaint createCheckerTexture(int cs, Color color) {
     int size = cs * cs;
     BufferedImage img = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
@@ -323,9 +327,5 @@ final class TextureUtils {
     }
     g2.dispose();
     return new TexturePaint(img, new Rectangle(size, size));
-  }
-
-  public static TexturePaint createCheckerTexture(int cs) {
-    return createCheckerTexture(cs, DEFAULT_COLOR);
   }
 }

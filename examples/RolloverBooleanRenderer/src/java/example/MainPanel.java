@@ -258,11 +258,11 @@ class CellCheckBox extends JCheckBox {
   //   /* Overridden for performance reasons. */
   // }
 
-  @Override public void repaint(Rectangle r) {
+  @Override public void repaint() {
     /* Overridden for performance reasons. */
   }
 
-  @Override public void repaint() {
+  @Override public void repaint(Rectangle r) {
     /* Overridden for performance reasons. */
   }
 
