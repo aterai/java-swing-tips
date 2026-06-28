@@ -72,13 +72,13 @@ class PluginNode {
   private final List<String> plugins;
   private int selectedIndex;
 
+  protected PluginNode(String name) {
+    this(name, Collections.emptyList());
+  }
+
   protected PluginNode(String name, List<String> plugins) {
     this.name = name;
     this.plugins = plugins;
-  }
-
-  protected PluginNode(String name) {
-    this(name, Collections.emptyList());
   }
 
   // public String getName() {
