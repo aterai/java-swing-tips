@@ -62,17 +62,17 @@ javax.swing.JComponent
 
 Others
 ---------------
-- [Graphics(71)](https://ateraimemo.com/en/Swing/_Graphics.html)
+- [Graphics(72)](https://ateraimemo.com/en/Swing/_Graphics.html)
 - [LayoutManager(57)](https://ateraimemo.com/en/Swing/_Layout.html)
-- [Animation(57)](https://ateraimemo.com/en/Swing/_Animation.html)
-- [Border(50)](https://ateraimemo.com/en/Swing/_Border.html)
+- [Animation(58)](https://ateraimemo.com/en/Swing/_Animation.html)
+- [Border(51)](https://ateraimemo.com/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/en/Swing/_LookAndFeel.html)
 - [Hyperlink Html(40)](https://ateraimemo.com/en/Swing/_Hyperlink.html)
 - [DragAndDrop(35)](https://ateraimemo.com/en/Swing/_DnD.html)
 - [Font(30)](https://ateraimemo.com/en/Swing/_Font.html)
 - [Calendar(24)](https://ateraimemo.com/en/Swing/_Calendar.html)
-- [SwingWorker(22)](https://ateraimemo.com/en/Swing/_SwingWorker.html)
+- [SwingWorker(23)](https://ateraimemo.com/en/Swing/_SwingWorker.html)
 - [File(14)](https://ateraimemo.com/en/Swing/_File.html)
 - [Cursor(9)](https://ateraimemo.com/en/Swing/_Cursor.html)
 - [TrayIcon(8)](https://ateraimemo.com/en/Swing/_TrayIcon.html)
