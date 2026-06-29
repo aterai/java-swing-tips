@@ -100,8 +100,7 @@ class GlowingBorder extends EmptyBorder {
       new SwingWorker<BufferedImage, Void>() {
         @Override protected BufferedImage doInBackground() {
           return cachedBounds.isEmpty() || scanRect.isEmpty()
-              ? null
-              : renderFrame(cachedBounds, scanRect, currentAngle);
+              ? null : renderFrame(cachedBounds, scanRect, currentAngle);
         }
 
         @Override protected void done() {
@@ -112,7 +111,6 @@ class GlowingBorder extends EmptyBorder {
             }
           } catch (InterruptedException | ExecutionException ignored) {
             Thread.currentThread().interrupt();
-            Toolkit.getDefaultToolkit().beep();
           } finally {
             isWorkerBusy.set(false);
           }
