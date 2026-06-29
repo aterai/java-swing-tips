@@ -43,9 +43,9 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box.add(makeTitledPanel("Default JComboBox", combo0));
+    box.add(createTitledPanel("Default JComboBox", combo0));
     box.add(Box.createVerticalStrut(15));
-    box.add(makeTitledPanel("RoundedCornerComboBox", combo1));
+    box.add(createTitledPanel("RoundedCornerComboBox", combo1));
     add(box, BorderLayout.NORTH);
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), title));
     p.add(c);
@@ -202,9 +202,7 @@ class ArrowIcon implements Icon {
       if (m.isPressed()) {
         shift = 1;
       } else {
-        if (m.isRollover()) {
-          g2.setPaint(rollover);
-        }
+        g2.setPaint(m.isRollover() ? rollover : color);
       }
     }
     g2.translate(x, y + shift);
@@ -440,7 +438,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -448,7 +446,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

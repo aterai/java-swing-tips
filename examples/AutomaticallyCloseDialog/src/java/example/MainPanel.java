@@ -88,7 +88,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
   @Override public void hierarchyChanged(HierarchyEvent e) {
     if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
       Component c = e.getComponent();
-      if (c.isShowing() && c instanceof JLabel) {
+      if (c.isShowing() && c instanceof JLabel && !timer.isRunning()) {
         JLabel l = (JLabel) c;
         atomicDown.set(SECONDS);
         l.setText(String.format("Closing in %d seconds", SECONDS));
@@ -97,9 +97,7 @@ class AutomaticallyCloseListener implements HierarchyListener {
         timer.addActionListener(listener);
         timer.start();
       } else {
-        if (timer.isRunning()) {
-          timer.stop();
-        }
+        timer.stop();
       }
     }
   }

@@ -16,9 +16,9 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout(15, 15));
     JPanel p = new JPanel(new GridLayout(0, 1, 16, 16));
     p.setOpaque(true);
-    JComboBox<String> combo1 = new JComboBox<>(makeModel());
+    JComboBox<String> combo1 = new JComboBox<>(createModel());
     p.add(combo1);
-    JComboBox<String> combo2 = new SimpleComboBox<>(makeModel());
+    JComboBox<String> combo2 = new SimpleComboBox<>(createModel());
     p.add(combo2);
     setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
     add(p, BorderLayout.NORTH);
@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultComboBoxModel<String> makeModel() {
+  private static DefaultComboBoxModel<String> createModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("333333");
     model.addElement("aaa");
@@ -155,9 +155,7 @@ class ArrowIcon implements Icon {
       if (m.isPressed()) {
         shift = 1;
       } else {
-        if (m.isRollover()) {
-          g2.setPaint(rollover);
-        }
+        g2.setPaint(m.isRollover() ? rollover : color);
       }
     }
     g2.translate(x, y + shift);

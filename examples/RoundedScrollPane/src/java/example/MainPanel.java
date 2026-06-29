@@ -258,9 +258,7 @@ class ArrowIcon implements Icon {
       if (m.isPressed()) {
         shift = 1;
       } else {
-        if (m.isRollover()) {
-          g2.setPaint(rollover);
-        }
+        g2.setPaint(m.isRollover() ? rollover : color);
       }
     }
     g2.translate(x, y + shift);

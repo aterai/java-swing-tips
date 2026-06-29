@@ -10,6 +10,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -20,7 +21,7 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new FlowLayout(FlowLayout.LEADING, 50, 50));
-    JTextArea editor = makeEditor();
+    JTextArea editor = createEditor();
     JButton b1 = new JButton("JPopupMenu");
     b1.addActionListener(e -> startEditing1(editor, (JButton) e.getSource()));
     add(b1);
@@ -115,7 +116,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  public static JTextArea makeEditor() {
+  public static JTextArea createEditor() {
     JTextArea editor = new JTextArea();
     editor.setFont(UIManager.getFont("TextField.font"));
     editor.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -178,10 +179,8 @@ class EditorResizeHandler implements DocumentListener {
         ((JPopupMenu) p).pack();
         editor.requestFocusInWindow();
       } else {
-        Window w = SwingUtilities.getWindowAncestor(editor);
-        if (w != null) {
-          w.pack();
-        }
+        Optional.ofNullable(SwingUtilities.getWindowAncestor(editor))
+            .ifPresent(Window::pack);
       }
     }
     prev = h;

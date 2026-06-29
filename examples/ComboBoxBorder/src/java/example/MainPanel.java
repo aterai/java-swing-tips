@@ -29,10 +29,10 @@ public final class MainPanel extends JPanel {
     UIManager.put("TitledBorder.titleColor", Color.WHITE);
     UIManager.put("TitledBorder.border", BorderFactory.createEmptyBorder());
 
-    JComboBox<String> combo0 = new JComboBox<>(makeComboBoxModel());
+    JComboBox<String> combo0 = new JComboBox<>(createComboBoxModel());
     initBorder(combo0.getAccessibleContext().getAccessibleChild(0));
 
-    JComboBox<String> combo1 = new JComboBox<String>(makeComboBoxModel()) {
+    JComboBox<String> combo1 = new JComboBox<String>(createComboBoxModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setUI(new BasicComboBoxUI());
@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    JComboBox<String> combo2 = new JComboBox<String>(makeComboBoxModel()) {
+    JComboBox<String> combo2 = new JComboBox<String>(createComboBoxModel()) {
       private transient MouseAdapter handler;
 
       @Override public void updateUI() {
@@ -62,11 +62,11 @@ public final class MainPanel extends JPanel {
     };
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("MetalComboBoxUI:", combo0));
+    box.add(createTitledPanel("MetalComboBoxUI:", combo0));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("BasicComboBoxUI:", combo1));
+    box.add(createTitledPanel("BasicComboBoxUI:", combo1));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("BasicComboBoxUI#createArrowButton():", combo2));
+    box.add(createTitledPanel("BasicComboBoxUI#createArrowButton():", combo2));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     add(box, BorderLayout.NORTH);
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static ComboBoxModel<String> makeComboBoxModel() {
+  private static ComboBoxModel<String> createComboBoxModel() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("1234");
     model.addElement("5555555555555555555555");
@@ -122,11 +122,7 @@ class ArrowIcon implements Icon {
       if (m.isPressed()) {
         shift = 1;
       } else {
-        if (m.isRollover()) {
-          g2.setPaint(Color.WHITE);
-        } else {
-          g2.setPaint(Color.BLACK);
-        }
+        g2.setPaint(m.isRollover() ? Color.WHITE : Color.BLACK);
       }
     }
     g2.translate(x, y + shift);
