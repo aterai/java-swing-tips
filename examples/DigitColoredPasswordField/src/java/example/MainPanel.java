@@ -140,7 +140,8 @@ class DigitHighlightField extends JPasswordField {
     if (doc instanceof AbstractDocument) {
       boolean reveal = c == 0; // '\u0000';
       if (reveal) {
-        ((AbstractDocument) doc).setDocumentFilter(new BackgroundHighlightFilter(this));
+        DocumentFilter filter = new BackgroundHighlightFilter(this, Color.YELLOW);
+        ((AbstractDocument) doc).setDocumentFilter(filter);
         try {
           doc.remove(0, 0);
         } catch (BadLocationException ex) {
@@ -156,14 +157,14 @@ class DigitHighlightField extends JPasswordField {
 }
 
 class BackgroundHighlightFilter extends DocumentFilter {
-  private final Highlighter.HighlightPainter painter =
-      new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+  private final Highlighter.HighlightPainter painter;
   private final Pattern pattern = Pattern.compile("\\d");
   private final JTextComponent field;
 
-  protected BackgroundHighlightFilter(JTextComponent field) {
+  protected BackgroundHighlightFilter(JTextComponent field, Color color) {
     super();
     this.field = field;
+    this.painter = new DefaultHighlighter.DefaultHighlightPainter(color);
   }
 
   @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
