@@ -18,37 +18,26 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeTable();
-    JTableHeader header = table.getTableHeader();
-    header.addMouseListener(new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        JTable t = ((JTableHeader) e.getComponent()).getTable();
-        if (t.isEditing()) {
-          t.getCellEditor().stopCellEditing();
-        }
-        int col = header.columnAtPoint(e.getPoint());
-        t.changeSelection(0, col, false, false);
-        t.changeSelection(t.getRowCount() - 1, col, false, true);
-      }
-    });
-    List<JTable> list = Arrays.asList(makeTable(), table);
+    JTable table = createTable();
+    table.getTableHeader().addMouseListener(new ColumnHeaderHandler());
+    List<JTable> tables = Arrays.asList(createTable(), table);
     JPanel p = new JPanel(new GridLayout(2, 1));
-    list.stream().map(JScrollPane::new).forEach(p::add);
+    tables.stream().map(JScrollPane::new).forEach(p::add);
     JButton button = new JButton("clear selection");
-    button.addActionListener(e -> list.forEach(JTable::clearSelection));
+    button.addActionListener(e -> tables.forEach(JTable::clearSelection));
     add(p);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable() {
-    JTable table = new JTable(makeModel());
+  private static JTable createTable() {
+    JTable table = new JTable(createModel());
     table.setCellSelectionEnabled(true);
     table.setAutoCreateRowSorter(true);
     return table;
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -79,5 +68,21 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+class ColumnHeaderHandler extends MouseAdapter {
+  @Override public void mousePressed(MouseEvent e) {
+    Component c = e.getComponent();
+    if (c instanceof JTableHeader) {
+      JTableHeader header = (JTableHeader) c;
+      JTable table = header.getTable();
+      if (table.isEditing()) {
+        table.getCellEditor().stopCellEditing();
+      }
+      int col = header.columnAtPoint(e.getPoint());
+      table.changeSelection(0, col, false, false);
+      table.changeSelection(table.getRowCount() - 1, col, false, true);
+    }
   }
 }
