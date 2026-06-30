@@ -328,7 +328,7 @@ final class PasswordUiUtils {
   }
 
   public static JTextPane createVisiblePasswordEditor(JPasswordField password) {
-    JTextPane textPane = new JTextPane() {
+    JTextPane textPane = new OneLineTextPane() {
       @Override public void updateUI() {
         super.updateUI();
         setBorder(password.getBorder());
