@@ -26,19 +26,19 @@ public final class MainPanel extends JPanel {
         .mapToObj(i -> "JCheckBox" + i)
         .map(GroupCheckBox::new)
         .forEach(p::add);
-    p.add(new GroupCheckComboBox<>(makeModel(), 3), BorderLayout.NORTH);
+    p.add(new LimitedCheckComboBox<>(createModel(), 3), BorderLayout.NORTH);
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ComboBoxModel<CheckItem> makeModel() {
-    CheckItem[] m = {
-        new CheckItem("One", false),
-        new CheckItem("Tow", true),
-        new CheckItem("Three", false),
-        new CheckItem("Fore", false),
-        new CheckItem("Five", false),
+  private static ComboBoxModel<CheckedItem> createModel() {
+    CheckedItem[] m = {
+        new CheckedItem("One", false),
+        new CheckedItem("Tow", true),
+        new CheckedItem("Three", false),
+        new CheckedItem("Fore", false),
+        new CheckedItem("Five", false),
     };
     return new DefaultComboBoxModel<>(m);
   }
@@ -76,16 +76,16 @@ class GroupCheckBox extends JCheckBox {
   }
 
   private final class ButtonGroupModel extends ToggleButtonModel {
-    private final int groupSize;
+    private final int maxSelectionCount;
 
-    private ButtonGroupModel(int groupSize) {
+    private ButtonGroupModel(int maxSelectionCount) {
       super();
-      this.groupSize = groupSize;
+      this.maxSelectionCount = maxSelectionCount;
     }
 
     @Override public void setSelected(boolean selected) {
       if (selected) {
-        if (getSelectedObjects().length == groupSize) {
+        if (getSelectedObjects().length == maxSelectionCount) {
           UIManager.getLookAndFeel().provideErrorFeedback(GroupCheckBox.this);
         } else {
           super.setSelected(true);
@@ -106,12 +106,12 @@ class GroupCheckBox extends JCheckBox {
   }
 }
 
-class CheckItem {
-  private final String text;
+class CheckedItem {
+  private final String label;
   private boolean selected;
 
-  protected CheckItem(String text, boolean selected) {
-    this.text = text;
+  protected CheckedItem(String label, boolean selected) {
+    this.label = label;
     this.selected = selected;
   }
 
@@ -124,20 +124,20 @@ class CheckItem {
   }
 
   @Override public String toString() {
-    return text;
+    return label;
   }
 }
 
 // https://ateraimemo.com/Swing/CheckedComboBox.html
 // https://github.com/aterai/java-swing-tips/blob/master/CheckedComboBox/src/java/example/MainPanel.java
-class GroupCheckComboBox<E extends CheckItem> extends JComboBox<E> {
-  private final JPanel panel = new JPanel(new BorderLayout());
-  private final int groupSize;
-  private boolean keepOpen;
+class LimitedCheckComboBox<E extends CheckedItem> extends JComboBox<E> {
+  private final JPanel rendererPanel = new JPanel(new BorderLayout());
+  private final int maxSelectionCount;
+  private boolean keepPopupVisible;
 
-  protected GroupCheckComboBox(ComboBoxModel<E> model, int groupSize) {
+  protected LimitedCheckComboBox(ComboBoxModel<E> model, int maxSelectionCount) {
     super(model);
-    this.groupSize = groupSize;
+    this.maxSelectionCount = maxSelectionCount;
   }
 
   @Override public Dimension getPreferredSize() {
@@ -153,43 +153,44 @@ class GroupCheckComboBox<E extends CheckItem> extends JComboBox<E> {
         @Override public void mousePressed(MouseEvent e) {
           JList<?> list = (JList<?>) e.getComponent();
           if (SwingUtilities.isLeftMouseButton(e)) {
-            keepOpen = true;
-            updateItem(list.locationToIndex(e.getPoint()));
+            keepPopupVisible = true;
+            toggleItemSelection(list.locationToIndex(e.getPoint()));
           }
         }
       });
     }
 
-    DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+    DefaultListCellRenderer labelRenderer = new DefaultListCellRenderer();
     JCheckBox check = new JCheckBox();
     check.setOpaque(false);
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(
+      Component c = labelRenderer.getListCellRendererComponent(
           list, value, index, isSelected, cellHasFocus);
-      updatePanel(value, index < 0, c, check, list.getForeground());
-      return panel;
+      configureRendererPanel(value, index < 0, c, check, list.getForeground());
+      return rendererPanel;
     });
     initActionMap();
   }
 
-  private void updatePanel(E value, boolean b, Component c, JCheckBox check, Color fgc) {
-    panel.removeAll();
+  private void configureRendererPanel(
+      E value, boolean b, Component c, JCheckBox check, Color fgc) {
+    rendererPanel.removeAll();
     if (b && c instanceof JLabel) {
       JLabel l = (JLabel) c;
-      l.setText(makeSelectedText(getSelectedObjects()));
+      l.setText(createSelectedText(getSelectedObjects()));
       l.setOpaque(false);
       l.setForeground(fgc);
-      panel.setOpaque(false);
+      rendererPanel.setOpaque(false);
     } else {
       check.setSelected(value.isSelected());
-      panel.add(check, BorderLayout.WEST);
-      panel.setOpaque(true);
-      panel.setBackground(c.getBackground());
+      rendererPanel.add(check, BorderLayout.WEST);
+      rendererPanel.setOpaque(true);
+      rendererPanel.setBackground(c.getBackground());
     }
-    panel.add(c);
+    rendererPanel.add(c);
   }
 
-  public static String makeSelectedText(Object... selectedObjects) {
+  public static String createSelectedText(Object... selectedObjects) {
     String txt = Arrays.stream(selectedObjects)
         .map(Objects::toString)
         .collect(Collectors.joining(", "));
@@ -203,32 +204,44 @@ class GroupCheckComboBox<E extends CheckItem> extends JComboBox<E> {
       @Override public void actionPerformed(ActionEvent e) {
         Accessible a = getAccessibleContext().getAccessibleChild(0);
         if (a instanceof ComboPopup) {
-          updateItem(((ComboPopup) a).getList().getSelectedIndex());
+          toggleItemSelection(((ComboPopup) a).getList().getSelectedIndex());
         }
       }
     });
   }
 
-  protected void updateItem(int index) {
-    if (isPopupVisible() && index >= 0) {
-      E item = getItemAt(index);
-      if (item.isSelected()) {
-        item.setSelected(false);
-      } else {
-        if (getSelectedObjects().length == groupSize) {
-          UIManager.getLookAndFeel().provideErrorFeedback(this);
-        } else {
-          item.setSelected(true);
-        }
-      }
-      setSelectedIndex(-1);
-      setSelectedItem(item);
+  protected void toggleItemSelection(int itemIndex) {
+    if (isPopupVisible() && itemIndex >= 0) {
+      toggleSelection(getItemAt(itemIndex));
     }
   }
 
+  private void toggleSelection(E item) {
+    if (item.isSelected()) {
+      item.setSelected(false);
+    } else if (isSelectionLimitReached()) {
+      notifySelectionLimit();
+    } else {
+      item.setSelected(true);
+    }
+
+    // Force the JComboBox to refresh its displayed text
+    // when the same item is toggled repeatedly.
+    setSelectedIndex(-1);
+    setSelectedItem(item);
+  }
+
+  private boolean isSelectionLimitReached() {
+    return getSelectedObjects().length >= maxSelectionCount;
+  }
+
+  private void notifySelectionLimit() {
+    UIManager.getLookAndFeel().provideErrorFeedback(this);
+  }
+
   @Override public void setPopupVisible(boolean v) {
-    if (keepOpen) {
-      keepOpen = false;
+    if (keepPopupVisible) {
+      keepPopupVisible = false;
     } else {
       super.setPopupVisible(v);
     }
@@ -237,7 +250,7 @@ class GroupCheckComboBox<E extends CheckItem> extends JComboBox<E> {
   @Override public Object[] getSelectedObjects() {
     return IntStream.range(0, getItemCount())
         .mapToObj(getModel()::getElementAt)
-        .filter(CheckItem::isSelected)
+        .filter(CheckedItem::isSelected)
         .toArray();
   }
 }
