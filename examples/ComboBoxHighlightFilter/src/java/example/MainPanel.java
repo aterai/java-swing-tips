@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     p.add(combo, BorderLayout.NORTH);
 
     Box box = Box.createVerticalBox();
-    box.add(makeHelpPanel());
+    box.add(createHelpPanel());
     box.add(Box.createVerticalStrut(5));
     box.add(p);
     add(box, BorderLayout.NORTH);
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPanel makeHelpPanel() {
+  private static JPanel createHelpPanel() {
     JPanel lp = new JPanel(new GridLayout(2, 1, 2, 2));
     lp.add(new JLabel("Char: show Popup"));
     lp.add(new JLabel("ESC: hide Popup"));
@@ -111,7 +111,8 @@ class HighlightComboBox extends JComboBox<String> {
     field.setBorder(BorderFactory.createEmptyBorder());
     ListCellRenderer<? super String> renderer = getRenderer();
     setRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      String pattern = ((JTextField) getEditor().getEditorComponent()).getText();
+      Component c = getEditor().getEditorComponent();
+      String pattern = c instanceof JTextField ? ((JTextField) c).getText() : "";
       return index >= 0 && !pattern.isEmpty()
           ? updateHighlight(value, field, pattern, isSelected)
           : renderer.getListCellRendererComponent(

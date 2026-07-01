@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
         "1111", "1111222", "111122233", "111122233444",
         "12345", "67890", "55551", "555512",
     };
-    JComboBox<String> combo = makeComboBox(array);
+    JComboBox<String> combo = createComboBox(array);
     combo.setEditable(true);
     combo.setSelectedIndex(-1);
     JTextField field = (JTextField) combo.getEditor().getEditorComponent();
@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
     p.add(combo, BorderLayout.NORTH);
 
     Box box = Box.createVerticalBox();
-    box.add(makeHelpPanel());
+    box.add(createHelpPanel());
     box.add(Box.createVerticalStrut(5));
     box.add(p);
     add(box, BorderLayout.NORTH);
@@ -56,7 +56,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox(String... model) {
+  private static JComboBox<String> createComboBox(String... model) {
     return new JComboBox<>(model);
     // // Test: Remove ArrowButton(look like a JTextField)
     // // UIManager.put("ComboBox.squareButton", Boolean.FALSE);
@@ -91,7 +91,7 @@ public final class MainPanel extends JPanel {
     // };
   }
 
-  private static Component makeHelpPanel() {
+  private static Component createHelpPanel() {
     JPanel lp = new JPanel(new GridLayout(2, 1, 2, 2));
     lp.add(new JLabel("Char: show Popup"));
     lp.add(new JLabel("ESC: hide Popup"));
@@ -212,10 +212,13 @@ class ComboKeyHandler extends KeyAdapter {
     }
   }
 
-  private static <E> void setSuggestionModel(JComboBox<E> cmb, ComboBoxModel<E> mdl, E value) {
-    cmb.setModel(mdl);
-    cmb.setSelectedIndex(-1);
-    ((JTextField) cmb.getEditor().getEditorComponent()).setText(Objects.toString(value));
+  private static <E> void setSuggestionModel(JComboBox<E> cbx, ComboBoxModel<E> m, E value) {
+    cbx.setModel(m);
+    cbx.setSelectedIndex(-1);
+    Component editor = cbx.getEditor().getEditorComponent();
+    if (editor instanceof JTextField) {
+      ((JTextField) editor).setText(Objects.toString(value));
+    }
   }
 
   private static ComboBoxModel<String> getSuggestedModel(List<String> list, String text) {
