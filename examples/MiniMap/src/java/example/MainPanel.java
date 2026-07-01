@@ -5,25 +5,15 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.Reader;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -42,7 +32,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(makeStyleSheet());
+    htmlEditorKit.setStyleSheet(createStyleSheet());
 
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
@@ -50,17 +40,21 @@ public final class MainPanel extends JPanel {
     editor.setSelectionColor(new Color(0x64_88_AA_AA, true));
     editor.setBackground(new Color(0xEE_EE_EE));
 
-    ScriptEngine engine = ScriptEngineUtils.createEngine();
-    JButton button = new JButton("open");
-    button.addActionListener(e -> {
-      JFileChooser fileChooser = new JFileChooser();
-      int ret = fileChooser.showOpenDialog(getRootPane());
-      if (ret == JFileChooser.APPROVE_OPTION) {
-        loadFile(fileChooser.getSelectedFile().getAbsolutePath(), engine);
-      }
-    });
-
-    scroll.getVerticalScrollBar().getModel().addChangeListener(e -> label.repaint());
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    Optional.ofNullable(cl.getResource("example/test.html"))
+        .ifPresent(url -> {
+          try {
+            editor.setPage(url);
+          } catch (IOException ex) {
+            UIManager.getLookAndFeel().provideErrorFeedback(editor);
+            editor.setText(ex.getMessage());
+          }
+          editor.addPropertyChangeListener("page", e -> {
+            label.setIcon(createMiniMapImageIcon(editor));
+            revalidate();
+            repaint();
+          });
+        });
 
     JPanel pp = new JPanel(new BorderLayout(0, 0));
     pp.add(label, BorderLayout.NORTH);
@@ -68,12 +62,16 @@ public final class MainPanel extends JPanel {
     minimap.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     minimap.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+    JCheckBox button = new JCheckBox("minimap");
+    button.addActionListener(this::toggleMiniMap);
+
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    box.add(Box.createHorizontalGlue());
     box.add(button);
 
-    JPanel p = new JPanel(new MiniMapLayout(scroll.getVerticalScrollBar())) {
+    JScrollBar verticalScrollBar = scroll.getVerticalScrollBar();
+    verticalScrollBar.getModel().addChangeListener(e -> label.repaint());
+    JPanel p = new JPanel(new MiniMapLayout(verticalScrollBar)) {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
       }
@@ -86,23 +84,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void loadFile(String path, ScriptEngine engine) {
-    try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
-      String txt = lines
-          .map(s -> s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
-          .collect(Collectors.joining("\n"));
-      editor.setText("<pre>" + ScriptEngineUtils.prettify(engine, txt) + "\n</pre>");
-    } catch (IOException ex) {
-      editor.setText(ex.getMessage());
+  private void toggleMiniMap(ActionEvent e) {
+    boolean b = ((AbstractButton) e.getSource()).isSelected();
+    if (b) {
+      label.setIcon(createMiniMapImageIcon(editor));
+    } else {
+      label.setIcon(null);
     }
-    EventQueue.invokeLater(() -> {
-      label.setIcon(makeMiniMapImageIcon(editor));
-      revalidate();
-      repaint();
-    });
+    revalidate();
+    repaint();
   }
 
-  private static StyleSheet makeStyleSheet() {
+  private static StyleSheet createStyleSheet() {
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str{color:#008800}");
     styleSheet.addRule(".kwd{color:#000088}");
@@ -118,7 +111,7 @@ public final class MainPanel extends JPanel {
     return styleSheet;
   }
 
-  private static Icon makeMiniMapImageIcon(Component c) {
+  private static Icon createMiniMapImageIcon(Component c) {
     Dimension d = c.getSize();
     int newW = Math.round(d.width * SCALE);
     int newH = Math.round(d.height * SCALE);
@@ -173,28 +166,37 @@ class MiniMapLabel extends JLabel {
     addMouseMotionListener(handler);
   }
 
+  // Calculating the thumb rectangle shared
+  // by paintComponent and processMiniMapMouseEvent
+  private Rectangle computeThumbRect() {
+    JViewport viewport = scroll.getViewport();
+    Rectangle er = viewport.getView().getBounds();
+    Rectangle cr = SwingUtilities.calculateInnerArea(this, null);
+    Rectangle thumbRect = new Rectangle(cr);
+    if (cr.height > 0 && er.getHeight() > 0) {
+      double sy = cr.getHeight() / er.getHeight();
+      AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
+      Rectangle tr = new Rectangle(viewport.getBounds());
+      tr.y = viewport.getViewPosition().y;
+      Rectangle r = at.createTransformedShape(tr).getBounds();
+      thumbRect.y += r.y;
+      thumbRect.height = r.height;
+    } else {
+      thumbRect.height = 0;
+    }
+    return thumbRect;
+  }
+
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    JViewport viewport = scroll.getViewport();
-    // Rectangle vr = scroll.getViewport().getVisibleRect(); // = viewport.getBounds();
-    Rectangle vr = viewport.getBounds();
-    Rectangle er = scroll.getViewport().getView().getBounds();
-    Rectangle cr = SwingUtilities.calculateInnerArea(this, new Rectangle());
+    Rectangle r = computeThumbRect();
 
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    double sy = cr.getHeight() / er.getHeight();
-    AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
-
-    // paint Thumb
-    Rectangle thumbRect = new Rectangle(vr);
-    thumbRect.y = viewport.getViewPosition().y;
-    Rectangle r = at.createTransformedShape(thumbRect).getBounds();
-    int y = cr.y + r.y;
     g2.setColor(THUMB_COLOR);
-    g2.fillRect(0, y, cr.width, r.height);
+    g2.fillRect(r.x, r.y, r.width, r.height);
     g2.setColor(THUMB_COLOR.darker());
-    g2.drawRect(0, y, cr.width - 1, r.height - 1);
+    g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
     g2.dispose();
   }
 
@@ -213,7 +215,14 @@ class MiniMapLabel extends JLabel {
       BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
       int range = m.getMaximum() - m.getMinimum();
       int iv = Math.round(pt.y * range / (float) c.getHeight() - m.getExtent() / 2f);
-      m.setValue(iv);
+      m.setValue(iv); // Scroll main editor side
+
+      if (c instanceof JComponent) {
+        // The display position of the minimap itself will also follow
+        // the position where the thumb (window) can be seen.
+        Rectangle thumbRect = computeThumbRect();
+        ((JComponent) c).scrollRectToVisible(thumbRect);
+      }
     }
   }
 }
@@ -239,7 +248,6 @@ class MiniMapLayout extends BorderLayout {
       Component ec = getLayoutComponent(parent, EAST);
       if (Objects.nonNull(ec)) {
         Dimension d = ec.getPreferredSize();
-        // JScrollBar vsb = scroll.getVerticalScrollBar();
         int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
         ec.setBounds(right - d.width - vsw, top, d.width, bottom - top);
       }
@@ -248,41 +256,5 @@ class MiniMapLayout extends BorderLayout {
         cc.setBounds(left, top, right - left, bottom - top);
       }
     }
-  }
-}
-
-final class ScriptEngineUtils {
-  private ScriptEngineUtils() {
-    /* Singleton */
-  }
-
-  public static ScriptEngine createEngine() {
-    ScriptEngineManager manager = new ScriptEngineManager();
-    ScriptEngine engine = manager.getEngineByName("JavaScript");
-
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    URL url = cl.getResource("example/prettify.js");
-    try {
-      assert url != null;
-      try (Reader reader = Files.newBufferedReader(Paths.get(url.toURI()))) {
-        engine.eval("var window={}, navigator=null;");
-        engine.eval(reader);
-      }
-    } catch (IOException | ScriptException | URISyntaxException ex) {
-      Logger.getGlobal().severe(ex::getMessage);
-      Toolkit.getDefaultToolkit().beep();
-    }
-    return engine;
-  }
-
-  public static String prettify(ScriptEngine engine, String src) {
-    String printTxt;
-    try {
-      Object w = engine.get("window");
-      printTxt = (String) ((Invocable) engine).invokeMethod(w, "prettyPrintOne", src);
-    } catch (ScriptException | NoSuchMethodException ex) {
-      printTxt = ex.getMessage();
-    }
-    return printTxt;
   }
 }
