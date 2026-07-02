@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -45,7 +46,10 @@ public final class MainPanel extends JPanel {
     monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
 
     JTableHeader header = monthTable.getTableHeader();
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    if (renderer instanceof JLabel) {
+      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
     JButton prev = new JButton("<");
     prev.addActionListener(e -> updateMonthView(getCurrentLocalDate().minusMonths(1)));

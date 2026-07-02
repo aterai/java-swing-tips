@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -39,7 +40,10 @@ public final class MainPanel extends JPanel {
     JTableHeader header = monthTable.getTableHeader();
     header.setResizingAllowed(false);
     header.setReorderingAllowed(false);
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    if (renderer instanceof JLabel) {
+      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
     ListSelectionListener selectionListener = e -> {
       if (!e.getValueIsAdjusting()) {
@@ -72,14 +76,14 @@ public final class MainPanel extends JPanel {
 
     updateMonthView(realLocalDate);
 
-    add(makeButtonBox(), BorderLayout.NORTH);
+    add(createButtonBox(), BorderLayout.NORTH);
     add(scroll);
     add(dateLabel, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JPanel makeButtonBox() {
+  private JPanel createButtonBox() {
     JButton prev = new JButton("<");
     prev.addActionListener(e -> {
       LocalDate d = monthTable.getCurrentLocalDate();
@@ -176,7 +180,10 @@ class MonthTable extends JTable {
     JTableHeader header = getTableHeader();
     header.setResizingAllowed(false);
     header.setReorderingAllowed(false);
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    if (renderer instanceof JLabel) {
+      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+    }
   }
 
   public LocalDate getRealLocalDate() {
@@ -205,14 +212,15 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
       l.setHorizontalAlignment(CENTER);
       LocalDate d = (LocalDate) value;
       l.setText(Integer.toString(d.getDayOfMonth()));
-      LocalDate cur = ((MonthTable) table).getCurrentLocalDate();
+      MonthTable tbl = (MonthTable) table;
+      LocalDate cur = tbl.getCurrentLocalDate();
       if (YearMonth.from(d).equals(YearMonth.from(cur))) {
         l.setForeground(table.getForeground());
       } else {
         l.setForeground(Color.GRAY);
       }
       DayOfWeek dow = d.getDayOfWeek();
-      if (d.isEqual(((MonthTable) table).getRealLocalDate())) {
+      if (d.isEqual(tbl.getRealLocalDate())) {
         l.setBackground(TODAY_BGC);
       } else if (dow == DayOfWeek.SUNDAY) {
         l.setBackground(SUNDAY_BGC);

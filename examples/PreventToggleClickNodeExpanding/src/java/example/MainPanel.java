@@ -80,14 +80,14 @@ public final class MainPanel extends JPanel {
     if (file.isDirectory()) {
       createChildren(file, child);
     } else if (Objects.equals("MainPanel.java", file.getName())) {
-      child.add(makeNode("MainPanel()"));
-      child.add(makeNode("createAndShowGui():void"));
-      child.add(makeNode("createChildren(File, DefaultMutableTreeNode):void"));
-      child.add(makeNode("main(String[]):void"));
+      child.add(createNode("MainPanel()"));
+      child.add(createNode("createAndShowGui():void"));
+      child.add(createNode("createChildren(File, DefaultMutableTreeNode):void"));
+      child.add(createNode("main(String[]):void"));
     }
   }
 
-  private static DefaultMutableTreeNode makeNode(String txt) {
+  private static DefaultMutableTreeNode createNode(String txt) {
     return new DefaultMutableTreeNode(txt);
   }
 
@@ -154,9 +154,9 @@ class FileTreeCellRenderer extends DefaultTreeCellRenderer {
       c.setForeground(getTextNonSelectionColor());
       c.setBackground(getBackgroundNonSelectionColor());
     }
-    if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
+    if (value instanceof DefaultMutableTreeNode) {
       Object o = ((DefaultMutableTreeNode) value).getUserObject();
-      if (o instanceof File) {
+      if (o instanceof File && c instanceof JLabel) {
         String txt;
         try {
           txt = ((File) o).getCanonicalFile().getName();

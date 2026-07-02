@@ -20,8 +20,11 @@ public final class MainPanel extends JPanel {
     JLabel label = new JLabel();
     label.addComponentListener(new ComponentAdapter() {
       @Override public void componentResized(ComponentEvent e) {
-        Window w = SwingUtilities.getWindowAncestor(getRootPane());
-        ((JLabel) e.getComponent()).setText(w.getSize().toString());
+        Component c = e.getComponent();
+        if (c instanceof JLabel) {
+          Window w = SwingUtilities.getWindowAncestor(getRootPane());
+          ((JLabel) c).setText(w.getSize().toString());
+        }
       }
     });
 

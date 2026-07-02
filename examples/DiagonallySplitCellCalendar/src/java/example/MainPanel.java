@@ -21,6 +21,7 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -43,7 +44,10 @@ public final class MainPanel extends JPanel {
     JTableHeader header = monthTable.getTableHeader();
     header.setResizingAllowed(false);
     header.setReorderingAllowed(false);
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    if (renderer instanceof JLabel) {
+      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+    }
 
     updateMonthView(LocalDate.of(2020, 8, 1));
 

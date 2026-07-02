@@ -22,12 +22,12 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new StandingsTable(makeModel());
+    JTable table = new StandingsTable(createModel());
     add(new JLayer<>(new JScrollPane(table), new BorderPaintLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"#", "Team", "MP", "W", "D", "L", "F", "A", "GD", "P"};
     Object[][] data = {
         {1, "Machida", 33, 20, 7, 6, 57, 27, +30, 67},
@@ -134,7 +134,10 @@ class StandingsTable extends JTable {
 
   private static void initTableHeader(JTable table) {
     JTableHeader header = table.getTableHeader();
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    if (renderer instanceof JLabel) {
+      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+    }
     TableColumnModel columnModel = table.getColumnModel();
     IntStream.range(0, columnModel.getColumnCount())
         .filter(i -> i != 1)
@@ -170,17 +173,17 @@ class BorderPaintLayerUI extends LayerUI<JScrollPane> {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(Color.GREEN.darker());
     if (b) {
-      g2.draw(makeUnderline(layer, table, 2));
+      g2.draw(createUnderline(layer, table, 2));
       g2.setPaint(Color.BLUE.darker());
-      g2.draw(makeUnderline(layer, table, 6));
+      g2.draw(createUnderline(layer, table, 6));
       g2.setPaint(Color.RED.darker());
-      g2.draw(makeUnderline(layer, table, 20));
+      g2.draw(createUnderline(layer, table, 20));
     } else {
-      g2.draw(makeUnderline(layer, table, 22 - 2));
+      g2.draw(createUnderline(layer, table, 22 - 2));
       g2.setPaint(Color.BLUE.darker());
-      g2.draw(makeUnderline(layer, table, 22 - 6));
+      g2.draw(createUnderline(layer, table, 22 - 6));
       g2.setPaint(Color.RED.darker());
-      g2.draw(makeUnderline(layer, table, 22 - 20));
+      g2.draw(createUnderline(layer, table, 22 - 20));
     }
     g2.dispose();
   }
@@ -196,7 +199,7 @@ class BorderPaintLayerUI extends LayerUI<JScrollPane> {
     return table;
   }
 
-  private static Line2D makeUnderline(Component c, JTable table, int idx) {
+  private static Line2D createUnderline(Component c, JTable table, int idx) {
     Rectangle r0 = table.getCellRect(idx - 1, 0, false);
     Rectangle r1 = table.getCellRect(idx - 1, table.getColumnCount() - 1, false);
     Rectangle r = SwingUtilities.convertRectangle(table, r0.union(r1), c);

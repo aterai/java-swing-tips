@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -168,7 +169,10 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
       JTableHeader header = monthTable.getTableHeader();
       header.setResizingAllowed(false);
       header.setReorderingAllowed(false);
-      ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+      TableCellRenderer renderer = header.getDefaultRenderer();
+      if (renderer instanceof JLabel) {
+        ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+      }
 
       MouseAdapter mouseHandler = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {

@@ -20,8 +20,8 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JCheckBox check = new JCheckBox("CrossFade Type?", true);
-    ImageIcon icon1 = new ImageIcon(makeImage("example/test.png"));
-    ImageIcon icon2 = new ImageIcon(makeImage("example/test.jpg"));
+    ImageIcon icon1 = new ImageIcon(createImage("example/test.png"));
+    ImageIcon icon2 = new ImageIcon(createImage("example/test.jpg"));
     JButton button = new JButton("change");
 
     AtomicInteger alpha = new AtomicInteger(10);
@@ -48,7 +48,10 @@ public final class MainPanel extends JPanel {
       } else if (mode == CrossFade.OUT && alpha.get() > 0) {
         alpha.decrementAndGet(); // alpha -= 1;
       } else {
-        ((Timer) e.getSource()).stop();
+        Object src = e.getSource();
+        if (src instanceof Timer) {
+          ((Timer) src).stop();
+        }
       }
       crossFade.repaint();
     });
@@ -64,20 +67,20 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeImage(String path) {
+  private static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

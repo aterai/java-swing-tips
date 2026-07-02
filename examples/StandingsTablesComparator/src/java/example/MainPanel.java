@@ -23,8 +23,8 @@ import javax.swing.table.TableRowSorter;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new StandingsTable(makeModel());
-    table.setDefaultRenderer(RowData.class, makeRenderer());
+    JTable table = new StandingsTable(createModel());
+    table.setDefaultRenderer(RowData.class, createRenderer());
     RowSorter<? extends TableModel> sorter = table.getRowSorter();
     if (sorter instanceof TableRowSorter) {
       TableRowSorter<? extends TableModel> rs = (TableRowSorter<? extends TableModel>) sorter;
@@ -45,7 +45,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultTableCellRenderer makeRenderer() {
+  private static DefaultTableCellRenderer createRenderer() {
     return new DefaultTableCellRenderer() {
       @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component c = super.getTableCellRendererComponent(
@@ -61,7 +61,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"#", "Team", "MP", "W", "D", "L", "F", "A", "GD", "P"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
@@ -172,7 +172,10 @@ class StandingsTable extends JTable {
 
   private static void initTableHeader(JTable table) {
     JTableHeader header = table.getTableHeader();
-    ((JLabel) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+    TableCellRenderer renderer = header.getDefaultRenderer();
+    if (renderer instanceof JLabel) {
+      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
+    }
     TableColumnModel columnModel = table.getColumnModel();
     for (int i = 0; i < columnModel.getColumnCount(); i++) {
       boolean isNotTeam = i != 1;
@@ -186,19 +189,19 @@ class StandingsTable extends JTable {
 class RowData {
   private static final List<Function<RowData, String>> COLUMN_CONVERTERS =
       Collections.unmodifiableList(Arrays.asList(
-        r -> Integer.toString(r.getPosition()),
-        RowData::getTeam,
-        r -> Integer.toString(r.getMatches()),
-        r -> Integer.toString(r.getWins()),
-        r -> Integer.toString(r.getDraws()),
-        r -> Integer.toString(r.getLosses()),
-        r -> Integer.toString(r.getGoalsFor()),
-        r -> Integer.toString(r.getGoalsAgainst()),
-        r -> {
-          int d = r.getGoalDifference();
-          return d > 0 ? "+" + d : Integer.toString(d);
-        },
-        r -> Integer.toString(r.getPoints())
+          r -> Integer.toString(r.getPosition()),
+          RowData::getTeam,
+          r -> Integer.toString(r.getMatches()),
+          r -> Integer.toString(r.getWins()),
+          r -> Integer.toString(r.getDraws()),
+          r -> Integer.toString(r.getLosses()),
+          r -> Integer.toString(r.getGoalsFor()),
+          r -> Integer.toString(r.getGoalsAgainst()),
+          r -> {
+            int d = r.getGoalDifference();
+            return d > 0 ? "+" + d : Integer.toString(d);
+          },
+          r -> Integer.toString(r.getPoints())
       ));
   private final int position;
   private final String team;
