@@ -20,7 +20,13 @@ import javax.swing.text.TextAction;
 import javax.swing.text.Utilities;
 
 public final class MainPanel extends JPanel {
-  private static final String TEXT = "AA-BB_CC\nAA-bb_CC\naa1-bb2_cc3\naa_(bb)_cc;\n11-22_33";
+  private static final String TEXT = String.join(
+      "\n",
+      "Abc-Def_Ghi",
+      "abc-def_ghi",
+      "aa1-bb2_cc3",
+      "aa_(bb)_cc;",
+      "11-22_33");
 
   private MainPanel() {
     super(new BorderLayout());
@@ -42,15 +48,15 @@ public final class MainPanel extends JPanel {
     };
     JTextArea textArea = new JTextArea(TEXT);
     textArea.getActionMap().put(DefaultEditorKit.selectWordAction, a);
-    Component c1 = makeTitledPanel("Default", new JTextArea(TEXT));
-    Component c2 = makeTitledPanel("Break words: _ and -", textArea);
+    Component c1 = createTitledPanel("Default", new JTextArea(TEXT));
+    Component c2 = createTitledPanel("Break words: _ and -", textArea);
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
     split.setResizeWeight(.5);
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JLabel(title), BorderLayout.NORTH);
     p.add(new JScrollPane(c));
