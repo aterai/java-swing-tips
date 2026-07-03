@@ -9,6 +9,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -179,10 +180,15 @@ abstract class AbstractShimmerLabel extends JLabel {
   }
 
   public static void applyRenderingHints(Graphics2D g2) {
-    g2.setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setRenderingHint(
-        RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    // g2.setRenderingHint(
+    //     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    // g2.setRenderingHint(
+    //     RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    Object hints = toolkit.getDesktopProperty("awt.font.desktophints");
+    if (hints instanceof Map<?, ?>) {
+      g2.addRenderingHints((Map<?, ?>) hints);
+    }
   }
 }
 
@@ -230,7 +236,10 @@ class TextShimmerLabel extends AbstractShimmerLabel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    applyRenderingHints(g2);
+    boolean isWindows = getUI().getClass().getName().contains("Windows");
+    if (!isWindows) {
+      applyRenderingHints(g2);
+    }
 
     Rectangle[] rects = ShimmerLayout.layoutLabel(this, g2);
     Rectangle textRect = rects[1];
@@ -280,7 +289,7 @@ class TextCompositeShimmerLabel extends AbstractShimmerLabel {
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    applyRenderingHints(g2);
+    // applyRenderingHints(g2);
 
     Rectangle[] rects = ShimmerLayout.layoutLabel(this, g2);
     Rectangle textRect = rects[1];
@@ -300,10 +309,13 @@ class TextCompositeShimmerLabel extends AbstractShimmerLabel {
       buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     }
     Graphics2D g2 = buffer.createGraphics();
+    boolean isWindows = getUI().getClass().getName().contains("Windows");
+    if (!isWindows) {
+      applyRenderingHints(g2);
+    }
     g2.setComposite(AlphaComposite.Clear);
     g2.fillRect(0, 0, w, h);
     g2.setComposite(AlphaComposite.SrcOver);
-    applyRenderingHints(g2);
 
     Rectangle[] rects = ShimmerLayout.layoutLabel(this, g2);
     Rectangle textRect = rects[1];
@@ -407,8 +419,10 @@ class ShimmerLayerUI extends LayerUI<JLabel> {
   private BufferedImage createShimmerBuffer(JLabel label, JComponent c, int w, int h) {
     BufferedImage shimBuf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D sg = shimBuf.createGraphics();
-
-    AbstractShimmerLabel.applyRenderingHints(sg);
+    boolean isWindows = label.getUI().getClass().getName().contains("Windows");
+    if (!isWindows) {
+       AbstractShimmerLabel.applyRenderingHints(sg);
+    }
     Rectangle[] rects = ShimmerLayout.layoutLabel(label, sg);
     Rectangle textRect = rects[1];
     FontMetrics fm = sg.getFontMetrics(label.getFont());
