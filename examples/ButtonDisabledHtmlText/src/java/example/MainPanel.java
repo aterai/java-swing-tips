@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -36,10 +37,13 @@ public final class MainPanel extends JPanel {
 
     JCheckBox check = new JCheckBox("setEnabled", true);
     check.addActionListener(e -> {
-      boolean isSelected = ((JCheckBox) e.getSource()).isSelected();
-      button0.setEnabled(isSelected);
-      layer1.setLocked(!isSelected);
-      button2.setEnabled(isSelected);
+      Object src = e.getSource();
+      if (src instanceof JCheckBox) {
+        boolean isSelected = ((JCheckBox) src).isSelected();
+        button0.setEnabled(isSelected);
+        layer1.setLocked(!isSelected);
+        button2.setEnabled(isSelected);
+      }
     });
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -154,7 +158,7 @@ class DisableInputLayerUI<V extends AbstractButton> extends LayerUI<V> {
       b.setFocusable(!isBlocking);
       b.setMnemonic(isBlocking ? 0 : b.getText().codePointAt(0));
       b.setForeground(isBlocking ? Color.RED : Color.BLACK);
-      l.getGlassPane().setVisible((Boolean) e.getNewValue());
+      l.getGlassPane().setVisible(Objects.equals(Boolean.TRUE, e.getNewValue()));
     }
   }
 

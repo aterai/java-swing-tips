@@ -32,15 +32,18 @@ public final class MainPanel extends JPanel {
     JButton b3 = new JButton("<html>Blurred <font color='blue'>JLayer");
     p.add(new JLayer<>(b3, new BlurLayerUI<>()));
 
-    JCheckBox button = new JCheckBox("setEnabled", true);
-    button.addActionListener(e -> {
-      boolean f = ((AbstractButton) e.getSource()).isSelected();
-      Stream.of(b0, b1, b2, b3).forEach(b -> b.setEnabled(f));
+    JCheckBox check = new JCheckBox("setEnabled", true);
+    check.addActionListener(e -> {
+      Object src = e.getSource();
+      if (src instanceof JCheckBox) {
+        boolean f = ((JCheckBox) src).isSelected();
+        Stream.of(b0, b1, b2, b3).forEach(b -> b.setEnabled(f));
+      }
     });
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    box.add(button);
+    box.add(check);
 
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());

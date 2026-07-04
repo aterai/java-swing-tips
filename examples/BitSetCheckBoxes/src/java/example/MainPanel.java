@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
           box.add(Box.createHorizontalStrut(2));
         });
     IntStream.range(0, BIT_LENGTH)
-        .mapToObj(this::makeCheckBox)
+        .mapToObj(this::createCheckBox)
         .forEach(panel::add);
     label.setFont(label.getFont().deriveFont(8f));
 
@@ -69,14 +69,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JCheckBox makeCheckBox(int i) {
+  private JCheckBox createCheckBox(int i) {
     JCheckBox c = new JCheckBox(Integer.toString(i), status.get(i));
     c.addActionListener(e -> {
-      BitSet newValue = status.get(0, BIT_LENGTH);
-      newValue.set(i, ((JCheckBox) e.getSource()).isSelected());
-      undoSupport.postEdit(new StatusEdit(status, newValue));
-      status = newValue;
-      label.setText(print(status));
+      Object src = e.getSource();
+      if (src instanceof JCheckBox) {
+        BitSet newValue = status.get(0, BIT_LENGTH);
+        newValue.set(i, ((JCheckBox) src).isSelected());
+        undoSupport.postEdit(new StatusEdit(status, newValue));
+        status = newValue;
+        label.setText(print(status));
+      }
     });
     return c;
   }
