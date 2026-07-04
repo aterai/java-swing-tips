@@ -32,10 +32,7 @@ public final class MainPanel extends JPanel {
     add(createTitledPanel("Default", createToggleSlider(null)));
     add(createTitledPanel("Thumb size", slider0));
     add(createTitledPanel("SliderTrack", slider1));
-
-    JSlider slider2 = createToggleSlider(d);
-    add(createTitledPanel("JSlider + JLayer", new JLayer<>(slider2, new ToggleSwitchLayerUI())));
-
+    add(createTitledPanel("JSlider + JLayer", createToggleSliderLayer(d)));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -50,6 +47,11 @@ public final class MainPanel extends JPanel {
       slider.putClientProperty("Nimbus.Overrides", d);
     }
     return slider;
+  }
+
+  private static JLayer<JSlider> createToggleSliderLayer(UIDefaults d) {
+    JSlider slider = createToggleSlider(d);
+    return new JLayer<>(slider, new ToggleSwitchLayerUI());
   }
 
   private static UIDefaults createSliderPainter() {
