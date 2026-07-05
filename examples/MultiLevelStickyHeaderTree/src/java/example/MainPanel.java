@@ -134,7 +134,7 @@ public final class MainPanel extends JPanel {
 // all expanded non-leaf ancestors as sticky headers.
 // Each header receives an independent push-up effect when the next expanded
 // sibling node of the same depth approaches.
-// 
+//
 // ### Push-up Algorithm
 // - For each stickyPaths[i]:
 // 1. Find the next expanded sibling nextSiblingPath[i] under the same parent.
@@ -296,8 +296,8 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
     Graphics2D g2 = (Graphics2D) g.create();
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     Object hints = toolkit.getDesktopProperty("awt.font.desktophints");
-    if (hints instanceof Map<?, ?> map) {
-      g2.addRenderingHints(map);
+    if (hints instanceof Map) {
+      g2.addRenderingHints((Map<?, ?>) hints);
     }
 
     JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
@@ -355,7 +355,8 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
     // Indentation according to depth (depth 0=0px, depth 1=10px...)
     int indent = depthIdx * 10;
 
-    if (c instanceof JLabel label) {
+    if (c instanceof JLabel) {
+      JLabel label = (JLabel) c;
       label.setOpaque(false);
       Icon icon = label.getIcon();
       int iconW = 0;
