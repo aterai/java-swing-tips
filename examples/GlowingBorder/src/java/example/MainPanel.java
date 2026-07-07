@@ -161,11 +161,11 @@ class GlowingBorder extends EmptyBorder {
     // → Draw only inside the borderMask (alpha=255),
     //   outside the shape (alpha=0) remains unchanged
     g2.setComposite(AlphaComposite.SrcAtop);
-    // VS Code の入力フィールド背景色風 (#252526)
+    // VS Code input field background color style
     g2.setColor(new Color(0x25_25_26));
     g2.fill(borderMask);
 
-    // VS Code のデフォルトの境界線色風 (#3C3C3C)
+    // VS Code default border color style
     g2.setColor(new Color(0x3C_3C_3C));
     g2.draw(outer);
     g2.draw(inner);
