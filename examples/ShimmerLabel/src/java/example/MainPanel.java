@@ -421,7 +421,7 @@ class ShimmerLayerUI extends LayerUI<JLabel> {
     Graphics2D sg = shimBuf.createGraphics();
     boolean isWindows = label.getUI().getClass().getName().contains("Windows");
     if (!isWindows) {
-       AbstractShimmerLabel.applyRenderingHints(sg);
+      AbstractShimmerLabel.applyRenderingHints(sg);
     }
     Rectangle[] rects = ShimmerLayout.layoutLabel(label, sg);
     Rectangle textRect = rects[1];
