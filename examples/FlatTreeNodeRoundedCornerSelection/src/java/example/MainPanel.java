@@ -22,16 +22,16 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(1, 0, 2, 2));
     JTree tree = new JTree();
     tree.setRowHeight(20);
-    add(makeScrollPane(tree));
-    add(makeScrollPane(new RoundedSelectionTree0()));
-    add(makeScrollPane(new RoundedSelectionTree()));
+    add(createScrollPane(tree));
+    add(createScrollPane(new RoundedSelectionTree0()));
+    add(createScrollPane(new RoundedSelectionTree()));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JScrollPane makeScrollPane(Component view) {
+  private static JScrollPane createScrollPane(Component view) {
     JScrollPane scroll = new JScrollPane(view);
     scroll.setBackground(Color.WHITE);
     scroll.getViewport().setBackground(Color.WHITE);
@@ -75,9 +75,9 @@ class RoundedSelectionTree extends JTree {
           .mapToObj(this::getRowBounds)
           .forEach(r -> area.add(new Area(r)));
       double arc = 4d;
-      for (Area a : GeomUtils.singularization(area)) {
+      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
         List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
-        GeomUtils.flatteningStepsOnRightSide(lst, arc * 2d);
+        GeomUtils.snapShortRightEdges(lst, arc * 2d);
         g2.fill(GeomUtils.convertRoundedPath(lst, arc));
         // g2.fill(GeomUtils.drawRoundedPolygon(lst, arc));
       }
@@ -114,7 +114,7 @@ class RoundedSelectionTree0 extends JTree {
           .mapToObj(this::getRowBounds)
           .forEach(r -> area.add(new Area(r)));
       double arc = 4d;
-      for (Area a : GeomUtils.singularization(area)) {
+      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
         List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         // GeomUtils.convertFlatten(lst, arc * 2d);
         g2.fill(GeomUtils.convertRoundedPath(lst, arc));
@@ -180,7 +180,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -188,7 +188,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
@@ -233,12 +233,12 @@ final class GeomUtils {
   public static List<Point2D> convertAreaToListOfPoint2D(Area area) {
     List<Point2D> list = new ArrayList<>();
     PathIterator pi = area.getPathIterator(null);
-    double[] coords = new double[6];
+    double[] cd = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(coords)) {
+      switch (pi.currentSegment(cd)) {
         case PathIterator.SEG_MOVETO:
         case PathIterator.SEG_LINETO:
-          list.add(new Point2D.Double(coords[0], coords[1]));
+          list.add(new Point2D.Double(cd[0], cd[1]));
           break;
         default:
           break;
@@ -248,7 +248,8 @@ final class GeomUtils {
     return list;
   }
 
-  public static void flatteningStepsOnRightSide(List<Point2D> list, double arc) {
+  // Align the short step at the right edge with the larger X-coordinate.
+  public static void snapShortRightEdges(List<Point2D> list, double arc) {
     int sz = list.size();
     for (int i = 0; i < sz; i++) {
       int i1 = (i + 1) % sz;
@@ -270,13 +271,10 @@ final class GeomUtils {
   }
 
   private static void replace(List<Point2D> list, int i, double x, double y) {
-    list.remove(i);
-    list.add(i, new Point2D.Double(x, y));
+    list.set(i, new Point2D.Double(x, y));
   }
 
-  /**
-   * Rounding the corners of a Rectilinear Polygon.
-   */
+  // Rounding the corners of a Rectilinear Polygon.
   public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
     double akv = arc - arc * kappa;
@@ -288,10 +286,10 @@ final class GeomUtils {
       Point2D prv = list.get((i - 1 + sz) % sz);
       Point2D cur = list.get(i);
       Point2D nxt = list.get((i + 1) % sz);
-      double dx0 = signum(cur.getX() - prv.getX(), arc);
-      double dy0 = signum(cur.getY() - prv.getY(), arc);
-      double dx1 = signum(nxt.getX() - cur.getX(), arc);
-      double dy1 = signum(nxt.getY() - cur.getY(), arc);
+      double dx0 = clampedSignum(cur.getX() - prv.getX(), arc);
+      double dy0 = clampedSignum(cur.getY() - prv.getY(), arc);
+      double dx1 = clampedSignum(nxt.getX() - cur.getX(), arc);
+      double dy1 = clampedSignum(nxt.getY() - cur.getY(), arc);
       path.curveTo(
           cur.getX() - dx0 * akv, cur.getY() - dy0 * akv,
           cur.getX() + dx1 * akv, cur.getY() + dy1 * akv,
@@ -302,32 +300,34 @@ final class GeomUtils {
     return path;
   }
 
-  private static double signum(double v, double arc) {
+  // Return 0 if less than the arc.
+  private static double clampedSignum(double v, double arc) {
     return Math.abs(v) < arc ? 0d : Math.signum(v);
   }
 
-  public static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
+  // Decompose a multi-loop Area into a list of single-loop Areas.
+  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+    List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
-    double[] coords = new double[6];
+    double[] cd = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(coords)) {
+      switch (pi.currentSegment(cd)) {
         case PathIterator.SEG_MOVETO:
-          path.moveTo(coords[0], coords[1]);
+          path.moveTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_LINETO:
-          path.lineTo(coords[0], coords[1]);
+          path.lineTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_QUADTO:
-          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+          path.quadTo(cd[0], cd[1], cd[2], cd[3]);
           break;
         case PathIterator.SEG_CUBICTO:
-          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+          path.curveTo(cd[0], cd[1], cd[2], cd[3], cd[4], cd[5]);
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          list.add(new Area(path));
+          subAreas.add(new Area(path));
           path.reset();
           break;
         default:
@@ -335,7 +335,7 @@ final class GeomUtils {
       }
       pi.next();
     }
-    return list;
+    return subAreas;
   }
 
   // // https://stackoverflow.com/questions/26995884/polygon-with-rounded-corners

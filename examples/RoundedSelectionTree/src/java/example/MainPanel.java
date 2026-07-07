@@ -21,15 +21,15 @@ public final class MainPanel extends JPanel {
     super(new GridLayout(1, 2, 2, 2));
     JTree tree = new JTree();
     tree.setRowHeight(20);
-    add(makeScrollPane(tree));
-    add(makeScrollPane(new RoundedSelectionTree()));
+    add(createScrollPane(tree));
+    add(createScrollPane(new RoundedSelectionTree()));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JScrollPane makeScrollPane(Component view) {
+  private static JScrollPane createScrollPane(Component view) {
     JScrollPane scroll = new JScrollPane(view);
     scroll.setBackground(Color.WHITE);
     scroll.getViewport().setBackground(Color.WHITE);
@@ -75,7 +75,7 @@ class RoundedSelectionTree extends JTree {
           .map(r -> new Rectangle(innerArea.x, r.y, innerArea.width, r.height))
           .forEach(r -> area.add(new Area(r)));
       int arc = 10;
-      for (Area a : singularization(area)) {
+      for (Area a : splitIntoSingleLoopAreas(area)) {
         Rectangle r = a.getBounds();
         g2.fillRoundRect(r.x, r.y, r.width - 1, r.height - 1, arc, arc);
       }
@@ -91,28 +91,29 @@ class RoundedSelectionTree extends JTree {
     super.paintComponent(g);
   }
 
-  private static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
+  // Decompose a multi-loop Area into a list of single-loop Areas.
+  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+    List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
-    double[] coords = new double[6];
+    double[] cd = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(coords)) {
+      switch (pi.currentSegment(cd)) {
         case PathIterator.SEG_MOVETO:
-          path.moveTo(coords[0], coords[1]);
+          path.moveTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_LINETO:
-          path.lineTo(coords[0], coords[1]);
+          path.lineTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_QUADTO:
-          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+          path.quadTo(cd[0], cd[1], cd[2], cd[3]);
           break;
         case PathIterator.SEG_CUBICTO:
-          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+          path.curveTo(cd[0], cd[1], cd[2], cd[3], cd[4], cd[5]);
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          list.add(new Area(path));
+          subAreas.add(new Area(path));
           path.reset();
           break;
         default:
@@ -120,7 +121,7 @@ class RoundedSelectionTree extends JTree {
       }
       pi.next();
     }
-    return list;
+    return subAreas;
   }
 
   @Override public void updateUI() {
@@ -180,7 +181,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -188,7 +189,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

@@ -28,7 +28,7 @@ public final class MainPanel extends JPanel {
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-    JTable table = new TranslucentCellSelectionTable(makeModel());
+    JTable table = new TranslucentCellSelectionTable(createModel());
     JScrollPane scroll = new JScrollPane(table) {
       @Override public void updateUI() {
         super.updateUI();
@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -131,28 +131,29 @@ final class GeomUtils {
     /* Singleton */
   }
 
-  public static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
+  // Decompose a multi-loop Area into a list of single-loop Areas.
+  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+    List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
-    double[] coords = new double[6];
+    double[] cd = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(coords)) {
+      switch (pi.currentSegment(cd)) {
         case PathIterator.SEG_MOVETO:
-          path.moveTo(coords[0], coords[1]);
+          path.moveTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_LINETO:
-          path.lineTo(coords[0], coords[1]);
+          path.lineTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_QUADTO:
-          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+          path.quadTo(cd[0], cd[1], cd[2], cd[3]);
           break;
         case PathIterator.SEG_CUBICTO:
-          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+          path.curveTo(cd[0], cd[1], cd[2], cd[3], cd[4], cd[5]);
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          list.add(new Area(path));
+          subAreas.add(new Area(path));
           path.reset();
           break;
         default:
@@ -160,7 +161,7 @@ final class GeomUtils {
       }
       pi.next();
     }
-    return list;
+    return subAreas;
   }
 }
 
@@ -247,7 +248,7 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
       Dimension ics = table.getIntercellSpacing();
       Color v = table.getSelectionBackground();
       Color sbc = new Color(v.getRed(), v.getGreen(), v.getBlue(), 0x32);
-      for (Area a : GeomUtils.singularization(area)) {
+      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
         Rectangle r = a.getBounds();
         r.width -= ics.width - 1;
         r.height -= ics.height - 1;
@@ -306,7 +307,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -314,7 +315,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

@@ -215,7 +215,7 @@ class MonthList extends JList<LocalDate> {
       Arrays.stream(indices)
           .mapToObj(i -> getCellBounds(i, i))
           .forEach(r -> area.add(new Area(r)));
-      for (Area a : GeomUtils.singularization(area)) {
+      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
         List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
         g2.fill(GeomUtils.convertRoundedPath(lst, 4d));
       }
@@ -270,7 +270,7 @@ class WeekHeaderList extends JList<DayOfWeek> {
   public static final Dimension CELL_SIZE = new Dimension(40, 26);
 
   protected WeekHeaderList() {
-    super(makeDayOfWeekListModel());
+    super(createDayOfWeekListModel());
   }
 
   @Override public void updateUI() {
@@ -295,7 +295,7 @@ class WeekHeaderList extends JList<DayOfWeek> {
     setFixedCellHeight(CELL_SIZE.height);
   }
 
-  private static ListModel<DayOfWeek> makeDayOfWeekListModel() {
+  private static ListModel<DayOfWeek> createDayOfWeekListModel() {
     DefaultListModel<DayOfWeek> weekModel = new DefaultListModel<>();
     DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
     for (int i = 0; i < DayOfWeek.values().length; i++) {
@@ -334,12 +334,12 @@ final class GeomUtils {
   public static List<Point2D> convertAreaToListOfPoint2D(Area area) {
     List<Point2D> list = new ArrayList<>();
     PathIterator pi = area.getPathIterator(null);
-    double[] coords = new double[6];
+    double[] cd = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(coords)) {
+      switch (pi.currentSegment(cd)) {
         case PathIterator.SEG_MOVETO:
         case PathIterator.SEG_LINETO:
-          list.add(new Point2D.Double(coords[0], coords[1]));
+          list.add(new Point2D.Double(cd[0], cd[1]));
           break;
         default:
           break;
@@ -349,9 +349,7 @@ final class GeomUtils {
     return list;
   }
 
-  /**
-   * Rounding the corners of a Rectilinear Polygon.
-   */
+  // Rounding the corners of a Rectilinear Polygon.
   public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
     double akv = arc - arc * kappa;
@@ -377,28 +375,29 @@ final class GeomUtils {
     return path;
   }
 
-  public static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
+  // Decompose a multi-loop Area into a list of single-loop Areas.
+  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+    List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
-    double[] coords = new double[6];
+    double[] cd = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(coords)) {
+      switch (pi.currentSegment(cd)) {
         case PathIterator.SEG_MOVETO:
-          path.moveTo(coords[0], coords[1]);
+          path.moveTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_LINETO:
-          path.lineTo(coords[0], coords[1]);
+          path.lineTo(cd[0], cd[1]);
           break;
         case PathIterator.SEG_QUADTO:
-          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+          path.quadTo(cd[0], cd[1], cd[2], cd[3]);
           break;
         case PathIterator.SEG_CUBICTO:
-          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+          path.curveTo(cd[0], cd[1], cd[2], cd[3], cd[4], cd[5]);
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          list.add(new Area(path));
+          subAreas.add(new Area(path));
           path.reset();
           break;
         default:
@@ -406,6 +405,6 @@ final class GeomUtils {
       }
       pi.next();
     }
-    return list;
+    return subAreas;
   }
 }

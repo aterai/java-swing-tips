@@ -48,11 +48,8 @@ public final class MainPanel extends JPanel {
     JTextArea textArea = new JTextArea(TEXT) {
       @Override public void updateUI() {
         super.updateUI();
-        Caret caret = new RoundedSelectionCaret();
-        caret.setBlinkRate(UIManager.getInt("TextArea.caretBlinkRate"));
-        setCaret(caret);
-        ((DefaultHighlighter) getHighlighter()).setDrawsLayeredHighlights(false);
         setSelectedTextColor(null);
+        installRoundedCaret(this);
       }
     };
     JCheckBox check = new JCheckBox("setLineWrap / setWrapStyleWord:");
@@ -72,26 +69,28 @@ public final class MainPanel extends JPanel {
 
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("JTextArea", p);
-    tabs.add("JEditorPane", new JScrollPane(makeEditorPane()));
+    tabs.add("JEditorPane", new JScrollPane(createEditorPane()));
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JEditorPane makeEditorPane() {
+  private static void installRoundedCaret(JTextComponent c) {
+    Caret caret = new RoundedSelectionCaret();
+    caret.setBlinkRate(UIManager.getInt("TextArea.caretBlinkRate"));
+    c.setCaret(caret);
+    ((DefaultHighlighter) c.getHighlighter()).setDrawsLayeredHighlights(false);
+  }
+
+  private static JEditorPane createEditorPane() {
     JEditorPane editor = new JEditorPane() {
       @Override public void updateUI() {
         super.updateUI();
-        // setSelectedTextColor(null);
-        // setSelectionColor(new Color(0x64_88_AA_AA, true));
         setBackground(new Color(0xEE_EE_EE));
-        Caret caret = new RoundedSelectionCaret();
-        caret.setBlinkRate(UIManager.getInt("TextArea.caretBlinkRate"));
-        setCaret(caret);
-        ((DefaultHighlighter) getHighlighter()).setDrawsLayeredHighlights(false);
+        installRoundedCaret(this);
       }
     };
     HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(makeStyleSheet());
+    htmlEditorKit.setStyleSheet(createStyleSheet());
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -107,7 +106,7 @@ public final class MainPanel extends JPanel {
     return editor;
   }
 
-  private static StyleSheet makeStyleSheet() {
+  private static StyleSheet createStyleSheet() {
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str{color:#008800}");
     styleSheet.addRule(".kwd{color:#000088}");
@@ -185,9 +184,9 @@ class RoundedSelectionHighlightPainter extends DefaultHighlightPainter {
     g2.setColor(new Color(rgba, true));
     try {
       Area area = getLinesArea(c, offs0, offs1);
-      for (Area a : GeomUtils.singularization(area)) {
+      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
         List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
-        GeomUtils.flatteningStepsOnRightSide(lst, ARC * 2d);
+        GeomUtils.snapShortRightEdges(lst, ARC * 2d);
         g2.fill(GeomUtils.convertRoundedPath(lst, ARC));
       }
     } catch (BadLocationException ex) {
@@ -244,7 +243,8 @@ final class GeomUtils {
     return list;
   }
 
-  public static void flatteningStepsOnRightSide(List<Point2D> list, double arc) {
+  // Align the short step at the right edge with the larger X-coordinate.
+  public static void snapShortRightEdges(List<Point2D> list, double arc) {
     int sz = list.size();
     for (int i = 0; i < sz; i++) {
       int i1 = (i + 1) % sz;
@@ -266,13 +266,10 @@ final class GeomUtils {
   }
 
   private static void replace(List<Point2D> list, int i, double x, double y) {
-    list.remove(i);
-    list.add(i, new Point2D.Double(x, y));
+    list.set(i, new Point2D.Double(x, y));
   }
 
-  /**
-   * Rounding the corners of a Rectilinear Polygon.
-   */
+  // Rounding the corners of a Rectilinear Polygon.
   public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
     double akv = arc - arc * kappa;
@@ -284,10 +281,10 @@ final class GeomUtils {
       Point2D prv = list.get((i - 1 + sz) % sz);
       Point2D cur = list.get(i);
       Point2D nxt = list.get((i + 1) % sz);
-      double dx0 = signum(cur.getX() - prv.getX(), arc);
-      double dy0 = signum(cur.getY() - prv.getY(), arc);
-      double dx1 = signum(nxt.getX() - cur.getX(), arc);
-      double dy1 = signum(nxt.getY() - cur.getY(), arc);
+      double dx0 = clampedSignum(cur.getX() - prv.getX(), arc);
+      double dy0 = clampedSignum(cur.getY() - prv.getY(), arc);
+      double dx1 = clampedSignum(nxt.getX() - cur.getX(), arc);
+      double dy1 = clampedSignum(nxt.getY() - cur.getY(), arc);
       path.curveTo(
           cur.getX() - dx0 * akv, cur.getY() - dy0 * akv,
           cur.getX() + dx1 * akv, cur.getY() + dy1 * akv,
@@ -298,12 +295,14 @@ final class GeomUtils {
     return path;
   }
 
-  private static double signum(double v, double arc) {
+  // Return 0 if less than the arc.
+  private static double clampedSignum(double v, double arc) {
     return Math.abs(v) < arc ? 0d : Math.signum(v);
   }
 
-  public static List<Area> singularization(Area rect) {
-    List<Area> list = new ArrayList<>();
+  // Decompose a multi-loop Area into a list of single-loop Areas.
+  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+    List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
     double[] cd = new double[6];
@@ -323,7 +322,7 @@ final class GeomUtils {
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
-          list.add(new Area(path));
+          subAreas.add(new Area(path));
           path.reset();
           break;
         default:
@@ -331,6 +330,6 @@ final class GeomUtils {
       }
       pi.next();
     }
-    return list;
+    return subAreas;
   }
 }
