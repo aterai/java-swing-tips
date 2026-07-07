@@ -140,7 +140,7 @@ public final class MainPanel extends JPanel {
 // 1. Find the next expanded sibling nextSiblingPath[i] under the same parent.
 // 2. If the Y-coordinate of nextSiblingPath[i] in the viewport goes below (i * HEADER_HEIGHT),
 // 3. Record the overlap amount as pushOffsets[i] and shift stickyPaths[i] upwards.
-@SuppressWarnings("PMD.OnlyOneReturn")
+@SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
 class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
   private static final int HEADER_HEIGHT = 24;
   private static final Color BORDER_COLOR = new Color(0x46_00_00_00, true);
@@ -302,7 +302,7 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
 
     JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
     Rectangle viewport = scroll.getViewport().getBounds();
-    int w = viewport.width;
+    Rectangle r = new Rectangle(viewport.x, viewport.y, viewport.width, HEADER_HEIGHT);
     int n = stickyPaths.size();
 
     // Draw from the bottom header up, overlaying upper headers on top (z-index)
@@ -311,17 +311,16 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
       int offset = pushOffsets.get(i);
 
       int baseY = viewport.y + i * HEADER_HEIGHT;
-      int y = baseY - offset;
+      r.y = baseY - offset;
 
       int depthIdx = depthIndex(path);
-      paintStickyHeader(g2, tree, c, path, viewport.x, y, w, HEADER_HEIGHT, depthIdx);
+      paintStickyHeader(g2, tree, c, path, r, depthIdx);
 
       // During push-up: Draw the next sibling header immediately below this header
       TreePath nextSibling = nextSiblingPaths.get(i);
       if (offset > 0 && nextSibling != null) {
-        int nextY = baseY + HEADER_HEIGHT - offset;
-        paintStickyHeader(g2, tree, c, nextSibling,
-            viewport.x, nextY, w, HEADER_HEIGHT, depthIndex(nextSibling));
+        r.y = baseY + HEADER_HEIGHT - offset; // next Y
+        paintStickyHeader(g2, tree, c, nextSibling, r, depthIndex(nextSibling));
       }
     }
     g2.dispose();
@@ -329,28 +328,20 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
 
   // Draw one fixed header
   public static void paintStickyHeader(
-      Graphics2D g2, JTree tree, JComponent layer, TreePath path,
-      int x, int y, int w, int h, int depthIdx) {
+      Graphics2D g2, JTree tree, JComponent layer,
+      TreePath path, Rectangle r, int depthIdx) {
 
     final Shape oldClip = g2.getClip();
-    g2.setClip(x, y, w, h);
+    g2.setClip(r);
     g2.setPaint(Color.LIGHT_GRAY);
-    g2.fillRect(x, y, w, h);
+    g2.fill(r);
 
     // Lower border
     g2.setColor(BORDER_COLOR);
-    g2.drawLine(x, y + h - 1, x + w - 1, y + h - 1);
+    g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
 
     // Get icon and text via TreeCellRenderer
-    TreeCellRenderer renderer = tree.getCellRenderer();
-    Object node = path.getLastPathComponent();
-    int row = tree.getRowForPath(path);
-    boolean sel = tree.isPathSelected(path);
-    boolean exp = tree.isExpanded(path);
-    boolean leaf = tree.getModel().isLeaf(node);
-
-    Component c = renderer.getTreeCellRendererComponent(
-        tree, node, sel, exp, leaf, row, false);
+    Component c = getTreeCellRendererComponent(tree, path);
 
     // Indentation according to depth (depth 0=0px, depth 1=10px...)
     int indent = depthIdx * 10;
@@ -360,9 +351,9 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
       label.setOpaque(false);
       Icon icon = label.getIcon();
       int iconW = 0;
-      int iconX = x + 6 + indent;
+      int iconX = r.x + 6 + indent;
       if (icon != null) {
-        int iconY = y + (h - icon.getIconHeight()) / 2;
+        int iconY = r.y + (r.height - icon.getIconHeight()) / 2;
         icon.paintIcon(layer, g2, iconX, iconY);
         iconW = icon.getIconWidth() + 4;
       }
@@ -371,17 +362,28 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
       if (text != null && !text.isEmpty()) {
         FontMetrics fm = g2.getFontMetrics();
         int textX = iconX + iconW;
-        int textY = y + (h + fm.getAscent() - fm.getDescent()) / 2;
+        int textY = r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2;
         g2.setColor(UIManager.getColor("Tree.foreground"));
         g2.drawString(text, textX, textY);
       }
     } else {
       JPanel tmp = new JPanel();
-      c.setSize(w - indent, h);
-      Rectangle rect = new Rectangle(x + indent, y, w - indent, h);
+      c.setSize(r.width - indent, r.height);
+      Rectangle rect = new Rectangle(r.x + indent, r.y, r.width - indent, r.height);
       SwingUtilities.paintComponent(g2, c, tmp, rect);
     }
     g2.setClip(oldClip);
+  }
+
+  private static Component getTreeCellRendererComponent(JTree tree, TreePath path) {
+    TreeCellRenderer renderer = tree.getCellRenderer();
+    Object node = path.getLastPathComponent();
+    int row = tree.getRowForPath(path);
+    boolean sel = tree.isPathSelected(path);
+    boolean exp = tree.isExpanded(path);
+    boolean leaf = tree.getModel().isLeaf(node);
+    return renderer.getTreeCellRendererComponent(
+        tree, node, sel, exp, leaf, row, false);
   }
 
   // Returns the depth index of the TreePath (0 = just below the root)
