@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -39,22 +40,15 @@ public final class MainPanel extends JPanel {
     editor.setSelectedTextColor(null);
     editor.setSelectionColor(new Color(0x64_88_AA_AA, true));
     editor.setBackground(new Color(0xEE_EE_EE));
+    editor.addPropertyChangeListener("page", e -> {
+      label.setIcon(createMiniMapImageIcon(editor));
+      revalidate();
+      repaint();
+    });
 
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Optional.ofNullable(cl.getResource("example/test.html"))
-        .ifPresent(url -> {
-          try {
-            editor.setPage(url);
-          } catch (IOException ex) {
-            UIManager.getLookAndFeel().provideErrorFeedback(editor);
-            editor.setText(ex.getMessage());
-          }
-          editor.addPropertyChangeListener("page", e -> {
-            label.setIcon(createMiniMapImageIcon(editor));
-            revalidate();
-            repaint();
-          });
-        });
+    String path = "example/test.html";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    Optional.ofNullable(url).ifPresent(this::load);
 
     JPanel pp = new JPanel(new BorderLayout(0, 0));
     pp.add(label, BorderLayout.NORTH);
@@ -62,7 +56,7 @@ public final class MainPanel extends JPanel {
     minimap.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     minimap.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    JCheckBox button = new JCheckBox("minimap");
+    JCheckBox button = new JCheckBox("minimap", true);
     button.addActionListener(this::toggleMiniMap);
 
     Box box = Box.createHorizontalBox();
@@ -84,8 +78,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private void load(URL url) {
+    try {
+      editor.setPage(url);
+    } catch (IOException ex) {
+      UIManager.getLookAndFeel().provideErrorFeedback(editor);
+      editor.setText(ex.getMessage());
+    }
+  }
+
   private void toggleMiniMap(ActionEvent e) {
-    boolean b = ((AbstractButton) e.getSource()).isSelected();
+    boolean b = ((JCheckBox) e.getSource()).isSelected();
     if (b) {
       label.setIcon(createMiniMapImageIcon(editor));
     } else {
