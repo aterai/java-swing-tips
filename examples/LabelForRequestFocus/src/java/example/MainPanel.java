@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -16,10 +17,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     MouseListener focusHandler = new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        Component c = ((JLabel) e.getComponent()).getLabelFor();
-        if (c != null) {
-          c.requestFocusInWindow();
-        }
+        Optional.ofNullable(e.getComponent())
+            .filter(JLabel.class::isInstance).map(JLabel.class::cast)
+            .map(JLabel::getLabelFor)
+            .ifPresent(Component::requestFocusInWindow);
       }
     };
 
