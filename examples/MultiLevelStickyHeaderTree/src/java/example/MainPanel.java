@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTree tree = createTree();
     tree.setRootVisible(false);
-    tree.setShowsRootHandles(true);
+    tree.setShowsRootHandles(false);
     tree.setRowHeight(24);
     expandAll(tree);
 
@@ -314,13 +314,13 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
       r.y = baseY - offset;
 
       int depthIdx = depthIndex(path);
-      paintStickyHeader(g2, tree, c, path, r, depthIdx);
+      paintStickyHeader(g2, tree, path, r, depthIdx);
 
       // During push-up: Draw the next sibling header immediately below this header
       TreePath nextSibling = nextSiblingPaths.get(i);
       if (offset > 0 && nextSibling != null) {
         r.y = baseY + HEADER_HEIGHT - offset; // next Y
-        paintStickyHeader(g2, tree, c, nextSibling, r, depthIndex(nextSibling));
+        paintStickyHeader(g2, tree, nextSibling, r, depthIndex(nextSibling));
       }
     }
     g2.dispose();
@@ -328,51 +328,43 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
 
   // Draw one fixed header
   public static void paintStickyHeader(
-      Graphics2D g2, JTree tree, JComponent layer,
-      TreePath path, Rectangle r, int depthIdx) {
+      Graphics2D g2, JTree tree, TreePath path, Rectangle r, int depthIdx) {
 
     final Shape oldClip = g2.getClip();
     g2.setClip(r);
     g2.setPaint(Color.LIGHT_GRAY);
     g2.fill(r);
 
-    // Lower border
-    g2.setColor(BORDER_COLOR);
-    g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
-
     // Get icon and text via TreeCellRenderer
     Component c = getTreeCellRendererComponent(tree, path);
 
-    // Indentation according to depth (depth 0=0px, depth 1=10px...)
-    int indent = depthIdx * 10;
-
     if (c instanceof JLabel) {
-      JLabel label = (JLabel) c;
-      label.setOpaque(false);
-      Icon icon = label.getIcon();
-      int iconW = 0;
-      int iconX = r.x + 6 + indent;
-      if (icon != null) {
-        int iconY = r.y + (r.height - icon.getIconHeight()) / 2;
-        icon.paintIcon(layer, g2, iconX, iconY);
-        iconW = icon.getIconWidth() + 4;
-      }
-
-      String text = label.getText();
-      if (text != null && !text.isEmpty()) {
-        FontMetrics fm = g2.getFontMetrics();
-        int textX = iconX + iconW;
-        int textY = r.y + (r.height + fm.getAscent() - fm.getDescent()) / 2;
-        g2.setColor(UIManager.getColor("Tree.foreground"));
-        g2.drawString(text, textX, textY);
-      }
-    } else {
-      JPanel tmp = new JPanel();
-      c.setSize(r.width - indent, r.height);
+      JLabel label = cloneLabel((JLabel) c);
+      int leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
+      int rightChildIndent = UIManager.getInt("Tree.rightChildIndent");
+      // leftChildIndent + rightChildIndent = 16px
+      // Indentation according to depth (depth 0=0px, depth 1=16px...)
+      int indent = depthIdx * (leftChildIndent + rightChildIndent);
+      label.setSize(r.width - indent, r.height);
       Rectangle rect = new Rectangle(r.x + indent, r.y, r.width - indent, r.height);
-      SwingUtilities.paintComponent(g2, c, tmp, rect);
+      SwingUtilities.paintComponent(g2, label, new JPanel(), rect);
+
+      // Lower border
+      g2.setColor(BORDER_COLOR);
+      g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
+      // label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
     }
     g2.setClip(oldClip);
+  }
+
+  private static JLabel cloneLabel(JLabel src) {
+    JLabel label = new JLabel(src.getText());
+    label.setIcon(src.getIcon());
+    label.setIconTextGap(src.getIconTextGap());
+    label.setOpaque(true);
+    // label.setBackground(UIManager.getColor("Tree.background"));
+    label.setBackground(Color.LIGHT_GRAY);
+    return label;
   }
 
   private static Component getTreeCellRendererComponent(JTree tree, TreePath path) {
