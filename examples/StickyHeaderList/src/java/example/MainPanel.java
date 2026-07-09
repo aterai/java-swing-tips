@@ -83,8 +83,7 @@ class StickyLayerUI extends LayerUI<JScrollPane> {
     super.installUI(c);
     if (c instanceof JLayer) {
       ((JLayer<?>) c).setLayerEventMask(
-          AWTEvent.MOUSE_WHEEL_EVENT_MASK
-              | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+          AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
     }
   }
 
