@@ -109,57 +109,37 @@ class AnalogClock extends JPanel {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(
-        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setRenderingHint(
-        RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+    initRenderingHints(g2);
     Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
-    g2.setColor(Color.DARK_GRAY);
-    g2.fill(rect);
+    paintBackground(g2, rect);
     double radius = Math.min(rect.width, rect.height) / 2d - 10d;
     g2.translate(rect.getCenterX(), rect.getCenterY());
 
-    // Drawing the hour markers
-    double hourMarkerLen = radius / 6d - 10d;
-    Shape hourMarker = new Line2D.Double(0d, hourMarkerLen - radius, 0d, -radius);
-    Shape minuteMarker = new Line2D.Double(0d, hourMarkerLen / 2d - radius, 0d, -radius);
-    paintHourMarkers(g2, hourMarker, minuteMarker);
-
-    // Drawing the clock numbers
-    paintClockNumbers(g2, radius, hourMarkerLen);
-
-    // Calculate the angle of rotation
-    // double secondRot = time.getSecond() * Math.PI / 30d;
-    // double minuteRot = time.getMinute() * Math.PI / 30d + secondRot / 60d;
-    // double hourRot = time.getHour() * Math.PI / 6d + minuteRot / 12d;
-
-    // Drawing the hour hand
-    double hourHandLen = radius / 2d;
-    Shape hourHand = new Line2D.Double(0d, 0d, 0d, -hourHandLen);
-    g2.setStroke(new BasicStroke(8f));
-    g2.setPaint(Color.WHITE);
-    g2.draw(AffineTransform.getRotateInstance(hourRot).createTransformedShape(hourHand));
-
-    // Drawing the minute hand
-    double minuteHandLen = 5d * radius / 6d;
-    Shape minuteHand = new Line2D.Double(0d, 0d, 0d, -minuteHandLen);
-    g2.setStroke(new BasicStroke(4f));
-    g2.setPaint(Color.WHITE);
-    g2.draw(AffineTransform.getRotateInstance(minuteRot).createTransformedShape(minuteHand));
-
-    // Drawing the second hand
-    double r = radius / 6d;
-    double secondHandLen = radius - r;
-    Shape secondHand = new Line2D.Double(0d, r, 0d, -secondHandLen);
-    g2.setPaint(Color.RED);
-    g2.setStroke(new BasicStroke(1f));
-    g2.draw(AffineTransform.getRotateInstance(secondRot).createTransformedShape(secondHand));
-    g2.fill(new Ellipse2D.Double(-r / 4d, -r / 4d, r / 2d, r / 2d));
+    paintHourMarkers(g2, radius);
+    paintClockNumbers(g2, radius);
+    paintHourHand(g2, radius, hourRot);
+    paintMinuteHand(g2, radius, minuteRot);
+    paintSecondHand(g2, radius, secondRot);
 
     g2.dispose();
   }
 
-  private static void paintHourMarkers(Graphics2D g2, Shape hourMarker, Shape minuteMarker) {
+  private static void initRenderingHints(Graphics2D g2) {
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+  }
+
+  private static void paintBackground(Graphics2D g2, Rectangle rect) {
+    g2.setColor(Color.BLACK);
+    g2.fill(rect);
+  }
+
+  private static void paintHourMarkers(Graphics2D g2, double radius) {
+    double hourMarkerLen = radius / 6d - 10d;
+    Shape hourMarker = new Line2D.Double(0d, hourMarkerLen - radius, 0d, -radius);
+    Shape minuteMarker = new Line2D.Double(0d, hourMarkerLen / 2d - radius, 0d, -radius);
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setStroke(new BasicStroke(2f));
     g2.setColor(Color.WHITE);
@@ -173,7 +153,8 @@ class AnalogClock extends JPanel {
     }
   }
 
-  private void paintClockNumbers(Graphics2D g2, double radius, double hourMarkerLen) {
+  private void paintClockNumbers(Graphics2D g2, double radius) {
+    double hourMarkerLen = radius / 6d - 10d;
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setColor(Color.WHITE);
     Font font = g2.getFont();
@@ -209,5 +190,32 @@ class AnalogClock extends JPanel {
 
   private static TextLayout getTextLayout(String txt, Font font, FontRenderContext frc) {
     return new TextLayout(txt, font, frc);
+  }
+
+  private static void paintHourHand(Graphics2D g2, double radius, double hourRot) {
+    double hourHandLen = radius / 2d;
+    Shape hourHand = new Line2D.Double(0d, 0d, 0d, -hourHandLen);
+    paintHand(g2, hourHand, 8f, Color.LIGHT_GRAY, hourRot);
+  }
+
+  private static void paintMinuteHand(Graphics2D g2, double radius, double minuteRot) {
+    double minuteHandLen = 5d * radius / 6d;
+    Shape minuteHand = new Line2D.Double(0d, 0d, 0d, -minuteHandLen);
+    paintHand(g2, minuteHand, 4f, Color.WHITE, minuteRot);
+  }
+
+  private static void paintSecondHand(Graphics2D g2, double radius, double secondRot) {
+    double r = radius / 6d;
+    double secondHandLen = radius - r;
+    Shape secondHand = new Line2D.Double(0d, r, 0d, -secondHandLen);
+    paintHand(g2, secondHand, 1f, Color.RED, secondRot);
+    g2.fill(new Ellipse2D.Double(-r / 4d, -r / 4d, r / 2d, r / 2d));
+  }
+
+  private static void paintHand(
+      Graphics2D g2, Shape hand, float strokeWidth, Color color, double rot) {
+    g2.setStroke(new BasicStroke(strokeWidth));
+    g2.setPaint(color);
+    g2.draw(AffineTransform.getRotateInstance(rot).createTransformedShape(hand));
   }
 }
