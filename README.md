@@ -52,7 +52,7 @@ javax.swing.JComponent
 - [JToolTip(38)](https://ateraimemo.com/en/Swing/_JToolTip.html)
 - [JInternalFrame JLayeredPane JDesktopPane(37)](https://ateraimemo.com/en/Swing/_JInternalFrame.html)
 - [JSlider(36)](https://ateraimemo.com/en/Swing/_JSlider.html)
-- [JProgressBar ProgressMonitor(34)](https://ateraimemo.com/en/Swing/_JProgressBar.html)
+- [JProgressBar ProgressMonitor(35)](https://ateraimemo.com/en/Swing/_JProgressBar.html)
 - [JFileChooser(34)](https://ateraimemo.com/en/Swing/_JFileChooser.html)
 - [JSpinner(34)](https://ateraimemo.com/en/Swing/_JSpinner.html)
 - [JPanel(23)](https://ateraimemo.com/en/Swing/_JPanel.html)
@@ -63,8 +63,8 @@ javax.swing.JComponent
 Others
 ---------------
 - [Graphics(72)](https://ateraimemo.com/en/Swing/_Graphics.html)
+- [Animation(59)](https://ateraimemo.com/en/Swing/_Animation.html)
 - [LayoutManager(57)](https://ateraimemo.com/en/Swing/_Layout.html)
-- [Animation(58)](https://ateraimemo.com/en/Swing/_Animation.html)
 - [Border(51)](https://ateraimemo.com/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/en/Swing/_LookAndFeel.html)
@@ -72,7 +72,7 @@ Others
 - [DragAndDrop(35)](https://ateraimemo.com/en/Swing/_DnD.html)
 - [Font(30)](https://ateraimemo.com/en/Swing/_Font.html)
 - [Calendar(24)](https://ateraimemo.com/en/Swing/_Calendar.html)
-- [SwingWorker(23)](https://ateraimemo.com/en/Swing/_SwingWorker.html)
+- [SwingWorker(24)](https://ateraimemo.com/en/Swing/_SwingWorker.html)
 - [File(14)](https://ateraimemo.com/en/Swing/_File.html)
 - [Cursor(9)](https://ateraimemo.com/en/Swing/_Cursor.html)
 - [TrayIcon(8)](https://ateraimemo.com/en/Swing/_TrayIcon.html)
