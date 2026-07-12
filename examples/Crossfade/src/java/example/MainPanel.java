@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,20 +43,7 @@ public final class MainPanel extends JPanel {
       }
     };
 
-    Timer animator = new Timer(50, e -> {
-      if (mode == CrossFade.IN && alpha.get() < 10) {
-        alpha.incrementAndGet(); // alpha += 1;
-      } else if (mode == CrossFade.OUT && alpha.get() > 0) {
-        alpha.decrementAndGet(); // alpha -= 1;
-      } else {
-        Object src = e.getSource();
-        if (src instanceof Timer) {
-          ((Timer) src).stop();
-        }
-      }
-      crossFade.repaint();
-    });
-
+    Timer animator = new Timer(50, e -> animation(e, alpha, crossFade));
     button.addActionListener(e -> {
       mode = mode.toggle();
       animator.start();
@@ -65,6 +53,20 @@ public final class MainPanel extends JPanel {
     add(button, BorderLayout.NORTH);
     add(check, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void animation(ActionEvent e, AtomicInteger alpha, Component c) {
+    if (mode == CrossFade.IN && alpha.get() < 10) {
+      alpha.incrementAndGet(); // alpha += 1;
+    } else if (mode == CrossFade.OUT && alpha.get() > 0) {
+      alpha.decrementAndGet(); // alpha -= 1;
+    } else {
+      Object src = e.getSource();
+      if (src instanceof Timer) {
+        ((Timer) src).stop();
+      }
+    }
+    c.repaint();
   }
 
   private static Image createImage(String path) {
