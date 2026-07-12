@@ -35,9 +35,6 @@ public final class MainPanel extends JPanel {
             .map(AbstractEaseOutProgressBarUI::getAnimatedFraction)
             .map(fraction -> Math.round(fraction * 100d) + "%")
             .orElseGet(super::getString);
-        // ProgressBarUI progressBarUI = getUI();
-        // return progressBarUI instanceof AbstractEaseOutProgressBarUI it
-        //     ? Math.round(it.getAnimatedFraction() * 100d) + "%" : super.getString();
       }
     };
     progress.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
@@ -129,11 +126,10 @@ abstract class AbstractEaseOutProgressBarUI extends BasicProgressBarUI {
   private void startAnimation(double target) {
     cancelAnimation();
     double from = animatedFraction;
-    if (Math.abs(target - from) < EPSILON) {
-      return;
+    if (Math.abs(target - from) >= EPSILON) {
+      animator = new AnimationWorker(from, target);
+      animator.execute();
     }
-    animator = new AnimationWorker(from, target);
-    animator.execute();
   }
 
   private static double easeOutCubic(double t) {
