@@ -315,7 +315,8 @@ class CardDropdownButton extends DropdownButton {
         .map(AbstractButton.class::cast)
         .filter(tab -> !viewport.getViewRect().contains(tab.getBounds()))
         .map(tab -> {
-          String title = ((JLabel) tab.getComponent(0)).getText();
+          Component cmp = tab.getComponent(0);
+          String title = cmp instanceof JLabel ? ((JLabel) cmp).getText() : "";
           JMenuItem mi = new JRadioButtonMenuItem(title);
           mi.addActionListener(e -> scrollTabToVisible(viewport, tab));
           return mi;
@@ -324,7 +325,8 @@ class CardDropdownButton extends DropdownButton {
 
   private void scrollTabToVisible(JViewport viewport, AbstractButton tab) {
     tab.setSelected(true);
-    String title = ((JLabel) tab.getComponent(0)).getText();
+    Component c = tab.getComponent(0);
+    String title = c instanceof JLabel ? ((JLabel) c).getText() : "";
     JPanel contentsPanel = tabs.getContentsPanel();
     LayoutManager layout = contentsPanel.getLayout();
     if (layout instanceof CardLayout) {
