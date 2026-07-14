@@ -187,22 +187,27 @@ class StandingsTable extends JTable {
 }
 
 class RowData {
-  private static final List<Function<RowData, String>> COLUMN_CONVERTERS =
-      Collections.unmodifiableList(Arrays.asList(
-          r -> Integer.toString(r.getPosition()),
-          RowData::getTeam,
-          r -> Integer.toString(r.getMatches()),
-          r -> Integer.toString(r.getWins()),
-          r -> Integer.toString(r.getDraws()),
-          r -> Integer.toString(r.getLosses()),
-          r -> Integer.toString(r.getGoalsFor()),
-          r -> Integer.toString(r.getGoalsAgainst()),
-          r -> {
-            int d = r.getGoalDifference();
-            return d > 0 ? "+" + d : Integer.toString(d);
-          },
-          r -> Integer.toString(r.getPoints())
-      ));
+  private static final List<Function<RowData, String>> COLUMN_CONVERTERS;
+
+  static {
+    List<Function<RowData, String>> list = Arrays.asList(
+        r -> Integer.toString(r.getPosition()),
+        RowData::getTeam,
+        r -> Integer.toString(r.getMatches()),
+        r -> Integer.toString(r.getWins()),
+        r -> Integer.toString(r.getDraws()),
+        r -> Integer.toString(r.getLosses()),
+        r -> Integer.toString(r.getGoalsFor()),
+        r -> Integer.toString(r.getGoalsAgainst()),
+        r -> {
+          int d = r.getGoalDifference();
+          return d > 0 ? "+" + d : Integer.toString(d);
+        },
+        r -> Integer.toString(r.getPoints())
+    );
+    COLUMN_CONVERTERS = Collections.unmodifiableList(list);
+  }
+
   private final int position;
   private final String team;
   private final int wins;
