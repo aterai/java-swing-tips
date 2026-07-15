@@ -45,8 +45,8 @@ public final class MainPanel extends JPanel {
 
 class RowHeightResizeLayer extends LayerUI<JScrollPane> {
   private static final int MIN_ROW_HEIGHT = 16;
-  private static final Cursor RESIZE_CURSOR =
-      Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+  private static final Cursor RESIZE_CURSOR = Cursor
+      .getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
   private int mouseOffsetY;
   private int resizingRow = -1;
   private Cursor otherCursor = RESIZE_CURSOR;
