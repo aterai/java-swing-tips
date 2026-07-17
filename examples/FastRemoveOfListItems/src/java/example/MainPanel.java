@@ -17,77 +17,148 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("default remove", makeCmp0());
-    tabbedPane.addTab("clear + addElement", makeCmp1());
-    tabbedPane.addTab("addAll + remove", makeCmp2());
-    add(tabbedPane);
+    JTabbedPane tabs = new JTabbedPane();
+    // Tab1: Removes selected items one at a time via DefaultListModel#remove(int).
+    tabs.addTab("default remove", createIndividualRemovalTab());
+
+    // Tab2: Collects the unselected elements and swaps in a brand-new model.
+    tabs.addTab("clear + addElement", createModelRebuildTab());
+
+    // Tab3: Uses a custom ListModel that batches removal into fewer events.
+    tabs.addTab("addAll + remove", createBatchArrayModelTab());
+    add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static <E> void move0(JList<E> from, JList<E> to) {
-    int[] selectedIndices = from.getSelectedIndices();
+  /**
+   * Individual-removal strategy: removes each selected index one at a time,
+   * from the highest index down (so earlier removals don't shift the
+   * remaining target indices). This fires one {@code fireIntervalRemoved}
+   * event per removed element, so repaint/revalidate cost grows with the
+   * number of selected items.
+   */
+  private static <E> void transferSelectedByIndividualRemoval(JList<E> src, JList<E> dst) {
+    int[] selectedIndices = src.getSelectedIndices();
     if (selectedIndices.length > 0) {
-      DefaultListModel<E> fromModel = (DefaultListModel<E>) from.getModel();
-      DefaultListModel<E> toModel = (DefaultListModel<E>) to.getModel();
-      for (int i : selectedIndices) {
-        toModel.addElement(fromModel.get(i));
+      DefaultListModel<E> sourceModel = (DefaultListModel<E>) src.getModel();
+      DefaultListModel<E> destinationModel = (DefaultListModel<E>) dst.getModel();
+      for (int index : selectedIndices) {
+        destinationModel.addElement(sourceModel.get(index));
       }
+      // Remove from the tail first so lower indices stay valid.
       for (int i = selectedIndices.length - 1; i >= 0; i--) {
-        fromModel.remove(selectedIndices[i]);
+        sourceModel.remove(selectedIndices[i]);
       }
     }
   }
 
-  private static <E> void move1(JList<E> from, JList<E> to) {
-    ListSelectionModel sm = from.getSelectionModel();
-    int[] selectedIndices = from.getSelectedIndices();
-
-    DefaultListModel<E> fromModel = (DefaultListModel<E>) from.getModel();
-    DefaultListModel<E> toModel = (DefaultListModel<E>) to.getModel();
-    List<E> unselectedValues = new ArrayList<>();
-    for (int i = 0; i < fromModel.getSize(); i++) {
-      if (!sm.isSelectedIndex(i)) {
-        unselectedValues.add(fromModel.getElementAt(i));
-      }
-    }
+  /**
+   * Model-rebuild strategy: collects the unselected elements in a single
+   * O(n) pass and swaps in a fresh model via {@code setModel}. Only one
+   * structural change is signaled, so this scales much better than
+   * per-item removal for large lists (tens of thousands of items).
+   * The trade-off is allocating a brand-new model object on every move.
+   */
+  private static <E> void transferSelectedByModelRebuild(JList<E> src, JList<E> dst) {
+    int[] selectedIndices = src.getSelectedIndices();
     if (selectedIndices.length > 0) {
-      for (int i : selectedIndices) {
-        toModel.addElement(fromModel.get(i));
+      DefaultListModel<E> sourceModel = (DefaultListModel<E>) src.getModel();
+      DefaultListModel<E> destinationModel = (DefaultListModel<E>) dst.getModel();
+      ListSelectionModel selectionModel = src.getSelectionModel();
+      List<E> unselectedValues = new ArrayList<>();
+      for (int i = 0; i < sourceModel.getSize(); i++) {
+        if (!selectionModel.isSelectedIndex(i)) {
+          unselectedValues.add(sourceModel.getElementAt(i));
+        }
       }
-      // if (from.getSelectionMode() != ListSelectionModel.MULTIPLE_INTERVAL_SELECTION) {
-      //   fromModel.removeRange(
-      //     selectedIndices[0],
-      //     selectedIndices[selectedIndices.length - 1]
-      //   );
-      // }
-      // TEST: Moving the first item is very slow.
-      // fromModel.clear();
-      // unselectedValues.forEach(fromModel::addElement);
-      DefaultListModel<E> model = new DefaultListModel<>();
-      unselectedValues.forEach(model::addElement);
-      from.setModel(model);
+      for (int index : selectedIndices) {
+        destinationModel.addElement(sourceModel.get(index));
+      }
+      DefaultListModel<E> rebuiltModel = new DefaultListModel<>();
+      unselectedValues.forEach(rebuiltModel::addElement);
+
+      // // Java 11:
+      // // https://bugs.openjdk.org/browse/JDK-8201289
+      // // Destination is a live model: batch the insert so it fires O(1)
+      // // events instead of one per selected element.
+      // destinationModel.addAll(src.getSelectedValuesList());
+      // DefaultListModel<E> rebuiltModel = new DefaultListModel<>();
+      // rebuiltModel.addAll(unselectedValues);
+
+      src.setModel(rebuiltModel);
     }
   }
 
-  private static <E> void move2(JList<E> from, JList<E> to) {
-    int[] selectedIndices = from.getSelectedIndices();
+  /**
+   * Model-rebuild strategy: collects the unselected elements in a single
+   * O(n) pass and swaps in a fresh model via {@code setModel} on the
+   * {@code src} side. That swap fires only one structural event since
+   * {@code rebuiltModel} has no listeners yet (it isn't attached to any
+   * JList until {@code setModel} runs). The trade-off is allocating a
+   * brand-new model object on every move.
+   * <p>
+   * Note: the {@code destination} model is different — it's already live,
+   * attached to a visible JList. Adding to it one element at a time (the
+   * original implementation) fires one {@code ListDataEvent} per element,
+   * and each event triggers JList's internal bookkeeping (e.g. adjusting
+   * the selection model's index ranges). When the selection is a large
+   * fraction of the list — e.g. selecting nearly all 20,000 items and
+   * moving them — that per-element cost accumulates and dominates the
+   * whole operation. Batching the destination-side insert via
+   * {@link DefaultListModel#addAll(java.util.Collection)} collapses those
+   * events from O(k) down to O(1), which is the fix applied below.
+   * [JDK-8201289] DefaultListModel and DefaultComboBoxModel
+   *    should support addAll (Collection c) - Java Bug System
+   * https://bugs.openjdk.org/browse/JDK-8201289
+   */
+  // private static <E> void transferSelectedByModelRebuild(JList<E> src, JList<E> dst) {
+  //   if (!src.isSelectionEmpty()) {
+  //     ListSelectionModel selectionModel = src.getSelectionModel();
+  //     DefaultListModel<E> sourceModel = (DefaultListModel<E>) src.getModel();
+  //     DefaultListModel<E> destinationModel = (DefaultListModel<E>) dst.getModel();
+  //
+  //     List<E> unselectedValues = new ArrayList<>();
+  //     for (int i = 0; i < sourceModel.getSize(); i++) {
+  //       if (!selectionModel.isSelectedIndex(i)) {
+  //         unselectedValues.add(sourceModel.getElementAt(i));
+  //       }
+  //     }
+  //     // Destination is a live model: batch the insert so it fires O(1)
+  //     // events instead of one per selected element.
+  //     destinationModel.addAll(src.getSelectedValuesList());
+  //
+  //     DefaultListModel<E> rebuiltModel = new DefaultListModel<>();
+  //     rebuiltModel.addAll(unselectedValues);
+  //     src.setModel(rebuiltModel);
+  //   }
+  // }
+
+  /**
+   * Batch-array-model strategy: uses the custom {@link ArrayListModel}'s
+   * {@code addAll}/{@code remove(int...)}, which each fire a bounded
+   * number of events instead of one per element. Avoids reallocating a
+   * whole new model on every move, so it uses less memory than the
+   * rebuild strategy while still batching UI notifications.
+   */
+  private static <E> void transferSelectedByBatchArrayModel(JList<E> src, JList<E> dst) {
+    int[] selectedIndices = src.getSelectedIndices();
     if (selectedIndices.length > 0) {
-      ((ArrayListModel<E>) to.getModel()).addAll(from.getSelectedValuesList());
-      ((ArrayListModel<E>) from.getModel()).remove(selectedIndices);
+      ((ArrayListModel<E>) dst.getModel()).addAll(src.getSelectedValuesList());
+      ((ArrayListModel<E>) src.getModel()).remove(selectedIndices);
     }
   }
 
-  private static <E> JList<E> makeList(ListModel<E> model) {
+  private static <E> JList<E> createSelectableList(ListModel<E> model) {
     JList<E> list = new JList<>(model);
     JPopupMenu popup = new JPopupMenu();
+    // Right-click menu action that inverts the current selection.
     popup.add("reverse").addActionListener(e -> {
-      ListSelectionModel sm = list.getSelectionModel();
+      ListSelectionModel selectionModel = list.getSelectionModel();
       for (int i = 0; i < list.getModel().getSize(); i++) {
-        if (sm.isSelectedIndex(i)) {
-          sm.removeSelectionInterval(i, i);
+        if (selectionModel.isSelectedIndex(i)) {
+          selectionModel.removeSelectionInterval(i, i);
         } else {
-          sm.addSelectionInterval(i, i);
+          selectionModel.addSelectionInterval(i, i);
         }
       }
     });
@@ -95,59 +166,65 @@ public final class MainPanel extends JPanel {
     return list;
   }
 
-  private static JButton makeButton(String title) {
+  private static JButton createTransferButton(String title) {
     JButton button = new JButton(title);
     button.setFocusable(false);
     button.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
     return button;
   }
 
-  private Component makeCmp0() {
+  private Component createIndividualRemovalTab() {
     DefaultListModel<String> model = new DefaultListModel<>();
     IntStream.range(0, 5000).mapToObj(Objects::toString).forEach(model::addElement);
-    JList<String> leftList = makeList(model);
+    JList<String> leftList = createSelectableList(model);
+    JList<String> rightList = createSelectableList(new DefaultListModel<>());
 
-    JList<String> rightList = makeList(new DefaultListModel<>());
+    JButton moveRightButton = createTransferButton(">");
+    moveRightButton.addActionListener(e ->
+        transferSelectedByIndividualRemoval(leftList, rightList));
 
-    JButton button1 = makeButton(">");
-    button1.addActionListener(e -> move0(leftList, rightList));
+    JButton moveLeftButton = createTransferButton("<");
+    moveLeftButton.addActionListener(e ->
+        transferSelectedByIndividualRemoval(rightList, leftList));
 
-    JButton button2 = makeButton("<");
-    button2.addActionListener(e -> move0(rightList, leftList));
-
-    return SpringLayoutUtils.makePanel(leftList, rightList, button1, button2);
+    return SpringLayoutUtils.createDualListPanel(
+        leftList, rightList, moveRightButton, moveLeftButton);
   }
 
-  private Component makeCmp1() {
+  private Component createModelRebuildTab() {
     DefaultListModel<String> model = new DefaultListModel<>();
     IntStream.range(10_000, 30_000).mapToObj(Objects::toString).forEach(model::addElement);
-    JList<String> leftList = makeList(model);
+    JList<String> leftList = createSelectableList(model);
+    JList<String> rightList = createSelectableList(new DefaultListModel<>());
 
-    JList<String> rightList = makeList(new DefaultListModel<>());
+    JButton moveRightButton = createTransferButton(">");
+    moveRightButton.addActionListener(e ->
+        transferSelectedByModelRebuild(leftList, rightList));
 
-    JButton button1 = makeButton(">");
-    button1.addActionListener(e -> move1(leftList, rightList));
+    JButton moveLeftButton = createTransferButton("<");
+    moveLeftButton.addActionListener(e ->
+        transferSelectedByModelRebuild(rightList, leftList));
 
-    JButton button2 = makeButton("<");
-    button2.addActionListener(e -> move1(rightList, leftList));
-
-    return SpringLayoutUtils.makePanel(leftList, rightList, button1, button2);
+    return SpringLayoutUtils.createDualListPanel(
+        leftList, rightList, moveRightButton, moveLeftButton);
   }
 
-  private Component makeCmp2() {
+  private Component createBatchArrayModelTab() {
     ArrayListModel<String> model = new ArrayListModel<>();
     IntStream.range(30_000, 50_000).mapToObj(Objects::toString).forEach(model::add);
-    JList<String> leftList = makeList(model);
+    JList<String> leftList = createSelectableList(model);
+    JList<String> rightList = createSelectableList(new ArrayListModel<>());
 
-    JList<String> rightList = makeList(new ArrayListModel<>());
+    JButton moveRightButton = createTransferButton(">");
+    moveRightButton.addActionListener(e ->
+        transferSelectedByBatchArrayModel(leftList, rightList));
 
-    JButton button1 = makeButton(">");
-    button1.addActionListener(e -> move2(leftList, rightList));
+    JButton moveLeftButton = createTransferButton("<");
+    moveLeftButton.addActionListener(e ->
+        transferSelectedByBatchArrayModel(rightList, leftList));
 
-    JButton button2 = makeButton("<");
-    button2.addActionListener(e -> move2(rightList, leftList));
-
-    return SpringLayoutUtils.makePanel(leftList, rightList, button1, button2);
+    return SpringLayoutUtils.createDualListPanel(
+        leftList, rightList, moveRightButton, moveLeftButton);
   }
 
   public static void main(String[] args) {
@@ -172,50 +249,67 @@ public final class MainPanel extends JPanel {
   }
 }
 
+/**
+ * A lightweight {@link ListModel} backed by an {@link ArrayList}.
+ * {@code addAll}/{@code remove(int...)} add or remove several elements
+ * at once while only firing events for the ranges that actually changed,
+ * keeping the number of notifications low without misreporting them.
+ */
 class ArrayListModel<E> extends AbstractListModel<E> {
-  private final List<E> delegate = new ArrayList<>();
+  private final List<E> items = new ArrayList<>();
 
   public void add(E element) {
-    int index = delegate.size();
-    delegate.add(element);
+    int index = items.size();
+    items.add(element);
     fireIntervalAdded(this, index, index);
   }
 
-  public void addAll(Collection<? extends E> c) {
-    delegate.addAll(c);
-    fireIntervalAdded(this, 0, delegate.size());
+  public void addAll(Collection<? extends E> elements) {
+    int firstAddedIndex = items.size();
+    items.addAll(elements);
+    int lastAddedIndex = items.size() - 1;
+    if (lastAddedIndex >= firstAddedIndex) {
+      // Notify only the actually-appended range.
+      fireIntervalAdded(this, firstAddedIndex, lastAddedIndex);
+    }
   }
 
   public E remove(int index) {
-    E rv = delegate.get(index);
-    delegate.remove(index);
+    E removedElement = items.get(index);
+    items.remove(index);
     fireIntervalRemoved(this, index, index);
-    return rv;
+    return removedElement;
   }
 
-  // public boolean removeAll(Collection<?> c) {
-  //   int max = delegate.size();
-  //   boolean b = delegate.removeAll(c);
-  //   fireIntervalRemoved(this, 0, max);
-  //   return b;
-  // }
-
+  @SuppressWarnings("ReturnCount")
   public void remove(int... selectedIndices) {
-    if (selectedIndices.length > 0) {
-      int max = selectedIndices.length - 1;
-      for (int i = max; i >= 0; i--) {
-        delegate.remove(selectedIndices[i]);
+    if (selectedIndices.length == 0) {
+      return;
+    }
+    // Assumes selectedIndices is ascending; walks it from the end and
+    // removes each run of consecutive indices together. This keeps
+    // event count low while ensuring the notified range always matches
+    // what was actually removed.
+    int runEnd = selectedIndices.length - 1;
+    while (runEnd >= 0) {
+      int runStart = runEnd;
+      while (runStart > 0 && selectedIndices[runStart - 1] == selectedIndices[runStart] - 1) {
+        runStart--;
       }
-      fireIntervalRemoved(this, selectedIndices[0], selectedIndices[max]);
+      int fromIndex = selectedIndices[runStart];
+      int toIndex = selectedIndices[runEnd];
+      items.subList(fromIndex, toIndex + 1).clear();
+      fireIntervalRemoved(this, fromIndex, toIndex);
+      runEnd = runStart - 1;
     }
   }
 
   @Override public E getElementAt(int index) {
-    return delegate.get(index);
+    return items.get(index);
   }
 
   @Override public int getSize() {
-    return delegate.size();
+    return items.size();
   }
 }
 
@@ -224,40 +318,42 @@ final class SpringLayoutUtils {
     /* Singleton */
   }
 
-  private static void setScaleAndAdd(Container p, Component c, Rectangle2D r) {
-    LayoutManager lm = p.getLayout();
-    if (lm instanceof SpringLayout) {
-      SpringLayout layout = (SpringLayout) lm;
-      Spring pw = layout.getConstraint(SpringLayout.WIDTH, p);
-      Spring ph = layout.getConstraint(SpringLayout.HEIGHT, p);
-      SpringLayout.Constraints sc = layout.getConstraints(c);
-      sc.setX(Spring.scale(pw, (float) r.getX()));
-      sc.setY(Spring.scale(ph, (float) r.getY()));
-      sc.setWidth(Spring.scale(pw, (float) r.getWidth()));
-      sc.setHeight(Spring.scale(ph, (float) r.getHeight()));
-      p.add(c);
+  private static void setScaleAndAdd(
+      Container parent, Component child, Rectangle2D bounds) {
+    LayoutManager layoutManager = parent.getLayout();
+    if (layoutManager instanceof SpringLayout) {
+      SpringLayout layout = (SpringLayout) layoutManager;
+      Spring parentWidth = layout.getConstraint(SpringLayout.WIDTH, parent);
+      Spring parentHeight = layout.getConstraint(SpringLayout.HEIGHT, parent);
+      SpringLayout.Constraints childConstraints = layout.getConstraints(child);
+      childConstraints.setX(Spring.scale(parentWidth, (float) bounds.getX()));
+      childConstraints.setY(Spring.scale(parentHeight, (float) bounds.getY()));
+      childConstraints.setWidth(Spring.scale(parentWidth, (float) bounds.getWidth()));
+      childConstraints.setHeight(Spring.scale(parentHeight, (float) bounds.getHeight()));
+      parent.add(child);
     }
   }
 
-  public static Component makePanel(JList<?> lefts, JList<?> rights, JButton l2r, JButton r2l) {
-    Box box = Box.createVerticalBox();
-    box.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-    box.add(Box.createVerticalGlue());
-    box.add(l2r);
-    box.add(Box.createVerticalStrut(20));
-    box.add(r2l);
-    box.add(Box.createVerticalGlue());
+  public static Component createDualListPanel(
+      JList<?> leftList, JList<?> rightList, JButton moveRightBtn, JButton moveLeftBtn) {
+    Box buttonBox = Box.createVerticalBox();
+    buttonBox.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+    buttonBox.add(Box.createVerticalGlue());
+    buttonBox.add(moveRightBtn);
+    buttonBox.add(Box.createVerticalStrut(20));
+    buttonBox.add(moveLeftBtn);
+    buttonBox.add(Box.createVerticalGlue());
 
-    JPanel cpn = new JPanel(new GridBagLayout());
-    cpn.add(box);
+    JPanel buttonPanel = new JPanel(new GridBagLayout());
+    buttonPanel.add(buttonBox);
 
-    JScrollPane spl = new JScrollPane(lefts);
-    JScrollPane spr = new JScrollPane(rights);
+    JScrollPane leftScroll = new JScrollPane(leftList);
+    JScrollPane rightScroll = new JScrollPane(rightList);
 
     JPanel p = new JPanel(new SpringLayout());
-    setScaleAndAdd(p, spl, new Rectangle2D.Float(.05f, .05f, .40f, .90f));
-    setScaleAndAdd(p, cpn, new Rectangle2D.Float(.45f, .05f, .10f, .90f));
-    setScaleAndAdd(p, spr, new Rectangle2D.Float(.55f, .05f, .40f, .90f));
+    setScaleAndAdd(p, leftScroll, new Rectangle2D.Float(.05f, .05f, .40f, .90f));
+    setScaleAndAdd(p, buttonPanel, new Rectangle2D.Float(.45f, .05f, .10f, .90f));
+    setScaleAndAdd(p, rightScroll, new Rectangle2D.Float(.55f, .05f, .40f, .90f));
     return p;
   }
 }
