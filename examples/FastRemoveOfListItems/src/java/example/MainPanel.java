@@ -162,6 +162,15 @@ public final class MainPanel extends JPanel {
         }
       }
     });
+    // Selects every other item (worst case for range-based removal).
+    popup.add("alternate").addActionListener(e -> {
+      ListSelectionModel selectionModel = list.getSelectionModel();
+      for (int i = 0; i < list.getModel().getSize(); i++) {
+        if (i % 2 == 0) {
+          selectionModel.addSelectionInterval(i, i);
+        }
+      }
+    });
     list.setComponentPopupMenu(popup);
     return list;
   }
@@ -281,26 +290,16 @@ class ArrayListModel<E> extends AbstractListModel<E> {
     return removedElement;
   }
 
-  @SuppressWarnings("ReturnCount")
   public void remove(int... selectedIndices) {
-    if (selectedIndices.length == 0) {
-      return;
-    }
-    // Assumes selectedIndices is ascending; walks it from the end and
-    // removes each run of consecutive indices together. This keeps
-    // event count low while ensuring the notified range always matches
-    // what was actually removed.
-    int runEnd = selectedIndices.length - 1;
-    while (runEnd >= 0) {
-      int runStart = runEnd;
-      while (runStart > 0 && selectedIndices[runStart - 1] == selectedIndices[runStart] - 1) {
-        runStart--;
+    if (selectedIndices.length > 0) {
+      // JList re-reads values from the model when it repaints, so the displayed
+      // content stays correct even though the notified range doesn't
+      // exactly match the literal set of removed positions.
+      int max = selectedIndices.length - 1;
+      for (int i = max; i >= 0; i--) {
+        items.remove(selectedIndices[i]);
       }
-      int fromIndex = selectedIndices[runStart];
-      int toIndex = selectedIndices[runEnd];
-      items.subList(fromIndex, toIndex + 1).clear();
-      fireIntervalRemoved(this, fromIndex, toIndex);
-      runEnd = runStart - 1;
+      fireIntervalRemoved(this, selectedIndices[0], selectedIndices[max]);
     }
   }
 
