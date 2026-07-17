@@ -89,28 +89,28 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  /**
-   * Model-rebuild strategy: collects the unselected elements in a single
-   * O(n) pass and swaps in a fresh model via {@code setModel} on the
-   * {@code src} side. That swap fires only one structural event since
-   * {@code rebuiltModel} has no listeners yet (it isn't attached to any
-   * JList until {@code setModel} runs). The trade-off is allocating a
-   * brand-new model object on every move.
-   * <p>
-   * Note: the {@code destination} model is different — it's already live,
-   * attached to a visible JList. Adding to it one element at a time (the
-   * original implementation) fires one {@code ListDataEvent} per element,
-   * and each event triggers JList's internal bookkeeping (e.g. adjusting
-   * the selection model's index ranges). When the selection is a large
-   * fraction of the list — e.g. selecting nearly all 20,000 items and
-   * moving them — that per-element cost accumulates and dominates the
-   * whole operation. Batching the destination-side insert via
-   * {@link DefaultListModel#addAll(java.util.Collection)} collapses those
-   * events from O(k) down to O(1), which is the fix applied below.
-   * [JDK-8201289] DefaultListModel and DefaultComboBoxModel
-   *    should support addAll (Collection c) - Java Bug System
-   * https://bugs.openjdk.org/browse/JDK-8201289
-   */
+  // /**
+  //  * Model-rebuild strategy: collects the unselected elements in a single
+  //  * O(n) pass and swaps in a fresh model via {@code setModel} on the
+  //  * {@code src} side. That swap fires only one structural event since
+  //  * {@code rebuiltModel} has no listeners yet (it isn't attached to any
+  //  * JList until {@code setModel} runs). The trade-off is allocating a
+  //  * brand-new model object on every move.
+  //  * <p>
+  //  * Note: the {@code destination} model is different — it's already live,
+  //  * attached to a visible JList. Adding to it one element at a time (the
+  //  * original implementation) fires one {@code ListDataEvent} per element,
+  //  * and each event triggers JList's internal bookkeeping (e.g. adjusting
+  //  * the selection model's index ranges). When the selection is a large
+  //  * fraction of the list — e.g. selecting nearly all 20,000 items and
+  //  * moving them — that per-element cost accumulates and dominates the
+  //  * whole operation. Batching the destination-side insert via
+  //  * {@link DefaultListModel#addAll(java.util.Collection)} collapses those
+  //  * events from O(k) down to O(1), which is the fix applied below.
+  //  * [JDK-8201289] DefaultListModel and DefaultComboBoxModel
+  //  *    should support addAll (Collection c) - Java Bug System
+  //  * https://bugs.openjdk.org/browse/JDK-8201289
+  //  */
   // private static <E> void transferSelectedByModelRebuild(JList<E> src, JList<E> dst) {
   //   if (!src.isSelectionEmpty()) {
   //     ListSelectionModel selectionModel = src.getSelectionModel();
