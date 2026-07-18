@@ -68,6 +68,7 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
+  private static final float FONT_RATIO = .2f;
   private static final String[] ARABIC_NUMERALS = {
       "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
   };
@@ -158,18 +159,20 @@ class AnalogClock extends JPanel {
   }
 
   private void paintClockNumbers(Graphics2D g2, double radius) {
+    float dynamicFontSize = Math.max((float) (radius * FONT_RATIO), 20f);
+    Font font = g2.getFont().deriveFont(dynamicFontSize);
+    FontRenderContext frc = g2.getFontRenderContext();
+
     double hourMarkerLen = radius / 6d - 10d;
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setColor(Color.WHITE);
-    Font font = g2.getFont();
-    FontRenderContext frc = g2.getFontRenderContext();
     if (isRomanNumerals) {
       AffineTransform si = AffineTransform.getScaleInstance(1d, 2d);
       for (String txt : ROMAN_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(si);
         Rectangle2D r = s.getBounds2D();
         double tx = r.getCenterX();
-        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY() * .5;
+        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY() * FONT_RATIO;
         Shape t = AffineTransform.getTranslateInstance(-tx, -ty).createTransformedShape(s);
         g2.fill(at.createTransformedShape(t));
         at.rotate(Math.PI / 6d);
@@ -179,7 +182,7 @@ class AnalogClock extends JPanel {
       for (String txt : ARABIC_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(null);
         Rectangle2D r = s.getBounds2D();
-        double ty = radius - hourMarkerLen - r.getHeight() - r.getCenterY() * .5;
+        double ty = radius - hourMarkerLen - r.getHeight() - r.getCenterY() * FONT_RATIO;
         ptSrc.setLocation(0d, -ty);
         Point2D pt = at.transform(ptSrc, null);
         double dx = pt.getX() - r.getCenterX();
