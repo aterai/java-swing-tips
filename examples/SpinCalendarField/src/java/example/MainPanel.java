@@ -45,7 +45,10 @@ public final class MainPanel extends JPanel {
         // and ignore the setCalendarField calls.
       }
     });
-    ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField().setFormatterFactory(factory);
+    JComponent editor2 = spinner2.getEditor();
+    if (editor2 instanceof JSpinner.DefaultEditor) {
+      ((JSpinner.DefaultEditor) editor2).getTextField().setFormatterFactory(factory);
+    }
 
     add(createTitledPanel("Default SpinnerDateModel", spinner1));
     add(createTitledPanel("Override SpinnerDateModel#setCalendarField(...)", spinner2));
