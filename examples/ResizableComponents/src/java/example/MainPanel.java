@@ -129,7 +129,8 @@ class ResizablePanel extends JPanel { // implements Serializable {
 
   // private void writeObject(ObjectOutputStream out) throws IOException {}
 
-  // private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {}
+  // private void readObject(ObjectInputStream in)
+  //     throws IOException, ClassNotFoundException {}
 
   // private void readObjectNoData() throws ObjectStreamException {}
 

@@ -339,8 +339,10 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
 
     if (Objects.nonNull(vsb)) {
       if (vsbNeeded) {
-        // if (Objects.nonNull(colHead) && UIManager.getBoolean("ScrollPane.fillUpperCorner")) {
-        //   if (leftToRight && upperRight == null || !leftToRight && upperLeft == null) {
+        // if (Objects.nonNull(colHead)
+        //     && UIManager.getBoolean("ScrollPane.fillUpperCorner")) {
+        //   if (leftToRight && upperRight == null
+        //       || !leftToRight && upperLeft == null) {
         //     vsbR.y = colHeadR.y;
         //     vsbR.height += colHeadR.height;
         //   }
@@ -354,8 +356,10 @@ class RightFixedScrollPaneLayout extends ScrollPaneLayout {
 
     if (Objects.nonNull(hsb)) {
       if (hsbNeeded) {
-        // if (Objects.nonNull(rowHead) && UIManager.getBoolean("ScrollPane.fillLowerCorner")) {
-        //   if (leftToRight && lowerLeft == null || !leftToRight && lowerRight == null) {
+        // if (Objects.nonNull(rowHead)
+        //     && UIManager.getBoolean("ScrollPane.fillLowerCorner")) {
+        //   if (leftToRight && lowerLeft == null
+        //       || !leftToRight && lowerRight == null) {
         //     if (leftToRight) {
         //       hsbR.x = rowHeadR.x;
         //     }

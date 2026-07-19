@@ -127,7 +127,8 @@ final class ShapeUtils {
     /* Singleton */
   }
 
-  public static Shape createRoundRect0(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape createRoundRect0(
+      Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
@@ -159,7 +160,8 @@ final class ShapeUtils {
     return area;
   }
 
-  public static Shape createRoundRect1(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape createRoundRect1(
+      Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
@@ -196,7 +198,8 @@ final class ShapeUtils {
     return path;
   }
 
-  public static Shape createRoundRect2(Rectangle2D r, double aw, double ah, Set<Corner> corners) {
+  public static Shape createRoundRect2(
+      Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double arh = ah * .5;
     double arw = aw * .5;
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;

@@ -107,7 +107,8 @@ public final class MainPanel extends JPanel {
   }
 
   // https://ateraimemo.com/Swing/Highlighter.html
-  public static void setHighlight(JEditorPane editor, String pattern, HighlightPainter painter) {
+  public static void setHighlight(
+      JEditorPane editor, String pattern, HighlightPainter painter) {
     Highlighter highlighter = editor.getHighlighter();
     highlighter.removeAllHighlights();
     Document doc = editor.getDocument();
