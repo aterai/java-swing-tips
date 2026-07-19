@@ -68,11 +68,12 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
+  private static final float FONT_RATIO = .2f;
   private static final String[] ARABIC_NUMERALS = {
       "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
   };
   // private static final String[] EARTHLY_BRANCHES = {
-  //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"
+  //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥",
   // };
   private double secondRot;
   private double minuteRot;
@@ -154,11 +155,13 @@ class AnalogClock extends JPanel {
   }
 
   private void paintClockNumbers(Graphics2D g2, double radius) {
+    float dynamicFontSize = Math.max((float) (radius * FONT_RATIO), 32f);
+    Font font = g2.getFont().deriveFont(dynamicFontSize);
+    FontRenderContext frc = g2.getFontRenderContext();
+
     double hourMarkerLen = radius / 6d - 10d;
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setColor(Color.WHITE);
-    Font font = g2.getFont();
-    FontRenderContext frc = g2.getFontRenderContext();
     if (isRotate) {
       for (String txt : ARABIC_NUMERALS) {
         double m00 = at.getScaleX();

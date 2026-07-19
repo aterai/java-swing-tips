@@ -167,12 +167,13 @@ class AnalogClock extends JPanel {
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setColor(Color.WHITE);
     if (isRomanNumerals) {
-      AffineTransform si = AffineTransform.getScaleInstance(1d, 2d);
+      double scaleY = 2d;
+      AffineTransform si = AffineTransform.getScaleInstance(1d, scaleY);
       for (String txt : ROMAN_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(si);
         Rectangle2D r = s.getBounds2D();
         double tx = r.getCenterX();
-        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY() * FONT_RATIO;
+        double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY() / scaleY;
         Shape t = AffineTransform.getTranslateInstance(-tx, -ty).createTransformedShape(s);
         g2.fill(at.createTransformedShape(t));
         at.rotate(Math.PI / 6d);
@@ -182,7 +183,7 @@ class AnalogClock extends JPanel {
       for (String txt : ARABIC_NUMERALS) {
         Shape s = getTextLayout(txt, font, frc).getOutline(null);
         Rectangle2D r = s.getBounds2D();
-        double ty = radius - hourMarkerLen - r.getHeight() - r.getCenterY() * FONT_RATIO;
+        double ty = radius - hourMarkerLen - r.getHeight();
         ptSrc.setLocation(0d, -ty);
         Point2D pt = at.transform(ptSrc, null);
         double dx = pt.getX() - r.getCenterX();
