@@ -17,7 +17,11 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public class OneLineTextPane extends JTextPane {
-  @SuppressWarnings("DesignForExtension")
+  /**
+   * {@inheritDoc}
+   *
+   * <p>Subclasses that override this method must call {@code super.updateUI()} first.
+   */
   @Override public void updateUI() {
     super.updateUI();
     String key = "Do-Nothing";
