@@ -18,8 +18,6 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     add(new JButton("Default JButton"));
-    // button.setUI(new RoundedCornerButtonUI());
-    // IGNORE LnF change: super.updateUI();
     JButton button = new JButton("RoundedCornerButtonUI") {
       @Override public void updateUI() {
         // IGNORE LnF change: super.updateUI();
@@ -29,20 +27,23 @@ public final class MainPanel extends JPanel {
     add(button);
     add(new RoundedCornerButton("Rounded Corner Button"));
 
-    URL url = Thread.currentThread().getContextClassLoader().getResource("example/16x16.png");
-    Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
+    String path = "example/16x16.png";
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    Icon icon = url == null
+        ? UIManager.getIcon("html.missingImage")
+        : new ImageIcon(url);
     add(new RoundButton(icon) {
       @Override public Dimension getPreferredSize() {
         int r = 16 + (FOCUS_STROKE + 4) * 2; // test margin = 4
         return new Dimension(r, r);
       }
     });
-    add(new ShapeButton(makeStar(25, 30, 20)));
+    add(new ShapeButton(createStar(25, 30, 20)));
     add(new RoundButton("Round Button"));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public Path2D makeStar(int r1, int r2, int vc) {
+  public Path2D createStar(int r1, int r2, int vc) {
     double or = Math.max(r1, r2);
     double ir = Math.min(r1, r2);
     double agl = 0d;
@@ -81,16 +82,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
-@SuppressWarnings("VisibilityModifier")
 class RoundedCornerButton extends JButton {
   protected static final int FOCUS_STROKE = 2;
   protected static final Color FC = new Color(100, 150, 255, 200);
   protected static final Color AC = new Color(230, 230, 230);
   protected static final Color RC = Color.ORANGE;
   private static final double ARC = 16d;
-  protected transient Shape shape;
-  protected transient Shape border;
-  protected transient Shape base;
+  private transient Shape buttonShape;
+  private transient Shape borderShape;
+  private transient Rectangle cachedBounds;
 
   protected RoundedCornerButton() {
     super();
@@ -115,7 +115,31 @@ class RoundedCornerButton extends JButton {
     // init(text, icon);
     // setContentAreaFilled(false);
     // setBackground(new Color(0xFA_FA_FA));
-    // initShape();
+    // updateShapeIfResized();
+  }
+
+  protected final Shape getShape() {
+    return buttonShape;
+  }
+
+  protected final void setShape(Shape newShape) {
+    buttonShape = newShape;
+  }
+
+  protected final Shape getBorderShape() {
+    return borderShape;
+  }
+
+  protected final void setBorderShape(Shape newBorderShape) {
+    borderShape = newBorderShape;
+  }
+
+  protected final Rectangle getCachedBounds() {
+    return cachedBounds;
+  }
+
+  protected final void setCachedBounds(Rectangle newBounds) {
+    cachedBounds = newBounds;
   }
 
   @Override public void updateUI() {
@@ -123,17 +147,19 @@ class RoundedCornerButton extends JButton {
     setContentAreaFilled(false);
     setFocusPainted(false);
     setBackground(new Color(0xFA_FA_FA));
-    initShape();
+    updateShapeIfResized();
   }
 
-  protected void initShape() {
-    if (!getBounds().equals(base)) {
-      base = getBounds();
-      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC, ARC);
-      border = new RoundRectangle2D.Double(
+  protected void updateShapeIfResized() {
+    if (!getBounds().equals(getCachedBounds())) {
+      setCachedBounds(getBounds());
+      double w = getWidth() - 1d;
+      double h = getHeight() - 1d;
+      setShape(new RoundRectangle2D.Double(0d, 0d, w, h, ARC, ARC));
+      setBorderShape(new RoundRectangle2D.Double(
           FOCUS_STROKE, FOCUS_STROKE,
-          getWidth() - 1d - FOCUS_STROKE * 2d,
-          getHeight() - 1d - FOCUS_STROKE * 2d, ARC, ARC);
+          w - FOCUS_STROKE * 2d,
+          h - FOCUS_STROKE * 2d, ARC, ARC));
     }
   }
 
@@ -141,43 +167,45 @@ class RoundedCornerButton extends JButton {
     float x2 = getWidth() - 1f;
     float y2 = getHeight() - 1f;
     g2.setPaint(new GradientPaint(0f, 0f, color, x2, y2, color.brighter(), true));
-    g2.fill(shape);
+    g2.fill(getShape());
     g2.setPaint(getBackground());
-    g2.fill(border);
+    g2.fill(getBorderShape());
   }
 
   @Override protected void paintComponent(Graphics g) {
-    initShape();
+    updateShapeIfResized();
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     if (getModel().isArmed()) {
       g2.setPaint(AC);
-      g2.fill(shape);
+      g2.fill(getShape());
     } else if (isRolloverEnabled() && getModel().isRollover()) {
       paintFocusAndRollover(g2, RC);
     } else if (hasFocus()) {
       paintFocusAndRollover(g2, FC);
     } else {
       g2.setPaint(getBackground());
-      g2.fill(shape);
+      g2.fill(getShape());
     }
     g2.dispose();
     super.paintComponent(g);
   }
 
   @Override protected void paintBorder(Graphics g) {
-    initShape();
+    updateShapeIfResized();
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(getForeground());
-    g2.draw(shape);
+    g2.draw(getShape());
     g2.dispose();
   }
 
   @Override public boolean contains(int x, int y) {
-    initShape();
-    // return shape != null && shape.contains(x, y);
-    return Optional.ofNullable(shape)
+    updateShapeIfResized();
+    // return buttonShape != null && buttonShape.contains(x, y);
+    return Optional.ofNullable(getShape())
         .map(s -> s.contains(x, y))
         .orElseGet(() -> super.contains(x, y));
   }
@@ -214,14 +242,16 @@ class RoundButton extends RoundedCornerButton {
     return d;
   }
 
-  @Override protected void initShape() {
-    if (!getBounds().equals(base)) {
-      base = getBounds();
-      shape = new Ellipse2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d);
-      border = new Ellipse2D.Double(
+  @Override protected void updateShapeIfResized() {
+    if (!getBounds().equals(getCachedBounds())) {
+      setCachedBounds(getBounds());
+      double w = getWidth() - 1d;
+      double h = getHeight() - 1d;
+      setShape(new Ellipse2D.Double(0d, 0d, w, h));
+      setBorderShape(new Ellipse2D.Double(
           FOCUS_STROKE, FOCUS_STROKE,
-          getWidth() - 1d - FOCUS_STROKE * 2d,
-          getHeight() - 1d - FOCUS_STROKE * 2d);
+          w - FOCUS_STROKE * 2d,
+          h - FOCUS_STROKE * 2d));
     }
   }
 }
@@ -258,7 +288,8 @@ class ShapeButton extends JButton {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     if (getModel().isArmed()) {
       g2.setPaint(AC);
       g2.fill(shape);
@@ -276,7 +307,8 @@ class ShapeButton extends JButton {
 
   @Override protected void paintBorder(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(getForeground());
     g2.draw(shape);
     g2.dispose();
