@@ -64,7 +64,8 @@ class RadialGradientButton extends JButton {
       new Color(0x64_44_05_F7, true),
       new Color(0x00_F7_23_59, true),
   };
-  private int radius;
+  protected final Point hoverPoint = new Point();
+  protected int radius;
   private final Timer timer1 = new Timer(10, e -> {
     radius = Math.min(200, radius + DELTA);
     repaint();
@@ -73,13 +74,28 @@ class RadialGradientButton extends JButton {
     radius = Math.max(0, radius - DELTA);
     repaint();
   });
-  private final Point pt = new Point();
-  private transient Shape shape;
-  private Rectangle base;
+  private transient Shape buttonShape;
+  private transient Rectangle cachedBounds;
   private transient MouseAdapter listener;
 
   protected RadialGradientButton(String title) {
     super(title);
+  }
+
+  protected final Shape getShape() {
+    return buttonShape;
+  }
+
+  protected final void setShape(Shape newShape) {
+    buttonShape = newShape;
+  }
+
+  protected final Rectangle getCachedBounds() {
+    return cachedBounds;
+  }
+
+  protected final void setCachedBounds(Rectangle newBounds) {
+    cachedBounds = newBounds;
   }
 
   @Override public void updateUI() {
@@ -94,12 +110,12 @@ class RadialGradientButton extends JButton {
     listener = new HoverHandler();
     addMouseListener(listener);
     addMouseMotionListener(listener);
-    update();
+    updateShapeIfBoundsChanged();
   }
 
   @Override public boolean contains(int x, int y) {
-    update();
-    return Optional.ofNullable(shape).map(s -> s.contains(x, y)).orElse(false);
+    updateShapeIfBoundsChanged();
+    return Optional.ofNullable(getShape()).map(s -> s.contains(x, y)).orElse(false);
   }
 
   // @Override protected void paintBorder(Graphics g) {
@@ -117,34 +133,40 @@ class RadialGradientButton extends JButton {
   // }
 
   @Override protected void paintComponent(Graphics g) {
-    update();
+    updateShapeIfBoundsChanged();
 
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     // g2.setComposite(AlphaComposite.Clear);
     // g2.setPaint(new Color(0x0, true));
     // g2.fillRect(0, 0, getWidth(), getHeight());
 
     g2.setComposite(AlphaComposite.Src);
     g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
-    g2.fill(shape);
+    g2.fill(getShape());
 
     if (radius > 0) {
-      int r2 = radius + radius;
-      g2.setPaint(new RadialGradientPaint(pt, r2, DIST, COLORS));
+      int diameter = radius + radius;
+      g2.setPaint(new RadialGradientPaint(hoverPoint, diameter, DIST, COLORS));
       g2.setComposite(AlphaComposite.SrcAtop);
-      g2.setClip(shape);
-      g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
+      g2.setClip(getShape());
+      double cx = hoverPoint.getX() - radius;
+      double cy = hoverPoint.getY() - radius;
+      g2.fill(new Ellipse2D.Double(cx, cy, diameter, diameter));
     }
     g2.dispose();
 
     super.paintComponent(g);
   }
 
-  protected void update() {
-    if (!getBounds().equals(base)) {
-      base = getBounds();
-      shape = new RoundRectangle2D.Double(0d, 0d, getWidth() - 1d, getHeight() - 1d, ARC, ARC);
+  protected void updateShapeIfBoundsChanged() {
+    Rectangle bounds = getBounds();
+    if (!bounds.equals(getCachedBounds())) {
+      setCachedBounds(bounds);
+      double w = getWidth() - 1d;
+      double h = getHeight() - 1d;
+      setShape(new RoundRectangle2D.Double(0d, 0d, w, h, ARC, ARC));
     }
   }
 
@@ -172,7 +194,7 @@ class RadialGradientButton extends JButton {
     }
 
     private void updateLocation(MouseEvent e) {
-      pt.setLocation(e.getPoint());
+      hoverPoint.setLocation(e.getPoint());
       e.getComponent().repaint();
     }
   }
@@ -186,20 +208,21 @@ class RadialGradientPaintButton extends RadialGradientButton {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    update();
+    updateShapeIfBoundsChanged();
     g.drawImage(buf, 0, 0, this);
     super.paintComponent(g);
   }
 
-  @Override protected void update() {
-    if (!getBounds().equals(base)) {
-      base = getBounds();
+  @Override protected void updateShapeIfBoundsChanged() {
+    Rectangle bounds = getBounds();
+    if (!bounds.equals(getCachedBounds())) {
+      setCachedBounds(bounds);
       int w = getWidth();
       int h = getHeight();
       if (w > 0 && h > 0) {
         buf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
       }
-      shape = new RoundRectangle2D.Double(0d, 0d, w - 1d, h - 1d, ARC, ARC);
+      setShape(new RoundRectangle2D.Double(0d, 0d, w - 1d, h - 1d, ARC, ARC));
     }
     if (buf != null) {
       Graphics2D g2 = buf.createGraphics();
@@ -209,13 +232,15 @@ class RadialGradientPaintButton extends RadialGradientButton {
       g2.fillRect(0, 0, getWidth(), getHeight());
       g2.setComposite(AlphaComposite.Src);
       g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
-      g2.fill(shape);
+      g2.fill(getShape());
       if (radius > 0) {
-        int r2 = radius + radius;
-        g2.setPaint(new RadialGradientPaint(pt, r2, DIST, COLORS));
+        int diameter = radius + radius;
+        g2.setPaint(new RadialGradientPaint(hoverPoint, diameter, DIST, COLORS));
         g2.setComposite(AlphaComposite.SrcAtop);
         // g2.setClip(shape);
-        g2.fill(new Ellipse2D.Double(pt.getX() - radius, pt.getY() - radius, r2, r2));
+        double cx = hoverPoint.getX() - radius;
+        double cy = hoverPoint.getY() - radius;
+        g2.fill(new Ellipse2D.Double(cx, cy, diameter, diameter));
       }
       g2.dispose();
     }
