@@ -20,14 +20,14 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new ScaledTable(makeModel());
+    JTable table = new ScaledTable(createModel());
     table.setAutoCreateRowSorter(true);
-    add(makeToolBar(table), BorderLayout.NORTH);
+    add(createToolBar(table), BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true}, {"bbb", 5, false}, {"CCC", 92, true}, {"DDD", 0, false},
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JToolBar makeToolBar(JTable table) {
+  private static JToolBar createToolBar(JTable table) {
     Font font = table.getFont();
     float fontSize = font.getSize2D();
     int rowHeight = table.getRowHeight();
@@ -60,7 +60,8 @@ public final class MainPanel extends JPanel {
     return toolBar;
   }
 
-  private static void scaling(JTable table, Font font, float fontSize, int rowHeight, float x) {
+  private static void scaling(
+      JTable table, Font font, float fontSize, int rowHeight, float x) {
     table.removeEditor();
     Font f = font.deriveFont(fontSize * x);
     table.setFont(f);
@@ -169,7 +170,8 @@ class ScaledIcon implements Icon {
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.translate(x, y);
     double sx = width / (double) icon.getIconWidth();
     double sy = height / (double) icon.getIconHeight();
@@ -191,7 +193,8 @@ class CheckBoxIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     if (c instanceof AbstractButton) {
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(x, y);
       AbstractButton b = (AbstractButton) c;
       g2.setPaint(b.getForeground()); // g2.setPaint(Color.DARK_GRAY);

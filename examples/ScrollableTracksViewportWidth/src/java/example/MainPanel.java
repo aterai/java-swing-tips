@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     add(makeTitledPane(table2, "AUTO_RESIZE_OFF"));
 
     JTable table3 = new JTable(1, 3) {
-      // java - How to make JTable both AutoResize and horizontally scrollable? - Stack Overflow
+      // How to make JTable both AutoResize and horizontally scrollable? - Stack Overflow
       // https://stackoverflow.com/questions/6104916/how-to-make-jtable-both-autoresize-and-horizontall-scrollable
       // In Java 9?, this code may no longer work correctly.
       // @Override public boolean getScrollableTracksViewportWidth() {
