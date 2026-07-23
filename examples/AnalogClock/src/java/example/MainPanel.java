@@ -46,6 +46,9 @@ public final class MainPanel extends JPanel {
 }
 
 class AnalogClock extends JPanel {
+  private static final int MINUTES_PER_HOUR = 60;
+  private static final int MIN_PER_MARKER = 5;
+  private static final double RAD_PER_MIN = 2d * Math.PI / MINUTES_PER_HOUR;
   private double secondRot;
   private double minuteRot;
   private double hourRot;
@@ -109,13 +112,13 @@ class AnalogClock extends JPanel {
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setStroke(new BasicStroke(2f));
     g2.setColor(Color.WHITE);
-    for (int i = 0; i < 60; i++) {
-      if (i % 5 == 0) {
+    for (int i = 0; i < MINUTES_PER_HOUR; i++) {
+      if (i % MIN_PER_MARKER == 0) {
         g2.draw(at.createTransformedShape(hourMarker));
       } else {
         g2.draw(at.createTransformedShape(minuteMarker));
       }
-      at.rotate(Math.PI / 30d);
+      at.rotate(RAD_PER_MIN);
     }
   }
 
