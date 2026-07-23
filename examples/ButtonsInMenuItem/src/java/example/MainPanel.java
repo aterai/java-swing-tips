@@ -25,18 +25,18 @@ public final class MainPanel extends JPanel {
   }
 
   private static JMenuBar createMenuBar() {
-    Component edit = MenuBarUtils.makeButtonBar(Arrays.asList(
-        MenuBarUtils.makeButton("Cut", new DefaultEditorKit.CutAction()),
-        MenuBarUtils.makeButton("Copy", new DefaultEditorKit.CopyAction()),
-        MenuBarUtils.makeButton("Paste", new DefaultEditorKit.PasteAction())));
+    Component edit = MenuBarUtils.createButtonBar(Arrays.asList(
+        MenuBarUtils.createButton("Cut", new DefaultEditorKit.CutAction()),
+        MenuBarUtils.createButton("Copy", new DefaultEditorKit.CopyAction()),
+        MenuBarUtils.createButton("Paste", new DefaultEditorKit.PasteAction())));
     JMenu menu = new JMenu("File");
-    menu.add("111111111");
+    menu.add("JMenuItem 1");
+    menu.add("JMenuItem 2");
     menu.addSeparator();
-    menu.add(MenuBarUtils.makeGridBagMenuItem(edit));
+    menu.add(MenuBarUtils.createGridBagMenuItem(edit));
     menu.addSeparator();
-    menu.add("22222");
-    menu.add("3333");
-    menu.add("4444444");
+    menu.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
+    menu.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
     JMenuBar mb = new JMenuBar();
     mb.add(menu);
     return mb;
@@ -69,15 +69,18 @@ final class MenuBarUtils {
     /* Singleton */
   }
 
-  public static JMenuItem makeGridBagMenuItem(Component comp) {
+  // Wraps a disabled "Edit" JMenuItem around comp so the button bar
+  // renders inline in the menu.
+  public static JMenuItem createGridBagMenuItem(Component comp) {
     JMenuItem item = new JMenuItem("Edit") {
       @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.width += comp.getPreferredSize().width;
-        d.height = Math.max(comp.getPreferredSize().height, d.height);
-        return d;
+        Dimension dim = super.getPreferredSize();
+        dim.width += comp.getPreferredSize().width;
+        dim.height = Math.max(comp.getPreferredSize().height, dim.height);
+        return dim;
       }
 
+      // Keep the label black even while disabled/rollover/pressed.
       @Override protected void fireStateChanged() {
         setForeground(Color.BLACK);
         super.fireStateChanged();
@@ -91,6 +94,7 @@ final class MenuBarUtils {
     // c.gridx = GridBagConstraints.RELATIVE;
     c.weightx = 1d;
 
+    // Push comp to the right edge of the menu item with a stretching glue component.
     c.fill = GridBagConstraints.HORIZONTAL;
     item.add(Box.createHorizontalGlue(), c);
     c.fill = GridBagConstraints.NONE;
@@ -99,30 +103,32 @@ final class MenuBarUtils {
     return item;
   }
 
-  public static Component makeButtonBar(List<AbstractButton> list) {
-    int size = list.size();
+  // Lays out buttons in a single row, wrapped in a JLayer that draws a separator on hover.
+  public static Component createButtonBar(List<AbstractButton> buttons) {
+    int size = buttons.size();
     JPanel p = new JPanel(new GridLayout(1, size, 0, 0)) {
       @Override public Dimension getMaximumSize() {
         return super.getPreferredSize();
       }
     };
-    list.forEach(b -> {
-      b.setIcon(new ToggleButtonBarCellIcon());
-      p.add(b);
+    buttons.forEach(button -> {
+      button.setIcon(new ToggleButtonBarCellIcon());
+      p.add(button);
     });
     p.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
     p.setOpaque(false);
 
-    return new JLayer<>(p, new EditMenuLayerUI<>(list.get(size - 1)));
+    return new JLayer<>(p, new EditMenuLayerUI<>(buttons.get(size - 1)));
   }
 
-  public static AbstractButton makeButton(String title, Action action) {
+  public static AbstractButton createButton(String title, Action action) {
     AbstractButton b = new JButton(action);
+    // Close the enclosing popup menu once the action has been triggered.
     b.addActionListener(e -> {
-      Component a = (Component) e.getSource();
-      Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, a);
-      if (c instanceof JPopupMenu) {
-        c.setVisible(false);
+      Component src = (Component) e.getSource();
+      Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, src);
+      if (popup instanceof JPopupMenu) {
+        popup.setVisible(false);
       }
     });
     b.setText(title);
@@ -138,12 +144,14 @@ final class MenuBarUtils {
   }
 }
 
+// Draws a segmented-button background: only the outer edges of the first/last
+// buttons in the bar are rounded, so the row reads as one continuous pill.
 // https://ateraimemo.com/Swing/ToggleButtonBar.html
 class ToggleButtonBarCellIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Container parent = c.getParent();
     if (Objects.nonNull(parent)) {
-      paintPath(c, g, makeButtonPath(c, parent, x, y));
+      paintPath(c, g, createButtonPath(c, parent, x, y));
     }
   }
 
@@ -151,54 +159,56 @@ class ToggleButtonBarCellIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Paint color = new Color(0x0, true);
+    Paint fillColor = new Color(0x0, true);
     Paint borderColor = Color.GRAY.brighter();
     if (c instanceof AbstractButton) {
-      ButtonModel m = ((AbstractButton) c).getModel();
-      if (m.isPressed()) {
-        color = new Color(0xC8_C8_FF);
-      } else if (m.isSelected() || m.isRollover()) {
+      ButtonModel model = ((AbstractButton) c).getModel();
+      if (model.isPressed()) {
+        fillColor = new Color(0xC8_C8_FF);
+      } else if (model.isSelected() || model.isRollover()) {
         borderColor = Color.GRAY;
       }
     }
-    g2.setPaint(color);
+    g2.setPaint(fillColor);
     g2.fill(path);
     g2.setPaint(borderColor);
     g2.draw(path);
     g2.dispose();
   }
 
-  private static Path2D makeButtonPath(Component c, Container parent, int x, int y) {
+  private static Path2D createButtonPath(Component c, Container parent, int x, int y) {
     double r = 4d;
+    // Bezier control-point offset that approximates a quarter circle of radius r.
     double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
     double w = c.getWidth();
     double h = c.getHeight() - 1d;
-    Path2D p = new Path2D.Double();
+    Path2D path = new Path2D.Double();
     if (Objects.equals(c, parent.getComponent(0))) {
-      // :first-child
-      p.moveTo(x, y + r);
-      p.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
-      p.lineTo(x + w, y);
-      p.lineTo(x + w, y + h);
-      p.lineTo(x + r, y + h);
-      p.curveTo(x + r - rr, y + h, x, y + h - r + rr, x, y + h - r);
+      // Round only the left corners for the first button.
+      path.moveTo(x, y + r);
+      path.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
+      path.lineTo(x + w, y);
+      path.lineTo(x + w, y + h);
+      path.lineTo(x + r, y + h);
+      path.curveTo(x + r - rr, y + h, x, y + h - r + rr, x, y + h - r);
     } else if (Objects.equals(c, parent.getComponent(parent.getComponentCount() - 1))) {
-      // :last-child
+      // Round only the right corners for the last button.
       w--;
-      p.moveTo(x, y);
-      p.lineTo(x + w - r, y);
-      p.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
-      p.lineTo(x + w, y + h - r);
-      p.curveTo(x + w, y + h - r + rr, x + w - r + rr, y + h, x + w - r, y + h);
-      p.lineTo(x, y + h);
+      path.moveTo(x, y);
+      path.lineTo(x + w - r, y);
+      path.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
+      path.lineTo(x + w, y + h - r);
+      path.curveTo(x + w, y + h - r + rr, x + w - r + rr, y + h, x + w - r, y + h);
+      path.lineTo(x, y + h);
     } else {
-      p.moveTo(x, y);
-      p.lineTo(x + w, y);
-      p.lineTo(x + w, y + h);
-      p.lineTo(x, y + h);
+      // Square corners for buttons in the middle of the bar.
+      path.moveTo(x, y);
+      path.lineTo(x + w, y);
+      path.lineTo(x + w, y + h);
+      path.lineTo(x, y + h);
     }
-    p.closePath();
-    return p;
+    path.closePath();
+    return path;
   }
 
   @Override public int getIconWidth() {
@@ -210,6 +220,8 @@ class ToggleButtonBarCellIcon implements Icon {
   }
 }
 
+// Draws a vertical separator line along the right edge of a hovered button,
+// except for the last button in the bar.
 class EditMenuLayerUI<V extends Component> extends LayerUI<V> {
   private final AbstractButton lastButton;
   private transient Shape shape;
