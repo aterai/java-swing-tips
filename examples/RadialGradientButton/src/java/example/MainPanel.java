@@ -64,14 +64,16 @@ class RadialGradientButton extends JButton {
       new Color(0x64_44_05_F7, true),
       new Color(0x00_F7_23_59, true),
   };
-  protected final Point hoverPoint = new Point();
-  protected int radius;
+  protected static final Color BASE_COLOR = new Color(0xF7_23_59);
+  protected static final Color ARMED_COLOR = new Color(0xFF_AA_AA);
+  private final Point hoverPoint = new Point();
+  private int radius;
   private final Timer timer1 = new Timer(10, e -> {
-    radius = Math.min(200, radius + DELTA);
+    setRadius(Math.min(200, radius + DELTA));
     repaint();
   });
   private final Timer timer2 = new Timer(10, e -> {
-    radius = Math.max(0, radius - DELTA);
+    setRadius(Math.max(0, radius - DELTA));
     repaint();
   });
   private transient Shape buttonShape;
@@ -98,6 +100,18 @@ class RadialGradientButton extends JButton {
     cachedBounds = newBounds;
   }
 
+  protected final Point getHoverPoint() {
+    return hoverPoint;
+  }
+
+  protected final int getRadius() {
+    return radius;
+  }
+
+  protected final void setRadius(int newRadius) {
+    radius = newRadius;
+  }
+
   @Override public void updateUI() {
     removeMouseListener(listener);
     removeMouseMotionListener(listener);
@@ -105,7 +119,7 @@ class RadialGradientButton extends JButton {
     setOpaque(false);
     setContentAreaFilled(false);
     setFocusPainted(false);
-    setBackground(new Color(0xF7_23_59));
+    setBackground(BASE_COLOR);
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     listener = new HoverHandler();
     addMouseListener(listener);
@@ -143,16 +157,16 @@ class RadialGradientButton extends JButton {
     // g2.fillRect(0, 0, getWidth(), getHeight());
 
     g2.setComposite(AlphaComposite.Src);
-    g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
+    g2.setPaint(getModel().isArmed() ? ARMED_COLOR : BASE_COLOR);
     g2.fill(getShape());
 
     if (radius > 0) {
       int diameter = radius + radius;
-      g2.setPaint(new RadialGradientPaint(hoverPoint, diameter, DIST, COLORS));
+      g2.setPaint(new RadialGradientPaint(getHoverPoint(), diameter, DIST, COLORS));
       g2.setComposite(AlphaComposite.SrcAtop);
       g2.setClip(getShape());
-      double cx = hoverPoint.getX() - radius;
-      double cy = hoverPoint.getY() - radius;
+      double cx = getHoverPoint().getX() - radius;
+      double cy = getHoverPoint().getY() - radius;
       g2.fill(new Ellipse2D.Double(cx, cy, diameter, diameter));
     }
     g2.dispose();
@@ -231,15 +245,16 @@ class RadialGradientPaintButton extends RadialGradientButton {
       g2.setComposite(AlphaComposite.Clear);
       g2.fillRect(0, 0, getWidth(), getHeight());
       g2.setComposite(AlphaComposite.Src);
-      g2.setPaint(new Color(getModel().isArmed() ? 0xFF_AA_AA : 0xF7_23_59));
+      g2.setPaint(getModel().isArmed() ? ARMED_COLOR : BASE_COLOR);
       g2.fill(getShape());
+      int radius = getRadius();
       if (radius > 0) {
         int diameter = radius + radius;
-        g2.setPaint(new RadialGradientPaint(hoverPoint, diameter, DIST, COLORS));
+        g2.setPaint(new RadialGradientPaint(getHoverPoint(), diameter, DIST, COLORS));
         g2.setComposite(AlphaComposite.SrcAtop);
         // g2.setClip(shape);
-        double cx = hoverPoint.getX() - radius;
-        double cy = hoverPoint.getY() - radius;
+        double cx = getHoverPoint().getX() - radius;
+        double cy = getHoverPoint().getY() - radius;
         g2.fill(new Ellipse2D.Double(cx, cy, diameter, diameter));
       }
       g2.dispose();
@@ -248,6 +263,7 @@ class RadialGradientPaintButton extends RadialGradientButton {
 }
 
 class TexturePanel extends JPanel {
+  private static final Color CHECKER_COLOR = new Color(0xEE_32_32_32, true);
   private transient Paint texture;
 
   protected TexturePanel(LayoutManager layout) {
@@ -256,7 +272,7 @@ class TexturePanel extends JPanel {
 
   @Override public void updateUI() {
     super.updateUI();
-    texture = createCheckerTexture(16, new Color(0xEE_32_32_32, true));
+    texture = createCheckerTexture(16, CHECKER_COLOR);
   }
 
   @Override protected void paintComponent(Graphics g) {
