@@ -68,6 +68,8 @@ public final class MainPanel extends JPanel {
 }
 
 class CardLayoutTabbedPane extends JPanel {
+  private static final Color PRESSED_COLOR = new Color(0xFE_FE_FE);
+  private static final Color ROLLOVER_COLOR = new Color(0xA0_A0_A0);
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel tabPanel = new JPanel(new GridLayout(1, 0, 0, 0));
   private final JPanel contentsPanel = new JPanel(cardLayout);
@@ -117,8 +119,8 @@ class CardLayoutTabbedPane extends JPanel {
         setBorder(BorderFactory.createEmptyBorder());
         setFocusPainted(false);
         setContentAreaFilled(false);
-        setPressedIcon(new CloseTabIcon(new Color(0xFE_FE_FE)));
-        setRolloverIcon(new CloseTabIcon(new Color(0xA0_A0_A0)));
+        setPressedIcon(new CloseTabIcon(PRESSED_COLOR));
+        setRolloverIcon(new CloseTabIcon(ROLLOVER_COLOR));
       }
     };
     close.addActionListener(e -> {

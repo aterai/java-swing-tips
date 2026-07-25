@@ -15,6 +15,18 @@ import javax.swing.text.View;
 public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
   // private static final TabViewButtonUI tabViewButtonUI = new OperaTabViewButtonUI();
   private static final int CLOSE_ICON_WIDTH = 12;
+  private static final Color TEXT_COLOR = new Color(230, 245, 255);
+  private static final Color OVERLAY_COLOR = new Color(0x64_00_00_00, true);
+  private static final Color TOP_GRAD_START = new Color(0x84_A2_B4);
+  private static final Color TOP_GRAD_END = new Color(0x67_85_98);
+  private static final Color BTM_GRAD_START = new Color(0x32_49_54);
+  private static final Color BTM_GRAD_END = new Color(0x3C_56_65);
+  private static final Color SHADOW_GRAD_START = new Color(0, 0, 0, 30);
+  private static final Color SHADOW_GRAD_END = new Color(0, 0, 0, 5);
+  private static final Color BORDER_COLOR = new Color(39, 56, 67);
+  private static final Color TOP_HIGHLIGHT = new Color(255, 255, 255, 30);
+  private static final Color LEFT_HIGHLIGHT = new Color(255, 255, 255, 60);
+  private static final Color RIGHT_SHADOW = new Color(39, 56, 67, 250);
   private final Rectangle viewRect = new Rectangle();
   private final Rectangle iconRect = new Rectangle();
   private final Rectangle textRect = new Rectangle();
@@ -32,7 +44,7 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     b.setForeground(Color.WHITE);
     if (b instanceof TabButton) {
       TabButton tabViewButton = (TabButton) b;
-      tabViewButton.setTextColor(new Color(230, 245, 255));
+      tabViewButton.setTextColor(TEXT_COLOR);
       tabViewButton.setPressedTextColor(Color.WHITE.darker());
       tabViewButton.setRolloverTextColor(Color.WHITE);
       tabViewButton.setRolloverSelectedTextColor(Color.WHITE);
@@ -54,9 +66,6 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     textRect.setBounds(0, 0, 0, 0);
 
     Graphics2D g2 = (Graphics2D) g.create();
-    // g2.setPaint(Color.CYAN); // c.getBackground());
-    // g2.fillRect(0, 0, c.getWidth() - 1, c.getHeight() - 1);
-    // g2.fill(viewRect);
     tabPainter(g2, viewRect);
 
     Icon icon = b.getIcon();
@@ -91,7 +100,7 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
 
     ButtonModel model = b.getModel();
     if (!model.isSelected() && !model.isArmed() && !model.isRollover()) {
-      g2.setPaint(new Color(0x64_00_00_00, true));
+      g2.setPaint(OVERLAY_COLOR);
       g2.fillRect(0, 0, c.getWidth(), c.getHeight());
       // g2.fill(viewRect);
     }
@@ -104,31 +113,29 @@ public final class OperaTabViewButtonUI extends BasicTabViewButtonUI {
     Rectangle r3 = new Rectangle(r.x, r.y + r.height / 2 - 2, r.width, r.height / 4);
 
     g2.setPaint(new GradientPaint(
-        0f, r1.y, new Color(0x84_A2_B4),
-        0f, (float) (r1.y + r1.height), new Color(0x67_85_98), true));
+        0f, r1.y, TOP_GRAD_START,
+        0f, (float) (r1.y + r1.height), TOP_GRAD_END, true));
     g2.fill(r1);
     g2.setPaint(new GradientPaint(
-        0f, r2.y, new Color(0x32_49_54),
-        0f, (float) (r2.y + r2.height), new Color(0x3C_56_65), true));
+        0f, r2.y, BTM_GRAD_START,
+        0f, (float) (r2.y + r2.height), BTM_GRAD_END, true));
     g2.fill(r2);
     g2.setPaint(new GradientPaint(
-        0f, r3.y, new Color(0, 0, 0, 30),
-        0f, (float) (r3.y + r3.height), new Color(0, 0, 0, 5), true));
+        0f, r3.y, SHADOW_GRAD_START,
+        0f, (float) (r3.y + r3.height), SHADOW_GRAD_END, true));
     g2.fill(r3);
 
-    g2.setPaint(new Color(39, 56, 67)); // g2.setPaint(Color.GREEN);
+    g2.setPaint(BORDER_COLOR);
     g2.drawLine(r.x, r.y, r.x + r.width, r.y);
 
-    g2.setPaint(new Color(255, 255, 255, 30)); // g2.setPaint(Color.RED);
+    g2.setPaint(TOP_HIGHLIGHT);
     g2.drawLine(r.x + 1, r.y + 1, r.x + r.width, r.y + 1);
 
-    g2.setPaint(new Color(255, 255, 255, 60)); // g2.setPaint(Color.BLUE);
+    g2.setPaint(LEFT_HIGHLIGHT);
     g2.drawLine(r.x, r.y, r.x, r.y + r.height);
 
-    g2.setPaint(new Color(39, 56, 67, 250)); // g2.setPaint(Color.YELLOW);
+    g2.setPaint(RIGHT_SHADOW);
     g2.drawLine(r.x + r.width - 1, r.y, r.x + r.width - 1, r.y + r.height);
-
-    // g2.setPaint(Color.PINK);
     g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
   }
 }

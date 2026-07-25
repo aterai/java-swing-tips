@@ -13,6 +13,9 @@ import javax.swing.text.View;
 
 public class BasicTabViewButtonUI extends TabViewButtonUI {
   // private static final TabViewButtonUI tabViewButtonUI = new BasicTabViewButtonUI();
+  private static final Color TEXT_COLOR = new Color(0x64_64_64);
+  private static final Color INACTIVE_COLOR = new Color(0xDC_DC_DC);
+  private static final Color ACCENT_COLOR = new Color(0xFF_78_28);
   private final Rectangle viewRct = new Rectangle();
   private final Rectangle iconRct = new Rectangle();
   private final Rectangle textRct = new Rectangle();
@@ -37,7 +40,7 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     // b.setForeground(Color.GREEN);
     if (b instanceof TabButton) {
       TabButton tabViewButton = (TabButton) b;
-      tabViewButton.setTextColor(new Color(0x64_64_64));
+      tabViewButton.setTextColor(TEXT_COLOR);
       tabViewButton.setPressedTextColor(Color.GRAY);
       tabViewButton.setRolloverTextColor(Color.BLACK);
       tabViewButton.setRolloverSelectedTextColor(Color.GRAY);
@@ -104,10 +107,10 @@ public class BasicTabViewButtonUI extends TabViewButtonUI {
     if (model.isSelected() || model.isArmed()) {
       g.setColor(Color.WHITE);
     } else {
-      g.setColor(new Color(0xDC_DC_DC));
+      g.setColor(INACTIVE_COLOR);
     }
     g.fillRect(viewRct.x, viewRct.y, viewRct.x + viewRct.width, viewRct.y + viewRct.height);
-    Color color = new Color(0xFF_78_28);
+    Color color = ACCENT_COLOR;
     if (model.isSelected()) {
       g.setColor(color);
       g.drawLine(viewRct.x + 1, viewRct.y - 2, viewRct.x + viewRct.width - 1, viewRct.y - 2);
