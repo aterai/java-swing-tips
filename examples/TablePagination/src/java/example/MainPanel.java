@@ -18,9 +18,10 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.text.View;
 
 public final class MainPanel extends JPanel {
-  private static final int LR_PAGE_SIZE = 5;
+  // Number of page-number links shown on each side of the current page
+  private static final int PAGE_LINK_RANGE = 5;
   private final Box box = Box.createHorizontalBox();
-  private final DefaultTableModel model = makeModel();
+  private final DefaultTableModel model = createModel();
   private final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
 
   private MainPanel() {
@@ -36,14 +37,14 @@ public final class MainPanel extends JPanel {
         .mapToObj(i -> new Object[] {i, "Test: " + i, i % 2 == 0 ? "" : "comment..."})
         .forEach(model::addRow);
 
-    initLinkBox(100, 1);
+    updatePaginationBox(100, 1);
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static DefaultTableModel makeModel() {
+  public static DefaultTableModel createModel() {
     String[] columnNames = {"Year", "String", "Comment"};
     return new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
@@ -52,18 +53,21 @@ public final class MainPanel extends JPanel {
     };
   }
 
+  // Rebuilds the row filter and the row of page-link buttons for the given page.
   @SuppressWarnings("ReturnCount")
-  private void initLinkBox(int itemsPerPage, int currentPageIndex) {
+  private void updatePaginationBox(int itemsPerPage, int currentPageIndex) {
     // assert currentPageIndex > 0;
     sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
       @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
+        // entry.getIdentifier() is the row index in the (unsorted) model,
+        // so filtering on it keeps each page's row range stable even when sorted.
         int ti = currentPageIndex - 1;
         int ei = entry.getIdentifier();
         return ti * itemsPerPage <= ei && ei < ti * itemsPerPage + itemsPerPage;
       }
     });
 
-    int startPageIndex = currentPageIndex - LR_PAGE_SIZE;
+    int startPageIndex = currentPageIndex - PAGE_LINK_RANGE;
     if (startPageIndex <= 0) {
       startPageIndex = 1;
     }
@@ -79,7 +83,7 @@ public final class MainPanel extends JPanel {
     int v = rowCount % itemsPerPage == 0 ? 0 : 1;
     int maxPageIndex = rowCount / itemsPerPage + v;
     // #endif
-    int endPageIndex = currentPageIndex + LR_PAGE_SIZE - 1;
+    int endPageIndex = currentPageIndex + PAGE_LINK_RANGE - 1;
     if (endPageIndex > maxPageIndex) {
       endPageIndex = maxPageIndex;
     }
@@ -91,11 +95,13 @@ public final class MainPanel extends JPanel {
       return;
     }
 
+    // Group all links in one ButtonGroup so the current page's radio button
+    // stays the only one visually "selected" (red) at a time.
     ButtonGroup bg = new ButtonGroup();
-    boolean flag1 = currentPageIndex > 1;
+    boolean hasPrevPage = currentPageIndex > 1;
     Arrays.asList(
-        makePrevNextButton(itemsPerPage, 1, "|<", flag1),
-        makePrevNextButton(itemsPerPage, currentPageIndex - 1, "<", flag1)
+        createPrevNextButton(itemsPerPage, 1, "|<", hasPrevPage),
+        createPrevNextButton(itemsPerPage, currentPageIndex - 1, "<", hasPrevPage)
     ).forEach(b -> {
       box.add(b);
       bg.add(b);
@@ -103,16 +109,16 @@ public final class MainPanel extends JPanel {
 
     box.add(Box.createHorizontalGlue());
     for (int i = startPageIndex; i <= endPageIndex; i++) {
-      JRadioButton c = makeRadioButton(itemsPerPage, currentPageIndex, i);
+      JRadioButton c = createRadioButton(itemsPerPage, currentPageIndex, i);
       box.add(c);
       bg.add(c);
     }
     box.add(Box.createHorizontalGlue());
 
-    boolean flag2 = currentPageIndex < maxPageIndex;
+    boolean hasNextPage = currentPageIndex < maxPageIndex;
     Arrays.asList(
-        makePrevNextButton(itemsPerPage, currentPageIndex + 1, ">", flag2),
-        makePrevNextButton(itemsPerPage, maxPageIndex, ">|", flag2)
+        createPrevNextButton(itemsPerPage, currentPageIndex + 1, ">", hasNextPage),
+        createPrevNextButton(itemsPerPage, maxPageIndex, ">|", hasNextPage)
     ).forEach(b -> {
       box.add(b);
       bg.add(b);
@@ -121,25 +127,26 @@ public final class MainPanel extends JPanel {
     box.repaint();
   }
 
-  private JRadioButton makeRadioButton(int itemsPerPage, int current, int target) {
+  private JRadioButton createRadioButton(int itemsPerPage, int current, int target) {
     JRadioButton radio = new LinkViewRadioButton(Objects.toString(target));
     if (target == current) {
       radio.setSelected(true);
     }
-    radio.addActionListener(e -> initLinkBox(itemsPerPage, target));
+    radio.addActionListener(e -> updatePaginationBox(itemsPerPage, target));
     return radio;
   }
 
-  private JRadioButton makePrevNextButton(int itemsPerPage, int tgt, String txt, boolean flg) {
-    JRadioButton radio = new JRadioButton(txt) {
+  private JRadioButton createPrevNextButton(
+      int itemsPerPage, int targetPage, String label, boolean enabled) {
+    JRadioButton radio = new JRadioButton(label) {
       @Override public void updateUI() {
         super.updateUI();
         setUI(new LinkViewRadioButtonUI());
         setForeground(Color.BLUE);
       }
     };
-    radio.setEnabled(flg);
-    radio.addActionListener(e -> initLinkBox(itemsPerPage, tgt));
+    radio.setEnabled(enabled);
+    radio.addActionListener(e -> updatePaginationBox(itemsPerPage, targetPage));
     return radio;
   }
 
@@ -165,11 +172,15 @@ public final class MainPanel extends JPanel {
   }
 }
 
+// A JRadioButton for the numbered page links, styled to look like a hyperlink
+// (see LinkViewRadioButtonUI) instead of a normal radio button.
 class LinkViewRadioButton extends JRadioButton {
   protected LinkViewRadioButton(String text) {
     super(text);
   }
 
+  // Recolors the "link" text to reflect the button state:
+  // pressed = green, selected (current page) = red, disabled = gray, otherwise blue.
   @Override protected void fireStateChanged() {
     ButtonModel bm = getModel();
     if (bm.isEnabled()) {
@@ -192,6 +203,8 @@ class LinkViewRadioButton extends JRadioButton {
   }
 }
 
+// Paints a JRadioButton with no icon and an underline on rollover,
+// so it reads as a plain hyperlink rather than a radio button.
 class LinkViewRadioButtonUI extends BasicRadioButtonUI {
   // private static final LinkViewRadioButtonUI radioButtonUI = new LinkViewRadioButtonUI();
   // private boolean defaults_initialized = false;
