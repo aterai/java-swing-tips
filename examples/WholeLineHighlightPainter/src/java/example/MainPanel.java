@@ -30,40 +30,43 @@ import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
+  private static final Color FOCUSED_COLOR = new Color(0xAA_CC_DD_FF, true);
+  private static final Color UNFOCUSED_COLOR = new Color(0xEE_EE_EE_EE, true);
+
   private MainPanel() {
     super(new GridLayout(0, 1));
-    JEditorPane editor0 = createEditorPane("DefaultHighlightPainter");
-    Caret caret0 = new FocusCaret(
-        new DefaultHighlightPainter(new Color(0xAA_CC_DD_FF, true)),
-        new DefaultHighlightPainter(new Color(0xEE_EE_EE_EE, true)));
-    caret0.setBlinkRate(editor0.getCaret().getBlinkRate());
-    editor0.setCaret(caret0);
+    JEditorPane defaultEditor = createEditorPane("DefaultHighlightPainter");
+    Caret defaultCaret = new FocusCaret(
+        new DefaultHighlightPainter(FOCUSED_COLOR),
+        new DefaultHighlightPainter(UNFOCUSED_COLOR));
+    defaultCaret.setBlinkRate(defaultEditor.getCaret().getBlinkRate());
+    defaultEditor.setCaret(defaultCaret);
 
-    JEditorPane editor1 = createEditorPane("ParagraphMarkHighlightPainter");
-    Caret caret1 = new FocusCaret(
-        new ParagraphMarkHighlightPainter(new Color(0xAA_CC_DD_FF, true)),
-        new ParagraphMarkHighlightPainter(new Color(0xEE_EE_EE_EE, true)));
-    caret1.setBlinkRate(editor1.getCaret().getBlinkRate());
-    editor1.setCaret(caret1);
+    JEditorPane paragraphEditor = createEditorPane("ParagraphMarkHighlightPainter");
+    Caret paragraphCaret = new FocusCaret(
+        new ParagraphMarkHighlightPainter(FOCUSED_COLOR),
+        new ParagraphMarkHighlightPainter(UNFOCUSED_COLOR));
+    paragraphCaret.setBlinkRate(paragraphEditor.getCaret().getBlinkRate());
+    paragraphEditor.setCaret(paragraphCaret);
 
-    JEditorPane editor2 = createEditorPane("WholeLineHighlightPainter");
-    Caret caret2 = new FocusCaret(
-        new WholeLineHighlightPainter(new Color(0xAA_CC_DD_FF, true)),
-        new WholeLineHighlightPainter(new Color(0xEE_EE_EE_EE, true)));
-    caret2.setBlinkRate(editor2.getCaret().getBlinkRate());
-    editor2.setCaret(caret2);
+    JEditorPane wholeLineEditor = createEditorPane("WholeLineHighlightPainter");
+    Caret wholeLineCaret = new FocusCaret(
+        new WholeLineHighlightPainter(FOCUSED_COLOR),
+        new WholeLineHighlightPainter(UNFOCUSED_COLOR));
+    wholeLineCaret.setBlinkRate(wholeLineEditor.getCaret().getBlinkRate());
+    wholeLineEditor.setCaret(wholeLineCaret);
 
-    add(new JScrollPane(editor0));
-    add(new JScrollPane(editor1));
-    add(new JScrollPane(editor2));
+    add(new JScrollPane(defaultEditor));
+    add(new JScrollPane(paragraphEditor));
+    add(new JScrollPane(wholeLineEditor));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JEditorPane createEditorPane(String txt) {
+  private static JEditorPane createEditorPane(String text) {
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(new ParagraphMarkEditorKit());
-    editor.setText(txt + "\n\n123432543543\n");
-    editor.setSelectionColor(new Color(0xAA_CC_DD_FF, true));
+    editor.setText(text + "\n\n123432543543\n");
+    editor.setSelectionColor(FOCUSED_COLOR);
     // editor.setSelectedTextColor(null);
     return editor;
   }
@@ -118,13 +121,13 @@ class WholeLineHighlightPainter extends DefaultHighlightPainter {
 }
 
 class FocusCaret extends DefaultCaret {
-  private final transient HighlightPainter nonFocusPainter;
-  private final transient HighlightPainter selectionPainter;
+  private final transient HighlightPainter focusedPainter;
+  private final transient HighlightPainter unfocusedPainter;
 
-  protected FocusCaret(HighlightPainter selectionPainter, HighlightPainter nonFocusPainter) {
+  protected FocusCaret(HighlightPainter focusedPainter, HighlightPainter unfocusedPainter) {
     super();
-    this.selectionPainter = selectionPainter;
-    this.nonFocusPainter = nonFocusPainter;
+    this.focusedPainter = focusedPainter;
+    this.unfocusedPainter = unfocusedPainter;
   }
 
   @Override public void focusLost(FocusEvent e) {
@@ -139,28 +142,28 @@ class FocusCaret extends DefaultCaret {
   }
 
   @Override protected HighlightPainter getSelectionPainter() {
-    return getComponent().hasFocus() ? selectionPainter : nonFocusPainter;
+    return getComponent().hasFocus() ? focusedPainter : unfocusedPainter;
   }
 
   @Override public boolean equals(Object o) {
-    return this == o || o instanceof FocusCaret && equals2((FocusCaret) o);
+    return this == o || o instanceof FocusCaret && isSameState((FocusCaret) o);
   }
 
-  private boolean equals2(FocusCaret that) {
-    boolean a = Objects.equals(nonFocusPainter, that.nonFocusPainter);
-    boolean b = Objects.equals(getSelectionPainter(), that.getSelectionPainter());
-    return super.equals(that) && a && b;
+  private boolean isSameState(FocusCaret that) {
+    boolean unfocusedEquals = Objects.equals(unfocusedPainter, that.unfocusedPainter);
+    boolean focusedEquals = Objects.equals(getSelectionPainter(), that.getSelectionPainter());
+    return super.equals(that) && unfocusedEquals && focusedEquals;
   }
 
   @Override public int hashCode() {
-    return Objects.hash(super.hashCode(), nonFocusPainter, getSelectionPainter());
+    return Objects.hash(super.hashCode(), unfocusedPainter, getSelectionPainter());
   }
 
   @Override public String toString() {
     return String.format(
-        "FocusCaret{nonFocusPainter=%s, selectionPainter=%s}",
-        nonFocusPainter,
-        selectionPainter);
+        "FocusCaret{unfocusedPainter=%s, focusedPainter=%s}",
+        unfocusedPainter,
+        focusedPainter);
   }
 }
 
