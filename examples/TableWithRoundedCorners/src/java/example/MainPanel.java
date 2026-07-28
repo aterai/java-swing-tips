@@ -163,6 +163,8 @@ class MonthTable extends JTable {
     getTableHeader().repaint();
   }
 
+  // Recompute row heights on every layout pass (e.g. window resize) so the
+  // table keeps exactly filling its enclosing viewport.
   @Override public void doLayout() {
     super.doLayout();
     Class<JViewport> viewportClass = JViewport.class;
@@ -172,6 +174,10 @@ class MonthTable extends JTable {
         .ifPresent(this::adjustRowHeights);
   }
 
+  // Distribute the viewport height evenly across all rows so the calendar
+  // grid always fills the JScrollPane exactly, with no leftover gap or
+  // vertical scrollbar. Any remainder pixels are handed out one at a time
+  // to the first rows so every row differs by at most one pixel.
   private void adjustRowHeights(JViewport viewport) {
     int height = viewport.getExtentSize().height;
     int rowCount = getModel().getRowCount();
@@ -193,16 +199,18 @@ enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
 
 class CalendarTableRenderer extends DefaultTableCellRenderer {
   private final Set<Corner> roundedCorners = EnumSet.noneOf(Corner.class);
-  private final LocalDate realDate = LocalDate.now(ZoneId.systemDefault());
-  private int curRow;
-  private int curColumn;
+  private final LocalDate today = LocalDate.now(ZoneId.systemDefault());
+  // Cache the cell coordinates of the last render call so that
+  // paintComponent(...) can rebuild the same rounded-corner path.
+  private int renderedRow;
+  private int renderedColumn;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component renderer = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
     renderer.setBackground(table.getBackground());
-    this.curRow = row;
-    this.curColumn = column;
+    this.renderedRow = row;
+    this.renderedColumn = column;
     updateCorners(table, row, column);
     if (value instanceof LocalDate && renderer instanceof JLabel && table instanceof MonthTable) {
       LocalDate date = (LocalDate) value;
@@ -220,7 +228,7 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
       } else {
         label.setFont(label.getFont().deriveFont(Font.PLAIN));
       }
-      if (date.equals(realDate)) {
+      if (date.equals(today)) {
         label.setIcon(new IndicatorIcon(label.getForeground()));
       } else {
         label.setIcon(null);
@@ -229,6 +237,8 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     return renderer;
   }
 
+  // Determine which of the four outer corners of the whole table (not the
+  // JTableHeader) the given cell occupies, if any.
   private void updateCorners(JTable table, int row, int col) {
     roundedCorners.clear();
     TableModel model = table.getModel();
@@ -261,21 +271,27 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     g2.setPaint(getBackground());
     g2.fill(bounds);
     g2.setPaint(UIManager.getColor("Table.gridColor"));
-    Shape shape = buildRoundedRectPath(bounds, 16d, 16d, curRow, curColumn);
+    Shape shape = buildRoundedRectPath(bounds, 16d, 16d, renderedRow, renderedColumn);
     g2.draw(shape);
     g2.dispose();
     super.paintComponent(g);
   }
 
+  // Build a rectangle outline whose corners are rounded only where the
+  // cell touches one of the table's four outer corners (see updateCorners).
   private Shape buildRoundedRectPath(
       Rectangle bounds, double arcWidth, double arcHeight, int row, int col) {
     double halfArcH = arcHeight * .5;
     double halfArcW = arcWidth * .5;
+    // Kappa is the constant ratio used to place cubic Bezier control points
+    // so that curveTo(...) approximates a quarter-circle arc.
     double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // ≒ 0.55228
     double ctrlOffsetW = halfArcW * kappa;
     double ctrlOffsetH = halfArcH * kappa;
     double x = bounds.getX();
     double y = bounds.getY();
+    // Trim the last column/row by a pixel so the outline stays inside the
+    // viewport and does not get clipped or doubled up against its edge.
     double w = bounds.getWidth() - (col == 6 ? 2d : 0d);
     double h = bounds.getHeight() - (row == 5 ? 2d : 0d);
     Path2D.Double path = new Path2D.Double();
@@ -337,6 +353,9 @@ class CalendarViewTableModel extends DefaultTableModel {
 
   protected CalendarViewTableModel(LocalDate date) {
     super();
+    // The grid always starts on the first day of the week (locale-dependent)
+    // that contains the 1st of the month, so leading cells from the
+    // previous month are shown instead of left blank.
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
     int dayOffset = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
     startDate = firstDayOfMonth.minusDays(dayOffset);
@@ -409,6 +428,9 @@ final class CalendarUtils {
         FormatStyle.LONG, null, Chronology.ofLocale(locale), locale);
   }
 
+  // Build a "year month" only pattern (e.g. "yyyy M" or "M yyyy") by pulling
+  // just the year and month runs out of the locale's long date pattern and
+  // re-joining them in the locale's natural order.
   public static DateTimeFormatter getLocalizedYearMonthFormatter(Locale locale) {
     String localizedPattern = getLocalizedPattern(locale);
     String year = extractPattern(localizedPattern, Pattern.compile("(y+)"));
@@ -417,6 +439,9 @@ final class CalendarUtils {
     return DateTimeFormatter.ofPattern(pattern);
   }
 
+  // Locales whose year/month fields are both purely numeric (e.g. "2026 4")
+  // read poorly without a separator, so insert " / " between them; locales
+  // with a spelled-out month (e.g. "April 2026") are left untouched.
   public static String getLocalizedYearMonthText(String formatted) {
     String[] parts = formatted.split(" ");
     boolean isAllNumeric = Arrays.stream(parts)
