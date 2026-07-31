@@ -9,9 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -20,23 +23,46 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label = new JLabel(new ImageIcon(makeMissingImage()));
+    JLabel label = new JLabel(new ImageIcon(createMissingImage()));
 
-    JScrollPane scroll = new JScrollPane(label);
-    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-    scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane scroll = new JScrollPane(label) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
+        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
+      }
+    };
 
     JViewport viewport = scroll.getViewport();
-    KineticScrollingListener l1 = new KineticScrollingListener(label);
-    viewport.addMouseMotionListener(l1);
-    viewport.addMouseListener(l1);
-    viewport.addHierarchyListener(l1);
+    KineticScrollingListener kineticListener = new KineticScrollingListener(label);
+    viewport.addMouseMotionListener(kineticListener);
+    viewport.addMouseListener(kineticListener);
+    viewport.addHierarchyListener(kineticListener);
 
-    add(new JLayer<>(scroll, new OverscrollEdgeEffectLayerUI()));
+    OverscrollEdgeEffectLayerUI layerUi = new OverscrollEdgeEffectLayerUI();
+    JLayer<JScrollPane> layer = new JLayer<>(scroll, layerUi);
+
+    EdgeOrientation[] values = EdgeOrientation.values();
+    JComboBox<EdgeOrientation> orientationCombo = new JComboBox<>(values);
+    orientationCombo.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        layerUi.setEdgeOrientation((EdgeOrientation) e.getItem());
+        layer.repaint();
+      }
+    });
+    Box box = Box.createHorizontalBox();
+    box.add(Box.createHorizontalGlue());
+    box.add(new JLabel("EdgeOrientation: "));
+    box.add(Box.createHorizontalStrut(2));
+    box.add(orientationCombo);
+    box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+    add(box, BorderLayout.NORTH);
+    add(layer);
     scroll.setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -69,89 +95,117 @@ public final class MainPanel extends JPanel {
   }
 }
 
+// Which pair of edges (top/bottom or left/right) draws the overscroll effect
+enum EdgeOrientation { VERTICAL, HORIZONTAL }
+
 class KineticScrollingListener extends MouseAdapter implements HierarchyListener {
   protected static final int SPEED = 4;
   protected static final int DELAY = 10;
-  protected static final double D = .8;
-  private final Cursor dc;
-  private final Cursor hc = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  private final Timer scroller = new Timer(DELAY, this::scroll);
-  private final JComponent label;
-  private final Point startPt = new Point();
-  private final Point delta = new Point();
+  protected static final double DECELERATION = .8;
+  private final Cursor defaultCursor;
+  private final Cursor dragCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+  private final Timer scrollTimer = new Timer(DELAY, this::scroll);
+  private final JComponent view;
+  private final Point dragStartPoint = new Point();
+  private final Point scrollVelocity = new Point();
 
-  protected KineticScrollingListener(JComponent comp) {
+  protected KineticScrollingListener(JComponent view) {
     super();
-    this.label = comp;
-    this.dc = comp.getCursor();
+    this.view = view;
+    this.defaultCursor = view.getCursor();
   }
 
   private void scroll(ActionEvent e) {
-    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(label);
+    JViewport viewport = (JViewport) SwingUtilities.getUnwrappedParent(view);
     Rectangle rect = viewport.getViewRect();
-    rect.translate(-delta.x, -delta.y);
-    label.scrollRectToVisible(rect);
-    if (Math.abs(delta.x) > 0 || Math.abs(delta.y) > 0) {
-      delta.setLocation((int) (delta.x * D), (int) (delta.y * D));
+    rect.translate(-scrollVelocity.x, -scrollVelocity.y);
+    view.scrollRectToVisible(rect);
+    if (Math.abs(scrollVelocity.x) > 0 || Math.abs(scrollVelocity.y) > 0) {
+      double dx = scrollVelocity.x * DECELERATION;
+      double dy = scrollVelocity.y * DECELERATION;
+      scrollVelocity.setLocation((int) dx, (int) dy);
     } else {
       ((Timer) e.getSource()).stop();
     }
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    e.getComponent().setCursor(hc);
-    startPt.setLocation(e.getPoint());
-    scroller.stop();
+    e.getComponent().setCursor(dragCursor);
+    dragStartPoint.setLocation(e.getPoint());
+    scrollTimer.stop();
   }
 
   @Override public void mouseDragged(MouseEvent e) {
     Point pt = e.getPoint();
-    delta.setLocation(SPEED * (pt.x - startPt.x), SPEED * (pt.y - startPt.y));
+    int sx = SPEED * (pt.x - dragStartPoint.x);
+    int sy = SPEED * (pt.y - dragStartPoint.y);
+    scrollVelocity.setLocation(sx, sy);
     JViewport viewport = (JViewport) e.getComponent();
     Rectangle rect = viewport.getViewRect();
-    rect.translate(startPt.x - pt.x, startPt.y - pt.y);
-    label.scrollRectToVisible(rect);
-    startPt.setLocation(pt);
+    rect.translate(dragStartPoint.x - pt.x, dragStartPoint.y - pt.y);
+    view.scrollRectToVisible(rect);
+    dragStartPoint.setLocation(pt);
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    e.getComponent().setCursor(dc);
-    scroller.start();
+    e.getComponent().setCursor(defaultCursor);
+    scrollTimer.start();
   }
 
   @Override public void hierarchyChanged(HierarchyEvent e) {
-    boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-    if (b && !e.getComponent().isDisplayable()) {
-      scroller.stop();
+    long displayability = e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED;
+    if (displayability != 0 && !e.getComponent().isDisplayable()) {
+      scrollTimer.stop();
     }
   }
 }
 
 class OverscrollEdgeEffectLayerUI extends LayerUI<JScrollPane> {
-  private final Color color = new Color(0xAA_AA_EE_FF, true);
-  private final Point mousePt = new Point();
-  private final Timer animator = new Timer(20, null);
-  private final Ellipse2D oval = new Ellipse2D.Double();
-  private double ovalHeight;
-  private int delta;
+  private static final double OVERSCROLL_RATIO = 1d / 8d;
+  private static final double OVAL_ASPECT_RATIO = 2.2;
+  private static final double SHRINK_RATIO = .67;
+  private static final double SHRINK_STEP = .5;
+
+  private final Color overscrollColor = new Color(0xAA_AA_EE_FF, true);
+  private final Point dragPoint = new Point();
+  private final Timer shrinkTimer = new Timer(20, null);
+  private final Ellipse2D overscrollOval = new Ellipse2D.Double();
+  private EdgeOrientation edgeOrientation = EdgeOrientation.VERTICAL;
+  private boolean atLeadingEdge;
+  private double overscrollSize;
+  private int prevDelta;
+
+  protected void setEdgeOrientation(EdgeOrientation orientation) {
+    this.edgeOrientation = orientation;
+    overscrollSize = 0d;
+    prevDelta = 0;
+  }
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    if (c instanceof JLayer && ovalHeight > 0d) {
+    if (c instanceof JLayer && overscrollSize > 0d) {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
       Rectangle r = scroll.getViewport().getViewRect();
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setPaint(color);
-      double dx = oval.getX();
-      double dw = oval.getWidth();
-      if (oval.getY() < 0) {
-        oval.setFrame(dx, -ovalHeight, dw, ovalHeight * 2d);
-      } else { // if (r.height < oval.getY() + oval.getHeight()) {
-        oval.setFrame(dx, r.getHeight() - ovalHeight, dw, ovalHeight * 2d);
+      g2.setPaint(overscrollColor);
+      // Re-derive the position from the current viewport size so the oval
+      // still touches the edge even if the layer has been resized.
+      boolean vertical = edgeOrientation == EdgeOrientation.VERTICAL;
+      double bound = vertical ? r.getHeight() : r.getWidth();
+      double pos = atLeadingEdge ? -overscrollSize : bound - overscrollSize;
+      Point2D pt = new Point();
+      Dimension2D dim = new Dimension();
+      if (vertical) {
+        pt.setLocation(overscrollOval.getX(), pos);
+        dim.setSize(overscrollOval.getWidth(), overscrollSize * 2d);
+      } else {
+        pt.setLocation(pos, overscrollOval.getY());
+        dim.setSize(overscrollSize * 2d, overscrollOval.getHeight());
       }
-      g2.fill(oval);
+      overscrollOval.setFrame(pt, dim);
+      g2.fill(overscrollOval);
       g2.dispose();
     }
   }
@@ -175,63 +229,114 @@ class OverscrollEdgeEffectLayerUI extends LayerUI<JScrollPane> {
     if (e.getComponent() instanceof JViewport) {
       int id = e.getID();
       if (id == MouseEvent.MOUSE_PRESSED) {
-        mousePt.setLocation(e.getPoint());
-      } else if (ovalHeight > 0d && id == MouseEvent.MOUSE_RELEASED) {
-        ovalShrinking(l);
+        dragPoint.setLocation(e.getPoint());
+      } else if (overscrollSize > 0d && id == MouseEvent.MOUSE_RELEASED) {
+        shrinkOverscroll(l);
       }
     }
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
-    int id = e.getID();
-    if (c instanceof JViewport && id == MouseEvent.MOUSE_DRAGGED && !animator.isRunning()) {
+    boolean isDragged = e.getID() == MouseEvent.MOUSE_DRAGGED;
+    if (c instanceof JViewport && isDragged && !shrinkTimer.isRunning()) {
       JViewport viewport = l.getView().getViewport();
-      Dimension d = viewport.getView().getSize();
-      Rectangle r = viewport.getViewRect();
+      Dimension viewSize = viewport.getView().getSize();
+      Rectangle viewRect = viewport.getViewRect();
       Point p = SwingUtilities.convertPoint(c, e.getPoint(), l.getView());
-      double ow = Math.max(p.getX(), r.getWidth() - p.getX());
-      double ox = p.getX() - ow;
-      int dy = e.getPoint().y - mousePt.y;
-      if (isDragReversed(dy)) {
-        // The y-axis drag direction has been reversed
-        ovalShrinking(l);
-      } else if (r.y == 0 && dy >= 0) {
-        // top edge
-        ovalHeight = Math.min(r.getHeight() / 8d, p.getY() / 8d);
-        oval.setFrame(ox, -ovalHeight, ow * 2.2, ovalHeight * 2d);
-      } else if (d.height == r.y + r.height && dy <= 0) {
-        // bottom edge
-        ovalHeight = Math.min(r.getHeight() / 8d, (r.getHeight() - p.getY()) / 8d);
-        oval.setFrame(ox, r.getHeight() - ovalHeight, ow * 2.2, ovalHeight * 2d);
-      }
-      mousePt.setLocation(e.getPoint());
-      delta = dy;
-      l.repaint();
+      updateOverscroll(e, p, viewRect, viewSize, l);
     }
   }
 
-  private boolean isDragReversed(int dy) {
-    boolean b1 = delta > 0 && dy < 0;
-    boolean b2 = delta < 0 && dy > 0;
+  // Handles both VERTICAL (top/bottom) and HORIZONTAL (left/right) edges by
+  // treating the scroll axis as the "primary" axis and the perpendicular one
+  // as the "secondary" axis, then swapping them back when painting the oval.
+  private void updateOverscroll(
+      MouseEvent e, Point p, Rectangle r, Dimension viewSize, JLayer<? extends JScrollPane> l) {
+    boolean vertical = edgeOrientation == EdgeOrientation.VERTICAL;
+    int delta = vertical ? e.getPoint().y - dragPoint.y : e.getPoint().x - dragPoint.x;
+    OverscrollAxis axis = new OverscrollAxis(vertical, p, r, viewSize);
+    if (isDragReversed(delta)) {
+      // The primary-axis drag direction has been reversed
+      shrinkOverscroll(l);
+    } else if (axis.primaryPos == 0 && delta >= 0) {
+      // leading edge (top or left)
+      atLeadingEdge = true;
+      overscrollSize = Math.min(axis.primarySize, axis.primary) * OVERSCROLL_RATIO;
+      double secondaryStart = axis.secondaryStart;
+      double secondaryLen = axis.secondaryLen;
+      double primaryLen = overscrollSize * 2d;
+      setOvalFrame(vertical, secondaryStart, -overscrollSize, secondaryLen, primaryLen);
+    } else if (axis.primaryBound == axis.primaryPos + axis.primarySize && delta <= 0) {
+      // trailing edge (bottom or right)
+      atLeadingEdge = false;
+      double remaining = axis.primarySize - axis.primary;
+      overscrollSize = Math.min(axis.primarySize, remaining) * OVERSCROLL_RATIO;
+      double primaryStart = axis.primarySize - overscrollSize;
+      double secondaryStart = axis.secondaryStart;
+      double secondaryLen = axis.secondaryLen;
+      double primaryLen = overscrollSize * 2d;
+      setOvalFrame(vertical, secondaryStart, primaryStart, secondaryLen, primaryLen);
+    }
+    dragPoint.setLocation(e.getPoint());
+    prevDelta = delta;
+    l.repaint();
+  }
+
+  private void setOvalFrame(
+      boolean vertical, double secondaryPos, double primaryPos,
+      double secondaryLen, double primaryLen) {
+    if (vertical) {
+      overscrollOval.setFrame(secondaryPos, primaryPos, secondaryLen, primaryLen);
+    } else {
+      overscrollOval.setFrame(primaryPos, secondaryPos, primaryLen, secondaryLen);
+    }
+  }
+
+  // Bundles the drag-axis metrics needed to size and position the overscroll
+  // oval, resolving the VERTICAL/HORIZONTAL orientation only once per drag.
+  private static final class OverscrollAxis {
+    private final double primary;
+    private final double primarySize;
+    private final double primaryPos;
+    private final double primaryBound;
+    private final double secondaryStart;
+    private final double secondaryLen;
+
+    private OverscrollAxis(boolean vertical, Point p, Rectangle r, Dimension viewSize) {
+      primary = vertical ? p.getY() : p.getX();
+      primarySize = vertical ? r.getHeight() : r.getWidth();
+      primaryPos = vertical ? r.y : r.x;
+      primaryBound = vertical ? viewSize.height : viewSize.width;
+      double secondary = vertical ? p.getX() : p.getY();
+      double secondarySize = vertical ? r.getWidth() : r.getHeight();
+      double halfSecondary = Math.max(secondary, secondarySize - secondary);
+      secondaryStart = secondary - halfSecondary;
+      secondaryLen = halfSecondary * OVAL_ASPECT_RATIO;
+    }
+  }
+
+  private boolean isDragReversed(int delta) {
+    boolean b1 = prevDelta > 0 && delta < 0;
+    boolean b2 = prevDelta < 0 && delta > 0;
     return b1 || b2;
   }
 
-  private void ovalShrinking(JLayer<? extends JScrollPane> l) {
-    if (ovalHeight > 0d && !animator.isRunning()) {
-      animator.addActionListener(e -> shrinkAnimation(l));
-      animator.start();
+  private void shrinkOverscroll(JLayer<? extends JScrollPane> l) {
+    if (overscrollSize > 0d && !shrinkTimer.isRunning()) {
+      shrinkTimer.addActionListener(e -> shrinkAnimation(l));
+      shrinkTimer.start();
     }
   }
 
   private void shrinkAnimation(JLayer<? extends JScrollPane> l) {
-    if (ovalHeight > 0d && animator.isRunning()) {
-      ovalHeight = Math.max(ovalHeight * .67 - .5, 0d);
+    if (overscrollSize > 0d && shrinkTimer.isRunning()) {
+      overscrollSize = Math.max(overscrollSize * SHRINK_RATIO - SHRINK_STEP, 0d);
       l.repaint();
     } else {
-      animator.stop();
-      for (ActionListener a : animator.getActionListeners()) {
-        animator.removeActionListener(a);
+      shrinkTimer.stop();
+      for (ActionListener a : shrinkTimer.getActionListeners()) {
+        shrinkTimer.removeActionListener(a);
       }
     }
   }
@@ -254,7 +359,7 @@ class MissingIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return 316;
+    return 640;
   }
 
   @Override public int getIconHeight() {
