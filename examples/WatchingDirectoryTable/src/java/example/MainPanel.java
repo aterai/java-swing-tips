@@ -17,24 +17,22 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final JTextArea logger = new JTextArea();
-  private final FileModel model = new FileModel();
-  private final transient TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
-  private final Set<Integer> deleteRowSet = new TreeSet<>();
+  // Column index of the hidden column that holds the full path of a row.
+  private static final int FULL_PATH_COLUMN = 2;
+  private final JTextArea logArea = new JTextArea();
+  private final FileTableModel model = new FileTableModel();
 
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new JTable(model);
-    table.setRowSorter(sorter);
+    table.setRowSorter(new TableRowSorter<>(model));
     table.setFillsViewportHeight(true);
     table.setComponentPopupMenu(new TablePopupMenu());
     // TableColumn col = table.getColumnModel().getColumn(0);
@@ -44,14 +42,14 @@ public final class MainPanel extends JPanel {
 
     Toolkit tk = Toolkit.getDefaultToolkit();
     SecondaryLoop loop = tk.getSystemEventQueue().createSecondaryLoop();
-    Thread worker = new Thread(new Watcher(loop));
+    Thread worker = new Thread(new DirectoryWatcher(loop));
     worker.start();
     if (!loop.enter()) {
-      append("Error");
+      appendLog("Error");
     }
     addHierarchyListener(e -> {
-      boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
-      if (b && !e.getComponent().isDisplayable()) {
+      long flags = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED);
+      if (flags != 0 && !e.getComponent().isDisplayable()) {
         worker.interrupt();
       }
     });
@@ -62,24 +60,37 @@ public final class MainPanel extends JPanel {
         Path path = Files.createTempFile("_", ".tmp");
         path.toFile().deleteOnExit();
       } catch (IOException ex) {
-        append(ex.getMessage());
+        appendLog(ex.getMessage());
       }
     });
 
-    JPanel box = new JPanel();
-    box.add(button);
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.add(button);
 
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(new JScrollPane(table));
-    p.add(new JScrollPane(logger));
+    JPanel centerPanel = new JPanel(new GridLayout(2, 1));
+    centerPanel.add(new JScrollPane(table));
+    centerPanel.add(new JScrollPane(logArea));
 
-    add(box, BorderLayout.NORTH);
-    add(p);
+    add(buttonPanel, BorderLayout.NORTH);
+    add(centerPanel);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void append(String str) {
-    logger.append(str + "\n");
+  public void appendLog(String str) {
+    logArea.append(str + "\n");
+  }
+
+  // Search the model for the row whose full path matches the given path, or
+  // return -1 if no such row exists.
+  private int rowIndexOf(Path path) {
+    String fullPath = path.toString();
+    return IntStream.range(0, model.getRowCount())
+        .filter(i -> {
+          Object obj = model.getValueAt(i, FULL_PATH_COLUMN);
+          return fullPath.equals(Objects.toString(obj, ""));
+        })
+        .findFirst()
+        .orElse(-1);
   }
 
   public static void main(String[] args) {
@@ -104,40 +115,41 @@ public final class MainPanel extends JPanel {
     frame.setVisible(true);
   }
 
-  private final class Watcher implements Runnable {
+  private final class DirectoryWatcher implements Runnable {
     private final SecondaryLoop loop;
 
-    private Watcher(SecondaryLoop loop) {
+    private DirectoryWatcher(SecondaryLoop loop) {
       this.loop = loop;
     }
 
     @Override public void run() {
-      try (WatchService watcher = FileSystems.getDefault().newWatchService()) {
+      try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
         Path dir = Paths.get(System.getProperty("java.io.tmpdir"));
         dir.register(
-            watcher,
+            watchService,
             StandardWatchEventKinds.ENTRY_CREATE,
             StandardWatchEventKinds.ENTRY_DELETE);
-        append("register: " + dir);
-        processEvents(dir, watcher);
+        appendLog("register: " + dir);
+        processEvents(dir, watchService);
         loop.exit();
       } catch (IOException ex) {
         Logger.getGlobal().severe(ex::getMessage);
       }
     }
 
-    // Watching a Directory for Changes (The Java™ Tutorials > Essential Classes > Basic I/O)
+    // Watching a Directory for Changes
+    // (The Java™ Tutorials > Essential Classes > Basic I/O)
     // https://docs.oracle.com/javase/tutorial/essential/io/notification.html
     // Process all events for keys queued to the watcher
     @SuppressWarnings("ReturnCount")
-    private void processEvents(Path dir, WatchService watcher) {
+    private void processEvents(Path dir, WatchService watchService) {
       for (;;) {
         // wait for key to be signaled
         WatchKey key;
         try {
-          key = watcher.take();
+          key = watchService.take();
         } catch (InterruptedException ex) {
-          EventQueue.invokeLater(() -> append("Interrupted"));
+          EventQueue.invokeLater(() -> appendLog("Interrupted"));
           Thread.currentThread().interrupt();
           return;
         }
@@ -156,7 +168,7 @@ public final class MainPanel extends JPanel {
           Path filename = (Path) event.context();
           Path child = dir.resolve(filename);
           EventQueue.invokeLater(() -> {
-            append(String.format("%s: %s", kind, child));
+            appendLog(String.format("%s: %s", kind, child));
             updateTable(kind, child);
           });
         }
@@ -175,41 +187,60 @@ public final class MainPanel extends JPanel {
       if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
         model.addPath(child);
       } else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
-        for (int i = 0; i < model.getRowCount(); i++) {
-          Object value = model.getValueAt(i, 2);
-          String path = Objects.toString(value, "");
-          if (path.equals(child.toString())) {
-            deleteRowSet.add(i);
-            // model.removeRow(i);
-            break;
-          }
+        int modelRow = rowIndexOf(child);
+        if (modelRow >= 0) {
+          model.removeRow(modelRow);
         }
-        sorter.setRowFilter(new RowFilter<TableModel, Integer>() {
-          @Override public boolean include(Entry<? extends TableModel, ? extends Integer> entry) {
-            return !isDeleteRow(entry.getIdentifier());
-          }
-        });
+      }
+    }
+  }
+
+  private static final class TablePopupMenu extends JPopupMenu {
+    private final JMenuItem deleteMenuItem;
+
+    private TablePopupMenu() {
+      super();
+      deleteMenuItem = add("delete");
+      deleteMenuItem.addActionListener(this::deleteActionPerformed);
+    }
+
+    @Override public void show(Component c, int x, int y) {
+      if (c instanceof JTable) {
+        deleteMenuItem.setEnabled(((JTable) c).getSelectedRowCount() > 0);
+        super.show(c, x, y);
       }
     }
 
-    private boolean isDeleteRow(int row) {
-      return deleteRowSet.contains(row);
+    private void deleteActionPerformed(ActionEvent e) {
+      JTable table = (JTable) getInvoker();
+      DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+      int[] selection = table.getSelectedRows();
+      for (int i = selection.length - 1; i >= 0; i--) {
+        int modelRow = table.convertRowIndexToModel(selection[i]);
+        Object obj = tableModel.getValueAt(modelRow, FULL_PATH_COLUMN);
+        Path path = Paths.get(Objects.toString(obj));
+        try {
+          Files.delete(path);
+        } catch (IOException ex) {
+          UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
+        }
+      }
     }
   }
 }
 
-class FileModel extends DefaultTableModel {
+class FileTableModel extends DefaultTableModel {
   private static final ColumnContext[] COLUMN_ARRAY = {
       new ColumnContext("No.", Integer.class, false),
       new ColumnContext("Name", String.class, false),
       new ColumnContext("Full Path", String.class, false),
   };
-  private int number;
+  private int rowNumber;
 
   public void addPath(Path path) {
-    Object[] obj = {number, path.getFileName(), path.toAbsolutePath()};
-    super.addRow(obj);
-    number++;
+    Object[] rowData = {rowNumber, path.getFileName(), path.toAbsolutePath()};
+    super.addRow(rowData);
+    rowNumber++;
   }
 
   @Override public boolean isCellEditable(int row, int col) {
@@ -237,38 +268,6 @@ class FileModel extends DefaultTableModel {
       this.columnName = columnName;
       this.columnClass = columnClass;
       this.isEditable = isEditable;
-    }
-  }
-}
-
-final class TablePopupMenu extends JPopupMenu {
-  private final JMenuItem delete;
-
-  /* default */ TablePopupMenu() {
-    super();
-    delete = add("delete");
-    delete.addActionListener(this::fileDelete);
-  }
-
-  @Override public void show(Component c, int x, int y) {
-    if (c instanceof JTable) {
-      delete.setEnabled(((JTable) c).getSelectedRowCount() > 0);
-      super.show(c, x, y);
-    }
-  }
-
-  private void fileDelete(ActionEvent e) {
-    JTable table = (JTable) getInvoker();
-    DefaultTableModel model = (DefaultTableModel) table.getModel();
-    int[] selection = table.getSelectedRows();
-    for (int i = selection.length - 1; i >= 0; i--) {
-      int idx = table.convertRowIndexToModel(selection[i]);
-      Path path = Paths.get(Objects.toString(model.getValueAt(idx, 2)));
-      try {
-        Files.delete(path);
-      } catch (IOException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
-      }
     }
   }
 }
