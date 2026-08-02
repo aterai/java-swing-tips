@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST MasonryLayout" />
+  <property name="jnlp.Name"     value="MasonryLayout" />
+  <property name="jnlp.name"     value="masonrylayout" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/masonrylayout/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/MasonryLayout.html" />
+</project>

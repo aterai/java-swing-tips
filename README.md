@@ -55,7 +55,7 @@ javax.swing.JComponent
 - [JProgressBar ProgressMonitor(35)](https://ateraimemo.com/en/Swing/_JProgressBar.html)
 - [JFileChooser(34)](https://ateraimemo.com/en/Swing/_JFileChooser.html)
 - [JSpinner(34)](https://ateraimemo.com/en/Swing/_JSpinner.html)
-- [JPanel(24)](https://ateraimemo.com/en/Swing/_JPanel.html)
+- [JPanel(25)](https://ateraimemo.com/en/Swing/_JPanel.html)
 - [JSplitPane(20)](https://ateraimemo.com/en/Swing/_JSplitPane.html)
 - [JOptionPane(13)](https://ateraimemo.com/en/Swing/_JOptionPane.html)
 - [JColorChooser(7)](https://ateraimemo.com/en/Swing/_JColorChooser.html)
@@ -64,7 +64,7 @@ Others
 ---------------
 - [Graphics(73)](https://ateraimemo.com/en/Swing/_Graphics.html)
 - [Animation(59)](https://ateraimemo.com/en/Swing/_Animation.html)
-- [LayoutManager(57)](https://ateraimemo.com/en/Swing/_Layout.html)
+- [LayoutManager(58)](https://ateraimemo.com/en/Swing/_Layout.html)
 - [Border(51)](https://ateraimemo.com/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/en/Swing/_LookAndFeel.html)
