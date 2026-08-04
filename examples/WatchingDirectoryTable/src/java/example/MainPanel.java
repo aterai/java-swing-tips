@@ -48,7 +48,7 @@ public final class MainPanel extends JPanel {
       appendLog("Error");
     }
     addHierarchyListener(e -> {
-      long flags = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED);
+      long flags = e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED;
       if (flags != 0 && !e.getComponent().isDisplayable()) {
         worker.interrupt();
       }
