@@ -435,7 +435,7 @@
     </module>
     <module name="InnerAssignment"/>
     <module name="MagicNumber">
-      <property name="ignoreNumbers" value="-1, 0, 1, 2, 320, 240, 160, .5"/>
+      <property name="ignoreNumbers" value="-1, 0, 1, 2, 100, 160, 320, 240, .5"/>
     </module>
 
     <module name="MatchXpath">
