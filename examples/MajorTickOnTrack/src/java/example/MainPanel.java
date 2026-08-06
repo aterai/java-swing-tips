@@ -14,38 +14,44 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final int THUMB_SIZE = 24;
+  private static final Color THUMB_COLOR = new Color(0x21_98_F6);
+
   private MainPanel() {
     super(new BorderLayout());
-    UIDefaults d = new UIDefaults();
-    d.put("Slider.thumbWidth", 24);
-    d.put("Slider.thumbHeight", 24);
+    UIDefaults overrides = new UIDefaults();
+    overrides.put("Slider.thumbWidth", THUMB_SIZE);
+    overrides.put("Slider.thumbHeight", THUMB_SIZE);
+    // Paint a filled circle with the current value drawn on top as the slider thumb.
     Painter<JSlider> thumbPainter = (g, c, w, h) -> {
-      g.setPaint(new Color(0x21_98_F6));
+      g.setPaint(THUMB_COLOR);
       g.fillOval(0, 0, w, h);
       NumberIcon icon = new NumberIcon(c.getValue());
-      int xx = (w - icon.getIconWidth()) / 2;
-      int yy = (h - icon.getIconHeight()) / 2;
-      icon.paintIcon(c, g, xx, yy);
+      int iconX = (w - icon.getIconWidth()) / 2;
+      int iconY = (h - icon.getIconHeight()) / 2;
+      icon.paintIcon(c, g, iconX, iconY);
     };
-    d.put("Slider:SliderThumb[Disabled].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderThumb[Enabled].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderThumb[Focused+MouseOver].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderThumb[Focused+Pressed].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderThumb[Focused].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderThumb[MouseOver].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderThumb[Pressed].backgroundPainter", thumbPainter);
-    d.put("Slider:SliderTrack[Enabled].backgroundPainter", new SliderTrackPainter());
+    overrides.put("Slider:SliderThumb[Disabled].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderThumb[Enabled].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderThumb[Focused+MouseOver].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderThumb[Focused+Pressed].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderThumb[Focused].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderThumb[MouseOver].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderThumb[Pressed].backgroundPainter", thumbPainter);
+    overrides.put("Slider:SliderTrack[Enabled].backgroundPainter", new SliderTrackPainter());
 
     JSlider slider = new JSlider();
     slider.setSnapToTicks(true);
     slider.setMajorTickSpacing(10);
+    // Repaint on drag so the major tick marks and the filled portion
+    // of the track stay in sync.
     slider.addMouseMotionListener(new MouseAdapter() {
       @Override public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
         e.getComponent().repaint();
       }
     });
-    slider.putClientProperty("Nimbus.Overrides", d);
+    slider.putClientProperty("Nimbus.Overrides", overrides);
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
@@ -59,10 +65,10 @@ public final class MainPanel extends JPanel {
   }
 
   private static Component createTitledPanel(String title, Component c) {
-    JPanel p = new JPanel(new BorderLayout());
-    p.setBorder(BorderFactory.createTitledBorder(title));
-    p.add(c);
-    return p;
+    JPanel panel = new JPanel(new BorderLayout());
+    panel.setBorder(BorderFactory.createTitledBorder(title));
+    panel.add(c);
+    return panel;
   }
 
   public static void main(String[] args) {
@@ -90,39 +96,44 @@ public final class MainPanel extends JPanel {
 }
 
 class SliderTrackPainter implements Painter<JSlider> {
-  @Override public void paint(Graphics2D g, JSlider c, int w, int h) {
+  private static final Color TRACK_COLOR = new Color(0xC6_E4_FC);
+  private static final Color TICK_COLOR = new Color(0x31_A8_F8);
+  private static final Color FILL_COLOR = new Color(0x21_98_F6);
+
+  @Override public void paint(Graphics2D g, JSlider slider, int width, int height) {
     int thumbSize = 24;
     int trackHeight = 8;
-    int trackWidth = w - thumbSize;
+    int trackWidth = width - thumbSize;
     int arc = 10;
     int fillTop = (thumbSize - trackHeight) / 2;
     int fillLeft = thumbSize / 2;
 
     // Paint track
-    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g.setColor(new Color(0xC6_E4_FC));
+    g.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g.setColor(TRACK_COLOR);
     g.fillRoundRect(fillLeft, fillTop + 2, trackWidth, trackHeight - 4, arc, arc);
 
     int fillBottom = fillTop + trackHeight;
-    Rectangle r = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
+    Rectangle trackRect = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
 
     // Paint the major tick marks on the track
-    g.setColor(new Color(0x31_A8_F8));
-    int value = c.getMinimum();
+    g.setColor(TICK_COLOR);
+    int value = slider.getMinimum();
     int tickSize = 4;
-    while (value <= c.getMaximum()) {
-      int xpt = getPositionForValue(c, r, value);
-      g.fillOval(xpt, (int) r.getCenterY() - tickSize / 2, tickSize, tickSize);
+    while (value <= slider.getMaximum()) {
+      int tickX = getPositionForValue(slider, trackRect, value);
+      g.fillOval(tickX, (int) trackRect.getCenterY() - tickSize / 2, tickSize, tickSize);
       // Overflow checking
-      if (Integer.MAX_VALUE - c.getMajorTickSpacing() < value) {
+      if (Integer.MAX_VALUE - slider.getMajorTickSpacing() < value) {
         break;
       }
-      value += c.getMajorTickSpacing();
+      value += slider.getMajorTickSpacing();
     }
 
     // JSlider.isFilled
-    int fillRight = getPositionForValue(c, r, c.getValue());
-    g.setColor(new Color(0x21_98_F6));
+    int fillRight = getPositionForValue(slider, trackRect, slider.getValue());
+    g.setColor(FILL_COLOR);
     g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
   }
 
@@ -140,6 +151,10 @@ class SliderTrackPainter implements Painter<JSlider> {
 }
 
 class NumberIcon implements Icon {
+  private static final int ICON_SIZE = 20;
+  private static final int MAX_VALUE_LENGTH = 999;
+  private static final double NARROW_SCALE_X = .66;
+
   private final int value;
 
   protected NumberIcon(int value) {
@@ -151,8 +166,10 @@ class NumberIcon implements Icon {
     // NumberFormat fmt = NumberFormat.getCompactNumberInstance(
     //    Locale.US, NumberFormat.Style.SHORT);
     // String txt = fmt.format(value);
-    String txt = value > 999 ? "1K" : Integer.toString(value);
-    AffineTransform at = txt.length() < 3 ? null : AffineTransform.getScaleInstance(.66, 1d);
+    String txt = value > MAX_VALUE_LENGTH ? "1K" : Integer.toString(value);
+    // Squeeze 3+ character labels horizontally so they still fit inside the icon.
+    AffineTransform at = txt.length() < 3
+        ? null : AffineTransform.getScaleInstance(NARROW_SCALE_X, 1d);
     return new TextLayout(txt, g2.getFont(), g2.getFontRenderContext()).getOutline(at);
   }
 
@@ -171,10 +188,10 @@ class NumberIcon implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return 20;
+    return ICON_SIZE;
   }
 
   @Override public int getIconHeight() {
-    return 20;
+    return ICON_SIZE;
   }
 }
