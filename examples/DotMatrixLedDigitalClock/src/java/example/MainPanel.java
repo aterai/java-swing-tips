@@ -33,9 +33,12 @@ public final class MainPanel extends JPanel {
   //     immutableSetOf(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19), // 8
   //     immutableSetOf(0, 1, 2, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19)); // 9
   // private static final List<Integer> DOT = Arrays.asList(1, 3);
-  private static final int COLUMN = 4;
-  private static final int ROW = 7;
-  private static final List<Set<Integer>> NUMBERS = Arrays.asList(
+  private static final int DIGIT_COLUMNS = 4;
+  private static final int DIGIT_ROWS = 7;
+  // Each digit is a DIGIT_COLUMNS x DIGIT_ROWS dot matrix laid out column-major, i.e. the
+  // cell at (column, row) has index (column * DIGIT_ROWS + row). The set below lists the
+  // indices of the dots that must be lit to draw that digit's glyph.
+  private static final List<Set<Integer>> DIGIT_PATTERNS = Arrays.asList(
       immutableSetOf(0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 20, 21, 22, 23, 24, 25, 26, 27), // 0
       immutableSetOf(21, 22, 23, 24, 25, 26, 27), // 1
       immutableSetOf(0, 3, 4, 5, 6, 7, 10, 13, 14, 17, 20, 21, 22, 23, 24, 27), // 2
@@ -59,103 +62,109 @@ public final class MainPanel extends JPanel {
   //     Set.of(0, 7, 11, 12, 13, 14, 17, 21, 23, 28, 29), // 7
   //     Set.of(1, 2, 4, 5, 7, 10, 13, 14, 17, 20, 21, 24, 27, 29, 30, 32, 33), // 8
   //     Set.of(1, 2, 5, 7, 10, 13, 14, 17, 20, 21, 24, 27, 29, 30, 31, 32, 33)); // 9
-  private static final List<Integer> DOT = Arrays.asList(2, 4);
+  private static final List<Integer> COLON_DOT_ROWS = Arrays.asList(2, 4);
+  private static final int RADIX = 10;
+  private static final int BLOCK_GAP = 1;
+  private static final int TIMER_DELAY_MS = 100;
+  private static final int LIST_GAP = 10;
+  private static final Dimension HOUR_MIN_DOT_SIZE = new Dimension(10, 10);
+  private static final Dimension SECONDS_DOT_SIZE = new Dimension(8, 8);
+  private static final Dimension PANEL_SIZE = new Dimension(320, 240);
   private transient HierarchyListener listener;
-  private final Timer timer = new Timer(100, null);
+  private final Timer timer = new Timer(TIMER_DELAY_MS, null);
   private LocalTime time = LocalTime.now(ZoneId.systemDefault());
 
   private MainPanel() {
     super(new GridBagLayout());
-    DefaultListModel<Boolean> model1 = new DefaultListModel<Boolean>() {
+    DefaultListModel<Boolean> hoursMinutesModel = new DefaultListModel<Boolean>() {
       @Override public Boolean getElementAt(int index) {
-        return getHoursMinutesDotMatrix(time, index);
+        return isHourMinuteDotLit(time, index);
       }
     };
-    model1.setSize((COLUMN * 4 + 5) * ROW);
-    JList<Boolean> hoursMinutes = makeLedDotMatrixList(model1, new Dimension(10, 10));
+    hoursMinutesModel.setSize((DIGIT_COLUMNS * 4 + 5) * DIGIT_ROWS);
+    JList<Boolean> hoursMinutesList =
+        createLedDotMatrixList(hoursMinutesModel, HOUR_MIN_DOT_SIZE);
 
-    DefaultListModel<Boolean> model2 = new DefaultListModel<Boolean>() {
+    DefaultListModel<Boolean> secondsModel = new DefaultListModel<Boolean>() {
       @Override public Boolean getElementAt(int index) {
-        return getSecondsDotMatrix(time, index);
+        return isSecondDotLit(time, index);
       }
     };
-    model2.setSize((COLUMN * 2 + 1) * ROW);
-    JList<Boolean> seconds = makeLedDotMatrixList(model2, new Dimension(8, 8));
+    secondsModel.setSize((DIGIT_COLUMNS * 2 + 1) * DIGIT_ROWS);
+    JList<Boolean> secondsList = createLedDotMatrixList(secondsModel, SECONDS_DOT_SIZE);
 
     timer.addActionListener(e -> {
       time = LocalTime.now(ZoneId.systemDefault());
-      hoursMinutes.repaint();
-      seconds.repaint();
+      hoursMinutesList.repaint();
+      secondsList.repaint();
     });
 
-    hoursMinutes.setAlignmentY(BOTTOM_ALIGNMENT);
-    seconds.setAlignmentY(BOTTOM_ALIGNMENT);
+    hoursMinutesList.setAlignmentY(BOTTOM_ALIGNMENT);
+    secondsList.setAlignmentY(BOTTOM_ALIGNMENT);
     Box box = Box.createHorizontalBox();
-    box.add(hoursMinutes);
-    box.add(Box.createHorizontalStrut(10));
-    box.add(seconds);
+    box.add(hoursMinutesList);
+    box.add(Box.createHorizontalStrut(LIST_GAP));
+    box.add(secondsList);
     add(box);
     setBackground(Color.BLACK);
-    setPreferredSize(new Dimension(320, 240));
+    setPreferredSize(PANEL_SIZE);
   }
 
-  private static boolean contains(int index, int start, int end, int num) {
-    return index < end * ROW && NUMBERS.get(num).contains(index - start * ROW);
+  // A cell only ever belongs to one block: DIGIT_PATTERNS values are all within
+  // [0, DIGIT_COLUMNS * DIGIT_ROWS), so for any other block the relative index below
+  // is negative (or too large) and simply misses the set, no lower-bound check needed.
+  private static boolean isDigitDotLit(
+      int index, int blockStart, int blockEnd, int digit) {
+    return index < blockEnd * DIGIT_ROWS
+        && DIGIT_PATTERNS.get(digit).contains(index - blockStart * DIGIT_ROWS);
   }
 
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  private static boolean getHoursMinutesDotMatrix(LocalTime time, int index) {
-    int ten = 10;
-    int hours = time.getHour();
-    int h1 = hours / ten;
-    int start = 0;
-    int end = COLUMN;
-    if (contains(index, start, end, h1)) {
-      return hours >= ten;
-    }
-    int gap = 1;
-    int h2 = hours - h1 * ten;
-    start = end + gap;
-    end = start + COLUMN;
-    if (contains(index, start, end, h2)) {
-      return true;
-    }
-    int seconds = time.getSecond();
-    int s1 = seconds / ten;
-    int s2 = seconds - s1 * ten;
-    start = end + gap;
-    end = start + gap;
-    if (index < end * ROW && s2 % 2 == 0 && DOT.contains(index - start * ROW)) {
-      return true;
-    }
-    int minutes = time.getMinute();
-    int m1 = minutes / ten;
-    start = end + gap;
-    end = start + COLUMN;
-    if (contains(index, start, end, m1)) {
-      return true;
-    }
-    int m2 = minutes - m1 * ten;
-    start = end + gap;
-    end = start + COLUMN;
-    return contains(index, start, end, m2);
+  private static boolean isHourMinuteDotLit(LocalTime time, int index) {
+    int hour = time.getHour();
+    int hourTens = hour / RADIX;
+    int blockStart = 0;
+    int blockEnd = DIGIT_COLUMNS;
+    // Blank the hour's leading zero: the tens digit only lights up when hour >= 10.
+    boolean lit = isDigitDotLit(index, blockStart, blockEnd, hourTens) && hour >= RADIX;
+
+    int hourUnits = hour - hourTens * RADIX;
+    blockStart = blockEnd + BLOCK_GAP;
+    blockEnd = blockStart + DIGIT_COLUMNS;
+    lit |= isDigitDotLit(index, blockStart, blockEnd, hourUnits);
+
+    // Blink the colon dots once per second, on for even seconds and off for odd seconds.
+    int secondUnits = time.getSecond() % RADIX;
+    blockStart = blockEnd + BLOCK_GAP;
+    blockEnd = blockStart + BLOCK_GAP;
+    lit |= index < blockEnd * DIGIT_ROWS
+        && secondUnits % 2 == 0
+        && COLON_DOT_ROWS.contains(index - blockStart * DIGIT_ROWS);
+
+    int minute = time.getMinute();
+    int minuteTens = minute / RADIX;
+    blockStart = blockEnd + BLOCK_GAP;
+    blockEnd = blockStart + DIGIT_COLUMNS;
+    lit |= isDigitDotLit(index, blockStart, blockEnd, minuteTens);
+
+    int minuteUnits = minute - minuteTens * RADIX;
+    blockStart = blockEnd + BLOCK_GAP;
+    blockEnd = blockStart + DIGIT_COLUMNS;
+    lit |= isDigitDotLit(index, blockStart, blockEnd, minuteUnits);
+
+    return lit;
   }
 
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  private static boolean getSecondsDotMatrix(LocalTime time, int index) {
-    int ten = 10;
-    int seconds = time.getSecond();
-    int s1 = seconds / ten;
-    int start = 0;
-    int end = COLUMN;
-    if (contains(index, start, end, s1)) {
-      return true;
-    }
-    int gap = 1;
-    int s2 = seconds - s1 * ten;
-    start = end + gap;
-    end = start + COLUMN;
-    return contains(index, start, end, s2);
+  private static boolean isSecondDotLit(LocalTime time, int index) {
+    int second = time.getSecond();
+    int secondTens = second / RADIX;
+    int blockStart = 0;
+    int blockEnd = DIGIT_COLUMNS;
+    boolean lit = isDigitDotLit(index, blockStart, blockEnd, secondTens);
+
+    int secondUnits = second - secondTens * RADIX;
+    blockStart = blockEnd + BLOCK_GAP;
+    blockEnd = blockStart + DIGIT_COLUMNS;
+    return lit || isDigitDotLit(index, blockStart, blockEnd, secondUnits);
   }
 
   @Override public void updateUI() {
@@ -178,17 +187,18 @@ public final class MainPanel extends JPanel {
     // Java 9: return Set.of(input);
   }
 
-  private static JList<Boolean> makeLedDotMatrixList(ListModel<Boolean> model, Dimension dim) {
+  private static JList<Boolean> createLedDotMatrixList(
+      ListModel<Boolean> model, Dimension size) {
     return new JList<Boolean>(model) {
       @Override public void updateUI() {
-        setFixedCellWidth(dim.width);
-        setFixedCellHeight(dim.height);
-        setVisibleRowCount(ROW);
+        setFixedCellWidth(size.width);
+        setFixedCellHeight(size.height);
+        setVisibleRowCount(DIGIT_ROWS);
         setCellRenderer(null);
         super.updateUI();
         setLayoutOrientation(VERTICAL_WRAP);
         setFocusable(false);
-        setCellRenderer(new LedListCellRenderer(getCellRenderer(), dim));
+        setCellRenderer(new LedListCellRenderer(getCellRenderer(), size));
         setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         setBackground(Color.BLACK);
       }
@@ -219,50 +229,51 @@ public final class MainPanel extends JPanel {
 
 class LedListCellRenderer implements ListCellRenderer<Boolean> {
   private final ListCellRenderer<? super Boolean> renderer;
-  private final Icon on;
-  private final Icon off;
+  private final Icon onIcon;
+  private final Icon offIcon;
 
-  protected LedListCellRenderer(ListCellRenderer<? super Boolean> renderer, Dimension dim) {
+  protected LedListCellRenderer(ListCellRenderer<? super Boolean> renderer, Dimension size) {
     this.renderer = renderer;
-    this.on = new LedDotIcon(true, dim);
-    this.off = new LedDotIcon(false, dim);
+    this.onIcon = new LedDotIcon(true, size);
+    this.offIcon = new LedDotIcon(false, size);
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends Boolean> list, Boolean value, int index, boolean isSelected, boolean cellHasFocus) {
-    Component c = renderer.getListCellRendererComponent(
+    Component component = renderer.getListCellRendererComponent(
         list, null, index, false, false);
-    if (c instanceof JLabel) {
-      ((JLabel) c).setIcon(Objects.equals(true, value) ? on : off);
+    if (component instanceof JLabel) {
+      ((JLabel) component).setIcon(Objects.equals(true, value) ? onIcon : offIcon);
     }
-    return c;
+    return component;
   }
 }
 
 class LedDotIcon implements Icon {
-  private final Color on = new Color(0x32_FF_AA);
-  private final boolean led;
-  private final Dimension dim;
+  private static final Color ON_COLOR = new Color(0x32_FF_AA);
+  private final boolean lit;
+  private final Dimension size;
 
-  protected LedDotIcon(boolean led, Dimension dim) {
-    this.led = led;
-    this.dim = dim;
+  protected LedDotIcon(boolean lit, Dimension size) {
+    this.lit = lit;
+    this.size = size;
   }
 
-  @Override public void paintIcon(Component c, Graphics g, int x, int y) {
+  @Override public void paintIcon(Component component, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     // JList#setLayoutOrientation(VERTICAL_WRAP) + SynthLookAndFeel(Nimbus, GTK) bug???
     // g2.translate(x, y);
-    g2.setPaint(led ? on : c.getBackground());
+    g2.setPaint(lit ? ON_COLOR : component.getBackground());
     g2.fillOval(0, 0, getIconWidth() - 1, getIconHeight() - 1);
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    return dim.width;
+    return size.width;
   }
 
   @Override public int getIconHeight() {
-    return dim.height;
+    return size.height;
   }
 }
