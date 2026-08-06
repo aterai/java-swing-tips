@@ -47,10 +47,11 @@ public final class MainPanel extends JPanel {
 
 class AlternateRowColorTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x64_32_64_FF, true);
+  private static final Color ALTERNATE_COLOR = new Color(0xCC_CC_CC);
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(new Color(0xCC_CC_CC));
+    g2.setPaint(ALTERNATE_COLOR);
     IntStream.range(0, getRowCount())
         .filter(i -> i % 2 == 0)
         .mapToObj(this::getRowBounds)
@@ -114,7 +115,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -122,7 +123,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
