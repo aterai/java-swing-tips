@@ -16,95 +16,107 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 public final class MainPanel extends JPanel {
+  private static final int POPUP_WIDTH = 240;
+  private static final int POPUP_HEIGHT = 120;
+  private static final Color GRIP_BACKGROUND = new Color(0xE0_E0_E0);
+  private static final Color BORDER_COLOR = new Color(0x64_64_64);
+
   private MainPanel() {
     super(new FlowLayout(FlowLayout.LEADING));
-    Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-    DefaultListModel<String> m1 = new DefaultListModel<>();
-    Stream.of(fonts).map(Font::getFontName).forEach(m1::addElement);
-    JList<String> list = new JList<>(m1);
-    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    Font[] allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+    DefaultListModel<String> fontListModel = new DefaultListModel<>();
+    Stream.of(allFonts).map(Font::getFontName).forEach(fontListModel::addElement);
+    JList<String> fontList = new JList<>(fontListModel);
+    fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    JPopupMenu popup = new JPopupMenu();
-    popup.setBorder(BorderFactory.createEmptyBorder());
-    popup.setPopupSize(240, 120);
+    JPopupMenu popupMenu = new JPopupMenu();
+    popupMenu.setBorder(BorderFactory.createEmptyBorder());
+    popupMenu.setPopupSize(POPUP_WIDTH, POPUP_HEIGHT);
 
-    JComboBox<String> combo = makeComboBox(fonts, list, popup);
-    list.addListSelectionListener(e -> combo.setSelectedIndex(list.getSelectedIndex()));
-    list.addMouseListener(new MouseAdapter() {
+    JComboBox<String> fontComboBox = createFontComboBox(allFonts, fontList, popupMenu);
+    // Selecting an item in the list updates the combo box selection to match.
+    fontList.addListSelectionListener(
+        e -> fontComboBox.setSelectedIndex(fontList.getSelectedIndex()));
+    fontList.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() - 1 > 0) {
-          combo.setSelectedIndex(list.getSelectedIndex());
-          popup.setVisible(false);
+          fontComboBox.setSelectedIndex(fontList.getSelectedIndex());
+          popupMenu.setVisible(false);
         }
       }
     });
-    combo.addItemListener(e -> {
-      int idx = combo.getSelectedIndex();
-      list.setSelectedIndex(idx);
-      list.scrollRectToVisible(list.getCellBounds(idx, idx));
+    fontComboBox.addItemListener(e -> {
+      int idx = fontComboBox.getSelectedIndex();
+      fontList.setSelectedIndex(idx);
+      fontList.scrollRectToVisible(fontList.getCellBounds(idx, idx));
     });
 
-    JScrollPane scroll = new JScrollPane(list);
-    scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.setViewportBorder(BorderFactory.createEmptyBorder());
-    popup.add(makeResizePanel(scroll));
+    JScrollPane scrollPane = new JScrollPane(fontList);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+    scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
+    popupMenu.add(createResizablePopupContentPanel(scrollPane));
 
     // JToggleButton button = new JToggleButton("JToggleButton");
     // button.addActionListener(e -> {
     //   AbstractButton btn = (AbstractButton) e.getSource();
     //   boolean flg = btn.getModel().isSelected();
-    //   popup.setVisible(flg);
+    //   popupMenu.setVisible(flg);
     //   button.setSelected(flg);
     //   Point p = button.getLocation();
     //   p.y += button.getHeight() - 1;
     //   SwingUtilities.convertPointToScreen(p, button.getParent());
-    //   popup.setLocation(p);
-    //   popup.requestFocusInWindow();
+    //   popupMenu.setLocation(p);
+    //   popupMenu.requestFocusInWindow();
     // });
     // add(button);
-    add(combo);
+    add(fontComboBox);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JComboBox<String> makeComboBox(Font[] fonts, JList<String> list, JPopupMenu popup) {
-    DefaultComboBoxModel<String> m2 = new DefaultComboBoxModel<>();
-    Stream.of(fonts).map(Font::getFontName).forEach(m2::addElement);
-    JComboBox<String> combo = new JComboBox<String>(m2) {
-      private transient PopupMenuListener handler;
+  private JComboBox<String> createFontComboBox(
+      Font[] fonts, JList<String> fontList, JPopupMenu popupMenu) {
+    DefaultComboBoxModel<String> fontComboBoxModel = new DefaultComboBoxModel<>();
+    Stream.of(fonts).map(Font::getFontName).forEach(fontComboBoxModel::addElement);
+    JComboBox<String> fontComboBox = new JComboBox<String>(fontComboBoxModel) {
+      private transient PopupMenuListener listener;
 
       @Override public void updateUI() {
-        removePopupMenuListener(handler);
+        removePopupMenuListener(listener);
         super.updateUI();
-        handler = new DropdownMenuListener(list, popup);
-        addPopupMenuListener(handler);
+        listener = new ComboBoxPopupMenuHandler(fontList, popupMenu);
+        addPopupMenuListener(listener);
       }
 
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        d.width = Math.min(d.width, 240);
+        d.width = Math.min(d.width, POPUP_WIDTH);
         return d;
       }
     };
-    combo.setMaximumRowCount(1);
-    return combo;
+    // Show only the current selection;
+    // the actual list is rendered inside the custom popup.
+    fontComboBox.setMaximumRowCount(1);
+    return fontComboBox;
   }
 
-  private static JPanel makeResizePanel(JScrollPane scroll) {
-    JLabel bottom = new JLabel("", new DotIcon(), SwingConstants.CENTER);
-    MouseInputListener rwl = new ResizePopupMenuListener();
-    bottom.addMouseListener(rwl);
-    bottom.addMouseMotionListener(rwl);
-    bottom.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-    bottom.setOpaque(true);
-    bottom.setBackground(new Color(0xE0_E0_E0));
-    bottom.setFocusable(false);
+  private static JPanel createResizablePopupContentPanel(JScrollPane scrollPane) {
+    JLabel resizeGripLabel = new JLabel("", new ResizeGripIcon(), SwingConstants.CENTER);
+    MouseInputListener resizeHandler = new PopupMenuResizeHandler();
+    resizeGripLabel.addMouseListener(resizeHandler);
+    resizeGripLabel.addMouseMotionListener(resizeHandler);
+    resizeGripLabel.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+    resizeGripLabel.setOpaque(true);
+    resizeGripLabel.setBackground(GRIP_BACKGROUND);
+    resizeGripLabel.setFocusable(false);
 
-    JPanel resizePanel = new JPanel(new BorderLayout());
-    resizePanel.add(scroll);
-    resizePanel.add(bottom, BorderLayout.SOUTH);
-    resizePanel.add(Box.createHorizontalStrut(240), BorderLayout.NORTH);
-    resizePanel.setBorder(BorderFactory.createLineBorder(new Color(0x64_64_64)));
-    return resizePanel;
+    JPanel contentPanel = new JPanel(new BorderLayout());
+    contentPanel.add(scrollPane);
+    contentPanel.add(resizeGripLabel, BorderLayout.SOUTH);
+    // Reserve a fixed width so the popup does not shrink narrower
+    // than this while resizing.
+    contentPanel.add(Box.createHorizontalStrut(POPUP_WIDTH), BorderLayout.NORTH);
+    contentPanel.setBorder(BorderFactory.createLineBorder(BORDER_COLOR));
+    return contentPanel;
   }
 
   public static void main(String[] args) {
@@ -129,21 +141,22 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DropdownMenuListener implements PopupMenuListener {
-  private final JList<String> list;
-  private final JPopupMenu popup;
+// Synchronizes the popup's font list with the combo box and shows the popup below it.
+class ComboBoxPopupMenuHandler implements PopupMenuListener {
+  private final JList<String> fontList;
+  private final JPopupMenu popupMenu;
 
-  protected DropdownMenuListener(JList<String> list, JPopupMenu popup) {
-    this.list = list;
-    this.popup = popup;
+  protected ComboBoxPopupMenuHandler(JList<String> fontList, JPopupMenu popupMenu) {
+    this.fontList = fontList;
+    this.popupMenu = popupMenu;
   }
 
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    Object o = e.getSource();
-    if (o instanceof JComboBox<?>) {
-      JComboBox<?> c = (JComboBox<?>) o;
-      list.setSelectedIndex(c.getSelectedIndex());
-      EventQueue.invokeLater(() -> popup.show(c, 0, c.getHeight()));
+    Object source = e.getSource();
+    if (source instanceof JComboBox<?>) {
+      JComboBox<?> comboBox = (JComboBox<?>) source;
+      fontList.setSelectedIndex(comboBox.getSelectedIndex());
+      EventQueue.invokeLater(() -> popupMenu.show(comboBox, 0, comboBox.getHeight()));
     }
   }
 
@@ -156,62 +169,69 @@ class DropdownMenuListener implements PopupMenuListener {
   }
 }
 
-class ResizePopupMenuListener extends MouseInputAdapter {
-  private final Rectangle rect = new Rectangle();
-  private final Point startPt = new Point();
-  private final Dimension startDim = new Dimension();
+// Resizes the enclosing JPopupMenu (and its underlying heavyweight/lightweight
+// popup window) vertically while the grip label is dragged.
+class PopupMenuResizeHandler extends MouseInputAdapter {
+  private final Rectangle newSize = new Rectangle();
+  private final Point dragStartPoint = new Point();
+  private final Dimension dragStartSize = new Dimension();
 
   @Override public void mousePressed(MouseEvent e) {
     Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, e.getComponent());
-    rect.setSize(popup.getSize());
-    startDim.setSize(popup.getSize());
-    startPt.setLocation(e.getComponent().getLocationOnScreen());
+    newSize.setSize(popup.getSize());
+    dragStartSize.setSize(popup.getSize());
+    dragStartPoint.setLocation(e.getComponent().getLocationOnScreen());
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    rect.height = startDim.height + e.getLocationOnScreen().y - startPt.y;
+    newSize.height = dragStartSize.height + e.getLocationOnScreen().y - dragStartPoint.y;
     Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, e.getComponent());
     if (c instanceof JPopupMenu) {
-      JPopupMenu popup = (JPopupMenu) c;
-      popup.setPreferredSize(rect.getSize());
-      Window w = SwingUtilities.getWindowAncestor(popup);
-      if (w != null && w.getType() == Window.Type.POPUP) {
+      JPopupMenu popupMenu = (JPopupMenu) c;
+      popupMenu.setPreferredSize(newSize.getSize());
+      Window window = SwingUtilities.getWindowAncestor(popupMenu);
+      if (window != null && window.getType() == Window.Type.POPUP) {
         // Popup$HeavyWeightWindow
-        w.setSize(rect.width, rect.height);
+        window.setSize(newSize.width, newSize.height);
       } else {
         // Popup$LightWeightWindow
-        popup.pack();
+        popupMenu.pack();
       }
     }
-    // Container p = popup.getTopLevelAncestor();
+    // Container p = popupMenu.getTopLevelAncestor();
     // if (p instanceof JWindow && ((Window) p).getType() == Window.Type.POPUP) {
     //   p.setSize(rect.width, rect.height);
     // } else {
-    //   popup.pack();
+    //   popupMenu.pack();
     // }
   }
 }
 
-class DotIcon implements Icon {
+// A row of dots used as a visual grip for the resizable bottom edge of the popup.
+class ResizeGripIcon implements Icon {
+  private static final int ICON_WIDTH = 32;
+  private static final int ICON_HEIGHT = 5;
+  private static final int DOT_COUNT = 4;
+  private static final int DOT_GAP = 4;
+  private static final int DOT_SIZE = 2;
+
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
     g2.setPaint(Color.GRAY);
-    int dots = 4;
-    int gap = 4;
-    int start = getIconWidth() / 2 - (dots - 1) * 2;
-    int h = getIconHeight() / 2;
-    for (int i = 0; i < dots; i++) {
-      g2.fillRect(start + gap * i, h, 2, 2);
+    int start = getIconWidth() / 2 - (DOT_COUNT - 1) * 2;
+    int centerY = getIconHeight() / 2;
+    for (int i = 0; i < DOT_COUNT; i++) {
+      g2.fillRect(start + DOT_GAP * i, centerY, DOT_SIZE, DOT_SIZE);
     }
     g2.dispose();
   }
 
   @Override public int getIconWidth() {
-    return 32;
+    return ICON_WIDTH;
   }
 
   @Override public int getIconHeight() {
-    return 5;
+    return ICON_HEIGHT;
   }
 }
