@@ -209,16 +209,16 @@ class ResizePanel extends JPanel {
     JPanel titleBar = makeTitleBar(titleBox);
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(new JLayer<>(titleBar, new TitleBarDragLayerUI()), BorderLayout.CENTER);
+    titlePanel.add(new JLayer<>(titleBar, new TitleBarDragLayerUI()));
 
     JPanel northPanel = new JPanel(new BorderLayout());
     northPanel.add(topLeft, BorderLayout.WEST);
-    northPanel.add(titlePanel, BorderLayout.CENTER);
+    northPanel.add(titlePanel);
     northPanel.add(topRight, BorderLayout.EAST);
 
     JPanel southPanel = new JPanel(new BorderLayout());
     southPanel.add(bottomLeft, BorderLayout.WEST);
-    southPanel.add(bottom, BorderLayout.CENTER);
+    southPanel.add(bottom);
     southPanel.add(bottomRight, BorderLayout.EAST);
 
     add(left, BorderLayout.WEST);

@@ -296,7 +296,7 @@ class TimePickerPopupPanel extends JPanel {
     String ampmName = TimePickerUtils.getAmpmLabel(loc);
     lists.add(TimePickerListFactory.createColumn(ampmName, ampmList, false), c);
 
-    add(lists, BorderLayout.CENTER);
+    add(lists);
     add(buildFooter(), BorderLayout.SOUTH);
   }
 

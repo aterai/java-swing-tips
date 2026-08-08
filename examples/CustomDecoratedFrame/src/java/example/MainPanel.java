@@ -105,23 +105,23 @@ public final class MainPanel extends JPanel {
 
     JPanel titlePanel = new JPanel(new BorderLayout());
     titlePanel.add(top, BorderLayout.NORTH);
-    titlePanel.add(titleBar, BorderLayout.CENTER);
+    titlePanel.add(titleBar);
 
     JPanel northPanel = new JPanel(new BorderLayout());
     northPanel.add(topLeft, BorderLayout.WEST);
-    northPanel.add(titlePanel, BorderLayout.CENTER);
+    northPanel.add(titlePanel);
     northPanel.add(topRight, BorderLayout.EAST);
 
     JPanel southPanel = new JPanel(new BorderLayout());
     southPanel.add(bottomLeft, BorderLayout.WEST);
-    southPanel.add(bottom, BorderLayout.CENTER);
+    southPanel.add(bottom);
     southPanel.add(bottomRight, BorderLayout.EAST);
 
     resizePanel.add(left, BorderLayout.WEST);
     resizePanel.add(right, BorderLayout.EAST);
     resizePanel.add(northPanel, BorderLayout.NORTH);
     resizePanel.add(southPanel, BorderLayout.SOUTH);
-    resizePanel.add(contentPanel, BorderLayout.CENTER);
+    resizePanel.add(contentPanel);
 
     titlePanel.setOpaque(false);
     northPanel.setOpaque(false);

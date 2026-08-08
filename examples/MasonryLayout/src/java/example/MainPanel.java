@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     masonryPanel = new MasonryPanel(new MasonryLayout(FIXED_COLUMNS, GAP));
     add(createToolBar(), BorderLayout.NORTH);
-    add(createScrollPane(), BorderLayout.CENTER);
+    add(createScrollPane());
     for (int i = 0; i < 9; i++) {
       addCard();
     }

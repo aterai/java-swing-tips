@@ -185,7 +185,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
 
     JPanel mainHolder = new JPanel(new BorderLayout());
     mainHolder.setBorder(createCellBorder());
-    mainHolder.add(swatchPanel, BorderLayout.CENTER);
+    mainHolder.add(swatchPanel);
 
     add(createOuterPanel(mainHolder, recentStr));
   }
@@ -212,7 +212,7 @@ class MySwatchChooserPanel extends AbstractColorChooserPanel {
     JPanel recentHolder = new JPanel(new BorderLayout());
     recentHolder.setBorder(createCellBorder());
     recentHolder.setInheritsPopupMenu(true);
-    recentHolder.add(recentSwatchPanel, BorderLayout.CENTER);
+    recentHolder.add(recentSwatchPanel);
 
     JLabel l = new JLabel(recentStr);
     l.setLabelFor(recentSwatchPanel);

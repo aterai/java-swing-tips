@@ -146,7 +146,7 @@ public final class MainPanel extends JPanel {
     JPanel panel = new JPanel(new ThreeColumnsLayout(0, 0));
     panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     panel.add(lsp, BorderLayout.WEST);
-    panel.add(box, BorderLayout.CENTER);
+    panel.add(box);
     panel.add(rsp, BorderLayout.EAST);
     return panel;
   }
