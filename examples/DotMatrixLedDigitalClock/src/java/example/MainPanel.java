@@ -19,25 +19,25 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  // private static final int COLUMN = 4;
-  // private static final int ROW = 5;
-  // private static final List<Set<Integer>> NUMBERS = Arrays.asList(
-  //     immutableSetOf(0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 16, 17, 18, 19), // 0
-  //     immutableSetOf(15, 16, 17, 18, 19), // 1
-  //     immutableSetOf(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 19), // 2
-  //     immutableSetOf(0, 2, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19), // 3
-  //     immutableSetOf(0, 1, 2, 7, 12, 15, 16, 17, 18, 19), // 4
-  //     immutableSetOf(0, 1, 2, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19), // 5
-  //     immutableSetOf(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19), // 6
-  //     immutableSetOf(0, 1, 2, 5, 10, 15, 16, 17, 18, 19), // 7
-  //     immutableSetOf(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19), // 8
-  //     immutableSetOf(0, 1, 2, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19)); // 9
-  // private static final List<Integer> DOT = Arrays.asList(1, 3);
+  // private static final int DIGIT_COLUMNS = 4;
+  // private static final int DIGIT_ROWS = 5;
+  // private static final List<Set<Integer>> DIGIT_PATTERNS = Arrays.asList(
+  //     Set.of(0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 16, 17, 18, 19), // 0
+  //     Set.of(15, 16, 17, 18, 19), // 1
+  //     Set.of(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 19), // 2
+  //     Set.of(0, 2, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19), // 3
+  //     Set.of(0, 1, 2, 7, 12, 15, 16, 17, 18, 19), // 4
+  //     Set.of(0, 1, 2, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19), // 5
+  //     Set.of(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19), // 6
+  //     Set.of(0, 1, 2, 5, 10, 15, 16, 17, 18, 19), // 7
+  //     Set.of(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19), // 8
+  //     Set.of(0, 1, 2, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19)); // 9
+  // private static final List<Integer> COLON_DOT_ROWS = Arrays.asList(1, 3);
   private static final int DIGIT_COLUMNS = 4;
   private static final int DIGIT_ROWS = 7;
-  // Each digit is a DIGIT_COLUMNS x DIGIT_ROWS dot matrix laid out column-major, i.e. the
-  // cell at (column, row) has index (column * DIGIT_ROWS + row). The set below lists the
-  // indices of the dots that must be lit to draw that digit's glyph.
+  // Each digit is a DIGIT_COLUMNS x DIGIT_ROWS dot matrix laid out column-major,
+  // i.e. the cell at (column, row) has index (column * DIGIT_ROWS + row). The set
+  // below lists the indices of the dots that must be lit to draw that digit's glyph.
   private static final List<Set<Integer>> DIGIT_PATTERNS = Arrays.asList(
       immutableSetOf(0, 1, 2, 3, 4, 5, 6, 7, 13, 14, 20, 21, 22, 23, 24, 25, 26, 27), // 0
       immutableSetOf(21, 22, 23, 24, 25, 26, 27), // 1
@@ -49,9 +49,9 @@ public final class MainPanel extends JPanel {
       immutableSetOf(0, 1, 2, 3, 7, 14, 21, 22, 23, 24, 25, 26, 27), // 7
       immutableSetOf(0, 1, 2, 3, 4, 5, 6, 7, 10, 13, 14, 17, 20, 21, 22, 23, 24, 25, 26, 27), // 8
       immutableSetOf(0, 1, 2, 3, 6, 7, 10, 13, 14, 17, 20, 21, 22, 23, 24, 25, 26, 27)); // 9
-  // private static final int COLUMN = 5;
-  // private static final int ROW = 7;
-  // private static final List<Set<Integer>> NUMBERS = Arrays.asList(
+  // private static final int DIGIT_COLUMNS = 5;
+  // private static final int DIGIT_ROWS = 7;
+  // private static final List<Set<Integer>> DIGIT_PATTERNS = Arrays.asList(
   //     Set.of(1, 2, 3, 4, 5, 7, 9, 13, 14, 17, 20, 21, 25, 27, 29, 30, 31, 32, 33), // 0
   //     Set.of(8, 13, 14, 15, 16, 17, 18, 19, 20, 27), // 1
   //     Set.of(1, 6, 7, 12, 13, 14, 18, 20, 21, 24, 27, 29, 30, 34), // 2
@@ -69,29 +69,35 @@ public final class MainPanel extends JPanel {
   private static final int LIST_GAP = 10;
   private static final Dimension HOUR_MIN_DOT_SIZE = new Dimension(10, 10);
   private static final Dimension SECONDS_DOT_SIZE = new Dimension(8, 8);
-  private static final Dimension PANEL_SIZE = new Dimension(320, 240);
   private transient HierarchyListener listener;
   private final Timer timer = new Timer(TIMER_DELAY_MS, null);
   private LocalTime time = LocalTime.now(ZoneId.systemDefault());
 
   private MainPanel() {
     super(new GridBagLayout());
-    DefaultListModel<Boolean> hoursMinutesModel = new DefaultListModel<Boolean>() {
+    ListModel<Boolean> hoursMinutesModel = new DefaultListModel<Boolean>() {
       @Override public Boolean getElementAt(int index) {
         return isHourMinuteDotLit(time, index);
       }
+
+      @Override public int getSize() {
+        return (DIGIT_COLUMNS * 4 + 5) * DIGIT_ROWS;
+      }
     };
-    hoursMinutesModel.setSize((DIGIT_COLUMNS * 4 + 5) * DIGIT_ROWS);
-    JList<Boolean> hoursMinutesList =
-        createLedDotMatrixList(hoursMinutesModel, HOUR_MIN_DOT_SIZE);
+    JList<Boolean> hoursMinutesList = createLedDotMatrixList(
+        hoursMinutesModel, HOUR_MIN_DOT_SIZE);
 
     DefaultListModel<Boolean> secondsModel = new DefaultListModel<Boolean>() {
       @Override public Boolean getElementAt(int index) {
         return isSecondDotLit(time, index);
       }
+
+      @Override public int getSize() {
+        return (DIGIT_COLUMNS * 2 + 1) * DIGIT_ROWS;
+      }
     };
-    secondsModel.setSize((DIGIT_COLUMNS * 2 + 1) * DIGIT_ROWS);
-    JList<Boolean> secondsList = createLedDotMatrixList(secondsModel, SECONDS_DOT_SIZE);
+    JList<Boolean> secondsList = createLedDotMatrixList(
+        secondsModel, SECONDS_DOT_SIZE);
 
     timer.addActionListener(e -> {
       time = LocalTime.now(ZoneId.systemDefault());
@@ -107,7 +113,7 @@ public final class MainPanel extends JPanel {
     box.add(secondsList);
     add(box);
     setBackground(Color.BLACK);
-    setPreferredSize(PANEL_SIZE);
+    setPreferredSize(new Dimension(320, 240));
   }
 
   // A cell only ever belongs to one block: DIGIT_PATTERNS values are all within
