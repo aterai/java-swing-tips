@@ -30,7 +30,10 @@ public final class MainPanel extends JPanel {
 
     JTable table = new JTable(500, 3);
     JScrollPane scroll2 = new JScrollPane(table);
-    SwingUtilities.invokeLater(() -> table.scrollRectToVisible(table.getCellRect(500, 0, true)));
+    SwingUtilities.invokeLater(() -> {
+      int max = table.getRowCount() - 1;
+      table.scrollRectToVisible(table.getCellRect(max, 0, true));
+    });
 
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.addTab("JTextArea", new JLayer<>(scroll1, new ScrollBackToTopLayerUI<>()));
@@ -74,16 +77,17 @@ class ScrollBackToTopIcon implements Icon {
     } else {
       g2.setPaint(arrowColor);
     }
-    float w2 = getIconWidth() / 2f;
-    float h2 = getIconHeight() / 2f;
-    float tw = w2 / 3f;
-    float th = h2 / 6f;
-    g2.setStroke(new BasicStroke(w2 / 2f));
-    Path2D p = new Path2D.Float();
-    p.moveTo(w2 - tw, h2 + th);
-    p.lineTo(w2, h2 - th);
-    p.lineTo(w2 + tw, h2 + th);
-    g2.draw(p);
+    float centerX = getIconWidth() / 2f;
+    float centerY = getIconHeight() / 2f;
+    float arrowHalfWidth = centerX / 3f;
+    float arrowHalfHeight = centerY / 6f;
+    g2.setStroke(new BasicStroke(centerX / 2f));
+    // Chevron (up-arrow) shape
+    Path2D arrow = new Path2D.Float();
+    arrow.moveTo(centerX - arrowHalfWidth, centerY + arrowHalfHeight);
+    arrow.lineTo(centerX, centerY - arrowHalfHeight);
+    arrow.lineTo(centerX + arrowHalfWidth, centerY + arrowHalfHeight);
+    g2.draw(arrow);
     g2.dispose();
   }
 
@@ -98,8 +102,9 @@ class ScrollBackToTopIcon implements Icon {
 
 class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
   private static final int GAP = 5;
+  // Dummy parent used only as the owner for SwingUtilities#paintComponent
   private final Container rubberStamp = new JPanel();
-  private final Point mousePt = new Point();
+  private final Point mousePoint = new Point();
   private final JButton button = new JButton(new ScrollBackToTopIcon()) {
     @Override public void updateUI() {
       super.updateUI();
@@ -130,7 +135,7 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
       updateButtonRect(scroll);
       if (scroll.getViewport().getViewRect().y > 0) {
-        button.getModel().setRollover(buttonRect.contains(mousePt));
+        button.getModel().setRollover(buttonRect.contains(mousePoint));
         SwingUtilities.paintComponent(g, button, rubberStamp, buttonRect);
       }
     }
@@ -154,34 +159,35 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
     JScrollPane scroll = l.getView();
-    Rectangle r = scroll.getViewport().getViewRect();
-    Point p = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), scroll);
-    mousePt.setLocation(p);
-    int id = e.getID();
-    if (id == MouseEvent.MOUSE_CLICKED) {
-      if (buttonRect.contains(mousePt)) {
+    Rectangle viewRect = scroll.getViewport().getViewRect();
+    Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), scroll);
+    mousePoint.setLocation(pt);
+    int eventId = e.getID();
+    if (eventId == MouseEvent.MOUSE_CLICKED) {
+      if (buttonRect.contains(mousePoint)) {
         scrollBackToTop(l.getView());
       }
-    } else if (id == MouseEvent.MOUSE_PRESSED && r.y > 0 && buttonRect.contains(mousePt)) {
+    } else if (eventId == MouseEvent.MOUSE_PRESSED
+        && viewRect.y > 0 && buttonRect.contains(mousePoint)) {
       e.consume();
     }
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
-    Point p = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), l.getView());
-    mousePt.setLocation(p);
-    l.getGlassPane().setVisible(buttonRect.contains(mousePt));
+    Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), l.getView());
+    mousePoint.setLocation(pt);
+    l.getGlassPane().setVisible(buttonRect.contains(mousePoint));
     l.repaint(buttonRect);
   }
 
   private void scrollBackToTop(JScrollPane scroll) {
-    JComponent c = (JComponent) scroll.getViewport().getView();
-    Rectangle current = scroll.getViewport().getViewRect();
+    JComponent view = (JComponent) scroll.getViewport().getView();
+    Rectangle target = scroll.getViewport().getViewRect();
     new Timer(20, e -> {
       Timer animator = (Timer) e.getSource();
-      if (0 < current.y && animator.isRunning()) {
-        current.y -= Math.max(1, current.y / 2);
-        c.scrollRectToVisible(current);
+      if (0 < target.y && animator.isRunning()) {
+        target.y -= Math.max(1, target.y / 2);
+        view.scrollRectToVisible(target);
       } else {
         animator.stop();
       }
@@ -221,10 +227,11 @@ class LineNumberView extends JPanel {
     super.updateUI();
     setOpaque(true);
     EventQueue.invokeLater(() -> {
-      Insets i = textArea.getMargin();
+      Insets textAreaMargin = textArea.getMargin();
       setBorder(BorderFactory.createCompoundBorder(
           BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
-          BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
+          BorderFactory.createEmptyBorder(
+              textAreaMargin.top, MARGIN, textAreaMargin.bottom, MARGIN - 1)));
       setBackground(textArea.getBackground());
     });
   }
@@ -232,8 +239,8 @@ class LineNumberView extends JPanel {
   private int getComponentWidth(FontMetrics fontMetrics) {
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Integer.toString(lineCount).length());
-    Insets i = getInsets();
-    return maxDigits * fontMetrics.stringWidth("0") + i.left + i.right;
+    Insets insets = getInsets();
+    return maxDigits * fontMetrics.stringWidth("0") + insets.left + insets.right;
   }
 
   private int getLineAtPoint(int y) {
@@ -257,18 +264,17 @@ class LineNumberView extends JPanel {
     Font font = textArea.getFont();
     g2.setFont(font);
     g2.setColor(getForeground());
-    int base = clip.y;
-    int start = getLineAtPoint(base);
-    int end = getLineAtPoint(base + clip.height);
+    int startLine = getLineAtPoint(clip.y);
+    int endLine = getLineAtPoint(clip.y + clip.height);
     FontMetrics fontMetrics = g2.getFontMetrics(font);
     int fontAscent = fontMetrics.getAscent();
     int fontDescent = fontMetrics.getDescent();
     int fontLeading = fontMetrics.getLeading();
-    int y = start * fontMetrics.getHeight();
-    int rmg = getInsets().right;
-    for (int i = start; i <= end; i++) {
-      String text = Integer.toString(i + 1);
-      int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
+    int y = startLine * fontMetrics.getHeight();
+    int rightMargin = getInsets().right;
+    for (int line = startLine; line <= endLine; line++) {
+      String text = Integer.toString(line + 1);
+      int x = getComponentWidth(fontMetrics) - rightMargin - fontMetrics.stringWidth(text);
       y += fontAscent;
       g2.drawString(text, x, y);
       y += fontDescent + fontLeading;
