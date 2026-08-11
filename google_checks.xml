@@ -470,6 +470,7 @@
                       RECORD_DEF, ANNOTATION_DEF"/>
       <property name="excludeScope" value="nothing"/>
     </module>
+    <module name="GoogleMethodName"/>
     -->
     <module name="MethodName">
       <property name="format"
@@ -502,6 +503,13 @@
     </module>
     <module name="CommentsIndentation">
       <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
+    </module>
+    <!-- module name="MultilineCommentLeadingAsteriskPresence"/ -->
+    <module name="SuppressionXpathSingleFilter">
+      <property name="checks" value="MultilineCommentLeadingAsteriskPresence"/>
+      <property name="query"
+                value="//BLOCK_COMMENT_BEGIN[preceding-sibling::RPAREN
+                and following-sibling::SEMI]"/>
     </module>
     <!-- https://checkstyle.org/filters/suppressionxpathfilter.html -->
     <module name="SuppressionXpathFilter">
