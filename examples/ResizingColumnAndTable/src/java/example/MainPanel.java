@@ -14,64 +14,29 @@ import javax.swing.table.TableColumnModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(0, 1));
-    JTable table = new JTable(100, 3) {
-      // https://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
-      // https://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
+    // https://stackoverflow.com/questions/16368343/jtable-resize-only-selected-column-when-container-size-changes
+    // https://stackoverflow.com/questions/23201818/jtable-columns-doesnt-resize-probably-when-jframe-resize
+    JTable resizeTable = new JTable(100, 3) {
       @Override public void doLayout() {
         if (getAutoResizeMode() == AUTO_RESIZE_LAST_COLUMN) {
+          // Force the last column to absorb the width change even when the
+          // JTableHeader itself is resized (e.g. via ancestor frame resizing).
           Optional.ofNullable(getTableHeader()).ifPresent(header -> {
             if (Objects.isNull(header.getResizingColumn())) {
-              TableColumnModel tcm = getColumnModel();
-              header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
+              TableColumnModel cm = getColumnModel();
+              header.setResizingColumn(cm.getColumn(cm.getColumnCount() - 1));
             }
           });
         }
         super.doLayout();
       }
     };
-    // table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-    add(makeTitledPanel("Normal JTable.AUTO_RESIZE_LAST_COLUMN", new JTable(100, 3)));
-    add(makeTitledPanel("Resize only last column when JTable resized", table));
-
-    // // TEST:
-    // JTable table1 = new JTable(100, 3) {
-    //   private transient ComponentListener resizeHandler;
-    //   @Override public void updateUI() {
-    //     removeComponentListener(resizeHandler);
-    //     super.updateUI();
-    //     resizeHandler = new ComponentAdapter() {
-    //       @Override public void componentResized(ComponentEvent e) {
-    //         Optional.ofNullable(getTableHeader()).ifPresent(header -> {
-    //           if (header.getResizingColumn() != null &&
-    //               getAutoResizeMode() == AUTO_RESIZE_LAST_COLUMN) {
-    //             TableColumnModel tcm = getColumnModel();
-    //             header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
-    //           }
-    //         });
-    //       }
-    //     };
-    //     addComponentListener(resizeHandler);
-    //   }
-    // };
-    // add(makeTitledPanel("JTable#addComponentListener(...)", table1));
-    //
-    // JTable table2 = new JTable(100, 3);
-    // table2.getTableHeader().addComponentListener(new ComponentAdapter() {
-    //   @Override public void componentResized(ComponentEvent e) {
-    //     Optional.ofNullable(table2.getTableHeader()).ifPresent(header -> {
-    //       if (header.getResizingColumn() == null
-    //           && table2.getAutoResizeMode() == JTable.AUTO_RESIZE_LAST_COLUMN) {
-    //         TableColumnModel tcm = table2.getColumnModel();
-    //         header.setResizingColumn(tcm.getColumn(tcm.getColumnCount() - 1));
-    //       }
-    //     });
-    //   }
-    // });
-    // add(makeTitledPanel("JTableHeader#addComponentListener(...)", table2));
+    add(createTitledPanel("Normal JTable.AUTO_RESIZE_LAST_COLUMN", new JTable(100, 3)));
+    add(createTitledPanel("Resize only last column when JTable resized", resizeTable));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeTitledPanel(String title, JTable table) {
+  private static Component createTitledPanel(String title, JTable table) {
     table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
