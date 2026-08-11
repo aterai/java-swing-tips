@@ -280,7 +280,7 @@ final class LookAndFeelUtils {
     Stream.of(UIManager.getInstalledLookAndFeels())
         .forEach(info -> {
           AbstractButton rb = makeButton(info, lnfName);
-          rb.addActionListener(e -> updateUI(popup));
+          rb.addActionListener(e -> updatePopupMenu(popup));
           bg.add(rb);
           box.add(rb);
         });
@@ -289,7 +289,7 @@ final class LookAndFeelUtils {
     return box;
   }
 
-  private static void updateUI(JPopupMenu popup) {
+  private static void updatePopupMenu(JPopupMenu popup) {
     EventQueue.invokeLater(() -> {
       SwingUtilities.updateComponentTreeUI(popup);
       popup.pack();

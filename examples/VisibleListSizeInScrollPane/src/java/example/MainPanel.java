@@ -13,12 +13,12 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    add(makeUI(null, 4));
-    add(makeUI("MMMMMMM", 4));
+    add(createLists(null, 4));
+    add(createLists("MMMMMMM", 4));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public Component makeUI(String prototypeValue, int visibleRowCount) {
+  public Component createLists(String prototypeValue, int visibleRowCount) {
     String[] model1 = IntStream.range(0, 20)
         .mapToObj(Objects::toString)
         .toArray(String[]::new);
