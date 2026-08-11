@@ -117,7 +117,6 @@ class RowSelectionTree extends JTree {
       g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
     });
   }
-
 }
 
 // class Handler extends DefaultTreeCellRenderer { // implements FocusListener {

@@ -234,7 +234,6 @@ class HeaderCheckBoxHandler extends MouseAdapter implements TableModelListener {
       model.setValueAt(selected, i, columnIndex);
     }
   }
-
 }
 
 enum Status {
