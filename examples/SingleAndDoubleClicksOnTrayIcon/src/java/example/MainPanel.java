@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> {
       Container top = getTopLevelAncestor();
       if (top instanceof Frame) {
-        makePopupMenu((Frame) top);
+        createPopupMenu((Frame) top);
       }
     });
   }
@@ -40,16 +40,16 @@ public final class MainPanel extends JPanel {
     lnf.show(tmp, 0, 0);
   }
 
-  private void makePopupMenu(Frame frame) {
+  private void createPopupMenu(Frame frame) {
     JPopupMenu lnfPop = new JPopupMenu();
     lnfPop.setLayout(new BorderLayout());
-    lnfPop.add(LookAndFeelUtils.makeLookAndFeelBox(lnfPop));
+    lnfPop.add(LookAndFeelUtils.createLookAndFeelBox(lnfPop));
     lnfPop.pack();
     JDialog tmp = new JDialog();
     tmp.setUndecorated(true);
     tmp.setAlwaysOnTop(true);
     Point loc = new Point();
-    TrayIcon icon = new TrayIcon(TrayIconUtils.makeDefaultImage(), "TRAY", null);
+    TrayIcon icon = new TrayIcon(TrayIconUtils.createDefaultImage(), "TRAY", null);
     icon.addMouseListener(new TrayIconPopupMenuHandler(popup, tmp));
     icon.addMouseListener(new MouseAdapter() {
       private final Timer timer = new Timer(500, e -> {
@@ -74,17 +74,17 @@ public final class MainPanel extends JPanel {
 
     // init JPopupMenu
     popup.addPopupMenuListener(new TemporaryParentPopupListener(tmp));
-    popup.add(makeLabel("Quick access", "Left-click")).addActionListener(e ->
+    popup.add(createLabel("Quick access", "Left-click")).addActionListener(e ->
         EventQueue.invokeLater(() -> openLookAndFeelBox(lnfPop, tmp, loc)));
-    popup.add(makeLabel("Settings", "Double-click")).addActionListener(e -> {
+    popup.add(createLabel("Settings", "Double-click")).addActionListener(e -> {
       frame.setExtendedState(Frame.NORMAL);
       frame.setVisible(true);
     });
     popup.addSeparator();
-    popup.add(makeLabel("Documentation", null));
-    popup.add(makeLabel("Report bug", null));
+    popup.add(createLabel("Documentation", null));
+    popup.add(createLabel("Report bug", null));
     popup.addSeparator();
-    popup.add(makeLabel("Exit", "")).addActionListener(e -> {
+    popup.add(createLabel("Exit", "")).addActionListener(e -> {
       SystemTray tray = SystemTray.getSystemTray();
       for (TrayIcon ti : tray.getTrayIcons()) {
         tray.remove(ti);
@@ -112,7 +112,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static String makeLabel(String title, String help) {
+  private static String createLabel(String title, String help) {
     int width = 150;
     String table = String.format("<html><table width='%d'>", width);
     String left = Objects.toString(title, "");
@@ -220,7 +220,7 @@ final class TrayIconUtils {
     return p;
   }
 
-  public static Image makeDefaultImage() {
+  public static Image createDefaultImage() {
     Icon icon = UIManager.getIcon("InternalFrame.icon");
     int w = icon.getIconWidth();
     int h = icon.getIconHeight();
@@ -293,7 +293,7 @@ final class LookAndFeelUtils {
   //   JMenu menu = new JMenu("LookAndFeel");
   //   ButtonGroup buttonGroup = new ButtonGroup();
   //   for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-  //     AbstractButton b = makeButton(info);
+  //     AbstractButton b = createButton(info);
   //     initLookAndFeelAction(info, b);
   //     menu.add(b);
   //     buttonGroup.add(b);
@@ -301,19 +301,19 @@ final class LookAndFeelUtils {
   //   return menu;
   // }
 
-  // private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  // private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
   //   boolean selected = info.getClassName().equals(lookAndFeel);
   //   return new JRadioButtonMenuItem(info.getName(), selected);
   // }
 
-  public static Component makeLookAndFeelBox(JPopupMenu popup) {
+  public static Component createLookAndFeelBox(JPopupMenu popup) {
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createVerticalBox();
     String lnfName = UIManager.getLookAndFeel().getClass().getName();
     Stream.of(UIManager.getInstalledLookAndFeels())
         .forEach(info -> {
-          AbstractButton rb = makeButton(info, lnfName);
-          rb.addActionListener(e -> updateUI(popup));
+          AbstractButton rb = createButton(info, lnfName);
+          rb.addActionListener(e -> updatePopupMenu(popup));
           bg.add(rb);
           box.add(rb);
         });
@@ -322,14 +322,14 @@ final class LookAndFeelUtils {
     return box;
   }
 
-  private static void updateUI(JPopupMenu popup) {
+  private static void updatePopupMenu(JPopupMenu popup) {
     EventQueue.invokeLater(() -> {
       SwingUtilities.updateComponentTreeUI(popup);
       popup.pack();
     });
   }
 
-  private static JRadioButton makeButton(UIManager.LookAndFeelInfo info, String laf) {
+  private static JRadioButton createButton(UIManager.LookAndFeelInfo info, String laf) {
     boolean selected = info.getClassName().equals(laf);
     JRadioButton rb = new JRadioButton(info.getName(), selected);
     initLookAndFeelAction(info, rb);

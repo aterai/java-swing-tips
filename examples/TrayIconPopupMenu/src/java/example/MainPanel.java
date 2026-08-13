@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     String msg = "SystemTray.isSupported(): " + SystemTray.isSupported();
     add(new JLabel(msg), BorderLayout.NORTH);
-    add(LookAndFeelUtils.makeLookAndFeelBox(popup));
+    add(LookAndFeelUtils.createLookAndFeelBox(popup));
     setPreferredSize(new Dimension(320, 240));
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
     // tmp.setAlwaysOnTop(true);
 
     String path = "example/16x16.png";
-    TrayIcon icon = new TrayIcon(TrayIconPopupMenuUtils.makeImage(path), "TRAY", null);
+    TrayIcon icon = new TrayIcon(TrayIconPopupMenuUtils.createImage(path), "TRAY", null);
     icon.addMouseListener(new TrayIconPopupMenuHandler(popup, tmp));
     try {
       SystemTray.getSystemTray().add(icon);
@@ -174,20 +174,20 @@ final class TrayIconPopupMenuUtils {
     return p;
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
       Image img;
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeDefaultTrayImage();
+        img = createDefaultTrayImage();
       }
       return img;
-    }).orElseGet(TrayIconPopupMenuUtils::makeDefaultTrayImage);
+    }).orElseGet(TrayIconPopupMenuUtils::createDefaultTrayImage);
   }
 
-  private static Image makeDefaultTrayImage() {
+  private static Image createDefaultTrayImage() {
     Icon icon = UIManager.getIcon("InternalFrame.icon");
     int w = icon.getIconWidth();
     int h = icon.getIconHeight();
@@ -260,7 +260,7 @@ final class LookAndFeelUtils {
   //   JMenu menu = new JMenu("LookAndFeel");
   //   ButtonGroup buttonGroup = new ButtonGroup();
   //   for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-  //     AbstractButton b = makeButton(info);
+  //     AbstractButton b = createButton(info);
   //     initLookAndFeelAction(info, b);
   //     menu.add(b);
   //     buttonGroup.add(b);
@@ -268,18 +268,18 @@ final class LookAndFeelUtils {
   //   return menu;
   // }
 
-  // private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  // private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
   //   boolean selected = info.getClassName().equals(lookAndFeel);
   //   return new JRadioButtonMenuItem(info.getName(), selected);
   // }
 
-  public static Component makeLookAndFeelBox(JPopupMenu popup) {
+  public static Component createLookAndFeelBox(JPopupMenu popup) {
     ButtonGroup bg = new ButtonGroup();
     Box box = Box.createVerticalBox();
     String lnfName = UIManager.getLookAndFeel().getClass().getName();
     Stream.of(UIManager.getInstalledLookAndFeels())
         .forEach(info -> {
-          AbstractButton rb = makeButton(info, lnfName);
+          AbstractButton rb = createButton(info, lnfName);
           rb.addActionListener(e -> updatePopupMenu(popup));
           bg.add(rb);
           box.add(rb);
@@ -296,7 +296,7 @@ final class LookAndFeelUtils {
     });
   }
 
-  private static JRadioButton makeButton(UIManager.LookAndFeelInfo info, String laf) {
+  private static JRadioButton createButton(UIManager.LookAndFeelInfo info, String laf) {
     boolean selected = info.getClassName().equals(laf);
     JRadioButton rb = new JRadioButton(info.getName(), selected);
     initLookAndFeelAction(info, rb);

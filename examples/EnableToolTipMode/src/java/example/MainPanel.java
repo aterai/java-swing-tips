@@ -37,12 +37,12 @@ public final class MainPanel extends JPanel {
     });
 
     add(panel, BorderLayout.NORTH);
-    add(makeUI());
+    add(createSamplePanel());
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeUI() {
+  private static Component createSamplePanel() {
     JLabel label = new JLabel("label");
     label.setToolTipText("JLabel");
 

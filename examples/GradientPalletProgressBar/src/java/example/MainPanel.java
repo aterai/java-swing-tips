@@ -18,14 +18,14 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(3, 1));
-    p.add(makeUI());
-    p.add(makeUI());
-    p.add(makeUI());
+    p.add(createProgressBarBox());
+    p.add(createProgressBarBox());
+    p.add(createProgressBarBox());
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeUI() {
+  private static Component createProgressBarBox() {
     JProgressBar progressBar = new JProgressBar() {
       @Override public void updateUI() {
         super.updateUI();
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       JButton b = (JButton) e.getSource();
       b.setEnabled(false);
-      SwingWorker<?, ?> worker = makeTask(b);
+      SwingWorker<?, ?> worker = createTask(b);
       worker.addPropertyChangeListener(new ProgressListener(progressBar));
       worker.execute();
     });
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static SwingWorker<?, ?> makeTask(JButton b) {
+  private static SwingWorker<?, ?> createTask(JButton b) {
     return new BackgroundTask() {
       @Override protected void done() {
         if (b.isDisplayable()) {
@@ -130,10 +130,10 @@ class GradientPalletProgressBarUI extends BasicProgressBarUI {
 
   protected GradientPalletProgressBarUI() {
     super();
-    this.pallet = makeGradientPallet();
+    this.pallet = createGradientPallet();
   }
 
-  private static int[] makeGradientPallet() {
+  private static int[] createGradientPallet() {
     BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = image.createGraphics();
     Point2D start = new Point2D.Float();

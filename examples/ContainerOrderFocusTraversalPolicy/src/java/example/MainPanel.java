@@ -15,12 +15,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     ButtonGroup group1 = new ButtonGroup();
-    Container p1 = makeUI(group1);
+    Container p1 = createButtons(group1);
     p1.setFocusTraversalPolicyProvider(true);
     p1.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy());
 
     ButtonGroup group2 = new ButtonGroup();
-    Container p2 = makeUI(group2);
+    Container p2 = createButtons(group2);
     p2.setFocusTraversalPolicyProvider(true);
     p2.setFocusTraversalPolicy(new ContainerOrderFocusTraversalPolicy() {
       @Override public Component getDefaultComponent(Container focusCycleRoot) {
@@ -35,14 +35,14 @@ public final class MainPanel extends JPanel {
     JTabbedPane tabbedPane = new JTabbedPane();
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabbedPane.setBorder(BorderFactory.createTitledBorder("FocusTraversalPolicy"));
-    tabbedPane.addTab("Layout", makeUI(new ButtonGroup()));
+    tabbedPane.addTab("Layout", createButtons(new ButtonGroup()));
     tabbedPane.addTab("ContainerOrder", p1);
     tabbedPane.addTab("ContainerOrder + ButtonGroup", p2);
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Container makeUI(ButtonGroup group) {
+  private Container createButtons(ButtonGroup group) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setFocusable(false);
     GridBagConstraints gbc = new GridBagConstraints();

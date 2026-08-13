@@ -40,7 +40,7 @@ public final class MainPanel extends JPanel {
     JCheckBox check3 = new JCheckBox("UIDefaults CheckBox[MouseOver].iconPainter") {
       @Override public void updateUI() {
         super.updateUI();
-        putClientProperty("Nimbus.Overrides", makeNimbusUIDefault());
+        putClientProperty("Nimbus.Overrides", createNimbusDefaults());
         putClientProperty("Nimbus.Overrides.InheritDefaults", true);
       }
     };
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static UIDefaults makeNimbusUIDefault() {
+  private static UIDefaults createNimbusDefaults() {
     UIDefaults d = UIManager.getLookAndFeelDefaults();
     Painter<JCheckBox> painter0 = getIconPainter(d, "Focused+Selected");
     Painter<JCheckBox> painter1 = getIconPainter(d, "MouseOver");
@@ -173,7 +173,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -181,7 +181,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
