@@ -36,6 +36,8 @@ public final class MainPanel extends JPanel {
       Logger.getGlobal().severe(ex::getMessage);
       return;
     }
+    UIManager.put("CircularSpinner.simpleColor", new Color(0x34_98_DB));
+    UIManager.put("CircularSpinner.materialColor", new Color(0xFF_00_00));
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
@@ -223,7 +225,7 @@ class SimpleStrokeSpinner extends AbstractSimpleSpinner {
   @Override protected void paintArc(Graphics2D g2, float x, float y, ArcAngles arc) {
     g2.setStroke(new BasicStroke(
         getStroke(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-    g2.setColor(new Color(0x34_98_DB));
+    g2.setColor(UIManager.getColor("CircularSpinner.simpleColor"));
     g2.draw(new Arc2D.Float(
         x, y, getDiameter(), getDiameter(),
         arc.getStartAngle(), arc.getSweepAngle(), Arc2D.OPEN));
@@ -240,7 +242,7 @@ class SimpleAreaSpinner extends AbstractSimpleSpinner {
     Area ring = createRing(x, y);
     g2.setColor(Color.LIGHT_GRAY);
     g2.fill(ring);
-    g2.setColor(new Color(0x34_98_DB));
+    g2.setColor(UIManager.getColor("CircularSpinner.simpleColor"));
     g2.fill(createArcArea(ring, arc.getStartAngle(), arc.getSweepAngle()));
   }
 }
@@ -254,7 +256,7 @@ class MaterialStrokeSpinner extends AbstractMaterialSpinner {
   @Override protected void paintArc(Graphics2D g2, float x, float y, ArcAngles arc) {
     g2.setStroke(new BasicStroke(
         getStroke(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-    g2.setColor(new Color(0xFF_00_00));
+    g2.setColor(UIManager.getColor("CircularSpinner.materialColor"));
     g2.draw(new Arc2D.Float(
         x, y, getDiameter(), getDiameter(),
         arc.getStartAngle(), arc.getSweepAngle(), Arc2D.OPEN));
@@ -271,7 +273,7 @@ class MaterialAreaSpinner extends AbstractMaterialSpinner {
     Area ring = createRing(x, y);
     g2.setColor(Color.LIGHT_GRAY);
     g2.fill(ring);
-    g2.setColor(new Color(0xFF_00_00));
+    g2.setColor(UIManager.getColor("CircularSpinner.materialColor"));
     g2.fill(createArcArea(ring, arc.getStartAngle(), arc.getSweepAngle()));
   }
 }
