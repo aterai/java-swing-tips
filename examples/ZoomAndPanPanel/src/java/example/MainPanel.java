@@ -31,7 +31,7 @@ public final class MainPanel extends JPanel {
       return i;
     }).orElseGet(MissingIcon::new);
 
-    add(new JScrollPane(new ZoomAndPanePanel(icon)));
+    add(new JScrollPane(new ZoomAndPanPanel(icon)));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -57,14 +57,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ZoomAndPanePanel extends JPanel {
+class ZoomAndPanPanel extends JPanel {
   private final AffineTransform zoomTransform = new AffineTransform();
   private final transient Icon icon;
   private final Rectangle imageRect;
-  private transient ZoomHandler handler;
-  private transient DragScrollListener listener;
+  private transient ZoomHandler zoomHandler;
+  private transient DragScrollListener dragListener;
 
-  protected ZoomAndPanePanel(Icon icon) {
+  protected ZoomAndPanPanel(Icon icon) {
     super();
     this.icon = icon;
     this.imageRect = new Rectangle(icon.getIconWidth(), icon.getIconHeight());
@@ -82,6 +82,7 @@ class ZoomAndPanePanel extends JPanel {
     icon.paintIcon(this, g2, 0, 0);
     // g2.drawImage(img, 0, 0, this);
 
+    // sample overlay in image coordinates, also affected by zoomTransform
     g2.setPaint(new Color(0x55_FF_00_00, true));
     Rectangle r = new Rectangle(500, 140, 150, 150);
     g2.fill(r);
@@ -105,43 +106,48 @@ class ZoomAndPanePanel extends JPanel {
   }
 
   @Override public void updateUI() {
-    removeMouseListener(listener);
-    removeMouseMotionListener(listener);
-    removeMouseWheelListener(handler);
+    removeMouseListener(dragListener);
+    removeMouseMotionListener(dragListener);
+    removeMouseWheelListener(zoomHandler);
     super.updateUI();
-    listener = new DragScrollListener();
-    addMouseListener(listener);
-    addMouseMotionListener(listener);
-    handler = new ZoomHandler();
-    addMouseWheelListener(handler);
+    dragListener = new DragScrollListener();
+    addMouseListener(dragListener);
+    addMouseMotionListener(dragListener);
+    zoomHandler = new ZoomHandler();
+    addMouseWheelListener(zoomHandler);
   }
 
   protected class ZoomHandler extends MouseAdapter {
     private static final double ZOOM_FACTOR = 1.2;
-    private static final int MIN = -10;
-    private static final int MAX = 10;
-    private static final int EXT = 1;
-    private final BoundedRangeModel range = new DefaultBoundedRangeModel(0, EXT, MIN, MAX + EXT);
+    private static final int MIN_ZOOM = -10;
+    private static final int MAX_ZOOM = 10;
+    private static final int EXTENT = 1;
+    private final BoundedRangeModel zoomRange = new DefaultBoundedRangeModel(
+        0, EXTENT, MIN_ZOOM, MAX_ZOOM + EXTENT);
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
-      double dir = e.getPreciseWheelRotation();
-      int z = range.getValue();
-      range.setValue(z + EXT * (dir > 0 ? -1 : 1));
-      if (z != range.getValue()) {
+      double rotation = e.getPreciseWheelRotation();
+      int oldZoom = zoomRange.getValue();
+      zoomRange.setValue(oldZoom + EXTENT * (rotation > 0 ? -1 : 1));
+      if (oldZoom != zoomRange.getValue()) {
         Component c = e.getComponent();
-        Container p = SwingUtilities.getAncestorOfClass(JViewport.class, c);
-        if (p instanceof JViewport) {
-          JViewport viewport = (JViewport) p;
-          Rectangle ovr = viewport.getViewRect();
-          double s = dir > 0 ? 1d / ZOOM_FACTOR : ZOOM_FACTOR;
-          zoomTransform.scale(s, s);
-          // double s = 1d + range.getValue() * .1;
-          // zoomTransform.setToScale(s, s);
-          AffineTransform at = AffineTransform.getScaleInstance(s, s);
-          Rectangle nvr = at.createTransformedShape(ovr).getBounds();
-          Point vp = nvr.getLocation();
-          vp.translate((nvr.width - ovr.width) / 2, (nvr.height - ovr.height) / 2);
-          viewport.setViewPosition(vp);
+        Container parent = SwingUtilities.getAncestorOfClass(JViewport.class, c);
+        if (parent instanceof JViewport) {
+          JViewport viewport = (JViewport) parent;
+          Rectangle oldViewRect = viewport.getViewRect();
+          double scale = rotation > 0 ? 1d / ZOOM_FACTOR : ZOOM_FACTOR;
+          zoomTransform.scale(scale, scale);
+          // double scale = 1d + zoomRange.getValue() * .1;
+          // zoomTransform.setToScale(scale, scale);
+          // scale the view rect the same way to keep the same view position
+          AffineTransform scaleTransform = AffineTransform.getScaleInstance(scale, scale);
+          Shape shape = scaleTransform.createTransformedShape(oldViewRect);
+          Rectangle newViewRect = shape.getBounds();
+          Point viewPosition = newViewRect.getLocation();
+          viewPosition.translate(
+              (newViewRect.width - oldViewRect.width) / 2,
+              (newViewRect.height - oldViewRect.height) / 2);
+          viewport.setViewPosition(viewPosition);
           c.revalidate();
           c.repaint();
         }
@@ -151,36 +157,36 @@ class ZoomAndPanePanel extends JPanel {
 }
 
 class DragScrollListener extends MouseAdapter {
-  private final Cursor defCursor = Cursor.getDefaultCursor();
-  private final Cursor hndCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  private final Point pp = new Point();
+  private final Cursor defaultCursor = Cursor.getDefaultCursor();
+  private final Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+  private final Point lastPoint = new Point();
 
   @Override public void mouseDragged(MouseEvent e) {
     Component c = e.getComponent();
-    Container p = SwingUtilities.getUnwrappedParent(c);
-    if (p instanceof JViewport) {
-      JViewport viewport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
-      Rectangle rect = viewport.getViewRect();
-      rect.translate(pp.x - cp.x, pp.y - cp.y);
-      ((JComponent) c).scrollRectToVisible(rect);
-      pp.setLocation(cp);
+    Container parent = SwingUtilities.getUnwrappedParent(c);
+    if (parent instanceof JViewport) {
+      JViewport viewport = (JViewport) parent;
+      Point currentPoint = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      Rectangle viewRect = viewport.getViewRect();
+      viewRect.translate(lastPoint.x - currentPoint.x, lastPoint.y - currentPoint.y);
+      ((JComponent) c).scrollRectToVisible(viewRect);
+      lastPoint.setLocation(currentPoint);
     }
   }
 
   @Override public void mousePressed(MouseEvent e) {
     Component c = e.getComponent();
-    c.setCursor(hndCursor);
-    Container p = SwingUtilities.getUnwrappedParent(c);
-    if (p instanceof JViewport) {
-      JViewport viewport = (JViewport) p;
-      Point cp = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
-      pp.setLocation(cp);
+    c.setCursor(handCursor);
+    Container parent = SwingUtilities.getUnwrappedParent(c);
+    if (parent instanceof JViewport) {
+      JViewport viewport = (JViewport) parent;
+      Point currentPoint = SwingUtilities.convertPoint(c, e.getPoint(), viewport);
+      lastPoint.setLocation(currentPoint);
     }
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    e.getComponent().setCursor(defCursor);
+    e.getComponent().setCursor(defaultCursor);
   }
 }
 
