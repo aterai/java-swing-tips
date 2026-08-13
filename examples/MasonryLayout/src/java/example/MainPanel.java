@@ -418,10 +418,10 @@ final class MasonryLayout implements LayoutManager {
   }
 
   /**
-   * Determine the possible layout width. If the parent container does not yet have a real size
-   * (Example: before {@code pack()}) uses temporary values based on the temporary number of columns
-   * and column width. Calling {@code parent.getPreferredSize()} causes its own recursive call. Do
-   * not use because
+   * Determine the available layout width. If the parent container does not yet have a real
+   * size (e.g., before {@code pack()}) uses temporary values based on the temporary
+   * number of columns and column width. Do not call {@code parent.getPreferredSize()},
+   * as this would result in a recursive call to the method itself.
    */
   private int resolveAvailableWidth(Container parent) {
     Insets insets = parent.getInsets();
@@ -432,11 +432,11 @@ final class MasonryLayout implements LayoutManager {
   }
 
   /**
-   * Determine the number of columns to use at the current width. In fixed number of columns mode,
-   * always returns that value. In Auto-fill mode, the {@code getMinimumSize()} width of visible
-   * child components Based on the maximum value, find the maximum number of columns that does not
-   * exceed {@code availableWidth} even if you include margins. If there are no children, there will
-   * be one column.
+   * Determine the number of columns to use at the current width. In fixed number
+   * of columns mode, always returns that value. In Auto-fill mode,
+   * the {@code getMinimumSize()} width of visible child components Based on the maximum
+   * value, find the maximum number of columns that does not exceed {@code availableWidth}
+   * even if you include margins. If there are no children, there will be one column.
    */
   private int resolveColumnCount(Container parent, int availableWidth) {
     int columns = columnCount;
@@ -456,8 +456,8 @@ final class MasonryLayout implements LayoutManager {
   }
 
   /**
-   * Returns the minimum {@code getMaximumSize()} width of visible child components. Do not make the
-   * column width larger than this (upper limit in Auto-fill mode).
+   * Returns the minimum {@code getMaximumSize()} width of visible child components.
+   * Do not make the column width larger than this (upper limit in Auto-fill mode).
    */
   private int resolveMaxColumnWidth(Container parent) {
     int maxWidth = Integer.MAX_VALUE;
@@ -471,8 +471,8 @@ final class MasonryLayout implements LayoutManager {
   }
 
   /**
-   * Calculate masonry placement. Only if {@code apply} is {@code true}, Actually set {@code bounds}
-   * of the component.
+   * Calculate masonry placement. Only if {@code apply} is {@code true}, Actually
+   * set {@code bounds} of the component.
    *
    * @return Height of each column after placement (value excluding extra gap at the end)
    */
