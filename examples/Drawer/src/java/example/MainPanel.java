@@ -178,7 +178,7 @@ public final class MainPanel extends JPanel {
       Logger.getGlobal().severe(ex::getMessage);
       return;
     }
-    JFrame frame = new JFrame("Drawer Demo");
+    JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
