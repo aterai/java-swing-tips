@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(new DefaultTableModel(10, 3));
     table.setRowHeight(24);
     table.setAutoCreateRowSorter(true);
-    add(new JLayer<>(new JScrollPane(table), new RowHeightResizeLayer()));
+    add(new JLayer<>(new JScrollPane(table), new RowHeightResizeLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -43,13 +43,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RowHeightResizeLayer extends LayerUI<JScrollPane> {
+// Resizes a JTable row by dragging near its bottom edge
+class RowHeightResizeLayerUI extends LayerUI<JScrollPane> {
   private static final int MIN_ROW_HEIGHT = 16;
   private static final Cursor RESIZE_CURSOR = Cursor
       .getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
-  private int mouseOffsetY;
+  private int pressOffsetY;
   private int resizingRow = -1;
-  private Cursor otherCursor = RESIZE_CURSOR;
+  private Cursor previousCursor = RESIZE_CURSOR;
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -72,7 +73,8 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
       JTable table = (JTable) c;
       resizingRow = getResizeTargetRow(table, e.getPoint());
       if (resizingRow >= 0) {
-        mouseOffsetY = e.getY() - table.getRowHeight(resizingRow);
+        pressOffsetY = e.getY() - table.getRowHeight(resizingRow);
+        // Consume so the boundary press does not change the row selection
         e.consume();
       }
     }
@@ -81,37 +83,41 @@ class RowHeightResizeLayer extends LayerUI<JScrollPane> {
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
     if (c instanceof JTable) {
-      updateRowHeight(e, (JTable) c);
+      handleMouseMotion(e, (JTable) c);
     }
   }
 
-  private void updateRowHeight(MouseEvent e, JTable table) {
+  private void handleMouseMotion(MouseEvent e, JTable table) {
     if (e.getID() == MouseEvent.MOUSE_MOVED) {
+      // Swap in the resize cursor near a row boundary, restore it otherwise
       Cursor curCursor = table.getCursor();
       boolean isResizing = RESIZE_CURSOR.equals(curCursor);
       int row = getResizeTargetRow(table, e.getPoint());
       if (row >= 0 != isResizing) {
-        table.setCursor(otherCursor);
-        otherCursor = curCursor;
+        table.setCursor(previousCursor);
+        previousCursor = curCursor;
       }
     } else if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-      int newHeight = e.getY() - mouseOffsetY;
+      int newHeight = e.getY() - pressOffsetY;
       if (newHeight > MIN_ROW_HEIGHT && resizingRow >= 0) {
         table.setRowHeight(resizingRow, newHeight);
       }
+      // Consume so dragging does not change the row selection
       e.consume();
     }
   }
 
+  // Returns the row whose boundary is under p, or -1 if not near one
   private int getResizeTargetRow(JTable table, Point p) {
     int row = table.rowAtPoint(p);
     int col = table.columnAtPoint(p);
     Rectangle r = table.getCellRect(row, col, false);
-    r.grow(0, -2);
-    return r.contains(p) ? -1 : getTargetRowIndex(p, r, row);
+    r.grow(0, -2); // Shrink the hit area so only the edge counts as a boundary
+    return r.contains(p) ? -1 : resolveRowIndex(p, r, row);
   }
 
-  private static int getTargetRowIndex(Point p, Rectangle r, int row) {
+  // Above center resizes the row above, below center resizes this row
+  private static int resolveRowIndex(Point p, Rectangle r, int row) {
     return p.y < r.getCenterY() ? row - 1 : row;
   }
 }
