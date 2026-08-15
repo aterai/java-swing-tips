@@ -26,7 +26,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    TableModel model = makeModel();
+    TableModel model = createModel();
     JTable table = new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
@@ -49,14 +49,14 @@ public final class MainPanel extends JPanel {
     // }
 
     @SuppressWarnings("PMD.UseConcurrentHashMap")
-    Map<Permissions, Integer> map = new EnumMap<>(Permissions.class);
-    map.put(Permissions.READ, 1 << 2);
-    map.put(Permissions.WRITE, 1 << 1);
-    map.put(Permissions.EXECUTE, 1);
+    Map<Permission, Integer> bitFlags = new EnumMap<>(Permission.class);
+    bitFlags.put(Permission.READ, 1 << 2);
+    bitFlags.put(Permission.WRITE, 1 << 1);
+    bitFlags.put(Permission.EXECUTE, 1);
 
     JLabel label = new JLabel();
     JButton button = new JButton("ls -l (chmod)");
-    button.addActionListener(e -> label.setText(getPermissionsText(model, map)));
+    button.addActionListener(e -> label.setText(createPermissionsText(model, bitFlags)));
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(label);
@@ -66,41 +66,42 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String getPermissionsText(TableModel model, Map<Permissions, Integer> map) {
-    StringBuilder numBuf = new StringBuilder(3);
-    StringBuilder buf = new StringBuilder(9);
+  private static String createPermissionsText(
+      TableModel model, Map<Permission, Integer> bitFlags) {
+    StringBuilder octalBuf = new StringBuilder(3);
+    StringBuilder rwxBuf = new StringBuilder(9);
     for (int i = 0; i < model.getRowCount(); i++) {
       Set<?> v = (Set<?>) model.getValueAt(i, 1);
-      int flg = 0;
-      if (v.contains(Permissions.READ)) {
-        flg |= map.get(Permissions.READ);
-        buf.append('r');
+      int bits = 0;
+      if (v.contains(Permission.READ)) {
+        bits |= bitFlags.get(Permission.READ);
+        rwxBuf.append('r');
       } else {
-        buf.append('-');
+        rwxBuf.append('-');
       }
-      if (v.contains(Permissions.WRITE)) {
-        flg |= map.get(Permissions.WRITE);
-        buf.append('w');
+      if (v.contains(Permission.WRITE)) {
+        bits |= bitFlags.get(Permission.WRITE);
+        rwxBuf.append('w');
       } else {
-        buf.append('-');
+        rwxBuf.append('-');
       }
-      if (v.contains(Permissions.EXECUTE)) {
-        flg |= map.get(Permissions.EXECUTE);
-        buf.append('x');
+      if (v.contains(Permission.EXECUTE)) {
+        bits |= bitFlags.get(Permission.EXECUTE);
+        rwxBuf.append('x');
       } else {
-        buf.append('-');
+        rwxBuf.append('-');
       }
-      numBuf.append(flg);
+      octalBuf.append(bits);
     }
-    return String.format(" %s -%s", numBuf, buf);
+    return String.format(" %s -%s", octalBuf, rwxBuf);
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
-        {"owner", EnumSet.allOf(Permissions.class)},
-        {"group", EnumSet.of(Permissions.READ)},
-        {"other", EnumSet.noneOf(Permissions.class)},
+        {"owner", EnumSet.allOf(Permission.class)},
+        {"group", EnumSet.of(Permission.READ)},
+        {"other", EnumSet.noneOf(Permission.class)},
     };
     return new DefaultTableModel(data, columnNames) {
       @Override public Class<?> getColumnClass(int column) {
@@ -131,107 +132,106 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum Permissions {
+enum Permission {
   EXECUTE, WRITE, READ
 }
 
 class CheckBoxesPanel extends JPanel {
-  private static final Color BGC = new Color(0x0, true);
-  private static final String[] MODE = {"r", "w", "x"};
-  private final List<JCheckBox> buttons = Stream.of(MODE).map(s -> {
+  private static final Color TRANSPARENT = new Color(0x0, true);
+  private static final String[] TITLES = {"r", "w", "x"};
+  private final List<JCheckBox> checkBoxes = Stream.of(TITLES).map(s -> {
     JCheckBox b = new JCheckBox(s);
     b.setOpaque(false);
     b.setFocusable(false);
     b.setRolloverEnabled(false);
-    b.setBackground(BGC);
+    b.setBackground(TRANSPARENT);
     return b;
   }).collect(Collectors.toList());
 
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(false);
-    setBackground(BGC);
+    setBackground(TRANSPARENT);
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    EventQueue.invokeLater(this::initButtons);
+    EventQueue.invokeLater(this::initCheckBoxes);
   }
 
-  protected String[] getTitles() {
-    return Arrays.copyOf(MODE, MODE.length);
+  protected String[] getModeTitles() {
+    return Arrays.copyOf(TITLES, TITLES.length);
   }
 
-  private void initButtons() {
+  private void initCheckBoxes() {
     removeAll();
-    for (JCheckBox b : buttons) {
+    for (JCheckBox b : checkBoxes) {
       add(b);
       add(Box.createHorizontalStrut(5));
     }
   }
 
-  protected void updateButtons(Object v) {
-    initButtons();
-    Set<?> f = v instanceof Set ? (Set<?>) v : EnumSet.noneOf(Permissions.class);
-    buttons.get(0).setSelected(f.contains(Permissions.READ));
-    buttons.get(1).setSelected(f.contains(Permissions.WRITE));
-    buttons.get(2).setSelected(f.contains(Permissions.EXECUTE));
+  protected void updateCheckBoxes(Object v) {
+    initCheckBoxes();
+    Set<?> f = v instanceof Set ? (Set<?>) v : EnumSet.noneOf(Permission.class);
+    checkBoxes.get(0).setSelected(f.contains(Permission.READ));
+    checkBoxes.get(1).setSelected(f.contains(Permission.WRITE));
+    checkBoxes.get(2).setSelected(f.contains(Permission.EXECUTE));
   }
 
-  protected void doClickCheckBox(String title) {
-    buttons.stream()
-        .filter(b -> b.getText().equals(title))
+  protected void doClickCheckBox(String text) {
+    checkBoxes.stream()
+        .filter(b -> b.getText().equals(text))
         .findFirst()
         .ifPresent(JCheckBox::doClick);
   }
 
-  protected Set<Permissions> getPermissionsValue() {
-    Set<Permissions> f = EnumSet.noneOf(Permissions.class);
-    if (buttons.get(0).isSelected()) {
-      f.add(Permissions.READ);
+  protected Set<Permission> getPermissions() {
+    Set<Permission> f = EnumSet.noneOf(Permission.class);
+    if (checkBoxes.get(0).isSelected()) {
+      f.add(Permission.READ);
     }
-    if (buttons.get(1).isSelected()) {
-      f.add(Permissions.WRITE);
+    if (checkBoxes.get(1).isSelected()) {
+      f.add(Permission.WRITE);
     }
-    if (buttons.get(2).isSelected()) {
-      f.add(Permissions.EXECUTE);
+    if (checkBoxes.get(2).isSelected()) {
+      f.add(Permission.EXECUTE);
     }
     return f;
   }
 }
 
 class CheckBoxesRenderer implements TableCellRenderer {
-  private final CheckBoxesPanel renderer = new CheckBoxesPanel();
+  private final CheckBoxesPanel panel = new CheckBoxesPanel();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    renderer.updateButtons(value);
-    return renderer;
+    panel.updateCheckBoxes(value);
+    return panel;
   }
-  // public static class UIResource extends CheckBoxesRenderer implements UIResource {}
 }
 
 class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
-  private final CheckBoxesPanel renderer = new CheckBoxesPanel();
+  private final CheckBoxesPanel panel = new CheckBoxesPanel();
 
   protected CheckBoxesEditor() {
     super();
-    String[] titles = renderer.getTitles();
-    ActionMap am = renderer.getActionMap();
+    String[] titles = panel.getModeTitles();
+    ActionMap am = panel.getActionMap();
     Stream.of(titles).forEach(t -> am.put(t, new AbstractAction(t) {
       @Override public void actionPerformed(ActionEvent e) {
-        renderer.doClickCheckBox(t);
+        panel.doClickCheckBox(t);
         fireEditingStopped();
       }
     }));
-    InputMap im = renderer.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    InputMap im = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), titles[0]);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), titles[1]);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), titles[2]);
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    renderer.updateButtons(value);
-    return renderer;
+    panel.updateCheckBoxes(value);
+    return panel;
   }
 
   @Override public Object getCellEditorValue() {
-    return renderer.getPermissionsValue();
+    return panel.getPermissions();
   }
 }
