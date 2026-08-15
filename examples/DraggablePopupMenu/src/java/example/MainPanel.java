@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box.add(Box.createHorizontalGlue());
-    box.add(makePopupButton());
+    box.add(createPopupToggleButton());
     box.add(Box.createHorizontalStrut(4));
     box.add(new JLabel("JFrame Footer"));
     box.add(Box.createHorizontalStrut(16));
@@ -27,7 +27,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static AbstractButton makePopupButton() {
+  private static AbstractButton createPopupToggleButton() {
     JPopupMenu popup = makePopup();
     String title = "JToggleButton";
     return MenuToggleButton.makePopupButton(popup, title, null);
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
 
   private static JPopupMenu makePopup() {
     JPopupMenu popup = new JPopupMenu();
-    popup.add(new PopupMenuHeader("Header"));
+    popup.add(new DraggablePopupHeader("Header"));
     popup.add("JMenuItem");
     popup.addSeparator();
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
@@ -69,20 +69,20 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class PopupMenuHeader extends JLabel {
-  private transient MouseAdapter listener;
+class DraggablePopupHeader extends JLabel {
+  private transient MouseAdapter dragListener;
 
-  protected PopupMenuHeader(String text) {
+  protected DraggablePopupHeader(String text) {
     super(text, CENTER);
   }
 
   @Override public void updateUI() {
-    removeMouseListener(listener);
-    removeMouseMotionListener(listener);
+    removeMouseListener(dragListener);
+    removeMouseMotionListener(dragListener);
     super.updateUI();
-    listener = new PopupHeaderMouseListener();
-    addMouseListener(listener);
-    addMouseMotionListener(listener);
+    dragListener = new DraggablePopupHeaderMouseListener();
+    addMouseListener(dragListener);
+    addMouseMotionListener(dragListener);
     // header.setAlignmentX(Component.CENTER_ALIGNMENT);
     setOpaque(true);
     Color color = UIManager.getColor("Label.background");
@@ -102,15 +102,15 @@ class PopupMenuHeader extends JLabel {
   }
 }
 
-class PopupHeaderMouseListener extends MouseAdapter {
-  private final Point startPt = new Point();
+class DraggablePopupHeaderMouseListener extends MouseAdapter {
+  private final Point startPoint = new Point();
 
   @Override public void mousePressed(MouseEvent e) {
     if (SwingUtilities.isLeftMouseButton(e)) {
       Component c = e.getComponent();
       Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, c);
       SwingUtilities.convertMouseEvent(c, e, popup);
-      startPt.setLocation(e.getPoint());
+      startPoint.setLocation(e.getPoint());
     }
   }
 
@@ -120,11 +120,11 @@ class PopupHeaderMouseListener extends MouseAdapter {
       Window w = SwingUtilities.getWindowAncestor(c);
       if (w != null && w.getType() == Window.Type.POPUP) { // Popup$HeavyWeightWindow
         Point pt = e.getLocationOnScreen();
-        w.setLocation(pt.x - startPt.x, pt.y - startPt.y);
+        w.setLocation(pt.x - startPoint.x, pt.y - startPoint.y);
       } else { // Popup$LightWeightWindow
         Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, c);
         Point pt = popup.getLocationOnScreen();
-        popup.setLocation(pt.x - startPt.x + e.getX(), pt.y - startPt.y + e.getY());
+        popup.setLocation(pt.x - startPoint.x + e.getX(), pt.y - startPoint.y + e.getY());
       }
     }
   }
