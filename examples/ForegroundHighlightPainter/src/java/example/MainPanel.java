@@ -28,6 +28,7 @@ import javax.swing.text.View;
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
   private static final String ECHO_CHAR_KEY = "PasswordField.echoChar";
+  private static final Color TRANSPARENT = new Color(0x0, true);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -51,8 +52,8 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         Color fg = UIManager.getColor("TextField.foreground");
-        setForeground(new Color(0x0, true));
-        setSelectedTextColor(new Color(0x0, true));
+        setForeground(TRANSPARENT);
+        setSelectedTextColor(TRANSPARENT);
         Highlighter.HighlightPainter painter0 = new ForegroundPainter(fg);
         Highlighter.HighlightPainter painter1 = new ForegroundPainter(Color.RED);
         Highlighter highlighter = getHighlighter();
@@ -132,6 +133,8 @@ public final class MainPanel extends JPanel {
 }
 
 class DigitHighlightPasswordField extends JPasswordField {
+  private static final Color TRANSPARENT = new Color(0x0, true);
+
   protected DigitHighlightPasswordField(int columns) {
     super(columns);
   }
@@ -162,8 +165,8 @@ class DigitHighlightPasswordField extends JPasswordField {
   private void updateHighlightFilter(AbstractDocument doc) {
     boolean reveal = getEchoChar() == 0; // '\u0000';
     if (reveal) {
-      setForeground(new Color(0x0, true));
-      setSelectedTextColor(new Color(0x0, true));
+      setForeground(TRANSPARENT);
+      setSelectedTextColor(TRANSPARENT);
       doc.setDocumentFilter(new HighlightFilter(this));
       try {
         doc.remove(0, 0);
