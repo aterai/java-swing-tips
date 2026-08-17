@@ -100,7 +100,11 @@
            includeAntRuntime="no"
            fork="true"
            classpathref="project.class.path">
-      <compilerarg value="-J-Dfile.encoding=${compile.encoding}" />
+      <compilerarg value="-J-Dfile.encoding=UTF-8" />
+      <!-- JDK18+: System.out/err use stdout/stderr.encoding (default: native.encoding), not file.encoding -->
+      <!-- UTF-8 is the only value these two properties officially accept on the command line -->
+      <compilerarg value="-J-Dstdout.encoding=UTF-8" />
+      <compilerarg value="-J-Dstderr.encoding=UTF-8" />
       <compilerarg value="-J-Duser.language=${user.language}" />
       <compilerarg value="-J-Duser.country=${user.country}" />
       <compilerarg value="--add-exports=java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" if:set="jdk9orlater" />
@@ -114,7 +118,8 @@
   <!-- =================================================================== -->
   <target name="run" depends="compile">
     <java classname="${main.class}" classpathref="project.class.path" fork="true">
-      <jvmarg value="-Dfile.encoding=${compile.encoding}" />
+      <!-- JDK18+: file.encoding defaults to UTF-8, so this is redundant (JEP 400) -->
+      <!-- <jvmarg value="-Dfile.encoding=${compile.encoding}" /> -->
       <jvmarg value="-Duser.language=${user.language}" />
       <jvmarg value="-Duser.country=${user.country}" />
       <jvmarg value="--add-opens=java.desktop/javax.swing=ALL-UNNAMED" if:set="jdk9orlater" />
@@ -294,7 +299,13 @@
       <compilerarg pathref="processorpath.ref" />
       <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR -Xep:MultipleTopLevelClasses:OFF" />
       <compilerarg value="-XDaddTypeAnnotationsToSymbol=true" />
+      <compilerarg value="-J-Duser.language=${user.language}" />
+      <compilerarg value="-J-Duser.country=${user.country}" />
       <compilerarg value="-J-Dfile.encoding=UTF-8" />
+      <!-- JDK18+: System.out/err use stdout/stderr.encoding (default: native.encoding), not file.encoding -->
+      <!-- UTF-8 is the only value these two properties officially accept on the command line -->
+      <compilerarg value="-J-Dstdout.encoding=UTF-8" />
+      <compilerarg value="-J-Dstderr.encoding=UTF-8" />
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED" if:set="jdk9orlater" />
       <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED" if:set="jdk9orlater" />
