@@ -339,7 +339,7 @@ class CloseableTabIconHandler extends MouseAdapter {
    * <br/>
    * Due to platform-dependent Drag&Drop implementations,
    * <code>MOUSE_DRAGGED</code> events may not be delivered during a native
-   * Drag&amp;Drop operation.
+   * {@literal Drag&Drop} operation.
    *
    * @param e  the <code>MouseEvent</code>
    */

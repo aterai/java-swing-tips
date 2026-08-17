@@ -132,7 +132,7 @@ public final class MainPanel extends JPanel {
    * collapsing any gap between those visible pages into a single
    * {@link #ELLIPSIS} entry.
    *
-   * <p>e.g. {@code currentPageIndex=12, maxPageIndex=21} -&gt;
+   * <p>e.g. {@code currentPageIndex=12, maxPageIndex=21} →
    * {@code 1 2 ... 10 11 12 13 14 ... 20 21}
    */
   private static List<Integer> createPageIndexList(int currentPageIndex, int maxPageIndex) {
