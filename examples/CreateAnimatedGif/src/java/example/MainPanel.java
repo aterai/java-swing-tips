@@ -124,7 +124,7 @@ public final class MainPanel extends JPanel {
     // last two bytes is an unsigned short (little endian) that
     // indicates the number of times to loop.
     // 0 means loop forever.
-    ae.setUserObject(new byte[]{0x1, 0x0, 0x0});
+    ae.setUserObject(new byte[] {0x1, 0x0, 0x0});
     IIOMetadataNode aes = new IIOMetadataNode("ApplicationExtensions");
     aes.appendChild(ae);
     return aes;

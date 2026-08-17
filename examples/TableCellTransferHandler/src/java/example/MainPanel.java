@@ -176,7 +176,7 @@ class CellIconTransferHandler extends TransferHandler {
     Object transferData = o;
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
-        return new DataFlavor[]{ICON_FLAVOR};
+        return new DataFlavor[] {ICON_FLAVOR};
       }
 
       @Override public boolean isDataFlavorSupported(DataFlavor flavor) {

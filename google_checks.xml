@@ -209,6 +209,7 @@
                                    may only be represented as '{}' when not part of a
                                    multi-block statement (4.1.3)"/>
     </module>
+    <module name="ArrayBracketNoWhitespace"/>
     <module name="SingleSpaceSeparator"/>
     <module name="OneStatementPerLine"/>
     <module name="MultipleVariableDeclarations"/>
@@ -295,12 +296,14 @@
                value="Record component name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="LocalVariableName">
-      <property name="format" value="^(_|[a-z]([a-z0-9][a-zA-Z0-9]*)?)$"/>
+      <property name="format"
+                value="^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$"/>
       <message key="name.invalidPattern"
              value="Local variable name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="LocalFinalVariableName">
-      <property name="format" value="^(_|[a-z]([a-z0-9][a-zA-Z0-9]*)?)$"/>
+      <property name="format"
+                value="^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$"/>
       <property name="tokens" value="VARIABLE_DEF, PARAMETER_DEF, RESOURCE"/>
       <message key="name.invalidPattern"
                value="Local final variable name ''{0}'' must match pattern ''{1}''."/>
