@@ -46,7 +46,7 @@ class ColorChooserTable extends JTable {
   private transient TableModelListener listener;
 
   protected ColorChooserTable() {
-    super(makeModel());
+    super(createModel());
   }
 
   @Override public void updateUI() {
@@ -61,20 +61,20 @@ class ColorChooserTable extends JTable {
         String key = Objects.toString(model.getValueAt(row, KEY_COL_IDX));
         Color color = (Color) model.getValueAt(row, COLOR_COL_IDX);
         UIManager.put(key, new ColorUIResource(color));
-        updateComponentTreeUI();
+        refreshComponentTree();
       }
     };
     getModel().addTableModelListener(listener);
   }
 
-  private void updateComponentTreeUI() {
+  private void refreshComponentTree() {
     EventQueue.invokeLater(() -> {
       Container c = getTopLevelAncestor();
       Optional.ofNullable(c).ifPresent(SwingUtilities::updateComponentTreeUI);
     });
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"Key", "Color"};
     Object[][] data = {
         {"activeCaption", UIManager.getColor("activeCaption")},
@@ -166,7 +166,8 @@ class ColorEditor extends AbstractCellEditor implements TableCellEditor, ActionL
 
     // Set up the dialog that the button brings up.
     colorChooser = new JColorChooser();
-    dialog = JColorChooser.createDialog(button, "Pick a Color", true, colorChooser, this, null);
+    String title = "Pick a Color";
+    dialog = JColorChooser.createDialog(button, title, true, colorChooser, this, null);
   }
 
   /**
