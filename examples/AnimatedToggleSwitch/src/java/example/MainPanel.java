@@ -191,6 +191,7 @@ class SliderToggleSwitchUI extends BasicSliderUI {
     private boolean thumbPressed;
     private int pressedValue;
 
+    @SuppressWarnings("ReturnCount")
     @Override public void mousePressed(MouseEvent e) {
       if (!slider.isEnabled() || !SwingUtilities.isLeftMouseButton(e)) {
         return;
