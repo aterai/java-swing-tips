@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
     // UIManager.put("MenuItem.border", BorderFactory.createEmptyBorder(2, 2, 2, 2));
     UIManager.put("MenuItem.borderPainted", false);
 
-    JMenu sub = makeMenu();
+    JMenu sub = createMenu();
     sub.setMnemonic('M');
     KeyStroke ks1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, 0);
     KeyStroke ks2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.CTRL_DOWN_MASK);
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     mb.add(sub);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
-    JPopupMenu popup = makePopupMenu();
+    JPopupMenu popup = createPopupMenu();
     popup.add("MenuItem4").setAccelerator(ks1);
     popup.add("MenuItem5").setAccelerator(ks2);
     popup.add("MenuItem6").setAccelerator(ks3);
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPopupMenu makePopupMenu() {
+  private static JPopupMenu createPopupMenu() {
     return new JPopupMenu() {
       @Override public JMenuItem add(String s) {
         return add(new JMenuItem(s) {
@@ -71,7 +71,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JMenu makeMenu() {
+  private static JMenu createMenu() {
     return new JMenu("JMenu(M)") {
       @Override public JMenuItem add(String s) {
         return add(new JMenuItem(s) {
@@ -124,7 +124,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -132,7 +132,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
@@ -175,7 +175,8 @@ class BasicRoundMenuItemUI extends BasicMenuItemUI {
     int menuWidth = menuItem.getWidth();
     int menuHeight = menuItem.getHeight();
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     boolean isSelected = menuItem instanceof JMenu && model.isSelected();
     if (menuItem.isOpaque()) {
       if (isSelected || model.isArmed()) {
@@ -221,13 +222,13 @@ class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
       g2.setPaint(Color.WHITE);
       g2.fillRoundRect(0, 0, width, height, 8, 8);
       g2.setComposite(AlphaComposite.SrcAtop);
-      super.paintMenuItem(g2, c, checkIcon, arrowIcon,
-          background, foreground, defTextIconGap);
+      super.paintMenuItem(
+          g2, c, checkIcon, arrowIcon, background, foreground, defTextIconGap);
       g2.dispose();
       g.drawImage(buffer, 0, 0, c);
     } else {
-      super.paintMenuItem(g, c, checkIcon, arrowIcon,
-          background, foreground, defTextIconGap);
+      super.paintMenuItem(
+          g, c, checkIcon, arrowIcon, background, foreground, defTextIconGap);
     }
   }
 }
@@ -243,11 +244,11 @@ class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
     ButtonModel model = ((JMenuItem) c).getModel();
     boolean isSelected = c instanceof JMenu && model.isSelected();
     if (isSelected || model.isArmed()) {
-      paintSelectedMenuItem(g, c, checkIcon, arrowIcon,
-          background, foreground, defTextIconGap);
+      paintSelectedMenuItem(
+          g, c, checkIcon, arrowIcon, background, foreground, defTextIconGap);
     } else {
-      super.paintMenuItem(g, c, checkIcon, arrowIcon,
-          background, foreground, defTextIconGap);
+      super.paintMenuItem(
+          g, c, checkIcon, arrowIcon, background, foreground, defTextIconGap);
     }
   }
 
@@ -282,8 +283,8 @@ class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
         g2.setPaint(Color.WHITE);
         g2.fillRoundRect(0, 0, width, height, 8, 8);
         g2.setComposite(AlphaComposite.SrcAtop);
-        super.paintMenuItem(g2, c, checkIcon, arrowIcon,
-            background, foreground, defTextIconGap);
+        super.paintMenuItem(
+            g2, c, checkIcon, arrowIcon, background, foreground, defTextIconGap);
         g2.dispose();
       }
     } while (buffer.contentsLost());
