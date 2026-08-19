@@ -199,27 +199,35 @@ class BasicRoundMenuItemUI extends BasicMenuItemUI {
 class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
   private BufferedImage buffer;
 
-  @Override protected void paintBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
-    ButtonModel model = menuItem.getModel();
-    boolean isSelected = menuItem instanceof JMenu && model.isSelected();
+  // Note: JDK-8348760 (backported to 21.0.12) makes WindowsMenuItemUI bypass
+  // the protected paintBackground(...) when Vista painting is active,
+  // so override paintMenuItem(...) instead
+  @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon,
+      Icon arrowIcon, Color background, Color foreground, int defTextIconGap) {
+    ButtonModel model = ((JMenuItem) c).getModel();
+    boolean isSelected = c instanceof JMenu && model.isSelected();
     if (isSelected || model.isArmed()) {
-      int width = menuItem.getWidth();
-      int height = menuItem.getHeight();
+      int width = c.getWidth();
+      int height = c.getHeight();
       if (buffer == null || buffer.getWidth() != width || buffer.getHeight() != height) {
         buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       }
       Graphics2D g2 = buffer.createGraphics();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      // g2.setComposite(AlphaComposite.Clear);
-      // g2.fillRect(0, 0, width, height);
-      // g2.setComposite(AlphaComposite.Src);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setComposite(AlphaComposite.Clear);
+      g2.fillRect(0, 0, width, height);
+      g2.setPaintMode(); // g2.setComposite(AlphaComposite.Src);
+      g2.setPaint(Color.WHITE);
       g2.fillRoundRect(0, 0, width, height, 8, 8);
       g2.setComposite(AlphaComposite.SrcAtop);
-      super.paintBackground(g2, menuItem, bgColor);
+      super.paintMenuItem(g2, c, checkIcon, arrowIcon,
+          background, foreground, defTextIconGap);
       g2.dispose();
-      g.drawImage(buffer, 0, 0, menuItem);
+      g.drawImage(buffer, 0, 0, c);
     } else {
-      super.paintBackground(g, menuItem, bgColor);
+      super.paintMenuItem(g, c, checkIcon, arrowIcon,
+          background, foreground, defTextIconGap);
     }
   }
 }
@@ -227,19 +235,26 @@ class WindowsRoundMenuItemUI extends WindowsMenuItemUI {
 class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
   private VolatileImage buffer;
 
-  @Override protected void paintBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
-    ButtonModel model = menuItem.getModel();
-    boolean isSelected = menuItem instanceof JMenu && model.isSelected();
+  // Note: JDK-8348760 (backported to 21.0.12) makes WindowsMenuItemUI bypass
+  // the protected paintBackground(...) when Vista painting is active,
+  // so override paintMenuItem(...) instead
+  @Override protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon,
+      Icon arrowIcon, Color background, Color foreground, int defTextIconGap) {
+    ButtonModel model = ((JMenuItem) c).getModel();
+    boolean isSelected = c instanceof JMenu && model.isSelected();
     if (isSelected || model.isArmed()) {
-      paintSelectedBackground(g, menuItem, bgColor);
+      paintSelectedMenuItem(g, c, checkIcon, arrowIcon,
+          background, foreground, defTextIconGap);
     } else {
-      super.paintBackground(g, menuItem, bgColor);
+      super.paintMenuItem(g, c, checkIcon, arrowIcon,
+          background, foreground, defTextIconGap);
     }
   }
 
-  private void paintSelectedBackground(Graphics g, JMenuItem menuItem, Color bgColor) {
-    int width = menuItem.getWidth();
-    int height = menuItem.getHeight();
+  private void paintSelectedMenuItem(Graphics g, JComponent c, Icon checkIcon,
+      Icon arrowIcon, Color background, Color foreground, int defTextIconGap) {
+    int width = c.getWidth();
+    int height = c.getHeight();
     GraphicsConfiguration config = ((Graphics2D) g).getDeviceConfiguration();
     // VolatileImage buffer = config.createCompatibleVolatileImage(
     //     width, height, Transparency.TRANSLUCENT);
@@ -248,26 +263,30 @@ class WindowsRoundedMenuItemUI extends WindowsMenuItemUI {
       if (buffer != null) {
         status = buffer.validate(config);
       }
-      if (status == VolatileImage.IMAGE_INCOMPATIBLE || status == VolatileImage.IMAGE_RESTORED) {
+      if (status == VolatileImage.IMAGE_INCOMPATIBLE
+          || status == VolatileImage.IMAGE_RESTORED) {
         if (buffer == null
             || buffer.getWidth() != width || buffer.getHeight() != height
             || status == VolatileImage.IMAGE_INCOMPATIBLE) {
           // if (buffer != null) { buffer.flush(); }
           Optional.ofNullable(buffer).ifPresent(Image::flush);
-          buffer = config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
+          buffer = config.createCompatibleVolatileImage(
+              width, height, Transparency.TRANSLUCENT);
         }
         Graphics2D g2 = buffer.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setComposite(AlphaComposite.Clear);
         g2.fillRect(0, 0, width, height);
         g2.setPaintMode(); // g2.setComposite(AlphaComposite.Src);
         g2.setPaint(Color.WHITE);
         g2.fillRoundRect(0, 0, width, height, 8, 8);
         g2.setComposite(AlphaComposite.SrcAtop);
-        super.paintBackground(g2, menuItem, bgColor);
+        super.paintMenuItem(g2, c, checkIcon, arrowIcon,
+            background, foreground, defTextIconGap);
         g2.dispose();
       }
     } while (buffer.contentsLost());
-    g.drawImage(buffer, 0, 0, menuItem);
+    g.drawImage(buffer, 0, 0, c);
   }
 }
