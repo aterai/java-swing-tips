@@ -145,6 +145,7 @@
         <attribute name="Implementation-Version" value="${version}" />
         <attribute name="Implementation-Vendor"  value="${vendor}" />
         <attribute name="Build-Id" value="${ts} (${user.name} [${os.name} ${os.version} ${os.arch}])" />
+        <attribute name="Add-Opens" value="java.desktop/com.sun.java.swing.plaf.windows" />
       </manifest>
     </jar>
   </target>
