@@ -77,6 +77,10 @@ class GlowingBorder extends EmptyBorder {
   private static final float ORIGIN_Y = .50f;
   private static final double ROTATION_SPEED = 1d / 120d;
   private static final float[] FRACTIONS = {0f, .04f, .13f, .22f, 1f};
+  // VS Code input field background color style
+  private static final Color INPUT_BG_COLOR = new Color(0x25_25_26);
+  // VS Code default border color style
+  private static final Color BORDER_COLOR = new Color(0x3C_3C_3C);
   private static final Color[] COLORS = {
       new Color(0x00_00_7A_CC, true),
       new Color(0xBF_00_7A_CC, true),
@@ -161,12 +165,10 @@ class GlowingBorder extends EmptyBorder {
     // → Draw only inside the borderMask (alpha=255),
     //   outside the shape (alpha=0) remains unchanged
     g2.setComposite(AlphaComposite.SrcAtop);
-    // VS Code input field background color style
-    g2.setColor(new Color(0x25_25_26));
+    g2.setColor(INPUT_BG_COLOR);
     g2.fill(borderMask);
 
-    // VS Code default border color style
-    g2.setColor(new Color(0x3C_3C_3C));
+    g2.setColor(BORDER_COLOR);
     g2.draw(outer);
     g2.draw(inner);
 
