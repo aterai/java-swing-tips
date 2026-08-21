@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Path2D;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -115,8 +116,11 @@ enum HexagonOrientation {
 // Hexagon button component
 class HexagonButton extends JButton {
   private static final int VERTICES = 6;
+  // Widest stroke used to draw the hexagon outline
+  private static final float BORDER_WIDTH = 3f;
   private final HexagonOrientation orientation;
-  private Polygon hexagon;
+  private final Dimension hexagonSize = new Dimension();
+  private transient Shape hexagon;
   private boolean isHovered;
   private transient MouseListener hoverHandler;
 
@@ -146,38 +150,58 @@ class HexagonButton extends JButton {
     addMouseListener(hoverHandler);
   }
 
-  // Recalculate the hexagon polygon to fill the component bounds exactly.
+  // Recalculate the hexagon shape only when the component size has changed.
+  private Shape getHexagon() {
+    Dimension d = getSize();
+    if (hexagon == null || !hexagonSize.equals(d)) {
+      hexagonSize.setSize(d);
+      hexagon = createHexagon();
+    }
+    return hexagon;
+  }
+
+  // Create a hexagon that fits inside the component bounds.
   // The circumradius R equals half of the longer side of the bounding box,
   // so Math.max(cx, cy) is used: Math.min(cx, cy) would shrink the hexagon
   // and leave gaps on all sides.
-  private void calculateHexagon() {
-    int cx = getWidth() / 2;
-    int cy = getHeight() / 2;
-    // int radius = Math.min(cx, cy);
-    int radius = Math.max(cx, cy);
-    hexagon = new Polygon();
+  // The center and the radius must be double, not int: with int the center of
+  // an even sized component is off by half a pixel and Polygon rounds every
+  // vertex, so the rightmost vertex ends up outside the component bounds and
+  // gets clipped while the leftmost one stays inside.
+  // The radius is also reduced by half the stroke width, because
+  // Graphics2D#draw(...) centers the stroke on the path and its outer half
+  // would otherwise be clipped too.
+  private Shape createHexagon() {
+    double cx = getWidth() / 2d;
+    double cy = getHeight() / 2d;
+    // double radius = Math.min(cx, cy);
+    double radius = Math.max(cx, cy) - BORDER_WIDTH / 2d;
+    Path2D path = new Path2D.Double();
     for (int i = 0; i < VERTICES; i++) {
       // Start at the orientation angle, step by 60 degrees(PI/3)
       double angle = orientation.getStartAngle() + i * Math.PI / 3d;
-      hexagon.addPoint(
-          (int) Math.round(cx + radius * Math.cos(angle)),
-          (int) Math.round(cy + radius * Math.sin(angle)));
+      double x = cx + radius * Math.cos(angle);
+      double y = cy + radius * Math.sin(angle);
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
     }
+    path.closePath();
+    return path;
   }
 
   // Hit-test against the hexagon shape, not the bounding rectangle.
   @Override public boolean contains(int x, int y) {
-    if (hexagon == null || hexagon.getBounds().width != getWidth()) {
-      calculateHexagon();
-    }
-    return hexagon.contains(x, y);
+    return getHexagon().contains(x, y);
   }
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    calculateHexagon();
+    Shape shape = getHexagon();
 
     // Choose fill color based on interaction state
     Color bg = getBackground();
@@ -188,20 +212,25 @@ class HexagonButton extends JButton {
     } else {
       g2.setColor(bg);
     }
-    g2.fillPolygon(hexagon); // Always fill
+    g2.fill(shape); // Always fill
 
     // Draw border; glow effect on hover
     if (isHovered) {
-      g2.setStroke(new BasicStroke(3f));
+      // Round join: a miter join would stick out further than BORDER_WIDTH / 2
+      // at every vertex and get clipped by the component bounds
+      g2.setStroke(new BasicStroke(
+          BORDER_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
       g2.setColor(new Color(255, 255, 255, 100));
-      g2.drawPolygon(hexagon);
-      g2.setStroke(new BasicStroke(1.5f));
+      g2.draw(shape);
+      g2.setStroke(new BasicStroke(
+          1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
       g2.setColor(Color.WHITE);
-      g2.drawPolygon(hexagon);
+      g2.draw(shape);
     } else {
-      g2.setStroke(new BasicStroke(1f));
+      g2.setStroke(new BasicStroke(
+          1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
       g2.setColor(bg.darker());
-      g2.drawPolygon(hexagon);
+      g2.draw(shape);
     }
 
     g2.dispose();
