@@ -35,10 +35,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         bi = ImageIO.read(s);
       } catch (IOException ex) {
-        bi = makeMissingImage();
+        bi = createMissingImage();
       }
       return bi;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     label1.setIcon(new ImageIcon(image));
 
     ColorModel colorModel = image.getColorModel();
@@ -54,11 +54,11 @@ public final class MainPanel extends JPanel {
     int w = image.getWidth();
     int h = image.getHeight();
     DataBuffer dataBuffer = image.getRaster().getDataBuffer();
-    label2.setIcon(new ImageIcon(makeImage(dataBuffer, colorModel, w, h, transIndex)));
+    label2.setIcon(new ImageIcon(createImage(dataBuffer, colorModel, w, h, transIndex)));
 
     JPanel box = new JPanel(new GridBagLayout());
     if (Objects.nonNull(idxColorModel)) {
-      JList<IndexedColor> palette = makeIndexedColorList(idxColorModel);
+      JList<IndexedColor> palette = createIndexedColorList(idxColorModel);
       box.add(new JScrollPane(palette), new GridBagConstraints());
     } else {
       box.add(new JLabel("No IndexColorModel"), new GridBagConstraints());
@@ -70,7 +70,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JList<IndexedColor> makeIndexedColorList(IndexColorModel model) {
+  private JList<IndexedColor> createIndexedColorList(IndexColorModel model) {
     return new JList<IndexedColor>(new PaletteListModel(model)) {
       @Override public void updateUI() {
         setCellRenderer(null);
@@ -86,7 +86,8 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static Image makeImage(DataBuffer buffer, ColorModel model, int w, int h, int idx) {
+  private static Image createImage(
+      DataBuffer buffer, ColorModel model, int w, int h, int idx) {
     // DataBufferByte dataBufferByte = null;
     // if (buffer instanceof DataBufferByte) {
     //   dataBufferByte = (DataBufferByte) buffer;
@@ -110,7 +111,7 @@ public final class MainPanel extends JPanel {
     return buf;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();
@@ -211,10 +212,10 @@ class ColorIcon implements Icon {
 }
 
 class IndexedColorListRenderer implements ListCellRenderer<IndexedColor> {
-  private final ListCellRenderer<? super IndexedColor> renderer = new DefaultListCellRenderer();
+  private final ListCellRenderer<? super IndexedColor> r = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends IndexedColor> list, IndexedColor value, int index, boolean isSelected, boolean cellHasFocus) {
-    Component c = renderer.getListCellRendererComponent(
+    Component c = r.getListCellRendererComponent(
         list, value, index, isSelected, cellHasFocus);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
