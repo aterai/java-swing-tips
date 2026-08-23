@@ -50,19 +50,19 @@ javax.swing.JComponent
 - [JLabel(50)](https://ateraimemo.com/en/Swing/_JLabel.html)
 - [JFrame JDialog JWindow(49)](https://ateraimemo.com/en/Swing/_JFrame.html)
 - [JToolTip(38)](https://ateraimemo.com/en/Swing/_JToolTip.html)
+- [JSlider(38)](https://ateraimemo.com/en/Swing/_JSlider.html)
 - [JInternalFrame JLayeredPane JDesktopPane(37)](https://ateraimemo.com/en/Swing/_JInternalFrame.html)
-- [JSlider(37)](https://ateraimemo.com/en/Swing/_JSlider.html)
 - [JProgressBar ProgressMonitor(35)](https://ateraimemo.com/en/Swing/_JProgressBar.html)
 - [JFileChooser(34)](https://ateraimemo.com/en/Swing/_JFileChooser.html)
 - [JSpinner(34)](https://ateraimemo.com/en/Swing/_JSpinner.html)
 - [JPanel(25)](https://ateraimemo.com/en/Swing/_JPanel.html)
-- [JSplitPane(20)](https://ateraimemo.com/en/Swing/_JSplitPane.html)
+- [JSplitPane(21)](https://ateraimemo.com/en/Swing/_JSplitPane.html)
 - [JOptionPane(13)](https://ateraimemo.com/en/Swing/_JOptionPane.html)
 - [JColorChooser(7)](https://ateraimemo.com/en/Swing/_JColorChooser.html)
 
 Others
 ---------------
-- [Graphics(74)](https://ateraimemo.com/en/Swing/_Graphics.html)
+- [Graphics(75)](https://ateraimemo.com/en/Swing/_Graphics.html)
 - [Animation(61)](https://ateraimemo.com/en/Swing/_Animation.html)
 - [LayoutManager(58)](https://ateraimemo.com/en/Swing/_Layout.html)
 - [Border(51)](https://ateraimemo.com/en/Swing/_Border.html)
