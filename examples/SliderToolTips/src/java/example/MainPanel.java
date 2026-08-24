@@ -4,29 +4,23 @@
 
 package example;
 
-import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalSliderUI;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JSlider slider = new JSlider(0, 100, 50) {
+    JSlider slider = new JumpToClickedPositionSlider(SwingConstants.HORIZONTAL, 0, 100, 50) {
       private transient MouseAdapter handler;
 
       @Override public void updateUI() {
         removeMouseMotionListener(handler);
         removeMouseListener(handler);
         super.updateUI();
-        if (getUI() instanceof WindowsSliderUI) {
-          setUI(new WindowsTooltipSliderUI(this));
-        } else {
-          setUI(new MetalTooltipSliderUI());
-        }
         handler = new SliderPopupListener();
         addMouseMotionListener(handler);
         addMouseListener(handler);
@@ -35,9 +29,9 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createVerticalBox();
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Default", initSlider(new JSlider(0, 100, 50))));
+    box.add(createTitledPanel("Default", initSlider(new JSlider(0, 100, 50))));
     box.add(Box.createVerticalStrut(25));
-    box.add(makeTitledPanel("Show ToolTip", initSlider(slider)));
+    box.add(createTitledPanel("Show ToolTip", initSlider(slider)));
     box.add(Box.createVerticalGlue());
 
     add(box, BorderLayout.NORTH);
@@ -56,7 +50,7 @@ public final class MainPanel extends JPanel {
     return slider;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -85,58 +79,28 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class WindowsTooltipSliderUI extends WindowsSliderUI {
-  protected WindowsTooltipSliderUI(JSlider slider) {
-    super(slider);
+// Slide the thumb to the clicked position and keep it draggable
+class JumpToClickedPositionSlider extends JSlider {
+  protected JumpToClickedPositionSlider(int orientation, int min, int max, int value) {
+    super(orientation, min, max, value);
   }
 
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new TrackListener() {
-      @Override public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e)) {
-          JSlider slider = (JSlider) e.getComponent();
-          if (slider.getOrientation() == SwingConstants.VERTICAL) {
-            slider.setValue(valueForYPosition(e.getY()));
-          } else { // SwingConstants.HORIZONTAL
-            slider.setValue(valueForXPosition(e.getX()));
-          }
-          super.mousePressed(e); // isDragging = true;
-          super.mouseDragged(e);
-        } else {
-          super.mousePressed(e);
-        }
-      }
-
-      @Override public boolean shouldScroll(int direction) {
-        return false;
-      }
-    };
+  @Override protected void processMouseEvent(MouseEvent e) {
+    if (e.getID() == MouseEvent.MOUSE_PRESSED && isJumpEvent(e)) {
+      setValue(getValueForPoint(e.getPoint()));
+    }
+    super.processMouseEvent(e);
   }
-}
 
-class MetalTooltipSliderUI extends MetalSliderUI {
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    // boolean b = UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag");
-    return new TrackListener() {
-      @Override public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e)) {
-          JSlider slider = (JSlider) e.getComponent();
-          if (slider.getOrientation() == SwingConstants.VERTICAL) {
-            slider.setValue(valueForYPosition(e.getY()));
-          } else { // SwingConstants.HORIZONTAL
-            slider.setValue(valueForXPosition(e.getX()));
-          }
-          super.mousePressed(e); // isDragging = true;
-          super.mouseDragged(e);
-        } else {
-          super.mousePressed(e);
-        }
-      }
+  private boolean isJumpEvent(MouseEvent e) {
+    return isEnabled() && getUI() instanceof BasicSliderUI
+        && SwingUtilities.isLeftMouseButton(e);
+  }
 
-      @Override public boolean shouldScroll(int direction) {
-        return false;
-      }
-    };
+  private int getValueForPoint(Point pt) {
+    BasicSliderUI ui = (BasicSliderUI) getUI();
+    boolean horizontal = getOrientation() == HORIZONTAL;
+    return horizontal ? ui.valueForXPosition(pt.x) : ui.valueForYPosition(pt.y);
   }
 }
 
