@@ -4,13 +4,12 @@
 
 package example;
 
-import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalSliderUI;
+import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -19,24 +18,10 @@ public final class MainPanel extends JPanel {
     initSlider(slider0);
     slider0.setBorder(BorderFactory.createTitledBorder("Default"));
 
-    JSlider slider1 = new JSlider(-100, 100, 0) {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsSliderUI) {
-          setUI(new WindowsZoomLevelsSliderUI(this));
-        } else { // NullPointerException ???
-          UIManager.put("Slider.trackWidth", 0); // Meaningless settings that are not used?
-          UIManager.put("Slider.majorTickLength", 8); // BasicSliderUI#getTickLength(): 8
-          Icon missingIcon = UIManager.getIcon("html.missingImage");
-          UIManager.put("Slider.verticalThumbIcon", missingIcon);
-          UIManager.put("Slider.horizontalThumbIcon", missingIcon);
-          setUI(new MetalZoomLevelsSliderUI());
-        }
-      }
-    };
+    JSlider slider1 = new ZoomLevelsSlider(-100, 100, 0);
     initSlider(slider1);
     String help1 = "Dragged: Snap to the center";
-    String help2 = "Clicked: Double-click the thumb to reset its value";
+    String help2 = "Double-clicked: Reset to the initial value";
     slider1.setBorder(BorderFactory.createTitledBorder("<html>" + help1 + "<br>" + help2));
 
     Box box = Box.createVerticalBox();
@@ -97,78 +82,108 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class WindowsZoomLevelsSliderUI extends WindowsSliderUI {
-  protected WindowsZoomLevelsSliderUI(JSlider slider) {
-    super(slider);
+// Snap the thumb to the initial value while dragging
+// and reset the value with a double click
+class ZoomLevelsSlider extends JSlider {
+  private static final int MIN_TICK_SPACING = 10;
+  private final int defaultValue;
+
+  protected ZoomLevelsSlider(int min, int max, int value) {
+    super(min, max, value);
+    defaultValue = value;
   }
 
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new WindowsTrackHandler();
-  }
-
-  private final class WindowsTrackHandler extends TrackListener {
-    @Override public void mouseClicked(MouseEvent e) {
-      boolean isLeftDoubleClick = SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
-      if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
-        slider.setValue(0);
+  // BasicSliderUI.TrackListener#mouseDragged(...) moves the thumb to the raw
+  // mouse location, and BasicSliderUI#calculateThumbLocation() is only called
+  // while BasicSliderUI#isDragging() returns false. Consuming MOUSE_PRESSED,
+  // MOUSE_DRAGGED and MOUSE_RELEASED keeps the TrackListener from starting a
+  // thumb drag, so the LookAndFeel itself places the thumb at the position of
+  // the snapped value.
+  @Override protected void processMouseEvent(MouseEvent e) {
+    int id = e.getID();
+    boolean isPressed = id == MouseEvent.MOUSE_PRESSED;
+    boolean isReleased = id == MouseEvent.MOUSE_RELEASED;
+    if ((isPressed || isReleased) && isThumbDragEvent(e)) {
+      if (isPressed) {
+        startThumbDrag(e);
       } else {
-        super.mouseClicked(e);
+        setValueIsAdjusting(false);
       }
+    } else {
+      super.processMouseEvent(e);
     }
+  }
 
-    @Override public void mouseDragged(MouseEvent e) {
-      // case HORIZONTAL:
-      int halfThumbWidth = thumbRect.width / 2;
-      int trackLength = trackRect.width;
-      int pos = e.getX() + halfThumbWidth;
-      int possibleTickPos = slider.getMaximum() - slider.getMinimum();
-      int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
-      int tickPixels = trackLength * tickSp / possibleTickPos;
-      int tickPixels2 = tickPixels / 2;
-      int trackCenter = (int) trackRect.getCenterX();
-      if (trackCenter - tickPixels2 < pos && pos < trackCenter + tickPixels2) {
-        e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
-        offset = 0;
-      }
-      super.mouseDragged(e);
+  private void startThumbDrag(MouseEvent e) {
+    if (isRequestFocusEnabled()) {
+      requestFocusInWindow();
     }
+    setValueIsAdjusting(true);
+    boolean isDoubleClick = e.getClickCount() >= 2;
+    setValue(isDoubleClick ? defaultValue : getSnappedValue(e.getPoint()));
+  }
+
+  @Override protected void processMouseMotionEvent(MouseEvent e) {
+    if (e.getID() == MouseEvent.MOUSE_DRAGGED && isThumbDragEvent(e)) {
+      setValue(getSnappedValue(e.getPoint()));
+    } else {
+      // MOUSE_MOVED is delegated to the TrackListener to keep the rollover state
+      super.processMouseMotionEvent(e);
+    }
+  }
+
+  private boolean isThumbDragEvent(MouseEvent e) {
+    return isEnabled() && getUI() instanceof BasicSliderUI
+        && SwingUtilities.isLeftMouseButton(e);
+  }
+
+  // Snap the value to the initial value if the mouse cursor is
+  // within half a tick from it
+  private int getSnappedValue(Point pt) {
+    BasicSliderUI ui = (BasicSliderUI) getUI();
+    boolean horizontal = getOrientation() == HORIZONTAL;
+    int value = horizontal ? ui.valueForXPosition(pt.x) : ui.valueForYPosition(pt.y);
+    int tickSpacing = Math.max(getMajorTickSpacing(), MIN_TICK_SPACING);
+    boolean nearDefaultValue = Math.abs(value - defaultValue) < tickSpacing / 2;
+    return nearDefaultValue ? defaultValue : value;
   }
 }
 
-class MetalZoomLevelsSliderUI extends MetalSliderUI {
-  protected MetalZoomLevelsSliderUI() {
-    super();
-  }
-
-  @Override protected TrackListener createTrackListener(JSlider slider) {
-    return new MetalTrackHandler();
-  }
-
-  private final class MetalTrackHandler extends TrackListener {
-    @Override public void mouseClicked(MouseEvent e) {
-      boolean isLeftDoubleClick = SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
-      if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
-        slider.setValue(0);
-      } else {
-        super.mouseClicked(e);
-      }
-    }
-
-    @Override public void mouseDragged(MouseEvent e) {
-      // case HORIZONTAL:
-      int halfThumbWidth = thumbRect.width / 2;
-      int trackLength = trackRect.width;
-      int pos = e.getX() + halfThumbWidth;
-      int possibleTickPos = slider.getMaximum() - slider.getMinimum();
-      int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
-      int tickPixels = trackLength * tickSp / possibleTickPos;
-      int tickPixels2 = tickPixels / 2;
-      int trackCenter = (int) trackRect.getCenterX();
-      if (trackCenter - tickPixels2 < pos && pos < trackCenter + tickPixels2) {
-        e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
-        offset = 0;
-      }
-      super.mouseDragged(e);
-    }
-  }
-}
+// class WindowsZoomLevelsSliderUI extends WindowsSliderUI {
+//   protected WindowsZoomLevelsSliderUI(JSlider slider) {
+//     super(slider);
+//   }
+//
+//   @Override protected TrackListener createTrackListener(JSlider slider) {
+//     return new WindowsTrackHandler();
+//   }
+//
+//   private final class WindowsTrackHandler extends TrackListener {
+//     @Override public void mouseClicked(MouseEvent e) {
+//       boolean isLeftDoubleClick =
+//           SwingUtilities.isLeftMouseButton(e) && e.getClickCount() >= 2;
+//       if (isLeftDoubleClick && thumbRect.contains(e.getPoint())) {
+//         slider.setValue(0);
+//       } else {
+//         super.mouseClicked(e);
+//       }
+//     }
+//
+//     @Override public void mouseDragged(MouseEvent e) {
+//       // case HORIZONTAL:
+//       int halfThumbWidth = thumbRect.width / 2;
+//       int trackLength = trackRect.width;
+//       int pos = e.getX() + halfThumbWidth;
+//       int possibleTickPos = slider.getMaximum() - slider.getMinimum();
+//       int tickSp = Math.max(slider.getMajorTickSpacing(), 10);
+//       int tickPixels = trackLength * tickSp / possibleTickPos;
+//       int tickPixels2 = tickPixels / 2;
+//       int trackCenter = (int) trackRect.getCenterX();
+//       if (trackCenter - tickPixels2 < pos && pos < trackCenter + tickPixels2) {
+//         e.translatePoint(trackCenter - halfThumbWidth - e.getX(), 0);
+//         offset = 0;
+//       }
+//       super.mouseDragged(e);
+//     }
+//   }
+// }
