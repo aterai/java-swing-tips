@@ -183,15 +183,14 @@ class HexagonalMosaicFilter implements BufferedImageOp {
   // Average the source pixels per hexagon in a single pass.
   private int[] getCellColors(BufferedImage src, int columns, int rows) {
     int width = src.getWidth();
-    int height = src.getHeight();
+    int[] line = new int[width];
     int size = columns * rows;
     long[] sumA = new long[size];
     long[] sumR = new long[size];
     long[] sumG = new long[size];
     long[] sumB = new long[size];
     int[] count = new int[size];
-    int[] line = new int[width];
-    for (int y = 0; y < height; y++) {
+    for (int y = 0; y < src.getHeight(); y++) {
       src.getRGB(0, y, width, 1, line, 0, width);
       for (int x = 0; x < width; x++) {
         int i = getCellIndex(x, y, columns, rows);
