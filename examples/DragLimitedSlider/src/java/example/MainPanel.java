@@ -4,7 +4,6 @@
 
 package example;
 
-import com.sun.java.swing.plaf.windows.WindowsSliderUI;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Map;
@@ -13,33 +12,24 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 public final class MainPanel extends JPanel {
-  public static final int MAXI = 80;
-  public static final int MINI = 40;
+  private static final int LOWER_LIMIT = 40;
+  private static final int UPPER_LIMIT = 80;
 
   private MainPanel() {
     super(new GridLayout(2, 1, 5, 5));
-    JSlider slider1 = initSlider(new JSlider(0, 100, 40));
+    JSlider slider1 = new JSlider(0, 100, LOWER_LIMIT);
+    initSlider(slider1);
     slider1.setBorder(BorderFactory.createTitledBorder("ChangeListener"));
     add(slider1);
 
-    JSlider slider = new JSlider(0, 100, 40) {
-      @Override public void updateUI() {
-        super.updateUI();
-        if (getUI() instanceof WindowsSliderUI) {
-          setUI(new WindowsDragLimitedSliderUI(this));
-        } else {
-          setUI(new BasicDragLimitedSliderUI(this));
-        }
-      }
-    };
-    JSlider slider2 = initSlider(slider);
-    slider2.setBorder(BorderFactory.createTitledBorder("TrackListener"));
+    JSlider slider2 = new DragLimitedSlider(0, 100, LOWER_LIMIT, LOWER_LIMIT, UPPER_LIMIT);
+    initSlider(slider2);
+    slider2.setBorder(BorderFactory.createTitledBorder("ChangeListener + DragLimitedSlider"));
     add(slider2);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSlider initSlider(JSlider slider) {
-    // JSlider slider = new JSlider(0, 100, 40);
+  private static void initSlider(JSlider slider) {
     slider.setMajorTickSpacing(10);
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
@@ -47,77 +37,23 @@ public final class MainPanel extends JPanel {
     if (labelTable instanceof Map) {
       ((Map<?, ?>) labelTable).forEach((key, value) -> {
         if (value instanceof JLabel) {
-          updateForeground((JLabel) value);
+          highlightOutOfRange((JLabel) value);
         }
       });
     }
-    // Dictionary<?, ?> dictionary = slider.getLabelTable();
-    // if (Objects.nonNull(dictionary)) {
-    //   Collections.list(dictionary.elements()).stream()
-    //       .filter(JLabel.class::isInstance)
-    //       .map(JLabel.class::cast)
-    //       .forEach(MainPanel::updateForeground);
-    // }
+    // The keyboard and the mouse wheel can still change the value,
+    // so the model also limits the value
     slider.getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      m.setValue(Math.min(Math.max(m.getValue(), MINI), MAXI));
-      // Java 21: m.setValue(Math.clamp(m.getValue(), MINI, MAXI));
+      m.setValue(Math.min(Math.max(m.getValue(), LOWER_LIMIT), UPPER_LIMIT));
+      // Java 21: m.setValue(Math.clamp(m.getValue(), LOWER_LIMIT, UPPER_LIMIT));
     });
-    return slider;
   }
 
-  private static void updateForeground(JLabel label) {
-    int v = Integer.parseInt(label.getText());
-    if (v > MAXI || v < MINI) {
+  private static void highlightOutOfRange(JLabel label) {
+    int value = Integer.parseInt(label.getText());
+    if (value < LOWER_LIMIT || value > UPPER_LIMIT) {
       label.setForeground(Color.RED);
-    }
-  }
-
-  private static final class WindowsDragLimitedSliderUI extends WindowsSliderUI {
-    private WindowsDragLimitedSliderUI(JSlider slider) {
-      super(slider);
-    }
-
-    @Override protected TrackListener createTrackListener(JSlider slider) {
-      return new TrackListener() {
-        @Override public void mouseDragged(MouseEvent e) {
-          // case HORIZONTAL:
-          int halfThumbWidth = thumbRect.width / 2;
-          int thumbLeft = e.getX() - offset;
-          int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
-          int minPos = xPositionForValue(MINI) - halfThumbWidth;
-          if (thumbLeft > maxPos) {
-            e.translatePoint(maxPos + offset - e.getX(), 0);
-          } else if (thumbLeft < minPos) {
-            e.translatePoint(minPos + offset - e.getX(), 0);
-          }
-          super.mouseDragged(e);
-        }
-      };
-    }
-  }
-
-  private static final class BasicDragLimitedSliderUI extends BasicSliderUI {
-    private BasicDragLimitedSliderUI(JSlider slider) {
-      super(slider);
-    }
-
-    @Override protected TrackListener createTrackListener(JSlider slider) {
-      return new TrackListener() {
-        @Override public void mouseDragged(MouseEvent e) {
-          // case HORIZONTAL:
-          int halfThumbWidth = thumbRect.width / 2;
-          int thumbLeft = e.getX() - offset;
-          int maxPos = xPositionForValue(MAXI) - halfThumbWidth;
-          int minPos = xPositionForValue(MINI) - halfThumbWidth;
-          if (thumbLeft > maxPos) {
-            e.translatePoint(maxPos + offset - e.getX(), 0);
-          } else if (thumbLeft < minPos) {
-            e.translatePoint(minPos + offset - e.getX(), 0);
-          }
-          super.mouseDragged(e);
-        }
-      };
     }
   }
 
@@ -140,5 +76,69 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+// Limit the range in which the value can be changed by mouse dragging
+class DragLimitedSlider extends JSlider {
+  private final int lowerDragLimit;
+  private final int upperDragLimit;
+
+  protected DragLimitedSlider(int min, int max, int value, int lower, int upper) {
+    super(min, max, value);
+    lowerDragLimit = lower;
+    upperDragLimit = upper;
+  }
+
+  // BasicSliderUI.TrackListener#mouseDragged(...) moves the thumb to the raw
+  // mouse location, and BasicSliderUI#calculateThumbLocation() is only called
+  // while BasicSliderUI#isDragging() returns false. Consuming MOUSE_PRESSED,
+  // MOUSE_DRAGGED and MOUSE_RELEASED keeps the TrackListener from starting a
+  // thumb drag, so the LookAndFeel itself places the thumb at the position of
+  // the limited value.
+  @Override protected void processMouseEvent(MouseEvent e) {
+    int id = e.getID();
+    boolean isPressed = id == MouseEvent.MOUSE_PRESSED;
+    boolean isReleased = id == MouseEvent.MOUSE_RELEASED;
+    if ((isPressed || isReleased) && isThumbDragEvent(e)) {
+      if (isPressed) {
+        startThumbDrag(e);
+      } else {
+        setValueIsAdjusting(false);
+      }
+    } else {
+      super.processMouseEvent(e);
+    }
+  }
+
+  @Override protected void processMouseMotionEvent(MouseEvent e) {
+    if (e.getID() == MouseEvent.MOUSE_DRAGGED && isThumbDragEvent(e)) {
+      setValue(getLimitedValue(e.getPoint()));
+    } else {
+      // MOUSE_MOVED is delegated to the TrackListener to keep the rollover state
+      super.processMouseMotionEvent(e);
+    }
+  }
+
+  private void startThumbDrag(MouseEvent e) {
+    if (isRequestFocusEnabled()) {
+      requestFocusInWindow();
+    }
+    setValueIsAdjusting(true);
+    setValue(getLimitedValue(e.getPoint()));
+  }
+
+  private boolean isThumbDragEvent(MouseEvent e) {
+    return isEnabled() && getUI() instanceof BasicSliderUI
+        && SwingUtilities.isLeftMouseButton(e);
+  }
+
+  // Clamp the value under the mouse cursor to the draggable range
+  private int getLimitedValue(Point pt) {
+    BasicSliderUI ui = (BasicSliderUI) getUI();
+    boolean horizontal = getOrientation() == HORIZONTAL;
+    int value = horizontal ? ui.valueForXPosition(pt.x) : ui.valueForYPosition(pt.y);
+    return Math.min(Math.max(value, lowerDragLimit), upperDragLimit);
+    // Java 21: return Math.clamp(value, lowerDragLimit, upperDragLimit);
   }
 }
