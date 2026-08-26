@@ -212,10 +212,10 @@ class ColorIcon implements Icon {
 }
 
 class IndexedColorListRenderer implements ListCellRenderer<IndexedColor> {
-  private final ListCellRenderer<? super IndexedColor> r = new DefaultListCellRenderer();
+  private final ListCellRenderer<? super IndexedColor> lcr = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends IndexedColor> list, IndexedColor value, int index, boolean isSelected, boolean cellHasFocus) {
-    Component c = r.getListCellRendererComponent(
+    Component c = lcr.getListCellRendererComponent(
         list, value, index, isSelected, cellHasFocus);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
