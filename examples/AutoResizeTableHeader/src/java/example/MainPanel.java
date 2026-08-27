@@ -230,8 +230,8 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     return c;
   }
 
-  private static boolean isDiagonallySplitCell(LocalDate nextWeekDay, LocalDate cur) {
-    return YearMonth.from(nextWeekDay).equals(YearMonth.from(cur));
+  private static boolean isDiagonallySplitCell(LocalDate nextWeekDay, LocalDate currentDate) {
+    return YearMonth.from(nextWeekDay).equals(YearMonth.from(currentDate));
   }
 
   private void updateWeekColor(LocalDate d, JTable table, Component c, boolean selected) {
@@ -290,8 +290,8 @@ class CalendarViewTableModel extends DefaultTableModel {
   protected CalendarViewTableModel(LocalDate date) {
     super();
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
-    int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(v);
+    int dayOfWeekOffset = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(dayOfWeekOffset);
   }
 
   @Override public Class<?> getColumnClass(int column) {
