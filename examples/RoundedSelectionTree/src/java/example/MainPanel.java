@@ -92,24 +92,24 @@ class RoundedSelectionTree extends JTree {
   }
 
   // Decompose a multi-loop Area into a list of single-loop Areas.
-  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+  private static List<Area> splitIntoSingleLoopAreas(Area rect) {
     List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
     PathIterator pi = rect.getPathIterator(null);
-    double[] cd = new double[6];
+    double[] coords = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(cd)) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
-          path.moveTo(cd[0], cd[1]);
+          path.moveTo(coords[0], coords[1]);
           break;
         case PathIterator.SEG_LINETO:
-          path.lineTo(cd[0], cd[1]);
+          path.lineTo(coords[0], coords[1]);
           break;
         case PathIterator.SEG_QUADTO:
-          path.quadTo(cd[0], cd[1], cd[2], cd[3]);
+          path.quadTo(coords[0], coords[1], coords[2], coords[3]);
           break;
         case PathIterator.SEG_CUBICTO:
-          path.curveTo(cd[0], cd[1], cd[2], cd[3], cd[4], cd[5]);
+          path.curveTo(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
           break;
         case PathIterator.SEG_CLOSE:
           path.closePath();
