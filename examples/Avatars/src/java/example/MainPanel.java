@@ -18,9 +18,12 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
+  private static final int PADDING = 5;
+
   private MainPanel() {
     super(new BorderLayout());
     // Sample user data
@@ -38,7 +41,7 @@ public final class MainPanel extends JPanel {
     JLayer<JPanel> layer2 = createAvatarGroup(names, colors, false);
     add(layer1, BorderLayout.NORTH);
     add(layer2, BorderLayout.SOUTH);
-    setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+    setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -46,7 +49,6 @@ public final class MainPanel extends JPanel {
       String[] names, Color[] colors, boolean leftForeground) {
     // Container for displaying avatars
     JPanel avatarPanel = new JPanel(new StackedLayout(0d, leftForeground));
-    avatarPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     // leftForeground = true -> 0, 1, 2... (Add from left -> Left is front)
     // leftForeground = false -> n-1, n-2... (Add from right -> Right is front)
@@ -57,15 +59,34 @@ public final class MainPanel extends JPanel {
     for (int i = start; i != end; i += step) {
       avatarPanel.add(createAvatarButton(i, names[i], colors[i]));
     }
+    avatarPanel.setBorder(createToolTipMargin(avatarPanel));
 
     // Wrap with JLayer and apply animation UI
     return new JLayer<JPanel>(avatarPanel, new AvatarLayerUI());
   }
 
-  private static JButton createAvatarButton(int i, String name, Color color) {
+  // Empty border wide enough to contain every avatar's balloon tooltip.
+  // The balloon is drawn above an avatar and outside of its bounds, so without
+  // this margin the pointer leaves the JLayer as soon as it moves onto the
+  // tooltip: the resulting MOUSE_EXITED collapses the avatar group even though
+  // the tooltip is still visible.
+  private static Border createToolTipMargin(Container avatarPanel) {
+    int top = PADDING;
+    int side = PADDING;
+    for (Component c : avatarPanel.getComponents()) {
+      AvatarButton b = (AvatarButton) c;
+      Rectangle r = b.getToolTipBounds(b.getToolTipText());
+      int overhang = Math.max(-r.x, r.x + r.width - b.getPreferredSize().width);
+      top = Math.max(top, PADDING - r.y);
+      side = Math.max(side, PADDING + overhang);
+    }
+    return BorderFactory.createEmptyBorder(top, side, PADDING, side);
+  }
+
+  private static AvatarButton createAvatarButton(int i, String name, Color color) {
     // Generate icons with varying sizes (100x100 to 200x200)
     int randomSize = 100 + (i * 25);
-    JButton button = new AvatarButton(new UserIcon(name, color, randomSize));
+    AvatarButton button = new AvatarButton(new UserIcon(name, color, randomSize));
     button.setToolTipText("User " + name);
     button.addActionListener(e -> Toolkit.getDefaultToolkit().beep());
     return button;
@@ -172,6 +193,7 @@ class StackedLayout implements LayoutManager {
 // Circular Avatar Button
 class AvatarButton extends JButton {
   private static final int DIAMETER = 24;
+  private static final int TIP_GAP = 2;
   private static final Insets INSETS = new Insets(2, 2, 2, 2);
   private transient JToolTip tip;
 
@@ -245,16 +267,26 @@ class AvatarButton extends JButton {
     g2.dispose();
   }
 
+  // Balloon tooltip bounds in this button's coordinate system. This is based on
+  // the preferred size instead of the current size so that the caller can also
+  // use it before this button gets laid out.
+  public Rectangle getToolTipBounds(String toolTipText) {
+    JToolTip toolTip = createToolTip();
+    toolTip.setTipText(toolTipText);
+    Dimension tooltipSize = toolTip.getPreferredSize();
+    Dimension buttonSize = getPreferredSize();
+    Insets insets = getInsets();
+    double centerX = insets.left + (buttonSize.width - insets.left - insets.right) / 2d;
+    int x = (int) (centerX - tooltipSize.getWidth() / 2d);
+    int y = insets.top - tooltipSize.height - TIP_GAP;
+    return new Rectangle(x, y, tooltipSize.width, tooltipSize.height);
+  }
+
   @Override public Point getToolTipLocation(MouseEvent e) {
-    return Optional.ofNullable(getToolTipText(e)).map(toolTipText -> {
-      JToolTip toolTip = createToolTip();
-      toolTip.setTipText(toolTipText);
-      Rectangle buttonBounds = SwingUtilities.calculateInnerArea(this, null);
-      Dimension tooltipSize = toolTip.getPreferredSize();
-      int centerX = (int) (buttonBounds.getCenterX() - tooltipSize.getWidth() / 2d);
-      int topY = buttonBounds.y - tooltipSize.height - 2;
-      return new Point(centerX, topY);
-    }).orElse(null);
+    return Optional.ofNullable(getToolTipText(e))
+        .map(this::getToolTipBounds)
+        .map(Rectangle::getLocation)
+        .orElse(null);
   }
 }
 
@@ -287,12 +319,30 @@ class AvatarLayerUI extends LayerUI<JPanel> {
     panel.repaint();
   }
 
+  // A JLayer also receives the mouse events of all its descendants, so moving
+  // between child buttons fires MOUSE_ENTERED and MOUSE_EXITED as well. Expand
+  // only when entering an avatar, and collapse only when the pointer really
+  // leaves the JLayer, which now includes the balloon tooltip area.
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JPanel> l) {
-    if (e.getID() == MouseEvent.MOUSE_ENTERED) {
+    if (e.getID() == MouseEvent.MOUSE_ENTERED && e.getComponent() instanceof AvatarButton) {
       startAnimation(1d);
-    } else if (e.getID() == MouseEvent.MOUSE_EXITED) {
+    } else if (e.getID() == MouseEvent.MOUSE_EXITED && !contains(e, l)) {
+      hideToolTip();
       startAnimation(0d);
     }
+  }
+
+  private static boolean contains(MouseEvent e, JLayer<? extends JPanel> l) {
+    return l.contains(SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), l));
+  }
+
+  // ToolTipManager keeps a tooltip visible when the pointer exits a component
+  // into the tooltip itself, so leaving the JLayer through the balloon would
+  // otherwise keep it on screen until the dismiss delay expires.
+  private static void hideToolTip() {
+    ToolTipManager manager = ToolTipManager.sharedInstance();
+    manager.setEnabled(false);
+    manager.setEnabled(true);
   }
 
   private void startAnimation(double target) {
