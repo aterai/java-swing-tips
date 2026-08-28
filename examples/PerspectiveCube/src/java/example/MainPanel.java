@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final List<Vertex> cube = new ArrayList<>(8);
+  private final transient List<Vertex> cube = new ArrayList<>(8);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
       double rotX = (pt.y - pp.y) * .03;
       double rotZ = 0d;
       for (Vertex v : cube) {
-        v.rotateTransformation(rotX, rotY, rotZ);
+        v.rotate(rotX, rotY, rotZ);
       }
       pp.setLocation(pt);
       e.getComponent().repaint();
@@ -67,22 +67,22 @@ public final class MainPanel extends JPanel {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     Path2D path = new Path2D.Double();
-    path.moveTo(cube.get(0).getX(), cube.get(0).getY());
-    path.lineTo(cube.get(1).getX(), cube.get(1).getY());
-    path.lineTo(cube.get(2).getX(), cube.get(2).getY());
-    path.lineTo(cube.get(3).getX(), cube.get(3).getY());
-    path.lineTo(cube.get(0).getX(), cube.get(0).getY());
-    path.lineTo(cube.get(4).getX(), cube.get(4).getY());
-    path.lineTo(cube.get(5).getX(), cube.get(5).getY());
-    path.lineTo(cube.get(6).getX(), cube.get(6).getY());
-    path.lineTo(cube.get(7).getX(), cube.get(7).getY());
-    path.lineTo(cube.get(4).getX(), cube.get(4).getY());
-    path.moveTo(cube.get(1).getX(), cube.get(1).getY());
-    path.lineTo(cube.get(5).getX(), cube.get(5).getY());
-    path.moveTo(cube.get(2).getX(), cube.get(2).getY());
-    path.lineTo(cube.get(6).getX(), cube.get(6).getY());
-    path.moveTo(cube.get(3).getX(), cube.get(3).getY());
-    path.lineTo(cube.get(7).getX(), cube.get(7).getY());
+    path.moveTo(cube.get(0).getScreenX(), cube.get(0).getScreenY());
+    path.lineTo(cube.get(1).getScreenX(), cube.get(1).getScreenY());
+    path.lineTo(cube.get(2).getScreenX(), cube.get(2).getScreenY());
+    path.lineTo(cube.get(3).getScreenX(), cube.get(3).getScreenY());
+    path.lineTo(cube.get(0).getScreenX(), cube.get(0).getScreenY());
+    path.lineTo(cube.get(4).getScreenX(), cube.get(4).getScreenY());
+    path.lineTo(cube.get(5).getScreenX(), cube.get(5).getScreenY());
+    path.lineTo(cube.get(6).getScreenX(), cube.get(6).getScreenY());
+    path.lineTo(cube.get(7).getScreenX(), cube.get(7).getScreenY());
+    path.lineTo(cube.get(4).getScreenX(), cube.get(4).getScreenY());
+    path.moveTo(cube.get(1).getScreenX(), cube.get(1).getScreenY());
+    path.lineTo(cube.get(5).getScreenX(), cube.get(5).getScreenY());
+    path.moveTo(cube.get(2).getScreenX(), cube.get(2).getScreenY());
+    path.lineTo(cube.get(6).getScreenX(), cube.get(6).getScreenY());
+    path.moveTo(cube.get(3).getScreenX(), cube.get(3).getScreenY());
+    path.lineTo(cube.get(7).getScreenX(), cube.get(7).getScreenY());
     Rectangle r = SwingUtilities.calculateInnerArea(this, null);
     g2.setPaint(Color.WHITE);
     g2.fill(r);
@@ -115,44 +115,46 @@ public final class MainPanel extends JPanel {
 }
 
 class Vertex {
-  private double vx;
-  private double vy;
-  private double dx;
-  private double dy;
-  private double dz;
+  private double worldX;
+  private double worldY;
+  private double worldZ;
+  private double screenX;
+  private double screenY;
 
-  protected Vertex(double dx, double dy, double dz) {
-    this.dx = dx;
-    this.dy = dy;
-    this.dz = dz;
-    projectionTransformation();
+  protected Vertex(double worldX, double worldY, double worldZ) {
+    this.worldX = worldX;
+    this.worldY = worldY;
+    this.worldZ = worldZ;
+    applyProjection();
   }
 
-  public double getX() {
-    return vx;
+  public double getScreenX() {
+    return screenX;
   }
 
-  public double getY() {
-    return vy;
+  public double getScreenY() {
+    return screenY;
   }
 
-  private void projectionTransformation() {
+  private void applyProjection() {
     double screenDistance = 500d;
     double depth = 1000d;
-    double gz = dz + depth;
-    this.vx = screenDistance * dx / gz;
-    this.vy = screenDistance * dy / gz;
+    double distanceZ = worldZ + depth;
+    this.screenX = screenDistance * worldX / distanceZ;
+    this.screenY = screenDistance * worldY / distanceZ;
   }
 
-  public void rotateTransformation(double kx, double ky, double kz) {
-    double x0 = dx * Math.cos(ky) - dz * Math.sin(ky);
-    double y0 = dy;
-    double z0 = dx * Math.sin(ky) + dz * Math.cos(ky);
-    double y1 = y0 * Math.cos(kx) - z0 * Math.sin(kx);
-    double z1 = y0 * Math.sin(kx) + z0 * Math.cos(kx);
-    this.dx = x0 * Math.cos(kz) - y1 * Math.sin(kz);
-    this.dy = x0 * Math.sin(kz) + y1 * Math.cos(kz);
-    this.dz = z1;
-    projectionTransformation();
+  public void rotate(double angleX, double angleY, double angleZ) {
+    // yaw: rotation around the y-axis
+    double yawX = worldX * Math.cos(angleY) - worldZ * Math.sin(angleY);
+    double yawZ = worldX * Math.sin(angleY) + worldZ * Math.cos(angleY);
+    // pitch: rotation around the x-axis
+    double pitchY = worldY * Math.cos(angleX) - yawZ * Math.sin(angleX);
+    double pitchZ = worldY * Math.sin(angleX) + yawZ * Math.cos(angleX);
+    // roll: rotation around the z-axis
+    this.worldX = yawX * Math.cos(angleZ) - pitchY * Math.sin(angleZ);
+    this.worldY = yawX * Math.sin(angleZ) + pitchY * Math.cos(angleZ);
+    this.worldZ = pitchZ;
+    applyProjection();
   }
 }
