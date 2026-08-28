@@ -60,7 +60,7 @@ class CubeTransitionPanel extends JPanel {
   private final double[] screenArrY = new double[IMG_WIDTH + 1]; // Top-left Y of each slice
   private final double[] drawArrH = new double[IMG_WIDTH + 1]; // Height of each slice
 
-  private final List<BufferedImage> images = new ArrayList<>();
+  private final transient List<BufferedImage> images = new ArrayList<>();
   private int currentIndex;
   private int nextIndex = 1;
   private double angle; // Current rotation angle in degrees: -90..90
