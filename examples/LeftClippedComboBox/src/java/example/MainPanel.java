@@ -85,6 +85,7 @@ class LeftClippedComboBox<E> extends JComboBox<E> {
 }
 
 class LeftClippedListCellRenderer extends DefaultListCellRenderer {
+  private static final String ELLIPSIS = "...";
   private final JComboBox<?> combo;
 
   protected LeftClippedListCellRenderer(JComboBox<?> combo) {
@@ -96,31 +97,59 @@ class LeftClippedListCellRenderer extends DefaultListCellRenderer {
     Component c = super.getListCellRendererComponent(
         list, value, index, isSelected, cellHasFocus);
     if (c instanceof JLabel) {
-      String s = Objects.toString(value, "");
+      String txt = Objects.toString(value, "");
       FontMetrics fm = c.getFontMetrics(c.getFont());
-      int w = getAvailableWidth(combo, index);
-      ((JLabel) c).setText(fm.stringWidth(s) <= w ? s : getLeftClippedText(s, fm, w));
+      int availableWidth = getAvailableWidth(index);
+      boolean fit = fm.stringWidth(txt) <= availableWidth;
+      ((JLabel) c).setText(fit ? txt : getLeftClippedText(txt, fm, availableWidth));
     }
     return c;
   }
 
-  private int getAvailableWidth(JComboBox<?> comboBox, int index) {
-    Optional<JButton> arrowButtonOp = descendants(comboBox)
-        .filter(JButton.class::isInstance)
-        .map(JButton.class::cast)
-        .findFirst();
-    Insets rendererIns = getInsets();
-    Rectangle r = SwingUtilities.calculateInnerArea(comboBox, null);
-    int availableWidth = r.width - rendererIns.left - rendererIns.right;
-    availableWidth = getLookAndFeelDependWidth(comboBox, availableWidth);
+  // Returns the width available for painting the cell text.
+  private int getAvailableWidth(int index) {
+    Insets ins = getInsets();
+    Rectangle r = SwingUtilities.calculateInnerArea(combo, null);
+    int availableWidth = r.width - ins.left - ins.right - getLookAndFeelPadding(combo);
     if (index < 0) {
+      // The editor area must also exclude the width of the arrow button
       // @see BasicComboBoxUI#rectangleForCurrentValue
-      int buttonSize = arrowButtonOp
+      int buttonWidth = getArrowButton(combo)
           .map(JComponent::getWidth)
-          .orElse(r.height - rendererIns.top - rendererIns.bottom);
-      availableWidth -= buttonSize;
+          .orElse(r.height - ins.top - ins.bottom);
+      availableWidth -= buttonWidth;
     }
     return availableWidth;
+  }
+
+  // Returns the horizontal padding that each LookAndFeel adds
+  // when painting the current value of the JComboBox.
+  private static int getLookAndFeelPadding(JComboBox<?> combo) {
+    int padding = 0;
+    Insets ins = UIManager.getInsets("ComboBox.padding");
+    if (ins != null) {
+      // NimbusComboBoxUI only?
+      padding += ins.left + ins.right;
+    }
+    ComboBoxUI ui = combo.getUI();
+    if (ui instanceof MetalComboBoxUI) {
+      // Magic number in MetalComboBoxUI#paintCurrentValue(...)
+      // This is really only called if we're using ocean.
+      // if (MetalLookAndFeel.usingOcean()) {
+      //   bounds.width -= 3;
+      padding += 3;
+    } else if (ui.getClass().getName().contains("Windows")) {
+      // Magic number in WindowsComboBoxUI#paintCurrentValue(...)
+      // XPStyle xp = XPStyle.getXP();
+      // if (xp != null) {
+      //   bounds.width -= 4;
+      // } else {
+      //   bounds.width -= 2;
+      // }
+      boolean xpStyle = Objects.equals(UIManager.getLookAndFeel().getName(), "Windows");
+      padding += xpStyle ? 4 : 2; // 2: Windows Classic
+    }
+    return padding;
   }
 
   // <blockquote cite="https://tips4java.wordpress.com/2008/11/12/left-dot-renderer/">
@@ -142,14 +171,14 @@ class LeftClippedListCellRenderer extends DefaultListCellRenderer {
   // }
   // </blockquote>
   private static String getLeftClippedText(String text, FontMetrics fm, int availableWidth) {
-    String dots = "...";
-    int textWidth = fm.stringWidth(dots);
+    int textWidth = fm.stringWidth(ELLIPSIS);
     int len = text.length();
+    int[] acp = new int[text.codePointCount(0, len)];
+    int j = acp.length;
+    // Scan backward by code point so that a supplementary character is not split
     // @see Unicode surrogate programming with the Java language
     // https://www.ibm.com/developerworks/library/j-unicode/index.html
     // https://www.ibm.com/developerworks/jp/ysl/library/java/j-unicode_surrogate/index.html
-    int[] acp = new int[text.codePointCount(0, len)];
-    int j = acp.length;
     for (int i = len; i > 0; i = text.offsetByCodePoints(i, -1)) {
       int cp = text.codePointBefore(i);
       textWidth += fm.charWidth(cp);
@@ -159,45 +188,18 @@ class LeftClippedListCellRenderer extends DefaultListCellRenderer {
       j -= 1;
       acp[j] = cp;
     }
-    return dots + new String(acp, j, acp.length - j);
+    return ELLIPSIS + new String(acp, j, acp.length - j);
   }
 
-  private static int getLookAndFeelDependWidth(JComboBox<?> combo, int width) {
-    int availableWidth = width;
-    Insets padding = UIManager.getInsets("ComboBox.padding");
-    if (padding != null) {
-      // NimbusComboBoxUI only?
-      availableWidth -= padding.left + padding.right;
-    }
-    ComboBoxUI ui = combo.getUI();
-    if (ui instanceof MetalComboBoxUI) {
-      // Magic number in MetalComboBoxUI#paintCurrentValue(...)
-      // This is really only called if we're using ocean.
-      // if (MetalLookAndFeel.usingOcean()) {
-      //   bounds.width -= 3;
-      availableWidth -= 3;
-    } else if (ui.getClass().getName().contains("Windows")) {
-      // Magic number in WindowsComboBoxUI#paintCurrentValue(...)
-      // XPStyle xp = XPStyle.getXP();
-      // if (xp != null) {
-      //   bounds.width -= 4;
-      // } else {
-      //   bounds.width -= 2;
-      // }
-      String lnfName = UIManager.getLookAndFeel().getName();
-      if (Objects.equals(lnfName, "Windows")) {
-        availableWidth -= 4;
-      } else { // Windows Classic
-        availableWidth -= 2;
-      }
-    }
-    return availableWidth;
+  private static Optional<JButton> getArrowButton(Container parent) {
+    return descendants(parent)
+        .filter(JButton.class::isInstance).map(JButton.class::cast)
+        .findFirst();
   }
 
   private static Stream<Component> descendants(Container parent) {
     return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance)
-        .map(Container.class::cast)
+        .filter(Container.class::isInstance).map(Container.class::cast)
         .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }
