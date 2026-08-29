@@ -94,11 +94,11 @@ final class NimbusTabbedPanePainterUtils {
     d.put(tab + "[Pressed+Selected].backgroundPainter", selTabPainter);
   }
 
-  protected static class TabPainter implements Painter<JComponent> {
+  private static final class TabPainter implements Painter<JComponent> {
     private final Color color;
     private final boolean selected;
 
-    protected TabPainter(boolean selected) {
+    private TabPainter(boolean selected) {
       this.selected = selected;
       this.color = selected ? CONTENT_BGC : TAB_BGC;
     }
@@ -109,7 +109,8 @@ final class NimbusTabbedPanePainterUtils {
       int x = 3;
       int y = 3;
       Graphics2D g2 = (Graphics2D) g.create(0, 0, width, height + a);
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
       int w = width - x;
       int h = height + a;
@@ -142,10 +143,11 @@ final class NimbusTabbedPanePainterUtils {
     }
   }
 
-  protected static class TabAreaPainter implements Painter<JComponent> {
+  private static final class TabAreaPainter implements Painter<JComponent> {
     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       double y = (double) h - OVER_PAINT;
       double width = w - STROKE_SIZE;
       double height = h - STROKE_SIZE;
@@ -159,10 +161,11 @@ final class NimbusTabbedPanePainterUtils {
     }
   }
 
-  protected static class TabbedPaneContentPainter implements Painter<JComponent> {
+  private static final class TabbedPaneContentPainter implements Painter<JComponent> {
     @Override public void paint(Graphics2D g, JComponent c, int w, int h) {
       Graphics2D g2 = (Graphics2D) g.create(0, 0, w, h);
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(0, -OVER_PAINT);
       double width = w - STROKE_SIZE;
       double height = h - STROKE_SIZE + OVER_PAINT;
