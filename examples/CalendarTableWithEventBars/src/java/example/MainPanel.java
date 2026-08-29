@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     calendarTable.setCurrentLocalDate(date);
     calendarTable.setModel(new CalendarViewTableModel(date));
     YearMonth currentMonth = YearMonth.from(date);
-    List<EventPeriod> events = createSampleEvents(currentMonth);
+    List<CalendarEvent> events = createSampleEvents(currentMonth);
     JLayer<JTable> layer = new JLayer<>(calendarTable, new EventBarLayerUI(events));
     JScrollPane scroll = new JScrollPane(layer) {
       @Override public void updateUI() {
@@ -47,48 +47,48 @@ public final class MainPanel extends JPanel {
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
       }
     };
-    JScrollPane comp = new JScrollPane(createLegendPanel(currentMonth, events));
-    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scroll, comp);
+    JScrollPane legend = new JScrollPane(createLegendPanel(currentMonth, events));
+    JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scroll, legend);
     split.setResizeWeight(.8);
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private List<EventPeriod> createSampleEvents(YearMonth ym) {
-    List<EventPeriod> events = new ArrayList<>();
+  private List<CalendarEvent> createSampleEvents(YearMonth ym) {
+    List<CalendarEvent> events = new ArrayList<>();
     // Event 1: 3-day meeting
-    events.add(new EventPeriod("Project Meeting",
+    events.add(new CalendarEvent("Project Meeting",
         LocalDate.of(ym.getYear(), ym.getMonth(), 5),
         LocalDate.of(ym.getYear(), ym.getMonth(), 7),
         new Color(100, 150, 255, 180)));
 
     // Event 2: 1-week training (overlaps with Event 1)
-    events.add(new EventPeriod("New Employee Training",
+    events.add(new CalendarEvent("New Employee Training",
         LocalDate.of(ym.getYear(), ym.getMonth(), 6),
         LocalDate.of(ym.getYear(), ym.getMonth(), 12),
         new Color(255, 180, 100, 180)));
 
     // Event 3: 2-day event
-    events.add(new EventPeriod("Exhibition",
+    events.add(new CalendarEvent("Exhibition",
         LocalDate.of(ym.getYear(), ym.getMonth(), 20),
         LocalDate.of(ym.getYear(), ym.getMonth(), 21),
         new Color(150, 255, 150, 180)));
 
     // Event 4: Long-term task until month-end
-    events.add(new EventPeriod("Year-End Processing",
+    events.add(new CalendarEvent("Year-End Processing",
         LocalDate.of(ym.getYear(), ym.getMonth(), 18),
         LocalDate.of(ym.getYear(), ym.getMonth(), ym.lengthOfMonth()),
         new Color(255, 150, 200, 180)));
 
     // Event 5: Another task overlapping with Event 4
-    events.add(new EventPeriod("System Maintenance",
+    events.add(new CalendarEvent("System Maintenance",
         LocalDate.of(ym.getYear(), ym.getMonth(), 22),
         LocalDate.of(ym.getYear(), ym.getMonth(), 26),
         new Color(200, 150, 255, 180)));
     return events;
   }
 
-  private JPanel createLegendPanel(YearMonth currentMonth, List<EventPeriod> events) {
+  private JPanel createLegendPanel(YearMonth currentMonth, List<CalendarEvent> events) {
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
     String txt = currentMonth.format(fmt.withLocale(locale));
@@ -135,7 +135,7 @@ class CalendarTable extends JTable {
 
   @Override public void updateUI() {
     super.updateUI();
-    setDefaultRenderer(LocalDate.class, new CalendarCellRenderer());
+    setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     setCellSelectionEnabled(true);
     setFillsViewportHeight(true);
@@ -158,7 +158,7 @@ class CalendarTable extends JTable {
   }
 }
 
-class CalendarCellRenderer extends DefaultTableCellRenderer {
+class CalendarTableRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, false, false, row, column);
@@ -173,12 +173,12 @@ class CalendarCellRenderer extends DefaultTableCellRenderer {
       String txt = isToday ? getCircledNumber(day) : Integer.toString(day);
       dayLabel.setText(txt);
       LocalDate currentDate = calendarTable.getCurrentLocalDate();
-      dayLabel.setForeground(getDayOfWeekColor(date, currentDate, isToday));
+      dayLabel.setForeground(getDayTextColor(date, currentDate, isToday));
     }
     return c;
   }
 
-  private Color getDayOfWeekColor(LocalDate date, LocalDate currentDate, boolean isToday) {
+  private Color getDayTextColor(LocalDate date, LocalDate currentDate, boolean isToday) {
     Color color;
     boolean isCurrentMonth = date.getMonth() == currentDate.getMonth();
     if (isCurrentMonth) {
@@ -238,7 +238,7 @@ class CalendarViewTableModel extends DefaultTableModel {
   }
 
   @Override public int getRowCount() {
-    return 6;
+    return WEEKS;
   }
 
   @Override public int getColumnCount() {
@@ -255,14 +255,14 @@ class CalendarViewTableModel extends DefaultTableModel {
 }
 
 @SuppressWarnings("PMD.DataClass")
-final class EventPeriod {
+final class CalendarEvent {
   private final String name;
   private final LocalDate startDate;
   private final LocalDate endDate;
   private final Color color;
   private int track; // Track Number (for duplicate avoidance)
 
-  /* default */ EventPeriod(String name, LocalDate startDate, LocalDate endDate, Color color) {
+  /* default */ CalendarEvent(String name, LocalDate startDate, LocalDate endDate, Color color) {
     this.name = name;
     this.startDate = startDate;
     this.endDate = endDate;
@@ -289,17 +289,17 @@ final class EventPeriod {
     return track;
   }
 
-  public void setTrack(int trackNum) {
-    this.track = trackNum;
+  public void setTrack(int track) {
+    this.track = track;
   }
 }
 
 class EventBarLayerUI extends LayerUI<JTable> {
   private static final int BAR_HEIGHT = 10;
   private static final int BAR_MARGIN = 2;
-  private final List<EventPeriod> events;
+  private final transient List<CalendarEvent> events;
 
-  protected EventBarLayerUI(List<EventPeriod> events) {
+  protected EventBarLayerUI(List<CalendarEvent> events) {
     super();
     this.events = events;
   }
@@ -317,7 +317,7 @@ class EventBarLayerUI extends LayerUI<JTable> {
       assignTracksToEvents();
 
       // Draw a color bar for each event
-      for (EventPeriod ev : events) {
+      for (CalendarEvent ev : events) {
         drawEventBars(g2, table, ev);
       }
     }
@@ -331,11 +331,11 @@ class EventBarLayerUI extends LayerUI<JTable> {
     int[] tracks = new int[events.size()];
     boolean[] usedTracks = new boolean[events.size()];
     for (int i = 0; i < events.size(); i++) {
-      EventPeriod event = events.get(i);
+      CalendarEvent event = events.get(i);
       Arrays.fill(usedTracks, false);
       // Check for overlap with already processed events
       for (int j = 0; j < i; j++) {
-        EventPeriod other = events.get(j);
+        CalendarEvent other = events.get(j);
         if (isOverlapping(event, other)) {
           usedTracks[tracks[j]] = true;
         }
@@ -351,22 +351,22 @@ class EventBarLayerUI extends LayerUI<JTable> {
   }
 
   /**
-   * Check if two event periods overlap.
+   * Check if two events overlap.
    */
-  private boolean isOverlapping(EventPeriod e1, EventPeriod e2) {
-    boolean b1 = e1.getEndDate().isBefore(e2.getStartDate());
-    boolean b2 = e2.getEndDate().isBefore(e1.getStartDate());
+  private boolean isOverlapping(CalendarEvent event, CalendarEvent other) {
+    boolean b1 = event.getEndDate().isBefore(other.getStartDate());
+    boolean b2 = other.getEndDate().isBefore(event.getStartDate());
     return !(b1 || b2);
   }
 
-  private void drawEventBars(Graphics2D g2, JTable table, EventPeriod event) {
+  private void drawEventBars(Graphics2D g2, JTable table, CalendarEvent event) {
     LocalDate calendarStartDate = (LocalDate) table.getModel().getValueAt(0, 0);
     int daysInTable = DayOfWeek.values().length * CalendarViewTableModel.WEEKS;
     LocalDate current = event.getStartDate();
     while (!current.isAfter(event.getEndDate())) {
       long sinceStart = ChronoUnit.DAYS.between(calendarStartDate, current);
       if (sinceStart >= 0 && sinceStart < daysInTable) {
-        int consecutiveDays = getConsecutiveDaysAndPaintBar(g2, table, event, current);
+        int consecutiveDays = drawEventBarSegment(g2, table, event, current);
         current = current.plusDays(consecutiveDays);
       } else {
         current = current.plusDays(1);
@@ -374,7 +374,7 @@ class EventBarLayerUI extends LayerUI<JTable> {
     }
   }
 
-  private static void drawEventBar(Graphics2D g2, EventPeriod event, Rectangle barRect) {
+  private static void drawEventBar(Graphics2D g2, CalendarEvent event, Rectangle barRect) {
     Color clr = event.getColor();
     g2.setColor(clr);
     g2.fillRoundRect(barRect.x, barRect.y, barRect.width, barRect.height, 5, 5);
@@ -382,39 +382,39 @@ class EventBarLayerUI extends LayerUI<JTable> {
     g2.drawRoundRect(barRect.x, barRect.y, barRect.width, barRect.height, 5, 5);
     boolean b = barRect.width > 60;
     if (b) {
-      drawBarTitle(g2, event, barRect);
+      drawEventName(g2, event, barRect);
     }
   }
 
-  private static int getConsecutiveDaysAndPaintBar(
-      Graphics2D g2, JTable tbl, EventPeriod ev, LocalDate cur) {
-    LocalDate calendarStartDate = (LocalDate) tbl.getModel().getValueAt(0, 0);
-    long sinceStart = ChronoUnit.DAYS.between(calendarStartDate, cur);
+  private static int drawEventBarSegment(
+      Graphics2D g2, JTable table, CalendarEvent event, LocalDate current) {
+    LocalDate calendarStartDate = (LocalDate) table.getModel().getValueAt(0, 0);
+    long sinceStart = ChronoUnit.DAYS.between(calendarStartDate, current);
     long daysInWeek = DayOfWeek.values().length;
     int weekRow = (int) (sinceStart / daysInWeek);
     int dayCol = (int) (sinceStart % daysInWeek);
     int consecutiveDays = 1;
-    LocalDate nextDay = cur.plusDays(1);
+    LocalDate nextDay = current.plusDays(1);
     boolean notEndOfWeek = dayCol != daysInWeek - 1;
-    while (!nextDay.isAfter(ev.getEndDate()) && notEndOfWeek) {
+    while (!nextDay.isAfter(event.getEndDate()) && notEndOfWeek) {
       consecutiveDays++;
       nextDay = nextDay.plusDays(1);
       if (dayCol + consecutiveDays >= daysInWeek) {
         break;
       }
     }
-    Rectangle firstRect = tbl.getCellRect(weekRow, dayCol, false);
-    Rectangle lastRect = tbl.getCellRect(weekRow, dayCol + consecutiveDays - 1, false);
-    int trackOffset = ev.getTrack() * (BAR_HEIGHT + BAR_MARGIN);
-    int headerHeight = tbl.getTableHeader().getHeight();
+    Rectangle firstRect = table.getCellRect(weekRow, dayCol, false);
+    Rectangle lastRect = table.getCellRect(weekRow, dayCol + consecutiveDays - 1, false);
+    int trackOffset = event.getTrack() * (BAR_HEIGHT + BAR_MARGIN);
+    int headerHeight = table.getTableHeader().getHeight();
     int barX = firstRect.x + 5;
     int barY = firstRect.y + trackOffset + headerHeight;
     int barWidth = lastRect.x + lastRect.width - firstRect.x - 10;
-    drawEventBar(g2, ev, new Rectangle(barX, barY, barWidth, BAR_HEIGHT));
+    drawEventBar(g2, event, new Rectangle(barX, barY, barWidth, BAR_HEIGHT));
     return consecutiveDays;
   }
 
-  private static void drawBarTitle(Graphics2D g2, EventPeriod event, Rectangle rect) {
+  private static void drawEventName(Graphics2D g2, CalendarEvent event, Rectangle rect) {
     g2.setColor(Color.BLACK);
     g2.setFont(g2.getFont().deriveFont(9f));
     FontMetrics fm = g2.getFontMetrics();
