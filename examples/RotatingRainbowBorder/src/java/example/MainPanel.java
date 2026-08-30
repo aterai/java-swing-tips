@@ -209,22 +209,13 @@ class RotatingConicRainbowBorder extends RotatingRainbowBorder {
     }
   }
 
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
+  // FRACTIONS is evenly spaced, so the segment index is computable directly
   private static int interpolateColorRgb(double t) {
-    if (t <= FRACTIONS[0]) {
-      return COLORS[0].getRGB();
-    }
-    int last = FRACTIONS.length - 1;
-    if (t >= FRACTIONS[last]) {
-      return COLORS[last].getRGB();
-    }
-    for (int i = 0; i < last; i++) {
-      if (t <= FRACTIONS[i + 1]) {
-        float ratio = (float) ((t - FRACTIONS[i]) / (FRACTIONS[i + 1] - FRACTIONS[i]));
-        return interpolateArgb(COLORS[i].getRGB(), COLORS[i + 1].getRGB(), ratio);
-      }
-    }
-    return 0;
+    double pos = Math.min(Math.max(t, 0d), 1d) * HUE_STEPS;
+    // Java 21: double pos = Math.clamp(t, 0d, 1d) * HUE_STEPS;
+    int idx = Math.min((int) pos, HUE_STEPS - 1);
+    float ratio = (float) (pos - idx);
+    return interpolateArgb(COLORS[idx].getRGB(), COLORS[idx + 1].getRGB(), ratio);
   }
 
   private static int interpolateArgb(int c0, int c1, float t) {
