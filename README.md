@@ -62,10 +62,10 @@ javax.swing.JComponent
 
 Others
 ---------------
-- [Graphics(75)](https://ateraimemo.com/en/Swing/_Graphics.html)
-- [Animation(61)](https://ateraimemo.com/en/Swing/_Animation.html)
+- [Graphics(76)](https://ateraimemo.com/en/Swing/_Graphics.html)
+- [Animation(62)](https://ateraimemo.com/en/Swing/_Animation.html)
 - [LayoutManager(58)](https://ateraimemo.com/en/Swing/_Layout.html)
-- [Border(51)](https://ateraimemo.com/en/Swing/_Border.html)
+- [Border(52)](https://ateraimemo.com/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/en/Swing/_LookAndFeel.html)
 - [Hyperlink Html(40)](https://ateraimemo.com/en/Swing/_Hyperlink.html)

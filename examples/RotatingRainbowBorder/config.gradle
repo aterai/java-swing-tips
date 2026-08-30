@@ -1,0 +1,6 @@
+vendor  = 'Java Swing Tips - https://github.com/aterai/java-swing-tips'
+version = '1.0.0'
+year    = '2003-2021'
+
+main.class = 'example.MainPanel'
+runtime.classpath = '.'
