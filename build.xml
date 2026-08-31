@@ -421,7 +421,10 @@
   <target name="ftp" depends="dist">
     <property name="ftp.userid" value="${env.FTP_USERID}" />
     <property name="ftp.server" value="${env.FTP_SERVER}" />
-    <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
+    <pathconvert property="ftp.basedir">
+      <path path="${env.FTP_BASEDIR}" />
+    </pathconvert>
+    <property name="ftp.remotedir" value="${ftp.basedir}/${jnlp.name}" />
     <property name="ssh.inkey" value="${env.SSH_INKEY}" />
     <property name="ssh.in" value="${env.SSH_IN}" />
     <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
@@ -449,7 +452,10 @@
     <echo message="ftps" />
     <property name="ftp.userid" value="${env.FTP_USERID}" />
     <property name="ftp.server" value="${env.FTP_SERVER}" />
-    <property name="ftp.remotedir" value="${env.FTP_BASEDIR}${jnlp.name}" />
+    <pathconvert property="ftp.basedir">
+      <path path="${env.FTP_BASEDIR}" />
+    </pathconvert>
+    <property name="ftp.remotedir" value="${ftp.basedir}/${jnlp.name}" />
     <property name="ssh.inkey" value="${env.SSH_INKEY}" />
     <property name="ssh.in" value="${env.SSH_IN}" />
     <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
