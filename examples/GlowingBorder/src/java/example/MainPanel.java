@@ -215,22 +215,20 @@ class GlowingBorder extends EmptyBorder {
     return img;
   }
 
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
   private static int interpolateColorRgb(double t) {
-    if (t <= FRACTIONS[0]) {
-      return 0;
-    }
+    int rgb = 0;
     int last = FRACTIONS.length - 1;
     if (t >= FRACTIONS[last]) {
-      return COLORS[last].getRGB();
-    }
-    for (int i = 0; i < last; i++) {
-      if (t <= FRACTIONS[i + 1]) {
-        float ratio = (float) ((t - FRACTIONS[i]) / (FRACTIONS[i + 1] - FRACTIONS[i]));
-        return interpolateArgb(COLORS[i].getRGB(), COLORS[i + 1].getRGB(), ratio);
+      rgb = COLORS[last].getRGB();
+    } else if (t > FRACTIONS[0]) {
+      int i = 0;
+      while (t > FRACTIONS[i + 1]) {
+        i++;
       }
+      float ratio = (float) ((t - FRACTIONS[i]) / (FRACTIONS[i + 1] - FRACTIONS[i]));
+      rgb = interpolateArgb(COLORS[i].getRGB(), COLORS[i + 1].getRGB(), ratio);
     }
-    return 0;
+    return rgb;
   }
 
   private static int interpolateArgb(int c0, int c1, float t) {
