@@ -22,7 +22,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     // symbol_scale_2.jpg: Real World Illustrator: Understanding 9-Slice Scaling
     // https://rwillustrator.blogspot.jp/2007/04/understanding-9-slice-scaling.html
-    BufferedImage img = makeBufferedImage("example/symbol_scale_2.jpg");
+    BufferedImage img = createBufferedImage("example/symbol_scale_2.jpg");
     JButton b1 = new ScalingButton("Scaling", img);
     JButton b2 = new NineSliceScalingButton("9-Slice Scaling", img);
 
@@ -30,22 +30,26 @@ public final class MainPanel extends JPanel {
     p1.add(b1);
     p1.add(b2);
 
-    BufferedImage bi = makeBufferedImage("example/blue.png");
-    JButton b3 = new JButton("Scaling Icon", new NineSliceIcon(bi, 0, 0, 0, 0));
+    BufferedImage bi = createBufferedImage("example/blue.png");
+    JButton b3 = new JButton("Scaling Icon", new NineSliceScalingIcon(bi, 0, 0, 0, 0));
     b3.setContentAreaFilled(false);
     b3.setBorder(BorderFactory.createEmptyBorder());
     b3.setForeground(Color.WHITE);
     b3.setHorizontalTextPosition(SwingConstants.CENTER);
-    b3.setPressedIcon(new NineSliceIcon(makeImage(bi, new PressedFilter()), 0, 0, 0, 0));
-    b3.setRolloverIcon(new NineSliceIcon(makeImage(bi, new RolloverFilter()), 0, 0, 0, 0));
+    b3.setPressedIcon(new NineSliceScalingIcon(
+        createFilteredImage(bi, new PressedImageFilter()), 0, 0, 0, 0));
+    b3.setRolloverIcon(new NineSliceScalingIcon(
+        createFilteredImage(bi, new RolloverImageFilter()), 0, 0, 0, 0));
 
-    JButton b4 = new JButton("9-Slice Scaling Icon", new NineSliceIcon(bi, 8, 8, 8, 8));
+    JButton b4 = new JButton("9-Slice Scaling Icon", new NineSliceScalingIcon(bi, 8, 8, 8, 8));
     b4.setContentAreaFilled(false);
     b4.setBorder(BorderFactory.createEmptyBorder());
     b4.setForeground(Color.WHITE);
     b4.setHorizontalTextPosition(SwingConstants.CENTER);
-    b4.setPressedIcon(new NineSliceIcon(makeImage(bi, new PressedFilter()), 8, 8, 8, 8));
-    b4.setRolloverIcon(new NineSliceIcon(makeImage(bi, new RolloverFilter()), 8, 8, 8, 8));
+    b4.setPressedIcon(new NineSliceScalingIcon(
+        createFilteredImage(bi, new PressedImageFilter()), 8, 8, 8, 8));
+    b4.setRolloverIcon(new NineSliceScalingIcon(
+        createFilteredImage(bi, new RolloverImageFilter()), 8, 8, 8, 8));
 
     JPanel p2 = new JPanel(new GridLayout(1, 2, 5, 5));
     p2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -57,17 +61,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private BufferedImage makeBufferedImage(String path) {
+  private static BufferedImage createBufferedImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       BufferedImage buf;
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     // ImageIcon ic = new ImageIcon(url);
     // int w = ic.getIconWidth();
     // int h = ic.getIconHeight();
@@ -78,7 +82,7 @@ public final class MainPanel extends JPanel {
     // return buf;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
@@ -89,7 +93,7 @@ public final class MainPanel extends JPanel {
     return bi;
   }
 
-  private static BufferedImage makeImage(BufferedImage src, ImageFilter filter) {
+  private static BufferedImage createFilteredImage(BufferedImage src, ImageFilter filter) {
     ImageProducer ip = src.getSource();
     Image img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(ip, filter));
     int w = img.getWidth(null);
@@ -126,8 +130,8 @@ public final class MainPanel extends JPanel {
 class ScalingButton extends JButton {
   private final transient BufferedImage image;
 
-  protected ScalingButton(String title, BufferedImage image) {
-    super(title, null);
+  protected ScalingButton(String text, BufferedImage image) {
+    super(text, null);
     this.image = image;
   }
 
@@ -160,8 +164,8 @@ class ScalingButton extends JButton {
 class NineSliceScalingButton extends JButton {
   private final transient BufferedImage image;
 
-  protected NineSliceScalingButton(String title, BufferedImage image) {
-    super(title, null);
+  protected NineSliceScalingButton(String text, BufferedImage image) {
+    super(text, null);
     this.image = image;
   }
 
@@ -172,7 +176,7 @@ class NineSliceScalingButton extends JButton {
 
   // @Override public Dimension getPreferredSize() {
   //   Dimension dim = super.getPreferredSize();
-  //   return new Dimension(dim.width + lw + rw, dim.height + th + bh);
+  //   return new Dimension(dim.width + left + right, dim.height + top + bottom);
   // }
 
   // @Override public Dimension getMinimumSize() {
@@ -186,64 +190,65 @@ class NineSliceScalingButton extends JButton {
 
     int iw = image.getWidth(this);
     int ih = image.getHeight(this);
-    int ww = getWidth();
-    int hh = getHeight();
+    int bw = getWidth();
+    int bh = getHeight();
 
-    int lw = 37;
-    int rw = 36;
-    int th = 36;
-    int bh = 36;
-
-    g2.drawImage(
-        image.getSubimage(lw, th, iw - lw - rw, ih - th - bh),
-        lw, th, ww - lw - rw, hh - th - bh, this);
+    int left = 37;
+    int right = 36;
+    int top = 36;
+    int bottom = 36;
 
     g2.drawImage(
-        image.getSubimage(lw, 0, iw - lw - rw, th),
-        lw, 0, ww - lw - rw, th, this);
-    g2.drawImage(
-        image.getSubimage(lw, ih - bh, iw - lw - rw, bh),
-        lw, hh - bh, ww - lw - rw, bh, this);
-    g2.drawImage(
-        image.getSubimage(0, th, lw, ih - th - bh),
-        0, th, lw, hh - th - bh, this);
-    g2.drawImage(
-        image.getSubimage(iw - rw, th, rw, ih - th - bh),
-        ww - rw, th, rw, hh - th - bh, this);
+        image.getSubimage(left, top, iw - left - right, ih - top - bottom),
+        left, top, bw - left - right, bh - top - bottom, this);
 
     g2.drawImage(
-        image.getSubimage(0, 0, lw, th), 0, 0, this);
+        image.getSubimage(left, 0, iw - left - right, top),
+        left, 0, bw - left - right, top, this);
     g2.drawImage(
-        image.getSubimage(iw - rw, 0, rw, th),
-        ww - rw, 0, this);
+        image.getSubimage(left, ih - bottom, iw - left - right, bottom),
+        left, bh - bottom, bw - left - right, bottom, this);
     g2.drawImage(
-        image.getSubimage(0, ih - bh, lw, bh),
-        0, hh - bh, this);
+        image.getSubimage(0, top, left, ih - top - bottom),
+        0, top, left, bh - top - bottom, this);
     g2.drawImage(
-        image.getSubimage(iw - rw, ih - bh, rw, bh),
-        ww - rw, hh - bh, this);
+        image.getSubimage(iw - right, top, right, ih - top - bottom),
+        bw - right, top, right, bh - top - bottom, this);
+
+    g2.drawImage(
+        image.getSubimage(0, 0, left, top), 0, 0, this);
+    g2.drawImage(
+        image.getSubimage(iw - right, 0, right, top),
+        bw - right, 0, this);
+    g2.drawImage(
+        image.getSubimage(0, ih - bottom, left, bottom),
+        0, bh - bottom, this);
+    g2.drawImage(
+        image.getSubimage(iw - right, ih - bottom, right, bottom),
+        bw - right, bh - bottom, this);
 
     g2.dispose();
     super.paintComponent(g);
   }
 }
 
-class NineSliceIcon implements Icon {
-  private static final Rectangle RECT = new Rectangle();
+class NineSliceScalingIcon implements Icon {
+  private final Rectangle innerArea = new Rectangle();
   private final BufferedImage image;
-  private final int lw;
-  private final int rw;
-  private final int th;
-  private final int bh;
+  private final int left;
+  private final int right;
+  private final int top;
+  private final int bottom;
   private int width;
   private int height;
 
-  protected NineSliceIcon(BufferedImage image, int lw, int rw, int th, int bh) {
+  protected NineSliceScalingIcon(
+      BufferedImage image, int left, int right, int top, int bottom) {
     this.image = image;
-    this.lw = lw;
-    this.rw = rw;
-    this.th = th;
-    this.bh = bh;
+    this.left = left;
+    this.right = right;
+    this.top = top;
+    this.bottom = bottom;
   }
 
   @Override public int getIconWidth() {
@@ -261,58 +266,58 @@ class NineSliceIcon implements Icon {
     // g2.translate(x, y); // 1.8.0: work fine?
 
     JComponent jc = c instanceof JComponent ? (JComponent) c : null;
-    RECT.setBounds(c.getBounds());
-    SwingUtilities.calculateInnerArea(jc, RECT);
-    width = RECT.width;
-    height = RECT.height;
+    innerArea.setBounds(c.getBounds());
+    SwingUtilities.calculateInnerArea(jc, innerArea);
+    width = innerArea.width;
+    height = innerArea.height;
 
     int iw = image.getWidth(c);
     int ih = image.getHeight(c);
 
     g2.drawImage(
-        image.getSubimage(lw, th, iw - lw - rw, ih - th - bh),
-        lw, th, width - lw - rw, height - th - bh, c);
+        image.getSubimage(left, top, iw - left - right, ih - top - bottom),
+        left, top, width - left - right, height - top - bottom, c);
 
-    if (lw > 0 && rw > 0 && th > 0 && bh > 0) {
+    if (left > 0 && right > 0 && top > 0 && bottom > 0) {
       g2.drawImage(
-          image.getSubimage(lw, 0, iw - lw - rw, th),
-          lw, 0, width - lw - rw, th, c);
+          image.getSubimage(left, 0, iw - left - right, top),
+          left, 0, width - left - right, top, c);
       g2.drawImage(
-          image.getSubimage(lw, ih - bh, iw - lw - rw, bh),
-          lw, height - bh, width - lw - rw, bh, c);
+          image.getSubimage(left, ih - bottom, iw - left - right, bottom),
+          left, height - bottom, width - left - right, bottom, c);
       g2.drawImage(
-          image.getSubimage(0, th, lw, ih - th - bh),
-          0, th, lw, height - th - bh, c);
+          image.getSubimage(0, top, left, ih - top - bottom),
+          0, top, left, height - top - bottom, c);
       g2.drawImage(
-          image.getSubimage(iw - rw, th, rw, ih - th - bh),
-          width - rw, th, rw, height - th - bh, c);
+          image.getSubimage(iw - right, top, right, ih - top - bottom),
+          width - right, top, right, height - top - bottom, c);
 
       g2.drawImage(
-          image.getSubimage(0, 0, lw, th),
+          image.getSubimage(0, 0, left, top),
           0, 0, c);
       g2.drawImage(
-          image.getSubimage(iw - rw, 0, rw, th),
-          width - rw, 0, c);
+          image.getSubimage(iw - right, 0, right, top),
+          width - right, 0, c);
       g2.drawImage(
-          image.getSubimage(0, ih - bh, lw, bh),
-          0, height - bh, c);
+          image.getSubimage(0, ih - bottom, left, bottom),
+          0, height - bottom, c);
       g2.drawImage(
-          image.getSubimage(iw - rw, ih - bh, rw, bh),
-          width - rw, height - bh, c);
+          image.getSubimage(iw - right, ih - bottom, right, bottom),
+          width - right, height - bottom, c);
     }
 
     g2.dispose();
   }
 }
 
-class PressedFilter extends RGBImageFilter {
+class PressedImageFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     int r = Math.round(((argb >> 16) & 0xFF) * .6f);
     return argb & 0xFF_00_FF_FF | r << 16;
   }
 }
 
-class RolloverFilter extends RGBImageFilter {
+class RolloverImageFilter extends RGBImageFilter {
   @Override public int filterRGB(int x, int y, int argb) {
     // int r = (argb >> 16) & 0xFF;
     int g = Math.min(0xFF, Math.round(((argb >> 8) & 0xFF) * 1.5f));
