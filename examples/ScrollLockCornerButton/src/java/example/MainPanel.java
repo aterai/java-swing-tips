@@ -21,41 +21,41 @@ public final class MainPanel extends JPanel {
     JTable table = new JTable(16, 4);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     JScrollPane scroll = new JScrollPane(table);
-    JToggleButton lock = new LockToggleButton();
+    JToggleButton lockButton = new LockToggleButton();
     DisableInputLayerUI<Component> layerUI = new DisableInputLayerUI<>();
-    lock.addItemListener(e -> {
+    lockButton.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        scrollLock(scroll, true);
+        setScrollLocked(scroll, true);
         layerUI.setLocked(true);
       } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-        scrollLock(scroll, false);
+        setScrollLocked(scroll, false);
         layerUI.setLocked(false);
       }
     });
     JScrollBar verticalScrollBar = scroll.getVerticalScrollBar();
-    JPanel verticalBox = new JPanel(new BorderLayout());
-    verticalBox.setOpaque(false);
-    verticalBox.add(new JLayer<>(verticalScrollBar, layerUI));
-    verticalBox.add(lock, BorderLayout.SOUTH);
+    JPanel scrollBarPanel = new JPanel(new BorderLayout());
+    scrollBarPanel.setOpaque(false);
+    scrollBarPanel.add(new JLayer<>(verticalScrollBar, layerUI));
+    scrollBarPanel.add(lockButton, BorderLayout.SOUTH);
     BoundedRangeModel model = verticalScrollBar.getModel();
     model.addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
-      verticalBox.setVisible(m.getMaximum() - m.getMinimum() > m.getExtent());
+      scrollBarPanel.setVisible(m.getMaximum() - m.getMinimum() > m.getExtent());
     });
-    verticalBox.setVisible(model.getMaximum() - model.getMinimum() > model.getExtent());
+    scrollBarPanel.setVisible(model.getMaximum() - model.getMinimum() > model.getExtent());
     JPanel panel = new JPanel(new BorderLayout(0, 0));
     panel.add(scroll);
-    panel.add(verticalBox, BorderLayout.EAST);
+    panel.add(scrollBarPanel, BorderLayout.EAST);
     add(panel);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void scrollLock(JScrollPane scroll, boolean lock) {
-    // scroll.getVerticalScrollBar().setEnabled(!lock);
-    scroll.setWheelScrollingEnabled(!lock);
-    Component c = scroll.getViewport().getView();
-    c.setEnabled(!lock);
-    c.setFocusable(!lock);
+  public static void setScrollLocked(JScrollPane scroll, boolean locked) {
+    // scroll.getVerticalScrollBar().setEnabled(!locked);
+    scroll.setWheelScrollingEnabled(!locked);
+    Component view = scroll.getViewport().getView();
+    view.setEnabled(!locked);
+    view.setFocusable(!locked);
   }
 
   public static void main(String[] args) {
@@ -106,15 +106,15 @@ class LockToggleButton extends JToggleButton {
 }
 
 class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
-  private static final String CMD_REPAINT = "lock";
+  private static final String LOCKED_PROPERTY = "locked";
   private final transient MouseListener mouseBlocker = new MouseAdapter() {
     /* block mouse event */
   };
-  private boolean isBlocking;
+  private boolean locked;
 
-  public void setLocked(boolean flag) {
-    firePropertyChange(CMD_REPAINT, isBlocking, flag);
-    isBlocking = flag;
+  public void setLocked(boolean locked) {
+    firePropertyChange(LOCKED_PROPERTY, this.locked, locked);
+    this.locked = locked;
   }
 
   @Override public void installUI(JComponent c) {
@@ -138,13 +138,13 @@ class DisableInputLayerUI<V extends Component> extends LayerUI<V> {
   }
 
   @Override public void eventDispatched(AWTEvent e, JLayer<? extends V> l) {
-    if (isBlocking && e instanceof InputEvent) {
+    if (locked && e instanceof InputEvent) {
       ((InputEvent) e).consume();
     }
   }
 
   @Override public void applyPropertyChange(PropertyChangeEvent e, JLayer<? extends V> l) {
-    if (CMD_REPAINT.equals(e.getPropertyName())) {
+    if (LOCKED_PROPERTY.equals(e.getPropertyName())) {
       l.getGlassPane().setVisible((Boolean) e.getNewValue());
     }
   }
