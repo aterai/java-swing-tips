@@ -11,8 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.BadLocationException;
@@ -23,75 +25,75 @@ import javax.swing.text.StyledDocument;
 
 public final class MainPanel extends JPanel {
   private static final String FILE_NAME = "example.txt";
-  private final SpinnerNumberModel model1 = new SpinnerNumberModel(0, 0, 6, 1);
-  private final SpinnerNumberModel model2 = new SpinnerNumberModel(2, 0, 6, 1);
-  private final JSpinner spinner1 = new JSpinner(model1);
-  private final JSpinner spinner2 = new JSpinner(model2);
-  private final JLabel label = new JLabel("2", SwingConstants.RIGHT);
+  private final SpinnerNumberModel keepModel = new SpinnerNumberModel(0, 0, 6, 1);
+  private final SpinnerNumberModel rotationModel = new SpinnerNumberModel(2, 0, 6, 1);
+  private final JSpinner keepSpinner = new JSpinner(keepModel);
+  private final JSpinner rotationSpinner = new JSpinner(rotationModel);
+  private final JLabel totalLabel = new JLabel("2", SwingConstants.RIGHT);
   private final LoggingTextPane log = new LoggingTextPane();
 
   private MainPanel() {
     super(new BorderLayout());
-    JButton ok = new JButton("Create new " + FILE_NAME);
-    ok.addActionListener(e -> {
+    JButton createButton = new JButton("Create new " + FILE_NAME);
+    createButton.addActionListener(e -> {
       File file = new File(System.getProperty("java.io.tmpdir"), FILE_NAME);
-      int oldIdx = model1.getNumber().intValue();
-      int newIdx = model2.getNumber().intValue();
-      new BackupTask(file, oldIdx, newIdx).execute();
+      int keepCount = keepModel.getNumber().intValue();
+      int rotationCount = rotationModel.getNumber().intValue();
+      new BackupTask(file, keepCount, rotationCount).execute();
     });
 
-    JButton clear = new JButton("clear");
-    clear.addActionListener(e -> log.setText(""));
+    JButton clearButton = new JButton("clear");
+    clearButton.addActionListener(e -> log.setText(""));
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
     box.add(Box.createHorizontalGlue());
-    box.add(ok);
+    box.add(createButton);
     box.add(Box.createHorizontalStrut(5));
-    box.add(clear);
+    box.add(clearButton);
 
-    JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(spinner1, "0");
-    editor1.getTextField().setEditable(false);
-    spinner1.setEditor(editor1);
+    JSpinner.NumberEditor keepEditor = new JSpinner.NumberEditor(keepSpinner, "0");
+    keepEditor.getTextField().setEditable(false);
+    keepSpinner.setEditor(keepEditor);
 
-    JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(spinner2, "0");
-    editor2.getTextField().setEditable(false);
-    spinner2.setEditor(editor2);
+    JSpinner.NumberEditor rotationEditor = new JSpinner.NumberEditor(rotationSpinner, "0");
+    rotationEditor.getTextField().setEditable(false);
+    rotationSpinner.setEditor(rotationEditor);
 
     ChangeListener cl = e -> {
-      int i = model1.getNumber().intValue() + model2.getNumber().intValue();
-      label.setText(Integer.toString(i));
+      int i = keepModel.getNumber().intValue() + rotationModel.getNumber().intValue();
+      totalLabel.setText(Integer.toString(i));
     };
-    model1.addChangeListener(cl);
-    model2.addChangeListener(cl);
+    keepModel.addChangeListener(cl);
+    rotationModel.addChangeListener(cl);
 
-    label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
+    totalLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 16));
 
     JScrollPane scroll = new JScrollPane(log);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.getVerticalScrollBar().setUnitIncrement(25);
 
-    add(makeNorthBox(), BorderLayout.NORTH);
+    add(createSettingsPanel(), BorderLayout.NORTH);
     add(scroll);
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makeNorthBox() {
-    JPanel northBox = new JPanel(new GridLayout(3, 2, 5, 5));
-    northBox.add(new JLabel("Number of backups to keep:", SwingConstants.RIGHT));
-    northBox.add(spinner1);
-    northBox.add(new JLabel("Number of backups to delete in order:", SwingConstants.RIGHT));
-    northBox.add(spinner2);
-    northBox.add(new JLabel("Total number of backups:", SwingConstants.RIGHT));
-    northBox.add(label);
-    return northBox;
+  private Component createSettingsPanel() {
+    JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
+    panel.add(new JLabel("Number of backups to keep:", SwingConstants.RIGHT));
+    panel.add(keepSpinner);
+    panel.add(new JLabel("Number of backups to rotate:", SwingConstants.RIGHT));
+    panel.add(rotationSpinner);
+    panel.add(new JLabel("Total number of backups:", SwingConstants.RIGHT));
+    panel.add(totalLabel);
+    return panel;
   }
 
   private final class BackupTask extends BackgroundTask {
-    private BackupTask(File file, int oldIdx, int newIdx) {
-      super(file, oldIdx, newIdx);
+    private BackupTask(File file, int keepCount, int rotationCount) {
+      super(file, keepCount, rotationCount);
     }
 
     @Override protected void process(List<Message> chunks) {
@@ -104,7 +106,7 @@ public final class MainPanel extends JPanel {
 
     @Override protected void done() {
       log.append(getDoneMessage());
-      log.append(mkMsg("----------------------------------", MessageType.REGULAR));
+      log.append(makeMessage("----------------------------------", MessageType.REGULAR));
     }
   }
 
@@ -138,14 +140,14 @@ class LoggingTextPane extends JTextPane {
   @Override public void updateUI() {
     super.updateUI();
     setEditable(false);
-    EventQueue.invokeLater(this::initStyle);
+    EventQueue.invokeLater(this::initStyles);
   }
 
-  public void append(Message m) {
+  public void append(Message msg) {
     StyledDocument doc = getStyledDocument();
     int len = doc.getLength();
-    String txt = m.getText() + "\n";
-    Style style = doc.getStyle(m.getType().toString());
+    String txt = msg.getText() + "\n";
+    Style style = doc.getStyle(msg.getType().toString());
     try {
       doc.insertString(len, txt, style);
     } catch (BadLocationException ex) {
@@ -156,7 +158,7 @@ class LoggingTextPane extends JTextPane {
     }
   }
 
-  private void initStyle() {
+  private void initStyles() {
     StyledDocument doc = getStyledDocument();
     // Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
     Style def = doc.getStyle(StyleContext.DEFAULT_STYLE);
@@ -164,12 +166,12 @@ class LoggingTextPane extends JTextPane {
     // StyleConstants.setForeground(error, Color.BLACK);
     // Style error = doc.addStyle(ERROR, regular);
     StyleConstants.setForeground(doc.addStyle(MessageType.ERROR.toString(), def), Color.RED);
-    StyleConstants.setForeground(doc.addStyle(MessageType.BLUE.toString(), def), Color.BLUE);
+    StyleConstants.setForeground(doc.addStyle(MessageType.DETAIL.toString(), def), Color.BLUE);
   }
 }
 
 enum MessageType {
-  REGULAR, ERROR, BLUE
+  REGULAR, ERROR, DETAIL
 }
 
 class Message {
@@ -191,142 +193,99 @@ class Message {
 }
 
 class BackgroundTask extends SwingWorker<File, Message> {
-  private final File orgFile;
-  private final int oldIdx;
-  private final int newIdx;
+  private final File originalFile;
+  private final int keepCount;
+  private final int rotationCount;
 
-  protected BackgroundTask(File file, int oldIdx, int newIdx) {
+  protected BackgroundTask(File file, int keepCount, int rotationCount) {
     super();
-    this.orgFile = file;
-    this.oldIdx = oldIdx;
-    this.newIdx = newIdx;
+    this.originalFile = file;
+    this.keepCount = keepCount;
+    this.rotationCount = rotationCount;
   }
 
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public File doInBackground() throws IOException {
-    if (!orgFile.exists()) {
-      return orgFile;
-    }
-
-    String newFileName = orgFile.getAbsolutePath();
-    if (oldIdx == 0 && newIdx == 0) { // = backup off
-      try {
-        Files.delete(orgFile.toPath());
-        return new File(newFileName);
-      } catch (IOException ex) {
-        publish(mkMsg(ex.getMessage(), MessageType.ERROR));
-        return null;
-      }
-    }
-
-    File tmpFile = renameAndBackup(orgFile, newFileName);
-    if (Objects.nonNull(tmpFile)) {
-      return tmpFile;
-    }
-
-    if (renameAndShiftBackup(orgFile)) {
-      return new File(newFileName);
-    } else {
-      return null;
-    }
-  }
-
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  private File renameAndBackup(File file, String newFileName) throws IOException {
-    boolean simpleRename = false;
-    File test = null;
-    for (int i = 1; i <= oldIdx; i++) {
-      test = createBackupFile(file, i);
-      if (!test.exists()) {
-        simpleRename = true;
-        break;
-      }
-    }
-    if (!simpleRename) {
-      for (int i = oldIdx + 1; i <= oldIdx + newIdx; i++) {
-        test = createBackupFile(file, i);
-        if (!test.exists()) {
-          simpleRename = true;
-          break;
+  @Override public File doInBackground() {
+    File result = null;
+    try {
+      if (originalFile.exists()) {
+        if (keepCount == 0 && rotationCount == 0) { // = backup off
+          Files.delete(originalFile.toPath());
+        } else {
+          createBackup(originalFile);
         }
       }
+      result = originalFile;
+    } catch (IOException ex) {
+      publish(makeMessage(ex.getMessage(), MessageType.ERROR));
     }
-    if (simpleRename) {
-      Path path = file.toPath();
-      try {
-        publish(mkMsg("Rename the older file", MessageType.REGULAR));
-        String msg = String.format("  %s -> %s", file.getName(), test.getName());
-        publish(mkMsg(msg, MessageType.BLUE));
-        Files.move(path, path.resolveSibling(test.getName()));
-        return new File(newFileName);
-      } catch (IOException ex) {
-        publish(mkMsg(ex.getMessage(), MessageType.ERROR));
-        throw ex;
-      }
-    }
-    return null;
+    return result;
   }
 
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  private boolean renameAndShiftBackup(File file) {
-    File parent = file.getParentFile();
-    File tmpFile3 = new File(parent, makeBackupFileName(file.getName(), oldIdx + 1));
-    publish(mkMsg("Delete old backup file", MessageType.REGULAR));
-    publish(mkMsg("  del:" + tmpFile3.getAbsolutePath(), MessageType.BLUE));
-    try {
-      Files.delete(tmpFile3.toPath());
-    } catch (IOException ex) {
-      publish(mkMsg(ex.getMessage(), MessageType.ERROR));
-      return false;
+  private void createBackup(File file) throws IOException {
+    Optional<File> unusedBackup = findUnusedBackupFile(file);
+    if (unusedBackup.isPresent()) {
+      renameFile(file, unusedBackup.get());
+    } else {
+      deleteOldestRotatingBackup(file);
+      shiftBackupFileNumbers(file);
+      renameFile(file, makeBackupFile(file, keepCount + rotationCount));
     }
-    for (int i = oldIdx + 2; i <= oldIdx + newIdx; i++) {
-      File tmpFile1 = createBackupFile(file, i);
-      File tmpFile2 = createBackupFile(file, i - 1);
-      Path oldPath = tmpFile1.toPath();
-      try {
-        Files.move(oldPath, oldPath.resolveSibling(tmpFile2.getName()));
-      } catch (IOException ex) {
-        publish(mkMsg(ex.getMessage(), MessageType.ERROR));
-        return false;
-      }
-      publish(mkMsg("Update old backup file numbers", MessageType.REGULAR));
-      publish(mkMsg("  " + tmpFile1.getName() + " -> " + tmpFile2.getName(), MessageType.BLUE));
-    }
-    File tmp = new File(parent, makeBackupFileName(file.getName(), oldIdx + newIdx));
-    publish(mkMsg("Rename the older file", MessageType.REGULAR));
-    publish(mkMsg("  " + file.getName() + " -> " + tmp.getName(), MessageType.BLUE));
+  }
 
-    Path path = file.toPath();
-    try {
-      Files.move(path, path.resolveSibling(tmp.getName()));
-    } catch (IOException ex) {
-      publish(mkMsg(ex.getMessage(), MessageType.ERROR));
-      return false;
+  private Optional<File> findUnusedBackupFile(File file) {
+    return IntStream.rangeClosed(1, keepCount + rotationCount)
+        .mapToObj(i -> makeBackupFile(file, i))
+        .filter(f -> !f.exists())
+        .findFirst();
+  }
+
+  private void deleteOldestRotatingBackup(File file) throws IOException {
+    File oldest = makeBackupFile(file, keepCount + 1);
+    publish(makeMessage("Delete old backup file", MessageType.REGULAR));
+    publish(makeMessage("  del:" + oldest.getAbsolutePath(), MessageType.DETAIL));
+    Files.delete(oldest.toPath());
+  }
+
+  private void shiftBackupFileNumbers(File file) throws IOException {
+    for (int i = keepCount + 2; i <= keepCount + rotationCount; i++) {
+      File src = makeBackupFile(file, i);
+      File dst = makeBackupFile(file, i - 1);
+      Path path = src.toPath();
+      Files.move(path, path.resolveSibling(dst.getName()));
+      publish(makeMessage("Update old backup file numbers", MessageType.REGULAR));
+      publish(makeMessage("  " + src.getName() + " -> " + dst.getName(), MessageType.DETAIL));
     }
-    return true;
+  }
+
+  private void renameFile(File src, File dst) throws IOException {
+    publish(makeMessage("Rename the original file", MessageType.REGULAR));
+    String msg = String.format("  %s -> %s", src.getName(), dst.getName());
+    publish(makeMessage(msg, MessageType.DETAIL));
+    Path path = src.toPath();
+    Files.move(path, path.resolveSibling(dst.getName()));
   }
 
   protected Message getDoneMessage() {
     Message msg;
     try {
-      File nf = get();
-      if (Objects.isNull(nf)) {
-        msg = mkMsg("Failed to create backup file.", MessageType.ERROR);
-      } else if (nf.createNewFile()) {
-        msg = mkMsg("Generated " + nf.getName() + ".", MessageType.REGULAR);
+      File newFile = get();
+      if (Objects.isNull(newFile)) {
+        msg = makeMessage("Failed to create backup file.", MessageType.ERROR);
+      } else if (newFile.createNewFile()) {
+        msg = makeMessage("Generated " + newFile.getName() + ".", MessageType.REGULAR);
       } else {
-        msg = mkMsg("Failed to generate " + nf.getName() + ".", MessageType.ERROR);
+        msg = makeMessage("Failed to generate " + newFile.getName() + ".", MessageType.ERROR);
       }
     } catch (InterruptedException ex) {
-      msg = mkMsg(ex.getMessage(), MessageType.ERROR);
+      msg = makeMessage(ex.getMessage(), MessageType.ERROR);
       Thread.currentThread().interrupt();
     } catch (ExecutionException | IOException ex) {
-      msg = mkMsg(ex.getMessage(), MessageType.ERROR);
+      msg = makeMessage(ex.getMessage(), MessageType.ERROR);
     }
     return msg;
   }
 
-  protected static Message mkMsg(String text, MessageType type) {
+  protected static Message makeMessage(String text, MessageType type) {
     return new Message(text, type);
   }
 
@@ -334,7 +293,7 @@ class BackgroundTask extends SwingWorker<File, Message> {
     return String.format("%s.%d~", name, num);
   }
 
-  private static File createBackupFile(File file, int idx) {
+  private static File makeBackupFile(File file, int idx) {
     return new File(file.getParentFile(), makeBackupFileName(file.getName(), idx));
   }
 }
