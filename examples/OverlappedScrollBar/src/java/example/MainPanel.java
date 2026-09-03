@@ -14,12 +14,12 @@ import javax.swing.table.DefaultTableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    add(new JScrollPane(makeTable()));
-    add(new OverlapScrollPane(makeTable()));
+    add(new JScrollPane(createSampleTable()));
+    add(new OverlappedScrollPane(createSampleTable()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable() {
+  private static JTable createSampleTable() {
     JTable table = new JTable(new DefaultTableModel(30, 5));
     table.setAutoCreateRowSorter(true);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -48,8 +48,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class OverlapScrollPane extends JScrollPane {
-  protected OverlapScrollPane(Component view) {
+class OverlappedScrollPane extends JScrollPane {
+  protected OverlappedScrollPane(Component view) {
     super(view);
   }
 
@@ -70,48 +70,41 @@ class OverlapScrollPane extends JScrollPane {
     });
     setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
     setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_ALWAYS);
-    setLayout(new OverlapScrollPaneLayout());
+    setLayout(new OverlappedScrollPaneLayout());
   }
 }
 
-class OverlapScrollPaneLayout extends ScrollPaneLayout {
+class OverlappedScrollPaneLayout extends ScrollPaneLayout {
   private static final int BAR_SIZE = 12;
 
   @Override public void layoutContainer(Container parent) {
     if (parent instanceof JScrollPane) {
       JScrollPane scrollPane = (JScrollPane) parent;
       Rectangle availR = SwingUtilities.calculateInnerArea(scrollPane, null);
-
-      Rectangle colHeadR = new Rectangle(0, availR.y, 0, 0);
-      if (Objects.nonNull(colHead) && colHead.isVisible()) {
-        int colHeadHeight = Math.min(availR.height, colHead.getPreferredSize().height);
-        colHeadR.height = colHeadHeight;
-        availR.y += colHeadHeight;
-        availR.height -= colHeadHeight;
-      }
-      colHeadR.width = availR.width;
-      colHeadR.x = availR.x;
       if (Objects.nonNull(colHead)) {
-        colHead.setBounds(colHeadR);
+        int h = colHead.isVisible()
+            ? Math.min(availR.height, colHead.getPreferredSize().height)
+            : 0;
+        colHead.setBounds(availR.x, availR.y, availR.width, h);
+        availR.y += h;
+        availR.height -= h;
       }
       if (Objects.nonNull(viewport)) {
         viewport.setBounds(availR);
       }
       if (Objects.nonNull(vsb)) {
-        vsb.setLocation(availR.x + availR.width - BAR_SIZE, availR.y);
-        vsb.setSize(BAR_SIZE, availR.height - BAR_SIZE);
-        // vsb.setVisible(true);
+        int x = availR.x + availR.width - BAR_SIZE;
+        vsb.setBounds(x, availR.y, BAR_SIZE, availR.height - BAR_SIZE);
       }
       if (Objects.nonNull(hsb)) {
-        hsb.setLocation(availR.x, availR.y + availR.height - BAR_SIZE);
-        hsb.setSize(availR.width - BAR_SIZE, BAR_SIZE);
-        // hsb.setVisible(true);
+        int y = availR.y + availR.height - BAR_SIZE;
+        hsb.setBounds(availR.x, y, availR.width - BAR_SIZE, BAR_SIZE);
       }
     }
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -120,16 +113,16 @@ class ZeroSizeButton extends JButton {
 }
 
 class OverlappedScrollBarUI extends BasicScrollBarUI {
-  private static final Color DEFAULT_COLOR = new Color(100, 180, 255, 100);
-  private static final Color DRAGGING_COLOR = new Color(100, 180, 200, 100);
-  private static final Color ROLLOVER_COLOR = new Color(100, 180, 220, 100);
+  private static final Color DEFAULT_COLOR = new Color(0x64_64_B4_FF, true);
+  private static final Color DRAGGING_COLOR = new Color(0x64_64_B4_C8, true);
+  private static final Color ROLLOVER_COLOR = new Color(0x64_64_B4_DC, true);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
@@ -138,18 +131,19 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
 
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
     if (!r.isEmpty() && c.isEnabled()) {
+      Rectangle thumb = new Rectangle(r.x, r.y, r.width - 1, r.height - 1);
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setPaint(getThumbColor());
-      g2.fillRect(r.x, r.y, r.width - 1, r.height - 1);
+      g2.setPaint(getCurrentThumbColor());
+      g2.fill(thumb);
       g2.setPaint(Color.WHITE);
-      g2.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+      g2.draw(thumb);
       g2.dispose();
     }
   }
 
-  private Color getThumbColor() {
+  private Color getCurrentThumbColor() {
     Color color;
     if (isDragging) {
       color = DRAGGING_COLOR;
