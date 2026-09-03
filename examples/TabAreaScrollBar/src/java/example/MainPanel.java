@@ -122,11 +122,11 @@ class CardLayoutTabbedPane extends JPanel {
     label.setOpaque(false);
 
     tab.add(label);
-    tab.add(makeCloseButton(tab, comp), BorderLayout.EAST);
+    tab.add(createCloseButton(tab, comp), BorderLayout.EAST);
     return tab;
   }
 
-  private JButton makeCloseButton(Container tab, Component c) {
+  private JButton createCloseButton(Container tab, Component c) {
     JButton close = new JButton(new CloseTabIcon(new Color(0xB0_B0_B0))) {
       @Override public Dimension getPreferredSize() {
         return new Dimension(12, 12);
@@ -355,7 +355,7 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -368,11 +368,11 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
   // private static final Color DRAGGING_COLOR = new Color(0xFA_FA_FA_FA, true);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
@@ -461,7 +461,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -469,7 +469,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

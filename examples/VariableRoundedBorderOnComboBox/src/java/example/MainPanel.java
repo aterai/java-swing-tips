@@ -373,7 +373,7 @@ class WithoutArrowButtonComboBoxUI extends BasicComboBoxUI {
 //   }
 // }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   @Override public Dimension getPreferredSize() {
     return new Dimension();
   }
@@ -381,11 +381,11 @@ class ZeroSizeButton extends JButton {
 
 class WithoutArrowButtonScrollBarUI extends BasicScrollBarUI {
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   // @Override protected Dimension getMinimumThumbSize() {

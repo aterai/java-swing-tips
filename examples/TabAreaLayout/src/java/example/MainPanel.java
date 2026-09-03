@@ -519,7 +519,7 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -532,11 +532,11 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
   // private static final Color DRAGGING_COLOR = new Color(0xFA_FA_FA_FA, true);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {

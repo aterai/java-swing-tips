@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -100,11 +100,11 @@ class ZeroSizeButton extends JButton {
 
 class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   // @Override protected Dimension getMinimumThumbSize() {

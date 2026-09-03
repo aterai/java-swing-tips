@@ -17,7 +17,7 @@ import javax.swing.table.TableCellEditor;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeFlatTable();
+    JTable table = createFlatTable();
     JTableHeader header = table.getTableHeader();
     header.setBorder(BorderFactory.createEmptyBorder());
     header.setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeFlatTable() {
+  private static JTable createFlatTable() {
     JTable table = new JTable(10, 3) {
       private final CellBorder border = new CellBorder(2, 2, 1, 2);
       @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
@@ -215,7 +215,7 @@ class OverlapScrollPaneLayout extends ScrollPaneLayout {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -229,11 +229,11 @@ class OverlappedScrollBarUI extends BasicScrollBarUI {
   private static final Color ROLLOVER_COLOR = new Color(100, 180, 220, 100);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {

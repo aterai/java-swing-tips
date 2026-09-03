@@ -89,7 +89,7 @@ class LocalDateTimeTableCellRenderer extends DefaultTableCellRenderer {
   }
 }
 
-class ZeroSizeButtonUI extends BasicComboBoxUI {
+class InvisibleButtonUI extends BasicComboBoxUI {
   @Override protected JButton createArrowButton() {
     return new JButton() {
       @Override public Dimension getPreferredSize() {
@@ -118,7 +118,7 @@ class LocalDateTimeTableCellEditor extends AbstractCellEditor implements TableCe
       setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
       setOpaque(false);
       setRenderer(new LocalDateTimeCellRenderer());
-      setUI(new ZeroSizeButtonUI());
+      setUI(new InvisibleButtonUI());
     }
   };
   private LocalDateTime selectedDate;

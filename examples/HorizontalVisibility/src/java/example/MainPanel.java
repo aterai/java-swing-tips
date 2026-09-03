@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    String js = makeOneLineCode();
+    String js = createOneLineCode();
     field1.setText(js);
     field2.setText(js);
     scrollbar1.setModel(field1.getHorizontalVisibility());
@@ -51,13 +51,13 @@ public final class MainPanel extends JPanel {
     JScrollPane scroll = new JScrollPane(new JTextField(js));
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-    add(makeBox(scroll, check), BorderLayout.NORTH);
-    add(makeButtons(), BorderLayout.SOUTH);
+    add(createBox(scroll, check), BorderLayout.NORTH);
+    add(createButtons(), BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Box makeBox(JScrollPane scroll, JCheckBox check) {
+  private Box createBox(JScrollPane scroll, JCheckBox check) {
     Box box = Box.createVerticalBox();
     box.add(new JLabel("JScrollPane + VERTICAL_SCROLLBAR_NEVER"));
     box.add(scroll);
@@ -77,7 +77,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private Box makeButtons() {
+  private Box createButtons() {
     JButton caretButton = new JButton("setCaretPosition: 0");
     caretButton.addActionListener(e -> {
       field1.requestFocusInWindow();
@@ -103,7 +103,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private static String makeOneLineCode() {
+  private static String createOneLineCode() {
     String loc = "var l=location,m=l.href.match('^(https?://)(.+)(api[^+]+|technotes[^+]+)');";
     String code = "if(m)l.href=m[1]+'docs.oracle.com/javase/8/docs/'+decodeURIComponent(m[3])";
     String replace = ".replace(/\\+.*$/,'').replace(/\\[\\]/g,':A').replace(/, |\\(|\\)/g,'-');";
@@ -172,7 +172,7 @@ class EmptyThumbHandler extends ComponentAdapter implements DocumentListener {
   }
 }
 
-class ZeroSizeButton extends JButton {
+class InvisibleButton extends JButton {
   private static final Dimension ZERO_SIZE = new Dimension();
 
   @Override public Dimension getPreferredSize() {
@@ -186,11 +186,11 @@ class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
   private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
 
   @Override protected JButton createDecreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected JButton createIncreaseButton(int orientation) {
-    return new ZeroSizeButton();
+    return new InvisibleButton();
   }
 
   @Override protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
