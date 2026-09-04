@@ -37,12 +37,12 @@ import javax.swing.text.ViewFactory;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JList<ListItem> list = new EditableList<>(makeModel());
+    JList<ListItem> list = new EditableList<>(createSampleModel());
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<ListItem> makeModel() {
+  private static ListModel<ListItem> createSampleModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
@@ -146,8 +146,8 @@ class ListItem {
     return title;
   }
 
-  public void setTitle(String txt) {
-    this.title = txt;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public Icon getIcon() {
@@ -182,9 +182,9 @@ class ColorIcon implements Icon {
 }
 
 class EditableList<E extends ListItem> extends JList<E> {
-  public static final String RENAME = "rename-title";
-  public static final String CANCEL = "cancel-editing";
-  public static final String EDITING = "start-editing";
+  private static final String RENAME_TITLE = "rename-title";
+  private static final String CANCEL_EDITING = "cancel-editing";
+  private static final String START_EDITING = "start-editing";
   private int editingIndex = -1;
   private int editorWidth = -1;
   private transient MouseAdapter handler;
@@ -209,12 +209,12 @@ class EditableList<E extends ListItem> extends JList<E> {
   private void initAction() {
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(WHEN_FOCUSED);
-    im.put(enterKey, RENAME);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
+    im.put(enterKey, RENAME_TITLE);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME_TITLE);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL_EDITING);
 
     // ActionMap am = editor.getActionMap();
-    editor.getActionMap().put(RENAME, renameTitle);
+    editor.getActionMap().put(RENAME_TITLE, renameTitle);
     // glassPane.setVisible(false);
     Action cancelEditing = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
@@ -223,10 +223,10 @@ class EditableList<E extends ListItem> extends JList<E> {
         editingIndex = -1;
       }
     };
-    editor.getActionMap().put(CANCEL, cancelEditing);
+    editor.getActionMap().put(CANCEL_EDITING, cancelEditing);
 
-    getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
-    getActionMap().put(EDITING, startEditing);
+    getInputMap(WHEN_FOCUSED).put(enterKey, START_EDITING);
+    getActionMap().put(START_EDITING, startEditing);
   }
 
   private void initEditor() {
@@ -298,20 +298,31 @@ class EditableList<E extends ListItem> extends JList<E> {
     addMouseMotionListener(handler);
   }
 
+  // Height of a single-line editor, independent of the text being edited
+  private int getEditorHeight() {
+    int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
+    return rowHeight + editor.getInsets().top + editor.getInsets().bottom;
+  }
+
   private final class StartEditingAction extends AbstractAction {
     @Override public void actionPerformed(ActionEvent e) {
       // getRootPane().setGlassPane(glassPane);
       int idx = getSelectedIndex();
-      editingIndex = idx;
       Rectangle rect = getCellBounds(idx, idx);
+      if (rect == null) {
+        return;
+      }
+      editingIndex = idx;
       // Point p = SwingUtilities.convertPoint(
       //     EditableList.this, rect.getLocation(), glassPane);
       // rect.setLocation(p);
       editorWidth = rect.width;
-      editor.setText(getSelectedValue().getTitle());
-      int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
-      rect.y += rect.height - rowHeight - 2 - 1;
-      rect.height = editor.getPreferredSize().height;
+      int h = getEditorHeight();
+      rect.y += rect.height - h - 1;
+      rect.height = h;
+      editor.setText(getModel().getElementAt(idx).getTitle());
+      // The width fixes the line wrapping and Window#pack() below
+      // expands the height to fit the wrapped text
       editor.setBounds(rect);
       editor.selectAll();
       // glassPane.add(editor);
@@ -336,30 +347,25 @@ class EditableList<E extends ListItem> extends JList<E> {
     @Override public void actionPerformed(ActionEvent e) {
       String title = editor.getText().trim();
       int index = editingIndex;
+      editingIndex = -1;
       window.setVisible(false);
       if (!title.isEmpty() && index >= 0) {
-        E item = getModel().getElementAt(index);
-        item.setTitle(title);
+        getModel().getElementAt(index).setTitle(title);
         setSelectedIndex(index);
-        EventQueue.invokeLater(() -> setSelectedIndex(index));
       }
-      editingIndex = -1;
     }
   }
 
   private final class ResizeHandler implements DocumentListener {
-    private int prev = -1;
+    private int prevHeight = -1;
 
     private void update() {
       int h = editor.getPreferredSize().height;
-      if (prev != h) {
-        Rectangle rect = editor.getBounds();
-        rect.height = h;
-        editor.setBounds(rect);
+      if (prevHeight != h) {
+        prevHeight = h;
         window.pack();
         editor.requestFocusInWindow();
       }
-      prev = h;
     }
 
     @Override public void insertUpdate(DocumentEvent e) {
@@ -377,7 +383,7 @@ class EditableList<E extends ListItem> extends JList<E> {
 
   private final class EditingHandler extends EditingMouseAdapter {
     @Override public void mouseClicked(MouseEvent e) {
-      if (isStartEditingEvent(e, editor.getPreferredSize())) {
+      if (isStartEditingEvent(e, getEditorHeight())) {
         Component c = e.getComponent();
         ActionEvent ev = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
         startEditing.actionPerformed(ev);
@@ -421,14 +427,17 @@ class EditingMouseAdapter extends MouseAdapter {
     startOutside = outside;
   }
 
-  protected boolean isStartEditingEvent(MouseEvent e, Dimension dim) {
+  // editorHeight must be the height of a single-line editor: using the
+  // preferred size of the editor makes this area depend on the text
+  // left over from the previous editing session
+  protected boolean isStartEditingEvent(MouseEvent e, int editorHeight) {
     JList<?> list = (JList<?>) e.getComponent();
     int idx = list.getSelectedIndex();
     Rectangle rect = list.getCellBounds(idx, idx);
     boolean b = false;
     if (rect != null) {
-      rect.y = rect.y + rect.height - dim.height - 2 - 1;
-      rect.height = dim.height;
+      rect.y = rect.y + rect.height - editorHeight - 1;
+      rect.height = editorHeight;
       b = e.getClickCount() >= 2 && rect.contains(e.getPoint());
     }
     return b;

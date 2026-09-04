@@ -21,12 +21,12 @@ import javax.swing.text.JTextComponent;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JList<ListItem> list = new EditableList<>(makeModel());
+    JList<ListItem> list = new EditableList<>(createSampleModel());
     add(new JScrollPane(list));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<ListItem> makeModel() {
+  private static ListModel<ListItem> createSampleModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
@@ -130,8 +130,8 @@ class ListItem {
     return title;
   }
 
-  public void setTitle(String txt) {
-    this.title = txt;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public Icon getIcon() {
@@ -204,40 +204,13 @@ class ClearSelectionListener extends MouseAdapter {
 }
 
 class EditableList<E extends ListItem> extends JList<E> {
-  public static final String RENAME = "rename-title";
-  public static final String CANCEL = "cancel-editing";
-  public static final String EDITING = "start-editing";
+  private static final String RENAME_TITLE = "rename-title";
+  private static final String CANCEL_EDITING = "cancel-editing";
+  private static final String START_EDITING = "start-editing";
   private final Container glassPane = new EditorGlassPane();
   private final JTextField editor = new JTextField();
-  private final Action startEditing = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      getRootPane().setGlassPane(glassPane);
-      int idx = getSelectedIndex();
-      Rectangle rect = getCellBounds(idx, idx);
-      Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
-      rect.setLocation(p);
-      editor.setText(getSelectedValue().getTitle());
-      int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
-      rect.y += rect.height - rowHeight - 2 - 1;
-      rect.height = editor.getPreferredSize().height;
-      editor.setBounds(rect);
-      editor.selectAll();
-      glassPane.add(editor);
-      glassPane.setVisible(true);
-      editor.requestFocusInWindow();
-    }
-  };
-  private final Action renameTitle = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      String title = editor.getText().trim();
-      int index = getSelectedIndex();
-      if (!title.isEmpty() && index >= 0) {
-        E item = getModel().getElementAt(index);
-        item.setTitle(title);
-      }
-      glassPane.setVisible(false);
-    }
-  };
+  private final Action startEditing = new StartEditingAction();
+  private final Action renameTitle = new RenameAction();
   private transient MouseAdapter handler;
 
   protected EditableList(ListModel<E> model) {
@@ -250,26 +223,26 @@ class EditableList<E extends ListItem> extends JList<E> {
 
     KeyStroke enterKey = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
     InputMap im = editor.getInputMap(WHEN_FOCUSED);
-    im.put(enterKey, RENAME);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL);
+    im.put(enterKey, RENAME_TITLE);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), RENAME_TITLE);
+    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), CANCEL_EDITING);
 
     ActionMap am = editor.getActionMap();
-    am.put(RENAME, renameTitle);
+    am.put(RENAME_TITLE, renameTitle);
     Action cancelEditing = new AbstractAction() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
+      @Override public void actionPerformed(ActionEvent e) {
         glassPane.setVisible(false);
       }
     };
-    am.put(CANCEL, cancelEditing);
+    am.put(CANCEL_EDITING, cancelEditing);
 
-    getInputMap(WHEN_FOCUSED).put(enterKey, EDITING);
-    getActionMap().put(EDITING, startEditing);
+    getInputMap(WHEN_FOCUSED).put(enterKey, START_EDITING);
+    getActionMap().put(START_EDITING, startEditing);
   }
 
   @Override public void updateUI() {
     removeMouseListener(handler);
+    removeMouseMotionListener(handler);
     setSelectionForeground(null);
     setSelectionBackground(null);
     setCellRenderer(null);
@@ -283,26 +256,63 @@ class EditableList<E extends ListItem> extends JList<E> {
     setCellRenderer(new ListItemListCellRenderer<>());
     handler = new ClearSelectionListener() {
       @Override public void mouseClicked(MouseEvent e) {
-        int idx = getSelectedIndex();
-        Rectangle rect = getCellBounds(idx, idx);
-        if (rect != null) {
-          int h = editor.getPreferredSize().height;
-          rect.y = rect.y + rect.height - h;
-          rect.height = h;
-          boolean isDoubleClick = e.getClickCount() >= 2;
-          if (isDoubleClick && rect.contains(e.getPoint())) {
-            Component c = e.getComponent();
-            ActionEvent ae = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
-            startEditing.actionPerformed(ae);
-          }
+        Rectangle rect = getEditorBounds(getSelectedIndex());
+        boolean isDoubleClick = e.getClickCount() >= 2;
+        if (isDoubleClick && rect != null && rect.contains(e.getPoint())) {
+          Component c = e.getComponent();
+          ActionEvent ae = new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "");
+          startEditing.actionPerformed(ae);
         }
       }
     };
     addMouseListener(handler);
+    addMouseMotionListener(handler);
   }
 
   protected JTextComponent getEditorTextField() {
     return editor;
+  }
+
+  // Bounds of a single-line editor aligned with the title label of the cell
+  private Rectangle getEditorBounds(int index) {
+    Rectangle rect = getCellBounds(index, index);
+    if (rect != null) {
+      int rowHeight = editor.getFontMetrics(editor.getFont()).getHeight();
+      int h = rowHeight + editor.getInsets().top + editor.getInsets().bottom;
+      rect.y += rect.height - h - 1;
+      rect.height = h;
+    }
+    return rect;
+  }
+
+  private final class StartEditingAction extends AbstractAction {
+    @Override public void actionPerformed(ActionEvent e) {
+      int idx = getSelectedIndex();
+      Rectangle rect = getEditorBounds(idx);
+      if (rect == null) {
+        return;
+      }
+      getRootPane().setGlassPane(glassPane);
+      editor.setText(getModel().getElementAt(idx).getTitle());
+      Point p = SwingUtilities.convertPoint(EditableList.this, rect.getLocation(), glassPane);
+      rect.setLocation(p);
+      editor.setBounds(rect);
+      editor.selectAll();
+      glassPane.add(editor);
+      glassPane.setVisible(true);
+      editor.requestFocusInWindow();
+    }
+  }
+
+  private final class RenameAction extends AbstractAction {
+    @Override public void actionPerformed(ActionEvent e) {
+      String title = editor.getText().trim();
+      int index = getSelectedIndex();
+      if (!title.isEmpty() && index >= 0) {
+        getModel().getElementAt(index).setTitle(title);
+      }
+      glassPane.setVisible(false);
+    }
   }
 
   private final class EditorGlassPane extends JComponent {
