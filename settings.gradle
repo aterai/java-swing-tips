@@ -1,3 +1,81 @@
-file('.').eachDirMatch(~/[A-Z]\w+/) {
-    include it.name
+rootProject.name = 'jst'
+
+def examplesDir = file('examples')
+
+// Select target examples with -Pexample=Foo,Bar (equivalent to Ant's -Dbasedir=examples/Foo).
+// Without it, every example directory is included.
+def selected = (providers.gradleProperty('example').getOrNull() ?: '')
+    .split(',')*.trim().findAll { it }
+def projectDirs = selected
+    ? selected.collect { new File(examplesDir, it) }
+    : examplesDir.listFiles().findAll { it.isDirectory() && it.name ==~ /[A-Z]\w+/ }
+
+projectDirs.each { d ->
+  include d.name
+  project(":${d.name}").projectDir = d
+}
+
+// Shared configuration. beforeProject is applied lazily per project, so it stays
+// compatible with configuration-on-demand and isolated projects (allprojects {} is not).
+def withQuality = providers.gradleProperty('quality').present
+def internalPackages = ['com.sun.java.swing.plaf.windows', 'sun.awt.shell', 'sun.swing']
+
+gradle.lifecycle.beforeProject { p ->
+  if (p == p.rootProject) {
+    return
+  }
+  p.apply plugin: 'java'
+  p.apply plugin: 'application'
+
+  p.version = '1.0.0'
+  p.java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+  p.sourceSets.main {
+    java {
+      srcDirs = ['src/java']
+    }
+    resources {
+      srcDirs = ['src/java', 'src/resources']
+      exclude '**/*.java', '**/*~', '**/*.bak'
+    }
+  }
+
+  p.repositories {
+    flatDir { dirs "${p.projectDir}/lib" }
+  }
+  p.dependencies {
+    implementation p.fileTree(dir: "${p.projectDir}/lib", include: '*.jar')
+  }
+
+  p.application {
+    mainClass = 'example.MainPanel'
+  }
+
+  p.tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += internalPackages
+        .collect { "--add-exports=java.desktop/$it=ALL-UNNAMED" } + ['-Xlint:unchecked']
+  }
+
+  p.tasks.withType(JavaExec).configureEach {
+    jvmArgs (internalPackages + ['javax.swing', 'javax.swing.plaf.basic'])
+        .collect { "--add-opens=java.desktop/$it=ALL-UNNAMED" }
+  }
+
+  p.tasks.named('jar') {
+    manifest.attributes(
+        'Implementation-Version': '1.0.0',
+        'Implementation-Vendor': 'Java Swing Tips - https://github.com/aterai/java-swing-tips',
+        'Main-Class': 'example.MainPanel',
+        'Class-Path': '.',
+        'Add-Opens': internalPackages.collect { "java.desktop/$it" }.join(' '))
+  }
+
+  // Checkstyle/PMD are opt-in: they add tasks and dependency resolution to every project.
+  if (withQuality) {
+    // Checkstyle/PMD tool jars come from Maven Central; the normal build path needs no remote repository.
+    p.repositories { mavenCentral() }
+    p.apply from: "${p.rootDir}/checkstyle.gradle"
+    p.apply from: "${p.rootDir}/pmd.gradle"
+  }
 }
