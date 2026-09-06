@@ -367,7 +367,7 @@ final class StepperPanel extends JPanel {
 
 // Java2D Step Icon Implementation with Visually Centered Glyphs
 class StepIcon implements Icon {
-  public static final Color COLOR_PRIMARY = new Colorr(0x21_96_F3);
+  public static final Color COLOR_PRIMARY = new Color(0x21_96_F3);
   public static final Color COLOR_INACTIVE = new Color(0xD2_D7_DC);
   public static final Color COLOR_CURRENT_BG = Color.WHITE;
   private final int stepNumber;
