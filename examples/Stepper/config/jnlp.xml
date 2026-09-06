@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST Stepper" />
+  <property name="jnlp.Name"     value="Stepper" />
+  <property name="jnlp.name"     value="stepper" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/stepper/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Stepper.html" />
+</project>

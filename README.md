@@ -47,7 +47,7 @@ javax.swing.JComponent
 - [JPopupMenu(65)](https://ateraimemo.com/en/Swing/_JPopupMenu.html)
 - [JLayer(65)](https://ateraimemo.com/en/Swing/_JLayer.html)
 - [JList(59)](https://ateraimemo.com/en/Swing/_JList.html)
-- [JLabel(50)](https://ateraimemo.com/en/Swing/_JLabel.html)
+- [JLabel(51)](https://ateraimemo.com/en/Swing/_JLabel.html)
 - [JFrame JDialog JWindow(49)](https://ateraimemo.com/en/Swing/_JFrame.html)
 - [JToolTip(38)](https://ateraimemo.com/en/Swing/_JToolTip.html)
 - [JSlider(38)](https://ateraimemo.com/en/Swing/_JSlider.html)
@@ -62,9 +62,9 @@ javax.swing.JComponent
 
 Others
 ---------------
-- [Graphics(76)](https://ateraimemo.com/en/Swing/_Graphics.html)
-- [Animation(62)](https://ateraimemo.com/en/Swing/_Animation.html)
-- [LayoutManager(58)](https://ateraimemo.com/en/Swing/_Layout.html)
+- [Graphics(77)](https://ateraimemo.com/en/Swing/_Graphics.html)
+- [Animation(63)](https://ateraimemo.com/en/Swing/_Animation.html)
+- [LayoutManager(59)](https://ateraimemo.com/en/Swing/_Layout.html)
 - [Border(52)](https://ateraimemo.com/en/Swing/_Border.html)
 - [Focus(45)](https://ateraimemo.com/en/Swing/_Focus.html)
 - [LookAndFeel(44)](https://ateraimemo.com/en/Swing/_LookAndFeel.html)
