@@ -16,20 +16,20 @@ import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private static final List<Image> IMAGE_LIST = Arrays.asList(
-      makeImage(16, Color.RED),
-      makeImage(18, Color.GREEN),
-      makeImage(20, Color.YELLOW),
-      makeImage(24, Color.PINK),
-      makeImage(32, Color.ORANGE),
-      makeImage(40, Color.CYAN),
-      makeImage(64, Color.MAGENTA));
+      createImage(16, Color.RED),
+      createImage(18, Color.GREEN),
+      createImage(20, Color.YELLOW),
+      createImage(24, Color.PINK),
+      createImage(32, Color.ORANGE),
+      createImage(40, Color.CYAN),
+      createImage(64, Color.MAGENTA));
   // TEST:
   // private static final List<Image> IMAGE_LIST2 = Arrays.asList(
-  //   makeImage(64, Color.RED),
-  //   makeImage(32, Color.GREEN),
-  //   makeImage(24, Color.PINK),
-  //   makeImage(20, Color.ORANGE),
-  //   makeImage(18, Color.CYAN));
+  //   createImage(64, Color.RED),
+  //   createImage(32, Color.GREEN),
+  //   createImage(24, Color.PINK),
+  //   createImage(20, Color.ORANGE),
+  //   createImage(18, Color.CYAN));
 
   private MainPanel() {
     super(new BorderLayout());
@@ -39,12 +39,12 @@ public final class MainPanel extends JPanel {
       fileChooser.showOpenDialog(getRootPane());
     });
 
-    JButton button2 = new JButton("makeImage(16, Color.WHITE)");
+    JButton button2 = new JButton("createImage(16, Color.WHITE)");
     button2.addActionListener(e -> {
       JFileChooser fileChooser = new JFileChooser() {
         @Override protected JDialog createDialog(Component parent) { // throws HeadlessException {
           JDialog dialog = super.createDialog(parent);
-          dialog.setIconImage(makeImage(16, Color.WHITE));
+          dialog.setIconImage(createImage(16, Color.WHITE));
           return dialog;
         }
       };
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Image makeImage(int size, Color color) {
+  public static Image createImage(int size, Color color) {
     // BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
     BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();

@@ -19,7 +19,7 @@ public final class MainPanel extends JPanel {
     URL url = cl.getResource("example/duke.running.gif");
     ImageIcon imageIcon = Optional.ofNullable(url)
         .map(ImageIcon::new)
-        .orElseGet(() -> new ImageIcon(makeMissingImage()));
+        .orElseGet(() -> new ImageIcon(createMissingImage()));
 
     JLabel label0 = new JLabel(imageIcon);
     label0.setBorder(BorderFactory.createTitledBorder("Default ImageIcon"));
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

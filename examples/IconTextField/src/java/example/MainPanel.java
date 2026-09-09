@@ -23,10 +23,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
     Icon icon = new ImageIcon(image);
     JLabel label1 = new JLabel(icon);
@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

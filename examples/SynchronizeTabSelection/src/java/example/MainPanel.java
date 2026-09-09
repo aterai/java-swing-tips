@@ -79,9 +79,9 @@ public final class MainPanel extends JPanel {
         "    <span style='color: rgb(170, 17, 17);'>try</span> {",
         "      <span style='color: rgb(170, 17, 17);'>return</span> ImageIO.read(url);",
         "    } <span style='color: rgb(170, 17, 17);'>catch</span> (IOException ex) {",
-        "      <span style='color: rgb(170, 17, 17);'>return</span> makeMissingImage();",
+        "      <span style='color: rgb(170, 17, 17);'>return</span> createMissingImage();",
         "    }",
-        "  }).orElseGet(() -&gt; makeMissingImage());"
+        "  }).orElseGet(() -&gt; createMissingImage());"
     );
   }
 
@@ -90,7 +90,7 @@ public final class MainPanel extends JPanel {
     return String.join("\n",
         "<pre><code>val bi = runCatching {",
         "  ImageIO." + String.format(span, "read") + "(" + String.format(span, "path") + ")",
-        "}.getOrNull() ?: makeMissingImage()"
+        "}.getOrNull() ?: createMissingImage()"
     );
   }
 

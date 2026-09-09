@@ -53,10 +53,10 @@ public final class MainPanel extends JPanel {
     URL url = cl.getResource(path);
     return Optional.ofNullable(url)
         .map(ImageIcon::new)
-        .orElseGet(MainPanel::makeMissingImage);
+        .orElseGet(MainPanel::createMissingImage);
   }
 
-  private static ImageIcon makeMissingImage() {
+  private static ImageIcon createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

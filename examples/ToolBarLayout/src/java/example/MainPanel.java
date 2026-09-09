@@ -50,12 +50,12 @@ public final class MainPanel extends JPanel {
   //     try (InputStream s = url.openStream()) {
   //       return new ImageIcon(ImageIO.read(s));
   //     } catch (IOException ex) {
-  //       return makeMissingIcon();
+  //       return createMissingIcon();
   //     }
-  //   }).orElseGet(MainPanel::makeMissingIcon);
+  //   }).orElseGet(MainPanel::createMissingIcon);
   // }
 
-  // private static Icon makeMissingIcon() {
+  // private static Icon createMissingIcon() {
   //   Icon missingIcon = UIManager.getIcon("html.missingImage");
   //   int iw = missingIcon.getIconWidth();
   //   int ih = missingIcon.getIconHeight();

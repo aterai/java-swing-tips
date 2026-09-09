@@ -69,16 +69,16 @@ class CardLayoutTabbedPane extends JPanel {
   private final Random rnd = new Random();
   // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
   private final List<ImageIcon> icons = Arrays.asList(
-      new ImageIcon(makeImage("wi0009-16.png")),
-      new ImageIcon(makeImage("wi0054-16.png")),
-      new ImageIcon(makeImage("wi0062-16.png")),
-      new ImageIcon(makeImage("wi0063-16.png")),
-      new ImageIcon(makeImage("wi0064-16.png")),
-      new ImageIcon(makeImage("wi0096-16.png")),
-      new ImageIcon(makeImage("wi0111-16.png")),
-      new ImageIcon(makeImage("wi0122-16.png")),
-      new ImageIcon(makeImage("wi0124-16.png")),
-      new ImageIcon(makeImage("wi0126-16.png"))
+      new ImageIcon(createImage("wi0009-16.png")),
+      new ImageIcon(createImage("wi0054-16.png")),
+      new ImageIcon(createImage("wi0062-16.png")),
+      new ImageIcon(createImage("wi0063-16.png")),
+      new ImageIcon(createImage("wi0064-16.png")),
+      new ImageIcon(createImage("wi0096-16.png")),
+      new ImageIcon(createImage("wi0111-16.png")),
+      new ImageIcon(createImage("wi0122-16.png")),
+      new ImageIcon(createImage("wi0124-16.png")),
+      new ImageIcon(createImage("wi0126-16.png"))
   );
 
   protected CardLayoutTabbedPane() {
@@ -182,20 +182,20 @@ class CardLayoutTabbedPane extends JPanel {
     tabPanel.revalidate();
   }
 
-  private Image makeImage(String path) {
+  private Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource("example/" + path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(this::makeMissingImage);
+    }).orElseGet(this::createMissingImage);
   }
 
-  private Image makeMissingImage() {
+  private Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

@@ -278,26 +278,26 @@ class ListItem {
 
   protected ListItem(String title, String path) {
     this.title = title;
-    Image img = makeImage(path);
+    Image img = createImage(path);
     this.icon = new ImageIcon(img);
     ImageProducer ip = new FilteredImageSource(img.getSource(), new SelectedImageFilter());
     this.selectedIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(ip));
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(ListItem::makeMissingImage);
+    }).orElseGet(ListItem::createMissingImage);
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

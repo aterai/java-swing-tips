@@ -43,7 +43,7 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    JLabel label = makeImageLabel();
+    JLabel label = createImageLabel();
     MouseAdapter ml = new DragScrollListener();
     label.addMouseMotionListener(ml);
     label.addMouseListener(ml);
@@ -127,7 +127,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private JLabel makeImageLabel() {
+  private JLabel createImageLabel() {
     String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Icon icon = Optional.ofNullable(cl.getResource(path)).map(u -> {

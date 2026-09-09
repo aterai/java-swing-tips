@@ -18,8 +18,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Icon icon = new ImageIcon(makeImage());
-    JLabel label = makeImageLabel(icon);
+    Icon icon = new ImageIcon(createImage());
+    JLabel label = createImageLabel(icon);
     Component scroll = makeTopLeftScrollPane(label);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
@@ -38,7 +38,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JLabel makeImageLabel(Icon icon) {
+  private static JLabel createImageLabel(Icon icon) {
     return new JLabel(icon) {
       private transient MouseAdapter listener;
 
@@ -53,7 +53,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static Image makeImage() {
+  private static Image createImage() {
     String path = "example/CRW_3857_JFR.jpg"; // https://sozai-free.com/
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
@@ -61,13 +61,13 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

@@ -71,14 +71,14 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

@@ -23,7 +23,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    TexturePaint texture = ImageUtils.makeImageTexture();
+    TexturePaint texture = ImageUtils.createImageTexture();
     JTable table = new TransparentTable(makeModel());
     JScrollPane scroll = new JScrollPane(table) {
       @Override protected void paintComponent(Graphics g) {
@@ -228,7 +228,7 @@ final class ImageUtils {
     /* Singleton */
   }
 
-  public static TexturePaint makeImageTexture() {
+  public static TexturePaint createImageTexture() {
     // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -237,14 +237,14 @@ final class ImageUtils {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
     return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
-  public static BufferedImage makeMissingImage() {
+  public static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

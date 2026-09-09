@@ -28,10 +28,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     Icon icon = new ImageIcon(image);
     ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());
     ImageIcon selectedIcon = new ImageIcon(createImage(ip));
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

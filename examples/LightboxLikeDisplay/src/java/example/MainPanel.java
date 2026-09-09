@@ -34,10 +34,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         bi = ImageIO.read(s);
       } catch (IOException ex) {
-        bi = makeMissingImage();
+        bi = createMissingImage();
       }
       return bi;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     EventQueue.invokeLater(() -> {
       getRootPane().setGlassPane(new LightboxGlassPane(image));
       getRootPane().getGlassPane().setVisible(false);
@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

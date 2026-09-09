@@ -24,7 +24,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new TransparentTable(makeModel());
     JScrollPane scroll = new JScrollPane(table) {
-      private final transient Paint texture = ImageUtils.makeImageTexture();
+      private final transient Paint texture = ImageUtils.createImageTexture();
 
       @Override protected JViewport createViewport() {
         return new JViewport() {
@@ -175,7 +175,7 @@ final class ImageUtils {
     /* Singleton */
   }
 
-  public static TexturePaint makeImageTexture() {
+  public static TexturePaint createImageTexture() {
     // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -184,14 +184,14 @@ final class ImageUtils {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
     return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
-  public static BufferedImage makeMissingImage() {
+  public static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

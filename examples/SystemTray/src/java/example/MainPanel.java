@@ -32,7 +32,7 @@ public final class MainPanel extends JPanel {
     // i.paintIcon(null, g2, cx, cy);
     // g2.dispose();
 
-    Image image = makeImage("example/16x16.png");
+    Image image = createImage("example/16x16.png");
     PopupMenu popup = makePopupMenu(frame);
     return new TrayIcon(image, "TRAY", popup);
   }
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     return popup;
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
       Image img;

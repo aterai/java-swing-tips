@@ -58,13 +58,13 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         i = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        i = makeMissingIcon();
+        i = createMissingIcon();
       }
       return i;
-    }).orElseGet(MainPanel::makeMissingIcon);
+    }).orElseGet(MainPanel::createMissingIcon);
   }
 
-  private static Icon makeMissingIcon() {
+  private static Icon createMissingIcon() {
     return UIManager.getIcon("OptionPane.errorIcon");
   }
 

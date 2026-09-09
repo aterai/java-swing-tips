@@ -183,7 +183,7 @@ enum TexturePaints {
   public Paint getTexturePaint() {
     Paint texture = null;
     if (this == IMAGE) {
-      texture = TextureUtils.makeImageTexture();
+      texture = TextureUtils.createImageTexture();
     } else if (this == CHECKER) {
       texture = TextureUtils.makeCheckerTexture();
     }
@@ -200,7 +200,7 @@ final class TextureUtils {
     /* Singleton */
   }
 
-  public static TexturePaint makeImageTexture() {
+  public static TexturePaint createImageTexture() {
     // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -209,14 +209,14 @@ final class TextureUtils {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(TextureUtils::makeMissingImage);
+    }).orElseGet(TextureUtils::createMissingImage);
     return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

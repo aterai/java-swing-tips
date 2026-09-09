@@ -48,16 +48,16 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     JScrollPane scroll = new JScrollPane(new JLabel(new ImageIcon(image)));
     File f = new File(path);
     tabbedPane.addTab(f.getName(), null, scroll, "tooltip");
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

@@ -45,10 +45,10 @@ public final class MainPanel extends JPanel {
 
   private TrayIcon makeTrayIcon() {
     Image[] images = new Image[4];
-    images[0] = makeImage("example/16x16.png");
-    images[1] = makeImage("example/16x16l.png");
+    images[0] = createImage("example/16x16.png");
+    images[1] = createImage("example/16x16l.png");
     images[2] = images[0];
-    images[3] = makeImage("example/16x16r.png");
+    images[3] = createImage("example/16x16r.png");
 
     MenuItem item1 = new MenuItem("Open:Frame");
     item1.addActionListener(e -> {
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
     return icon;
   }
 
-  private static Image makeImage(String path) {
+  private static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
       Image img;

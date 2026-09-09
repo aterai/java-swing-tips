@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ImageIcon icon = makeImageIcon("example/restore_to_background_color.gif");
+    ImageIcon icon = createImageIcon("example/restore_to_background_color.gif");
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     Object uo0 = new IconNode("default", icon);
     DefaultMutableTreeNode s0 = new DefaultMutableTreeNode(uo0);
@@ -66,14 +66,14 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public static ImageIcon makeImageIcon(String path) {
+  public static ImageIcon createImageIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path))
         .map(ImageIcon::new)
-        .orElseGet(() -> new ImageIcon(makeMissingImage()));
+        .orElseGet(() -> new ImageIcon(createMissingImage()));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

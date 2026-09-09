@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     Timer animator = new Timer(5, null);
-    Image image = ImageUtils.makeImage("example/test.png");
+    Image image = ImageUtils.createImage("example/test.png");
     WipePanel wipe = new WipePanel(image, animator);
     wipe.setBackground(Color.BLACK);
     animator.addActionListener(e -> wipe.repaint());
@@ -141,20 +141,20 @@ final class ImageUtils {
     /* Singleton */
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
   }
 
-  public static Image makeMissingImage() {
+  public static Image createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

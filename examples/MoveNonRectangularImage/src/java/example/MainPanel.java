@@ -25,10 +25,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         bi = ImageIO.read(s);
       } catch (IOException ex) {
-        bi = makeMissingImage();
+        bi = createMissingImage();
       }
       return bi;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
     JLabel icon = makeLabelIcon(image);
     icon.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -60,7 +60,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

@@ -39,10 +39,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         bi = ImageIO.read(s);
       } catch (IOException ex) {
-        bi = makeMissingImage();
+        bi = createMissingImage();
       }
       return bi;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     add(new ImageFlipPanel(img));
     add(box, BorderLayout.SOUTH);
     setOpaque(false);
@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
     return rb;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = new MissingIcon();
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

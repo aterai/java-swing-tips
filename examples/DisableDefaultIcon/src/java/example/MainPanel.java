@@ -46,10 +46,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
     JRadioButton r4 = new JRadioButton("img=toolkit.createImage(url_16x16transparent)", true);
     r4.addItemListener(e -> {
@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     return new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
   }
 

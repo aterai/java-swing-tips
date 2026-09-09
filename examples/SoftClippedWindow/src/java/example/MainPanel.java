@@ -26,10 +26,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
     int width = image.getWidth();
     int height = image.getHeight();
@@ -130,7 +130,7 @@ public final class MainPanel extends JPanel {
     return image;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     BufferedImage image = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = image.createGraphics();
     g2.setPaint(Color.RED);

@@ -192,7 +192,7 @@ class ProgressRenderer implements TableCellRenderer {
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c;
-    // label.setIcon(makeImageIcon(url, table, row, column));
+    // label.setIcon(createImageIcon(url, table, row, column));
     // c = label;
     if (value instanceof JProgressBar) {
       c = (JProgressBar) value;
@@ -206,7 +206,7 @@ class ProgressRenderer implements TableCellRenderer {
     return c;
   }
 
-  // public static Icon makeImageIcon(URL url, JTable table, int row, int col) {
+  // public static Icon createImageIcon(URL url, JTable table, int row, int col) {
   //   if (Objects.nonNull(url)) {
   //     ImageIcon icon = new ImageIcon(url);
   //     // Wastefulness: icon.setImageObserver((ImageObserver) table);

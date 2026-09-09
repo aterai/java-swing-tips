@@ -56,10 +56,10 @@ public final class MainPanel extends JPanel {
       try (InputStream s = u.openStream()) {
         bi = ImageIO.read(s);
       } catch (IOException ex) {
-        bi = makeMissingImage();
+        bi = createMissingImage();
       }
       return bi;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
 
     int w = image.getWidth();
     int h = image.getHeight();
@@ -73,7 +73,7 @@ public final class MainPanel extends JPanel {
     return dst;
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

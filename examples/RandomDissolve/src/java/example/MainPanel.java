@@ -23,8 +23,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    BufferedImage i1 = makeImage("example/test.png");
-    BufferedImage i2 = makeImage("example/test.jpg");
+    BufferedImage i1 = createImage("example/test.png");
+    BufferedImage i2 = createImage("example/test.jpg");
 
     RandomDissolve randomDissolve = new RandomDissolve(i1, i2);
     JButton button = new JButton("change");
@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private BufferedImage makeImage(String path) {
+  private BufferedImage createImage(String path) {
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
     Icon icon = Optional.ofNullable(url).map(u -> {
       Icon icn;

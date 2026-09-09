@@ -49,7 +49,7 @@ public final class MainPanel extends JPanel {
     desktop.add(createFrame(p3));
 
     String path = "example/GIANT_TCR1_2013.jpg";
-    desktop.setBorder(new CentredBackgroundBorder(ImageUtils.makeImage(path)));
+    desktop.setBorder(new CentredBackgroundBorder(ImageUtils.createImage(path)));
     // D3D/OGL: Window translucency doesn't work with accelerated pipelines
     // https://bugs.openjdk.org/browse/JDK-6655001
     // desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
@@ -116,17 +116,17 @@ final class ImageUtils {
     /* Singleton */
   }
 
-  public static BufferedImage makeImage(String path) {
+  public static BufferedImage createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       BufferedImage buf;
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
   }
 
   public static TexturePaint makeTexturePaint() {
@@ -146,7 +146,7 @@ final class ImageUtils {
     return new TexturePaint(img, new Rectangle(16, 16));
   }
 
-  public static BufferedImage makeMissingImage() {
+  public static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

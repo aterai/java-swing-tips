@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private final transient TexturePaint imageTexture = makeImageTexture();
+  private final transient TexturePaint imageTexture = createImageTexture();
   private final transient TexturePaint checkerTexture = makeCheckerTexture();
   private transient TexturePaint texture;
 
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
     super.paintComponent(g);
   }
 
-  private static TexturePaint makeImageTexture() {
+  private static TexturePaint createImageTexture() {
     // unkaku_w.png https://www.viva-edo.com/komon/edokomon.html
     String path = "example/unkaku_w.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -76,14 +76,14 @@ public final class MainPanel extends JPanel {
       try (InputStream s = url.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
     return new TexturePaint(img, new Rectangle(img.getWidth(), img.getHeight()));
   }
 
-  private static BufferedImage makeMissingImage() {
+  private static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

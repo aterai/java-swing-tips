@@ -20,8 +20,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Image ia = makeImage("example/a.png");
-    Image ib = makeImage("example/b.png");
+    Image ia = createImage("example/a.png");
+    Image ib = createImage("example/b.png");
     Icon iia = new ImageIcon(ia);
     Icon iib = new ImageIcon(ib);
     JLabel label = new JLabel(iia);
@@ -102,20 +102,20 @@ public final class MainPanel extends JPanel {
     return pixels;
   }
 
-  private static Image makeImage(String path) {
+  private static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(u -> {
       Image img;
       try (InputStream s = u.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(MainPanel::makeMissingImage);
+    }).orElseGet(MainPanel::createMissingImage);
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

@@ -189,10 +189,10 @@ final class ImageUtils {
       try (InputStream s = u.openStream()) {
         buf = ImageIO.read(s);
       } catch (IOException ex) {
-        buf = makeMissingImage();
+        buf = createMissingImage();
       }
       return buf;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
   }
 
   public static BufferedImage getFilteredImage(BufferedImage image) {
@@ -208,7 +208,7 @@ final class ImageUtils {
     return dst;
   }
 
-  public static BufferedImage makeMissingImage() {
+  public static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("OptionPane.errorIcon");
     int w = missingIcon.getIconWidth();
     int h = missingIcon.getIconHeight();

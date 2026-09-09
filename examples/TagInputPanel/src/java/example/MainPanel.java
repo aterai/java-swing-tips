@@ -128,12 +128,12 @@ class TagInputPanel extends JPanel {
     ));
     tags.add(text);
     tag.add(new JLabel(text));
-    tag.add(makeCloseButton(tag), BorderLayout.EAST);
+    tag.add(createCloseButton(tag), BorderLayout.EAST);
     tagContainer.add(tag, tagContainer.getComponentCount() - 1);
     resizeAndRepaint();
   }
 
-  private JButton makeCloseButton(JPanel tag) {
+  private JButton createCloseButton(JPanel tag) {
     JButton closeBtn = new JButton("×") {
       @Override public void updateUI() {
         super.updateUI();

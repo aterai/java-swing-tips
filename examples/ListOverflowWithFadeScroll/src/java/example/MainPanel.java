@@ -17,12 +17,12 @@ public final class MainPanel extends JPanel {
     Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
     DefaultListModel<String> model = new DefaultListModel<>();
     Stream.of(fonts).map(Font::getFontName).sorted().forEach(model::addElement);
-    add(makeScrollPane(new JList<>(model)));
-    add(new JLayer<>(makeScrollPane(new JList<>(model)), new FadeScrollLayerUI()));
+    add(createScrollPane(new JList<>(model)));
+    add(new JLayer<>(createScrollPane(new JList<>(model)), new FadeScrollLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JScrollPane makeScrollPane(Component c) {
+  private JScrollPane createScrollPane(Component c) {
     return new JScrollPane(c) {
       @Override public void updateUI() {
         super.updateUI();

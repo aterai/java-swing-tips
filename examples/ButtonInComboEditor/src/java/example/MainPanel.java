@@ -27,8 +27,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Image image1 = ImageUtils.makeImage("example/favicon.png");
-    Image image2 = ImageUtils.makeImage("example/16x16.png");
+    Image image1 = ImageUtils.createImage("example/favicon.png");
+    Image image2 = ImageUtils.createImage("example/16x16.png");
 
     JComboBox<SiteItem> combo01 = new JComboBox<>(makeTestModel(image1, image2));
     initComboBox(combo01);
@@ -157,7 +157,7 @@ class SiteItemComboBox extends JComboBox<SiteItem> {
   }
 
   private static JButton makeRssButton() {
-    Image rss = ImageUtils.makeImage("example/feed-icon-14x14.png"); // http://feedicons.com/
+    Image rss = ImageUtils.createImage("example/feed-icon-14x14.png"); // http://feedicons.com/
     JButton button = new JButton(new ImageIcon(rss));
     ImageProducer ip = new FilteredImageSource(rss.getSource(), new SelectedImageFilter());
     button.setRolloverIcon(new ImageIcon(button.getToolkit().createImage(ip)));
@@ -350,20 +350,20 @@ final class ImageUtils {
     /* Singleton */
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(ImageUtils::makeMissingImage);
+    }).orElseGet(ImageUtils::createMissingImage);
   }
 
-  public static BufferedImage makeMissingImage() {
+  public static BufferedImage createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();

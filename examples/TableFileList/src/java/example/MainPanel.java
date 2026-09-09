@@ -135,7 +135,7 @@ class FileNameRenderer implements TableCellRenderer {
     renderer.setOpaque(false);
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    Image image = makeImage("example/wi0063-16.png");
+    Image image = createImage("example/wi0063-16.png");
     icon = new ImageIcon(image);
 
     ImageProducer ip = new FilteredImageSource(image.getSource(), new SelectedImageFilter());
@@ -153,20 +153,20 @@ class FileNameRenderer implements TableCellRenderer {
     table.setRowHeight(d.height);
   }
 
-  public static Image makeImage(String path) {
+  public static Image createImage(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Image img;
       try (InputStream s = url.openStream()) {
         img = ImageIO.read(s);
       } catch (IOException ex) {
-        img = makeMissingImage();
+        img = createMissingImage();
       }
       return img;
-    }).orElseGet(FileNameRenderer::makeMissingImage);
+    }).orElseGet(FileNameRenderer::createMissingImage);
   }
 
-  private static Image makeMissingImage() {
+  private static Image createMissingImage() {
     Icon missingIcon = UIManager.getIcon("html.missingImage");
     int iw = missingIcon.getIconWidth();
     int ih = missingIcon.getIconHeight();
