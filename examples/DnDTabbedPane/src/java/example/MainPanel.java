@@ -21,7 +21,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,12 +58,12 @@ public final class MainPanel extends JPanel {
     tab.addTab("null 06", null);
     tab.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
-    add(makeCheckBoxPanel(tab), BorderLayout.NORTH);
+    add(createCheckBoxPanel(tab), BorderLayout.NORTH);
     add(tab);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeCheckBoxPanel(DnDTabbedPane tabs) {
+  private static Component createCheckBoxPanel(DnDTabbedPane tabs) {
     JCheckBox check1 = new JCheckBox("Tab Ghost", true);
     check1.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
@@ -210,81 +209,23 @@ class DnDTabbedPane extends JTabbedPane {
 
   protected int getTargetTabIndex(Point glassPt) {
     Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
-    boolean horizontal = isTopBottomTabPlacement(getTabPlacement());
-    return IntStream.range(0, getTabCount())
-        .map(i -> horizontal ? getHorizontalIndex(i, tabPt) : getVerticalIndex(i, tabPt))
-        .filter(i -> i >= 0)
+    int count = getTabCount();
+    // findFirst() is short-circuiting, so map(...) is evaluated
+    // only for the first tab that contains the point.
+    return IntStream.range(0, count)
+        .filter(i -> getBoundsAt(i).contains(tabPt))
+        .map(i -> isFirstHalf(getBoundsAt(i), tabPt) ? i : i + 1)
         .findFirst()
-        .orElse(-1);
+        .orElse(count == 0 ? -1 : count);
   }
 
-  private int getHorizontalIndex(int i, Point pt) {
-    Rectangle r = getBoundsAt(i);
-    boolean withInTab = r.contains(pt);
-    Rectangle2D cr = new Rectangle2D.Double(r.getCenterX(), r.getY(), .1, r.getHeight());
-    int iv = cr.outcode(pt);
-    boolean outLeft = (iv & Rectangle2D.OUT_LEFT) != 0;
-    boolean outRight = (iv & Rectangle2D.OUT_RIGHT) != 0;
-    boolean firstHalf = withInTab && outLeft;
-    boolean secondHalf = withInTab && outRight;
-    boolean centerLine = cr.contains(pt);
-    boolean lastTab = i == getTabCount() - 1;
-    int idx;
-    if (firstHalf || centerLine) {
-      idx = i;
-    } else if (secondHalf || lastTab) {
-      idx = i + 1;
-    } else {
-      idx = -1;
-    }
-    return idx;
+  // Test whether the point is in the first half of the tab:
+  // the left half for TOP/BOTTOM, the upper half for LEFT/RIGHT.
+  private boolean isFirstHalf(Rectangle r, Point pt) {
+    return isTopBottomTabPlacement(getTabPlacement())
+        ? pt.getX() <= r.getCenterX()
+        : pt.getY() <= r.getCenterY();
   }
-
-  private int getVerticalIndex(int i, Point pt) {
-    Rectangle r = getBoundsAt(i);
-    boolean withInTab = r.contains(pt);
-    Rectangle2D cr = new Rectangle2D.Double(r.getX(), r.getCenterY(), r.getWidth(), .1);
-    int iv = cr.outcode(pt);
-    boolean outTop = (iv & Rectangle2D.OUT_TOP) != 0;
-    boolean outBottom = (iv & Rectangle2D.OUT_BOTTOM) != 0;
-    boolean firstHalf = withInTab && outTop;
-    boolean secondHalf = withInTab && outBottom;
-    boolean centerLine = cr.contains(pt);
-    boolean lastTab = i == getTabCount() - 1;
-    int idx;
-    if (firstHalf || centerLine) {
-      idx = i;
-    } else if (secondHalf || lastTab) {
-      idx = i + 1;
-    } else {
-      idx = -1;
-    }
-    return idx;
-  }
-
-  // private int getTargetTabIndex(int i, boolean isHorizontal, Point pt) {
-  //   Rectangle r = getBoundsAt(i);
-  //   // First half.
-  //   if (isHorizontal) {
-  //     r.width = r.width / 2 + 1;
-  //   } else {
-  //     r.height = r.height / 2 + 1;
-  //   }
-  //   if (r.contains(pt)) {
-  //     return i;
-  //   }
-  //
-  //   // Second half.
-  //   if (isHorizontal) {
-  //     r.x += r.width;
-  //   } else {
-  //     r.y += r.height;
-  //   }
-  //   if (r.contains(pt)) {
-  //     return i + 1;
-  //   }
-  //   return -1;
-  // }
 
   protected void convertTab(int prev, int next) {
     if (next >= 0 && prev != next) {

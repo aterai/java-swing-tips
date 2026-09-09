@@ -52,12 +52,12 @@ public final class MainPanel extends JPanel {
     tab.addTab("JTabbedPane 06", sub);
     tab.addTab("Title 000000000000000007", new JScrollPane(new JTree()));
 
-    add(makeCheckBoxPanel(tab), BorderLayout.NORTH);
+    add(createCheckBoxPanel(tab), BorderLayout.NORTH);
     add(tab);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeCheckBoxPanel(DnDTabbedPane tabs) {
+  private static Component createCheckBoxPanel(DnDTabbedPane tabs) {
     JCheckBox check1 = new JCheckBox("Tab Ghost", true);
     check1.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
@@ -189,17 +189,22 @@ class DnDTabbedPane extends JTabbedPane {
 
   protected int getTargetTabIndex(Point glassPt) {
     Point tabPt = SwingUtilities.convertPoint(glassPane, glassPt, this);
-    Point d = isTopBottomTabPlacement(getTabPlacement()) ? new Point(1, 0) : new Point(0, 1);
-    return IntStream.range(0, getTabCount()).filter(i -> {
-      Rectangle r = getBoundsAt(i);
-      r.translate(-r.width * d.x / 2, -r.height * d.y / 2);
-      return r.contains(tabPt);
-    }).findFirst().orElseGet(() -> {
-      int count = getTabCount();
-      Rectangle r = getBoundsAt(count - 1);
-      r.translate(r.width * d.x / 2, r.height * d.y / 2);
-      return r.contains(tabPt) ? count : -1;
-    });
+    int count = getTabCount();
+    // findFirst() is short-circuiting, so map(...) is evaluated
+    // only for the first tab that contains the point.
+    return IntStream.range(0, count)
+        .filter(i -> getBoundsAt(i).contains(tabPt))
+        .map(i -> isFirstHalf(getBoundsAt(i), tabPt) ? i : i + 1)
+        .findFirst()
+        .orElse(count == 0 ? -1 : count);
+  }
+
+  // Test whether the point is in the first half of the tab:
+  // the left half for TOP/BOTTOM, the upper half for LEFT/RIGHT.
+  private boolean isFirstHalf(Rectangle r, Point pt) {
+    return isTopBottomTabPlacement(getTabPlacement())
+        ? pt.getX() <= r.getCenterX()
+        : pt.getY() <= r.getCenterY();
   }
 
   protected void convertTab(int prev, int next) {
@@ -330,7 +335,7 @@ class TabDragSourceListener implements DragSourceListener {
     Window w = SwingUtilities.getWindowAncestor(c);
     boolean outOfFrame = !w.getBounds().contains(e.getLocation());
     if (dropSuccess && outOfFrame && c instanceof DnDTabbedPane) {
-      DnDTabbedPane tabs = makeDnDTabbedPane((DnDTabbedPane) c);
+      DnDTabbedPane tabs = createDnDTabbedPane((DnDTabbedPane) c);
       JFrame frame = new JFrame();
       frame.getContentPane().add(tabs);
       frame.setSize(320, 240);
@@ -339,7 +344,7 @@ class TabDragSourceListener implements DragSourceListener {
     }
   }
 
-  private static DnDTabbedPane makeDnDTabbedPane(DnDTabbedPane src) {
+  private static DnDTabbedPane createDnDTabbedPane(DnDTabbedPane src) {
     int index = src.getDragTabIndex();
     final Component cmp = src.getComponentAt(index);
     final Component tab = src.getTabComponentAt(index);
