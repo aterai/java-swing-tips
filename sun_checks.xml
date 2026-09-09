@@ -188,6 +188,7 @@
     <module name="FallThrough"/>
     <module name="HiddenField">
       <property name="ignoreConstructorParameter" value="true"/>
+      <property name="ignoreSetter" value="true"/>
     </module>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
