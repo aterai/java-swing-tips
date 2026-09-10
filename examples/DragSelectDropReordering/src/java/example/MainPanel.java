@@ -128,9 +128,9 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     int b = c.getBlue();
     int max = Math.max(Math.max(r, g), b);
     if (max == r) {
-      max <<= 8;
+      max <<= 16;
     } else if (max == g) {
-      max <<= 4;
+      max <<= 8;
     }
     return new Color(max);
   }

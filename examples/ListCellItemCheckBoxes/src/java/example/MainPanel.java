@@ -95,10 +95,10 @@ public final class MainPanel extends JPanel {
 class RubberBandSelectionList<E extends ListItem> extends JList<E> {
   protected static final Color SELECTED_COLOR = new Color(0x40_32_64_FF, true);
   protected static final Color ROLLOVER_COLOR = new Color(0x40_32_64_AA, true);
-  private transient ItemCheckBoxesListener rbl;
+  private transient RubberBandingListener rbl;
   private Color rubberBandColor;
   private final Path2D rubberBand = new Path2D.Double();
-  private int rollOverIndex = -1;
+  private int rolloverIndex = -1;
   private int checkedIndex = -1;
 
   protected RubberBandSelectionList(ListModel<E> model) {
@@ -121,7 +121,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     setCellRenderer(new ListItemCellRenderer());
-    rbl = new ItemCheckBoxesListener();
+    rbl = new RubberBandingListener();
     addMouseMotionListener(rbl);
     addMouseListener(rbl);
   }
@@ -165,9 +165,9 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     int b = c.getBlue();
     int max = Math.max(Math.max(r, g), b);
     if (max == r) {
-      max <<= 8;
+      max <<= 16;
     } else if (max == g) {
-      max <<= 4;
+      max <<= 8;
     }
     return new Color(max);
   }
@@ -181,7 +181,7 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     return r.width != 0 || r.height != 0;
   }
 
-  private final class ItemCheckBoxesListener extends MouseAdapter {
+  private final class RubberBandingListener extends MouseAdapter {
     private final Point srcPoint = new Point();
 
     @Override public void mouseDragged(MouseEvent e) {
@@ -194,73 +194,61 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       rb.lineTo(dstPoint.x, dstPoint.y);
       rb.lineTo(srcPoint.x, dstPoint.y);
       rb.closePath();
-
-      Component c = e.getComponent();
-      if (c instanceof JList) {
-        JList<?> l = (JList<?>) c;
-        // l.setFocusable(true);
-        int[] indices = IntStream.range(0, l.getModel().getSize())
-            .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
-        l.setSelectedIndices(indices);
-        l.repaint();
-      }
+      int[] indices = IntStream.range(0, getModel().getSize())
+          .filter(i -> rb.intersects(getCellBounds(i, i)))
+          .toArray();
+      setSelectedIndices(indices);
+      repaint();
     }
 
     @Override public void mouseExited(MouseEvent e) {
-      rollOverIndex = -1;
-      e.getComponent().repaint();
+      rolloverIndex = -1;
+      repaint();
     }
 
     @Override public void mouseMoved(MouseEvent e) {
-      Point pt = e.getPoint();
-      int idx = locationToIndex(pt);
-      if (!getCellBounds(idx, idx).contains(pt)) {
-        idx = -1;
-      }
-      Rectangle rect = new Rectangle();
-      if (idx >= 0) {
-        rect.add(getCellBounds(idx, idx));
-        if (rollOverIndex >= 0 && idx != rollOverIndex) {
-          rect.add(getCellBounds(rollOverIndex, rollOverIndex));
+      int idx = getIndexAt(e.getPoint());
+      if (idx != rolloverIndex) {
+        Rectangle rect = new Rectangle();
+        if (idx >= 0) {
+          rect.add(getCellBounds(idx, idx));
         }
-        rollOverIndex = idx;
-      } else {
-        if (rollOverIndex >= 0) {
-          rect.add(getCellBounds(rollOverIndex, rollOverIndex));
+        if (rolloverIndex >= 0) {
+          rect.add(getCellBounds(rolloverIndex, rolloverIndex));
         }
-        rollOverIndex = -1;
+        rolloverIndex = idx;
+        repaint(rect);
       }
-      ((JComponent) e.getComponent()).repaint(rect);
     }
 
     @Override public void mouseReleased(MouseEvent e) {
       getRubberBand().reset();
-      JList<?> l = (JList<?>) e.getComponent();
-      // l.getSelectionModel().setValueIsAdjusting(false);
-      // l.setFocusable(true);
-      l.repaint();
+      repaint();
     }
 
     @Override public void mousePressed(MouseEvent e) {
-      JList<?> l = (JList<?>) e.getComponent();
-      // l.getSelectionModel().setValueIsAdjusting(true);
       Point pt = e.getPoint();
-      int index = l.locationToIndex(pt);
-      if (l.getCellBounds(index, index).contains(pt)) {
-        // l.setFocusable(false);
+      int index = getIndexAt(pt);
+      if (index >= 0) {
         cellPressed(e, index);
       } else {
         EventQueue.invokeLater(() -> {
-          l.getSelectionModel().setAnchorSelectionIndex(-1);
-          l.getSelectionModel().setLeadSelectionIndex(-1);
-          rollOverIndex = -1;
+          getSelectionModel().setAnchorSelectionIndex(-1);
+          getSelectionModel().setLeadSelectionIndex(-1);
+          rolloverIndex = -1;
           checkedIndex = -1;
-          l.clearSelection();
+          clearSelection();
         });
-        // l.setFocusable(false);
       }
       srcPoint.setLocation(pt);
-      l.repaint();
+      repaint();
+    }
+
+    // Returns the index of the cell that actually contains pt, or -1
+    private int getIndexAt(Point pt) {
+      int index = locationToIndex(pt);
+      Rectangle r = getCellBounds(index, index);
+      return r != null && r.contains(pt) ? index : -1;
     }
 
     private void cellPressed(MouseEvent e, int index) {
@@ -272,7 +260,6 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
         getCheckBoxAt(e, index).ifPresent(button -> {
           checkedIndex = index;
           if (isSelectedIndex(index)) {
-            // setFocusable(false);
             removeSelectionInterval(index, index);
           } else {
             setSelectionInterval(index, index);
@@ -332,7 +319,6 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       label.setVerticalTextPosition(SwingConstants.TOP);
       label.setHorizontalTextPosition(SwingConstants.CENTER);
       label.setForeground(itemPanel.getForeground());
-      label.setBackground(itemPanel.getBackground());
       label.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
       label.setOpaque(false);
 
@@ -365,20 +351,16 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
       itemPanel.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
       icon.setIcon(value.getIcon());
       check.setSelected(isSelected);
-      check.getModel().setRollover(index == rollOverIndex);
+      check.getModel().setRollover(index == rolloverIndex);
+      boolean isRollover = index == rolloverIndex;
+      check.setVisible(isSelected || isRollover);
+      label.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
       if (isSelected) {
-        label.setForeground(list.getSelectionForeground());
-        label.setBackground(SELECTED_COLOR);
         itemPanel.setBackground(SELECTED_COLOR);
-        check.setVisible(true);
-      } else if (index == rollOverIndex) {
+      } else if (isRollover) {
         itemPanel.setBackground(ROLLOVER_COLOR);
-        check.setVisible(true);
       } else {
-        label.setForeground(list.getForeground());
-        label.setBackground(list.getBackground());
         itemPanel.setBackground(list.getBackground());
-        check.setVisible(false);
       }
       return renderer;
     }
