@@ -6,8 +6,10 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -31,9 +33,9 @@ public final class MainPanel extends JPanel {
     JComboBox<PaperSize> combo = new DropdownTableComboBox(PaperSize.values(), model);
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        PaperSize rowData = combo.getItemAt(combo.getSelectedIndex());
-        wtf.setText(Integer.toString(rowData.getWidth()));
-        htf.setText(Integer.toString(rowData.getHeight()));
+        PaperSize item = (PaperSize) e.getItem();
+        wtf.setText(Integer.toString(item.getWidth()));
+        htf.setText(Integer.toString(item.getHeight()));
       }
     });
     ListCellRenderer<? super PaperSize> renderer = combo.getRenderer();
@@ -149,7 +151,7 @@ class PaperSizeListCellRenderer implements ListCellRenderer<PaperSize> {
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       l.setOpaque(true);
-      l.setText(Objects.toString(value.getSeries(), ""));
+      l.setText(Objects.isNull(value) ? "" : value.getSeries());
     }
     return c;
   }
@@ -171,43 +173,46 @@ class DropdownTableComboBox extends JComboBox<PaperSize> {
           return new ComboTablePopup(comboBox, table);
         }
       });
-      setEditable(false);
     });
   }
 }
 
 class DropdownTable extends JTable {
-  private transient HighlightListener mouseHandler;
+  private transient RowHighlightListener highlighter;
 
   @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
     Component c = super.prepareRenderer(renderer, row, column);
-    if (mouseHandler != null && mouseHandler.isHighlightTableRow(row)) {
-      c.setForeground(UIManager.getColor("Table.selectionForeground"));
-      c.setBackground(UIManager.getColor("Table.selectionBackground").brighter());
+    if (highlighter != null && highlighter.isHighlightedRow(row)) {
+      c.setForeground(getSelectionForeground());
+      c.setBackground(getSelectionBackground().brighter());
     } else if (isRowSelected(row)) {
-      c.setForeground(UIManager.getColor("Table.selectionForeground"));
-      c.setBackground(UIManager.getColor("Table.selectionBackground"));
+      c.setForeground(getSelectionForeground());
+      c.setBackground(getSelectionBackground());
     } else {
-      c.setForeground(UIManager.getColor("Table.foreground"));
-      c.setBackground(UIManager.getColor("Table.background"));
+      c.setForeground(getForeground());
+      c.setBackground(getBackground());
     }
     return c;
   }
 
   @Override public void updateUI() {
-    removeMouseListener(mouseHandler);
-    removeMouseMotionListener(mouseHandler);
+    removeMouseListener(highlighter);
+    removeMouseMotionListener(highlighter);
     super.updateUI();
-    mouseHandler = new HighlightListener();
-    addMouseListener(mouseHandler);
-    addMouseMotionListener(mouseHandler);
+    highlighter = new RowHighlightListener();
+    addMouseListener(highlighter);
+    addMouseMotionListener(highlighter);
+    setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     getTableHeader().setReorderingAllowed(false);
   }
 }
 
 class ComboTablePopup extends BasicComboPopup {
+  private static final int POPUP_WIDTH = 240;
   private final JTable table;
   private final JScrollPane scroll;
+  private final transient ItemListener itemListener;
+  private final transient MouseListener mouseListener;
 
   // Java 8: protected ComboTablePopup(JComboBox<?> combo, JTable table) {
   // Java 9: protected ComboTablePopup(JComboBox<Object> combo, JTable table) {
@@ -215,98 +220,86 @@ class ComboTablePopup extends BasicComboPopup {
   protected ComboTablePopup(JComboBox combo, JTable table) {
     super(combo);
     this.table = table;
-    // this.setBorderPainted(false);
-    // this.setBorder(BorderFactory.createEmptyBorder());
+    this.scroll = new JScrollPane(table);
 
-    ListSelectionModel sm = table.getSelectionModel();
-    sm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    sm.addListSelectionListener(e -> combo.setSelectedIndex(table.getSelectedRow()));
-
-    combo.addItemListener(e -> {
+    itemListener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         setRowSelection(combo.getSelectedIndex());
       }
-    });
+    };
+    combo.addItemListener(itemListener);
 
-    table.addMouseListener(new MouseAdapter() {
+    mouseListener = new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        combo.setSelectedIndex(table.rowAtPoint(e.getPoint()));
-        setVisible(false);
+        int row = table.rowAtPoint(e.getPoint());
+        if (row >= 0) {
+          combo.setSelectedIndex(row);
+          setVisible(false);
+        }
       }
-    });
-
-    scroll = new JScrollPane(table);
+    };
+    table.addMouseListener(mouseListener);
   }
 
-  // @Override public void updateUI() {
-  //   super.updateUI();
-  //   EventQueue.invokeLater(() -> setBorder(BorderFactory.createEmptyBorder()));
-  // }
+  @Override public void uninstallingUI() {
+    comboBox.removeItemListener(itemListener);
+    table.removeMouseListener(mouseListener);
+    super.uninstallingUI();
+  }
 
-  // Java 9: @SuppressWarnings("deprecation")
-  // @Override public void show() {
-  //   if (isEnabled()) {
-  //     Insets ins = scroll.getInsets();
-  //     int tableHeight = table.getPreferredSize().height;
-  //     int headerHeight = table.getTableHeader().getPreferredSize().height;
-  //     int scrollHeight = tableHeight + headerHeight + ins.top + ins.bottom;
-  //     scroll.setPreferredSize(new Dimension(240, scrollHeight));
-  //     super.removeAll();
-  //     super.add(scroll);
-  //     setRowSelection(comboBox.getSelectedIndex());
-  //     super.show(comboBox, 0, comboBox.getBounds().height);
-  //   }
-  // }
-
-  @Override protected void togglePopup() {
-    if (!isVisible()) {
+  // JPopupMenu#setVisible(true) is called from both BasicComboPopup#show()
+  // (keyboard: Alt+Down, F4, ...) and #togglePopup() (mouse click)
+  @Override public void setVisible(boolean visible) {
+    if (visible) {
       Insets ins = scroll.getInsets();
       int tableHeight = table.getPreferredSize().height;
       int headerHeight = table.getTableHeader().getPreferredSize().height;
       int scrollHeight = tableHeight + headerHeight + ins.top + ins.bottom;
-      scroll.setPreferredSize(new Dimension(240, scrollHeight));
-      super.removeAll();
-      super.add(scroll);
+      scroll.setPreferredSize(new Dimension(POPUP_WIDTH, scrollHeight));
+      removeAll();
+      add(scroll);
       setBorderPainted(false);
       // setBorder(BorderFactory.createEmptyBorder());
     }
-    super.togglePopup();
+    super.setVisible(visible);
   }
 
   private void setRowSelection(int index) {
-    if (index != -1) {
+    if (index >= 0) {
       table.setRowSelectionInterval(index, index);
       table.scrollRectToVisible(table.getCellRect(index, 0, true));
     }
   }
 }
 
-class HighlightListener extends MouseAdapter {
-  private int viewRowIdx = -1;
+class RowHighlightListener extends MouseAdapter {
+  private int highlightedRow = -1;
 
-  public boolean isHighlightTableRow(int row) {
-    return this.viewRowIdx == row;
+  public boolean isHighlightedRow(int row) {
+    return highlightedRow == row;
   }
 
-  private void setHighlightTableCell(MouseEvent e) {
-    Point pt = e.getPoint();
+  private void updateHighlightedRow(MouseEvent e) {
     Component c = e.getComponent();
     if (c instanceof JTable) {
-      viewRowIdx = ((JTable) c).rowAtPoint(pt);
-      c.repaint();
+      int row = ((JTable) c).rowAtPoint(e.getPoint());
+      if (row != highlightedRow) {
+        highlightedRow = row;
+        c.repaint();
+      }
     }
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    setHighlightTableCell(e);
+    updateHighlightedRow(e);
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    setHighlightTableCell(e);
+    updateHighlightedRow(e);
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    viewRowIdx = -1;
+    highlightedRow = -1;
     e.getComponent().repaint();
   }
 }
