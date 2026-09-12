@@ -23,19 +23,19 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTextField wtf = new JTextField(5);
-    wtf.setEditable(false);
+    JTextField widthField = new JTextField(5);
+    widthField.setEditable(false);
 
-    JTextField htf = new JTextField(5);
-    htf.setEditable(false);
+    JTextField heightField = new JTextField(5);
+    heightField.setEditable(false);
 
-    TableModel model = makeTableModel();
+    TableModel model = createTableModel();
     JComboBox<PaperSize> combo = new DropdownTableComboBox(PaperSize.values(), model);
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         PaperSize item = (PaperSize) e.getItem();
-        wtf.setText(Integer.toString(item.getWidth()));
-        htf.setText(Integer.toString(item.getHeight()));
+        widthField.setText(Integer.toString(item.getWidth()));
+        heightField.setText(Integer.toString(item.getHeight()));
       }
     });
     ListCellRenderer<? super PaperSize> renderer = combo.getRenderer();
@@ -47,17 +47,17 @@ public final class MainPanel extends JPanel {
     box.add(combo);
     box.add(Box.createHorizontalStrut(15));
     box.add(new JLabel("width: "));
-    box.add(wtf);
+    box.add(widthField);
     box.add(Box.createHorizontalStrut(5));
     box.add(new JLabel("height: "));
-    box.add(htf);
+    box.add(heightField);
     box.add(Box.createHorizontalGlue());
 
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeTableModel() {
+  private static TableModel createTableModel() {
     String[] columnNames = {"A series", "width", "height"};
     DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
       @Override public Class<?> getColumnClass(int column) {
