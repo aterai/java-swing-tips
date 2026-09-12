@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -14,22 +13,22 @@ import javax.swing.event.PopupMenuListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JComboBox<String> combo00 = makeComboBox();
+    JComboBox<String> combo00 = createComboBox();
     combo00.setEditable(false);
 
-    JComboBox<String> combo01 = makeComboBox();
+    JComboBox<String> combo01 = createComboBox();
     combo01.setEditable(true);
 
-    JComboBox<String> combo02 = makeComboBox();
+    JComboBox<String> combo02 = createComboBox();
     combo02.setEditable(false);
     combo02.addPopupMenuListener(new WidePopupMenuListener());
 
-    JComboBox<String> combo03 = makeComboBox();
+    JComboBox<String> combo03 = createComboBox();
     combo03.setEditable(true);
     combo03.addPopupMenuListener(new WidePopupMenuListener());
 
-    int g = 5;
-    JPanel p = new JPanel(new GridLayout(4, 2, g, g));
+    int gap = 5;
+    JPanel p = new JPanel(new GridLayout(4, 2, gap, gap));
     p.add(combo00);
     p.add(new JLabel("<- normal"));
     p.add(combo01);
@@ -38,12 +37,12 @@ public final class MainPanel extends JPanel {
     p.add(new JLabel("<- wide"));
     p.add(combo03);
     p.add(new JLabel("<- wide, editable"));
-    setBorder(BorderFactory.createEmptyBorder(g, g, g, g));
+    setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JComboBox<String> makeComboBox() {
+  private static JComboBox<String> createComboBox() {
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
     model.addElement("1111");
     model.addElement("22222222");
@@ -76,26 +75,26 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// https://community.oracle.com/thread/1368300 How to widen the drop-down list in a JComboBox
+// How to widen the drop-down list in a JComboBox
+// https://community.oracle.com/thread/1368300
 class WidePopupMenuListener implements PopupMenuListener {
   private static final int POPUP_MIN_WIDTH = 300;
-  private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     JComboBox<?> combo = (JComboBox<?>) e.getSource();
     Dimension size = combo.getSize();
-    if (size.width < POPUP_MIN_WIDTH && !adjusting.get()) {
-      adjusting.set(true);
+    if (size.width < POPUP_MIN_WIDTH) {
+      // Temporarily widen the combo box so that BasicComboPopup#getPopupLocation()
+      // sizes the popup from the widened bounds. The nested showPopup() fires this
+      // listener again, but the width check above prevents infinite recursion.
       combo.setSize(POPUP_MIN_WIDTH, size.height);
       combo.showPopup();
       // // Java 8
       // combo.setSize(size);
-      // adjusting.set(false);
-      // Java 21
-      EventQueue.invokeLater(() -> {
-        combo.setSize(size);
-        adjusting.set(false);
-      });
+      // Java 21: the outer BasicComboPopup#show() still calls getPopupLocation()
+      // after this listener returns, so restoring the size synchronously would
+      // shrink the already visible popup back to the combo box width.
+      EventQueue.invokeLater(() -> combo.setSize(size));
     }
   }
 

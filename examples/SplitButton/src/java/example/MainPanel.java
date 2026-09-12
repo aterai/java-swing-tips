@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -105,12 +104,12 @@ class ComboItem {
   }
 }
 
-final class EditorPanel extends JPanel {
+final class ComboItemPanel extends JPanel {
   private final JCheckBox checkBox = new JCheckBox();
   private final JLabel label = new JLabel();
   private final JTextArea textArea = new JTextArea();
 
-  /* default */ EditorPanel(ComboItem data) {
+  /* default */ ComboItemPanel(ComboItem data) {
     super(new BorderLayout());
     setItem(data);
     checkBox.setOpaque(false);
@@ -145,7 +144,7 @@ final class EditorPanel extends JPanel {
 
 class CheckComboBoxRenderer<E extends ComboItem> implements ListCellRenderer<E> {
   private static final Color SELECTED_BGC = new Color(0xC0_E8_FF);
-  private final EditorPanel renderer;
+  private final ComboItemPanel renderer;
   private final JLabel label = new JLabel();
   private final JComboBox<ComboItem> combo;
 
@@ -153,7 +152,7 @@ class CheckComboBoxRenderer<E extends ComboItem> implements ListCellRenderer<E> 
     this.combo = combo;
     ComboItem proto = Optional.ofNullable(combo.getPrototypeDisplayValue())
         .orElseGet(() -> new ComboItem("", ""));
-    renderer = new EditorPanel(proto);
+    renderer = new ComboItemPanel(proto);
   }
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -181,19 +180,20 @@ class CheckComboBoxRenderer<E extends ComboItem> implements ListCellRenderer<E> 
 
 class WidePopupMenuListener implements PopupMenuListener {
   private static final int POPUP_MIN_WIDTH = 260;
-  private final AtomicBoolean adjusting = new AtomicBoolean();
 
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
     JComboBox<?> combo = (JComboBox<?>) e.getSource();
     Dimension size = combo.getSize();
-    if (size.width < POPUP_MIN_WIDTH && !adjusting.get()) {
-      adjusting.set(true);
+    if (size.width < POPUP_MIN_WIDTH) {
+      // Temporarily widen the combo box so that BasicComboPopup#getPopupLocation()
+      // sizes the popup from the widened bounds. The nested showPopup() fires this
+      // listener again, but the width check above prevents infinite recursion.
       combo.setSize(POPUP_MIN_WIDTH, size.height);
       combo.showPopup();
-      EventQueue.invokeLater(() -> {
-        combo.setSize(size);
-        adjusting.set(false);
-      });
+      // The outer BasicComboPopup#show() still calls getPopupLocation() after this
+      // listener returns, so restoring the size synchronously would shrink the
+      // already visible popup back to the combo box width.
+      EventQueue.invokeLater(() -> combo.setSize(size));
     }
   }
 
