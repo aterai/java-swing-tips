@@ -21,14 +21,13 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
-    add(new TimePickerSingleField().createMainPanel());
-    add(new TimePickerSplitField().createMainPanel());
+    add(new TimePickerSingleField().createComponent());
+    add(new TimePickerSplitField().createComponent());
     setBorder(BorderFactory.createEmptyBorder(20, 2, 20, 2));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -59,19 +58,19 @@ public final class MainPanel extends JPanel {
 // each with its own up/down spinner buttons.
 class TimePickerSplitField {
   // Background color of the rounded panel that wraps the hour/minute fields.
-  private static final Color PANEL_COLOR = new Color(0xDE_DE_DE);
+  private static final Color PANEL_BACKGROUND = new Color(0xDE_DE_DE);
 
-  public JPanel createMainPanel() {
-    JFormattedTextField hourField = createNumberField(12, 1, 0, 23);
-    JFormattedTextField minuteField = createNumberField(30, 1, 0, 59);
+  public JPanel createComponent() {
+    RoundFormattedTextField hourField = createNumberField(12, 1, 0, 23);
+    RoundFormattedTextField minuteField = createNumberField(30, 1, 0, 59);
 
     JPanel upButtonPanel = new JPanel(new GridLayout(1, 2));
-    upButtonPanel.add(createCenteredBox(createArrowButton(hourField, 1, 0, 23)));
-    upButtonPanel.add(createCenteredBox(createArrowButton(minuteField, 1, 0, 59)));
+    upButtonPanel.add(createCenteredBox(createArrowButton(hourField, 1)));
+    upButtonPanel.add(createCenteredBox(createArrowButton(minuteField, 1)));
 
     JPanel downButtonPanel = new JPanel(new GridLayout(1, 2));
-    downButtonPanel.add(createCenteredBox(createArrowButton(hourField, -1, 0, 23)));
-    downButtonPanel.add(createCenteredBox(createArrowButton(minuteField, -1, 0, 59)));
+    downButtonPanel.add(createCenteredBox(createArrowButton(hourField, -1)));
+    downButtonPanel.add(createCenteredBox(createArrowButton(minuteField, -1)));
 
     JPanel panel = new JPanel(new BorderLayout(5, 5));
     panel.setOpaque(false);
@@ -81,11 +80,13 @@ class TimePickerSplitField {
     return panel;
   }
 
-  public static JButton createArrowButton(JTextField field, int delta, int min, int max) {
-    String arrowLabel = delta > 0 ? "⏶" : "⏷";
+  // Creates an up/down button that moves the field by one step,
+  // repeating while the button is held down.
+  private static JButton createArrowButton(RoundFormattedTextField field, int direction) {
+    String arrowLabel = direction > 0 ? "⏶" : "⏷";
     JButton button = new JButton(arrowLabel);
     button.setFocusable(false);
-    AutoRepeatHandler handler = new AutoRepeatHandler(field, delta, min, max);
+    AutoRepeatHandler handler = new AutoRepeatHandler(() -> field.adjustValue(direction));
     button.addActionListener(handler);
     button.addMouseListener(handler);
     return button;
@@ -104,7 +105,7 @@ class TimePickerSplitField {
     panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
     panel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
     panel.setOpaque(false);
-    panel.setBackground(PANEL_COLOR);
+    panel.setBackground(PANEL_BACKGROUND);
     panel.add(Box.createHorizontalGlue());
     panel.add(hourField);
     JLabel colon = new JLabel(":");
@@ -116,8 +117,9 @@ class TimePickerSplitField {
     return panel;
   }
 
-  public static JFormattedTextField createNumberField(int value, int step, int min, int max) {
-    JFormattedTextField field = new RoundFormattedTextField(value, step, min, max);
+  private static RoundFormattedTextField createNumberField(
+      int value, int step, int min, int max) {
+    RoundFormattedTextField field = new RoundFormattedTextField(value, step, min, max);
     try {
       // "##" restricts input to exactly two digits (e.g. "07", "23").
       MaskFormatter mask = new MaskFormatter("##");
@@ -135,36 +137,43 @@ class TimePickerSplitField {
 
 // A JPanel that paints itself as a filled rounded rectangle using its background color.
 class RoundPanel extends JPanel {
-  private final int radius;
+  private final int arc;
 
-  protected RoundPanel(int radius) {
+  protected RoundPanel(int arc) {
     super();
-    this.radius = radius;
+    this.arc = arc;
   }
 
   @Override protected void paintComponent(Graphics g) {
+    paintRoundRect(g, this, arc);
+    super.paintComponent(g);
+  }
+
+  // Fills the component bounds with its background color
+  // and outlines it with a darker shade of the same color.
+  public static void paintRoundRect(Graphics g, Component c, int arc) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setColor(getBackground());
-    int w = getWidth();
-    int h = getHeight();
-    g2.fill(new RoundRectangle2D.Double(0, 0, w, h, radius, radius));
-    g2.setColor(getBackground().darker());
-    g2.draw(new RoundRectangle2D.Double(0, 0, w - 1, h - 1, radius, radius));
+    int w = c.getWidth();
+    int h = c.getHeight();
+    g2.setColor(c.getBackground());
+    g2.fill(new RoundRectangle2D.Double(0, 0, w, h, arc, arc));
+    g2.setColor(c.getBackground().darker());
+    g2.draw(new RoundRectangle2D.Double(0, 0, w - 1d, h - 1d, arc, arc));
     g2.dispose();
-    super.paintComponent(g);
   }
 }
 
 // A two-digit numeric field with a rounded, focus-highlighted background
-// and mouse-wheel support.
+// and mouse-wheel support. The value wraps around within [min, max].
 class RoundFormattedTextField extends JFormattedTextField {
-  // Background color used while the field is not focused.
-  private static final Color FIELD_COLOR = new Color(0xCE_CE_CE);
+  // Background color used while the field is focused.
+  private static final Color FIELD_BACKGROUND = new Color(0xCE_CE_CE);
   // Fully transparent so the selection itself is invisible;
   // the focus highlight is drawn instead.
-  private static final Color NO_SELECTION = new Color(0x0, true);
+  private static final Color TRANSPARENT = new Color(0x0, true);
+  private static final int ARC = 8;
 
   private transient Handler handler;
   private final int step;
@@ -183,106 +192,88 @@ class RoundFormattedTextField extends JFormattedTextField {
     removeFocusListener(handler);
     removeMouseWheelListener(handler);
     super.updateUI();
-    setFocusable(true);
     setOpaque(false);
-    setBackground(FIELD_COLOR);
-    setSelectionColor(NO_SELECTION);
-    setSelectedTextColor(getForeground());
-    setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+    setBackground(FIELD_BACKGROUND);
+    // Dimmed until the field gains the focus; see Handler#focusGained
+    setForeground(Color.DARK_GRAY);
+    setSelectionColor(TRANSPARENT);
+    setSelectedTextColor(UIManager.getColor("TextField.foreground"));
+    setBorder(BorderFactory.createEmptyBorder());
     setCaret(new DefaultCaret() {
       @Override public boolean isVisible() {
         return false;
       }
     });
-    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    setCursor(Cursor.getDefaultCursor());
     handler = new Handler();
     addFocusListener(handler);
     addMouseWheelListener(handler);
   }
 
+  // Moves the value by the given number of steps, wrapping around
+  // within [min, max] instead of clamping (e.g. 23 + 1 -> 0).
+  public void adjustValue(int steps) {
+    requestFocusInWindow();
+    int range = max - min + 1;
+    int value = Integer.parseInt(getText());
+    int next = Math.floorMod(value - min + steps * step, range) + min;
+    setText(String.format("%02d", next));
+  }
+
   @Override protected void paintComponent(Graphics g) {
     if (hasFocus()) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(
-          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setColor(getBackground());
-      g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 8, 8));
-      g2.setColor(getBackground().darker());
-      g2.draw(new RoundRectangle2D.Double(0, 0, getWidth() - 1, getHeight() - 1, 8, 8));
-      g2.dispose();
+      RoundPanel.paintRoundRect(g, this, ARC);
     }
     super.paintComponent(g);
   }
 
   private final class Handler implements FocusListener, MouseWheelListener {
     @Override public void focusGained(FocusEvent e) {
-      Component c = e.getComponent();
-      c.setForeground(UIManager.getColor("TextField.foreground"));
+      setForeground(UIManager.getColor("TextField.foreground"));
     }
 
     @Override public void focusLost(FocusEvent e) {
-      e.getComponent().setForeground(Color.DARK_GRAY);
+      setForeground(Color.DARK_GRAY);
     }
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
-      int delta = e.getWheelRotation() < 0 ? 1 : -1;
-      Component c = e.getComponent();
-      if (c instanceof JTextComponent) {
-        AutoRepeatHandler.adjust((JTextComponent) c, delta * step, min, max);
-      }
+      // Rotating the wheel away from the user (negative) increases the value
+      adjustValue(-e.getWheelRotation());
     }
   }
 }
 
-// Shared button handler that adjusts a numeric field's value,
-// repeating while the button is held.
+// Runs an action when a button is clicked and keeps repeating it
+// while the button is held down, like the arrow buttons of a JSpinner.
 class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   private final Timer autoRepeatTimer;
-  private final JTextComponent targetField;
-  private final int delta;
-  private final int min;
-  private final int max;
-  private JButton pressedButton;
+  private final Runnable action;
+  private AbstractButton arrowButton;
 
-  protected AutoRepeatHandler(JTextComponent targetField, int delta, int min, int max) {
+  protected AutoRepeatHandler(Runnable action) {
     super();
-    this.targetField = targetField;
-    this.delta = delta;
-    this.min = min;
-    this.max = max;
+    this.action = action;
     autoRepeatTimer = new Timer(60, this);
     autoRepeatTimer.setInitialDelay(300);
   }
 
-  public static void adjust(JTextComponent field, int delta, int min, int max) {
-    field.requestFocusInWindow();
-    int range = max - min + 1;
-    int value = Integer.parseInt(field.getText());
-    // Wrap around within [min, max] instead of clamping (e.g. 23 + 1 -> 0).
-    value = (value - min + delta) % range;
-    if (value < 0) {
-      value += range;
-    }
-    value += min;
-    field.setText(String.format("%02d", value));
-  }
-
   @Override public void actionPerformed(ActionEvent e) {
-    Object source = e.getSource();
-    if (source instanceof Timer) {
-      // The auto-repeat timer keeps firing until the button is released.
-      boolean released = pressedButton != null && !pressedButton.getModel().isPressed();
-      if (released && autoRepeatTimer.isRunning()) {
-        autoRepeatTimer.stop();
-      }
-    } else if (source instanceof JButton) {
-      pressedButton = (JButton) source;
+    // The button itself fires once on release; the timer fires while held.
+    boolean released = e.getSource() instanceof Timer
+        && !arrowButton.getModel().isPressed();
+    if (released) {
+      // Safety net: stop repeating if the button was released
+      // without this handler receiving mouseReleased.
+      autoRepeatTimer.stop();
+    } else {
+      action.run();
     }
-    adjust(targetField, delta, min, max);
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    if (SwingUtilities.isLeftMouseButton(e) && e.getComponent().isEnabled()) {
+    Component c = e.getComponent();
+    if (SwingUtilities.isLeftMouseButton(e) && c.isEnabled() && c instanceof AbstractButton) {
+      arrowButton = (AbstractButton) c;
       autoRepeatTimer.start();
     }
   }
@@ -292,9 +283,7 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    if (autoRepeatTimer.isRunning()) {
-      autoRepeatTimer.stop();
-    }
+    autoRepeatTimer.stop();
   }
 }
 
@@ -303,45 +292,37 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
 class TimePickerSingleField {
   // Index of the colon in the "HH:mm" mask: caret positions 0-2 are over the hour digits.
   private static final int HOUR_END_INDEX = 2;
+  private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-  private JFormattedTextField timeField;
   private LocalTime currentTime = LocalTime.of(12, 30);
-  private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-  public Component createMainPanel() {
-    try {
-      MaskFormatter mask = new MaskFormatter("##:##");
-      mask.setPlaceholderCharacter('0');
-      timeField = new JFormattedTextField(mask);
-    } catch (ParseException ex) {
-      timeField = new JFormattedTextField();
-    }
-
-    timeField.setFont(timeField.getFont().deriveFont(Font.BOLD, 42f));
-    timeField.setHorizontalAlignment(JTextField.CENTER);
-    timeField.setEditable(false);
-    timeField.setFocusable(true);
-    updateDisplay();
-
-    timeField.addMouseWheelListener(e -> {
-      boolean isUp = e.getWheelRotation() < 0;
-      // Java 9: isHourSide = timeField.viewToModel2D(e.getPoint()) <= HOUR_END_INDEX;
-      boolean isHourSide = timeField.viewToModel(e.getPoint()) <= HOUR_END_INDEX;
-      adjustTime(isHourSide, isUp);
+  public JFormattedTextField createComponent() {
+    JFormattedTextField field = createMaskedField("##:##");
+    field.setFont(field.getFont().deriveFont(Font.BOLD, 42f));
+    field.setHorizontalAlignment(JTextField.CENTER);
+    field.setEditable(false);
+    field.setText(currentTime.format(TIME_FORMATTER));
+    field.addMouseWheelListener(e -> {
+      // Rotating the wheel away from the user (negative) increases the value
+      int steps = -e.getWheelRotation();
+      // Java 9: boolean isHourSide = field.viewToModel2D(e.getPoint()) <= HOUR_END_INDEX;
+      boolean isHourSide = field.viewToModel(e.getPoint()) <= HOUR_END_INDEX;
+      // Unlike TimePickerSplitField, the minutes carry over into the hours (12:59 -> 13:00)
+      currentTime = isHourSide ? currentTime.plusHours(steps) : currentTime.plusMinutes(steps);
+      field.setText(currentTime.format(TIME_FORMATTER));
     });
-    return timeField;
+    return field;
   }
 
-  private void adjustTime(boolean isHour, boolean isUp) {
-    if (isHour) {
-      currentTime = isUp ? currentTime.plusHours(1) : currentTime.minusHours(1);
-    } else {
-      currentTime = isUp ? currentTime.plusMinutes(1) : currentTime.minusMinutes(1);
+  private static JFormattedTextField createMaskedField(String pattern) {
+    JFormattedTextField field;
+    try {
+      MaskFormatter mask = new MaskFormatter(pattern);
+      mask.setPlaceholderCharacter('0');
+      field = new JFormattedTextField(mask);
+    } catch (ParseException ex) {
+      field = new JFormattedTextField();
     }
-    updateDisplay();
-  }
-
-  private void updateDisplay() {
-    timeField.setText(currentTime.format(timeFormatter));
+    return field;
   }
 }
