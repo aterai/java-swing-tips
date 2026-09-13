@@ -19,28 +19,28 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // // JDK 1.6.0
+    // // JDK 1.6.0: the default JViewport can be scrolled beyond the view edges
     // JScrollPane scroll = new JScrollPane(new JLabel(createIcon()));
     // JDK 1.7.0 or later
     JScrollPane scroll = new JScrollPane(new JLabel(createIcon())) {
       @Override protected JViewport createViewport() {
-        return new CustomViewport();
+        return new OverscrollViewport();
       }
     };
-    HandDragScrollListener hsl1 = new HandDragScrollListener();
+    HandDragScrollListener listener = new HandDragScrollListener();
     JViewport viewport = scroll.getViewport();
-    viewport.addMouseMotionListener(hsl1);
-    viewport.addMouseListener(hsl1);
+    viewport.addMouseMotionListener(listener);
+    viewport.addMouseListener(listener);
 
-    JRadioButton radio = new JRadioButton("scrollRectToVisible", true);
-    radio.addItemListener(e -> {
+    JRadioButton r1 = new JRadioButton("scrollRectToVisible", true);
+    r1.addItemListener(e -> {
       boolean b = e.getStateChange() == ItemEvent.SELECTED;
-      hsl1.setScrollRectToVisibleMode(b);
+      listener.setBoundedMode(b);
     });
 
     Box box = Box.createHorizontalBox();
     ButtonGroup bg = new ButtonGroup();
-    Stream.of(radio, new JRadioButton("setViewPosition")).forEach(r -> {
+    Stream.of(r1, new JRadioButton("setViewPosition")).forEach(r -> {
       box.add(r);
       bg.add(r);
     });
@@ -90,61 +90,62 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class CustomViewport extends JViewport {
+// JViewport#setViewPosition(Point) calls revalidate() since JDK 1.7.0 (to keep
+// heavyweight/lightweight mixing consistent), and ViewportLayout then clamps
+// the view position back inside the view bounds. Skip that revalidate() while
+// the position is being set so the view can be scrolled beyond its edges.
+class OverscrollViewport extends JViewport {
   private static final boolean WEIGHT_MIXING = false;
-  private boolean isAdjusting;
+  private boolean adjusting;
 
   @Override public void revalidate() {
-    if (WEIGHT_MIXING || !isAdjusting) {
+    if (WEIGHT_MIXING || !adjusting) {
       super.revalidate();
     }
   }
 
   @Override public void setViewPosition(Point p) {
-    if (WEIGHT_MIXING) {
-      super.setViewPosition(p);
-    } else {
-      isAdjusting = true;
-      super.setViewPosition(p);
-      isAdjusting = false;
-    }
+    adjusting = true;
+    super.setViewPosition(p);
+    adjusting = false;
   }
 }
 
 class HandDragScrollListener extends MouseAdapter {
   private final Cursor defaultCursor = Cursor.getDefaultCursor();
   private final Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-  private final Point previousPoint = new Point();
-  private boolean isBoundedMode = true;
-
-  @Override public void mouseDragged(MouseEvent e) {
-    JViewport viewport = (JViewport) e.getComponent();
-    Point cp = e.getPoint();
-    // Point vp = SwingUtilities.convertPoint(viewport, 0, 0, label);
-    // Point vp = viewport.getViewPosition();
-    // vp.translate(pp.x - cp.x, pp.y - cp.y);
-    Rectangle rect = viewport.getViewRect();
-    rect.translate(previousPoint.x - cp.x, previousPoint.y - cp.y);
-    Component c = SwingUtilities.getUnwrappedView(viewport);
-    if (isBoundedMode && c instanceof JComponent) {
-      ((JComponent) c).scrollRectToVisible(rect);
-    } else {
-      viewport.setViewPosition(rect.getLocation());
-    }
-    previousPoint.setLocation(cp);
-  }
+  private final Point prevPt = new Point();
+  // true: JComponent#scrollRectToVisible(Rectangle) keeps the viewport inside
+  // the view bounds; false: JViewport#setViewPosition(Point) allows overscroll
+  private boolean boundedMode = true;
 
   @Override public void mousePressed(MouseEvent e) {
     e.getComponent().setCursor(handCursor);
-    previousPoint.setLocation(e.getPoint());
+    prevPt.setLocation(e.getPoint());
+  }
+
+  @Override public void mouseDragged(MouseEvent e) {
+    JViewport viewport = (JViewport) e.getComponent();
+    Point pt = e.getPoint();
+    // Move the view in the opposite direction of the mouse so the image
+    // follows the cursor
+    Rectangle rect = viewport.getViewRect();
+    rect.translate(prevPt.x - pt.x, prevPt.y - pt.y);
+    Component view = SwingUtilities.getUnwrappedView(viewport);
+    if (boundedMode && view instanceof JComponent) {
+      ((JComponent) view).scrollRectToVisible(rect);
+    } else {
+      viewport.setViewPosition(rect.getLocation());
+    }
+    prevPt.setLocation(pt);
   }
 
   @Override public void mouseReleased(MouseEvent e) {
     e.getComponent().setCursor(defaultCursor);
   }
 
-  public void setScrollRectToVisibleMode(boolean b) {
-    isBoundedMode = b;
+  public void setBoundedMode(boolean b) {
+    boundedMode = b;
   }
 }
 
