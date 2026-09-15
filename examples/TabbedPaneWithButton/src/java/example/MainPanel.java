@@ -178,7 +178,7 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       Insets tabIns = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
       tabWidth -= tabIns.left + tabIns.right + 3;
-      updateAllTabWidth(tabWidth, gap);
+      updateAllTabWidths(tabWidth, gap);
     }
     super.doLayout();
   }
@@ -188,19 +188,14 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     setTabComponentAt(index, new JLabel(title, icon, CENTER));
   }
 
-  private void updateAllTabWidth(int tabWidth, int gap) {
-    Dimension dim = new Dimension();
-    int rest = gap;
-    int tabCount = getTabCount();
-    for (int i = 0; i < tabCount; i++) {
+  private void updateAllTabWidths(int tabWidth, int gap) {
+    for (int i = 0; i < getTabCount(); i++) {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = i == tabCount - 1 ? rest : 1;
-        int w = rest > 0 ? tabWidth + a : tabWidth;
-        dim.setSize(w, tab.getPreferredSize().height);
-        tab.setPreferredSize(dim);
-        rest -= a;
+        Dimension d = tab.getPreferredSize();
+        d.width = i < gap ? tabWidth + 1 : tabWidth;
+        tab.setPreferredSize(d);
       }
     }
   }

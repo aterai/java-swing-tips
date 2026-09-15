@@ -117,10 +117,12 @@ class ClippedTitleTabbedPane extends JTabbedPane {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        // Distribute the remainder (gap < tabCount) one pixel each to the leading tabs
-        int w = i < gap ? tabWidth + 1 : tabWidth;
         // Each tab needs its own Dimension: setPreferredSize(...) keeps the reference
-        tab.setPreferredSize(new Dimension(w, tab.getPreferredSize().height));
+        // getPreferredSize() returns a copy, so it is safe to modify and set it back
+        Dimension d = tab.getPreferredSize();
+        // Distribute the remainder (gap < tabCount) one pixel each to the leading tabs
+        d.width = i < gap ? tabWidth + 1 : tabWidth;
+        tab.setPreferredSize(d);
       }
     }
   }
