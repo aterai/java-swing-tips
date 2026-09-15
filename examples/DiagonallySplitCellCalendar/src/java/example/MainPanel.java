@@ -179,6 +179,13 @@ class CalendarTable extends JTable {
     }
   }
 
+  @Override public boolean getScrollableTracksViewportHeight() {
+    // Always follow the viewport height so that doLayout (and thus
+    // adjustRowHeights) runs again when the viewport shrinks, e.g. when the
+    // menu bar is added after the frame is packed
+    return getParent() instanceof JViewport;
+  }
+
   @Override public void doLayout() {
     super.doLayout();
     Class<JViewport> clz = JViewport.class;

@@ -5,9 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -44,22 +41,10 @@ public final class MainPanel extends JPanel {
 
   private JScrollPane makeScrollPane(Component comp) {
     return new JScrollPane(comp) {
-      private transient ComponentListener listener;
-
       @Override public void updateUI() {
-        removeComponentListener(listener);
         super.updateUI();
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
         setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-        listener = new ComponentAdapter() {
-          @Override public void componentResized(ComponentEvent e) {
-            Component c = e.getComponent();
-            if (c instanceof JScrollPane) {
-              ((JScrollPane) c).getViewport().getView().revalidate();
-            }
-          }
-        };
-        addComponentListener(listener);
       }
     };
   }
@@ -94,6 +79,12 @@ class AdjustRowHeightTable extends JTable {
     super(model);
   }
 
+  @Override public boolean getScrollableTracksViewportHeight() {
+    // Always follow the viewport height so that doLayout (and thus
+    // adjustRowHeights) runs again whenever the viewport is resized
+    return getParent() instanceof JViewport;
+  }
+
   @Override public void doLayout() {
     super.doLayout();
     Class<JViewport> clz = JViewport.class;
@@ -109,11 +100,10 @@ class AdjustRowHeightTable extends JTable {
     int baseRowHeight = height / rowCount;
     if ((height != prevHeight || rowCount != prevCount) && baseRowHeight > 0) {
       int remainder = height % rowCount;
+      // Distribute the remainder one pixel at a time to the first rows
       for (int i = 0; i < rowCount; i++) {
-        int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
-        // Java 21: int adjustedHeight = rowHeight + Math.clamp(remainder, 0, 1);
+        int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
         setRowHeight(i, Math.max(1, adjustedHeight));
-        remainder -= 1;
       }
     }
     prevHeight = height;

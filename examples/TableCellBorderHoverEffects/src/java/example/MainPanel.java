@@ -108,6 +108,13 @@ public final class MainPanel extends JPanel {
       addMouseMotionListener(listener);
     }
 
+    @Override public boolean getScrollableTracksViewportHeight() {
+      // Always follow the viewport height so that doLayout (and thus
+      // adjustRowHeights) runs again when the viewport shrinks, e.g. when the
+      // menu bar is added after the frame is packed
+      return getParent() instanceof JViewport;
+    }
+
     @Override public void doLayout() {
       super.doLayout();
       Class<JViewport> clz = JViewport.class;
@@ -137,11 +144,10 @@ public final class MainPanel extends JPanel {
       int rowCount = getModel().getRowCount();
       int baseRowHeight = height / rowCount;
       int remainder = height % rowCount;
+      // Distribute the remainder one pixel at a time to the first rows
       for (int i = 0; i < rowCount; i++) {
-        int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
-        // int adjustedHeight = baseRowHeight + Math.clamp(remainder, 0, 1);
+        int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
         setRowHeight(i, Math.max(1, adjustedHeight));
-        remainder -= 1;
       }
     }
 
@@ -175,6 +181,7 @@ public final class MainPanel extends JPanel {
 
   private final class CalendarTableRenderer extends DefaultTableCellRenderer {
     private final JPanel panel = new JPanel(new BorderLayout());
+    private final JLayer<JPanel> layer = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       Component c = super.getTableCellRendererComponent(
@@ -197,15 +204,16 @@ public final class MainPanel extends JPanel {
           sub.setVerticalAlignment(BOTTOM);
           sub.setHorizontalAlignment(RIGHT);
           panel.removeAll();
-          panel.setOpaque(false);
+          // Make the container opaque so that the spotlight gradient shows
+          // through only the intercell spacing, like the other cells
+          panel.setOpaque(true);
+          panel.setBackground(l.getBackground());
           panel.setForeground(getDayOfWeekColor(d.getDayOfWeek()));
           panel.add(sub, BorderLayout.SOUTH);
           panel.add(c, BorderLayout.NORTH);
-          panel.setBorder(l.getBorder());
-          l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
           l.setHorizontalAlignment(LEFT);
           updateCellWeekColor(d, sub);
-          c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+          c = layer;
         }
       }
       return c;

@@ -163,6 +163,10 @@ class MonthTable extends JTable {
     getTableHeader().repaint();
   }
 
+  @Override public boolean getScrollableTracksViewportHeight() {
+    return getParent() instanceof JViewport;
+  }
+
   // Recompute row heights on every layout pass (e.g. window resize) so the
   // table keeps exactly filling its enclosing viewport.
   @Override public void doLayout() {
@@ -184,11 +188,10 @@ class MonthTable extends JTable {
     int baseRowHeight = height / rowCount;
     if (height != prevHeight && baseRowHeight > 0) {
       int remainder = height % rowCount;
+      // Distribute the remainder one pixel at a time to the first rows
       for (int i = 0; i < rowCount; i++) {
-        int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
-        // Java 21: int adjustedHeight = baseRowHeight + Math.clamp(remainder, 0, 1);
+        int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
         setRowHeight(i, Math.max(1, adjustedHeight));
-        remainder -= 1;
       }
     }
     prevHeight = height;

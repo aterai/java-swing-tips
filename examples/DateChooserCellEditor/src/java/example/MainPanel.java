@@ -226,6 +226,10 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
       addMouseMotionListener(highlighter);
     }
 
+    @Override public boolean getScrollableTracksViewportHeight() {
+      return getParent() instanceof JViewport;
+    }
+
     @Override public void doLayout() {
       super.doLayout();
       Class<JViewport> clz = JViewport.class;
@@ -240,11 +244,10 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
       int rowCount = getModel().getRowCount();
       int baseRowHeight = height / rowCount;
       int remainder = height % rowCount;
+      // Distribute the remainder one pixel at a time to the first rows
       for (int i = 0; i < rowCount; i++) {
-        int adjustedHeight = baseRowHeight + Math.min(Math.max(remainder, 0), 1);
-        // Java 21: int adjustedHeight = baseRowHeight + Math.clamp(remainder, 0, 1);
+        int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
         setRowHeight(i, Math.max(1, adjustedHeight));
-        remainder -= 1;
       }
     }
   }
