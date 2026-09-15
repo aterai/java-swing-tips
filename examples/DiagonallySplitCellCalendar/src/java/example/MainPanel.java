@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -81,14 +82,23 @@ public final class MainPanel extends JPanel {
 
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    monthLabel.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
+    monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM")));
     monthTable.setModel(new CalendarViewTableModel(localDate));
-    // EventQueue.invokeLater(monthTable::doLayout);
   }
 
   private final class CalendarTableRenderer extends DefaultTableCellRenderer {
+    private final Border cellBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+    private final JLabel sub = new JLabel();
     private final JPanel panel = new JPanel(new BorderLayout());
+    private final JLayer<JPanel> layer = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+
+    private CalendarTableRenderer() {
+      super();
+      sub.setBorder(cellBorder);
+      sub.setOpaque(false);
+      sub.setVerticalAlignment(BOTTOM);
+      sub.setHorizontalAlignment(RIGHT);
+    }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       Component c = super.getTableCellRendererComponent(
@@ -99,41 +109,33 @@ public final class MainPanel extends JPanel {
         l.setText(Integer.toString(d.getDayOfMonth()));
         l.setVerticalAlignment(TOP);
         l.setHorizontalAlignment(LEFT);
-        updateCellWeekColor(d, table, c, c);
+        updateCellColors(d, table, l, l);
         TableModel model = table.getModel();
         LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days
         boolean isLastRow = row == model.getRowCount() - 1;
-        if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
-          JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
+        if (isLastRow && isCurrentMonth(nextWeekDay)) {
+          sub.setText(Integer.toString(nextWeekDay.getDayOfMonth()));
           sub.setFont(l.getFont());
-          sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-          sub.setOpaque(false);
-          sub.setVerticalAlignment(BOTTOM);
-          sub.setHorizontalAlignment(RIGHT);
-
-          panel.removeAll();
-          panel.add(sub, BorderLayout.SOUTH);
-          panel.add(c, BorderLayout.NORTH);
+          // Move the focus/no-focus border of the label to the panel
           panel.setBorder(l.getBorder());
-          l.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-          updateCellWeekColor(d, table, sub, panel);
-          c = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+          l.setBorder(cellBorder);
+          // The label may have been re-parented to the CellRendererPane
+          panel.removeAll();
+          panel.add(l, BorderLayout.NORTH);
+          panel.add(sub, BorderLayout.SOUTH);
+          updateCellColors(nextWeekDay, table, sub, panel);
+          c = layer;
         }
       }
       return c;
     }
 
-    private boolean isDiagonallySplitCell(LocalDate nextWeekDay) {
-      return YearMonth.from(nextWeekDay).equals(YearMonth.from(getCurrentLocalDate()));
+    private boolean isCurrentMonth(LocalDate d) {
+      return YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
     }
 
-    private void updateCellWeekColor(LocalDate d, JTable table, Component fgc, Component bgc) {
-      if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-        fgc.setForeground(table.getForeground());
-      } else {
-        fgc.setForeground(Color.GRAY);
-      }
+    private void updateCellColors(LocalDate d, JTable table, Component fgc, Component bgc) {
+      fgc.setForeground(isCurrentMonth(d) ? table.getForeground() : Color.GRAY);
       bgc.setBackground(getDayOfWeekColor(table, d.getDayOfWeek()));
     }
 
@@ -170,11 +172,10 @@ class CalendarTable extends JTable {
     int rowCount = getModel().getRowCount();
     int baseRowHeight = height / rowCount;
     int remainder = height % rowCount;
+    // Distribute the remainder one pixel at a time to the first rows
     for (int i = 0; i < rowCount; i++) {
-      int adjustedHeight = baseRowHeight + Math.min(Math.max(0, remainder), 1);
-      // Java 21: int adjustedHeight = baseRowHeight + Math.clamp(remainder, 0, 1);
+      int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
       setRowHeight(i, Math.max(1, adjustedHeight));
-      remainder -= 1;
     }
   }
 
