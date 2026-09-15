@@ -26,7 +26,7 @@ public final class MainPanel extends JPanel {
     tabs.addTab("JTable", new ColorIcon(Color.GREEN), new JScrollPane(new JTable(5, 3)));
     tabs.addTab("JLabel", new ColorIcon(Color.BLUE), new JLabel("text"));
     tabs.addTab("JSplitPane", new ColorIcon(Color.ORANGE), new JSplitPane());
-    add(new JLayer<>(tabs, new TabAreaResizeLayer()));
+    add(new JLayer<>(tabs, new TabAreaResizeLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -61,10 +61,6 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     super(LEFT);
   }
 
-  // protected ClippedTitleTabbedPane(int tabPlacement) {
-  //   super(tabPlacement);
-  // }
-
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
     SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
@@ -76,11 +72,6 @@ class ClippedTitleTabbedPane extends JTabbedPane {
         .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
   }
 
-  private Insets getTabAreaInsets() {
-    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
-        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
-  }
-
   public int getTabAreaWidth() {
     return tabAreaWidth;
   }
@@ -90,24 +81,15 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     // Java 21: int w = Math.clamp(width, MIN_WIDTH, getWidth() - MIN_WIDTH);
     if (tabAreaWidth != w) {
       tabAreaWidth = w;
-      revalidate(); // doLayout();
+      revalidate();
     }
   }
 
   @Override public void doLayout() {
-    int tabCount = getTabCount();
-    if (tabCount > 0 && isVisible()) {
-      Insets tabAreaIns = getTabAreaInsets();
-      Insets i = getInsets();
-      int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
-      int tabPlacement = getTabPlacement();
-      boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
-      int tabWidth = isTopBottom ? areaWidth / tabCount : getTabAreaWidth();
-      int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
-      Insets tabIns = getTabInsets();
+    if (getTabCount() > 0 && isVisible()) {
+      Insets tabInsets = getTabInsets();
       // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
-      tabWidth -= tabIns.left + tabIns.right + 3;
-      updateAllTabWidth(tabWidth, gap);
+      updateAllTabWidths(tabAreaWidth - tabInsets.left - tabInsets.right - 3);
     }
     super.doLayout();
   }
@@ -117,25 +99,22 @@ class ClippedTitleTabbedPane extends JTabbedPane {
     setTabComponentAt(index, new JLabel(title, icon, LEADING));
   }
 
-  private void updateAllTabWidth(int tabWidth, int gap) {
-    Dimension dim = new Dimension();
-    int rest = gap;
-    int tabCount = getTabCount();
-    for (int i = 0; i < tabCount; i++) {
+  private void updateAllTabWidths(int tabWidth) {
+    for (int i = 0; i < getTabCount(); i++) {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = i == tabCount - 1 ? rest : 1;
-        int w = rest > 0 ? tabWidth + a : tabWidth;
-        dim.setSize(w, tab.getPreferredSize().height);
-        tab.setPreferredSize(dim);
-        rest -= a;
+        // getPreferredSize() returns a copy, so it is safe to modify and set it back
+        Dimension d = tab.getPreferredSize();
+        d.width = tabWidth;
+        tab.setPreferredSize(d);
       }
     }
   }
 }
 
-class TabAreaResizeLayer extends LayerUI<ClippedTitleTabbedPane> {
+class TabAreaResizeLayerUI extends LayerUI<ClippedTitleTabbedPane> {
+  private static final int DIVIDER_SIZE = 4;
   private int offset;
   private boolean resizing;
 
@@ -157,60 +136,68 @@ class TabAreaResizeLayer extends LayerUI<ClippedTitleTabbedPane> {
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends ClippedTitleTabbedPane> l) {
     ClippedTitleTabbedPane tabbedPane = l.getView();
     if (e.getID() == MouseEvent.MOUSE_PRESSED) {
-      Rectangle rect = getDividerBounds(tabbedPane);
-      Point pt = e.getPoint();
-      SwingUtilities.convertPoint(e.getComponent(), pt, tabbedPane);
-      if (rect.contains(pt)) {
+      // The event source may be a child of the JTabbedPane,
+      // so convert the point to the JTabbedPane coordinates
+      Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), tabbedPane);
+      if (getDividerBounds(tabbedPane).contains(pt)) {
         offset = pt.x - tabbedPane.getTabAreaWidth();
         tabbedPane.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
         resizing = true;
         e.consume();
       }
     } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
-      tabbedPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+      tabbedPane.setCursor(Cursor.getDefaultCursor());
       resizing = false;
     }
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends ClippedTitleTabbedPane> l) {
     ClippedTitleTabbedPane tabbedPane = l.getView();
-    Point pt = e.getPoint();
-    SwingUtilities.convertPoint(e.getComponent(), pt, tabbedPane);
+    Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), tabbedPane);
     if (e.getID() == MouseEvent.MOUSE_MOVED) {
-      Rectangle r = getDividerBounds(tabbedPane);
-      tabbedPane.setCursor(Cursor.getPredefinedCursor(
-          r.contains(pt) ? Cursor.W_RESIZE_CURSOR : Cursor.DEFAULT_CURSOR));
+      boolean onDivider = getDividerBounds(tabbedPane).contains(pt);
+      tabbedPane.setCursor(onDivider
+          ? Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR)
+          : Cursor.getDefaultCursor());
     } else if (e.getID() == MouseEvent.MOUSE_DRAGGED && resizing) {
       tabbedPane.setTabAreaWidth(pt.x - offset);
       e.consume();
     }
   }
 
+  // Returns the draggable border between the tab area and the selected
+  // component in the JTabbedPane coordinates (tab placement: LEFT only)
   private static Rectangle getDividerBounds(ClippedTitleTabbedPane tabbedPane) {
-    Dimension dividerSize = new Dimension(4, 4);
-    Rectangle bounds = tabbedPane.getBounds();
-    Rectangle compRect = Optional.ofNullable(tabbedPane.getSelectedComponent())
-        .map(Component::getBounds).orElseGet(Rectangle::new);
-    switch (tabbedPane.getTabPlacement()) {
-      case SwingConstants.LEFT:
-        bounds.x = compRect.x - dividerSize.width;
-        bounds.width = dividerSize.width * 2;
-        break;
-      case SwingConstants.RIGHT:
-        bounds.x += compRect.x + compRect.width - dividerSize.width;
-        bounds.width = dividerSize.width * 2;
-        break;
-      case SwingConstants.BOTTOM:
-        bounds.y += compRect.y + compRect.height - dividerSize.height;
-        bounds.height = dividerSize.height * 2;
-        break;
-      default: // case SwingConstants.TOP:
-        bounds.y = compRect.y - dividerSize.height;
-        bounds.height = dividerSize.height * 2;
-        break;
-    }
-    return bounds;
+    int x = Optional.ofNullable(tabbedPane.getSelectedComponent())
+        .map(Component::getX).orElse(0);
+    return new Rectangle(x - DIVIDER_SIZE, 0, DIVIDER_SIZE * 2, tabbedPane.getHeight());
   }
+
+  // private static Rectangle getDividerBounds(ClippedTitleTabbedPane tabbedPane) {
+  //   Dimension dividerSize = new Dimension(4, 4);
+  //   Rectangle bounds = tabbedPane.getBounds();
+  //   Rectangle compRect = Optional.ofNullable(tabbedPane.getSelectedComponent())
+  //       .map(Component::getBounds).orElseGet(Rectangle::new);
+  //   switch (tabbedPane.getTabPlacement()) {
+  //     case SwingConstants.LEFT:
+  //       bounds.x = compRect.x - dividerSize.width;
+  //       bounds.width = dividerSize.width * 2;
+  //       break;
+  //     case SwingConstants.RIGHT:
+  //       bounds.x += compRect.x + compRect.width - dividerSize.width;
+  //       bounds.width = dividerSize.width * 2;
+  //       break;
+  //     case SwingConstants.BOTTOM:
+  //       bounds.y += compRect.y + compRect.height - dividerSize.height;
+  //       bounds.height = dividerSize.height * 2;
+  //       break;
+  //     default: // case SwingConstants.TOP:
+  //       bounds.y = compRect.y - dividerSize.height;
+  //       bounds.height = dividerSize.height * 2;
+  //       break;
+  //   }
+  //   return bounds;
+  // }
 }
 
 class ColorIcon implements Icon {
