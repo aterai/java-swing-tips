@@ -13,8 +13,10 @@ import java.awt.geom.Path2D;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -24,7 +26,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
     add(new DigitalClock());
-    add(new HelpPanel());
+    add(new SegmentLegendPanel());
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -79,15 +81,15 @@ class DigitalClock extends JPanel {
     h2 = new DigitalNumber(x, y, SIZE);
     x += r.width;
     double sz = SIZE * 1.5d;
-    dot1 = new Ellipse2D.Double(x, (float) r.getCenterY() - gap, sz, sz);
-    dot2 = new Ellipse2D.Double(x, (float) r.getCenterY() + gap, sz, sz);
+    dot1 = new Ellipse2D.Double(x, r.getCenterY() - gap, sz, sz);
+    dot2 = new Ellipse2D.Double(x, r.getCenterY() + gap, sz, sz);
     x += sz + gap;
     m1 = new DigitalNumber(x, y, SIZE);
     x += r.width + gap;
     m2 = new DigitalNumber(x, y, SIZE);
     x += r.width + gap;
     double hs = SIZE / 2d;
-    double y2 = y + h1.getBounds().height / 4d;
+    double y2 = y + r.height / 4d;
     s1 = new DigitalNumber(x, y2, hs);
     x += s1.getBounds().width + gap / 2d;
     s2 = new DigitalNumber(x, y2, hs);
@@ -106,52 +108,45 @@ class DigitalClock extends JPanel {
       }
     };
     addHierarchyListener(listener);
-    setBackground(DigitalNumber.BGC);
+    setBackground(DigitalNumber.BACKGROUND);
   }
 
   private void updateTime() {
     int ten = 10;
     LocalTime time = LocalTime.now(ZoneId.systemDefault());
-    // set Hours
     int hours = time.getHour();
     if (hours < ten) {
-      h1.turnOffNumber();
-      h2.setNumber(hours);
+      h1.turnOff(); // suppress the leading zero
     } else {
-      int dh = hours / ten;
-      h1.setNumber(dh);
-      h2.setNumber(hours - dh * ten);
+      h1.setNumber(hours / ten);
     }
-    // set Minutes
+    h2.setNumber(hours % ten);
     int minutes = time.getMinute();
-    int dm = minutes / ten;
-    m1.setNumber(dm);
-    m2.setNumber(minutes - dm * ten);
-
-    // set Seconds
+    m1.setNumber(minutes / ten);
+    m2.setNumber(minutes % ten);
     int seconds = time.getSecond();
-    int ds = seconds / ten;
-    s1.setNumber(ds);
-    s2.setNumber(seconds - ds * ten);
+    s1.setNumber(seconds / ten);
+    s2.setNumber(seconds % ten);
   }
 
   @Override public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setStroke(new BasicStroke(3f));
     g2.shear(-.1, 0d);
-    double sv = getWidth() / (h1.getBounds().width * 8d);
-    g2.scale(sv, sv);
-    h1.drawNumber(g2);
-    h2.drawNumber(g2);
+    double scale = getWidth() / (h1.getBounds().width * 8d);
+    g2.scale(scale, scale);
+    h1.draw(g2);
+    h2.draw(g2);
     g2.setColor(pulse ? DigitalNumber.ON : DigitalNumber.OFF);
     g2.fill(dot1);
     g2.fill(dot2);
-    m1.drawNumber(g2);
-    m2.drawNumber(g2);
-    s1.drawNumber(g2);
-    s2.drawNumber(g2);
+    m1.draw(g2);
+    m2.draw(g2);
+    s1.draw(g2);
+    s2.draw(g2);
     g2.dispose();
   }
 }
@@ -159,168 +154,177 @@ class DigitalClock extends JPanel {
 class DigitalNumber {
   public static final Color OFF = new Color(0xCC_CC_CC);
   public static final Color ON = Color.DARK_GRAY;
-  public static final Color BGC = Color.LIGHT_GRAY;
-  private final double isosceles;
-  private final double dx;
-  private final double dy;
-  private final double width;
-  private final double height;
-  private final Rectangle rect = new Rectangle();
-  private final List<Set<Seg>> numbers = Arrays.asList(
-      EnumSet.of(Seg.A, Seg.B, Seg.C, Seg.D, Seg.E, Seg.F),
-      EnumSet.of(Seg.B, Seg.C),
-      EnumSet.of(Seg.A, Seg.B, Seg.D, Seg.E, Seg.G),
-      EnumSet.of(Seg.A, Seg.B, Seg.C, Seg.D, Seg.G),
-      EnumSet.of(Seg.B, Seg.C, Seg.F, Seg.G),
-      EnumSet.of(Seg.A, Seg.C, Seg.D, Seg.F, Seg.G),
-      EnumSet.of(Seg.A, Seg.C, Seg.D, Seg.E, Seg.F, Seg.G),
-      EnumSet.of(Seg.A, Seg.B, Seg.C),
-      EnumSet.of(Seg.A, Seg.B, Seg.C, Seg.D, Seg.E, Seg.F, Seg.G),
-      EnumSet.of(Seg.A, Seg.B, Seg.C, Seg.D, Seg.F, Seg.G));
-  private Set<Seg> led = EnumSet.noneOf(Seg.class);
+  public static final Color BACKGROUND = Color.LIGHT_GRAY;
+  private static final List<Set<Segment>> NUMBERS = Arrays.asList(
+      EnumSet.of(Segment.A, Segment.B, Segment.C, Segment.D, Segment.E, Segment.F),
+      EnumSet.of(Segment.B, Segment.C),
+      EnumSet.of(Segment.A, Segment.B, Segment.D, Segment.E, Segment.G),
+      EnumSet.of(Segment.A, Segment.B, Segment.C, Segment.D, Segment.G),
+      EnumSet.of(Segment.B, Segment.C, Segment.F, Segment.G),
+      EnumSet.of(Segment.A, Segment.C, Segment.D, Segment.F, Segment.G),
+      EnumSet.of(Segment.A, Segment.C, Segment.D, Segment.E, Segment.F, Segment.G),
+      EnumSet.of(Segment.A, Segment.B, Segment.C),
+      EnumSet.allOf(Segment.class),
+      EnumSet.of(Segment.A, Segment.B, Segment.C, Segment.D, Segment.F, Segment.G));
+  @SuppressWarnings("PMD.UseConcurrentHashMap")
+  private final Map<Segment, Shape> segments = new EnumMap<>(Segment.class);
+  private final Rectangle bounds;
+  private Set<Segment> lit = EnumSet.noneOf(Segment.class);
 
-  protected DigitalNumber(double dx, double dy, double isosceles) {
-    this.isosceles = isosceles;
-    this.dx = dx;
-    this.dy = dy;
-    this.width = 2d * isosceles;
-    this.height = width + isosceles;
-    rect.setLocation((int) (dx - isosceles), (int) (dy - height * 2d));
-    rect.setSize((int) (width + 4d * isosceles), (int) (height * 4d));
+  protected DigitalNumber(double x, double y, double isosceles) {
+    double width = 2d * isosceles;
+    double height = width + isosceles;
+    for (Segment s : Segment.values()) {
+      segments.put(s, s.getShape(x, y, width, height, isosceles));
+    }
+    bounds = segments.values().stream()
+        .map(Shape::getBounds)
+        .reduce(Rectangle::union)
+        .orElseGet(Rectangle::new);
   }
 
   public Rectangle getBounds() {
-    return rect;
+    return bounds;
   }
 
-  public void setNumber(int num) {
-    led = numbers.get(num);
+  public void setNumber(int number) {
+    lit = NUMBERS.get(number);
   }
 
-  public void turnOffNumber() {
-    led.clear();
+  public void turnOff() {
+    lit = EnumSet.noneOf(Segment.class);
   }
 
-  public void drawNumber(Graphics2D g2) {
-    EnumSet.allOf(Seg.class).forEach(s -> {
-      g2.setColor(led.contains(s) ? ON : OFF);
-      Shape seg = s.getShape(dx, dy, width, height, isosceles);
-      g2.fill(seg);
-      g2.setColor(BGC);
-      g2.draw(seg);
-      // g2.setColor(Color.RED);
-      // g2.draw(rect);
+  public void draw(Graphics2D g2) {
+    segments.forEach((segment, shape) -> {
+      g2.setColor(lit.contains(segment) ? ON : OFF);
+      g2.fill(shape);
+      g2.setColor(BACKGROUND);
+      g2.draw(shape);
     });
   }
 }
 
-enum Seg {
-  A() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
-      AffineTransform at = AffineTransform.getTranslateInstance(x, y - h - i * 2);
-      return at.createTransformedShape(horiz2(w, i));
+enum Segment {
+  A {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
+      AffineTransform at = AffineTransform.getTranslateInstance(x, y - h - isosceles * 2d);
+      return at.createTransformedShape(createTrapezoid(w, isosceles));
     }
   },
-  B() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
-      AffineTransform at = AffineTransform.getTranslateInstance(x + w + i * 2, y);
-      at.scale(-1, 1);
-      return at.createTransformedShape(vert(h, i));
+  B {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
+      AffineTransform at = AffineTransform.getTranslateInstance(x + w + isosceles * 2d, y);
+      at.scale(-1d, 1d);
+      return at.createTransformedShape(createPentagon(h, isosceles));
     }
   },
-  C() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
-      AffineTransform at = AffineTransform.getTranslateInstance(x + w + i * 2, y);
-      at.scale(-1, -1);
-      return at.createTransformedShape(vert(h, i));
+  C {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
+      AffineTransform at = AffineTransform.getTranslateInstance(x + w + isosceles * 2d, y);
+      at.scale(-1d, -1d);
+      return at.createTransformedShape(createPentagon(h, isosceles));
     }
   },
-  D() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
-      AffineTransform at = AffineTransform.getTranslateInstance(x, y + h + i * 2);
-      at.scale(1, -1);
-      return at.createTransformedShape(horiz2(w, i));
+  D {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
+      AffineTransform at = AffineTransform.getTranslateInstance(x, y + h + isosceles * 2d);
+      at.scale(1d, -1d);
+      return at.createTransformedShape(createTrapezoid(w, isosceles));
     }
   },
-  E() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
+  E {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
       AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-      at.scale(1, -1);
-      return at.createTransformedShape(vert(h, i));
+      at.scale(1d, -1d);
+      return at.createTransformedShape(createPentagon(h, isosceles));
     }
   },
-  F() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
+  F {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
       AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-      return at.createTransformedShape(vert(h, i));
+      return at.createTransformedShape(createPentagon(h, isosceles));
     }
   },
-  G() {
-    @Override public Shape getShape(double x, double y, double w, double h, double i) {
+  G {
+    @Override public Shape getShape(
+        double x, double y, double w, double h, double isosceles) {
       AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-      return at.createTransformedShape(horiz1(w, i));
+      return at.createTransformedShape(createHexagon(w, isosceles));
     }
   };
 
-  public abstract Shape getShape(double x, double y, double w, double h, double i);
+  public abstract Shape getShape(
+      double x, double y, double w, double h, double isosceles);
 
-  private static Path2D vert(double height, double isosceles) {
+  // Vertical segment (F): the origin is the bottom vertex
+  private static Path2D createPentagon(double height, double isosceles) {
     Path2D path = new Path2D.Double();
     path.moveTo(0d, 0d);
     path.lineTo(isosceles, -isosceles);
     path.lineTo(isosceles, -isosceles - height);
-    path.lineTo(-isosceles, -isosceles - height - isosceles * 2);
+    path.lineTo(-isosceles, -isosceles - height - isosceles * 2d);
     path.lineTo(-isosceles, -isosceles);
     path.closePath();
     return path;
   }
 
-  private static Path2D horiz1(double width, double isosceles) {
+  // Middle segment (G): the origin is the left vertex
+  private static Path2D createHexagon(double width, double isosceles) {
     Path2D path = new Path2D.Double();
-    path.moveTo(0, 0);
+    path.moveTo(0d, 0d);
     path.lineTo(isosceles, isosceles);
     path.lineTo(isosceles + width, isosceles);
-    path.lineTo(isosceles + width + isosceles, 0);
+    path.lineTo(isosceles + width + isosceles, 0d);
     path.lineTo(isosceles + width, -isosceles);
     path.lineTo(isosceles, -isosceles);
     path.closePath();
     return path;
   }
 
-  private static Path2D horiz2(double width, double isosceles) {
+  // Top segment (A): the origin is the midpoint of the left edge
+  private static Path2D createTrapezoid(double width, double isosceles) {
     Path2D path = new Path2D.Double();
     path.moveTo(isosceles, isosceles);
     path.lineTo(isosceles + width, isosceles);
-    path.lineTo(3 * isosceles + width, -isosceles);
+    path.lineTo(3d * isosceles + width, -isosceles);
     path.lineTo(-isosceles, -isosceles);
     path.closePath();
     return path;
   }
 }
 
-class HelpPanel extends JPanel {
+class SegmentLegendPanel extends JPanel {
   private static final double SIZE = 16d;
-  private final transient DigitalNumber help = new DigitalNumber(SIZE * 3d, SIZE * 8d, SIZE);
+  private final transient DigitalNumber digit = new DigitalNumber(
+      SIZE * 3d, SIZE * 8d, SIZE);
 
-  protected HelpPanel() {
+  protected SegmentLegendPanel() {
     super();
-    help.setNumber(8);
+    digit.setNumber(8);
   }
 
   @Override public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setStroke(new BasicStroke(3f));
     g2.shear(-.1, 0d);
-    double sv = getWidth() / (help.getBounds().width * 8d);
-    g2.scale(sv, sv);
-    help.drawNumber(g2);
+    Rectangle r = digit.getBounds();
+    double scale = getWidth() / (r.width * 8d);
+    g2.scale(scale, scale);
+    digit.draw(g2);
     g2.setPaint(Color.RED);
     g2.setFont(getFont().deriveFont(32f));
-    Rectangle r = help.getBounds();
-    float fw = help.getBounds().width;
-    float fh = help.getBounds().height;
+    float fw = r.width;
+    float fh = r.height;
     g2.drawString("A", r.x + fw * .5f, r.y);
     g2.drawString("B", r.x + fw * .75f, r.y + fh * .25f);
     g2.drawString("C", r.x + fw * .75f, r.y + fh * .75f);
