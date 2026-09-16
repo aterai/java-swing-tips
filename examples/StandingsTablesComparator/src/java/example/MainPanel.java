@@ -25,22 +25,22 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTable table = new StandingsTable(createModel());
     table.setDefaultRenderer(RowData.class, createRenderer());
+    table.setAutoCreateRowSorter(true);
     RowSorter<? extends TableModel> sorter = table.getRowSorter();
     if (sorter instanceof TableRowSorter) {
       TableRowSorter<? extends TableModel> rs = (TableRowSorter<? extends TableModel>) sorter;
-      rs.setComparator(0, Comparator.comparing(RowData::getPosition));
+      rs.setComparator(0, Comparator.comparingInt(RowData::getPosition));
       rs.setComparator(1, Comparator.comparing(RowData::getTeam));
-      rs.setComparator(2, Comparator.comparing(RowData::getMatches));
-      rs.setComparator(3, Comparator.comparing(RowData::getWins));
-      rs.setComparator(4, Comparator.comparing(RowData::getDraws));
-      rs.setComparator(5, Comparator.comparing(RowData::getLosses));
-      rs.setComparator(6, Comparator.comparing(RowData::getGoalsFor));
-      rs.setComparator(7, Comparator.comparing(RowData::getGoalsAgainst));
-      rs.setComparator(8, Comparator.comparing(RowData::getGoalDifference));
-      rs.setComparator(9, Comparator.comparing(RowData::getPoints)
-          .thenComparing(RowData::getGoalDifference));
+      rs.setComparator(2, Comparator.comparingInt(RowData::getMatches));
+      rs.setComparator(3, Comparator.comparingInt(RowData::getWins));
+      rs.setComparator(4, Comparator.comparingInt(RowData::getDraws));
+      rs.setComparator(5, Comparator.comparingInt(RowData::getLosses));
+      rs.setComparator(6, Comparator.comparingInt(RowData::getGoalsFor));
+      rs.setComparator(7, Comparator.comparingInt(RowData::getGoalsAgainst));
+      rs.setComparator(8, Comparator.comparingInt(RowData::getGoalDifference));
+      rs.setComparator(9, Comparator.comparingInt(RowData::getPoints)
+          .thenComparingInt(RowData::getGoalDifference));
     }
-    // add(new JLayer<>(new JScrollPane(table), new BorderPaintLayerUI()));
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -54,7 +54,7 @@ public final class MainPanel extends JPanel {
           JLabel l = (JLabel) c;
           int col = table.convertColumnIndexToModel(column);
           l.setHorizontalAlignment(col == 1 ? LEADING : CENTER);
-          l.setText(((RowData) value).toString(col));
+          l.setText(((RowData) value).getColumnText(col));
         }
         return c;
       }
@@ -94,7 +94,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static void addRow(DefaultTableModel model, RowData data) {
-    model.addRow(Collections.nCopies(10, data).toArray());
+    model.addRow(Collections.nCopies(model.getColumnCount(), data).toArray());
   }
 
   public static void main(String[] args) {
@@ -120,37 +120,44 @@ public final class MainPanel extends JPanel {
 }
 
 class StandingsTable extends JTable {
+  private static final Color PROMOTION = new Color(0xCF_F3_C0);
+  private static final Color PROMOTION_PLAYOFF = new Color(0xCB_F7_F5);
+  private static final Color RELEGATION = new Color(0xFB_DC_DC);
+  private static final Color ODD_ROW = new Color(0xF0_F0_F0);
+
   protected StandingsTable(TableModel model) {
     super(model);
   }
 
-  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+  @Override public Component prepareRenderer(
+      TableCellRenderer renderer, int row, int column) {
     Component c = super.prepareRenderer(renderer, row, column);
-    boolean isSelected = isRowSelected(row);
-    if (!isSelected) {
-      TableModel model = getModel();
-      RowData data = (RowData) model.getValueAt(convertRowIndexToModel(row), 0);
-      int num = data.getPosition();
-      boolean promotion = num <= 2;
-      boolean promotionPlayOff = num <= 6;
-      boolean relegation = num >= 21;
-      if (promotion) {
-        c.setBackground(new Color(0xCF_F3_C0));
-      } else if (promotionPlayOff) {
-        c.setBackground(new Color(0xCB_F7_F5));
-      } else if (relegation) {
-        c.setBackground(new Color(0xFB_DC_DC));
-      } else if (row % 2 == 0) {
-        c.setBackground(Color.WHITE);
-      } else {
-        c.setBackground(new Color(0xF0_F0_F0));
-      }
+    if (!isRowSelected(row)) {
+      // every cell in a row holds the same RowData, so no column conversion is needed
+      RowData data = (RowData) getValueAt(row, column);
+      c.setBackground(getRowBackground(data.getPosition(), row));
     }
     c.setForeground(Color.BLACK);
-    if (c instanceof JLabel && column != 1) {
-      ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
-    }
     return c;
+  }
+
+  private static Color getRowBackground(int position, int row) {
+    boolean promotion = position <= 2;
+    boolean promotionPlayoff = position <= 6;
+    boolean relegation = position >= 21;
+    Color color;
+    if (promotion) {
+      color = PROMOTION;
+    } else if (promotionPlayoff) {
+      color = PROMOTION_PLAYOFF;
+    } else if (relegation) {
+      color = RELEGATION;
+    } else if (row % 2 == 0) {
+      color = Color.WHITE;
+    } else {
+      color = ODD_ROW;
+    }
+    return color;
   }
 
   @Override public boolean isCellEditable(int row, int column) {
@@ -165,7 +172,6 @@ class StandingsTable extends JTable {
     setIntercellSpacing(new Dimension());
     setSelectionForeground(getForeground());
     setSelectionBackground(new Color(0x32_00_00_64, true));
-    setAutoCreateRowSorter(true);
     setFocusable(false);
     initTableHeader(this);
   }
@@ -178,8 +184,8 @@ class StandingsTable extends JTable {
     }
     TableColumnModel columnModel = table.getColumnModel();
     for (int i = 0; i < columnModel.getColumnCount(); i++) {
-      boolean isNotTeam = i != 1;
-      if (isNotTeam) {
+      boolean isTeamColumn = i == 1;
+      if (!isTeamColumn) {
         columnModel.getColumn(i).setMaxWidth(26);
       }
     }
@@ -221,14 +227,14 @@ class RowData {
       String team,
       int wins,
       int draws,
-      int looses,
+      int losses,
       int goalsFor,
       int goalsAgainst) {
     this.position = position;
     this.team = team;
     this.wins = wins;
     this.draws = draws;
-    this.losses = looses;
+    this.losses = losses;
     this.goalsFor = goalsFor;
     this.goalsAgainst = goalsAgainst;
   }
@@ -273,14 +279,10 @@ class RowData {
     return wins * 3 + draws;
   }
 
-  public String toString(int column) {
-    String txt;
-    if (column >= 0 && column < COLUMN_CONVERTERS.size()) {
-      txt = COLUMN_CONVERTERS.get(column).apply(this);
-    } else {
-      txt = Integer.toString(getPoints());
-    }
-    return txt;
+  public String getColumnText(int column) {
+    return column >= 0 && column < COLUMN_CONVERTERS.size()
+        ? COLUMN_CONVERTERS.get(column).apply(this)
+        : "";
   }
 }
 
@@ -321,13 +323,9 @@ class RowData {
 //     return wins * 3 + draws;
 //   }
 //
-//   public String toString(int column) {
-//     String txt;
-//     if (column >= 0 && column < COLUMN_CONVERTERS.size()) {
-//       txt = COLUMN_CONVERTERS.get(column).apply(this);
-//     } else {
-//       txt = Integer.toString(getPoints());
-//     }
-//     return txt;
+//   public String getColumnText(int column) {
+//     return column >= 0 && column < COLUMN_CONVERTERS.size()
+//         ? COLUMN_CONVERTERS.get(column).apply(this)
+//         : "";
 //   }
 // }

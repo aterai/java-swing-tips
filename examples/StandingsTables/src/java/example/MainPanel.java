@@ -6,8 +6,9 @@ package example;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
@@ -23,6 +24,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new StandingsTable(createModel());
+    table.setAutoCreateRowSorter(true);
     add(new JLayer<>(new JScrollPane(table), new BorderPaintLayerUI()));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -83,36 +85,49 @@ public final class MainPanel extends JPanel {
 }
 
 class StandingsTable extends JTable {
+  private static final Color PROMOTION = new Color(0xCF_F3_C0);
+  private static final Color PROMOTION_PLAYOFF = new Color(0xCB_F7_F5);
+  private static final Color RELEGATION = new Color(0xFB_DC_DC);
+  private static final Color ODD_ROW = new Color(0xF0_F0_F0);
+
   protected StandingsTable(TableModel model) {
     super(model);
   }
 
-  @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+  @Override public Component prepareRenderer(
+      TableCellRenderer renderer, int row, int column) {
     Component c = super.prepareRenderer(renderer, row, column);
-    int promotion = 2;
-    int playoffs = 6;
-    int relegation = 21;
-    boolean isSelected = isRowSelected(row);
-    if (!isSelected) {
-      TableModel model = getModel();
-      Integer num = (Integer) model.getValueAt(convertRowIndexToModel(row), 0);
-      if (num <= promotion) {
-        c.setBackground(new Color(0xCF_F3_C0));
-      } else if (num <= playoffs) {
-        c.setBackground(new Color(0xCB_F7_F5));
-      } else if (num >= relegation) {
-        c.setBackground(new Color(0xFB_DC_DC));
-      } else if (row % 2 == 0) {
-        c.setBackground(Color.WHITE);
-      } else {
-        c.setBackground(new Color(0xF0_F0_F0));
-      }
+    if (!isRowSelected(row)) {
+      Object position = getModel().getValueAt(convertRowIndexToModel(row), 0);
+      c.setBackground(getRowBackground((Integer) position, row));
     }
     c.setForeground(Color.BLACK);
-    if (c instanceof JLabel && column != 1) {
-      ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+    // use the model index so that the alignment survives column reordering
+    boolean isTeamColumn = convertColumnIndexToModel(column) == 1;
+    if (c instanceof JLabel) {
+      ((JLabel) c).setHorizontalAlignment(
+          isTeamColumn ? SwingConstants.LEADING : SwingConstants.CENTER);
     }
     return c;
+  }
+
+  private static Color getRowBackground(int position, int row) {
+    boolean promotion = position <= 2;
+    boolean promotionPlayoff = position <= 6;
+    boolean relegation = position >= 21;
+    Color color;
+    if (promotion) {
+      color = PROMOTION;
+    } else if (promotionPlayoff) {
+      color = PROMOTION_PLAYOFF;
+    } else if (relegation) {
+      color = RELEGATION;
+    } else if (row % 2 == 0) {
+      color = Color.WHITE;
+    } else {
+      color = ODD_ROW;
+    }
+    return color;
   }
 
   @Override public boolean isCellEditable(int row, int column) {
@@ -127,12 +142,11 @@ class StandingsTable extends JTable {
     setIntercellSpacing(new Dimension());
     setSelectionForeground(getForeground());
     setSelectionBackground(new Color(0x32_00_00_64, true));
-    setAutoCreateRowSorter(true);
     setFocusable(false);
-    initTableHeader(this);
+    initTableColumns(this);
   }
 
-  private static void initTableHeader(JTable table) {
+  private static void initTableColumns(JTable table) {
     JTableHeader header = table.getTableHeader();
     TableCellRenderer renderer = header.getDefaultRenderer();
     if (renderer instanceof JLabel) {
@@ -142,11 +156,10 @@ class StandingsTable extends JTable {
     IntStream.range(0, columnModel.getColumnCount())
         .filter(i -> i != 1)
         .forEach(i -> columnModel.getColumn(i).setMaxWidth(26));
+    // goal difference: prefix positive values with "+"
     columnModel.getColumn(8).setCellRenderer(new DefaultTableCellRenderer() {
       @Override public Component getTableCellRendererComponent(JTable tbl, Object value, boolean selected, boolean hasFocus, int row, int col) {
-        String v = Objects.toString(value);
-        String txt = v.startsWith("-") || "0".equals(v) ? v : "+" + v;
-        setHorizontalAlignment(RIGHT);
+        Object txt = value instanceof Integer && (Integer) value > 0 ? "+" + value : value;
         return super.getTableCellRendererComponent(tbl, txt, selected, hasFocus, row, col);
       }
     });
@@ -154,55 +167,89 @@ class StandingsTable extends JTable {
 }
 
 class BorderPaintLayerUI extends LayerUI<JScrollPane> {
+  private static final int POSITION_COLUMN = 0;
+  private static final int POINTS_COLUMN = 9;
+
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    JTable table = getTable(c);
-    RowSorter<? extends TableModel> sorter = table == null ? null : table.getRowSorter();
-    if (Objects.nonNull(sorter)) {
-      List<? extends RowSorter.SortKey> keys = sorter.getSortKeys();
-      int column = keys.isEmpty() ? -1 : keys.get(0).getColumn();
-      if (column <= 0 || column == 9) {
-        boolean b1 = column == 0 && keys.get(0).getSortOrder() == SortOrder.ASCENDING;
-        boolean b2 = column == 9 && keys.get(0).getSortOrder() == SortOrder.DESCENDING;
-        paintLines(g, c, table, column < 0 || b1 || b2);
+    getTable(c).ifPresent(table -> {
+      List<? extends RowSorter.SortKey> keys = getSortKeys(table);
+      if (keys.isEmpty() || isStandingsOrder(keys.get(0))) {
+        paintLines(g, c, table, true);
+      } else if (isReversedStandingsOrder(keys.get(0))) {
+        paintLines(g, c, table, false);
       }
-    }
+    });
   }
 
-  private static void paintLines(Graphics g, Component layer, JTable table, boolean b) {
+  private static List<? extends RowSorter.SortKey> getSortKeys(JTable table) {
+    RowSorter<? extends TableModel> sorter = table.getRowSorter();
+    return sorter == null ? Collections.emptyList() : sorter.getSortKeys();
+  }
+
+  // rows are ordered from first to last place
+  private static boolean isStandingsOrder(RowSorter.SortKey key) {
+    int column = key.getColumn();
+    SortOrder order = key.getSortOrder();
+    return column == POSITION_COLUMN && order == SortOrder.ASCENDING
+        || column == POINTS_COLUMN && order == SortOrder.DESCENDING;
+  }
+
+  // rows are ordered from last to first place
+  private static boolean isReversedStandingsOrder(RowSorter.SortKey key) {
+    int column = key.getColumn();
+    SortOrder order = key.getSortOrder();
+    return column == POSITION_COLUMN && order == SortOrder.DESCENDING
+        || column == POINTS_COLUMN && order == SortOrder.ASCENDING;
+  }
+
+  private static void paintLines(
+      Graphics g, Component layer, JTable table, boolean ascending) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setPaint(Color.GREEN.darker());
-    if (b) {
-      g2.draw(createUnderline(layer, table, 2));
-      g2.setPaint(Color.BLUE.darker());
-      g2.draw(createUnderline(layer, table, 6));
-      g2.setPaint(Color.RED.darker());
-      g2.draw(createUnderline(layer, table, 20));
-    } else {
-      g2.draw(createUnderline(layer, table, 22 - 2));
-      g2.setPaint(Color.BLUE.darker());
-      g2.draw(createUnderline(layer, table, 22 - 6));
-      g2.setPaint(Color.RED.darker());
-      g2.draw(createUnderline(layer, table, 22 - 20));
+    for (Boundary b : Boundary.values()) {
+      g2.setPaint(b.getColor());
+      g2.draw(createUnderline(layer, table, b.getViewRow(table.getRowCount(), ascending)));
     }
     g2.dispose();
   }
 
-  private static JTable getTable(Component c) {
-    JTable table = null;
-    if (c instanceof JLayer) {
-      Component c1 = ((JLayer<?>) c).getView();
-      if (c1 instanceof JScrollPane) {
-        table = (JTable) ((JScrollPane) c1).getViewport().getView();
-      }
-    }
-    return table;
+  private static Optional<JTable> getTable(Component c) {
+    return Optional.of(c)
+        .filter(JLayer.class::isInstance)
+        .map(layer -> ((JLayer<?>) layer).getView())
+        .filter(JScrollPane.class::isInstance)
+        .map(scroll -> ((JScrollPane) scroll).getViewport().getView())
+        .filter(JTable.class::isInstance)
+        .map(JTable.class::cast);
   }
 
-  private static Line2D createUnderline(Component c, JTable table, int idx) {
-    Rectangle r0 = table.getCellRect(idx - 1, 0, false);
-    Rectangle r1 = table.getCellRect(idx - 1, table.getColumnCount() - 1, false);
+  private static Line2D createUnderline(Component c, JTable table, int row) {
+    Rectangle r0 = table.getCellRect(row, 0, false);
+    Rectangle r1 = table.getCellRect(row, table.getColumnCount() - 1, false);
     Rectangle r = SwingUtilities.convertRectangle(table, r0.union(r1), c);
     return new Line2D.Double(r.getX(), r.getMaxY(), r.getMaxX(), r.getMaxY());
+  }
+}
+
+// a line is drawn below the row of the last team in each zone
+enum Boundary {
+  PROMOTION(2, Color.GREEN.darker()),
+  PROMOTION_PLAYOFF(6, Color.BLUE.darker()),
+  SAFETY(20, Color.RED.darker());
+
+  private final int lastPosition;
+  private final Color color;
+
+  Boundary(int lastPosition, Color color) {
+    this.lastPosition = lastPosition;
+    this.color = color;
+  }
+
+  public Color getColor() {
+    return color;
+  }
+
+  public int getViewRow(int rowCount, boolean ascending) {
+    return ascending ? lastPosition - 1 : rowCount - lastPosition - 1;
   }
 }
