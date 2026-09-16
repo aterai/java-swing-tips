@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -34,7 +33,7 @@ public final class MainPanel extends JPanel {
   @SuppressWarnings("PMD.UseConcurrentHashMap")
   private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-  private final JTable monthTable = new MonthTable();
+  private final JTable monthTable = new CalendarTable();
   private LocalDate currentLocalDate;
 
   private MainPanel() {
@@ -73,13 +72,12 @@ public final class MainPanel extends JPanel {
 
   public void updateMonthView(LocalDate localDate) {
     currentLocalDate = localDate;
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    monthLabel.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
+    monthLabel.setText(localDate.format(DateTimeFormatter.ofPattern("yyyy / MM")));
     monthTable.setModel(new CalendarViewTableModel(localDate));
   }
 
-  private final class MonthTable extends JTable {
-    private final Point pt = new Point(-1000, -1000);
+  private final class CalendarTable extends JTable {
+    private final Point spotlightCenter = new Point(-1000, -1000);
     private transient MouseAdapter listener;
 
     @Override public void updateUI() {
@@ -91,21 +89,27 @@ public final class MainPanel extends JPanel {
       setShowGrid(false);
       setIntercellSpacing(new Dimension(2, 2));
       setFont(getFont().deriveFont(Font.BOLD));
+      // The spotlight is painted before the cells, so the table itself
+      // must not fill its background
       setOpaque(false);
       setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
       JTableHeader header = getTableHeader();
-      TableCellRenderer r = new CenterAlignmentHeaderRenderer();
-      TableColumnModel cm = getColumnModel();
-      EventQueue.invokeLater(() -> {
-        for (int i = 0; i < cm.getColumnCount(); i++) {
-          cm.getColumn(i).setHeaderRenderer(r);
-        }
-      });
       header.setResizingAllowed(false);
       header.setReorderingAllowed(false);
       listener = new SpotlightListener();
       addMouseListener(listener);
       addMouseMotionListener(listener);
+    }
+
+    @Override public void createDefaultColumnsFromModel() {
+      super.createDefaultColumnsFromModel();
+      // setModel(...) recreates all the TableColumns, so the header renderer
+      // must be set again each time the month view is updated
+      TableCellRenderer r = new CenterAlignmentHeaderRenderer();
+      TableColumnModel cm = getColumnModel();
+      for (int i = 0; i < cm.getColumnCount(); i++) {
+        cm.getColumn(i).setHeaderRenderer(r);
+      }
     }
 
     @Override public boolean getScrollableTracksViewportHeight() {
@@ -124,19 +128,25 @@ public final class MainPanel extends JPanel {
     }
 
     @Override protected void paintComponent(Graphics g) {
+      Rectangle r = getSpotlightBounds();
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setComposite(AlphaComposite.Src);
-      Point2D center = new Point2D.Float(pt.x, pt.y);
-      float[] dist = {0.0f, 0.5f, 1.0f};
+      float radius = r.width / 2f;
+      float[] dist = {0f, .5f, 1f};
       Color[] colors = {Color.GRAY, Color.LIGHT_GRAY, Color.WHITE};
-      Rectangle cr = getCellRect(0, 0, true);
-      int r = Math.max(cr.width, cr.height) * 2;
-      g2.setPaint(new RadialGradientPaint(center, r, dist, colors));
-      int r2 = r + r;
-      g2.fill(new Ellipse2D.Float(pt.x - r, pt.y - r, r2, r2));
+      g2.setPaint(new RadialGradientPaint(spotlightCenter, radius, dist, colors));
+      g2.fill(new Ellipse2D.Float(r.x, r.y, r.width, r.height));
       g2.dispose();
+      // The opaque cells are painted over the gradient, so it remains
+      // visible only in the intercell spacing
       super.paintComponent(g);
+    }
+
+    private Rectangle getSpotlightBounds() {
+      Rectangle cr = getCellRect(0, 0, true);
+      int radius = Math.max(cr.width, cr.height) * 2;
+      int size = radius + radius;
+      return new Rectangle(spotlightCenter.x - radius, spotlightCenter.y - radius, size, size);
     }
 
     private void adjustRowHeights(JViewport viewport) {
@@ -153,35 +163,48 @@ public final class MainPanel extends JPanel {
 
     private final class SpotlightListener extends MouseAdapter {
       @Override public void mouseExited(MouseEvent e) {
-        pt.setLocation(-1000, -1000);
-        repaint();
+        Rectangle r = getSpotlightBounds();
+        spotlightCenter.setLocation(-1000, -1000);
+        repaint(r);
       }
 
       @Override public void mouseEntered(MouseEvent e) {
-        update(e);
+        moveSpotlight(e.getPoint());
       }
 
       @Override public void mouseDragged(MouseEvent e) {
-        update(e);
+        moveSpotlight(e.getPoint());
       }
 
       @Override public void mouseMoved(MouseEvent e) {
-        update(e);
+        moveSpotlight(e.getPoint());
       }
 
-      private void update(MouseEvent e) {
-        pt.setLocation(e.getPoint());
-        Rectangle cr = getCellRect(0, 0, true);
-        int r = Math.max(cr.width, cr.height) * 2;
-        int r2 = r + r;
-        repaint(new Rectangle(pt.x - r, pt.y - r, r2, r2));
+      private void moveSpotlight(Point pt) {
+        // Repaint both the old and the new spotlight areas so that no
+        // highlighted borders are left behind when the mouse moves quickly
+        Rectangle r = getSpotlightBounds();
+        spotlightCenter.setLocation(pt);
+        repaint(r.union(getSpotlightBounds()));
       }
     }
   }
 
   private final class CalendarTableRenderer extends DefaultTableCellRenderer {
+    private final JLabel sub = new JLabel();
     private final JPanel panel = new JPanel(new BorderLayout());
     private final JLayer<JPanel> layer = new JLayer<>(panel, new DiagonallySplitCellLayerUI());
+
+    private CalendarTableRenderer() {
+      super();
+      sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+      sub.setOpaque(false);
+      sub.setVerticalAlignment(BOTTOM);
+      sub.setHorizontalAlignment(RIGHT);
+      // Make the container opaque so that the spotlight gradient shows
+      // through only the intercell spacing, like the other cells
+      panel.setOpaque(true);
+    }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
       Component c = super.getTableCellRendererComponent(
@@ -192,43 +215,34 @@ public final class MainPanel extends JPanel {
         l.setText(Integer.toString(d.getDayOfMonth()));
         l.setVerticalAlignment(TOP);
         l.setHorizontalAlignment(CENTER);
-        updateCellWeekColor(d, c);
+        updateForeground(d, l);
         TableModel model = table.getModel();
         LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days
         boolean isLastRow = row == model.getRowCount() - 1;
-        if (isLastRow && isDiagonallySplitCell(nextWeekDay)) {
-          JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
-          sub.setFont(table.getFont());
-          sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-          sub.setOpaque(false);
-          sub.setVerticalAlignment(BOTTOM);
-          sub.setHorizontalAlignment(RIGHT);
-          panel.removeAll();
-          // Make the container opaque so that the spotlight gradient shows
-          // through only the intercell spacing, like the other cells
-          panel.setOpaque(true);
-          panel.setBackground(l.getBackground());
-          panel.setForeground(getDayOfWeekColor(d.getDayOfWeek()));
-          panel.add(sub, BorderLayout.SOUTH);
-          panel.add(c, BorderLayout.NORTH);
+        if (isLastRow && isCurrentMonth(nextWeekDay)) {
           l.setHorizontalAlignment(LEFT);
-          updateCellWeekColor(d, sub);
+          sub.setText(Integer.toString(nextWeekDay.getDayOfMonth()));
+          sub.setFont(l.getFont());
+          updateForeground(nextWeekDay, sub);
+          // The label may have been re-parented to the CellRendererPane
+          panel.removeAll();
+          panel.add(l, BorderLayout.NORTH);
+          panel.add(sub, BorderLayout.SOUTH);
+          panel.setBackground(l.getBackground());
+          // Used as the color of the diagonal line by DiagonallySplitCellLayerUI
+          panel.setForeground(l.getForeground());
           c = layer;
         }
       }
       return c;
     }
 
-    private boolean isDiagonallySplitCell(LocalDate nextWeekDay) {
-      return YearMonth.from(nextWeekDay).equals(YearMonth.from(getCurrentLocalDate()));
+    private boolean isCurrentMonth(LocalDate d) {
+      return YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()));
     }
 
-    private void updateCellWeekColor(LocalDate d, Component fgc) {
-      if (YearMonth.from(d).equals(YearMonth.from(getCurrentLocalDate()))) {
-        fgc.setForeground(getDayOfWeekColor(d.getDayOfWeek()));
-      } else {
-        fgc.setForeground(Color.GRAY);
-      }
+    private void updateForeground(LocalDate d, Component c) {
+      c.setForeground(isCurrentMonth(d) ? getDayOfWeekColor(d.getDayOfWeek()) : Color.GRAY);
     }
 
     private Color getDayOfWeekColor(DayOfWeek dow) {
