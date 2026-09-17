@@ -5,10 +5,10 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +20,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 public final class MainPanel extends JPanel {
-  private static final float SCALE = .15f;
   private final JEditorPane editor = new JEditorPane();
   private final JScrollPane scroll = new JScrollPane(editor) {
     @Override public void updateUI() {
@@ -29,6 +28,7 @@ public final class MainPanel extends JPanel {
     }
   };
   private final JLabel label = new MiniMapLabel(scroll);
+  private final JCheckBox check = new JCheckBox("minimap", true);
 
   private MainPanel() {
     super(new BorderLayout());
@@ -40,45 +40,47 @@ public final class MainPanel extends JPanel {
     editor.setSelectedTextColor(null);
     editor.setSelectionColor(new Color(0x64_88_AA_AA, true));
     editor.setBackground(new Color(0xEE_EE_EE));
-    editor.addPropertyChangeListener("page", e -> {
-      label.setIcon(createMiniMapImageIcon(editor));
-      revalidate();
-      repaint();
+    editor.addPropertyChangeListener("page", e -> updateMiniMap());
+    editor.addComponentListener(new ComponentAdapter() {
+      @Override public void componentResized(ComponentEvent e) {
+        // The HTML is reflowed when the editor width changes,
+        // so the minimap image must be regenerated
+        updateMiniMap();
+      }
     });
 
     String path = "example/test.html";
     URL url = Thread.currentThread().getContextClassLoader().getResource(path);
-    Optional.ofNullable(url).ifPresent(this::load);
+    Optional.ofNullable(url).ifPresent(this::loadPage);
 
-    JPanel pp = new JPanel(new BorderLayout(0, 0));
-    pp.add(label, BorderLayout.NORTH);
-    JScrollPane minimap = new JScrollPane(pp);
+    JPanel labelPanel = new JPanel(new BorderLayout(0, 0));
+    labelPanel.add(label, BorderLayout.NORTH);
+    JScrollPane minimap = new JScrollPane(labelPanel);
     minimap.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     minimap.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-    JCheckBox button = new JCheckBox("minimap", true);
-    button.addActionListener(this::toggleMiniMap);
+    check.addActionListener(e -> updateMiniMap());
 
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    box.add(button);
+    box.add(check);
 
     JScrollBar verticalScrollBar = scroll.getVerticalScrollBar();
     verticalScrollBar.getModel().addChangeListener(e -> label.repaint());
-    JPanel p = new JPanel(new MiniMapLayout(verticalScrollBar)) {
+    JPanel overlayPanel = new JPanel(new MiniMapLayout(verticalScrollBar)) {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
       }
     };
-    p.add(minimap, BorderLayout.EAST);
-    p.add(scroll);
+    overlayPanel.add(minimap, BorderLayout.EAST);
+    overlayPanel.add(scroll);
 
-    add(p);
+    add(overlayPanel);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void load(URL url) {
+  private void loadPage(URL url) {
     try {
       editor.setPage(url);
     } catch (IOException ex) {
@@ -87,13 +89,8 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private void toggleMiniMap(ActionEvent e) {
-    boolean b = ((JCheckBox) e.getSource()).isSelected();
-    if (b) {
-      label.setIcon(createMiniMapImageIcon(editor));
-    } else {
-      label.setIcon(null);
-    }
+  private void updateMiniMap() {
+    label.setIcon(check.isSelected() ? MiniMapLabel.createMiniMapIcon(editor) : null);
     revalidate();
     repaint();
   }
@@ -112,20 +109,6 @@ public final class MainPanel extends JPanel {
     styleSheet.addRule(".atv{color:#008800}");
     styleSheet.addRule(".dec{color:#660066}");
     return styleSheet;
-  }
-
-  private static Icon createMiniMapImageIcon(Component c) {
-    Dimension d = c.getSize();
-    int newW = Math.round(d.width * SCALE);
-    int newH = Math.round(d.height * SCALE);
-    BufferedImage image = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = image.createGraphics();
-    g2.setRenderingHint(
-        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    g2.scale(SCALE, SCALE);
-    c.print(g2);
-    g2.dispose();
-    return new ImageIcon(image);
   }
 
   public static void main(String[] args) {
@@ -151,6 +134,7 @@ public final class MainPanel extends JPanel {
 }
 
 class MiniMapLabel extends JLabel {
+  private static final float SCALE = .15f;
   private static final Color THUMB_COLOR = new Color(0x32_00_00_FF, true);
   private final JScrollPane scroll;
   private transient MouseAdapter handler;
@@ -169,23 +153,36 @@ class MiniMapLabel extends JLabel {
     addMouseMotionListener(handler);
   }
 
+  public static Icon createMiniMapIcon(Component c) {
+    Dimension size = c.getSize();
+    int width = Math.max(1, Math.round(size.width * SCALE));
+    int height = Math.max(1, Math.round(size.height * SCALE));
+    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = image.createGraphics();
+    g2.setRenderingHint(
+        RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g2.scale(SCALE, SCALE);
+    c.print(g2);
+    g2.dispose();
+    return new ImageIcon(image);
+  }
+
   // Calculating the thumb rectangle shared
   // by paintComponent and processMiniMapMouseEvent
   private Rectangle computeThumbRect() {
     JViewport viewport = scroll.getViewport();
-    Rectangle er = viewport.getView().getBounds();
-    Rectangle cr = SwingUtilities.calculateInnerArea(this, null);
-    Rectangle thumbRect = new Rectangle(cr);
-    if (cr.height > 0 && er.getHeight() > 0) {
-      double sy = cr.getHeight() / er.getHeight();
-      AffineTransform at = AffineTransform.getScaleInstance(1d, sy);
-      Rectangle tr = new Rectangle(viewport.getBounds());
-      tr.y = viewport.getViewPosition().y;
-      Rectangle r = at.createTransformedShape(tr).getBounds();
-      thumbRect.y += r.y;
-      thumbRect.height = r.height;
-    } else {
-      thumbRect.height = 0;
+    Rectangle innerRect = SwingUtilities.calculateInnerArea(this, null);
+    Rectangle thumbRect = new Rectangle(innerRect);
+    thumbRect.height = 0;
+    int viewHeight = viewport.getView().getHeight();
+    if (innerRect.height > 0 && viewHeight > 0) {
+      // Scale factor from the editor (view) height to the minimap label height
+      double sy = innerRect.getHeight() / viewHeight;
+      int viewY = viewport.getViewPosition().y;
+      int extent = viewport.getExtentSize().height;
+      int y = (int) Math.round(viewY * sy);
+      thumbRect.y += y;
+      thumbRect.height = (int) Math.round((viewY + extent) * sy) - y;
     }
     return thumbRect;
   }
@@ -213,18 +210,18 @@ class MiniMapLabel extends JLabel {
     }
 
     private void processMiniMapMouseEvent(MouseEvent e) {
-      Point pt = e.getPoint();
-      Component c = e.getComponent();
-      BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
-      int range = m.getMaximum() - m.getMinimum();
-      int iv = Math.round(pt.y * range / (float) c.getHeight() - m.getExtent() / 2f);
-      m.setValue(iv); // Scroll main editor side
+      Rectangle innerRect = SwingUtilities.calculateInnerArea(MiniMapLabel.this, null);
+      if (innerRect.height > 0) {
+        // Center the visible area (thumb) on the clicked position
+        BoundedRangeModel m = scroll.getVerticalScrollBar().getModel();
+        int range = m.getMaximum() - m.getMinimum();
+        float y = (e.getY() - innerRect.y) * range / (float) innerRect.height;
+        int value = m.getMinimum() + Math.round(y - m.getExtent() / 2f);
+        m.setValue(value); // Scroll main editor side
 
-      if (c instanceof JComponent) {
         // The display position of the minimap itself will also follow
         // the position where the thumb (window) can be seen.
-        Rectangle thumbRect = computeThumbRect();
-        ((JComponent) c).scrollRectToVisible(thumbRect);
+        scrollRectToVisible(computeThumbRect());
       }
     }
   }
@@ -248,15 +245,16 @@ class MiniMapLayout extends BorderLayout {
       int bottom = height - insets.bottom;
       int left = insets.left;
       int right = width - insets.right;
-      Component ec = getLayoutComponent(parent, EAST);
-      if (Objects.nonNull(ec)) {
-        Dimension d = ec.getPreferredSize();
-        int vsw = vsb.isVisible() ? vsb.getSize().width : 0;
-        ec.setBounds(right - d.width - vsw, top, d.width, bottom - top);
+      Component east = getLayoutComponent(parent, EAST);
+      if (Objects.nonNull(east)) {
+        Dimension d = east.getPreferredSize();
+        // Place the minimap just to the left of the vertical scroll bar
+        int vsbWidth = vsb.isVisible() ? vsb.getWidth() : 0;
+        east.setBounds(right - d.width - vsbWidth, top, d.width, bottom - top);
       }
-      Component cc = getLayoutComponent(parent, CENTER);
-      if (Objects.nonNull(cc)) {
-        cc.setBounds(left, top, right - left, bottom - top);
+      Component center = getLayoutComponent(parent, CENTER);
+      if (Objects.nonNull(center)) {
+        center.setBounds(left, top, right - left, bottom - top);
       }
     }
   }
