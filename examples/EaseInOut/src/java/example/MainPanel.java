@@ -91,16 +91,12 @@ class ImageCaptionLabel extends JLabel {
         BorderFactory.createLineBorder(Color.WHITE, 4)));
     setLayout(new OverlayLayout(this) {
       @Override public void layoutContainer(Container parent) {
-        // Insets insets = parent.getInsets();
         if (parent.getComponentCount() > 0) {
-          int width = parent.getWidth(); // - insets.left - insets.right;
-          int height = parent.getHeight(); // - insets.left - insets.right;
-          int x = 0; // insets.left; int y = insets.top;
+          int width = parent.getWidth();
+          int height = parent.getHeight();
           int tah = handler.getTextAreaHeight();
-          // for (int i = 0; i < num; i++) {
-          Component c = parent.getComponent(0); // = textArea;
-          c.setBounds(x, height - tah, width, c.getPreferredSize().height);
-          // }
+          Component c = parent.getComponent(0);
+          c.setBounds(0, height - tah, width, c.getPreferredSize().height);
         }
       }
     });
@@ -108,20 +104,19 @@ class ImageCaptionLabel extends JLabel {
 
   private final class LabelHandler extends MouseAdapter implements HierarchyListener {
     private final Timer animator = new Timer(10, e -> updateTextAreaLocation());
-    // private final Component textArea;
     private int areaHeight;
     private int count;
     private int direction;
 
     private void updateTextAreaLocation() {
-      double height = textArea.getPreferredSize().getHeight();
-      double a = AnimationUtils.easeInOut(count / height);
+      int preferredHeight = textArea.getPreferredSize().height;
+      double a = AnimationUtils.easeInOut(count / (double) preferredHeight);
       count += direction;
-      areaHeight = (int) (.5 + a * height);
+      areaHeight = (int) (.5 + a * preferredHeight);
       textArea.setBackground(new Color(0f, 0f, 0f, (float) (.6 * a)));
       if (direction > 0) { // show
-        if (areaHeight >= textArea.getPreferredSize().height) {
-          areaHeight = textArea.getPreferredSize().height;
+        if (areaHeight >= preferredHeight) {
+          areaHeight = preferredHeight;
           animator.stop();
         }
       } else { // hide
@@ -202,7 +197,6 @@ class CaptionTextArea extends JTextArea {
 
   private void dispatchMouseEvent(MouseEvent e) {
     Component src = e.getComponent();
-    // Component dst = SwingUtilities.getUnwrappedParent(src);
     Container dst = SwingUtilities.getAncestorOfClass(JLabel.class, src);
     if (dst instanceof JLabel) {
       dst.dispatchEvent(SwingUtilities.convertMouseEvent(src, e, dst));
@@ -241,7 +235,7 @@ final class AnimationUtils {
   // https://wiki.c2.com/?IntegerPowerAlgorithm
   public static double intPow(double base0, int exp0) {
     if (exp0 < 0) {
-      throw new IllegalArgumentException("exp must be a positive integer or zero");
+      throw new IllegalArgumentException("exp0 must be a positive integer or zero");
     }
     double base = base0;
     int exp = exp0;
@@ -253,10 +247,6 @@ final class AnimationUtils {
     }
     return result;
   }
-
-  // public static double delta(double t) {
-  //   return 1d - Math.sin(Math.acos(t));
-  // }
 }
 
 class MissingIcon implements Icon {
