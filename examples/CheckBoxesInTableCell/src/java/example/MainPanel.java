@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(makeModel()) {
+    JTable table = new JTable(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         TableColumn c = getColumnModel().getColumn(1);
@@ -34,7 +35,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"user", "rwx"};
     Object[][] data = {
         {"owner", 7}, {"group", 6}, {"other", 5},
@@ -70,7 +71,7 @@ public final class MainPanel extends JPanel {
 
 class CheckBoxesPanel extends JPanel {
   // Permission symbols in "rwx" display order; bit: r -> 4, w -> 2, x -> 1
-  public static final List<String> SYMBOLS = List.of("r", "w", "x");
+  public static final List<String> SYMBOLS = Arrays.asList("r", "w", "x");
   private static final Color TRANSPARENT = new Color(0x0, true);
   private final List<JCheckBox> checkBoxes = SYMBOLS.stream()
       .map(CheckBoxesPanel::createCheckBox)
