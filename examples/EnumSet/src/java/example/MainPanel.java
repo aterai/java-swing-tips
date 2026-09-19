@@ -7,12 +7,12 @@ package example;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,37 +27,19 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     TableModel model = createModel();
+    JLabel label = new JLabel();
+    JButton button = new JButton("ls -l (chmod)");
+    button.addActionListener(e -> label.setText(createPermissionsText(model)));
+
     JTable table = new JTable(model) {
       @Override public void updateUI() {
         super.updateUI();
         TableColumn c = getColumnModel().getColumn(1);
         c.setCellRenderer(new CheckBoxesRenderer());
         c.setCellEditor(new CheckBoxesEditor());
+        putClientProperty("terminateEditOnFocusLost", true);
       }
     };
-    table.putClientProperty("terminateEditOnFocusLost", true);
-
-    // if (System.getProperty("java.version").startsWith("1.6.0")) {
-    //   // 1.6.0_xx bug? column header click -> edit cancel?
-    //   table.getTableHeader().addMouseListener(new MouseAdapter() {
-    //     @Override public void mousePressed(MouseEvent e) {
-    //       if (table.isEditing()) {
-    //         table.getCellEditor().stopCellEditing();
-    //       }
-    //     }
-    //   });
-    // }
-
-    @SuppressWarnings("PMD.UseConcurrentHashMap")
-    Map<Permission, Integer> bitFlags = new EnumMap<>(Permission.class);
-    bitFlags.put(Permission.READ, 1 << 2);
-    bitFlags.put(Permission.WRITE, 1 << 1);
-    bitFlags.put(Permission.EXECUTE, 1);
-
-    JLabel label = new JLabel();
-    JButton button = new JButton("ls -l (chmod)");
-    button.addActionListener(e -> label.setText(createPermissionsText(model, bitFlags)));
-
     JPanel p = new JPanel(new BorderLayout());
     p.add(label);
     p.add(button, BorderLayout.EAST);
@@ -66,32 +48,19 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String createPermissionsText(
-      TableModel model, Map<Permission, Integer> bitFlags) {
+  // e.g. " 740 -rwxr-----"
+  private static String createPermissionsText(TableModel model) {
     StringBuilder octalBuf = new StringBuilder(3);
     StringBuilder rwxBuf = new StringBuilder(9);
     for (int i = 0; i < model.getRowCount(); i++) {
-      Set<?> v = (Set<?>) model.getValueAt(i, 1);
-      int bits = 0;
-      if (v.contains(Permission.READ)) {
-        bits |= bitFlags.get(Permission.READ);
-        rwxBuf.append('r');
-      } else {
-        rwxBuf.append('-');
+      Set<?> permissions = (Set<?>) model.getValueAt(i, 1);
+      int mode = 0;
+      for (Permission perm : Permission.values()) {
+        boolean granted = permissions.contains(perm);
+        mode |= granted ? perm.getMode() : 0;
+        rwxBuf.append(granted ? perm.getSymbol() : '-');
       }
-      if (v.contains(Permission.WRITE)) {
-        bits |= bitFlags.get(Permission.WRITE);
-        rwxBuf.append('w');
-      } else {
-        rwxBuf.append('-');
-      }
-      if (v.contains(Permission.EXECUTE)) {
-        bits |= bitFlags.get(Permission.EXECUTE);
-        rwxBuf.append('x');
-      } else {
-        rwxBuf.append('-');
-      }
-      octalBuf.append(bits);
+      octalBuf.append(mode);
     }
     return String.format(" %s -%s", octalBuf, rwxBuf);
   }
@@ -132,106 +101,122 @@ public final class MainPanel extends JPanel {
   }
 }
 
+// Declared in "rwx" display order
 enum Permission {
-  EXECUTE, WRITE, READ
+  READ('r', 1 << 2), WRITE('w', 1 << 1), EXECUTE('x', 1);
+
+  private final char symbol;
+  private final int mode;
+
+  Permission(char symbol, int mode) {
+    this.symbol = symbol;
+    this.mode = mode;
+  }
+
+  public char getSymbol() {
+    return symbol;
+  }
+
+  public int getMode() {
+    return mode;
+  }
 }
 
 class CheckBoxesPanel extends JPanel {
   private static final Color TRANSPARENT = new Color(0x0, true);
-  private static final String[] TITLES = {"r", "w", "x"};
-  private final List<JCheckBox> checkBoxes = Stream.of(TITLES).map(s -> {
-    JCheckBox b = new JCheckBox(s);
-    b.setOpaque(false);
-    b.setFocusable(false);
-    b.setRolloverEnabled(false);
-    b.setBackground(TRANSPARENT);
-    return b;
-  }).collect(Collectors.toList());
+  private final Map<Permission, JCheckBox> checkBoxes = Stream
+      .of(Permission.values())
+      .collect(Collectors.toMap(
+          Function.identity(),
+          CheckBoxesPanel::createCheckBox,
+          (a, b) -> a,
+          () -> new EnumMap<>(Permission.class)));
 
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(false);
     setBackground(TRANSPARENT);
     setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    EventQueue.invokeLater(this::initCheckBoxes);
   }
 
-  protected String[] getModeTitles() {
-    return Arrays.copyOf(TITLES, TITLES.length);
+  private static JCheckBox createCheckBox(Permission perm) {
+    JCheckBox b = new JCheckBox(String.valueOf(perm.getSymbol()));
+    b.setOpaque(false);
+    b.setFocusable(false);
+    b.setRolloverEnabled(false);
+    b.setBackground(TRANSPARENT);
+    return b;
   }
 
+  // Re-add the check boxes on every update to avoid ghost images on Windows Aero
   private void initCheckBoxes() {
     removeAll();
-    for (JCheckBox b : checkBoxes) {
+    checkBoxes.values().forEach(b -> {
       add(b);
       add(Box.createHorizontalStrut(5));
-    }
+    });
   }
 
-  protected void updateCheckBoxes(Object v) {
+  protected void updateCheckBoxes(Object value) {
     initCheckBoxes();
-    Set<?> f = v instanceof Set ? (Set<?>) v : EnumSet.noneOf(Permission.class);
-    checkBoxes.get(0).setSelected(f.contains(Permission.READ));
-    checkBoxes.get(1).setSelected(f.contains(Permission.WRITE));
-    checkBoxes.get(2).setSelected(f.contains(Permission.EXECUTE));
+    Set<?> permissions = value instanceof Set
+        ? (Set<?>) value
+        : Collections.emptySet();
+    checkBoxes.forEach((perm, b) -> b.setSelected(permissions.contains(perm)));
   }
 
-  protected void doClickCheckBox(String text) {
-    checkBoxes.stream()
-        .filter(b -> b.getText().equals(text))
-        .findFirst()
-        .ifPresent(JCheckBox::doClick);
+  protected void toggleCheckBox(Permission perm) {
+    checkBoxes.get(perm).doClick();
   }
 
   protected Set<Permission> getPermissions() {
-    Set<Permission> f = EnumSet.noneOf(Permission.class);
-    if (checkBoxes.get(0).isSelected()) {
-      f.add(Permission.READ);
-    }
-    if (checkBoxes.get(1).isSelected()) {
-      f.add(Permission.WRITE);
-    }
-    if (checkBoxes.get(2).isSelected()) {
-      f.add(Permission.EXECUTE);
-    }
-    return f;
+    return checkBoxes.entrySet().stream()
+        .filter(e -> e.getValue().isSelected())
+        .map(Map.Entry::getKey)
+        .collect(Collectors.toCollection(() -> EnumSet.noneOf(Permission.class)));
   }
 }
 
 class CheckBoxesRenderer implements TableCellRenderer {
-  private final CheckBoxesPanel panel = new CheckBoxesPanel();
+  private final CheckBoxesPanel renderer = new CheckBoxesPanel();
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    panel.updateCheckBoxes(value);
-    return panel;
+    renderer.updateCheckBoxes(value);
+    return renderer;
   }
 }
 
 class CheckBoxesEditor extends AbstractCellEditor implements TableCellEditor {
-  private final CheckBoxesPanel panel = new CheckBoxesPanel();
+  private final CheckBoxesPanel editor = new CheckBoxesPanel();
 
   protected CheckBoxesEditor() {
     super();
-    String[] titles = panel.getModeTitles();
-    ActionMap am = panel.getActionMap();
-    Stream.of(titles).forEach(t -> am.put(t, new AbstractAction(t) {
+    ActionMap am = editor.getActionMap();
+    InputMap im = editor.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    Stream.of(Permission.values()).forEach(perm -> {
+      String key = perm.name();
+      am.put(key, createToggleAction(perm));
+      // 'r' -> KeyEvent.VK_R, 'w' -> KeyEvent.VK_W, 'x' -> KeyEvent.VK_X
+      int keyCode = KeyEvent.getExtendedKeyCodeForChar(perm.getSymbol());
+      im.put(KeyStroke.getKeyStroke(keyCode, 0), key);
+    });
+  }
+
+  private Action createToggleAction(Permission perm) {
+    return new AbstractAction(perm.name()) {
       @Override public void actionPerformed(ActionEvent e) {
-        panel.doClickCheckBox(t);
+        editor.toggleCheckBox(perm);
         fireEditingStopped();
       }
-    }));
-    InputMap im = panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), titles[0]);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), titles[1]);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), titles[2]);
+    };
   }
 
   @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-    panel.updateCheckBoxes(value);
-    return panel;
+    editor.updateCheckBoxes(value);
+    return editor;
   }
 
   @Override public Object getCellEditorValue() {
-    return panel.getPermissions();
+    return editor.getPermissions();
   }
 }
