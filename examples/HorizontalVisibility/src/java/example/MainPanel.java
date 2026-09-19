@@ -146,13 +146,13 @@ class EmptyThumbHandler extends ComponentAdapter implements DocumentListener {
   private void changeThumbModel() {
     EventQueue.invokeLater(() -> {
       BoundedRangeModel m = textField.getHorizontalVisibility();
-      int iv = m.getMaximum() - m.getMinimum() - m.getExtent() - 1; // -1: bug?
-      if (iv <= 0) {
-        scrollbar.setModel(emptyThumbModel);
-      } else {
-        scrollbar.setModel(textField.getHorizontalVisibility());
-      }
+      scrollbar.setModel(isScrollable(m) ? m : emptyThumbModel);
     });
+  }
+
+  // Ignore the caret's 1px margin so fully-visible text doesn't leave a spurious thumb.
+  /* default */ static boolean isScrollable(BoundedRangeModel m) {
+    return m.getMaximum() - m.getMinimum() - m.getExtent() - 1 > 0;
   }
 
   @Override public void componentResized(ComponentEvent e) {
@@ -181,9 +181,9 @@ class InvisibleButton extends JButton {
 }
 
 class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
-  private static final Color DEFAULT_COLOR = new Color(220, 100, 100, 100);
-  private static final Color DRAGGING_COLOR = new Color(200, 100, 100, 100);
-  private static final Color ROLLOVER_COLOR = new Color(255, 120, 100, 100);
+  private static final Color DEFAULT_COLOR = new Color(0xDC_64_64_64, true);
+  private static final Color DRAGGING_COLOR = new Color(0xC8_64_64_64, true);
+  private static final Color ROLLOVER_COLOR = new Color(0xFF_64_64_64, true);
 
   @Override protected JButton createDecreaseButton(int orientation) {
     return new InvisibleButton();
@@ -203,8 +203,7 @@ class ArrowButtonlessScrollBarUI extends BasicScrollBarUI {
   @Override protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
     if (c instanceof JScrollBar && c.isEnabled() && !r.isEmpty()) {
       BoundedRangeModel m = ((JScrollBar) c).getModel();
-      int iv = m.getMaximum() - m.getMinimum() - m.getExtent() - 1; // -1: bug?
-      if (iv > 0) {
+      if (EmptyThumbHandler.isScrollable(m)) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
