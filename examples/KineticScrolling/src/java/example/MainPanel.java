@@ -125,7 +125,7 @@ abstract class KineticScrollingListener extends MouseAdapter implements Hierarch
   protected static final int DELAY = 10;
   protected static final double DAMPING = .8;
   // Velocity of the view position in pixels per timer tick
-  protected final Point velocity = new Point();
+  private final Point velocity = new Point();
   private final Cursor defaultCursor;
   private final Cursor handCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
   private final JComponent view;
@@ -155,6 +155,10 @@ abstract class KineticScrollingListener extends MouseAdapter implements Hierarch
 
   protected JViewport getViewport() {
     return (JViewport) SwingUtilities.getUnwrappedParent(view);
+  }
+
+  protected Point getVelocity() {
+    return velocity;
   }
 
   // Returns true when the velocity has decayed to zero
@@ -206,6 +210,7 @@ class ScrollRectToVisibleListener extends KineticScrollingListener {
   }
 
   private void scroll() {
+    Point velocity = getVelocity();
     drag(getViewport(), velocity.x, velocity.y);
     if (decelerate()) {
       scrollTimer.stop();
@@ -252,6 +257,7 @@ class SetViewPositionListener extends KineticScrollingListener {
 
   private void scroll() {
     JViewport viewport = getViewport();
+    Point velocity = getVelocity();
     drag(viewport, velocity.x, velocity.y);
     Point vp = viewport.getViewPosition();
     Point inside = getNearestInsidePosition(viewport, vp);
