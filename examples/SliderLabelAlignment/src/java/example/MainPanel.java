@@ -6,54 +6,57 @@ package example;
 
 import java.awt.*;
 import java.util.Map;
-import java.util.Objects;
+import java.util.function.IntFunction;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
+  private static final String MIN_TEXT = "Short";
+  private static final String MAX_TEXT = "Long";
+
   private MainPanel() {
     super(new BorderLayout(5, 5));
-    JSlider slider1 = makeSlider();
-    Object labelTable1 = slider1.getLabelTable();
-    if (labelTable1 instanceof Map) {
-      ((Map<?, ?>) labelTable1).forEach((key, value) -> {
-        if (key instanceof Integer && value instanceof JLabel) {
-          ((JLabel) value).setText(getLabel(slider1, key));
-        }
-      });
-    }
-    slider1.setLabelTable(slider1.getLabelTable());
+    JSlider slider1 = createSlider();
+    setLabelText(slider1, value -> getLabelText(slider1, value));
 
-    JSlider slider2 = makeSlider();
-    Object labelTable2 = slider2.getLabelTable();
-    if (labelTable2 instanceof Map) {
-      ((Map<?, ?>) labelTable2).forEach((key, value) -> {
-        if (key instanceof Integer && value instanceof JLabel) {
-          ((JLabel) value).setText(" ");
-        }
-      });
-    }
-    slider2.setLabelTable(slider2.getLabelTable());
-    JLayer<JSlider> layer = new JLayer<>(slider2, new SliderLabelLayerUI());
+    JSlider slider2 = createSlider();
+    // hide all the label text but keep the label area
+    setLabelText(slider2, value -> " ");
+    JLayer<JSlider> layer = new JLayer<>(slider2, new SliderLabelLayerUI(MIN_TEXT, MAX_TEXT));
 
-    add(makeTitledPanel("Default", slider1), BorderLayout.NORTH);
-    add(makeTitledPanel("JLayer", layer), BorderLayout.SOUTH);
+    add(createTitledPanel("Default", slider1), BorderLayout.NORTH);
+    add(createTitledPanel("JLayer", layer), BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(25, 50, 25, 50));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String getLabel(JSlider slider, Object key) {
-    String txt = "";
-    if (Objects.equals(key, slider.getMinimum())) {
-      txt = "Short";
-    } else if (Objects.equals(key, slider.getMaximum())) {
-      txt = "Long";
+  private static String getLabelText(JSlider slider, int value) {
+    String txt;
+    if (value == slider.getMinimum()) {
+      txt = MIN_TEXT;
+    } else if (value == slider.getMaximum()) {
+      txt = MAX_TEXT;
+    } else {
+      txt = "";
     }
     return txt;
   }
 
-  private JSlider makeSlider() {
+  private static void setLabelText(JSlider slider, IntFunction<String> mapper) {
+    Object labelTable = slider.getLabelTable();
+    if (labelTable instanceof Map) {
+      ((Map<?, ?>) labelTable).forEach((key, value) -> {
+        if (key instanceof Integer && value instanceof JLabel) {
+          ((JLabel) value).setText(mapper.apply((Integer) key));
+        }
+      });
+    }
+    // fire a labelTable property change so that the UI recalculates the label size
+    slider.setLabelTable(slider.getLabelTable());
+  }
+
+  private static JSlider createSlider() {
     JSlider slider = new JSlider(0, 4);
     slider.setMajorTickSpacing(1);
     slider.setPaintLabels(true);
@@ -62,7 +65,7 @@ public final class MainPanel extends JPanel {
     return slider;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -93,27 +96,34 @@ public final class MainPanel extends JPanel {
 }
 
 class SliderLabelLayerUI extends LayerUI<JSlider> {
-  private final JLabel min = new JLabel("Short");
-  private final JLabel max = new JLabel("Long");
+  private static final int PADDING = 2;
+  private final JLabel minLabel = new JLabel();
+  private final JLabel maxLabel = new JLabel();
+
+  protected SliderLabelLayerUI(String minText, String maxText) {
+    super();
+    minLabel.setText(minText);
+    maxLabel.setText(maxText);
+  }
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
     if (c instanceof JLayer) {
-      JSlider s = (JSlider) ((JLayer<?>) c).getView();
-      Graphics2D g2 = (Graphics2D) g.create();
-      Dimension d = c.getSize();
-      Dimension d2 = min.getPreferredSize();
-      FontMetrics metrics = s.getFontMetrics(s.getFont());
-      int yy = s.getUI().getBaseline(s, d.width, d.height) - metrics.getAscent();
-      int xx = 2;
-      int w2 = d2.width;
-      int h2 = d2.height;
-      SwingUtilities.paintComponent(g2, min, s, xx, yy, w2, h2);
-      Dimension d3 = max.getPreferredSize();
-      int w3 = d3.width;
-      int h3 = d3.height;
-      SwingUtilities.paintComponent(g2, max, s, d.width - w3 - xx, yy, w3, h3);
-      g2.dispose();
+      JSlider slider = (JSlider) ((JLayer<?>) c).getView();
+      int width = slider.getWidth();
+      int height = slider.getHeight();
+      Font font = slider.getFont();
+      minLabel.setFont(font);
+      maxLabel.setFont(font);
+      // align the text with the baseline of the slider labels
+      int y = slider.getBaseline(width, height) - slider.getFontMetrics(font).getAscent();
+      Dimension minSize = minLabel.getPreferredSize();
+      SwingUtilities.paintComponent(
+          g, minLabel, slider, PADDING, y, minSize.width, minSize.height);
+      Dimension maxSize = maxLabel.getPreferredSize();
+      int x = width - maxSize.width - PADDING;
+      SwingUtilities.paintComponent(
+          g, maxLabel, slider, x, y, maxSize.width, maxSize.height);
     }
   }
 }
