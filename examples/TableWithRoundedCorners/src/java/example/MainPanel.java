@@ -16,10 +16,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -36,7 +34,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-    MonthTable monthTable = new MonthTable();
+    CalendarTable monthTable = new CalendarTable();
     updateMonthView(monthTable, monthLabel, LocalDate.now(ZoneId.systemDefault()));
 
     JButton prevButton = new JButton("<");
@@ -68,11 +66,11 @@ public final class MainPanel extends JPanel {
     setBackground(UIManager.getColor("Table.background"));
   }
 
-  private static void updateMonthView(MonthTable table, JLabel label, LocalDate date) {
+  private static void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentDate(date);
     Locale locale = Locale.getDefault();
     DateTimeFormatter formatter = CalendarUtils.getLocalizedYearMonthFormatter(locale);
-    String formattedText = date.format(formatter.withLocale(locale));
+    String formattedText = date.format(formatter);
     label.setText(CalendarUtils.getLocalizedYearMonthText(formattedText));
     table.setModel(new CalendarViewTableModel(date));
   }
@@ -118,9 +116,9 @@ class MonthScrollPane extends JScrollPane {
   }
 }
 
-class MonthTable extends JTable {
+class CalendarTable extends JTable {
   private LocalDate currentDate;
-  private int prevHeight = -1;
+  private int lastHeight = -1;
 
   @Override public void updateUI() {
     super.updateUI();
@@ -142,7 +140,7 @@ class MonthTable extends JTable {
 
   @Override public void setModel(TableModel dataModel) {
     super.setModel(dataModel);
-    prevHeight = -1;
+    lastHeight = -1;
     EventQueue.invokeLater(this::updateWeekHeaderRenderer);
   }
 
@@ -171,11 +169,9 @@ class MonthTable extends JTable {
   // table keeps exactly filling its enclosing viewport.
   @Override public void doLayout() {
     super.doLayout();
-    Class<JViewport> viewportClass = JViewport.class;
-    Optional.ofNullable(SwingUtilities.getAncestorOfClass(viewportClass, this))
-        .filter(viewportClass::isInstance)
-        .map(viewportClass::cast)
-        .ifPresent(this::adjustRowHeights);
+    if (getParent() instanceof JViewport) {
+      adjustRowHeights((JViewport) getParent());
+    }
   }
 
   // Distribute the viewport height evenly across all rows so the calendar
@@ -183,10 +179,13 @@ class MonthTable extends JTable {
   // vertical scrollbar. Any remainder pixels are handed out one at a time
   // to the first rows so every row differs by at most one pixel.
   private void adjustRowHeights(JViewport viewport) {
-    int height = viewport.getExtentSize().height;
     int rowCount = getModel().getRowCount();
+    if (rowCount == 0) {
+      return;
+    }
+    int height = viewport.getExtentSize().height;
     int baseRowHeight = height / rowCount;
-    if (height != prevHeight && baseRowHeight > 0) {
+    if (height != lastHeight && baseRowHeight > 0) {
       int remainder = height % rowCount;
       // Distribute the remainder one pixel at a time to the first rows
       for (int i = 0; i < rowCount; i++) {
@@ -194,7 +193,7 @@ class MonthTable extends JTable {
         setRowHeight(i, Math.max(1, adjustedHeight));
       }
     }
-    prevHeight = height;
+    lastHeight = height;
   }
 }
 
@@ -202,11 +201,13 @@ enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
 
 class CalendarTableRenderer extends DefaultTableCellRenderer {
   private final Set<Corner> roundedCorners = EnumSet.noneOf(Corner.class);
-  private final LocalDate today = LocalDate.now(ZoneId.systemDefault());
+
   // Cache the cell coordinates of the last render call so that
   // paintComponent(...) can rebuild the same rounded-corner path.
   private int renderedRow;
   private int renderedColumn;
+  private int lastRow;
+  private int lastColumn;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component renderer = super.getTableCellRendererComponent(
@@ -215,7 +216,9 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     this.renderedRow = row;
     this.renderedColumn = column;
     updateCorners(table, row, column);
-    if (value instanceof LocalDate && renderer instanceof JLabel && table instanceof MonthTable) {
+    if (value instanceof LocalDate
+        && renderer instanceof JLabel
+        && table instanceof CalendarTable) {
       LocalDate date = (LocalDate) value;
       JLabel label = (JLabel) renderer;
       label.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -225,14 +228,14 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
       label.setHorizontalAlignment(CENTER);
       label.setVerticalTextPosition(TOP);
       label.setHorizontalTextPosition(CENTER);
-      LocalDate currentDate = ((MonthTable) table).getCurrentDate();
+      LocalDate currentDate = ((CalendarTable) table).getCurrentDate();
       if (YearMonth.from(date).equals(YearMonth.from(currentDate))) {
         label.setFont(label.getFont().deriveFont(Font.BOLD));
       } else {
         label.setFont(label.getFont().deriveFont(Font.PLAIN));
       }
-      if (date.equals(today)) {
-        label.setIcon(new IndicatorIcon(label.getForeground()));
+      if (date.equals(LocalDate.now(ZoneId.systemDefault()))) {
+        label.setIcon(new TodayIndicatorIcon(label.getForeground()));
       } else {
         label.setIcon(null);
       }
@@ -242,21 +245,21 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
 
   // Determine which of the four outer corners of the whole table (not the
   // JTableHeader) the given cell occupies, if any.
-  private void updateCorners(JTable table, int row, int col) {
+  private void updateCorners(JTable table, int row, int column) {
     roundedCorners.clear();
     TableModel model = table.getModel();
-    int lastRow = model.getRowCount() - 1;
-    int lastCol = model.getColumnCount() - 1;
-    if (row == 0 && col == 0) {
+    lastRow = model.getRowCount() - 1;
+    lastColumn = model.getColumnCount() - 1;
+    if (row == 0 && column == 0) {
       roundedCorners.add(Corner.TOP_LEFT);
     }
-    if (row == 0 && col == lastCol) {
+    if (row == 0 && column == lastColumn) {
       roundedCorners.add(Corner.TOP_RIGHT);
     }
-    if (row == lastRow && col == 0) {
+    if (row == lastRow && column == 0) {
       roundedCorners.add(Corner.BOTTOM_LEFT);
     }
-    if (row == lastRow && col == lastCol) {
+    if (row == lastRow && column == lastColumn) {
       roundedCorners.add(Corner.BOTTOM_RIGHT);
     }
   }
@@ -283,7 +286,7 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   // Build a rectangle outline whose corners are rounded only where the
   // cell touches one of the table's four outer corners (see updateCorners).
   private Shape buildRoundedRectPath(
-      Rectangle bounds, double arcWidth, double arcHeight, int row, int col) {
+      Rectangle bounds, double arcWidth, double arcHeight, int row, int column) {
     double halfArcH = arcHeight * .5;
     double halfArcW = arcWidth * .5;
     // Kappa is the constant ratio used to place cubic Bezier control points
@@ -295,8 +298,8 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     double y = bounds.getY();
     // Trim the last column/row by a pixel so the outline stays inside the
     // viewport and does not get clipped or doubled up against its edge.
-    double w = bounds.getWidth() - (col == 6 ? 2d : 0d);
-    double h = bounds.getHeight() - (row == 5 ? 2d : 0d);
+    double w = bounds.getWidth() - (column == lastColumn ? 2d : 0d);
+    double h = bounds.getHeight() - (row == lastRow ? 2d : 0d);
     Path2D.Double path = new Path2D.Double();
     if (roundedCorners.contains(Corner.TOP_LEFT)) {
       path.moveTo(x, y + halfArcH);
@@ -352,7 +355,8 @@ class WeekHeaderRenderer extends DefaultTableCellRenderer {
 
 class CalendarViewTableModel extends DefaultTableModel {
   private final LocalDate startDate;
-  private final WeekFields weekFields = WeekFields.of(Locale.getDefault());
+  private final Locale locale = Locale.getDefault();
+  private final WeekFields weekFields = WeekFields.of(locale);
 
   protected CalendarViewTableModel(LocalDate date) {
     super();
@@ -370,7 +374,7 @@ class CalendarViewTableModel extends DefaultTableModel {
 
   @Override public String getColumnName(int column) {
     return weekFields.getFirstDayOfWeek().plus(column)
-        .getDisplayName(TextStyle.SHORT_STANDALONE, Locale.getDefault());
+        .getDisplayName(TextStyle.SHORT_STANDALONE, locale);
   }
 
   @Override public int getRowCount() {
@@ -390,10 +394,10 @@ class CalendarViewTableModel extends DefaultTableModel {
   }
 }
 
-class IndicatorIcon implements Icon {
+class TodayIndicatorIcon implements Icon {
   private final Color color;
 
-  protected IndicatorIcon(Color color) {
+  protected TodayIndicatorIcon(Color color) {
     this.color = color;
   }
 
@@ -402,12 +406,10 @@ class IndicatorIcon implements Icon {
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(color);
-    // g2.fillRoundRect(x, y, width, height, arcDiameter, arcDiameter);
     int arcRadius = 2;
     int arcDiameter = arcRadius * 2;
-    Rectangle r = SwingUtilities.calculateInnerArea((JComponent) c, null);
-    int ox = (int) r.getCenterX() - arcRadius;
-    int oy = c.getFont().getSize() + arcDiameter;
+    int ox = x + (getIconWidth() - arcDiameter) / 2;
+    int oy = y + (getIconHeight() - arcDiameter) / 2;
     g2.fillOval(ox, oy, arcDiameter, arcDiameter);
     g2.dispose();
   }
@@ -422,11 +424,14 @@ class IndicatorIcon implements Icon {
 }
 
 final class CalendarUtils {
+  private static final Pattern YEAR_PATTERN = Pattern.compile("(y+)");
+  private static final Pattern MONTH_PATTERN = Pattern.compile("(M+)");
+
   private CalendarUtils() {
     /* Utility class */
   }
 
-  public static String getLocalizedPattern(Locale locale) {
+  public static String getLocalizedDatePattern(Locale locale) {
     return DateTimeFormatterBuilder.getLocalizedDateTimePattern(
         FormatStyle.LONG, null, Chronology.ofLocale(locale), locale);
   }
@@ -435,31 +440,35 @@ final class CalendarUtils {
   // just the year and month runs out of the locale's long date pattern and
   // re-joining them in the locale's natural order.
   public static DateTimeFormatter getLocalizedYearMonthFormatter(Locale locale) {
-    String localizedPattern = getLocalizedPattern(locale);
-    String year = extractPattern(localizedPattern, Pattern.compile("(y+)"));
-    String month = extractPattern(localizedPattern, Pattern.compile("(M+)"));
-    String pattern = isYearFirst(locale) ? year + " " + month : month + " " + year;
-    return DateTimeFormatter.ofPattern(pattern);
+    String localizedPattern = getLocalizedDatePattern(locale);
+    String year = extractPatternPart(localizedPattern, YEAR_PATTERN);
+    String month = extractPatternPart(localizedPattern, MONTH_PATTERN);
+    String pattern = isYearFirst(localizedPattern)
+        ? year + " " + month : month + " " + year;
+    return DateTimeFormatter.ofPattern(pattern, locale);
   }
 
   // Locales whose year/month fields are both purely numeric (e.g. "2026 4")
   // read poorly without a separator, so insert " / " between them; locales
   // with a spelled-out month (e.g. "April 2026") are left untouched.
   public static String getLocalizedYearMonthText(String formatted) {
-    String[] parts = formatted.split(" ");
-    boolean isAllNumeric = Arrays.stream(parts)
-        .flatMapToInt(String::chars)
-        .allMatch(Character::isDigit);
+    String[] parts = formatted.trim().split("\\s+");
+    boolean isAllNumeric = parts.length == 2
+        && parts[0].chars().allMatch(Character::isDigit)
+        && parts[1].chars().allMatch(Character::isDigit);
     return isAllNumeric ? parts[0] + " / " + parts[1] : formatted;
   }
 
-  public static String extractPattern(String source, Pattern pattern) {
+  private static String extractPatternPart(String source, Pattern pattern) {
     Matcher matcher = pattern.matcher(source);
     return matcher.find() ? matcher.group(1) : "";
   }
 
   public static boolean isYearFirst(Locale locale) {
-    String localizedPattern = getLocalizedPattern(locale);
+    return isYearFirst(getLocalizedDatePattern(locale));
+  }
+
+  private static boolean isYearFirst(String localizedPattern) {
     int yearIndex = localizedPattern.indexOf('y');
     int monthIndex = localizedPattern.indexOf('M');
     return yearIndex != -1 && monthIndex != -1 && yearIndex < monthIndex;

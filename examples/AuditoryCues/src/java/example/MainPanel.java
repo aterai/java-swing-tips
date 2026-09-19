@@ -83,7 +83,7 @@ public final class MainPanel extends JPanel {
       SecondaryLoop loop = p.getToolkit().getSystemEventQueue().createSecondaryLoop();
       clip.addLineListener(e -> {
         LineEvent.Type t = e.getType();
-        if (Objects.equals(t, LineEvent.Type.STOP) || Objects.equals(t, LineEvent.Type.CLOSE)) {
+        if (LineEvent.Type.STOP.equals(t) || LineEvent.Type.CLOSE.equals(t)) {
           loop.exit();
         }
       });
