@@ -44,12 +44,40 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TriangleUI extends BasicSliderUI {
-  private final boolean isUpward;
+/**
+ * A slider UI that paints only a small triangular thumb pointing up or down.
+ * The track, ticks and labels are painted by the {@link RangeBar} instead.
+ */
+class TriangleSliderUI extends BasicSliderUI {
+  private static final Color THUMB_COLOR = new Color(0x28_2C_34);
+  private static final int THUMB_WIDTH = 11;
+  private static final int THUMB_HEIGHT = 10;
+  private static final int TRIANGLE_HEIGHT = 8;
+  private final boolean upward;
 
-  protected TriangleUI(JSlider b, boolean isUpward) {
-    super(b);
-    this.isUpward = isUpward;
+  protected TriangleSliderUI(JSlider slider, boolean upward) {
+    super(slider);
+    this.upward = upward;
+  }
+
+  @Override protected void installDefaults(JSlider slider) {
+    super.installDefaults(slider);
+    // Some LookAndFeels (e.g. Windows) reserve 2px focus insets, which would
+    // shift the thumb positions away from the values painted on the RangeBar.
+    focusInsets = new Insets(0, 0, 0, 0);
+  }
+
+  @Override protected Dimension getThumbSize() {
+    return new Dimension(THUMB_WIDTH, THUMB_HEIGHT);
+  }
+
+  @Override protected void calculateTrackBuffer() {
+    if (slider.getOrientation() == JSlider.HORIZONTAL) {
+      // Share the horizontal track range with the RangeBar
+      trackBuffer = RangeBar.TRACK_PADDING;
+    } else {
+      super.calculateTrackBuffer();
+    }
   }
 
   @Override public void paintTrack(Graphics g) {
@@ -60,76 +88,43 @@ class TriangleUI extends BasicSliderUI {
     // nothing to paint
   }
 
-  @Override protected void calculateTrackBuffer() {
-    if (slider.getOrientation() == JSlider.HORIZONTAL) {
-      trackBuffer = RangeBar.PAD; // + thumbRect.width / 2;
-    } else {
-      super.calculateTrackBuffer();
-    }
-  }
-
   @Override public void paintThumb(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setColor(new Color(0x28_2C_34));
-
-    Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
-    double h = 8d;
-    double leftX = thumbRect.getX();
-    double centerX = leftX + thumbRect.width / 2d;
-    double rightX = leftX + thumbRect.width;
-    double topY = isUpward ? r.getY() : r.y + r.height - h;
-    double bottomY = topY + h;
-
+    g2.setColor(THUMB_COLOR);
+    // Anchor the apex to the edge of the thumb rectangle facing the RangeBar
+    double apexY = upward ? thumbRect.getMinY() : thumbRect.getMaxY();
+    double baseY = upward ? apexY + TRIANGLE_HEIGHT : apexY - TRIANGLE_HEIGHT;
     Path2D triangle = new Path2D.Double();
-    triangle.moveTo(leftX, isUpward ? bottomY : topY);
-    triangle.lineTo(centerX, isUpward ? topY : bottomY);
-    triangle.lineTo(rightX, isUpward ? bottomY : topY);
+    triangle.moveTo(thumbRect.getMinX(), baseY);
+    triangle.lineTo(thumbRect.getCenterX(), apexY);
+    triangle.lineTo(thumbRect.getMaxX(), baseY);
     triangle.closePath();
-
     g2.fill(triangle);
     g2.dispose();
   }
-
-  // @Override public void paintThumb(Graphics g) {
-  //   Graphics2D g2 = (Graphics2D) g.create();
-  //   g2.setColor(new Color(40, 44, 52));
-  //   Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
-  //   int h = 8;
-  //   int x = thumbRect.x; // + (thumbRect.width - w) / 2;
-  //   int y = isUpward ? r.y : r.y + r.height - h;
-  //   int[] xps = {x, x + thumbRect.width / 2, x + thumbRect.width};
-  //   int[] yps = isUpward ? new int[] {y + h, y, y + h} : new int[] {y, y + h, y};
-  //   g2.fillPolygon(xps, yps, xps.length);
-  //   g2.dispose();
-  // }
 }
 
 class RangeSliderPanel extends JPanel {
   private final JSlider lowerSlider;
   private final JSlider upperSlider;
 
-  protected RangeSliderPanel(int min, int max, int lowInit, int highInit) {
-    super(new BorderLayout(0, 0));
-    upperSlider = createSlider(min, max, highInit, false);
-    lowerSlider = createSlider(min, max, lowInit, true);
+  protected RangeSliderPanel(int min, int max, int lowerValue, int upperValue) {
+    super(new BorderLayout());
+    lowerSlider = createSlider(min, max, lowerValue, true);
+    upperSlider = createSlider(min, max, upperValue, false);
+    RangeBar rangeBar = new RangeBar(lowerSlider, upperSlider);
 
-    ChangeListener cl = e -> {
-      if (lowerSlider.getValue() > upperSlider.getValue()) {
-        if (Objects.equals(e.getSource(), lowerSlider)) {
-          lowerSlider.setValue(upperSlider.getValue());
-        } else {
-          upperSlider.setValue(lowerSlider.getValue());
-        }
-      }
-      repaint();
+    ChangeListener listener = e -> {
+      clampToOtherSlider(e.getSource());
+      rangeBar.repaint();
     };
-    lowerSlider.addChangeListener(cl);
-    upperSlider.addChangeListener(cl);
+    lowerSlider.addChangeListener(listener);
+    upperSlider.addChangeListener(listener);
 
     add(upperSlider, BorderLayout.NORTH);
-    add(new RangeBar(lowerSlider, upperSlider));
+    add(rangeBar);
     add(lowerSlider, BorderLayout.SOUTH);
   }
 
@@ -141,84 +136,68 @@ class RangeSliderPanel extends JPanel {
     super.add(comp, constraints);
   }
 
-  private static JSlider createSlider(int min, int max, int val, boolean isUp) {
-    return new JSlider(min, max, val) {
+  // Keep lower <= upper: the slider being moved stops at the other one
+  private void clampToOtherSlider(Object source) {
+    int lower = lowerSlider.getValue();
+    int upper = upperSlider.getValue();
+    if (lower > upper) {
+      if (Objects.equals(source, lowerSlider)) {
+        lowerSlider.setValue(upper);
+      } else {
+        upperSlider.setValue(lower);
+      }
+    }
+  }
+
+  private static JSlider createSlider(int min, int max, int value, boolean upward) {
+    return new JSlider(min, max, value) {
       @Override public void updateUI() {
         super.updateUI();
-        setUI(new TriangleUI(this, isUp));
+        setUI(new TriangleSliderUI(this, upward));
         setOpaque(false);
-        setPaintTicks(false);
-        setPaintLabels(false);
-      }
-
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.height = 10;
-        return d;
       }
     };
   }
 }
 
+/**
+ * Paints the track, the tick marks, the selected range and its values
+ * between the two sliders, and lets the user drag the whole range.
+ */
 class RangeBar extends JLabel {
   public static final int BAR_HEIGHT = 24;
-  public static final int PAD = 20;
+  public static final int TRACK_PADDING = 20;
+  private static final int MAJOR_TICK_STEP = 10;
+  private static final int MINOR_TICK_STEP = 2;
+  private static final int MINOR_TICK_LENGTH = 8;
+  private static final int TEXT_GAP = 2;
+  private static final float ARC = 4f;
   private static final Color MAJOR_TICK_COLOR = new Color(0xB4_B4_B9);
   private static final Color MINOR_TICK_COLOR = new Color(0xD2_D2_D7);
-  private static final Color TRACK_BGC = new Color(0xE6_E6_EB);
+  private static final Color TRACK_COLOR = new Color(0xE6_E6_EB);
   private static final Color RANGE_COLOR = new Color(0x78_00_B4_FF, true);
-  private final JSlider low;
-  private final JSlider up;
-  private final Point dragStartPt = new Point(0, 0);
-  private int slLow;
-  private int slUp;
-  private transient MouseAdapter dragListener;
+  private final JSlider lowerSlider;
+  private final JSlider upperSlider;
+  private transient MouseAdapter mouseListener;
+  private boolean dragging;
+  private boolean hovering;
+  private int dragStartX;
+  private int lowerAtDragStart;
+  private int upperAtDragStart;
 
-  protected RangeBar(JSlider low, JSlider up) {
+  protected RangeBar(JSlider lowerSlider, JSlider upperSlider) {
     super();
-    this.low = low;
-    this.up = up;
+    this.lowerSlider = lowerSlider;
+    this.upperSlider = upperSlider;
   }
 
   @Override public void updateUI() {
-    removeMouseListener(dragListener);
-    removeMouseMotionListener(dragListener);
+    removeMouseListener(mouseListener);
+    removeMouseMotionListener(mouseListener);
     super.updateUI();
-    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    dragListener = new MouseAdapter() {
-      @Override public void mousePressed(MouseEvent e) {
-        dragStartPt.setLocation(e.getPoint());
-        slLow = low.getValue();
-        slUp = up.getValue();
-        repaint();
-      }
-
-      @Override public void mouseReleased(MouseEvent e) {
-        dragStartPt.setLocation(-100, -100);
-        repaint();
-      }
-
-      @Override public void mouseDragged(MouseEvent e) {
-        if (dragStartPt.x >= 0) {
-          updateRange(e.getX() - dragStartPt.x);
-        }
-        repaint();
-      }
-    };
-    addMouseListener(dragListener);
-    addMouseMotionListener(dragListener);
-  }
-
-  private void updateRange(int diff) {
-    double trackW = low.getWidth() - PAD * 2d;
-    int range = low.getMaximum() - low.getMinimum();
-    int delta = (int) Math.round(diff * range / trackW);
-    int ln = slLow + delta;
-    int un = slUp + delta;
-    if (ln >= low.getMinimum() && un <= low.getMaximum()) {
-      low.setValue(ln);
-      up.setValue(un);
-    }
+    mouseListener = new RangeMouseListener();
+    addMouseListener(mouseListener);
+    addMouseMotionListener(mouseListener);
   }
 
   @Override public Dimension getPreferredSize() {
@@ -227,71 +206,158 @@ class RangeBar extends JLabel {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    int w = getWidth() - PAD * 2 - 1;
-    int cy = getHeight() / 2;
-    int barH = BAR_HEIGHT - 1;
-    // 1. paint Track
-    paintTrack(g2, w, cy, barH);
-    // 2. paint Ticks
-    paintTicks(g2, w, cy, barH);
-    int lx = getPositionX(low);
-    int ux = getPositionX(up);
-    // 3. Range bar
-    paintRangeBar(g2, cy, barH, lx, ux);
-    // 4. Numeric text
-    paintNumber(g2, cy, lx, ux);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    Rectangle track = getTrackBounds();
+    paintTrack(g2, track);
+    paintTicks(g2, track);
+    Rectangle range = getRangeBounds();
+    paintRange(g2, range);
+    paintValues(g2, range);
     g2.dispose();
   }
 
-  private static void paintTrack(Graphics2D g2, int w, int cy, int barH) {
-    g2.setColor(TRACK_BGC);
-    Shape track = new RoundRectangle2D.Float(PAD, cy - barH / 2f, w, barH, 4f, 4f);
-    g2.fill(track);
-    g2.setColor(TRACK_BGC.darker());
-    g2.draw(track);
+  private static void paintTrack(Graphics2D g2, Rectangle track) {
+    Shape shape = new RoundRectangle2D.Double(
+        track.x, track.y, track.width, track.height, ARC, ARC);
+    g2.setColor(TRACK_COLOR);
+    g2.fill(shape);
+    g2.setColor(TRACK_COLOR.darker());
+    g2.draw(shape);
   }
 
-  private static void paintTicks(Graphics2D g2, int w, int cy, int barH) {
-    // g2.setStroke(new BasicStroke(1f));
-    for (int i = 0; i <= 100; i += 2) {
-      int tx = PAD + (i * w / 100);
-      if (i % 10 == 0) {
-        // MajorTick
+  private void paintTicks(Graphics2D g2, Rectangle track) {
+    int min = lowerSlider.getMinimum();
+    int max = lowerSlider.getMaximum();
+    int minorTop = track.y + (track.height - MINOR_TICK_LENGTH) / 2;
+    for (int value = min; value <= max; value += MINOR_TICK_STEP) {
+      int x = valueToX(value);
+      if ((value - min) % MAJOR_TICK_STEP == 0) {
         g2.setColor(MAJOR_TICK_COLOR);
-        g2.drawLine(tx, cy - barH / 2, tx, cy + barH / 2);
+        g2.drawLine(x, track.y, x, track.y + track.height);
       } else {
-        // MinorTick
         g2.setColor(MINOR_TICK_COLOR);
-        g2.drawLine(tx, cy - 4, tx, cy + 4);
+        g2.drawLine(x, minorTop, x, minorTop + MINOR_TICK_LENGTH);
       }
     }
   }
 
-  private static void paintRangeBar(Graphics2D g2, int cy, int barH, int lx, int ux) {
-    g2.setPaint(RANGE_COLOR);
-    Shape bar = new RoundRectangle2D.Float(lx, cy - barH / 2f, ux - lx, barH, 4f, 4f);
-    g2.fill(bar);
+  private static void paintRange(Graphics2D g2, Rectangle range) {
+    Shape shape = new RoundRectangle2D.Double(
+        range.x, range.y, range.width, range.height, ARC, ARC);
+    g2.setColor(RANGE_COLOR);
+    g2.fill(shape);
     g2.setColor(RANGE_COLOR.darker());
-    g2.draw(bar);
+    g2.draw(shape);
   }
 
-  private void paintNumber(Graphics2D g2, int cy, int lx, int ux) {
-    g2.setColor(UIManager.getColor("Button.foreground"));
-    String txtLow = String.valueOf(low.getValue());
-    String txtUp = String.valueOf(up.getValue());
+  private void paintValues(Graphics2D g2, Rectangle range) {
+    g2.setColor(getForeground());
+    String lowerText = String.valueOf(lowerSlider.getValue());
+    String upperText = String.valueOf(upperSlider.getValue());
     FontMetrics fm = g2.getFontMetrics();
-    int gap = 2;
-    int ty = cy + fm.getAscent() / 2 - 1;
-    g2.drawString(txtLow, lx - fm.stringWidth(txtLow) - gap, ty);
-    g2.drawString(txtUp, ux + gap, ty);
+    // Center the text vertically on the bar
+    double baseline = range.getCenterY() + (fm.getAscent() - fm.getDescent()) / 2d;
+    int y = (int) Math.round(baseline);
+    g2.drawString(lowerText, range.x - fm.stringWidth(lowerText) - TEXT_GAP, y);
+    g2.drawString(upperText, range.x + range.width + TEXT_GAP, y);
   }
 
-  private static int getPositionX(JSlider slider) {
-    int iv = slider.getValue() - slider.getMinimum();
-    int range = slider.getMaximum() - slider.getMinimum();
-    double v = (double) iv / range;
-    Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
-    return PAD + (int) (v * (r.width - PAD * 2d));
+  // The same width as the slider tracks, which use TRACK_PADDING as their
+  // trackBuffer (see TriangleSliderUI#calculateTrackBuffer()).
+  private int getTrackWidth() {
+    return getWidth() - TRACK_PADDING * 2;
+  }
+
+  private Rectangle getTrackBounds() {
+    int height = BAR_HEIGHT - 1;
+    int y = (getHeight() - height) / 2;
+    return new Rectangle(TRACK_PADDING, y, getTrackWidth() - 1, height);
+  }
+
+  private Rectangle getRangeBounds() {
+    Rectangle track = getTrackBounds();
+    int lowerX = valueToX(lowerSlider.getValue());
+    int upperX = valueToX(upperSlider.getValue());
+    return new Rectangle(lowerX, track.y, upperX - lowerX, track.height);
+  }
+
+  // Same mapping as BasicSliderUI#xPositionForValue(int) so that the values
+  // painted here line up with the slider thumbs.
+  private int valueToX(int value) {
+    int min = lowerSlider.getMinimum();
+    int max = lowerSlider.getMaximum();
+    int trackWidth = getTrackWidth();
+    double pixelsPerValue = (double) trackWidth / (max - min);
+    int x = (int) Math.round(pixelsPerValue * (value - min));
+    return TRACK_PADDING + Math.min(x, trackWidth - 1);
+  }
+
+  // Slide the whole range by the horizontal drag distance, keeping its width.
+  private void moveRange(int dx) {
+    int min = lowerSlider.getMinimum();
+    int max = lowerSlider.getMaximum();
+    double valuesPerPixel = (max - min) / (double) getTrackWidth();
+    int delta = (int) Math.round(dx * valuesPerPixel);
+    // Stop at the ends of the track instead of ignoring the drag
+    delta = Math.max(min - lowerAtDragStart, Math.min(max - upperAtDragStart, delta));
+    int lower = lowerAtDragStart + delta;
+    int upper = upperAtDragStart + delta;
+    // RangeSliderPanel clamps lower <= upper on every change, so when moving
+    // to the right the upper value has to be raised before the lower one.
+    if (lower > lowerSlider.getValue()) {
+      upperSlider.setValue(upper);
+      lowerSlider.setValue(lower);
+    } else {
+      lowerSlider.setValue(lower);
+      upperSlider.setValue(upper);
+    }
+  }
+
+  private void setRangeHovered(boolean hovered) {
+    if (hovering != hovered) {
+      hovering = hovered;
+      setCursor(Cursor.getPredefinedCursor(
+          hovered ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR));
+    }
+  }
+
+  private final class RangeMouseListener extends MouseAdapter {
+    @Override public void mouseEntered(MouseEvent e) {
+      mouseMoved(e);
+    }
+
+    @Override public void mouseMoved(MouseEvent e) {
+      setRangeHovered(getRangeBounds().contains(e.getPoint()));
+    }
+
+    @Override public void mousePressed(MouseEvent e) {
+      if (SwingUtilities.isLeftMouseButton(e) && getRangeBounds().contains(e.getPoint())) {
+        dragging = true;
+        setRangeHovered(true);
+        dragStartX = e.getX();
+        lowerAtDragStart = lowerSlider.getValue();
+        upperAtDragStart = upperSlider.getValue();
+      }
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      if (dragging) {
+        moveRange(e.getX() - dragStartX);
+      }
+    }
+
+    @Override public void mouseReleased(MouseEvent e) {
+      if (dragging && SwingUtilities.isLeftMouseButton(e)) {
+        dragging = false;
+      }
+      mouseMoved(e);
+    }
+
+    @Override public void mouseExited(MouseEvent e) {
+      if (!dragging) {
+        setRangeHovered(false);
+      }
+    }
   }
 }
