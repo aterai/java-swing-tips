@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
@@ -24,31 +25,37 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new FlowLayout(FlowLayout.LEADING));
     Font[] allFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-    DefaultListModel<String> fontListModel = new DefaultListModel<>();
-    Stream.of(allFonts).map(Font::getFontName).forEach(fontListModel::addElement);
-    JList<String> fontList = new JList<>(fontListModel);
+    String[] fontNames = Stream.of(allFonts).map(Font::getFontName).toArray(String[]::new);
+    JList<String> fontList = new JList<>(fontNames);
     fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     JPopupMenu popupMenu = new JPopupMenu();
     popupMenu.setBorder(BorderFactory.createEmptyBorder());
     popupMenu.setPopupSize(POPUP_WIDTH, POPUP_HEIGHT);
 
-    JComboBox<String> fontComboBox = createFontComboBox(allFonts, fontList, popupMenu);
+    JComboBox<String> fontComboBox = createFontComboBox(fontNames, fontList, popupMenu);
     // Selecting an item in the list updates the combo box selection to match.
-    fontList.addListSelectionListener(
-        e -> fontComboBox.setSelectedIndex(fontList.getSelectedIndex()));
+    fontList.addListSelectionListener(e -> {
+      if (!e.getValueIsAdjusting()) {
+        fontComboBox.setSelectedIndex(fontList.getSelectedIndex());
+      }
+    });
+    // Double-clicking an item closes the popup;
+    // the selection is already synchronized by the ListSelectionListener.
     fontList.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() - 1 > 0) {
-          fontComboBox.setSelectedIndex(fontList.getSelectedIndex());
+        boolean isDoubleClick = e.getClickCount() >= 2;
+        if (isDoubleClick) {
           popupMenu.setVisible(false);
         }
       }
     });
     fontComboBox.addItemListener(e -> {
       int idx = fontComboBox.getSelectedIndex();
-      fontList.setSelectedIndex(idx);
-      fontList.scrollRectToVisible(fontList.getCellBounds(idx, idx));
+      if (e.getStateChange() == ItemEvent.SELECTED && idx >= 0) {
+        fontList.setSelectedIndex(idx);
+        fontList.scrollRectToVisible(fontList.getCellBounds(idx, idx));
+      }
     });
 
     JScrollPane scrollPane = new JScrollPane(fontList);
@@ -56,28 +63,13 @@ public final class MainPanel extends JPanel {
     scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
     popupMenu.add(createResizablePopupContentPanel(scrollPane));
 
-    // JToggleButton button = new JToggleButton("JToggleButton");
-    // button.addActionListener(e -> {
-    //   AbstractButton btn = (AbstractButton) e.getSource();
-    //   boolean flg = btn.getModel().isSelected();
-    //   popupMenu.setVisible(flg);
-    //   button.setSelected(flg);
-    //   Point p = button.getLocation();
-    //   p.y += button.getHeight() - 1;
-    //   SwingUtilities.convertPointToScreen(p, button.getParent());
-    //   popupMenu.setLocation(p);
-    //   popupMenu.requestFocusInWindow();
-    // });
-    // add(button);
     add(fontComboBox);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JComboBox<String> createFontComboBox(
-      Font[] fonts, JList<String> fontList, JPopupMenu popupMenu) {
-    DefaultComboBoxModel<String> fontComboBoxModel = new DefaultComboBoxModel<>();
-    Stream.of(fonts).map(Font::getFontName).forEach(fontComboBoxModel::addElement);
-    JComboBox<String> fontComboBox = new JComboBox<String>(fontComboBoxModel) {
+  private static JComboBox<String> createFontComboBox(
+      String[] fontNames, JList<String> fontList, JPopupMenu popupMenu) {
+    JComboBox<String> fontComboBox = new JComboBox<String>(fontNames) {
       private transient PopupMenuListener listener;
 
       @Override public void updateUI() {
@@ -156,54 +148,52 @@ class ComboBoxPopupMenuHandler implements PopupMenuListener {
     if (source instanceof JComboBox<?>) {
       JComboBox<?> comboBox = (JComboBox<?>) source;
       fontList.setSelectedIndex(comboBox.getSelectedIndex());
+      // Show the custom popup after the combo box's own popup so that it is on top
       EventQueue.invokeLater(() -> popupMenu.show(comboBox, 0, comboBox.getHeight()));
     }
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-    // rect.setSize(window.getSize());
+    /* not needed */
   }
 
   @Override public void popupMenuCanceled(PopupMenuEvent e) {
-    // rect.setSize(window.getSize());
+    /* not needed */
   }
 }
 
 // Resizes the enclosing JPopupMenu (and its underlying heavyweight/lightweight
 // popup window) vertically while the grip label is dragged.
 class PopupMenuResizeHandler extends MouseInputAdapter {
-  private final Rectangle newSize = new Rectangle();
   private final Point dragStartPoint = new Point();
   private final Dimension dragStartSize = new Dimension();
 
   @Override public void mousePressed(MouseEvent e) {
     Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, e.getComponent());
-    newSize.setSize(popup.getSize());
-    dragStartSize.setSize(popup.getSize());
-    dragStartPoint.setLocation(e.getComponent().getLocationOnScreen());
+    if (popup != null) {
+      dragStartSize.setSize(popup.getSize());
+      dragStartPoint.setLocation(e.getLocationOnScreen());
+    }
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    newSize.height = dragStartSize.height + e.getLocationOnScreen().y - dragStartPoint.y;
     Container c = SwingUtilities.getAncestorOfClass(JPopupMenu.class, e.getComponent());
     if (c instanceof JPopupMenu) {
       JPopupMenu popupMenu = (JPopupMenu) c;
-      popupMenu.setPreferredSize(newSize.getSize());
+      int dy = e.getLocationOnScreen().y - dragStartPoint.y;
+      int minHeight = popupMenu.getMinimumSize().height;
+      Dimension size = new Dimension(
+          dragStartSize.width, Math.max(minHeight, dragStartSize.height + dy));
+      popupMenu.setPreferredSize(size);
       Window window = SwingUtilities.getWindowAncestor(popupMenu);
       if (window != null && window.getType() == Window.Type.POPUP) {
         // Popup$HeavyWeightWindow
-        window.setSize(newSize.width, newSize.height);
+        window.setSize(size);
       } else {
         // Popup$LightWeightWindow
         popupMenu.pack();
       }
     }
-    // Container p = popupMenu.getTopLevelAncestor();
-    // if (p instanceof JWindow && ((Window) p).getType() == Window.Type.POPUP) {
-    //   p.setSize(rect.width, rect.height);
-    // } else {
-    //   popupMenu.pack();
-    // }
   }
 }
 
@@ -219,10 +209,12 @@ class ResizeGripIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
     g2.setPaint(Color.GRAY);
-    int start = getIconWidth() / 2 - (DOT_COUNT - 1) * 2;
-    int centerY = getIconHeight() / 2;
+    // Center the row of dots in the icon
+    int dotsWidth = (DOT_COUNT - 1) * DOT_GAP + DOT_SIZE;
+    int startX = (getIconWidth() - dotsWidth) / 2;
+    int startY = (getIconHeight() - DOT_SIZE) / 2;
     for (int i = 0; i < DOT_COUNT; i++) {
-      g2.fillRect(start + DOT_GAP * i, centerY, DOT_SIZE, DOT_SIZE);
+      g2.fillRect(startX + DOT_GAP * i, startY, DOT_SIZE, DOT_SIZE);
     }
     g2.dispose();
   }
