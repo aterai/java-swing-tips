@@ -17,8 +17,8 @@ import javax.swing.plaf.basic.ComboPopup;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    String[] model = {"aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"};
-    JComboBox<String> combo = new JComboBox<String>(model) {
+    String[] items = {"aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg"};
+    JComboBox<String> combo = new JComboBox<String>(items) {
       @Override public void updateUI() {
         super.updateUI();
         if (getUI() instanceof WindowsComboBoxUI) {
@@ -65,9 +65,6 @@ public final class MainPanel extends JPanel {
 }
 
 class HeaderFooterComboPopup extends BasicComboPopup {
-  private transient JLabel header;
-  private transient JMenuItem footer;
-
   // Java 8: protected HeaderFooterComboPopup(JComboBox<?> combo) {
   // Java 9: protected HeaderFooterComboPopup(JComboBox<Object> combo) {
   @SuppressWarnings("unchecked")
@@ -76,39 +73,34 @@ class HeaderFooterComboPopup extends BasicComboPopup {
   }
 
   @Override protected void configurePopup() {
-    // setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-    // setBorderPainted(true);
-    // setBorder(LIST_BORDER);
-    // setOpaque(false);
-    // add(scroller);
-    // setDoubleBuffered(true);
-    // setFocusable(false);
+    // BasicComboPopup#configurePopup() sets a vertical BoxLayout
+    // and adds the scroller that wraps the list.
     super.configurePopup();
-    configureHeader();
-    configureFooter();
-    add(header, 0);
-    add(footer);
-    // or
-    // setLayout(new BorderLayout());
-    // add(header, BorderLayout.NORTH);
-    // add(scroller);
-    // add(footer, BorderLayout.SOUTH);
+    add(createHeader(), 0);
+    add(createFooter());
   }
 
-  protected void configureHeader() {
-    header = new JLabel("History", SwingConstants.CENTER);
+  protected JComponent createHeader() {
+    JLabel header = new JLabel("History", SwingConstants.CENTER);
     header.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-    header.setMaximumSize(new Dimension(Short.MAX_VALUE, 24));
+    // The JLabel constructor sets LEFT_ALIGNMENT; match the CENTER_ALIGNMENT
+    // of the scroller and the footer so the BoxLayout does not shift it.
     header.setAlignmentX(CENTER_ALIGNMENT);
+    // A JLabel does not stretch in a BoxLayout unless its maximum
+    // width is unbounded.
+    int height = header.getPreferredSize().height;
+    header.setMaximumSize(new Dimension(Short.MAX_VALUE, height));
+    return header;
   }
 
-  protected void configureFooter() {
+  protected JComponent createFooter() {
     int modifiers = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK;
-    footer = new JMenuItem("Show All Bookmarks");
+    JMenuItem footer = new JMenuItem("Show All Bookmarks");
     footer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, modifiers));
     footer.addActionListener(e -> {
-      Window w = SwingUtilities.getWindowAncestor(getInvoker());
+      Window w = SwingUtilities.getWindowAncestor(comboBox);
       JOptionPane.showMessageDialog(w, "Bookmarks");
     });
+    return footer;
   }
 }
