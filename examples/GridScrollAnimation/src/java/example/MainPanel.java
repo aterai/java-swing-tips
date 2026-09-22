@@ -5,37 +5,38 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    GridPanel gp = new GridPanel(4, 3);
-    for (int i = 0; i < gp.getColumns() * gp.getRows(); i++) {
-      gp.add(createSampleComponent(i));
+    GridPanel grid = new GridPanel(4, 3, new Dimension(160, 120));
+    for (int i = 0; i < grid.getRows() * grid.getColumns(); i++) {
+      grid.add(createSampleComponent(i));
     }
-    JScrollPane scroll = new JScrollPane(gp);
+    JScrollPane scroll = new JScrollPane(grid);
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    // scroll.getVerticalScrollBar().setEnabled(false);
-    // scroll.getHorizontalScrollBar().setEnabled(false);
-    // scroll.getVerticalScrollBar().setPreferredSize(new Dimension());
-    // scroll.getHorizontalScrollBar().setPreferredSize(new Dimension());
     JPanel p = new JPanel();
     p.add(scroll);
     add(p);
-    add(new JButton(new ScrollAction("right", scroll, new Point(1, 0))), BorderLayout.EAST);
-    add(new JButton(new ScrollAction("left", scroll, new Point(-1, 0))), BorderLayout.WEST);
-    add(new JButton(new ScrollAction("bottom", scroll, new Point(0, 1))), BorderLayout.SOUTH);
-    add(new JButton(new ScrollAction("top", scroll, new Point(0, -1))), BorderLayout.NORTH);
+    // All buttons share one animator so that only one animation runs at a time
+    GridScrollAnimator animator = new GridScrollAnimator(scroll.getViewport());
+    add(createScrollButton("right", animator, 1, 0), BorderLayout.EAST);
+    add(createScrollButton("left", animator, -1, 0), BorderLayout.WEST);
+    add(createScrollButton("bottom", animator, 0, 1), BorderLayout.SOUTH);
+    add(createScrollButton("top", animator, 0, -1), BorderLayout.NORTH);
   }
 
   private static Component createSampleComponent(int idx) {
     return idx % 2 == 0 ? new JButton("button" + idx) : new JScrollPane(new JTree());
+  }
+
+  private static JButton createScrollButton(String title, GridScrollAnimator a, int dx, int dy) {
+    JButton button = new JButton(title);
+    button.addActionListener(e -> a.scrollBy(dx, dy));
+    return button;
   }
 
   public static void main(String[] args) {
@@ -61,12 +62,11 @@ public final class MainPanel extends JPanel {
 }
 
 class GridPanel extends JPanel implements Scrollable {
-  private final Dimension size;
+  private final Dimension cellSize;
 
-  protected GridPanel(int rows, int cols) {
+  protected GridPanel(int rows, int cols, Dimension cellSize) {
     super(new GridLayout(rows, cols, 0, 0));
-    // putClientProperty("JScrollBar.fastWheelScrolling", Boolean.FALSE);
-    this.size = new Dimension(160 * cols, 120 * rows);
+    this.cellSize = new Dimension(cellSize);
   }
 
   public int getRows() {
@@ -77,9 +77,13 @@ class GridPanel extends JPanel implements Scrollable {
     return ((GridLayout) getLayout()).getColumns();
   }
 
+  @Override public Dimension getPreferredSize() {
+    return new Dimension(cellSize.width * getColumns(), cellSize.height * getRows());
+  }
+
   @Override public Dimension getPreferredScrollableViewportSize() {
-    Dimension d = getPreferredSize();
-    return new Dimension(d.width / getColumns(), d.height / getRows());
+    // Show one cell of the grid at a time
+    return new Dimension(cellSize);
   }
 
   @Override public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
@@ -97,63 +101,60 @@ class GridPanel extends JPanel implements Scrollable {
   @Override public boolean getScrollableTracksViewportHeight() {
     return false;
   }
-
-  @Override public Dimension getPreferredSize() {
-    return size;
-  }
 }
 
-class ScrollAction extends AbstractAction {
-  private static final double SIZE = 32d;
-  private final Point vec;
-  private final JScrollPane scrollPane;
-  private final Timer scroller = new Timer(5, null);
-  private transient ActionListener listener;
+class GridScrollAnimator {
+  private static final int STEPS = 32;
+  private final Timer timer = new Timer(5, e -> step());
+  private final JViewport viewport;
+  private final Point start = new Point();
+  private final Point end = new Point();
+  private int count;
 
-  protected ScrollAction(String name, JScrollPane scrollPane, Point vec) {
-    super(name);
-    this.scrollPane = scrollPane;
-    this.vec = vec;
+  protected GridScrollAnimator(JViewport viewport) {
+    this.viewport = viewport;
   }
 
-  @Override public void actionPerformed(ActionEvent e) {
-    start();
-  }
-
-  protected void start() {
-    JViewport viewport = scrollPane.getViewport();
-    Component view = viewport.getView();
-    if (!scroller.isRunning() && view instanceof JComponent) {
-      int w = viewport.getWidth();
-      int h = viewport.getHeight();
-      int sx = viewport.getViewPosition().x;
-      int sy = viewport.getViewPosition().y;
-      Rectangle rect = new Rectangle(w, h);
-      scroller.removeActionListener(listener);
-      AtomicInteger counter = new AtomicInteger((int) SIZE);
-      listener = e -> {
-        double a = easeInOut(counter.getAndDecrement() / SIZE);
-        Point d = new Point((int) (w - a * w + .5), (int) (h - a * h + .5));
-        if (counter.get() <= 0) {
-          d.setLocation(w, h);
-          scroller.stop();
-        }
-        rect.setLocation(sx + vec.x * d.x, sy + vec.y * d.y);
-        ((JComponent) view).scrollRectToVisible(rect);
-      };
-      scroller.addActionListener(listener);
-      scroller.start();
+  public void scrollBy(int dx, int dy) {
+    if (timer.isRunning() || viewport.getView() == null) {
+      return;
+    }
+    Dimension extent = viewport.getExtentSize();
+    Dimension viewSize = viewport.getViewSize();
+    start.setLocation(viewport.getViewPosition());
+    end.setLocation(
+        clamp(start.x + dx * extent.width, viewSize.width - extent.width),
+        clamp(start.y + dy * extent.height, viewSize.height - extent.height));
+    if (!end.equals(start)) {
+      count = 0;
+      timer.start();
     }
   }
 
-  protected static double easeInOut(double t) {
+  private void step() {
+    count++;
+    double a = easeInOut(count / (double) STEPS);
+    if (count >= STEPS) {
+      a = 1d;
+      timer.stop();
+    }
+    int x = start.x + (int) Math.round(a * (end.x - start.x));
+    int y = start.y + (int) Math.round(a * (end.y - start.y));
+    viewport.setViewPosition(new Point(x, y));
+  }
+
+  private static int clamp(int value, int max) {
+    // Java 21: return Math.clamp(value, 0, max);
+    return Math.min(Math.max(value, 0), max);
+  }
+
+  public static double easeInOut(double t) {
     // range: 0.0 <= t <= 1.0
     boolean isFirstHalf = t < .5;
     return isFirstHalf ? .5 * pow3(t * 2d) : .5 * (pow3(t * 2d - 2d) + 2d);
   }
 
-  protected static double pow3(double a) {
-    // return Math.pow(a, 3d);
+  private static double pow3(double a) {
     return a * a * a;
   }
 }
