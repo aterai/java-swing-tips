@@ -12,12 +12,12 @@ import java.awt.dnd.DragSource;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -81,28 +81,10 @@ public final class MainPanel extends JPanel {
 // Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-  protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
-  protected static final JLabel LABEL = new JLabel() {
-    @Override public Dimension getPreferredSize() {
-      Dimension d = super.getPreferredSize();
-      d.width = 32;
-      return d;
-    }
-  };
+  private static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
   private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
-
-  protected ListItemTransferHandler() {
-    super();
-    // localObjectFlavor = new ActivationDataFlavor(
-    //     Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-    LABEL.setOpaque(true);
-    LABEL.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-    LABEL.setHorizontalAlignment(SwingConstants.CENTER);
-    LABEL.setForeground(Color.WHITE);
-    LABEL.setBackground(new Color(0xC8_00_00_FF, true));
-  }
 
   @Override protected Transferable createTransferable(JComponent c) {
     JList<?> source = (JList<?>) c;
@@ -134,28 +116,39 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    // System.out.println("getSourceActions");
-    c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
-    return c instanceof JList ? getDragImageAction((JList<?>) c) : NONE;
+    int action = NONE;
+    if (c instanceof JList && !((JList<?>) c).isSelectionEmpty()) {
+      c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
+      updateDragImage((JList<?>) c);
+      action = MOVE;
+    }
+    return action;
   }
 
-  protected int getDragImageAction(JList<?> src) {
-    setDragImage(createDragImage(src));
-    Optional.ofNullable(src.getMousePosition())
-        .ifPresent(this::setDragImageOffset);
-    return MOVE;
+  protected void updateDragImage(JList<?> src) {
+    Rectangle bounds = getSelectedCellsBounds(src);
+    setDragImage(createDragImage(src, bounds));
+    Point pt = Optional.ofNullable(src.getMousePosition()).orElseGet(bounds::getLocation);
+    pt.translate(-bounds.x, -bounds.y);
+    setDragImageOffset(pt);
   }
 
-  private static <E> BufferedImage createDragImage(JList<E> source) {
-    int w = source.getWidth();
-    int h = source.getHeight();
-    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+  private static Rectangle getSelectedCellsBounds(JList<?> list) {
+    return Arrays.stream(list.getSelectedIndices())
+        .mapToObj(i -> list.getCellBounds(i, i))
+        .reduce(Rectangle::union)
+        .orElseGet(Rectangle::new);
+  }
+
+  private static <E> BufferedImage createDragImage(JList<E> list, Rectangle bounds) {
+    BufferedImage bi = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = bi.createGraphics();
-    ListCellRenderer<? super E> renderer = source.getCellRenderer();
-    for (int i : source.getSelectedIndices()) {
-      E value = source.getModel().getElementAt(i);
-      Component c = renderer.getListCellRendererComponent(source, value, i, false, false);
-      SwingUtilities.paintComponent(g2, c, source, source.getCellBounds(i, i));
+    g2.translate(-bounds.x, -bounds.y);
+    ListCellRenderer<? super E> renderer = list.getCellRenderer();
+    for (int i : list.getSelectedIndices()) {
+      E value = list.getModel().getElementAt(i);
+      Component c = renderer.getListCellRendererComponent(list, value, i, false, false);
+      SwingUtilities.paintComponent(g2, c, list, list.getCellBounds(i, i));
     }
     g2.dispose();
     return bi;
@@ -163,24 +156,16 @@ class ListItemTransferHandler extends TransferHandler {
 
   private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
-    int index; // = dl.getIndex();
-    if (info.isDrop()) { // Mouse Drag & Drop
-      DropLocation tdl = info.getDropLocation();
-      if (tdl instanceof JList.DropLocation) {
-        index = ((JList.DropLocation) tdl).getIndex();
-      } else {
-        index = target.getSelectedIndex();
-      }
+    int index;
+    DropLocation dl = info.isDrop() ? info.getDropLocation() : null;
+    if (dl instanceof JList.DropLocation) { // Mouse Drag & Drop
+      index = ((JList.DropLocation) dl).getIndex();
     } else { // Keyboard Copy & Paste
       index = target.getSelectedIndex();
     }
-    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = model.getSize();
-    // int index = dl.getIndex();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
-    return index;
+    int max = target.getModel().getSize();
+    // If it is out of range, it is appended to the end
+    return index < 0 ? max : Math.min(index, max);
   }
 
   private static List<?> getTransferData(TransferSupport info) {
@@ -206,15 +191,11 @@ class ListItemTransferHandler extends TransferHandler {
       index += 1;
     }
     addCount = info.isDrop() ? values.size() : 0;
-    // target.requestFocusInWindow();
     return !values.isEmpty();
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    // System.out.println("exportDone");
-    Component glassPane = c.getRootPane().getGlassPane();
-    // glassPane.setCursor(Cursor.getDefaultCursor());
-    glassPane.setVisible(false);
+    c.getRootPane().getGlassPane().setVisible(false);
     cleanup(c, action == MOVE);
   }
 
@@ -224,12 +205,9 @@ class ListItemTransferHandler extends TransferHandler {
       // need to adjust the indices accordingly, since those
       // after the insertion point have moved.
       if (addCount > 0) {
-        IntStream.range(0, indices.size())
-            .filter(i -> indices.get(i) >= addIndex)
-            .forEach(i -> indices.set(i, indices.get(i) + addCount));
+        indices.replaceAll(i -> i >= addIndex ? i + addCount : i);
       }
-      JList<?> src = (JList<?>) c;
-      DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
+      DefaultListModel<?> model = (DefaultListModel<?>) ((JList<?>) c).getModel();
       for (int i = indices.size() - 1; i >= 0; i--) {
         model.remove(indices.get(i));
       }
@@ -241,47 +219,56 @@ class ListItemTransferHandler extends TransferHandler {
 }
 
 class CompactListItemTransferHandler extends ListItemTransferHandler {
-  @Override public int getSourceActions(JComponent c) {
-    // System.out.println("getSourceActions");
-    Component glassPane = c.getRootPane().getGlassPane();
-    glassPane.setCursor(DragSource.DefaultMoveDrop);
-    return c instanceof JList ? getDragImageAction((JList<?>) c) : NONE;
-  }
+  private static final JLabel COUNT_LABEL = createCountLabel();
 
-  @Override protected int getDragImageAction(JList<?> src) {
-    int cellLabelHeight = 21; // = height(15) + top(2) + bottom(2) + cell.bottom(2)
+  @Override protected void updateDragImage(JList<?> src) {
+    // Cut off the title at the bottom of the cell and use only the icon area:
+    // title text height + title border(top: 2, bottom: 2) + cell border(bottom: 2)
+    int titleHeight = src.getFontMetrics(src.getFont()).getHeight() + 6;
     int w = src.getFixedCellWidth();
-    int h = src.getFixedCellHeight() - cellLabelHeight;
+    int h = src.getFixedCellHeight() - titleHeight;
     setDragImage(createCompactDragImage(src, w, h));
     setDragImageOffset(new Point(w / 2, h));
-    return MOVE; // TransferHandler.COPY_OR_MOVE;
   }
 
-  private static <E> BufferedImage createCompactDragImage(JList<E> source, int w, int h) {
+  private static JLabel createCountLabel() {
+    JLabel label = new JLabel() {
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.width = 32;
+        return d;
+      }
+    };
+    label.setOpaque(true);
+    label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+    label.setHorizontalAlignment(SwingConstants.CENTER);
+    label.setForeground(Color.WHITE);
+    label.setBackground(new Color(0xC8_00_00_FF, true));
+    return label;
+  }
+
+  private static <E> BufferedImage createCompactDragImage(JList<E> list, int w, int h) {
     if (w <= 0 || h <= 0) {
       throw new IllegalArgumentException("width and height must be > 0");
     }
-    int[] selectedIndices = source.getSelectedIndices();
-    GraphicsConfiguration gc = source.getGraphicsConfiguration();
-    BufferedImage br = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
-    Graphics2D g2 = br.createGraphics();
-    ListCellRenderer<? super E> renderer = source.getCellRenderer();
-    int idx = selectedIndices[0];
-    E valueAt = source.getModel().getElementAt(idx);
-    Component c = renderer.getListCellRendererComponent(source, valueAt, idx, false, false);
-    Rectangle rect = source.getCellBounds(idx, idx);
-    SwingUtilities.paintComponent(g2, c, source, 0, 0, rect.width, rect.height);
-    int selectedCount = selectedIndices.length;
-    boolean oneOrMore = selectedCount > 1;
-    if (oneOrMore) {
-      LABEL.setText(Integer.toString(selectedCount));
-      Dimension d = LABEL.getPreferredSize();
+    GraphicsConfiguration gc = list.getGraphicsConfiguration();
+    BufferedImage image = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+    Graphics2D g2 = image.createGraphics();
+    int idx = list.getMinSelectionIndex();
+    E value = list.getModel().getElementAt(idx);
+    ListCellRenderer<? super E> renderer = list.getCellRenderer();
+    Component c = renderer.getListCellRendererComponent(list, value, idx, false, false);
+    Rectangle rect = list.getCellBounds(idx, idx);
+    SwingUtilities.paintComponent(g2, c, list, 0, 0, rect.width, rect.height);
+    if (idx != list.getMaxSelectionIndex()) { // two or more items are selected
+      COUNT_LABEL.setText(Integer.toString(list.getSelectedIndices().length));
+      Dimension d = COUNT_LABEL.getPreferredSize();
       int x = (w - d.width) / 2;
       int y = (h - d.height) / 2;
-      SwingUtilities.paintComponent(g2, LABEL, source, x, y, d.width, d.height);
+      SwingUtilities.paintComponent(g2, COUNT_LABEL, list, x, y, d.width, d.height);
     }
     g2.dispose();
-    br.coerceData(true);
-    return br;
+    image.coerceData(true);
+    return image;
   }
 }

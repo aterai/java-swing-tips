@@ -24,7 +24,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 public final class ReorderableList<E extends ListItem> extends JList<E> {
-  private transient MouseInputListener rbl;
+  private transient MouseInputListener rubberBanding;
   private Color rubberBandColor;
   private final Path2D rubberBand = new Path2D.Double();
 
@@ -37,8 +37,8 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
     setSelectionBackground(null); // Nimbus
     setCellRenderer(null);
     setTransferHandler(null);
-    removeMouseListener(rbl);
-    removeMouseMotionListener(rbl);
+    removeMouseListener(rubberBanding);
+    removeMouseMotionListener(rubberBanding);
     super.updateUI();
 
     rubberBandColor = createRubberBandColor(getSelectionBackground());
@@ -49,9 +49,9 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     setCellRenderer(new ListItemListCellRenderer<>());
-    rbl = new RubberBandingListener();
-    addMouseMotionListener(rbl);
-    addMouseListener(rbl);
+    rubberBanding = new RubberBandingListener();
+    addMouseMotionListener(rubberBanding);
+    addMouseListener(rubberBanding);
 
     // putClientProperty("List.isFileList", Boolean.TRUE);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -126,7 +126,8 @@ public final class ReorderableList<E extends ListItem> extends JList<E> {
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       int index = l.locationToIndex(e.getPoint());
-      if (l.getCellBounds(index, index).contains(e.getPoint())) {
+      Rectangle r = l.getCellBounds(index, index);
+      if (r != null && r.contains(e.getPoint())) {
         l.setFocusable(true);
         // Update the selection index only when dragging is disabled
         if (!l.getDragEnabled()) {
