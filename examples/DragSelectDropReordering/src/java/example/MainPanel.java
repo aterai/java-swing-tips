@@ -75,7 +75,7 @@ public final class MainPanel extends JPanel {
 
 class ReorderableList<E extends ListItem> extends JList<E> {
   private final Path2D rubberBand = new Path2D.Double();
-  private transient MouseInputListener rbl;
+  private transient MouseInputListener rubberBanding;
   private Color rubberBandColor;
 
   protected ReorderableList(ListModel<E> model) {
@@ -87,8 +87,8 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     setSelectionBackground(null); // Nimbus
     setCellRenderer(null);
     setTransferHandler(null);
-    removeMouseListener(rbl);
-    removeMouseMotionListener(rbl);
+    removeMouseListener(rubberBanding);
+    removeMouseMotionListener(rubberBanding);
     super.updateUI();
 
     rubberBandColor = createRubberBandColor(getSelectionBackground());
@@ -99,9 +99,9 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     setCellRenderer(new ListItemListCellRenderer<>());
-    rbl = new RubberBandingListener();
-    addMouseMotionListener(rbl);
-    addMouseListener(rbl);
+    rubberBanding = new RubberBandingListener();
+    addMouseMotionListener(rubberBanding);
+    addMouseListener(rubberBanding);
 
     // putClientProperty("List.isFileList", Boolean.TRUE);
     getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -135,10 +135,6 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     return new Color(max);
   }
 
-  protected Path2D getRubberBand() {
-    return rubberBand;
-  }
-
   private final class RubberBandingListener extends MouseInputAdapter {
     private final Point srcPoint = new Point();
 
@@ -146,17 +142,15 @@ class ReorderableList<E extends ListItem> extends JList<E> {
       JList<?> l = (JList<?>) e.getComponent();
       if (!l.getDragEnabled()) {
         Point dstPoint = e.getPoint();
-        Path2D rb = getRubberBand();
-        rb.reset();
-        rb.moveTo(srcPoint.x, srcPoint.y);
-        rb.lineTo(dstPoint.x, srcPoint.y);
-        rb.lineTo(dstPoint.x, dstPoint.y);
-        rb.lineTo(srcPoint.x, dstPoint.y);
-        rb.closePath();
-
-        // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
+        rubberBand.reset();
+        rubberBand.moveTo(srcPoint.x, srcPoint.y);
+        rubberBand.lineTo(dstPoint.x, srcPoint.y);
+        rubberBand.lineTo(dstPoint.x, dstPoint.y);
+        rubberBand.lineTo(srcPoint.x, dstPoint.y);
+        rubberBand.closePath();
         int[] indices = IntStream.range(0, l.getModel().getSize())
-            .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
+            .filter(i -> rubberBand.intersects(l.getCellBounds(i, i)))
+            .toArray();
         l.setSelectedIndices(indices);
         l.repaint();
       }
@@ -165,19 +159,16 @@ class ReorderableList<E extends ListItem> extends JList<E> {
     @Override public void mouseReleased(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       l.setFocusable(true);
-      // if (Objects.isNull(srcPoint) || !getDragEnabled()) {
-      //   Component glassPane = l.getRootPane().getGlassPane();
-      //   glassPane.setVisible(false);
-      // }
-      getRubberBand().reset();
-      l.setDragEnabled(l.getSelectedIndices().length > 0);
+      rubberBand.reset();
+      l.setDragEnabled(!l.isSelectionEmpty());
       l.repaint();
     }
 
     @Override public void mousePressed(MouseEvent e) {
       JList<?> l = (JList<?>) e.getComponent();
       int index = l.locationToIndex(e.getPoint());
-      if (l.getCellBounds(index, index).contains(e.getPoint())) {
+      Rectangle cell = l.getCellBounds(index, index);
+      if (cell != null && cell.contains(e.getPoint())) {
         l.setFocusable(true);
         // Update the selection index only when dragging is disabled
         if (!l.getDragEnabled()) {
@@ -193,23 +184,6 @@ class ReorderableList<E extends ListItem> extends JList<E> {
       srcPoint.setLocation(e.getPoint());
       l.repaint();
     }
-
-    // // JDK 1.7.0
-    // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-    //   ListModel model = l.getModel();
-    //   List<Integer> ll = new ArrayList<>(model.getSize());
-    //   for (int i = 0; i < model.getSize(); i++) {
-    //     if (rect.intersects(l.getCellBounds(i, i))) {
-    //       ll.add(i);
-    //     }
-    //   }
-    //   // JDK 1.8.0: return ll.stream().mapToInt(Integer::intValue).toArray();
-    //   int[] il = new int[ll.size()];
-    //   for (int i = 0; i < ll.size(); i++) {
-    //     il[i] = ll.get(i);
-    //   }
-    //   return il;
-    // }
   }
 }
 
@@ -351,17 +325,10 @@ class ListItem implements Serializable {
 // Demo - BasicDnD (The Java™ Tutorials > ... > Drag and Drop and Data Transfer)
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html
 class ListItemTransferHandler extends TransferHandler {
-  protected static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
+  private static final DataFlavor FLAVOR = new DataFlavor(List.class, "List of items");
   private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
-
-  // protected ListItemTransferHandler() {
-  //   super();
-  //   localObjectFlavor = new ActivationDataFlavor(
-  //       Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-  //   // localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
-  // }
 
   @Override protected Transferable createTransferable(JComponent c) {
     JList<?> source = (JList<?>) c;
@@ -369,8 +336,6 @@ class ListItemTransferHandler extends TransferHandler {
     for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
-    // Object[] transferredObjects = source.getSelectedValuesList().toArray(new Object[0]);
-    // return new DataHandler(transferredObjects, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -395,10 +360,12 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public int getSourceActions(JComponent c) {
-    // System.out.println("getSourceActions");
-    c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
-    // glassPane.setVisible(true);
-    return MOVE; // TransferHandler.COPY_OR_MOVE;
+    int action = NONE;
+    if (c instanceof JList && !((JList<?>) c).isSelectionEmpty()) {
+      c.getRootPane().getGlassPane().setCursor(DragSource.DefaultMoveDrop);
+      action = MOVE;
+    }
+    return action;
   }
 
   @Override public boolean importData(TransferSupport info) {
@@ -415,9 +382,8 @@ class ListItemTransferHandler extends TransferHandler {
     DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
     int max = model.getSize();
     int index = dl.getIndex();
-    // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    // index = Math.min(index, max);
-    index = index >= 0 && index < max ? index : max;
+    // If it is out of range, it is appended to the end
+    index = index < 0 ? max : Math.min(index, max);
     addIndex = index;
     List<?> values = getTransferData(t);
     for (Object o : values) {
@@ -440,10 +406,7 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    // System.out.println("exportDone");
-    Component glassPane = c.getRootPane().getGlassPane();
-    // glassPane.setCursor(Cursor.getDefaultCursor());
-    glassPane.setVisible(false);
+    c.getRootPane().getGlassPane().setVisible(false);
     cleanup(c, action == MOVE);
   }
 
@@ -453,17 +416,9 @@ class ListItemTransferHandler extends TransferHandler {
       // need to adjust the indices accordingly, since those
       // after the insertion point have moved.
       if (addCount > 0) {
-        IntStream.range(0, indices.size())
-            .filter(i -> indices.get(i) >= addIndex)
-            .forEach(i -> indices.set(i, indices.get(i) + addCount));
-        // for (int i = 0; i < indices.size(); i++) {
-        //   if (indices.get(i) >= addIndex) {
-        //     indices.set(i, indices.get(i) + addCount);
-        //   }
-        // }
+        indices.replaceAll(i -> i >= addIndex ? i + addCount : i);
       }
-      JList<?> src = (JList<?>) c;
-      DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
+      DefaultListModel<?> model = (DefaultListModel<?>) ((JList<?>) c).getModel();
       for (int i = indices.size() - 1; i >= 0; i--) {
         model.remove(indices.get(i));
       }
