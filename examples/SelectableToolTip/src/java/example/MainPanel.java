@@ -28,32 +28,34 @@ public final class MainPanel extends JPanel {
     hintEditor.setEditorKit(new HTMLEditorKit());
     hintEditor.setEditable(false);
     hintEditor.setOpaque(false);
-    JCheckBox check = new JCheckBox();
-    check.setOpaque(false);
-    JPanel tooltipContent = new JPanel(new BorderLayout());
-    tooltipContent.add(hintEditor);
-    tooltipContent.add(check, BorderLayout.EAST);
+    JCheckBox checkBox = new JCheckBox();
+    checkBox.setOpaque(false);
+    JPanel popupContent = new JPanel(new BorderLayout());
+    popupContent.add(hintEditor);
+    popupContent.add(checkBox, BorderLayout.EAST);
     JPopupMenu popup = new JPopupMenu();
-    popup.add(new JScrollPane(tooltipContent));
+    popup.add(new JScrollPane(popupContent));
     popup.setBorder(BorderFactory.createEmptyBorder());
 
-    JEditorPane editor = new RichToolTipEditorPane(tooltipContent);
+    JEditorPane editor = new PopupToolTipEditorPane(popup, popupContent);
     editor.setEditorKit(new HTMLEditorKit());
     editor.setText(HTML_TEXT);
     editor.setEditable(false);
-    editor.addHyperlinkListener(e -> handleHyperlinkEvent(e, hintEditor));
+    editor.addHyperlinkListener(e -> handleHyperlinkEvent(e, hintEditor, popup));
 
     add(new JScrollPane(editor));
     add(new JScrollPane(new JTextArea(HTML_TEXT)));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void handleHyperlinkEvent(HyperlinkEvent e, JEditorPane hintEditor) {
+  private static void handleHyperlinkEvent(
+      HyperlinkEvent e, JEditorPane hintEditor, JPopupMenu popup) {
     JEditorPane editorPane = (JEditorPane) e.getSource();
-    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-      String message = "You click the link with the URL " + e.getURL();
+    HyperlinkEvent.EventType type = e.getEventType();
+    if (type == HyperlinkEvent.EventType.ACTIVATED) {
+      String message = "You clicked the link with the URL " + e.getURL();
       JOptionPane.showMessageDialog(editorPane, message);
-    } else if (e.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+    } else if (type == HyperlinkEvent.EventType.ENTERED) {
       editorPane.setToolTipText("");
       Optional.ofNullable(e.getSourceElement())
           .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
@@ -62,12 +64,9 @@ public final class MainPanel extends JPanel {
             String url = Objects.toString(e.getURL());
             // String url = Objects.toString(attr.getAttribute(HTML.Attribute.HREF));
             hintEditor.setText(String.format("<html>%s: <a href='%s'>%s</a>", title, url, url));
-            Window popup = SwingUtilities.getWindowAncestor(hintEditor);
-            if (popup != null) {
-              popup.pack();
-            }
+            popup.pack();
           });
-    } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
+    } else if (type == HyperlinkEvent.EventType.EXITED) {
       editorPane.setToolTipText(null);
     }
   }
@@ -94,24 +93,23 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RichToolTipEditorPane extends JEditorPane {
-  private final JPanel panel;
+class PopupToolTipEditorPane extends JEditorPane {
+  private final JPopupMenu popup;
+  private final JComponent popupContent;
 
-  protected RichToolTipEditorPane(JPanel panel) {
+  protected PopupToolTipEditorPane(JPopupMenu popup, JComponent popupContent) {
     super();
-    this.panel = panel;
+    this.popup = popup;
+    this.popupContent = popupContent;
   }
 
   @Override public JToolTip createToolTip() {
     JToolTip tip = super.createToolTip();
     tip.addHierarchyListener(e -> {
-      boolean showing = e.getComponent().isShowing();
-      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && showing) {
-        panel.setBackground(tip.getBackground());
-        Container p = SwingUtilities.getAncestorOfClass(JPopupMenu.class, panel);
-        if (p instanceof JPopupMenu) {
-          ((JPopupMenu) p).show(tip, 0, 0);
-        }
+      boolean showingChanged = (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0;
+      if (showingChanged && tip.isShowing()) {
+        popupContent.setBackground(tip.getBackground());
+        popup.show(tip, 0, 0);
       }
     });
     return tip;
