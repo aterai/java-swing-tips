@@ -323,9 +323,8 @@ class TableRowTransferHandler extends TransferHandler {
     } else { // dl.isInsert()) {
       index = target.getSelectedRow();
     }
-    // index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    // index = Math.min(index, max);
-    index = index >= 0 && index < max ? index : max;
+    // If it is out of range, it is appended to the end
+    index = index < 0 ? max : Math.min(index, max);
     addIndex = index;
     // target.setCursor(Cursor.getDefaultCursor());
     List<?> values = getTransferData(info);
