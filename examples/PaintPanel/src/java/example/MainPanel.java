@@ -45,95 +45,16 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// class PaintPanel extends JPanel {
-//   private final Point startPoint = new Point();
-//   private final Point p = new Point();
-//   private MouseAdapter handler;
-//   @Override public void updateUI() {
-//     removeMouseMotionListener(handler);
-//     removeMouseListener(handler);
-//     super.updateUI();
-//     handler = new MouseAdapter() {
-//       @Override public void mouseDragged(MouseEvent e) {
-//         p.setLocation(e.getPoint());
-//         repaint();
-//       }
-//
-//       @Override public void mousePressed(MouseEvent e) {
-//         startPoint.setLocation(e.getPoint());
-//       }
-//     };
-//     addMouseMotionListener(handler);
-//     addMouseListener(handler);
-//   }
-//
-//   @Override protected void paintComponent(Graphics g) {
-//     // super.paintComponent(g);
-//     Graphics2D g2 = (Graphics2D) g.create();
-//     g2.setStroke(new BasicStroke(3f));
-//     g2.setPaint(Color.BLACK);
-//     g2.drawLine(startPoint.x, startPoint.y, p.x, p.y);
-//     g2.dispose();
-//     startPoint.setLocation(p);
-//   }
-// }
-
-// class PaintPanel extends JPanel {
-//   private final Polygon polygon = new Polygon();
-//   private final Point startPoint = new Point();
-//   private transient BufferedImage offImage;
-//   private transient MouseAdapter handler;
-//   @Override public void updateUI() {
-//     removeMouseMotionListener(handler);
-//     removeMouseListener(handler);
-//     super.updateUI();
-//     handler = new MouseAdapter() {
-//       @Override public void mouseDragged(MouseEvent e) {
-//         Point p = e.getPoint();
-//         Graphics2D g2 = offImage.createGraphics();
-//         g2.setStroke(new BasicStroke(3f));
-//         g2.setPaint(Color.BLACK);
-//         g2.drawLine(startPoint.x, startPoint.y, p.x, p.y);
-//         g2.dispose();
-//         // repaint();
-//         Rectangle r = getRepaintRectangle(startPoint, p);
-//         repaint(r.x - 2, r.y - 2, r.width + 2 + 2, r.height + 2 + 2); // (3.0 / 2) = 1.5 < 2
-//         startPoint.setLocation(p);
-//       }
-//
-//       @Override public void mousePressed(MouseEvent e) {
-//         startPoint.setLocation(e.getPoint());
-//         // if (Objects.isNull(offImage)) { // resized
-//         //   offImage = (BufferedImage) createImage(getWidth(), getHeight());
-//         // }
-//       }
-//     };
-//     addMouseMotionListener(handler);
-//     addMouseListener(handler);
-//     offImage = new BufferedImage(320, 240, BufferedImage.TYPE_INT_ARGB);
-//   }
-//
-//   @Override protected void paintComponent(Graphics g) {
-//     super.paintComponent(g);
-//     g.drawImage(offImage, 0, 0, this);
-//   }
-//
-//   private Rectangle getRepaintRectangle(Point srcPoint, Point dstPoint) {
-//     polygon.reset();
-//     polygon.addPoint(srcPoint.x, srcPoint.y);
-//     polygon.addPoint(dstPoint.x, srcPoint.y);
-//     polygon.addPoint(dstPoint.x, dstPoint.y);
-//     polygon.addPoint(srcPoint.x, dstPoint.y);
-//     return polygon.getBounds();
-//   }
-// }
-
 class PaintPanel extends JPanel {
+  private static final float STROKE_WIDTH = 3f;
   private static final Stroke STROKE = new BasicStroke(
-      3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+      STROKE_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  // Half of the stroke width plus a margin for rounding
+  private static final int PADDING = (int) Math.ceil(STROKE_WIDTH / 2f) + 1;
   private transient MouseInputListener handler;
   private transient List<Shape> list;
 
+  // updateUI() is called from the JPanel constructor before the field initializers run
   protected List<Shape> getList() {
     if (Objects.isNull(list)) {
       list = new ArrayList<>();
@@ -145,24 +66,17 @@ class PaintPanel extends JPanel {
     removeMouseMotionListener(handler);
     removeMouseListener(handler);
     super.updateUI();
-    handler = new MouseInputAdapter() {
-      private Path2D path;
-      @Override public void mousePressed(MouseEvent e) {
-        path = new Path2D.Double();
-        path.moveTo(e.getX(), e.getY());
-        getList().add(path);
-        e.getComponent().repaint();
-      }
-
-      @Override public void mouseDragged(MouseEvent e) {
-        if (path != null) {
-          path.lineTo(e.getX(), e.getY());
-          e.getComponent().repaint();
-        }
-      }
-    };
+    handler = new MouseHandler();
     addMouseMotionListener(handler);
     addMouseListener(handler);
+  }
+
+  // Repaints only the area covered by the stroke of the segment from p0 to p1
+  private void repaintSegment(Point p0, Point p1) {
+    Rectangle r = new Rectangle(p0);
+    r.add(p1);
+    r.grow(PADDING, PADDING);
+    repaint(r);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -172,5 +86,30 @@ class PaintPanel extends JPanel {
     g2.setStroke(STROKE);
     getList().forEach(g2::draw);
     g2.dispose();
+  }
+
+  private final class MouseHandler extends MouseInputAdapter {
+    private final Point prevPoint = new Point();
+    private Path2D path;
+
+    @Override public void mousePressed(MouseEvent e) {
+      Point pt = e.getPoint();
+      path = new Path2D.Double();
+      path.moveTo(pt.x, pt.y);
+      // A zero-length segment is needed to draw a dot with a round cap
+      path.lineTo(pt.x, pt.y);
+      getList().add(path);
+      prevPoint.setLocation(pt);
+      repaintSegment(pt, pt);
+    }
+
+    @Override public void mouseDragged(MouseEvent e) {
+      if (path != null) {
+        Point pt = e.getPoint();
+        path.lineTo(pt.x, pt.y);
+        repaintSegment(prevPoint, pt);
+        prevPoint.setLocation(pt);
+      }
+    }
   }
 }
