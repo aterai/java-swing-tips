@@ -8,6 +8,8 @@
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="ReplaceHashtableWithMap" />
+    <exclude name="OnDemandImport" />
+    <exclude name="TypeNameMismatch" />
   </rule>
   <rule ref="category/java/bestpractices.xml/LooseCoupling">
     <properties>
