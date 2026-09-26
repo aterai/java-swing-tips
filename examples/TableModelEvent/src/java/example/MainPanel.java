@@ -9,10 +9,10 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.synth.SynthUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
@@ -32,8 +32,11 @@ public final class MainPanel extends JPanel {
         {true, 3, "EEE"}, {false, 6, "GGG"}, {true, 4, "FFF"}, {false, 7, "HHH"},
     };
     return new DefaultTableModel(data, columnNames) {
+      private final Class<?>[] columnClasses = {Boolean.class, Integer.class, String.class};
+
       @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
+        // getValueAt(0, column) throws an exception after all rows are deleted
+        return columnClasses[column];
       }
     };
   }
@@ -88,11 +91,11 @@ class HeaderCheckBoxTable extends JTable {
         SwingUtilities.updateComponentTreeUI((Component) r);
       }
     }
-    TableColumn column = getColumnModel().getColumn(CHECKBOX_COLUMN);
-    column.setHeaderRenderer(new HeaderRenderer());
-    column.setHeaderValue(Status.INDETERMINATE);
+    int vci = convertColumnIndexToView(CHECKBOX_COLUMN);
+    getColumnModel().getColumn(vci).setHeaderRenderer(new HeaderRenderer());
 
     handler = new HeaderCheckBoxHandler(this, CHECKBOX_COLUMN);
+    handler.updateHeaderState();
     m.addTableModelListener(handler);
     getTableHeader().addMouseListener(handler);
   }
@@ -111,28 +114,34 @@ class HeaderCheckBoxTable extends JTable {
 class HeaderRenderer implements TableCellRenderer {
   private final JCheckBox check = new JCheckBox();
   private final JLabel label = new JLabel("Check All");
+  private final Icon icon = new ComponentIcon(label);
+
+  protected HeaderRenderer() {
+    check.setOpaque(false);
+    label.setOpaque(false);
+    label.setIcon(new ComponentIcon(check));
+    if (isSynth()) {
+      check.setText(" ");
+    }
+  }
+
+  private boolean isSynth() {
+    return check.getUI() instanceof SynthUI;
+  }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    if (value instanceof Status) {
-      ((Status) value).configureHeaderCheckBox(check);
-    } else {
-      Status.INDETERMINATE.configureHeaderCheckBox(check);
-    }
+    Status status = value instanceof Status ? (Status) value : Status.INDETERMINATE;
+    status.configureHeaderCheckBox(check);
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
     Component c = r.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       l.setOpaque(false);
-      check.setOpaque(false);
-      boolean isSynth = check.getUI().getClass().getName().contains("Synth");
-      if (isSynth) {
-        check.setText(" ");
+      if (isSynth()) {
         check.setPreferredSize(l.getPreferredSize());
       }
-      label.setOpaque(false);
-      label.setIcon(new ComponentIcon(check));
-      l.setIcon(new ComponentIcon(label));
+      l.setIcon(icon);
       l.setText(null);
     }
     return c;
@@ -159,32 +168,26 @@ class ComponentIcon implements Icon {
 
   @Override public int getIconHeight() {
     return cmp.getPreferredSize().height;
-    // Icon icon = UIManager.getIcon("CheckBox.icon");
-    // return icon == null ? 20 : icon.getIconHeight();
   }
 }
 
 enum Status {
-  SELECTED {
-    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
-      check.setSelected(true);
-      check.setEnabled(true);
-    }
-  },
-  DESELECTED {
-    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
-      check.setSelected(false);
-      check.setEnabled(true);
-    }
-  },
-  INDETERMINATE {
-    @Override /* default */ void configureHeaderCheckBox(JCheckBox check) {
-      check.setSelected(true);
-      check.setEnabled(false);
-    }
-  };
+  SELECTED(true, true),
+  DESELECTED(false, true),
+  INDETERMINATE(true, false);
 
-  /* default */ abstract void configureHeaderCheckBox(JCheckBox check);
+  private final boolean selected;
+  private final boolean enabled;
+
+  Status(boolean selected, boolean enabled) {
+    this.selected = selected;
+    this.enabled = enabled;
+  }
+
+  /* default */ void configureHeaderCheckBox(JCheckBox check) {
+    check.setSelected(selected);
+    check.setEnabled(enabled);
+  }
 }
 
 final class TablePopupMenu extends JPopupMenu {

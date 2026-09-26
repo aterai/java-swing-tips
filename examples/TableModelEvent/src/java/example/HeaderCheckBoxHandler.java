@@ -6,6 +6,10 @@ package example;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -24,119 +28,119 @@ public final class HeaderCheckBoxHandler extends MouseAdapter implements TableMo
   }
 
   @Override public void tableChanged(TableModelEvent e) {
-    int vci = table.convertColumnIndexToView(targetColumnIndex);
-    TableColumn column = table.getColumnModel().getColumn(vci);
-    Object status = column.getHeaderValue();
-    TableModel m = table.getModel();
-    boolean repaint = false;
-    if (e.getType() == TableModelEvent.DELETE) {
-      // System.out.println("DELETE");
-      // System.out.println(status + ":   " + Status.INDETERMINATE.equals(status));
-      repaint = fireDeleteEvent(m, column, status);
-    } else if (e.getType() == TableModelEvent.INSERT && status != Status.INDETERMINATE) {
-      // System.out.println("INSERT");
-      repaint = fireInsertEvent(m, column, status, e);
-    } else if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == targetColumnIndex) {
-      // System.out.println("UPDATE");
-      repaint = fireUpdateEvent(m, column, status);
+    int col = e.getColumn();
+    boolean targetChanged = col == targetColumnIndex || col == TableModelEvent.ALL_COLUMNS;
+    if (targetChanged && e.getFirstRow() != TableModelEvent.HEADER_ROW) {
+      int vci = table.convertColumnIndexToView(targetColumnIndex);
+      if (vci >= 0) {
+        TableColumn column = table.getColumnModel().getColumn(vci);
+        Object value = column.getHeaderValue();
+        Status status = value instanceof Status ? (Status) value : Status.INDETERMINATE;
+        Status newStatus = e.getType() == TableModelEvent.DELETE
+            ? getStatusAfterDelete(status)
+            : getStatusAfterChange(status, e);
+        setHeaderStatus(vci, newStatus);
+      }
     }
-    if (repaint) {
+  }
+
+  /* default */ void updateHeaderState() {
+    int vci = table.convertColumnIndexToView(targetColumnIndex);
+    if (vci >= 0) {
+      TableModel m = table.getModel();
+      setHeaderStatus(vci, resolveStatus(m, 0, m.getRowCount() - 1));
+    }
+  }
+
+  private void setHeaderStatus(int vci, Status status) {
+    TableColumn column = table.getColumnModel().getColumn(vci);
+    if (column.getHeaderValue() != status) {
+      column.setHeaderValue(status);
       JTableHeader h = table.getTableHeader();
       h.repaint(h.getHeaderRect(vci));
     }
   }
 
-  private boolean fireDeleteEvent(TableModel m, TableColumn column, Object status) {
-    boolean repaint = true;
-    if (m.getRowCount() == 0) {
-      column.setHeaderValue(Status.DESELECTED);
+  // TableModelEvent.DELETE: the deleted rows no longer exist in the model
+  private Status getStatusAfterDelete(Status status) {
+    TableModel m = table.getModel();
+    int rowCount = m.getRowCount();
+    Status newStatus;
+    if (rowCount == 0) {
+      newStatus = Status.DESELECTED;
     } else if (status == Status.INDETERMINATE) {
-      boolean selected = true;
-      boolean deselected = true;
-      for (int i = 0; i < m.getRowCount(); i++) {
-        Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-        selected &= b;
-        deselected &= !b;
-      }
-      // System.out.println(selected);
-      // System.out.println(deselected);
-      if (deselected) {
-        column.setHeaderValue(Status.DESELECTED);
-      } else if (selected) {
-        column.setHeaderValue(Status.SELECTED);
-      } else {
-        repaint = false;
-      }
+      newStatus = resolveStatus(m, 0, rowCount - 1);
+    } else {
+      // Deleting rows from a uniform column does not change its state
+      newStatus = status;
     }
-    return repaint;
+    return newStatus;
   }
 
-  private boolean fireInsertEvent(
-      TableModel m, TableColumn column, Object status, TableModelEvent e) {
-    boolean repaint = true;
-    boolean selected = status == Status.DESELECTED;
-    boolean deselected = status == Status.SELECTED;
-    for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-      Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-      selected &= b;
-      deselected &= !b;
-    }
-    if (selected && m.getRowCount() == 1) {
-      column.setHeaderValue(Status.SELECTED);
-    } else if (selected || deselected) {
-      column.setHeaderValue(Status.INDETERMINATE);
+  // TableModelEvent.INSERT or TableModelEvent.UPDATE
+  private Status getStatusAfterChange(Status status, TableModelEvent e) {
+    TableModel m = table.getModel();
+    int lastIndex = m.getRowCount() - 1;
+    int firstRow = Math.max(0, e.getFirstRow());
+    // fireTableDataChanged() sets lastRow to Integer.MAX_VALUE
+    int lastRow = Math.min(e.getLastRow(), lastIndex);
+    boolean allRowsChanged = firstRow == 0 && lastRow == lastIndex;
+    boolean isUpdate = e.getType() == TableModelEvent.UPDATE;
+    Status newStatus;
+    if (allRowsChanged || isUpdate && status == Status.INDETERMINATE) {
+      newStatus = resolveStatus(m, 0, lastIndex);
     } else {
-      repaint = false;
+      // The unchanged rows are uniform (or already mixed if INDETERMINATE),
+      // so only the changed rows need to be checked
+      Status changed = resolveStatus(m, firstRow, lastRow);
+      newStatus = changed == status ? status : Status.INDETERMINATE;
     }
-    return repaint;
+    return newStatus;
   }
 
-  private boolean fireUpdateEvent(TableModel m, TableColumn column, Object status) {
-    boolean repaint = true;
-    if (status == Status.INDETERMINATE) {
-      boolean selected = true;
-      boolean deselected = true;
-      for (int i = 0; i < m.getRowCount(); i++) {
-        Boolean b = (Boolean) m.getValueAt(i, targetColumnIndex);
-        selected &= b;
-        deselected &= !b;
-        if (selected == deselected) {
-          break;
-        }
-      }
-      if (selected == deselected) {
-        repaint = false;
-      } else if (deselected) {
-        column.setHeaderValue(Status.DESELECTED);
-      } else {
-        column.setHeaderValue(Status.SELECTED);
-      }
+  private Status resolveStatus(TableModel m, int firstRow, int lastRow) {
+    List<Boolean> values = IntStream.rangeClosed(firstRow, lastRow)
+        .mapToObj(i -> Objects.equals(m.getValueAt(i, targetColumnIndex), true))
+        .distinct()
+        .limit(2)
+        .collect(Collectors.toList()); // Java 16: .toList();
+    Status status;
+    if (values.isEmpty()) {
+      status = Status.DESELECTED;
     } else {
-      column.setHeaderValue(Status.INDETERMINATE);
+      boolean isUniform = values.size() == 1;
+      if (isUniform) {
+        boolean isSelected = values.get(0); // Java 21: values.getFirst();
+        status = isSelected ? Status.SELECTED : Status.DESELECTED;
+      } else {
+        status = Status.INDETERMINATE;
+      }
     }
-    return repaint;
+    return status;
   }
 
   @Override public void mouseClicked(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
-    if (header.isEnabled()) {
-      JTable tbl = header.getTable();
-      TableModel model = tbl.getModel();
-      int vci = tbl.columnAtPoint(e.getPoint());
-      int mci = tbl.convertColumnIndexToModel(vci);
-      if (mci == targetColumnIndex && model.getRowCount() > 0) {
-        TableColumn column = tbl.getColumnModel().getColumn(vci);
-        boolean select = column.getHeaderValue() == Status.DESELECTED;
-        toggleAllRows(model, mci, select);
-        column.setHeaderValue(select ? Status.SELECTED : Status.DESELECTED);
-        // header.repaint();
-      }
+    TableModel model = table.getModel();
+    int vci = header.columnAtPoint(e.getPoint());
+    int mci = table.convertColumnIndexToModel(vci);
+    if (header.isEnabled() && mci == targetColumnIndex && model.getRowCount() > 0) {
+      TableColumn column = table.getColumnModel().getColumn(vci);
+      boolean selected = column.getHeaderValue() == Status.DESELECTED;
+      setAllValues(model, selected);
+      setHeaderStatus(vci, selected ? Status.SELECTED : Status.DESELECTED);
     }
   }
 
-  private void toggleAllRows(TableModel model, int columnIndex, boolean selected) {
-    for (int i = 0; i < model.getRowCount(); i++) {
-      model.setValueAt(selected, i, columnIndex);
+  private void setAllValues(TableModel model, boolean selected) {
+    // Suppress the header state check for each row while updating all rows
+    model.removeTableModelListener(this);
+    try {
+      for (int i = 0; i < model.getRowCount(); i++) {
+        model.setValueAt(selected, i, targetColumnIndex);
+      }
+    } finally {
+      model.addTableModelListener(this);
     }
   }
 }
