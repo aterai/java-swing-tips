@@ -12,19 +12,21 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JComboBox<PairItem> combo = new JComboBox<PairItem>(makeModel()) {
+    JComboBox<PairItem> combo0 = new JComboBox<>(createModel());
+    add(createTitledBox("DefaultComboBox", combo0), BorderLayout.SOUTH);
+
+    JComboBox<PairItem> combo1 = new JComboBox<PairItem>(createModel()) {
       @Override public void updateUI() {
         // setRenderer(null);
         super.updateUI();
         setRenderer(new MultiColumnCellRenderer<>());
       }
     };
-    add(makeTitledBox("MultiColumnComboBox", combo), BorderLayout.NORTH);
-    add(makeTitledBox("DefaultComboBox", new JComboBox<>(makeModel())), BorderLayout.SOUTH);
+    add(createTitledBox("MultiColumnComboBox", combo1), BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Box makeTitledBox(String title, JComboBox<?> combo) {
+  private static Box createTitledBox(String title, JComboBox<?> combo) {
     JTextField leftTextField = new JTextField();
     JTextField rightTextField = new JTextField();
     leftTextField.setEditable(false);
@@ -39,15 +41,19 @@ public final class MainPanel extends JPanel {
     box.add(rightTextField);
     combo.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        PairItem item = (PairItem) e.getItem();
-        leftTextField.setText(item.getLeftText());
-        rightTextField.setText(item.getRightText());
+        updateTextFields((PairItem) e.getItem(), leftTextField, rightTextField);
       }
     });
+    updateTextFields((PairItem) combo.getSelectedItem(), leftTextField, rightTextField);
     return box;
   }
 
-  private static ComboBoxModel<PairItem> makeModel() {
+  private static void updateTextFields(PairItem item, JTextField left, JTextField right) {
+    left.setText(item == null ? "" : item.getLeftText());
+    right.setText(item == null ? "" : item.getRightText());
+  }
+
+  private static ComboBoxModel<PairItem> createModel() {
     String name = "loooooooooooooooooooooooooooooooooong.1234567890.1234567890";
     DefaultComboBoxModel<PairItem> m = new DefaultComboBoxModel<>();
     m.addElement(new PairItem("ComboBoxModel", "846876"));
@@ -97,7 +103,6 @@ class MultiColumnCellRenderer<E extends PairItem> implements ListCellRenderer<E>
       super.updateUI();
       setOpaque(false);
       setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-      setForeground(Color.GRAY);
       setHorizontalAlignment(RIGHT);
     }
 
@@ -124,27 +129,37 @@ class MultiColumnCellRenderer<E extends PairItem> implements ListCellRenderer<E>
     }
   };
 
-  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-    leftLabel.setText(value.getLeftText());
-    rightLabel.setText(value.getRightText());
-    leftLabel.setFont(list.getFont());
-    rightLabel.setFont(list.getFont());
+  protected MultiColumnCellRenderer() {
     renderer.add(leftLabel);
     renderer.add(rightLabel, BorderLayout.EAST);
-    if (index < 0) {
-      leftLabel.setForeground(list.getForeground());
-      renderer.setOpaque(false);
+  }
+
+  @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    leftLabel.setText(value == null ? "" : value.getLeftText());
+    rightLabel.setText(value == null ? "" : value.getRightText());
+    leftLabel.setFont(list.getFont());
+    rightLabel.setFont(list.getFont());
+    Color fgc;
+    Color bgc;
+    if (index >= 0 && isSelected) {
+      fgc = list.getSelectionForeground();
+      bgc = list.getSelectionBackground();
     } else {
-      if (isSelected) {
-        leftLabel.setForeground(list.getSelectionForeground());
-        renderer.setBackground(list.getSelectionBackground());
-      } else {
-        leftLabel.setForeground(list.getForeground());
-        renderer.setBackground(list.getBackground());
-      }
-      renderer.setOpaque(true);
+      fgc = list.getForeground();
+      bgc = list.getBackground();
     }
+    leftLabel.setForeground(fgc);
+    rightLabel.setForeground(blend(fgc, bgc));
+    renderer.setBackground(bgc);
+    renderer.setOpaque(index >= 0);
     return renderer;
+  }
+
+  private static Color blend(Color c1, Color c2) {
+    int r = (c1.getRed() + c2.getRed()) / 2;
+    int g = (c1.getGreen() + c2.getGreen()) / 2;
+    int b = (c1.getBlue() + c2.getBlue()) / 2;
+    return new Color(r, g, b);
   }
 }
 
@@ -152,9 +167,9 @@ class PairItem {
   private final String leftText;
   private final String rightText;
 
-  protected PairItem(String strLeft, String strRight) {
-    this.leftText = strLeft;
-    this.rightText = strRight;
+  protected PairItem(String leftText, String rightText) {
+    this.leftText = leftText;
+    this.rightText = rightText;
   }
 
   public String getLeftText() {
