@@ -5,22 +5,19 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 public final class RoundedCornerButtonUI extends BasicButtonUI {
   private static final double ARC = 16d;
   private static final double FOCUS_STROKE = 2d;
-  private static final Color FC = new Color(100, 150, 255);
-  private static final Color AC = new Color(220, 225, 230);
-  private static final Color RC = Color.ORANGE;
+  private static final Color FOCUS_COLOR = new Color(100, 150, 255);
+  private static final Color PRESSED_COLOR = new Color(220, 225, 230);
+  private static final Color ROLLOVER_COLOR = Color.ORANGE;
+  private final Dimension cachedSize = new Dimension();
   private Shape shape;
-  private Shape border;
-  private Shape base;
-  private transient BasicButtonListener listener;
+  private Shape innerShape;
 
   @Override protected void installDefaults(AbstractButton b) {
     super.installDefaults(b);
@@ -29,32 +26,10 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
     b.setOpaque(false);
     b.setBackground(new Color(245, 250, 255));
     b.setBorder(BorderFactory.createEmptyBorder(4, 12, 4, 12));
-    initShape(b);
-  }
-
-  @Override protected void installListeners(AbstractButton button) {
-    if (listener != null) {
-      listener = new RoundedCornerButtonListener(button);
-    }
-    button.addMouseListener(listener);
-    button.addMouseMotionListener(listener);
-    button.addFocusListener(listener);
-    button.addPropertyChangeListener(listener);
-    button.addChangeListener(listener);
-  }
-
-  @Override protected void uninstallListeners(AbstractButton b) {
-    super.uninstallListeners(b);
-    b.removeMouseListener(listener);
-    b.removeMouseMotionListener(listener);
-    b.removeFocusListener(listener);
-    b.removePropertyChangeListener(listener);
-    b.removeChangeListener(listener);
   }
 
   @Override public void paint(Graphics g, JComponent c) {
-    initShape(c);
-
+    updateShapeIfResized(c);
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -63,12 +38,12 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
       AbstractButton b = (AbstractButton) c;
       ButtonModel model = b.getModel();
       if (model.isArmed()) {
-        g2.setPaint(AC);
+        g2.setPaint(PRESSED_COLOR);
         g2.fill(shape);
       } else if (b.isRolloverEnabled() && model.isRollover()) {
-        paintFocusAndRollover(g2, c, RC);
+        paintFocusAndRollover(g2, c, ROLLOVER_COLOR);
       } else if (b.hasFocus()) {
-        paintFocusAndRollover(g2, c, FC);
+        paintFocusAndRollover(g2, c, FOCUS_COLOR);
       } else {
         g2.setPaint(c.getBackground());
         g2.fill(shape);
@@ -82,55 +57,30 @@ public final class RoundedCornerButtonUI extends BasicButtonUI {
     super.paint(g, c);
   }
 
-  public boolean isShapeContains(Point pt) {
-    return shape != null && shape.contains(pt);
+  // JComponent#contains(int, int) delegates to this method, so mouse events
+  // (press, rollover, etc.) outside the rounded corners are not dispatched to the button.
+  @Override public boolean contains(JComponent c, int x, int y) {
+    updateShapeIfResized(c);
+    return shape.contains(x, y);
   }
 
-  public void initShape(Component c) {
-    if (!c.getBounds().equals(base)) {
-      base = c.getBounds();
+  private void updateShapeIfResized(Component c) {
+    if (shape == null || !cachedSize.equals(c.getSize())) {
+      c.getSize(cachedSize);
       double w = c.getWidth() - 1d;
       double h = c.getHeight() - 1d;
       double s = FOCUS_STROKE;
       shape = new RoundRectangle2D.Double(0d, 0d, w, h, ARC, ARC);
-      border = new RoundRectangle2D.Double(s, s, w - s * 2d, h - s * 2d, ARC, ARC);
+      innerShape = new RoundRectangle2D.Double(s, s, w - s * 2d, h - s * 2d, ARC, ARC);
     }
   }
 
-  public void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
+  private void paintFocusAndRollover(Graphics2D g2, Component c, Color color) {
     float w = c.getWidth() - 1f;
     float h = c.getHeight() - 1f;
     g2.setPaint(new GradientPaint(0f, 0f, color, w, h, color.brighter(), true));
     g2.fill(shape);
     g2.setPaint(c.getBackground());
-    g2.fill(border);
-  }
-
-  private final class RoundedCornerButtonListener extends BasicButtonListener {
-    private RoundedCornerButtonListener(AbstractButton button) {
-      super(button);
-    }
-
-    @Override public void mousePressed(MouseEvent e) {
-      AbstractButton b = (AbstractButton) e.getComponent();
-      initShape(b);
-      if (isShapeContains(e.getPoint())) {
-        super.mousePressed(e);
-      }
-    }
-
-    @Override public void mouseEntered(MouseEvent e) {
-      if (isShapeContains(e.getPoint())) {
-        super.mouseEntered(e);
-      }
-    }
-
-    @Override public void mouseMoved(MouseEvent e) {
-      if (isShapeContains(e.getPoint())) {
-        super.mouseEntered(e);
-      } else {
-        super.mouseExited(e);
-      }
-    }
+    g2.fill(innerShape);
   }
 }
