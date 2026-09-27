@@ -159,6 +159,10 @@
     <module name="NoWhitespaceBefore"/>
     <module name="OperatorWrap"/>
     <module name="ParenPad"/>
+    <module name="SeparatorWrap">
+      <property name="tokens" value="COMMA"/>
+      <property name="option" value="EOL"/>
+    </module>
     <module name="TypecastParenPad"/>
     <module name="WhitespaceAfter">
       <!-- Explicit token list to avoid duplication with WhitespaceAround.
@@ -211,7 +215,10 @@
     <!-- Miscellaneous other checks.                       -->
     <!-- See https://checkstyle.org/checks/misc/index.html -->
     <module name="ArrayTypeStyle"/>
-    <!-- module name="FinalParameters"/ -->
+    <!--
+    <module name="FinalParameters"/>
+    <module name="Indentation"/>
+    -->
     <module name="TodoComment"/>
     <module name="UpperEll"/>
 

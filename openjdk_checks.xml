@@ -169,6 +169,7 @@
     <module name="ArrayTypeStyle"/>
     <module name="VariableDeclarationUsageDistance"/>
     <!-- module name="OpenjdkAnnotationLocation"/ -->
+    <module name="OpenjdkMethodThrowsAlignment"/>
 
     <module name="MethodName">
       <property name="format" value="^[a-z]{2,}[a-zA-Z0-9]*$"/>
@@ -263,6 +264,11 @@
     </module>
 
     <module name="RedundantModifier"/>
+    <module name="ModifierOrder">
+      <property name="modifiersOrder"
+                value="public, private, protected, abstract, static, final, transient, volatile,
+                       default, synchronized, native, strictfp"/>
+    </module>
 
     <!-- https://checkstyle.org/filters/suppressionxpathfilter.html -->
     <module name="SuppressionXpathFilter">
@@ -328,6 +334,10 @@
     <module name="LeftCurly"/>
     <module name="SuppressionXpathSingleFilter">
       <property name="checks" value="LeftCurly"/>
+      <!-- one phrase per translation of the 'line.break.after' message, see
+           checks/blocks/messages*.properties -->
+      <property name="message"
+                value="line break after|Zeilenumbruch|salto de línea|rivinvaihdon|saut de ligne|改行|quebra de linha|перевод строки|satır sonu|换行"/>
       <property name="query"
                 value="//METHOD_DEF/SLIST[LITERAL_RETURN
                         or EXPR[following-sibling::SEMI[following-sibling::*[self::RCURLY]]]]"/>
