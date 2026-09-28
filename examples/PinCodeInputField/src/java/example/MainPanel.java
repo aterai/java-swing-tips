@@ -140,25 +140,27 @@ class RevealLastCharPasswordView extends PasswordView {
       } else {
         g.setColor(f.getDisabledTextColor());
       }
-      Graphics2D g2 = (Graphics2D) g;
       char echoChar = f.getEchoChar();
       int n = p1 - p0;
       for (int i = 0; i < n; i++) {
-        j = i == n - 1 ? drawLastChar(g2, j, y, p0 + i) : drawEchoCharacter(g, j, y, echoChar);
+        j = i == n - 1 ? drawLastChar(g, j, y, p0 + i) : drawEchoCharacter(g, j, y, echoChar);
       }
     }
     return j;
   }
 
-  private int drawLastChar(Graphics2D g2, int x, int y, int pos) throws BadLocationException {
+  private int drawLastChar(Graphics g, int x, int y, int pos) throws BadLocationException {
+    Graphics2D g2 = (Graphics2D) g;
     Font font = g2.getFont();
     double w = font.getStringBounds("0", g2.getFontRenderContext()).getWidth();
     int sz = (int) ((font.getSize2D() - w) / 2d);
     Segment s = new Segment();
     getDocument().getText(pos, 1, s);
-    float fx = x + sz;
-    float fy = y;
-    return (int) Utilities.drawTabbedText(s, fx, fy, g2, this, pos);
+    return Utilities.drawTabbedText(s, x + sz, y, g, this, pos);
+    // Java 9:
+    // float fx = x + sz;
+    // float fy = y;
+    // return (int) Utilities.drawTabbedText(s, fx, fy, g2, this, pos);
   }
 }
 
