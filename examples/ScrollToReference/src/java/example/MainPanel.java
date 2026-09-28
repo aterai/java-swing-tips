@@ -25,6 +25,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -36,20 +37,23 @@ public final class MainPanel extends JPanel {
     editor.setEditorKit(new HTMLEditorKit());
     editor.setText("<html><body><p id='main'></p><p id='bottom'>id=bottom</p></body>");
 
+    DefaultTreeModel model = createModel();
+    appendAnchors(editor, (DefaultMutableTreeNode) model.getRoot());
+
     JButton button = new JButton("bottom");
     button.addActionListener(e -> scrollToId(editor, "bottom"));
     EventQueue.invokeLater(() -> scrollToId(editor, "main"));
 
-    JScrollPane s1 = new JScrollPane(createTree(editor));
-    JScrollPane s2 = new JScrollPane(editor);
-    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    JScrollPane treeScroll = new JScrollPane(createTree(model, editor));
+    JScrollPane editorScroll = new JScrollPane(editor);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScroll, editorScroll);
     split.setResizeWeight(.5);
     add(split);
     add(button, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTree createTree(JEditorPane editor) {
+  private static JTree createTree(TreeModel model, JEditorPane editor) {
     Icon emptyIcon = new EmptyIcon();
     UIManager.put("Tree.openIcon", emptyIcon);
     UIManager.put("Tree.closedIcon", emptyIcon);
@@ -61,7 +65,7 @@ public final class MainPanel extends JPanel {
     UIManager.put("Tree.paintLines", false);
 
     JTree tree = new RowSelectionTree();
-    tree.setModel(createModel(editor));
+    tree.setModel(model);
     tree.setRowHeight(32);
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     // https://ateraimemo.com/Swing/ExpandAllNodes.html
@@ -71,14 +75,12 @@ public final class MainPanel extends JPanel {
       row += 1;
     }
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-    tree.addTreeSelectionListener(e -> {
-      Object o = e.getNewLeadSelectionPath().getLastPathComponent();
-      if (o instanceof DefaultMutableTreeNode) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
-        String ref = Objects.toString(node.getUserObject());
-        editor.scrollToReference(ref);
-      }
-    });
+    tree.addTreeSelectionListener(e -> Optional.ofNullable(e.getNewLeadSelectionPath())
+        .map(TreePath::getLastPathComponent)
+        .filter(DefaultMutableTreeNode.class::isInstance)
+        .map(DefaultMutableTreeNode.class::cast)
+        .map(node -> Objects.toString(node.getUserObject()))
+        .ifPresent(editor::scrollToReference));
     return tree;
   }
 
@@ -87,6 +89,9 @@ public final class MainPanel extends JPanel {
     if (d instanceof HTMLDocument) {
       HTMLDocument doc = (HTMLDocument) d;
       Element element = doc.getElement(id);
+      if (element == null) {
+        return;
+      }
       try {
         int pos = element.getStartOffset();
         // Java 9: Rectangle r = editor.modelToView2D(pos).getBounds();
@@ -103,7 +108,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static DefaultTreeModel createModel(JEditorPane editor) {
+  private static DefaultTreeModel createModel() {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("1. Introduction");
     root.add(c1);
@@ -121,9 +126,13 @@ public final class MainPanel extends JPanel {
     c3.add(new DefaultMutableTreeNode("3.4. Section"));
     root.add(c3);
 
+    return new DefaultTreeModel(root);
+  }
+
+  private static void appendAnchors(JEditorPane editor, DefaultMutableTreeNode root) {
     HTMLDocument doc = (HTMLDocument) editor.getDocument();
     Element element = doc.getElement("main");
-    // DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+    String br = String.join("", Collections.nCopies(12, "<br />"));
     // Java 9: Collections.list(root.preorderEnumeration()).stream()
     Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
@@ -131,7 +140,6 @@ public final class MainPanel extends JPanel {
         .filter(node -> !node.isRoot())
         .map(node -> Objects.toString(node.getUserObject()))
         .forEach(ref -> {
-          String br = String.join("", Collections.nCopies(12, "<br />"));
           try {
             String link = String.format("<a name='%s' href='#'>%s</a>%s", ref, ref, br);
             doc.insertBeforeEnd(element, link);
@@ -140,8 +148,6 @@ public final class MainPanel extends JPanel {
             UIManager.getLookAndFeel().provideErrorFeedback(editor);
           }
         });
-
-    return new DefaultTreeModel(root);
   }
 
   public static void main(String[] args) {
@@ -172,26 +178,37 @@ class RowSelectionTree extends JTree {
   private transient TreeWillExpandListener listener;
 
   @Override protected void paintComponent(Graphics g) {
-    int[] sr = getSelectionRows();
-    if (sr == null) {
+    int[] selectionRows = getSelectionRows();
+    if (selectionRows == null) {
       super.paintComponent(g);
     } else {
       g.setColor(getBackground());
       g.fillRect(0, 0, getWidth(), getHeight());
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setPaint(SELECTED_COLOR);
-      Arrays.stream(sr).mapToObj(this::getRowBounds)
-          .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+      paintRows(g2, selectionRows);
       super.paintComponent(g);
       if (hasFocus()) {
-        Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-          Rectangle r = getRowBounds(getRowForPath(path));
-          g2.setPaint(SELECTED_COLOR.darker());
-          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-        });
+        paintFocusRow(g2);
       }
       g2.dispose();
     }
+  }
+
+  private void paintRows(Graphics2D g2, int... selectionRows) {
+    g2.setPaint(SELECTED_COLOR);
+    Arrays.stream(selectionRows)
+        .mapToObj(this::getRowBounds)
+        .filter(Objects::nonNull)
+        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+  }
+
+  private void paintFocusRow(Graphics2D g2) {
+    Optional.ofNullable(getLeadSelectionPath())
+        .map(this::getPathBounds)
+        .ifPresent(r -> {
+          g2.setPaint(SELECTED_COLOR.darker());
+          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+        });
   }
 
   @Override public void updateUI() {

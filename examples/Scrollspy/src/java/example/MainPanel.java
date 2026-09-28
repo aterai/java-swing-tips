@@ -88,13 +88,13 @@ public final class MainPanel extends JPanel {
     TreeModel model = createModel();
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
     // Java 9: Collections.list(root.preorderEnumeration()).stream()
+    String br = String.join("", Collections.nCopies(12, "<br />"));
     Collections.list((Enumeration<?>) root.preorderEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !node.isRoot())
         .map(node -> Objects.toString(node.getUserObject()))
         .forEach(ref -> {
-          String br = String.join("", Collections.nCopies(12, "<br />"));
           String link = String.format("<a name='%s' href='#'>%s</a>%s", ref, ref, br);
           try {
             doc.insertBeforeEnd(element, link);
@@ -110,11 +110,14 @@ public final class MainPanel extends JPanel {
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.addTreeSelectionListener(e -> {
-      Object o = e.getNewLeadSelectionPath().getLastPathComponent();
-      if (o instanceof DefaultMutableTreeNode && tree.isEnabled()) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
-        String ref = Objects.toString(node.getUserObject());
-        editor.scrollToReference(ref);
+      // ignore node selection triggered by JEditorPane scrolling
+      if (tree.isEnabled()) {
+        Optional.ofNullable(e.getNewLeadSelectionPath())
+            .map(TreePath::getLastPathComponent)
+            .filter(DefaultMutableTreeNode.class::isInstance)
+            .map(DefaultMutableTreeNode.class::cast)
+            .map(node -> Objects.toString(node.getUserObject()))
+            .ifPresent(editor::scrollToReference);
       }
     });
     expandAllNodes(tree);
@@ -217,19 +220,30 @@ class RowSelectionTree extends JTree {
       g.setColor(getBackground());
       g.fillRect(0, 0, getWidth(), getHeight());
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setPaint(SELECTED_COLOR);
-      Arrays.stream(selectionRows).mapToObj(this::getRowBounds)
-          .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+      paintRows(g2, selectionRows);
       super.paintComponent(g);
       if (hasFocus()) {
-        Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-          Rectangle r = getRowBounds(getRowForPath(path));
-          g2.setPaint(SELECTED_COLOR.darker());
-          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-        });
+        paintFocusRow(g2);
       }
       g2.dispose();
     }
+  }
+
+  private void paintRows(Graphics2D g2, int... selectionRows) {
+    g2.setPaint(SELECTED_COLOR);
+    Arrays.stream(selectionRows)
+        .mapToObj(this::getRowBounds)
+        .filter(Objects::nonNull)
+        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+  }
+
+  private void paintFocusRow(Graphics2D g2) {
+    Optional.ofNullable(getLeadSelectionPath())
+        .map(this::getPathBounds)
+        .ifPresent(r -> {
+          g2.setPaint(SELECTED_COLOR.darker());
+          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+        });
   }
 
   @Override public void updateUI() {
