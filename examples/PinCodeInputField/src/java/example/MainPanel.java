@@ -33,16 +33,16 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         setUI(new BasicPasswordFieldUI() {
           @Override public View create(Element elem) {
-            return new PasswordView2(elem);
+            return new RevealLastCharPasswordView(elem);
           }
         });
       }
     };
 
     Box box = Box.createVerticalBox();
-    box.add(makePasswordField(new JPasswordField(6)));
+    box.add(createPinField(new JPasswordField(6)));
     box.add(Box.createVerticalStrut(10));
-    box.add(makePasswordField(password));
+    box.add(createPinField(password));
 
     JPanel p = new JPanel(new GridBagLayout());
     p.add(box);
@@ -50,7 +50,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makePasswordField(JPasswordField password) {
+  private Component createPinField(JPasswordField password) {
     password.setCaret(new DefaultCaret() {
       @Override public boolean isSelectionVisible() {
         return false;
@@ -106,16 +106,22 @@ public final class MainPanel extends JPanel {
 class PinCodeDocumentFilter extends DocumentFilter {
   public static final int MAX = 4;
 
+  @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attrs) throws BadLocationException {
+    replace(fb, offset, 0, text, attrs);
+  }
+
   @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-    String str = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
-    if (str.length() <= MAX && str.matches("\\d+")) {
+    Document doc = fb.getDocument();
+    StringBuilder sb = new StringBuilder(doc.getText(0, doc.getLength()));
+    sb.replace(offset, offset + length, text == null ? "" : text);
+    if (sb.length() <= MAX && sb.toString().matches("\\d*")) {
       super.replace(fb, offset, length, text, attrs);
     }
   }
 }
 
-class PasswordView2 extends PasswordView {
-  protected PasswordView2(Element elem) {
+class RevealLastCharPasswordView extends PasswordView {
+  protected RevealLastCharPasswordView(Element elem) {
     super(elem);
   }
 
@@ -138,24 +144,21 @@ class PasswordView2 extends PasswordView {
       char echoChar = f.getEchoChar();
       int n = p1 - p0;
       for (int i = 0; i < n; i++) {
-        j = i == n - 1 ? drawLastChar(g2, j, y, i) : drawEchoCharacter(g, j, y, echoChar);
+        j = i == n - 1 ? drawLastChar(g2, j, y, p0 + i) : drawEchoCharacter(g, j, y, echoChar);
       }
     }
     return j;
   }
 
-  private int drawLastChar(Graphics g, int x, int y, int p1) throws BadLocationException {
-    Graphics2D g2 = (Graphics2D) g;
+  private int drawLastChar(Graphics2D g2, int x, int y, int pos) throws BadLocationException {
     Font font = g2.getFont();
-    float fs = font.getSize2D();
     double w = font.getStringBounds("0", g2.getFontRenderContext()).getWidth();
-    int sz = (int) ((fs - w) / 2d);
-    Document doc = getDocument();
-    Segment s = new Segment(); // SegmentCache.getSharedSegment();
-    doc.getText(p1, 1, s);
-    // int ret = Utilities.drawTabbedText(s, x, y, g, this, p1);
-    // SegmentCache.releaseSharedSegment(s);
-    return Utilities.drawTabbedText(s, x + sz, y, g, this, p1);
+    int sz = (int) ((font.getSize2D() - w) / 2d);
+    Segment s = new Segment();
+    getDocument().getText(pos, 1, s);
+    float fx = x + sz;
+    float fy = y;
+    return (int) Utilities.drawTabbedText(s, fx, fy, g2, this, pos);
   }
 }
 
