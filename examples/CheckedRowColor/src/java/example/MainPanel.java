@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -14,16 +15,20 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int BOOLEAN_COLUMN = 2;
+  private static final int BOOLEAN_COLUMN = 2;
+  private static final Color CHECKED_COLOR = Color.ORANGE;
 
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = makeTable(makeModel());
-    // TEST: JTable table = makeTable2(model);
+    JTable table = new CheckedRowColorTable(createModel());
     table.getModel().addTableModelListener(e -> {
-      if (e.getType() == TableModelEvent.UPDATE) {
-        // System.out.println("TableModel: tableChanged");
-        rowRepaint(table, table.convertRowIndexToView(e.getFirstRow()));
+      // Only a change in the check box column affects the row background color
+      if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == BOOLEAN_COLUMN) {
+        if (e.getFirstRow() == e.getLastRow()) {
+          repaintRow(table, table.convertRowIndexToView(e.getFirstRow()));
+        } else {
+          table.repaint();
+        }
       }
     });
     table.setAutoCreateRowSorter(true);
@@ -37,7 +42,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Number", "Boolean"};
     Object[][] data = {
         {"aaa", 1, false}, {"bbb", 20, false},
@@ -50,68 +55,62 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
 
-      @Override public boolean isCellEditable(int row, int col) {
-        return col == BOOLEAN_COLUMN;
+      @Override public boolean isCellEditable(int row, int column) {
+        return column == BOOLEAN_COLUMN;
       }
     };
   }
 
-  public static JTable makeTable(TableModel model) {
-    return new JTable(model) {
-      @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-        Component c = super.prepareRenderer(renderer, row, column);
-        boolean b = (boolean) model.getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
+  private static final class CheckedRowColorTable extends JTable {
+    private CheckedRowColorTable(TableModel model) {
+      super(model);
+    }
+
+    @Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+      Component c = super.prepareRenderer(renderer, row, column);
+      // Keep the selection colors set by the renderer for the selected rows
+      if (!isRowSelected(row)) {
+        Object value = getModel().getValueAt(convertRowIndexToModel(row), BOOLEAN_COLUMN);
         c.setForeground(getForeground());
-        c.setBackground(b ? Color.ORANGE : getBackground());
-        return c;
+        c.setBackground(Boolean.TRUE.equals(value) ? CHECKED_COLOR : getBackground());
       }
+      return c;
+    }
 
-      @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
-        Component c = super.prepareEditor(editor, row, column);
-        if (c instanceof JCheckBox) {
-          c.setBackground(((JCheckBox) c).isSelected() ? Color.ORANGE : getBackground());
-        }
-        return c;
+    @Override public Component prepareEditor(TableCellEditor editor, int row, int column) {
+      Component c = super.prepareEditor(editor, row, column);
+      updateEditorBackground(c, row);
+      return c;
+    }
+
+    @Override public void valueChanged(ListSelectionEvent e) {
+      super.valueChanged(e);
+      // A mouse press starts editing before the row is selected,
+      // so the editor background also has to follow the selection change
+      if (isEditing()) {
+        updateEditorBackground(getEditorComponent(), getEditingRow());
       }
-    };
-    // for (int i = 0; i < model.getColumnCount(); i++) {
-    //   TableCellRenderer r = table.getDefaultRenderer(model.getColumnClass(i));
-    //   if (r instanceof Component) {
-    //     SwingUtilities.updateComponentTreeUI((Component) r);
-    //   }
-    // }
-    // return table;
+    }
+
+    private void updateEditorBackground(Component c, int row) {
+      if (c instanceof JCheckBox) {
+        Color bgc;
+        if (isRowSelected(row)) {
+          bgc = getSelectionBackground();
+        } else {
+          bgc = ((JCheckBox) c).isSelected() ? CHECKED_COLOR : getBackground();
+        }
+        c.setBackground(bgc);
+      }
+    }
   }
 
-  // // TEST:
-  // public static JTable makeTable2(TableModel model) {
-  //   JTable table = new JTable(model);
-  //   TableColumnModel columns = table.getColumnModel();
-  //   TableCellRenderer r = new RowColorTableRenderer();
-  //   for (int i = 0; i < columns.getColumnCount(); i++) {
-  //     columns.getColumn(i).setCellRenderer(r);
-  //   }
-  //   return table;
-  // }
-  //
-  // private static class RowColorTableRenderer extends DefaultTableCellRenderer {
-  //   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-  //     Component c = super.getTableCellRendererComponent(
-  //         table, value, isSelected, hasFocus, row, column);
-  //     TableModel model = table.getModel();
-  //     Boolean b = (Boolean) model.getValueAt(
-  //         table.convertRowIndexToModel(row), BOOLEAN_COLUMN);
-  //     c.setForeground(table.getForeground());
-  //     c.setBackground(b ? Color.ORANGE : table.getBackground());
-  //     return c;
-  //   }
-  // }
-
-  private static void rowRepaint(JTable table, int row) {
-    Rectangle r = table.getCellRect(row, 0, true);
-    // r.height = table.getRowHeight();
-    r.width = table.getWidth();
-    table.repaint(r);
+  private static void repaintRow(JTable table, int viewRow) {
+    // The row may be filtered out by the RowSorter
+    if (viewRow >= 0) {
+      Rectangle r = table.getCellRect(viewRow, 0, true);
+      table.repaint(0, r.y, table.getWidth(), r.height);
+    }
   }
 
   public static void main(String[] args) {
