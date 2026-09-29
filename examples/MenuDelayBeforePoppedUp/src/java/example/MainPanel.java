@@ -17,7 +17,7 @@ public final class MainPanel extends JPanel {
     sub0.add("JMenuItem:1");
     popup.add(sub0);
 
-    JMenu sub1 = makeMenu("JMenu(0..2000)", 2000);
+    JMenu sub1 = createMenu("JMenu(0..2000)", 2000);
     sub1.add("JMenuItem:2");
     sub1.add("JMenuItem:3");
     popup.add(sub1);
@@ -29,14 +29,14 @@ public final class MainPanel extends JPanel {
     add(spinner);
 
     JMenuBar mb = new JMenuBar();
-    mb.add(makeTopLevelMenu());
+    mb.add(createTopLevelMenu());
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JMenu makeTopLevelMenu() {
+  private static JMenu createTopLevelMenu() {
     JMenu menu = new JMenu("JMenu#setDelay(...)");
     menu.add("JMenuItem1");
     menu.add("JMenuItem2");
@@ -46,17 +46,17 @@ public final class MainPanel extends JPanel {
     sub.add("JMenuItem5");
     menu.add(sub);
 
-    JMenu sub0 = makeMenu("JMenu(0)", 0);
+    JMenu sub0 = createMenu("JMenu(0)", 0);
     sub0.add("JMenuItem6");
     sub0.add("JMenuItem7");
     menu.add(sub0);
 
-    JMenu sub1 = makeMenu("JMenu(2000)", 2000);
+    JMenu sub1 = createMenu("JMenu(2000)", 2000);
     sub1.add("JMenuItem8");
     sub1.add("JMenuItem9");
     menu.add(sub1);
 
-    JMenu sub2 = makeMenu("JMenu(500)", 500);
+    JMenu sub2 = createMenu("JMenu(500)", 500);
     sub2.add("JMenuItem10");
     sub2.add("JMenuItem11");
     menu.add(sub2);
@@ -65,7 +65,7 @@ public final class MainPanel extends JPanel {
     return menu;
   }
 
-  private static JMenu makeMenu(String title, int delay) {
+  private static JMenu createMenu(String title, int delay) {
     JMenu menu = new JMenu(title);
     menu.setDelay(delay);
     return menu;
@@ -105,7 +105,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -113,7 +113,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
@@ -127,8 +127,7 @@ final class LookAndFeelUtils {
   }
 
   private static void setLookAndFeel(String newLookAndFeel) {
-    String oldLookAndFeel = lookAndFeel;
-    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+    if (!lookAndFeel.equals(newLookAndFeel)) {
       try {
         UIManager.setLookAndFeel(newLookAndFeel);
         lookAndFeel = newLookAndFeel;
@@ -139,7 +138,6 @@ final class LookAndFeelUtils {
         return;
       }
       updateLookAndFeel();
-      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
     }
   }
 
