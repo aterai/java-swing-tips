@@ -14,17 +14,17 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JDesktopPane desktop = new JDesktopPane();
 
-    AtomicInteger num = new AtomicInteger();
+    AtomicInteger counter = new AtomicInteger();
     JButton button = new JButton("add");
-    button.addActionListener(e -> addInternalFrame(desktop, num.getAndIncrement()));
+    button.addActionListener(e -> addInternalFrame(desktop, counter.getAndIncrement()));
 
-    long lv = button.getMultiClickThreshhold();
-    SpinnerNumberModel m = new SpinnerNumberModel(lv, 0L, 10_000L, 100L);
-    m.addChangeListener(e -> button.setMultiClickThreshhold(m.getNumber().longValue()));
+    long threshold = button.getMultiClickThreshhold();
+    SpinnerNumberModel model = new SpinnerNumberModel(threshold, 0L, 10_000L, 100L);
+    model.addChangeListener(e -> button.setMultiClickThreshhold(model.getNumber().longValue()));
 
     JMenuBar mb = new JMenuBar();
     mb.add(new JLabel("MultiClickThreshhold: "));
-    mb.add(new JSpinner(m));
+    mb.add(new JSpinner(model));
     mb.add(Box.createHorizontalGlue());
     mb.add(button);
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
@@ -33,13 +33,11 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void addInternalFrame(JDesktopPane desktop, int idx) {
-    String title = "#" + idx;
-    JInternalFrame f = new JInternalFrame(title, true, true, true, true);
-    desktop.add(f);
-    f.setBounds(idx * 10, idx * 10, 200, 100);
-    EventQueue.invokeLater(() -> f.setVisible(true));
-    // desktop.getDesktopManager().activateFrame(f);
+  private static void addInternalFrame(JDesktopPane desktop, int index) {
+    JInternalFrame frame = new JInternalFrame("#" + index, true, true, true, true);
+    frame.setBounds(index * 10, index * 10, 200, 100);
+    desktop.add(frame);
+    frame.setVisible(true);
   }
 
   public static void main(String[] args) {
