@@ -11,6 +11,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -93,7 +94,7 @@ class TranslucentCellSelectionTable extends JTable {
     setBackground(new Color(0x0, true));
     setRowHeight(20);
     if (getUI() instanceof SynthTableUI) {
-      setDefaultRenderer(Boolean.class, new SynthBooleanTableCellRenderer2());
+      setDefaultRenderer(Boolean.class, new SynthBooleanTableCellRenderer());
     }
   }
 
@@ -132,10 +133,10 @@ final class GeomUtils {
   }
 
   // Decompose a multi-loop Area into a list of single-loop Areas.
-  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+  public static List<Area> splitIntoSingleLoopAreas(Area area) {
     List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
-    PathIterator pi = rect.getPathIterator(null);
+    PathIterator pi = area.getPathIterator(null);
     double[] cd = new double[6];
     while (!pi.isDone()) {
       switch (pi.currentSegment(cd)) {
@@ -165,7 +166,7 @@ final class GeomUtils {
   }
 }
 
-class SynthBooleanTableCellRenderer2 extends JCheckBox implements TableCellRenderer {
+class SynthBooleanTableCellRenderer extends JCheckBox implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     setHorizontalAlignment(CENTER);
     setName("Table.cellRenderer");
@@ -193,14 +194,13 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
       WIDTH, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, MITER, DASH, 0f);
   private static final Stroke BORDER_STROKE2 = new BasicStroke(
       WIDTH, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, MITER, DASH, 2f);
-  private static Stroke borderStroke = BORDER_STROKE1;
-  private JTable table;
-  private boolean flg;
+  private Stroke borderStroke = BORDER_STROKE1;
+  private JTable focusedTable;
   private final Timer animator = new Timer(480, e -> {
-    if (table != null && !table.isEditing()) {
-      borderStroke = flg ? BORDER_STROKE1 : BORDER_STROKE2;
-      repaintSelectedArea(table);
-      flg = !flg;
+    if (focusedTable != null && !focusedTable.isEditing()) {
+      boolean b = Objects.equals(borderStroke, BORDER_STROKE1);
+      borderStroke = b ? BORDER_STROKE2 : BORDER_STROKE1;
+      repaintSelectedCells(focusedTable);
     }
   });
 
@@ -212,6 +212,7 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
   }
 
   @Override public void uninstallUI(JComponent c) {
+    animator.stop();
     if (c instanceof JLayer) {
       ((JLayer<?>) c).setLayerEventMask(0);
     }
@@ -219,55 +220,55 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
   }
 
   @Override protected void processFocusEvent(FocusEvent e, JLayer<? extends JScrollPane> l) {
-    table = getTable(l);
+    super.processFocusEvent(e, l);
     if (e.getID() == FocusEvent.FOCUS_GAINED) {
+      focusedTable = getTable(l);
       animator.start();
     } else {
       animator.stop();
     }
-    super.processFocusEvent(e, l);
   }
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    if (table == null) {
-      table = getTable(c);
+    JTable table = getTable(c);
+    if (table == null || table.isEditing() || !hasSelectedCells(table)) {
+      return;
     }
-    int cc = table.getSelectedColumnCount();
-    int rc = table.getSelectedRowCount();
-    if (cc != 0 && rc != 0 && !table.isEditing()) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(
-          RenderingHints.KEY_ANTIALIASING,
-          RenderingHints.VALUE_ANTIALIAS_ON);
-      Area area = new Area();
-      getSelectedArea(table).forEach(r -> {
-        Rectangle rect = SwingUtilities.convertRectangle(table, r, c);
-        area.add(new Area(rect));
-      });
-      Dimension ics = table.getIntercellSpacing();
-      Color v = table.getSelectionBackground();
-      Color sbc = new Color(v.getRed(), v.getGreen(), v.getBlue(), 0x32);
-      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
-        Rectangle r = a.getBounds();
-        r.width -= ics.width - 1;
-        r.height -= ics.height - 1;
-        g2.setPaint(sbc);
-        g2.fill(r);
-        g2.setPaint(v);
-        g2.setStroke(borderStroke);
-        g2.draw(r);
-      }
-      g2.dispose();
+    Area area = new Area();
+    getSelectedCellRects(table).forEach(r -> {
+      Rectangle rect = SwingUtilities.convertRectangle(table, r, c);
+      area.add(new Area(rect));
+    });
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    Dimension ics = table.getIntercellSpacing();
+    Color sbc = table.getSelectionBackground();
+    Color fillColor = new Color(sbc.getRed(), sbc.getGreen(), sbc.getBlue(), 0x32);
+    g2.setStroke(borderStroke);
+    for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
+      Rectangle r = a.getBounds();
+      r.width -= ics.width - 1;
+      r.height -= ics.height - 1;
+      g2.setPaint(fillColor);
+      g2.fill(r);
+      g2.setPaint(sbc);
+      g2.draw(r);
     }
+    g2.dispose();
   }
 
-  private static List<Rectangle> getSelectedArea(JTable tbl) {
+  private static boolean hasSelectedCells(JTable table) {
+    return table.getSelectedRowCount() > 0 && table.getSelectedColumnCount() > 0;
+  }
+
+  private static List<Rectangle> getSelectedCellRects(JTable table) {
     List<Rectangle> list = new ArrayList<>();
-    for (int row : tbl.getSelectedRows()) {
-      for (int col : tbl.getSelectedColumns()) {
-        if (tbl.isCellSelected(row, col)) {
-          list.add(tbl.getCellRect(row, col, true));
+    for (int row : table.getSelectedRows()) {
+      for (int col : table.getSelectedColumns()) {
+        if (table.isCellSelected(row, col)) {
+          list.add(table.getCellRect(row, col, true));
         }
       }
     }
@@ -275,24 +276,20 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
   }
 
   private static JTable getTable(Component c) {
-    JTable table = null;
-    if (c instanceof JLayer) {
-      Component c1 = ((JLayer<?>) c).getView();
-      if (c1 instanceof JScrollPane) {
-        table = (JTable) ((JScrollPane) c1).getViewport().getView();
-      }
-    }
-    return table;
+    Component sp = c instanceof JLayer ? ((JLayer<?>) c).getView() : null;
+    Component v = sp instanceof JScrollPane
+        ? ((JScrollPane) sp).getViewport().getView() : null;
+    return v instanceof JTable ? (JTable) v : null;
   }
 
-  private static void repaintSelectedArea(JTable tbl) {
-    int cc = tbl.getSelectedColumnCount();
-    int rc = tbl.getSelectedRowCount();
-    if (cc != 0 && rc != 0) {
-      Area area = new Area();
-      getSelectedArea(tbl).forEach(r -> area.add(new Area(r)));
-      tbl.repaint(area.getBounds());
-    }
+  private static void repaintSelectedCells(JTable table) {
+    getSelectedCellRects(table).stream().reduce(Rectangle::union).ifPresent(r -> {
+      // Grow the dirty region by the stroke width, since the dashed border
+      // is drawn centered on the edge of the selected area.
+      int w = (int) Math.ceil(WIDTH);
+      r.grow(w, w);
+      table.repaint(r);
+    });
   }
 }
 
