@@ -13,13 +13,10 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JCheckBox check = new JCheckBox("Adjust JPopupMenu location", true);
     check.setFocusPainted(false);
-    JPopupMenu popup = makePopupMenu(check);
-    // setComponentPopupMenu(popup);
+    JPopupMenu popup = createPopupMenu(check);
 
     JLabel label = new JLabel("JLabel: 1234567890");
     label.setOpaque(true);
-    // label.setInheritsPopupMenu(true);
-    // check.setInheritsPopupMenu(true);
     label.setComponentPopupMenu(popup);
 
     add(check, BorderLayout.NORTH);
@@ -28,20 +25,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPopupMenu makePopupMenu(JCheckBox check) {
+  private static JPopupMenu createPopupMenu(JCheckBox check) {
     JPopupMenu popup = new JPopupMenu() {
       @Override public void show(Component c, int x, int y) {
         if (check.isSelected()) {
-          Point p = new Point(x, y);
-          Rectangle r = c.getBounds();
           Dimension d = getPreferredSize();
-          if (p.x + d.width > r.width) {
-            p.x -= d.width;
-          }
-          if (p.y + d.height > r.height) {
-            p.y -= d.height;
-          }
-          super.show(c, Math.max(p.x, 0), Math.max(p.y, 0));
+          int px = x + d.width > c.getWidth() ? x - d.width : x;
+          int py = y + d.height > c.getHeight() ? y - d.height : y;
+          super.show(c, Math.max(px, 0), Math.max(py, 0));
         } else {
           super.show(c, x, y);
         }
