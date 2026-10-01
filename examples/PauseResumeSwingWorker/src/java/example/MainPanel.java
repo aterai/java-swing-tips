@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -23,8 +24,8 @@ public final class MainPanel extends JPanel {
   private final JButton runButton = new JButton("run");
   private final JButton cancelButton = new JButton("cancel");
   private final JButton pauseButton = new JButton(TXT_PAUSE);
-  private final JProgressBar bar1 = new JProgressBar();
-  private final JProgressBar bar2 = new JProgressBar();
+  private final JProgressBar totalProgressBar = new JProgressBar();
+  private final JProgressBar fileProgressBar = new JProgressBar();
   private transient BackgroundTask worker;
 
   private MainPanel() {
@@ -42,7 +43,7 @@ public final class MainPanel extends JPanel {
       JButton b = (JButton) e.getSource();
       if (Objects.nonNull(worker)) {
         b.setText(worker.isCancelled() || worker.isPaused() ? TXT_PAUSE : TXT_RESUME);
-        worker.toggle();
+        worker.togglePaused();
       } else {
         b.setText(TXT_PAUSE);
       }
@@ -87,19 +88,19 @@ public final class MainPanel extends JPanel {
   }
 
   /* default */ void updateTotalProgress(int value) {
-    bar1.setValue(value);
+    totalProgressBar.setValue(value);
   }
 
   /* default */ void updateFileProgress(int value) {
-    bar2.setValue(value);
+    fileProgressBar.setValue(value);
   }
 
   /* default */ void appendLog(Object value) {
     area.append(Objects.toString(value));
   }
 
-  /* default */ void updatePauseMarker(boolean append) {
-    if (append) {
+  /* default */ void updatePauseMarker(boolean visible) {
+    if (visible) {
       area.append("*");
     } else {
       try {
@@ -119,10 +120,10 @@ public final class MainPanel extends JPanel {
     cancelButton.setEnabled(running);
     pauseButton.setEnabled(running);
     if (running) {
-      bar1.setValue(0);
-      bar2.setValue(0);
-      statusPanel.add(bar1, BorderLayout.NORTH);
-      statusPanel.add(bar2, BorderLayout.SOUTH);
+      totalProgressBar.setValue(0);
+      fileProgressBar.setValue(0);
+      statusPanel.add(totalProgressBar, BorderLayout.NORTH);
+      statusPanel.add(fileProgressBar, BorderLayout.SOUTH);
     } else {
       runButton.requestFocusInWindow();
       statusPanel.removeAll();
@@ -230,33 +231,40 @@ final class Progress {
 }
 
 class BackgroundTask extends SwingWorker<String, Progress> {
-  private boolean paused;
+  // written on the EDT and read on the worker thread
+  private final AtomicBoolean paused = new AtomicBoolean();
   private final Random random = new Random();
 
   @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 12;
-    publish(new Progress(ProgressType.LOG, "Length Of Task: " + lengthOfTask));
-    publish(new Progress(ProgressType.LOG, "\n------------------------------\n"));
+    publishProgress(ProgressType.LOG, "Length Of Task: " + lengthOfTask);
+    publishProgress(ProgressType.LOG, "\n------------------------------\n");
     while (current < lengthOfTask && !isCancelled()) {
-      convertFileToSomething(100 * current / lengthOfTask);
+      convertFileToSomething();
       current++;
+      publishProgress(ProgressType.TOTAL, 100 * current / lengthOfTask);
     }
-    publish(new Progress(ProgressType.LOG, "\n"));
+    publishProgress(ProgressType.LOG, "\n");
     return "Done";
   }
 
-  protected void convertFileToSomething(int progress) throws InterruptedException {
-    boolean blinking = false;
+  protected void convertFileToSomething() throws InterruptedException {
+    boolean markerVisible = true;
     int current = 0;
     int lengthOfTask = 10 + random.nextInt(50);
-    publish(new Progress(ProgressType.TOTAL, progress));
-    publish(new Progress(ProgressType.LOG, "*"));
+    publishProgress(ProgressType.LOG, "*");
     while (current <= lengthOfTask && !isCancelled()) {
-      if (paused) {
-        pause(blinking);
-        blinking = !blinking;
+      if (paused.get()) {
+        Thread.sleep(500);
+        markerVisible = !markerVisible;
+        publishProgress(ProgressType.PAUSE, markerVisible);
         continue;
+      }
+      if (!markerVisible) {
+        // restore the marker hidden by blinking when resumed
+        markerVisible = true;
+        publishProgress(ProgressType.PAUSE, true);
       }
       doSomething(100 * current / lengthOfTask);
       current++;
@@ -264,21 +272,21 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   }
 
   public boolean isPaused() {
-    return paused;
+    return paused.get();
   }
 
-  public void toggle() {
-    paused = !paused;
-  }
-
-  private void pause(boolean blinking) throws InterruptedException {
-    Thread.sleep(500);
-    publish(new Progress(ProgressType.PAUSE, blinking));
+  public void togglePaused() {
+    // only called on the EDT, so get-then-set is not a race
+    paused.set(!paused.get());
   }
 
   protected void doSomething(int progress) throws InterruptedException {
     Thread.sleep(20);
-    publish(new Progress(ProgressType.FILE, progress + 1));
+    publishProgress(ProgressType.FILE, progress);
+  }
+
+  private void publishProgress(ProgressType type, Object value) {
+    publish(new Progress(type, value));
   }
 
   protected String getDoneMessage() {
