@@ -17,8 +17,8 @@ public final class MainPanel extends JPanel {
   private final JPanel statusPanel = new JPanel(new BorderLayout());
   private final JButton runButton = new JButton("run");
   private final JButton cancelButton = new JButton("cancel");
-  private final JProgressBar bar1 = new JProgressBar();
-  private final JProgressBar bar2 = new JProgressBar();
+  private final JProgressBar totalProgressBar = new JProgressBar();
+  private final JProgressBar fileProgressBar = new JProgressBar();
   private transient SwingWorker<String, Progress> worker;
 
   private MainPanel() {
@@ -26,13 +26,15 @@ public final class MainPanel extends JPanel {
     area.setEditable(false);
     runButton.addActionListener(e -> {
       updateButtonsAndStatusPanel(true);
-      executeWorker();
+      // a SwingWorker is designed to be executed only once, so create a new one each time
+      worker = new ProgressTask();
+      worker.execute();
     });
+    cancelButton.setEnabled(false);
     cancelButton.addActionListener(e -> {
       if (Objects.nonNull(worker) && !worker.isDone()) {
         worker.cancel(true);
       }
-      // worker = null;
     });
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -46,21 +48,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void executeWorker() {
-    if (Objects.isNull(worker)) {
-      worker = new ProgressTask();
-    }
-    worker.execute();
-  }
-
-  public void updateButtonsAndStatusPanel(boolean running) {
+  private void updateButtonsAndStatusPanel(boolean running) {
     runButton.setEnabled(!running);
     cancelButton.setEnabled(running);
     if (running) {
-      bar1.setValue(0);
-      bar2.setValue(0);
-      statusPanel.add(bar1, BorderLayout.NORTH);
-      statusPanel.add(bar2, BorderLayout.SOUTH);
+      totalProgressBar.setValue(0);
+      fileProgressBar.setValue(0);
+      statusPanel.add(totalProgressBar, BorderLayout.NORTH);
+      statusPanel.add(fileProgressBar, BorderLayout.SOUTH);
     } else {
       statusPanel.removeAll();
     }
@@ -89,11 +84,11 @@ public final class MainPanel extends JPanel {
   }
 
   /* default */ void updateTotalProgress(int value) {
-    bar1.setValue(value);
+    totalProgressBar.setValue(value);
   }
 
   /* default */ void updateFileProgress(int value) {
-    bar2.setValue(value);
+    fileProgressBar.setValue(value);
   }
 
   /* default */ void appendLog(Object value) {
@@ -172,21 +167,21 @@ class BackgroundTask extends SwingWorker<String, Progress> {
   @Override protected String doInBackground() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 12;
-    publish(new Progress(ProgressType.LOG, "Length Of Task: " + lengthOfTask));
-    publish(new Progress(ProgressType.LOG, "\n------------------------------\n"));
+    publishProgress(ProgressType.LOG, "Length Of Task: " + lengthOfTask);
+    publishProgress(ProgressType.LOG, "\n------------------------------\n");
     while (current < lengthOfTask && !isCancelled()) {
-      convertFileToSomething(100 * current / lengthOfTask);
+      convertFileToSomething();
       current++;
+      publishProgress(ProgressType.TOTAL, 100 * current / lengthOfTask);
     }
-    publish(new Progress(ProgressType.LOG, "\n"));
+    publishProgress(ProgressType.LOG, "\n");
     return "Done";
   }
 
-  protected void convertFileToSomething(int progress) throws InterruptedException {
+  protected void convertFileToSomething() throws InterruptedException {
     int current = 0;
     int lengthOfTask = 10 + random.nextInt(50);
-    publish(new Progress(ProgressType.TOTAL, progress));
-    publish(new Progress(ProgressType.LOG, "*"));
+    publishProgress(ProgressType.LOG, "*");
     while (current <= lengthOfTask && !isCancelled()) {
       doSomething(100 * current / lengthOfTask);
       current++;
@@ -195,7 +190,11 @@ class BackgroundTask extends SwingWorker<String, Progress> {
 
   protected void doSomething(int progress) throws InterruptedException {
     Thread.sleep(20);
-    publish(new Progress(ProgressType.FILE, progress + 1));
+    publishProgress(ProgressType.FILE, progress);
+  }
+
+  private void publishProgress(ProgressType type, Object value) {
+    publish(new Progress(type, value));
   }
 
   protected String getDoneMessage() {
