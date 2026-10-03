@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
@@ -91,7 +92,7 @@ public final class MainPanel extends JPanel {
 }
 
 enum GridStyle {
-  NONE("None"), TICK("Tick marks"), POLYGON("Polygons");
+  NONE("None"), TICK("Tick marks"), POLYGON("Polygons"), CIRCLE("Circles");
 
   private final String label;
 
@@ -258,12 +259,24 @@ final class RadarChart {
     return createPolygon(values);
   }
 
+  private static Ellipse2D createCircle(double value) {
+    double r = RADIUS * value / MAX_VALUE;
+    return new Ellipse2D.Double(CENTER - r, CENTER - r, r * 2d, r * 2d);
+  }
+
+  // Circle for GridStyle.CIRCLE, regular polygon otherwise
+  private static Shape createGridShape(int sides, double value, GridStyle style) {
+    return style == GridStyle.CIRCLE
+        ? createCircle(value)
+        : createRegularPolygon(sides, value);
+  }
+
   public static void drawGrid(Graphics2D g2, int sides, GridStyle style) {
     g2.setStroke(GRID_STROKE);
-    if (style == GridStyle.POLYGON) {
+    if (style == GridStyle.POLYGON || style == GridStyle.CIRCLE) {
       g2.setColor(GRID_COLOR);
       for (int i = 1; i < DIVISIONS; i++) {
-        g2.draw(createRegularPolygon(sides, MAX_VALUE * i / DIVISIONS));
+        g2.draw(createGridShape(sides, MAX_VALUE * i / DIVISIONS, style));
       }
     }
     // Axes and the outer frame are always drawn
@@ -277,7 +290,7 @@ final class RadarChart {
         drawTicks(g2, i, sides);
       }
     }
-    g2.draw(createRegularPolygon(sides, MAX_VALUE));
+    g2.draw(createGridShape(sides, MAX_VALUE, style));
   }
 
   // Short lines perpendicular to the axis at each division
