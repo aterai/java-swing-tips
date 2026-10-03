@@ -8,48 +8,43 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  private static final Color DRAW_COLOR = Color.BLACK;
-  private static final Color BACK_COLOR = Color.WHITE;
-  private static final int MINX = 5;
-  private static final int MAXX = 315;
-  private static final int MINY = 5;
-  private static final int MAXY = 175;
-  private static final int MINN = 50;
-  private static final int MAXN = 500;
-  private final List<Double> array = new ArrayList<>(MAXN);
-  private int number = 150;
-  private double factorx;
-  private double factory;
-  private transient SwingWorker<String, Rectangle> worker;
-
-  private final JComboBox<GenerateInputs> distCmb = new JComboBox<>(GenerateInputs.values());
-  private final JComboBox<SortAlgorithms> algoCmb = new JComboBox<>(SortAlgorithms.values());
-  private final SpinnerNumberModel model = new SpinnerNumberModel(number, MINN, MAXN, 10);
-  private final JSpinner spinner = new JSpinner(model);
+  private static final Color DOT_COLOR = Color.BLACK;
+  private static final Color MARKER_COLOR = Color.RED;
+  private static final int MIN_NUMBER = 50;
+  private static final int MAX_NUMBER = 500;
+  private final Rectangle plotArea = new Rectangle(5, 5, 310, 170);
+  // The list is modified by the SwingWorker thread and read by the EDT
+  private final List<Double> array = Collections.synchronizedList(new ArrayList<>(MAX_NUMBER));
+  private final JComboBox<InputDistribution> distributionCombo =
+      new JComboBox<>(InputDistribution.values());
+  private final JComboBox<SortAlgorithm> algorithmCombo = new JComboBox<>(SortAlgorithm.values());
+  private final SpinnerNumberModel numberModel =
+      new SpinnerNumberModel(150, MIN_NUMBER, MAX_NUMBER, 10);
+  private final JSpinner numberSpinner = new JSpinner(numberModel);
   private final JButton startButton = new JButton("Start");
   private final JButton cancelButton = new JButton("Cancel");
-  private final JPanel panel = new JPanel() {
+  private final JPanel canvas = new JPanel() {
     @Override protected void paintComponent(Graphics g) {
       super.paintComponent(g);
-      drawAllOval(g);
+      drawDots(g);
     }
   };
+  private transient SwingWorker<String, Rectangle> worker;
+  private boolean needsRegeneration;
 
   private MainPanel() {
     super(new BorderLayout());
-    genArray(number);
+    generateArray();
+    setComponentsEnabled(true);
 
-    startButton.addActionListener(e -> {
-      setComponentEnabled(false);
-      panel.setToolTipText(null);
-      workerExecute();
-    });
+    startButton.addActionListener(e -> startSorting());
 
     cancelButton.addActionListener(e -> {
       if (Objects.nonNull(worker) && !worker.isDone()) {
@@ -57,27 +52,27 @@ public final class MainPanel extends JPanel {
       }
     });
 
-    ItemListener il = e -> {
+    ItemListener listener = e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        genArray(number);
-        panel.repaint();
-        panel.setToolTipText(null);
+        resetArray();
       }
     };
-    distCmb.addItemListener(il);
-    algoCmb.addItemListener(il);
-    panel.setBackground(BACK_COLOR);
+    distributionCombo.addItemListener(listener);
+    algorithmCombo.addItemListener(listener);
+    numberSpinner.addChangeListener(e -> resetArray());
+    canvas.setBackground(Color.WHITE);
+
     Box box1 = Box.createHorizontalBox();
     box1.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box1.add(new JLabel(" Number:"));
-    box1.add(spinner);
+    box1.add(numberSpinner);
     box1.add(new JLabel(" Input:"));
-    box1.add(distCmb);
+    box1.add(distributionCombo);
 
     Box box2 = Box.createHorizontalBox();
     box2.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box2.add(new JLabel(" Algorithm:"));
-    box2.add(algoCmb);
+    box2.add(algorithmCombo);
     box2.add(startButton);
     box2.add(cancelButton);
 
@@ -86,47 +81,55 @@ public final class MainPanel extends JPanel {
     p.add(box1);
     p.add(box2);
     add(p, BorderLayout.NORTH);
-    add(panel);
+    add(canvas);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void drawAllOval(Graphics g) {
-    // g.setColor(DRAW_COLOR);
-    for (int i = 0; i < number; i++) {
-      int px = (int) (MINX + factorx * i);
-      int py = MAXY - (int) (factory * array.get(i));
-      g.setColor(i % 5 == 0 ? Color.RED : DRAW_COLOR);
-      g.drawOval(px, py, 4, 4);
+  private void drawDots(Graphics g) {
+    int size = array.size();
+    for (int i = 0; i < size; i++) {
+      Rectangle r = SortingTask.getDotBounds(plotArea, size, i, array.get(i));
+      g.setColor(i % 5 == 0 ? MARKER_COLOR : DOT_COLOR);
+      g.drawOval(r.x, r.y, r.width, r.height);
     }
   }
 
-  public void setComponentEnabled(boolean flag) {
-    cancelButton.setEnabled(!flag);
-    startButton.setEnabled(flag);
-    spinner.setEnabled(flag);
-    distCmb.setEnabled(flag);
-    algoCmb.setEnabled(flag);
+  private void setComponentsEnabled(boolean enabled) {
+    cancelButton.setEnabled(!enabled);
+    startButton.setEnabled(enabled);
+    numberSpinner.setEnabled(enabled);
+    distributionCombo.setEnabled(enabled);
+    algorithmCombo.setEnabled(enabled);
   }
 
-  public void genArray(int n) {
+  private void generateArray() {
+    int idx = distributionCombo.getSelectedIndex();
+    InputDistribution distribution = distributionCombo.getItemAt(idx);
     array.clear();
-    factorx = (MAXX - MINX) / (double) n;
-    factory = (double) MAXY - MINY;
-    distCmb.getItemAt(distCmb.getSelectedIndex()).generate(array, n);
+    distribution.generate(array, numberModel.getNumber().intValue());
+    needsRegeneration = false;
   }
 
-  public void workerExecute() {
-    int tmp = model.getNumber().intValue();
-    if (tmp != number) {
-      number = tmp;
-      genArray(number);
+  private void resetArray() {
+    generateArray();
+    canvas.setToolTipText(null);
+    canvas.repaint();
+  }
+
+  private void startSorting() {
+    // The previous run has already sorted (or partially sorted) the array
+    if (needsRegeneration) {
+      generateArray();
+      canvas.repaint();
     }
-    SortAlgorithms sa = algoCmb.getItemAt(algoCmb.getSelectedIndex());
-    Rectangle paintArea = new Rectangle(MINX, MINY, MAXX - MINX, MAXY - MINY);
-    worker = new SortingTask(sa, number, array, paintArea, factorx, factory) {
+    needsRegeneration = true;
+    setComponentsEnabled(false);
+    canvas.setToolTipText(null);
+    SortAlgorithm algorithm = algorithmCombo.getItemAt(algorithmCombo.getSelectedIndex());
+    worker = new SortingTask(algorithm, array, plotArea) {
       @Override protected void process(List<Rectangle> chunks) {
         if (isDisplayable() && !isCancelled()) {
-          chunks.forEach(panel::repaint);
+          chunks.forEach(canvas::repaint);
         } else {
           cancel(true);
         }
@@ -134,9 +137,9 @@ public final class MainPanel extends JPanel {
 
       @Override protected void done() {
         if (isDisplayable()) {
-          setComponentEnabled(true);
-          panel.setToolTipText(getDoneMessage());
-          repaint();
+          setComponentsEnabled(true);
+          canvas.setToolTipText(getDoneMessage());
+          canvas.repaint();
         }
       }
     };
@@ -167,16 +170,16 @@ public final class MainPanel extends JPanel {
   }
 }
 
-enum SortAlgorithms {
-  ISORT("Insertion Sort"),
-  SELSORT("Selection Sort"),
-  SHELLSORT("Shell Sort"),
-  HSORT("Heap Sort"),
-  QSORT("Quicksort"),
-  QSORT2("2-way Quicksort");
+enum SortAlgorithm {
+  INSERTION("Insertion Sort"),
+  SELECTION("Selection Sort"),
+  SHELL("Shell Sort"),
+  HEAP("Heap Sort"),
+  QUICK("Quicksort"),
+  TWO_WAY_QUICK("2-way Quicksort");
   private final String description;
 
-  SortAlgorithms(String description) {
+  SortAlgorithm(String description) {
     this.description = description;
   }
 
@@ -185,27 +188,28 @@ enum SortAlgorithms {
   }
 }
 
-enum GenerateInputs {
-  RANDOM() {
+enum InputDistribution {
+  RANDOM {
     @Override public void generate(List<Double> array, int n) {
       for (int i = 0; i < n; i++) {
         array.add(Math.random());
       }
     }
   },
-  ASCENDING() {
+  ASCENDING {
     @Override public void generate(List<Double> array, int n) {
       for (int i = 0; i < n; i++) {
         array.add(i / (double) n);
       }
     }
   },
-  DESCENDING() {
+  DESCENDING {
     @Override public void generate(List<Double> array, int n) {
       for (int i = 0; i < n; i++) {
         array.add(1d - i / (double) n);
       }
     }
   };
+
   public abstract void generate(List<Double> array, int n);
 }
