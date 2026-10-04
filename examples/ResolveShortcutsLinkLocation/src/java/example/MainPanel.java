@@ -18,8 +18,8 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -44,6 +44,7 @@ public final class MainPanel extends JPanel {
     };
     tree.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
     tree.setRootVisible(false);
+    ToolTipManager.sharedInstance().registerComponent(tree);
     tree.addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
     tree.expandRow(0);
 
@@ -115,59 +116,57 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    TreePath path = e.getPath();
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-    File dir = getRealFile8((File) node.getUserObject());
-    if (node.isLeaf() && dir != null && dir.isDirectory()) {
-      JTree tree = (JTree) e.getSource();
-      DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
-      new BackgroundTask(fileSystemView, dir) {
-        @Override protected void process(List<File> chunks) {
-          if (tree.isDisplayable() && !isCancelled()) {
-            chunks.stream().map(DefaultMutableTreeNode::new)
-                .forEach(c -> m.insertNodeInto(c, node, node.getChildCount()));
-          } else {
-            cancel(true);
-          }
-        }
-      }.execute();
-    }
-  }
-
-  private File getRealFile8(File file) {
-    Optional<File> op;
-    try {
-      File f = file;
-      sun.awt.shell.ShellFolder sf = sun.awt.shell.ShellFolder.getShellFolder(f);
-      if (sf.isLink()) {
-        f = sf.getLinkLocation();
+    Object c = e.getSource();
+    Object o = e.getPath().getLastPathComponent();
+    if (e.isAddedPath() && c instanceof JTree && o instanceof DefaultMutableTreeNode) {
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+      Object userObject = node.getUserObject();
+      if (node.isLeaf() && userObject instanceof File) {
+        resolveLinkLocation((File) userObject)
+            .filter(File::isDirectory)
+            .ifPresent(dir -> insertBackground((JTree) c, dir, node));
       }
-      op = Optional.ofNullable(f);
-    } catch (FileNotFoundException ex) {
-      op = Optional.empty();
     }
-    return op.orElse(null);
   }
 
-  // private File getRealFile9(File file) {
-  //   if (fileSystemView.isLink(file)) {
-  //     try {
-  //       file = fileSystemView.getLinkLocation(file);
-  //     } catch (FileNotFoundException ex) {
-  //       file = null;
-  //     }
-  //   }
-  //   return file;
-  // }
+  private void insertBackground(JTree tree, File dir, MutableTreeNode node) {
+    DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
+    new BackgroundTask(fileSystemView, dir) {
+      @Override protected void process(List<File> chunks) {
+        if (tree.isDisplayable() && !isCancelled()) {
+          chunks.stream()
+              .map(DefaultMutableTreeNode::new)
+              .forEach(c -> m.insertNodeInto(c, node, node.getChildCount()));
+        } else {
+          cancel(true);
+        }
+      }
+    }.execute();
+  }
 
-  // private File getRealFile(File file) {
-  //   String version = System.getProperty("java.specification.version");
-  //   if (Double.parseDouble(version) >= 9.0) {
-  //     file = getRealFile9(file);
-  //   } else {
-  //     file = getRealFile8(file);
+  // Java 8: sun.awt.shell.ShellFolder
+  // Java 9 or later: --add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED
+  private static Optional<File> resolveLinkLocation(File file) {
+    Optional<File> location;
+    try {
+      sun.awt.shell.ShellFolder sf = sun.awt.shell.ShellFolder.getShellFolder(file);
+      location = Optional.ofNullable(sf.isLink() ? sf.getLinkLocation() : file);
+    } catch (FileNotFoundException ex) {
+      location = Optional.empty();
+    }
+    return location;
+  }
+
+  // // Java 9 or later: FileSystemView#isLink(File), FileSystemView#getLinkLocation(File)
+  // private Optional<File> resolveLinkLocation(File file) {
+  //   Optional<File> location;
+  //   try {
+  //     boolean isLink = fileSystemView.isLink(file);
+  //     location = Optional.ofNullable(isLink ? fileSystemView.getLinkLocation(file) : file);
+  //   } catch (FileNotFoundException ex) {
+  //     location = Optional.empty();
   //   }
-  //   return file;
+  //   return location;
   // }
 }
 
