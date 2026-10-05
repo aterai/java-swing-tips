@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.TableColumnModelEvent;
@@ -107,6 +108,7 @@ final class ColumnTitles {
   }
 }
 
+@SuppressWarnings("PMD.TooManyMethods")
 class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
   private static final Color LINE_COLOR = new Color(0x00_78_D7);
   private static final int LINE_WIDTH = 4;
@@ -114,6 +116,7 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
   private final Rectangle2D line = new Rectangle2D.Double();
   private final Ellipse2D plus = new Ellipse2D.Double();
   private int insertIndex = -1;
+  private transient Optional<HeaderState> savedState = Optional.empty();
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
@@ -129,7 +132,7 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
       }
       g2.clip(SwingUtilities.convertRectangle(scroll, clip, c));
       // line and plus are in the JTableHeader coordinate system
-      JTableHeader header = getTable(scroll).getTableHeader();
+      JTableHeader header = ((JTable) scroll.getViewport().getView()).getTableHeader();
       Point pt = SwingUtilities.convertPoint(header, 0, 0, c);
       g2.translate(pt.x, pt.y);
       // paint Insert Line
@@ -193,6 +196,7 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
   }
 
   private void clearInsertLocation(JLayer<? extends JScrollPane> l) {
+    restoreHeaderState();
     if (insertIndex >= 0) {
       insertIndex = -1;
       l.repaint();
@@ -206,9 +210,19 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
       int height = header.getHeight() + scroll.getViewport().getHeight();
       line.setFrame(Math.max(0, x - LINE_WIDTH / 2), 0d, LINE_WIDTH, height);
       double cx = Math.max(x, PLUS_SIZE / 2d);
-      double cy = header.getHeight() / 2d;
+      double cy = PLUS_SIZE / 2d;
       plus.setFrame(cx - PLUS_SIZE / 2d, cy - PLUS_SIZE / 2d, PLUS_SIZE, PLUS_SIZE);
     }
+    if (insertIndex < 0 || !plus.contains(pt)) {
+      restoreHeaderState();
+    } else if (!savedState.isPresent()) {
+      savedState = Optional.of(HeaderState.setHandCursor(header));
+    }
+  }
+
+  private void restoreHeaderState() {
+    savedState.ifPresent(HeaderState::restore);
+    savedState = Optional.empty();
   }
 
   // Returns the view index at which a new column is inserted, or -1 if the
@@ -250,9 +264,40 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
       table.moveColumn(viewCount, index);
     }
   }
+}
 
-  private static JTable getTable(JScrollPane scroll) {
-    return (JTable) scroll.getViewport().getView();
+// BasicTableHeaderUI swaps the cursor with the resize cursor in mouseMoved,
+// which is called after the LayerUI. Disable resizing and reordering while
+// the mouse is over the plus icon so that the hand cursor is kept and
+// pressing the icon does not start resizing or dragging a column.
+final class HeaderState {
+  private final JTableHeader header;
+  private final Cursor cursor;
+  private final boolean resizable;
+  private final boolean reorderable;
+
+  private HeaderState(JTableHeader header) {
+    this.header = header;
+    this.cursor = header.getCursor();
+    this.resizable = header.getResizingAllowed();
+    this.reorderable = header.getReorderingAllowed();
+  }
+
+  // Returns the previous state to be restored later
+  public static HeaderState setHandCursor(JTableHeader header) {
+    final HeaderState state = new HeaderState(header);
+    header.setResizingAllowed(false);
+    header.setReorderingAllowed(false);
+    header.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    return state;
+  }
+
+  // Restore the saved cursor so that BasicTableHeaderUI can swap it
+  // with the resize cursor consistently
+  public void restore() {
+    header.setResizingAllowed(resizable);
+    header.setReorderingAllowed(reorderable);
+    header.setCursor(cursor);
   }
 }
 
