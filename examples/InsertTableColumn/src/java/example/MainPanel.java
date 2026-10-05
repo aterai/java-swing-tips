@@ -11,21 +11,16 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.TableColumnModelEvent;
 import javax.swing.plaf.LayerUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
+import javax.swing.table.TableColumnModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // Java 8:
-    // Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
-    //   at WindowsTableHeaderUI$XPDefaultRenderer.paint(WindowsTableHeaderUI)
-    // [JDK-8039383] NPE when changing Windows Theme
-    // https://bugs.openjdk.org/browse/JDK-8039383
     JScrollPane scroll = new JScrollPane(makeTable());
     add(new JLayer<>(scroll, new ColumnInsertLayerUI()));
     JMenuBar mb = new JMenuBar();
@@ -37,30 +32,37 @@ public final class MainPanel extends JPanel {
 
   private static JTable makeTable() {
     JTable table = new JTable(5, 3) {
-      @Override protected JTableHeader createDefaultTableHeader() {
-        return new JTableHeader(columnModel) {
-          @Override public void updateUI() {
-            super.updateUI();
-            EventQueue.invokeLater(() -> {
-              TableCellRenderer renderer = getDefaultRenderer();
-              setDefaultRenderer(new BijectiveBase26Renderer(renderer));
-            });
-          }
-        };
-      }
-
       @Override public void updateUI() {
         super.updateUI();
         setAutoCreateColumnsFromModel(false);
         setAutoResizeMode(AUTO_RESIZE_OFF);
       }
+
+      @Override public void columnAdded(TableColumnModelEvent e) {
+        super.columnAdded(e);
+        updateHeaderValues(getColumnModel());
+      }
+
+      @Override public void columnMoved(TableColumnModelEvent e) {
+        super.columnMoved(e);
+        if (e.getFromIndex() != e.getToIndex()) {
+          updateHeaderValues(getColumnModel());
+        }
+      }
     };
-    // System.out.println(convertToColumnTitle(16_384)); // -> XFD
+    // System.out.println(ColumnTitles.toColumnTitle(16_384)); // -> XFD
     table.setModel(new DefaultTableModel(5, 16_384));
     table.setValueAt("0-0", 0, 0);
     table.setValueAt("0-1", 0, 1);
     table.setValueAt("0-2", 0, 2);
     return table;
+  }
+
+  // Name the columns in view order (A, B, ..., Z, AA, ...)
+  private static void updateHeaderValues(TableColumnModel columnModel) {
+    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+      columnModel.getColumn(i).setHeaderValue(ColumnTitles.toColumnTitle(i + 1));
+    }
   }
 
   public static void main(String[] args) {
@@ -85,55 +87,51 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class BijectiveBase26Renderer implements TableCellRenderer {
-  private final TableCellRenderer renderer;
+final class ColumnTitles {
+  private static final int RADIX = 26;
 
-  protected BijectiveBase26Renderer(TableCellRenderer renderer) {
-    this.renderer = renderer;
+  private ColumnTitles() {
+    /* Singleton */
   }
 
-  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = renderer.getTableCellRendererComponent(
-        table, value, isSelected, hasFocus, row, column);
-    if (c instanceof JLabel) {
-      JLabel l = (JLabel) c;
-      l.setText(convertToColumnTitle(column + 1));
-      l.setHorizontalAlignment(SwingConstants.CENTER);
+  // Bijective base-26: 1 -> A, 26 -> Z, 27 -> AA, 16384 -> XFD
+  public static String toColumnTitle(int columnNumber) {
+    if (columnNumber <= 0) {
+      throw new IllegalArgumentException("columnNumber must be positive: " + columnNumber);
     }
-    return c;
-  }
-
-  private static String convertToColumnTitle(int columnNumber) {
-    assert columnNumber > 0 : "Input is not valid!";
     StringBuilder sb = new StringBuilder();
-    int num = columnNumber;
-    while (num > 0) {
-      int mod = (num - 1) % 26;
-      int code = 'A' + mod;
-      sb.insert(0, (char) code);
-      // Java 11: sb.insert(0, Character.toString(code));
-      num = (num - mod) / 26;
+    for (int n = columnNumber; n > 0; n = (n - 1) / RADIX) {
+      sb.append((char) ('A' + (n - 1) % RADIX));
     }
-    return sb.toString();
+    return sb.reverse().toString();
   }
 }
 
 class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
   private static final Color LINE_COLOR = new Color(0x00_78_D7);
   private static final int LINE_WIDTH = 4;
+  private static final int PLUS_SIZE = 10;
   private final Rectangle2D line = new Rectangle2D.Double();
-  private final Ellipse2D plus = new Ellipse2D.Double(0d, 0d, 10d, 10d);
+  private final Ellipse2D plus = new Ellipse2D.Double();
+  private int insertIndex = -1;
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    if (c instanceof JLayer && !line.isEmpty()) {
+    if (insertIndex >= 0 && c instanceof JLayer) {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
-      JTableHeader header = ((JTable) scroll.getViewport().getView()).getTableHeader();
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      Point pt0 = line.getBounds().getLocation();
-      Point pt1 = SwingUtilities.convertPoint(header, pt0, c);
-      g2.translate(pt1.getX() - pt0.getX(), pt1.getY() - pt0.getY());
+      // Do not paint over the scroll bars
+      Rectangle clip = scroll.getViewport().getBounds();
+      JViewport columnHeader = scroll.getColumnHeader();
+      if (columnHeader != null) {
+        clip.add(columnHeader.getBounds());
+      }
+      g2.clip(SwingUtilities.convertRectangle(scroll, clip, c));
+      // line and plus are in the JTableHeader coordinate system
+      JTableHeader header = getTable(scroll).getTableHeader();
+      Point pt = SwingUtilities.convertPoint(header, 0, 0, c);
+      g2.translate(pt.x, pt.y);
       // paint Insert Line
       g2.setPaint(LINE_COLOR);
       g2.fill(line);
@@ -143,61 +141,11 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
       g2.setPaint(LINE_COLOR);
       double cx = plus.getCenterX();
       double cy = plus.getCenterY();
-      double w2 = plus.getWidth() / 2d;
-      double h2 = plus.getHeight() / 2d;
-      g2.draw(new Line2D.Double(cx - w2, cy, cx + w2, cy));
-      g2.draw(new Line2D.Double(cx, cy - h2, cx, cy + h2));
+      double r = plus.getWidth() / 2d;
+      g2.draw(new Line2D.Double(cx - r, cy, cx + r, cy));
+      g2.draw(new Line2D.Double(cx, cy - r, cx, cy + r));
       g2.draw(plus);
       g2.dispose();
-    }
-  }
-
-  private void updateLineLocation(JScrollPane scroll, Point loc) {
-    JTable table = (JTable) scroll.getViewport().getView();
-    JTableHeader header = table.getTableHeader();
-    Rectangle rect = scroll.getVisibleRect();
-    JScrollBar bar = scroll.getHorizontalScrollBar();
-    int scrollHeight = bar.isVisible() ? bar.getHeight() : 0;
-    Dimension d = new Dimension(LINE_WIDTH, rect.height - scrollHeight);
-    for (int i = 0; i < table.getColumnCount(); i++) {
-      if (canInsert(header, loc, i, d)) {
-        break;
-      }
-    }
-  }
-
-  private boolean canInsert(JTableHeader header, Point loc, int i, Dimension d) {
-    Rectangle r = header.getHeaderRect(i);
-    Rectangle center = plus.getBounds();
-    Rectangle r1 = RectUtils.getWestRect(r, center, i);
-    Rectangle r2 = RectUtils.getEastRect(r, center);
-    boolean hit = false;
-    if (r1.contains(loc)) {
-      updateInsertLineLocation(r1, loc, d, header);
-      hit = true;
-    } else if (r2.contains(loc)) {
-      updateInsertLineLocation(r2, loc, d, header);
-      hit = true;
-    } else if (r.contains(loc)) {
-      line.setFrame(0d, 0d, 0d, 0d);
-      header.setCursor(Cursor.getDefaultCursor());
-      hit = true;
-    }
-    return hit;
-  }
-
-  private void updateInsertLineLocation(Rectangle r, Point loc, Dimension d, Component c) {
-    if (r.contains(loc)) {
-      double cx = r.getCenterX();
-      double cy = r.getCenterY();
-      line.setFrame(cx - d.getWidth() / 2d, r.getY(), d.getWidth(), d.getHeight());
-      double pw = plus.getWidth() / 2d;
-      double ph = plus.getHeight() / 2d;
-      plus.setFrameFromCenter(cx, cy, cx - pw, cy - ph);
-      c.setCursor(Cursor.getDefaultCursor());
-    } else {
-      line.setFrame(0d, 0d, 0d, 0d);
-      c.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
     }
   }
 
@@ -218,64 +166,93 @@ class ColumnInsertLayerUI extends LayerUI<JScrollPane> {
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     super.processMouseEvent(e, l);
-    if (e.getID() == MouseEvent.MOUSE_CLICKED) {
-      mouseClicked(e, l);
-    }
-  }
-
-  private void mouseClicked(MouseEvent e, JLayer<? extends JScrollPane> l) {
-    JScrollPane scroll = l.getView();
-    Point pt = e.getPoint();
-    if (plus.contains(pt) && !line.isEmpty()) {
-      JTable table = (JTable) scroll.getViewport().getView();
-      TableModel model = table.getModel();
-      int columnCount = table.getColumnCount();
-      int maxColumn = model.getColumnCount();
-      if (columnCount < maxColumn) {
-        int idx = table.columnAtPoint(line.getBounds().getLocation());
-        TableColumn column = new TableColumn(columnCount);
-        column.setHeaderValue("Column" + columnCount);
-        table.addColumn(column);
-        table.moveColumn(columnCount, idx + 1);
-        updateLineLocation(scroll, pt);
+    Component c = e.getComponent();
+    int id = e.getID();
+    if (id == MouseEvent.MOUSE_CLICKED && c instanceof JTableHeader) {
+      JTableHeader header = (JTableHeader) c;
+      Point pt = e.getPoint();
+      if (insertIndex >= 0 && plus.contains(pt)) {
+        insertColumn(header.getTable(), insertIndex);
+        updateInsertLocation(l.getView(), header, pt);
+        l.repaint();
       }
+    } else if (id == MouseEvent.MOUSE_EXITED && c instanceof JTableHeader) {
+      clearInsertLocation(l);
     }
-    l.repaint(scroll.getBounds());
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     super.processMouseMotionEvent(e, l);
     Component c = e.getComponent();
-    int id = e.getID();
-    JScrollPane scroll = l.getView();
-    if (id == MouseEvent.MOUSE_MOVED && c instanceof JTableHeader) {
-      updateLineLocation(scroll, e.getPoint());
+    if (e.getID() == MouseEvent.MOUSE_MOVED && c instanceof JTableHeader) {
+      updateInsertLocation(l.getView(), (JTableHeader) c, e.getPoint());
+      l.repaint();
     } else {
-      line.setFrame(0d, 0d, 0d, 0d);
+      clearInsertLocation(l);
     }
-    l.repaint(scroll.getBounds());
-  }
-}
-
-final class RectUtils {
-  private RectUtils() {
-    /* Singleton */
   }
 
-  public static Rectangle getWestRect(Rectangle cell, Rectangle center, int i) {
-    Rectangle rect = cell.getBounds();
-    if (i != 0) {
-      rect.x -= center.width / 2;
+  private void clearInsertLocation(JLayer<? extends JScrollPane> l) {
+    if (insertIndex >= 0) {
+      insertIndex = -1;
+      l.repaint();
     }
-    rect.setSize(center.getSize());
-    return rect;
   }
 
-  public static Rectangle getEastRect(Rectangle cell, Rectangle center) {
-    Rectangle rect = cell.getBounds();
-    rect.x += rect.width - center.width / 2;
-    rect.setSize(center.getSize());
-    return rect;
+  private void updateInsertLocation(JScrollPane scroll, JTableHeader header, Point pt) {
+    insertIndex = getInsertIndex(header, pt);
+    if (insertIndex >= 0) {
+      int x = getBoundaryX(header, insertIndex);
+      int height = header.getHeight() + scroll.getViewport().getHeight();
+      line.setFrame(Math.max(0, x - LINE_WIDTH / 2), 0d, LINE_WIDTH, height);
+      double cx = Math.max(x, PLUS_SIZE / 2d);
+      double cy = header.getHeight() / 2d;
+      plus.setFrame(cx - PLUS_SIZE / 2d, cy - PLUS_SIZE / 2d, PLUS_SIZE, PLUS_SIZE);
+    }
+  }
+
+  // Returns the view index at which a new column is inserted, or -1 if the
+  // point is not near a column boundary
+  private static int getInsertIndex(JTableHeader header, Point pt) {
+    int column = header.columnAtPoint(pt);
+    int index = -1;
+    if (column >= 0) {
+      Rectangle r = header.getHeaderRect(column);
+      // The left edge of the first column has no column on its left side,
+      // so the whole hit area is placed inside the first column
+      int west = column == 0 ? PLUS_SIZE : PLUS_SIZE / 2;
+      if (pt.x < r.x + west) {
+        index = column;
+      } else if (pt.x >= r.x + r.width - PLUS_SIZE / 2) {
+        index = column + 1;
+      }
+    }
+    return index;
+  }
+
+  private static int getBoundaryX(JTableHeader header, int index) {
+    int x;
+    if (index == 0) {
+      x = header.getHeaderRect(0).x;
+    } else {
+      Rectangle r = header.getHeaderRect(index - 1);
+      x = r.x + r.width;
+    }
+    return x;
+  }
+
+  // JTable and TableColumnModel have no method to insert a TableColumn at
+  // the specified position, so add it to the end and then move it
+  private static void insertColumn(JTable table, int index) {
+    int viewCount = table.getColumnCount();
+    if (viewCount < table.getModel().getColumnCount()) {
+      table.addColumn(new TableColumn(viewCount));
+      table.moveColumn(viewCount, index);
+    }
+  }
+
+  private static JTable getTable(JScrollPane scroll) {
+    return (JTable) scroll.getViewport().getView();
   }
 }
 
