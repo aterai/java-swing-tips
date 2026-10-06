@@ -15,10 +15,9 @@ import javax.swing.text.html.StyleSheet;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(2, 1));
-    HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-    htmlEditorKit.setStyleSheet(makeStyleSheet());
-    JEditorPane editor1 = makeEditorPane(htmlEditorKit);
-    JEditorPane editor2 = makeEditorPane(htmlEditorKit);
+    StyleSheet styleSheet = createStyleSheet();
+    JEditorPane editor1 = createEditorPane(styleSheet);
+    JEditorPane editor2 = createEditorPane(styleSheet);
     editor2.setSelectedTextColor(null);
     editor2.setSelectionColor(new Color(0x64_88_AA_AA, true));
     // TEST: editor2.setSelectionColor(null);
@@ -27,7 +26,11 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JEditorPane makeEditorPane(HTMLEditorKit htmlEditorKit) {
+  private static JEditorPane createEditorPane(StyleSheet styleSheet) {
+    // An EditorKit instance should not be shared between JEditorPanes,
+    // since HTMLEditorKit#install(...) keeps a reference to the editor.
+    HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
+    htmlEditorKit.setStyleSheet(styleSheet);
     JEditorPane editor = new JEditorPane();
     editor.setEditorKit(htmlEditorKit);
     editor.setEditable(false);
@@ -45,7 +48,7 @@ public final class MainPanel extends JPanel {
     return editor;
   }
 
-  private static StyleSheet makeStyleSheet() {
+  private static StyleSheet createStyleSheet() {
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule(".str{color:#008800}");
     styleSheet.addRule(".kwd{color:#000088}");
