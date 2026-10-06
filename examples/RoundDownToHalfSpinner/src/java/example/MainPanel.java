@@ -28,23 +28,23 @@ public final class MainPanel extends JPanel {
         null
     );
     JSpinner downModelSpinner = createSpinner(
-        new RoundToHalfSpinnerModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
+        new RoundDownToHalfSpinnerModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
         null
     );
-    JSpinner downFmtSpinner = createSpinner(
+    JSpinner downFormatSpinner = createSpinner(
         new SpinnerNumberModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
-        createHalfFormatter(RoundingMode.DOWN)
+        new HalfFormatter(RoundingMode.DOWN, MIN_VALUE, MAX_VALUE)
     );
-    JSpinner halfUpFmtSpinner = createSpinner(
+    JSpinner halfUpSpinner = createSpinner(
         new SpinnerNumberModel(INITIAL_VALUE, MIN_VALUE, MAX_VALUE, STEP_SIZE),
-        createHalfFormatter(RoundingMode.HALF_UP)
+        new HalfFormatter(RoundingMode.HALF_UP, MIN_VALUE, MAX_VALUE)
     );
 
     JPanel p = new JPanel(new GridLayout(0, 2, 5, 5));
     p.add(createTitledPanel("Default, stepSize: 0.5", defaultSpinner));
     p.add(createTitledPanel("Override SpinnerNumberModel", downModelSpinner));
-    p.add(createTitledPanel("Round down to half Formatter", downFmtSpinner));
-    p.add(createTitledPanel("Round to half Formatter", halfUpFmtSpinner));
+    p.add(createTitledPanel("Round down to half Formatter", downFormatSpinner));
+    p.add(createTitledPanel("Round to half Formatter", halfUpSpinner));
 
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
@@ -56,12 +56,12 @@ public final class MainPanel extends JPanel {
     if (formatter != null) {
       JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) spinner.getEditor();
       editor.getTextField().setFormatterFactory(new DefaultFormatterFactory(formatter));
-      info(formatter, model);
+      appendRoundedValue(formatter, model);
     }
     return spinner;
   }
 
-  private void info(DefaultFormatter formatter, SpinnerNumberModel model) {
+  private void appendRoundedValue(DefaultFormatter formatter, SpinnerNumberModel model) {
     try {
       String valueText = model.getNumber().toString();
       Object roundedValue = formatter.stringToValue(valueText);
@@ -69,28 +69,6 @@ public final class MainPanel extends JPanel {
     } catch (ParseException ex) {
       textArea.append(String.format("Parse error: %s%n", ex.getMessage()));
     }
-  }
-
-  private static DefaultFormatter createHalfFormatter(RoundingMode roundingMode) {
-    return new DefaultFormatter() {
-      @Override public Object stringToValue(String text) {
-        return roundToHalf(new BigDecimal(text), roundingMode).doubleValue();
-      }
-
-      @Override public String valueToString(Object value) throws ParseException {
-        if (!(value instanceof Number)) {
-          throw new ParseException("value is not a Number: " + value, 0);
-        }
-        double doubleValue = ((Number) value).doubleValue();
-        return roundToHalf(BigDecimal.valueOf(doubleValue), roundingMode).toString();
-      }
-    };
-  }
-
-  private static BigDecimal roundToHalf(BigDecimal value, RoundingMode roundingMode) {
-    return value.multiply(BigDecimal.valueOf(2))
-        .setScale(0, roundingMode)
-        .multiply(BigDecimal.valueOf(0.5));
   }
 
   private static Component createTitledPanel(String title, Component component) {
@@ -126,17 +104,65 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RoundToHalfSpinnerModel extends SpinnerNumberModel {
-  protected RoundToHalfSpinnerModel(double value, double min, double max, double step) {
+final class HalfFormatter extends DefaultFormatter {
+  private final RoundingMode roundingMode;
+  private final double minimum;
+  private final double maximum;
+
+  /* default */ HalfFormatter(RoundingMode roundingMode, double minimum, double maximum) {
+    super();
+    this.roundingMode = roundingMode;
+    this.minimum = minimum;
+    this.maximum = maximum;
+    // DefaultFormatter overwrites typed characters by default, unlike NumberFormatter
+    setOverwriteMode(false);
+  }
+
+  @Override public Object stringToValue(String text) throws ParseException {
+    BigDecimal value;
+    try {
+      value = new BigDecimal(text.trim());
+    } catch (NumberFormatException ex) {
+      // DefaultFormatter must report invalid text as a ParseException
+      // so that JFormattedTextField can revert the edit
+      ParseException pe = new ParseException("Invalid number: " + text, 0);
+      pe.initCause(ex);
+      throw pe;
+    }
+    double rounded = RoundDownToHalfSpinnerModel.roundToHalf(value, roundingMode).doubleValue();
+    // This formatter replaces the NumberEditor's one, which checks the bounds of the model
+    if (rounded < minimum || rounded > maximum) {
+      throw new ParseException("Out of range: " + text, 0);
+    }
+    return rounded;
+  }
+
+  @Override public String valueToString(Object value) throws ParseException {
+    if (!(value instanceof Number)) {
+      throw new ParseException("value is not a Number: " + value, 0);
+    }
+    double doubleValue = ((Number) value).doubleValue();
+    return RoundDownToHalfSpinnerModel.roundToHalf(
+        BigDecimal.valueOf(doubleValue), roundingMode).toString();
+  }
+}
+
+class RoundDownToHalfSpinnerModel extends SpinnerNumberModel {
+  public RoundDownToHalfSpinnerModel(double value, double min, double max, double step) {
     super(roundDownToHalf(value), min, max, step);
   }
 
   @Override public void setValue(Object value) {
-    Number number = requireNumber(value);
-    Double roundedValue = roundDownToHalf(number.doubleValue());
-    if (!roundedValue.equals(getValue())) {
+    Double roundedValue = roundDownToHalf(requireNumber(value).doubleValue());
+    if (roundedValue.equals(getValue())) {
+      if (!roundedValue.equals(value)) {
+        // The value is unchanged, but the editor still displays the unrounded text
+        // (e.g. 8.85 when the value is 8.5), so notify it to redisplay the current value
+        fireStateChanged();
+      }
+    } else {
+      // SpinnerNumberModel#setValue(...) fires a ChangeEvent by itself
       super.setValue(roundedValue);
-      fireStateChanged();
     }
   }
 
@@ -151,6 +177,8 @@ class RoundToHalfSpinnerModel extends SpinnerNumberModel {
     return roundToHalf(BigDecimal.valueOf(value), RoundingMode.DOWN).doubleValue();
   }
 
+  // Round to a multiple of 0.5: double the value, round it to an integer
+  // with the given RoundingMode, and then halve it.
   public static BigDecimal roundToHalf(BigDecimal value, RoundingMode roundingMode) {
     return value.multiply(BigDecimal.valueOf(2))
         .setScale(0, roundingMode)
