@@ -192,7 +192,7 @@ class RoundedSelectionHighlightPainter extends DefaultHighlightPainter {
     try {
       Area area = getRowsArea(c, offs0, offs1);
       for (List<Point2D> polygon : GeomUtils.splitIntoPolygons(area)) {
-        GeomUtils.snapShortRightEdges(polygon, ARC * 2d);
+        GeomUtils.snapShortSteps(polygon, ARC * 2d);
         g2.fill(GeomUtils.convertRoundedPath(polygon, ARC));
       }
     } catch (BadLocationException ex) {
@@ -244,12 +244,12 @@ final class GeomUtils {
     List<List<Point2D>> polygons = new ArrayList<>();
     List<Point2D> polygon = new ArrayList<>();
     PathIterator pi = area.getPathIterator(null);
-    double[] cd = new double[6];
+    double[] coords = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(cd)) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
         case PathIterator.SEG_LINETO:
-          polygon.add(new Point2D.Double(cd[0], cd[1]));
+          polygon.add(new Point2D.Double(coords[0], coords[1]));
           break;
         case PathIterator.SEG_CLOSE:
           if (!polygon.isEmpty()) {
@@ -265,24 +265,35 @@ final class GeomUtils {
     return polygons;
   }
 
-  // Align the short step at the right edge with the larger X-coordinate.
-  public static void snapShortRightEdges(List<Point2D> list, double arc) {
-    int sz = list.size();
+  // Align a short step between rows with the outer X-coordinate
+  // (the larger one on the right side, the smaller one on the left side).
+  public static void snapShortSteps(List<Point2D> polygon, double arc) {
+    int sz = polygon.size();
     for (int i = 0; i < sz; i++) {
       int i1 = (i + 1) % sz;
       int i2 = (i + 2) % sz;
       int i3 = (i + 3) % sz;
-      Point2D pt0 = list.get(i);
-      Point2D pt1 = list.get(i1);
-      Point2D pt2 = list.get(i2);
-      Point2D pt3 = list.get(i3);
+      Point2D pt0 = polygon.get(i);
+      Point2D pt1 = polygon.get(i1);
+      Point2D pt2 = polygon.get(i2);
+      Point2D pt3 = polygon.get(i3);
       double dx1 = pt2.getX() - pt1.getX();
-      if (Math.abs(dx1) > 1.0e-1 && Math.abs(dx1) < arc) {
-        double max = Math.max(pt0.getX(), pt2.getX());
-        replace(list, i, max, pt0.getY());
-        replace(list, i1, max, pt1.getY());
-        replace(list, i2, max, pt2.getY());
-        replace(list, i3, max, pt3.getY());
+      double dy0 = pt1.getY() - pt0.getY();
+      double dy2 = pt3.getY() - pt2.getY();
+      // A step has vertical edges in the same direction on both sides of
+      // the horizontal edge, otherwise it is the top or bottom edge of a row
+      // and a narrow selection (e.g. a single "i") must not be collapsed.
+      boolean isStep = dy0 * dy2 > 0d;
+      if (isStep && Math.abs(dx1) > 1.0e-1 && Math.abs(dx1) < arc) {
+        // The outline of an Area runs counterclockwise on the screen,
+        // so the upward vertical edges are on the right side.
+        double x = dy0 < 0d
+            ? Math.max(pt0.getX(), pt2.getX())
+            : Math.min(pt0.getX(), pt2.getX());
+        replace(polygon, i, x, pt0.getY());
+        replace(polygon, i1, x, pt1.getY());
+        replace(polygon, i2, x, pt2.getY());
+        replace(polygon, i3, x, pt3.getY());
       }
     }
   }

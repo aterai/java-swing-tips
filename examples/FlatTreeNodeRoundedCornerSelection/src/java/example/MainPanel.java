@@ -23,8 +23,8 @@ public final class MainPanel extends JPanel {
     JTree tree = new JTree();
     tree.setRowHeight(20);
     add(createScrollPane(tree));
-    add(createScrollPane(new RoundedSelectionTree0()));
-    add(createScrollPane(new RoundedSelectionTree()));
+    add(createScrollPane(new RoundedSelectionTree(false)));
+    add(createScrollPane(new RoundedSelectionTree(true)));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
@@ -61,8 +61,18 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class RoundedSelectionTree extends JTree {
+final class RoundedSelectionTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0xC8_00_78_D7, true);
+  private static final double ARC = 4d;
+  private final boolean flatten;
+
+  /* default */ RoundedSelectionTree(boolean flatten) {
+    super();
+    this.flatten = flatten;
+    // Register the listener here instead of updateUI() so that it is not
+    // added again each time the LookAndFeel is changed.
+    addTreeSelectionListener(e -> repaint());
+  }
 
   @Override protected void paintComponent(Graphics g) {
     int[] selectionRows = getSelectionRows();
@@ -74,12 +84,11 @@ class RoundedSelectionTree extends JTree {
       Arrays.stream(selectionRows)
           .mapToObj(this::getRowBounds)
           .forEach(r -> area.add(new Area(r)));
-      double arc = 4d;
-      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
-        List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
-        GeomUtils.snapShortRightEdges(lst, arc * 2d);
-        g2.fill(GeomUtils.convertRoundedPath(lst, arc));
-        // g2.fill(GeomUtils.drawRoundedPolygon(lst, arc));
+      for (List<Point2D> polygon : GeomUtils.splitIntoPolygons(area)) {
+        if (flatten) {
+          GeomUtils.snapShortSteps(polygon, ARC * 2d);
+        }
+        g2.fill(GeomUtils.convertRoundedPath(polygon, ARC));
       }
       g2.dispose();
     }
@@ -96,45 +105,6 @@ class RoundedSelectionTree extends JTree {
     d.put(key, new TransparentTreeCellPainter());
     putClientProperty("Nimbus.Overrides", d);
     putClientProperty("Nimbus.Overrides.InheritDefaults", false);
-    addTreeSelectionListener(e -> repaint());
-  }
-}
-
-class RoundedSelectionTree0 extends JTree {
-  private static final Color SELECTED_COLOR = new Color(0xC8_00_78_D7, true);
-
-  @Override protected void paintComponent(Graphics g) {
-    int[] selectionRows = getSelectionRows();
-    if (selectionRows != null && selectionRows.length > 0) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setPaint(SELECTED_COLOR);
-      Area area = new Area();
-      Arrays.stream(selectionRows)
-          .mapToObj(this::getRowBounds)
-          .forEach(r -> area.add(new Area(r)));
-      double arc = 4d;
-      for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
-        List<Point2D> lst = GeomUtils.convertAreaToListOfPoint2D(a);
-        // GeomUtils.convertFlatten(lst, arc * 2d);
-        g2.fill(GeomUtils.convertRoundedPath(lst, arc));
-      }
-      g2.dispose();
-    }
-    super.paintComponent(g);
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setCellRenderer(new TransparentTreeCellRenderer());
-    setOpaque(false);
-    setRowHeight(20);
-    UIDefaults d = new UIDefaults();
-    String key = "Tree:TreeCell[Enabled+Selected].backgroundPainter";
-    d.put(key, new TransparentTreeCellPainter());
-    putClientProperty("Nimbus.Overrides", d);
-    putClientProperty("Nimbus.Overrides.InheritDefaults", false);
-    addTreeSelectionListener(e -> repaint());
   }
 }
 
@@ -226,46 +196,68 @@ final class LookAndFeelUtils {
 }
 
 final class GeomUtils {
+  private static final double KAPPA = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...
+
   private GeomUtils() {
     /* Singleton */
   }
 
-  public static List<Point2D> convertAreaToListOfPoint2D(Area area) {
-    List<Point2D> list = new ArrayList<>();
+  // Decompose a multi-loop Area into a list of polygons (single-loop vertex lists).
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+  public static List<List<Point2D>> splitIntoPolygons(Area area) {
+    List<List<Point2D>> polygons = new ArrayList<>();
+    List<Point2D> polygon = new ArrayList<>();
     PathIterator pi = area.getPathIterator(null);
-    double[] cd = new double[6];
+    double[] coords = new double[6];
     while (!pi.isDone()) {
-      switch (pi.currentSegment(cd)) {
+      switch (pi.currentSegment(coords)) {
         case PathIterator.SEG_MOVETO:
         case PathIterator.SEG_LINETO:
-          list.add(new Point2D.Double(cd[0], cd[1]));
+          polygon.add(new Point2D.Double(coords[0], coords[1]));
+          break;
+        case PathIterator.SEG_CLOSE:
+          if (!polygon.isEmpty()) {
+            polygons.add(polygon);
+            polygon = new ArrayList<>();
+          }
           break;
         default:
           break;
       }
       pi.next();
     }
-    return list;
+    return polygons;
   }
 
-  // Align the short step at the right edge with the larger X-coordinate.
-  public static void snapShortRightEdges(List<Point2D> list, double arc) {
-    int sz = list.size();
+  // Align a short step between rows with the outer X-coordinate
+  // (the larger one on the right side, the smaller one on the left side).
+  public static void snapShortSteps(List<Point2D> polygon, double arc) {
+    int sz = polygon.size();
     for (int i = 0; i < sz; i++) {
       int i1 = (i + 1) % sz;
       int i2 = (i + 2) % sz;
       int i3 = (i + 3) % sz;
-      Point2D pt0 = list.get(i);
-      Point2D pt1 = list.get(i1);
-      Point2D pt2 = list.get(i2);
-      Point2D pt3 = list.get(i3);
+      Point2D pt0 = polygon.get(i);
+      Point2D pt1 = polygon.get(i1);
+      Point2D pt2 = polygon.get(i2);
+      Point2D pt3 = polygon.get(i3);
       double dx1 = pt2.getX() - pt1.getX();
-      if (Math.abs(dx1) > 1.0e-1 && Math.abs(dx1) < arc) {
-        double max = Math.max(pt0.getX(), pt2.getX());
-        replace(list, i, max, pt0.getY());
-        replace(list, i1, max, pt1.getY());
-        replace(list, i2, max, pt2.getY());
-        replace(list, i3, max, pt3.getY());
+      double dy0 = pt1.getY() - pt0.getY();
+      double dy2 = pt3.getY() - pt2.getY();
+      // A step has vertical edges in the same direction on both sides of
+      // the horizontal edge, otherwise it is the top or bottom edge of a row
+      // and a narrow selection (e.g. a single "i") must not be collapsed.
+      boolean isStep = dy0 * dy2 > 0d;
+      if (isStep && Math.abs(dx1) > 1.0e-1 && Math.abs(dx1) < arc) {
+        // The outline of an Area runs counterclockwise on the screen,
+        // so the upward vertical edges are on the right side.
+        double x = dy0 < 0d
+            ? Math.max(pt0.getX(), pt2.getX())
+            : Math.min(pt0.getX(), pt2.getX());
+        replace(polygon, i, x, pt0.getY());
+        replace(polygon, i1, x, pt1.getY());
+        replace(polygon, i2, x, pt2.getY());
+        replace(polygon, i3, x, pt3.getY());
       }
     }
   }
@@ -276,8 +268,7 @@ final class GeomUtils {
 
   // Rounding the corners of a Rectilinear Polygon.
   public static Path2D convertRoundedPath(List<Point2D> list, double arc) {
-    double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
-    double akv = arc - arc * kappa;
+    double akv = arc - arc * KAPPA;
     int sz = list.size();
     Point2D pt0 = list.get(0);
     Path2D path = new Path2D.Double();
@@ -304,96 +295,4 @@ final class GeomUtils {
   private static double clampedSignum(double v, double arc) {
     return Math.abs(v) < arc ? 0d : Math.signum(v);
   }
-
-  // Decompose a multi-loop Area into a list of single-loop Areas.
-  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
-    List<Area> subAreas = new ArrayList<>();
-    Path2D path = new Path2D.Double();
-    PathIterator pi = rect.getPathIterator(null);
-    double[] cd = new double[6];
-    while (!pi.isDone()) {
-      switch (pi.currentSegment(cd)) {
-        case PathIterator.SEG_MOVETO:
-          path.moveTo(cd[0], cd[1]);
-          break;
-        case PathIterator.SEG_LINETO:
-          path.lineTo(cd[0], cd[1]);
-          break;
-        case PathIterator.SEG_QUADTO:
-          path.quadTo(cd[0], cd[1], cd[2], cd[3]);
-          break;
-        case PathIterator.SEG_CUBICTO:
-          path.curveTo(cd[0], cd[1], cd[2], cd[3], cd[4], cd[5]);
-          break;
-        case PathIterator.SEG_CLOSE:
-          path.closePath();
-          subAreas.add(new Area(path));
-          path.reset();
-          break;
-        default:
-          break;
-      }
-      pi.next();
-    }
-    return subAreas;
-  }
-
-  // // https://stackoverflow.com/questions/26995884/polygon-with-rounded-corners
-  // public static Path2D drawRoundedPolygon(List<Point2D> points, double radius) {
-  //   List<Point2D> closed = convertToClosed(points, radius);
-  //   Point2D pt0 = points.get(0);
-  //   Path2D path = new Path2D.Double();
-  //   path.moveTo(pt0.getX(), pt0.getY());
-  //   for (int i = 0, last = closed.size(); i < last; i += 3) {
-  //     Point2D p1 = closed.get(i);
-  //     Point2D p2 = closed.get(i + 1);
-  //     Point2D p3 = closed.get(i + 2);
-  //     // rounded isosceles triangle connector values:
-  //     double[] c = roundIsosceles(p1, p2, p3, .75);
-  //     // tell Processing that we have points to add to our shape:
-  //     path.lineTo(p1.getX(), p1.getY());
-  //     path.curveTo(c[0], c[1], c[2], c[3], p3.getX(), p3.getY());
-  //   }
-  //   path.closePath();
-  //   return path;
-  // }
-  //
-  // public static List<Point2D> convertToClosed(List<Point2D> points, double radius) {
-  //   // this value *actually* depends on the angle between the lines.
-  //   // a 180-degree angle means f can be 1, a 10-degree angle needs
-  //   // an f closer to 4!
-  //   // double f = 2.5f;
-  //   List<Point2D> closed = new ArrayList<>();
-  //   int last = points.size();
-  //   for (int i = 0; i < last; i++) {
-  //     Point2D p1 = points.get(i);
-  //     Point2D p2 = points.get((i + 1) % last);
-  //     Point2D p3 = points.get((i + 2) % last);
-  //     double dx1 = p2.getX() - p1.getX();
-  //     double dy1 = p2.getY() - p1.getY();
-  //     double m1 = Math.hypot(dx1, dy1);
-  //     closed.add(new Point2D.Double(
-  //         p2.getX() - radius * dx1 / m1,
-  //         p2.getY() - radius * dy1 / m1));
-  //     closed.add(p2);
-  //     double dx2 = p3.getX() - p2.getX();
-  //     double dy2 = p3.getY() - p2.getY();
-  //     double m2 = Math.hypot(dx2, dy2);
-  //     closed.add(new Point2D.Double(
-  //         p2.getX() + radius * dx2 / m2,
-  //         p2.getY() + radius * dy2 / m2));
-  //   }
-  //   return closed;
-  // }
-  //
-  // public static double[] roundIsosceles(Point2D p1, Point2D p2, Point2D p3, double t) {
-  //   double mt = 1d - t;
-  //   double c1x = mt * p1.getX() + t * p2.getX();
-  //   double c1y = mt * p1.getY() + t * p2.getY();
-  //   double c2x = mt * p3.getX() + t * p2.getX();
-  //   double c2y = mt * p3.getY() + t * p2.getY();
-  //   return new double[]{
-  //       c1x, c1y, c2x, c2y
-  //   };
-  // }
 }
