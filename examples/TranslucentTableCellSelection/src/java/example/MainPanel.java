@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.synth.SynthTableUI;
@@ -77,9 +77,14 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TranslucentCellSelectionTable extends JTable {
-  protected TranslucentCellSelectionTable(TableModel model) {
+final class TranslucentCellSelectionTable extends JTable {
+  private static final Color TRANSPARENT = new Color(0x0, true);
+
+  /* default */ TranslucentCellSelectionTable(TableModel model) {
     super(model);
+    // The selection outline is painted over the whole JLayer, so repaint the
+    // entire table when editing starts, stops, or is canceled to hide/show it.
+    addPropertyChangeListener("tableCellEditor", e -> repaint());
   }
 
   @Override public void updateUI() {
@@ -89,10 +94,10 @@ class TranslucentCellSelectionTable extends JTable {
     setCellSelectionEnabled(true);
     setIntercellSpacing(new Dimension(3, 3));
     setAutoCreateRowSorter(true);
-    setBackground(new Color(0x0, true));
+    setBackground(TRANSPARENT);
     setRowHeight(20);
     if (getUI() instanceof SynthTableUI) {
-      setDefaultRenderer(Boolean.class, new SynthBooleanTableCellRenderer2());
+      setDefaultRenderer(Boolean.class, new SynthBooleanTableCellRenderer());
     }
   }
 
@@ -110,17 +115,20 @@ class TranslucentCellSelectionTable extends JTable {
       ((JComponent) c).setOpaque(false);
     }
     c.setForeground(getForeground());
-    c.setBackground(new Color(0x0, true));
+    c.setBackground(TRANSPARENT);
     return c;
   }
 
-  @Override public void editingStopped(ChangeEvent e) {
-    super.editingStopped(e);
+  // JTable repaints only the changed rows or columns, which would leave a part
+  // of the old selection outline, so repaint the entire table on any selection
+  // change (mouse, keyboard, selectAll(), clearSelection(), etc.).
+  @Override public void valueChanged(ListSelectionEvent e) {
+    super.valueChanged(e);
     repaint();
   }
 
-  @Override public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
-    super.changeSelection(rowIndex, columnIndex, toggle, extend);
+  @Override public void columnSelectionChanged(ListSelectionEvent e) {
+    super.columnSelectionChanged(e);
     repaint();
   }
 
@@ -167,10 +175,10 @@ final class GeomUtils {
   }
 
   // Decompose a multi-loop Area into a list of single-loop Areas.
-  public static List<Area> splitIntoSingleLoopAreas(Area rect) {
+  public static List<Area> splitIntoSingleLoopAreas(Area area) {
     List<Area> subAreas = new ArrayList<>();
     Path2D path = new Path2D.Double();
-    PathIterator pi = rect.getPathIterator(null);
+    PathIterator pi = area.getPathIterator(null);
     double[] cd = new double[6];
     while (!pi.isDone()) {
       switch (pi.currentSegment(cd)) {
@@ -200,7 +208,7 @@ final class GeomUtils {
   }
 }
 
-class SynthBooleanTableCellRenderer2 extends JCheckBox implements TableCellRenderer {
+class SynthBooleanTableCellRenderer extends JCheckBox implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     setHorizontalAlignment(CENTER);
     setName("Table.cellRenderer");
@@ -231,14 +239,16 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
 
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
-    JTable table = getTable(c);
-    int cc = table.getSelectedColumnCount();
-    int rc = table.getSelectedRowCount();
-    if (cc != 0 && rc != 0 && !table.isEditing()) {
+    JScrollPane scroll = getScrollPane(c);
+    JTable table = getTable(scroll);
+    if (table != null && hasSelectedCells(table) && !table.isEditing()) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING,
           RenderingHints.VALUE_ANTIALIAS_ON);
+      // Clip to the viewport (including its border) so that the selection
+      // scrolled out of view is not painted over the header or scrollbars.
+      g2.clip(SwingUtilities.convertRectangle(scroll, scroll.getViewportBorderBounds(), c));
       Area area = new Area();
       for (int row : table.getSelectedRows()) {
         for (int col : table.getSelectedColumns()) {
@@ -246,21 +256,26 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
         }
       }
       Dimension ics = table.getIntercellSpacing();
-      Color v = table.getSelectionBackground();
-      // Color sbc = new Color(v.getRGB() & 0xFF_FF_FF | (0x32 << 24), true);
-      Color sbc = new Color(v.getRed(), v.getGreen(), v.getBlue(), 0x32);
+      Color selectionColor = table.getSelectionBackground();
+      // int rgb = selectionColor.getRGB() & 0xFF_FF_FF | (0x32 << 24);
+      Color translucentColor = new Color(
+          selectionColor.getRed(), selectionColor.getGreen(), selectionColor.getBlue(), 0x32);
+      g2.setStroke(BORDER_STROKE);
       for (Area a : GeomUtils.splitIntoSingleLoopAreas(area)) {
         Rectangle r = a.getBounds();
         r.width -= ics.width - 1;
         r.height -= ics.height - 1;
-        g2.setPaint(sbc);
+        g2.setPaint(translucentColor);
         g2.fill(r);
-        g2.setPaint(v);
-        g2.setStroke(BORDER_STROKE);
+        g2.setPaint(selectionColor);
         g2.draw(r);
       }
       g2.dispose();
     }
+  }
+
+  private static boolean hasSelectedCells(JTable table) {
+    return table.getSelectedRowCount() > 0 && table.getSelectedColumnCount() > 0;
   }
 
   private static void addArea(Component c, JTable table, Area area, int row, int col) {
@@ -270,12 +285,23 @@ class TranslucentCellSelectionLayerUI extends LayerUI<JScrollPane> {
     }
   }
 
-  private static JTable getTable(Component c) {
-    JTable table = null;
+  private static JScrollPane getScrollPane(Component c) {
+    JScrollPane scroll = null;
     if (c instanceof JLayer) {
-      Component c1 = ((JLayer<?>) c).getView();
-      if (c1 instanceof JScrollPane) {
-        table = (JTable) ((JScrollPane) c1).getViewport().getView();
+      Component view = ((JLayer<?>) c).getView();
+      if (view instanceof JScrollPane) {
+        scroll = (JScrollPane) view;
+      }
+    }
+    return scroll;
+  }
+
+  private static JTable getTable(JScrollPane scroll) {
+    JTable table = null;
+    if (scroll != null) {
+      Component view = scroll.getViewport().getView();
+      if (view instanceof JTable) {
+        table = (JTable) view;
       }
     }
     return table;
