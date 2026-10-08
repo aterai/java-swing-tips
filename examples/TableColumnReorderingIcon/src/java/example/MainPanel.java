@@ -5,6 +5,7 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -56,6 +57,7 @@ public final class MainPanel extends JPanel {
 
 class ColumnDragLayerUI extends LayerUI<JScrollPane> {
   private final Rectangle draggableRect = new Rectangle();
+  private final Icon dragAreaIcon = new DragAreaIcon();
 
   @Override public void installUI(JComponent c) {
     super.installUI(c);
@@ -75,13 +77,10 @@ class ColumnDragLayerUI extends LayerUI<JScrollPane> {
   @Override public void paint(Graphics g, JComponent c) {
     super.paint(g, c);
     if (!draggableRect.isEmpty()) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      // g2.fill(draggableRect);
-      Icon icon = new DragAreaIcon();
-      int x = (int) (draggableRect.getCenterX() - icon.getIconWidth() / 2d);
+      int iw = dragAreaIcon.getIconWidth();
+      int x = draggableRect.x + (draggableRect.width - iw) / 2;
       int y = draggableRect.y + 1;
-      icon.paintIcon(c, g2, x, y);
-      g2.dispose();
+      dragAreaIcon.paintIcon(c, g, x, y);
     }
   }
 
@@ -90,11 +89,16 @@ class ColumnDragLayerUI extends LayerUI<JScrollPane> {
     Component c = e.getComponent();
     if (c instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) c;
-      if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+      int id = e.getID();
+      if (id == MouseEvent.MOUSE_PRESSED) {
         updateIconAndCursor(header, e.getPoint(), l);
-      } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+      } else if (id == MouseEvent.MOUSE_RELEASED) {
         header.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        draggableRect.setSize(0, 0);
+        clearDraggableRect(header);
+      } else if (id == MouseEvent.MOUSE_EXITED && !isMouseButtonDown(e)) {
+        // Hide the drag handle icon when the cursor leaves the header,
+        // but keep it while dragging a column outside the header
+        clearDraggableRect(header);
       }
     }
   }
@@ -104,25 +108,27 @@ class ColumnDragLayerUI extends LayerUI<JScrollPane> {
     if (c instanceof JTableHeader) {
       JTableHeader header = (JTableHeader) c;
       if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-        mousePressed(e, l, header);
+        mouseDragged(e, l, header);
       } else if (e.getID() == MouseEvent.MOUSE_MOVED) {
-        mouseMoved(e, l, header);
+        updateIconAndCursor(header, e.getPoint(), l);
+        header.repaint();
       }
-    } else {
-      c.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-      draggableRect.setSize(0, 0);
     }
   }
 
-  private void mousePressed(MouseEvent e, JLayer<? extends JScrollPane> l, JTableHeader header) {
+  private void mouseDragged(MouseEvent e, JLayer<? extends JScrollPane> l, JTableHeader header) {
     TableColumn draggedColumn = header.getDraggedColumn();
     if (!draggableRect.isEmpty() && draggedColumn != null) {
+      // The dragged distance is updated by BasicTableHeaderUI after this
+      // event is processed, so read it later on the EDT
       EventQueue.invokeLater(() -> {
+        // Using columnAtPoint(...) would make the rectangle jump at the moment
+        // the columns are swapped, so convert the model index of the dragged column
         int modelIndex = draggedColumn.getModelIndex();
         int viewIndex = header.getTable().convertColumnIndexToView(modelIndex);
         Rectangle rect = header.getHeaderRect(viewIndex);
         rect.x += header.getDraggedDistance();
-        draggableRect.setRect(SwingUtilities.convertRectangle(header, rect, l));
+        draggableRect.setBounds(SwingUtilities.convertRectangle(header, rect, l));
         header.repaint(rect);
       });
     } else {
@@ -130,40 +136,53 @@ class ColumnDragLayerUI extends LayerUI<JScrollPane> {
     }
   }
 
-  private void mouseMoved(MouseEvent e, JLayer<? extends JScrollPane> l, JTableHeader header) {
-    Point pt = e.getPoint();
-    updateIconAndCursor(header, pt, l);
-    header.repaint();
-  }
-
   private void updateIconAndCursor(JTableHeader header, Point pt, JLayer<?> l) {
     Rectangle r = header.getHeaderRect(header.columnAtPoint(pt));
     r.height /= 2;
     if (r.contains(pt)) {
       header.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-      draggableRect.setRect(SwingUtilities.convertRectangle(header, r, l));
+      draggableRect.setBounds(SwingUtilities.convertRectangle(header, r, l));
     } else {
       header.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
       draggableRect.setSize(0, 0);
     }
   }
+
+  private void clearDraggableRect(JTableHeader header) {
+    if (!draggableRect.isEmpty()) {
+      draggableRect.setSize(0, 0);
+      header.repaint();
+    }
+  }
+
+  private static boolean isMouseButtonDown(MouseEvent e) {
+    int mask = InputEvent.BUTTON1_DOWN_MASK
+        | InputEvent.BUTTON2_DOWN_MASK
+        | InputEvent.BUTTON3_DOWN_MASK;
+    return (e.getModifiersEx() & mask) != 0;
+  }
 }
 
 class DragAreaIcon implements Icon {
   private static final Color SQUARE_COLOR = new Color(0x64_64_64_64, true);
+  private static final int SQUARE_SIZE = 2;
+  private static final int COLUMN_COUNT = 4;
+  private static final int COLUMN_STEP = 4;
+  private static final int ROW_STEP = 3;
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(x, y);
-    int count = 4;
-    int diff = 3;
+    g2.setPaint(SQUARE_COLOR);
+    // Center the 2 x 4 grid of squares horizontally
+    int gridWidth = COLUMN_STEP * (COLUMN_COUNT - 1) + SQUARE_SIZE;
+    int firstColumn = (getIconWidth() - gridWidth) / 2;
     int firstRow = 1;
-    int secondRow = firstRow + diff;
-    int firstColumn = (getIconWidth() - diff * count) / 2;
-    for (int i = 0; i < count; i++) {
-      int column = firstColumn + i * count;
-      drawSquare(g2, column, firstRow);
-      drawSquare(g2, column, secondRow);
+    int secondRow = firstRow + ROW_STEP;
+    for (int i = 0; i < COLUMN_COUNT; i++) {
+      int column = firstColumn + i * COLUMN_STEP;
+      g2.fillRect(column, firstRow, SQUARE_SIZE, SQUARE_SIZE);
+      g2.fillRect(column, secondRow, SQUARE_SIZE, SQUARE_SIZE);
     }
     g2.dispose();
   }
@@ -174,11 +193,6 @@ class DragAreaIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 12;
-  }
-
-  private void drawSquare(Graphics g, int x, int y) {
-    g.setColor(SQUARE_COLOR);
-    g.fillRect(x, y, 2, 2);
   }
 }
 
@@ -193,7 +207,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -201,7 +215,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
