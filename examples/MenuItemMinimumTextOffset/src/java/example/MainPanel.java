@@ -10,27 +10,26 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
-  // private static final String PropertyPrefix = "MenuItem";
-  private static final String PRE = "RadioButtonMenuItem.";
+  private static final String PREFIX = "RadioButtonMenuItem.";
 
   private MainPanel() {
     super(new BorderLayout());
     JTextArea log = new JTextArea();
     info(log);
-    JPopupMenu popup = makePopup();
+    JPopupMenu popup = createPopup();
     log.setComponentPopupMenu(popup);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
   private static void info(JTextArea log) {
-    String key = PRE + "margin";
+    String key = PREFIX + "margin";
     log.append(String.format("%s: %s%n", key, UIManager.getInsets(key)));
-    log.append(infoInt(PRE + "minimumTextOffset"));
-    log.append(infoInt(PRE + "afterCheckIconGap"));
-    log.append(infoInt(PRE + "checkIconOffset"));
+    log.append(infoInt(PREFIX + "minimumTextOffset"));
+    log.append(infoInt(PREFIX + "afterCheckIconGap"));
+    log.append(infoInt(PREFIX + "checkIconOffset"));
     Icon icon = getCheckIcon();
-    log.append(String.format("%scheckIcon: %s%n", PRE, icon));
+    log.append(String.format("%scheckIcon: %s%n", PREFIX, icon));
     if (icon != null) {
       int w = icon.getIconWidth();
       int h = icon.getIconHeight();
@@ -43,37 +42,38 @@ public final class MainPanel extends JPanel {
   }
 
   private static Icon getCheckIcon() {
-    return UIManager.getIcon(PRE + "checkIcon");
+    return UIManager.getIcon(PREFIX + "checkIcon");
   }
 
-  private static JPopupMenu makePopup() {
+  private static JPopupMenu createPopup() {
     // UIManager.put("RadioButtonMenuItem.margin", new Insets(2, -31, 2, 2));
-    UIManager.put(PRE + "minimumTextOffset", 10);
-    UIManager.put(PRE + "afterCheckIconGap", 0);
-    UIManager.put(PRE + "checkIconOffset", 0);
+    UIManager.put(PREFIX + "minimumTextOffset", 10);
+    UIManager.put(PREFIX + "afterCheckIconGap", 0);
+    UIManager.put(PREFIX + "checkIconOffset", 0);
     Icon checkIcon = getCheckIcon();
     int height = checkIcon == null ? 22 : checkIcon.getIconHeight();
-    UIManager.put(PRE + "checkIcon", new EmptyIcon());
+    UIManager.put(PREFIX + "checkIcon", new EmptyIcon());
     Dimension d = new Dimension(100, height);
     JPopupMenu popup = new JPopupMenu();
-    ButtonGroup bg = new ButtonGroup();
+    ButtonGroup group = new ButtonGroup();
     Arrays.asList(
-        makeMenuItem("0.5 pt", .5f, d),
-        makeMenuItem("0.75 pt", .75f, d),
-        makeMenuItem("1 pt", 1f, d),
-        makeMenuItem("1.5 pt", 1.5f, d),
-        makeMenuItem("2.25 pt", 2.25f, d),
-        makeMenuItem("3 pt", 3f, d)
+        createMenuItem("0.5 pt", .5f, d),
+        createMenuItem("0.75 pt", .75f, d),
+        createMenuItem("1 pt", 1f, d),
+        createMenuItem("1.5 pt", 1.5f, d),
+        createMenuItem("2.25 pt", 2.25f, d),
+        createMenuItem("3 pt", 3f, d)
     ).forEach(m -> {
       popup.add(m);
-      bg.add(m);
+      group.add(m);
     });
     return popup;
   }
 
-  private static JMenuItem makeMenuItem(String txt, float width, Dimension d) {
-    float px = width * Toolkit.getDefaultToolkit().getScreenResolution() / 72f;
-    return new JRadioButtonMenuItem(txt, new LineIcon(new BasicStroke(px), d)) {
+  private static JMenuItem createMenuItem(String text, float points, Dimension size) {
+    // convert points (1/72 inch) to pixels using the screen resolution (dpi)
+    float px = points * Toolkit.getDefaultToolkit().getScreenResolution() / 72f;
+    return new JRadioButtonMenuItem(text, new LineIcon(new BasicStroke(px), size)) {
       @Override protected void init(String text, Icon icon) {
         super.init(text, icon);
         setHorizontalTextPosition(LEADING);
