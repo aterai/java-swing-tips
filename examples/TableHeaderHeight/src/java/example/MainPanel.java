@@ -18,17 +18,18 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(2, 1));
 
-    JTable table1 = makeTable();
+    JTable table1 = createTable();
     // Bad: >>>>
     JTableHeader header = table1.getTableHeader();
     // Dimension d = header.getPreferredSize();
     // d.height = HEADER_HEIGHT;
     // header.setPreferredSize(d); // addColumn case test
     header.setPreferredSize(new Dimension(100, HEADER_HEIGHT));
-    p.add(makeTitledPanel("Bad: JTableHeader#setPreferredSize(...)", new JScrollPane(table1)));
+    p.add(createTitledPanel(
+        "Bad: JTableHeader#setPreferredSize(...)", new JScrollPane(table1)));
     // <<<<
 
-    JTable table2 = makeTable();
+    JTable table2 = createTable();
     JScrollPane scroll = new JScrollPane(table2);
     scroll.setColumnHeader(new JViewport() {
       @Override public Dimension getPreferredSize() {
@@ -45,7 +46,7 @@ public final class MainPanel extends JPanel {
     //     return d;
     //   }
     // });
-    p.add(makeTitledPanel("Override getPreferredSize()", scroll));
+    p.add(createTitledPanel("Override getPreferredSize()", scroll));
 
     JTextField info = new JTextField();
     info.setEditable(false);
@@ -53,7 +54,8 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       table1.getColumnModel().addColumn(new TableColumn());
       table2.getColumnModel().addColumn(new TableColumn());
-      info.setText(String.format("%s - %s", getDim(table1), getDim(table2)));
+      info.setText(
+          String.format("%s - %s", getHeaderSize(table1), getHeaderSize(table2)));
     });
 
     Box box = Box.createHorizontalBox();
@@ -66,19 +68,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static String getDim(JTable t) {
-    JTableHeader h = t.getTableHeader();
-    Dimension d = h.getPreferredSize();
+  private static String getHeaderSize(JTable table) {
+    Dimension d = table.getTableHeader().getPreferredSize();
     return String.format("%dx%d", d.width, d.height);
   }
 
-  private static JTable makeTable() {
+  private static JTable createTable() {
     JTable table = new JTable(new DefaultTableModel(2, 20));
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     return table;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
