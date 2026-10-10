@@ -30,16 +30,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    Action a = new TextAction(DefaultEditorKit.selectWordAction) {
+    Action selectWordAction = new TextAction(DefaultEditorKit.selectWordAction) {
       @Override public void actionPerformed(ActionEvent e) {
         JTextComponent target = getTextComponent(e);
         if (target != null) {
           try {
-            int offs = target.getCaretPosition();
-            int begOffs = TextUtils.getWordStart(target, offs);
-            int endOffs = TextUtils.getWordEnd(target, offs);
-            target.setCaretPosition(begOffs);
-            target.moveCaretPosition(endOffs);
+            int pos = target.getCaretPosition();
+            int start = TextUtils.getWordStart(target, pos);
+            int end = TextUtils.getWordEnd(target, pos);
+            target.setCaretPosition(start);
+            target.moveCaretPosition(end);
           } catch (BadLocationException ex) {
             UIManager.getLookAndFeel().provideErrorFeedback(target);
           }
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
       }
     };
     JTextArea textArea = new JTextArea(TEXT);
-    textArea.getActionMap().put(DefaultEditorKit.selectWordAction, a);
+    textArea.getActionMap().put(DefaultEditorKit.selectWordAction, selectWordAction);
     Component c1 = createTitledPanel("Default", new JTextArea(TEXT));
     Component c2 = createTitledPanel("Break words: _ and -", textArea);
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, c1, c2);
@@ -86,155 +86,74 @@ public final class MainPanel extends JPanel {
 }
 
 final class TextUtils {
+  private static final String DELIMITERS = "_-";
+
   private TextUtils() {
     /* HideUtilityClassConstructor */
   }
 
-  // @see javax.swing.text.Utilities.getWordStart(...)
+  // @see javax.swing.text.Utilities#getWordStart(JTextComponent, int)
   public static int getWordStart(JTextComponent c, int offs) throws BadLocationException {
-    Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
-        .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
-    Document doc = c.getDocument();
+    Element line = getParagraphElement(c, offs);
     int lineStart = line.getStartOffset();
-    int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
-    int offs2 = offs;
-    Segment seg = new Segment(); // SegmentCache.getSharedSegment();
-    doc.getText(lineStart, lineEnd - lineStart, seg);
+    Segment seg = getLineText(c.getDocument(), line);
+    int start = offs;
     if (seg.count > 0) {
       BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
       words.setText(seg);
-      int wordPosition = seg.offset + offs - lineStart;
-      if (wordPosition >= words.last()) {
-        wordPosition = words.last() - 1;
-        words.following(wordPosition);
-        offs2 = lineStart + words.previous() - seg.offset;
-      } else {
-        words.following(wordPosition);
-        offs2 = lineStart + words.previous() - seg.offset;
-        for (int i = offs; i > offs2; i--) {
-          char ch = seg.charAt(i - seg.offset);
-          if (ch == '_' || ch == '-') {
-            offs2 = i + 1;
-            break;
-          }
-        }
-      }
-    }
-    // SegmentCache.releaseSharedSegment(seg);
-    return offs2;
-  }
-
-  // @see javax.swing.text.Utilities.getWordEnd(...)
-  public static int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
-    Element line = Optional.ofNullable(Utilities.getParagraphElement(c, offs))
-        .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
-    Document doc = c.getDocument();
-    int lineStart = line.getStartOffset();
-    int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
-    int offs2 = offs;
-
-    Segment seg = new Segment(); // SegmentCache.getSharedSegment();
-    doc.getText(lineStart, lineEnd - lineStart, seg);
-    if (seg.count > 0) {
-      BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
-      words.setText(seg);
-      int wordPosition = offs - lineStart + seg.offset;
-      if (wordPosition >= words.last()) {
-        wordPosition = words.last() - 1;
-      }
-      offs2 = lineStart + words.following(wordPosition) - seg.offset;
-
-      for (int i = offs; i < offs2; i++) {
-        char ch = seg.charAt(i - seg.offset);
-        if (ch == '_' || ch == '-') {
-          offs2 = i;
+      // Clamp to the last character of the line (e.g. clicked past the line end)
+      int pos = Math.min(offs - lineStart, seg.count - 1);
+      // BreakIterator indices start at seg.offset (the Segment's begin index),
+      // while Segment#charAt(int) takes an index relative to the line start
+      words.following(seg.offset + pos);
+      start = lineStart + words.previous() - seg.offset;
+      for (int i = lineStart + pos; i > start; i--) {
+        if (isDelimiter(seg.charAt(i - lineStart))) {
+          start = i + 1;
           break;
         }
       }
     }
-    // SegmentCache.releaseSharedSegment(seg);
-    return offs2;
+    return start;
+  }
+
+  // @see javax.swing.text.Utilities#getWordEnd(JTextComponent, int)
+  public static int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
+    Element line = getParagraphElement(c, offs);
+    int lineStart = line.getStartOffset();
+    Segment seg = getLineText(c.getDocument(), line);
+    int end = offs;
+    if (seg.count > 0) {
+      BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
+      words.setText(seg);
+      int pos = Math.min(offs - lineStart, seg.count - 1);
+      end = lineStart + words.following(seg.offset + pos) - seg.offset;
+      for (int i = offs; i < end; i++) {
+        if (isDelimiter(seg.charAt(i - lineStart))) {
+          end = i;
+          break;
+        }
+      }
+    }
+    return end;
+  }
+
+  private static boolean isDelimiter(char ch) {
+    return DELIMITERS.indexOf(ch) >= 0;
+  }
+
+  private static Element getParagraphElement(JTextComponent c, int offs)
+      throws BadLocationException {
+    return Optional.ofNullable(Utilities.getParagraphElement(c, offs))
+        .orElseThrow(() -> new BadLocationException("No word at " + offs, offs));
+  }
+
+  // Excludes the implicit newline at the end of the document
+  private static Segment getLineText(Document doc, Element line) throws BadLocationException {
+    int lineStart = line.getStartOffset();
+    int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
+    Segment seg = new Segment();
+    doc.getText(lineStart, lineEnd - lineStart, seg);
+    return seg;
   }
 }
-
-// class SegmentCache {
-//   /**
-//    * A global cache.
-//    */
-//   private static final SegmentCache SHARED_CACHE = new SegmentCache();
-//
-//   /**
-//    * A list of the currently unused Segments.
-//    */
-//   private final List<Segment> segments = new ArrayList<>(11);
-//
-//   /**
-//    * Returns the shared SegmentCache.
-//    */
-//   public static SegmentCache getSharedInstance() {
-//     return SHARED_CACHE;
-//   }
-//
-//   /**
-//    * A convenience method to get a Segment from the shared
-//    * <code>SegmentCache</code>.
-//    */
-//   public static Segment getSharedSegment() {
-//     return getSharedInstance().getSegment();
-//   }
-//
-//   /**
-//    * A convenience method to release a Segment to the shared
-//    * <code>SegmentCache</code>.
-//    */
-//   public static void releaseSharedSegment(Segment segment) {
-//     getSharedInstance().releaseSegment(segment);
-//   }
-//
-//   // /**
-//   //  * Creates and returns a SegmentCache.
-//   //  */
-//   // public SegmentCache() {
-//   //   segments = new ArrayList<>(11);
-//   // }
-//
-//   /**
-//    * Returns a <code>Segment</code>. When done, the <code>Segment</code>
-//    * should be recycled by invoking <code>releaseSegment</code>.
-//    */
-//   public Segment getSegment() {
-//     synchronized (this) {
-//       int size = segments.size();
-//       if (size > 0) {
-//         return segments.remove(size - 1);
-//       }
-//     }
-//     return new CachedSegment();
-//   }
-//
-//   /**
-//    * Releases a Segment. You should not use a Segment after you release it,
-//    * and you should NEVER release the same Segment more than once, eg:
-//    * <pre>
-//    *   segmentCache.releaseSegment(segment);
-//    *   segmentCache.releaseSegment(segment);
-//    * </pre>
-//    * Will likely result in very bad things happening!
-//    */
-//   public void releaseSegment(Segment segment) {
-//     if (segment instanceof CachedSegment) {
-//       synchronized (this) {
-//         segment.array = null;
-//         segment.count = 0;
-//         segments.add(segment);
-//       }
-//     }
-//   }
-//
-//   /**
-//    * CachedSegment is used as a tagging interface to determine if
-//    * a Segment can successfully be shared.
-//    */
-//   private static class CachedSegment extends Segment {
-//   }
-// }
