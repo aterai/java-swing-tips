@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -44,7 +43,7 @@ public final class MainPanel extends JPanel {
   }
 
   private static JPanel createEchoCharStrategyPanel() {
-    JPasswordField password = new DigitHighlightField(40);
+    JPasswordField password = new DigitHighlightPasswordField(40);
     password.setFont(FONT);
     password.setAlignmentX(RIGHT_ALIGNMENT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
@@ -55,13 +54,13 @@ public final class MainPanel extends JPanel {
       password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
     PasswordUiUtils.setupVisibilityToggleButton(button);
-    JPanel p = new OverlapLayerPanel();
+    JPanel p = new OverlayLayoutPanel();
     p.add(button);
     p.add(password);
     return p;
   }
 
-  private JPanel createCardLayoutStrategyPanel() {
+  private static JPanel createCardLayoutStrategyPanel() {
     JPasswordField password = new JPasswordField(40);
     password.setFont(FONT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
@@ -81,16 +80,16 @@ public final class MainPanel extends JPanel {
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       if (b) {
-        PasswordUiUtils.sync(password.getDocument(), visibleTextPane.getStyledDocument());
+        PasswordUiUtils.copyText(password.getDocument(), visibleTextPane.getStyledDocument());
         cardLayout.show(p, PasswordVisibility.VISIBLE.toString());
       } else {
-        PasswordUiUtils.sync(visibleTextPane.getStyledDocument(), password.getDocument());
+        PasswordUiUtils.copyText(visibleTextPane.getStyledDocument(), password.getDocument());
         cardLayout.show(p, PasswordVisibility.HIDDEN.toString());
       }
     });
     PasswordUiUtils.setupVisibilityToggleButton(button);
 
-    JPanel panel = new OverlapLayerPanel();
+    JPanel panel = new OverlayLayoutPanel();
     panel.add(button);
     panel.add(p);
     return panel;
@@ -129,8 +128,8 @@ enum PasswordVisibility {
   VISIBLE, HIDDEN
 }
 
-class DigitHighlightField extends JPasswordField {
-  protected DigitHighlightField(int columns) {
+class DigitHighlightPasswordField extends JPasswordField {
+  protected DigitHighlightPasswordField(int columns) {
     super(columns);
   }
 
@@ -138,9 +137,9 @@ class DigitHighlightField extends JPasswordField {
     super.setEchoChar(c);
     Document doc = getDocument();
     if (doc instanceof AbstractDocument) {
-      boolean reveal = c == 0; // '\u0000';
+      boolean reveal = c == 0; // the null character: show the password as plain text
       if (reveal) {
-        DocumentFilter filter = new BackgroundHighlightFilter(this, Color.YELLOW);
+        DocumentFilter filter = new DigitHighlightFilter(this, Color.YELLOW);
         ((AbstractDocument) doc).setDocumentFilter(filter);
         try {
           doc.remove(0, 0);
@@ -148,20 +147,20 @@ class DigitHighlightField extends JPasswordField {
           UIManager.getLookAndFeel().provideErrorFeedback(this);
         }
       } else {
+        // setEchoChar(...) may be called by the UI delegate before the highlighter is installed
         Optional.ofNullable(getHighlighter()).ifPresent(Highlighter::removeAllHighlights);
-        // getHighlighter().removeAllHighlights();
         ((AbstractDocument) doc).setDocumentFilter(null);
       }
     }
   }
 }
 
-class BackgroundHighlightFilter extends DocumentFilter {
+class DigitHighlightFilter extends DocumentFilter {
   private final Highlighter.HighlightPainter painter;
   private final Pattern pattern = Pattern.compile("\\d");
   private final JTextComponent field;
 
-  protected BackgroundHighlightFilter(JTextComponent field, Color color) {
+  protected DigitHighlightFilter(JTextComponent field, Color color) {
     super();
     this.field = field;
     this.painter = new DefaultHighlighter.DefaultHighlightPainter(color);
@@ -184,28 +183,25 @@ class BackgroundHighlightFilter extends DocumentFilter {
 
   private void update(FilterBypass fb) {
     Document doc = fb.getDocument();
-    field.getHighlighter().removeAllHighlights();
+    Highlighter highlighter = field.getHighlighter();
+    highlighter.removeAllHighlights();
     try {
-      Highlighter highlighter = field.getHighlighter();
-      String text = doc.getText(0, doc.getLength());
-      Matcher matcher = pattern.matcher(text);
-      int pos = 0;
-      while (matcher.find(pos) && !matcher.group().isEmpty()) {
-        pos = matcher.end();
-        highlighter.addHighlight(matcher.start(), pos, painter);
+      Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
+      while (matcher.find()) {
+        highlighter.addHighlight(matcher.start(), matcher.end(), painter);
       }
-    } catch (BadLocationException | PatternSyntaxException ex) {
+    } catch (BadLocationException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
     }
   }
 }
 
-class TextForegroundFilter extends DocumentFilter {
+class DigitForegroundFilter extends DocumentFilter {
   private final SimpleAttributeSet defAttr = new SimpleAttributeSet();
   private final SimpleAttributeSet numAttr = new SimpleAttributeSet();
   private final Pattern pattern = Pattern.compile("\\d");
 
-  protected TextForegroundFilter() {
+  protected DigitForegroundFilter() {
     super();
     StyleConstants.setForeground(defAttr, Color.BLACK);
     StyleConstants.setForeground(numAttr, Color.RED);
@@ -237,7 +233,7 @@ class TextForegroundFilter extends DocumentFilter {
   }
 }
 
-class OverlapLayerPanel extends JPanel {
+class OverlayLayoutPanel extends JPanel {
   @Override public void updateUI() {
     super.updateUI();
     setLayout(new OverlayLayout(this));
@@ -262,7 +258,7 @@ class EyeIcon implements Icon {
     g2.setPaint(color);
     int iw = getIconWidth();
     int ih = getIconHeight();
-    double s = getIconWidth() / 12d;
+    double s = iw / 12d;
     g2.setStroke(new BasicStroke((float) s));
     double w = iw - s * 2d;
     double h = ih - s * 2d;
@@ -299,10 +295,10 @@ class EyeIcon implements Icon {
 
 final class PasswordUiUtils {
   private PasswordUiUtils() {
-    // Singleton
+    // Utility class
   }
 
-  public static void sync(Document src, Document dst) {
+  public static void copyText(Document src, Document dst) {
     try {
       dst.remove(0, dst.getLength());
       dst.insertString(0, src.getText(0, src.getLength()), null);
@@ -333,17 +329,16 @@ final class PasswordUiUtils {
         super.updateUI();
         setBorder(password.getBorder());
         setFont(password.getFont());
-        setupDocument(getStyledDocument());
       }
     };
-
+    // Set the filter after construction, since the JTextPane constructor replaces the document
     setupDocument(textPane.getStyledDocument());
     return textPane;
   }
 
   private static void setupDocument(StyledDocument doc) {
     if (doc instanceof AbstractDocument) {
-      ((AbstractDocument) doc).setDocumentFilter(new TextForegroundFilter());
+      ((AbstractDocument) doc).setDocumentFilter(new DigitForegroundFilter());
     }
   }
 }

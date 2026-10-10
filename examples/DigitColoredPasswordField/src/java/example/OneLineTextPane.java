@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BoxView;
 import javax.swing.text.ComponentView;
+import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.IconView;
 import javax.swing.text.LabelView;
@@ -32,8 +33,14 @@ public class OneLineTextPane extends JTextPane {
         // Do nothing
       }
     });
-    setEditorKit(new NoWrapEditorKit());
     enableInputMethods(false);
+  }
+
+  // The JTextPane constructor calls setEditorKit(createDefaultEditorKit()) after updateUI(),
+  // so an editor kit set in updateUI() would be overwritten (and replacing it on a
+  // Look&Feel change would also discard the current document).
+  @Override protected EditorKit createDefaultEditorKit() {
+    return new NoWrapEditorKit();
   }
 
   @Override public final void scrollRectToVisible(Rectangle rect) {
