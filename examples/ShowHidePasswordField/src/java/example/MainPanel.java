@@ -14,6 +14,7 @@ import java.awt.geom.Line2D;
 import java.util.logging.Logger;
 import javax.swing.*;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
   private static final String ECHO_CHAR_KEY = "PasswordField.echoChar";
@@ -37,7 +38,7 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JCheckBox("show passwords");
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
+      setPasswordVisible(password, b);
     });
     JPanel p = new JPanel(new BorderLayout());
     p.add(password);
@@ -52,7 +53,7 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
-      password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
+      setPasswordVisible(password, b);
     });
     configureEyeButton(button);
     JPanel p = createOverlayPanel();
@@ -61,35 +62,36 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private JPanel createCardLayoutPasswordPanel() {
+  private static JPanel createCardLayoutPasswordPanel() {
     JPasswordField password = createPasswordField();
-    JTextField field = new JTextField(24);
-    field.setFont(FONT);
-    field.enableInputMethods(false);
-    field.setDocument(password.getDocument());
+    JTextField textField = new JTextField(24);
+    textField.setFont(FONT);
+    textField.enableInputMethods(false);
+    // Share the Document so that both fields always display the same text
+    textField.setDocument(password.getDocument());
 
     CardLayout visibilityLayout = new CardLayout();
-    JPanel p = new JPanel(visibilityLayout) {
+    JPanel cardPanel = new JPanel(visibilityLayout) {
       @Override public void updateUI() {
         super.updateUI();
         setAlignmentX(RIGHT_ALIGNMENT);
       }
     };
-    p.add(password, PasswordVisibility.HIDDEN.toString());
-    p.add(field, PasswordVisibility.VISIBLE.toString());
+    cardPanel.add(password, PasswordVisibility.HIDDEN.toString());
+    cardPanel.add(textField, PasswordVisibility.VISIBLE.toString());
 
     AbstractButton button = new JToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       PasswordVisibility s = b ? PasswordVisibility.VISIBLE : PasswordVisibility.HIDDEN;
-      visibilityLayout.show(p, s.toString());
+      visibilityLayout.show(cardPanel, s.toString());
     });
     configureEyeButton(button);
 
-    JPanel panel = createOverlayPanel();
-    panel.add(button);
-    panel.add(p);
-    return panel;
+    JPanel p = createOverlayPanel();
+    p.add(button);
+    p.add(cardPanel);
+    return p;
   }
 
   private static JPanel createHoldToShowPasswordPanel() {
@@ -97,11 +99,11 @@ public final class MainPanel extends JPanel {
     AbstractButton button = new JButton();
     button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
-        password.setEchoChar(0);
+        setPasswordVisible(password, true);
       }
 
       @Override public void mouseReleased(MouseEvent e) {
-        password.setEchoChar((Character) UIManager.get(ECHO_CHAR_KEY));
+        setPasswordVisible(password, false);
       }
     });
     configureEyeButton(button);
@@ -109,6 +111,12 @@ public final class MainPanel extends JPanel {
     p.add(button);
     p.add(password);
     return p;
+  }
+
+  private static void setPasswordVisible(JPasswordField password, boolean visible) {
+    // An echo character of 0 displays the text as typed, like a JTextField
+    char echoChar = visible ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY);
+    password.setEchoChar(echoChar);
   }
 
   private static void configureEyeButton(AbstractButton b) {
@@ -239,7 +247,7 @@ class EyeIcon implements Icon {
     g2.setPaint(color);
     int iw = getIconWidth();
     int ih = getIconHeight();
-    double s = getIconWidth() / 12d;
+    double s = iw / 12d;
     g2.setStroke(new BasicStroke((float) s));
     double w = iw - s * 2d;
     double h = ih - s * 2d;
