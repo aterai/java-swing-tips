@@ -10,7 +10,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -73,18 +72,21 @@ class FaceMarkDocumentListener implements DocumentListener {
   }
 
   @Override public void insertUpdate(DocumentEvent e) {
-    update((DefaultStyledDocument) e.getDocument(), e.getOffset());
+    update((StyledDocument) e.getDocument(), e.getOffset());
   }
 
   @Override public void removeUpdate(DocumentEvent e) {
-    update((DefaultStyledDocument) e.getDocument(), e.getOffset());
+    update((StyledDocument) e.getDocument(), e.getOffset());
   }
 
   private void update(StyledDocument doc, int offset) {
-    Element elm = doc.getCharacterElement(offset);
+    // Limit the search range to the character element around the edited offset
+    Element element = doc.getCharacterElement(offset);
+    // The document cannot be mutated inside a DocumentListener notification,
+    // so the attribute change is deferred to the EDT
     EventQueue.invokeLater(() -> {
       try {
-        updateFaceStyle(doc, elm);
+        updateFaceStyle(doc, element);
       } catch (BadLocationException ex) {
         // should never happen
         RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
@@ -94,15 +96,16 @@ class FaceMarkDocumentListener implements DocumentListener {
     });
   }
 
-  private void updateFaceStyle(StyledDocument doc, Element elm) throws BadLocationException {
-    int start = elm.getStartOffset();
-    int end = elm.getEndOffset();
+  private void updateFaceStyle(StyledDocument doc, Element element) throws BadLocationException {
+    int start = element.getStartOffset();
+    int end = element.getEndOffset();
     String text = doc.getText(start, end - start);
+    Style face = doc.getStyle(faceMark);
+    int length = faceMark.length();
     int pos = text.indexOf(faceMark);
-    while (pos > -1) {
-      Style face = doc.getStyle(faceMark);
-      doc.setCharacterAttributes(start + pos, faceMark.length(), face, false);
-      pos = text.indexOf(faceMark, pos + faceMark.length());
+    while (pos >= 0) {
+      doc.setCharacterAttributes(start + pos, length, face, false);
+      pos = text.indexOf(faceMark, pos + length);
     }
   }
 }
