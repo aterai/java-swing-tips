@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST ScrollSmoothing" />
+  <property name="jnlp.Name"     value="ScrollSmoothing" />
+  <property name="jnlp.name"     value="scrollsmoothing" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/scrollsmoothing/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/ScrollSmoothing.html" />
+</project>
