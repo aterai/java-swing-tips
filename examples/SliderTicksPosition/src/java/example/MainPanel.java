@@ -7,8 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -62,7 +60,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void initSliderTicks(JSlider slider) {
+  private static void initSliderTicks(JSlider slider) {
     slider.setMajorTickSpacing(20);
     slider.setMinorTickSpacing(10);
     slider.setPaintTicks(true);
@@ -94,7 +92,9 @@ class VerticalFlipLayerUI extends LayerUI<JComponent> {
   @Override public void paint(Graphics g, JComponent c) {
     if (c instanceof JLayer) {
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.setTransform(getAffineTransform(c.getSize()));
+      // Concatenate the flip with the current transform instead of replacing it
+      // with setTransform(), which would discard the translation and HiDPI scaling
+      g2.transform(getAffineTransform(c.getSize()));
       super.paint(g2, c);
       g2.dispose();
     } else {
@@ -121,22 +121,16 @@ class VerticalFlipLayerUI extends LayerUI<JComponent> {
   @Override public void eventDispatched(AWTEvent e, JLayer<? extends JComponent> l) {
     if (e instanceof MouseEvent) {
       MouseEvent me = (MouseEvent) e;
-      Point2D pt = me.getPoint();
-      try {
-        pt = getAffineTransform(l.getSize()).inverseTransform(pt, null);
-      } catch (NoninvertibleTransformException ex) {
-        // ex.printStackTrace();
-        UIManager.getLookAndFeel().provideErrorFeedback(me.getComponent());
-      }
-      // Horizontal: me.translatePoint((int) pt.getX() - me.getX(), 0);
-      me.translatePoint(0, (int) pt.getY() - me.getY());
+      // The vertical flip is its own inverse: y -> height - y
+      // Horizontal: me.translatePoint(l.getWidth() - 2 * me.getX(), 0);
+      me.translatePoint(0, l.getHeight() - 2 * me.getY());
       me.getComponent().repaint();
       // or: l.getView().repaint();
     }
     super.eventDispatched(e, l);
   }
 
-  private AffineTransform getAffineTransform(Dimension d) {
+  private static AffineTransform getAffineTransform(Dimension d) {
     AffineTransform at = AffineTransform.getTranslateInstance(0d, d.height);
     at.scale(1d, -1d);
     return at;
