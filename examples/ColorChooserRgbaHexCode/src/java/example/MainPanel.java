@@ -12,9 +12,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -54,9 +52,6 @@ public final class MainPanel extends JPanel {
     cc.setColor(initColor);
     AbstractColorChooserPanel rgbChooser = getRgbChooser(cc);
     if (rgbChooser != null) {
-      AbstractColorChooserPanel[] panels = cc.getChooserPanels();
-      List<AbstractColorChooserPanel> choosers = new ArrayList<>(Arrays.asList(panels));
-      // AbstractColorChooserPanel rgbChooser = choosers.get(3);
       // Java 9: if (rgbChooser.isColorTransparencySelectionEnabled()) {
       for (Component c : rgbChooser.getComponents()) {
         if (c instanceof JFormattedTextField) {
@@ -66,7 +61,9 @@ public final class MainPanel extends JPanel {
           ValueFormatter.init((JFormattedTextField) c);
         }
       }
-      cc.setChooserPanels(choosers.toArray(new AbstractColorChooserPanel[0]));
+      // Pass a new array: setting the same array instance does not fire a
+      // property change event, so the chooser panels would not be reinstalled
+      cc.setChooserPanels(cc.getChooserPanels().clone());
     }
     ColorTracker ok = new ColorTracker(cc);
     String title = "JColorChooser";
@@ -85,13 +82,10 @@ public final class MainPanel extends JPanel {
 
   private static AbstractColorChooserPanel getRgbChooser(JColorChooser colorChooser) {
     String rgbName = UIManager.getString("ColorChooser.rgbNameText", Locale.getDefault());
-    AbstractColorChooserPanel rgbChooser = null;
-    for (AbstractColorChooserPanel p : colorChooser.getChooserPanels()) {
-      if (Objects.equals(rgbName, p.getDisplayName())) {
-        rgbChooser = p;
-      }
-    }
-    return rgbChooser;
+    return Arrays.stream(colorChooser.getChooserPanels())
+        .filter(p -> Objects.equals(rgbName, p.getDisplayName()))
+        .findFirst()
+        .orElse(null);
   }
 
   private static void removeFocusListeners(Component c) {
@@ -143,6 +137,7 @@ class ColorTracker implements ActionListener {
 
 // copied from javax/swing/colorchooser/ValueFormatter.java
 class ValueFormatter extends JFormattedTextField.AbstractFormatter implements FocusListener {
+  private static final int LENGTH = 8;
   // private final int length;
   // private final int radix;
   // private JFormattedTextField text;
@@ -183,30 +178,22 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
   }
 
   private static boolean isValidLength(int len) {
-    return 0 <= len && len <= 8;
+    return 0 <= len && len <= LENGTH;
   }
 
   private static boolean isValidCode(String code) {
     return code.chars().allMatch(c -> Character.digit(c, 16) >= 0);
-    // boolean isValid = true;
-    // for (int i = 0; i < code.length(); i++) {
-    //   if (Character.digit(code.charAt(i), 16) < 0) {
-    //     isValid = false;
-    //     break;
-    //   }
-    // }
-    // return isValid;
   }
 
   @Override public Object stringToValue(String text) throws ParseException {
+    // The DocumentFilter allows 0 to 8 digits, so an incomplete code must be
+    // rejected here, otherwise substring(...) throws StringIndexOutOfBoundsException
+    if (text == null || text.length() != LENGTH) {
+      throw new ParseException("illegal length", 0);
+    }
     try {
-      // return Integer.valueOf(rgbaToArgb(text), 16); // <- NumberFormatException
+      // Integer.valueOf(argb, 16) throws NumberFormatException if argb > 0x7FFFFFFF
       return Integer.parseUnsignedInt(rgbaToArgb(text), 16);
-      // int r = Integer.parseInt(text.substring(0, 2), 16);
-      // int g = Integer.parseInt(text.substring(2, 4), 16);
-      // int b = Integer.parseInt(text.substring(4, 6), 16);
-      // int a = Integer.parseInt(text.substring(6), 16);
-      // return (a << 24) | (r << 16) | (g << 8) | b;
     } catch (NumberFormatException nfe) {
       ParseException pe = new ParseException("illegal format", 0);
       pe.initCause(nfe);
@@ -216,28 +203,17 @@ class ValueFormatter extends JFormattedTextField.AbstractFormatter implements Fo
 
   @Override public String valueToString(Object object) throws ParseException {
     if (object instanceof Integer) {
-      int value = (Integer) object;
-      // String str = "00" + Integer.toHexString(value).toUpperCase();
-      char[] array = new char[8];
-      for (int i = array.length - 1; i >= 0; i--) {
-        array[i] = Character.forDigit(value & 0x0F, 16);
-        value >>= 4;
-      }
-      // while (0 < index--) {
-      //   array[index] = Character.forDigit(value & 0x0F, 16);
-      //   value >>= 4;
-      // }
-      String argb = String.valueOf(array).toUpperCase(Locale.ENGLISH);
+      String argb = String.format(Locale.ENGLISH, "%08X", (Integer) object);
       return argbToRgba(argb);
     }
     throw new ParseException("illegal object", 0);
   }
 
-  private String argbToRgba(String argb) {
+  private static String argbToRgba(String argb) {
     return argb.substring(2) + argb.substring(0, 2);
   }
 
-  private String rgbaToArgb(String rgba) {
+  private static String rgbaToArgb(String rgba) {
     return rgba.substring(6) + rgba.substring(0, 6);
   }
 
