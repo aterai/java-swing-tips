@@ -11,6 +11,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -21,26 +22,20 @@ public final class MainPanel extends JPanel {
     super();
     String path = "example/test.jpg";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    BufferedImage image = Optional.ofNullable(cl.getResource(path)).map(url -> {
-      BufferedImage buf;
-      try (InputStream s = url.openStream()) {
-        buf = ImageIO.read(s);
-      } catch (IOException ex) {
-        buf = createMissingImage();
-      }
-      return buf;
-    }).orElseGet(MainPanel::createMissingImage);
+    BufferedImage image = Optional.ofNullable(cl.getResource(path))
+        .map(MainPanel::readImage)
+        .orElseGet(MainPanel::createMissingImage);
 
     int width = image.getWidth();
     int height = image.getHeight();
     Shape shape = new RoundRectangle2D.Float(0f, 0f, width / 2f, height / 2f, 50f, 50f);
 
-    BufferedImage clippedImage = makeClippedImage(image, shape);
+    BufferedImage clippedImage = createClippedImage(image, shape);
 
     JButton button1 = new JButton("clipped window");
     button1.addActionListener(e -> {
       JWindow window = new JWindow();
-      window.getContentPane().add(makePanel(image));
+      window.getContentPane().add(createPanel(image));
       window.setShape(shape);
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
@@ -53,7 +48,7 @@ public final class MainPanel extends JPanel {
       if (isTranslucencyCapable(window)) {
         window.setBackground(new Color(0x0, true));
       }
-      window.getContentPane().add(makePanel(clippedImage));
+      window.getContentPane().add(createPanel(clippedImage));
       window.pack();
       window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
       window.setVisible(true);
@@ -64,21 +59,30 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  // ImageIO.read(...) returns null if no registered ImageReader can decode the stream
+  private static BufferedImage readImage(URL url) {
+    Optional<BufferedImage> image;
+    try (InputStream s = url.openStream()) {
+      image = Optional.ofNullable(ImageIO.read(s));
+    } catch (IOException ex) {
+      image = Optional.empty();
+    }
+    return image.orElseGet(MainPanel::createMissingImage);
+  }
+
   private static boolean isTranslucencyCapable(JWindow window) {
     GraphicsConfiguration gc = window.getGraphicsConfiguration();
     return gc != null && gc.isTranslucencyCapable();
   }
 
-  private Component makePanel(BufferedImage image) {
+  private static Component createPanel(BufferedImage image) {
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getPreferredSize() {
-        return new Dimension(image.getWidth(this) / 2, image.getHeight(this) / 2);
+        return new Dimension(image.getWidth() / 2, image.getHeight() / 2);
       }
 
       @Override protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.drawImage(image, 0, 0, this);
-        g2.dispose();
+        g.drawImage(image, 0, 0, this);
         super.paintComponent(g);
       }
     };
@@ -86,12 +90,12 @@ public final class MainPanel extends JPanel {
     DragWindowListener dwl = new DragWindowListener();
     panel.addMouseListener(dwl);
     panel.addMouseMotionListener(dwl);
-    panel.add(makeCloseButtonBox(), BorderLayout.SOUTH);
+    panel.add(createCloseButtonBox(), BorderLayout.SOUTH);
     panel.setOpaque(false);
     return panel;
   }
 
-  private static Box makeCloseButtonBox() {
+  private static Box createCloseButtonBox() {
     JButton close = new JButton("close");
     close.addActionListener(e -> {
       Component c = (Component) e.getSource();
@@ -109,20 +113,20 @@ public final class MainPanel extends JPanel {
 
   // @see https://community.oracle.com/blogs/campbell/2006/07/19/java-2d-trickery-soft-clipping
   // campbell: Java 2D Trickery: Soft Clipping Blog | Oracle Community
-  private static BufferedImage makeClippedImage(BufferedImage source, Shape shape) {
+  private static BufferedImage createClippedImage(BufferedImage source, Shape shape) {
     int width = source.getWidth();
     int height = source.getHeight();
 
     BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    // A newly created TYPE_INT_ARGB image is already fully transparent,
+    // so there is no need to clear it with AlphaComposite.Clear.
     Graphics2D g2 = image.createGraphics();
-    // g2.setComposite(AlphaComposite.Clear);
-    // g2.fillRect(0, 0, width, height);
-
     g2.setComposite(AlphaComposite.Src);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    // g2.setColor(Color.WHITE);
+    // Only the alpha channel of the (antialiased) shape matters here.
     g2.fill(shape);
 
+    // Draw the source image only where the destination is opaque (soft clipping)
     g2.setComposite(AlphaComposite.SrcAtop);
     g2.drawImage(source, 0, 0, null);
     g2.dispose();
