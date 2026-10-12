@@ -36,7 +36,11 @@ public final class MainPanel extends JPanel {
     scroll.setRowHeaderView(new LineNumberView(textArea));
 
     JCheckBox check = new JCheckBox("editable", true);
-    check.addActionListener(e -> textArea.setEditable(check.isSelected()));
+    check.addActionListener(e -> {
+      textArea.setEditable(check.isSelected());
+      // setEditable(...) does not revalidate, so recalculate the preferred height here
+      textArea.revalidate();
+    });
 
     add(scroll);
     add(check, BorderLayout.SOUTH);
@@ -133,21 +137,17 @@ class LineNumberView extends JPanel {
     Font font = textArea.getFont();
     g2.setFont(font);
     g2.setColor(getForeground());
-    int base = clip.y;
-    int start = getLineAtPoint(base);
-    int end = getLineAtPoint(base + clip.height);
+    int start = getLineAtPoint(clip.y);
+    int end = getLineAtPoint(clip.y + clip.height);
     FontMetrics fontMetrics = g2.getFontMetrics(font);
-    int fontAscent = fontMetrics.getAscent();
-    int fontDescent = fontMetrics.getDescent();
-    int fontLeading = fontMetrics.getLeading();
-    int y = start * fontMetrics.getHeight();
-    int rmg = getInsets().right;
+    int lineHeight = fontMetrics.getHeight();
+    int right = getComponentWidth(fontMetrics) - getInsets().right;
+    // baseline of the first visible line
+    int y = start * lineHeight + fontMetrics.getAscent();
     for (int i = start; i <= end; i++) {
       String text = Integer.toString(i + 1);
-      int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
-      y += fontAscent;
-      g2.drawString(text, x, y);
-      y += fontDescent + fontLeading;
+      g2.drawString(text, right - fontMetrics.stringWidth(text), y);
+      y += lineHeight;
     }
     g2.dispose();
   }
