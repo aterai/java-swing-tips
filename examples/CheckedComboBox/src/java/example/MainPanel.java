@@ -91,8 +91,8 @@ class CheckItem {
     return selected;
   }
 
-  public void setSelected(boolean isSelected) {
-    selected = isSelected;
+  public void setSelected(boolean selected) {
+    this.selected = selected;
   }
 
   @Override public String toString() {
@@ -148,7 +148,6 @@ class CheckItem {
 // }
 
 class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
-  private final JPanel panel = new JPanel(new BorderLayout());
   private boolean keepOpen;
 
   protected CheckedComboBox(ComboBoxModel<E> model) {
@@ -202,6 +201,8 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
       // }
       // removeItemAt(index);
       // insertItemAt(item, index);
+      // Deselect once so that setSelectedItem(item) always fires a change event
+      // and repaints the comma-separated text displayed in the JComboBox itself
       setSelectedIndex(-1);
       setSelectedItem(item);
     }
@@ -225,28 +226,32 @@ class CheckedComboBox<E extends CheckItem> extends JComboBox<E> {
   }
 
   private final class CheckItemListCellRenderer implements ListCellRenderer<E> {
+    private final JPanel panel = new JPanel(new BorderLayout());
     private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
     private final JCheckBox check = new JCheckBox();
 
+    private CheckItemListCellRenderer() {
+      check.setOpaque(false);
+    }
+
     @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
       panel.removeAll();
-      check.setOpaque(false);
-      Component c = renderer.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
+      renderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
       if (index < 0) {
+        // JComboBox itself: show the checked items as a comma-separated text
         String txt = getCheckItemString(list.getModel());
-        JLabel l = (JLabel) c;
-        l.setText(txt.isEmpty() ? " " : txt);
-        l.setOpaque(false);
-        l.setForeground(list.getForeground());
+        // An empty string may collapse the height of the JComboBox
+        renderer.setText(txt.isEmpty() ? " " : txt);
+        renderer.setOpaque(false);
+        renderer.setForeground(list.getForeground());
         panel.setOpaque(false);
       } else {
         check.setSelected(value.isSelected());
         panel.add(check, BorderLayout.WEST);
         panel.setOpaque(true);
-        panel.setBackground(c.getBackground());
+        panel.setBackground(renderer.getBackground());
       }
-      panel.add(c);
+      panel.add(renderer);
       return panel;
     }
   }
