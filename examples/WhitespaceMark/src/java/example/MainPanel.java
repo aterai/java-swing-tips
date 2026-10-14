@@ -28,7 +28,7 @@ import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
   private static final String TAB_TXT = "\n1\taaa\n12\taaa\n123\taaa\n1234\taaa\t\t\t\t\t\t\n";
-  private static final String IDEOGRAPHIC_SPACE = String.join("\n",
+  private static final String FULL_SPACE_TXT = String.join("\n",
       "123456789012",
       "bbb2　　　1 3 ccc3\n",
       "　00000 　12345 ",
@@ -38,8 +38,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTextPane editor = new JTextPane();
     editor.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-    editor.setEditorKit(new CustomEditorKit());
-    editor.setText(IDEOGRAPHIC_SPACE + TAB_TXT);
+    editor.setEditorKit(new WhitespaceEditorKit());
+    editor.setText(FULL_SPACE_TXT + TAB_TXT);
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -66,8 +66,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class CustomEditorKit extends StyledEditorKit {
-  private static final MutableAttributeSet ATTRS = new SimpleAttributeSet();
+class WhitespaceEditorKit extends StyledEditorKit {
+  private final MutableAttributeSet tabAttrs = new SimpleAttributeSet();
 
   @Override public void install(JEditorPane c) {
     FontMetrics fm = c.getFontMetrics(c.getFont());
@@ -80,8 +80,7 @@ class CustomEditorKit extends StyledEditorKit {
         .mapToObj(i -> (i + 1f) * tabLength)
         .map(TabStop::new)
         .toArray(TabStop[]::new);
-    TabSet tabSet = new TabSet(tabs);
-    StyleConstants.setTabSet(ATTRS, tabSet);
+    StyleConstants.setTabSet(tabAttrs, new TabSet(tabs));
     super.install(c);
   }
 
@@ -96,7 +95,7 @@ class CustomEditorKit extends StyledEditorKit {
     String name = elem.getName();
     View view;
     if (AbstractDocument.ParagraphElementName.equals(name)) {
-      view = new ParagraphWithEopmView(elem);
+      view = new ParagraphMarkView(elem);
     } else if (AbstractDocument.ContentElementName.equals(name)) {
       view = new WhitespaceLabelView(elem);
     } else {
@@ -108,37 +107,38 @@ class CustomEditorKit extends StyledEditorKit {
   @Override public Document createDefaultDocument() {
     Document d = super.createDefaultDocument();
     if (d instanceof StyledDocument) {
-      ((StyledDocument) d).setParagraphAttributes(0, d.getLength(), ATTRS, false);
+      ((StyledDocument) d).setParagraphAttributes(0, d.getLength(), tabAttrs, false);
     }
     return d;
   }
 }
 
-class ParagraphWithEopmView extends ParagraphView {
+class ParagraphMarkView extends ParagraphView {
   private static final Color MARK_COLOR = new Color(0x78_82_6E);
 
-  protected ParagraphWithEopmView(Element elem) {
+  protected ParagraphMarkView(Element elem) {
     super(elem);
   }
 
   @Override public void paint(Graphics g, Shape allocation) {
     super.paint(g, allocation);
-    paintCustomParagraph(g, allocation);
+    paintParagraphMark(g, allocation);
   }
 
-  private void paintCustomParagraph(Graphics g, Shape a) {
+  private void paintParagraphMark(Graphics g, Shape a) {
     try {
-      Shape paragraph = modelToView(getEndOffset(), a, Position.Bias.Backward);
-      Rectangle r = Objects.nonNull(paragraph) ? paragraph.getBounds() : a.getBounds();
+      // Backward bias keeps the mark on the last row of a wrapped paragraph
+      Shape eop = modelToView(getEndOffset(), a, Position.Bias.Backward);
+      Rectangle r = Objects.nonNull(eop) ? eop.getBounds() : a.getBounds();
       int x = r.x;
       int y = r.y;
       int h = r.height;
-      Color old = g.getColor();
-      g.setColor(MARK_COLOR);
-      g.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
-      g.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
-      g.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
-      g.setColor(old);
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(MARK_COLOR);
+      g2.drawLine(x + 1, y + h / 2, x + 1, y + h - 4);
+      g2.drawLine(x + 2, y + h / 2, x + 2, y + h - 5);
+      g2.drawLine(x + 3, y + h - 6, x + 3, y + h - 6);
+      g2.dispose();
     } catch (BadLocationException ex) {
       // should never happen
       RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
@@ -149,10 +149,11 @@ class ParagraphWithEopmView extends ParagraphView {
 }
 
 class WhitespaceLabelView extends LabelView {
-  private static final String IDEOGRAPHIC_SPACE = "　"; // "\u3000";
-  private static final String TABULATION = "\t";
+  private static final char IDEOGRAPHIC_SPACE = '　'; // U+3000 IDEOGRAPHIC SPACE
+  private static final char TAB = '\t';
   private static final Color MARK_COLOR = new Color(0x78_82_6E);
-  private static final BasicStroke DASHED = new BasicStroke(
+  private static final Stroke SOLID = new BasicStroke(1f);
+  private static final Stroke DASHED = new BasicStroke(
       1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[] {1f}, 0f);
 
   protected WhitespaceLabelView(Element elem) {
@@ -162,32 +163,45 @@ class WhitespaceLabelView extends LabelView {
   @Override public void paint(Graphics g, Shape a) {
     super.paint(g, a);
     Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(MARK_COLOR);
     Rectangle alloc = a instanceof Rectangle ? (Rectangle) a : a.getBounds();
-    FontMetrics fontMetrics = g.getFontMetrics();
-    int spaceWidth = fontMetrics.stringWidth(IDEOGRAPHIC_SPACE);
-    int sumOfTabs = 0;
-    String text = getText(getStartOffset(), getEndOffset()).toString();
+    int sy = alloc.y + alloc.height - g2.getFontMetrics(getFont()).getDescent();
+    int p0 = getStartOffset();
+    String text = getText(p0, getEndOffset()).toString();
     for (int i = 0; i < text.length(); i++) {
-      String s = text.substring(i, i + 1);
-      int prevStrWidth = fontMetrics.stringWidth(text.substring(0, i)) + sumOfTabs;
-      int sx = alloc.x + prevStrWidth;
-      int sy = alloc.y + alloc.height - fontMetrics.getDescent();
-      if (IDEOGRAPHIC_SPACE.equals(s)) {
+      char c = text.charAt(i);
+      if (c == IDEOGRAPHIC_SPACE) {
+        Rectangle r = getCharBounds(p0 + i, a);
         g2.setStroke(DASHED);
-        g2.setPaint(MARK_COLOR);
-        g2.drawLine(sx + 1, sy - 1, sx + spaceWidth - 2, sy - 1);
-        g2.drawLine(sx + 2, sy, sx + spaceWidth - 2, sy);
-      } else if (TABULATION.equals(s)) {
-        int tabWidth = (int) getTabExpander().nextTabStop(sx, i) - sx;
-        g2.setPaint(MARK_COLOR);
-        g2.drawLine(sx + 2, sy, sx + 2 + 2, sy);
-        g2.drawLine(sx + 2, sy - 1, sx + 2 + 1, sy - 1);
-        g2.drawLine(sx + 2, sy - 2, sx + 2, sy - 2);
+        g2.drawLine(r.x + 1, sy - 1, r.x + r.width - 2, sy - 1);
+        g2.drawLine(r.x + 2, sy, r.x + r.width - 2, sy);
+      } else if (c == TAB) {
+        Rectangle r = getCharBounds(p0 + i, a);
+        int sx = r.x + 2;
+        // the arrowhead must be solid even after a dashed full-width space mark
+        g2.setStroke(SOLID);
+        g2.drawLine(sx, sy, sx + 2, sy);
+        g2.drawLine(sx, sy - 1, sx + 1, sy - 1);
+        g2.drawLine(sx, sy - 2, sx, sy - 2);
         g2.setStroke(DASHED);
-        g2.drawLine(sx + 2, sy, sx + tabWidth - 2, sy);
-        sumOfTabs += tabWidth;
+        g2.drawLine(sx, sy, r.x + r.width - 2, sy);
       }
     }
     g2.dispose();
+  }
+
+  // The bounds returned by modelToView already include the expanded tab width
+  // and the actual glyph widths, so there is no need to accumulate them manually.
+  private Rectangle getCharBounds(int pos, Shape a) {
+    try {
+      Rectangle r0 = modelToView(pos, a, Position.Bias.Forward).getBounds();
+      Rectangle r1 = modelToView(pos + 1, a, Position.Bias.Forward).getBounds();
+      return new Rectangle(r0.x, r0.y, r1.x - r0.x, r0.height);
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
   }
 }
