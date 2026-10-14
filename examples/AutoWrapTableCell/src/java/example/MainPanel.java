@@ -148,55 +148,45 @@ class AutoWrapTable extends JTable {
 
 // delegation pattern
 class TextAreaCellRenderer implements TableCellRenderer {
-  // public static class UIResource extends TextAreaCellRenderer implements UIResource {}
   private final JTextArea renderer = new JTextArea();
-  private final List<List<Integer>> rowColHeight = new ArrayList<>();
+  // Caches the preferred height of each cell: cellHeights.get(row).get(column)
+  private final List<List<Integer>> cellHeights = new ArrayList<>();
 
   protected TextAreaCellRenderer() {
-    super();
     renderer.setLineWrap(true);
     renderer.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    // renderer.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-    // renderer.setMargin(new Insets(2, 2, 2, 2));
-    // renderer.setBorder(BorderFactory.createEmptyBorder());
     renderer.setName("Table.cellRenderer");
   }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     renderer.setFont(table.getFont());
     renderer.setText(Objects.toString(value, ""));
+    // The trick for this to work properly is to set the width of the column to the
+    // text area. The reason for this is that getPreferredSize(), without a width tries
+    // to place all the text in one line. By setting the size with the width of the column,
+    // getPreferredSize() returns the proper height which the row should have in
+    // order to make room for the text.
+    // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
     renderer.setBounds(table.getCellRect(row, column, false));
-    // renderer.doLayout();
-    int maxHeight = adjustedRowHeights(row, column);
+    int maxHeight = updateCellHeight(row, column, renderer.getPreferredSize().height);
     if (table.getRowHeight(row) != maxHeight) {
       table.setRowHeight(row, maxHeight);
     }
     return renderer;
   }
 
-  // Calculate the new preferred height for a given row, and sets the height on the table.
-  // http://blog.botunge.dk/post/2009/10/09/JTable-multiline-cell-renderer.aspx
-  // The trick for this to work properly is to set the width of the column to the
-  // text area. The reason for this is that getPreferredSize(), without a width tries
-  // to place all the text in one line. By setting the size with the width of the column,
-  // getPreferredSize() returns the proper height which the row should have in
-  // order to make room for the text.
-  // int cWidth = table.getTableHeader().getColumnModel().getColumn(column).getWidth();
-  // int cWidth = table.getCellRect(row, column, false).width; // Ignore IntercellSpacing
-  // setSize(new Dimension(cWidth, 1000));
-  private int adjustedRowHeights(int row, int column) {
-    int prefH = renderer.getPreferredSize().height;
-    while (rowColHeight.size() <= row) {
-      rowColHeight.add(new ArrayList<>());
+  // Stores the preferred height of the given cell and returns the maximum
+  // cell height of the row, i.e. the height that the row should have.
+  private int updateCellHeight(int row, int column, int height) {
+    while (cellHeights.size() <= row) {
+      cellHeights.add(new ArrayList<>());
     }
-    List<Integer> colHeights = rowColHeight.get(row);
+    List<Integer> colHeights = cellHeights.get(row);
     while (colHeights.size() <= column) {
       colHeights.add(0);
     }
-    colHeights.set(column, prefH);
-    // return colHeights.stream().max(Integer::compare).orElse(0);
+    colHeights.set(column, height);
     return Collections.max(colHeights);
-    // return colHeights.isEmpty() ? prefH : Collections.max(colHeights);
   }
 }
 
