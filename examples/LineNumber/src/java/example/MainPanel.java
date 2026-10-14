@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
 public final class MainPanel extends JPanel {
@@ -81,20 +82,14 @@ class LineNumberView extends JPanel {
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(true);
-    EventQueue.invokeLater(() -> {
-      // Insets i = textArea.getInsets();
-      Insets i = textArea.getMargin();
-      setBorder(BorderFactory.createCompoundBorder(
-          BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
-          BorderFactory.createEmptyBorder(i.top, MARGIN, i.bottom, MARGIN - 1)));
-      setBackground(textArea.getBackground());
-    });
+    // The vertical position of each line number is taken from the JTextArea itself,
+    // so only the horizontal padding is required here.
+    setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY),
+        BorderFactory.createEmptyBorder(0, MARGIN, 0, MARGIN - 1)));
   }
 
   private int getComponentWidth(FontMetrics fontMetrics) {
-    // Document doc = textArea.getDocument();
-    // Element root = doc.getDefaultRootElement();
-    // int lineCount = root.getElementIndex(doc.getLength());
     int lineCount = textArea.getLineCount();
     int maxDigits = Math.max(3, Integer.toString(lineCount).length());
     Insets i = getInsets();
@@ -115,28 +110,33 @@ class LineNumberView extends JPanel {
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setColor(textArea.getBackground());
     Rectangle clip = g2.getClipBounds();
-    g2.fillRect(clip.x, clip.y, clip.width, clip.height);
+    g2.setColor(textArea.getBackground());
+    g2.fill(clip);
 
     Font font = textArea.getFont();
     g2.setFont(font);
     g2.setColor(getForeground());
-    int base = clip.y;
-    int start = getLineAtPoint(base);
-    int end = getLineAtPoint(base + clip.height);
     FontMetrics fontMetrics = g2.getFontMetrics(font);
-    int fontAscent = fontMetrics.getAscent();
-    int fontDescent = fontMetrics.getDescent();
-    int fontLeading = fontMetrics.getLeading();
-    int y = start * fontMetrics.getHeight();
-    int rmg = getInsets().right;
-    for (int i = start; i <= end; i++) {
-      String text = Integer.toString(i + 1);
-      int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
-      y += fontAscent;
-      g2.drawString(text, x, y);
-      y += fontDescent + fontLeading;
+    int ascent = fontMetrics.getAscent();
+    int right = getWidth() - getInsets().right;
+    Element root = textArea.getDocument().getDefaultRootElement();
+    int start = getLineAtPoint(clip.y);
+    int end = getLineAtPoint(clip.y + clip.height);
+    try {
+      for (int i = start; i <= end; i++) {
+        // Align the baseline with the first row of the line in the JTextArea,
+        // this takes the JTextArea insets and wrapped lines into account.
+        int offset = root.getElement(i).getStartOffset();
+        Rectangle r = textArea.modelToView(offset);
+        // Java 9: Rectangle r = textArea.modelToView2D(offset).getBounds();
+        String text = Integer.toString(i + 1);
+        int x = right - fontMetrics.stringWidth(text);
+        g2.drawString(text, x, r.y + ascent);
+      }
+    } catch (BadLocationException ex) {
+      // should never happen: the start offset of an existing line is always valid
+      UIManager.getLookAndFeel().provideErrorFeedback(textArea);
     }
     g2.dispose();
   }
