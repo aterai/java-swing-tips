@@ -10,15 +10,9 @@ import java.util.Collections;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
 import javax.swing.text.Element;
-import javax.swing.text.IconView;
-import javax.swing.text.LabelView;
 import javax.swing.text.ParagraphView;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
@@ -108,46 +102,6 @@ public final class MainPanel extends JPanel {
   }
 }
 
-/*
-class NoWrapEditorKit1 extends StyledEditorKit {
-  @Override public ViewFactory getViewFactory() {
-    return new StyledViewFactory();
-  }
-
-  static class StyledViewFactory implements ViewFactory {
-    @SuppressWarnings("PMD.OnlyOneReturn")
-    @Override public View create(Element elem) {
-      String kind = elem.getName();
-      if (Objects.nonNull(kind)) {
-        if (kind.equals(AbstractDocument.ContentElementName)) {
-          return new LabelView(elem);
-        } else if (kind.equals(AbstractDocument.ParagraphElementName)) {
-          return new ParagraphView(elem);
-        } else if (kind.equals(AbstractDocument.SectionElementName)) {
-          return new NoWrapBoxView(elem, View.Y_AXIS);
-        } else if (kind.equals(StyleConstants.ComponentElementName)) {
-          return new ComponentView(elem);
-        } else if (kind.equals(StyleConstants.IconElementName)) {
-          return new IconView(elem);
-        }
-      }
-      return new LabelView(elem);
-    }
-  }
-
-  static class NoWrapBoxView extends BoxView {
-    protected NoWrapBoxView(Element elem, int axis) {
-      super(elem, axis);
-    }
-
-    @Override public void layout(int width, int height) {
-      super.layout(Integer.MAX_VALUE - 64, height);
-      // ??? Integer.MAX_VALUE - 64 = error?
-      // ??? Integer.MAX_VALUE - 64 = ok?
-    }
-  }
-}
-/*/
 // https://community.oracle.com/thread/1353861 Disabling word wrap for JTextPane
 class NoWrapParagraphView extends ParagraphView {
   protected NoWrapParagraphView(Element elem) {
@@ -165,29 +119,11 @@ class NoWrapParagraphView extends ParagraphView {
   }
 }
 
-class NoWrapViewFactory implements ViewFactory {
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      // case AbstractDocument.ContentElementName:
-      //   return new LabelView(elem);
-      case AbstractDocument.ParagraphElementName:
-        return new NoWrapParagraphView(elem);
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new LabelView(elem);
-    }
-  }
-}
-
 class NoWrapEditorKit2 extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new NoWrapViewFactory();
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> AbstractDocument.ParagraphElementName.equals(elem.getName())
+        ? new NoWrapParagraphView(elem)
+        : defaultFactory.create(elem);
   }
 }
-// */

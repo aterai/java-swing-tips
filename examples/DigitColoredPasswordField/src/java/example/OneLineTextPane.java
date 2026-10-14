@@ -5,16 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
 import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
-import javax.swing.text.IconView;
-import javax.swing.text.LabelView;
 import javax.swing.text.ParagraphView;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public class OneLineTextPane extends JTextPane {
@@ -36,9 +30,9 @@ public class OneLineTextPane extends JTextPane {
     enableInputMethods(false);
   }
 
-  // The JTextPane constructor calls setEditorKit(createDefaultEditorKit()) after updateUI(),
-  // so an editor kit set in updateUI() would be overwritten (and replacing it on a
-  // Look&Feel change would also discard the current document).
+  // The JTextPane constructor calls setEditorKit(createDefaultEditorKit()) after
+  // updateUI(), so an editor kit set in updateUI() would be overwritten (and replacing
+  // it on a Look&Feel change would also discard the current document).
   @Override protected EditorKit createDefaultEditorKit() {
     return new NoWrapEditorKit();
   }
@@ -51,7 +45,10 @@ public class OneLineTextPane extends JTextPane {
 
 class NoWrapEditorKit extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new NoWrapViewFactory();
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> AbstractDocument.ParagraphElementName.equals(elem.getName())
+        ? new NoWrapParagraphView(elem)
+        : defaultFactory.create(elem);
   }
 }
 
@@ -68,23 +65,5 @@ class NoWrapParagraphView extends ParagraphView {
 
   @Override public int getFlowSpan(int index) {
     return Integer.MAX_VALUE;
-  }
-}
-
-class NoWrapViewFactory implements ViewFactory {
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      case AbstractDocument.ParagraphElementName:
-        return new NoWrapParagraphView(elem);
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new LabelView(elem);
-    }
   }
 }

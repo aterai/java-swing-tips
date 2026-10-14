@@ -10,23 +10,17 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
 import javax.swing.text.Element;
-import javax.swing.text.IconView;
-import javax.swing.text.LabelView;
 import javax.swing.text.ParagraphView;
 import javax.swing.text.Position;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JEditorPane editor = new JEditorPane();
-    editor.setEditorKit(new MyEditorKit());
+    editor.setEditorKit(new ParagraphMarkEditorKit());
     editor.setText("1234123541341234123423\n12374612340\n213441324\n\n645206345437820");
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
@@ -54,49 +48,35 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MyEditorKit extends StyledEditorKit {
+class ParagraphMarkEditorKit extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new MyViewFactory();
+    // Replace only the paragraph view and delegate the other elements
+    // to the default StyledEditorKit factory
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> AbstractDocument.ParagraphElementName.equals(elem.getName())
+        ? new ParagraphMarkView(elem)
+        : defaultFactory.create(elem);
   }
 }
 
-class MyViewFactory implements ViewFactory {
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      // case AbstractDocument.ContentElementName:
-      //   return new LabelView(elem);
-      case AbstractDocument.ParagraphElementName:
-        return new ParagraphWithEopmView(elem);
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new LabelView(elem);
-    }
-  }
-}
-
-class ParagraphWithEopmView extends ParagraphView {
+class ParagraphMarkView extends ParagraphView {
   // private static final ParagraphMarkIcon paragraphMarkIcon = new ParagraphMarkIcon();
   private static final Color MARK_COLOR = new Color(0x78_82_6E);
 
-  protected ParagraphWithEopmView(Element elem) {
+  protected ParagraphMarkView(Element elem) {
     super(elem);
   }
 
   @Override public void paint(Graphics g, Shape allocation) {
     super.paint(g, allocation);
-    paintCustomParagraph(g, allocation);
+    paintParagraphMark(g, allocation);
   }
 
-  private void paintCustomParagraph(Graphics g, Shape a) {
+  private void paintParagraphMark(Graphics g, Shape a) {
     try {
-      Shape paragraph = modelToView(getEndOffset(), a, Position.Bias.Backward);
-      Rectangle r = Objects.nonNull(paragraph) ? paragraph.getBounds() : a.getBounds();
+      // Backward bias keeps the mark on the last row of a wrapped paragraph
+      Shape eop = modelToView(getEndOffset(), a, Position.Bias.Backward);
+      Rectangle r = Objects.nonNull(eop) ? eop.getBounds() : a.getBounds();
       int x = r.x;
       int y = r.y;
       int h = r.height;

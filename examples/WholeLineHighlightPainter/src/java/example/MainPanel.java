@@ -13,19 +13,14 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
 import javax.swing.text.Caret;
-import javax.swing.text.ComponentView;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
 import javax.swing.text.Element;
 import javax.swing.text.Highlighter.HighlightPainter;
-import javax.swing.text.IconView;
 import javax.swing.text.JTextComponent;
-import javax.swing.text.LabelView;
 import javax.swing.text.ParagraphView;
 import javax.swing.text.Position.Bias;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
@@ -159,39 +154,13 @@ class FocusCaret extends DefaultCaret {
   }
 }
 
-class ParagraphMarkEditorKit extends StyledEditorKit implements ViewFactory {
+class ParagraphMarkEditorKit extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return this;
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> AbstractDocument.ParagraphElementName.equals(elem.getName())
+        ? new ParagraphWithEndMarkView(elem)
+        : defaultFactory.create(elem);
   }
-
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      // case AbstractDocument.ContentElementName:
-      //   return new LabelView(elem);
-      case AbstractDocument.ParagraphElementName:
-        return new ParagraphWithEndMarkView(elem);
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new LabelView(elem);
-    }
-  }
-
-  // Java 12:
-  // @Override public View create(Element elem) {
-  //   return switch (elem.getName()) {
-  //     case AbstractDocument.ParagraphElementName -> new ParagraphWithEndMarkView(elem);
-  //     case AbstractDocument.SectionElementName -> new BoxView(elem, View.Y_AXIS);
-  //     case StyleConstants.ComponentElementName -> new ComponentView(elem);
-  //     case StyleConstants.IconElementName -> new IconView(elem);
-  //     default -> new LabelView(elem);
-  //   };
-  // }
 }
 
 class ParagraphWithEndMarkView extends ParagraphView {

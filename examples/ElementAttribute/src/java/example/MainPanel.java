@@ -193,25 +193,26 @@ class CustomTooltipEditorPane extends JEditorPane {
 
 class TooltipEditorKit extends HTMLEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new HTMLFactory() {
-      @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-      @Override public View create(Element elem) {
-        AttributeSet attrs = elem.getAttributes();
-        Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-        Object o = name == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
-        if (o instanceof HTML.Tag) {
-          HTML.Tag kind = (HTML.Tag) o;
-          if (kind == HTML.Tag.DIV) {
-            return new BlockView(elem, View.Y_AXIS) {
-              @Override public String getToolTipText(float x, float y, Shape allocation) {
-                Object o = getElement().getAttributes().getAttribute(HTML.Attribute.TITLE);
-                return o == null ? super.getToolTipText(x, y, allocation) : Objects.toString(o);
-              }
-            };
-          }
-        }
-        return super.create(elem);
-      }
-    };
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> isDiv(elem)
+        ? new TooltipBlockView(elem)
+        : defaultFactory.create(elem);
+  }
+
+  private static boolean isDiv(Element elem) {
+    AttributeSet attrs = elem.getAttributes();
+    Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
+    return name == null && attrs.getAttribute(StyleConstants.NameAttribute) == HTML.Tag.DIV;
+  }
+}
+
+class TooltipBlockView extends BlockView {
+  protected TooltipBlockView(Element elem) {
+    super(elem, View.Y_AXIS);
+  }
+
+  @Override public String getToolTipText(float x, float y, Shape allocation) {
+    Object o = getElement().getAttributes().getAttribute(HTML.Attribute.TITLE);
+    return o == null ? super.getToolTipText(x, y, allocation) : Objects.toString(o);
   }
 }

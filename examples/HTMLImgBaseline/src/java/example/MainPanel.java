@@ -12,7 +12,6 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
@@ -71,24 +70,25 @@ public final class MainPanel extends JPanel {
 
 class ImgBaselineHtmlEditorKit extends HTMLEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new HTMLEditorKit.HTMLFactory() {
-      @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-      @Override public View create(Element elem) {
-        AttributeSet attrs = elem.getAttributes();
-        Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
-        Object o = name == null ? attrs.getAttribute(StyleConstants.NameAttribute) : null;
-        if (o instanceof HTML.Tag) {
-          HTML.Tag kind = (HTML.Tag) o;
-          if (kind == HTML.Tag.IMG) {
-            return new ImageView(elem) {
-              @Override public float getAlignment(int axis) { // .8125f: magic number
-                return axis == Y_AXIS ? .8125f : super.getAlignment(axis);
-              }
-            };
-          }
-        }
-        return super.create(elem);
-      }
-    };
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> isImg(elem)
+        ? new BaselineImageView(elem)
+        : defaultFactory.create(elem);
+  }
+
+  private static boolean isImg(Element elem) {
+    AttributeSet attrs = elem.getAttributes();
+    Object name = attrs.getAttribute(AbstractDocument.ElementNameAttribute);
+    return name == null && attrs.getAttribute(StyleConstants.NameAttribute) == HTML.Tag.IMG;
+  }
+}
+
+class BaselineImageView extends ImageView {
+  protected BaselineImageView(Element elem) {
+    super(elem);
+  }
+
+  @Override public float getAlignment(int axis) { // .8125f: magic number
+    return axis == Y_AXIS ? .8125f : super.getAlignment(axis);
   }
 }

@@ -11,11 +11,8 @@ import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
-import javax.swing.text.IconView;
 import javax.swing.text.LabelView;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.ParagraphView;
@@ -89,7 +86,23 @@ class CustomEditorKit extends StyledEditorKit {
   }
 
   @Override public ViewFactory getViewFactory() {
-    return new CustomViewFactory();
+    // Replace only the paragraph and content views and delegate the other elements
+    // to the default StyledEditorKit factory
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> createView(elem, defaultFactory);
+  }
+
+  private static View createView(Element elem, ViewFactory defaultFactory) {
+    String name = elem.getName();
+    View view;
+    if (AbstractDocument.ParagraphElementName.equals(name)) {
+      view = new ParagraphWithEopmView(elem);
+    } else if (AbstractDocument.ContentElementName.equals(name)) {
+      view = new WhitespaceLabelView(elem);
+    } else {
+      view = defaultFactory.create(elem);
+    }
+    return view;
   }
 
   @Override public Document createDefaultDocument() {
@@ -98,26 +111,6 @@ class CustomEditorKit extends StyledEditorKit {
       ((StyledDocument) d).setParagraphAttributes(0, d.getLength(), ATTRS, false);
     }
     return d;
-  }
-}
-
-class CustomViewFactory implements ViewFactory {
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      // case AbstractDocument.ContentElementName:
-      //   return new WhitespaceLabelView(elem);
-      case AbstractDocument.ParagraphElementName:
-        return new ParagraphWithEopmView(elem);
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new WhitespaceLabelView(elem);
-    }
   }
 }
 

@@ -16,19 +16,14 @@ import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Element;
-import javax.swing.text.IconView;
-import javax.swing.text.LabelView;
 import javax.swing.text.ParagraphView;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
@@ -225,28 +220,11 @@ class NoWrapParagraphView extends ParagraphView {
   }
 }
 
-class NoWrapViewFactory implements ViewFactory {
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      // case AbstractDocument.ContentElementName:
-      //   return new LabelView(elem);
-      case AbstractDocument.ParagraphElementName:
-        return new NoWrapParagraphView(elem);
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new LabelView(elem);
-    }
-  }
-}
-
 class NoWrapEditorKit extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new NoWrapViewFactory();
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> AbstractDocument.ParagraphElementName.equals(elem.getName())
+        ? new NoWrapParagraphView(elem)
+        : defaultFactory.create(elem);
   }
 }

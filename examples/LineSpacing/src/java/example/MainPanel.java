@@ -9,18 +9,13 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.BoxView;
-import javax.swing.text.ComponentView;
 import javax.swing.text.Element;
-import javax.swing.text.IconView;
-import javax.swing.text.LabelView;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.ParagraphView;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 
 public final class MainPanel extends JPanel {
@@ -101,30 +96,19 @@ public final class MainPanel extends JPanel {
 
 class BottomInsetEditorKit extends StyledEditorKit {
   @Override public ViewFactory getViewFactory() {
-    return new BottomInsetViewFactory();
+    ViewFactory defaultFactory = super.getViewFactory();
+    return elem -> AbstractDocument.ParagraphElementName.equals(elem.getName())
+        ? new BottomInsetParagraphView(elem)
+        : defaultFactory.create(elem);
   }
 }
 
-class BottomInsetViewFactory implements ViewFactory {
-  @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
-  @Override public View create(Element elem) {
-    switch (elem.getName()) {
-      // case AbstractDocument.ContentElementName:
-      //   return new LabelView(elem);
-      case AbstractDocument.ParagraphElementName:
-        return new ParagraphView(elem) {
-          @Override protected short getBottomInset() {
-            return 5;
-          }
-        };
-      case AbstractDocument.SectionElementName:
-        return new BoxView(elem, View.Y_AXIS);
-      case StyleConstants.ComponentElementName:
-        return new ComponentView(elem);
-      case StyleConstants.IconElementName:
-        return new IconView(elem);
-      default:
-        return new LabelView(elem);
-    }
+class BottomInsetParagraphView extends ParagraphView {
+  protected BottomInsetParagraphView(Element element) {
+    super(element);
+  }
+
+  @Override protected short getBottomInset() {
+    return 5;
   }
 }

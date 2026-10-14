@@ -147,7 +147,8 @@ class DigitHighlightPasswordField extends JPasswordField {
           UIManager.getLookAndFeel().provideErrorFeedback(this);
         }
       } else {
-        // setEchoChar(...) may be called by the UI delegate before the highlighter is installed
+        // setEchoChar(...) may be called by the UI delegate before
+        // the highlighter is installed
         Optional.ofNullable(getHighlighter()).ifPresent(Highlighter::removeAllHighlights);
         ((AbstractDocument) doc).setDocumentFilter(null);
       }
