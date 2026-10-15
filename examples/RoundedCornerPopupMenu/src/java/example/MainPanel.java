@@ -15,26 +15,27 @@ import javax.swing.tree.TreePath;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JPopupMenu popup = makePopupMenu();
+    JPopupMenu popup = createPopupMenu();
     JTree tree = new JTree();
     tree.setComponentPopupMenu(popup);
     add(new JScrollPane(tree));
-    JMenuBar mb = new JMenuBar();
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPopupMenu makePopupMenu() {
+  private static JPopupMenu createPopupMenu() {
     JPopupMenu popup = new JPopupMenu();
     popup.add("add").addActionListener(e -> {
       JTree tree = (JTree) popup.getInvoker();
       TreePath path = tree.getSelectionPath();
       if (path != null) {
-        MutableTreeNode p = (MutableTreeNode) path.getLastPathComponent();
-        DefaultMutableTreeNode c = new DefaultMutableTreeNode("New node");
-        ((DefaultTreeModel) tree.getModel()).insertNodeInto(c, p, p.getChildCount());
-        tree.scrollPathToVisible(new TreePath(c.getPath()));
+        MutableTreeNode parent = (MutableTreeNode) path.getLastPathComponent();
+        DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
+        ((DefaultTreeModel) tree.getModel()).insertNodeInto(
+            child, parent, parent.getChildCount());
+        tree.scrollPathToVisible(new TreePath(child.getPath()));
       }
     });
     popup.addSeparator();
@@ -101,7 +102,7 @@ public final class MainPanel extends JPanel {
 //     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 //         RenderingHints.VALUE_ANTIALIAS_ON);
 //     g2.setPaint(getBackground());
-//     Shape s = makeShape();
+//     Shape s = createShape();
 //     g2.fill(s);
 //     g2.setPaint(Color.GRAY);
 //     g2.draw(s);
@@ -119,7 +120,7 @@ public final class MainPanel extends JPanel {
 //     super.show(c, x, y);
 //   }
 //
-//   private Shape makeShape() {
+//   private Shape createShape() {
 //     float w = getWidth() - 1f;
 //     float h = getHeight() - 1f;
 //     Insets i = getInsets();
@@ -139,7 +140,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -147,7 +148,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }

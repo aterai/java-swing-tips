@@ -18,44 +18,46 @@ public final class RoundedPopupMenuUI extends BasicPopupMenuUI {
   }
 
   @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
-    Popup pp = super.getPopup(popup, x, y);
-    if (pp != null) {
+    Popup p = super.getPopup(popup, x, y);
+    if (p != null) {
+      // A heavyweight popup (Popup$HeavyWeightWindow) is shown outside the parent frame,
+      // so its window background must also be made transparent
       EventQueue.invokeLater(() -> Optional.ofNullable(SwingUtilities.getWindowAncestor(popup))
-          .filter(w -> {
-            boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
-            GraphicsConfiguration gc = w.getGraphicsConfiguration();
-            return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
-          })
+          .filter(RoundedPopupMenuUI::isTranslucentPopupWindow)
           .ifPresent(w -> w.setBackground(new Color(0x0, true))));
       popup.setBorder(new RoundedBorder());
       popup.setOpaque(false);
     }
-    return pp;
+    return p;
+  }
+
+  private static boolean isTranslucentPopupWindow(Window w) {
+    GraphicsConfiguration gc = w.getGraphicsConfiguration();
+    return w.getType() == Window.Type.POPUP && gc != null && gc.isTranslucencyCapable();
   }
 }
 
 class RoundedBorder extends AbstractBorder {
-  @Override public Insets getBorderInsets(Component c) {
-    return new Insets(5, 5, 5, 5);
+  private static final int PAD = 5;
+  private static final float ARC = PAD * 2f;
+
+  // JComponent#getInsets(Insets) calls AbstractBorder#getBorderInsets(Component, Insets),
+  // so override this method (getBorderInsets(Component) delegates to it)
+  @Override public Insets getBorderInsets(Component c, Insets insets) {
+    insets.set(PAD, PAD, PAD, PAD);
+    return insets;
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
         RenderingHints.VALUE_ANTIALIAS_ON);
+    Shape s = new RoundRectangle2D.Float(x, y, w - 1f, h - 1f, ARC, ARC);
+    // Fill the rounded background here, since the JPopupMenu itself is transparent
     g2.setPaint(c.getBackground());
-    Shape s = makeShape((JComponent) c);
     g2.fill(s);
     g2.setPaint(Color.GRAY);
     g2.draw(s);
     g2.dispose();
-  }
-
-  private static Shape makeShape(JComponent c) {
-    float w = c.getWidth() - 1f;
-    float h = c.getHeight() - 1f;
-    Insets i = c.getInsets();
-    float r = Math.min(i.top + i.left, i.bottom + i.right);
-    return new RoundRectangle2D.Float(0f, 0f, w, h, r, r);
   }
 }
