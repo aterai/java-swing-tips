@@ -48,8 +48,8 @@ public final class MainPanel extends JPanel {
 
     LOGGER.info(() -> "test, TEST");
 
-    JButton button = new JButton("Clear");
-    button.addActionListener(e -> textArea.setText(""));
+    JButton clearButton = new JButton("Clear");
+    clearButton.addActionListener(e -> textArea.setText(""));
     JTextField textField = new JTextField("aaa");
 
     Box box = Box.createHorizontalBox();
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
     box.add(Box.createHorizontalStrut(5));
     box.add(new JButton(new EnterAction(textField)));
     box.add(Box.createHorizontalStrut(5));
-    box.add(button);
+    box.add(clearButton);
 
     add(new JScrollPane(textArea));
     add(box, BorderLayout.SOUTH);
@@ -189,15 +189,20 @@ class TextAreaOutputStream extends OutputStream {
   }
 
   // // Java 10:
-  // @Override public void flush() {
-  //   textArea.append(buffer.toString(StandardCharsets.UTF_8));
-  //   buffer.reset();
-  // }
-
+  // String text = buffer.toString(StandardCharsets.UTF_8);
   @SuppressWarnings({"JdkObsolete", "PMD.UseStandardCharsets"})
   @Override public void flush() throws IOException {
-    textArea.append(buffer.toString("UTF-8"));
+    String text = buffer.toString("UTF-8");
     buffer.reset();
+    if (text.isEmpty()) {
+      return;
+    }
+    // Logger may be called from any thread, so update the JTextArea on the EDT
+    if (EventQueue.isDispatchThread()) {
+      textArea.append(text);
+    } else {
+      EventQueue.invokeLater(() -> textArea.append(text));
+    }
   }
 
   @Override public void write(int b) {
@@ -210,8 +215,8 @@ class TextAreaOutputStream extends OutputStream {
 }
 
 class TextAreaHandler extends StreamHandler {
-  protected TextAreaHandler(OutputStream os) {
-    super(os, new SimpleFormatter());
+  protected TextAreaHandler(OutputStream out) {
+    super(out, new SimpleFormatter());
   }
 
   @Override public String getEncoding() {
