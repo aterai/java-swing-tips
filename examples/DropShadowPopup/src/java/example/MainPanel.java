@@ -18,11 +18,11 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JPopupMenu popup0 = new JPopupMenu();
-    initPopupMenu(popup0);
+    JPopupMenu defaultPopup = new JPopupMenu();
+    initPopupMenu(defaultPopup);
 
-    DropShadowPopupMenu popup1 = new DropShadowPopupMenu();
-    initPopupMenu(popup1);
+    JPopupMenu shadowPopup = new DropShadowPopupMenu();
+    initPopupMenu(shadowPopup);
 
     String path = "example/test.png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -36,25 +36,25 @@ public final class MainPanel extends JPanel {
       return i;
     }).orElseGet(MissingIcon::new);
     JLabel label = new JLabel(icon);
-    label.setComponentPopupMenu(popup1);
+    label.setComponentPopupMenu(shadowPopup);
 
     JCheckBox check = new JCheckBox("Paint Shadow", true);
     check.addActionListener(e -> {
       JCheckBox c = (JCheckBox) e.getSource();
-      label.setComponentPopupMenu(c.isSelected() ? popup1 : popup0);
+      label.setComponentPopupMenu(c.isSelected() ? shadowPopup : defaultPopup);
     });
     add(check, BorderLayout.NORTH);
     add(label);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void initPopupMenu(JPopupMenu p) {
-    Stream.of("Open", "Save", "Close").map(s -> s.concat("(sample)")).forEach(p::add);
+  private static void initPopupMenu(JPopupMenu popup) {
+    Stream.of("Open", "Save", "Close").map(s -> s.concat("(sample)")).forEach(popup::add);
     // [JDK-6595814] Nimbus LAF: Renderers, MenuSeparators, colors rollup bug - Java Bug System
     // https://bugs.openjdk.org/browse/JDK-6595814
-    // Fixed 6u10: p.add(new JSeparator());
-    p.addSeparator();
-    p.add("Exit").addActionListener(e -> {
+    // Fixed 6u10: popup.add(new JSeparator());
+    popup.addSeparator();
+    popup.add("Exit").addActionListener(e -> {
       JMenuItem m = (JMenuItem) e.getSource();
       JPopupMenu pop = (JPopupMenu) SwingUtilities.getUnwrappedParent(m);
       Optional.ofNullable(SwingUtilities.getWindowAncestor(pop.getInvoker()))
@@ -136,7 +136,7 @@ final class DropShadowPopupMenu extends JPopupMenu {
     if (Objects.isNull(inner)) {
       inner = getBorder();
     }
-    setBorder(makeShadowBorder(c, new Point(x, y)));
+    setBorder(createShadowBorder(c, new Point(x, y)));
 
     Dimension d = getPreferredSize();
     int w = d.width;
@@ -157,7 +157,7 @@ final class DropShadowPopupMenu extends JPopupMenu {
     super.show(c, x, y);
   }
 
-  private Border makeShadowBorder(Component c, Point p) {
+  private Border createShadowBorder(Component c, Point p) {
     Rectangle r = SwingUtilities.getWindowAncestor(c).getBounds();
     Dimension d = this.getPreferredSize();
     SwingUtilities.convertPointToScreen(p, c);
@@ -174,28 +174,28 @@ final class DropShadowPopupMenu extends JPopupMenu {
 }
 
 class ShadowBorder extends AbstractBorder {
-  private final int xoff;
-  private final int yoff;
+  private final int offsetX;
+  private final int offsetY;
   private final transient BufferedImage screen;
   private transient BufferedImage shadow;
 
   protected ShadowBorder(int x, int y, JComponent c, Point p) {
     super();
-    this.xoff = x;
-    this.yoff = y;
-    BufferedImage bi = null;
+    this.offsetX = x;
+    this.offsetY = y;
+    // Capture only the area under the popup menu and its shadow
+    Dimension d = c.getPreferredSize();
+    Rectangle r = new Rectangle(p.x, p.y, d.width + offsetX, d.height + offsetY);
     try {
-      Robot robot = new Robot();
-      Dimension d = c.getPreferredSize();
-      bi = robot.createScreenCapture(new Rectangle(p.x, p.y, d.width + xoff, d.height + yoff));
+      screen = new Robot().createScreenCapture(r);
     } catch (AWTException ex) {
       throw new IllegalStateException(ex);
     }
-    screen = bi;
   }
 
   @Override public Insets getBorderInsets(Component c) {
-    return new Insets(0, 0, xoff, yoff);
+    // Insets(top, left, bottom, right)
+    return new Insets(0, 0, offsetY, offsetX);
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
@@ -208,8 +208,8 @@ class ShadowBorder extends AbstractBorder {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f));
       g2.setPaint(Color.BLACK);
-      for (int i = 0; i < xoff; i++) {
-        g2.fillRoundRect(xoff, xoff, w - xoff - xoff + i, h - xoff - xoff + i, 4, 4);
+      for (int i = 0; i < offsetX; i++) {
+        g2.fillRoundRect(offsetX, offsetY, w - offsetX * 2 + i, h - offsetY * 2 + i, 4, 4);
       }
       g2.dispose();
     }
@@ -217,7 +217,7 @@ class ShadowBorder extends AbstractBorder {
     g2.drawImage(screen, 0, 0, c);
     g2.drawImage(shadow, 0, 0, c);
     g2.setPaint(c.getBackground()); // ??? 1.7.0_03
-    g2.fillRect(x, y, w - xoff, h - yoff);
+    g2.fillRect(x, y, w - offsetX, h - offsetY);
     g2.dispose();
   }
 }
@@ -225,7 +225,6 @@ class ShadowBorder extends AbstractBorder {
 // JDK 1.7.0: JPopupMenu#setBackground(new Color(0x0, true));
 final class DropShadowPopupMenu extends JPopupMenu {
   private static final int OFFSET = 4;
-  private final Dimension dim = new Dimension();
   private transient BufferedImage shadow;
 
   @Override public void updateUI() {
@@ -251,8 +250,8 @@ final class DropShadowPopupMenu extends JPopupMenu {
 
   @Override public void show(Component c, int x, int y) {
     Dimension d = getPreferredSize();
-    if (dim.width != d.width || dim.height != d.height) {
-      dim.setSize(d.width, d.height);
+    // Recreate the shadow image only when the popup menu size has changed
+    if (shadow == null || shadow.getWidth() != d.width || shadow.getHeight() != d.height) {
       shadow = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2 = shadow.createGraphics();
       g2.setRenderingHint(
@@ -268,9 +267,10 @@ final class DropShadowPopupMenu extends JPopupMenu {
     }
     EventQueue.invokeLater(() -> Optional.ofNullable(SwingUtilities.getWindowAncestor(this))
         .filter(top -> {
+          // Popup$HeavyWeightWindow: make the window background transparent
           boolean isHeavyWeight = top.getType() == Window.Type.POPUP;
           GraphicsConfiguration gc = top.getGraphicsConfiguration();
-          return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+          return isHeavyWeight && gc != null && gc.isTranslucencyCapable();
         })
         .ifPresent(top -> top.setBackground(new Color(0x0, true))));
     super.show(c, x, y);
