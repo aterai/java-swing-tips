@@ -13,21 +13,8 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 3));
-    DefaultListModel<String> model = makeModel();
-    JList<String> list0 = new JList<String>(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setCellRenderer(new TooltipListCellRenderer<>());
-      }
-    };
-
-    JList<String> list1 = new JList<String>(model) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setCellRenderer(new TooltipListCellRenderer<>());
-      }
-    };
-    JScrollPane scroll1 = new JScrollPane(list1);
+    DefaultListModel<String> model = createModel();
+    JScrollPane scroll1 = new JScrollPane(createList(model));
     scroll1.addMouseWheelListener(e -> {
       JScrollPane scrollPane = (JScrollPane) e.getComponent();
       Component view = scrollPane.getViewport().getView();
@@ -36,31 +23,30 @@ public final class MainPanel extends JPanel {
     });
     // Tooltips, the mouse wheel and JScrollPane oracle-tech
     // https://community.oracle.com/tech/developers/discussion/1353509/tooltips-the-mouse-wheel-and-jscrollpane
-    // scroll1.addMouseWheelListener(e -> {
-    //   Point p = getToolTipCellPoint();
-    //   if (p != null) {
-    //     MouseEvent event = new MouseEvent(
-    //         e.getComponent(), MouseEvent.MOUSE_MOVED, e.getWhen(),
-    //         e.getModifiersEx() | e.getModifiers(),
-    //         p.x, p.y, e.getClickCount(), e.isPopupTrigger());
-    //     ToolTipManager.sharedInstance().mouseMoved(event);
-    //   }
-    // });
 
-    JList<String> list2 = new TooltipList<String>(model) {
+    JList<String> list2 = new ToolTipList<String>(model) {
       @Override public void updateUI() {
         super.updateUI();
-        setCellRenderer(new TooltipListCellRenderer<>());
+        setCellRenderer(new ToolTipListCellRenderer<>());
       }
     };
 
-    add(makeTitledPanel("Default", new JScrollPane(list0)));
-    add(makeTitledPanel("MouseWheelListener", scroll1));
-    add(makeTitledPanel("getToolTipLocation", new JScrollPane(list2)));
+    add(createTitledPanel("Default", new JScrollPane(createList(model))));
+    add(createTitledPanel("MouseWheelListener", scroll1));
+    add(createTitledPanel("getToolTipLocation", new JScrollPane(list2)));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultListModel<String> makeModel() {
+  private static JList<String> createList(ListModel<String> model) {
+    return new JList<String>(model) {
+      @Override public void updateUI() {
+        super.updateUI();
+        setCellRenderer(new ToolTipListCellRenderer<>());
+      }
+    };
+  }
+
+  private static DefaultListModel<String> createModel() {
     DefaultListModel<String> model = new DefaultListModel<>();
     for (int i = 0; i < 8; i++) {
       model.addElement(i + ": 11111");
@@ -77,7 +63,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(c);
@@ -106,8 +92,8 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TooltipList<E> extends JList<E> {
-  protected TooltipList(ListModel<E> m) {
+class ToolTipList<E> extends JList<E> {
+  protected ToolTipList(ListModel<E> m) {
     super(m);
   }
 
@@ -115,13 +101,15 @@ class TooltipList<E> extends JList<E> {
     MouseEvent event = getToolTipCellPoint(e)
         .map(p -> new MouseEvent(
             e.getComponent(), MouseEvent.MOUSE_MOVED, e.getWhen(),
-            e.getModifiersEx() | e.getModifiers(),
+            e.getModifiersEx(),
             p.x, p.y, e.getClickCount(), e.isPopupTrigger())
         ).orElse(e);
     return super.getToolTipText(event);
   }
 
   @Override public Point getToolTipLocation(MouseEvent e) {
+    // Show the tooltip just below the cell under the current mouse cursor,
+    // or return null to use the default location
     return getToolTipCellPoint(e)
         .map(p -> {
           int i = locationToIndex(p);
@@ -130,6 +118,8 @@ class TooltipList<E> extends JList<E> {
         .orElse(null);
   }
 
+  // The location of MouseEvent may be stale after scrolling by the mouse wheel,
+  // so use the current mouse position if it is over a cell
   private Optional<Point> getToolTipCellPoint(MouseEvent e) {
     return Optional.ofNullable(getMousePosition())
         .filter(p -> !p.equals(e.getPoint()))
@@ -141,7 +131,7 @@ class TooltipList<E> extends JList<E> {
   }
 }
 
-class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
+class ToolTipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
