@@ -25,11 +25,11 @@ public final class MainPanel extends JPanel {
     String txt = "A " + very + " long tooltip that must be line wrap";
     JButton b1 = new JButton("JToolTip(Default)");
     b1.setToolTipText(txt + ": 1");
-    JButton b2 = makeButton("LineWrapToolTip: Long");
+    JButton b2 = createButton("LineWrapToolTip: Long");
     b2.setToolTipText(txt + ": 2");
-    JButton b3 = makeButton("LineWrapToolTip: Short");
+    JButton b3 = createButton("LineWrapToolTip: Short");
     b3.setToolTipText("ToolTipText: 3");
-    JTextField field = makeTextField(txt + ": 4");
+    JTextField field = createTextField(txt + ": 4");
     field.setToolTipText(field.getText());
     Box box = Box.createVerticalBox();
     box.add(b1);
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JButton makeButton(String title) {
+  private JButton createButton(String title) {
     return new JButton(title) {
       private transient JToolTip tip;
 
@@ -58,16 +58,13 @@ public final class MainPanel extends JPanel {
 
       @Override public String getToolTipText(MouseEvent e) {
         String tipText = super.getToolTipText(e);
-        EventQueue.invokeLater(() ->
-            Optional.ofNullable(SwingUtilities.getWindowAncestor(tip))
-                .filter(w -> w.getType() == Window.Type.POPUP)
-                .ifPresent(Window::pack));
+        packToolTipWindow(tip);
         return tipText;
       }
     };
   }
 
-  private JTextField makeTextField(String txt) {
+  private JTextField createTextField(String txt) {
     JTextField field = new JTextField(20) {
       private transient JToolTip tip;
 
@@ -81,15 +78,22 @@ public final class MainPanel extends JPanel {
 
       @Override public String getToolTipText(MouseEvent e) {
         String tipText = getText();
-        EventQueue.invokeLater(() ->
-            Optional.ofNullable(SwingUtilities.getWindowAncestor(tip))
-                .filter(w -> w.getType() == Window.Type.POPUP)
-                .ifPresent(Window::pack));
+        packToolTipWindow(tip);
         return tipText;
       }
     };
     field.setText(txt);
     return field;
+  }
+
+  // The tooltip may not have been created yet when getToolTipText(...) is first called
+  // (ToolTipManager calls it on mouseEntered), so a null check is required.
+  private static void packToolTipWindow(JToolTip tip) {
+    EventQueue.invokeLater(() ->
+        Optional.ofNullable(tip)
+            .map(SwingUtilities::getWindowAncestor)
+            .filter(w -> w.getType() == Window.Type.POPUP)
+            .ifPresent(Window::pack));
   }
 
   public static void main(String[] args) {
@@ -115,7 +119,7 @@ public final class MainPanel extends JPanel {
 }
 
 class LineWrapToolTip extends JToolTip {
-  private static final double JAVA17 = 17.0;
+  private static final boolean JAVA17_OR_LATER = isJava17OrLater();
   private static final JLabel MEASURER = new JLabel(" ");
   private static final int TIP_WIDTH = 200;
   private final JTextArea textArea = new JTextArea(0, 20);
@@ -140,19 +144,18 @@ class LineWrapToolTip extends JToolTip {
     return super.add(comp);
   }
 
-  @Override public Dimension getPreferredSize() {
-    Dimension d = getLayout().preferredLayoutSize(this);
-    Dimension dim;
+  private static boolean isJava17OrLater() {
+    // "1.8", "11", "17", "21", ...
     String version = System.getProperty("java.specification.version");
-    if (Double.parseDouble(version) >= JAVA17) {
-      dim = getTextAreaSize17(d);
-    } else {
-      dim = getTextAreaSize8(d);
-    }
-    return dim;
+    return Double.parseDouble(version) >= 17d;
   }
 
-  private Dimension getTextAreaSize8(Dimension d) {
+  @Override public Dimension getPreferredSize() {
+    Dimension d = getLayout().preferredLayoutSize(this);
+    return JAVA17_OR_LATER ? getPreferredSizeJava17(d) : getPreferredSizeJava8(d);
+  }
+
+  private Dimension getPreferredSizeJava8(Dimension d) {
     Font font = textArea.getFont();
     MEASURER.setFont(font);
     MEASURER.setText(textArea.getText());
@@ -163,22 +166,33 @@ class LineWrapToolTip extends JToolTip {
 
     // JDK-8226513 JEditorPane is shown with incorrect size - Java Bug System
     // https://bugs.openjdk.org/browse/JDK-8226513
-    AttributedString as = new AttributedString(textArea.getText());
-    as.addAttribute(TextAttribute.FONT, font);
-    AttributedCharacterIterator aci = as.getIterator();
-    FontMetrics fm = textArea.getFontMetrics(font);
-    FontRenderContext frc = fm.getFontRenderContext();
-    LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
-    float y = 0f;
-    while (lbm.getPosition() < aci.getEndIndex()) {
-      TextLayout tl = lbm.nextLayout(TIP_WIDTH);
-      y += tl.getDescent() + tl.getLeading() + tl.getAscent();
-    }
-    d.height = (int) y + getTextAreaPaddingHeight(i);
+    // Wrap the text with the width actually available to the text,
+    // not the whole tooltip width.
+    float wrappingWidth = Math.max(1f, d.width - pad);
+    d.height = (int) Math.ceil(getWrappedTextHeight(font, wrappingWidth))
+        + getTextAreaPaddingHeight(i);
     return d;
   }
 
-  private Dimension getTextAreaSize17(Dimension d) {
+  private float getWrappedTextHeight(Font font, float wrappingWidth) {
+    String text = textArea.getText();
+    float height = 0f;
+    // AttributedString#addAttribute(...) throws IllegalArgumentException for an empty text
+    if (text != null && !text.isEmpty()) {
+      AttributedString as = new AttributedString(text);
+      as.addAttribute(TextAttribute.FONT, font);
+      AttributedCharacterIterator aci = as.getIterator();
+      FontRenderContext frc = textArea.getFontMetrics(font).getFontRenderContext();
+      LineBreakMeasurer lbm = new LineBreakMeasurer(aci, frc);
+      while (lbm.getPosition() < aci.getEndIndex()) {
+        TextLayout tl = lbm.nextLayout(wrappingWidth);
+        height += tl.getAscent() + tl.getDescent() + tl.getLeading();
+      }
+    }
+    return height;
+  }
+
+  private Dimension getPreferredSizeJava17(Dimension d) {
     MEASURER.setFont(textArea.getFont());
     MEASURER.setText(textArea.getText());
     int pad = getTextAreaPaddingWidth(getInsets());
