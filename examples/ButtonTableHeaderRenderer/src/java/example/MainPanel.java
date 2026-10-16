@@ -131,6 +131,10 @@ class ButtonHeaderRenderer extends JButton implements TableCellRenderer {
     pressedColumn = column;
   }
 
+  public int getRolloverColumn() {
+    return rolloverColumn;
+  }
+
   public void setRolloverColumn(int column) {
     rolloverColumn = column;
   }
@@ -164,44 +168,52 @@ enum SortIconType {
 
 class HeaderMouseListener extends MouseAdapter {
   @Override public void mousePressed(MouseEvent e) {
-    JTableHeader header = (JTableHeader) e.getComponent();
-    JTable table = header.getTable();
     // if (table.isEditing()) {
     //   table.getCellEditor().stopCellEditing();
     // }
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    int viewColumn = table.columnAtPoint(e.getPoint());
-    if (viewColumn >= 0 && renderer instanceof ButtonHeaderRenderer) {
-      int column = table.convertColumnIndexToModel(viewColumn);
-      ((ButtonHeaderRenderer) renderer).setPressedColumn(column);
-    }
+    getButtonHeaderRenderer(e).ifPresent(r -> {
+      r.setPressedColumn(getModelColumn(e));
+      e.getComponent().repaint();
+    });
   }
 
   @Override public void mouseReleased(MouseEvent e) {
-    JTableHeader header = (JTableHeader) e.getComponent();
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    if (renderer instanceof ButtonHeaderRenderer) {
-      ((ButtonHeaderRenderer) renderer).setPressedColumn(-1);
-    }
+    getButtonHeaderRenderer(e).ifPresent(r -> {
+      r.setPressedColumn(-1);
+      e.getComponent().repaint();
+    });
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    JTableHeader header = (JTableHeader) e.getComponent();
-    JTable table = header.getTable();
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    int viewColumn = table.columnAtPoint(e.getPoint());
-    if (viewColumn >= 0 && renderer instanceof ButtonHeaderRenderer) {
-      int column = table.convertColumnIndexToModel(viewColumn);
-      ((ButtonHeaderRenderer) renderer).setRolloverColumn(column);
-    }
+    getButtonHeaderRenderer(e).ifPresent(r -> {
+      int column = getModelColumn(e);
+      // Repaint only when the rollover column changes, because
+      // BasicTableHeaderUI (e.g. MetalLookAndFeel) does not repaint it.
+      if (r.getRolloverColumn() != column) {
+        r.setRolloverColumn(column);
+        e.getComponent().repaint();
+      }
+    });
   }
 
   @Override public void mouseExited(MouseEvent e) {
+    getButtonHeaderRenderer(e).ifPresent(r -> {
+      r.setRolloverColumn(-1);
+      e.getComponent().repaint();
+    });
+  }
+
+  private static Optional<ButtonHeaderRenderer> getButtonHeaderRenderer(MouseEvent e) {
+    return Optional.ofNullable(((JTableHeader) e.getComponent()).getDefaultRenderer())
+        .filter(ButtonHeaderRenderer.class::isInstance)
+        .map(ButtonHeaderRenderer.class::cast);
+  }
+
+  // Returns -1 if the point is outside the columns (e.g. the empty area on the right).
+  private static int getModelColumn(MouseEvent e) {
     JTableHeader header = (JTableHeader) e.getComponent();
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    if (renderer instanceof ButtonHeaderRenderer) {
-      ((ButtonHeaderRenderer) renderer).setRolloverColumn(-1);
-    }
+    int viewColumn = header.columnAtPoint(e.getPoint());
+    return viewColumn < 0 ? -1 : header.getTable().convertColumnIndexToModel(viewColumn);
   }
 }
 
