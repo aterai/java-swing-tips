@@ -5,8 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -38,19 +36,15 @@ public final class MainPanel extends JPanel {
     overrides.put("Slider:SliderThumb[Focused].backgroundPainter", thumbPainter);
     overrides.put("Slider:SliderThumb[MouseOver].backgroundPainter", thumbPainter);
     overrides.put("Slider:SliderThumb[Pressed].backgroundPainter", thumbPainter);
-    overrides.put("Slider:SliderTrack[Enabled].backgroundPainter", new SliderTrackPainter());
+    overrides.put(
+        "Slider:SliderTrack[Enabled].backgroundPainter", new SliderTrackPainter(THUMB_SIZE));
 
     JSlider slider = new JSlider();
     slider.setSnapToTicks(true);
     slider.setMajorTickSpacing(10);
-    // Repaint on drag so the major tick marks and the filled portion
-    // of the track stay in sync.
-    slider.addMouseMotionListener(new MouseAdapter() {
-      @Override public void mouseDragged(MouseEvent e) {
-        super.mouseDragged(e);
-        e.getComponent().repaint();
-      }
-    });
+    // While dragging, the UI repaints only the thumb area, so repaint the whole
+    // slider whenever the value changes to keep the filled track in sync.
+    slider.addChangeListener(e -> ((JComponent) e.getSource()).repaint());
     slider.putClientProperty("Nimbus.Overrides", overrides);
 
     Box box = Box.createVerticalBox();
@@ -99,42 +93,50 @@ class SliderTrackPainter implements Painter<JSlider> {
   private static final Color TRACK_COLOR = new Color(0xC6_E4_FC);
   private static final Color TICK_COLOR = new Color(0x31_A8_F8);
   private static final Color FILL_COLOR = new Color(0x21_98_F6);
+  private static final int TRACK_HEIGHT = 8;
+  private static final int TICK_SIZE = 4;
+  private static final int ARC = 10;
+  private final int thumbSize;
+
+  protected SliderTrackPainter(int thumbSize) {
+    this.thumbSize = thumbSize;
+  }
 
   @Override public void paint(Graphics2D g, JSlider slider, int width, int height) {
-    int thumbSize = 24;
-    int trackHeight = 8;
-    int trackWidth = width - thumbSize;
-    int arc = 10;
-    int fillTop = (thumbSize - trackHeight) / 2;
-    int fillLeft = thumbSize / 2;
+    // The track starts and ends half a thumb inside the painted area.
+    Rectangle trackRect = new Rectangle(
+        thumbSize / 2, (thumbSize - TRACK_HEIGHT) / 2, width - thumbSize, TRACK_HEIGHT);
 
-    // Paint track
+    // Paint a thin track
     g.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setColor(TRACK_COLOR);
-    g.fillRoundRect(fillLeft, fillTop + 2, trackWidth, trackHeight - 4, arc, arc);
-
-    int fillBottom = fillTop + trackHeight;
-    Rectangle trackRect = new Rectangle(fillLeft, fillTop, trackWidth, fillBottom - fillTop);
+    g.fillRoundRect(
+        trackRect.x, trackRect.y + 2, trackRect.width, trackRect.height - 4, ARC, ARC);
 
     // Paint the major tick marks on the track
-    g.setColor(TICK_COLOR);
-    int value = slider.getMinimum();
-    int tickSize = 4;
-    while (value <= slider.getMaximum()) {
-      int tickX = getPositionForValue(slider, trackRect, value);
-      g.fillOval(tickX, (int) trackRect.getCenterY() - tickSize / 2, tickSize, tickSize);
-      // Overflow checking
-      if (Integer.MAX_VALUE - slider.getMajorTickSpacing() < value) {
-        break;
+    int spacing = slider.getMajorTickSpacing();
+    if (spacing > 0) { // a spacing of 0 or less would loop forever
+      g.setColor(TICK_COLOR);
+      int tickY = (int) trackRect.getCenterY() - TICK_SIZE / 2;
+      int max = slider.getMaximum();
+      for (int value = slider.getMinimum(); value <= max; value += spacing) {
+        // Center the tick mark on the value position, like the thumb
+        int tickX = getPositionForValue(slider, trackRect, value) - TICK_SIZE / 2;
+        g.fillOval(tickX, tickY, TICK_SIZE, TICK_SIZE);
+        // Overflow checking
+        if (Integer.MAX_VALUE - spacing < value) {
+          break;
+        }
       }
-      value += slider.getMajorTickSpacing();
     }
 
-    // JSlider.isFilled
+    // Fill the track up to the current value (like JSlider.isFilled),
+    // hiding the tick marks below the current value
     int fillRight = getPositionForValue(slider, trackRect, slider.getValue());
     g.setColor(FILL_COLOR);
-    g.fillRoundRect(fillLeft, fillTop, fillRight - fillLeft, fillBottom - fillTop, arc, arc);
+    g.fillRoundRect(
+        trackRect.x, trackRect.y, fillRight - trackRect.x, trackRect.height, ARC, ARC);
   }
 
   // @see javax/swing/plaf/basic/BasicSliderUI#xPositionForValue(int value)
@@ -152,7 +154,7 @@ class SliderTrackPainter implements Painter<JSlider> {
 
 class NumberIcon implements Icon {
   private static final int ICON_SIZE = 20;
-  private static final int MAX_VALUE_LENGTH = 999;
+  private static final int MAX_DISPLAY_VALUE = 999;
   private static final double NARROW_SCALE_X = .66;
 
   private final int value;
@@ -166,7 +168,7 @@ class NumberIcon implements Icon {
     // NumberFormat fmt = NumberFormat.getCompactNumberInstance(
     //    Locale.US, NumberFormat.Style.SHORT);
     // String txt = fmt.format(value);
-    String txt = value > MAX_VALUE_LENGTH ? "1K" : Integer.toString(value);
+    String txt = value > MAX_DISPLAY_VALUE ? "1K" : Integer.toString(value);
     // Squeeze 3+ character labels horizontally so they still fit inside the icon.
     AffineTransform at = txt.length() < 3
         ? null : AffineTransform.getScaleInstance(NARROW_SCALE_X, 1d);
