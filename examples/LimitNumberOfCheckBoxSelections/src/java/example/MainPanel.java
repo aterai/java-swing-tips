@@ -19,14 +19,15 @@ import javax.swing.*;
 import javax.swing.plaf.basic.ComboPopup;
 
 public final class MainPanel extends JPanel {
+  private static final int SELECTION_LIMIT = 3;
+
   private MainPanel() {
     super(new BorderLayout(5, 5));
     JPanel p = new JPanel();
     IntStream.range(0, 8)
-        .mapToObj(i -> "JCheckBox" + i)
-        .map(GroupCheckBox::new)
+        .mapToObj(i -> new GroupCheckBox("JCheckBox" + i, SELECTION_LIMIT))
         .forEach(p::add);
-    p.add(new LimitedCheckComboBox<>(createModel(), 3), BorderLayout.NORTH);
+    p.add(new LimitedCheckComboBox<>(createModel(), SELECTION_LIMIT));
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
@@ -35,9 +36,9 @@ public final class MainPanel extends JPanel {
   private static ComboBoxModel<CheckedItem> createModel() {
     CheckedItem[] m = {
         new CheckedItem("One", false),
-        new CheckedItem("Tow", true),
+        new CheckedItem("Two", true),
         new CheckedItem("Three", false),
-        new CheckedItem("Fore", false),
+        new CheckedItem("Four", false),
         new CheckedItem("Five", false),
     };
     return new DefaultComboBoxModel<>(m);
@@ -65,14 +66,12 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class GroupCheckBox extends JCheckBox {
-  protected GroupCheckBox(String title) {
+final class GroupCheckBox extends JCheckBox {
+  /* default */ GroupCheckBox(String title, int maxSelectionCount) {
     super(title);
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setModel(new ButtonGroupModel(3));
+    // Replace the model in the constructor rather than in updateUI(),
+    // so that the selection state is not lost when the Look&Feel is changed.
+    setModel(new ButtonGroupModel(maxSelectionCount));
   }
 
   private final class ButtonGroupModel extends ToggleButtonModel {
@@ -84,20 +83,23 @@ class GroupCheckBox extends JCheckBox {
     }
 
     @Override public void setSelected(boolean selected) {
-      if (selected) {
-        if (getSelectedObjects().length == maxSelectionCount) {
-          UIManager.getLookAndFeel().provideErrorFeedback(GroupCheckBox.this);
-        } else {
-          super.setSelected(true);
-        }
+      // Reject only a new selection that would exceed the limit
+      // (re-selecting an already selected check box is not an error).
+      if (selected && !isSelected() && getSelectedObjects().length >= maxSelectionCount) {
+        UIManager.getLookAndFeel().provideErrorFeedback(GroupCheckBox.this);
       } else {
-        super.setSelected(false);
+        super.setSelected(selected);
       }
     }
 
+    // Returns the selected buttons in the same parent container (the group).
     @Override public Object[] getSelectedObjects() {
       Container parent = getParent();
-      return Arrays.stream(parent.getComponents())
+      // Before being added to a container, the group consists of this check box only
+      Component[] buttons = parent == null
+          ? new Component[] {GroupCheckBox.this}
+          : parent.getComponents();
+      return Arrays.stream(buttons)
           .filter(AbstractButton.class::isInstance)
           .map(AbstractButton.class::cast)
           .filter(AbstractButton::isSelected)
@@ -173,21 +175,22 @@ class LimitedCheckComboBox<E extends CheckedItem> extends JComboBox<E> {
   }
 
   private void configureRendererPanel(
-      E value, boolean b, Component c, JCheckBox check, Color fgc) {
+      E value, boolean isDisplayArea, Component label, JCheckBox check, Color foreground) {
     rendererPanel.removeAll();
-    if (b && c instanceof JLabel) {
-      JLabel l = (JLabel) c;
+    if (isDisplayArea && label instanceof JLabel) {
+      // The combo box display area shows the comma-separated selected items
+      JLabel l = (JLabel) label;
       l.setText(createSelectedText(getSelectedObjects()));
       l.setOpaque(false);
-      l.setForeground(fgc);
+      l.setForeground(foreground);
       rendererPanel.setOpaque(false);
     } else {
       check.setSelected(value.isSelected());
       rendererPanel.add(check, BorderLayout.WEST);
       rendererPanel.setOpaque(true);
-      rendererPanel.setBackground(c.getBackground());
+      rendererPanel.setBackground(label.getBackground());
     }
-    rendererPanel.add(c);
+    rendererPanel.add(label);
   }
 
   public static String createSelectedText(Object... selectedObjects) {
@@ -249,7 +252,7 @@ class LimitedCheckComboBox<E extends CheckedItem> extends JComboBox<E> {
 
   @Override public Object[] getSelectedObjects() {
     return IntStream.range(0, getItemCount())
-        .mapToObj(getModel()::getElementAt)
+        .mapToObj(this::getItemAt)
         .filter(CheckedItem::isSelected)
         .toArray();
   }
