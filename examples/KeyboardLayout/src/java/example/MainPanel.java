@@ -21,11 +21,8 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout(2, 2));
-    Component keyboard = makeKeyboardPanel();
-    EventQueue.invokeLater(() -> SwingUtilities.updateComponentTreeUI(keyboard));
-
     JPanel box = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    box.add(keyboard);
+    box.add(createKeyboardPanel());
 
     add(box, BorderLayout.NORTH);
     add(new JScrollPane(new JTextArea()));
@@ -33,57 +30,54 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeKeyboardPanel() {
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+  private static Component createKeyboardPanel() {
     JPanel keyboard = new JPanel(new GridBagLayout());
-
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
-    c.gridy = 50;
-    for (int i = 0; i < KEYS[0].length * 2; i++) {
-      c.gridx = i;
-      keyboard.add(Box.createHorizontalStrut(KeyButton.SIZE));
-    }
 
+    int columns = 0;
     for (int row = 0; row < KEYS.length; row++) {
       c.gridx = 0;
       c.gridy = row;
-      for (int col = 0; col < KEYS[row].length; col++) {
-        String key = KEYS[row][col];
-        int len = key.length();
-        c.gridwidth = getGridWidth(len);
+      for (String key : KEYS[row]) {
+        c.gridwidth = getGridWidth(key);
         if (key.isEmpty()) {
           keyboard.add(Box.createHorizontalStrut(KeyButton.SIZE), c);
         } else {
-          keyboard.add(createKeyButton(key, len <= 2), c);
+          keyboard.add(new KeyButton(key, key.length() <= 2), c);
         }
         c.gridx += c.gridwidth;
       }
+      columns = Math.max(columns, c.gridx);
+    }
+
+    // Guide row: zero-height struts that fix the width of every grid column
+    c.gridy = KEYS.length;
+    c.gridwidth = 1;
+    for (int i = 0; i < columns; i++) {
+      c.gridx = i;
+      keyboard.add(Box.createHorizontalStrut(KeyButton.SIZE), c);
     }
     return keyboard;
   }
 
-  private static int getGridWidth(int len) {
-    // return len > 10 ? 14 : len > 4  ? 4 : len > 1  ? 3 : len == 1 ? 2 : 1;
-    int space = 10;
-    int shift = 4;
-    int alt = 1;
-    int l;
-    if (len > space) {
-      l = 14;
-    } else if (len > shift) {
-      l = 4;
-    } else if (len > alt) {
-      l = 3;
-    } else if (len == alt) {
-      l = 2;
-    } else {
-      l = 1;
+  @SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+  private static int getGridWidth(String key) {
+    int len = key.length();
+    int width;
+    if (len > 10) { // space bar
+      width = 14;
+    } else if (len > 4) { // Shift, Enter
+      width = 4;
+    } else if (len > 1) { // Tab, Ctrl, Alt, BS, Fn
+      width = 3;
+    } else if (len == 1) { // default keys
+      width = 2;
+    } else { // empty string: invisible spacer
+      width = 1;
     }
-    return l;
-  }
-
-  private static AbstractButton createKeyButton(String key, boolean square) {
-    return new KeyButton(key, square);
+    return width;
   }
 
   public static void main(String[] args) {
@@ -112,31 +106,21 @@ class KeyButton extends JButton {
   public static final int SIZE = 10;
   private final boolean square;
 
-  // protected KeyButton(String str) {
-  //   this(str, true);
-  // }
-
-  protected KeyButton(String str, boolean square) {
-    super(str);
+  protected KeyButton(String text, boolean square) {
+    super(text);
     this.square = square;
   }
 
   @Override public void updateUI() {
-    super.updateUI();
-    // Font font = getFont();
-    // setFont(font.deriveFont(6f));
-    setFocusable(false);
+    // The size variant must be set before the UI delegate is installed,
+    // otherwise it is not applied until the next updateUI() call
     putClientProperty("JComponent.sizeVariant", "mini");
+    super.updateUI();
+    setFocusable(false);
     setBorder(BorderFactory.createEmptyBorder());
   }
 
   @Override public Dimension getPreferredSize() {
-    Dimension d;
-    if (square) {
-      d = new Dimension(SIZE * 2, SIZE * 2);
-    } else {
-      d = super.getPreferredSize();
-    }
-    return d;
+    return square ? new Dimension(SIZE * 2, SIZE * 2) : super.getPreferredSize();
   }
 }
