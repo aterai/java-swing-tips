@@ -12,47 +12,38 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultTableModel m1 = new DefaultTableModel(100, 256);
-    JTable table = new JTable(m1);
+    DefaultTableModel model1 = new DefaultTableModel(100, 256);
+    JTable table = new JTable(model1);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     JScrollPane scroll = new JScrollPane(table);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
+    // Move the horizontal JScrollBar out of the JScrollPane,
+    // it still shares the BoundedRangeModel with the viewport
     JPanel scrollBox = new JPanel(new BorderLayout());
     scrollBox.setOpaque(false);
     scrollBox.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
     scrollBox.add(scroll.getHorizontalScrollBar());
 
-    JRadioButton r1 = new JRadioButton("a", true);
-    r1.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        table.setModel(m1);
-      }
-    });
-
-    DefaultTableModel m2 = new DefaultTableModel(50, 8);
-    JRadioButton r2 = new JRadioButton("b");
-    r2.addItemListener(e -> {
-      if (e.getStateChange() == ItemEvent.SELECTED) {
-        table.setModel(m2);
-      }
-    });
-
+    DefaultTableModel model2 = new DefaultTableModel(50, 8);
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder());
-    ButtonGroup bg = new ButtonGroup();
+    ButtonGroup group = new ButtonGroup();
+    JRadioButton r1 = createRadioButton("a", table, model1);
+    r1.setSelected(true);
+    JRadioButton r2 = createRadioButton("b", table, model2);
     Arrays.asList(r1, r2).forEach(r -> {
-      r.setOpaque(false);
-      bg.add(r);
+      group.add(r);
       box.add(r);
     });
     box.add(Box.createHorizontalGlue());
 
-    JSplitPane horizontalSplit = makeScrollSplitPane();
+    JSplitPane horizontalSplit = createScrollSplitPane();
     horizontalSplit.setLeftComponent(box);
     horizontalSplit.setRightComponent(scrollBox);
 
@@ -63,7 +54,18 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JSplitPane makeScrollSplitPane() {
+  private static JRadioButton createRadioButton(String text, JTable table, TableModel model) {
+    JRadioButton radio = new JRadioButton(text);
+    radio.setOpaque(false);
+    radio.addItemListener(e -> {
+      if (e.getStateChange() == ItemEvent.SELECTED) {
+        table.setModel(model);
+      }
+    });
+    return radio;
+  }
+
+  private static JSplitPane createScrollSplitPane() {
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
     split.setBackground(Color.WHITE);
     split.setContinuousLayout(true);
@@ -79,7 +81,10 @@ public final class MainPanel extends JPanel {
     divider.setBorder(BorderFactory.createEmptyBorder());
     divider.setBackground(Color.WHITE);
     divider.add(tripleColon);
-    divider.setDividerSize(tripleColon.getPreferredSize().width);
+    // Set the size via JSplitPane instead of BasicSplitPaneDivider#setDividerSize(...),
+    // JSplitPane#getDividerSize() is used by setDividerLocation(double)
+    // and it is propagated to the divider by BasicSplitPaneUI
+    split.setDividerSize(tripleColon.getPreferredSize().width);
     return split;
   }
 
