@@ -15,37 +15,37 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
-import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    Container breadcrumb = makeContainer(10 + 1);
+    Container breadcrumb = createContainer(10 + 1);
 
     JTree tree = new JTree();
     tree.setSelectionRow(0);
     tree.addTreeSelectionListener(e -> {
       Object o = tree.getLastSelectedPathComponent();
-      if (o instanceof MutableTreeNode && !((MutableTreeNode) o).isLeaf()) {
+      // A leaf node is not added to the breadcrumb trail, keep the current one
+      if (o instanceof TreeNode && !((TreeNode) o).isLeaf()) {
         initBreadcrumbList(breadcrumb, tree);
-        breadcrumb.revalidate();
-        breadcrumb.repaint();
       }
     });
 
     initBreadcrumbList(breadcrumb, tree);
     add(new JLayer<>(breadcrumb, new BreadcrumbLayerUI<>()), BorderLayout.NORTH);
 
-    Component c = makeBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
+    Component c = createBreadcrumbList(Arrays.asList("aaa", "bb", "c"));
     add(c, BorderLayout.SOUTH);
     add(new JScrollPane(tree));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Container makeContainer(int overlap) {
+  private static Container createContainer(int overlap) {
     JPanel p = new JPanel(new FlowLayout(FlowLayout.LEADING, -overlap, 0)) {
       @Override public boolean isOptimizedDrawingEnabled() {
+        // The child buttons overlap each other
         return false;
       }
     };
@@ -57,55 +57,47 @@ public final class MainPanel extends JPanel {
   private static void initBreadcrumbList(Container p, JTree tree) {
     p.removeAll();
     ButtonGroup bg = new ButtonGroup();
-    Object[] paths = Optional.ofNullable(tree.getSelectionPath())
+    Object[] nodes = Optional.ofNullable(tree.getSelectionPath())
         .map(TreePath::getPath).orElseGet(() -> new Object[0]);
-    for (int i = 0; i < paths.length; i++) {
-      AbstractButton b = makeButton(tree, copyTreePath(paths, i + 1), Color.ORANGE);
+    for (int i = 0; i < nodes.length; i++) {
+      TreePath path = copyTreePath(nodes, i + 1);
+      AbstractButton b = createButton(nodes[i].toString(), Color.ORANGE);
+      b.addActionListener(e -> tree.setSelectionPath(path));
       p.add(b);
       bg.add(b);
+      // Highlight the button of the current (last) node
+      b.setSelected(i == nodes.length - 1);
     }
+    p.revalidate();
+    p.repaint();
   }
 
-  private static TreePath copyTreePath(Object[] paths, int newLength) {
-    return new TreePath(Arrays.copyOf(paths, newLength));
+  private static TreePath copyTreePath(Object[] nodes, int newLength) {
+    return new TreePath(Arrays.copyOf(nodes, newLength));
   }
 
-  private static Component makeBreadcrumbList(List<String> list) {
-    Container p = makeContainer(5 + 1);
+  private static Component createBreadcrumbList(List<String> list) {
+    Container p = createContainer(5 + 1);
     ButtonGroup bg = new ButtonGroup();
     list.forEach(title -> {
-      AbstractButton b = makeButton(null, new TreePath(title), Color.PINK);
+      AbstractButton b = createButton(title, Color.PINK);
       p.add(b);
       bg.add(b);
     });
     return p;
   }
 
-  private static AbstractButton makeButton(JTree tree, TreePath path, Color color) {
-    AbstractButton b = new JRadioButton(path.getLastPathComponent().toString()) {
+  private static AbstractButton createButton(String title, Color color) {
+    AbstractButton b = new JRadioButton(title) {
       @Override public boolean contains(int x, int y) {
+        // Respond to the mouse only inside the arrow shape of the icon
         return Optional.ofNullable(getIcon())
             .filter(ArrowToggleButtonBarCellIcon.class::isInstance)
             .map(i -> ((ArrowToggleButtonBarCellIcon) i).getShape())
             .map(s -> s.contains(x, y))
             .orElseGet(() -> super.contains(x, y));
-        // Icon i = getIcon();
-        // if (i instanceof ArrowToggleButtonBarCellIcon) {
-        //   Shape s = ((ArrowToggleButtonBarCellIcon) i).getShape();
-        //   if (Objects.nonNull(s)) {
-        //     return s.contains(x, y);
-        //   }
-        // }
-        // return super.contains(x, y);
       }
     };
-    if (Objects.nonNull(tree)) {
-      b.addActionListener(e -> {
-        JRadioButton r = (JRadioButton) e.getSource();
-        tree.setSelectionPath(path);
-        r.setSelected(true);
-      });
-    }
     b.setIcon(new ArrowToggleButtonBarCellIcon());
     b.setContentAreaFilled(false);
     b.setBorder(BorderFactory.createEmptyBorder());
@@ -153,7 +145,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
     return shape;
   }
 
-  protected Shape makeShape(Container parent, Component c, int x, int y) {
+  protected Shape createShape(Container parent, Component c, int x, int y) {
     int w = c.getWidth() - 1;
     int h = c.getHeight() - 1;
     double h2 = Math.round(h * .5);
@@ -174,8 +166,8 @@ class ArrowToggleButtonBarCellIcon implements Icon {
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Container parent = c.getParent();
     if (Objects.nonNull(parent)) {
-      shape = makeShape(parent, c, x, y);
-      boolean selected = isSelected(c);
+      shape = createShape(parent, c, x, y);
+      boolean selected = isSelectedOrRollover(c);
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(selected ? c.getBackground() : parent.getBackground());
       g2.fill(shape);
@@ -185,7 +177,7 @@ class ArrowToggleButtonBarCellIcon implements Icon {
     }
   }
 
-  private static boolean isSelected(Component c) {
+  private static boolean isSelectedOrRollover(Component c) {
     boolean b = false;
     if (c instanceof AbstractButton) {
       ButtonModel m = ((AbstractButton) c).getModel();
@@ -211,7 +203,7 @@ class BreadcrumbLayerUI<V extends Component> extends LayerUI<V> {
     Optional.ofNullable(shape).ifPresent(s -> {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(Color.GRAY);
-      g2.draw(shape);
+      g2.draw(s);
       g2.dispose();
     });
   }
