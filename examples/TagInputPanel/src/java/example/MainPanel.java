@@ -5,6 +5,8 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.KeyAdapter;
@@ -12,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -61,7 +64,7 @@ public final class MainPanel extends JPanel {
 class TagInputPanel extends JPanel {
   private final List<String> tags = new ArrayList<>();
   private final JTextField textField = new JTextField(15);
-  private final JPanel tagContainer = new JPanel(new FlowLayout(FlowLayout.LEFT)) {
+  private final JPanel tagContainer = new JPanel(new WrapFlowLayout(FlowLayout.LEFT, 5, 5)) {
     @Override public void updateUI() {
       super.updateUI();
       setBackground(UIManager.getColor("TextField.background"));
@@ -87,16 +90,14 @@ class TagInputPanel extends JPanel {
       }
     });
     tagContainer.add(textField);
-    JScrollPane scroll = new JScrollPane(tagContainer) {
-      @Override public void updateUI() {
-        super.updateUI();
-        setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-        setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
-        setBorder(BorderFactory.createEmptyBorder());
-        setViewportBorder(BorderFactory.createEmptyBorder());
+    tagContainer.addComponentListener(new ComponentAdapter() {
+      @Override public void componentResized(ComponentEvent e) {
+        // The preferred height depends on the current width, so lay out
+        // the ancestors again after the width has changed
+        e.getComponent().revalidate();
       }
-    };
-    add(scroll);
+    });
+    add(tagContainer);
   }
 
   @Override public void updateUI() {
@@ -110,7 +111,8 @@ class TagInputPanel extends JPanel {
   }
 
   public List<String> getTags() {
-    return tags;
+    // Return a read-only view so that callers cannot desynchronize it from the tag components
+    return Collections.unmodifiableList(tags);
   }
 
   public Container getTagContainer() {
@@ -134,7 +136,7 @@ class TagInputPanel extends JPanel {
   }
 
   private JButton createCloseButton(JPanel tag) {
-    JButton closeBtn = new JButton("×") {
+    JButton closeButton = new JButton("×") {
       @Override public void updateUI() {
         super.updateUI();
         setContentAreaFilled(false);
@@ -143,12 +145,12 @@ class TagInputPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder());
       }
     };
-    closeBtn.addActionListener(e -> {
+    closeButton.addActionListener(e -> {
       tags.remove(tag.getName());
       tagContainer.remove(tag);
       resizeAndRepaint();
     });
-    closeBtn.addMouseListener(new MouseAdapter() {
+    closeButton.addMouseListener(new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
         e.getComponent().setForeground(Color.RED);
       }
@@ -157,15 +159,16 @@ class TagInputPanel extends JPanel {
         e.getComponent().setForeground(UIManager.getColor("Button.foreground"));
       }
     });
-    return closeBtn;
+    return closeButton;
   }
 
   private void removeLastTag() {
-    int count = tagContainer.getComponentCount();
-    boolean moreThanOne = count > 1;
-    if (moreThanOne) {
-      tags.remove(tags.size() - 1); // Java 21: .removeLast();
-      tagContainer.remove(count - 2);
+    if (!tags.isEmpty()) {
+      // The tag components are kept in the same order as the tags list,
+      // followed by the JTextField, so the last tag shares its index
+      int lastIndex = tags.size() - 1;
+      tags.remove(lastIndex); // Java 21: .removeLast();
+      tagContainer.remove(lastIndex);
       resizeAndRepaint();
     }
   }
@@ -173,5 +176,47 @@ class TagInputPanel extends JPanel {
   private void resizeAndRepaint() {
     revalidate();
     repaint();
+  }
+}
+
+class WrapFlowLayout extends FlowLayout {
+  protected WrapFlowLayout(int align, int hgap, int vgap) {
+    super(align, hgap, vgap);
+  }
+
+  @SuppressWarnings("PMD.AvoidSynchronizedStatement")
+  @Override public Dimension preferredLayoutSize(Container target) {
+    synchronized (target.getTreeLock()) {
+      // Before the first layout the width is unknown, so fall back to a single row
+      return target.getWidth() == 0
+          ? super.preferredLayoutSize(target)
+          : wrappedLayoutSize(target);
+    }
+  }
+
+  private Dimension wrappedLayoutSize(Container target) {
+    int targetWidth = target.getWidth();
+    Insets insets = target.getInsets();
+    int hgap = getHgap();
+    int vgap = getVgap();
+    // Wrap rows with the same rule as FlowLayout#layoutContainer(...)
+    int maxWidth = targetWidth - insets.left - insets.right - hgap * 2;
+    int height = insets.top + insets.bottom + vgap;
+    int rowWidth = 0;
+    int rowHeight = 0;
+    for (Component c : target.getComponents()) {
+      if (c.isVisible()) {
+        Dimension d = c.getPreferredSize();
+        if (rowWidth > 0 && rowWidth + d.width > maxWidth) {
+          height += rowHeight + vgap;
+          rowWidth = 0;
+          rowHeight = 0;
+        }
+        rowWidth += rowWidth > 0 ? hgap + d.width : d.width;
+        rowHeight = Math.max(rowHeight, d.height);
+      }
+    }
+    height += rowHeight + vgap;
+    return new Dimension(targetWidth, height);
   }
 }
