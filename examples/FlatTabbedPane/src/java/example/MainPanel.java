@@ -42,25 +42,25 @@ public final class MainPanel extends JPanel {
     };
 
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    tabs.addTab("A", makeIcon("example/wi0009-32.png"), new JScrollPane(new JTree()));
-    tabs.addTab("B", makeIcon("example/wi0054-32.png"), new JScrollPane(new JTextArea()));
-    tabs.addTab("C", makeIcon("example/wi0062-32.png"), new JScrollPane(new JTree()));
-    tabs.addTab("D", makeIcon("example/wi0063-32.png"), new JScrollPane(new JTextArea()));
+    tabs.addTab("A", createIcon("example/wi0009-32.png"), new JScrollPane(new JTree()));
+    tabs.addTab("B", createIcon("example/wi0054-32.png"), new JScrollPane(new JTextArea()));
+    tabs.addTab("C", createIcon("example/wi0062-32.png"), new JScrollPane(new JTree()));
+    tabs.addTab("D", createIcon("example/wi0063-32.png"), new JScrollPane(new JTextArea()));
 
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Icon makeIcon(String path) {
+  private static Icon createIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
-      Icon i;
+      Icon icon;
       try (InputStream s = url.openStream()) {
-        i = new ImageIcon(ImageIO.read(s));
+        icon = new ImageIcon(ImageIO.read(s));
       } catch (IOException ex) {
-        i = createMissingIcon();
+        icon = createMissingIcon();
       }
-      return i;
+      return icon;
     }).orElseGet(MainPanel::createMissingIcon);
   }
 
@@ -108,19 +108,21 @@ class FlatTabbedPaneUI extends BasicTabbedPaneUI {
   }
 
   @Override protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+    // BasicTabbedPaneUI#paintContentBorder(...) passes the same content area bounds
+    // to all four edge methods, so it is enough to fill the whole area only once here
     g.setColor(SELECTED_BG);
     g.fillRect(x, y, w, h);
   }
 
   @Override protected void paintContentBorderRightEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-    paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+    // Already filled in paintContentBorderTopEdge(...)
   }
 
   @Override protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-    paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+    // Already filled in paintContentBorderTopEdge(...)
   }
 
   @Override protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
-    paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+    // Already filled in paintContentBorderTopEdge(...)
   }
 }
