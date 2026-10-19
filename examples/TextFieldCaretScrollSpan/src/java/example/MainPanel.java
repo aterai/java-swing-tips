@@ -101,21 +101,27 @@ class HorizontalScrollCaret extends DefaultCaret {
     Rectangle startRect = null;
     try {
       startRect = ui.modelToView(field, dot, bias);
+      // Java 9: startRect = ui.modelToView2D(field, dot, bias).getBounds();
     } catch (BadLocationException ble) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
     }
-    Insets i = field.getInsets();
+    Insets insets = field.getInsets();
     BoundedRangeModel vis = field.getHorizontalVisibility();
-    int x = r.x + vis.getValue() - i.left;
-    int n = 8;
-    int span = vis.getExtent() / n;
-    if (r.x < i.left) {
+    // caret x position in the coordinate of the horizontal visibility model
+    int x = r.x + vis.getValue() - insets.left;
+    // scroll by 1/8 of the visible extent (WindowsFieldCaret uses 1/4)
+    int divisor = 8;
+    int span = vis.getExtent() / divisor;
+    if (r.x < insets.left) {
+      // caret moved off the left edge: place it 1/8 span from the left
       vis.setValue(x - span);
-    } else if (r.x + r.width > i.left + vis.getExtent()) {
-      vis.setValue(x - (n - 1) * span);
+    } else if (r.x + r.width > insets.left + vis.getExtent()) {
+      // caret moved off the right edge: place it 1/8 span from the right
+      vis.setValue(x - (divisor - 1) * span);
     }
     if (startRect != null) {
       try {
+        // repaint the caret if its view position changed after scrolling
         Rectangle endRect = ui.modelToView(field, dot, bias);
         if (endRect != null && !endRect.equals(startRect)) {
           damage(endRect);
