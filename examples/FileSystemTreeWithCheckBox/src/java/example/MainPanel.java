@@ -176,11 +176,6 @@ class CheckBoxNode {
   private final File file;
   private final Status status;
 
-  protected CheckBoxNode(File file) {
-    this.file = file;
-    this.status = Status.INDETERMINATE;
-  }
-
   protected CheckBoxNode(File file, Status status) {
     this.file = file;
     this.status = status;
@@ -328,18 +323,23 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
+    // The event is also fired when the path is removed from the selection,
+    // so load the subdirectories only for a newly selected path
+    if (!e.isAddedPath()) {
+      return;
+    }
     TreeModel m = ((JTree) e.getSource()).getModel();
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-    Object uo = node.getUserObject();
-    if (node.isLeaf() && uo instanceof CheckBoxNode && m instanceof DefaultTreeModel) {
+    Object userObject = node.getUserObject();
+    if (node.isLeaf() && userObject instanceof CheckBoxNode && m instanceof DefaultTreeModel) {
       DefaultTreeModel model = (DefaultTreeModel) m;
-      CheckBoxNode check = (CheckBoxNode) uo;
+      CheckBoxNode check = (CheckBoxNode) userObject;
       File parent = check.getFile();
       // if (!parent.isDirectory()) {
       //   return;
       // }
-      boolean b = check.getStatus() == Status.SELECTED;
-      Status status = b ? Status.SELECTED : Status.DESELECTED;
+      // A leaf node is never INDETERMINATE, so the child nodes inherit its check status
+      Status status = check.getStatus() == Status.SELECTED ? Status.SELECTED : Status.DESELECTED;
       BackgroundTask worker = new BackgroundTask(fileSystemView, parent) {
         @Override protected void process(List<File> chunks) {
           chunks.stream().map(file -> new CheckBoxNode(file, status))

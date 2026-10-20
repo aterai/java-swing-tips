@@ -6,61 +6,56 @@ package example;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
-  @SuppressWarnings("ReturnCount")
   @Override public void treeNodesChanged(TreeModelEvent e) {
-    if (adjusting.get()) {
+    // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
+    // To indicate the root has changed, childIndices and children will be null.
+    // The root of this sample has no CheckBoxNode, so there is nothing to update.
+    Object[] children = e.getChildren();
+    if (adjusting.get() || Objects.isNull(children)) {
       return;
     }
     adjusting.set(true);
-
-    DefaultTreeModel model = (DefaultTreeModel) e.getSource();
-    // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
-    // To indicate the root has changed, childIndices and children will be null.
-    Object[] children = e.getChildren();
-    boolean isRoot = Objects.isNull(children);
-
-    // If the parent node exists, update its status
-    if (!isRoot) {
-      TreePath parent = e.getTreePath();
-      DefaultMutableTreeNode n = (DefaultMutableTreeNode) parent.getLastPathComponent();
-      while (Objects.nonNull(n)) {
-        updateParentUserObject(n);
-        TreeNode tmp = n.getParent();
-        if (tmp instanceof DefaultMutableTreeNode) {
-          n = (DefaultMutableTreeNode) tmp;
-        } else {
-          break;
+    try {
+      DefaultTreeModel model = (DefaultTreeModel) e.getSource();
+      // Update the status of all descendant nodes to be the same as the changed node status
+      for (Object child : children) {
+        if (child instanceof DefaultMutableTreeNode) {
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) child;
+          Object userObject = node.getUserObject();
+          if (userObject instanceof CheckBoxNode) {
+            updateAllChildrenUserObject(node, ((CheckBoxNode) userObject).getStatus());
+            model.nodeChanged(node);
+          }
         }
       }
-      model.nodeChanged(n);
+      // Update the status of the ancestor nodes from the nearest parent up to the root
+      for (TreePath path = e.getTreePath(); Objects.nonNull(path); path = path.getParentPath()) {
+        Object o = path.getLastPathComponent();
+        if (o instanceof DefaultMutableTreeNode) {
+          DefaultMutableTreeNode parent = (DefaultMutableTreeNode) o;
+          updateParentUserObject(parent);
+          model.nodeChanged(parent);
+        }
+      }
+    } finally {
+      // Always reset the flag, otherwise this listener stops working after an exception
+      adjusting.set(false);
     }
-
-    // Update the status of all child nodes to be the same as the current node status
-    boolean isOneNodeSelected = Objects.nonNull(children) && children.length == 1;
-    Object current = isOneNodeSelected ? children[0] : model.getRoot();
-    if (current instanceof DefaultMutableTreeNode) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
-      CheckBoxNode c = (CheckBoxNode) node.getUserObject();
-      updateAllChildrenUserObject(node, c.getStatus());
-      model.nodeChanged(node);
-    }
-
-    adjusting.set(false);
   }
 
   // private void updateParentUserObject(DefaultMutableTreeNode parent) {
@@ -92,26 +87,21 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   // }
 
   private void updateParentUserObject(DefaultMutableTreeNode parent) {
-    // Java 9: Collections.list(parent.children()).stream()
-    List<Status> list = Collections.list((Enumeration<?>) parent.children()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .map(DefaultMutableTreeNode::getUserObject)
-        .filter(CheckBoxNode.class::isInstance)
-        .map(CheckBoxNode.class::cast)
-        .map(CheckBoxNode::getStatus)
-        .collect(Collectors.toList());
-
     Object o = parent.getUserObject();
     if (o instanceof CheckBoxNode) {
+      // Java 9: Collections.list(parent.children()).stream()
+      Set<Status> set = Collections.list((Enumeration<?>) parent.children()).stream()
+          .filter(DefaultMutableTreeNode.class::isInstance)
+          .map(DefaultMutableTreeNode.class::cast)
+          .map(DefaultMutableTreeNode::getUserObject)
+          .filter(CheckBoxNode.class::isInstance)
+          .map(CheckBoxNode.class::cast)
+          .map(CheckBoxNode::getStatus)
+          .collect(Collectors.toCollection(() -> EnumSet.noneOf(Status.class)));
+      // SELECTED or DESELECTED only if all children have that same status
+      Status status = set.size() == 1 ? set.iterator().next() : Status.INDETERMINATE;
       File file = ((CheckBoxNode) o).getFile();
-      if (list.stream().allMatch(s -> s == Status.DESELECTED)) {
-        parent.setUserObject(new CheckBoxNode(file, Status.DESELECTED));
-      } else if (list.stream().allMatch(s -> s == Status.SELECTED)) {
-        parent.setUserObject(new CheckBoxNode(file, Status.SELECTED));
-      } else {
-        parent.setUserObject(new CheckBoxNode(file, Status.INDETERMINATE));
-      }
+      parent.setUserObject(new CheckBoxNode(file, status));
     }
   }
 
@@ -122,8 +112,10 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !Objects.equals(parent, node))
         .forEach(node -> {
-          CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-          node.setUserObject(new CheckBoxNode(check.getFile(), status));
+          Object o = node.getUserObject();
+          if (o instanceof CheckBoxNode) {
+            node.setUserObject(new CheckBoxNode(((CheckBoxNode) o).getFile(), status));
+          }
         });
   }
 
