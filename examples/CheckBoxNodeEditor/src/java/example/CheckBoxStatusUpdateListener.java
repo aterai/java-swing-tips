@@ -8,11 +8,12 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.EventObject;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import javax.swing.*;
@@ -23,51 +24,51 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   private final AtomicBoolean adjusting = new AtomicBoolean();
 
-  @SuppressWarnings("ReturnCount")
   @Override public void treeNodesChanged(TreeModelEvent e) {
     if (adjusting.get()) {
       return;
     }
     adjusting.set(true);
+    try {
+      DefaultTreeModel model = (DefaultTreeModel) e.getSource();
+      // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
+      // To indicate the root has changed, childIndices and children will be null.
+      Object[] children = e.getChildren();
+      boolean isRoot = Objects.isNull(children);
+      Object[] changedNodes = isRoot ? new Object[] {model.getRoot()} : children;
 
-    DefaultTreeModel model = (DefaultTreeModel) e.getSource();
-    // https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-
-    // To indicate the root has changed, childIndices and children will be null.
-    Object[] children = e.getChildren();
-    boolean isRoot = Objects.isNull(children);
-
-    // If the parent node exists, update its status
-    if (!isRoot) {
-      TreePath parent = e.getTreePath();
-      DefaultMutableTreeNode n = (DefaultMutableTreeNode) parent.getLastPathComponent();
-      while (Objects.nonNull(n)) {
-        updateParentUserObject(n);
-        TreeNode tmp = n.getParent();
-        if (tmp instanceof DefaultMutableTreeNode) {
-          n = (DefaultMutableTreeNode) tmp;
-        } else {
-          break;
+      // Update the status of all descendant nodes to be the same as the changed node status
+      for (Object o : changedNodes) {
+        if (o instanceof DefaultMutableTreeNode) {
+          DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+          Object userObject = node.getUserObject();
+          if (userObject instanceof CheckBoxNode) {
+            updateAllChildrenUserObject(node, ((CheckBoxNode) userObject).getStatus());
+            model.nodeChanged(node);
+          }
         }
       }
-      model.nodeChanged(n);
-    }
 
-    // Update the status of all child nodes to be the same as the current node status
-    boolean isOneNodeSelected = Objects.nonNull(children) && children.length == 1;
-    Object current = isOneNodeSelected ? children[0] : model.getRoot();
-    if (current instanceof DefaultMutableTreeNode) {
-      DefaultMutableTreeNode node = (DefaultMutableTreeNode) current;
-      CheckBoxNode c = (CheckBoxNode) node.getUserObject();
-      updateAllChildrenUserObject(node, c.getStatus());
-      model.nodeChanged(node);
+      // If the parent node exists, update the status of the ancestor nodes up to the root
+      if (!isRoot) {
+        for (TreePath path = e.getTreePath(); Objects.nonNull(path); path = path.getParentPath()) {
+          Object o = path.getLastPathComponent();
+          if (o instanceof DefaultMutableTreeNode) {
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) o;
+            updateParentUserObject(parent);
+            model.nodeChanged(parent);
+          }
+        }
+      }
+    } finally {
+      // Always reset the flag, otherwise this listener stops working after an exception
+      adjusting.set(false);
     }
-    adjusting.set(false);
   }
 
   // private void updateParentUserObject(DefaultMutableTreeNode parent) {
@@ -96,26 +97,21 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
   // }
 
   private void updateParentUserObject(DefaultMutableTreeNode parent) {
-    // Java 9: List<Status> list = Collections.list(parent.children()).stream()
-    List<Status> list = Collections.list((Enumeration<?>) parent.children()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .map(DefaultMutableTreeNode::getUserObject)
-        .filter(CheckBoxNode.class::isInstance)
-        .map(CheckBoxNode.class::cast)
-        .map(CheckBoxNode::getStatus)
-        .collect(Collectors.toList());
-
     Object o = parent.getUserObject();
     if (o instanceof CheckBoxNode) {
+      // Java 9: Collections.list(parent.children()).stream()
+      Set<Status> set = Collections.list((Enumeration<?>) parent.children()).stream()
+          .filter(DefaultMutableTreeNode.class::isInstance)
+          .map(DefaultMutableTreeNode.class::cast)
+          .map(DefaultMutableTreeNode::getUserObject)
+          .filter(CheckBoxNode.class::isInstance)
+          .map(CheckBoxNode.class::cast)
+          .map(CheckBoxNode::getStatus)
+          .collect(Collectors.toCollection(() -> EnumSet.noneOf(Status.class)));
+      // SELECTED or DESELECTED only if all children have that same status
+      Status status = set.size() == 1 ? set.iterator().next() : Status.INDETERMINATE;
       String label = ((CheckBoxNode) o).getLabel();
-      if (list.stream().allMatch(s -> s == Status.DESELECTED)) {
-        parent.setUserObject(new CheckBoxNode(label, Status.DESELECTED));
-      } else if (list.stream().allMatch(s -> s == Status.SELECTED)) {
-        parent.setUserObject(new CheckBoxNode(label, Status.SELECTED));
-      } else {
-        parent.setUserObject(new CheckBoxNode(label, Status.INDETERMINATE));
-      }
+      parent.setUserObject(new CheckBoxNode(label, status));
     }
   }
 
@@ -126,8 +122,10 @@ public final class CheckBoxStatusUpdateListener implements TreeModelListener {
         .map(DefaultMutableTreeNode.class::cast)
         .filter(node -> !Objects.equals(parent, node))
         .forEach(node -> {
-          CheckBoxNode check = (CheckBoxNode) node.getUserObject();
-          node.setUserObject(new CheckBoxNode(check.getLabel(), status));
+          Object o = node.getUserObject();
+          if (o instanceof CheckBoxNode) {
+            node.setUserObject(new CheckBoxNode(((CheckBoxNode) o).getLabel(), status));
+          }
         });
   }
 
@@ -149,17 +147,22 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
   private final TriStateCheckBox checkBox = new TriStateCheckBox();
   private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
+  protected CheckBoxNodeRenderer() {
+    // These properties do not depend on the node, so set them only once
+    panel.setFocusable(false);
+    panel.setRequestFocusEnabled(false);
+    panel.setOpaque(false);
+    panel.add(checkBox, BorderLayout.WEST);
+    checkBox.setFocusable(false);
+    checkBox.setOpaque(false);
+  }
+
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
     Component c = renderer.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, hasFocus);
     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
-      panel.setFocusable(false);
-      panel.setRequestFocusEnabled(false);
-      panel.setOpaque(false);
       checkBox.setEnabled(tree.isEnabled());
       checkBox.setFont(tree.getFont());
-      checkBox.setFocusable(false);
-      checkBox.setOpaque(false);
       JLabel l = (JLabel) c;
       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
       if (userObject instanceof CheckBoxNode) {
@@ -169,7 +172,6 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
         l.setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
       }
-      panel.add(checkBox, BorderLayout.WEST);
       panel.add(l);
       c = panel;
     }
@@ -192,15 +194,20 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
     }
   };
   private final DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-  private String str;
+  private String label;
+
+  protected CheckBoxNodeEditor() {
+    super();
+    panel.setFocusable(false);
+    panel.setRequestFocusEnabled(false);
+    panel.setOpaque(false);
+    panel.add(checkBox, BorderLayout.WEST);
+  }
 
   @Override public Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
     Component c = renderer.getTreeCellRendererComponent(
         tree, value, true, expanded, leaf, row, true);
     if (value instanceof DefaultMutableTreeNode && c instanceof JLabel) {
-      panel.setFocusable(false);
-      panel.setRequestFocusEnabled(false);
-      panel.setOpaque(false);
       checkBox.setEnabled(tree.isEnabled());
       checkBox.setFont(tree.getFont());
       // checkBox.setFocusable(false);
@@ -212,9 +219,8 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
         checkBox.setIcon(indeterminate ? new IndeterminateIcon() : null);
         ((JLabel) c).setText(node.getLabel());
         checkBox.setSelected(node.getStatus() == Status.SELECTED);
-        str = node.getLabel();
+        label = node.getLabel();
       }
-      panel.add(checkBox, BorderLayout.WEST);
       panel.add(c);
       c = panel;
     }
@@ -223,7 +229,7 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
   }
 
   @Override public Object getCellEditorValue() {
-    return new CheckBoxNode(str, checkBox.isSelected() ? Status.SELECTED : Status.DESELECTED);
+    return new CheckBoxNode(label, checkBox.isSelected() ? Status.SELECTED : Status.DESELECTED);
   }
 
   @Override public boolean isCellEditable(EventObject e) {
@@ -281,13 +287,13 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //       if (userObject instanceof CheckBoxNode) {
 //         CheckBoxNode node = (CheckBoxNode) userObject;
-//         if (node.status == Status.INDETERMINATE) {
+//         if (node.getStatus() == Status.INDETERMINATE) {
 //           setIcon(new IndeterminateIcon());
 //         } else {
 //           setIcon(null);
 //         }
-//         l.setText(node.label);
-//         setSelected(node.status == Status.SELECTED);
+//         l.setText(node.getLabel());
+//         setSelected(node.getStatus() == Status.SELECTED);
 //       }
 //       // panel.add(this, BorderLayout.WEST);
 //       panel.add(l);
@@ -337,14 +343,14 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //       if (userObject instanceof CheckBoxNode && c instanceof JLabel) {
 //         CheckBoxNode node = (CheckBoxNode) userObject;
-//         if (node.status == Status.INDETERMINATE) {
+//         if (node.getStatus() == Status.INDETERMINATE) {
 //           setIcon(new IndeterminateIcon());
 //         } else {
 //           setIcon(null);
 //         }
-//         ((JLabel) c).setText(node.label);
-//         setSelected(node.status == Status.SELECTED);
-//         str = node.label;
+//         ((JLabel) c).setText(node.getLabel());
+//         setSelected(node.getStatus() == Status.SELECTED);
+//         str = node.getLabel();
 //       }
 //       // panel.add(this, BorderLayout.WEST);
 //       panel.add(c);
@@ -486,13 +492,13 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //       if (userObject instanceof CheckBoxNode) {
 //         CheckBoxNode node = (CheckBoxNode) userObject;
-//         if (node.status == Status.INDETERMINATE) {
+//         if (node.getStatus() == Status.INDETERMINATE) {
 //           check.setIcon(new IndeterminateIcon());
 //         } else {
 //           check.setIcon(null);
 //         }
-//         l.setText(node.label);
-//         check.setSelected(node.status == Status.SELECTED);
+//         l.setText(node.getLabel());
+//         check.setSelected(node.getStatus() == Status.SELECTED);
 //       }
 //       // add(this, BorderLayout.WEST);
 //       add(l);
@@ -540,14 +546,14 @@ class CheckBoxNodeEditor extends AbstractCellEditor implements TreeCellEditor {
 //       Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 //       if (userObject instanceof CheckBoxNode) {
 //         CheckBoxNode node = (CheckBoxNode) userObject;
-//         if (node.status == Status.INDETERMINATE) {
+//         if (node.getStatus() == Status.INDETERMINATE) {
 //           check.setIcon(new IndeterminateIcon());
 //         } else {
 //           check.setIcon(null);
 //         }
-//         ((JLabel) c).setText(node.label);
-//         check.setSelected(node.status == Status.SELECTED);
-//         str = node.label;
+//         ((JLabel) c).setText(node.getLabel());
+//         check.setSelected(node.getStatus() == Status.SELECTED);
+//         str = node.getLabel();
 //       }
 //       // add(this, BorderLayout.WEST);
 //       add(c);

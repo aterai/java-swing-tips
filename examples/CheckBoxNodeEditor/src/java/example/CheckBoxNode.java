@@ -8,16 +8,6 @@ public final class CheckBoxNode {
   private final String label;
   private final Status status;
 
-  public CheckBoxNode() {
-    this.label = "";
-    this.status = Status.INDETERMINATE;
-  }
-
-  public CheckBoxNode(String label) {
-    this.label = label;
-    this.status = Status.INDETERMINATE;
-  }
-
   public CheckBoxNode(String label, Status status) {
     this.label = label;
     this.status = status;
