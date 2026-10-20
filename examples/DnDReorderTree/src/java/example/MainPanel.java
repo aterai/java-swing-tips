@@ -16,9 +16,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -48,10 +46,9 @@ public final class MainPanel extends JPanel {
   }
 
   private static void expandTree(JTree tree) {
-    int row = 0;
-    while (row < tree.getRowCount()) {
+    // The row count increases as the rows are expanded
+    for (int row = 0; row < tree.getRowCount(); row++) {
       tree.expandRow(row);
-      row++;
     }
   }
 
@@ -142,12 +139,13 @@ class TreeTransferHandler extends TransferHandler {
     if (p instanceof MutableTreeNode && m instanceof DefaultTreeModel) {
       MutableTreeNode parent = (MutableTreeNode) p;
       DefaultTreeModel model = (DefaultTreeModel) m;
-      int childIndex = dl.getChildIndex();
-      AtomicInteger index = new AtomicInteger(getDropIndex(parent, childIndex));
-      nodes.stream()
-          .filter(MutableTreeNode.class::isInstance)
-          .map(MutableTreeNode.class::cast)
-          .forEach(n -> model.insertNodeInto(n, parent, index.getAndIncrement()));
+      int index = getDropIndex(parent, dl.getChildIndex());
+      for (Object n : nodes) {
+        if (n instanceof MutableTreeNode) {
+          model.insertNodeInto((MutableTreeNode) n, parent, index);
+          index++;
+        }
+      }
     }
     return !nodes.isEmpty();
   }
@@ -178,9 +176,10 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   private void cleanup(JTree tree) {
-    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+    TreeModel m = tree.getModel();
     TreePath[] selectionPaths = tree.getSelectionPaths();
-    if (selectionPaths != null) {
+    if (m instanceof DefaultTreeModel && selectionPaths != null) {
+      DefaultTreeModel model = (DefaultTreeModel) m;
       for (TreePath path : selectionPaths) {
         model.removeNodeFromParent((MutableTreeNode) path.getLastPathComponent());
       }
@@ -211,31 +210,16 @@ final class TreeUtils {
 
   public static boolean canImportDropLocation(JTree tree, JTree.DropLocation dl) {
     // Do not allow drop to descendant and drag-source selections
-    // int dropRow = tree.getRowForPath(dl.getPath());
+    TreePath dropPath = dl.getPath();
     Point pt = dl.getDropPoint();
-    int dropRow = tree.getRowForLocation(pt.x, pt.y);
-    int[] selRows = tree.getSelectionRows();
-    return selRows != null && IntStream
-        .of(selRows)
-        .noneMatch(r -> r == dropRow || isDescendant(tree, r, dropRow));
-  }
-
-  private static boolean isDescendant(JTree tree, int selRow, int dropRow) {
-    Object node = tree.getPathForRow(selRow).getLastPathComponent();
-    return node instanceof DefaultMutableTreeNode
-        && isDescendant2(tree, dropRow, (DefaultMutableTreeNode) node);
-  }
-
-  private static boolean isDescendant2(JTree tree, int dropRow, DefaultMutableTreeNode node) {
-    Enumeration<?> e = node.depthFirstEnumeration();
-    return Collections.list(e)
-        .stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .map(DefaultMutableTreeNode::getPath)
-        .map(TreePath::new)
-        .map(tree::getRowForPath)
-        .anyMatch(row -> row == dropRow);
+    // null if the drop point is not on a node (e.g. to the right of a node label)
+    TreePath pointPath = tree.getPathForLocation(pt.x, pt.y);
+    TreePath[] selPaths = tree.getSelectionPaths();
+    // TreePath#isDescendant(...) returns true for the path itself or its descendants.
+    // Checking dropPath prevents a selected node from being dropped into its own subtree
+    // even if the drop point is outside the node bounds.
+    return dropPath != null && selPaths != null && Arrays.stream(selPaths)
+        .noneMatch(p -> p.isDescendant(dropPath) || p.isDescendant(pointPath));
   }
 
   public static DefaultMutableTreeNode deepCopy(
