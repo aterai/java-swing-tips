@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  // The divider location used to expand the collapsed tab component
+  private static final int EXPANDED_SIZE = 120;
   private final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
   private final Dimension tabAreaSize = new Dimension(40, 40);
 
@@ -26,14 +28,17 @@ public final class MainPanel extends JPanel {
     tabbedPane.setFocusable(false);
     tabbedPane.addChangeListener(e -> updateDividerLocation(tabbedPane));
     tabbedPane.addMouseListener(new MouseAdapter() {
-      private int prev = -1;
+      private int prevIndex = -1;
       @Override public void mouseClicked(MouseEvent e) {
         JTabbedPane tabs = (JTabbedPane) e.getComponent();
-        // boolean isDoubleClick = e.getClickCount() > 1;
-        if (prev == tabs.getSelectedIndex() && SwingUtilities.isLeftMouseButton(e)) {
-          tabClicked(tabs);
+        int selected = tabs.getSelectedIndex();
+        // Clicks on the tab component area are also delivered to the JTabbedPane,
+        // so only toggle when the already selected tab itself is clicked
+        boolean isSelectedTab = tabs.indexAtLocation(e.getX(), e.getY()) == selected;
+        if (isSelectedTab && prevIndex == selected && SwingUtilities.isLeftMouseButton(e)) {
+          toggleCollapsed(tabs);
         }
-        prev = tabs.getSelectedIndex();
+        prevIndex = selected;
       }
     });
     Stream.of("computer", "directory", "file").forEach(title -> {
@@ -49,7 +54,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public void updateDividerLocation(JTabbedPane tabs) {
+  private void updateDividerLocation(JTabbedPane tabs) {
     Component c = tabs.getSelectedComponent();
     if (isTopBottomTabPlacement(tabs.getTabPlacement())) {
       splitPane.setDividerLocation(c.getPreferredSize().height + tabAreaSize.height);
@@ -58,25 +63,19 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static boolean isTopBottomTabPlacement(int tabPlacement) {
+  /* default */ static boolean isTopBottomTabPlacement(int tabPlacement) {
     return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 
-  public void tabClicked(JTabbedPane tabs) {
+  // Toggle the collapsed state of the selected tab component: collapse it to the tab area size,
+  // or expand it to the default size if it is already collapsed
+  private void toggleCollapsed(JTabbedPane tabs) {
     Component c = tabs.getSelectedComponent();
-    if (isTopBottomTabPlacement(tabs.getTabPlacement())) {
-      if (c.getPreferredSize().height == 0) {
-        splitPane.setDividerLocation(120);
-      } else {
-        splitPane.setDividerLocation(tabAreaSize.height);
-      }
-    } else {
-      if (c.getPreferredSize().width == 0) {
-        splitPane.setDividerLocation(120);
-      } else {
-        splitPane.setDividerLocation(tabAreaSize.width);
-      }
-    }
+    boolean isTopBottom = isTopBottomTabPlacement(tabs.getTabPlacement());
+    Dimension d = c.getPreferredSize();
+    boolean isCollapsed = (isTopBottom ? d.height : d.width) == 0;
+    int tabAreaLength = isTopBottom ? tabAreaSize.height : tabAreaSize.width;
+    splitPane.setDividerLocation(isCollapsed ? EXPANDED_SIZE : tabAreaLength);
   }
 
   private Icon makeVerticalTabIcon(String title, Icon icon) {
@@ -86,7 +85,7 @@ public final class MainPanel extends JPanel {
     int w = d.height;
     int h = d.width;
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = (Graphics2D) bi.getGraphics();
+    Graphics2D g2 = bi.createGraphics();
     AffineTransform at = AffineTransform.getTranslateInstance(0, h);
     at.quadrantRotate(-1);
     g2.setTransform(at);
@@ -132,16 +131,12 @@ class TabResizedAdapter extends ComponentAdapter {
     if (c.equals(tabbedPane.getSelectedComponent())) {
       Dimension d = c.getPreferredSize();
       Dimension tabAreaSize = tabbedPane.getMinimumSize();
-      if (isTopBottomTabPlacement(tabbedPane.getTabPlacement())) {
+      if (MainPanel.isTopBottomTabPlacement(tabbedPane.getTabPlacement())) {
         d.height = splitPane.getDividerLocation() - tabAreaSize.height;
       } else {
         d.width = splitPane.getDividerLocation() - tabAreaSize.width;
       }
       c.setPreferredSize(d);
     }
-  }
-
-  private static boolean isTopBottomTabPlacement(int tabPlacement) {
-    return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
   }
 }
