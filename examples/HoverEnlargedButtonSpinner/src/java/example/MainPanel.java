@@ -66,41 +66,48 @@ class EnlargedButtonSpinner extends JSpinner {
   }
 
   @Override public void updateUI() {
-    JTextField field = ((JSpinner.DefaultEditor) getEditor()).getTextField();
-    field.removeMouseListener(listener);
-    super.updateUI();
-    listener = new ArrowButtonEnlargeListener();
-    field.addMouseListener(listener);
+    JComponent editor = getEditor();
+    if (editor instanceof DefaultEditor) {
+      JTextField field = ((DefaultEditor) editor).getTextField();
+      field.removeMouseListener(listener);
+      super.updateUI();
+      // Recreate the listener so that its JPopupMenu follows the new LookAndFeel
+      listener = new ArrowButtonEnlargeListener();
+      field.addMouseListener(listener);
+    } else {
+      super.updateUI();
+    }
   }
 }
 
 class ArrowButtonEnlargeListener extends MouseAdapter {
   private final JPopupMenu popup = new JPopupMenu();
 
+  protected ArrowButtonEnlargeListener() {
+    super();
+    popup.setLayout(new GridLayout(2, 1));
+    popup.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+    popup.setFocusable(false);
+  }
+
   @Override public void mousePressed(MouseEvent e) {
     Component c = SwingUtilities.getAncestorOfClass(JSpinner.class, e.getComponent());
     if (SwingUtilities.isLeftMouseButton(e) && c instanceof JSpinner) {
       JSpinner spinner = (JSpinner) c;
-      JButton bigNextBtn = makeArrowButton(spinner, true);
-      JButton bigPrevBtn = makeArrowButton(spinner, false);
-      popup.setLayout(new GridLayout(2, 1));
-      popup.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-      popup.setFocusable(false);
       popup.removeAll();
-      popup.add(bigNextBtn);
-      popup.add(bigPrevBtn);
+      popup.add(createArrowButton(spinner, true));
+      popup.add(createArrowButton(spinner, false));
       popup.pack();
-      // Dimension d1 = UIManager.getDimension("Spinner.arrowButtonSize");
-      // Dimension d2 = bigNextBtn.getPreferredSize();
+      // Show the popup to the right of the editor, vertically centered on it
       JComponent editor = spinner.getEditor();
       Rectangle r = SwingUtilities.calculateInnerArea(editor, null);
       int px = (int) r.getMaxX();
-      int py = (int) r.getCenterY() - bigNextBtn.getPreferredSize().height;
+      int py = (int) r.getCenterY() - popup.getPreferredSize().height / 2;
       popup.show(editor, px, py);
     }
   }
 
-  private static JButton makeArrowButton(JSpinner spinner, boolean isNext) {
+  private static JButton createArrowButton(JSpinner spinner, boolean isNext) {
     int direction = isNext ? SwingConstants.NORTH : SwingConstants.SOUTH;
     JButton arrowButton = new BasicArrowButton(direction) {
       @Override public Dimension getPreferredSize() {
@@ -133,16 +140,13 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
   }
 
   @Override public void actionPerformed(ActionEvent e) {
-    Object src = e.getSource();
-    if (src instanceof Timer) {
-      if (isPressed(arrowButton) && repeatTimer.isRunning()) {
-        repeatTimer.stop();
-        setArrowButton(null);
-      }
-    } else {
-      if (src instanceof JButton) {
-        setArrowButton((JButton) src);
-      }
+    boolean released = arrowButton != null && !arrowButton.getModel().isPressed();
+    if (e.getSource() instanceof Timer && released) {
+      // The button was released without a mouseReleased event, stop repeating
+      // and do not change the value
+      repeatTimer.stop();
+      setArrowButton(null);
+      return;
     }
     Object value = isNext ? spinner.getNextValue() : spinner.getPreviousValue();
     if (value != null) {
@@ -154,12 +158,10 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
     this.arrowButton = button;
   }
 
-  private static boolean isPressed(JButton button) {
-    return button != null && !button.getModel().isPressed();
-  }
-
   @Override public void mousePressed(MouseEvent e) {
-    if (SwingUtilities.isLeftMouseButton(e) && e.getComponent().isEnabled()) {
+    Component c = e.getComponent();
+    if (SwingUtilities.isLeftMouseButton(e) && c.isEnabled() && c instanceof JButton) {
+      setArrowButton((JButton) c);
       repeatTimer.start();
     }
   }
@@ -170,19 +172,18 @@ class ArrowButtonHandler extends AbstractAction implements MouseListener {
   }
 
   @Override public void mouseClicked(MouseEvent e) {
-    // no need
+    // not needed
   }
 
   @Override public void mouseEntered(MouseEvent e) {
-    // if (!autoRepeatTimer.isRunning()) {
-    //   autoRepeatTimer.start();
-    // }
+    // Resume repeating if the mouse comes back while the button is still pressed
+    if (arrowButton != null && arrowButton.getModel().isPressed() && !repeatTimer.isRunning()) {
+      repeatTimer.start();
+    }
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    if (repeatTimer.isRunning()) {
-      repeatTimer.stop();
-    }
+    repeatTimer.stop();
   }
 }
 
@@ -198,7 +199,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -206,7 +207,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
