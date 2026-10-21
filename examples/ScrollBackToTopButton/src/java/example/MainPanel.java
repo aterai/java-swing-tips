@@ -116,6 +116,7 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
     }
   };
   private final Rectangle buttonRect = new Rectangle(button.getPreferredSize());
+  private Timer animator;
 
   @Override public void updateUI(JLayer<? extends V> l) {
     super.updateUI(l);
@@ -134,7 +135,7 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
     if (c instanceof JLayer) {
       JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
       updateButtonRect(scroll);
-      if (scroll.getViewport().getViewRect().y > 0) {
+      if (isButtonVisible(scroll)) {
         button.getModel().setRollover(buttonRect.contains(mousePoint));
         SwingUtilities.paintComponent(g, button, rubberStamp, buttonRect);
       }
@@ -158,40 +159,53 @@ class ScrollBackToTopLayerUI<V extends JScrollPane> extends LayerUI<V> {
   }
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
-    JScrollPane scroll = l.getView();
-    Rectangle viewRect = scroll.getViewport().getViewRect();
-    Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), scroll);
-    mousePoint.setLocation(pt);
-    int eventId = e.getID();
-    if (eventId == MouseEvent.MOUSE_CLICKED) {
-      if (buttonRect.contains(mousePoint)) {
+    updateMousePoint(e, l);
+    // The button is only painted (and clickable) while the top area is scrolled out
+    if (isButtonVisible(l.getView()) && buttonRect.contains(mousePoint)) {
+      int id = e.getID();
+      if (id == MouseEvent.MOUSE_CLICKED) {
         scrollBackToTop(l.getView());
+        e.consume();
+      } else if (id == MouseEvent.MOUSE_PRESSED) {
+        // Prevent the child component (e.g. JTable cell selection) from handling the press
+        e.consume();
       }
-    } else if (eventId == MouseEvent.MOUSE_PRESSED
-        && viewRect.y > 0 && buttonRect.contains(mousePoint)) {
-      e.consume();
     }
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
-    Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), l.getView());
+    updateMousePoint(e, l);
+  }
+
+  private void updateMousePoint(MouseEvent e, JLayer<? extends V> l) {
+    JScrollPane scroll = l.getView();
+    Point pt = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), scroll);
     mousePoint.setLocation(pt);
-    l.getGlassPane().setVisible(buttonRect.contains(mousePoint));
+    // Show the glass pane (default cursor) only while hovering over the visible button
+    l.getGlassPane().setVisible(isButtonVisible(scroll) && buttonRect.contains(mousePoint));
     l.repaint(buttonRect);
   }
 
+  private static boolean isButtonVisible(JScrollPane scroll) {
+    return scroll.getViewport().getViewRect().y > 0;
+  }
+
   private void scrollBackToTop(JScrollPane scroll) {
+    if (animator != null && animator.isRunning()) {
+      return;
+    }
     JComponent view = (JComponent) scroll.getViewport().getView();
     Rectangle target = scroll.getViewport().getViewRect();
-    new Timer(20, e -> {
-      Timer animator = (Timer) e.getSource();
-      if (0 < target.y && animator.isRunning()) {
+    animator = new Timer(20, e -> {
+      if (target.y > 0) {
+        // Halve the remaining distance on each tick for an ease-out effect
         target.y -= Math.max(1, target.y / 2);
         view.scrollRectToVisible(target);
       } else {
-        animator.stop();
+        ((Timer) e.getSource()).stop();
       }
-    }).start();
+    });
+    animator.start();
   }
 }
 
@@ -271,10 +285,10 @@ class LineNumberView extends JPanel {
     int fontDescent = fontMetrics.getDescent();
     int fontLeading = fontMetrics.getLeading();
     int y = startLine * fontMetrics.getHeight();
-    int rightMargin = getInsets().right;
+    int rightEdge = getComponentWidth(fontMetrics) - getInsets().right;
     for (int line = startLine; line <= endLine; line++) {
       String text = Integer.toString(line + 1);
-      int x = getComponentWidth(fontMetrics) - rightMargin - fontMetrics.stringWidth(text);
+      int x = rightEdge - fontMetrics.stringWidth(text);
       y += fontAscent;
       g2.drawString(text, x, y);
       y += fontDescent + fontLeading;
