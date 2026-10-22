@@ -61,8 +61,7 @@ public final class MainPanel extends JPanel {
 // https://community.oracle.com/thread/2105230
 // modified by aterai@outlook.com
 class SimpleSyntaxDocument extends DefaultStyledDocument {
-  private static final String OPERANDS = ".,";
-  // HashMap<String, AttributeSet> keywords = new HashMap<>();
+  private static final String DELIMITERS = ".,";
 
   @Override public void insertString(int offset, String text, AttributeSet a) throws BadLocationException {
     super.insertString(offset, text, a);
@@ -76,54 +75,43 @@ class SimpleSyntaxDocument extends DefaultStyledDocument {
 
   private void processChangedLines(int offset, int length) throws BadLocationException {
     Element root = getDefaultRootElement();
-    String content = getText(0, getLength());
     int startLine = root.getElementIndex(offset);
     int endLine = root.getElementIndex(offset + length);
     for (int i = startLine; i <= endLine; i++) {
-      applyHighlighting(content, i);
+      applyHighlighting(root.getElement(i));
     }
   }
 
-  private void applyHighlighting(String content, int line) {
-    Element root = getDefaultRootElement();
-    int startOffset = root.getElement(line).getStartOffset();
-    int endOffset = root.getElement(line).getEndOffset() - 1;
-    int lineLength = endOffset - startOffset;
-    int contentLength = content.length();
-    endOffset = endOffset >= contentLength ? contentLength - 1 : endOffset;
-    setCharacterAttributes(startOffset, lineLength, getStyle(StyleContext.DEFAULT_STYLE), true);
-    checkForTokens(content, startOffset, endOffset);
+  private void applyHighlighting(Element line) throws BadLocationException {
+    int startOffset = line.getStartOffset();
+    // Exclude the trailing newline; the last line element also ends with
+    // an implied newline at getLength() + 1, so this never exceeds the length
+    int endOffset = line.getEndOffset() - 1;
+    // Fetch only the changed line instead of the whole document text
+    String text = getText(startOffset, endOffset - startOffset);
+    setCharacterAttributes(startOffset, text.length(), getStyle(StyleContext.DEFAULT_STYLE), true);
+    highlightKeywords(text, startOffset);
   }
 
-  private void checkForTokens(String content, int startOffset, int endOffset) {
-    int index = startOffset;
-    while (index <= endOffset) {
-      while (index <= endOffset && isDelimiter(content.charAt(index))) {
+  private void highlightKeywords(String text, int lineOffset) {
+    int length = text.length();
+    int index = 0;
+    while (index < length) {
+      int tokenStart = index;
+      while (index < length && !isDelimiter(text.charAt(index))) {
         index++;
       }
-      if (index <= endOffset) {
-        index = getOtherToken(content, index, endOffset);
+      if (index > tokenStart) {
+        Style style = getStyle(text.substring(tokenStart, index));
+        if (Objects.nonNull(style)) {
+          setCharacterAttributes(lineOffset + tokenStart, index - tokenStart, style, false);
+        }
       }
+      index++; // skip the delimiter
     }
-  }
-
-  private int getOtherToken(String content, int startOffset, int endOffset) {
-    int endOfToken = startOffset + 1;
-    while (endOfToken <= endOffset) {
-      if (isDelimiter(content.charAt(endOfToken))) {
-        break;
-      }
-      endOfToken++;
-    }
-    String token = content.substring(startOffset, endOfToken);
-    Style style = getStyle(token);
-    if (Objects.nonNull(style)) {
-      setCharacterAttributes(startOffset, endOfToken - startOffset, style, false);
-    }
-    return endOfToken + 1;
   }
 
   protected boolean isDelimiter(char ch) {
-    return Character.isWhitespace(ch) || OPERANDS.indexOf(ch) >= 0;
+    return Character.isWhitespace(ch) || DELIMITERS.indexOf(ch) >= 0;
   }
 }
