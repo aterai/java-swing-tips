@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Objects;
@@ -20,7 +19,6 @@ import javax.swing.plaf.LayerUI;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.plaf.basic.BasicSliderUI;
 import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.JTextComponent;
 import javax.swing.text.NumberFormatter;
 
 public final class MainPanel extends JPanel {
@@ -57,12 +55,12 @@ final class CompactSliderPanel1 extends JPanel {
   /* default */ CompactSliderPanel1() {
     super(new GridLayout(0, 1, 10, 10));
     setOpaque(false);
-    add(makeCompactSlider1());
-    add(makeCompactSlider2());
+    add(createCompactSlider1());
+    add(createCompactSlider2());
     setBackground(Color.WHITE);
   }
 
-  private static Component makeCompactSlider1() {
+  private static Component createCompactSlider1() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JProgressBar progressBar = new FlatProgressBar(m);
     int value = m.getValue();
@@ -74,7 +72,7 @@ final class CompactSliderPanel1 extends JPanel {
     return spinner;
   }
 
-  private static Component makeCompactSlider2() {
+  private static Component createCompactSlider2() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JProgressBar progressBar = new FlatProgressBar(m);
     int min = m.getMinimum();
@@ -94,10 +92,12 @@ final class CompactSliderPanel1 extends JPanel {
       JSpinner src = (JSpinner) e.getComponent();
       SpinnerNumberModel m = (SpinnerNumberModel) src.getModel();
       int step = e.getWheelRotation() * m.getStepSize().intValue();
-      int iv = (int) src.getValue() - step;
-      if ((Integer) m.getMinimum() <= iv && iv <= (Integer) m.getMaximum()) {
-        src.setValue(iv);
-      }
+      int newValue = (int) src.getValue() - step;
+      // Clamp so that min and max can be reached even if the value is not a multiple of step
+      int min = (Integer) m.getMinimum();
+      int max = (Integer) m.getMaximum();
+      src.setValue(Math.min(Math.max(newValue, min), max));
+      // Java 21: src.setValue(Math.clamp(newValue, min, max));
     });
   }
 }
@@ -166,33 +166,14 @@ class ProgressBarLayerUI extends LayerUI<JSpinner> {
   }
 }
 
-class ProgressBarSpinner extends JSpinner {
+// The transparent settings of the editor are inherited from FlatSpinner
+class ProgressBarSpinner extends FlatSpinner {
   private final JPanel renderer = new JPanel();
   private final JProgressBar progressBar;
 
   protected ProgressBarSpinner(SpinnerModel model, JProgressBar progressBar) {
     super(model);
     this.progressBar = progressBar;
-  }
-
-  @Override public void updateUI() {
-    super.updateUI();
-    setOpaque(false);
-    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
-    editor.setOpaque(false);
-    JTextField field = editor.getTextField();
-    field.setOpaque(false);
-    field.setBorder(BorderFactory.createEmptyBorder());
-    UIDefaults d = new UIDefaults();
-    Painter<JComponent> painter = (g, c, w, h) -> {
-      // empty painter
-    };
-    String key = "Spinner:Panel:\"Spinner.formattedTextField\"";
-    d.put(key + "[Enabled].backgroundPainter", painter);
-    d.put(key + "[Focused].backgroundPainter", painter);
-    d.put(key + "[Selected].backgroundPainter", painter);
-    field.putClientProperty("Nimbus.Overrides", d);
-    field.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -209,44 +190,39 @@ final class CompactSliderPanel2 extends JPanel {
   /* default */ CompactSliderPanel2() {
     super(new GridLayout(0, 1, 10, 10));
     setOpaque(false);
-    add(makeCompactSlider3());
-    add(makeCompactSlider4());
+    add(createCompactSlider3());
+    add(createCompactSlider4());
     setBackground(Color.WHITE);
   }
 
-  private static Component makeCompactSlider3() {
+  private static Component createCompactSlider3() {
     BoundedRangeModel m = new DefaultBoundedRangeModel(50, 0, 0, 100);
     JProgressBar progressBar = new FlatProgressBar(m);
     JFormattedTextField field = new ProgressBarFormattedTextField(progressBar);
-    field.setValue(50);
-    field.addMouseWheelListener(e -> {
-      JFormattedTextField src = (JFormattedTextField) e.getComponent();
-      BoundedRangeModel model = progressBar.getModel();
-      int iv = (Integer) src.getValue() - e.getWheelRotation();
-      if (model.getMinimum() <= iv && iv <= model.getMaximum()) {
-        src.setValue(iv);
-        progressBar.setValue(iv);
-      }
-    });
+    field.setValue(m.getValue());
+    // Keep the text field in sync when the value is changed by the buttons or the mouse wheel
+    m.addChangeListener(e -> field.setValue(m.getValue()));
+    // BoundedRangeModel#setValue(...) clamps the value to the range
+    field.addMouseWheelListener(e -> m.setValue(m.getValue() - e.getWheelRotation()));
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
     box.add(field);
-    box.add(makeButton(-5, field, m));
-    box.add(makeButton(+5, field, m));
+    box.add(createButton(-5, m));
+    box.add(createButton(+5, m));
     box.add(Box.createHorizontalGlue());
     return box;
   }
 
-  private static JButton makeButton(int step, JTextComponent view, BoundedRangeModel m) {
+  private static JButton createButton(int step, BoundedRangeModel m) {
     String title = String.format("%+d", step);
     JButton button = new JButton(title);
-    AutoRepeatHandler handler = new AutoRepeatHandler(step, view, m);
+    AutoRepeatHandler handler = new AutoRepeatHandler(step, m);
     button.addActionListener(handler);
     button.addMouseListener(handler);
     return button;
   }
 
-  private static Component makeCompactSlider4() {
+  private static Component createCompactSlider4() {
     JSlider slider = new JSlider(0, 100, 50) {
       @Override public void updateUI() {
         super.updateUI();
@@ -261,15 +237,14 @@ final class CompactSliderPanel2 extends JPanel {
     slider.addChangeListener(e -> {
       JSlider src = (JSlider) e.getSource();
       field.setValue(src.getValue());
+      // BasicSliderUI repaints only the thumb area while dragging,
+      // so repaint the whole slider to update the filled track
       src.repaint();
     });
+    // JSlider#setValue(...) clamps the value to the range
     slider.addMouseWheelListener(e -> {
       JSlider src = (JSlider) e.getComponent();
-      int iv = src.getValue() - e.getWheelRotation();
-      if (src.getMinimum() <= iv && iv <= src.getMaximum()) {
-        src.setValue(iv);
-        field.setValue(iv);
-      }
+      src.setValue(src.getValue() - e.getWheelRotation());
     });
     JPanel p = new OverlayPanel(slider.getPreferredSize());
     p.setLayout(new OverlayLayout(p));
@@ -280,8 +255,8 @@ final class CompactSliderPanel2 extends JPanel {
     Box box = Box.createHorizontalBox();
     box.add(p);
     box.add(Box.createHorizontalStrut(2));
-    box.add(makeButton(-5, field, slider.getModel()));
-    box.add(makeButton(+5, field, slider.getModel()));
+    box.add(createButton(-5, slider.getModel()));
+    box.add(createButton(+5, slider.getModel()));
     box.add(Box.createHorizontalGlue());
     JPanel panel = new JPanel(new BorderLayout());
     panel.add(p);
@@ -292,15 +267,13 @@ final class CompactSliderPanel2 extends JPanel {
 
 class AutoRepeatHandler extends MouseAdapter implements ActionListener {
   private final Timer autoRepeatTimer;
-  private final BigInteger extent;
-  private final JTextComponent view;
+  private final int step;
   private final BoundedRangeModel model;
   private JButton arrowButton;
 
-  protected AutoRepeatHandler(int step, JTextComponent view, BoundedRangeModel model) {
+  protected AutoRepeatHandler(int step, BoundedRangeModel model) {
     super();
-    this.extent = BigInteger.valueOf(step);
-    this.view = view;
+    this.step = step;
     this.model = model;
     autoRepeatTimer = new Timer(60, this);
     autoRepeatTimer.setInitialDelay(300);
@@ -316,10 +289,9 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
     } else if (o instanceof JButton) {
       arrowButton = (JButton) o;
     }
-    BigInteger i = new BigInteger(view.getText());
-    BigInteger iv = i.add(extent);
-    model.setValue(iv.intValue());
-    view.setText(String.valueOf(model.getValue()));
+    // The text field is updated by the ChangeListener of the model,
+    // and BoundedRangeModel#setValue(...) clamps the value to the range
+    model.setValue(model.getValue() + step);
   }
 
   @Override public void mousePressed(MouseEvent e) {
@@ -340,15 +312,17 @@ class AutoRepeatHandler extends MouseAdapter implements ActionListener {
 }
 
 class NumberFormatterFactory extends DefaultFormatterFactory {
-  private static final NumberFormatter FORMATTER = new NumberFormatter();
-
-  static {
-    FORMATTER.setValueClass(Integer.class);
-    ((NumberFormat) FORMATTER.getFormat()).setGroupingUsed(false);
+  protected NumberFormatterFactory() {
+    // An AbstractFormatter is installed into a single JFormattedTextField,
+    // so create a new instance for each factory instead of sharing a static one
+    super(createFormatter());
   }
 
-  protected NumberFormatterFactory() {
-    super(FORMATTER, FORMATTER, FORMATTER);
+  private static NumberFormatter createFormatter() {
+    NumberFormatter formatter = new NumberFormatter();
+    formatter.setValueClass(Integer.class);
+    ((NumberFormat) formatter.getFormat()).setGroupingUsed(false);
+    return formatter;
   }
 }
 
@@ -370,19 +344,15 @@ class FlatSliderUI extends BasicSliderUI {
     if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
       Graphics2D g2 = (Graphics2D) g.create();
       int middleOfThumb = thumbRect.x + thumbRect.width / 2;
-      int fillWidth;
+      Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
       if (drawInverted()) {
-        int trackRight = trackRect.width - 1;
-        int fillRight = slider.isEnabled() ? trackRight - 2 : trackRight - 1;
-        fillWidth = fillRight - middleOfThumb;
+        // Fill from the thumb to the right edge
+        r.width = r.x + r.width - middleOfThumb;
+        r.x = middleOfThumb;
       } else {
-        int trackLeft = 0;
-        int fillLeft = slider.isEnabled() ? trackLeft + 1 : trackLeft;
-        fillWidth = middleOfThumb - fillLeft;
+        r.width = middleOfThumb - r.x;
       }
       g2.setPaint(slider.getForeground());
-      Rectangle r = SwingUtilities.calculateInnerArea(slider, null);
-      r.width = fillWidth;
       g2.fill(r);
       g2.dispose();
     } else {
@@ -455,10 +425,7 @@ class ProgressBarFormattedTextField extends JFormattedTextField {
     setOpaque(false);
     setFormatterFactory(new NumberFormatterFactory());
     setHorizontalAlignment(RIGHT);
-    setHorizontalAlignment(RIGHT);
-    setOpaque(false);
     setColumns(16);
-    // setValue(50);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -495,7 +462,6 @@ class SliderFormattedTextField extends JFormattedTextField {
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     setColumns(3);
-    setHorizontalAlignment(RIGHT);
     setAlignmentX(RIGHT_ALIGNMENT);
     // handler = new MouseEventHandler(slider);
     // addMouseListener(handler);
@@ -543,7 +509,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -551,7 +517,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
