@@ -5,11 +5,10 @@
 package example;
 
 import java.awt.*;
-import java.awt.font.GlyphMetrics;
+import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.Optional;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -71,15 +70,11 @@ public final class MainPanel extends JPanel {
 }
 
 class JustifiedLabel extends JLabel {
-  private transient GlyphVector gvText;
+  private transient GlyphVector justifiedText;
   private int prevWidth = -1;
 
-  // protected JustifiedLabel() {
-  //   this(null);
-  // }
-
-  protected JustifiedLabel(String str) {
-    super(str);
+  protected JustifiedLabel(String text) {
+    super(text);
   }
 
   @Override public void setText(String text) {
@@ -87,42 +82,64 @@ class JustifiedLabel extends JLabel {
     prevWidth = -1;
   }
 
+  @Override public void setFont(Font font) {
+    super.setFont(font);
+    prevWidth = -1;
+  }
+
   @Override protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g.create();
-    Font font = getFont();
-    Dimension d = getSize();
+    // Use the same text antialiasing as the default JLabel rendering
+    Object hints = Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
+    if (hints instanceof Map) {
+      g2.addRenderingHints((Map<?, ?>) hints);
+    }
     Insets ins = getInsets();
-    int w = d.width - ins.left - ins.right;
+    int w = getWidth() - ins.left - ins.right;
     if (w != prevWidth) {
-      GlyphVector gv = font.createGlyphVector(g2.getFontRenderContext(), getText());
-      gvText = makeJustifiedGlyphVector(gv, w);
+      justifiedText = createJustifiedGlyphVector(g2.getFontRenderContext(), w);
       prevWidth = w;
     }
-    Optional.ofNullable(gvText).ifPresent(gv -> {
-      g2.setPaint(getBackground());
-      g2.fillRect(0, 0, d.width, d.height);
+    int baseline = getBaseline(getWidth(), getHeight());
+    if (justifiedText == null || baseline < 0) {
+      // Not enough space: fall back to the default JLabel rendering
+      // (truncated with "...")
+      super.paintComponent(g);
+    } else {
+      if (isOpaque()) {
+        g2.setPaint(getBackground());
+        g2.fillRect(0, 0, getWidth(), getHeight());
+      }
       g2.setPaint(getForeground());
-      g2.drawGlyphVector(gv, ins.left, ins.top + font.getSize2D());
-    });
+      g2.drawGlyphVector(justifiedText, ins.left, baseline);
+    }
     g2.dispose();
   }
 
-  private static GlyphVector makeJustifiedGlyphVector(GlyphVector gv, float width) {
-    Rectangle2D r = gv.getVisualBounds();
-    float vw = (float) r.getWidth();
-    if (width > vw) {
-      int num = gv.getNumGlyphs();
-      float xx = (width - vw) / (num - 1f);
-      float pos = num == 1 ? (width - vw) * .5f : 0f;
-      Point2D gmPos = new Point2D.Float();
-      for (int i = 0; i < num; i++) {
-        GlyphMetrics gm = gv.getGlyphMetrics(i);
-        gmPos.setLocation(pos, 0f);
-        gv.setGlyphPosition(i, gmPos);
-        pos += gm.getAdvance() + xx;
+  private GlyphVector createJustifiedGlyphVector(FontRenderContext frc, float width) {
+    String text = getText();
+    GlyphVector justified = null;
+    if (text != null && !text.isEmpty()) {
+      GlyphVector gv = getFont().createGlyphVector(frc, text);
+      // Use the logical width (sum of the advances) so that the right edge
+      // of the last glyph lines up with the right edge of the label
+      float textWidth = (float) gv.getLogicalBounds().getWidth();
+      if (width > textWidth) {
+        int num = gv.getNumGlyphs();
+        float extra = width - textWidth;
+        // A single glyph is centered,
+        // otherwise the extra space is spread evenly between glyphs
+        float gap = num > 1 ? extra / (num - 1) : 0f;
+        float pos = num > 1 ? 0f : extra / 2f;
+        Point2D glyphPos = new Point2D.Float();
+        for (int i = 0; i < num; i++) {
+          glyphPos.setLocation(pos, 0f);
+          gv.setGlyphPosition(i, glyphPos);
+          pos += gv.getGlyphMetrics(i).getAdvance() + gap;
+        }
+        justified = gv;
       }
     }
-    return gv;
+    return justified;
   }
 }
