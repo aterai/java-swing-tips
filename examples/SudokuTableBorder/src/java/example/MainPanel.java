@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -16,9 +17,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  public static final int BW1 = 1;
-  public static final int BW2 = 2;
-  public static final int CELL_SZ = 18;
+  public static final int BORDER_WIDTH1 = 1;
+  public static final int BORDER_WIDTH2 = 2;
+  public static final int CELL_SIZE = 18;
 
   private MainPanel() {
     super(new GridBagLayout());
@@ -43,18 +44,17 @@ public final class MainPanel extends JPanel {
         return data[row][column] == 0;
       }
     };
-    JTable table = makeSudokuTable(model);
+    JTable table = createSudokuTable(model);
     JTextField editor = new JTextField();
     editor.setHorizontalAlignment(SwingConstants.CENTER);
     table.setDefaultEditor(Integer.class, new SudokuCellEditor(editor));
     table.setDefaultRenderer(Integer.class, new SudokuCellRenderer(data));
 
-    TableColumnModel m = table.getColumnModel();
-    m.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    for (int i = 0; i < m.getColumnCount(); i++) {
-      TableColumn col = m.getColumn(i);
-      int a = (i + 1) % 3 == 0 ? BW2 : BW1;
-      col.setPreferredWidth(CELL_SZ + a);
+    TableColumnModel columnModel = table.getColumnModel();
+    columnModel.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+      TableColumn col = columnModel.getColumn(i);
+      col.setPreferredWidth(getCellSize(i));
       col.setResizable(false);
     }
 
@@ -62,14 +62,23 @@ public final class MainPanel extends JPanel {
     scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.setViewportBorder(BorderFactory.createMatteBorder(BW2, BW2, 0, 0, Color.BLACK));
+    Border outerBorder = BorderFactory.createMatteBorder(
+        BORDER_WIDTH2, BORDER_WIDTH2, 0, 0, Color.BLACK);
+    scroll.setViewportBorder(outerBorder);
     scroll.setColumnHeader(new JViewport());
     scroll.getColumnHeader().setVisible(false);
     add(scroll);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JTable makeSudokuTable(TableModel model) {
+  // The cell size including the right or bottom border width,
+  // every third row or column has a thick block border.
+  private static int getCellSize(int index) {
+    boolean isBlockEdge = (index + 1) % 3 == 0;
+    return CELL_SIZE + (isBlockEdge ? BORDER_WIDTH2 : BORDER_WIDTH1);
+  }
+
+  private static JTable createSudokuTable(TableModel model) {
     JTable table = new JTable(model) {
       @Override public Dimension getPreferredScrollableViewportSize() {
         return super.getPreferredSize();
@@ -82,48 +91,63 @@ public final class MainPanel extends JPanel {
         setAutoResizeMode(AUTO_RESIZE_OFF);
         getTableHeader().setReorderingAllowed(false);
         setBorder(BorderFactory.createEmptyBorder());
-        setShowVerticalLines(false);
-        setShowHorizontalLines(false);
+        setShowGrid(false);
+        // also sets the row margin and the column margin to 0
         setIntercellSpacing(new Dimension());
-        setRowMargin(0);
-        getColumnModel().setColumnMargin(0);
       }
     };
     for (int i = 0; i < table.getRowCount(); i++) {
-      int a = (i + 1) % 3 == 0 ? BW2 : BW1;
-      table.setRowHeight(i, CELL_SZ + a);
+      table.setRowHeight(i, getCellSize(i));
     }
     return table;
   }
 
   private static final class SudokuCellEditor extends DefaultCellEditor {
-    private final JTextField editor;
+    private final JTextField textField;
 
-    private SudokuCellEditor(JTextField editor) {
-      super(editor);
-      this.editor = editor;
+    private SudokuCellEditor(JTextField textField) {
+      super(textField);
+      this.textField = textField;
     }
 
     @Override public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+      textField.setBorder(new LineBorder(Color.BLACK));
       Object v = Objects.equals(value, 0) ? "" : value;
       return super.getTableCellEditorComponent(table, v, isSelected, row, column);
     }
 
+    // Accept only an empty string or a single digit from 1 to 9,
+    // otherwise keep editing and show a red border like JTable.GenericEditor.
+    @Override public boolean stopCellEditing() {
+      String text = textField.getText().trim();
+      boolean isValid = text.isEmpty() || text.matches("[1-9]");
+      boolean stopped = isValid && super.stopCellEditing();
+      if (!isValid) {
+        textField.setBorder(new LineBorder(Color.RED));
+      }
+      return stopped;
+    }
+
+    // Store an Integer instead of the String returned by DefaultCellEditor,
+    // an empty cell is represented by 0.
     @Override public Object getCellEditorValue() {
-      return editor.getText().isEmpty() ? 0 : super.getCellEditorValue();
+      String text = textField.getText().trim();
+      return text.isEmpty() ? 0 : Integer.parseInt(text);
     }
   }
 
   private static final class SudokuCellRenderer extends DefaultTableCellRenderer {
-    private final Border b0 = BorderFactory.createMatteBorder(0, 0, BW1, BW1, Color.GRAY);
-    private final Border b1 = BorderFactory.createMatteBorder(0, 0, BW2, BW2, Color.BLACK);
-    private final Border b2 = BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, BW2, 0, Color.BLACK),
-        BorderFactory.createMatteBorder(0, 0, 0, BW1, Color.GRAY));
-    private final Border b3 = BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(0, 0, 0, BW2, Color.BLACK),
-        BorderFactory.createMatteBorder(0, 0, BW1, 0, Color.GRAY));
-    private final Integer[][] mask;
+    private final Border cellBorder = BorderFactory.createMatteBorder(
+        0, 0, BORDER_WIDTH1, BORDER_WIDTH1, Color.GRAY);
+    private final Border blockCornerBorder = BorderFactory.createMatteBorder(
+        0, 0, BORDER_WIDTH2, BORDER_WIDTH2, Color.BLACK);
+    private final Border blockBottomBorder = BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, BORDER_WIDTH2, 0, Color.BLACK),
+        BorderFactory.createMatteBorder(0, 0, 0, BORDER_WIDTH1, Color.GRAY));
+    private final Border blockRightBorder = BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 0, BORDER_WIDTH2, Color.BLACK),
+        BorderFactory.createMatteBorder(0, 0, BORDER_WIDTH1, 0, Color.GRAY));
+    private final Integer[][] puzzle;
 
     @SuppressWarnings("PMD.UseVarargs")
     private SudokuCellRenderer(Integer[][] src) {
@@ -132,11 +156,11 @@ public final class MainPanel extends JPanel {
       for (int i = 0; i < src.length; i++) {
         System.arraycopy(src[i], 0, dst[i], 0, src[0].length);
       }
-      this.mask = dst;
+      this.puzzle = dst;
     }
 
     @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-      boolean isEditable = mask[row][column] == 0;
+      boolean isEditable = puzzle[row][column] == 0;
       Component c = super.getTableCellRendererComponent(
           table, value, isEditable && isSelected, hasFocus, row, column);
       c.setFont(isEditable ? c.getFont() : c.getFont().deriveFont(Font.BOLD));
@@ -146,16 +170,16 @@ public final class MainPanel extends JPanel {
         if (isEditable && Objects.equals(value, 0)) {
           l.setText(" ");
         }
-        boolean rf = (row + 1) % 3 == 0;
-        boolean cf = (column + 1) % 3 == 0;
-        if (rf && cf) {
-          l.setBorder(b1);
-        } else if (rf) {
-          l.setBorder(b2);
-        } else if (cf) {
-          l.setBorder(b3);
+        boolean isBlockBottom = (row + 1) % 3 == 0;
+        boolean isBlockRight = (column + 1) % 3 == 0;
+        if (isBlockBottom && isBlockRight) {
+          l.setBorder(blockCornerBorder);
+        } else if (isBlockBottom) {
+          l.setBorder(blockBottomBorder);
+        } else if (isBlockRight) {
+          l.setBorder(blockRightBorder);
         } else {
-          l.setBorder(b0);
+          l.setBorder(cellBorder);
         }
       }
       return c;
