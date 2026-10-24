@@ -15,7 +15,7 @@ public final class MainPanel extends JPanel {
   private final CardLayout cardLayout = new CardLayout();
   private final JPanel panel = new JPanel(cardLayout);
   private final JDesktopPane desktopPane = new JDesktopPane();
-  private final JTabbedPane tabs = new JTabbedPane();
+  private final JTabbedPane tabbedPane = new JTabbedPane();
   private int openFrameCount;
   private int row;
   private int col;
@@ -23,14 +23,14 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     panel.add(desktopPane, desktopPane.getClass().getName());
-    panel.add(tabs, tabs.getClass().getName());
+    panel.add(tabbedPane, tabbedPane.getClass().getName());
 
     JToggleButton swapButton = new JToggleButton("JDesktopPane <-> JTabbedPane");
     swapButton.addActionListener(e -> {
       if (((AbstractButton) e.getSource()).isSelected()) {
-        internalFrameToTab();
+        moveFramesToTabs();
       } else {
-        tabToInternalFrame();
+        moveTabsToFrames();
       }
     });
 
@@ -57,31 +57,34 @@ public final class MainPanel extends JPanel {
     if (desktopPane.isShowing()) {
       f.add(c);
     } else {
-      tabs.addTab(title, icon, c);
+      tabbedPane.addTab(title, icon, c);
     }
   }
 
-  private void tabToInternalFrame() {
+  private void moveTabsToFrames() {
+    // Moving a component to another parent also removes its tab from the JTabbedPane
     Stream.of(desktopPane.getAllFrames()).forEach(f -> {
-      int i = tabs.indexOfTab(f.getTitle());
-      f.setContentPane((Container) tabs.getComponentAt(i));
+      int i = tabbedPane.indexOfTab(f.getTitle());
+      f.setContentPane((Container) tabbedPane.getComponentAt(i));
     });
     cardLayout.show(panel, desktopPane.getClass().getName());
   }
 
-  private void internalFrameToTab() {
-    // tabbedPane.removeAll();
+  private void moveFramesToTabs() {
+    // Compare the length first so that "Document #10" comes after "Document #9"
+    Comparator<String> titleOrder = Comparator.comparingInt(String::length)
+        .thenComparing(Comparator.naturalOrder());
     Stream.of(desktopPane.getAllFrames())
-        .sorted(Comparator.comparing(JInternalFrame::getTitle))
-        .forEach(f -> tabs.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
+        .sorted(Comparator.comparing(JInternalFrame::getTitle, titleOrder))
+        .forEach(f -> tabbedPane.addTab(f.getTitle(), f.getFrameIcon(), f.getContentPane()));
     Optional.ofNullable(desktopPane.getSelectedFrame())
-        .ifPresent(f -> tabs.setSelectedIndex(tabs.indexOfTab(f.getTitle())));
-    cardLayout.show(panel, tabs.getClass().getName());
+        .ifPresent(f -> tabbedPane.setSelectedIndex(tabbedPane.indexOfTab(f.getTitle())));
+    cardLayout.show(panel, tabbedPane.getClass().getName());
   }
 
   private JInternalFrame createInternalFrame() {
     openFrameCount += 1;
-    String title = String.format("Document #%s", openFrameCount);
+    String title = String.format("Document #%d", openFrameCount);
     JInternalFrame f = new JInternalFrame(title, true, true, true, true);
     row += 1;
     f.setSize(240, 120);
