@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -80,29 +79,28 @@ class CompoundButtonPanel extends JPanel {
 
 enum ButtonLocation {
   CENTER(0d), NORTH(45d), EAST(135d), SOUTH(225d), WEST(-45d);
-  private final double degree;
+  private final double startAngle;
 
-  ButtonLocation(double degree) {
-    this.degree = degree;
+  ButtonLocation(double startAngle) {
+    this.startAngle = startAngle;
   }
 
   /* default */ double getStartAngle() {
-    return degree;
+    return startAngle;
   }
 }
 
 class CompoundButton extends JButton {
   private transient Shape shape;
-  private transient Shape base;
-  private final ButtonLocation bl;
+  private final Dimension shapeSize = new Dimension();
+  private final ButtonLocation location;
   private final Dimension dim;
 
-  protected CompoundButton(Dimension d, ButtonLocation bl) {
+  protected CompoundButton(Dimension d, ButtonLocation location) {
     super();
     this.dim = d;
-    this.bl = bl;
+    this.location = location;
     setIcon(new ShapeIcon());
-    initShape();
   }
 
   @Override public void updateUI() {
@@ -120,77 +118,75 @@ class CompoundButton extends JButton {
     super.setIcon(defaultIcon);
   }
 
-  @Override public final Rectangle getBounds() {
-    return super.getBounds();
-  }
-
-  private void initShape() {
-    Rectangle rect = getBounds();
-    if (!rect.equals(base)) {
-      base = rect;
-      double ww = rect.width * .5;
-      double xx = ww * .5;
-      Shape inner = new Ellipse2D.Double(xx, xx, ww, ww);
-      if (ButtonLocation.CENTER == bl) {
-        shape = inner;
-      } else {
-        // TEST: parent.isOptimizedDrawingEnabled: false
-        double dw = rect.width - 2d;
-        double dh = rect.height - 2d;
-        Shape outer = new Arc2D.Double(1d, 1d, dw, dh, bl.getStartAngle(), 90d, Arc2D.PIE);
-        Area area = new Area(outer);
-        area.subtract(new Area(inner));
-        shape = area;
-      }
+  // Create the shape lazily and rebuild it only when the size changes,
+  // so that contains(...) also works before the first paint
+  private Shape getShape() {
+    int w = getWidth();
+    int h = getHeight();
+    if (shape == null || shapeSize.width != w || shapeSize.height != h) {
+      shapeSize.setSize(w, h);
+      shape = createShape(w, h);
     }
+    return shape;
   }
 
-  protected void paintFocusAndRollover(Graphics2D g2, Color color) {
+  private Shape createShape(int w, int h) {
+    double ww = w * .5;
+    double xx = ww * .5;
+    Shape inner = new Ellipse2D.Double(xx, xx, ww, ww);
+    Shape s;
+    if (ButtonLocation.CENTER == location) {
+      s = inner;
+    } else {
+      // The parent panel must return false from isOptimizedDrawingEnabled()
+      // because the bounds of these buttons overlap each other
+      Shape outer = new Arc2D.Double(
+          1d, 1d, w - 2d, h - 2d, location.getStartAngle(), 90d, Arc2D.PIE);
+      Area area = new Area(outer);
+      area.subtract(new Area(inner));
+      s = area;
+    }
+    return s;
+  }
+
+  private void paintFocusAndRollover(Graphics2D g2, Color color) {
     float x2 = getWidth() - 1f;
     float y2 = getHeight() - 1f;
     g2.setPaint(new GradientPaint(0f, 0f, color, x2, y2, color.brighter(), true));
-    g2.fill(shape);
-    g2.setPaint(getBackground());
-  }
-
-  @Override protected void paintComponent(Graphics g) {
-    initShape();
-    super.paintComponent(g);
+    g2.fill(getShape());
   }
 
   @Override protected void paintBorder(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(Color.GRAY);
-    g2.draw(shape);
+    g2.draw(getShape());
     g2.dispose();
   }
 
   @Override public boolean contains(int x, int y) {
-    // return shape != null && shape.contains(x, y);
-    return Optional.ofNullable(shape)
-        .map(s -> s.contains(x, y))
-        .orElseGet(() -> super.contains(x, y));
+    return getShape().contains(x, y);
   }
 
   private final class ShapeIcon implements Icon {
-    private final Color fc = new Color(100, 150, 255, 200);
-    private final Color ac = new Color(230, 230, 230);
-    private final Color rc = new Color(255, 165, 100);
+    private final Color focusColor = new Color(100, 150, 255, 200);
+    private final Color armedColor = new Color(230, 230, 230);
+    private final Color rolloverColor = new Color(255, 165, 100);
 
+    // The shape is in the button's coordinate space, so x and y are ignored
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       if (getModel().isArmed()) {
-        g2.setPaint(ac);
-        g2.fill(shape);
+        g2.setPaint(armedColor);
+        g2.fill(getShape());
       } else if (isRolloverEnabled() && getModel().isRollover()) {
-        paintFocusAndRollover(g2, rc);
+        paintFocusAndRollover(g2, rolloverColor);
       } else if (hasFocus()) {
-        paintFocusAndRollover(g2, fc);
+        paintFocusAndRollover(g2, focusColor);
       } else {
         g2.setPaint(getBackground());
-        g2.fill(shape);
+        g2.fill(getShape());
       }
       g2.dispose();
     }
