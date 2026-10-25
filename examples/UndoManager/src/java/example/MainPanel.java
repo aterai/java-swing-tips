@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 public final class MainPanel extends JPanel {
@@ -22,8 +20,8 @@ public final class MainPanel extends JPanel {
     JTextField field2 = new JTextField("222222222");
     initUndoRedo(field2);
 
-    add(createTitledPanel("undo:Ctrl-z, redo:Ctrl-y", field1));
-    add(createTitledPanel("test", field2));
+    add(createTitledPanel("undo: Ctrl-Z, redo: Ctrl-Y or Ctrl-Shift-Z", field1));
+    add(createTitledPanel("another JTextField with its own UndoManager", field2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -57,9 +55,10 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      try {
+      // Check canUndo() beforehand instead of catching CannotUndoException
+      if (undoManager.canUndo()) {
         undoManager.undo();
-      } catch (CannotUndoException ex) {
+      } else {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     }
@@ -74,9 +73,10 @@ public final class MainPanel extends JPanel {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
-      try {
+      // Check canRedo() beforehand instead of catching CannotRedoException
+      if (undoManager.canRedo()) {
         undoManager.redo();
-      } catch (CannotRedoException ex) {
+      } else {
         UIManager.getLookAndFeel().provideErrorFeedback((Component) e.getSource());
       }
     }
