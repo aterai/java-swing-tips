@@ -19,7 +19,6 @@ import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.Position;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.BlockView;
 import javax.swing.text.html.HTML;
@@ -208,7 +207,7 @@ class TooltipEditorKit extends HTMLEditorKit {
 
 class TooltipBlockView extends BlockView {
   protected TooltipBlockView(Element elem) {
-    super(elem, View.Y_AXIS);
+    super(elem, Y_AXIS);
   }
 
   @Override public String getToolTipText(float x, float y, Shape allocation) {
