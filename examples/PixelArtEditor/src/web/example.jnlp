@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="@codebase@" href="example.jnlp">
+  <information>
+    <title>@title@</title>
+    <vendor>@vendor@</vendor>
+    <homepage href="@homepage@" />
+    <description>Swing Example</description>
+    <description kind="short">example</description>
+  </information>
+  <update check="timeout" policy="always" />
+  <resources>
+    <java version="@compile.source@+" />
+    <jar href="example.jar" main="true" />
+  </resources>
+  <application-desc main-class="@main.class@" />
+</jnlp>
