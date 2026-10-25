@@ -206,6 +206,7 @@ class RadarChartPanel extends JPanel {
   }
 }
 
+@SuppressWarnings("PMD.TooManyMethods")
 final class RadarChart {
   public static final double SIZE = 1000d;
   private static final double CENTER = SIZE / 2d;
