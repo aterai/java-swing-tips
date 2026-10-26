@@ -148,7 +148,7 @@ final class HalfFormatter extends DefaultFormatter {
 }
 
 class RoundDownToHalfSpinnerModel extends SpinnerNumberModel {
-  public RoundDownToHalfSpinnerModel(double value, double min, double max, double step) {
+  protected RoundDownToHalfSpinnerModel(double value, double min, double max, double step) {
     super(roundDownToHalf(value), min, max, step);
   }
 

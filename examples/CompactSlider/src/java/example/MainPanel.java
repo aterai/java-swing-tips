@@ -96,8 +96,7 @@ final class CompactSliderPanel1 extends JPanel {
       // Clamp so that min and max can be reached even if the value is not a multiple of step
       int min = (Integer) m.getMinimum();
       int max = (Integer) m.getMaximum();
-      src.setValue(Math.min(Math.max(newValue, min), max));
-      // Java 21: src.setValue(Math.clamp(newValue, min, max));
+      src.setValue(Math.min(Math.max(newValue, min), max)); // Java 21: Math.clamp(...);
     });
   }
 }

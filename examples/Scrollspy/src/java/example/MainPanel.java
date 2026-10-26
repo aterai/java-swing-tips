@@ -109,8 +109,8 @@ public final class MainPanel extends JPanel {
     tree.setRowHeight(32);
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    // ignore node selection triggered by JEditorPane scrolling
     tree.addTreeSelectionListener(e -> {
-      // ignore node selection triggered by JEditorPane scrolling
       if (tree.isEnabled()) {
         Optional.ofNullable(e.getNewLeadSelectionPath())
             .map(TreePath::getLastPathComponent)

@@ -219,8 +219,8 @@ class BackgroundTask extends SwingWorker<String, Chunk> {
     return ret;
   }
 
-  protected int doSomething(
-      Scanner scanner, int idx, int readied) throws InterruptedException {
+  protected int doSomething(Scanner scanner, int idx, int readied)
+      throws InterruptedException {
     if (idx % 50 == 0) {
       Thread.sleep(10);
     }
