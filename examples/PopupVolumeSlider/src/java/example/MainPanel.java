@@ -15,15 +15,17 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 public final class MainPanel extends JPanel {
+  public static final int DEFAULT_VOLUME = 80;
+
   private MainPanel() {
     super(new BorderLayout());
     JPopupMenu popup = new JPopupMenu();
     popup.setLayout(new BorderLayout());
     popup.addMouseWheelListener(InputEvent::consume);
 
-    UIManager.put("Slider.paintValue", true);
+    UIManager.put("Slider.paintValue", Boolean.TRUE);
     UIManager.put("Slider.focus", UIManager.get("Slider.background"));
-    JSlider slider = new JSlider(SwingConstants.VERTICAL, 0, 100, 80) {
+    JSlider slider = new JSlider(SwingConstants.VERTICAL, 0, 100, DEFAULT_VOLUME) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
         d.height = 120;
@@ -43,8 +45,8 @@ public final class MainPanel extends JPanel {
     JToggleButton button = makeToggleButton(popup, slider);
     slider.getModel().addChangeListener(e -> {
       BoundedRangeModel m = (BoundedRangeModel) e.getSource();
+      // SoundButton#setEnabled(...) also switches the icon text
       button.setEnabled(m.getValue() > m.getMinimum());
-      button.repaint();
     });
 
     Box box = Box.createHorizontalBox();
@@ -55,9 +57,9 @@ public final class MainPanel extends JPanel {
   }
 
   private JToggleButton makeToggleButton(JPopupMenu popup, JSlider slider) {
-    JToggleButton button = new SoundButton(popup);
+    SoundButton button = new SoundButton(popup);
     button.setToolTipText("");
-    button.addMouseListener(new SoundButtonHandler(slider, popup));
+    button.addMouseListener(new SoundButtonHandler(button, slider, popup));
     popup.addPopupMenuListener(new PopupHandler(button));
     return button;
   }
@@ -84,32 +86,37 @@ public final class MainPanel extends JPanel {
   }
 
   private static final class SoundButtonHandler extends MouseAdapter {
+    private final SoundButton button;
     private final JSlider slider;
     private final JPopupMenu popup;
 
-    private SoundButtonHandler(JSlider slider, JPopupMenu popup) {
+    private SoundButtonHandler(SoundButton button, JSlider slider, JPopupMenu popup) {
       super();
+      this.button = button;
       this.slider = slider;
       this.popup = popup;
     }
 
     @Override public void mousePressed(MouseEvent e) {
-      Component btn = e.getComponent();
-      if (!btn.isEnabled()) {
-        slider.setValue(80);
-        btn.setEnabled(true);
+      // A MouseListener is used instead of an ActionListener so that
+      // the popup also opens when the button is disabled (muted)
+      if (!button.isEnabled()) {
+        slider.setValue(DEFAULT_VOLUME);
+        button.setEnabled(true);
       }
-      Dimension d = popup.getPreferredSize();
-      popup.show(btn, (btn.getWidth() - d.width) / 2, -d.height);
+      button.showPopup();
     }
 
     @Override public void mouseEntered(MouseEvent e) {
-      if (!popup.isVisible()) {
-        ToolTipManager.sharedInstance().setEnabled(true);
-      }
+      enableToolTipIfPopupHidden();
     }
 
     @Override public void mouseExited(MouseEvent e) {
+      enableToolTipIfPopupHidden();
+    }
+
+    // Restore the tooltip disabled by PopupHandler#popupMenuWillBecomeVisible(...)
+    private void enableToolTipIfPopupHidden() {
       if (!popup.isVisible()) {
         ToolTipManager.sharedInstance().setEnabled(true);
       }
@@ -148,13 +155,18 @@ class SoundButton extends JToggleButton {
   @Override public JToolTip createToolTip() {
     JToolTip tip = super.createToolTip();
     tip.addHierarchyListener(e -> {
-      long flg = e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED;
-      if (flg != 0 && e.getComponent().isShowing()) {
-        Dimension d = popup.getPreferredSize();
-        popup.show(this, (getWidth() - d.width) / 2, -d.height);
+      boolean showingChanged = (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0;
+      if (showingChanged && e.getComponent().isShowing()) {
+        // Overlay the popup menu on top of the tooltip just shown
+        showPopup();
       }
     });
     return tip;
+  }
+
+  public void showPopup() {
+    Dimension d = popup.getPreferredSize();
+    popup.show(this, (getWidth() - d.width) / 2, -d.height);
   }
 
   @Override public Point getToolTipLocation(MouseEvent e) {
