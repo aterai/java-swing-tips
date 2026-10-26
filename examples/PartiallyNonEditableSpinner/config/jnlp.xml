@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <property name="jnlp.title"    value="JST PartiallyNonEditableSpinner" />
+  <property name="jnlp.Name"     value="PartiallyNonEditableSpinner" />
+  <property name="jnlp.name"     value="partiallynoneditablespinner" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/partiallynoneditablespinner" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/PartiallyNonEditableSpinner.html" />
+</project>

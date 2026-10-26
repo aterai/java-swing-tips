@@ -5,11 +5,13 @@
 package example;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.synth.SynthUI;
+import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -44,16 +46,19 @@ public final class MainPanel extends JPanel {
     // cb.setGap(0);
     // cb.install(editor2);
 
-    add(makeTitledPanel("JSpinner+Default", spinner1));
-    add(makeTitledPanel("JSpinner+StringBorder", spinner2));
+    add(createTitledPanel("JSpinner+Default", spinner1));
+    add(createTitledPanel("JSpinner+StringBorder", spinner2));
     setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void initTextFieldBorder(JTextField textField) {
+  private static void initTextFieldBorder(JTextField textField) {
+    // The child JFormattedTextField is updated after this editor by
+    // SwingUtilities.updateComponentTreeUI(...), so wait until its new border is installed
     EventQueue.invokeLater(() -> {
-      Border b = new StringBorder(textField, "%");
-      if (textField.getUI().getClass().getName().contains("SynthFormattedTextFieldUI")) {
+      Border b = new StringBorder("%");
+      // Synth(Nimbus) paints the text field background with its border, so keep it
+      if (textField.getUI() instanceof SynthUI) {
         Border c = textField.getBorder();
         textField.setBorder(Objects.nonNull(c) ? BorderFactory.createCompoundBorder(c, b) : b);
       } else {
@@ -62,7 +67,7 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  private static Component makeTitledPanel(String title, Component cmp) {
+  private static Component createTitledPanel(String title, Component cmp) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     GridBagConstraints c = new GridBagConstraints();
@@ -96,19 +101,17 @@ public final class MainPanel extends JPanel {
 }
 
 class StringBorder implements Border {
-  private final Insets insets;
-  private final Rectangle rect;
-  private final String str;
+  private final String text;
 
-  protected StringBorder(JComponent parent, String str) {
-    this.str = str;
-    FontRenderContext frc = new FontRenderContext(null, true, true);
-    rect = parent.getFont().getStringBounds(str, frc).getBounds();
-    insets = new Insets(0, 0, 0, rect.width);
+  protected StringBorder(String text) {
+    this.text = text;
   }
 
   @Override public Insets getBorderInsets(Component c) {
-    return insets;
+    // Measure with the current font of the component so that the insets
+    // follow font and LookAndFeel changes
+    int w = c.getFontMetrics(c.getFont()).stringWidth(text);
+    return new Insets(0, 0, 0, w);
   }
 
   @Override public boolean isBorderOpaque() {
@@ -117,10 +120,19 @@ class StringBorder implements Border {
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
-    int tx = x + width - rect.width;
-    float ty = y - rect.y + (height - rect.height) / 2f;
-    // g2.setPaint(Color.RED);
-    g2.drawString(str, tx, ty);
+    // Use the same text antialiasing as the text field
+    Object hints = Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
+    if (hints instanceof Map) {
+      g2.addRenderingHints((Map<?, ?>) hints);
+    }
+    Font font = c.getFont();
+    g2.setFont(font);
+    boolean disabled = c instanceof JTextComponent && !c.isEnabled();
+    g2.setPaint(disabled ? ((JTextComponent) c).getDisabledTextColor() : c.getForeground());
+    FontMetrics fm = c.getFontMetrics(font);
+    int tx = x + width - fm.stringWidth(text);
+    int ty = y + (height - fm.getHeight()) / 2 + fm.getAscent();
+    g2.drawString(text, tx, ty);
     g2.dispose();
   }
 }
