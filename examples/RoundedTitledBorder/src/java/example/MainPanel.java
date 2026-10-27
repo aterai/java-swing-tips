@@ -74,22 +74,25 @@ class RoundedTitledBorder extends TitledBorder {
   }
 
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     Border b = getBorder();
     if (b instanceof RoundedBorder) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(
+          RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       Dimension d = getLabel(c).getPreferredSize();
-      Insets i = b.getBorderInsets(c);
-      int a2 = arc * 2;
-      int w = d.width + i.left + i.right + a2;
-      int h = d.height + i.top + i.bottom;
-      g2.setClip(((RoundedBorder) b).getBorderShape(x + i.left, y + i.top, w, h));
+      Insets ins = b.getBorderInsets(c);
+      int arc2 = arc * 2;
+      int w = d.width + ins.left + ins.right + arc2;
+      int h = d.height + ins.top + ins.bottom;
+      // Clip with the rounded border shape so that the top-left corner follows the border,
+      // and push the other corners outside the clip so that only the bottom-right is rounded
+      g2.setClip(((RoundedBorder) b).getBorderShape(x + ins.left, y + ins.top, w, h));
       g2.setPaint(Color.GRAY);
-      Shape titleBg = new RoundRectangle2D.Float(x - a2, y - a2, w + a2, h + a2, arc, arc);
+      Shape titleBg = new RoundRectangle2D.Float(
+          x - arc2, y - arc2, w + arc2, h + arc2, arc, arc);
       g2.fill(titleBg);
       g2.dispose();
     }
-    g2.dispose();
     super.paintBorder(c, g, x, y, width, height);
   }
 
@@ -146,8 +149,9 @@ class TitleLayerUI extends LayerUI<JScrollPane> {
     super.paint(g, c);
     if (c instanceof JLayer) {
       JScrollPane sp = (JScrollPane) ((JLayer<?>) c).getView();
-      Rectangle r = SwingUtilities.calculateInnerArea(sp, sp.getBounds());
-      if (r != null && !sp.getViewport().getView().hasFocus()) {
+      Component view = sp.getViewport().getView();
+      if (view != null && !view.hasFocus()) {
+        Rectangle r = SwingUtilities.calculateInnerArea(sp, null);
         Dimension d = label.getPreferredSize();
         SwingUtilities.paintComponent(g, label, sp, r.x - 1, r.y - 1, d.width, d.height);
       }
@@ -191,12 +195,13 @@ class TitleLayerUI extends LayerUI<JScrollPane> {
         Dimension d = getPreferredSize();
         int w = d.width - 1;
         int h = d.height - 1;
-        int h2 = h / 2;
+        int halfHeight = h / 2;
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setPaint(getBackground());
-        g2.fillRect(0, 0, w, h2);
+        // Fill the upper half to keep the top-right corner square
+        g2.fillRect(0, 0, w, halfHeight);
         g2.fillRoundRect(-arc, 0, w + arc, h, arc, arc);
         g2.dispose();
       }
