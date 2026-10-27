@@ -96,15 +96,12 @@ class RoundedComboBox<E> extends JComboBox<E> {
     super.updateUI();
     setBorder(new RoundedCornerBorder());
     setRenderer(new RoundedCornerListCellRenderer());
-    setUI(new WithoutArrowButtonComboBoxUI());
+    setUI(new FlatArrowButtonComboBoxUI());
     listener = new HeavyWeightContainerListener();
     addPopupMenuListener(listener);
     Object o = getAccessibleContext().getAccessibleChild(0);
     if (o instanceof JComponent) {
-      JComponent c = (JComponent) o;
-      c.setBorder(new BottomRoundedCornerBorder());
-      // c.setBackground(UIManager.getColor("List.background")); // ???
-      c.setBackground(Color.WHITE);
+      ((JComponent) o).setBorder(new BottomRoundedCornerBorder());
     }
   }
 }
@@ -157,8 +154,14 @@ class GapIcon implements Icon {
 
 class HeavyWeightContainerListener implements PopupMenuListener {
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    EventQueue.invokeLater(() -> {
-      JComboBox<?> combo = (JComboBox<?>) e.getSource();
+    JComboBox<?> combo = (JComboBox<?>) e.getSource();
+    // The popup window is not yet available here, so defer until it is shown
+    EventQueue.invokeLater(() -> updatePopupBorder(combo));
+  }
+
+  private static void updatePopupBorder(JComboBox<?> combo) {
+    // The popup may already be closed before this deferred task runs
+    if (combo.isPopupVisible()) {
       combo.setBorder(new TopRoundedCornerBorder());
       Accessible a = combo.getUI().getAccessibleChild(combo, 0);
       if (a instanceof JPopupMenu) {
@@ -166,13 +169,12 @@ class HeavyWeightContainerListener implements PopupMenuListener {
             .filter(HeavyWeightContainerListener::isHeavyWeight)
             .ifPresent(w -> w.setBackground(new Color(0x0, true)));
       }
-    });
+    }
   }
 
   private static boolean isHeavyWeight(Window w) {
-    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
     GraphicsConfiguration gc = w.getGraphicsConfiguration();
-    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+    return w.getType() == Window.Type.POPUP && gc != null && gc.isTranslucencyCapable();
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -227,30 +229,23 @@ class RoundedCornerBorder extends AbstractBorder {
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    int r = ARC * 2;
-    int w = width - 1;
-    int h = height - 1;
-
-    Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
-    if (c instanceof JPopupMenu) {
-      g2.setPaint(c.getBackground());
-      g2.fill(round);
-    } else {
-      Container parent = c.getParent();
-      if (Objects.nonNull(parent)) {
-        g2.setPaint(parent.getBackground());
-        Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
-        corner.subtract(round);
-        g2.fill(corner);
-      }
+    Area round = createBorderShape(x, y, width - 1d, height - 1d);
+    Container parent = c.getParent();
+    if (Objects.nonNull(parent)) {
+      // Fill the outside of the rounded corners with the parent background
+      g2.setPaint(parent.getBackground());
+      Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
+      corner.subtract(round);
+      g2.fill(corner);
     }
     g2.setPaint(Color.GRAY);
     g2.draw(round);
     g2.dispose();
   }
 
-  @Override public Insets getBorderInsets(Component c) {
-    return new Insets(4, 4, 4, 4);
+  protected Area createBorderShape(double x, double y, double w, double h) {
+    double r = ARC * 2d;
+    return new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
   }
 
   @Override public Insets getBorderInsets(Component c, Insets insets) {
@@ -261,29 +256,11 @@ class RoundedCornerBorder extends AbstractBorder {
 
 class TopRoundedCornerBorder extends RoundedCornerBorder {
   // https://ateraimemo.com/Swing/RoundedComboBox.html
-  @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    if (c instanceof JPopupMenu) {
-      g2.clearRect(x, y, width, height);
-    }
-    double r = ARC * 2d;
-    double w = width - 1d;
-    double h = height - 1d;
-    Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
-    Rectangle b = round.getBounds();
-    b.setBounds(b.x, b.y + ARC, b.width, b.height - ARC);
-    round.add(new Area(b));
-    Container parent = c.getParent();
-    if (Objects.nonNull(parent)) {
-      g2.setPaint(parent.getBackground());
-      Area corner = new Area(new Rectangle2D.Double(x, y, width, height));
-      corner.subtract(round);
-      g2.fill(corner);
-    }
-    g2.setPaint(Color.GRAY);
-    g2.draw(round);
-    g2.dispose();
+  @Override protected Area createBorderShape(double x, double y, double w, double h) {
+    // Round only the top two corners by adding a rectangle over the bottom ones
+    Area round = super.createBorderShape(x, y, w, h);
+    round.add(new Area(new Rectangle2D.Double(x, y + ARC, w, h - ARC)));
+    return round;
   }
 }
 
@@ -295,10 +272,11 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     if (c instanceof JPopupMenu) {
       Window w = SwingUtilities.getWindowAncestor(c);
       if (w != null && w.getType() == Window.Type.POPUP) {
+        // Graphics#clearRect(...) ignores the Composite and fills with the background color,
+        // so fill with AlphaComposite.Clear to make the corners transparent
         Composite cmp = g2.getComposite();
         g2.setComposite(AlphaComposite.Clear);
-        g2.setPaint(new Color(0x0, true));
-        g2.clearRect(x, y, width, height);
+        g2.fillRect(x, y, width, height);
         g2.setComposite(cmp);
       }
     }
@@ -316,19 +294,25 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     p.lineTo(x + w, y);
     p.closePath();
 
-    g2.setPaint(c.getBackground());
+    // BasicComboPopup is not opaque, so the area between this border and the list is
+    // painted only here: fill it with the list background to avoid a frame of another color
+    Color bgc = c instanceof ComboPopup
+        ? ((ComboPopup) c).getList().getBackground()
+        : c.getBackground();
+    g2.setPaint(bgc);
     g2.fill(p);
     g2.setPaint(Color.GRAY);
     g2.draw(p);
-    g2.setPaint(c.getBackground());
+    g2.setPaint(bgc);
     g2.drawLine(x + 1, y, x + width - 2, y);
     g2.dispose();
   }
 }
 
-class WithoutArrowButtonComboBoxUI extends BasicComboBoxUI {
+class FlatArrowButtonComboBoxUI extends BasicComboBoxUI {
   @Override protected JButton createArrowButton() {
-    JButton b = new JButton(new ArrowIcon(Color.WHITE, Color.BLACK));
+    // A white arrow is invisible on the light background of the combo box
+    JButton b = new JButton(new ArrowIcon(Color.GRAY, Color.BLACK));
     b.setContentAreaFilled(false);
     b.setFocusPainted(false);
     b.setBorder(BorderFactory.createEmptyBorder());
