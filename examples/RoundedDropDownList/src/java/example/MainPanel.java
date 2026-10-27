@@ -22,14 +22,14 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 public final class MainPanel extends JPanel {
-  public static final Color SELECTION_FGC = Color.ORANGE;
-  public static final Color PANEL_BGC = Color.GRAY;
+  public static final Color SELECTION_COLOR = Color.ORANGE;
+  public static final Color PANEL_BACKGROUND = Color.GRAY;
 
   private MainPanel() {
     super(new BorderLayout());
     UIManager.put("ComboBox.foreground", DarkComboBox.FOREGROUND);
     UIManager.put("ComboBox.background", DarkComboBox.BACKGROUND);
-    UIManager.put("ComboBox.selectionForeground", SELECTION_FGC);
+    UIManager.put("ComboBox.selectionForeground", SELECTION_COLOR);
     UIManager.put("ComboBox.selectionBackground", DarkComboBox.BACKGROUND);
 
     UIManager.put("ComboBox.buttonDarkShadow", DarkComboBox.BACKGROUND);
@@ -39,7 +39,7 @@ public final class MainPanel extends JPanel {
 
     JPanel p = new JPanel(new GridLayout(0, 1, 15, 15));
     p.setOpaque(true);
-    p.setBackground(PANEL_BGC);
+    p.setBackground(PANEL_BACKGROUND);
     p.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
     p.add(new DarkComboBox<>(createModel()));
     p.add(new BasicRoundedComboBox<>(createModel()));
@@ -47,7 +47,7 @@ public final class MainPanel extends JPanel {
 
     add(p, BorderLayout.NORTH);
     setOpaque(true);
-    setBackground(PANEL_BGC);
+    setBackground(PANEL_BACKGROUND);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -169,22 +169,25 @@ class RoundedComboBox<E> extends JComboBox<E> {
 
 class HeavyWeightContainerListener implements PopupMenuListener {
   @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-    EventQueue.invokeLater(() -> {
-      JComboBox<?> combo = (JComboBox<?>) e.getSource();
-      Accessible a = combo.getUI().getAccessibleChild(combo, 0);
-      if (a instanceof JPopupMenu) {
-        // https://ateraimemo.com/Swing/DropShadowPopup.html
-        Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
-            .filter(HeavyWeightContainerListener::isHeavyWeight)
-            .ifPresent(w -> w.setBackground(new Color(0x0, true)));
-      }
-    });
+    JComboBox<?> combo = (JComboBox<?>) e.getSource();
+    // The popup window is not yet available here, so defer until it is shown
+    EventQueue.invokeLater(() -> createPopupWindowTranslucent(combo));
+  }
+
+  private static void createPopupWindowTranslucent(JComboBox<?> combo) {
+    // The popup may already be closed before this deferred task runs
+    Accessible a = combo.getUI().getAccessibleChild(combo, 0);
+    if (combo.isPopupVisible() && a instanceof JPopupMenu) {
+      // https://ateraimemo.com/Swing/DropShadowPopup.html
+      Optional.ofNullable(SwingUtilities.getWindowAncestor((Component) a))
+          .filter(HeavyWeightContainerListener::isHeavyWeight)
+          .ifPresent(w -> w.setBackground(new Color(0x0, true)));
+    }
   }
 
   private static boolean isHeavyWeight(Window w) {
-    boolean isHeavyWeight = w.getType() == Window.Type.POPUP;
     GraphicsConfiguration gc = w.getGraphicsConfiguration();
-    return gc != null && gc.isTranslucencyCapable() && isHeavyWeight;
+    return w.getType() == Window.Type.POPUP && gc != null && gc.isTranslucencyCapable();
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -222,11 +225,11 @@ class ComboRolloverHandler extends MouseAdapter {
 
 class ArrowIcon implements Icon {
   private final Color color;
-  private final Color rollover;
+  private final Color rolloverColor;
 
-  protected ArrowIcon(Color color, Color rollover) {
+  protected ArrowIcon(Color color, Color rolloverColor) {
     this.color = color;
-    this.rollover = rollover;
+    this.rolloverColor = rolloverColor;
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -238,7 +241,7 @@ class ArrowIcon implements Icon {
       if (m.isPressed()) {
         shift = 1;
       } else {
-        g2.setPaint(m.isRollover() ? rollover : color);
+        g2.setPaint(m.isRollover() ? rolloverColor : color);
       }
     }
     g2.translate(x, y + shift);
@@ -285,10 +288,6 @@ class RoundedCornerBorder extends AbstractBorder {
     g2.dispose();
   }
 
-  @Override public Insets getBorderInsets(Component c) {
-    return new Insets(4, 8, 4, 8);
-  }
-
   @Override public Insets getBorderInsets(Component c, Insets insets) {
     insets.set(4, 8, 4, 8);
     return insets;
@@ -300,17 +299,13 @@ class TopRoundedCornerBorder extends RoundedCornerBorder {
   @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    if (c instanceof JPopupMenu) {
-      g2.clearRect(x, y, width, height);
-    }
     double r = ARC * 2d;
     double w = width - 1d;
     double h = height - 1d;
 
+    // Round only the top corners by covering the bottom ones with a rectangle
     Area round = new Area(new RoundRectangle2D.Double(x, y, w, h, r, r));
-    Rectangle b = round.getBounds();
-    b.setBounds(b.x, b.y + ARC, b.width, b.height - ARC);
-    round.add(new Area(b));
+    round.add(new Area(new Rectangle2D.Double(x, y + ARC, w, h - ARC)));
 
     Container parent = c.getParent();
     if (Objects.nonNull(parent)) {
@@ -356,13 +351,13 @@ class BottomRoundedCornerBorder extends RoundedCornerBorder {
     p.curveTo(x + w - r + rr, y + h, x + w, y + h - r + rr, x + w, y + h - r);
     p.lineTo(x + w, y);
     p.closePath();
-    // Area round = new Area(p);
 
     g2.setPaint(c.getBackground());
     g2.fill(p);
 
     g2.setPaint(c.getForeground());
     g2.draw(p);
+    // Erase the top edge so that the list looks connected to the JComboBox
     g2.setPaint(c.getBackground());
     g2.drawLine(x + 1, y, x + width - 2, y);
     g2.dispose();
