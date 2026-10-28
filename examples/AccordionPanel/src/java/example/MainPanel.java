@@ -21,7 +21,7 @@ public final class MainPanel extends JPanel {
     sideMenuBox.setOpaque(true);
     sideMenuBox.setBackground(new Color(0xB4_B4_FF));
     sideMenuBox.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-    initAccordionSections().forEach(p -> {
+    createAccordionSections().forEach(p -> {
       sideMenuBox.add(p);
       sideMenuBox.add(Box.createVerticalStrut(5));
     });
@@ -48,45 +48,44 @@ public final class MainPanel extends JPanel {
   //   box.revalidate();
   // }
 
-  private List<AbstractAccordionSectionPanel> initAccordionSections() {
+  private static List<AccordionSectionPanel> createAccordionSections() {
     return Arrays.asList(
-        new AbstractAccordionSectionPanel("System Tasks") {
-          @Override public JPanel createPanel() {
-            JPanel p = new JPanel(new GridLayout(0, 1));
-            Stream.of("1111", "222222")
-                .map(JCheckBox::new)
-                .forEach(b -> {
-                  b.setOpaque(false);
-                  p.add(b);
-                });
-            return p;
-          }
-        },
-        new AbstractAccordionSectionPanel("Other Places") {
-          @Override public JPanel createPanel() {
-            JPanel p = new JPanel(new GridLayout(0, 1));
-            Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
-                .map(JLabel::new)
-                .forEach(p::add);
-            return p;
-          }
-        },
-        new AbstractAccordionSectionPanel("Details") {
-          @Override public JPanel createPanel() {
-            JPanel p = new JPanel(new GridLayout(0, 1));
-            ButtonGroup bg = new ButtonGroup();
-            Stream.of("aaa", "bbb", "ccc", "ddd")
-                .map(JRadioButton::new)
-                .forEach(b -> {
-                  b.setSelected(p.getComponentCount() == 0);
-                  b.setOpaque(false);
-                  p.add(b);
-                  bg.add(b);
-                });
-            return p;
-          }
-        }
-    );
+        new AccordionSectionPanel("System Tasks", createSystemTasksPanel()),
+        new AccordionSectionPanel("Other Places", createOtherPlacesPanel()),
+        new AccordionSectionPanel("Details", createDetailsPanel()));
+  }
+
+  private static JPanel createSystemTasksPanel() {
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    Stream.of("1111", "222222")
+        .map(JCheckBox::new)
+        .forEach(b -> {
+          b.setOpaque(false);
+          p.add(b);
+        });
+    return p;
+  }
+
+  private static JPanel createOtherPlacesPanel() {
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
+        .map(JLabel::new)
+        .forEach(p::add);
+    return p;
+  }
+
+  private static JPanel createDetailsPanel() {
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    ButtonGroup bg = new ButtonGroup();
+    Stream.of("aaa", "bbb", "ccc", "ddd")
+        .map(JRadioButton::new)
+        .forEach(b -> {
+          b.setSelected(p.getComponentCount() == 0);
+          b.setOpaque(false);
+          p.add(b);
+          bg.add(b);
+        });
+    return p;
   }
 
   public static void main(String[] args) {
@@ -111,14 +110,18 @@ public final class MainPanel extends JPanel {
   }
 }
 
-abstract class AbstractAccordionSectionPanel extends JPanel {
+final class AccordionSectionPanel extends JPanel {
   private final String title;
   private final JLabel headerLabel;
-  private final JPanel contentPanel = createPanel();
+  private final JComponent contentPanel;
 
-  protected AbstractAccordionSectionPanel(String title) {
+  // The content is passed in instead of being created by an abstract factory
+  // method called from a field initializer, which would run before the
+  // subclass fields are initialized.
+  /* default */ AccordionSectionPanel(String title, JComponent contentPanel) {
     super(new BorderLayout());
     this.title = title;
+    this.contentPanel = contentPanel;
     headerLabel = new JLabel("▼ " + title) {
       private final Color bgc = new Color(0xC8_C8_FF);
 
@@ -150,16 +153,6 @@ abstract class AbstractAccordionSectionPanel extends JPanel {
     add(contentPanel);
   }
 
-  public abstract JPanel createPanel();
-
-  @Override public final Component add(Component comp) {
-    return super.add(comp);
-  }
-
-  @Override public final void add(Component comp, Object constraints) {
-    super.add(comp, constraints);
-  }
-
   @Override public Dimension getPreferredSize() {
     Dimension d = headerLabel.getPreferredSize();
     if (contentPanel.isVisible()) {
@@ -174,13 +167,19 @@ abstract class AbstractAccordionSectionPanel extends JPanel {
     return d;
   }
 
-  protected void toggleExpansion() {
+  private void toggleExpansion() {
     boolean visible = !contentPanel.isVisible();
     contentPanel.setVisible(visible);
     headerLabel.setText(String.format("%s %s", visible ? "△" : "▼", title));
     revalidate();
     // fireExpansionEvent();
-    EventQueue.invokeLater(() -> contentPanel.scrollRectToVisible(contentPanel.getBounds()));
+    if (visible) {
+      // scrollRectToVisible() takes a rectangle in the component's own coordinate
+      // space, so getBounds() (relative to the parent) would scroll too far
+      EventQueue.invokeLater(() -> {
+        contentPanel.scrollRectToVisible(new Rectangle(contentPanel.getSize()));
+      });
+    }
   }
 
   // protected Vector<ExpansionListener> expansionListenerList = new Vector<>();
