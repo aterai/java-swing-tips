@@ -11,10 +11,10 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JScrollPane s1 = new JScrollPane(new JTree());
-    JScrollPane s2 = new JScrollPane(new JTable(6, 3));
+    JScrollPane left = new JScrollPane(new JTree());
+    JScrollPane right = new JScrollPane(new JTable(6, 3));
 
-    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
     split.setResizeWeight(.4);
 
     JCheckBox check = new JCheckBox("Keep DividerLocation", true);
@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void swap(JSplitPane split, boolean keepDividerLoc) {
+  private static void swap(JSplitPane split, boolean keepLocation) {
     Component left = split.getLeftComponent();
     Component right = split.getRightComponent();
 
@@ -47,8 +47,11 @@ public final class MainPanel extends JPanel {
     split.setLeftComponent(right);
     split.setRightComponent(left);
 
+    // Swap the distribution ratio of extra space as well
     split.setResizeWeight(1d - split.getResizeWeight());
-    if (keepDividerLoc) {
+    // Re-set the current location explicitly, otherwise the divider location
+    // is recalculated after the child components are replaced
+    if (keepLocation) {
       split.setDividerLocation(split.getDividerLocation());
     }
   }
