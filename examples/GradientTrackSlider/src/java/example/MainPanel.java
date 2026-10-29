@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalSliderUI;
@@ -34,10 +33,7 @@ public final class MainPanel extends JPanel {
         return 64;
       }
     });
-    // System.out.println(UIManager.get("Slider.trackWidth"));
-    // System.out.println(UIManager.get("Slider.majorTickLength"));
-    // System.out.println(UIManager.getInt("Slider.trackWidth"));
-    // System.out.println(UIManager.getInt("Slider.majorTickLength"));
+    // WindowsLookAndFeel does not define these keys, but MetalSliderUI requires them
     UIManager.put("Slider.trackWidth", 64);
     UIManager.put("Slider.majorTickLength", 6);
 
@@ -46,16 +42,16 @@ public final class MainPanel extends JPanel {
     slider.setOpaque(false);
 
     Box box = Box.createVerticalBox();
-    box.add(makeTitledPanel("Default:", slider));
+    box.add(createTitledPanel("Default:", slider));
     box.add(Box.createVerticalStrut(5));
-    box.add(makeTitledPanel("Gradient translucent track JSlider:", makeSlider()));
+    box.add(createTitledPanel("Gradient translucent track JSlider:", createSlider()));
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     add(box, BorderLayout.NORTH);
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JSlider makeSlider() {
+  private JSlider createSlider() {
     return new JSlider(SwingConstants.HORIZONTAL, 0, 100, 50) {
       private transient MouseAdapter handler;
 
@@ -63,7 +59,7 @@ public final class MainPanel extends JPanel {
         removeMouseMotionListener(handler);
         removeMouseWheelListener(handler);
         super.updateUI();
-        setUI(new GradientPalletSliderUI());
+        setUI(new GradientPaletteSliderUI());
         setBackground(Color.GRAY);
         setOpaque(false);
         handler = new WheelMouseHandler();
@@ -81,7 +77,7 @@ public final class MainPanel extends JPanel {
     super.paintComponent(g);
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JPanel p = new JPanel(new BorderLayout());
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.setOpaque(false);
@@ -111,8 +107,9 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class GradientPalletSliderUI extends MetalSliderUI {
-  private static final int[] GRADIENT_PALLET = GradientPalletUtils.makeGradientPallet();
+class GradientPaletteSliderUI extends MetalSliderUI {
+  private static final int FILL_ALPHA = 0x64 << 24;
+  private static final int[] GRADIENT_PALETTE = GradientPaletteUtils.createGradientPalette();
   // private Color controlDarkShadow = MetalLookAndFeel.getControlDarkShadow();
   private final Color controlDarkShadow = new Color(0x64_64_64);
   // private Color controlHighlight = MetalLookAndFeel.getControlHighlight();
@@ -198,41 +195,9 @@ class GradientPalletSliderUI extends MetalSliderUI {
       fillBottom = trBottom - 1;
     }
 
-    // if (slider.getOrientation() == SwingConstants.HORIZONTAL) {
-    //   middleOfThumb = thumbRect.x + thumbRect.width / 2;
-    //   middleOfThumb -= trackRect.x; // To compensate for the g.translate()
-    //   fillTop = slider.isEnabled() ? trTop + 1 : trTop;
-    //   fillBottom = slider.isEnabled() ? trBottom - 2 : trBottom - 1;
-    //
-    //   if (drawInverted()) {
-    //     fillLeft = middleOfThumb;
-    //     fillRight = slider.isEnabled() ? trRight - 2 : trRight - 1;
-    //   } else {
-    //     fillLeft = slider.isEnabled() ? trLeft +1 : trLeft;
-    //     fillRight = middleOfThumb;
-    //   }
-    // } else {
-    //   middleOfThumb = thumbRect.y + thumbRect.height / 2;
-    //   middleOfThumb -= trackRect.y; // To compensate for the g.translate()
-    //   fillLeft = slider.isEnabled() ? trLeft + 1 : trLeft;
-    //   fillRight = slider.isEnabled() ? trRight - 2 : trRight - 1;
-    //
-    //   if (drawInverted()) {
-    //     fillTop = slider.isEnabled() ? trTop + 1 : trTop;
-    //     fillBottom = middleOfThumb;
-    //   } else {
-    //     fillTop = middleOfThumb;
-    //     fillBottom = slider.isEnabled() ? trBottom - 2 : trBottom - 1;
-    //   }
-    // }
-
     if (slider.isEnabled()) {
-      // g.setColor(slider.getBackground());
-      // g.drawLine(fillLeft, fillTop, fillRight, fillTop);
-      // g.drawLine(fillLeft, fillTop, fillLeft, fillBottom);
-
       float x = (fillRight - fillLeft) / (float) (trRight - trLeft);
-      g.setColor(GradientPalletUtils.getColorFromPallet(GRADIENT_PALLET, x, 0x64 << 24));
+      g.setColor(GradientPaletteUtils.getColorFromPalette(GRADIENT_PALETTE, x, FILL_ALPHA));
       g.fillRect(fillLeft + 1, fillTop + 1, fillRight - fillLeft, fillBottom - fillTop);
     } else {
       g.setColor(controlShadow);
@@ -243,13 +208,13 @@ class GradientPalletSliderUI extends MetalSliderUI {
   protected void paintTrackHighlight(Graphics g, int top, int left, int bottom, int right) {
     int yy = top + (bottom - top) / 2;
     for (int i = 10; i >= 0; i--) {
-      g.setColor(makeColor(i * .07f));
-      g.drawLine(left + 2, yy, right - left - 2, yy);
+      g.setColor(createColor(i * .07f));
+      g.drawLine(left + 2, yy, right - 2, yy);
       yy--;
     }
   }
 
-  private static Color makeColor(float alpha) {
+  private static Color createColor(float alpha) {
     return new Color(1f, 1f, 1f, alpha);
   }
 }
@@ -268,45 +233,32 @@ final class WheelMouseHandler extends MouseAdapter {
   }
 }
 
-final class GradientPalletUtils {
-  private GradientPalletUtils() {
+final class GradientPaletteUtils {
+  private GradientPaletteUtils() {
     /* HideUtilityClassConstructor */
   }
 
-  public static int[] makeGradientPallet() {
-    BufferedImage image = new BufferedImage(100, 1, BufferedImage.TYPE_INT_RGB);
+  public static int[] createGradientPalette() {
+    int width = 100;
+    BufferedImage image = new BufferedImage(width, 1, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = image.createGraphics();
     Point2D start = new Point2D.Float();
-    Point2D end = new Point2D.Float(99f, 0f);
+    Point2D end = new Point2D.Float(width - 1f, 0f);
     float[] dist = {.0f, .5f, 1f};
     Color[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
     g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
-    g2.fillRect(0, 0, 100, 1);
+    g2.fillRect(0, 0, width, 1);
     g2.dispose();
-
-    int width = image.getWidth(null);
-    int[] pallet = new int[width];
-    PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
-    try {
-      pg.grabPixels();
-    } catch (InterruptedException ex) {
-      // ex.printStackTrace();
-      Toolkit.getDefaultToolkit().beep();
-      Thread.currentThread().interrupt();
-    }
-    return pallet;
+    // BufferedImage#getRGB(...) reads the pixels directly,
+    // so PixelGrabber and its InterruptedException handling are unnecessary
+    return image.getRGB(0, 0, width, 1, null, 0, width);
   }
 
-  public static Color getColorFromPallet(int[] pallet, float x, int alpha) {
-    // if (x < 0f || x > 1f) {
-    //   throw new IllegalArgumentException("Parameter outside of expected range");
-    // }
-    int i = (int) (pallet.length * x);
-    int max = pallet.length - 1;
-    int index = Math.min(Math.max(i, 0), max);
-    // Java 21: int index = Math.clamp(i, 0, pallet.length - 1);
-    int pix = pallet[index] & 0x00_FF_FF_FF;
-    // int alpha = 0x64 << 24;
+  public static Color getColorFromPalette(int[] palette, float x, int alpha) {
+    int i = (int) (palette.length * x);
+    int index = Math.min(Math.max(i, 0), palette.length - 1);
+    // Java 21: int index = Math.clamp(i, 0, palette.length - 1);
+    int pix = palette[index] & 0x00_FF_FF_FF;
     return new Color(alpha | pix, true);
   }
 }
