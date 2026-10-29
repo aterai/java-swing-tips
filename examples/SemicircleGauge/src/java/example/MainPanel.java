@@ -9,7 +9,6 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
@@ -50,13 +49,10 @@ public final class MainPanel extends JPanel {
 
     JButton button = new JButton("start");
     button.addActionListener(e -> {
-      Object src = e.getSource();
-      if (src instanceof JButton) {
-        int lengthOfTask = progress2.getMaximum() - progress2.getMinimum();
-        SwingWorker<?, ?> worker = makeWorker((JButton) e.getSource(), lengthOfTask);
-        worker.addPropertyChangeListener(new ProgressListener(progress2));
-        worker.execute();
-      }
+      int lengthOfTask = progress2.getMaximum() - progress2.getMinimum();
+      SwingWorker<?, ?> worker = createWorker(button, lengthOfTask);
+      worker.addPropertyChangeListener(new ProgressListener(progress2));
+      worker.execute();
     });
 
     JPanel p = new JPanel(new GridLayout(2, 1));
@@ -69,7 +65,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static SwingWorker<?, ?> makeWorker(JButton button, int lengthOfTask) {
+  private static SwingWorker<?, ?> createWorker(JButton button, int lengthOfTask) {
     button.setEnabled(false);
     return new BackgroundTask(lengthOfTask) {
       @Override protected void done() {
@@ -107,59 +103,50 @@ public final class MainPanel extends JPanel {
 }
 
 class SolidGaugeUI extends BasicProgressBarUI {
-  private final int[] pallet;
+  private final int[] palette;
   private final double extent;
 
   protected SolidGaugeUI(int range, double extent) {
     super();
-    this.pallet = makeGradientPallet(range);
+    this.palette = createGradientPalette(range);
     this.extent = extent;
   }
 
   @Override public void paint(Graphics g, JComponent c) {
     Rectangle rect = SwingUtilities.calculateInnerArea(progressBar, null);
-    // if (rect.isEmpty()) {
-    //   return;
-    // }
+    if (rect.isEmpty()) {
+      return;
+    }
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     // double extent = -150d;
-    double or = Math.min(rect.width, rect.height);
+    double outerRadius = Math.min(rect.width, rect.height);
+    double innerRadius = outerRadius * .6;
     double cx = rect.getCenterX();
     double cy = rect.getMaxY();
-    double sz = or * 2d;
-    double ir = or * .6;
+    // Arc2D angles are counterclockwise from 3 o'clock,
+    // so the gauge starts at the upper left and sweeps clockwise (negative extent)
     double start = 90d + extent * .5;
-    double degree = extent * progressBar.getPercentComplete();
-    Shape inner = new Arc2D.Double(
-        cx - ir, cy - ir, ir * 2d, ir * 2d, start, -extent, Arc2D.PIE);
-    Shape outer = new Arc2D.Double(
-        cx - or, cy - or, sz, sz, start, -extent, Arc2D.PIE);
-    Shape sector = new Arc2D.Double(
-        cx - or, cy - or, sz, sz, start, -degree, Arc2D.PIE);
-
-    Area foreground = new Area(sector);
-    Area background = new Area(outer);
-    Area hole = new Area(inner);
-
-    foreground.subtract(hole);
+    double percent = progressBar.getPercentComplete();
+    double degree = extent * percent;
+    Area background = createArc(cx, cy, outerRadius, start, -extent);
+    Area foreground = createArc(cx, cy, outerRadius, start, -degree);
+    Area hole = createArc(cx, cy, innerRadius, start, -extent);
     background.subtract(hole);
+    foreground.subtract(hole);
 
     // Draw the track
     g2.setPaint(new Color(0xDD_DD_DD));
     g2.fill(background);
 
     // Draw the circular sector
-    g2.setPaint(getColorFromPallet(pallet, progressBar.getPercentComplete()));
+    g2.setPaint(getColorFromPalette(palette, percent));
     g2.fill(foreground);
 
     // Draw minimum, maximum
-    float min = (float) (cx - or - progressBar.getFont().getSize2D());
-    float max = (float) (cx + or + 4d);
     g2.setPaint(progressBar.getForeground());
-    g2.drawString(Objects.toString(progressBar.getMinimum()), min, (float) cy);
-    g2.drawString(Objects.toString(progressBar.getMaximum()), max, (float) cy);
+    drawMinMaxString(g2, cx, cy, outerRadius);
 
     // Deal with possible text painting
     if (progressBar.isStringPainted()) {
@@ -168,21 +155,38 @@ class SolidGaugeUI extends BasicProgressBarUI {
     g2.dispose();
   }
 
+  private static Area createArc(double cx, double cy, double r, double start, double extent) {
+    double d = r * 2d;
+    return new Area(new Arc2D.Double(cx - r, cy - r, d, d, start, extent, Arc2D.PIE));
+  }
+
+  private void drawMinMaxString(Graphics2D g2, double cx, double cy, double r) {
+    String min = Objects.toString(progressBar.getMinimum());
+    String max = Objects.toString(progressBar.getMaximum());
+    double gap = 4d;
+    // Right-align the minimum label to the left end of the gauge
+    double minX = cx - r - gap - g2.getFontMetrics().stringWidth(min);
+    double maxX = cx + r + gap;
+    g2.drawString(min, (float) minX, (float) cy);
+    g2.drawString(max, (float) maxX, (float) cy);
+  }
+
   private void drawProgressString(Graphics2D g2, float x, float y) {
     Font font = progressBar.getFont();
     float fontSize = font.getSize2D();
-    float h = y - fontSize;
-    String str = String.format("%d", progressBar.getValue());
-    float vx = x - g2.getFontMetrics().stringWidth(str) * .5f;
-    g2.drawString(str, vx, h);
-    float ksz = fontSize * 2f / 3f;
-    g2.setFont(font.deriveFont(ksz));
-    String kmh = "㎞/h";
-    float tx = x - g2.getFontMetrics().stringWidth(kmh) * .5f;
-    g2.drawString(kmh, tx, h + ksz);
+    float baseline = y - fontSize;
+    String value = Integer.toString(progressBar.getValue());
+    float valueX = x - g2.getFontMetrics().stringWidth(value) * .5f;
+    g2.drawString(value, valueX, baseline);
+    // Draw the unit on the next line in a font 2/3 the size of the value
+    float unitSize = fontSize * 2f / 3f;
+    g2.setFont(font.deriveFont(unitSize));
+    String unit = "㎞/h";
+    float unitX = x - g2.getFontMetrics().stringWidth(unit) * .5f;
+    g2.drawString(unit, unitX, baseline + unitSize);
   }
 
-  private static int[] makeGradientPallet(int range) {
+  private static int[] createGradientPalette(int range) {
     BufferedImage image = new BufferedImage(range, 1, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2 = image.createGraphics();
     Point2D start = new Point2D.Float();
@@ -192,29 +196,19 @@ class SolidGaugeUI extends BasicProgressBarUI {
     g2.setPaint(new LinearGradientPaint(start, end, dist, colors));
     g2.fillRect(0, 0, range, 1);
     g2.dispose();
-
-    int width = image.getWidth(null);
-    int[] pallet = new int[width];
-    PixelGrabber pg = new PixelGrabber(image, 0, 0, width, 1, pallet, 0, width);
-    try {
-      pg.grabPixels();
-    } catch (InterruptedException ex) {
-      Logger.getGlobal().severe(ex::getMessage);
-      Toolkit.getDefaultToolkit().beep();
-      Thread.currentThread().interrupt();
-    }
-    return pallet;
+    // BufferedImage#getRGB(...) reads the pixels directly,
+    // so PixelGrabber and its InterruptedException handling are unnecessary
+    return image.getRGB(0, 0, range, 1, null, 0, range);
   }
 
-  private static Color getColorFromPallet(int[] pallet, double pos) {
+  private static Color getColorFromPalette(int[] palette, double pos) {
     if (pos < 0d || pos > 1d) {
       throw new IllegalArgumentException("Parameter outside of expected range");
     }
-    int i = (int) (pallet.length * pos);
-    int max = pallet.length - 1;
-    int index = Math.min(Math.max(i, 0), max);
-    // Java 21: int index = Math.clamp(i, 0, pallet.length - 1);
-    return new Color(pallet[index] & 0x00_FF_FF_FF);
+    // pos == 1d gives palette.length, so clamp it to the last index
+    int index = Math.min((int) (palette.length * pos), palette.length - 1);
+    // Color(int) ignores the alpha bits of the TYPE_INT_RGB pixel
+    return new Color(palette[index]);
   }
 
   // @Override protected Color getSelectionBackground() {
