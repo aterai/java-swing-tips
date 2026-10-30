@@ -11,7 +11,6 @@ import java.awt.geom.Ellipse2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
@@ -19,21 +18,11 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JProgressBar progress1 = new JProgressBar() {
-      @Override public void updateUI() {
-        super.updateUI();
-        setUI(new ProgressCircleUI());
-      }
-    };
+    JProgressBar progress1 = createProgressBar();
     progress1.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
     progress1.setForeground(new Color(0xAA_FF_AA_AA, true));
 
-    JProgressBar progress2 = new JProgressBar() {
-      @Override public void updateUI() {
-        super.updateUI();
-        setUI(new ProgressCircleUI());
-      }
-    };
+    JProgressBar progress2 = createProgressBar();
     progress2.setStringPainted(true);
     progress2.setFont(progress2.getFont().deriveFont(24f));
     progress2.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
@@ -70,6 +59,15 @@ public final class MainPanel extends JPanel {
     add(p);
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JProgressBar createProgressBar() {
+    return new JProgressBar() {
+      @Override public void updateUI() {
+        super.updateUI();
+        setUI(new ProgressCircleUI());
+      }
+    };
   }
 
   private static void start(JButton button, JProgressBar progress) {
@@ -129,20 +127,28 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
   private void paintProgressCircle(Graphics g, Rectangle rect) {
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+    // Arc2D angles increase counterclockwise, so a negative extent draws clockwise
     Object o = progressBar.getClientProperty("Slider.clockwise");
-    int dir = Objects.equals(o, true) ? -1 : 1;
-    double sz = Math.min(rect.width, rect.height);
+    int dir = Boolean.TRUE.equals(o) ? -1 : 1;
+    double size = Math.min(rect.width, rect.height);
     double cx = rect.getCenterX();
     double cy = rect.getCenterY();
-    double or = sz * .5;
-    double ir = or * .5; // .8;
-    double start = 90d;
+    double outerRadius = size * .5;
+    double innerRadius = outerRadius * .5;
+    double start = 90d; // 12 o'clock
     double degree = dir * 360d * progressBar.getPercentComplete();
-    Shape inner = new Ellipse2D.Double(cx - ir, cy - ir, ir * 2d, ir * 2d);
-    Shape outer = new Ellipse2D.Double(cx - or, cy - or, sz, sz);
-    Shape sector = new Arc2D.Double(cx - or, cy - or, sz, sz, start, degree, Arc2D.PIE);
+    double ox = cx - outerRadius;
+    double oy = cy - outerRadius;
+    double innerSize = innerRadius * 2d;
+    Shape inner = new Ellipse2D.Double(
+        cx - innerRadius, cy - innerRadius, innerSize, innerSize);
+    Shape outer = new Ellipse2D.Double(
+        ox, oy, size, size);
+    Shape sector = new Arc2D.Double(
+        ox, oy, size, size, start, degree, Arc2D.PIE);
 
     Area foreground = new Area(sector);
     Area background = new Area(outer);
@@ -156,10 +162,6 @@ class ProgressCircleUI extends BasicProgressBarUI {
     g2.fill(background);
 
     // Draw the circular sector
-    // AffineTransform at = AffineTransform.getScaleInstance(-1.0, 1.0);
-    // at.translate(-(barRectWidth + b.left * 2), 0);
-    // AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(degree), cx, cy);
-    // g2.fill(at.createTransformedShape(area));
     g2.setPaint(progressBar.getForeground());
     g2.fill(foreground);
     g2.dispose();
