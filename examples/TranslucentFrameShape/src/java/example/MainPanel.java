@@ -17,26 +17,8 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Shape shape = new RoundRectangle2D.Float(0f, 0f, 240f, 64f, 32f, 32f);
 
-    JButton button1 = new JButton("use Window#setShape(...)");
-    button1.addActionListener(e -> {
-      JWindow window = new JWindow();
-      setTranslucencyBackground(window);
-      window.getContentPane().add(makePanel(shape));
-      window.setShape(shape);
-      window.pack();
-      window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
-      window.setVisible(true);
-    });
-
-    JButton button2 = new JButton("not use Window#setShape(...)");
-    button2.addActionListener(e -> {
-      JWindow window = new JWindow();
-      setTranslucencyBackground(window);
-      window.getContentPane().add(makePanel(shape));
-      window.pack();
-      window.setLocationRelativeTo(((AbstractButton) e.getSource()).getRootPane());
-      window.setVisible(true);
-    });
+    JButton button1 = createButton("use Window#setShape(...)", shape, true);
+    JButton button2 = createButton("not use Window#setShape(...)", shape, false);
 
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
     p.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
@@ -49,6 +31,28 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private static JButton createButton(String title, Shape shape, boolean useSetShape) {
+    JButton button = new JButton(title);
+    button.addActionListener(e -> {
+      Component c = ((AbstractButton) e.getSource()).getRootPane();
+      showWindow(c, shape, useSetShape);
+    });
+    return button;
+  }
+
+  private static void showWindow(Component parent, Shape shape, boolean useSetShape) {
+    JWindow window = new JWindow();
+    setTranslucencyBackground(window);
+    window.getContentPane().add(createPanel(shape));
+    if (useSetShape) {
+      // Hard clipping: the edges of the window become jagged
+      window.setShape(shape);
+    }
+    window.pack();
+    window.setLocationRelativeTo(parent);
+    window.setVisible(true);
+  }
+
   private static void setTranslucencyBackground(JWindow window) {
     GraphicsConfiguration gc = window.getGraphicsConfiguration();
     if (gc != null && gc.isTranslucencyCapable()) {
@@ -56,7 +60,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private Component makePanel(Shape shape) {
+  private static Component createPanel(Shape shape) {
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getPreferredSize() {
         return shape.getBounds().getSize();
@@ -78,12 +82,12 @@ public final class MainPanel extends JPanel {
     DragWindowListener dwl = new DragWindowListener();
     panel.addMouseListener(dwl);
     panel.addMouseMotionListener(dwl);
-    panel.add(makeIconBox());
-    panel.add(makeCloseButton(), BorderLayout.EAST);
+    panel.add(createIconBox());
+    panel.add(createCloseButton(), BorderLayout.EAST);
     return panel;
   }
 
-  private static Container makeIconBox() {
+  private static Container createIconBox() {
     // Box p = Box.createHorizontalBox();
     JPanel p = new JPanel();
     p.setOpaque(false);
@@ -94,7 +98,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JButton makeCloseButton() {
+  private static JButton createCloseButton() {
     JButton close = new JButton("<html><b>X");
     close.setContentAreaFilled(false);
     close.setBorder(BorderFactory.createEmptyBorder());
