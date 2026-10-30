@@ -23,19 +23,23 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     log.setEditable(false);
     JToolBar toolBar = new JToolBar();
-    toolBar.add(makeButton0());
+    Icon listIcon = UIManager.getIcon("FileChooser.listViewIcon");
+    toolBar.add(createButton(listIcon, createExitClosePopupMenu()));
     toolBar.addSeparator(new Dimension(25, 25));
-    toolBar.add(makeButton1());
+    Icon detailsIcon = UIManager.getIcon("FileChooser.detailsViewIcon");
+    toolBar.add(createButton(detailsIcon, createAutoClosePopupMenu()));
     add(toolBar, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JButton makeButton0() {
+  private JPopupMenu createExitClosePopupMenu() {
     JPopupMenu popup = new JPopupMenu();
     initPopupMenu(popup);
     popup.addMouseListener(new MouseAdapter() {
       @Override public void mouseExited(MouseEvent e) {
+        // mouseExited is also fired when the cursor moves onto a child JMenuItem,
+        // so wait until the armed state is updated and close only if no item is armed
         EventQueue.invokeLater(() -> {
           boolean isArmed = Stream.of(popup.getSubElements())
               .filter(AbstractButton.class::isInstance)
@@ -48,24 +52,17 @@ public final class MainPanel extends JPanel {
         });
       }
     });
-    JButton button = new JButton(UIManager.getIcon("FileChooser.listViewIcon"));
-    button.setFocusPainted(false);
-    button.addActionListener(e -> {
-      popup.show(button, 0, button.getHeight());
-      popup.requestFocusInWindow();
-    });
-    button.addMouseListener(new MouseAdapter() {
-      @Override public void mouseEntered(MouseEvent e) {
-        ((AbstractButton) e.getComponent()).doClick();
-      }
-    });
-    return button;
+    return popup;
   }
 
-  private JButton makeButton1() {
+  private JPopupMenu createAutoClosePopupMenu() {
     JPopupMenu popup = new AutoClosePopupMenu();
     initPopupMenu(popup);
-    JButton button = new JButton(UIManager.getIcon("FileChooser.detailsViewIcon"));
+    return popup;
+  }
+
+  private static JButton createButton(Icon icon, JPopupMenu popup) {
+    JButton button = new JButton(icon);
     button.setFocusPainted(false);
     button.addActionListener(e -> {
       popup.show(button, 0, button.getHeight());
@@ -73,35 +70,35 @@ public final class MainPanel extends JPanel {
     });
     button.addMouseListener(new MouseAdapter() {
       @Override public void mouseEntered(MouseEvent e) {
-        ((AbstractButton) e.getComponent()).doClick();
+        button.doClick();
       }
     });
     return button;
   }
 
   private void initPopupMenu(JPopupMenu popup) {
-    ButtonGroup bg = new ButtonGroup();
-    makeMenuList().stream()
-        .map(MainPanel::makeMenuButton)
-        .forEach(b -> {
-          b.addActionListener(e -> {
+    ButtonGroup group = new ButtonGroup();
+    createMenuList().stream()
+        .map(MainPanel::createMenuItem)
+        .forEach(item -> {
+          item.addActionListener(e -> {
             String cmd = e.getActionCommand();
             log.append(String.format("Selected JRadioButton command: %s%n", cmd));
           });
-          popup.add(b);
-          bg.add(b);
+          popup.add(item);
+          group.add(item);
         });
   }
 
-  private static AbstractButton makeMenuButton(MenuContext m) {
-    JRadioButtonMenuItem b = new JRadioButtonMenuItem(m.getCommand());
-    b.setActionCommand(m.getCommand());
-    b.setForeground(m.getColor());
-    b.setBorder(BorderFactory.createEmptyBorder());
-    return b;
+  private static AbstractButton createMenuItem(MenuContext context) {
+    JRadioButtonMenuItem item = new JRadioButtonMenuItem(context.getCommand());
+    item.setActionCommand(context.getCommand());
+    item.setForeground(context.getColor());
+    item.setBorder(BorderFactory.createEmptyBorder());
+    return item;
   }
 
-  private static List<MenuContext> makeMenuList() {
+  private static List<MenuContext> createMenuList() {
     return Arrays.asList(
         new MenuContext("BLUE", Color.BLUE),
         new MenuContext("CYAN", Color.CYAN),
@@ -147,7 +144,11 @@ class AutoClosePopupMenu extends JPopupMenu {
 
   private void checkAutoClose(MouseEvent e) {
     Component c = e.getComponent();
-    Rectangle r = getBounds();
+    // The mouse point is converted to this popup's coordinate system,
+    // so compare it with the local bounds rather than getBounds(),
+    // which depends on the container created by the PopupFactory.
+    Rectangle r = new Rectangle(getSize());
+    // Allow a small vertical gap between the invoker and this popup
     r.grow(0, 5);
     Point pt = SwingUtilities.convertPoint(c, e.getPoint(), this);
     if (!r.contains(pt) && !(c instanceof JButton)) {
