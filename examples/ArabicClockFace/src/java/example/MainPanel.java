@@ -71,6 +71,9 @@ class AnalogClock extends JPanel {
   private static final int MINUTES_PER_HOUR = 60;
   private static final int MIN_PER_MARKER = 5;
   private static final double RAD_PER_MIN = 2d * Math.PI / MINUTES_PER_HOUR;
+  private static final double RAD_PER_HOUR = RAD_PER_MIN * MIN_PER_MARKER;
+  private static final double MIN_RADIUS = 1d;
+  private static final double EPSILON = 1.0e-4;
   private static final float FONT_RATIO = .2f;
   private static final String[] ARABIC_NUMERALS = {
       "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
@@ -78,22 +81,33 @@ class AnalogClock extends JPanel {
   // private static final String[] EARTHLY_BRANCHES = {
   //     "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥",
   // };
-  private double secondRot;
-  private double minuteRot;
-  private double hourRot;
+  private int secondOfDay = -1;
+  private double secondAngle;
+  private double minuteAngle;
+  private double hourAngle;
+  // The hands only move once per second, so skip repainting
+  // if the time has not changed since the previous Timer tick
   private final Timer timer = new Timer(200, e -> {
-    LocalTime time = LocalTime.now(ZoneId.systemDefault());
-    // Calculate the angle of rotation
-    secondRot = time.getSecond() * Math.PI / 30d;
-    minuteRot = time.getMinute() * Math.PI / 30d + secondRot / 60d;
-    hourRot = time.getHour() * Math.PI / 6d + minuteRot / 12d;
-    repaint();
+    int sec = LocalTime.now(ZoneId.systemDefault()).toSecondOfDay();
+    if (sec != secondOfDay) {
+      secondOfDay = sec;
+      secondAngle = sec % 60 * RAD_PER_MIN;
+      minuteAngle = sec / 60 % 60 * RAD_PER_MIN + secondAngle / 60d;
+      hourAngle = sec / 3600 % 12 * RAD_PER_HOUR + minuteAngle / 12d;
+      repaint();
+    }
   });
   private transient HierarchyListener listener;
-  private boolean isRotate = true;
+  private boolean rotate = true;
+
+  protected AnalogClock() {
+    super();
+    // Update the hands immediately on start instead of waiting for the first delay
+    timer.setInitialDelay(0);
+  }
 
   public void setRotate(boolean rotate) {
-    isRotate = rotate;
+    this.rotate = rotate;
   }
 
   @Override public void updateUI() {
@@ -117,13 +131,17 @@ class AnalogClock extends JPanel {
     Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
     paintBackground(g2, rect);
     double radius = Math.min(rect.width, rect.height) / 2d - 10d;
-    g2.translate(rect.getCenterX(), rect.getCenterY());
-
-    paintHourMarkers(g2, radius);
-    paintClockNumbers(g2, radius);
-    paintHourHand(g2, radius, hourRot);
-    paintMinuteHand(g2, radius, minuteRot);
-    paintSecondHand(g2, radius, secondRot);
+    // Skip drawing the dial if the panel is too small to contain it
+    if (radius >= MIN_RADIUS) {
+      // Clamp to zero so that the markers do not stick out of the dial
+      double hourMarkerLen = Math.max(0d, radius / 6d - 10d);
+      g2.translate(rect.getCenterX(), rect.getCenterY());
+      paintHourMarkers(g2, radius, hourMarkerLen);
+      paintClockNumbers(g2, radius, hourMarkerLen);
+      paintHourHand(g2, radius, hourAngle);
+      paintMinuteHand(g2, radius, minuteAngle);
+      paintSecondHand(g2, radius, secondAngle);
+    }
 
     g2.dispose();
   }
@@ -140,8 +158,7 @@ class AnalogClock extends JPanel {
     g2.fill(rect);
   }
 
-  private static void paintHourMarkers(Graphics2D g2, double radius) {
-    double hourMarkerLen = radius / 6d - 10d;
+  private static void paintHourMarkers(Graphics2D g2, double radius, double hourMarkerLen) {
     Shape hourMarker = new Line2D.Double(0d, hourMarkerLen - radius, 0d, -radius);
     Shape minuteMarker = new Line2D.Double(0d, hourMarkerLen / 2d - radius, 0d, -radius);
     AffineTransform at = AffineTransform.getRotateInstance(0d);
@@ -157,26 +174,26 @@ class AnalogClock extends JPanel {
     }
   }
 
-  private void paintClockNumbers(Graphics2D g2, double radius) {
-    float dynamicFontSize = Math.max((float) (radius * FONT_RATIO), 32f);
-    Font font = g2.getFont().deriveFont(dynamicFontSize);
+  private void paintClockNumbers(Graphics2D g2, double radius, double hourMarkerLen) {
+    float fontSize = Math.max((float) (radius * FONT_RATIO), 32f);
+    Font font = g2.getFont().deriveFont(fontSize);
     FontRenderContext frc = g2.getFontRenderContext();
-
-    double hourMarkerLen = radius / 6d - 10d;
     AffineTransform at = AffineTransform.getRotateInstance(0d);
     g2.setColor(Color.WHITE);
-    if (isRotate) {
+    if (rotate) {
       for (String txt : ARABIC_NUMERALS) {
-        double m00 = at.getScaleX();
-        double d = m00 > 0d || Math.abs(m00) < 0.0001 ? 1d : -1d;
-        AffineTransform si = AffineTransform.getScaleInstance(d, d);
-        Shape s = getTextLayout(txt, font, frc).getOutline(si);
+        // m00 (= cos of the rotation angle) is negative in the lower half of the dial
+        // (4 to 8 o'clock), so flip the numerals upside down there to keep them readable.
+        // EPSILON keeps the 3 and 9 o'clock numerals (m00 is about zero) unflipped.
+        double sign = at.getScaleX() > -EPSILON ? 1d : -1d;
+        AffineTransform flip = AffineTransform.getScaleInstance(sign, sign);
+        Shape s = getTextLayout(txt, font, frc).getOutline(flip);
         Rectangle2D r = s.getBounds2D();
         double tx = r.getCenterX();
         double ty = radius - hourMarkerLen - r.getHeight() + r.getCenterY();
         Shape t = AffineTransform.getTranslateInstance(-tx, -ty).createTransformedShape(s);
         g2.fill(at.createTransformedShape(t));
-        at.rotate(Math.PI / 6d);
+        at.rotate(RAD_PER_HOUR);
       }
     } else {
       Point2D ptSrc = new Point2D.Double();
@@ -189,7 +206,7 @@ class AnalogClock extends JPanel {
         double dx = pt.getX() - r.getCenterX();
         double dy = pt.getY() - r.getCenterY();
         g2.fill(AffineTransform.getTranslateInstance(dx, dy).createTransformedShape(s));
-        at.rotate(Math.PI / 6d);
+        at.rotate(RAD_PER_HOUR);
       }
     }
   }
@@ -198,30 +215,30 @@ class AnalogClock extends JPanel {
     return new TextLayout(txt, font, frc);
   }
 
-  private static void paintHourHand(Graphics2D g2, double radius, double hourRot) {
+  private static void paintHourHand(Graphics2D g2, double radius, double hourAngle) {
     double hourHandLen = radius / 2d;
     Shape hourHand = new Line2D.Double(0d, 0d, 0d, -hourHandLen);
-    paintHand(g2, hourHand, 8f, Color.LIGHT_GRAY, hourRot);
+    paintHand(g2, hourHand, 8f, Color.LIGHT_GRAY, hourAngle);
   }
 
-  private static void paintMinuteHand(Graphics2D g2, double radius, double minuteRot) {
+  private static void paintMinuteHand(Graphics2D g2, double radius, double minuteAngle) {
     double minuteHandLen = 5d * radius / 6d;
     Shape minuteHand = new Line2D.Double(0d, 0d, 0d, -minuteHandLen);
-    paintHand(g2, minuteHand, 4f, Color.WHITE, minuteRot);
+    paintHand(g2, minuteHand, 4f, Color.WHITE, minuteAngle);
   }
 
-  private static void paintSecondHand(Graphics2D g2, double radius, double secondRot) {
+  private static void paintSecondHand(Graphics2D g2, double radius, double secondAngle) {
     double r = radius / 6d;
     double secondHandLen = radius - r;
     Shape secondHand = new Line2D.Double(0d, r, 0d, -secondHandLen);
-    paintHand(g2, secondHand, 1f, Color.RED, secondRot);
+    paintHand(g2, secondHand, 1f, Color.RED, secondAngle);
     g2.fill(new Ellipse2D.Double(-r / 4d, -r / 4d, r / 2d, r / 2d));
   }
 
   private static void paintHand(
-      Graphics2D g2, Shape hand, float strokeWidth, Color color, double rot) {
+      Graphics2D g2, Shape hand, float strokeWidth, Color color, double angle) {
     g2.setStroke(new BasicStroke(strokeWidth));
     g2.setPaint(color);
-    g2.draw(AffineTransform.getRotateInstance(rot).createTransformedShape(hand));
+    g2.draw(AffineTransform.getRotateInstance(angle).createTransformedShape(hand));
   }
 }
