@@ -72,6 +72,7 @@ public final class MainPanel extends JPanel {
 
   private static void start(JButton button, JProgressBar progress) {
     button.setEnabled(false);
+    progress.setIndeterminate(true);
     SwingWorker<String, Void> worker = new BackgroundTask() {
       @Override protected void done() {
         button.setEnabled(true);
@@ -94,6 +95,8 @@ public final class MainPanel extends JPanel {
       Logger.getGlobal().severe(ex::getMessage);
       return;
     }
+    // Repaint the indeterminate spinner at about 60fps (default: 50ms)
+    UIManager.put("ProgressBar.repaintInterval", 16);
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
@@ -104,6 +107,9 @@ public final class MainPanel extends JPanel {
 }
 
 class ProgressCircleUI extends BasicProgressBarUI {
+  private static final double START_ANGLE = 90d; // 12 o'clock
+  private final long startTime = System.currentTimeMillis();
+
   @Override public Dimension getPreferredSize(JComponent c) {
     Dimension d = super.getPreferredSize(c);
     int v = Math.max(d.width, d.height);
@@ -113,9 +119,23 @@ class ProgressCircleUI extends BasicProgressBarUI {
 
   @Override public void paint(Graphics g, JComponent c) {
     Rectangle rect = SwingUtilities.calculateInnerArea(progressBar, null);
-    if (!rect.isEmpty()) {
+    if (rect.isEmpty()) {
+      return;
+    }
+    // Arc2D angles increase counterclockwise, so a negative extent draws clockwise
+    Object o = progressBar.getClientProperty("Slider.clockwise");
+    int dir = Boolean.TRUE.equals(o) ? -1 : 1;
+    if (progressBar.isIndeterminate()) {
+      // Draw the track and the stretching/contracting rotating arc
+      long elapsed = System.currentTimeMillis() - startTime;
+      ArcAngles arc = MaterialSpinner.computeArcAngles(elapsed);
+      double start = START_ANGLE - dir * arc.getStartAngle();
+      double extent = -dir * arc.getSweepAngle();
+      paintProgressCircle(g, rect, start, extent);
+    } else {
       // Draw the track and the circular sector
-      paintProgressCircle(g, rect);
+      double extent = dir * 360d * progressBar.getPercentComplete();
+      paintProgressCircle(g, rect, START_ANGLE, extent);
 
       // Deal with possible text painting
       if (progressBar.isStringPainted()) {
@@ -125,21 +145,21 @@ class ProgressCircleUI extends BasicProgressBarUI {
     }
   }
 
-  private void paintProgressCircle(Graphics g, Rectangle rect) {
+  // Repaint the whole circle on each animation frame instead of the bouncing box area
+  @Override protected Rectangle getBox(Rectangle r) {
+    return null;
+  }
+
+  private void paintProgressCircle(Graphics g, Rectangle rect, double start, double extent) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-    // Arc2D angles increase counterclockwise, so a negative extent draws clockwise
-    Object o = progressBar.getClientProperty("Slider.clockwise");
-    int dir = Boolean.TRUE.equals(o) ? -1 : 1;
     double size = Math.min(rect.width, rect.height);
     double cx = rect.getCenterX();
     double cy = rect.getCenterY();
     double outerRadius = size * .5;
     double innerRadius = outerRadius * .5;
-    double start = 90d; // 12 o'clock
-    double degree = dir * 360d * progressBar.getPercentComplete();
     double ox = cx - outerRadius;
     double oy = cy - outerRadius;
     double innerSize = innerRadius * 2d;
@@ -148,7 +168,7 @@ class ProgressCircleUI extends BasicProgressBarUI {
     Shape outer = new Ellipse2D.Double(
         ox, oy, size, size);
     Shape sector = new Arc2D.Double(
-        ox, oy, size, size, start, degree, Arc2D.PIE);
+        ox, oy, size, size, start, extent, Arc2D.PIE);
 
     Area foreground = new Area(sector);
     Area background = new Area(outer);
@@ -177,8 +197,73 @@ class ProgressCircleUI extends BasicProgressBarUI {
   // }
 }
 
+// A value object that only holds the starting angle
+// and sweep angle of the arc for one frame.
+// record ArcAngles(float startAngle, float sweepAngle) {}
+class ArcAngles {
+  private final float startAngle;
+  private final float sweepAngle;
+
+  protected ArcAngles(float startAngle, float sweepAngle) {
+    this.startAngle = startAngle;
+    this.sweepAngle = sweepAngle;
+  }
+
+  public float getStartAngle() {
+    return startAngle;
+  }
+
+  public float getSweepAngle() {
+    return sweepAngle;
+  }
+}
+
+// Angle calculations for the Material style spinner (stretch/contract/rotate)
+// https://ateraimemo.com/Swing/CircularSpinner.html
+final class MaterialSpinner {
+  private static final float CYCLE_DURATION = 1332f;
+  private static final float MAX_SWEEP = 270f;
+  private static final float MIN_SWEEP = 15f;
+
+  private MaterialSpinner() {
+    /* Singleton */
+  }
+
+  // The returned angles rotate clockwise (negative values)
+  public static ArcAngles computeArcAngles(long elapsedMillis) {
+    float totalCycles = elapsedMillis / CYCLE_DURATION;
+    int cycleIndex = (int) Math.floor(totalCycles);
+    float t = totalCycles - cycleIndex;
+    float sweepRange = MAX_SWEEP - MIN_SWEEP;
+    // Keep the angles small to avoid losing float precision over time
+    float cycleOffset = cycleIndex * sweepRange % 360f;
+
+    float head;
+    float tail;
+    boolean isFirstHalf = t < .5f;
+    if (isFirstHalf) {
+      head = cycleOffset + MIN_SWEEP + (sweepRange * easeInOutCubic(t / .5f));
+      tail = cycleOffset;
+    } else {
+      head = cycleOffset + MAX_SWEEP;
+      tail = cycleOffset + (sweepRange * easeInOutCubic((t - .5f) / .5f));
+    }
+
+    float baseSpin = -360f * (elapsedMillis % 3000L / 3000f);
+    float startAngle = baseSpin - tail;
+    float sweepAngle = tail - head;
+    return new ArcAngles(startAngle, sweepAngle);
+  }
+
+  private static float easeInOutCubic(float x) {
+    return x < .5f ? 4f * x * x * x : 1f - (float) Math.pow(-2f * x + 2f, 3f) / 2f;
+  }
+}
+
 class BackgroundTask extends SwingWorker<String, Void> {
   @Override protected String doInBackground() throws InterruptedException {
+    // Keep the progress bar indeterminate while preparing
+    Thread.sleep(3000);
     int current = 0;
     int lengthOfTask = 100;
     while (current <= lengthOfTask && !isCancelled()) {
