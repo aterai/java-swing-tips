@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -17,52 +16,42 @@ import javax.swing.plaf.LayerUI;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JTable table = new JTable(10, 5);
-    table.setFillsViewportHeight(true);
-    table.setComponentPopupMenu(makePopupMenu());
-
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("Default", new JScrollPane(table));
-    tabbedPane.addTab("MouseListener", new JScrollPane(makeTable1()));
-    tabbedPane.addTab("PopupMenuListener", new JScrollPane(makeTable2()));
-    JTable table3 = new JTable(10, 5);
-    table3.setFillsViewportHeight(true);
-    table3.setComponentPopupMenu(makePopupMenu());
-    JScrollPane scroll = new JScrollPane(table3);
+    tabbedPane.addTab("Default", new JScrollPane(createTable(createPopupMenu())));
+    tabbedPane.addTab("MouseListener", new JScrollPane(createMouseListenerTable()));
+    tabbedPane.addTab("PopupMenuListener", new JScrollPane(createPopupMenuListenerTable()));
+    JScrollPane scroll = new JScrollPane(createTable(createPopupMenu()));
     tabbedPane.addTab("JLayer", new JLayer<>(scroll, new RightMouseButtonLayerUI()));
-
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTable makeTable1() {
+  private static JTable createTable(JPopupMenu popup) {
     JTable table = new JTable(10, 5);
     table.setFillsViewportHeight(true);
-    table.setComponentPopupMenu(makePopupMenu());
+    table.setComponentPopupMenu(popup);
+    return table;
+  }
+
+  private static JTable createMouseListenerTable() {
+    JTable table = createTable(createPopupMenu());
     table.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
         if (c instanceof JTable && SwingUtilities.isRightMouseButton(e)) {
-          JTable table = (JTable) c;
-          if (table.isEditing()) {
-            table.removeEditor();
-          }
-          TableUtils.updateSelection(table, e.getPoint());
+          TableUtils.updateSelection((JTable) c, e.getPoint());
         }
       }
     });
     return table;
   }
 
-  private static JTable makeTable2() {
-    JTable table = new JTable(10, 5);
-    table.setFillsViewportHeight(true);
-    JPopupMenu popup = makePopupMenu();
+  private static JTable createPopupMenuListenerTable() {
+    JPopupMenu popup = createPopupMenu();
+    JTable table = createTable(popup);
     popup.addPopupMenuListener(new PopupMenuListener() {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        if (table.isEditing()) {
-          table.removeEditor();
-        }
+        // The location of the JPopupMenu is not yet determined at this point
         SwingUtilities.invokeLater(() -> {
           Point pt = SwingUtilities.convertPoint(popup, new Point(), table);
           TableUtils.updateSelection(table, pt);
@@ -77,11 +66,10 @@ public final class MainPanel extends JPanel {
         /* not needed */
       }
     });
-    table.setComponentPopupMenu(popup);
     return table;
   }
 
-  private static JPopupMenu makePopupMenu() {
+  private static JPopupMenu createPopupMenu() {
     JPopupMenu popup = new JPopupMenu();
     popup.add("clearSelection").addActionListener(e -> {
       Component c = popup.getInvoker();
@@ -133,14 +121,10 @@ class RightMouseButtonLayerUI extends LayerUI<JScrollPane> {
 
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JScrollPane> l) {
     Component c = e.getComponent();
-    if (c instanceof JTable && SwingUtilities.isRightMouseButton(e)) {
-      JTable table = (JTable) c;
-      if (table.isEditing()) {
-        table.removeEditor();
-      }
-      TableUtils.updateSelection(table, e.getPoint());
-    } else {
-      super.processMouseEvent(e, l);
+    // Update the selection only once on MOUSE_PRESSED, not on MOUSE_RELEASED or MOUSE_CLICKED
+    boolean pressed = e.getID() == MouseEvent.MOUSE_PRESSED;
+    if (pressed && c instanceof JTable && SwingUtilities.isRightMouseButton(e)) {
+      TableUtils.updateSelection((JTable) c, e.getPoint());
     }
   }
 }
@@ -150,34 +134,17 @@ final class TableUtils {
     /* Singleton */
   }
 
-  public static Rectangle getCellArea(JTable table) {
-    Rectangle start = table.getCellRect(0, 0, true);
-    int rc = table.getRowCount();
-    int cc = table.getColumnCount();
-    Rectangle end = table.getCellRect(rc - 1, cc - 1, true);
-    return start.union(end);
-  }
-
   public static void updateSelection(JTable table, Point pt) {
-    Rectangle cellArea = getCellArea(table);
-    if (cellArea.contains(pt)) {
-      int currentRow = table.rowAtPoint(pt);
-      int currentColumn = table.columnAtPoint(pt);
-      if (noneMatch(table.getSelectedRows(), currentRow)) {
-        table.changeSelection(currentRow, currentColumn, false, false);
-      }
-    } else {
-      table.clearSelection();
+    if (table.isEditing()) {
+      table.removeEditor();
     }
-  }
-
-  public static boolean noneMatch(int[] selectedRows, int currentRow) {
-    return IntStream.of(selectedRows).noneMatch(i -> i == currentRow);
-    // for (int i : selectedRows) {
-    //   if (i == currentRow) {
-    //     return false;
-    //   }
-    // }
-    // return true;
+    int row = table.rowAtPoint(pt);
+    int column = table.columnAtPoint(pt);
+    // rowAtPoint(...) or columnAtPoint(...) returns -1 outside the cell area
+    if (row < 0 || column < 0) {
+      table.clearSelection();
+    } else if (!table.isRowSelected(row)) {
+      table.changeSelection(row, column, false, false);
+    }
   }
 }
