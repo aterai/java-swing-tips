@@ -1,0 +1,164 @@
+---
+category: swing
+folder: WrapTextTableCellRenderer
+title: JTableのセル幅で文字列を折り返し
+title-en: Wrap text according to the cell width of the JTable
+tags: [JTable, TableCellRenderer, JTextArea, JLabel]
+author: aterai
+pubdate: 2004-07-12T03:26:48+09:00
+description: JTableのセル幅に合わせて文字列を折り返します。
+summary-ja: JTableのセル幅に合わせて文字列を折り返します。
+summary-en: This code wraps text to fit the cell width of the JTable.
+image: https://lh4.googleusercontent.com/_9Z4BYR88imo/TQTUbGVPssI/AAAAAAAAAmA/dPiTKpwf1Ro/s800/TableCellRenderer.png
+---
+* Summary [#summary]
+`JTable`のセル幅に合わせて文字列を折り返します。
+
+#en{{
+This code wraps text to fit the cell width of the `JTable`.
+}}
+
+#download(https://lh4.googleusercontent.com/_9Z4BYR88imo/TQTUbGVPssI/AAAAAAAAAmA/dPiTKpwf1Ro/s800/TableCellRenderer.png)
+
+* Source Code Examples [#sourcecode]
+#code(link){{
+getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
+getColumnModel().getColumn(1).setCellRenderer(new WrappedLabelRenderer());
+getColumnModel().getColumn(2).setCellRenderer(new TextAreaCellRenderer());
+// ...
+class WrappedLabelRenderer implements TableCellRenderer {
+  private final JLabel renderer = new WrappedLabel() {
+    @Override public void updateUI() {
+      super.updateUI();
+      setOpaque(true);
+      setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+    }
+  };
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    if (isSelected) {
+      renderer.setForeground(table.getSelectionForeground());
+      renderer.setBackground(table.getSelectionBackground());
+    } else {
+      renderer.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
+    }
+    boolean isNumber = value instanceof Number;
+    renderer.setHorizontalAlignment(isNumber ? SwingConstants.RIGHT : SwingConstants.LEFT);
+    renderer.setFont(table.getFont());
+    renderer.setText(Objects.toString(value, ""));
+    return renderer;
+  }
+}
+
+class WrappedLabel extends JLabel {
+  private transient GlyphVector gvText;
+
+  // ...
+
+  @Override public void doLayout() {
+    Rectangle r = SwingUtilities.calculateInnerArea(this, null);
+    Font font = getFont();
+    FontMetrics fm = getFontMetrics(font);
+    FontRenderContext frc = fm.getFontRenderContext();
+    GlyphVector gv = font.createGlyphVector(frc, getText());
+    gvText = getWrappedGlyphVector(gv, r.getWidth());
+    super.doLayout();
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    if (Objects.nonNull(gvText)) {
+      Insets i = getInsets();
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setPaint(getBackground());
+      g2.fillRect(0, 0, getWidth(), getHeight());
+      g2.setPaint(getForeground());
+      g2.drawGlyphVector(gvText, i.left, getFont().getSize2D() + i.top);
+      g2.dispose();
+    } else {
+      super.paintComponent(g);
+    }
+  }
+
+  private static GlyphVector getWrappedGlyphVector(GlyphVector gv, double width) {
+    Point2D gmPos = new Point2D.Float();
+    float lineHeight = (float) gv.getLogicalBounds().getHeight();
+    float pos = 0f;
+    int lineCount = 0;
+    for (int i = 0; i < gv.getNumGlyphs(); i++) {
+      GlyphMetrics gm = gv.getGlyphMetrics(i);
+      float advance = gm.getAdvance();
+      // Wrap only if the line is not empty, so that a glyph wider than
+      // the cell does not leave a blank line above it
+      if (pos > 0f && pos + advance > width) {
+        lineCount++;
+        pos = 0f;
+      }
+      gmPos.setLocation(pos, lineHeight * lineCount);
+      gv.setGlyphPosition(i, gmPos);
+      pos += advance;
+    }
+    return gv;
+  }
+}
+
+// delegation pattern
+class TextAreaCellRenderer implements TableCellRenderer {
+  private final JTextArea renderer = new JTextArea();
+
+  protected TextAreaCellRenderer() {
+    renderer.setLineWrap(true);
+    renderer.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+  }
+
+  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    if (isSelected) {
+      renderer.setForeground(table.getSelectionForeground());
+      renderer.setBackground(table.getSelectionBackground());
+    } else {
+      renderer.setForeground(table.getForeground());
+      renderer.setBackground(table.getBackground());
+    }
+    renderer.setFont(table.getFont());
+    renderer.setText(Objects.toString(value, ""));
+    return renderer;
+  }
+}
+}}
+
+* Description [#description]
+- `0`列目
+-- デフォルトの`JLabel`を継承する`DefaultTableCellRenderer`を使用し超過分は`...`で省略
+- `1`列目
+-- [[文字列の折り返し>Swing/GlyphVector]]で作成した`JLabel`を継承する`WrappedLabel`をセル描画コンポーネントとして保持するレンダラーを使ってセル幅に合わせて折り返し
+-- `CellRendererPane`でセル描画コンポーネントのサイズが変更される、または文字列が変更されると`WrappedLabel#doLayout()`が実行されるので、ここでセルの内部領域の幅に合わせて`GlyphVector`の各グリフの位置を更新する
+-- 行が空でなく次のグリフがセル幅を超える場合のみ改行するので、セル幅より広いグリフがあってもその前に空行は挿入されない
+- `2`列目
+-- `JTextArea`をセル描画コンポーネントとして保持する`TableCellRenderer`を作成し`JTextArea#setLineWrap(boolean)`メソッドを使用して折り返しを有効化
+- どちらのレンダラーも行の高さは自動調整しないため、`JTable#setRowHeight(50)`で固定の高さを設定している
+
+#en{{
+- Column `0`
+    - Uses `DefaultTableCellRenderer`, which extends the default `JLabel`, and truncates overflowing text with `...`
+- Column `1`
+    - Uses a renderer that holds a `WrappedLabel`, a `JLabel` subclass created in [[Wrap the string in a JLabel>Swing/GlyphVector]], as the cell rendering component to wrap text to fit the cell width
+    - `WrappedLabel#doLayout()` is invoked when the `CellRendererPane` changes the size of the cell rendering component or when its text changes, so the position of each glyph in the `GlyphVector` is updated there to fit the width of the inner area of the cell
+    - A line is wrapped only when it is not empty and the next glyph would exceed the cell width, so no blank line is inserted before a glyph wider than the cell
+- Column `2`
+    - Creates a `TableCellRenderer` that holds a `JTextArea` as the cell rendering component, and enables line wrapping with the `JTextArea#setLineWrap(boolean)` method
+- Neither renderer adjusts the row height automatically, so a fixed height is set with `JTable#setRowHeight(50)`
+}}
+
+* Reference [#reference]
+- [[TableCellRendererでセルの背景色を変更>Swing/StripeTable]]
+- [[JTableのセルの高さを自動調整>Swing/AutoWrapTableCell]]
+-- セル幅だけでなく高さも調整する方法のサンプル
+
+* Comment [#comment]
+#comment
+- メモ: `TextAreaCellRenderer`を、`NimbusLookAndFeel`で使ったとき、うまく余白を消す方法が分からない。 -- &user(aterai); &new{2008-05-08 (木) 18:25:18};
+- ここの方法だと行の高さも自動変更してくれます。%%This JDK Tutorial shows you how to wrap text inside cells of a JTable%% (リンク切れ) -- &user(とおりすがり); &new{2010-12-10 (金) 10:12:40};
+- ご指摘ありがとうございます。この方法なら、[[JTableのセルの高さを自動調整>Swing/AutoWrapTableCell]]で発生しているバグも修正できそうです。 -- &user(aterai); &new{2010-12-10 (金) 13:50:58};
+-- スクロールバーの表示・非表示が繰り返されるバグは修正できそうだけど、高さが更新されない場合がある(上記の`www.roseindia.net`にある例だと、列幅をすこしずつ調整すると、`fox`が表示されなくなる)方は難しそう？ -- &user(aterai); &new{2010-12-10 (金) 17:43:28};
+
+#comment

@@ -34,7 +34,6 @@ public final class MainPanel extends JPanel {
         getColumnModel().getColumn(2).setCellRenderer(null);
         super.updateUI();
         getTableHeader().setReorderingAllowed(false);
-        setRowSelectionAllowed(true);
         setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         setRowHeight(50);
         getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer());
@@ -42,8 +41,6 @@ public final class MainPanel extends JPanel {
         getColumnModel().getColumn(2).setCellRenderer(new TextAreaCellRenderer());
       }
     };
-    // JTableHeader header = table.getTableHeader();
-    // header.setReorderingAllowed(false);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -99,8 +96,8 @@ class WrappedLabelRenderer implements TableCellRenderer {
       renderer.setForeground(table.getForeground());
       renderer.setBackground(table.getBackground());
     }
-    boolean b = value instanceof Number;
-    renderer.setHorizontalAlignment(b ? SwingConstants.RIGHT : SwingConstants.LEFT);
+    boolean isNumber = value instanceof Number;
+    renderer.setHorizontalAlignment(isNumber ? SwingConstants.RIGHT : SwingConstants.LEFT);
     renderer.setFont(table.getFont());
     renderer.setText(Objects.toString(value, ""));
     return renderer;
@@ -147,12 +144,12 @@ class WrappedLabel extends JLabel {
     float lineHeight = (float) gv.getLogicalBounds().getHeight();
     float pos = 0f;
     int lineCount = 0;
-    GlyphMetrics gm;
-
     for (int i = 0; i < gv.getNumGlyphs(); i++) {
-      gm = gv.getGlyphMetrics(i);
+      GlyphMetrics gm = gv.getGlyphMetrics(i);
       float advance = gm.getAdvance();
-      if (pos < width && width <= pos + advance) {
+      // Wrap only if the line is not empty, so that a glyph wider than
+      // the cell does not leave a blank line above it
+      if (pos > 0f && pos + advance > width) {
         lineCount++;
         pos = 0f;
       }
@@ -170,7 +167,6 @@ class TextAreaCellRenderer implements TableCellRenderer {
   private final JTextArea renderer = new JTextArea();
 
   protected TextAreaCellRenderer() {
-    super();
     renderer.setLineWrap(true);
     renderer.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
     // renderer.setName("Table.cellRenderer");
