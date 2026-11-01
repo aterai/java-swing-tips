@@ -14,12 +14,12 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    JInternalFrame f0 = new JInternalFrame("metal(default)", true, true, true, true);
-    // TEST: f0.setUI(new BasicInternalFrameUI(f0));
-    f0.setSize(240, 100);
-    f0.setLocation(20, 10);
+    JInternalFrame metalFrame = new JInternalFrame("metal(default)", true, true, true, true);
+    // TEST: metalFrame.setUI(new BasicInternalFrameUI(metalFrame));
+    metalFrame.setSize(240, 100);
+    metalFrame.setLocation(20, 10);
 
-    JInternalFrame f1 = new JInternalFrame("basic", true, true, true, true) {
+    JInternalFrame basicFrame = new JInternalFrame("basic", true, true, true, true) {
       @Override public void updateUI() {
         super.updateUI();
         setUI(new BasicInternalFrameUI(this) {
@@ -29,15 +29,16 @@ public final class MainPanel extends JPanel {
         });
       }
     };
-    f1.setSize(240, 100);
-    f1.setLocation(40, 120);
+    basicFrame.setSize(240, 100);
+    basicFrame.setLocation(40, 120);
 
     JDesktopPane desktop = new JDesktopPane();
-    desktop.add(f0);
-    desktop.add(f1);
+    desktop.add(metalFrame);
+    desktop.add(basicFrame);
     EventQueue.invokeLater(() -> {
-      JInternalFrame[] allFrames = desktop.getAllFrames();
-      Arrays.asList(allFrames).forEach(f -> f.setVisible(true));
+      for (JInternalFrame f : desktop.getAllFrames()) {
+        f.setVisible(true);
+      }
     });
 
     add(desktop);
@@ -72,6 +73,7 @@ class BumpsFreeInternalFrameTitlePane extends BasicInternalFrameTitlePane {
         ? MetalLookAndFeel.getPrimaryControlDarkShadow()
         : MetalLookAndFeel.getControlDarkShadow();
     g.setColor(shadow);
+    // Same edges as MetalInternalFrameTitlePane: bottom line and top corner dots
     g.drawLine(0, height - 1, width, height - 1);
     g.drawLine(0, 0, 0, 0);
     g.drawLine(width - 1, 0, width - 1, 0);
@@ -87,6 +89,8 @@ class BumpsFreeInternalFrameTitlePane extends BasicInternalFrameTitlePane {
     super.createButtons();
     Arrays.asList(closeButton, maxButton, iconButton).forEach(b -> {
       b.setContentAreaFilled(false);
+      // Removes the button border; TitlePaneLayout sets fixed 16x14 bounds,
+      // so these insets do not enlarge the button
       b.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
     });
   }
