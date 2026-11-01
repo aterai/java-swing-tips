@@ -7,6 +7,7 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -71,28 +72,48 @@ public final class MainPanel extends JPanel {
 }
 
 class VerticalTableHeaderRenderer implements TableCellRenderer {
-  private static final String ASCENDING = "Table.ascendingSortIcon";
-  private static final String DESCENDING = "Table.descendingSortIcon";
+  private static final String ASCENDING_KEY = "Table.ascendingSortIcon";
+  private static final String DESCENDING_KEY = "Table.descendingSortIcon";
+  // A non-Icon value makes UIManager#getIcon(...) and DefaultLookup return null,
+  // so the default header renderer neither shows nor paints its own sort icon
+  private static final Object NO_SORT_ICON = "";
   private final Icon ascendingIcon;
   private final Icon descendingIcon;
-  private final EmptyIcon emptyIcon;
+  private final Icon emptyIcon;
   private final JPanel intermediate = new JPanel();
   private final JLabel label = new JLabel("", null, SwingConstants.LEADING);
 
   protected VerticalTableHeaderRenderer() {
-    ascendingIcon = UIManager.getLookAndFeelDefaults().getIcon(ASCENDING);
-    descendingIcon = UIManager.getLookAndFeelDefaults().getIcon(DESCENDING);
+    UIDefaults def = UIManager.getLookAndFeelDefaults();
+    Icon ascending = def.getIcon(ASCENDING_KEY);
+    Icon descending = def.getIcon(DESCENDING_KEY);
+    // The whole header label is rotated 90 degrees counterclockwise later,
+    // so rotate the sort icons 90 degrees clockwise in advance to keep them
+    // pointing up and down. The rotated icons are created only once here.
+    ascendingIcon = new RotateIcon(ascending, 90);
+    descendingIcon = new RotateIcon(descending, 90);
+    // Reserve the same space for the unsorted columns
     emptyIcon = new EmptyIcon(ascendingIcon.getIconWidth(), ascendingIcon.getIconHeight());
+    label.setHorizontalTextPosition(SwingConstants.LEFT);
+    label.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
   }
 
-  @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    UIManager.put(ASCENDING, emptyIcon);
-    UIManager.put(DESCENDING, emptyIcon);
+  @Override public Component getTableCellRendererComponent(
+      JTable table, Object value, boolean isSelected, boolean hasFocus,
+      int row, int column) {
     TableCellRenderer r = table.getTableHeader().getDefaultRenderer();
-    Component c = r.getTableCellRendererComponent(
-        table, value, isSelected, hasFocus, row, column);
-    UIManager.put(ASCENDING, ascendingIcon);
-    UIManager.put(DESCENDING, descendingIcon);
+    Component c;
+    UIManager.put(ASCENDING_KEY, NO_SORT_ICON);
+    UIManager.put(DESCENDING_KEY, NO_SORT_ICON);
+    try {
+      c = r.getTableCellRendererComponent(
+          table, value, isSelected, hasFocus, row, column);
+    } finally {
+      // Putting null removes the temporary values from the developer defaults,
+      // so the LookAndFeel defaults are used again
+      UIManager.put(ASCENDING_KEY, null);
+      UIManager.put(DESCENDING_KEY, null);
+    }
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
       l.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,10 +131,7 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
           break;
       }
       label.setText(l.getText());
-      label.setIcon(new RotateIcon(sortIcon, 90));
-      label.setHorizontalTextPosition(SwingConstants.LEFT);
-      label.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
-
+      label.setIcon(sortIcon);
       // l.setIcon(new RotateIcon(new ComponentIcon(label), -90));
       l.setIcon(createVerticalHeaderIcon(label));
       l.setText(null);
@@ -137,7 +155,7 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
     int w = d.height;
     int h = d.width;
     BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = (Graphics2D) bi.getGraphics();
+    Graphics2D g2 = bi.createGraphics();
     AffineTransform at = AffineTransform.getTranslateInstance(0, h);
     at.quadrantRotate(-1);
     g2.setTransform(at);
@@ -155,7 +173,7 @@ class VerticalTableHeaderRenderer implements TableCellRenderer {
   //   }
   //
   //   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-  //     SwingUtilities.paintComponent(g, cmp, p, x, y, getIconWidth(), getIconHeight());
+  //     SwingUtilities.paintComponent(g, cmp, intermediate, x, y, getIconWidth(), getIconHeight());
   //   }
   //
   //   @Override public int getIconWidth() {
