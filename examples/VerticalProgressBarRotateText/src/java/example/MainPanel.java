@@ -25,13 +25,13 @@ public final class MainPanel extends JPanel implements HierarchyListener {
 
     JProgressBar progressBar2 = new JProgressBar(SwingConstants.VERTICAL);
     progressBar2.setStringPainted(true);
-    UIDefaults d = new UIDefaults();
-    d.put("ProgressBar.rotateText", false);
+    UIDefaults overrides = new UIDefaults();
+    overrides.put("ProgressBar.rotateText", false);
     // NimbusDefaults has a typo in a L&F property - Java Bug System
     // https://bugs.openjdk.org/browse/JDK-8285962
-    // d.put("ProgressBar.vertictalSize", new Dimension(50, 150));
-    d.put("ProgressBar.verticalSize", new Dimension(50, 150));
-    progressBar2.putClientProperty("Nimbus.Overrides", d);
+    // overrides.put("ProgressBar.vertictalSize", new Dimension(50, 150));
+    overrides.put("ProgressBar.verticalSize", new Dimension(50, 150));
+    progressBar2.putClientProperty("Nimbus.Overrides", overrides);
     progressBar2.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
 
     JButton button = new JButton("Test");
