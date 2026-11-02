@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
@@ -65,6 +64,7 @@ class VerticalTitledBorder extends TitledBorder {
   protected VerticalTitledBorder(String title) {
     super(title);
     this.label = new JLabel(title);
+    // Fill the label background so that the border line behind the title is hidden
     this.label.setOpaque(true);
     // this.label.putClientProperty(BasicHTML.propertyKey, null);
   }
@@ -76,96 +76,95 @@ class VerticalTitledBorder extends TitledBorder {
       super.paintBorder(c, g, x, y, width, height);
     } else {
       int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-      JLabel lbl = getTitleLabel(c);
-      Dimension size = lbl.getPreferredSize();
-      Insets ins = createComponentBorderInsets(border, c, new Insets(0, 0, 0, 0));
+      JLabel titleLabel = getTitleLabel(c);
+      Dimension size = titleLabel.getPreferredSize();
+      Insets borderInsets = getInnerBorderInsets(border, c, new Insets(0, 0, 0, 0));
 
       int labelH = size.height;
-      int labelW = Math.min(height - ins.top - ins.bottom, size.width);
+      int labelW = Math.min(height - borderInsets.top - borderInsets.bottom, size.width);
       int borderX = x + edge;
       int borderY = y + edge;
       int borderW = width - edge - edge;
       int borderH = height - edge - edge;
 
-      int left = edge + ins.left / 2 - labelH / 2;
+      // Center the title on the left border line, the same way as
+      // TitledBorder centers the title on the top border line
+      int labelX = x;
+      int left = edge + borderInsets.left / 2 - labelH / 2;
       if (left < edge) {
         borderX -= left;
         borderW += left;
+      } else {
+        labelX += left;
       }
       border.paintBorder(c, g, borderX, borderY, borderW, borderH);
 
       Graphics2D g2 = (Graphics2D) g.create();
-      g2.translate(0d, (height + labelW) / 2d);
+      // The (x, y) offset is not zero when nested in another border,
+      // e.g. a TitledBorder or a CompoundBorder
+      g2.translate(labelX, y + (height + labelW) / 2d);
       g2.transform(AffineTransform.getQuadrantRotateInstance(-1));
       // or: g2.rotate(-Math.PI / 2d);
       // or: g2.rotate(Math.toRadians(-90));
-      lbl.setSize(labelW, labelH);
-      lbl.paint(g2);
+      titleLabel.setSize(labelW, labelH);
+      titleLabel.paint(g2);
       g2.dispose();
     }
   }
 
   @Override public Insets getBorderInsets(Component c, Insets insets) {
     Border border = getBorder();
-    Insets ins = createComponentBorderInsets(border, c, insets);
+    Insets borderInsets = getInnerBorderInsets(border, c, insets);
     String title = getTitle();
     if (Objects.nonNull(title) && !title.isEmpty()) {
       int edge = border instanceof TitledBorder ? 0 : EDGE_SPACING;
-      JLabel lbl = getTitleLabel(c);
-      Dimension size = lbl.getPreferredSize();
-      if (ins.left < size.height) {
-        ins.left = size.height - edge;
+      Dimension size = getTitleLabel(c).getPreferredSize();
+      if (borderInsets.left < size.height) {
+        borderInsets.left = size.height - edge;
       }
-      ins.top += edge + TEXT_SPACING;
-      ins.left += edge + TEXT_SPACING;
-      ins.right += edge + TEXT_SPACING;
-      ins.bottom += edge + TEXT_SPACING;
+      borderInsets.top += edge + TEXT_SPACING;
+      borderInsets.left += edge + TEXT_SPACING;
+      borderInsets.right += edge + TEXT_SPACING;
+      borderInsets.bottom += edge + TEXT_SPACING;
     }
-    return ins;
+    return borderInsets;
   }
 
-  // // Copied from TitledBorder
-  // private Color getTitleColor(Component c) {
-  //   Color color = getTitleColor();
-  //   if (Objects.nonNull(color)) {
-  //     return color;
-  //   }
-  //   color = UIManager.getColor("TitledBorder.titleColor");
-  //   if (Objects.nonNull(color)) {
-  //     return color;
-  //   }
-  //   return Objects.nonNull(c) ? c.getForeground() : null;
-  // }
-
+  // @see javax/swing/border/TitledBorder.java#getTitleColor(Component)
   private Color getTitleColor(Component c) {
-    return Optional.ofNullable(getTitleColor())
-        .orElseGet(() -> Optional.ofNullable(UIManager.getColor("TitledBorder.titleColor"))
-            .orElseGet(() -> Optional.ofNullable(c).map(Component::getForeground)
-                .orElse(null)));
+    Color color = getTitleColor();
+    if (Objects.isNull(color)) {
+      color = UIManager.getColor("TitledBorder.titleColor");
+    }
+    if (Objects.isNull(color) && Objects.nonNull(c)) {
+      color = c.getForeground();
+    }
+    return color;
   }
 
   private JLabel getTitleLabel(Component c) {
-    this.label.setText(getTitle());
-    this.label.setFont(getFont(c));
-    this.label.setForeground(getTitleColor(c));
+    label.setText(getTitle());
+    label.setFont(getFont(c));
+    label.setForeground(getTitleColor(c));
     if (Objects.nonNull(c)) {
-      this.label.setComponentOrientation(c.getComponentOrientation());
-      this.label.setEnabled(c.isEnabled());
-      this.label.setBackground(c.getBackground()); // ???
+      label.setComponentOrientation(c.getComponentOrientation());
+      label.setEnabled(c.isEnabled());
+      label.setBackground(c.getBackground());
     }
-    return this.label;
+    return label;
   }
 
   // @see javax/swing/border/TitledBorder.java#getBorderInsets(Border, Component, Insets)
-  private static Insets createComponentBorderInsets(Border border, Component c, Insets i) {
-    Insets ins = new Insets(i.top, i.left, i.bottom, i.right);
+  // Reinitialize and return the given insets, as AbstractBorder#getBorderInsets(...) does
+  private static Insets getInnerBorderInsets(Border border, Component c, Insets insets) {
+    Insets ins = insets;
     if (Objects.isNull(border)) {
       ins.set(0, 0, 0, 0);
     } else if (border instanceof AbstractBorder) {
-      AbstractBorder ab = (AbstractBorder) border;
-      ins = ab.getBorderInsets(c, i);
+      ins = ((AbstractBorder) border).getBorderInsets(c, ins);
     } else {
-      ins = border.getBorderInsets(c);
+      Insets i = border.getBorderInsets(c);
+      ins.set(i.top, i.left, i.bottom, i.right);
     }
     return ins;
   }
