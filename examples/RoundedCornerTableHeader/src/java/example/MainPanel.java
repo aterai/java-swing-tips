@@ -36,7 +36,7 @@ public final class MainPanel extends JPanel {
     JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
     monthLabel.setOpaque(false);
     monthLabel.setFont(monthLabel.getFont().deriveFont(Font.BOLD));
-    MonthTable monthTable = new MonthTable();
+    CalendarTable monthTable = new CalendarTable();
     updateMonthView(monthTable, monthLabel, LocalDate.of(2021, 6, 21));
 
     JButton prev = new JButton("<");
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void updateMonthView(MonthTable table, JLabel label, LocalDate date) {
+  private void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentLocalDate(date);
     Color color = monthThemeColor.get(date.getMonthValue() - 1);
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
@@ -117,7 +117,7 @@ class MonthScrollPane extends JScrollPane {
   }
 }
 
-class MonthTable extends JTable {
+class CalendarTable extends JTable {
   private LocalDate currentLocalDate;
 
   @Override public void updateUI() {
@@ -181,14 +181,14 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
-    if (value instanceof LocalDate && c instanceof JLabel && table instanceof MonthTable) {
+    if (value instanceof LocalDate && c instanceof JLabel && table instanceof CalendarTable) {
       LocalDate d = (LocalDate) value;
       JLabel l = (JLabel) c;
       l.setText(Integer.toString(d.getDayOfMonth()));
       l.setVerticalAlignment(TOP);
       l.setHorizontalAlignment(LEFT);
       panel.setBackground(l.getBackground());
-      currentLocalDate = ((MonthTable) table).getCurrentLocalDate();
+      currentLocalDate = ((CalendarTable) table).getCurrentLocalDate();
       updateWeekColor(d, table, c, selected);
       TableModel model = table.getModel();
       LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days

@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-    MonthTable monthTable = new MonthTable();
+    CalendarTable monthTable = new CalendarTable();
     updateMonthView(monthTable, monthLabel, LocalDate.now(ZoneId.systemDefault()));
 
     JButton prev = new JButton("<");
@@ -66,7 +66,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void updateMonthView(MonthTable table, JLabel label, LocalDate date) {
+  private static void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentLocalDate(date);
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
@@ -109,7 +109,7 @@ class MonthScrollPane extends JScrollPane {
   }
 }
 
-class MonthTable extends JTable {
+class CalendarTable extends JTable {
   private LocalDate currentLocalDate;
 
   @Override public void updateUI() {
@@ -146,13 +146,13 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
-    if (value instanceof LocalDate && table instanceof MonthTable) {
+    if (value instanceof LocalDate && table instanceof CalendarTable) {
       LocalDate d = (LocalDate) value;
       if (c instanceof JLabel) {
         ((JLabel) c).setHorizontalAlignment(CENTER);
         ((JLabel) c).setText(Integer.toString(d.getDayOfMonth()));
       }
-      LocalDate currentLocalDate = ((MonthTable) table).getCurrentLocalDate();
+      LocalDate currentLocalDate = ((CalendarTable) table).getCurrentLocalDate();
       if (selected) {
         c.setForeground(table.getSelectionForeground());
       } else if (YearMonth.from(d).equals(YearMonth.from(currentLocalDate))) {

@@ -154,7 +154,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
   private final class CalenderPanel extends JPanel {
     private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
     private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-    private final MonthTable monthTable = new MonthTable();
+    private final CalendarTable monthTable = new CalendarTable();
     private LocalDate currentLocalDate;
 
     private CalenderPanel() {
@@ -213,7 +213,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
     }
   }
 
-  private static final class MonthTable extends JTable {
+  private static final class CalendarTable extends JTable {
     private transient HighlightListener highlighter;
 
     @Override public void updateUI() {

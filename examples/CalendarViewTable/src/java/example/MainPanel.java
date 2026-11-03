@@ -24,7 +24,7 @@ import javax.swing.table.TableCellRenderer;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    MonthTable monthTable = new MonthTable();
+    CalendarTable monthTable = new CalendarTable();
     LocalDate now = monthTable.getRealLocalDate();
     JLabel dateLabel = new JLabel(now.toString(), SwingConstants.CENTER);
     JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
@@ -63,7 +63,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void updateMonthView(MonthTable table, JLabel label, LocalDate date) {
+  private static void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentLocalDate(date);
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
     label.setText(date.format(fmt.withLocale(Locale.getDefault())));
@@ -92,7 +92,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MonthTable extends JTable {
+class CalendarTable extends JTable {
   private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
 
@@ -133,19 +133,19 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
-    if (c instanceof JLabel && value instanceof LocalDate && table instanceof MonthTable) {
+    if (c instanceof JLabel && value instanceof LocalDate && table instanceof CalendarTable) {
       JLabel l = (JLabel) c;
       l.setHorizontalAlignment(CENTER);
       LocalDate d = (LocalDate) value;
       l.setText(Integer.toString(d.getDayOfMonth()));
-      LocalDate cur = ((MonthTable) table).getCurrentLocalDate();
+      LocalDate cur = ((CalendarTable) table).getCurrentLocalDate();
       if (YearMonth.from(d).equals(YearMonth.from(cur))) {
         l.setForeground(table.getForeground());
       } else {
         l.setForeground(Color.GRAY);
       }
       DayOfWeek dow = d.getDayOfWeek();
-      if (d.isEqual(((MonthTable) table).getRealLocalDate())) {
+      if (d.isEqual(((CalendarTable) table).getRealLocalDate())) {
         l.setBackground(TODAY_BGC);
       } else if (dow == DayOfWeek.SUNDAY) {
         l.setBackground(SUNDAY_BGC);

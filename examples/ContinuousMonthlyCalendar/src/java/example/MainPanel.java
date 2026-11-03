@@ -26,7 +26,7 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private final JLabel dateLabel = new JLabel("", SwingConstants.CENTER);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-  private final MonthTable monthTable = new MonthTable();
+  private final CalendarTable monthTable = new CalendarTable();
   private final JScrollPane scroll = new JScrollPane(monthTable);
 
   private MainPanel() {
@@ -166,7 +166,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MonthTable extends JTable {
+class CalendarTable extends JTable {
   private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
 
@@ -207,12 +207,12 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, selected, focused, row, column);
-    if (c instanceof JLabel && value instanceof LocalDate && table instanceof MonthTable) {
+    if (c instanceof JLabel && value instanceof LocalDate && table instanceof CalendarTable) {
       JLabel l = (JLabel) c;
       l.setHorizontalAlignment(CENTER);
       LocalDate d = (LocalDate) value;
       l.setText(Integer.toString(d.getDayOfMonth()));
-      MonthTable tbl = (MonthTable) table;
+      CalendarTable tbl = (CalendarTable) table;
       LocalDate cur = tbl.getCurrentLocalDate();
       if (YearMonth.from(d).equals(YearMonth.from(cur))) {
         l.setForeground(table.getForeground());

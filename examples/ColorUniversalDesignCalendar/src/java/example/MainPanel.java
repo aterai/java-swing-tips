@@ -35,7 +35,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-    MonthTable monthTable = new MonthTable();
+    CalendarTable monthTable = new CalendarTable();
     LocalDate realDate = LocalDate.now(ZoneId.systemDefault());
     updateMonthView(monthTable, monthLabel, realDate);
 
@@ -67,7 +67,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void updateMonthView(MonthTable table, JLabel label, LocalDate date) {
+  private static void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentLocalDate(date);
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
     label.setText(date.format(fmt.withLocale(Locale.getDefault())));
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class MonthTable extends JTable {
+class CalendarTable extends JTable {
   private LocalDate currentDate;
 
   @Override public void updateUI() {
@@ -155,8 +155,8 @@ class CalendarTableRenderer implements TableCellRenderer {
     renderer.removeAll();
     renderer.add(label);
     label.setOpaque(false);
-    if (value instanceof LocalDate && table instanceof MonthTable) {
-      currentDate = ((MonthTable) table).getCurrentLocalDate();
+    if (value instanceof LocalDate && table instanceof CalendarTable) {
+      currentDate = ((CalendarTable) table).getCurrentLocalDate();
       LocalDate d = (LocalDate) value;
       updateEnclosedLabel(table, label, d);
       // if (isJapaneseNationalHoliday(d)) {
