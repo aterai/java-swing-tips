@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
-  <property name="jnlp.title"    value="JST Gradient" />
-  <property name="jnlp.Name"     value="Gradient" />
-  <property name="jnlp.name"     value="gradient" />
-  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gradient/" />
-  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/Gradient.html" />
-</project>

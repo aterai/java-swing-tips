@@ -33,7 +33,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  public static Component makeIndentPanel(String title, JSeparator sp, int indent) {
+  private static Component makeIndentPanel(String title, JSeparator sp, int indent) {
     JPanel p = new JPanel(new GridBagLayout());
     p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -109,9 +109,9 @@ class GradientSeparator extends JSeparator {
 }
 
 class GradientSeparatorUI extends BasicSeparatorUI {
-  private Color bgClr;
-  private Color shdClr;
-  private Color hltClr;
+  private Color background;
+  private Color shadow;
+  private Color highlight;
 
   public static ComponentUI createUI(JComponent c) {
     return new GradientSeparatorUI();
@@ -119,12 +119,12 @@ class GradientSeparatorUI extends BasicSeparatorUI {
 
   private void updateColors(Component c) {
     Color bgc = c.getBackground();
-    Color c1 = UIManager.getColor("Panel.background");
-    bgClr = c1 instanceof ColorUIResource ? c1 : bgc;
-    Color c2 = UIManager.getColor("Separator.shadow");
-    shdClr = c2 instanceof ColorUIResource ? c2 : bgc.darker();
-    Color c3 = UIManager.getColor("Separator.highlight");
-    hltClr = c3 instanceof ColorUIResource ? c3 : bgc.brighter();
+    Color panelBg = UIManager.getColor("Panel.background");
+    background = panelBg instanceof ColorUIResource ? panelBg : bgc;
+    Color shadowColor = UIManager.getColor("Separator.shadow");
+    shadow = shadowColor instanceof ColorUIResource ? shadowColor : bgc.darker();
+    Color highlightColor = UIManager.getColor("Separator.highlight");
+    highlight = highlightColor instanceof ColorUIResource ? highlightColor : bgc.brighter();
   }
 
   @Override public void installUI(JComponent c) {
@@ -135,19 +135,31 @@ class GradientSeparatorUI extends BasicSeparatorUI {
   @Override public void paint(Graphics g, JComponent c) {
     if (c instanceof JSeparator) {
       Graphics2D g2 = (Graphics2D) g.create();
+      // Paint inside the border insets
       Rectangle r = SwingUtilities.calculateInnerArea(c, null);
       if (((JSeparator) c).getOrientation() == SwingConstants.HORIZONTAL) {
-        g2.setPaint(new GradientPaint(0f, 0f, shdClr, r.width, 0f, bgClr, true));
-        g2.fillRect(0, 0, r.width, 1);
-        g2.setPaint(new GradientPaint(0f, 0f, hltClr, r.width, 0f, bgClr, true));
-        g2.fillRect(0, 1, r.width, 1);
+        float x2 = r.x + r.width;
+        g2.setPaint(new GradientPaint(r.x, r.y, shadow, x2, r.y, background));
+        g2.fillRect(r.x, r.y, r.width, 1);
+        g2.setPaint(new GradientPaint(r.x, r.y, highlight, x2, r.y, background));
+        g2.fillRect(r.x, r.y + 1, r.width, 1);
       } else {
-        g2.setPaint(new GradientPaint(0f, 0f, shdClr, 0f, r.height, bgClr, true));
-        g2.fillRect(0, 0, 1, r.height);
-        g2.setPaint(new GradientPaint(0f, 0f, hltClr, 0f, r.height, bgClr, true));
-        g2.fillRect(1, 0, 1, r.height);
+        float y2 = r.y + r.height;
+        g2.setPaint(new GradientPaint(r.x, r.y, shadow, r.x, y2, background));
+        g2.fillRect(r.x, r.y, 1, r.height);
+        g2.setPaint(new GradientPaint(r.x, r.y, highlight, r.x, y2, background));
+        g2.fillRect(r.x + 1, r.y, 1, r.height);
       }
       g2.dispose();
     }
+  }
+
+  @Override public Dimension getPreferredSize(JComponent c) {
+    // BasicSeparatorUI ignores the border insets, so the line would be hidden by a Border
+    Dimension d = super.getPreferredSize(c);
+    Insets i = c.getInsets();
+    d.width += i.left + i.right;
+    d.height += i.top + i.bottom;
+    return d;
   }
 }
