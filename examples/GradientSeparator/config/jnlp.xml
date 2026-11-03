@@ -2,7 +2,7 @@
 <project>
   <property name="jnlp.title"    value="JST GradientSeparator" />
   <property name="jnlp.Name"     value="GradientSeparator" />
-  <property name="jnlp.name"     value="gradient" />
-  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gradient/" />
+  <property name="jnlp.name"     value="gradientseparator" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/gradientseparator/" />
   <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GradientSeparator.html" />
 </project>
