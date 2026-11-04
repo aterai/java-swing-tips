@@ -6,8 +6,6 @@ package example;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -22,30 +20,14 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JTabbedPane tabs = new ClippedTitleTabbedPane();
     tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-    // tabs.setTabPlacement(SwingConstants.LEFT);
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-    List<TabTitle> titles = Arrays.asList(
-        new TabTitle("JTree", cl.getResource("example/wi0009-32.png")),
-        new TabTitle("JTextArea", cl.getResource("example/wi0054-32.png")),
-        new TabTitle("JTable", cl.getResource("example/wi0062-32.png")),
-        new TabTitle("JSplitPane", cl.getResource("example/wi0063-32.png"))
-    );
-
-    addTab(tabs, titles.get(0), new JScrollPane(new JTree()));
-    addTab(tabs, titles.get(1), new JScrollPane(new JTextArea()));
-    addTab(tabs, titles.get(2), new JScrollPane(new JTable(8, 3)));
-    addTab(tabs, titles.get(3), new JSplitPane());
-    tabs.setSelectedIndex(-1);
-    EventQueue.invokeLater(() -> tabs.setSelectedIndex(0));
-
-    tabs.addChangeListener(e -> {
-      JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-      if (tabbedPane.getTabCount() > 0) {
-        updateSelectedTabTitle(tabbedPane);
-      }
-    });
-
+    addTab(tabs, "JTree", "example/wi0009-32.png", new JScrollPane(new JTree()));
+    addTab(tabs, "JTextArea", "example/wi0054-32.png", new JScrollPane(new JTextArea()));
+    addTab(tabs, "JTable", "example/wi0062-32.png", new JScrollPane(new JTable(8, 3)));
+    addTab(tabs, "JSplitPane", "example/wi0063-32.png", new JSplitPane());
+    tabs.addChangeListener(e -> updateSelectedTabTitle((JTabbedPane) e.getSource()));
+    updateSelectedTabTitle(tabs);
+    tabs.setComponentPopupMenu(createTabPlacementPopup());
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
   }
@@ -60,28 +42,31 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static void addTab(JTabbedPane tabbedPane, TabTitle tt, Component c) {
-    tabbedPane.addTab(tt.getTitle(), c);
-    Icon icon = Optional.ofNullable(tt.getUrl())
-        .<Icon>map(ImageIcon::new)
-        .orElseGet(() -> UIManager.getIcon("html.missingImage"));
-    JLabel label = new JLabel(null, icon, SwingConstants.CENTER) {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        Container c = SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
-        if (c instanceof JTabbedPane) {
-          int tp = ((JTabbedPane) c).getTabPlacement();
-          if (tp == TOP || tp == BOTTOM) {
-            int fontSize = tabbedPane.getFont().getSize();
-            d.height = icon.getIconHeight() + fontSize + getIconTextGap();
-          }
-        }
-        return d;
+  private static void addTab(JTabbedPane tabs, String title, String path, Component c) {
+    tabs.addTab(title, c);
+    URL url = Thread.currentThread().getContextClassLoader().getResource(path);
+    tabs.setTabComponentAt(tabs.getTabCount() - 1, new IconTabLabel(title, url));
+  }
+
+  private static JPopupMenu createTabPlacementPopup() {
+    JPopupMenu popup = new JPopupMenu();
+    ButtonGroup group = new ButtonGroup();
+    popup.add(createTabPlacementItem(popup, group, "TOP", SwingConstants.TOP));
+    popup.add(createTabPlacementItem(popup, group, "LEFT", SwingConstants.LEFT));
+    return popup;
+  }
+
+  private static JMenuItem createTabPlacementItem(
+      JPopupMenu popup, ButtonGroup group, String name, int placement) {
+    JMenuItem item = new JRadioButtonMenuItem(name, placement == SwingConstants.TOP);
+    item.addActionListener(e -> {
+      Component c = popup.getInvoker();
+      if (c instanceof JTabbedPane) {
+        ((JTabbedPane) c).setTabPlacement(placement);
       }
-    };
-    label.setVerticalTextPosition(SwingConstants.BOTTOM);
-    label.setHorizontalTextPosition(SwingConstants.CENTER);
-    tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, label);
+    });
+    group.add(item);
+    return item;
   }
 
   public static void main(String[] args) {
@@ -107,33 +92,53 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TabTitle {
+class IconTabLabel extends JLabel {
   private final String title;
-  private final URL url;
 
-  protected TabTitle(String title, URL url) {
+  protected IconTabLabel(String title, URL url) {
+    super(null, createIcon(url), CENTER);
     this.title = title;
-    this.url = url;
   }
 
-  public String getTitle() {
-    return title;
+  private static Icon createIcon(URL url) {
+    return Optional.ofNullable(url)
+        .<Icon>map(ImageIcon::new)
+        .orElseGet(() -> UIManager.getIcon("html.missingImage"));
   }
 
-  public URL getUrl() {
-    return url;
+  @Override public void updateUI() {
+    super.updateUI();
+    setVerticalTextPosition(BOTTOM);
+    setHorizontalTextPosition(CENTER);
+  }
+
+  @Override public Dimension getPreferredSize() {
+    Dimension d = super.getPreferredSize();
+    Container c = SwingUtilities.getAncestorOfClass(JTabbedPane.class, this);
+    if (c instanceof JTabbedPane) {
+      // Fix the size along the cross axis so that the tab does not
+      // grow or shrink when the title is shown or hidden
+      Icon icon = getIcon();
+      FontMetrics fm = getFontMetrics(getFont());
+      int height = icon.getIconHeight() + getIconTextGap() + fm.getHeight();
+      int tabPlacement = ((JTabbedPane) c).getTabPlacement();
+      if (tabPlacement == TOP || tabPlacement == BOTTOM) {
+        d.height = height;
+      } else {
+        d.width = Math.max(icon.getIconWidth(), fm.stringWidth(title));
+        // Never shrink below the icon + title height: the tabs scroll instead of clipping
+        d.height = Math.max(d.height, height);
+      }
+    }
+    return d;
   }
 }
 
 class ClippedTitleTabbedPane extends JTabbedPane {
-  protected ClippedTitleTabbedPane() {
-    super();
-  }
-
   private Insets getSynthInsets(Region region) {
     SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext context = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(context, null);
+    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
+    return style.getInsets(ctx, null);
   }
 
   private Insets getTabInsets() {
@@ -148,112 +153,50 @@ class ClippedTitleTabbedPane extends JTabbedPane {
 
   @Override public void doLayout() {
     int tabCount = getTabCount();
-    if (tabCount >= 0 && isVisible()) {
-      Insets tabIns = getTabInsets();
-      Insets tabAreaIns = getTabAreaInsets();
-      Insets ins = getInsets();
+    if (tabCount > 0 && isVisible()) {
+      Insets tabInsets = getTabInsets();
+      Insets tabAreaInsets = getTabAreaInsets();
+      Insets insets = getInsets();
       int tabPlacement = getTabPlacement();
-      int tabSize;
-      int gap;
-      if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-        int h = getHeight() - tabAreaIns.top - tabAreaIns.bottom - ins.top - ins.bottom;
-        tabSize = h / tabCount;
-        gap = h - tabSize * tabCount;
-        tabSize -= tabIns.top + tabIns.bottom + 3;
-      } else { // TOP || BOTTOM
-        int w = getWidth() - tabAreaIns.left - tabAreaIns.right - ins.left - ins.right;
-        tabSize = w / tabCount;
-        gap = w - tabSize * tabCount;
-        tabSize -= tabIns.left + tabIns.right + 3;
+      boolean horizontal = tabPlacement == TOP || tabPlacement == BOTTOM;
+      int areaSize;
+      int padding;
+      if (horizontal) {
+        areaSize = getWidth() - tabAreaInsets.left - tabAreaInsets.right
+            - insets.left - insets.right;
+        // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
+        padding = tabInsets.left + tabInsets.right + 3;
+      } else {
+        // BasicTabbedPaneUI#getTabAreaInsets(...) rotates tabAreaInsets for LEFT/RIGHT,
+        // so its left/right are applied to the top/bottom of the tab area
+        areaSize = getHeight() - tabAreaInsets.left - tabAreaInsets.right
+            - insets.top - insets.bottom;
+        // This 2 is the magic number defined in BasicTabbedPaneUI#calculateTabHeight(...)
+        padding = tabInsets.top + tabInsets.bottom + 2;
       }
-      updateAllTabWidth(tabSize, gap);
+      int tabSize = areaSize / tabCount;
+      int gap = areaSize - tabSize * tabCount;
+      updateAllTabSizes(tabSize - padding, gap, horizontal);
     }
     super.doLayout();
   }
 
-  private void updateAllTabWidth(int tabSize, int gap) {
-    boolean isSide = getTabPlacement() == LEFT || getTabPlacement() == RIGHT;
-    Dimension dim = new Dimension();
-    int rest = gap;
-    int tabCount = getTabCount();
-    for (int i = 0; i < tabCount; i++) {
+  private void updateAllTabSizes(int tabSize, int gap, boolean horizontal) {
+    for (int i = 0; i < getTabCount(); i++) {
       Component c = getTabComponentAt(i);
       if (c instanceof JComponent) {
         JComponent tab = (JComponent) c;
-        int a = i == tabCount - 1 ? rest : 1;
-        int w = rest > 0 ? tabSize + a : tabSize;
-        if (isSide) {
-          dim.setSize(tab.getPreferredSize().width, w);
+        // Distribute the remainder (gap < tabCount) one pixel each to the leading tabs
+        int size = i < gap ? tabSize + 1 : tabSize;
+        // getPreferredSize() returns a copy, so it is safe to modify and set it back
+        Dimension d = tab.getPreferredSize();
+        if (horizontal) {
+          d.width = size;
         } else {
-          dim.setSize(w, tab.getPreferredSize().height);
+          d.height = size;
         }
-        tab.setPreferredSize(dim);
-        rest -= a;
+        tab.setPreferredSize(d);
       }
     }
   }
 }
-
-// public final class MainPanel extends JPanel {
-//   private MainPanel() {
-//     super(new BorderLayout());
-//     JTabbedPane tabs = new JTabbedPane(SwingConstants.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-//     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-//     // [XP Style Icons - Download](https://xp-style-icons.en.softonic.com/)
-//     List<TabTitle> titles = Arrays.asList(
-//         new TabTitle("JTree", cl.getResource("example/wi0009-32.png")),
-//         new TabTitle("JTextArea", cl.getResource("example/wi0054-32.png")),
-//         new TabTitle("JTable", cl.getResource("example/wi0062-32.png")),
-//         new TabTitle("JSplitPane", cl.getResource("example/wi0063-32.png"))
-//     );
-//
-//     tabs.addTab(makeTitle(titles.get(0), true), new JScrollPane(new JTree()));
-//     tabs.addTab(makeTitle(titles.get(1), false), new JScrollPane(new JTextArea()));
-//     tabs.addTab(makeTitle(titles.get(2), false), new JScrollPane(new JTable(8, 3)));
-//     tabs.addTab(makeTitle(titles.get(3), false), new JSplitPane());
-//     tabs.setSelectedIndex(0);
-//
-//     tabs.addChangeListener(e -> {
-//       JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-//       if (tabbedPane.getTabCount() <= 0) {
-//         return;
-//       }
-//       int idx = tabbedPane.getSelectedIndex();
-//       for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-//         tabbedPane.setTitleAt(i, makeTitle(titles.get(i), i == idx));
-//       }
-//     });
-//
-//     add(tabs);
-//     setPreferredSize(new Dimension(320, 240));
-//   }
-//
-//   private static String makeTitle(TabTitle tt, boolean isSelected) {
-//     String title = "";
-//     if (isSelected) {
-//       title = "<br/>" + tt.title;
-//     }
-//     return "<html><center><img src='" + tt.url + "'/>" + title;
-//   }
-//
-//   public static void main(String[] args) {
-//     EventQueue.invokeLater(MainPanel::createAndShowGui);
-//   }
-//
-//   private static void createAndShowGui() {
-//     try {
-//       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//     } catch (UnsupportedLookAndFeelException ignored) {
-//       Toolkit.getDefaultToolkit().beep();
-//     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-//       ex.printStackTrace();
-//       return;
-//     }
-//     JFrame frame = new JFrame("@title@");
-//     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//     frame.getContentPane().add(new MainPanel());
-//     frame.pack();
-//     frame.setLocationRelativeTo(null);
-//     frame.setVisible(true);
-//   }
-// }
