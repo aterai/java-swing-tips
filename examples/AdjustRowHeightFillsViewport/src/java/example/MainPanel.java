@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,9 +13,9 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    DefaultTableModel model = makeModel();
+    DefaultTableModel model = createModel();
     JTable table = new AdjustRowHeightTable(model);
-    JScrollPane scroll = makeScrollPane(table);
+    JScrollPane scroll = createScrollPane(table);
     JButton button = new JButton("add");
     button.addActionListener(e -> model.addRow(new Object[] {"", 0, false}));
     add(scroll);
@@ -24,7 +23,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultTableModel makeModel() {
+  private static DefaultTableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"aaa", 12, true},
@@ -39,7 +38,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private JScrollPane makeScrollPane(Component comp) {
+  private static JScrollPane createScrollPane(Component comp) {
     return new JScrollPane(comp) {
       @Override public void updateUI() {
         super.updateUI();
@@ -73,7 +72,7 @@ public final class MainPanel extends JPanel {
 
 class AdjustRowHeightTable extends JTable {
   private int prevHeight = -1;
-  private int prevCount = -1;
+  private int prevRowCount = -1;
 
   protected AdjustRowHeightTable(TableModel model) {
     super(model);
@@ -87,27 +86,29 @@ class AdjustRowHeightTable extends JTable {
 
   @Override public void doLayout() {
     super.doLayout();
-    Class<JViewport> clz = JViewport.class;
-    Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-        .filter(clz::isInstance)
-        .map(clz::cast)
-        .ifPresent(this::adjustRowHeights);
+    Container parent = getParent();
+    if (parent instanceof JViewport) {
+      adjustRowHeights(((JViewport) parent).getExtentSize().height);
+    }
   }
 
-  private void adjustRowHeights(JViewport viewport) {
-    int height = viewport.getExtentSize().height;
-    int rowCount = getModel().getRowCount();
-    int baseRowHeight = height / rowCount;
-    if ((height != prevHeight || rowCount != prevCount) && baseRowHeight > 0) {
-      int remainder = height % rowCount;
-      // Distribute the remainder one pixel at a time to the first rows
-      for (int i = 0; i < rowCount; i++) {
-        int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
-        setRowHeight(i, Math.max(1, adjustedHeight));
+  private void adjustRowHeights(int height) {
+    // Use the view row count, setRowHeight(int, int) takes a view index
+    int rowCount = getRowCount();
+    // setRowHeight(...) revalidates the table and calls doLayout() again,
+    // so skip the update if neither the height nor the row count has changed
+    if (rowCount > 0 && (height != prevHeight || rowCount != prevRowCount)) {
+      int baseRowHeight = height / rowCount;
+      if (baseRowHeight > 0) {
+        int remainder = height % rowCount;
+        // Distribute the remainder one pixel at a time to the first rows
+        for (int i = 0; i < rowCount; i++) {
+          setRowHeight(i, baseRowHeight + (i < remainder ? 1 : 0));
+        }
       }
     }
     prevHeight = height;
-    prevCount = rowCount;
+    prevRowCount = rowCount;
   }
 }
 
