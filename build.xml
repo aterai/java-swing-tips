@@ -5,7 +5,39 @@
   <property environment="env" />
   <property name="config.dir" value="config" />
   <import file="${basedir}/${config.dir}/properties.xml" />
-  <import file="${basedir}/${config.dir}/jnlp.xml" />
+  <!-- optional per-sample overrides: Ant properties are immutable, so values set here win -->
+  <import file="${basedir}/${config.dir}/jnlp.xml" optional="true" />
+
+  <!-- derive the jnlp.* properties from the sample directory name (a leading "_" marks a draft) -->
+  <basename property="sample.dir" file="${basedir}" />
+  <loadresource property="jnlp.Name" unless:set="jnlp.Name">
+    <propertyresource name="sample.dir" />
+    <filterchain>
+      <tokenfilter>
+        <replaceregex pattern="^_" replace="" />
+      </tokenfilter>
+    </filterchain>
+  </loadresource>
+  <!-- Ant has no built-in lowercase filter, and JDK 15+ has no JavaScript engine for script tasks -->
+  <loadresource property="jnlp.name" unless:set="jnlp.name">
+    <propertyresource name="jnlp.Name" />
+    <filterchain>
+      <tokenfilter>
+        <replacestring from="A" to="a" /><replacestring from="B" to="b" /><replacestring from="C" to="c" />
+        <replacestring from="D" to="d" /><replacestring from="E" to="e" /><replacestring from="F" to="f" />
+        <replacestring from="G" to="g" /><replacestring from="H" to="h" /><replacestring from="I" to="i" />
+        <replacestring from="J" to="j" /><replacestring from="K" to="k" /><replacestring from="L" to="l" />
+        <replacestring from="M" to="m" /><replacestring from="N" to="n" /><replacestring from="O" to="o" />
+        <replacestring from="P" to="p" /><replacestring from="Q" to="q" /><replacestring from="R" to="r" />
+        <replacestring from="S" to="s" /><replacestring from="T" to="t" /><replacestring from="U" to="u" />
+        <replacestring from="V" to="v" /><replacestring from="W" to="w" /><replacestring from="X" to="x" />
+        <replacestring from="Y" to="y" /><replacestring from="Z" to="z" />
+      </tokenfilter>
+    </filterchain>
+  </loadresource>
+  <property name="jnlp.title"    value="JST ${jnlp.Name}" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/${jnlp.name}/" />
+  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/${jnlp.Name}.html" />
 
   <condition property="have.resources">
     <available file="${res.dir}" />
@@ -447,81 +479,4 @@
       <fileset refid="ftp.upload.fileset" />
     </ftp>
   </target>
-
-  <target name="ftps">
-    <echo message="ftps" />
-    <property name="ftp.userid" value="${env.FTP_USERID}" />
-    <property name="ftp.server" value="${env.FTP_SERVER}" />
-    <pathconvert property="ftp.basedir">
-      <path path="${env.FTP_BASEDIR}" />
-    </pathconvert>
-    <property name="ftp.remotedir" value="${ftp.basedir}/${jnlp.name}" />
-    <property name="ssh.inkey" value="${env.SSH_INKEY}" />
-    <property name="ssh.in" value="${env.SSH_IN}" />
-    <exec executable="openssl" outputproperty="ftp.password" failonerror="true">
-      <arg value="pkeyutl" />
-      <arg value="-decrypt" />
-      <arg value="-inkey" />
-      <arg value="${ssh.inkey}" />
-      <arg value="-in" />
-      <arg value="${ssh.in}" />
-    </exec>
-    <ftps server="${ftp.server}" remotedir="${ftp.remotedir}"
-          userid="${ftp.userid}" password="${ftp.password}">
-      <fileset refid="ftp.upload.fileset" />
-    </ftps>
-  </target>
-
-  <scriptdef name="ftps" language="javascript">
-    <attribute name="server" />
-    <attribute name="remotedir" />
-    <attribute name="userid" />
-    <attribute name="password" />
-    <element name="fileset" type="fileset" />
-    <![CDATA[
-      var server = attributes.get("server");
-      var remotedir = attributes.get("remotedir");
-      var username = attributes.get("userid");
-      var password = attributes.get("password");
-      try {
-        var ftps = new org.apache.commons.net.ftp.FTPSClient("SSL");
-        ftps.connect(server);
-        var reply = ftps.getReplyCode();
-        if (!org.apache.commons.net.ftp.FTPReply.isPositiveCompletion(reply)) {
-          ftps.disconnect();
-          print("FTP server refused connection.");
-          System.exit(1);
-        }
-        // ftps.setBufferSize(1048576);
-        if (!ftps.login(username, password)) {
-          print("FTP server refused connection.");
-        } else {
-          print("Remote system is " + ftps.getSystemName());
-          ftps.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
-          ftps.enterLocalPassiveMode();
-          ftps.makeDirectory(remotedir);
-          var filesets = elements.get("fileset");
-          for (i = 0; i < filesets.size(); i++) {
-            var fileset = filesets.get(i);
-            var scanner = fileset.getDirectoryScanner(project);
-            scanner.scan();
-            var basedir  = fileset.getDir(project);
-            var files = scanner.getIncludedFiles();
-            for(j = 0; j < files.length; j++) {
-              var filename = files[j];
-              var local = new java.io.File(basedir, filename);
-              print("file: " + remotedir + "/" +  filename);
-              var input = new java.io.FileInputStream(local);
-              ftps.storeFile(remotedir + "/" +  filename, input);
-              input.close();
-            }
-          }
-        }
-        ftps.logout();
-      } catch (ex) {
-        ex.printStackTrace();
-      }
-      ftps.disconnect();
-    ]]>
-  </scriptdef>
 </project>
