@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
-  <property name="jnlp.title"    value="JST GlyphVector" />
-  <property name="jnlp.Name"     value="GlyphVector" />
-  <property name="jnlp.name"     value="glyphvector" />
-  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/glyphvector/" />
-  <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/GlyphVector.html" />
-</project>
