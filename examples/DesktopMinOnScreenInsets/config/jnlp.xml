@@ -3,6 +3,6 @@
   <property name="jnlp.title"    value="JST DesktopMinOnScreenInsets" />
   <property name="jnlp.Name"     value="DesktopMinOnScreenInsets" />
   <property name="jnlp.name"     value="desktopminonscreeninsets" />
-  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/desktoppanedragmode/" />
+  <property name="jnlp.codebase" value="https://ateraimemo.com/swing/desktopminonscreeninsets/" />
   <property name="jnlp.homepage" value="https://ateraimemo.com/Swing/DesktopMinOnScreenInsets.html" />
 </project>
