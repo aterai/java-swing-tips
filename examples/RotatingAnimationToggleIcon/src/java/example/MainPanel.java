@@ -7,7 +7,6 @@ package example;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -17,7 +16,7 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Box accordion = Box.createVerticalBox();
     accordion.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    makeExpansionPanelList().forEach(p -> {
+    createExpansionPanelList().forEach(p -> {
       accordion.add(p);
       accordion.add(Box.createVerticalStrut(5));
     });
@@ -36,41 +35,40 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private List<AbstractExpansionPanel> makeExpansionPanelList() {
+  private static List<ExpansionPanel> createExpansionPanelList() {
     return Arrays.asList(
-        new AbstractExpansionPanel("System Tasks") {
-          @Override public JPanel makePanel() {
-            JPanel p = new JPanel(new GridLayout(0, 1));
-            Stream.of("1111", "222222")
-                .map(JCheckBox::new)
-                .forEach(p::add);
-            return p;
-          }
-        },
-        new AbstractExpansionPanel("Other Places") {
-          @Override public JPanel makePanel() {
-            JPanel p = new JPanel(new GridLayout(0, 1));
-            Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
-                .map(JLabel::new)
-                .forEach(p::add);
-            return p;
-          }
-        },
-        new AbstractExpansionPanel("Details") {
-          @Override public JPanel makePanel() {
-            JPanel p = new JPanel(new GridLayout(0, 1));
-            ButtonGroup bg = new ButtonGroup();
-            Stream.of("aaa", "bbb", "ccc", "ddd")
-                .map(JRadioButton::new)
-                .forEach(b -> {
-                  b.setSelected(p.getComponentCount() == 0);
-                  p.add(b);
-                  bg.add(b);
-                });
-            return p;
-          }
-        }
-    );
+        new ExpansionPanel("System Tasks", createSystemTasksPanel()),
+        new ExpansionPanel("Other Places", createOtherPlacesPanel()),
+        new ExpansionPanel("Details", createDetailsPanel()));
+  }
+
+  private static JPanel createSystemTasksPanel() {
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    Stream.of("1111", "222222")
+        .map(JCheckBox::new)
+        .forEach(p::add);
+    return p;
+  }
+
+  private static JPanel createOtherPlacesPanel() {
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    Stream.of("Desktop", "My Network Places", "My Documents", "Shared Documents")
+        .map(JLabel::new)
+        .forEach(p::add);
+    return p;
+  }
+
+  private static JPanel createDetailsPanel() {
+    JPanel p = new JPanel(new GridLayout(0, 1));
+    ButtonGroup bg = new ButtonGroup();
+    Stream.of("aaa", "bbb", "ccc", "ddd")
+        .map(JRadioButton::new)
+        .forEach(b -> {
+          b.setSelected(p.getComponentCount() == 0);
+          p.add(b);
+          bg.add(b);
+        });
+    return p;
   }
 
   public static void main(String[] args) {
@@ -95,7 +93,7 @@ public final class MainPanel extends JPanel {
   }
 }
 
-abstract class AbstractExpansionPanel extends JPanel {
+final class ExpansionPanel extends JPanel {
   private final JToggleButton toggleButton = new JToggleButton() {
     @Override public void updateUI() {
       super.updateUI();
@@ -104,60 +102,53 @@ abstract class AbstractExpansionPanel extends JPanel {
       setFocusable(false);
     }
   };
-  private final JButton button = new JButton() {
+  private final JButton titleButton = new JButton() {
     @Override public void updateUI() {
       super.updateUI();
       setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
       setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
     }
   };
-  private final JPanel panel = makePanel();
+  private final JComponent contentPanel;
 
-  protected AbstractExpansionPanel(String title) {
+  // The content is passed in instead of being created by an abstract factory
+  // method called from a field initializer, which would run before the
+  // subclass fields are initialized.
+  /* default */ ExpansionPanel(String title, JComponent contentPanel) {
     super(new BorderLayout());
+    this.contentPanel = contentPanel;
     Icon arrowIcon = UIManager.getIcon("Menu.arrowIcon");
-    AnimatableIcon animIcon = new AnimatableIcon(arrowIcon, toggleButton);
-    toggleButton.setIcon(animIcon);
-    toggleButton.addActionListener(e -> rotate(animIcon));
-    button.add(new JLabel(title));
-    button.add(Box.createHorizontalGlue());
-    button.add(toggleButton);
-    button.addActionListener(e -> {
-      toggleButton.setSelected(!toggleButton.isSelected());
-      EventQueue.invokeLater(() -> rotate(animIcon));
-    });
-    add(button, BorderLayout.NORTH);
-    panel.setVisible(false);
-    panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    add(panel);
+    AnimatableIcon animatedIcon = new AnimatableIcon(arrowIcon, toggleButton);
+    toggleButton.setIcon(animatedIcon);
+    // An ItemListener is also notified by setSelected(), so it handles both buttons.
+    toggleButton.addItemListener(e -> updateExpandedState(animatedIcon));
+    titleButton.add(new JLabel(title));
+    titleButton.add(Box.createHorizontalGlue());
+    titleButton.add(toggleButton);
+    titleButton.addActionListener(e -> toggleButton.setSelected(!toggleButton.isSelected()));
+    add(titleButton, BorderLayout.NORTH);
+    contentPanel.setVisible(false);
+    contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    add(contentPanel);
   }
 
-  private void rotate(AnimatableIcon animeIcon) {
-    if (toggleButton.isSelected()) {
-      animeIcon.animateTo(90d);
-      panel.setVisible(true);
-    } else {
-      animeIcon.animateTo(0d);
-      panel.setVisible(false);
-    }
+  private void updateExpandedState(AnimatableIcon animatedIcon) {
+    boolean expanded = toggleButton.isSelected();
+    animatedIcon.animateTo(expanded ? 90d : 0d);
+    contentPanel.setVisible(expanded);
     revalidate();
-    EventQueue.invokeLater(() -> panel.scrollRectToVisible(panel.getBounds()));
-  }
-
-  public abstract JPanel makePanel();
-
-  @Override public final Component add(Component comp) {
-    return super.add(comp);
-  }
-
-  @Override public final void add(Component comp, Object constraints) {
-    super.add(comp, constraints);
+    if (expanded) {
+      // The rectangle is relative to contentPanel itself, so getBounds() cannot be used.
+      EventQueue.invokeLater(() -> {
+        contentPanel.scrollRectToVisible(new Rectangle(contentPanel.getSize()));
+      });
+    }
   }
 
   @Override public Dimension getPreferredSize() {
-    Dimension d = button.getPreferredSize();
-    if (panel.isVisible()) {
-      d.height += panel.getPreferredSize().height;
+    Dimension d = titleButton.getPreferredSize();
+    if (contentPanel.isVisible()) {
+      d.height += contentPanel.getPreferredSize().height;
     }
     return d;
   }
@@ -170,45 +161,48 @@ abstract class AbstractExpansionPanel extends JPanel {
 }
 
 class AnimatableIcon implements Icon {
+  private static final double EASING_RATE = .5;
+  private static final double SNAP_THRESHOLD = .5;
   private final Icon icon;
-  private final Timer timer = new Timer(15, null);
+  private final Component parent;
+  private final Timer timer = new Timer(15, e -> updateAngle());
+  // MetalIconFactory.MenuArrowIcon casts the component passed to paintIcon() to JMenuItem.
+  private final Component menuItem = new JMenuItem();
   private double currentAngle;
   private double targetAngle;
-  private Component parent;
 
   protected AnimatableIcon(Icon icon, Component parent) {
     this.icon = icon;
     this.parent = parent;
-    double step = .5;
-    this.timer.addActionListener(e -> {
-      double diff = targetAngle - currentAngle;
-      if (Math.abs(diff) < step) {
-        currentAngle = targetAngle;
-        timer.stop();
-      } else {
-        currentAngle += diff * step;
-      }
-      Optional.ofNullable(this.parent).ifPresent(Component::repaint);
-    });
+  }
+
+  private void updateAngle() {
+    double diff = targetAngle - currentAngle;
+    if (Math.abs(diff) < SNAP_THRESHOLD) {
+      currentAngle = targetAngle;
+      timer.stop();
+    } else {
+      currentAngle += diff * EASING_RATE;
+    }
+    parent.repaint();
   }
 
   public void animateTo(double angle) {
-    this.targetAngle = angle;
+    targetAngle = angle;
     if (!timer.isRunning()) {
       timer.start();
     }
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-    if (this.parent == null) {
-      this.parent = c;
-    }
     Graphics2D g2 = (Graphics2D) g.create();
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    int cx = x + icon.getIconWidth() / 2;
-    int cy = y + icon.getIconHeight() / 2;
+    g2.setRenderingHint(
+        RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    // Use floating point so that an icon with an odd size rotates around its true center.
+    double cx = x + icon.getIconWidth() / 2d;
+    double cy = y + icon.getIconHeight() / 2d;
     g2.rotate(Math.toRadians(currentAngle), cx, cy);
-    icon.paintIcon(c, g2, x, y);
+    icon.paintIcon(menuItem, g2, x, y);
     g2.dispose();
   }
 
