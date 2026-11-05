@@ -5,10 +5,9 @@
 package example;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,50 +20,47 @@ public final class MainPanel extends JPanel {
     AlignedLabel filesOfType = new AlignedLabel("Files of Type:");
     AlignedLabel host = new AlignedLabel("Host:");
     AlignedLabel port = new AlignedLabel("Port:");
-    AlignedLabel user = new AlignedLabel("User Name:");
+    AlignedLabel userName = new AlignedLabel("User Name:");
     AlignedLabel password = new AlignedLabel("Password:");
-    AlignedLabel.groupLabels(fileName, filesOfType, host, port, user, password);
+    AlignedLabel.groupLabels(fileName, filesOfType, host, port, userName, password);
 
-    Border innerBorder = BorderFactory.createEmptyBorder(5, 2, 5, 5);
+    Box fileChooserBox = createTitledBox("FileChooser");
+    fileChooserBox.add(createLabeledBox(fileName, new JTextField()));
+    fileChooserBox.add(Box.createVerticalStrut(5));
+    fileChooserBox.add(createLabeledBox(filesOfType, new JComboBox<String>()));
 
-    Box box1 = Box.createVerticalBox();
-    TitledBorder border1 = BorderFactory.createTitledBorder("FileChooser");
-    border1.setTitlePosition(TitledBorder.ABOVE_TOP);
-    box1.setBorder(BorderFactory.createCompoundBorder(border1, innerBorder));
-    box1.add(makeLabeledBox(fileName, new JTextField()));
-    box1.add(Box.createVerticalStrut(5));
-    box1.add(makeLabeledBox(filesOfType, new JComboBox<String>()));
+    Box proxyBox = createTitledBox("HTTP Proxy");
+    proxyBox.add(createLabeledBox(host, new JTextField()));
+    proxyBox.add(Box.createVerticalStrut(5));
+    proxyBox.add(createLabeledBox(port, new JTextField()));
+    proxyBox.add(Box.createVerticalStrut(5));
+    proxyBox.add(createLabeledBox(userName, new JTextField()));
+    proxyBox.add(Box.createVerticalStrut(5));
+    proxyBox.add(createLabeledBox(password, new JPasswordField()));
 
-    Box box2 = Box.createVerticalBox();
-    TitledBorder border2 = BorderFactory.createTitledBorder("HTTP Proxy");
-    border2.setTitlePosition(TitledBorder.ABOVE_TOP);
-    box2.setBorder(BorderFactory.createCompoundBorder(border2, innerBorder));
-    box2.add(makeLabeledBox(host, new JTextField()));
-    box2.add(Box.createVerticalStrut(5));
-    box2.add(makeLabeledBox(port, new JTextField()));
-    box2.add(Box.createVerticalStrut(5));
-    box2.add(makeLabeledBox(user, new JTextField()));
-    box2.add(Box.createVerticalStrut(5));
-    box2.add(makeLabeledBox(password, new JPasswordField()));
-
-    add(makeBox(box1, box2), BorderLayout.NORTH);
+    Box box = Box.createVerticalBox();
+    box.add(fileChooserBox);
+    box.add(Box.createVerticalStrut(10));
+    box.add(proxyBox);
+    add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Box makeBox(Box box1, Box box2) {
+  private static Box createTitledBox(String title) {
+    TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+    titledBorder.setTitlePosition(TitledBorder.ABOVE_TOP);
+    Border innerBorder = BorderFactory.createEmptyBorder(5, 2, 5, 5);
     Box box = Box.createVerticalBox();
-    box.add(box1);
-    box.add(Box.createVerticalStrut(10));
-    box.add(box2);
+    box.setBorder(BorderFactory.createCompoundBorder(titledBorder, innerBorder));
     return box;
   }
 
-  private static Box makeLabeledBox(Component label, Component c) {
+  private static Box createLabeledBox(Component label, Component field) {
     Box box = Box.createHorizontalBox();
     box.add(label);
     box.add(Box.createHorizontalStrut(5));
-    box.add(c);
+    box.add(field);
     return box;
   }
 
@@ -93,9 +89,8 @@ public final class MainPanel extends JPanel {
 // @see javax/swing/plaf/metal/MetalFileChooserUI.java
 class AlignedLabel extends JLabel {
   private static final int INDENT = 10;
-  // private AlignedLabel[] group;
-  private final List<AlignedLabel> group = new ArrayList<>();
-  private int maxWidth;
+  // An ungrouped label is aligned only with itself.
+  private List<AlignedLabel> group = Collections.singletonList(this);
 
   protected AlignedLabel(String text) {
     super(text, RIGHT);
@@ -108,36 +103,30 @@ class AlignedLabel extends JLabel {
     return d;
   }
 
-  private void setMaxWidth(int max) {
-    this.maxWidth = max;
+  // BasicLabelUI calculates the minimum and maximum sizes without calling
+  // the overridden getPreferredSize(), so BoxLayout would resize the labels unevenly.
+  @Override public Dimension getMinimumSize() {
+    return getPreferredSize();
   }
 
+  @Override public Dimension getMaximumSize() {
+    return getPreferredSize();
+  }
+
+  // The width is not cached so that changes of the text or font are reflected.
   private int getMaxWidth() {
-    if (maxWidth == 0 && Objects.nonNull(group)) {
-      // int max = 0;
-      // for (AlignedLabel al : group) {
-      //  max = Math.max(al.getSuperPreferredWidth(), max);
-      // }
-      // for (AlignedLabel al : group) {
-      //   al.maxWidth = max;
-      // }
-      int max = group.stream()
-          .map(AlignedLabel::getSuperPreferredWidth)
-          .reduce(0, Integer::max);
-      group.forEach(al -> al.setMaxWidth(max));
-    }
-    return maxWidth;
+    return group.stream()
+        .mapToInt(AlignedLabel::getSuperPreferredWidth)
+        .max()
+        .orElse(0);
   }
 
   private int getSuperPreferredWidth() {
     return super.getPreferredSize().width;
   }
 
-  public static void groupLabels(AlignedLabel... list) {
-    List<AlignedLabel> labels = Arrays.asList(list);
-    labels.forEach(al -> {
-      al.group.clear();
-      al.group.addAll(labels);
-    });
+  public static void groupLabels(AlignedLabel... labels) {
+    List<AlignedLabel> group = Arrays.asList(labels);
+    group.forEach(al -> al.group = group);
   }
 }
