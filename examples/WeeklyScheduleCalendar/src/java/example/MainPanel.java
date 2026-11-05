@@ -10,29 +10,21 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
-import javax.swing.plaf.synth.Region;
-import javax.swing.plaf.synth.SynthConstants;
-import javax.swing.plaf.synth.SynthContext;
-import javax.swing.plaf.synth.SynthLookAndFeel;
-import javax.swing.plaf.synth.SynthStyle;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabs = new DayScheduleTabbedPane();
-    LocalDate today = LocalDate.now(ZoneId.systemDefault());
-    updateCalendar(tabs, today, today.minusDays(3));
+    updateCalendar(tabs, true);
 
     JCheckBox check = new JCheckBox("Center Today", true);
-    check.addActionListener(e -> {
-      boolean selected = ((JCheckBox) e.getSource()).isSelected();
-      handleCenterModeToggle(tabs, selected);
-    });
+    check.addActionListener(e -> updateCalendar(tabs, check.isSelected()));
 
     add(tabs);
     add(check, BorderLayout.SOUTH);
@@ -40,27 +32,28 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void handleCenterModeToggle(JTabbedPane tabs, boolean centering) {
-    LocalDate today = LocalDate.now(ZoneId.systemDefault());
-    LocalDate start = centering
-        ? today.minusDays(3)
-        : today.minusDays(today.getDayOfWeek().getValue() - 1);
-    updateCalendar(tabs, today, start);
-  }
-
-  private static void updateCalendar(JTabbedPane tabs, LocalDate today, LocalDate startDay) {
+  private static void updateCalendar(JTabbedPane tabs, boolean centerToday) {
     tabs.removeAll();
     Locale locale = Locale.getDefault();
-    int todayIdx = 0;
+    LocalDate today = LocalDate.now(ZoneId.systemDefault());
+    LocalDate startDay = getStartDay(today, locale, centerToday);
+    int todayIndex = 0;
     for (int i = 0; i < DayOfWeek.values().length; i++) {
       LocalDate date = startDay.plusDays(i);
       tabs.addTab("", createTabContent(date));
       tabs.setTabComponentAt(i, createDayTab(date, today, locale));
       if (date.equals(today)) {
-        todayIdx = i;
+        todayIndex = i;
       }
     }
-    tabs.setSelectedIndex(todayIdx);
+    tabs.setSelectedIndex(todayIndex);
+  }
+
+  private static LocalDate getStartDay(LocalDate today, Locale locale, boolean centerToday) {
+    DayOfWeek firstDay = WeekFields.of(locale).getFirstDayOfWeek();
+    return centerToday
+        ? today.minusDays(DayOfWeek.values().length / 2)
+        : today.with(TemporalAdjusters.previousOrSame(firstDay));
   }
 
   private static JPanel createTabContent(LocalDate date) {
@@ -74,39 +67,28 @@ public final class MainPanel extends JPanel {
 
   private static JPanel createDayTab(LocalDate date, LocalDate today, Locale locale) {
     String dayName = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, locale);
-    JLabel lblDay = new JLabel(dayName, SwingConstants.CENTER);
-    lblDay.setFont(lblDay.getFont().deriveFont(11f));
-    lblDay.setForeground(ModernTabbedPaneUI.TEXT_PRIMARY);
+    JLabel dayLabel = new JLabel(dayName, SwingConstants.CENTER);
+    dayLabel.setFont(dayLabel.getFont().deriveFont(11f));
+    dayLabel.setForeground(ModernTabbedPaneUI.TEXT_PRIMARY);
 
     String dayOfMonth = String.valueOf(date.getDayOfMonth());
-    JLabel lblDate = new JLabel(dayOfMonth, SwingConstants.CENTER);
-    lblDate.setFont(lblDate.getFont().deriveFont(Font.BOLD, 18f));
-    lblDate.setForeground(ModernTabbedPaneUI.TEXT_PRIMARY);
+    JLabel dateLabel = new JLabel(dayOfMonth, SwingConstants.CENTER);
+    dateLabel.setFont(dateLabel.getFont().deriveFont(Font.BOLD, 18f));
+    dateLabel.setForeground(ModernTabbedPaneUI.TEXT_PRIMARY);
 
     JPanel panel = new JPanel(new BorderLayout(0, 2));
     panel.setOpaque(false);
     panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    panel.add(lblDay, BorderLayout.NORTH);
-    panel.add(lblDate);
+    panel.add(dayLabel, BorderLayout.NORTH);
+    panel.add(dateLabel);
     panel.add(createIndicator(date, today), BorderLayout.SOUTH);
     return panel;
   }
 
   private static JLabel createIndicator(LocalDate date, LocalDate today) {
-    int iw = 20;
-    int ih = 4;
-    int ir = 2;
-    JLabel lblIndicator = new JLabel("", SwingConstants.CENTER);
-    if (date.equals(today)) {
-      Color indicatorColor = ModernTabbedPaneUI.ACCENT_TODAY;
-      Icon activeIcon = new IndicatorIcon(indicatorColor, iw, ih, ir);
-      lblIndicator.setIcon(activeIcon);
-    } else {
-      Color inactiveColor = new Color(0x0, true);
-      Icon inactiveIcon = new IndicatorIcon(inactiveColor, iw, ih, ir);
-      lblIndicator.setIcon(inactiveIcon);
-    }
-    return lblIndicator;
+    // The transparent icon keeps the layout of the other tabs the same as today's tab
+    Color color = date.equals(today) ? ModernTabbedPaneUI.ACCENT_TODAY : new Color(0x0, true);
+    return new JLabel(new IndicatorIcon(color, 20, 4, 2), SwingConstants.CENTER);
   }
 
   public static void main(String[] args) {
@@ -138,55 +120,9 @@ class DayScheduleTabbedPane extends JTabbedPane {
 
   @Override public void updateUI() {
     super.updateUI();
-    UIManager.put("TabbedPane.selectedLabelShift", 0);
-    UIManager.put("TabbedPane.labelShift", 0);
+    // Synth-based LookAndFeels (e.g. Nimbus) turn this off, which skips paintTabBackground(...)
+    UIManager.put("TabbedPane.tabsOpaque", true);
     setUI(new ModernTabbedPaneUI());
-  }
-
-  private Insets getSynthInsets(Region region) {
-    SynthStyle style = SynthLookAndFeel.getStyle(this, region);
-    SynthContext ctx = new SynthContext(this, region, style, SynthConstants.ENABLED);
-    return style.getInsets(ctx, null);
-  }
-
-  private Insets getTabInsets() {
-    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabInsets"))
-        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB));
-  }
-
-  private Insets getTabAreaInsets() {
-    return Optional.ofNullable(UIManager.getInsets("TabbedPane.tabAreaInsets"))
-        .orElseGet(() -> getSynthInsets(Region.TABBED_PANE_TAB_AREA));
-  }
-
-  @Override public void doLayout() {
-    int tabCount = getTabCount();
-    if (tabCount > 0 && isVisible()) {
-      Insets tabAreaIns = getTabAreaInsets();
-      Insets i = getInsets();
-      int areaWidth = getWidth() - tabAreaIns.left - tabAreaIns.right - i.left - i.right;
-      int tabPlacement = getTabPlacement();
-      boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
-      int tabWidth = isTopBottom ? areaWidth / tabCount : areaWidth / 4;
-      int gap = isTopBottom ? areaWidth - tabWidth * tabCount : 0;
-      Insets tabIns = getTabInsets();
-      // This 3 is the magic number defined in BasicTabbedPaneUI#calculateTabWidth(...)
-      tabWidth -= tabIns.left + tabIns.right + 3;
-      updateAllTabWidths(tabWidth, gap);
-    }
-    super.doLayout();
-  }
-
-  private void updateAllTabWidths(int tabWidth, int gap) {
-    for (int i = 0; i < getTabCount(); i++) {
-      Component c = getTabComponentAt(i);
-      if (c instanceof JComponent) {
-        JComponent tab = (JComponent) c;
-        Dimension d = tab.getPreferredSize();
-        d.width = i < gap ? tabWidth + 1 : tabWidth;
-        tab.setPreferredSize(d);
-      }
-    }
   }
 }
 
@@ -194,13 +130,13 @@ class IndicatorIcon implements Icon {
   private final Color color;
   private final int width;
   private final int height;
-  private final int arcRadius;
+  private final int radius;
 
-  protected IndicatorIcon(Color color, int width, int height, int arcRadius) {
+  protected IndicatorIcon(Color color, int width, int height, int radius) {
     this.color = color;
     this.width = width;
     this.height = height;
-    this.arcRadius = arcRadius;
+    this.radius = radius;
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -208,11 +144,8 @@ class IndicatorIcon implements Icon {
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(color);
-    Rectangle r = SwingUtilities.calculateInnerArea((JComponent) c, null);
-    int ox = (int) r.getCenterX() - arcRadius;
-    int oy = (int) r.getCenterY() - arcRadius;
-    int arcDiameter = arcRadius * 2;
-    g2.fillOval(ox, oy, arcDiameter, arcDiameter);
+    int diameter = radius * 2;
+    g2.fillOval(x + width / 2 - radius, y + height / 2 - radius, diameter, diameter);
     g2.dispose();
   }
 
@@ -226,21 +159,47 @@ class IndicatorIcon implements Icon {
 }
 
 class ModernTabbedPaneUI extends BasicTabbedPaneUI {
-  public static final Color BG_DARK = new Color(0x0F, 0x0F, 0x13);
+  public static final Color BG_DARK = new Color(0x0F_0F_13);
   // public static final Color BG_PANEL = new Color(0x18_18_20);
   public static final Color BG_TAB_IDLE = new Color(0x22_22_2E);
-  public static final Color BG_TAB_SEL = new Color(0x2A_2A_3C);
+  public static final Color BG_TAB_SELECTED = new Color(0x2A_2A_3C);
   public static final Color ACCENT = new Color(0x7C_6A_FF);
   public static final Color ACCENT_TODAY = new Color(0xFF_6B_6B);
   public static final Color TEXT_PRIMARY = new Color(0xF0_F0_F8);
   // public static final Color TEXT_MUTED = new Color(0x80_80_9A);
   // private static final Color BORDER_COLOR = new Color(0x30_30_45);
 
+  @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+    boolean isTopBottom = tabPlacement == TOP || tabPlacement == BOTTOM;
+    return isTopBottom && tabPane.getWidth() > 0
+        ? calculateEvenTabWidth(tabPlacement, tabIndex)
+        : super.calculateTabWidth(tabPlacement, tabIndex, metrics);
+  }
+
+  private int calculateEvenTabWidth(int tabPlacement, int tabIndex) {
+    Insets insets = tabPane.getInsets();
+    Insets areaInsets = getTabAreaInsets(tabPlacement);
+    int horizontalInsets = insets.left + insets.right + areaInsets.left + areaInsets.right;
+    int areaWidth = tabPane.getWidth() - horizontalInsets;
+    int tabCount = tabPane.getTabCount();
+    // Integer pixel distribution: the leading tabs take one pixel each of the remainder
+    int extraPixel = tabIndex < areaWidth % tabCount ? 1 : 0;
+    return areaWidth / tabCount + extraPixel;
+  }
+
+  @Override protected int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) {
+    return 0;
+  }
+
+  @Override protected int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) {
+    return 0;
+  }
+
   @Override protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    g2.setColor(isSelected ? BG_TAB_SEL : BG_TAB_IDLE);
+    g2.setColor(isSelected ? BG_TAB_SELECTED : BG_TAB_IDLE);
     int arc = 12;
     g2.fill(new RoundRectangle2D.Float(x + 2f, y + 2f, w - 4f, h - 2f, arc, arc));
     if (isSelected) {
