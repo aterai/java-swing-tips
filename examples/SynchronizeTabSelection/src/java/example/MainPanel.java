@@ -9,15 +9,20 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final String RED = "rgb(170, 17, 17)";
+  private static final String GREEN = "rgb(17, 119, 0)";
+
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabs1 = new JTabbedPane();
-    tabs1.addTab("Java", makeEditor(makeJava1(), 36));
-    tabs1.addTab("Kotlin", makeEditor(makeKotlin1(), 36));
+    tabs1.addTab("Java", createEditor(createJava1(), 36));
+    tabs1.addTab("Kotlin", createEditor(createKotlin1(), 36));
 
     JTabbedPane tabs2 = new JTabbedPane();
-    tabs2.addTab("Java", makeEditor(makeJava2(), 160));
-    tabs2.addTab("Kotlin", makeEditor(makeKotlin2(), 160));
+    tabs2.addTab("Java", createEditor(createJava2(), 160));
+    tabs2.addTab("Kotlin", createEditor(createKotlin2(), 160));
+    // Both tabbed panes must have the same number of tabs: otherwise, selecting
+    // a tab that exists only in one of them throws an IndexOutOfBoundsException.
     tabs2.setModel(tabs1.getModel());
 
     Box box = Box.createVerticalBox();
@@ -34,11 +39,11 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeEditor(String s, int height) {
+  private static Component createEditor(String html, int height) {
     JEditorPane editor = new JEditorPane();
     editor.setContentType("text/html");
     editor.setEditable(false);
-    editor.setText(s);
+    editor.setText(html);
     return new JScrollPane(editor) {
       @Override public void updateUI() {
         super.updateUI();
@@ -53,43 +58,45 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static String makeJava1() {
+  private static String span(String color, String text) {
+    return String.format("<span style='color: %s;'>%s</span>", color, text);
+  }
+
+  private static String createJava1() {
     return String.join("",
         "<html><pre><code>",
-        "btn.setSelected((i &amp; (<span style='color: rgb(170, 17, 17);'>1</span>",
-        " &lt;&lt; <span style='color: rgb(170, 17, 17);'>2</span>))",
-        " != <span style='color: rgb(170, 17, 17);'>0</span>);"
+        "btn.setSelected((i &amp; (" + span(RED, "1"),
+        " &lt;&lt; " + span(RED, "2") + "))",
+        " != " + span(RED, "0") + ");"
     );
   }
 
-  //      "<html><pre><code>"
-  private static String makeKotlin1() {
+  private static String createKotlin1() {
     return String.join("",
         "<html><pre><code>",
-        "btn.setSelected(i and (<span style='color: rgb(170, 17, 17);'>1</span>",
-        " shl <span style='color: rgb(170, 17, 17);'>2</span>)",
-        " != <span style='color: rgb(170, 17, 17);'>0</span>)"
+        "btn.setSelected(i and (" + span(RED, "1"),
+        " shl " + span(RED, "2") + ")",
+        " != " + span(RED, "0") + ")"
     );
   }
 
-  private static String makeJava2() {
+  private static String createJava2() {
     return String.join("\n",
         "<html><pre><code>BufferedImage bi = Optional.ofNullable(path)",
         "  .map(url -&gt; {",
-        "    <span style='color: rgb(170, 17, 17);'>try</span> {",
-        "      <span style='color: rgb(170, 17, 17);'>return</span> ImageIO.read(url);",
-        "    } <span style='color: rgb(170, 17, 17);'>catch</span> (IOException ex) {",
-        "      <span style='color: rgb(170, 17, 17);'>return</span> createMissingImage();",
+        "    " + span(RED, "try") + " {",
+        "      " + span(RED, "return") + " ImageIO.read(url);",
+        "    } " + span(RED, "catch") + " (IOException ex) {",
+        "      " + span(RED, "return") + " createMissingImage();",
         "    }",
         "  }).orElseGet(() -&gt; createMissingImage());"
     );
   }
 
-  private static String makeKotlin2() {
-    String span = "<span style='color: rgb(17, 119, 0);'>%s</span>";
+  private static String createKotlin2() {
     return String.join("\n",
-        "<pre><code>val bi = runCatching {",
-        "  ImageIO." + String.format(span, "read") + "(" + String.format(span, "path") + ")",
+        "<html><pre><code>val bi = runCatching {",
+        "  ImageIO." + span(GREEN, "read") + "(" + span(GREEN, "path") + ")",
         "}.getOrNull() ?: createMissingImage()"
     );
   }
