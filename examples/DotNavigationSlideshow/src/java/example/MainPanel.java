@@ -5,12 +5,8 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Path2D;
@@ -23,6 +19,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private static final int TOTAL_IMAGES = 5;
   private final List<ImageIcon> images = new ArrayList<>();
+  private final List<JToggleButton> dots = new ArrayList<>();
   private final AnimationPanel animationPanel;
   private final JPanel dotPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 16, 16));
   private int currentIndex;
@@ -62,14 +59,13 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JButton createArrowButton(boolean moveRight) {
-    JButton button = new HoverArrowButton(moveRight);
+  private JButton createArrowButton(boolean left) {
+    JButton button = new HoverArrowButton(left);
     button.addActionListener(e -> {
-      int totalImages = images.size();
-      if (moveRight) {
-        navigateTo((currentIndex - 1 + totalImages) % totalImages, false);
+      if (left) {
+        navigatePrevious();
       } else {
-        navigateTo((currentIndex + 1) % totalImages, true);
+        navigateNext();
       }
     });
     return button;
@@ -81,6 +77,7 @@ public final class MainPanel extends JPanel {
     for (int i = 0; i < totalImages; i++) {
       JToggleButton dot = createDotButton(i);
       group.add(dot);
+      dots.add(dot);
       dotPanel.add(dot);
     }
   }
@@ -92,44 +89,47 @@ public final class MainPanel extends JPanel {
     dot.setFocusPainted(false);
     dot.setBorder(BorderFactory.createEmptyBorder());
     dot.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    dot.addActionListener(e -> {
-      if (index != currentIndex) {
-        navigateTo(index, index > currentIndex);
-      }
-    });
-    // dot.addKeyListener(new NavigateHandler());
+    dot.addActionListener(e -> navigateTo(index, index > currentIndex));
     return dot;
   }
 
-  private void navigateTo(int index, boolean moveRight) {
-    Component c = dotPanel.getComponent(index);
-    if (c instanceof JToggleButton && !animationPanel.isAnimating()) {
-      ((JToggleButton) c).setSelected(true);
-      ImageIcon nextImage = images.get(index);
+  private void navigatePrevious() {
+    int totalImages = images.size();
+    navigateTo((currentIndex - 1 + totalImages) % totalImages, false);
+  }
+
+  private void navigateNext() {
+    navigateTo((currentIndex + 1) % images.size(), true);
+  }
+
+  private void navigateTo(int index, boolean forward) {
+    requestFocusInWindow();
+    if (index != currentIndex && !animationPanel.isAnimating()) {
       currentIndex = index;
-      animationPanel.startAnimation(nextImage, moveRight);
-      requestFocusInWindow();
+      animationPanel.startAnimation(images.get(index), forward);
     }
+    // A clicked dot is already selected by the ButtonGroup, so the selection
+    // must be restored when the navigation is ignored during the animation
+    dots.get(currentIndex).setSelected(true);
   }
 
   private final class NavigateHandler extends KeyAdapter implements MouseWheelListener {
     @Override public void keyPressed(KeyEvent e) {
-      int totalImages = images.size();
       int keyCode = e.getKeyCode();
       if (keyCode == KeyEvent.VK_LEFT) {
-        navigateTo((currentIndex - 1 + totalImages) % totalImages, false);
+        navigatePrevious();
       } else if (keyCode == KeyEvent.VK_RIGHT) {
-        navigateTo((currentIndex + 1) % totalImages, true);
+        navigateNext();
       }
     }
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
-      int totalImages = images.size();
+      // A high-resolution wheel may report a rotation of 0
       int rotation = e.getWheelRotation();
       if (rotation < 0) {
-        navigateTo((currentIndex - 1 + totalImages) % totalImages, false);
-      } else {
-        navigateTo((currentIndex + 1) % totalImages, true);
+        navigatePrevious();
+      } else if (rotation > 0) {
+        navigateNext();
       }
     }
   }
@@ -186,70 +186,55 @@ class AnimationPanel extends JPanel {
   private Image currentImage;
   private Image nextImage;
   private double animationProgress; // 0.0 to 1.0
-  private boolean moveRight = true;
+  private boolean slideForward = true;
+  private long startTime;
 
   protected AnimationPanel(ImageIcon initialImage) {
     super();
     this.currentImage = initialImage.getImage();
-    int delay = 1000 / FRAME_RATE;
-    timer = new Timer(delay, new ActionListener() {
-      private long startTime;
-
-      @Override public void actionPerformed(ActionEvent e) {
-        boolean b0 = animationProgress == 0d;
-        if (b0) {
-          startTime = System.currentTimeMillis();
-          animationProgress = .001; // Start
-        } else {
-          long elapsed = System.currentTimeMillis() - startTime;
-          animationProgress = (double) elapsed / DURATION;
-          boolean b1 = animationProgress >= 1d;
-          if (b1) {
-            animationProgress = 1d;
-            completeAnimation();
-          }
-        }
-        repaint();
-      }
-    });
+    timer = new Timer(1000 / FRAME_RATE, e -> updateAnimation());
     timer.setInitialDelay(0);
   }
 
-  public void startAnimation(ImageIcon nextImageIcon, boolean isMoveRight) {
+  public void startAnimation(ImageIcon nextImageIcon, boolean forward) {
     this.nextImage = nextImageIcon.getImage();
-    this.moveRight = isMoveRight;
+    this.slideForward = forward;
     this.animationProgress = 0d;
+    this.startTime = System.currentTimeMillis();
     timer.start();
+  }
+
+  private void updateAnimation() {
+    long elapsed = System.currentTimeMillis() - startTime;
+    animationProgress = (double) elapsed / DURATION;
+    if (elapsed >= DURATION) {
+      completeAnimation();
+    }
+    repaint();
   }
 
   private void completeAnimation() {
     timer.stop();
     currentImage = nextImage; // Swap images
-    // nextImage = null;
-    animationProgress = 0d;
   }
 
   public boolean isAnimating() {
     return timer.isRunning();
   }
 
-  private double easeOut(double t) {
+  private static double easeOut(double t) {
     return t * (2d - t);
   }
 
-  @SuppressWarnings("ReturnCount")
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    if (currentImage == null) {
-      return;
-    }
     Graphics2D g2 = (Graphics2D) g.create();
     int width = getWidth();
     int height = getHeight();
-    if (isAnimating() && nextImage != null) {
+    if (isAnimating()) {
       double easedProgress = easeOut(animationProgress);
       int offsetX = (int) (width * easedProgress);
-      if (moveRight) {
+      if (slideForward) {
         // Slide to left (new image comes from right)
         g2.drawImage(currentImage, -offsetX, 0, width, height, this);
         g2.drawImage(nextImage, width - offsetX, 0, width, height, this);
@@ -267,18 +252,18 @@ class AnimationPanel extends JPanel {
 }
 
 class DotIcon implements Icon {
-  private static final Color SEL_COLOR = Color.WHITE;
-  private static final Color DEF_COLOR = new Color(0x64_FF_FF_FF, true);
+  private static final Color SELECTED_COLOR = Color.WHITE;
+  private static final Color DEFAULT_COLOR = new Color(0x64_FF_FF_FF, true);
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     int gap;
     if (c instanceof AbstractButton && ((AbstractButton) c).getModel().isSelected()) {
-      g2.setColor(SEL_COLOR);
+      g2.setColor(SELECTED_COLOR);
       gap = 0;
     } else {
-      g2.setColor(DEF_COLOR);
+      g2.setColor(DEFAULT_COLOR);
       gap = 2;
     }
     g2.fillOval(x + gap, y + gap, getIconWidth() - gap * 2, getIconHeight() - gap * 2);
@@ -295,35 +280,21 @@ class DotIcon implements Icon {
 }
 
 class HoverArrowButton extends JButton {
-  private final boolean isLeft;
-  private boolean isHovered;
-  private transient MouseAdapter mouseAdapter;
+  private final boolean left;
 
-  protected HoverArrowButton(boolean isLeft) {
+  protected HoverArrowButton(boolean left) {
     super();
-    this.isLeft = isLeft;
+    this.left = left;
   }
 
   @Override public void updateUI() {
-    removeMouseListener(mouseAdapter);
     super.updateUI();
     setContentAreaFilled(false);
     setFocusPainted(false);
     setOpaque(false);
+    setRolloverEnabled(true);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setCursor(new Cursor(Cursor.HAND_CURSOR));
-    mouseAdapter = new MouseAdapter() {
-      @Override public void mouseEntered(MouseEvent e) {
-        isHovered = true;
-        repaint();
-      }
-
-      @Override public void mouseExited(MouseEvent e) {
-        isHovered = false;
-        repaint();
-      }
-    };
-    addMouseListener(mouseAdapter);
   }
 
   @Override public Dimension getPreferredSize() {
@@ -333,18 +304,18 @@ class HoverArrowButton extends JButton {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    if (isHovered) {
+    if (getModel().isRollover()) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setColor(Color.WHITE);
       g2.setStroke(new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
       Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
-      g2.draw(createArrowPath(rect, isLeft));
+      g2.draw(createArrowPath(rect, left));
       g2.dispose();
     }
   }
 
-  private static Path2D createArrowPath(Rectangle rect, boolean left) {
+  private static Path2D createArrowPath(Rectangle rect, boolean leftArrow) {
     double arrowHeight = Math.min(25d, rect.height / 2d);
     double arrowWidth = arrowHeight / 2d;
     double centerX = rect.getCenterX();
@@ -352,7 +323,7 @@ class HoverArrowButton extends JButton {
     double startX = centerX - (arrowWidth / 2d);
 
     Path2D path = new Path2D.Double();
-    if (left) { // <
+    if (leftArrow) { // <
       path.moveTo(startX + arrowWidth, centerY - arrowHeight / 2);
       path.lineTo(startX, centerY);
       path.lineTo(startX + arrowWidth, centerY + arrowHeight / 2);
