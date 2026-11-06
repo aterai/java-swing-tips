@@ -17,7 +17,7 @@ import javax.swing.event.PopupMenuListener;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    List<String> list = Arrays.asList(
+    List<String> options = Arrays.asList(
         "-Duser.country=JP",
         "-Duser.language=ja",
         "-Dfile.encoding=UTF-8",
@@ -25,7 +25,7 @@ public final class MainPanel extends JPanel {
         "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
         "--add-opens=java.desktop/sun.awt.shell=ALL-UNNAMED");
     ExpandableTextField expandableField = new ExpandableTextField();
-    expandableField.setText(String.join(" ", list));
+    expandableField.setText(String.join(" ", options));
     JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 20));
     p.add(new JLabel("VM Options:"));
     p.add(expandableField);
@@ -69,28 +69,14 @@ class OverlayLayoutPanel extends JPanel {
 class ExpandableTextField extends OverlayLayoutPanel {
   private final JTextField textField = new JTextField(20);
   private final JTextArea textArea = new JTextArea();
-  private final JPopupMenu popup = new JPopupMenu() {
-    private transient PopupMenuListener listener;
-
-    @Override public void updateUI() {
-      removePopupMenuListener(listener);
-      super.updateUI();
-      JPanel footer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-      footer.add(makeResizeLabel(this));
-      setLayout(new BorderLayout());
-      add(new JScrollPane(textArea));
-      add(footer, BorderLayout.SOUTH);
-      listener = new ExpandPopupMenuListener();
-      addPopupMenuListener(listener);
-    }
-  };
+  private final JPopupMenu popup = new ExpandPopupMenu();
 
   protected ExpandableTextField() {
     super();
     ExpandArrowIcon icon = new ExpandArrowIcon();
-    JButton expandBtn = makeExpandButton(icon);
-    expandBtn.addActionListener(e -> popup.show(textField, 0, 0));
-    add(expandBtn);
+    JButton expandButton = makeExpandButton(icon);
+    expandButton.addActionListener(e -> popup.show(textField, 0, 0));
+    add(expandButton);
 
     textField.setMargin(new Insets(0, 0, 0, icon.getIconWidth()));
     textField.setAlignmentX(RIGHT_ALIGNMENT);
@@ -102,10 +88,35 @@ class ExpandableTextField extends OverlayLayoutPanel {
     return super.add(comp);
   }
 
+  private final class ExpandPopupMenu extends JPopupMenu {
+    private transient PopupMenuListener listener;
+
+    @Override public void updateUI() {
+      removePopupMenuListener(listener);
+      super.updateUI();
+      removeAll(); // Avoid leaving the previous components when the UI is updated again
+      JPanel footer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+      footer.add(makeResizeLabel(this));
+      setLayout(new BorderLayout());
+      add(new JScrollPane(textArea));
+      add(footer, BorderLayout.SOUTH);
+      listener = new ExpandPopupMenuListener();
+      addPopupMenuListener(listener);
+    }
+
+    @Override public Dimension getPreferredSize() {
+      // Keep the popup at least as wide as the text field, even for short text
+      Dimension d = super.getPreferredSize();
+      d.width = Math.max(d.width, textField.getWidth());
+      return d;
+    }
+  }
+
   private final class ExpandPopupMenuListener implements PopupMenuListener {
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
       textArea.setText(textField.getText().replace(" ", "\n") + "\n");
-      textArea.requestFocusInWindow();
+      // The popup is not showing yet, so request the focus after it is displayed
+      EventQueue.invokeLater(textArea::requestFocusInWindow);
     }
 
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -113,28 +124,28 @@ class ExpandableTextField extends OverlayLayoutPanel {
     }
 
     @Override public void popupMenuCanceled(PopupMenuEvent e) {
-      // not need
+      // not needed
     }
   }
 
   private static JLabel makeResizeLabel(JPopupMenu popup) {
     JLabel resizeLabel = new JLabel("◢");
     resizeLabel.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-    MouseAdapter resizer = new Resizer(popup);
+    MouseAdapter resizer = new PopupMenuResizeHandler(popup);
     resizeLabel.addMouseListener(resizer);
     resizeLabel.addMouseMotionListener(resizer);
     return resizeLabel;
   }
 
   private static JButton makeExpandButton(ExpandArrowIcon icon) {
-    JButton expandBtn = new JButton(icon);
-    expandBtn.setMargin(new Insets(0, 0, 0, 0));
-    expandBtn.setContentAreaFilled(false);
-    expandBtn.setFocusable(false);
-    expandBtn.setBorderPainted(false);
-    expandBtn.setAlignmentX(RIGHT_ALIGNMENT);
-    expandBtn.setAlignmentY(CENTER_ALIGNMENT);
-    return expandBtn;
+    JButton expandButton = new JButton(icon);
+    expandButton.setMargin(new Insets(0, 0, 0, 0));
+    expandButton.setContentAreaFilled(false);
+    expandButton.setFocusable(false);
+    expandButton.setBorderPainted(false);
+    expandButton.setAlignmentX(RIGHT_ALIGNMENT);
+    expandButton.setAlignmentY(CENTER_ALIGNMENT);
+    return expandButton;
   }
 
   public void setText(String text) {
@@ -142,33 +153,35 @@ class ExpandableTextField extends OverlayLayoutPanel {
   }
 }
 
-class Resizer extends MouseAdapter {
-  private final Point startPt = new Point();
-  private final Dimension startSize = new Dimension();
+class PopupMenuResizeHandler extends MouseAdapter {
+  private static final int MIN_HEIGHT = 100;
+  private final Point dragStartPoint = new Point();
+  private final Dimension dragStartSize = new Dimension();
   private final JPopupMenu popup;
 
-  protected Resizer(JPopupMenu popup) {
+  protected PopupMenuResizeHandler(JPopupMenu popup) {
     super();
     this.popup = popup;
   }
 
   @Override public void mousePressed(MouseEvent e) {
-    startPt.setLocation(e.getLocationOnScreen());
-    startSize.setSize(popup.getSize());
+    dragStartPoint.setLocation(e.getLocationOnScreen());
+    dragStartSize.setSize(popup.getSize());
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    int dx = e.getLocationOnScreen().x - startPt.x;
-    int dy = e.getLocationOnScreen().y - startPt.y;
+    Point pt = e.getLocationOnScreen();
     int minWidth = popup.getInvoker().getWidth();
-    int width = Math.max(minWidth, startSize.width + dx);
-    int height = Math.max(100, startSize.height + dy);
-    Dimension newSize = new Dimension(width, height);
-    popup.setPreferredSize(newSize);
-    Window w = SwingUtilities.getWindowAncestor(popup);
-    if (w != null && w.getType() == Window.Type.POPUP) {
-      w.setSize(newSize.width, newSize.height);
+    int width = Math.max(minWidth, dragStartSize.width + pt.x - dragStartPoint.x);
+    int height = Math.max(MIN_HEIGHT, dragStartSize.height + pt.y - dragStartPoint.y);
+    Dimension size = new Dimension(width, height);
+    popup.setPreferredSize(size);
+    Window window = SwingUtilities.getWindowAncestor(popup);
+    if (window != null && window.getType() == Window.Type.POPUP) {
+      // Popup$HeavyWeightWindow
+      window.setSize(size);
     } else {
+      // Popup$LightWeightWindow
       popup.pack();
     }
   }
