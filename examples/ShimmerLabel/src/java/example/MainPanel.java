@@ -10,8 +10,8 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
@@ -27,13 +27,13 @@ public final class MainPanel extends JPanel {
     String text = "JLayer Shimmer Label";
     Icon icon = UIManager.getIcon("InternalFrame.icon");
     JLabel label = new JLabel(text, icon, JLabel.LEADING);
-    addLabel(box, new JLayer<>(label, new ShimmerLayerUI()));
+    addComponent(box, new JLayer<>(label, new ShimmerLayerUI()));
 
     add(box, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void addLabel(Box box, JComponent component) {
+  private static void addComponent(Box box, JComponent component) {
     component.setAlignmentX(LEFT_ALIGNMENT);
     box.add(component);
     box.add(Box.createVerticalStrut(20));
@@ -41,7 +41,7 @@ public final class MainPanel extends JPanel {
 
   private static void addLabel(Box box, JLabel label) {
     label.setIcon(UIManager.getIcon("InternalFrame.icon"));
-    addLabel(box, (JComponent) label);
+    addComponent(box, label);
   }
 
   public static void main(String[] args) {
@@ -72,9 +72,9 @@ final class ShimmerColors {
     /* Utility class: do not instantiate */
   }
 
-  // Returns the relative brightness of the foreground color as 0.0～1.0
+  // Returns the relative luminance of the foreground color as 0.0～1.0
   // (sRGB -> linear, ITU-R BT.709).
-  // The higher the brightness (≧0.5), the more likely it is that
+  // The higher the luminance (≧0.5), the more likely it is that
   // a "brighter foreground color = dark mode" is being detected.
   public static double luminance(Color c) {
     double r = srgbToLinear(c.getRed() / 255d);
@@ -95,12 +95,21 @@ final class ShimmerColors {
   //     - Uses white as the highlight
   // - @param fg Foreground color of the label (value of {@code getForeground()})
   // - @param alpha Alpha value of the highlight color (0～255)
-  public static Color shimmerBright(Color fg, int alpha) {
+  public static Color highlightColor(Color fg, int alpha) {
     boolean isDarkMode = luminance(fg) >= 0.5;
     int r = isDarkMode ? blend(fg.getRed(), 255, 0.6) : 255;
     int g = isDarkMode ? blend(fg.getGreen(), 255, 0.6) : 255;
     int b = isDarkMode ? blend(fg.getBlue(), 255, 0.6) : 255;
     return new Color(r, g, b, alpha);
+  }
+
+  // Returns the gradient colors of the shimmer band: transparent, highlight, transparent.
+  // LinearGradientPaint interpolates non-premultiplied colors, so the transparent ends
+  // keep the RGB of the highlight; fading to transparent black would darken the band edges.
+  public static Color[] gradientColors(Color fg, int alpha) {
+    Color highlight = highlightColor(fg, alpha);
+    Color transparent = new Color(highlight.getRGB() & 0xFF_FF_FF, true);
+    return new Color[] {transparent, highlight, transparent};
   }
 
   // Linearly interpolates src and dst by t (0.0～1.0) and returns an integer.
@@ -115,12 +124,16 @@ final class ShimmerLayout {
     /* Utility class: do not instantiate */
   }
 
-  // Computes iconRect and textRect for the given label using the Graphics2D context.
-  // Returns a two-element array: [iconRect, textRect].
-  public static Rectangle[] layoutLabel(JLabel label, Graphics2D g2) {
+  // TextLayout rejects a null or empty string, so check this before creating one.
+  public static boolean hasText(JLabel label) {
+    String text = label.getText();
+    return text != null && !text.isEmpty();
+  }
+
+  // Computes the text bounds of the given label using the Graphics2D context.
+  public static Rectangle getTextRect(JLabel label, Graphics2D g2) {
     Rectangle area = SwingUtilities.calculateInnerArea(label, null);
     FontMetrics fm = g2.getFontMetrics(label.getFont());
-    Rectangle iconRect = new Rectangle();
     Rectangle textRect = new Rectangle();
     SwingUtilities.layoutCompoundLabel(
         label,
@@ -132,35 +145,40 @@ final class ShimmerLayout {
         label.getVerticalTextPosition(),
         label.getHorizontalTextPosition(),
         area,
-        iconRect,
+        new Rectangle(),
         textRect,
         label.getIconTextGap());
-    return new Rectangle[] {iconRect, textRect};
+    return textRect;
   }
 }
 
 // Abstract base class for shimmer JLabel variants
 abstract class AbstractShimmerLabel extends JLabel {
-  protected static final Color TRANSPARENT = new Color(0x0, true);
   protected static final int ALPHA = 200;
   protected static final float[] FRACTIONS = {0f, .5f, 1f};
   private final Timer shimmerTimer;
   private float animX;
 
-  protected AbstractShimmerLabel(String text, int fps, float speed, int bandWidth) {
+  protected AbstractShimmerLabel(String text, int delay, float speed, int bandWidth) {
     super(text);
-    shimmerTimer = new Timer(fps, e -> {
+    shimmerTimer = new Timer(delay, e -> {
       animX += speed;
       if (animX > getWidth() + bandWidth) {
         animX = -bandWidth;
       }
       repaint();
     });
-    shimmerTimer.start();
   }
 
   @Override public boolean isOpaque() {
     return false;
+  }
+
+  // Run the timer only while displayable so that the animation
+  // also resumes when the label is added to a container again.
+  @Override public void addNotify() {
+    super.addNotify();
+    shimmerTimer.start();
   }
 
   @Override public void removeNotify() {
@@ -173,28 +191,29 @@ abstract class AbstractShimmerLabel extends JLabel {
   }
 
   protected void clearTextRect(Graphics2D g2, Rectangle textRect) {
-    Paint oldPaint = g2.getPaint();
     g2.setPaint(getBackground());
-    g2.fillRect(textRect.x, textRect.y, textRect.width, textRect.height);
-    g2.setPaint(oldPaint);
+    g2.fill(textRect);
   }
 
-  public static void applyRenderingHints(Graphics2D g2) {
-    // g2.setRenderingHint(
-    //     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    // g2.setRenderingHint(
-    //     RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    Toolkit toolkit = Toolkit.getDefaultToolkit();
-    Object hints = toolkit.getDesktopProperty("awt.font.desktophints");
-    if (hints instanceof Map<?, ?>) {
-      g2.addRenderingHints((Map<?, ?>) hints);
+  public static void applyRenderingHints(JLabel label, Graphics2D g2) {
+    boolean isWindows = label.getUI().getClass().getName().contains("Windows");
+    if (!isWindows) {
+      // g2.setRenderingHint(
+      //     RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      // g2.setRenderingHint(
+      //     RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+      Toolkit toolkit = Toolkit.getDefaultToolkit();
+      Object hints = toolkit.getDesktopProperty("awt.font.desktophints");
+      if (hints instanceof Map<?, ?>) {
+        g2.addRenderingHints((Map<?, ?>) hints);
+      }
     }
   }
 }
 
 // ShimmerLabel: Shimmer that sweeps the entire component rectangle.
 class ShimmerLabel extends AbstractShimmerLabel {
-  private static final int FPS = 15;
+  private static final int DELAY = 15;
   private static final int BAND_WIDTH = 80;
   private static final float SPEED = 4f;
   private static final Color SHIMMER_BASE = new Color(0x00_FF_FF_FF, true);
@@ -202,7 +221,7 @@ class ShimmerLabel extends AbstractShimmerLabel {
   private static final Color[] COLORS = {SHIMMER_BASE, SHIMMER_BRIGHT, SHIMMER_BASE};
 
   protected ShimmerLabel(String text) {
-    super(text, FPS, SPEED, BAND_WIDTH);
+    super(text, DELAY, SPEED, BAND_WIDTH);
   }
 
   @Override public boolean isOpaque() {
@@ -223,26 +242,28 @@ class ShimmerLabel extends AbstractShimmerLabel {
 
 // TextShimmerLabel: Shimmer that glints only the text using clipping.
 class TextShimmerLabel extends AbstractShimmerLabel {
-  private static final int FPS = 15;
+  private static final int DELAY = 15;
   // NOTE: BAND_WIDTH intentionally differs from other variants.
-  // (narrower band = sharper glint)
+  // (narrower than the composite variant = sharper glint)
   private static final int BAND_WIDTH = 100;
   private static final float SPEED = 4f;
 
   protected TextShimmerLabel(String text) {
-    super(text, FPS, SPEED, BAND_WIDTH);
+    super(text, DELAY, SPEED, BAND_WIDTH);
   }
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    Graphics2D g2 = (Graphics2D) g.create();
-    boolean isWindows = getUI().getClass().getName().contains("Windows");
-    if (!isWindows) {
-      applyRenderingHints(g2);
+    if (ShimmerLayout.hasText(this)) {
+      paintShimmerText(g);
     }
+  }
 
-    Rectangle[] rects = ShimmerLayout.layoutLabel(this, g2);
-    Rectangle textRect = rects[1];
+  private void paintShimmerText(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    applyRenderingHints(this, g2);
+
+    Rectangle textRect = ShimmerLayout.getTextRect(this, g2);
     FontMetrics fm = g2.getFontMetrics(getFont());
 
     float x = textRect.x;
@@ -261,11 +282,7 @@ class TextShimmerLabel extends AbstractShimmerLabel {
     g2.clip(layout.getOutline(AffineTransform.getTranslateInstance(x, y)));
 
     // 3. Draw gradient inside clip
-    Color[] colors = {
-        TRANSPARENT,
-        ShimmerColors.shimmerBright(getForeground(), ALPHA),
-        TRANSPARENT,
-    };
+    Color[] colors = ShimmerColors.gradientColors(getForeground(), ALPHA);
     float startX = getAnimX();
     float endX = startX + BAND_WIDTH;
     g2.setPaint(new LinearGradientPaint(startX, 0f, endX, 0f, FRACTIONS, colors));
@@ -276,51 +293,44 @@ class TextShimmerLabel extends AbstractShimmerLabel {
 
 // TextCompositeShimmerLabel: Shimmer that glints text with high quality using AlphaComposite.
 class TextCompositeShimmerLabel extends AbstractShimmerLabel {
-  private static final int FPS = 15;
+  private static final int DELAY = 15;
   // NOTE: BAND_WIDTH intentionally wider here for a softer, more diffuse glow.
   private static final int BAND_WIDTH = 160;
   private static final float SPEED = 4f;
   private transient BufferedImage buffer;
 
   protected TextCompositeShimmerLabel(String text) {
-    super(text, FPS, SPEED, BAND_WIDTH);
+    super(text, DELAY, SPEED, BAND_WIDTH);
   }
 
   @Override protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-    Graphics2D g2 = (Graphics2D) g.create();
-    // applyRenderingHints(g2);
+    if (ShimmerLayout.hasText(this)) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      Rectangle textRect = ShimmerLayout.getTextRect(this, g2);
 
-    Rectangle[] rects = ShimmerLayout.layoutLabel(this, g2);
-    Rectangle textRect = rects[1];
+      // Clear the text area painted by super.paintComponent to avoid double-draw.
+      clearTextRect(g2, textRect);
 
-    // Clear the text area painted by super.paintComponent to avoid double-draw.
-    clearTextRect(g2, textRect);
-
-    updateBuffer();
-    Optional.ofNullable(buffer).ifPresent(img -> g2.drawImage(img, 0, 0, this));
-    g2.dispose();
+      updateBuffer(textRect);
+      g2.drawImage(buffer, 0, 0, this);
+      g2.dispose();
+    }
   }
 
-  private void updateBuffer() {
+  private void updateBuffer(Rectangle textRect) {
     int w = Math.max(1, getWidth());
     int h = Math.max(1, getHeight());
     if (buffer == null || buffer.getWidth() != w || buffer.getHeight() != h) {
       buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     }
     Graphics2D g2 = buffer.createGraphics();
-    boolean isWindows = getUI().getClass().getName().contains("Windows");
-    if (!isWindows) {
-      applyRenderingHints(g2);
-    }
+    applyRenderingHints(this, g2);
     g2.setComposite(AlphaComposite.Clear);
     g2.fillRect(0, 0, w, h);
     g2.setComposite(AlphaComposite.SrcOver);
 
-    Rectangle[] rects = ShimmerLayout.layoutLabel(this, g2);
-    Rectangle textRect = rects[1];
     FontMetrics fm = g2.getFontMetrics(getFont());
-
     float x = textRect.x;
     float y = textRect.y + fm.getAscent();
 
@@ -331,11 +341,7 @@ class TextCompositeShimmerLabel extends AbstractShimmerLabel {
 
     // 2. Composite shimmer gradient over text pixels only (SrcAtop).
     g2.setComposite(AlphaComposite.SrcAtop);
-    Color[] colors = {
-        TRANSPARENT,
-        ShimmerColors.shimmerBright(getForeground(), ALPHA),
-        TRANSPARENT,
-    };
+    Color[] colors = ShimmerColors.gradientColors(getForeground(), ALPHA);
     float startX = getAnimX();
     float endX = startX + BAND_WIDTH;
     g2.setPaint(new LinearGradientPaint(startX, 0f, endX, 0f, FRACTIONS, colors));
@@ -346,15 +352,14 @@ class TextCompositeShimmerLabel extends AbstractShimmerLabel {
 
 // ShimmerLayerUI: JLayer-based shimmer using AlphaComposite.
 class ShimmerLayerUI extends LayerUI<JLabel> {
-  private static final int FPS = 16;
-  // NOTE: BAND_WIDTH intentionally narrower for a tighter,
-  // sharper highlight on the layer variant.
+  private static final int DELAY = 16;
+  // NOTE: BAND_WIDTH intentionally narrower than the composite variant
+  // for a tighter, sharper highlight on the layer variant.
   private static final int BAND_WIDTH = 100;
   private static final float SPEED = 4f;
   private static final int ALPHA = 180;
-  private static final Color TRANSPARENT = new Color(0x0, true);
   private static final float[] FRACTIONS = {0f, .5f, 1f};
-  private final Timer timer = new Timer(FPS, null);
+  private final Timer timer = new Timer(DELAY, null);
   private float animX;
   private transient BufferedImage buffer;
 
@@ -372,95 +377,62 @@ class ShimmerLayerUI extends LayerUI<JLabel> {
 
   @Override public void uninstallUI(JComponent c) {
     timer.stop();
+    // Otherwise reinstalling this UI would add a second listener and double the speed.
+    Stream.of(timer.getActionListeners()).forEach(timer::removeActionListener);
     super.uninstallUI(c);
   }
 
-  // Since `super.paint()` draws the `JLabel` directly to the screen,
-  // it results in duplicate text with the text in the buffer that is later
-  // drawn using `drawImage()`.
-  // Instead, the `JLabel` is drawn entirely within the buffer, and the buffer
-  // is transferred to the screen only once after shader compositing.
+  // `super.paint()` draws the `JLabel` including its plain text, so the text area is
+  // cleared and then overlaid with the text-only shimmer buffer using SrcOver.
+  // Applying SrcAtop to the whole layer would cause the shimmer to affect the icon as well,
+  // so the text shimmer is composited in a separate buffer before being transferred.
   @Override public void paint(Graphics g, JComponent c) {
-    // super.paint(g, c);
+    super.paint(g, c);
     @SuppressWarnings("unchecked")
     JLayer<? extends JLabel> layer = (JLayer<? extends JLabel>) c;
     JLabel label = layer.getView();
-    if (label == null || label.getText() == null || label.getText().isEmpty()) {
-      super.paint(g, c);
-    } else {
-      int w = Math.max(1, c.getWidth());
-      int h = Math.max(1, c.getHeight());
-      ensureBuffer(w, h);
-      paintLayerToBuffer(c, w, h);
-      BufferedImage shimBuf = createShimmerBuffer(label, c, w, h);
-      paintShimmerBuffer(shimBuf);
-      g.drawImage(buffer, 0, 0, c);
+    if (label != null && ShimmerLayout.hasText(label)) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      Rectangle textRect = ShimmerLayout.getTextRect(label, g2);
+      Point labelOrigin = SwingUtilities.convertPoint(label, 0, 0, c);
+      textRect.translate(labelOrigin.x, labelOrigin.y);
+
+      g2.setPaint(label.getBackground());
+      g2.fill(textRect);
+
+      updateBuffer(label, textRect, c.getSize());
+      g2.drawImage(buffer, 0, 0, c);
+      g2.dispose();
     }
   }
 
-  private void ensureBuffer(int w, int h) {
+  private void updateBuffer(JLabel label, Rectangle textRect, Dimension size) {
+    int w = Math.max(1, size.width);
+    int h = Math.max(1, size.height);
     if (buffer == null || buffer.getWidth() != w || buffer.getHeight() != h) {
       buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     }
-  }
+    Graphics2D g2 = buffer.createGraphics();
+    AbstractShimmerLabel.applyRenderingHints(label, g2);
+    g2.setComposite(AlphaComposite.Clear);
+    g2.fillRect(0, 0, w, h);
+    g2.setComposite(AlphaComposite.SrcOver);
 
-  private void paintLayerToBuffer(JComponent c, int w, int h) {
-    Graphics2D buf = buffer.createGraphics();
-    buf.setComposite(AlphaComposite.Clear);
-    buf.fillRect(0, 0, w, h);
-    buf.setComposite(AlphaComposite.SrcOver);
-    c.paint(buf);
-    buf.dispose();
-  }
-
-  // Generate a separate text-only shimmer buffer and overlay it using SrcOver.
-  // Applying SrcAtop to the entire buffer causes the shimmer to affect the icons as well,
-  // so the text shimmer is composited in a separate buffer before being transferred.
-  private BufferedImage createShimmerBuffer(JLabel label, JComponent c, int w, int h) {
-    BufferedImage shimBuf = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D sg = shimBuf.createGraphics();
-    boolean isWindows = label.getUI().getClass().getName().contains("Windows");
-    if (!isWindows) {
-      AbstractShimmerLabel.applyRenderingHints(sg);
-    }
-    Rectangle[] rects = ShimmerLayout.layoutLabel(label, sg);
-    Rectangle textRect = rects[1];
-    FontMetrics fm = sg.getFontMetrics(label.getFont());
-    Point labelOrigin = SwingUtilities.convertPoint(label, 0, 0, c);
-    float x = labelOrigin.x + textRect.x;
-    float y = labelOrigin.y + textRect.y + fm.getAscent();
+    FontMetrics fm = g2.getFontMetrics(label.getFont());
+    float x = textRect.x;
+    float y = textRect.y + fm.getAscent();
 
     // 1. Draw the text outline to the shimmer buffer (to serve as a mask).
-    sg.setPaint(label.getForeground());
-    FontRenderContext frc = sg.getFontRenderContext();
-    new TextLayout(label.getText(), label.getFont(), frc).draw(sg, x, y);
+    g2.setPaint(label.getForeground());
+    FontRenderContext frc = g2.getFontRenderContext();
+    new TextLayout(label.getText(), label.getFont(), frc).draw(g2, x, y);
 
     // 2. Compose the gradient using SrcAtop (masked by the text's alpha channel).
-    sg.setComposite(AlphaComposite.SrcAtop);
-    Color[] colors = {
-        TRANSPARENT,
-        ShimmerColors.shimmerBright(label.getForeground(), ALPHA),
-        TRANSPARENT,
-    };
+    g2.setComposite(AlphaComposite.SrcAtop);
+    Color[] colors = ShimmerColors.gradientColors(label.getForeground(), ALPHA);
     float endX = animX + BAND_WIDTH;
-    sg.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, FRACTIONS, colors));
-    sg.fillRect(0, 0, w, h);
-    sg.dispose();
-
-    // Clear the text area painted
-    Graphics2D buf = buffer.createGraphics();
-    // buf.setComposite(AlphaComposite.DstOut);
-    buf.setPaint(label.getBackground());
-    buf.fill(textRect);
-    buf.dispose();
-
-    return shimBuf;
-  }
-
-  private void paintShimmerBuffer(BufferedImage shimBuf) {
-    Graphics2D buf = buffer.createGraphics();
-    buf.setComposite(AlphaComposite.SrcOver);
-    buf.drawImage(shimBuf, 0, 0, null);
-    buf.dispose();
+    g2.setPaint(new LinearGradientPaint(animX, 0f, endX, 0f, FRACTIONS, colors));
+    g2.fillRect(0, 0, w, h);
+    g2.dispose();
   }
 }
