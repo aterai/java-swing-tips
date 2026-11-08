@@ -29,10 +29,11 @@ public final class MainPanel extends JPanel {
   private static final int WHEEL_W = 20;
   private static final int WHEEL_H = 30;
   private static final float WHEEL_ARC = 10f;
+  private static final int WHEEL_SHIFT = 5;
   private static final float STROKE_W = 4f;
   private final Set<MouseButton> pressedButtons = EnumSet.noneOf(MouseButton.class);
   private final JTextArea logArea = new JTextArea();
-  private final JLabel visualizerLabel = new JLabel(new MouseVisualizer());
+  private final JLabel visualizerLabel = new JLabel(new MouseIcon());
   private final Timer wheelResetTimer = new Timer(100, null);
   private int wheelOffset;
 
@@ -63,33 +64,35 @@ public final class MainPanel extends JPanel {
   }
 
   private void updateButton(MouseEvent e, boolean isPressed) {
-    MouseButton btn = null;
+    MouseButton button = null;
     if (SwingUtilities.isLeftMouseButton(e)) {
-      btn = MouseButton.LEFT;
+      button = MouseButton.LEFT;
     } else if (SwingUtilities.isMiddleMouseButton(e)) {
-      btn = MouseButton.MIDDLE;
+      button = MouseButton.MIDDLE;
     } else if (SwingUtilities.isRightMouseButton(e)) {
-      btn = MouseButton.RIGHT;
+      button = MouseButton.RIGHT;
     }
-    // boolean isPressed = e.getID() == MouseEvent.MOUSE_PRESSED;
-    if (btn != null) {
+    if (button != null) {
       if (isPressed) {
-        pressedButtons.add(btn);
+        pressedButtons.add(button);
       } else {
-        pressedButtons.remove(btn);
+        pressedButtons.remove(button);
       }
-      logEvent((isPressed ? "Pressed: " : "Released: ") + btn);
+      logEvent((isPressed ? "Pressed: " : "Released: ") + button);
       visualizerLabel.repaint();
     }
   }
 
   private void handleWheel(MouseWheelEvent e) {
     int rotation = e.getWheelRotation();
-    String direction = rotation < 0 ? "UP" : "DOWN";
-    wheelOffset = rotation < 0 ? -5 : 5;
-    logEvent("Wheel Moved: " + direction + " (Amount: " + rotation + ")");
-    visualizerLabel.repaint();
-    wheelResetTimer.restart();
+    // A high-resolution wheel reports 0 until the rotation reaches a full notch.
+    if (rotation != 0) {
+      String direction = rotation < 0 ? "UP" : "DOWN";
+      wheelOffset = rotation < 0 ? -WHEEL_SHIFT : WHEEL_SHIFT;
+      logEvent("Wheel Moved: " + direction + " (Amount: " + rotation + ")");
+      visualizerLabel.repaint();
+      wheelResetTimer.restart();
+    }
   }
 
   private void logEvent(String msg) {
@@ -97,36 +100,38 @@ public final class MainPanel extends JPanel {
     logArea.setCaretPosition(logArea.getDocument().getLength());
   }
 
-  private final class MouseVisualizer implements Icon {
+  private final class MouseIcon implements Icon {
     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      float xx = x + STROKE_W / 2f;
-      float yy = y + STROKE_W / 2f;
-      float w1 = getIconWidth() - STROKE_W;
-      float h1 = getIconHeight() - STROKE_W;
-      Area body = new Area(new RoundRectangle2D.Float(xx, yy, w1, h1, ICON_ARC, ICON_ARC));
+      float bodyX = x + STROKE_W / 2f;
+      float bodyY = y + STROKE_W / 2f;
+      float bodyWidth = getIconWidth() - STROKE_W;
+      float bodyHeight = getIconHeight() - STROKE_W;
+      Area body = new Area(new RoundRectangle2D.Float(
+          bodyX, bodyY, bodyWidth, bodyHeight, ICON_ARC, ICON_ARC));
       g2.setColor(COLOR_BODY);
       g2.fill(body);
       g2.setColor(COLOR_LINE);
       g2.setStroke(new BasicStroke(STROKE_W));
       g2.draw(body);
 
-      float w2 = w1 / 2f;
-      float h2 = h1 / 2f;
-      Area left = new Area(new Rectangle2D.Float(xx, yy, w2, h2));
+      float halfWidth = bodyWidth / 2f;
+      float halfHeight = bodyHeight / 2f;
+      Area left = new Area(new Rectangle2D.Float(bodyX, bodyY, halfWidth, halfHeight));
       left.intersect(body);
-      drawPart(g2, left, MouseButton.LEFT);
+      drawButton(g2, left, MouseButton.LEFT);
 
-      Area right = new Area(new Rectangle2D.Float(xx + w2, yy, w2, h2));
+      float centerX = bodyX + halfWidth;
+      Area right = new Area(new Rectangle2D.Float(centerX, bodyY, halfWidth, halfHeight));
       right.intersect(body);
-      drawPart(g2, right, MouseButton.RIGHT);
+      drawButton(g2, right, MouseButton.RIGHT);
 
-      float wa = WHEEL_ARC;
-      float wx = (float) body.getBounds().getCenterX() - WHEEL_W / 2f;
-      float wy = y + WHEEL_H / 2f + wheelOffset;
-      Shape wheel = new RoundRectangle2D.Float(wx, wy, WHEEL_W, WHEEL_H, wa, wa);
+      float wheelX = centerX - WHEEL_W / 2f;
+      float wheelY = y + WHEEL_H / 2f + wheelOffset;
+      Shape wheel = new RoundRectangle2D.Float(
+          wheelX, wheelY, WHEEL_W, WHEEL_H, WHEEL_ARC, WHEEL_ARC);
       g2.setColor(getWheelColor());
       g2.fill(wheel);
       g2.setColor(COLOR_LINE);
@@ -152,13 +157,13 @@ public final class MainPanel extends JPanel {
       return color;
     }
 
-    private void drawPart(Graphics2D g2, Shape s, MouseButton target) {
-      if (pressedButtons.contains(target)) {
+    private void drawButton(Graphics2D g2, Shape shape, MouseButton button) {
+      if (pressedButtons.contains(button)) {
         g2.setColor(COLOR_CLICK);
-        g2.fill(s);
+        g2.fill(shape);
       }
       g2.setColor(COLOR_LINE);
-      g2.draw(s);
+      g2.draw(shape);
     }
   }
 
@@ -169,7 +174,6 @@ public final class MainPanel extends JPanel {
   private static void createAndShowGui() {
     try {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      UIManager.put("TabbedPane.tabInsets", new Insets(8, 2, 2, 2));
     } catch (UnsupportedLookAndFeelException ignored) {
       Toolkit.getDefaultToolkit().beep();
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
