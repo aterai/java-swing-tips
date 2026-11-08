@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -35,10 +37,12 @@ public final class MainPanel extends JPanel {
 
   private static TableModel createModel() {
     String[] columnNames = {"Type", "Value"};
-    @SuppressWarnings({"JavaUtilDate", "PMD.ReplaceJavaUtilDate"})
+    @SuppressWarnings("JavaUtilDate")
     Object[][] data = {
         {"String", "text"},
-        {"Date", new Date()},
+        // DateEditor commits only the date part, so the time of day is dropped here
+        // to keep an unchanged value from being recorded as an undoable edit
+        {"Date", Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())},
         {"Integer", 12},
         {"Double", 3.45},
         {"Boolean", true},
@@ -99,12 +103,21 @@ class PropertyTable extends JTable {
     im.put(KeyStroke.getKeyStroke("ctrl Y"), redo);
   }
 
+  // Discard the active edit first, otherwise the editor keeps showing a stale
+  // value and committing it would overwrite the undone or redone cell value
+  private void cancelEditing() {
+    if (isEditing()) {
+      getCellEditor().cancelCellEditing();
+    }
+  }
+
   private final class UndoAction extends AbstractAction {
     private UndoAction() {
       super("undo");
     }
 
     @Override public void actionPerformed(ActionEvent e) {
+      cancelEditing();
       try {
         undoManager.undo();
       } catch (CannotUndoException ex) {
@@ -119,6 +132,7 @@ class PropertyTable extends JTable {
     }
 
     @Override public void actionPerformed(ActionEvent e) {
+      cancelEditing();
       try {
         undoManager.redo();
       } catch (CannotRedoException ex) {
@@ -128,10 +142,12 @@ class PropertyTable extends JTable {
   }
 
   private Class<?> getClassAt(int row, int column) {
-    int mc = convertColumnIndexToModel(column);
-    int mr = convertRowIndexToModel(row);
-    TableModel m = getModel();
-    return mc == TARGET_COLUMN ? m.getValueAt(mr, mc).getClass() : null;
+    int modelColumn = convertColumnIndexToModel(column);
+    int modelRow = convertRowIndexToModel(row);
+    TableModel model = getModel();
+    return modelColumn == TARGET_COLUMN
+        ? model.getValueAt(modelRow, modelColumn).getClass()
+        : null;
   }
 
   @Override public void updateUI() {
@@ -151,23 +167,26 @@ class PropertyTable extends JTable {
     // return isTarget
     //     ? getDefaultRenderer(getClassAt(row, column))
     //     : super.getCellRenderer(row, column);
-    Class<?> clz = getClassAt(row, column);
-    return Objects.nonNull(clz)
-        ? getDefaultRenderer(clz)
+    Class<?> cellClass = getClassAt(row, column);
+    return Objects.nonNull(cellClass)
+        ? getDefaultRenderer(cellClass)
         : super.getCellRenderer(row, column);
   }
 
   @Override public void setValueAt(Object newValue, int row, int column) {
-    if (isEditing()) {
-      int mr = convertRowIndexToModel(row);
-      int mc = convertColumnIndexToModel(column);
-      Object oldValue = getValueAt(mr, mc);
-      if (!Objects.equals(oldValue, newValue)) {
-        TableModel model = getModel();
-        undoManager.addEdit(new UndoableCellEdit(model, mr, mc, oldValue, newValue));
+    // The default editor commits null for an emptied Number cell, but the cell
+    // class is derived from its value, so the current value is kept in that case
+    if (Objects.nonNull(newValue)) {
+      // JTable#getValueAt(...) takes view indices, the edit keeps model indices
+      Object oldValue = getValueAt(row, column);
+      if (isEditing() && !Objects.equals(oldValue, newValue)) {
+        int modelRow = convertRowIndexToModel(row);
+        int modelColumn = convertColumnIndexToModel(column);
+        undoManager.addEdit(
+            new UndoableCellEdit(getModel(), modelRow, modelColumn, oldValue, newValue));
       }
+      super.setValueAt(newValue, row, column);
     }
-    super.setValueAt(newValue, row, column);
   }
 
   // https://stackoverflow.com/questions/1464691/property-list-gui-component-in-swing
@@ -176,7 +195,6 @@ class PropertyTable extends JTable {
   // editor was invoked so the proper class can be created.
   @Override public TableCellEditor getCellEditor(int row, int column) {
     editingClass = getClassAt(row, column);
-    // return convertColumnIndexToModel(column) == TARGET_COL_IDX
     return Objects.nonNull(editingClass)
         ? getDefaultEditor(editingClass)
         : super.getCellEditor(row, column);
@@ -209,19 +227,17 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor {
         setArrowButtonEnabled(true);
         EventQueue.invokeLater(() -> {
           JTextField field = (JTextField) e.getComponent();
-          field.setCaretPosition(8);
-          field.setSelectionStart(8);
-          field.setSelectionEnd(10);
+          field.select(8, 10);
         });
       }
     });
     spinner.setBorder(BorderFactory.createEmptyBorder());
   }
 
-  protected final void setArrowButtonEnabled(boolean flag) {
+  protected final void setArrowButtonEnabled(boolean enabled) {
     for (Component c : spinner.getComponents()) {
       if (c instanceof JButton) {
-        c.setEnabled(flag);
+        c.setEnabled(enabled);
       }
     }
   }
@@ -271,12 +287,12 @@ class ColorRenderer extends DefaultTableCellRenderer {
         table, value, isSelected, hasFocus, row, column);
     if (value instanceof Color && c instanceof JLabel) {
       Color color = (Color) value;
-      JLabel l = (JLabel) c;
-      l.setIcon(new ColorIcon(color));
+      JLabel label = (JLabel) c;
+      label.setIcon(new ColorIcon(color));
       int r = color.getRed();
       int g = color.getGreen();
       int b = color.getBlue();
-      l.setText(String.format("(%d, %d, %d)", r, g, b));
+      label.setText(String.format("(%d, %d, %d)", r, g, b));
     }
     return c;
   }
@@ -380,13 +396,14 @@ class UndoableCellEdit extends AbstractUndoableEdit {
   private final Object oldValue;
   private final Object newValue;
 
-  protected UndoableCellEdit(TableModel m, int row, int col, Object oldVal, Object newVal) {
+  protected UndoableCellEdit(
+      TableModel model, int row, int column, Object oldValue, Object newValue) {
     super();
-    this.model = m;
+    this.model = model;
     this.row = row;
-    this.column = col;
-    this.oldValue = oldVal;
-    this.newValue = newVal;
+    this.column = column;
+    this.oldValue = oldValue;
+    this.newValue = newValue;
   }
 
   @Override public void undo() {
