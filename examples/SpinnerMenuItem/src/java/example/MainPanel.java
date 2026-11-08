@@ -13,15 +13,15 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
-    menuBar.add(makeSpinnerMenu());
-    menuBar.add(makeSliderMenu());
-    // menuBar.add(makeComboBoxMenu());
+    menuBar.add(createSpinnerMenu());
+    menuBar.add(createSliderMenu());
+    // menuBar.add(createComboBoxMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
     add(new JScrollPane(new JTextArea()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Component makeMenuBox(String title, Component c) {
+  private static Component createMenuBox(String title, Component c) {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box.add(new JLabel(title));
@@ -29,7 +29,7 @@ public final class MainPanel extends JPanel {
     return box;
   }
 
-  private static Component makeSpinnerMenuItem(String title, Component c) {
+  private static Component createComponentMenuItem(String title, Component c) {
     JMenuItem item = new JMenuItem() {
       @Override public void updateUI() {
         super.updateUI();
@@ -39,8 +39,13 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public Dimension getPreferredSize() {
+        // BasicMenuItemUI ignores child components when computing the size,
+        // so merge in the layout size (label, component and border insets)
+        // to avoid clipping the bottom border area or the leading label.
         Dimension d = super.getPreferredSize();
-        d.height = Math.max(d.height, c.getPreferredSize().height);
+        Dimension p = getLayout().preferredLayoutSize(this);
+        d.width = Math.max(d.width, p.width);
+        d.height = Math.max(d.height, p.height);
         return d;
       }
     };
@@ -49,7 +54,7 @@ public final class MainPanel extends JPanel {
     return item;
   }
 
-  // private static Component makeSpinnerMenuItem9(String title, Component c) {
+  // private static Component createCheckBoxMenuItem(String title, Component c) {
   //   UIManager.put("CheckBoxMenuItem.checkIcon", new Icon() {
   //     @Override public void paintIcon(Component c, Graphics g, int x, int y) {
   //       /* Do nothing */
@@ -76,15 +81,15 @@ public final class MainPanel extends JPanel {
   //   return item;
   // }
 
-  private static JMenu makeSpinnerMenu() {
+  private static JMenu createSpinnerMenu() {
     SpinnerNumberModel model1 = new SpinnerNumberModel(100, 10, 300, 10);
     SpinnerNumberModel model2 = new SpinnerNumberModel(150, 10, 300, 10);
     JMenu menu = new JMenu("JSpinner");
-    menu.add(makeMenuBox("L: ", makeSpinner(model1)));
-    menu.add(makeMenuBox("R: ", makeSpinner(model2)));
+    menu.add(createMenuBox("L: ", createSpinner(model1)));
+    menu.add(createMenuBox("R: ", createSpinner(model2)));
     menu.add(new JSeparator());
-    menu.add(makeSpinnerMenuItem("Left: ", makeSpinner(model1)));
-    menu.add(makeSpinnerMenuItem("Right: ", makeSpinner(model2)));
+    menu.add(createComponentMenuItem("Left: ", createSpinner(model1)));
+    menu.add(createComponentMenuItem("Right: ", createSpinner(model2)));
     menu.addSeparator();
     menu.add("JMenuItem1");
     menu.add("JMenuItem2");
@@ -92,30 +97,42 @@ public final class MainPanel extends JPanel {
     return menu;
   }
 
-  private static JSpinner makeSpinner(SpinnerModel model) {
+  private static JSpinner createSpinner(SpinnerModel model) {
     JSpinner spinner = new JSpinner(model);
     ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField().setColumns(8);
     spinner.addMouseWheelListener(e -> {
       JSpinner s = (JSpinner) e.getComponent();
-      SpinnerModel o = s.getModel();
-      if (s.isEnabled() && o instanceof SpinnerNumberModel) {
-        SpinnerNumberModel m = (SpinnerNumberModel) o;
-        m.setValue(m.getNumber().intValue() - e.getWheelRotation());
+      if (s.isEnabled()) {
+        spin(s.getModel(), e.getWheelRotation());
       }
       e.consume();
     });
     return spinner;
   }
 
-  private static JMenu makeSliderMenu() {
+  private static void spin(SpinnerModel model, int rotation) {
+    // getNextValue()/getPreviousValue() respect the step size and bounds,
+    // whereas SpinnerNumberModel#setValue(...) does not check the bounds
+    Object value = null;
+    if (rotation < 0) {
+      value = model.getNextValue();
+    } else if (rotation > 0) {
+      value = model.getPreviousValue();
+    }
+    if (value != null) {
+      model.setValue(value);
+    }
+  }
+
+  private static JMenu createSliderMenu() {
     BoundedRangeModel model1 = new DefaultBoundedRangeModel(90, 1, 0, 100);
     BoundedRangeModel model2 = new DefaultBoundedRangeModel(50, 1, 0, 100);
     JMenu menu = new JMenu("JSlider");
-    menu.add(makeMenuBox("L: ", makeSlider(model1)));
-    menu.add(makeMenuBox("R: ", makeSlider(model2)));
+    menu.add(createMenuBox("L: ", createSlider(model1)));
+    menu.add(createMenuBox("R: ", createSlider(model2)));
     menu.add(new JSeparator());
-    menu.add(makeSpinnerMenuItem("Left: ", makeSlider(model1)));
-    menu.add(makeSpinnerMenuItem("Right: ", makeSlider(model2)));
+    menu.add(createComponentMenuItem("Left: ", createSlider(model1)));
+    menu.add(createComponentMenuItem("Right: ", createSlider(model2)));
     menu.addSeparator();
     menu.add("JMenuItem3");
     menu.add("JMenuItem4");
@@ -123,7 +140,7 @@ public final class MainPanel extends JPanel {
     return menu;
   }
 
-  private static JSlider makeSlider(BoundedRangeModel model) {
+  private static JSlider createSlider(BoundedRangeModel model) {
     // UIManager.put("Slider.paintValue", Boolean.FALSE); // GTKLookAndFeel
     // UIManager.put("Slider.focus", UIManager.get("Slider.background"));
     JSlider slider = new JSlider(model) {
@@ -146,15 +163,15 @@ public final class MainPanel extends JPanel {
     return slider;
   }
 
-  // private static JMenu makeComboBoxMenu() {
+  // private static JMenu createComboBoxMenu() {
   //   String[] model1 = {"A1", "B1", "C1"};
   //   String[] model2 = {"A2", "B2", "C2"};
   //   JMenu menu = new JMenu("JComboBox");
-  //   menu.add(makeMenuBox("L: ", makeComboBox(model1)));
-  //   menu.add(makeMenuBox("R: ", makeComboBox(model2)));
+  //   menu.add(createMenuBox("L: ", createComboBox(model1)));
+  //   menu.add(createMenuBox("R: ", createComboBox(model2)));
   //   menu.add(new JSeparator());
-  //   menu.add(makeSpinnerMenuItem("Left: ", makeComboBox(model1)));
-  //   menu.add(makeSpinnerMenuItem("Right: ", makeComboBox(model2)));
+  //   menu.add(createComponentMenuItem("Left: ", createComboBox(model1)));
+  //   menu.add(createComponentMenuItem("Right: ", createComboBox(model2)));
   //   menu.addSeparator();
   //   menu.add("JMenuItem5");
   //   menu.add("JMenuItem6");
@@ -162,7 +179,7 @@ public final class MainPanel extends JPanel {
   //   return menu;
   // }
 
-  // private static JComboBox<String> makeComboBox(String... model) {
+  // private static JComboBox<String> createComboBox(String... model) {
   //   return new JComboBox<String>(model) {
   //     @Override public Dimension getPreferredSize() {
   //       Dimension d = super.getPreferredSize();
@@ -205,7 +222,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -213,7 +230,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
