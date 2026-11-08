@@ -29,9 +29,9 @@ public final class MainPanel extends JPanel {
     desktop.add(frame);
     frame.setVisible(true);
 
-    JMenuBar menuBar3 = MenuBarUtils.initMenuBar(new JMenuBar());
+    JMenuBar bottomMenuBar = MenuBarUtils.initMenuBar(new JMenuBar());
     add(desktop);
-    add(new JLayer<>(menuBar3, new MenuHighlightLayerUI()), BorderLayout.SOUTH);
+    add(new JLayer<>(bottomMenuBar, new MenuHighlightLayerUI()), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -59,7 +59,7 @@ public final class MainPanel extends JPanel {
 
 class SelectionIndicatorMenuBar extends JMenuBar {
   private static final Color SELECTION_COLOR = new Color(0x00_AA_FF);
-  private static final int SZ = 3;
+  private static final int THICKNESS = 3;
   private final Rectangle rect = new Rectangle();
   private transient ChangeListener listener;
 
@@ -67,11 +67,11 @@ class SelectionIndicatorMenuBar extends JMenuBar {
     MenuSelectionManager manager = MenuSelectionManager.defaultManager();
     manager.removeChangeListener(listener);
     super.updateUI();
-    Border inside = BorderFactory.createEmptyBorder(SZ + 1, 0, 0, 0);
+    Border inside = BorderFactory.createEmptyBorder(THICKNESS + 1, 0, 0, 0);
     Border outside = UIManager.getBorder("MenuBar.border");
     Border border = BorderFactory.createCompoundBorder(outside, inside);
     setBorder(border);
-    listener = this::updateTopLevelMenuBorder;
+    listener = this::updateSelectionIndicator;
     manager.addChangeListener(listener);
   }
 
@@ -80,71 +80,71 @@ class SelectionIndicatorMenuBar extends JMenuBar {
     if (!rect.isEmpty()) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(SELECTION_COLOR);
-      g2.fillRect(rect.x, rect.y - SZ, rect.width, SZ);
+      g2.fillRect(rect.x, rect.y - THICKNESS, rect.width, THICKNESS);
       g2.dispose();
     }
   }
 
-  private void updateTopLevelMenuBorder(ChangeEvent e) {
-    Object o = e.getSource();
+  private void updateSelectionIndicator(ChangeEvent e) {
     rect.setSize(0, 0);
-    MenuElement[] p = ((MenuSelectionManager) o).getSelectedPath();
-    if (p != null && p.length > 1 && Objects.equals(this, p[0].getComponent())) {
-      updateMenuBorder(p[1].getComponent());
-    }
-    repaint();
-  }
-
-  private void updateMenuBorder(Component c) {
-    if (c instanceof JMenu && ((JMenu) c).isTopLevelMenu()) {
-      JMenu menu = (JMenu) c;
-      ButtonModel m = menu.getModel();
-      if (m.isArmed() || m.isPressed() || m.isSelected()) {
-        rect.setBounds(menu.getBounds());
+    MenuElement[] path = ((MenuSelectionManager) e.getSource()).getSelectedPath();
+    if (path.length > 1 && Objects.equals(this, path[0].getComponent())) {
+      // The element next to the JMenuBar in the selected path is the selected top-level menu.
+      Component c = path[1].getComponent();
+      if (c instanceof JMenu) {
+        rect.setBounds(c.getBounds());
       }
     }
+    repaint();
   }
 }
 
 class SelectionHighlightMenuBar extends JMenuBar {
   private static final Color ALPHA_ZERO = new Color(0x0, true);
   private static final Color SELECTION_COLOR = new Color(0x00_AA_FF);
-  private static final int SZ = 3;
+  private static final int THICKNESS = 3;
   private transient ChangeListener listener;
+  private transient Border selectedBorder;
+  private transient Border unselectedBorder;
 
   @Override public void updateUI() {
     MenuSelectionManager manager = MenuSelectionManager.defaultManager();
     manager.removeChangeListener(listener);
     super.updateUI();
-    listener = e -> updateTopLevelMenuBorder();
+    selectedBorder = makeMenuBorder(SELECTION_COLOR);
+    unselectedBorder = makeMenuBorder(ALPHA_ZERO);
+    listener = e -> updateTopLevelMenuHighlight();
     manager.addChangeListener(listener);
-    EventQueue.invokeLater(this::updateTopLevelMenuBorder);
+    EventQueue.invokeLater(this::updateTopLevelMenuHighlight);
   }
 
-  private void updateTopLevelMenuBorder() {
-    for (MenuElement me : getSubElements()) {
-      updateMenuBorder(me.getComponent());
+  private static Border makeMenuBorder(Color color) {
+    Border inside = UIManager.getBorder("Menu.border");
+    Border outside = BorderFactory.createMatteBorder(0, 0, THICKNESS, 0, color);
+    return BorderFactory.createCompoundBorder(outside, inside);
+  }
+
+  private void updateTopLevelMenuHighlight() {
+    // JMenuBar#getSubElements() returns only the direct children of this JMenuBar.
+    for (MenuElement element : getSubElements()) {
+      updateMenuBorder(element.getComponent());
     }
   }
 
   private void updateMenuBorder(Component c) {
     if (c instanceof JMenu) {
       JMenu menu = (JMenu) c;
-      if (menu.isTopLevelMenu() && menu.getParent().equals(this)) {
-        ButtonModel model = menu.getModel();
-        boolean b = model.isArmed() || model.isPressed() || model.isSelected();
-        Color color = b ? SELECTION_COLOR : ALPHA_ZERO;
-        Border inside = UIManager.getBorder("Menu.border");
-        Border outside = BorderFactory.createMatteBorder(0, 0, SZ, 0, color);
-        menu.setBorder(BorderFactory.createCompoundBorder(outside, inside));
-      }
+      ButtonModel model = menu.getModel();
+      boolean selected = model.isArmed() || model.isPressed() || model.isSelected();
+      // Reusing the same Border instance makes JComponent#setBorder(...) skip the repaint.
+      menu.setBorder(selected ? selectedBorder : unselectedBorder);
     }
   }
 }
 
 class MenuHighlightLayerUI extends LayerUI<JMenuBar> {
   private static final Color SELECTION_COLOR = new Color(0x00_AA_FF);
-  private static final int SZ = 3;
+  private static final int THICKNESS = 3;
   private final Rectangle rect = new Rectangle();
 
   @Override public void installUI(JComponent c) {
@@ -167,7 +167,7 @@ class MenuHighlightLayerUI extends LayerUI<JMenuBar> {
     if (c instanceof JLayer && !rect.isEmpty()) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(SELECTION_COLOR);
-      g2.fillRect(rect.x, rect.y + rect.height - SZ, rect.width, SZ);
+      g2.fillRect(rect.x, rect.y + rect.height - THICKNESS, rect.width, THICKNESS);
       g2.dispose();
     }
   }
@@ -175,17 +175,21 @@ class MenuHighlightLayerUI extends LayerUI<JMenuBar> {
   @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends JMenuBar> l) {
     super.processMouseEvent(e, l);
     if (e.getID() == MouseEvent.MOUSE_EXITED) {
-      rect.setSize(0, 0);
+      updateIndicator(l, new Rectangle());
     }
   }
 
   @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends JMenuBar> l) {
     super.processMouseMotionEvent(e, l);
     Component c = e.getComponent();
-    if (c instanceof JMenu) {
-      rect.setBounds(c.getBounds());
-    } else {
-      rect.setSize(0, 0);
+    updateIndicator(l, c instanceof JMenu ? c.getBounds() : new Rectangle());
+  }
+
+  private void updateIndicator(JLayer<? extends JMenuBar> l, Rectangle r) {
+    if (!rect.equals(r)) {
+      rect.setBounds(r);
+      // Some LookAndFeels, such as Metal, do not repaint a JMenu when the mouse hovers over it.
+      l.repaint();
     }
   }
 }
