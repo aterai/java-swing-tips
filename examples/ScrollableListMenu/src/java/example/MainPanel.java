@@ -5,8 +5,10 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.*;
@@ -18,8 +20,9 @@ public final class MainPanel extends JPanel {
     DefaultListModel<String> model = new DefaultListModel<>();
     Stream.of(fonts).map(Font::getFontName).sorted().forEach(model::addElement);
     JList<String> list = new PopupList<>(model);
+    // The unit increment of the vertical scroll bar is taken from
+    // JList#getScrollableUnitIncrement(...), i.e. the row height
     JScrollPane scroll = new JScrollPane(list);
-    scroll.getVerticalScrollBar().setUnitIncrement(list.getFixedCellHeight());
     scroll.setBorder(BorderFactory.createEmptyBorder());
     scroll.setViewportBorder(BorderFactory.createEmptyBorder());
 
@@ -30,11 +33,20 @@ public final class MainPanel extends JPanel {
     menu.addSeparator();
     menu.add("Item 1");
     menu.add("Item 2");
-    JMenuBar mb = new JMenuBar();
-    mb.add(menu);
-    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
-    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
-    add(new JScrollPane(new JTextArea()));
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.add(menu);
+    menuBar.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
+    JTextArea textArea = new JTextArea("The quick brown fox jumps over the lazy dog.");
+    textArea.setLineWrap(true);
+    list.addListSelectionListener(e -> {
+      String name = list.getSelectedValue();
+      if (!e.getValueIsAdjusting() && Objects.nonNull(name)) {
+        Font font = textArea.getFont();
+        textArea.setFont(new Font(name, font.getStyle(), font.getSize()));
+      }
+    });
+    add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
@@ -62,6 +74,8 @@ public final class MainPanel extends JPanel {
 
 class PopupList<E> extends JList<E> {
   private transient PopupListMouseListener listener;
+  private transient RadioButtonMenuItemCellRenderer<E> renderer;
+  private boolean typeAhead;
 
   protected PopupList(ListModel<E> model) {
     super(model);
@@ -71,56 +85,157 @@ class PopupList<E> extends JList<E> {
     removeMouseListener(listener);
     removeMouseMotionListener(listener);
     super.updateUI();
-    setFixedCellHeight(20);
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     listener = new PopupListMouseListener();
     addMouseListener(listener);
     addMouseMotionListener(listener);
-    Color selectedBg = new Color(0x91_C9_F7); // UIManager.get("Menu.selectionBackground");
-    ListCellRenderer<? super E> renderer = getCellRenderer();
-    setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-      Component c = renderer.getListCellRendererComponent(
-          list, value, index, isSelected, cellHasFocus);
-      if (c instanceof JComponent && listener.isRolloverIndex(index)) {
-        c.setBackground(selectedBg);
-        c.setForeground(Color.WHITE);
-      }
-      return c;
-    });
+    // Recreate the renderer so that its JRadioButtonMenuItem uses the new LookAndFeel
+    renderer = new RadioButtonMenuItemCellRenderer<>(listener);
+    setCellRenderer(renderer);
+  }
+
+  public boolean isDoNotCloseOnMouseClick() {
+    return renderer.isDoNotCloseOnMouseClick();
+  }
+
+  @Override protected void processKeyEvent(KeyEvent e) {
+    // BasicListUI selects the item found by the type-ahead search
+    // and calls ensureIndexIsVisible(...) in KeyListener#keyTyped(...)
+    typeAhead = e.getID() == KeyEvent.KEY_TYPED;
+    if (typeAhead) {
+      // Clear the rollover so that the focused (lead) item is highlighted
+      listener.clearRolloverIndex(this);
+    }
+    try {
+      super.processKeyEvent(e);
+    } finally {
+      typeAhead = false;
+    }
+  }
+
+  @Override public void ensureIndexIsVisible(int index) {
+    Rectangle cell = getCellBounds(index, index);
+    if (typeAhead && cell != null) {
+      // Scroll so that the item found by the type-ahead search is centered,
+      // JViewport#scrollRectToVisible(...) clamps the position to the view bounds
+      Rectangle r = getVisibleRect();
+      r.y = cell.y - (r.height - cell.height) / 2;
+      scrollRectToVisible(r);
+    } else {
+      super.ensureIndexIsVisible(index);
+    }
+  }
+}
+
+class RadioButtonMenuItemCellRenderer<E> implements ListCellRenderer<E> {
+  public static final String DO_NOT_CLOSE = "RadioButtonMenuItem.doNotCloseOnMouseClick";
+  private final JRadioButtonMenuItem item = new JRadioButtonMenuItem();
+  private final PopupListMouseListener listener;
+
+  protected RadioButtonMenuItemCellRenderer(PopupListMouseListener listener) {
+    this.listener = listener;
+    // Java 9+: same client property as JRadioButtonMenuItem (JDK-8165234),
+    // but a click on the JList cell does not go through BasicMenuItemUI,
+    // so PopupListMouseListener refers to this value by itself
+    item.putClientProperty(DO_NOT_CLOSE, true);
+  }
+
+  public boolean isDoNotCloseOnMouseClick() {
+    // Same lookup order as BasicMenuItemUI: client property, then UIManager
+    Object value = item.getClientProperty(DO_NOT_CLOSE);
+    return value instanceof Boolean ? (Boolean) value : UIManager.getBoolean(DO_NOT_CLOSE);
+  }
+
+  @Override public Component getListCellRendererComponent(
+      JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
+    item.setText(Objects.toString(value, ""));
+    // The selected list item is shown as a checked radio button
+    item.setSelected(isSelected);
+    // The rollover list item, or the focused (lead) list item if there is no rollover,
+    // is painted with the menu item highlight of the LookAndFeel
+    boolean focused = cellHasFocus && !listener.hasRollover();
+    item.setArmed(listener.isRolloverIndex(index) || focused);
+    return item;
   }
 }
 
 class PopupListMouseListener extends MouseAdapter {
-  private int index = -1;
+  private int rolloverIndex = -1;
 
   public boolean isRolloverIndex(int i) {
-    return this.index == i;
+    return rolloverIndex == i;
   }
 
-  private void setRollover(MouseEvent e) {
-    Point pt = e.getPoint();
+  public boolean hasRollover() {
+    return rolloverIndex >= 0;
+  }
+
+  public void clearRolloverIndex(JList<?> list) {
+    setRolloverIndex(list, -1);
+  }
+
+  private void updateRolloverIndex(MouseEvent e) {
     Component c = e.getComponent();
     if (c instanceof JList) {
-      index = ((JList<?>) c).locationToIndex(pt);
-      c.repaint();
+      JList<?> list = (JList<?>) c;
+      Point pt = e.getPoint();
+      int i = list.locationToIndex(pt);
+      // locationToIndex(...) returns the nearest cell index,
+      // so ignore points outside the cell bounds (e.g. below the last item)
+      Rectangle r = list.getCellBounds(i, i);
+      setRolloverIndex(list, r != null && r.contains(pt) ? i : -1);
+    }
+  }
+
+  private void setRolloverIndex(JList<?> list, int i) {
+    int prev = rolloverIndex;
+    if (prev != i) {
+      rolloverIndex = i;
+      // Repaint only the previous and new rollover cells
+      repaintCell(list, prev);
+      repaintCell(list, i);
+      if (prev < 0 || i < 0) {
+        // The focused (lead) cell is highlighted only when there is no rollover
+        repaintCell(list, list.getLeadSelectionIndex());
+      }
+    }
+  }
+
+  private static void repaintCell(JList<?> list, int i) {
+    Rectangle r = i >= 0 ? list.getCellBounds(i, i) : null;
+    if (r != null) {
+      list.repaint(r);
     }
   }
 
   @Override public void mouseMoved(MouseEvent e) {
-    setRollover(e);
+    updateRolloverIndex(e);
   }
 
   @Override public void mouseDragged(MouseEvent e) {
-    setRollover(e);
+    updateRolloverIndex(e);
   }
 
   @Override public void mouseClicked(MouseEvent e) {
-    MenuSelectionManager.defaultManager().clearSelectedPath();
+    Component c = e.getComponent();
+    // Only a left click on a list item (the JList selects it on mouse press)
+    boolean isItemClicked = SwingUtilities.isLeftMouseButton(e) && rolloverIndex >= 0;
+    // Single click: select only, double click: select and close the menus
+    boolean doNotClose = c instanceof PopupList && ((PopupList<?>) c).isDoNotCloseOnMouseClick();
+    boolean close = !doNotClose || e.getClickCount() >= 2;
+    if (isItemClicked && close && c instanceof JList) {
+      // Clear the rollover state so that a stale highlight is not shown
+      // when the menu is reopened
+      setRolloverIndex((JList<?>) c, -1);
+      MenuSelectionManager.defaultManager().clearSelectedPath();
+    }
   }
 
   @Override public void mouseExited(MouseEvent e) {
-    index = -1;
-    e.getComponent().repaint();
+    Component c = e.getComponent();
+    if (c instanceof JList) {
+      setRolloverIndex((JList<?>) c, -1);
+    }
   }
 }
 
