@@ -26,8 +26,9 @@ public final class MainPanel extends JPanel {
         super.updateUI();
         LayoutManager lm = getLayout();
         if (lm instanceof OverflowMenuLayout) {
-          JMenu popupMenu = ((OverflowMenuLayout) lm).getOverflowMenu();
-          SwingUtilities.updateComponentTreeUI(popupMenu);
+          // The overflow menu may not be in the menu bar, update it explicitly
+          JMenu overflowMenu = ((OverflowMenuLayout) lm).getOverflowMenu();
+          SwingUtilities.updateComponentTreeUI(overflowMenu);
         }
       }
     };
@@ -57,10 +58,10 @@ public final class MainPanel extends JPanel {
         menuBar.revalidate();
       }
     };
-    boolean b = menuBar.getComponentOrientation().isLeftToRight();
+    boolean isLeftToRight = menuBar.getComponentOrientation().isLeftToRight();
     Arrays.asList(
-        new JRadioButtonMenuItem("LEFT_TO_RIGHT", b),
-        new JRadioButtonMenuItem("RIGHT_TO_LEFT", !b)
+        new JRadioButtonMenuItem("LEFT_TO_RIGHT", isLeftToRight),
+        new JRadioButtonMenuItem("RIGHT_TO_LEFT", !isLeftToRight)
     ).forEach(rb -> {
       bg.add(rb);
       menu.add(rb);
@@ -114,24 +115,27 @@ class OverflowMenuLayout extends FlowLayout {
   }
 
   @Override public void layoutContainer(Container target) {
+    // Move all menus back to the menu bar before laying them out, even if
+    // preferredLayoutSize(...) has not been called since the last layout
+    restoreOverflowedMenus(target);
     super.layoutContainer(target);
     Rectangle r = SwingUtilities.calculateInnerArea((JComponent) target, null);
     int num = target.getComponentCount();
-    if (target.getComponent(num - 1).getY() > r.y + getVgap()) {
+    // The menus wrapped to the second row or later overflow the menu bar
+    if (num > 0 && target.getComponent(num - 1).getY() > r.y + getVgap()) {
+      // Add the overflow menu before getting its preferred size, since a JMenu
+      // that is not in a JMenuBar is measured as a (larger) submenu item
       target.add(overflowMenu);
-      overflowMenu.setSize(overflowMenu.getPreferredSize());
-      int popupX;
+      Dimension d = overflowMenu.getPreferredSize();
+      int x;
       if (target.getComponentOrientation().isLeftToRight()) {
-        popupX = r.x + r.width - overflowMenu.getSize().width;
+        x = r.x + r.width - d.width;
       } else {
-        popupX = r.x;
+        x = r.x;
       }
-      overflowMenu.setLocation(popupX, r.y);
-      overflowMenu.setVisible(true);
-    }
-    if (target.isAncestorOf(overflowMenu)) {
+      overflowMenu.setBounds(x, r.y, d.width, d.height);
       Arrays.stream(target.getComponents())
-          .filter(c -> shouldMoveToPopup(target, c))
+          .filter(c -> shouldMoveToOverflowMenu(r, c))
           .forEach(overflowMenu::add);
       // `getPopupMenu().pack()` is not necessary in Java 8,
       // but if you do not do this in Java 21,
@@ -140,24 +144,22 @@ class OverflowMenuLayout extends FlowLayout {
     }
   }
 
-  private boolean shouldMoveToPopup(Container target, Component c) {
-    Insets insets = target.getInsets();
-    int y = insets.top + getVgap();
-    Point pt = overflowMenu.getLocation();
-    if (!target.getComponentOrientation().isLeftToRight()) {
-      pt.x += overflowMenu.getWidth();
+  private boolean shouldMoveToOverflowMenu(Rectangle r, Component c) {
+    // Rectangle#intersects(...) excludes menus that are only adjacent to the overflow menu
+    boolean overlapped = !Objects.equals(c, overflowMenu)
+        && c.getBounds().intersects(overflowMenu.getBounds());
+    return c.getY() > r.y + getVgap() || overlapped;
+  }
+
+  private void restoreOverflowedMenus(Container target) {
+    target.remove(overflowMenu);
+    for (Component c : overflowMenu.getMenuComponents()) {
+      target.add(c);
     }
-    boolean b = !Objects.equals(c, overflowMenu) && c.getBounds().contains(pt);
-    return c.getY() > y || b;
   }
 
   @Override public Dimension preferredLayoutSize(Container target) {
-    overflowMenu.setVisible(false);
-    target.remove(overflowMenu);
-    for (Component c : overflowMenu.getPopupMenu().getComponents()) {
-      target.add(c);
-    }
-    overflowMenu.removeAll();
+    restoreOverflowedMenus(target);
     return super.preferredLayoutSize(target);
   }
 }
