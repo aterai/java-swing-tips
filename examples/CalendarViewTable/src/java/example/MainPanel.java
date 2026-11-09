@@ -22,6 +22,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 public final class MainPanel extends JPanel {
+  private static final DateTimeFormatter MONTH_FORMAT = DateTimeFormatter.ofPattern("yyyy / MM");
+
   private MainPanel() {
     super(new BorderLayout());
     CalendarTable monthTable = new CalendarTable();
@@ -31,11 +33,11 @@ public final class MainPanel extends JPanel {
     updateMonthView(monthTable, monthLabel, now);
 
     ListSelectionListener selectionListener = e -> {
-      if (!e.getValueIsAdjusting()) {
-        int row = monthTable.getSelectedRow();
-        int column = monthTable.getSelectedColumn();
-        LocalDate ld = (LocalDate) monthTable.getValueAt(row, column);
-        dateLabel.setText(ld.toString());
+      int row = monthTable.getSelectedRow();
+      int column = monthTable.getSelectedColumn();
+      // The selection is cleared (-1) when the model is replaced by the prev/next buttons
+      if (!e.getValueIsAdjusting() && row >= 0 && column >= 0) {
+        dateLabel.setText(monthTable.getValueAt(row, column).toString());
       }
     };
     monthTable.getSelectionModel().addListSelectionListener(selectionListener);
@@ -65,8 +67,7 @@ public final class MainPanel extends JPanel {
 
   private static void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentLocalDate(date);
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    label.setText(date.format(fmt.withLocale(Locale.getDefault())));
+    label.setText(date.format(MONTH_FORMAT));
     table.setModel(new CalendarViewTableModel(date));
   }
 
@@ -145,7 +146,10 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
         l.setForeground(Color.GRAY);
       }
       DayOfWeek dow = d.getDayOfWeek();
-      if (d.isEqual(((CalendarTable) table).getRealLocalDate())) {
+      if (selected) {
+        // keep the selection background set by DefaultTableCellRenderer
+        l.setForeground(table.getSelectionForeground());
+      } else if (d.isEqual(((CalendarTable) table).getRealLocalDate())) {
         l.setBackground(TODAY_BGC);
       } else if (dow == DayOfWeek.SUNDAY) {
         l.setBackground(SUNDAY_BGC);
@@ -167,9 +171,10 @@ class CalendarViewTableModel extends DefaultTableModel {
     super();
     // LocalDate firstDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
-    // int v = firstDayOfMonth.get(WeekFields.SUNDAY_START.dayOfWeek()) - 1;
-    int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(v);
+    // number of days from the locale-dependent first day of the week to the first day of the month
+    // (use WeekFields.SUNDAY_START.dayOfWeek() to always start the week on Sunday)
+    int offset = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(offset);
   }
 
   @Override public Class<?> getColumnClass(int column) {
