@@ -6,15 +6,15 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.FocusEvent;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.tree.TreeModel;
+import javax.swing.text.Position;
 import javax.swing.tree.TreeNode;
 
 public final class MainPanel extends JPanel {
@@ -23,9 +23,9 @@ public final class MainPanel extends JPanel {
     String title0 = "Box + Multiple JList + JSeparator";
     add(makeTitledPanel(title0, makeListBox()));
     String title1 = "JSeparator + ListModel";
-    add(makeTitledPanel(title1, new GroupList<>(makeModel1())));
+    add(makeTitledPanel(title1, new GroupList<>(makeSeparatorModel())));
     String title2 = "CellRenderer + MatteBorder";
-    add(makeTitledPanel(title2, new GroupBorderList<>(makeModel2())));
+    add(makeTitledPanel(title2, new GroupBorderList<>(makeTreeNodeModel())));
     JMenuBar mb = new JMenuBar();
     mb.add(LookAndFeelUtils.createLookAndFeelMenu());
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
@@ -43,28 +43,23 @@ public final class MainPanel extends JPanel {
 
   private static Container makeListBox() {
     Box box = Box.createVerticalBox();
-    JTree tree = new JTree();
-    TreeModel model = tree.getModel();
-    TreeNode root = (TreeNode) model.getRoot();
-    Collections.list((Enumeration<?>) root.children())
-        .stream()
-        .filter(TreeNode.class::isInstance)
-        .map(TreeNode.class::cast)
-        .forEach(node -> {
-          if (!node.isLeaf()) {
-            Enumeration<?> children = node.children();
-            box.add(makeList(Collections.list(children).toArray()));
-            box.add(new JSeparator());
-          }
-        });
-    JPanel p = new JPanel(new BorderLayout());
-    p.setBackground(UIManager.getColor("List.background"));
+    getGroups().forEach(node -> {
+      box.add(makeList(getChildren(node).toArray()));
+      box.add(new JSeparator());
+    });
+    JPanel p = new JPanel(new BorderLayout()) {
+      @Override public void updateUI() {
+        super.updateUI();
+        // A color set only once would be reset to Panel.background by a LookAndFeel change
+        setBackground(UIManager.getColor("List.background"));
+      }
+    };
     p.add(box, BorderLayout.NORTH);
     return p;
   }
 
-  private static JList<Object> makeList(Object... ary) {
-    JList<Object> c = new JList<Object>(ary) {
+  private static JList<Object> makeList(Object... items) {
+    JList<Object> list = new JList<Object>(items) {
       @Override public void updateUI() {
         setCellRenderer(null);
         super.updateUI();
@@ -74,55 +69,45 @@ public final class MainPanel extends JPanel {
           return r.getListCellRendererComponent(l, v, index, selected, cellHasFocus);
         });
       }
+
+      @Override protected void processFocusEvent(FocusEvent e) {
+        super.processFocusEvent(e);
+        // ListUI repaints only the lead cell, but every selected cell depends on the focus
+        repaint();
+      }
     };
-    int height = c.getPreferredSize().height;
-    c.setMaximumSize(new Dimension(Short.MAX_VALUE, height));
-    return c;
+    int height = list.getPreferredSize().height;
+    list.setMaximumSize(new Dimension(Short.MAX_VALUE, height));
+    return list;
   }
 
-  private static ListModel<Object> makeModel1() {
-    JTree tree = new JTree();
-    TreeNode root = (TreeNode) tree.getModel().getRoot();
+  private static ListModel<Object> makeSeparatorModel() {
     DefaultListModel<Object> model = new DefaultListModel<>();
-    Collections.list((Enumeration<?>) root.children())
-        .stream().filter(TreeNode.class::isInstance)
-        .map(TreeNode.class::cast)
-        .filter(node -> !node.isLeaf())
-        .forEach(node -> {
-          Collections.list((Enumeration<?>) node.children())
-              .stream()
-              .filter(TreeNode.class::isInstance)
-              .map(TreeNode.class::cast)
-              .forEach(model::addElement);
-          // Java 11: model.addAll(Collections.list(node.children()));
-          model.addElement(new JSeparator());
-        });
-    int last = model.getSize() - 1;
-    if (model.getElementAt(last) instanceof JSeparator) {
-      model.remove(last);
-    }
+    getGroups().forEach(node -> {
+      if (!model.isEmpty()) {
+        model.addElement(new JSeparator());
+      }
+      getChildren(node).forEach(model::addElement);
+    });
     return model;
   }
 
-  private static ListModel<TreeNode> makeModel2() {
-    JTree tree = new JTree();
-    TreeNode root = (TreeNode) tree.getModel().getRoot();
+  private static ListModel<TreeNode> makeTreeNodeModel() {
     DefaultListModel<TreeNode> model = new DefaultListModel<>();
-    Collections.list((Enumeration<?>) root.children())
+    getGroups().flatMap(MainPanel::getChildren).forEach(model::addElement);
+    return model;
+  }
+
+  private static Stream<TreeNode> getGroups() {
+    TreeNode root = (TreeNode) new JTree().getModel().getRoot();
+    return getChildren(root).filter(node -> !node.isLeaf());
+  }
+
+  private static Stream<TreeNode> getChildren(TreeNode parent) {
+    return Collections.list((Enumeration<?>) parent.children())
         .stream()
         .filter(TreeNode.class::isInstance)
-        .map(TreeNode.class::cast)
-        .forEach(node -> {
-          if (!node.isLeaf()) {
-            Collections.list((Enumeration<?>) node.children())
-                .stream()
-                .filter(TreeNode.class::isInstance)
-                .map(TreeNode.class::cast)
-                .forEach(model::addElement);
-            // Java 11: model.addAll(Collections.list(node.children()));
-          }
-        });
-    return model;
+        .map(TreeNode.class::cast);
   }
 
   public static void main(String[] args) {
@@ -150,12 +135,15 @@ public final class MainPanel extends JPanel {
 class GroupList<E> extends JList<E> {
   protected GroupList(ListModel<E> model) {
     super(model);
-    initActionMpa(this);
+    ActionMap am = getActionMap();
+    skipSeparator(am, "selectPreviousRow");
+    skipSeparator(am, "selectNextRow");
   }
 
   @Override public void updateUI() {
     setCellRenderer(null);
     super.updateUI();
+    // The JSeparator in the ListModel is out of the component tree and would keep the old UI
     JSeparator separator = new JSeparator();
     ListCellRenderer<? super E> r = getCellRenderer();
     setCellRenderer((l, v, index, isSelected, cellHasFocus) ->
@@ -165,44 +153,34 @@ class GroupList<E> extends JList<E> {
     );
   }
 
-  private static <E> void initActionMpa(JList<E> list) {
-    ActionMap am = list.getActionMap();
-    String selectPrevKey = "selectPreviousRow";
-    Action prev = am.get(selectPrevKey);
-    am.put(selectPrevKey, new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        prev.actionPerformed(e);
-        JList<?> l = (JList<?>) e.getSource();
-        int index = l.getSelectedIndex();
-        Object o = l.getModel().getElementAt(index);
-        if (o instanceof JSeparator) {
-          prev.actionPerformed(e);
-        }
-      }
-    });
-    String selectNextKey = "selectNextRow";
-    Action next = am.get(selectNextKey);
-    am.put(selectNextKey, new AbstractAction() {
-      @Override public void actionPerformed(ActionEvent e) {
-        next.actionPerformed(e);
-        JList<?> l = (JList<?>) e.getSource();
-        int index = l.getSelectedIndex();
-        Object o = l.getModel().getElementAt(index);
-        if (o instanceof JSeparator) {
-          next.actionPerformed(e);
-        }
-      }
-    });
+  @Override public int getNextMatch(String prefix, int startIndex, Position.Bias bias) {
+    // Keep the type-ahead search from matching JSeparator#toString()
+    int index = super.getNextMatch(prefix, startIndex, bias);
+    return isSeparator(this, index) ? -1 : index;
+  }
 
-    InputMap im = list.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), selectPrevKey);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), selectPrevKey);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), selectNextKey);
-    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), selectNextKey);
+  private static void skipSeparator(ActionMap am, String key) {
+    Action action = am.get(key);
+    am.put(key, new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        action.actionPerformed(e);
+        JList<?> l = (JList<?>) e.getSource();
+        if (isSeparator(l, l.getSelectedIndex())) {
+          action.actionPerformed(e);
+        }
+      }
+    });
+  }
+
+  private static boolean isSeparator(JList<?> list, int index) {
+    return index >= 0 && list.getModel().getElementAt(index) instanceof JSeparator;
   }
 }
 
 class GroupBorderList<E extends TreeNode> extends JList<E> {
+  private static final Border GROUP_END = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY);
+  private static final Border GROUP_ITEM = BorderFactory.createEmptyBorder(0, 0, 1, 0);
+
   protected GroupBorderList(ListModel<E> model) {
     super(model);
   }
@@ -214,26 +192,19 @@ class GroupBorderList<E extends TreeNode> extends JList<E> {
     setCellRenderer((l, v, index, isSelected, cellHasFocus) -> {
       Component c = r.getListCellRendererComponent(l, v, index, isSelected, cellHasFocus);
       if (c instanceof JComponent) {
-        Border outside = getOutsideBorder(l, v, index);
-        String key = isSelected ? "List.focusCellHighlightBorder" : "List.noFocusBorder";
-        Border inside = UIManager.getBorder(key);
-        ((JComponent) c).setBorder(BorderFactory.createCompoundBorder(outside, inside));
+        JComponent renderer = (JComponent) c;
+        // The default renderer resets its focus Border on every call, so it never nests
+        Border outside = isGroupEnd(l, v, index) ? GROUP_END : GROUP_ITEM;
+        renderer.setBorder(BorderFactory.createCompoundBorder(outside, renderer.getBorder()));
       }
       return c;
     });
   }
 
-  private static Border getOutsideBorder(JList<?> l, TreeNode v, int index) {
-    int max = l.getModel().getSize();
+  private static boolean isGroupEnd(JList<? extends TreeNode> l, TreeNode v, int index) {
+    ListModel<? extends TreeNode> m = l.getModel();
     int next = index + 1;
-    Object n = next < max ? l.getModel().getElementAt(next) : null;
-    return Optional.ofNullable(n)
-        .filter(TreeNode.class::isInstance)
-        .map(TreeNode.class::cast)
-        .map(TreeNode::getParent)
-        .filter(p -> !Objects.equals(p, v.getParent()))
-        .<Border>map(p -> BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY))
-        .orElseGet(() -> BorderFactory.createMatteBorder(0, 0, 1, 0, l.getBackground()));
+    return next < m.getSize() && !Objects.equals(m.getElementAt(next).getParent(), v.getParent());
   }
 }
 
