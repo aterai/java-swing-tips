@@ -5,25 +5,36 @@
 package example;
 
 import java.awt.*;
+import java.text.Collator;
+import java.util.Comparator;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
+  private static final Pattern HTML_TAG = Pattern.compile("<[^>]*>");
+
   private MainPanel() {
     super(new BorderLayout());
-    JTabbedPane tab = new JTabbedPane();
-    tab.addTab("<html>Test<p>Test</p></html>", new JLabel("Test1"));
-    tab.addTab("<html>Test<p>test", new JLabel("Test2"));
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addTab("<html>Test<p>Test</p></html>", new JLabel("Test1"));
+    // The tags do not have to be well-formed
+    tabbedPane.addTab("<html>Test<p>test", new JLabel("Test2"));
 
-    JTable table = new JTable(makeModel());
-    table.setAutoCreateRowSorter(true);
-    table.setRowSelectionAllowed(true);
+    TableModel model = makeModel();
+    TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+    // Sort by the displayed text instead of the raw "<html>..." markup
+    Collator collator = Collator.getInstance();
+    sorter.setComparator(0, Comparator.comparing(MainPanel::removeHtmlTags, collator));
+    JTable table = new JTable(model);
+    table.setRowSorter(sorter);
     table.setRowHeight(32);
     table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-    add(tab, BorderLayout.NORTH);
+    add(tabbedPane, BorderLayout.NORTH);
     add(new JScrollPane(table));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -39,6 +50,10 @@ public final class MainPanel extends JPanel {
         return getValueAt(0, column).getClass();
       }
     };
+  }
+
+  private static String removeHtmlTags(String text) {
+    return HTML_TAG.matcher(text).replaceAll("");
   }
 
   public static void main(String[] args) {
