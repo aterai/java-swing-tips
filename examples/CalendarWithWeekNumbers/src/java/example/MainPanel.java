@@ -237,7 +237,7 @@ class WeekHeaderList extends JList<DayOfWeek> {
   public static final Dimension CELL_SIZE = new Dimension(38, 26);
 
   protected WeekHeaderList() {
-    super(makeDayOfWeekListModel());
+    super(createDayOfWeekListModel());
   }
 
   @Override public void updateUI() {
@@ -262,7 +262,7 @@ class WeekHeaderList extends JList<DayOfWeek> {
     setFixedCellHeight(CELL_SIZE.height);
   }
 
-  private static ListModel<DayOfWeek> makeDayOfWeekListModel() {
+  private static ListModel<DayOfWeek> createDayOfWeekListModel() {
     DefaultListModel<DayOfWeek> weekModel = new DefaultListModel<>();
     DayOfWeek firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
     for (int i = 0; i < DayOfWeek.values().length; i++) {
