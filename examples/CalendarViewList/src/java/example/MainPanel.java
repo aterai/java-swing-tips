@@ -74,14 +74,14 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private String between(MonthList monthList, ListSelectionModel lsm) {
+  private static String between(MonthList monthList, ListSelectionModel lsm) {
     ListModel<LocalDate> model = monthList.getModel();
     LocalDate from = model.getElementAt(lsm.getMinSelectionIndex());
     LocalDate to = model.getElementAt(lsm.getMaxSelectionIndex());
     return Period.between(from, to).toString();
   }
 
-  private void installActions(MonthList monthList, JLabel label) {
+  private void installActions(MonthList monthList, JLabel yearMonthLabel) {
     InputMap im = monthList.getInputMap(WHEN_FOCUSED);
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "selectNextIndex");
     im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "selectPreviousIndex");
@@ -92,10 +92,11 @@ public final class MainPanel extends JPanel {
         int index = monthList.getLeadSelectionIndex();
         if (index > 0) {
           monthList.setSelectedIndex(index - 1);
-        } else {
+        } else if (index == 0) {
+          // move to the last day of the previous month view
           LocalDate d = monthList.getModel().getElementAt(0).minusDays(1);
-          LocalDate date = monthList.getCurrentLocalDate().minusMonths(1);
-          updateMonthView(monthList, label, date);
+          updateMonthView(
+              monthList, yearMonthLabel, monthList.getCurrentLocalDate().minusMonths(1));
           monthList.setSelectedValue(d, false);
         }
       }
@@ -106,10 +107,10 @@ public final class MainPanel extends JPanel {
         if (index < monthList.getModel().getSize() - 1) {
           monthList.setSelectedIndex(index + 1);
         } else {
-          int lastDayOfMonth = monthList.getModel().getSize() - 1;
-          LocalDate d = monthList.getModel().getElementAt(lastDayOfMonth).plusDays(1);
-          LocalDate date = monthList.getCurrentLocalDate().plusMonths(1);
-          updateMonthView(monthList, label, date);
+          int lastIndex = monthList.getModel().getSize() - 1;
+          LocalDate d = monthList.getModel().getElementAt(lastIndex).plusDays(1);
+          updateMonthView(
+              monthList, yearMonthLabel, monthList.getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
         }
       }
@@ -119,10 +120,11 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         int index = monthList.getLeadSelectionIndex();
         int weekLength = DayOfWeek.values().length; // 7
-        if (index < weekLength) {
+        // index < 0 means no lead selection, so delegate to the default action
+        if (index >= 0 && index < weekLength) {
           LocalDate d = monthList.getModel().getElementAt(index).minusDays(weekLength);
-          LocalDate date = monthList.getCurrentLocalDate().minusMonths(1);
-          updateMonthView(monthList, label, date);
+          updateMonthView(
+              monthList, yearMonthLabel, monthList.getCurrentLocalDate().minusMonths(1));
           monthList.setSelectedValue(d, false);
         } else {
           selectPreviousRow.actionPerformed(e);
@@ -134,10 +136,11 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         int index = monthList.getLeadSelectionIndex();
         int weekLength = DayOfWeek.values().length; // 7
-        if (index > monthList.getModel().getSize() - weekLength) {
+        // the last row starts at index (size - weekLength)
+        if (index >= monthList.getModel().getSize() - weekLength) {
           LocalDate d = monthList.getModel().getElementAt(index).plusDays(weekLength);
-          LocalDate date = monthList.getCurrentLocalDate().plusMonths(1);
-          updateMonthView(monthList, label, date);
+          updateMonthView(
+              monthList, yearMonthLabel, monthList.getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
         } else {
           selectNextRow.actionPerformed(e);
@@ -146,10 +149,10 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  private void updateMonthView(MonthList list, JLabel label, LocalDate localDate) {
+  private static void updateMonthView(MonthList list, JLabel yearMonthLabel, LocalDate localDate) {
     list.setCurrentLocalDate(localDate);
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    label.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
+    yearMonthLabel.setText(localDate.format(fmt.withLocale(Locale.getDefault())));
     list.setModel(new CalendarViewListModel(localDate));
   }
 
@@ -284,8 +287,9 @@ class CalendarViewListModel extends AbstractListModel<LocalDate> {
     super();
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
     WeekFields weekFields = WeekFields.of(Locale.getDefault());
-    int fdmDow = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(fdmDow);
+    // dayOfWeek() is localized: 1 is the first day of the week for this locale
+    int daysFromWeekStart = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(daysFromWeekStart);
   }
 
   @Override public int getSize() {

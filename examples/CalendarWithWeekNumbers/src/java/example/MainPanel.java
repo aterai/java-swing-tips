@@ -70,7 +70,6 @@ public final class MainPanel extends JPanel {
         });
       }
     };
-    // scroll.setRowHeaderView(weekNumberList);
     box.add(scroll);
     add(box);
     setPreferredSize(new Dimension(320, 240));
@@ -87,7 +86,8 @@ public final class MainPanel extends JPanel {
         int index = monthList.getLeadSelectionIndex();
         if (index > 0) {
           monthList.setSelectedIndex(index - 1);
-        } else {
+        } else if (index == 0) {
+          // move to the last day of the previous month view
           LocalDate d = monthList.getModel().getElementAt(0).minusDays(1);
           updateMonthView(monthList.getCurrentLocalDate().minusMonths(1));
           monthList.setSelectedValue(d, false);
@@ -100,8 +100,8 @@ public final class MainPanel extends JPanel {
         if (index < monthList.getModel().getSize() - 1) {
           monthList.setSelectedIndex(index + 1);
         } else {
-          int lastDayOfMonth = monthList.getModel().getSize() - 1;
-          LocalDate d = monthList.getModel().getElementAt(lastDayOfMonth).plusDays(1);
+          int lastIndex = monthList.getModel().getSize() - 1;
+          LocalDate d = monthList.getModel().getElementAt(lastIndex).plusDays(1);
           updateMonthView(monthList.getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
         }
@@ -112,7 +112,8 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         int index = monthList.getLeadSelectionIndex();
         int weekLength = DayOfWeek.values().length; // 7
-        if (index < weekLength) {
+        // index < 0 means no lead selection, so delegate to the default action
+        if (index >= 0 && index < weekLength) {
           LocalDate d = monthList.getModel().getElementAt(index).minusDays(weekLength);
           updateMonthView(monthList.getCurrentLocalDate().minusMonths(1));
           monthList.setSelectedValue(d, false);
@@ -126,7 +127,8 @@ public final class MainPanel extends JPanel {
       @Override public void actionPerformed(ActionEvent e) {
         int index = monthList.getLeadSelectionIndex();
         int weekLength = DayOfWeek.values().length; // 7
-        if (index > monthList.getModel().getSize() - weekLength) {
+        // the last row starts at index (size - weekLength)
+        if (index >= monthList.getModel().getSize() - weekLength) {
           LocalDate d = monthList.getModel().getElementAt(index).plusDays(weekLength);
           updateMonthView(monthList.getCurrentLocalDate().plusMonths(1));
           monthList.setSelectedValue(d, false);
@@ -278,8 +280,9 @@ class CalendarViewListModel extends AbstractListModel<LocalDate> {
     super();
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
     WeekFields weekFields = WeekFields.of(Locale.getDefault());
-    int fdmDow = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(fdmDow);
+    // dayOfWeek() is localized: 1 is the first day of the week for this locale
+    int daysFromWeekStart = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(daysFromWeekStart);
   }
 
   @Override public int getSize() {
