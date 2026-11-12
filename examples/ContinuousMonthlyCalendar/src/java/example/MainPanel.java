@@ -17,13 +17,13 @@ import java.util.Locale;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyy / MM");
   private final JLabel dateLabel = new JLabel("", SwingConstants.CENTER);
   private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
   private final CalendarTable monthTable = new CalendarTable();
@@ -31,36 +31,24 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    monthTable.setDefaultRenderer(LocalDate.class, new CalendarTableRenderer());
-    monthTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    monthTable.setCellSelectionEnabled(true);
-    monthTable.setRowHeight(32);
-    monthTable.setFillsViewportHeight(true);
-
-    JTableHeader header = monthTable.getTableHeader();
-    header.setResizingAllowed(false);
-    header.setReorderingAllowed(false);
-    TableCellRenderer renderer = header.getDefaultRenderer();
-    if (renderer instanceof JLabel) {
-      ((JLabel) renderer).setHorizontalAlignment(SwingConstants.CENTER);
-    }
-
+    // The renderer, selection mode, row height and header settings
+    // are configured in CalendarTable#updateUI()
     ListSelectionListener selectionListener = e -> {
-      if (!e.getValueIsAdjusting()) {
-        int row = monthTable.getSelectedRow();
-        int column = monthTable.getSelectedColumn();
-        LocalDate ld = (LocalDate) monthTable.getValueAt(row, column);
-        dateLabel.setText(ld.toString());
+      int row = monthTable.getSelectedRow();
+      int column = monthTable.getSelectedColumn();
+      // Ignore the intermediate state where only one of the row or column is selected
+      if (!e.getValueIsAdjusting() && row >= 0 && column >= 0) {
+        LocalDate date = (LocalDate) monthTable.getValueAt(row, column);
+        dateLabel.setText(date.toString());
       }
     };
     monthTable.getSelectionModel().addListSelectionListener(selectionListener);
     monthTable.getColumnModel().getSelectionModel().addListSelectionListener(selectionListener);
 
     Locale defaultLocale = Locale.getDefault();
-    LocalDate realLocalDate = monthTable.getRealLocalDate();
-    LocalDate date = getTopLeftCellDayOfMonth(realLocalDate, defaultLocale);
-    CalendarViewTableModel model = new CalendarViewTableModel(date, defaultLocale);
-    monthTable.setModel(model);
+    LocalDate today = monthTable.getToday();
+    LocalDate date = getTopLeftCellDayOfMonth(today, defaultLocale);
+    monthTable.setModel(new CalendarViewTableModel(date, defaultLocale));
 
     JScrollBar verticalScrollBar = new JScrollBar(Adjustable.VERTICAL) {
       @Override public Dimension getPreferredSize() {
@@ -70,11 +58,10 @@ public final class MainPanel extends JPanel {
       }
     };
     verticalScrollBar.setUnitIncrement(monthTable.getRowHeight());
-    // verticalScrollBar.setBlockIncrement(monthTable.getRowHeight());
     scroll.setVerticalScrollBar(verticalScrollBar);
     verticalScrollBar.getModel().addChangeListener(e -> verticalScrollChanged());
 
-    updateMonthView(realLocalDate);
+    updateMonthView(today);
 
     add(createButtonBox(), BorderLayout.NORTH);
     add(scroll);
@@ -86,13 +73,13 @@ public final class MainPanel extends JPanel {
   private JPanel createButtonBox() {
     JButton prev = new JButton("<");
     prev.addActionListener(e -> {
-      LocalDate d = monthTable.getCurrentLocalDate();
-      updateMonthView(d.minusMonths(1));
+      LocalDate date = monthTable.getCurrentLocalDate();
+      updateMonthView(date.minusMonths(1));
     });
     JButton next = new JButton(">");
     next.addActionListener(e -> {
-      LocalDate d = monthTable.getCurrentLocalDate();
-      updateMonthView(d.plusMonths(1));
+      LocalDate date = monthTable.getCurrentLocalDate();
+      updateMonthView(date.plusMonths(1));
     });
     JPanel p = new JPanel(new BorderLayout());
     p.add(monthLabel);
@@ -102,46 +89,49 @@ public final class MainPanel extends JPanel {
   }
 
   private void verticalScrollChanged() {
-    EventQueue.invokeLater(() -> {
-      JViewport viewport = scroll.getViewport();
-      Point pt = SwingUtilities.convertPoint(viewport, 0, 0, monthTable);
-      int row = monthTable.rowAtPoint(pt);
-      int col = 6; // monthTable.columnAtPoint(pt);
-      LocalDate localDate = (LocalDate) monthTable.getValueAt(row, col);
-      monthTable.setCurrentLocalDate(localDate);
-      updateMonthLabel(localDate);
-      viewport.repaint();
-    });
+    EventQueue.invokeLater(this::updateCurrentMonth);
   }
 
-  public void updateMonthView(LocalDate date) {
+  private void updateCurrentMonth() {
+    JViewport viewport = scroll.getViewport();
+    Point pt = SwingUtilities.convertPoint(viewport, 0, 0, monthTable);
+    int row = monthTable.rowAtPoint(pt);
+    if (row >= 0) {
+      // The top-right cell (the last day of the top week) always belongs to
+      // the month whose first week is displayed at the top
+      int column = monthTable.getColumnCount() - 1;
+      LocalDate date = (LocalDate) monthTable.getValueAt(row, column);
+      monthTable.setCurrentLocalDate(date);
+      updateMonthLabel(date);
+      viewport.repaint();
+    }
+  }
+
+  private void updateMonthView(LocalDate date) {
     monthTable.setCurrentLocalDate(date);
     updateMonthLabel(date);
-    TableModel model = monthTable.getModel();
-    int v = model.getRowCount() / 2;
-    LocalDate realLocalDate = monthTable.getRealLocalDate();
+    // The center row of the model is the first week of this month (today)
+    int centerRow = monthTable.getRowCount() / 2;
     Locale locale = monthTable.getLocale();
-    LocalDate startDate1 = getTopLeftCellDayOfMonth(realLocalDate, locale);
-    LocalDate startDate2 = getTopLeftCellDayOfMonth(date, locale);
-    int between = (int) ChronoUnit.WEEKS.between(startDate1, startDate2);
-    // monthTable.revalidate();
-    Rectangle r = monthTable.getCellRect(v + between, 0, false);
+    LocalDate baseDate = getTopLeftCellDayOfMonth(monthTable.getToday(), locale);
+    LocalDate targetDate = getTopLeftCellDayOfMonth(date, locale);
+    int weeks = (int) ChronoUnit.WEEKS.between(baseDate, targetDate);
+    Rectangle r = monthTable.getCellRect(centerRow + weeks, 0, false);
     r.height = scroll.getViewport().getViewRect().height;
     monthTable.scrollRectToVisible(r);
     scroll.repaint();
   }
 
-  private void updateMonthLabel(LocalDate localDate) {
+  private void updateMonthLabel(LocalDate date) {
     Locale locale = monthLabel.getLocale();
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    monthLabel.setText(localDate.format(fmt.withLocale(locale)));
+    monthLabel.setText(date.format(MONTH_FORMATTER.withLocale(locale)));
   }
 
-  private static LocalDate getTopLeftCellDayOfMonth(LocalDate date, Locale loc) {
-    WeekFields weekFields = WeekFields.of(loc);
-    LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
-    int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    return firstDayOfMonth.minusDays(v);
+  private static LocalDate getTopLeftCellDayOfMonth(LocalDate date, Locale locale) {
+    WeekFields weekFields = WeekFields.of(locale);
+    LocalDate firstDayOfMonth = date.withDayOfMonth(1);
+    int offset = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    return firstDayOfMonth.minusDays(offset);
   }
 
   public static void main(String[] args) {
@@ -167,7 +157,7 @@ public final class MainPanel extends JPanel {
 }
 
 class CalendarTable extends JTable {
-  private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
+  private final LocalDate today = LocalDate.now(ZoneId.systemDefault());
   private LocalDate currentLocalDate;
 
   @Override public void updateUI() {
@@ -176,7 +166,7 @@ class CalendarTable extends JTable {
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     setCellSelectionEnabled(true);
     setFillsViewportHeight(true);
-    setRowHeight(20);
+    setRowHeight(32);
     JTableHeader header = getTableHeader();
     header.setResizingAllowed(false);
     header.setReorderingAllowed(false);
@@ -186,8 +176,8 @@ class CalendarTable extends JTable {
     }
   }
 
-  public LocalDate getRealLocalDate() {
-    return realLocalDate;
+  public LocalDate getToday() {
+    return today;
   }
 
   public LocalDate getCurrentLocalDate() {
@@ -212,15 +202,15 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
       l.setHorizontalAlignment(CENTER);
       LocalDate d = (LocalDate) value;
       l.setText(Integer.toString(d.getDayOfMonth()));
-      CalendarTable tbl = (CalendarTable) table;
-      LocalDate cur = tbl.getCurrentLocalDate();
-      if (YearMonth.from(d).equals(YearMonth.from(cur))) {
+      CalendarTable calendar = (CalendarTable) table;
+      LocalDate current = calendar.getCurrentLocalDate();
+      if (YearMonth.from(d).equals(YearMonth.from(current))) {
         l.setForeground(table.getForeground());
       } else {
         l.setForeground(Color.GRAY);
       }
       DayOfWeek dow = d.getDayOfWeek();
-      if (d.isEqual(tbl.getRealLocalDate())) {
+      if (d.isEqual(calendar.getToday())) {
         l.setBackground(TODAY_BGC);
       } else if (dow == DayOfWeek.SUNDAY) {
         l.setBackground(SUNDAY_BGC);
@@ -234,13 +224,13 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   }
 }
 
-class CalendarViewTableModel extends DefaultTableModel {
+class CalendarViewTableModel extends AbstractTableModel {
   private static final int WEEK_COUNT = 1000;
   private final LocalDate startDate;
   private final Locale locale;
   private final WeekFields weekFields;
 
-  protected CalendarViewTableModel(LocalDate date, Locale locale) {
+  /* default */ CalendarViewTableModel(LocalDate date, Locale locale) {
     super();
     this.locale = locale;
     weekFields = WeekFields.of(locale);
@@ -257,11 +247,11 @@ class CalendarViewTableModel extends DefaultTableModel {
   }
 
   @Override public int getRowCount() {
-    return WEEK_COUNT; // week
+    return WEEK_COUNT;
   }
 
   @Override public int getColumnCount() {
-    return DayOfWeek.values().length; // 7: day
+    return DayOfWeek.values().length; // 7 days a week
   }
 
   @Override public Object getValueAt(int row, int column) {
