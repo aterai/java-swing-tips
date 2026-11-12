@@ -5,7 +5,7 @@
 package example;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
+import java.awt.geom.RoundRectangle2D;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -15,17 +15,17 @@ import java.time.temporal.WeekFields;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
-  private final List<Color> monthThemeColor = Arrays.asList(
+  private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyy / MM");
+  private static final List<Color> THEME_COLORS = Arrays.asList(
       new Color(0xD5_0B_17), new Color(0x02_6C_B6), new Color(0xED_87_AD),
       new Color(0xCE_30_6A), new Color(0x48_B0_37), new Color(0xA4_62_A2),
       new Color(0x00_BD_E7), new Color(0xEB_5E_31), new Color(0xC8_01_82),
@@ -63,11 +63,10 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
+  private static void updateMonthView(CalendarTable table, JLabel label, LocalDate date) {
     table.setCurrentLocalDate(date);
-    Color color = monthThemeColor.get(date.getMonthValue() - 1);
-    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-    label.setText(date.format(fmt.withLocale(Locale.getDefault())));
+    Color color = THEME_COLORS.get(date.getMonthValue() - 1);
+    label.setText(date.format(MONTH_FORMATTER));
     label.setForeground(color);
     table.setModel(new CalendarViewTableModel(date));
     table.getTableHeader().setBackground(color);
@@ -104,13 +103,6 @@ class MonthScrollPane extends JScrollPane {
     super.updateUI();
     setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_NEVER);
     setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
-    setColumnHeader(new JViewport() {
-      @Override public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
-        d.height = 24;
-        return d;
-      }
-    });
     setBorder(BorderFactory.createEmptyBorder());
     setViewportBorder(BorderFactory.createEmptyBorder());
     getViewport().setBackground(Color.WHITE);
@@ -118,6 +110,7 @@ class MonthScrollPane extends JScrollPane {
 }
 
 class CalendarTable extends JTable {
+  private static final int HEADER_HEIGHT = 24;
   private LocalDate currentLocalDate;
 
   @Override public void updateUI() {
@@ -139,6 +132,18 @@ class CalendarTable extends JTable {
     header.setReorderingAllowed(false);
   }
 
+  // Fix the header height in the header itself instead of replacing the
+  // JScrollPane column header viewport, which would drop the header on updateUI()
+  @Override protected JTableHeader createDefaultTableHeader() {
+    return new JTableHeader(columnModel) {
+      @Override public Dimension getPreferredSize() {
+        Dimension d = super.getPreferredSize();
+        d.height = HEADER_HEIGHT;
+        return d;
+      }
+    };
+  }
+
   public void setCurrentLocalDate(LocalDate date) {
     currentLocalDate = date;
   }
@@ -148,14 +153,21 @@ class CalendarTable extends JTable {
   }
 
   private void adjustRowHeights(JViewport viewport) {
+    int rowCount = getRowCount();
+    if (rowCount == 0) {
+      return;
+    }
     int height = viewport.getExtentSize().height;
-    int rowCount = getModel().getRowCount();
     int baseRowHeight = height / rowCount;
     int remainder = height % rowCount;
     // Distribute the remainder one pixel at a time to the first rows
     for (int i = 0; i < rowCount; i++) {
-      int adjustedHeight = baseRowHeight + (i < remainder ? 1 : 0);
-      setRowHeight(i, Math.max(1, adjustedHeight));
+      int adjustedHeight = Math.max(1, baseRowHeight + (i < remainder ? 1 : 0));
+      // Skip unchanged rows: setRowHeight(...) always revalidates the table,
+      // which would schedule another doLayout() call
+      if (getRowHeight(i) != adjustedHeight) {
+        setRowHeight(i, adjustedHeight);
+      }
     }
   }
 
@@ -165,10 +177,10 @@ class CalendarTable extends JTable {
 
   @Override public void doLayout() {
     super.doLayout();
-    Class<JViewport> clz = JViewport.class;
-    Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, this))
-        .filter(clz::isInstance).map(clz::cast)
-        .ifPresent(this::adjustRowHeights);
+    Container parent = getParent();
+    if (parent instanceof JViewport) {
+      adjustRowHeights((JViewport) parent);
+    }
   }
 }
 
@@ -176,7 +188,6 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
   private static final Color SUNDAY_FGC = new Color(0xD9_0B_0D);
   private static final Color SATURDAY_FGC = new Color(0x10_4A_90);
   private final JPanel panel = new JPanel(new BorderLayout());
-  private LocalDate currentLocalDate;
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
     Component c = super.getTableCellRendererComponent(
@@ -188,19 +199,19 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
       l.setVerticalAlignment(TOP);
       l.setHorizontalAlignment(LEFT);
       panel.setBackground(l.getBackground());
-      currentLocalDate = ((CalendarTable) table).getCurrentLocalDate();
-      updateWeekColor(d, table, c, selected);
-      TableModel model = table.getModel();
-      LocalDate nextWeekDay = d.plusDays(model.getColumnCount()); // plus 7 days
-      boolean isLastRow = row == model.getRowCount() - 1;
-      if (isLastRow && isDiagonallySplitCell(nextWeekDay, currentLocalDate)) {
+      YearMonth currentMonth = YearMonth.from(((CalendarTable) table).getCurrentLocalDate());
+      updateWeekColor(c, d, currentMonth, table, selected);
+      LocalDate nextWeekDay = d.plusDays(table.getColumnCount()); // plus 7 days
+      boolean isLastRow = row == table.getRowCount() - 1;
+      // The last row also shows the date of the following week if it is still in the current month
+      if (isLastRow && YearMonth.from(nextWeekDay).equals(currentMonth)) {
         JLabel sub = new JLabel(Integer.toString(nextWeekDay.getDayOfMonth()));
         sub.setFont(l.getFont());
         sub.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         sub.setOpaque(false);
         sub.setVerticalAlignment(BOTTOM);
         sub.setHorizontalAlignment(RIGHT);
-        updateWeekColor(d, table, sub, selected);
+        updateWeekColor(sub, nextWeekDay, currentMonth, table, selected);
         panel.removeAll();
         panel.add(sub, BorderLayout.SOUTH);
         panel.add(c, BorderLayout.NORTH);
@@ -212,11 +223,8 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
     return c;
   }
 
-  private static boolean isDiagonallySplitCell(LocalDate nextWeekDay, LocalDate cur) {
-    return YearMonth.from(nextWeekDay).equals(YearMonth.from(cur));
-  }
-
-  private void updateWeekColor(LocalDate d, JTable table, Component c, boolean selected) {
+  private static void updateWeekColor(
+      Component c, LocalDate d, YearMonth currentMonth, JTable table, boolean selected) {
     if (selected) {
       c.setForeground(table.getSelectionForeground());
     } else {
@@ -225,7 +233,7 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
         c.setForeground(SUNDAY_FGC);
       } else if (dayOfWeek == DayOfWeek.SATURDAY) {
         c.setForeground(SATURDAY_FGC);
-      } else if (YearMonth.from(d).equals(YearMonth.from(currentLocalDate))) {
+      } else if (YearMonth.from(d).equals(currentMonth)) {
         c.setForeground(table.getForeground());
       } else {
         c.setForeground(Color.GRAY);
@@ -235,92 +243,58 @@ class CalendarTableRenderer extends DefaultTableCellRenderer {
 }
 
 class RoundedHeaderRenderer extends DefaultTableCellRenderer {
-  private final JLabel firstLabel = new JLabel() {
-    @Override public void paintComponent(Graphics g) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setPaint(getBackground());
-      g2.fill(makeFirstHeaderPath(getSize()));
-      g2.dispose();
-      super.paintComponent(g);
-    }
-  };
-  private final JLabel lastLabel = new JLabel() {
-    @Override public void paintComponent(Graphics g) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2.setPaint(getBackground());
-      g2.fill(makeLastHeaderPath(getSize()));
-      g2.dispose();
-      super.paintComponent(g);
-    }
-  };
-
-  protected RoundedHeaderRenderer() {
-    super();
-    firstLabel.setOpaque(false);
-    lastLabel.setOpaque(false);
-    firstLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-    lastLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-  }
+  private final JLabel firstLabel = new RoundedCornerLabel(true);
+  private final JLabel lastLabel = new RoundedCornerLabel(false);
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    Component c = super.getTableCellRendererComponent(
-        table, value, isSelected, hasFocus, row, column);
+    JLabel l = this;
     if (column == 0) {
-      c = firstLabel;
+      l = firstLabel;
     } else if (column == table.getColumnCount() - 1) {
-      c = lastLabel;
+      l = lastLabel;
+    } else {
+      super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }
-    c.setFont(table.getFont());
-    c.setForeground(table.getTableHeader().getForeground());
-    c.setBackground(table.getTableHeader().getBackground());
-    if (c instanceof JLabel) {
-      JLabel l = (JLabel) c;
-      l.setText(value.toString());
-      l.setHorizontalAlignment(CENTER);
-    }
-    return c;
-  }
-
-  private static Path2D makeFirstHeaderPath(Dimension size) {
-    double r = 8d;
-    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
-    double x = 0d;
-    double y = 0d;
-    double w = size.getWidth();
-    double h = size.getHeight();
-    Path2D p = new Path2D.Double();
-    p.moveTo(x, y + r);
-    p.curveTo(x, y + r - rr, x + r - rr, y, x + r, y);
-    p.lineTo(x + w, y);
-    p.lineTo(x + w, y + h);
-    p.lineTo(x + r, y + h);
-    p.curveTo(x + r - rr, y + h, x, y + h - r + rr, x, y + h - r);
-    p.closePath();
-    return p;
-  }
-
-  private static Path2D makeLastHeaderPath(Dimension size) {
-    double r = 8d;
-    double rr = r * 4d * (Math.sqrt(2d) - 1d) / 3d; // = r * .5522;
-    double x = 0d;
-    double y = 0d;
-    double w = size.getWidth();
-    double h = size.getHeight();
-    Path2D p = new Path2D.Double();
-    p.moveTo(x, y);
-    p.lineTo(x + w - r, y);
-    p.curveTo(x + w - r + rr, y, x + w, y + r - rr, x + w, y + r);
-    p.lineTo(x + w, y + h - r);
-    p.curveTo(x + w, y + h - r + rr, x + w - r + rr, y + h, x + w - r, y + h);
-    p.lineTo(x, y + h);
-    p.closePath();
-    return p;
+    JTableHeader header = table.getTableHeader();
+    l.setText(Objects.toString(value, ""));
+    l.setFont(table.getFont());
+    l.setForeground(header.getForeground());
+    l.setBackground(header.getBackground());
+    l.setHorizontalAlignment(CENTER);
+    return l;
   }
 }
 
-class CalendarViewTableModel extends DefaultTableModel {
+class RoundedCornerLabel extends JLabel {
+  private static final double ARC = 16d;
+  private final boolean leading;
+
+  protected RoundedCornerLabel(boolean leading) {
+    super();
+    this.leading = leading;
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    setOpaque(false);
+    setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+  }
+
+  @Override protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setPaint(getBackground());
+    // Extend the round rectangle beyond the opposite edge so that
+    // only the corners on the leading (or trailing) side are rounded
+    double x = leading ? 0d : -ARC;
+    double w = getWidth() + ARC;
+    g2.fill(new RoundRectangle2D.Double(x, 0d, w, getHeight(), ARC, ARC));
+    g2.dispose();
+    super.paintComponent(g);
+  }
+}
+
+class CalendarViewTableModel extends AbstractTableModel {
   private final LocalDate startDate;
   private final WeekFields weekFields = WeekFields.of(Locale.getDefault());
 
@@ -351,10 +325,6 @@ class CalendarViewTableModel extends DefaultTableModel {
   @Override public Object getValueAt(int row, int column) {
     return startDate.plusDays((long) row * getColumnCount() + column);
   }
-
-  @Override public boolean isCellEditable(int row, int column) {
-    return false;
-  }
 }
 
 class DiagonallySplitCellLayerUI extends LayerUI<JPanel> {
@@ -363,7 +333,6 @@ class DiagonallySplitCellLayerUI extends LayerUI<JPanel> {
     if (c instanceof JLayer) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      // g2.setPaint(UIManager.getColor("Table.gridColor"));
       g2.setPaint(((JLayer<?>) c).getView().getForeground());
       g2.drawLine(c.getWidth() - 4, 4, 4, c.getHeight() - 4);
       g2.dispose();
