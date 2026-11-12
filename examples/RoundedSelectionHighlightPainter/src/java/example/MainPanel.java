@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     @Override public void updateUI() {
       super.updateUI();
       Caret caret = new DefaultCaret() {
-        @Override protected Highlighter.HighlightPainter getSelectionPainter() {
+        @Override protected HighlightPainter getSelectionPainter() {
           return new RoundedSelectionHighlightPainter();
         }
       };
@@ -63,8 +63,7 @@ public final class MainPanel extends JPanel {
     check.addActionListener(e -> {
       DefaultHighlighter dh = (DefaultHighlighter) textArea.getHighlighter();
       dh.setDrawsLayeredHighlights(((JCheckBox) e.getSource()).isSelected());
-      DocumentUtils.updateHighlight(textArea, field);
-      textArea.select(textArea.getSelectionStart(), textArea.getSelectionEnd());
+      reapplyHighlights();
     });
 
     field.getDocument().addDocumentListener(new HighlightDocumentListener());
@@ -86,6 +85,17 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(textArea));
     add(box, BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  // The drawsLayeredHighlights setting is only applied to highlights added
+  // after the change, so re-add the search and selection highlights.
+  private void reapplyHighlights() {
+    DocumentUtils.updateHighlight(textArea, field);
+    Caret caret = textArea.getCaret();
+    int mark = caret.getMark();
+    int dot = caret.getDot();
+    caret.setDot(mark);
+    caret.moveDot(dot); // keeps the selection direction, unlike select(start, end)
   }
 
   private final class HighlightDocumentListener implements DocumentListener {
@@ -128,26 +138,32 @@ final class DocumentUtils {
   private static final Color WARNING_COLOR = new Color(0xFF_C8_C8);
 
   private DocumentUtils() {
-    /* Singleton */
+    /* Utility class */
   }
 
   public static void updateHighlight(JTextComponent editor, JTextField field) {
     field.setBackground(Color.WHITE);
     String pattern = field.getText().trim();
     Highlighter highlighter = editor.getHighlighter();
-    highlighter.removeAllHighlights();
+    // Remove only the search highlights and keep the selection highlight owned by the Caret
+    for (Highlighter.Highlight h : highlighter.getHighlights()) {
+      if (h.getPainter() instanceof RoundedHighlightPainter) {
+        highlighter.removeHighlight(h);
+      }
+    }
     if (!pattern.isEmpty()) {
       Document doc = editor.getDocument();
       try {
         String text = doc.getText(0, doc.getLength());
         Matcher matcher = Pattern.compile(pattern).matcher(text);
         HighlightPainter highlightPainter = new RoundedHighlightPainter();
-        int pos = 0;
-        while (matcher.find(pos) && !matcher.group().isEmpty()) {
+        // Matcher#find() steps over empty matches by itself, so skip them and keep searching
+        while (matcher.find()) {
           int start = matcher.start();
           int end = matcher.end();
-          highlighter.addHighlight(start, end, highlightPainter);
-          pos = end;
+          if (end > start) {
+            highlighter.addHighlight(start, end, highlightPainter);
+          }
         }
       } catch (BadLocationException | PatternSyntaxException ex) {
         UIManager.getLookAndFeel().provideErrorFeedback(field);
@@ -166,13 +182,14 @@ class RoundedHighlightPainter extends DefaultHighlightPainter {
 
   @Override public void paint(Graphics g, int offs0, int offs1, Shape bounds, JTextComponent c) {
     try {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       TextUI mapper = c.getUI();
       Rectangle p0 = mapper.modelToView(c, offs0);
       Rectangle p1 = mapper.modelToView(c, offs1);
+      // Create the Graphics after modelToView so that it is not leaked on BadLocationException
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       if (p0.y == p1.y) { // same line, render a rectangle
-        Shape s = makeRoundRectangle(p0.union(p1));
+        Shape s = createRoundRectangle(p0.union(p1));
         g2.setColor(Color.PINK);
         g2.fill(s);
         g2.setPaint(Color.RED);
@@ -203,7 +220,7 @@ class RoundedHighlightPainter extends DefaultHighlightPainter {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.setPaint(Color.ORANGE);
-      Shape r = makeRoundRectangle(s.getBounds());
+      Shape r = createRoundRectangle(s.getBounds());
       g2.fill(r);
       g2.setPaint(Color.RED);
       g2.draw(r);
@@ -212,7 +229,7 @@ class RoundedHighlightPainter extends DefaultHighlightPainter {
     return s;
   }
 
-  private static RoundRectangle2D makeRoundRectangle(Rectangle r) {
+  private static RoundRectangle2D createRoundRectangle(Rectangle r) {
     return new RoundRectangle2D.Float(r.x, r.y, r.width - 1, r.height - 1, 5f, 5f);
   }
 }
