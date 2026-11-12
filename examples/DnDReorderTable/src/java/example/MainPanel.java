@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -25,7 +24,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     TransferHandler handler = new TableRowTransferHandler();
-    JTable table = new JTable(makeModel());
+    JTable table = new JTable(createModel());
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setTransferHandler(handler);
     table.setDropMode(DropMode.INSERT_ROWS);
@@ -52,7 +51,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static TableModel makeModel() {
+  private static TableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
@@ -121,6 +120,8 @@ class TableRowTransferHandler extends TransferHandler {
     // }
     // Object[] transferredRows = list.toArray();
     // indices = table.getSelectedRows();
+    // Discard indices left over from a previous drag that did not reach exportDone
+    indices.clear();
     for (int i : table.getSelectedRows()) {
       indices.add(i);
     }
@@ -178,10 +179,9 @@ class TableRowTransferHandler extends TransferHandler {
     addIndex = index;
     // target.setCursor(Cursor.getDefaultCursor());
     List<?> values = getTransferData(info);
-    Object[] type = new Object[0];
     for (Object o : values) {
       // model.insertRow(index, (Vector<?>) o);
-      model.insertRow(index, ((List<?>) o).toArray(type));
+      model.insertRow(index, ((List<?>) o).toArray());
       target.getSelectionModel().addSelectionInterval(index, index);
       index += 1;
     }
@@ -208,14 +208,12 @@ class TableRowTransferHandler extends TransferHandler {
     c.getRootPane().getGlassPane().setVisible(false);
     // c.setCursor(Cursor.getDefaultCursor());
     if (remove && !indices.isEmpty()) {
-      if (addCount > 0) {
-        IntStream.range(0, indices.size())
-            .filter(i -> indices.get(i) >= addIndex)
-            .forEach(i -> indices.set(i, indices.get(i) + addCount));
-      }
       DefaultTableModel model = (DefaultTableModel) ((JTable) c).getModel();
+      // Remove from the bottom so that the remaining indices stay valid.
+      // Rows at or after the drop location were shifted down by the inserted rows.
       for (int i = indices.size() - 1; i >= 0; i--) {
-        model.removeRow(indices.get(i));
+        int idx = indices.get(i);
+        model.removeRow(addCount > 0 && idx >= addIndex ? idx + addCount : idx);
       }
     }
     indices.clear();
