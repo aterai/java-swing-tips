@@ -9,12 +9,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.TextAction;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -65,39 +69,13 @@ public final class MainPanel extends JPanel {
 }
 
 class CustomTextArea extends JTextArea {
-  private final Action selectAllAct = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      Rectangle r = getVisibleRect();
-      getActionMap().get("select-all").actionPerformed(e);
-      EventQueue.invokeLater(() -> scrollRectToVisible(r));
-    }
-  };
-  private final Action caretUpAct = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      if (getSelectedText() == null) {
-        getActionMap().get("caret-up").actionPerformed(e);
-      } else {
-        getCaret().moveDot(getCaret().getMark());
-      }
-    }
-  };
-  private final Action caretForwardAct = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      if (getSelectedText() == null) {
-        getActionMap().get("caret-forward").actionPerformed(e);
-      } else {
-        getCaret().moveDot(getCaret().getMark());
-      }
-    }
-  };
-
   protected CustomTextArea(String text) {
     super(text);
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    EventQueue.invokeLater(this::initActionMap);
+    initActionMap();
   }
 
   private void initActionMap() {
@@ -105,48 +83,32 @@ class CustomTextArea extends JTextArea {
     ActionMap am = getActionMap();
     String selectAllKey = "select-all2";
     im.put(KeyStroke.getKeyStroke("ctrl A"), selectAllKey);
-    am.put(selectAllKey, selectAllAct);
-    String caretUpKey = "caret-up";
-    im.put(KeyStroke.getKeyStroke("UP"), caretUpKey + "2");
-    am.put(caretUpKey + "2", caretUpAct);
-    String caretForwardKey = "caret-forward";
-    im.put(KeyStroke.getKeyStroke("LEFT"), caretForwardKey + "2");
-    am.put(caretForwardKey + "2", caretForwardAct);
+    am.put(selectAllKey, new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        Rectangle r = getVisibleRect();
+        getActionMap().get(DefaultEditorKit.selectAllAction).actionPerformed(e);
+        // Restore the visible rect after the caret has scrolled to the end of the text
+        EventQueue.invokeLater(() -> scrollRectToVisible(r));
+      }
+    });
+    // Visual Studio Code: UP and LEFT move the caret to the start of the selection
+    String upKey = "caret-up2";
+    im.put(KeyStroke.getKeyStroke("UP"), upKey);
+    am.put(upKey, new CollapseSelectionAction(DefaultEditorKit.upAction, true));
+    String backwardKey = "caret-backward2";
+    im.put(KeyStroke.getKeyStroke("LEFT"), backwardKey);
+    am.put(backwardKey, new CollapseSelectionAction(DefaultEditorKit.backwardAction, true));
   }
 }
 
 class EmacsTextArea extends JTextArea {
-  private final Action selectAllAct = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      selectAll();
-    }
-  };
-  private final Action caretDownAct = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      if (getSelectedText() == null) {
-        getActionMap().get("caret-down").actionPerformed(e);
-      } else {
-        getCaret().moveDot(getCaret().getMark());
-      }
-    }
-  };
-  private final Action caretBackwardAct = new AbstractAction() {
-    @Override public void actionPerformed(ActionEvent e) {
-      if (getSelectedText() == null) {
-        getActionMap().get("caret-backward").actionPerformed(e);
-      } else {
-        getCaret().moveDot(getCaret().getMark());
-      }
-    }
-  };
-
   protected EmacsTextArea(String text) {
     super(text);
   }
 
   @Override public void updateUI() {
     super.updateUI();
-    EventQueue.invokeLater(this::initActionMap);
+    initActionMap();
   }
 
   private void initActionMap() {
@@ -154,23 +116,56 @@ class EmacsTextArea extends JTextArea {
     ActionMap am = getActionMap();
     String selectAllKey = "select-all2";
     im.put(KeyStroke.getKeyStroke("ctrl A"), selectAllKey);
-    am.put(selectAllKey, selectAllAct);
-    String caretDownKey = "caret-down";
-    im.put(KeyStroke.getKeyStroke("DOWN"), caretDownKey + "2");
-    am.put(caretDownKey + "2", caretDownAct);
-    String caretBackwardKey = "caret-backward";
-    im.put(KeyStroke.getKeyStroke("RIGHT"), caretBackwardKey + "2");
-    am.put(caretBackwardKey + "2", caretBackwardAct);
+    am.put(selectAllKey, new AbstractAction() {
+      @Override public void actionPerformed(ActionEvent e) {
+        selectAll();
+      }
+    });
+    // GNU Emacs: DOWN and RIGHT move the caret to the end of the selection
+    String downKey = "caret-down2";
+    im.put(KeyStroke.getKeyStroke("DOWN"), downKey);
+    am.put(downKey, new CollapseSelectionAction(DefaultEditorKit.downAction, false));
+    String forwardKey = "caret-forward2";
+    im.put(KeyStroke.getKeyStroke("RIGHT"), forwardKey);
+    am.put(forwardKey, new CollapseSelectionAction(DefaultEditorKit.forwardAction, false));
   }
 
   @Override public void selectAll() {
     Rectangle r = getVisibleRect();
     Document doc = getDocument();
     if (doc != null) {
+      // Select from the end to the beginning so that the caret stays at the top
       setCaretPosition(doc.getLength());
       moveCaretPosition(0);
     }
     EventQueue.invokeLater(() -> scrollRectToVisible(r));
+  }
+}
+
+// Collapses the selection to its start or end, or performs the default caret
+// action when nothing is selected.
+class CollapseSelectionAction extends TextAction {
+  private final String defaultActionName;
+  private final boolean toSelectionStart;
+
+  protected CollapseSelectionAction(String defaultActionName, boolean toSelectionStart) {
+    super(defaultActionName);
+    this.defaultActionName = defaultActionName;
+    this.toSelectionStart = toSelectionStart;
+  }
+
+  @Override public void actionPerformed(ActionEvent e) {
+    JTextComponent c = getTextComponent(e);
+    if (c != null) {
+      int start = c.getSelectionStart();
+      int end = c.getSelectionEnd();
+      if (start == end) {
+        Optional.ofNullable(c.getActionMap().get(defaultActionName))
+            .ifPresent(a -> a.actionPerformed(e));
+      } else {
+        c.setCaretPosition(toSelectionStart ? start : end);
+      }
+    }
   }
 }
 
@@ -250,10 +245,10 @@ class LineNumberView extends JPanel {
     int fontDescent = fontMetrics.getDescent();
     int fontLeading = fontMetrics.getLeading();
     int y = start * fontMetrics.getHeight();
-    int rmg = getInsets().right;
+    int right = getComponentWidth(fontMetrics) - getInsets().right;
     for (int i = start; i <= end; i++) {
       String text = Integer.toString(i + 1);
-      int x = getComponentWidth(fontMetrics) - rmg - fontMetrics.stringWidth(text);
+      int x = right - fontMetrics.stringWidth(text);
       y += fontAscent;
       g2.drawString(text, x, y);
       y += fontDescent + fontLeading;
