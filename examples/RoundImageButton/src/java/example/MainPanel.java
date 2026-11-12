@@ -23,37 +23,37 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
-    Box box = makeBox();
+    Box box = createBox();
     add(box, BorderLayout.NORTH);
-    add(makePanel(box), BorderLayout.SOUTH);
+    add(createPanel(box), BorderLayout.SOUTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Component makePanel(Box box) {
+  private Component createPanel(Box box) {
     JCheckBox check = new JCheckBox("ButtonBorder Color");
     check.addActionListener(e -> {
-      Color bgc = ((JCheckBox) e.getSource()).isSelected() ? Color.WHITE : Color.BLACK;
-      buttons.forEach(b -> b.setBackground(bgc));
+      Color color = ((JCheckBox) e.getSource()).isSelected() ? Color.WHITE : Color.BLACK;
+      buttons.forEach(b -> b.setBackground(color));
       box.repaint();
     });
     JPanel p = new JPanel();
     p.add(check);
 
-    JComboBox<? extends Enum<?>> alignmentsChoices = new JComboBox<>(ButtonAlignments.values());
-    alignmentsChoices.addItemListener(e -> {
+    JComboBox<ButtonAlignment> alignmentChoices = new JComboBox<>(ButtonAlignment.values());
+    alignmentChoices.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
-        ButtonAlignments ba = (ButtonAlignments) e.getItem();
+        ButtonAlignment ba = (ButtonAlignment) e.getItem();
         buttons.forEach(b -> b.setAlignmentY(ba.getAlignment()));
         box.revalidate();
       }
     });
-    alignmentsChoices.setSelectedIndex(1);
-    p.add(alignmentsChoices);
+    alignmentChoices.setSelectedIndex(1);
+    p.add(alignmentChoices);
     p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     return p;
   }
 
-  private Box makeBox() {
+  private Box createBox() {
     Box box = Box.createHorizontalBox();
     // JDK 5
     // new Box(BoxLayout.X_AXIS) {
@@ -79,7 +79,7 @@ public final class MainPanel extends JPanel {
   }
 
   // // TEST:
-  // public static List<JButton> makeButtonArray2(Class clazz) {
+  // public static List<JButton> createButtonArray2(Class clazz) {
   //   return Arrays.asList(
   //     new JButton(new ImageIcon(clazz.getResource("005.png"))) {{
   //       setPressedIcon(new ImageIcon(clazz.getResource("005d.png")));
@@ -132,35 +132,12 @@ public final class MainPanel extends JPanel {
 
 class RoundButton extends JButton {
   private transient Shape shape;
-  private transient Shape base;
+  private transient Shape baseBounds;
 
-  // protected RoundButton() {
-  //   super();
-  // }
-
-  // protected RoundButton(Icon icon) {
-  //   super(icon);
-  // }
-
-  // protected RoundButton(String text) {
-  //   super(text);
-  // }
-
-  // protected RoundButton(Action a) {
-  //   super(a);
-  //   // setAction(a);
-  // }
-
-  // protected RoundButton(String text, Icon icon) {
-  //   super(text, icon);
-  //   // setModel(new DefaultButtonModel());
-  //   // init(text, icon);
-  // }
-
-  protected RoundButton(String i1, String i2, String i3) {
-    super(makeIcon(i1));
-    setPressedIcon(makeIcon(i2));
-    setRolloverIcon(makeIcon(i3));
+  protected RoundButton(String iconPath, String pressedIconPath, String rolloverIconPath) {
+    super(createIcon(iconPath));
+    setPressedIcon(createIcon(pressedIconPath));
+    setRolloverIcon(createIcon(rolloverIconPath));
   }
 
   @Override public void updateUI() {
@@ -185,19 +162,20 @@ class RoundButton extends JButton {
   @Override public Dimension getPreferredSize() {
     Icon icon = getIcon();
     Insets i = getInsets();
-    int iw = Math.max(icon.getIconWidth(), icon.getIconHeight());
-    return new Dimension(iw + i.right + i.left, iw + i.top + i.bottom);
+    // Use a square of the longer icon side so that the border forms a circle
+    int size = Math.max(icon.getIconWidth(), icon.getIconHeight());
+    return new Dimension(size + i.right + i.left, size + i.top + i.bottom);
   }
 
   protected void initShape() {
-    if (!getBounds().equals(base)) {
+    if (!getBounds().equals(baseBounds)) {
       Dimension s = getPreferredSize();
-      base = getBounds();
+      baseBounds = getBounds();
       shape = new Ellipse2D.Double(0d, 0d, s.width - 1d, s.height - 1d);
     }
   }
 
-  public static Icon makeIcon(String path) {
+  public static Icon createIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource("example/" + path))
         .<Icon>map(ImageIcon::new)
@@ -216,10 +194,9 @@ class RoundButton extends JButton {
 
   @Override public boolean contains(int x, int y) {
     initShape();
-    // return shape != null && shape.contains(x, y);
-    return Optional.ofNullable(shape)
-        .map(s -> s.contains(x, y))
-        .orElseGet(() -> super.contains(x, y));
+    // The shape is always created in updateUI() called from the constructor,
+    // so only the inside of the circle responds to the mouse
+    return shape.contains(x, y);
   }
 }
 
@@ -305,14 +282,14 @@ class RoundButton extends JButton {
 //   }
 // }
 
-enum ButtonAlignments {
+enum ButtonAlignment {
   TOP("Top Alignment", Component.TOP_ALIGNMENT),
   CENTER("Center Alignment", Component.CENTER_ALIGNMENT),
   BOTTOM("Bottom Alignment", Component.BOTTOM_ALIGNMENT);
   private final String description;
   private final float alignment;
 
-  ButtonAlignments(String description, float alignment) {
+  ButtonAlignment(String description, float alignment) {
     this.description = description;
     this.alignment = alignment;
   }
