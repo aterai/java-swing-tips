@@ -9,7 +9,6 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -19,15 +18,16 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super();
-    List<String> style = Arrays.asList("Bold", "Italic", "Underline");
-    add(makeButtonToggles(style, 1));
-    List<String> food = Arrays.asList("hot dogs", "pizza", "ravioli", "bananas");
-    add(makeMultipleSelection(food, 1));
+    List<String> styles = Arrays.asList("Bold", "Italic", "Underline");
+    add(createSingleSelection(styles, 1));
+    List<String> foods = Arrays.asList("hot dogs", "pizza", "ravioli", "bananas");
+    add(createMultipleSelection(foods, 1));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JPanel makePanel(int overlap) {
-    return new JPanel(new FlowLayout(FlowLayout.CENTER, -overlap, 0)) {
+  private static JPanel createPanel(int overlap) {
+    // A negative hgap overlaps adjacent buttons so that their LineBorders are shared
+    JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, -overlap, 0)) {
       @Override public boolean isOptimizedDrawingEnabled() {
         return false;
       }
@@ -38,48 +38,41 @@ public final class MainPanel extends JPanel {
         return d;
       }
     };
+    p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
+    return p;
   }
 
-  public static JPanel makeButtonToggles(List<String> list, int overlap) {
-    JPanel p = makePanel(overlap);
-    p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
-    ButtonGroup bg = new ToggleButtonGroup();
+  private static JPanel createSingleSelection(List<String> list, int overlap) {
+    JPanel p = createPanel(overlap);
+    ButtonGroup group = new ToggleButtonGroup();
     list.forEach(title -> {
-      AbstractButton b = makeCheckToggleButton(title);
+      AbstractButton b = createCheckToggleButton(title);
       p.add(b);
-      bg.add(b);
+      group.add(b);
     });
     return p;
   }
 
-  public static JPanel makeMultipleSelection(List<String> list, int overlap) {
-    JPanel p = makePanel(overlap);
-    p.setBorder(BorderFactory.createEmptyBorder(5, overlap + 5, 5, 5));
-    list.forEach(title -> {
-      AbstractButton b = makeCheckToggleButton(title);
-      p.add(b);
-    });
+  private static JPanel createMultipleSelection(List<String> list, int overlap) {
+    JPanel p = createPanel(overlap);
+    list.forEach(title -> p.add(createCheckToggleButton(title)));
     return p;
   }
 
-  private static AbstractButton makeCheckToggleButton(String title) {
+  private static AbstractButton createCheckToggleButton(String title) {
     AbstractButton b = new JToggleButton(title) {
       @Override public void updateUI() {
         super.updateUI();
         setBackground(Color.GRAY);
-        setBorder(makeBorder(getBackground()));
+        setBorder(createBorder(getBackground()));
         setContentAreaFilled(false);
         setFocusPainted(false);
         setOpaque(false);
       }
     };
-    b.addActionListener(e -> {
-      Container parent = ((AbstractButton) e.getSource()).getParent();
-      SwingUtils.descendants(parent)
-          .filter(AbstractButton.class::isInstance)
-          .map(AbstractButton.class::cast)
-          .forEach(MainPanel::updateButton);
-    });
+    // An ItemEvent is also fired on a button deselected by the ButtonGroup,
+    // so each button only needs to update itself
+    b.addItemListener(e -> updateButton(b));
     return b;
   }
 
@@ -95,9 +88,9 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private static Border makeBorder(Color bgc) {
+  private static Border createBorder(Color color) {
     return BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(bgc),
+        BorderFactory.createLineBorder(color),
         BorderFactory.createEmptyBorder(5, 8, 5, 8));
   }
 
@@ -161,19 +154,19 @@ class CheckBoxIcon implements Icon {
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2.translate(x, y);
       AbstractButton b = (AbstractButton) c;
-      g2.setPaint(b.getForeground());
-      float s = Math.min(getIconWidth(), getIconHeight()) * .05f;
-      g2.setStroke(new BasicStroke(s));
-      float w = getIconWidth() - s - s;
-      float h = getIconHeight() - s - s;
-      float gw = w / 8f;
-      float gh = h / 8f;
       if (b.getModel().isSelected()) {
+        g2.setPaint(b.getForeground());
+        float s = Math.min(getIconWidth(), getIconHeight()) * .05f;
+        float w = getIconWidth() - s - s;
+        float h = getIconHeight() - s - s;
+        float gw = w / 8f;
+        float gh = h / 8f;
         g2.setStroke(new BasicStroke(3f * s));
+        // The origin is already translated to (x, y), so do not add x and y again
         Path2D p = new Path2D.Float();
-        p.moveTo(x + 2f * gw, y + .5f * h);
-        p.lineTo(x + .4f * w, y + h - 2f * gh);
-        p.lineTo(x + w - 2f * gw, y + 2f * gh);
+        p.moveTo(2f * gw, .5f * h);
+        p.lineTo(.4f * w, h - 2f * gh);
+        p.lineTo(w - 2f * gw, 2f * gh);
         g2.draw(p);
       }
       g2.dispose();
@@ -213,17 +206,5 @@ class ToggleButtonGroup extends ButtonGroup {
       super.setSelected(m, b);
     }
     prevModel = getSelection();
-  }
-}
-
-final class SwingUtils {
-  private SwingUtils() {
-    /* Singleton */
-  }
-
-  public static Stream<Component> descendants(Container parent) {
-    return Stream.of(parent.getComponents())
-        .filter(Container.class::isInstance).map(Container.class::cast)
-        .flatMap(c -> Stream.concat(Stream.of(c), descendants(c)));
   }
 }
