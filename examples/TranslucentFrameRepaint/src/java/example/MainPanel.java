@@ -28,17 +28,22 @@ public final class MainPanel extends JPanel {
     String txt = LocalTime.now(ZoneId.systemDefault()).format(formatter);
     JLabel label = new JLabel(txt, SwingConstants.CENTER);
     Timer timer = new Timer(100, null);
+    // The timer fires every 100ms, but the root pane only needs to be
+    // repainted when the displayed time actually changes
     timer.addActionListener(e -> {
-      label.setText(LocalTime.now(ZoneId.systemDefault()).format(formatter));
-      Container parent = SwingUtilities.getUnwrappedParent(label);
-      if (Objects.nonNull(parent) && parent.isOpaque()) {
-        repaintWindowAncestor(label);
+      String now = LocalTime.now(ZoneId.systemDefault()).format(formatter);
+      if (!now.equals(label.getText())) {
+        label.setText(now);
+        Container parent = SwingUtilities.getUnwrappedParent(label);
+        if (Objects.nonNull(parent) && parent.isOpaque()) {
+          repaintRootPane(label);
+        }
       }
     });
     // http://www.yourname.jp/soft/digitalfonts-20090306.shtml
     // Digital display font: Copyright (c) Yourname, Inc.
     String path = "example/YournameS7ScientificHalf.ttf";
-    TexturePanel tp = TextureUtils.makeTexturePanel(label, path);
+    TexturePanel tp = TextureUtils.createTexturePanel(label, path);
 
     JFrame digitalClock = new JFrame();
     digitalClock.getContentPane().add(tp);
@@ -53,12 +58,12 @@ public final class MainPanel extends JPanel {
     digitalClock.pack();
     digitalClock.setLocationRelativeTo(null);
 
-    JComboBox<TexturePaints> combo = makeComboBox(tp);
+    // The ItemListener of the JComboBox keeps the texture of the panel in sync
+    // with the selected item, so there is no need to set it again here
     JToggleButton button = new JToggleButton("timer");
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       if (b) {
-        tp.setTexturePaint(getTexturePaint(combo));
         timer.start();
       } else {
         timer.stop();
@@ -66,20 +71,14 @@ public final class MainPanel extends JPanel {
       digitalClock.setVisible(b);
     });
     JPanel p = new JPanel();
-    p.add(combo);
+    p.add(createComboBox(tp));
     p.add(button);
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(new JTree()));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static Paint getTexturePaint(JComboBox<TexturePaints> combo) {
-    int index = combo.getSelectedIndex();
-    TexturePaints item = combo.getItemAt(index);
-    return item.getTexturePaint();
-  }
-
-  private JComboBox<TexturePaints> makeComboBox(TexturePanel tp) {
+  private static JComboBox<TexturePaints> createComboBox(TexturePanel tp) {
     JComboBox<TexturePaints> c = new JComboBox<TexturePaints>(TexturePaints.values()) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
@@ -93,36 +92,22 @@ public final class MainPanel extends JPanel {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         TexturePaints t = (TexturePaints) e.getItem();
         tp.setTexturePaint(t.getTexturePaint());
-        repaintWindowAncestor(tp);
+        repaintRootPane(tp);
       }
     });
     return c;
   }
 
-  public static void repaintWindowAncestor(JComponent c) {
-    Optional.ofNullable(c.getRootPane())
-        .ifPresent(rootPane -> {
-          Rectangle r = SwingUtilities.convertRectangle(c, c.getBounds(), rootPane);
-          rootPane.repaint(r);
-        });
-
+  // Repaints the area of the JRootPane covered by the component so that the
+  // transparent window is cleared before the translucent background is painted
+  private static void repaintRootPane(JComponent c) {
+    Optional.ofNullable(c.getRootPane()).ifPresent(rootPane -> {
+      // c.getBounds() is relative to the parent of c,
+      // so the local bounds must be used as the source rectangle
+      Rectangle local = SwingUtilities.getLocalBounds(c);
+      rootPane.repaint(SwingUtilities.convertRectangle(c, local, rootPane));
+    });
   }
-
-  // protected void repaintWindowAncestor(Component c) {
-  //   Window w = SwingUtilities.getWindowAncestor(c);
-  //   if (w instanceof JFrame) {
-  //     JFrame f = (JFrame) w;
-  //     JComponent cp = (JComponent) f.getContentPane();
-  //     // cp.repaint();
-  //     Rectangle r = c.getBounds();
-  //     r = SwingUtilities.convertRectangle(c, r, cp);
-  //     cp.repaint(r);
-  //     // r = SwingUtilities.convertRectangle(c, r, f);
-  //     // f.repaint(r.x, r.y, r.width, r.height);
-  //   } else {
-  //     c.repaint();
-  //   }
-  // }
 
   public static void main(String[] args) {
     EventQueue.invokeLater(MainPanel::createAndShowGui);
@@ -185,7 +170,7 @@ enum TexturePaints {
     if (this == IMAGE) {
       texture = TextureUtils.createImageTexture();
     } else if (this == CHECKER) {
-      texture = TextureUtils.makeCheckerTexture();
+      texture = TextureUtils.createCheckerTexture();
     }
     return texture;
   }
@@ -197,7 +182,7 @@ enum TexturePaints {
 
 final class TextureUtils {
   private TextureUtils() {
-    /* Singleton */
+    /* Utility class */
   }
 
   public static TexturePaint createImageTexture() {
@@ -227,7 +212,7 @@ final class TextureUtils {
     return bi;
   }
 
-  public static TexturePaint makeCheckerTexture() {
+  public static TexturePaint createCheckerTexture() {
     int cs = 6;
     int sz = cs * cs;
     BufferedImage bi = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
@@ -245,9 +230,9 @@ final class TextureUtils {
     return new TexturePaint(bi, new Rectangle(sz, sz));
   }
 
-  public static TexturePanel makeTexturePanel(JLabel label, String path) {
+  public static TexturePanel createTexturePanel(JLabel label, String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
-    Font font = makeFont(cl.getResource(path)).orElseGet(label::getFont);
+    Font font = createFont(cl.getResource(path)).orElseGet(label::getFont);
     label.setFont(font.deriveFont(80f));
     label.setBackground(new Color(0x0, true));
     label.setOpaque(false);
@@ -262,7 +247,7 @@ final class TextureUtils {
     return p;
   }
 
-  private static Optional<Font> makeFont(URL url) {
+  private static Optional<Font> createFont(URL url) {
     Optional<Font> op;
     if (url == null) {
       op = Optional.empty();
