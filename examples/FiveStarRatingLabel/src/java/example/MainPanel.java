@@ -60,14 +60,15 @@ public final class MainPanel extends JPanel {
 
 class FiveStarRatingLabel extends JComponent {
   private static final String STAR = "★★★★★";
-  private final int ip;
-  private final int fp;
+  private final int intPart;
+  private final int fracPart;
 
   protected FiveStarRatingLabel(String rating) {
     super();
     BigDecimal bd = new BigDecimal(rating);
-    ip = bd.intValue();
-    fp = bd.subtract(new BigDecimal(ip)).multiply(BigDecimal.TEN).intValue();
+    intPart = bd.intValue();
+    // the first decimal place of the rating as an integer: "3.5" -> 5
+    fracPart = bd.subtract(new BigDecimal(intPart)).movePointRight(1).intValue();
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -88,21 +89,24 @@ class FiveStarRatingLabel extends JComponent {
     double cy = h / 2d - r.getCenterY();
     AffineTransform toCenterAt = AffineTransform.getTranslateInstance(cx, cy);
 
-    double point = 0d;
-    for (int i = 0; i < gv.getNumGlyphs(); i++) {
-      GlyphMetrics gm = gv.getGlyphMetrics(i);
-      if (i <= ip - 1) {
-        point += gm.getAdvance();
-      } else if (i <= ip) {
-        point += gm.getBounds2D().getWidth() * fp / 10d;
-      }
-    }
+    double fillWidth = getFillWidth(gv);
     g2.setPaint(Color.GREEN);
     Shape s = toCenterAt.createTransformedShape(gv.getOutline());
     g2.draw(s);
-    Rectangle2D clip = new Rectangle2D.Double(r.getX(), r.getY(), point, r.getHeight());
+    Rectangle2D clip = new Rectangle2D.Double(r.getX(), r.getY(), fillWidth, r.getHeight());
     g2.setClip(toCenterAt.createTransformedShape(clip));
     g2.fill(s);
     g2.dispose();
+  }
+
+  private double getFillWidth(GlyphVector gv) {
+    // the glyph position equals the sum of the advances of the preceding glyphs,
+    // and getGlyphPosition(getNumGlyphs()) returns the end position
+    double fillWidth = gv.getGlyphPosition(intPart).getX();
+    if (intPart < gv.getNumGlyphs()) {
+      GlyphMetrics gm = gv.getGlyphMetrics(intPart);
+      fillWidth += gm.getBounds2D().getWidth() * fracPart / 10d;
+    }
+    return fillWidth;
   }
 }
