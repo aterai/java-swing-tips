@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -39,21 +40,21 @@ public final class MainPanel extends JPanel {
 
     // 1
     List<ImageIcon> list1 = Arrays.asList(
-        makeStarImageIcon(image, new SelectedImageFilter(1f, .5f, .5f)),
-        makeStarImageIcon(image, new SelectedImageFilter(.5f, 1f, .5f)),
-        makeStarImageIcon(image, new SelectedImageFilter(1f, .5f, 1f)),
-        makeStarImageIcon(image, new SelectedImageFilter(.5f, .5f, 1f)),
-        makeStarImageIcon(image, new SelectedImageFilter(1f, 1f, .5f)));
-    add(makeStarRatingPanel("gap=0", new LevelBar(defaultIcon, list1, 0)));
+        createStarImageIcon(image, new SelectedImageFilter(1f, .5f, .5f)),
+        createStarImageIcon(image, new SelectedImageFilter(.5f, 1f, .5f)),
+        createStarImageIcon(image, new SelectedImageFilter(1f, .5f, 1f)),
+        createStarImageIcon(image, new SelectedImageFilter(.5f, .5f, 1f)),
+        createStarImageIcon(image, new SelectedImageFilter(1f, 1f, .5f)));
+    add(createStarRatingPanel("gap=0", new LevelBar(defaultIcon, list1, 0)));
 
     // 2
     List<ImageIcon> list2 = Arrays.asList(
-        makeStarImageIcon(image, new SelectedImageFilter(.2f, .5f, .5f)),
-        makeStarImageIcon(image, new SelectedImageFilter(0f, 1f, .2f)),
-        makeStarImageIcon(image, new SelectedImageFilter(1f, 1f, .2f)),
-        makeStarImageIcon(image, new SelectedImageFilter(.8f, .4f, .2f)),
-        makeStarImageIcon(image, new SelectedImageFilter(1f, .1f, .1f)));
-    add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list2, 1) {
+        createStarImageIcon(image, new SelectedImageFilter(.2f, .5f, .5f)),
+        createStarImageIcon(image, new SelectedImageFilter(0f, 1f, .2f)),
+        createStarImageIcon(image, new SelectedImageFilter(1f, 1f, .2f)),
+        createStarImageIcon(image, new SelectedImageFilter(.8f, .4f, .2f)),
+        createStarImageIcon(image, new SelectedImageFilter(1f, .1f, .1f)));
+    add(createStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list2, 1) {
       @Override protected void repaintIcon(int index) {
         for (int i = 0; i < getLabelList().size(); i++) {
           getLabelList().get(i).setIcon(i <= index ? getIconList().get(index) : defaultIcon);
@@ -64,32 +65,32 @@ public final class MainPanel extends JPanel {
 
     // 3
     List<ImageIcon> list3 = Arrays.asList(
-        makeStarImageIcon(image, new SelectedImageFilter(.6f, .6f, 0f)),
-        makeStarImageIcon(image, new SelectedImageFilter(.7f, .7f, 0f)),
-        makeStarImageIcon(image, new SelectedImageFilter(.8f, .8f, 0f)),
-        makeStarImageIcon(image, new SelectedImageFilter(.9f, .9f, 0f)),
-        makeStarImageIcon(image, new SelectedImageFilter(1f, 1f, 0f)));
-    add(makeStarRatingPanel("gap=2+2", new LevelBar(defaultIcon, list3, 2)));
+        createStarImageIcon(image, new SelectedImageFilter(.6f, .6f, 0f)),
+        createStarImageIcon(image, new SelectedImageFilter(.7f, .7f, 0f)),
+        createStarImageIcon(image, new SelectedImageFilter(.8f, .8f, 0f)),
+        createStarImageIcon(image, new SelectedImageFilter(.9f, .9f, 0f)),
+        createStarImageIcon(image, new SelectedImageFilter(1f, 1f, 0f)));
+    add(createStarRatingPanel("gap=2+2", new LevelBar(defaultIcon, list3, 2)));
 
     // 4
-    ImageIcon star = makeStarImageIcon(image, new SelectedImageFilter(1f, 1f, 0f));
+    ImageIcon star = createStarImageIcon(image, new SelectedImageFilter(1f, 1f, 0f));
     List<ImageIcon> list4 = Arrays.asList(star, star, star, star, star);
-    add(makeStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list4, 1)));
+    add(createStarRatingPanel("gap=1+1", new LevelBar(defaultIcon, list4, 1)));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JPanel makeStarRatingPanel(String title, LevelBar label) {
+  private JPanel createStarRatingPanel(String title, LevelBar levelBar) {
     JButton button = new JButton("clear");
-    button.addActionListener(e -> label.clear());
+    button.addActionListener(e -> levelBar.clear());
 
     JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
     p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(button);
-    p.add(label);
+    p.add(levelBar);
     return p;
   }
 
-  private static ImageIcon makeStarImageIcon(Image image, ImageFilter filter) {
+  private static ImageIcon createStarImageIcon(Image image, ImageFilter filter) {
     FilteredImageSource producer = new FilteredImageSource(image.getSource(), filter);
     return new ImageIcon(Toolkit.getDefaultToolkit().createImage(producer));
   }
@@ -130,24 +131,22 @@ public final class MainPanel extends JPanel {
 class LevelBar extends JPanel {
   private final int gap;
   private final List<ImageIcon> iconList;
-  private final List<JLabel> labelList = Arrays.asList(
-      new JLabel(), new JLabel(), new JLabel(), new JLabel(), new JLabel()
-  );
+  private final List<JLabel> labelList;
   private final ImageIcon defaultIcon;
-  private int clicked = -1;
+  private int level = -1;
   private transient MouseAdapter handler;
 
   protected LevelBar(ImageIcon defaultIcon, List<ImageIcon> list, int gap) {
-    super(new GridLayout(1, 5, gap * 2, gap * 2));
+    // rows=1, cols=0: lay out as many labels as there are icons in a single row
+    super(new GridLayout(1, 0, gap * 2, gap * 2));
     this.defaultIcon = defaultIcon;
     this.iconList = list;
     this.gap = gap;
-    EventQueue.invokeLater(() -> {
-      for (JLabel l : labelList) {
-        l.setIcon(defaultIcon);
-        add(l);
-      }
-    });
+    // create one label per icon instead of a hard-coded five
+    this.labelList = list.stream()
+        .map(icon -> new JLabel(defaultIcon))
+        .collect(Collectors.toList());
+    labelList.forEach(this::add);
   }
 
   public List<ImageIcon> getIconList() {
@@ -172,11 +171,11 @@ class LevelBar extends JPanel {
       }
 
       @Override public void mouseClicked(MouseEvent e) {
-        clicked = getSelectedIconIndex(e.getPoint());
+        level = getSelectedIconIndex(e.getPoint());
       }
 
       @Override public void mouseExited(MouseEvent e) {
-        repaintIcon(clicked);
+        repaintIcon(level);
       }
     };
     addMouseListener(handler);
@@ -184,17 +183,17 @@ class LevelBar extends JPanel {
   }
 
   public void clear() {
-    clicked = -1;
-    repaintIcon(clicked);
+    level = -1;
+    repaintIcon(level);
   }
 
   // public int getLevel() {
-  //   return clicked;
+  //   return level;
   // }
 
   // public void setLevel(int l) {
-  //   clicked = l;
-  //   repaintIcon(clicked);
+  //   level = l;
+  //   repaintIcon(level);
   // }
 
   protected int getSelectedIconIndex(Point p) {
