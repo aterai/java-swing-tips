@@ -22,10 +22,11 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private static final int MAX_HISTORY = 4;
   private final JComboBox<String> dirCombo = new JComboBox<>();
   private final JFileChooser fileChooser = new JFileChooser();
   private final JTextArea textArea = new JTextArea();
-  private final JProgressBar progress = new JProgressBar();
+  private final JProgressBar progressBar = new JProgressBar();
   private final JPanel statusPanel = new JPanel(new BorderLayout());
   private final JButton searchButton = new JButton("Search");
   private final JButton cancelButton = new JButton("Cancel");
@@ -40,28 +41,29 @@ public final class MainPanel extends JPanel {
     dirCombo.setModel(model);
     dirCombo.setFocusable(false);
     textArea.setEditable(false);
-    statusPanel.add(progress);
+    statusPanel.add(progressBar);
     statusPanel.setVisible(false);
+    cancelButton.setEnabled(false);
 
     searchButton.addActionListener(e -> searchActionPerformed());
     cancelButton.addActionListener(e -> cancelActionPerformed());
     chooseButton.addActionListener(e -> chooseActionPerformed());
 
-    JPanel box1 = new JPanel(new BorderLayout(5, 5));
-    box1.add(new JLabel("Search folder:"), BorderLayout.WEST);
-    box1.add(dirCombo);
-    box1.add(chooseButton, BorderLayout.EAST);
+    JPanel dirPanel = new JPanel(new BorderLayout(5, 5));
+    dirPanel.add(new JLabel("Search folder:"), BorderLayout.WEST);
+    dirPanel.add(dirCombo);
+    dirPanel.add(chooseButton, BorderLayout.EAST);
 
-    Box box2 = Box.createHorizontalBox();
-    box2.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    box2.add(Box.createHorizontalGlue());
-    box2.add(searchButton);
-    box2.add(Box.createHorizontalStrut(2));
-    box2.add(cancelButton);
+    Box buttonBox = Box.createHorizontalBox();
+    buttonBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    buttonBox.add(Box.createHorizontalGlue());
+    buttonBox.add(searchButton);
+    buttonBox.add(Box.createHorizontalStrut(2));
+    buttonBox.add(cancelButton);
 
     JPanel panel = new JPanel(new BorderLayout());
-    panel.add(box1, BorderLayout.NORTH);
-    panel.add(box2, BorderLayout.SOUTH);
+    panel.add(dirPanel, BorderLayout.NORTH);
+    panel.add(buttonBox, BorderLayout.SOUTH);
 
     add(new JScrollPane(textArea));
     add(panel, BorderLayout.NORTH);
@@ -69,11 +71,17 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
+  private String getSelectedDirectory() {
+    return Objects.toString(dirCombo.getSelectedItem(), "");
+  }
+
   private void searchActionPerformed() {
-    updateComponentStatus(true);
-    File dir = new File(dirCombo.getItemAt(dirCombo.getSelectedIndex()));
-    if (dir.exists()) {
-      executeWorker(dir);
+    File dir = new File(getSelectedDirectory());
+    // Check the directory before disabling the components,
+    // otherwise they will never be re-enabled because no worker is executed
+    if (dir.isDirectory()) {
+      updateComponentStatus(true);
+      executeWorker(dir.toPath());
     } else {
       textArea.setText("The directory does not exist.");
     }
@@ -83,25 +91,23 @@ public final class MainPanel extends JPanel {
     if (Objects.nonNull(worker) && !worker.isDone()) {
       worker.cancel(true);
     }
-    // worker = null;
   }
 
   private void chooseActionPerformed() {
     fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-    fileChooser.setSelectedFile(new File(Objects.toString(dirCombo.getEditor().getItem())));
+    fileChooser.setSelectedFile(new File(getSelectedDirectory()));
     Component c = dirCombo.getRootPane();
-    int fcSelected = fileChooser.showOpenDialog(c);
-    if (fcSelected == JFileChooser.APPROVE_OPTION) {
+    int result = fileChooser.showOpenDialog(c);
+    if (result == JFileChooser.APPROVE_OPTION) {
       File file = fileChooser.getSelectedFile();
       if (Objects.isNull(file) || !file.isDirectory()) {
         textArea.setText("Please select directory.");
       } else {
         String path = file.getAbsolutePath();
         textArea.setText(path);
-        addItem(dirCombo, path, 4);
-        repaint();
+        addItem(dirCombo, path, MAX_HISTORY);
       }
-    } else if (fcSelected == JFileChooser.CANCEL_OPTION) {
+    } else if (result == JFileChooser.CANCEL_OPTION) {
       textArea.setText("JFileChooser cancelled.");
     } else {
       UIManager.getLookAndFeel().provideErrorFeedback(c);
@@ -109,26 +115,20 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public void updateComponentStatus(boolean start) {
+  private void updateComponentStatus(boolean start) {
     if (start) {
-      addItem(dirCombo, Objects.toString(dirCombo.getEditor().getItem()), 4);
-      statusPanel.setVisible(true);
-      dirCombo.setEnabled(false);
-      chooseButton.setEnabled(false);
-      searchButton.setEnabled(false);
-      cancelButton.setEnabled(true);
-      progress.setIndeterminate(true);
+      addItem(dirCombo, getSelectedDirectory(), MAX_HISTORY);
+      progressBar.setIndeterminate(true);
       textArea.setText("");
-    } else {
-      dirCombo.setEnabled(true);
-      chooseButton.setEnabled(true);
-      searchButton.setEnabled(true);
-      cancelButton.setEnabled(false);
-      statusPanel.setVisible(false);
     }
+    statusPanel.setVisible(start);
+    dirCombo.setEnabled(!start);
+    chooseButton.setEnabled(!start);
+    searchButton.setEnabled(!start);
+    cancelButton.setEnabled(start);
   }
 
-  public static void addItem(JComboBox<String> combo, String str, int max) {
+  private static void addItem(JComboBox<String> combo, String str, int max) {
     ComboBoxModel<String> m = combo.getModel();
     if (str != null && !str.isEmpty() && m instanceof DefaultComboBoxModel) {
       DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) m;
@@ -143,7 +143,7 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  public void executeWorker(File dir) {
+  private void executeWorker(Path dir) {
     worker = new RecursiveFileSearchTask(dir) {
       @Override protected void process(List<Message> chunks) {
         if (isDisplayable() && !isCancelled()) {
@@ -161,19 +161,19 @@ public final class MainPanel extends JPanel {
         }
       }
     };
-    worker.addPropertyChangeListener(new ProgressListener(progress));
+    worker.addPropertyChangeListener(new ProgressListener(progressBar));
     worker.execute();
   }
 
-  private void updateMessage(Message m) {
-    if (m.isAppend()) {
-      appendLine(m.getText());
+  private void updateMessage(Message msg) {
+    if (msg.isAppend()) {
+      appendLine(msg.getText());
     } else {
-      textArea.setText(m.getText() + "\n");
+      textArea.setText(msg.getText() + "\n");
     }
   }
 
-  public void appendLine(String str) {
+  private void appendLine(String str) {
     textArea.append(str + "\n");
     textArea.setCaretPosition(textArea.getDocument().getLength());
   }
@@ -193,7 +193,6 @@ public final class MainPanel extends JPanel {
     }
     JFrame frame = new JFrame("@title@");
     frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    // frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.getContentPane().add(new MainPanel());
     frame.pack();
     frame.setLocationRelativeTo(null);
@@ -201,148 +200,55 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// class RecursiveFileSearchTask extends SwingWorker<String, Message> {
-//   private int counter;
-//   private final File dir;
-//   protected RecursiveFileSearchTask(File dir) {
-//     super();
-//     this.dir = dir;
-//   }
-//
-//   @Override protected String doInBackground() {
-//     if (Objects.isNull(dir) || !dir.exists()) {
-//       publish(new Message("The directory does not exist.", true));
-//       return "Error";
-//     }
-//     List<File> list = new ArrayList<>();
-//     // ArrayList<Path> list = new ArrayList<>();
-//     try {
-//       counter = 0;
-//       recursiveSearch(dir, list);
-//     } catch (InterruptedException ex) {
-//       // recursiveSearch(dir.toPath(), list);
-//       // } catch (Exception ex) {
-//       publish(new Message("The search was canceled", true));
-//       return "Interrupted1";
-//     }
-//     firePropertyChange("clear-JTextArea", "", "");
-//
-//     int lengthOfTask = list.size();
-//     publish(new Message("Length Of Task: " + lengthOfTask, false));
-//     publish(new Message("----------------", true));
-//
-//     try {
-//       int current = 0;
-//       while (current < lengthOfTask && !isCancelled()) {
-//         // if (!progress.isDisplayable()) {
-//         //   return "Disposed";
-//         // }
-//         File file = list.get(current);
-//         // Path path = list.get(current);
-//         Thread.sleep(50);
-//         setProgress(100 * current / lengthOfTask);
-//         current++;
-//         String path = file.getAbsolutePath();
-//         publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
-//       }
-//     } catch (InterruptedException ex) {
-//       return "Interrupted";
-//     }
-//     return "Done";
-//   }
-//
-//   private void recursiveSearch(File dir, List<File> list) throws InterruptedException {
-//     // System.out.println("recursiveSearch() is EDT?: " + EventQueue.isDispatchThread());
-//     for (String name : dir.list()) {
-//       if (Thread.interrupted()) {
-//         throw new InterruptedException();
-//       }
-//       File dir = new File(dir, name);
-//       if (dir.isDirectory()) {
-//         recursiveSearch(dir, list);
-//       } else {
-//         counter++;
-//         if (counter % 100 == 0) {
-//           publish(new Message("Results:" + counter + "\n", false));
-//         }
-//         list.add(dir);
-//       }
-//     }
-//   }
-// }
-
 class RecursiveFileSearchTask extends SwingWorker<String, Message> {
-  private int counter;
-  private final File dir;
+  private final Path dir;
 
-  protected RecursiveFileSearchTask(File dir) {
+  protected RecursiveFileSearchTask(Path dir) {
     super();
     this.dir = dir;
   }
 
-  @Override protected String doInBackground() throws InterruptedException {
-    // if (Objects.isNull(dir) || !dir.exists()) {
-    //   publish(new Message("The directory does not exist.", true));
-    //   return "Error";
-    // }
-    String msg;
-    List<Path> list = getPathList(dir.toPath());
-    if (list.isEmpty()) {
-      msg = "Interrupted1";
-    } else {
-      firePropertyChange("clear-JTextArea", "", "");
-      int lengthOfTask = list.size();
-      publish(new Message("Length Of Task: " + lengthOfTask, false));
-      publish(new Message("----------------", true));
-      int idx = 0;
-      while (idx < lengthOfTask && !isCancelled()) {
-        doSomething(list, idx);
-        idx++;
-      }
-      msg = "Done";
-    }
-    return msg;
-  }
-
-  private List<Path> getPathList(Path dirPath) {
-    List<Path> list = new ArrayList<>();
-    try {
-      counter = 0;
-      recursiveSearch(dirPath, list);
-    } catch (IOException ex) {
-      publish(new Message("The search was canceled", true));
-      list.clear();
-    }
-    return list;
-  }
-
-  protected void doSomething(List<Path> list, int idx) throws InterruptedException {
+  @Override protected String doInBackground() throws IOException, InterruptedException {
+    List<Path> list = searchFiles(dir);
     int lengthOfTask = list.size();
-    setProgress(100 * idx / lengthOfTask);
+    publish(new Message("Length Of Task: " + lengthOfTask, false));
+    publish(new Message("----------------", true));
+    for (int i = 0; i < lengthOfTask && !isCancelled(); i++) {
+      processFile(list, i);
+    }
+    return "Done";
+  }
+
+  protected void processFile(List<Path> list, int idx) throws InterruptedException {
     Thread.sleep(10);
-    Path path = list.get(idx);
+    int lengthOfTask = list.size();
     int current = idx + 1;
-    publish(new Message(current + "/" + lengthOfTask + ", " + path, true));
+    publish(new Message(current + "/" + lengthOfTask + ", " + list.get(idx), true));
+    setProgress(100 * current / lengthOfTask);
   }
 
   // Walking the File Tree (The Java™ Tutorials > Essential Classes > Basic I/O)
   // https://docs.oracle.com/javase/tutorial/essential/io/walk.html
-  private void recursiveSearch(Path dirPath, List<Path> list) throws IOException {
-    Files.walkFileTree(dirPath, new SimpleFileVisitor<Path>() {
-      @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        if (Thread.interrupted()) {
-          throw new IOException();
-        }
+  private List<Path> searchFiles(Path start) throws IOException {
+    List<Path> list = new ArrayList<>();
+    Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+      @Override public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         if (attrs.isRegularFile()) {
-          counter++;
-          if (counter % 100 == 0) {
-            publish(new Message("Results:" + counter + "\n", false));
-          }
           list.add(file);
+          if (list.size() % 100 == 0) {
+            publish(new Message("Results: " + list.size(), false));
+          }
         }
-        return FileVisitResult.CONTINUE;
+        return isCancelled() ? FileVisitResult.TERMINATE : FileVisitResult.CONTINUE;
+      }
+
+      // Skip unreadable files or directories (e.g. AccessDeniedException)
+      // instead of aborting the whole search
+      @Override public FileVisitResult visitFileFailed(Path file, IOException ex) {
+        return isCancelled() ? FileVisitResult.TERMINATE : FileVisitResult.CONTINUE;
       }
     });
+    return list;
   }
 
   protected String getDoneMessage() {
@@ -371,8 +277,7 @@ class ProgressListener implements PropertyChangeListener {
     boolean isProgress = "progress".equals(e.getPropertyName());
     if (isProgress) {
       progressBar.setIndeterminate(false);
-      int progress = (Integer) e.getNewValue();
-      progressBar.setValue(progress);
+      progressBar.setValue((Integer) e.getNewValue());
     }
   }
 }
