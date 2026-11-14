@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTableHeaderUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
@@ -97,7 +98,11 @@ class GroupableTableHeader extends JTableHeader {
 
   @Override public void updateUI() {
     super.updateUI();
+    // Replacing the UI delegate uninstalls the LookAndFeel specific header renderer
+    // (Synth: HeaderRenderer, Windows: XPDefaultRenderer), so use a renderer that
+    // paints the same cell lines on every LookAndFeel
     setUI(new GroupableTableHeaderUI());
+    setDefaultRenderer(new HeaderCellRenderer());
   }
 
   // [java] BooleanGetMethodName: Don't report bad method names on @Override #97
@@ -140,6 +145,26 @@ class GroupableTableHeader extends JTableHeader {
 
   private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
+  }
+}
+
+class HeaderCellRenderer extends DefaultTableCellRenderer {
+  @Override public Component getTableCellRendererComponent(
+      JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    super.getTableCellRendererComponent(table, value, false, false, row, column);
+    setHorizontalAlignment(CENTER);
+    Color lineColor = Color.GRAY;
+    if (table != null) {
+      JTableHeader header = table.getTableHeader();
+      setForeground(header.getForeground());
+      setBackground(header.getBackground());
+      setFont(header.getFont());
+      lineColor = table.getGridColor();
+    }
+    setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 1, 1, lineColor),
+        BorderFactory.createEmptyBorder(2, 4, 2, 4)));
+    return this;
   }
 }
 
