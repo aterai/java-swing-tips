@@ -132,18 +132,26 @@ public final class MainPanel extends JPanel {
 // LayerUI that displays a multi-level sticky header for a JTree.
 // Traces ancestors from the top row's TreePath in the viewport and overlays
 // all expanded non-leaf ancestors as sticky headers.
-// Each header receives an independent push-up effect when the next expanded
-// sibling node of the same depth approaches.
+// Each header receives a push-up effect when the next expanded sibling node
+// of the same depth, or of one of its ancestors, approaches.
+// The headers have the same background as the JTree and no border lines:
+// a gradient shadow below them makes them look raised.
 //
 // ### Push-up Algorithm
-// - For each stickyPaths[i]:
-// 1. Find the next expanded sibling nextSiblingPath[i] under the same parent.
-// 2. If the Y-coordinate of nextSiblingPath[i] in the viewport goes below (i * HEADER_HEIGHT),
-// 3. Record the overlap amount as pushOffsets[i] and shift stickyPaths[i] upwards.
+// - For each stickyPaths[i] (from the outermost):
+// 1. Find the next expanded sibling under the same parent.
+// 2. Keep the smallest Y-coordinate in the viewport of the siblings found so far
+//    (the siblings of the ancestors included).
+// 3. If that Y-coordinate goes above the bottom of the header ((i + 1) * HEADER_HEIGHT),
+//    record the overlap amount as pushOffsets[i] and shift stickyPaths[i] upwards.
+// 4. The headers are clipped at that Y-coordinate, so the sibling and the rows
+//    below it are the JTree's own rows.
 @SuppressWarnings({"PMD.OnlyOneReturn", "ReturnCount"})
 class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
   private static final int HEADER_HEIGHT = 24;
-  private static final Color BORDER_COLOR = new Color(0x46_00_00_00, true);
+  private static final int SHADOW_HEIGHT = 6;
+  private static final Color SHADOW_COLOR = new Color(0x40_00_00_00, true);
+  private static final Color TRANSPARENT = new Color(0x0, true);
   private static final int DEPTH = 4;
 
   // TreePath list of fixed headers to currently display.
@@ -151,12 +159,13 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
   private final List<TreePath> stickyPaths = new ArrayList<>();
 
   // Push-up amount (px) corresponding to stickyPaths[i].
-  // When pushOffsets[i] > 0, stickyPaths[i] is shifted upwards by that amount,
-  // and the corresponding nextSiblingPath is drawn just below it.
+  // When pushOffsets[i] > 0, stickyPaths[i] is shifted upwards by that amount.
   private final List<Integer> pushOffsets = new ArrayList<>();
 
-  // The TreePath of the next sibling header that pushes up stickyPaths[i].
-  private final List<TreePath> nextSiblingPaths = new ArrayList<>();
+  // Y-coordinate in the viewport of the nearest "next expanded sibling" of the
+  // sticky headers, or Integer.MAX_VALUE if there is none. The sticky headers
+  // are never drawn below it, so the JTree's own rows are visible from there.
+  private int pushLimit = Integer.MAX_VALUE;
 
   // -------------------------------------------------------------------------
   // Updating Header State
@@ -167,7 +176,7 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
   private void updateHeader(JTree tree) {
     stickyPaths.clear();
     pushOffsets.clear();
-    nextSiblingPaths.clear();
+    pushLimit = Integer.MAX_VALUE;
 
     if (tree == null) {
       return;
@@ -211,44 +220,27 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
   // Calculate the amount of collision/uplift with the "next expanded sibling"
   // for each fixed header.
   private void calculatePushOffsets(JTree tree, int topY) {
-    int inheritedOffset = 0;
-
+    // The top of the nearest "next expanded sibling" of this header and of its
+    // ancestors: the next sibling of an ancestor also ends the subtree of this
+    // header, so it must push this header up as well.
+    int limit = Integer.MAX_VALUE;
     for (int i = 0; i < stickyPaths.size(); i++) {
-      TreePath sticky = stickyPaths.get(i);
-
-      // Get the next expanded sibling under the same parent
-      TreePath nextSibling = findNextExpandedSibling(tree, sticky);
-      nextSiblingPaths.add(nextSibling);
-
-      int stickyBaseY = i * HEADER_HEIGHT;
-      int localOffset = computeOverlap(tree, nextSibling, topY, stickyBaseY);
-
-      // If the parent is pushed up, the child must also be pushed up
-      // to prevent visual overlapping
-      int finalOffset = Math.max(localOffset, inheritedOffset);
-      pushOffsets.add(finalOffset);
-      inheritedOffset = finalOffset;
+      limit = Math.min(limit, getNextSiblingTop(tree, stickyPaths.get(i), topY));
+      // The amount that the sibling encroaches on the current header area.
+      int overlap = (i + 1) * HEADER_HEIGHT - limit;
+      pushOffsets.add(Math.min(Math.max(overlap, 0), HEADER_HEIGHT));
+      // Java 21: pushOffsets.add(Math.clamp(overlap, 0, HEADER_HEIGHT));
     }
+    pushLimit = limit;
   }
 
-  // Calculate the amount that the next sibling header encroaches
-  // on the current header area.
-  private static int computeOverlap(
-      JTree tree, TreePath nextSibling, int topY, int stickyBaseY) {
-    if (nextSibling == null) {
-      return 0;
-    }
-
-    int nextRow = tree.getRowForPath(nextSibling);
-    Rectangle nr = tree.getRowBounds(nextRow);
-    if (nr == null) {
-      return 0;
-    }
-
-    int nextTopInView = nr.y - topY;
-    int overlap = stickyBaseY + HEADER_HEIGHT - nextTopInView;
-    return Math.min(Math.max(overlap, 0), HEADER_HEIGHT);
-    // Java 21: return Math.clamp(overlap, 0, HEADER_HEIGHT);
+  // Returns the Y-coordinate in the viewport of the "next expanded sibling"
+  // of the specified TreePath, or Integer.MAX_VALUE if there is none.
+  private static int getNextSiblingTop(JTree tree, TreePath path, int topY) {
+    return Optional.ofNullable(findNextExpandedSibling(tree, path))
+        .map(nextSibling -> tree.getRowBounds(tree.getRowForPath(nextSibling)))
+        .map(nr -> nr.y - topY)
+        .orElse(Integer.MAX_VALUE);
   }
 
   // Returns the "next expanded sibling" under the same parent
@@ -302,44 +294,42 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
 
     JScrollPane scroll = (JScrollPane) ((JLayer<?>) c).getView();
     Rectangle viewport = scroll.getViewport().getBounds();
-    Rectangle r = new Rectangle(viewport.x, viewport.y, viewport.width, HEADER_HEIGHT);
+    g2.clip(viewport);
     int n = stickyPaths.size();
 
+    // The innermost header is always the lowest one, even while it is pushed up.
+    // The rows from the pushing sibling downwards are the JTree's own rows,
+    // so the sticky header area must end at the top of that sibling.
+    int bottom = Math.min(n * HEADER_HEIGHT - pushOffsets.get(n - 1), pushLimit);
+
+    Graphics2D g3 = (Graphics2D) g2.create();
+    g3.clipRect(viewport.x, viewport.y, viewport.width, bottom);
+    Rectangle r = new Rectangle(viewport.x, viewport.y, viewport.width, HEADER_HEIGHT);
     // Draw from the bottom header up, overlaying upper headers on top (z-index)
     for (int i = n - 1; i >= 0; i--) {
       TreePath path = stickyPaths.get(i);
-      int offset = pushOffsets.get(i);
-
-      int baseY = viewport.y + i * HEADER_HEIGHT;
-      r.y = baseY - offset;
-
-      int depthIdx = depthIndex(path);
-      paintStickyHeader(g2, tree, path, r, depthIdx);
-
-      // During push-up: Draw the next sibling header immediately below this header
-      TreePath nextSibling = nextSiblingPaths.get(i);
-      if (offset > 0 && nextSibling != null) {
-        r.y = baseY + HEADER_HEIGHT - offset; // next Y
-        paintStickyHeader(g2, tree, nextSibling, r, depthIndex(nextSibling));
-      }
+      r.y = viewport.y + i * HEADER_HEIGHT - pushOffsets.get(i);
+      paintStickyHeader(g3, tree, path, r, depthIndex(path));
     }
+    g3.dispose();
+
+    paintShadow(g2, viewport, viewport.y + bottom);
     g2.dispose();
   }
 
-  // Draw one fixed header
+  // Draw one fixed header with the same background as the JTree
   public static void paintStickyHeader(
-      Graphics2D g2, JTree tree, TreePath path, Rectangle r, int depthIdx) {
-
-    final Shape oldClip = g2.getClip();
-    g2.setClip(r);
-    g2.setPaint(Color.LIGHT_GRAY);
+      Graphics2D g, JTree tree, TreePath path, Rectangle r, int depthIdx) {
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.clip(r);
+    g2.setPaint(tree.getBackground());
     g2.fill(r);
 
     // Get icon and text via TreeCellRenderer
     Component c = getTreeCellRendererComponent(tree, path);
 
     if (c instanceof JLabel) {
-      JLabel label = cloneLabel((JLabel) c);
+      JLabel label = cloneLabel((JLabel) c, tree);
       int leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
       int rightChildIndent = UIManager.getInt("Tree.rightChildIndent");
       // leftChildIndent + rightChildIndent = 16px
@@ -348,22 +338,23 @@ class StickyHeaderTreeLayerUI extends LayerUI<JScrollPane> {
       label.setSize(r.width - indent, r.height);
       Rectangle rect = new Rectangle(r.x + indent, r.y, r.width - indent, r.height);
       SwingUtilities.paintComponent(g2, label, new JPanel(), rect);
-
-      // Lower border
-      g2.setColor(BORDER_COLOR);
-      g2.drawLine(r.x, r.y + r.height - 1, r.x + r.width - 1, r.y + r.height - 1);
-      // label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
     }
-    g2.setClip(oldClip);
+    g2.dispose();
   }
 
-  private static JLabel cloneLabel(JLabel src) {
+  // Draw a gradient shadow below the sticky headers instead of border lines.
+  private static void paintShadow(Graphics2D g, Rectangle area, int y) {
+    g.setPaint(new GradientPaint(0f, y, SHADOW_COLOR, 0f, y + SHADOW_HEIGHT, TRANSPARENT));
+    g.fillRect(area.x, y, area.width, SHADOW_HEIGHT);
+  }
+
+  private static JLabel cloneLabel(JLabel src, JTree tree) {
     JLabel label = new JLabel(src.getText());
     label.setIcon(src.getIcon());
     label.setIconTextGap(src.getIconTextGap());
     label.setOpaque(true);
-    // label.setBackground(UIManager.getColor("Tree.background"));
-    label.setBackground(Color.LIGHT_GRAY);
+    label.setBackground(tree.getBackground());
+    label.setForeground(tree.getForeground());
     return label;
   }
 
