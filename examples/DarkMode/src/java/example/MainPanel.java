@@ -29,28 +29,18 @@ public final class MainPanel extends JPanel {
       @Override public void updateUI() {
         super.updateUI();
         if (sys.isSelected()) {
-          ThemeUtils.updateTheme(this);
-          loadHtml(this);
+          applyTheme(this, ThemeUtils.isDarkMode());
         }
         setEditable(false);
         setSelectedTextColor(null);
         setSelectionColor(new Color(0x64_88_AA_AA, true));
       }
     };
-    sys.addActionListener(e -> {
-      ThemeUtils.updateTheme(editor);
-      loadHtml(editor);
-    });
+    sys.addActionListener(e -> applyTheme(editor, ThemeUtils.isDarkMode()));
     JRadioButtonMenuItem light = new JRadioButtonMenuItem("Light");
-    light.addActionListener(e -> {
-      ThemeUtils.updateTheme(editor, false);
-      loadHtml(editor);
-    });
+    light.addActionListener(e -> applyTheme(editor, false));
     JRadioButtonMenuItem dark = new JRadioButtonMenuItem("Dark");
-    dark.addActionListener(e -> {
-      ThemeUtils.updateTheme(editor, true);
-      loadHtml(editor);
-    });
+    dark.addActionListener(e -> applyTheme(editor, true));
     ButtonGroup group = new ButtonGroup();
     group.add(sys);
     group.add(light);
@@ -61,13 +51,15 @@ public final class MainPanel extends JPanel {
     theme.add(light);
     theme.add(dark);
 
-    String key = "gnome.Net/ThemeName";
+    String key = ThemeUtils.GNOME_THEME_NAME;
     Toolkit.getDefaultToolkit().addPropertyChangeListener(key, e -> {
-      if (sys.isSelected()) {
-        boolean isDark = Objects.toString(e.getNewValue()).contains("dark");
-        ThemeUtils.updateTheme(editor, isDark);
-        loadHtml(editor);
-      }
+      boolean isDark = ThemeUtils.isDarkThemeName(e.getNewValue());
+      // This listener may be notified on the AWT toolkit thread, not on the EDT
+      EventQueue.invokeLater(() -> {
+        if (sys.isSelected()) {
+          applyTheme(editor, isDark);
+        }
+      });
     });
 
     JMenuBar mb = new JMenuBar();
@@ -77,6 +69,12 @@ public final class MainPanel extends JPanel {
     add(new JScrollPane(editor));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void applyTheme(JEditorPane editor, boolean isDark) {
+    ThemeUtils.updateTheme(editor, isDark);
+    // Reload the page since setEditorKit(...) replaces the document with an empty one
+    loadHtml(editor);
   }
 
   private static void loadHtml(JEditorPane editor) {
@@ -125,7 +123,7 @@ final class LookAndFeelUtils {
     JMenu menu = new JMenu("LookAndFeel");
     ButtonGroup buttonGroup = new ButtonGroup();
     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-      AbstractButton b = makeButton(info);
+      AbstractButton b = createButton(info);
       initLookAndFeelAction(info, b);
       menu.add(b);
       buttonGroup.add(b);
@@ -133,7 +131,7 @@ final class LookAndFeelUtils {
     return menu;
   }
 
-  private static AbstractButton makeButton(UIManager.LookAndFeelInfo info) {
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
     boolean selected = info.getClassName().equals(lookAndFeel);
     return new JRadioButtonMenuItem(info.getName(), selected);
   }
@@ -171,12 +169,10 @@ final class LookAndFeelUtils {
 }
 
 final class ThemeUtils {
+  public static final String GNOME_THEME_NAME = "gnome.Net/ThemeName";
+
   private ThemeUtils() {
     /* Singleton */
-  }
-
-  public static void updateTheme(JEditorPane editor) {
-    updateTheme(editor, isDarkMode());
   }
 
   public static void updateTheme(JEditorPane editor, boolean isDark) {
@@ -188,10 +184,10 @@ final class ThemeUtils {
       htmlEditorKit = new HTMLEditorKit();
     }
     if (isDark) {
-      htmlEditorKit.setStyleSheet(makeDarkStyleSheet());
+      htmlEditorKit.setStyleSheet(createDarkStyleSheet());
       editor.setBackground(new Color(0x1E_1F_22));
     } else {
-      htmlEditorKit.setStyleSheet(makeLightStyleSheet());
+      htmlEditorKit.setStyleSheet(createLightStyleSheet());
       editor.setBackground(new Color(0xEE_EE_EE));
     }
     editor.setEditorKit(htmlEditorKit);
@@ -212,32 +208,31 @@ final class ThemeUtils {
     return isDark;
   }
 
-  public static String getProcessOutput(List<String> cmd)
-      throws IOException, InterruptedException {
+  public static String getProcessOutput(List<String> cmd) throws IOException {
     ProcessBuilder builder = new ProcessBuilder(cmd);
     builder.redirectErrorStream(true);
-    Process p = builder.start();
-    String str;
-    try (BufferedReader pr = new BufferedReader(
-        new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
-      str = pr.lines().collect(Collectors.joining(System.lineSeparator()));
+    Process process = builder.start();
+    // Reading until EOF also waits for the process to finish writing its output
+    try (BufferedReader reader = new BufferedReader(
+        new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+      return reader.lines().collect(Collectors.joining(System.lineSeparator()));
     }
-    return str;
   }
 
   public static boolean isWindowsDarkMode() {
+    // reg.exe starts much faster than powershell.exe
     List<String> cmd = Arrays.asList(
-        "powershell.exe",
-        "Get-ItemPropertyValue",
-        "-Path",
-        "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
-        "-Name",
-        "AppsUseLightTheme;"
+        "reg",
+        "query",
+        "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        "/v",
+        "AppsUseLightTheme"
     );
     boolean isDarkMode;
     try {
-      isDarkMode = Objects.equals("0", getProcessOutput(cmd).trim());
-    } catch (IOException | InterruptedException ex) {
+      // The output looks like: "    AppsUseLightTheme    REG_DWORD    0x0"
+      isDarkMode = getProcessOutput(cmd).trim().endsWith("0x0");
+    } catch (IOException ex) {
       Logger.getGlobal().severe(ex::getMessage);
       isDarkMode = false;
     }
@@ -246,15 +241,19 @@ final class ThemeUtils {
 
   public static boolean isLinuxDarkMode() {
     Toolkit tk = Toolkit.getDefaultToolkit();
-    Object theme = tk.getDesktopProperty("gnome.Net/ThemeName");
-    return Objects.toString(theme).contains("dark");
+    return isDarkThemeName(tk.getDesktopProperty(GNOME_THEME_NAME));
+  }
+
+  // e.g. Yaru-dark, Adwaita-dark, HighContrastInverse is not supported
+  public static boolean isDarkThemeName(Object themeName) {
+    return Objects.toString(themeName).toLowerCase(Locale.ENGLISH).contains("dark");
   }
 
   public static boolean isMacDarkMode() {
     return false;
   }
 
-  public static StyleSheet makeLightStyleSheet() {
+  public static StyleSheet createLightStyleSheet() {
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule("pre{background:#eeeeee}");
     styleSheet.addRule(".str{color:#008800}");
@@ -271,7 +270,7 @@ final class ThemeUtils {
     return styleSheet;
   }
 
-  public static StyleSheet makeDarkStyleSheet() {
+  public static StyleSheet createDarkStyleSheet() {
     StyleSheet styleSheet = new StyleSheet();
     styleSheet.addRule("pre{background:#1e1f22}");
     styleSheet.addRule(".str{color:#ffa0a0}");
