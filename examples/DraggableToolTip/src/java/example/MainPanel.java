@@ -43,13 +43,13 @@ public final class MainPanel extends JPanel {
     editor.setEditorKit(new HTMLEditorKit());
     editor.setText(HTML_TEXT);
     editor.setEditable(false);
-    editor.addHyperlinkListener(e -> linkEvent(e, hint));
+    editor.addHyperlinkListener(e -> handleHyperlinkEvent(e, hint));
 
     add(new JScrollPane(editor));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static void linkEvent(HyperlinkEvent e, JEditorPane hint) {
+  private static void handleHyperlinkEvent(HyperlinkEvent e, JEditorPane hint) {
     JEditorPane editorPane = (JEditorPane) e.getSource();
     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
       String message = "You click the link with the URL " + e.getURL();
@@ -59,16 +59,16 @@ public final class MainPanel extends JPanel {
       Optional.ofNullable(e.getSourceElement())
           .map(elem -> (AttributeSet) elem.getAttributes().getAttribute(HTML.Tag.A))
           .map(attr -> {
-            String title = Objects.toString(attr.getAttribute(HTML.Attribute.TITLE));
+            String title = Objects.toString(attr.getAttribute(HTML.Attribute.TITLE), "");
             String url = Objects.toString(e.getURL());
             String link = String.format("<a href='%s'>%s</a>", url, url);
             return String.format("<html>%s: %s<br/>...<br/>...", title, link);
           })
           .ifPresent(txt -> {
             hint.setText(txt);
-            Window popup = SwingUtilities.getWindowAncestor(hint);
-            if (popup != null) {
-              popup.pack();
+            Window window = SwingUtilities.getWindowAncestor(hint);
+            if (window != null) {
+              window.pack();
             }
           });
     } else if (e.getEventType() == HyperlinkEvent.EventType.EXITED) {
@@ -149,10 +149,10 @@ class PopupDragListener extends MouseAdapter {
 
   @Override public void mousePressed(MouseEvent e) {
     if (SwingUtilities.isLeftMouseButton(e)) {
+      // Keep the press point in the coordinates of the popup window moved by mouseDragged
       Component c = e.getComponent();
-      Container popup = SwingUtilities.getAncestorOfClass(JPopupMenu.class, c);
-      SwingUtilities.convertMouseEvent(c, e, popup);
-      startPt.setLocation(e.getPoint());
+      Window w = SwingUtilities.getWindowAncestor(c);
+      startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), w));
     }
   }
 
