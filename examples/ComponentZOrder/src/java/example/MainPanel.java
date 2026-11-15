@@ -5,19 +5,17 @@
 package example;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    // JPanel p1 = new JPanel();
-    // Box p1 = Box.createHorizontalBox();
     JPanel p1 = new JPanel(new GridLayout(1, 0, 2, 2));
     p1.setBorder(BorderFactory.createTitledBorder("GridLayout"));
-    p1.add(new JScrollPane(new JTable(6, 3)));
-    p1.add(new JScrollPane(new JTree()));
-    p1.add(new JScrollPane(new JTextArea("JTextArea")));
+    createComponents().forEach(p1::add);
 
     JPanel p2 = new JPanel(new GridBagLayout());
     p2.setBorder(BorderFactory.createTitledBorder("GridBagLayout"));
@@ -26,19 +24,15 @@ public final class MainPanel extends JPanel {
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1d;
     c.weighty = 1d;
-    // c.gridx = GridBagConstraints.RELATIVE;
-    // c.gridx = 0;
-    p2.add(new JScrollPane(new JTable(6, 3)), c);
-    // c.gridx = 1;
-    p2.add(new JScrollPane(new JTree()), c);
-    // c.gridx = 2;
-    p2.add(new JScrollPane(new JTextArea("JTextArea")), c);
+    // Keep gridx and gridy at the default GridBagConstraints.RELATIVE,
+    // otherwise changing the z-order does not change the layout position
+    createComponents().forEach(child -> p2.add(child, c));
 
     JButton button = new JButton("rotate");
     button.setFocusable(false);
     button.addActionListener(e -> {
-      rotateChildComponent(p1);
-      rotateChildComponent(p2);
+      rotateChildComponents(p1);
+      rotateChildComponents(p2);
     });
 
     JPanel panel = new JPanel(new GridLayout(2, 1));
@@ -50,9 +44,22 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static void rotateChildComponent(Container p) {
-    p.setComponentZOrder(p.getComponent(p.getComponentCount() - 1), 0);
-    p.revalidate();
+  private static List<Component> createComponents() {
+    return Arrays.asList(
+        new JScrollPane(new JTable(6, 3)),
+        new JScrollPane(new JTree()),
+        new JScrollPane(new JTextArea("JTextArea")));
+  }
+
+  // Moves the last child component to the front (z-order index 0),
+  // which shifts the other child components back by one
+  private static void rotateChildComponents(Container parent) {
+    int count = parent.getComponentCount();
+    if (count > 0) {
+      parent.setComponentZOrder(parent.getComponent(count - 1), 0);
+      parent.revalidate();
+      parent.repaint();
+    }
   }
 
   public static void main(String[] args) {
