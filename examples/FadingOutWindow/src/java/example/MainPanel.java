@@ -18,7 +18,7 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JButton button = new JButton("open JWindow");
-    button.addActionListener(e -> makeWindow(button));
+    button.addActionListener(e -> createWindow(button));
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
     p.add(button);
@@ -28,26 +28,30 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void makeWindow(JComponent c) {
+  private void createWindow(JComponent c) {
     JWindow window = new JWindow();
     GraphicsConfiguration gc = window.getGraphicsConfiguration();
     if (gc != null && gc.isTranslucencyCapable()) {
       window.setBackground(new Color(0x0, true));
     }
+    // Window#setOpacity(float) throws an UnsupportedOperationException
+    // if uniform translucency is not supported, so just dispose the window then
+    boolean translucent = gc != null && gc.getDevice()
+        .isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
     AtomicInteger alpha = new AtomicInteger(100);
     Timer animator = new Timer(50, null);
     animator.addActionListener(e -> {
       int a = alpha.addAndGet(-10);
-      if (a >= 0) {
-        updateWindowOpacity(window, a / 100f);
-      } else {
+      if (a < 0 || !translucent) {
         window.dispose();
         animator.stop();
         log.append("JWindow.dispose()\n");
+      } else {
+        updateWindowOpacity(window, a / 100f);
       }
     });
     Shape shape = new RoundRectangle2D.Float(0f, 0f, 240f, 64f, 32f, 32f);
-    window.getContentPane().add(makePanel(shape, animator));
+    window.getContentPane().add(createPanel(shape, animator));
     window.pack();
     window.setLocationRelativeTo(c.getRootPane());
     window.setVisible(true);
@@ -58,7 +62,7 @@ public final class MainPanel extends JPanel {
     log.append(String.format("JWindow.setOpacity(%f)%n", opacity));
   }
 
-  private Component makePanel(Shape shape, Timer animator) {
+  private Component createPanel(Shape shape, Timer animator) {
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getPreferredSize() {
         return shape.getBounds().getSize();
@@ -76,15 +80,15 @@ public final class MainPanel extends JPanel {
     };
     panel.setOpaque(false);
     panel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-    DragWindowListener dwl = new DragWindowListener();
-    panel.addMouseListener(dwl);
-    panel.addMouseMotionListener(dwl);
-    panel.add(makeIconBox());
-    panel.add(makeCloseButton(animator), BorderLayout.EAST);
+    DragWindowListener listener = new DragWindowListener();
+    panel.addMouseListener(listener);
+    panel.addMouseMotionListener(listener);
+    panel.add(createIconBox());
+    panel.add(createCloseButton(animator), BorderLayout.EAST);
     return panel;
   }
 
-  private static Container makeIconBox() {
+  private static Container createIconBox() {
     JPanel p = new JPanel();
     p.setOpaque(false);
     p.add(new JLabel(UIManager.getIcon("OptionPane.errorIcon")));
@@ -94,7 +98,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JButton makeCloseButton(Timer animator) {
+  private static JButton createCloseButton(Timer animator) {
     JButton close = new JButton("<html><b>X");
     close.setContentAreaFilled(false);
     close.setBorder(BorderFactory.createEmptyBorder());
