@@ -13,7 +13,6 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
@@ -23,33 +22,20 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super();
     JPopupMenu popup = new JPopupMenu();
-    Stream.of(Corner.values()).map(this::createCornerCheckBox).forEach(popup::add);
+    corners.forEach(c -> popup.add(createCheckBox(c, corners)));
     popup.addSeparator();
-    Stream.of(Type.values()).map(this::createTypeCheckBox).forEach(popup::add);
+    types.forEach(t -> popup.add(createCheckBox(t, types)));
     setComponentPopupMenu(popup);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JCheckBoxMenuItem createCornerCheckBox(Corner corner) {
-    JCheckBoxMenuItem check = new JCheckBoxMenuItem(corner.name(), true);
+  private <E extends Enum<E>> JCheckBoxMenuItem createCheckBox(E item, Set<E> selected) {
+    JCheckBoxMenuItem check = new JCheckBoxMenuItem(item.name(), selected.contains(item));
     check.addActionListener(e -> {
       if (((AbstractButton) e.getSource()).isSelected()) {
-        corners.add(corner);
+        selected.add(item);
       } else {
-        corners.remove(corner);
-      }
-      repaint();
-    });
-    return check;
-  }
-
-  private JCheckBoxMenuItem createTypeCheckBox(Type type) {
-    JCheckBoxMenuItem check = new JCheckBoxMenuItem(type.name(), true);
-    check.addActionListener(e -> {
-      if (((AbstractButton) e.getSource()).isSelected()) {
-        types.add(type);
-      } else {
-        types.remove(type);
+        selected.remove(item);
       }
       repaint();
     });
@@ -76,19 +62,19 @@ public final class MainPanel extends JPanel {
 
     if (types.contains(Type.SUBTRACT)) {
       g2.setColor(Color.RED);
-      Shape shape0 = ShapeUtils.createRoundRect0(rect, aw, ah, corners);
+      Shape shape0 = ShapeUtils.createRoundRectBySubtraction(rect, aw, ah, corners);
       g2.draw(shape0);
     }
 
     if (types.contains(Type.PATH2D1)) {
       g2.setColor(Color.GREEN);
-      Shape shape1 = ShapeUtils.createRoundRect1(rect, aw, ah, corners);
+      Shape shape1 = ShapeUtils.createRoundRectWithCornerControlPoints(rect, aw, ah, corners);
       g2.draw(shape1);
     }
 
     if (types.contains(Type.PATH2D2)) {
       g2.setColor(Color.BLUE);
-      Shape shape2 = ShapeUtils.createRoundRect2(rect, aw, ah, corners);
+      Shape shape2 = ShapeUtils.createRoundRectWithKappa(rect, aw, ah, corners);
       g2.draw(shape2);
     }
 
@@ -123,11 +109,14 @@ enum Corner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }
 enum Type { ROUND_RECTANGLE2D, SUBTRACT, PATH2D1, PATH2D2 }
 
 final class ShapeUtils {
+  // Bezier control point ratio for approximating a quarter circle: 4 * (sqrt(2) - 1) / 3
+  private static final double KAPPA = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...
+
   private ShapeUtils() {
     /* Singleton */
   }
 
-  public static Shape createRoundRect0(
+  public static Shape createRoundRectBySubtraction(
       Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
@@ -156,11 +145,10 @@ final class ShapeUtils {
       br.subtract(new Area(new Ellipse2D.Double(x + w - aw, y + h - ah, aw, ah)));
       area.subtract(br);
     }
-    // area.transform(AffineTransform.getTranslateInstance(x, y));
     return area;
   }
 
-  public static Shape createRoundRect1(
+  public static Shape createRoundRectWithCornerControlPoints(
       Rectangle2D r, double aw, double ah, Set<Corner> corners) {
     double x = r.getX();
     double y = r.getY();
@@ -169,6 +157,8 @@ final class ShapeUtils {
     double arw = aw * .5;
     double arh = ah * .5;
     Path2D.Double path = new Path2D.Double();
+    // The first control point coincides with the start point and the second one
+    // is the corner of the rectangle, so the curve does not match a quarter ellipse.
     if (corners.contains(Corner.TOP_LEFT)) {
       path.moveTo(x, y + arh);
       path.curveTo(x, y + arh, x, y, x + arw, y);
@@ -194,22 +184,20 @@ final class ShapeUtils {
       path.lineTo(x, y + h);
     }
     path.closePath();
-    // path.transform(AffineTransform.getTranslateInstance(x, y));
     return path;
   }
 
-  public static Shape createRoundRect2(
+  public static Shape createRoundRectWithKappa(
       Rectangle2D r, double aw, double ah, Set<Corner> corners) {
-    double arh = ah * .5;
-    double arw = aw * .5;
-    double kappa = 4d * (Math.sqrt(2d) - 1d) / 3d; // = 0.55228...;
-    double akw = arw * kappa;
-    double akh = arh * kappa;
-    Path2D.Double p = new Path2D.Double();
     double x = r.getX();
     double y = r.getY();
     double w = r.getWidth();
     double h = r.getHeight();
+    double arw = aw * .5;
+    double arh = ah * .5;
+    double akw = arw * KAPPA;
+    double akh = arh * KAPPA;
+    Path2D.Double p = new Path2D.Double();
     if (corners.contains(Corner.TOP_LEFT)) {
       p.moveTo(x, y + arh);
       p.curveTo(x, y + arh - akh, x + arw - akw, y, x + arw, y);
@@ -235,7 +223,6 @@ final class ShapeUtils {
       p.lineTo(x, y + h);
     }
     p.closePath();
-    // p.transform(AffineTransform.getTranslateInstance(x, y));
     return p;
   }
 }
