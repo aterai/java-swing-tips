@@ -6,25 +6,22 @@ package example;
 
 import java.awt.*;
 import java.awt.dnd.DragSource;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Objects;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.swing.*;
+import javax.swing.plaf.LayerUI;
 
 public final class MainPanel extends JPanel {
   private static final String PATH = "toolbarButtonGraphics/general/";
+  private final JTextArea log = new JTextArea();
 
   private MainPanel() {
     super(new BorderLayout());
     JToolBar toolBar = new JToolBar("ToolBarButton");
     toolBar.setFloatable(false);
-    DragHandler dh = new DragHandler();
-    toolBar.addMouseListener(dh);
-    toolBar.addMouseMotionListener(dh);
     toolBar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
 
     Stream.of(
@@ -33,17 +30,21 @@ public final class MainPanel extends JPanel {
         "Help24.gif", "Open24.gif", "Save24.gif"
     ).map(this::createToolBarButton).forEach(toolBar::add);
 
-    add(toolBar, BorderLayout.NORTH);
-    add(new JScrollPane(new JTree()));
+    log.setEditable(false);
+    add(new JLayer<>(toolBar, new ReorderingLayerUI<>()), BorderLayout.NORTH);
+    add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
   }
 
   private Component createToolBarButton(String name) {
     URL url = Thread.currentThread().getContextClassLoader().getResource(PATH + name);
     Icon icon = url == null ? UIManager.getIcon("html.missingImage") : new ImageIcon(url);
-    JComponent label = new JLabel(icon);
-    label.setOpaque(false);
-    return label;
+    JButton button = new JButton(icon);
+    button.setFocusable(false);
+    button.setToolTipText(name);
+    // Fired only by a click, not by a drag that exceeds the drag threshold
+    button.addActionListener(e -> log.append(name + " clicked\n"));
+    return button;
   }
 
   public static void main(String[] args) {
@@ -68,108 +69,114 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DragHandler extends MouseAdapter {
-  private static final Rectangle PREV_AREA = new Rectangle();
-  private static final Rectangle NEXT_AREA = new Rectangle();
-  private final JWindow window = new JWindow();
+class ReorderingLayerUI<V extends Container> extends LayerUI<V> {
+  private final Point startPt = new Point();
+  private final Point dragOffset = new Point();
+  private final Point ghostPt = new Point();
+  private final int dragThreshold = DragSource.getDragThreshold();
   private Component draggingComponent;
   private boolean isDragging;
-  private int index = -1;
-  private Component gap;
-  private final Point startPt = new Point();
-  private final int dragThreshold = DragSource.getDragThreshold();
 
-  @Override public void mousePressed(MouseEvent e) {
-    Container parent = (Container) e.getComponent();
-    if (parent.getComponentCount() > 0) {
-      startPt.setLocation(e.getPoint());
-      GraphicsConfiguration gc = window.getGraphicsConfiguration();
-      if (gc != null && gc.isTranslucencyCapable()) {
-        window.setBackground(new Color(0x0, true));
+  @Override public void installUI(JComponent c) {
+    super.installUI(c);
+    if (c instanceof JLayer) {
+      ((JLayer<?>) c).setLayerEventMask(
+          AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+    }
+  }
+
+  @Override public void uninstallUI(JComponent c) {
+    if (c instanceof JLayer) {
+      ((JLayer<?>) c).setLayerEventMask(0);
+    }
+    super.uninstallUI(c);
+  }
+
+  @Override public void paint(Graphics g, JComponent c) {
+    super.paint(g, c);
+    if (isDragging) {
+      Component dc = draggingComponent;
+      Container parent = dc.getParent();
+      Graphics2D g2 = (Graphics2D) g.create();
+      // Hide the original button to make it look like a gap
+      Rectangle r = SwingUtilities.convertRectangle(parent, dc.getBounds(), c);
+      g2.setPaint(parent.getBackground());
+      g2.fill(r);
+      // Paint the ghost of the dragging button
+      g2.translate(ghostPt.x, ghostPt.y);
+      g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));
+      dc.paint(g2);
+      g2.dispose();
+    }
+  }
+
+  @Override protected void processMouseEvent(MouseEvent e, JLayer<? extends V> l) {
+    Container parent = l.getView();
+    Component c = e.getComponent();
+    int id = e.getID();
+    if (id == MouseEvent.MOUSE_PRESSED) {
+      boolean isChild = c != null && Objects.equals(c.getParent(), parent);
+      if (SwingUtilities.isLeftMouseButton(e) && isChild) {
+        // The candidate for dragging; the drag starts when the threshold is exceeded
+        draggingComponent = c;
+        dragOffset.setLocation(e.getPoint());
+        startPt.setLocation(SwingUtilities.convertPoint(c, e.getPoint(), parent));
       }
-    }
-  }
-
-  private void startDragging(Container parent, Point pt) {
-    Component c = parent.getComponentAt(pt);
-    index = parent.getComponentZOrder(c);
-    if (!Objects.equals(c, parent) && index >= 0) {
-      isDragging = true;
-      draggingComponent = c;
-      gap = Box.createHorizontalStrut(c.getWidth());
-      swapComponent(parent, c, gap, index);
-
-      window.add(draggingComponent);
-      window.pack();
-
-      Dimension d = draggingComponent.getPreferredSize();
-      Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
-      SwingUtilities.convertPointToScreen(p, parent);
-      window.setLocation(p);
-      window.setVisible(true);
-    }
-  }
-
-  @Override public void mouseDragged(MouseEvent e) {
-    Point pt = e.getPoint();
-    Container parent = (Container) e.getComponent();
-    if (window.isVisible() && isDragging) {
-      Dimension d = draggingComponent.getPreferredSize();
-      Point p = new Point(pt.x - d.width / 2, pt.y - d.height / 2);
-      SwingUtilities.convertPointToScreen(p, parent);
-      window.setLocation(p);
-      int idx = IntStream.range(0, parent.getComponentCount())
-          .map(i -> getTargetIndex(parent, i, pt))
-          .filter(i -> i >= 0)
-          .findFirst()
-          .orElse(-1);
-      swapComponent(parent, gap, gap, idx);
-    } else {
-      if (startPt.distance(pt) > dragThreshold) {
-        startDragging(parent, pt);
-      }
-    }
-  }
-
-  @Override public void mouseReleased(MouseEvent e) {
-    if (window.isVisible() && isDragging) { // draggingComponent != null) {
-      Point pt = e.getPoint();
-      Container parent = (Container) e.getComponent();
-      int max = parent.getComponentCount();
-      // Component cmp = draggingComponent;
-      // draggingComponent = null;
-      window.setVisible(false);
-      int idx = IntStream.range(0, max)
-          .map(i -> getTargetIndex(parent, i, pt))
-          .filter(i -> i >= 0)
-          .findFirst()
-          .orElseGet(() -> parent.getBounds().contains(pt) ? max : index);
-      swapComponent(parent, gap, draggingComponent, idx);
+    } else if (id == MouseEvent.MOUSE_RELEASED && isDragging) {
       isDragging = false;
+      l.repaint();
     }
   }
 
-  private int getTargetIndex(Container parent, int i, Point pt) {
-    Component c = parent.getComponent(i);
-    Rectangle r = c.getBounds();
-    int wd2 = r.width / 2;
-    PREV_AREA.setBounds(r.x, r.y, wd2, r.height);
-    NEXT_AREA.setBounds(r.x + wd2, r.y, wd2, r.height);
-    int idx = -1;
-    if (PREV_AREA.contains(pt)) {
-      idx = i > 1 ? i : 0;
-    } else if (NEXT_AREA.contains(pt)) {
-      idx = i;
+  @Override protected void processMouseMotionEvent(MouseEvent e, JLayer<? extends V> l) {
+    Component c = e.getComponent();
+    boolean isLeftDragged = e.getID() == MouseEvent.MOUSE_DRAGGED
+        && SwingUtilities.isLeftMouseButton(e);
+    // The dragged events are dispatched to the component that received the press
+    if (isLeftDragged && Objects.equals(c, draggingComponent)) {
+      Container parent = l.getView();
+      Point pt = SwingUtilities.convertPoint(c, e.getPoint(), parent);
+      if (!isDragging && startPt.distance(pt) > dragThreshold) {
+        startDragging(c);
+      }
+      if (isDragging) {
+        rearrange(parent, pt);
+        Point p = new Point(pt.x - dragOffset.x, pt.y - dragOffset.y);
+        ghostPt.setLocation(SwingUtilities.convertPoint(parent, p, l));
+        l.repaint();
+      }
     }
-    return idx;
   }
 
-  private static void swapComponent(Container p, Component remove, Component add, int idx) {
-    p.remove(remove);
-    if (idx >= 0) {
-      p.add(add, idx);
+  private void startDragging(Component c) {
+    isDragging = true;
+    if (c instanceof AbstractButton) {
+      // Cancel the click: DefaultButtonModel#setPressed(false) fires an ActionEvent
+      // if the model is still armed, so the armed state must be cleared first.
+      ButtonModel m = ((AbstractButton) c).getModel();
+      m.setArmed(false);
+      m.setPressed(false);
+      m.setRollover(false);
     }
-    p.revalidate();
-    p.repaint();
+  }
+
+  private void rearrange(Container parent, Point pt) {
+    Component dc = draggingComponent;
+    int cur = parent.getComponentZOrder(dc);
+    for (int i = 0; i < parent.getComponentCount(); i++) {
+      Component c = parent.getComponent(i);
+      Rectangle r = c.getBounds();
+      if (!Objects.equals(c, dc) && r.x <= pt.x && pt.x < r.x + r.width) {
+        // Swap when the cursor passes the center of the adjacent component
+        boolean isPrevArea = pt.x < r.x + r.width / 2;
+        if (isPrevArea ? cur > i : cur < i) {
+          // Container#setComponentZOrder(...) does not call removeNotify(),
+          // so the button keeps receiving the mouse dragged events.
+          parent.setComponentZOrder(dc, i);
+          parent.revalidate();
+        }
+        break;
+      }
+    }
   }
 }
