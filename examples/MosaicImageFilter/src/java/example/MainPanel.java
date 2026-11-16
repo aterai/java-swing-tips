@@ -14,7 +14,6 @@ import java.awt.image.ColorModel;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
-import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -33,32 +32,32 @@ public final class MainPanel extends JPanel {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     Image image = Optional.ofNullable(cl.getResource("example/test.jpg")).map(u -> {
       Image img;
-      try (InputStream s = u.openStream()) {
-        img = ImageIO.read(s);
+      try (InputStream is = u.openStream()) {
+        img = ImageIO.read(is);
       } catch (IOException ex) {
         img = createMissingImage();
       }
       return img;
     }).orElseGet(MainPanel::createMissingImage);
-    Icon imageIcon1 = new ImageIcon(image);
+    Icon sourceIcon = new ImageIcon(image);
 
     Component beforeCanvas = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        imageIcon1.paintIcon(this, g, 0, 0);
+        sourceIcon.paintIcon(this, g, 0, 0);
       }
     };
     split.setLeftComponent(beforeCanvas);
 
     ImageFilter filter = new BufferedImageFilter(new MosaicImageFilter(16));
     ImageProducer producer = new FilteredImageSource(image.getSource(), filter);
-    Image result = Toolkit.getDefaultToolkit().createImage(producer);
-    Icon imageIcon2 = new ImageIcon(result);
+    Image mosaicImage = Toolkit.getDefaultToolkit().createImage(producer);
+    Icon mosaicIcon = new ImageIcon(mosaicImage);
     Component afterCanvas = new JComponent() {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.translate(-getLocation().x + split.getInsets().left, 0);
-        imageIcon2.paintIcon(this, g, 0, 0);
+        mosaicIcon.paintIcon(this, g, 0, 0);
       }
     };
     split.setRightComponent(afterCanvas);
@@ -105,58 +104,55 @@ public final class MainPanel extends JPanel {
 class MosaicImageFilter implements BufferedImageOp {
   private final int blockSize;
 
-  protected MosaicImageFilter(int blockSize) {
+  /* default */ MosaicImageFilter(int blockSize) {
     this.blockSize = blockSize;
   }
 
   @Override public BufferedImage filter(BufferedImage src, BufferedImage dst) {
     int width = src.getWidth();
     int height = src.getHeight();
-    WritableRaster srcRaster = src.getRaster();
-    BufferedImage img = dst == null ? createCompatibleDestImage(src, null) : dst;
-    WritableRaster dstRaster = img.getRaster();
+    BufferedImage dest = dst == null ? createCompatibleDestImage(src, null) : dst;
     int[] pixels = new int[blockSize * blockSize];
     for (int y = 0; y < height; y += blockSize) {
       for (int x = 0; x < width; x += blockSize) {
         int w = Math.min(blockSize, width - x);
         int h = Math.min(blockSize, height - y);
-        srcRaster.getDataElements(x, y, w, h, pixels);
+        // getRGB/setRGB always use the default ARGB color model, so this works
+        // for any image type (Raster#getDataElements(...) would require an
+        // int-packed raster and could lose the alpha channel of TYPE_INT_RGB)
+        src.getRGB(x, y, w, h, pixels, 0, w);
         updatePixels(pixels, w, h);
-        dstRaster.setDataElements(x, y, w, h, pixels);
+        dest.setRGB(x, y, w, h, pixels, 0, w);
       }
     }
-    return img;
+    return dest;
   }
 
   public static int getBlockRgb(int[] pixels, int w, int h) {
     int r = 0;
     int g = 0;
     int b = 0;
-    for (int by = 0; by < h; by++) {
-      for (int bx = 0; bx < w; bx++) {
-        int argb = pixels[bx + by * w];
-        r += (argb >> 16) & 0xFF;
-        g += (argb >> 8) & 0xFF;
-        b += argb & 0xFF;
-      }
-    }
     int size = w * h;
+    for (int i = 0; i < size; i++) {
+      int argb = pixels[i];
+      r += (argb >> 16) & 0xFF;
+      g += (argb >> 8) & 0xFF;
+      b += argb & 0xFF;
+    }
     return (r / size) << 16 | (g / size) << 8 | (b / size);
   }
 
   public static void updatePixels(int[] pixels, int w, int h) {
     int rgb = getBlockRgb(pixels, w, h);
-    for (int by = 0; by < h; by++) {
-      for (int bx = 0; bx < w; bx++) {
-        int i = bx + by * w;
-        int alpha = pixels[i] & 0xFF_00_00_00;
-        pixels[i] = alpha | rgb;
-      }
+    // the block is stored contiguously (scansize == w), so a single loop is enough
+    for (int i = 0; i < w * h; i++) {
+      pixels[i] = (pixels[i] & 0xFF_00_00_00) | rgb;
     }
   }
 
   @Override public Rectangle2D getBounds2D(BufferedImage src) {
-    return null;
+    // the mosaic does not change the geometry of the image
+    return src.getRaster().getBounds();
   }
 
   @Override public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCm) {
@@ -164,7 +160,9 @@ class MosaicImageFilter implements BufferedImageOp {
   }
 
   @Override public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
-    return null;
+    Point2D pt = dstPt == null ? (Point2D) srcPt.clone() : dstPt;
+    pt.setLocation(srcPt);
+    return pt;
   }
 
   @Override public RenderingHints getRenderingHints() {
