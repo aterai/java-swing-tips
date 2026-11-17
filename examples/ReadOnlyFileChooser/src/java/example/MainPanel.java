@@ -9,29 +9,15 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
+  private final JTextArea log = new JTextArea();
+
   private MainPanel() {
     super(new BorderLayout());
-    JTextArea log = new JTextArea();
-
     JButton readOnlyButton = new JButton("readOnly");
-    readOnlyButton.addActionListener(e -> {
-      UIManager.put("FileChooser.readOnly", true);
-      JFileChooser fileChooser = new JFileChooser();
-      int retValue = fileChooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-      }
-    });
+    readOnlyButton.addActionListener(e -> showOpenDialog(true));
 
     JButton defaultButton = new JButton("Default");
-    defaultButton.addActionListener(e -> {
-      UIManager.put("FileChooser.readOnly", false);
-      JFileChooser fileChooser = new JFileChooser();
-      int retValue = fileChooser.showOpenDialog(getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(fileChooser.getSelectedFile().getAbsolutePath());
-      }
-    });
+    defaultButton.addActionListener(e -> showOpenDialog(false));
 
     JPanel p = new JPanel();
     p.setBorder(BorderFactory.createTitledBorder("JFileChooser"));
@@ -40,6 +26,17 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private void showOpenDialog(boolean readOnly) {
+    // The FileChooserUI reads "FileChooser.readOnly" when it is installed,
+    // so the value must be set before the JFileChooser is created.
+    UIManager.put("FileChooser.readOnly", readOnly);
+    JFileChooser fileChooser = new JFileChooser();
+    int retValue = fileChooser.showOpenDialog(getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      log.setText(fileChooser.getSelectedFile().getAbsolutePath());
+    }
   }
 
   public static void main(String[] args) {
