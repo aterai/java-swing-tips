@@ -71,7 +71,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
   private static final String NAME = "test";
   private static final String MIME_TYPE = DataFlavor.javaJVMLocalObjectMimeType;
   private static final DataFlavor FLAVOR = new DataFlavor(MIME_TYPE, NAME);
-  private static final Color EVEN_BGC = new Color(0xF0_F0_F0);
+  private static final Color EVEN_BACKGROUND = new Color(0xF0_F0_F0);
   private int draggedIndex = -1;
   private int targetIndex = -1;
   private final transient Transferable transferable = new Transferable() {
@@ -84,7 +84,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
     }
 
     @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-      return NAME.equals(flavor.getHumanPresentableName());
+      return FLAVOR.equals(flavor);
     }
   };
   private final Rectangle targetLine = new Rectangle();
@@ -114,7 +114,7 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
       c.setBackground(list.getSelectionBackground());
     } else {
       c.setForeground(list.getForeground());
-      c.setBackground(i % 2 == 0 ? EVEN_BGC : list.getBackground());
+      c.setBackground(i % 2 == 0 ? EVEN_BACKGROUND : list.getBackground());
     }
   }
 
@@ -129,24 +129,26 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
   }
 
   protected void initTargetLine(Point p) {
-    Rectangle rect = getCellBounds(0, 0);
-    int cellHeight = rect.height;
+    int index = locationToIndex(p);
+    if (index < 0) {
+      targetIndex = -1;
+      return;
+    }
+    // Insert before the nearest cell if the cursor is in its upper half,
+    // otherwise insert after it (also works with variable cell heights).
+    Rectangle rect = getCellBounds(index, index);
     int lineHeight = 2;
-    int modelSize = getModel().getSize();
-    targetIndex = -1;
-    targetLine.setSize(rect.width, lineHeight);
-    for (int i = 0; i < modelSize; i++) {
-      rect.setLocation(0, cellHeight * i - cellHeight / 2);
-      if (rect.contains(p)) {
-        targetIndex = i;
-        targetLine.setLocation(0, i * cellHeight);
-        break;
-      }
+    int y = rect.y;
+    if (p.y >= rect.getCenterY()) {
+      index++;
+      y += rect.height;
     }
-    if (targetIndex < 0) {
-      targetIndex = modelSize;
-      targetLine.setLocation(0, targetIndex * cellHeight - lineHeight);
+    if (index == getModel().getSize()) {
+      // Keep the line inside the bottom edge of the last cell
+      y -= lineHeight;
     }
+    targetIndex = index;
+    targetLine.setBounds(rect.x, y, rect.width, lineHeight);
   }
 
   // Interface: DragGestureListener
@@ -197,37 +199,22 @@ class DnDList<E> extends JList<E> implements DragGestureListener {
     }
 
     @Override public void drop(DropTargetDropEvent e) {
-      DefaultListModel<E> model = (DefaultListModel<E>) getModel();
-      if (isDropAcceptable(e) && targetIndex >= 0) {
-        E str = model.get(draggedIndex);
-        if (targetIndex == draggedIndex) {
-          setSelectedIndex(targetIndex);
-        } else if (targetIndex < draggedIndex) {
-          model.remove(draggedIndex);
-          model.add(targetIndex, str);
-          setSelectedIndex(targetIndex);
-        } else {
-          model.add(targetIndex, str);
-          model.remove(draggedIndex);
-          setSelectedIndex(targetIndex - 1);
-        }
-        e.dropComplete(true);
-      } else {
-        e.dropComplete(false);
+      boolean acceptable = e.isDataFlavorSupported(FLAVOR) && targetIndex >= 0 && draggedIndex >= 0;
+      if (acceptable) {
+        DefaultListModel<E> model = (DefaultListModel<E>) getModel();
+        E value = model.remove(draggedIndex);
+        // The target index shifts up by one after removing an item above it
+        int index = targetIndex > draggedIndex ? targetIndex - 1 : targetIndex;
+        model.add(index, value);
+        setSelectedIndex(index);
       }
-      e.dropComplete(false);
+      e.dropComplete(acceptable);
       targetIndex = -1;
       repaint();
     }
 
     private boolean isDragAcceptable(DropTargetDragEvent e) {
-      DataFlavor[] flavors = e.getCurrentDataFlavors();
-      return transferable.isDataFlavorSupported(flavors[0]);
-    }
-
-    private boolean isDropAcceptable(DropTargetDropEvent e) {
-      DataFlavor[] flavors = e.getTransferable().getTransferDataFlavors();
-      return transferable.isDataFlavorSupported(flavors[0]);
+      return e.isDataFlavorSupported(FLAVOR);
     }
   }
 }
