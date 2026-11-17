@@ -169,10 +169,10 @@ class ComboKeyHandler extends KeyAdapter {
         shouldHide = false;
         break;
       case KeyEvent.VK_ENTER:
-        if (!list.contains(text)) {
+        // Do not add an empty string as a candidate
+        if (!text.isEmpty() && !list.contains(text)) {
           list.add(text);
           list.sort(Comparator.naturalOrder());
-          // setSuggestionModel(comboBox, new DefaultComboBoxModel(list), text);
           setSuggestionModel(comboBox, getSuggestedModel(list, text), text);
         }
         shouldHide = true;
@@ -191,18 +191,18 @@ class ComboKeyHandler extends KeyAdapter {
     Component c = e.getComponent();
     if (c instanceof JTextField) {
       JTextField textField = (JTextField) c;
-      EventQueue.invokeLater(() -> keyTyped(textField.getText()));
+      // The typed character is not yet inserted into the document at this point
+      EventQueue.invokeLater(() -> updateSuggestions(textField.getText()));
     }
   }
 
-  private void keyTyped(String text) {
-    ComboBoxModel<String> m;
+  private void updateSuggestions(String text) {
     if (text.isEmpty()) {
-      m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
+      ComboBoxModel<String> m = new DefaultComboBoxModel<>(list.toArray(new String[0]));
       setSuggestionModel(comboBox, m, "");
       comboBox.hidePopup();
     } else {
-      m = getSuggestedModel(list, text);
+      ComboBoxModel<String> m = getSuggestedModel(list, text);
       if (m.getSize() == 0 || shouldHide) {
         comboBox.hidePopup();
       } else {
