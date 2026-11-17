@@ -26,47 +26,56 @@ public final class MainPanel extends JPanel {
       printInfo(button, now.toString());
     });
 
-    JCheckBox check1 = new JCheckBox("setVisible", true);
-    check1.addActionListener(e -> button.setVisible(((JCheckBox) e.getSource()).isSelected()));
+    JCheckBox visibleCheck = new JCheckBox("setVisible", true);
+    visibleCheck.addActionListener(e -> button.setVisible(visibleCheck.isSelected()));
 
-    JCheckBox check2 = new JCheckBox("setEnabled", true);
-    check2.addActionListener(e -> button.setEnabled(((JCheckBox) e.getSource()).isSelected()));
+    JCheckBox enabledCheck = new JCheckBox("setEnabled", true);
+    enabledCheck.addActionListener(e -> button.setEnabled(enabledCheck.isSelected()));
 
-    JCheckBox check3 = new JCheckBox("start", true);
-    check3.addActionListener(e -> {
-      if (((JCheckBox) e.getSource()).isSelected()) {
+    JCheckBox timerCheck = new JCheckBox("start", true);
+    timerCheck.addActionListener(e -> {
+      if (timerCheck.isSelected()) {
         timer.start();
       } else {
         timer.stop();
       }
     });
 
-    button.addHierarchyListener(e -> {
-      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-        printInfo(button, "SHOWING_CHANGED");
-      }
-      if ((e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-        printInfo(button, "DISPLAYABILITY_CHANGED");
-      }
-    });
+    button.addHierarchyListener(e -> hierarchyChanged(e, timer));
     printInfo(button, "after: new JButton, before: add(button); frame.setVisible(true)");
 
-    JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    p1.add(new JLabel("JButton:"));
-    p1.add(check1);
-    p1.add(check2);
-    JPanel p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    p2.add(new JLabel("Timer:"));
-    p2.add(check3);
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    buttonPanel.add(new JLabel("JButton:"));
+    buttonPanel.add(visibleCheck);
+    buttonPanel.add(enabledCheck);
+    JPanel timerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    timerPanel.add(new JLabel("Timer:"));
+    timerPanel.add(timerCheck);
 
-    JPanel p = new JPanel(new GridLayout(2, 1));
-    p.add(p1);
-    p.add(p2);
-    add(p, BorderLayout.NORTH);
+    JPanel controls = new JPanel(new GridLayout(2, 1));
+    controls.add(buttonPanel);
+    controls.add(timerPanel);
+    add(controls, BorderLayout.NORTH);
     add(makeTabbedPane(button));
 
     timer.start();
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void hierarchyChanged(HierarchyEvent e, Timer timer) {
+    Component c = e.getComponent();
+    long flags = e.getChangeFlags();
+    if ((flags & HierarchyEvent.SHOWING_CHANGED) != 0) {
+      printInfo(c, "SHOWING_CHANGED");
+    }
+    if ((flags & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
+      printInfo(c, "DISPLAYABILITY_CHANGED");
+      // Stop the Timer when the frame is disposed so that it does not
+      // keep logging and prevent the application from shutting down.
+      if (!c.isDisplayable()) {
+        timer.stop();
+      }
+    }
   }
 
   private static JTabbedPane makeTabbedPane(JButton button) {
@@ -83,10 +92,10 @@ public final class MainPanel extends JPanel {
     return tabs;
   }
 
-  public static void printInfo(Component c, String str) {
+  public static void printInfo(Component c, String message) {
     LOGGER.info(() -> String.join(
         "\n",
-        c.getClass().getName() + ": " + str,
+        c.getClass().getName() + ": " + message,
         "  isDisplayable:" + c.isDisplayable(),
         "  isShowing:" + c.isShowing(),
         "  isVisible:" + c.isVisible()));
