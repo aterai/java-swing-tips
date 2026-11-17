@@ -17,7 +17,7 @@ import javax.swing.*;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    JList<String> list1 = new JList<String>(makeModel()) {
+    JList<String> list1 = new JList<String>(createModel()) {
       @Override public JToolTip createToolTip() {
         JToolTip tip = new BalloonToolTip();
         tip.setComponent(this);
@@ -26,22 +26,22 @@ public final class MainPanel extends JPanel {
 
       @Override public void updateUI() {
         super.updateUI();
-        setCellRenderer(new TooltipListCellRenderer<>());
+        setCellRenderer(new ToolTipListCellRenderer<>());
       }
     };
-    add(makeTitledPanel("BalloonToolTip", list1));
+    add(createTitledPanel("BalloonToolTip", list1));
 
-    JList<String> list2 = new JList<String>(makeModel()) {
+    JList<String> list2 = new JList<String>(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
-        setCellRenderer(new TooltipListCellRenderer<>());
+        setCellRenderer(new ToolTipListCellRenderer<>());
       }
     };
-    add(makeTitledPanel("Default JToolTip", list2));
+    add(createTitledPanel("Default JToolTip", list2));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultListModel<String> makeModel() {
+  private static DefaultListModel<String> createModel() {
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("ABC DEF GHI JKL MNO PQR STU VWX YZ");
     model.addElement("111");
@@ -55,7 +55,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static Component makeTitledPanel(String title, Component c) {
+  private static Component createTitledPanel(String title, Component c) {
     JScrollPane scroll = new JScrollPane(c);
     scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     JPanel p = new JPanel(new BorderLayout());
@@ -86,29 +86,22 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class TooltipListCellRenderer<E> implements ListCellRenderer<E> {
+class ToolTipListCellRenderer<E> implements ListCellRenderer<E> {
   private final ListCellRenderer<? super E> renderer = new DefaultListCellRenderer();
 
   @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     Component c = renderer.getListCellRendererComponent(
         list, value, index, isSelected, cellHasFocus);
-    // Insets i = l.getInsets();
-    // Container c = SwingUtilities.getAncestorOfClass(JViewport.class, list);
-    // Rectangle rect = c.getBounds();
     if (c instanceof JComponent) {
       Class<JViewport> clz = JViewport.class;
       Rectangle rect = Optional.ofNullable(SwingUtilities.getAncestorOfClass(clz, list))
-          .filter(clz::isInstance).map(clz::cast)
-          // .map(JViewport::getBounds)
-          .map(v -> SwingUtilities.calculateInnerArea(v, null))
+          .map(v -> SwingUtilities.calculateInnerArea((JComponent) v, null))
           .orElseGet(Rectangle::new);
-      // rect.width -= i.left + i.right;
-      // FontMetrics fm = c.getFontMetrics(c.getFont());
-      // String s = Objects.toString(value, "");
-      // String txt = fm.stringWidth(s) > rect.width ? s : list.getToolTipText();
+      // Show the cell text as a tooltip only if it is clipped by the viewport
+      FontMetrics fm = c.getFontMetrics(c.getFont());
       String txt = Optional.ofNullable(value)
           .map(Object::toString)
-          .filter(str -> c.getFontMetrics(c.getFont()).stringWidth(str) > rect.width)
+          .filter(str -> fm.stringWidth(str) > rect.width)
           .orElseGet(list::getToolTipText);
       ((JComponent) c).setToolTipText(txt);
     }
@@ -139,12 +132,13 @@ class BalloonToolTip extends JToolTip {
 
   @Override public Dimension getPreferredSize() {
     Dimension d = super.getPreferredSize();
-    d.height = 28;
+    // Keep the default height, but grow it for larger fonts
+    d.height = Math.max(d.height, 28);
     return d;
   }
 
   @Override protected void paintComponent(Graphics g) {
-    Shape s = makeBalloonShape(4d, 6d);
+    Shape s = createBalloonShape(4d, 6d);
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setColor(getBackground());
@@ -155,18 +149,16 @@ class BalloonToolTip extends JToolTip {
     super.paintComponent(g);
   }
 
-  public Shape makeBalloonShape(double triHeight, double arc) {
-    // Insets i = getInsets();
-    // double x = i.left;
-    // double h = getHeight() - i.bottom - y - 1d;
-    Rectangle rect = SwingUtilities.calculateInnerArea(this, null);
-    double x = rect.getX();
+  private Shape createBalloonShape(double triHeight, double arc) {
+    // The tail (triangle) starts at the left inset and points upward
+    double x = getInsets().left;
     Path2D triangle = new Path2D.Double();
     triangle.moveTo(x + triHeight, triHeight);
     triangle.lineTo(x + triHeight * 2d, 0d);
     triangle.lineTo(x + triHeight * 3d, triHeight);
+    triangle.closePath();
     double w = getWidth() - 1d;
-    double h = rect.getHeight() + triHeight - 1d;
+    double h = getHeight() - triHeight - 1d;
     Area area = new Area(new RoundRectangle2D.Double(0d, triHeight, w, h, arc, arc));
     area.add(new Area(triangle));
     return area;
