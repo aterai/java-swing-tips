@@ -5,7 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
@@ -58,9 +57,7 @@ class PlaqueScrollPane extends JScrollPane {
     if (!isOpaque() && b instanceof PlaqueBorder) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(getBackground());
-      int w = getWidth() - 1;
-      int h = getHeight() - 1;
-      g2.fill(((PlaqueBorder) b).getBorderShape(0, 0, w, h, ARC));
+      g2.fill(((PlaqueBorder) b).getBorderShape(this, 0, 0, getWidth(), getHeight()));
       g2.dispose();
     }
     super.paintComponent(g);
@@ -69,29 +66,31 @@ class PlaqueScrollPane extends JScrollPane {
   @Override public void updateUI() {
     super.updateUI();
     setOpaque(false);
-    setBackground(Color.WHITE);
+    // Use the LookAndFeel-dependent table background instead of a fixed white color
+    setBackground(UIManager.getColor("Table.background"));
     getViewport().setBackground(getBackground());
     setBorder(new PlaqueBorder(ARC) {
       @Override protected Shape getBorderShape(double x, double y, double w, double h, double r) {
-        return makeBorderShape(x, y, w, h, r);
+        return createBorderShape(x, y, w, h, r);
       }
     });
   }
 
-  private static Shape makeBorderShape(double x, double y, double w, double h, double r) {
+  private static Shape createBorderShape(double x, double y, double w, double h, double r) {
+    // Distance of the Bezier control points from the corner to approximate a quarter circle:
+    // 4 * (sqrt(2) - 1) / 3 = 0.55228...
     double rr = r * .5522;
     Path2D path = new Path2D.Double();
-    path.moveTo(0, r);
-    path.curveTo(rr, r, r, rr, r, y);
-    path.lineTo(w - r, 0);
-    path.curveTo(w - r, rr, w - rr, r, w, r);
-    path.lineTo(w, h - r);
-    path.curveTo(w - rr, h - r, w - r, h - rr, w - r, h);
-    path.lineTo(r, h);
-    path.curveTo(r, h - rr, rr, h - r, 0, h - r);
-    // path.lineTo(0, r);
+    path.moveTo(x, y + r);
+    path.curveTo(x + rr, y + r, x + r, y + rr, x + r, y);
+    path.lineTo(x + w - r, y);
+    path.curveTo(x + w - r, y + rr, x + w - rr, y + r, x + w, y + r);
+    path.lineTo(x + w, y + h - r);
+    path.curveTo(x + w - rr, y + h - r, x + w - r, y + h - rr, x + w - r, y + h);
+    path.lineTo(x + r, y + h);
+    path.curveTo(x + r, y + h - rr, x + rr, y + h - r, x, y + h - r);
     path.closePath();
-    return AffineTransform.getTranslateInstance(x, y).createTransformedShape(path);
+    return path;
   }
 }
 
@@ -107,9 +106,7 @@ class PlaqueTextField extends JTextField {
     if (!isOpaque() && b instanceof PlaqueBorder) {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setPaint(getBackground());
-      int w = getWidth() - 1;
-      int h = getHeight() - 1;
-      g2.fill(((PlaqueBorder) b).getBorderShape(0, 0, w, h, ARC));
+      g2.fill(((PlaqueBorder) b).getBorderShape(this, 0, 0, getWidth(), getHeight()));
       g2.dispose();
     }
     super.paintComponent(g);
@@ -131,19 +128,27 @@ class PlaqueBorder extends EmptyBorder {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setPaint(Color.GRAY);
-    Insets i = getBorderInsets(c);
-    int arc = Math.min(i.top, Math.min(width / 2, height / 2));
-    g2.draw(getBorderShape(x, y, width - 1d, height - 1d, arc));
+    g2.draw(getBorderShape(c, x, y, width, height));
     g2.dispose();
   }
 
+  /**
+   * Returns the border shape with the corner radius clamped to the component size,
+   * so that the background fill and the border outline always match.
+   */
+  public Shape getBorderShape(Component c, int x, int y, int width, int height) {
+    Insets i = getBorderInsets(c);
+    int arc = Math.min(i.top, Math.min(width / 2, height / 2));
+    return getBorderShape(x, y, width - 1d, height - 1d, arc);
+  }
+
   protected Shape getBorderShape(double x, double y, double w, double h, double r) {
-    double a = r + r;
-    Area rect = new Area(new Rectangle2D.Double(0, 0, w, h));
-    rect.subtract(new Area(new Ellipse2D.Double(-r, -r, a, a)));
-    rect.subtract(new Area(new Ellipse2D.Double(w - r, -r, a, a)));
-    rect.subtract(new Area(new Ellipse2D.Double(-r, h - r, a, a)));
-    rect.subtract(new Area(new Ellipse2D.Double(w - r, h - r, a, a)));
-    return AffineTransform.getTranslateInstance(x, y).createTransformedShape(rect);
+    double d = r + r;
+    Area shape = new Area(new Rectangle2D.Double(x, y, w, h));
+    shape.subtract(new Area(new Ellipse2D.Double(x - r, y - r, d, d)));
+    shape.subtract(new Area(new Ellipse2D.Double(x + w - r, y - r, d, d)));
+    shape.subtract(new Area(new Ellipse2D.Double(x - r, y + h - r, d, d)));
+    shape.subtract(new Area(new Ellipse2D.Double(x + w - r, y + h - r, d, d)));
+    return shape;
   }
 }
