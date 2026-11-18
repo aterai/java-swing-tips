@@ -13,21 +13,22 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     SpinnerModel model = new SpinnerNumberModel(10, 0, 1000, 1);
 
-    JSpinner spinner1 = new JSpinner(model);
-    spinner1.setEnabled(false);
+    JSpinner disabledSpinner = new JSpinner(model);
+    disabledSpinner.setEnabled(false);
 
-    // UIManager.put("FormattedTextField.inactiveBackground", Color.RED);
-    JSpinner spinner2 = new JSpinner(model);
-    JTextField field = ((JSpinner.DefaultEditor) spinner2.getEditor()).getTextField();
+    JSpinner readOnlySpinner = new JSpinner(model);
+    JTextField field = ((JSpinner.DefaultEditor) readOnlySpinner.getEditor()).getTextField();
     field.setEditable(false);
+    // A non-editable text field is painted with the inactive background color,
+    // so restore the normal background to look the same as the editable one
     field.setBackground(UIManager.getColor("FormattedTextField.background"));
 
     Box box = Box.createVerticalBox();
     box.add(makeTitledPanel("Default", new JSpinner(model)));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("spinner.setEnabled(false)", spinner1));
+    box.add(makeTitledPanel("spinner.setEnabled(false)", disabledSpinner));
     box.add(Box.createVerticalStrut(10));
-    box.add(makeTitledPanel("editor.setEditable(false)", spinner2));
+    box.add(makeTitledPanel("field.setEditable(false)", readOnlySpinner));
 
     add(box, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
