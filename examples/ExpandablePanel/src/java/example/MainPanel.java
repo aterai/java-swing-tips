@@ -19,20 +19,22 @@ public final class MainPanel extends JPanel {
   private final Box northBox = Box.createVerticalBox();
   private final Box centerBox = Box.createVerticalBox();
   private final Box southBox = Box.createVerticalBox();
-  private final List<? extends AbstractExpansionPanel> panelList = makeList();
+  private final List<? extends AbstractExpansionPanel> panelList = createList();
 
   private MainPanel() {
     super(new BorderLayout());
-    ExpansionListener rl = e -> {
+    ExpansionListener listener = e -> {
       Object c = e.getSource();
       if (c instanceof Component) {
-        panelClicked((Component) c);
+        rearrangePanels((Component) c);
+        // Removing components does not always repaint the vacated area
         revalidate();
+        repaint();
       }
     };
     panelList.forEach(exp -> {
       northBox.add(exp);
-      exp.addExpansionListener(rl);
+      exp.addExpansionListener(listener);
     });
     JPanel panel = new JPanel(new BorderLayout()) {
       @Override public Dimension getMinimumSize() {
@@ -49,7 +51,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private void panelClicked(Component source) {
+  private void rearrangePanels(Component source) {
     Arrays.asList(northBox, centerBox, southBox).forEach(Container::removeAll);
     Container target = northBox;
     for (AbstractExpansionPanel p : panelList) {
@@ -63,10 +65,10 @@ public final class MainPanel extends JPanel {
     }
   }
 
-  private List<? extends AbstractExpansionPanel> makeList() {
+  private List<? extends AbstractExpansionPanel> createList() {
     return Arrays.asList(
         new AbstractExpansionPanel("Panel1") {
-          @Override public Container makePanel() {
+          @Override public Container createPanel() {
             Box p = Box.createVerticalBox();
             p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
             p.add(new JCheckBox("11111"));
@@ -75,21 +77,21 @@ public final class MainPanel extends JPanel {
           }
         },
         new AbstractExpansionPanel("Panel2") {
-          @Override public Container makePanel() {
+          @Override public Container createPanel() {
             Box p = Box.createVerticalBox();
             p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
             for (int i = 0; i < 16; i++) {
-              p.add(makeLabel(i));
+              p.add(createLabel(i));
             }
             return p;
           }
 
-          private JLabel makeLabel(int i) {
+          private JLabel createLabel(int i) {
             return new JLabel(String.format("%02d", i));
           }
         },
         new AbstractExpansionPanel("Panel3") {
-          @Override public Container makePanel() {
+          @Override public Container createPanel() {
             Box p = Box.createVerticalBox();
             p.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
             ButtonGroup bg = new ButtonGroup();
@@ -132,10 +134,10 @@ abstract class AbstractExpansionPanel extends JPanel {
   // OvershadowingSubclassFields:
   // JComponent: private final EventListenerList listenerList = new EventListenerList();
   private ExpansionEvent expansionEvent;
-  private boolean openFlag;
+  private boolean expanded;
   private final JScrollPane scroll = new JScrollPane();
   private final JButton button = new JButton();
-  private final Container panel = makePanel();
+  private final Container panel = createPanel();
 
   protected AbstractExpansionPanel(String title) {
     super(new BorderLayout());
@@ -157,15 +159,15 @@ abstract class AbstractExpansionPanel extends JPanel {
     super.add(comp, constraints);
   }
 
-  public abstract Container makePanel();
+  public abstract Container createPanel();
 
   public boolean isExpanded() {
-    return openFlag;
+    return expanded;
   }
 
-  public void setExpanded(boolean flg) {
-    openFlag = flg;
-    if (openFlag) {
+  public void setExpanded(boolean expanded) {
+    this.expanded = expanded;
+    if (expanded) {
       add(scroll);
     } else {
       remove(scroll);
@@ -181,7 +183,7 @@ abstract class AbstractExpansionPanel extends JPanel {
   // }
 
   // Notify all listeners that have registered interest in
-  // notification on this event type.The event instance
+  // notification on this event type. The event instance
   // is lazily created using the parameters passed into
   // the fire method.
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
