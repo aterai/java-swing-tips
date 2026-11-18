@@ -14,11 +14,11 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     JDesktopPane desktop = new JDesktopPane();
     desktop.setDesktopManager(new DragDesktopManager(desktop));
-    JInternalFrame frame1 = createFrame(desktop, "Frame1");
+    JInternalFrame frame1 = createFrame("Frame1");
     desktop.add(frame1);
     frame1.setLocation(30, 10);
     frame1.setVisible(true);
-    JInternalFrame frame2 = createFrame(desktop, "Frame2");
+    JInternalFrame frame2 = createFrame("Frame2");
     desktop.add(frame2);
     frame2.setLocation(50, 30);
     frame2.setVisible(true);
@@ -26,12 +26,15 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JInternalFrame createFrame(JDesktopPane desktop, String title) {
+  private static JInternalFrame createFrame(String title) {
     JInternalFrame frame = new JInternalFrame(title, true, true, true, true) {
       @Override protected void paintComponent(Graphics g) {
         // if (isDragging) { // JInternalFrame#isDragging: package private
-        DesktopManager m = desktop.getDesktopManager();
+        JDesktopPane desktop = getDesktopPane();
+        DesktopManager m = desktop == null ? null : desktop.getDesktopManager();
         if (m instanceof DragDesktopManager && ((DragDesktopManager) m).isDraggingFrame(this)) {
+          // The same Graphics is also used to paint the border and children,
+          // so the whole frame is drawn semi-transparent
           AlphaComposite comp = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .2f);
           ((Graphics2D) g).setComposite(comp);
         }
@@ -73,12 +76,12 @@ class DragDesktopManager extends DefaultDesktopManager {
     this.desktop = desktop;
   }
 
-  public void setDraggingFrame(JComponent f) {
+  private void setDraggingFrame(JComponent f) {
     draggingFrame = f;
   }
 
-  public boolean isDraggingFrame(JInternalFrame f) {
-    return Objects.equals(draggingFrame, f);
+  public boolean isDraggingFrame(JComponent f) {
+    return f != null && Objects.equals(draggingFrame, f);
   }
 
   @Override public void beginDraggingFrame(JComponent f) {
@@ -102,5 +105,8 @@ class DragDesktopManager extends DefaultDesktopManager {
     setDraggingFrame(null);
     desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
     super.endResizingFrame(f);
+    // The bounds may not change (e.g. just clicking the border), so repaint
+    // explicitly to clear the semi-transparent state
+    f.repaint();
   }
 }
