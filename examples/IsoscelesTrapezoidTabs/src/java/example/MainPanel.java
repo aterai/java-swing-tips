@@ -6,7 +6,7 @@ package example;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
@@ -52,8 +52,9 @@ public final class MainPanel extends JPanel {
 }
 
 class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
-  private static final int ADJ2 = 3;
-  private static final Color TAB_BGC = Color.LIGHT_GRAY;
+  // horizontal width of the slanted sides of the trapezoid
+  private static final int SLANT_WIDTH = 3;
+  private static final Color TAB_BACKGROUND = Color.LIGHT_GRAY;
   private static final Color TAB_BORDER = Color.GRAY;
   private final Color selectedTabColor = UIManager.getColor("TabbedPane.selected");
 
@@ -67,21 +68,28 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     // copied from BasicTabbedPaneUI#paintTabArea(...)
     for (int i = runCount - 1; i >= 0; i--) {
       int start = tabRuns[i];
-      // int next = tabRuns[(i == runCount - 1) ? 0 : i + 1];
       int next = tabRuns[(i + 1) % runCount];
-      // int end = next == 0 ? tabCount - 1 : next - 1;
-      int end = (next - 1 + tabCount) % tabCount;
-      // for (int j = start; j <= end; j++) {
+      int end = next == 0 ? tabCount - 1 : next - 1;
+      // Paint the tabs from right to left so that the left tab overlaps the right one
       // https://stackoverflow.com/questions/41566659/tabs-rendering-order-in-custom-jtabbedpane
       for (int j = end; j >= start; j--) {
-        if (j != selectedIndex && rects[j].intersects(clipRect)) {
+        if (j != selectedIndex && intersectsTrapezoid(rects[j], clipRect)) {
           paintTab(g, tabPlacement, rects, j, iconRect, textRect);
         }
       }
     }
-    if (selectedIndex >= 0 && rects[selectedIndex].intersects(clipRect)) {
+    if (selectedIndex >= 0 && intersectsTrapezoid(rects[selectedIndex], clipRect)) {
       paintTab(g, tabPlacement, rects, selectedIndex, iconRect, textRect);
     }
+  }
+
+  // The trapezoid sticks out of the tab bounds by SLANT_WIDTH on both sides,
+  // so a tab must also be repainted when only its protruding part is in the clip
+  // (e.g. when only the adjacent tab is repainted by a focus change).
+  private static boolean intersectsTrapezoid(Rectangle tabRect, Rectangle clipRect) {
+    Rectangle r = new Rectangle(tabRect);
+    r.grow(SLANT_WIDTH, 0);
+    return r.intersects(clipRect);
   }
 
   @Override protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
@@ -94,61 +102,44 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
 
   @Override protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
     super.paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+    if (tabPlacement != TOP || selectedIndex < 0) {
+      return;
+    }
     Rectangle selRect = getTabBounds(selectedIndex, calcRect);
-    Graphics2D g2 = (Graphics2D) g.create();
-    g2.setColor(selectedTabColor);
-    g2.drawLine(selRect.x - ADJ2 + 1, y, selRect.x + selRect.width + ADJ2 - 1, y);
-    g2.dispose();
+    // Same condition as BasicTabbedPaneUI: skip if the selected tab is
+    // scrolled out of view (SCROLL_TAB_LAYOUT)
+    if (selRect.x >= x && selRect.x <= x + w) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      g2.setColor(selectedTabColor);
+      g2.drawLine(selRect.x - SLANT_WIDTH + 1, y, selRect.x + selRect.width + SLANT_WIDTH - 1, y);
+      g2.dispose();
+    }
   }
 
   @Override protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+    // The trapezoid sticks out of the tab bounds, so expand the clipping area
     Rectangle clipRect = g2.getClipBounds();
-    clipRect.grow(ADJ2 + 1, 0);
+    clipRect.grow(SLANT_WIDTH + 1, 0);
     g2.setClip(clipRect);
 
-    float textShiftOffset = isSelected ? 0f : 1f;
-    GeneralPath trapezoid = new GeneralPath();
-    trapezoid.moveTo(-ADJ2, h);
-    trapezoid.lineTo(ADJ2, textShiftOffset);
-    trapezoid.lineTo((float) w - ADJ2, textShiftOffset);
-    trapezoid.lineTo((float) w + ADJ2, h);
+    // Unselected tabs are 1px lower than the selected tab
+    float top = isSelected ? 0f : 1f;
+    Path2D trapezoid = new Path2D.Float();
+    trapezoid.moveTo(-SLANT_WIDTH, h);
+    trapezoid.lineTo(SLANT_WIDTH, top);
+    trapezoid.lineTo(w - SLANT_WIDTH, top);
+    trapezoid.lineTo(w + SLANT_WIDTH, h);
     trapezoid.closePath();
     trapezoid.transform(AffineTransform.getTranslateInstance(x, y));
 
-    // TEST: g2.setColor(isSelected ? tabPane.getBackground() : tabBackgroundColor);
-    g2.setColor(isSelected ? selectedTabColor : TAB_BGC);
+    g2.setColor(isSelected ? selectedTabColor : TAB_BACKGROUND);
     g2.fill(trapezoid);
 
     g2.setColor(TAB_BORDER);
     g2.draw(trapezoid);
-
-    // GeneralPath shape = new GeneralPath();
-    // shape.moveTo(x - ADJ2, y + h);
-    // shape.lineTo(x + ADJ2, y + textShiftOffset);
-    // shape.lineTo(x + w - ADJ2, y + textShiftOffset);
-    // shape.lineTo(x + w + ADJ2, y + h);
-    // shape.closePath();
-    // g2.setColor(isSelected ? selectedTabColor : tabBackgroundColor);
-    // g2.fill(shape);
-    //
-    // GeneralPath border = new GeneralPath();
-    // border.moveTo(x - ADJ2, y + h);
-    // // if (isSelected || tabIndex == 0) {
-    // //   border.moveTo(x - ADJ2, y + h);
-    // // } else {
-    // //   // pentagon
-    // //   border.moveTo(x + ADJ2, y + h);
-    // //   border.lineTo(x, (y + h - 1) / 2);
-    // // }
-    // border.lineTo(x + ADJ2, y + textShiftOffset);
-    // border.lineTo(x + w - ADJ2, y + textShiftOffset);
-    // border.lineTo(x + w + ADJ2, y + h);
-    //
-    // g2.setColor(tabBorderColor);
-    // g2.draw(border);
 
     g2.dispose();
   }
