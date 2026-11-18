@@ -12,10 +12,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.*;
@@ -30,12 +28,12 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
     TreeTransferHandler handler = new TreeTransferHandler();
-    add(new JScrollPane(makeTree(handler)));
-    add(new JScrollPane(makeTree(handler)));
+    add(new JScrollPane(createTree(handler)));
+    add(new JScrollPane(createTree(handler)));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JTree makeTree(TransferHandler handler) {
+  private static JTree createTree(TransferHandler handler) {
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     tree.setRootVisible(false);
@@ -45,12 +43,12 @@ public final class MainPanel extends JPanel {
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
     // Disable node Cut action
-    Action empty = new AbstractAction() {
+    Action doNothing = new AbstractAction() {
       @Override public void actionPerformed(ActionEvent e) {
         /* do nothing */
       }
     };
-    tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
+    tree.getActionMap().put(TransferHandler.getCutAction().getValue(Action.NAME), doNothing);
 
     expandTree(tree);
     return tree;
@@ -95,16 +93,11 @@ class TreeTransferHandler extends TransferHandler {
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JTree) c;
-    String msg = "SelectionPaths is null";
-    TreePath[] paths = Objects.requireNonNull(source.getSelectionPaths(), msg);
-    List<Object> nodes = Arrays.stream(paths)
+    TreePath[] paths = source.getSelectionPaths();
+    // An empty list is transferred when nothing is selected, and importData(...) rejects it
+    List<Object> nodes = paths == null ? Collections.emptyList() : Arrays.stream(paths)
         .map(TreePath::getLastPathComponent)
         .collect(Collectors.toList()); // Java 16: .toList();
-    // List<Object> nodes = new ArrayList<>(paths.length);
-    // for (TreePath path : paths) {
-    //   nodes.add(path.getLastPathComponent());
-    // }
-    // return new DataHandler(nodes, FLAVOR.getMimeType());
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -129,33 +122,39 @@ class TreeTransferHandler extends TransferHandler {
   }
 
   @Override public boolean canImport(TransferSupport support) {
-    boolean equals = Objects.equals(source, support.getComponent());
-    return !equals && support.isDrop() && support.isDataFlavorSupported(FLAVOR);
+    boolean isSource = Objects.equals(source, support.getComponent());
+    return !isSource && support.isDrop() && support.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public boolean importData(TransferSupport support) {
-    List<?> nodes = getTransferData(support.getTransferable());
     Component c = support.getComponent();
     DropLocation dl = support.getDropLocation();
+    boolean imported = false;
     if (c instanceof JTree && dl instanceof JTree.DropLocation) {
-      insertNode((JTree) c, (JTree.DropLocation) dl, nodes);
+      List<?> nodes = getTransferData(support.getTransferable());
+      imported = insertNodes((JTree) c, (JTree.DropLocation) dl, nodes);
     }
-    return !nodes.isEmpty();
+    // Returning true lets exportDone(...) remove the nodes from the source tree,
+    // so report success only when the nodes were actually inserted
+    return imported;
   }
 
-  private static void insertNode(JTree tree, JTree.DropLocation dl, List<?> nodes) {
+  private static boolean insertNodes(JTree tree, JTree.DropLocation dl, List<?> nodes) {
     int childIndex = dl.getChildIndex();
-    TreePath path = dl.getPath();
-    DefaultMutableTreeNode tgt = (DefaultMutableTreeNode) path.getLastPathComponent();
+    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) dl.getPath().getLastPathComponent();
     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-    AtomicInteger idx = new AtomicInteger(childIndex < 0 ? tgt.getChildCount() : childIndex);
-    nodes.stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .forEach(n -> {
-          DefaultMutableTreeNode clone = new DefaultMutableTreeNode(n.getUserObject());
-          model.insertNodeInto(deepCopy(n, clone), tgt, idx.getAndIncrement());
-        });
+    int index = childIndex < 0 ? parent.getChildCount() : childIndex;
+    boolean inserted = false;
+    for (Object o : nodes) {
+      if (o instanceof DefaultMutableTreeNode) {
+        // Insert a copy without a parent: inserting the original node would detach it
+        // from the source model, and exportDone(...) could no longer remove it
+        model.insertNodeInto(deepCopy((DefaultMutableTreeNode) o), parent, index);
+        index++;
+        inserted = true;
+      }
+    }
+    return inserted;
   }
 
   private static List<?> getTransferData(Transferable transferable) {
@@ -168,40 +167,27 @@ class TreeTransferHandler extends TransferHandler {
     return nodes;
   }
 
-  private static MutableTreeNode deepCopy(TreeNode src, DefaultMutableTreeNode tgt) {
-    // Java 9: Collections.list(src.children()).stream()
-    Collections.list((Enumeration<?>) src.children()).stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .forEach(node -> {
-          DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-          tgt.add(clone);
-          if (!node.isLeaf()) {
-            deepCopy(node, clone);
-          }
-        });
-    // for (int i = 0; i < src.getChildCount(); i++) {
-    //   DefaultMutableTreeNode node = (DefaultMutableTreeNode) src.getChildAt(i);
-    //   DefaultMutableTreeNode clone = new DefaultMutableTreeNode(node.getUserObject());
-    //   // DefaultMutableTreeNode clone = (DefaultMutableTreeNode) node.clone();
-    //   tgt.add(clone);
-    //   if (!node.isLeaf()) {
-    //     deepCopyTree(node, clone);
-    //   }
-    // }
-    return tgt;
+  private static DefaultMutableTreeNode deepCopy(DefaultMutableTreeNode src) {
+    DefaultMutableTreeNode copy = new DefaultMutableTreeNode(src.getUserObject());
+    for (int i = 0; i < src.getChildCount(); i++) {
+      TreeNode child = src.getChildAt(i);
+      if (child instanceof DefaultMutableTreeNode) {
+        copy.add(deepCopy((DefaultMutableTreeNode) child));
+      }
+    }
+    return copy;
   }
 
   @Override protected void exportDone(JComponent src, Transferable data, int action) {
     if (action == MOVE && src instanceof JTree) {
-      JTree tree = (JTree) src;
-      DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-      TreePath[] selectionPaths = tree.getSelectionPaths();
-      if (selectionPaths != null) {
-        for (TreePath path : selectionPaths) {
-          model.removeNodeFromParent((MutableTreeNode) path.getLastPathComponent());
-        }
-      }
+      // Remove the transferred nodes rather than the current selection,
+      // which may have changed since the drag started
+      DefaultTreeModel model = (DefaultTreeModel) ((JTree) src).getModel();
+      getTransferData(data).stream()
+          .filter(MutableTreeNode.class::isInstance)
+          .map(MutableTreeNode.class::cast)
+          .filter(node -> node.getParent() != null)
+          .forEach(model::removeNodeFromParent);
     }
   }
 }
