@@ -106,8 +106,6 @@ public final class MainPanel extends JPanel {
 class DnDTabbedPane extends JTabbedPane {
   private static final int SCROLL_SZ = 20; // Test
   private static final int BUTTON_SZ = 30; // XXX 30 is magic number of scroll button size
-  private static final Rectangle RECT_BACKWARD = new Rectangle();
-  private static final Rectangle RECT_FORWARD = new Rectangle();
   private int dragTabIndex = -1;
   private final Point pointOnScreen = new Point(-1, -1);
   private transient DnDTabbedPane.DropLocation dropLocation;
@@ -152,21 +150,21 @@ class DnDTabbedPane extends JTabbedPane {
     Optional.ofNullable(button).filter(JButton::isEnabled).ifPresent(JButton::doClick);
   }
 
-  public void autoScrollTest(Point pt) {
+  public void autoScroll(Point pt) {
     Rectangle r = getTabAreaBounds();
-    // int tabPlacement = getTabPlacement();
-    // if (tabPlacement == TOP || tabPlacement == BOTTOM) {
     int arrowBoxSize = SCROLL_SZ + BUTTON_SZ;
+    Rectangle backward;
+    Rectangle forward;
     if (isTopBottomTabPlacement(getTabPlacement())) {
-      RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SZ, r.height);
-      RECT_FORWARD.setBounds(r.x + r.width - arrowBoxSize, r.y, arrowBoxSize, r.height);
+      backward = new Rectangle(r.x, r.y, SCROLL_SZ, r.height);
+      forward = new Rectangle(r.x + r.width - arrowBoxSize, r.y, arrowBoxSize, r.height);
     } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-      RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SZ);
-      RECT_FORWARD.setBounds(r.x, r.y + r.height - arrowBoxSize, r.width, arrowBoxSize);
+      backward = new Rectangle(r.x, r.y, r.width, SCROLL_SZ);
+      forward = new Rectangle(r.x, r.y + r.height - arrowBoxSize, r.width, arrowBoxSize);
     }
-    if (RECT_BACKWARD.contains(pt)) {
+    if (backward.contains(pt)) {
       clickArrowButton("scrollTabsBackwardAction");
-    } else if (RECT_FORWARD.contains(pt)) {
+    } else if (forward.contains(pt)) {
       clickArrowButton("scrollTabsForwardAction");
     }
   }
@@ -234,7 +232,6 @@ class DnDTabbedPane extends JTabbedPane {
     Optional.ofNullable(SwingUtilities.getWindowAncestor(target))
         .ifPresent(Window::toFront);
     target.requestFocusInWindow();
-    target.setSelectedIndex(targetIndex);
     pointOnScreen.setLocation(-1, -1);
   }
 
@@ -249,19 +246,19 @@ class DnDTabbedPane extends JTabbedPane {
     final Icon icon = getIconAt(prev);
     final String tip = getToolTipTextAt(prev);
     final boolean isEnabled = isEnabledAt(prev);
-    int tgtIndex = prev > next ? next : next - 1;
+    int targetIndex = prev > next ? next : next - 1;
     remove(prev);
-    insertTab(title, icon, cmp, tip, tgtIndex);
-    setEnabledAt(tgtIndex, isEnabled);
+    insertTab(title, icon, cmp, tip, targetIndex);
+    setEnabledAt(targetIndex, isEnabled);
     // When you drag and drop a disabled tab, it finishes enabled and selected.
     // pointed out by dlorde
     if (isEnabled) {
-      setSelectedIndex(tgtIndex);
+      setSelectedIndex(targetIndex);
     }
     // I have a component in all tabs (JLabel with an X to close the tab)
     // and when I move a tab the component disappear.
     // pointed out by Daniel Dario Morales Salas
-    setTabComponentAt(tgtIndex, tab);
+    setTabComponentAt(targetIndex, tab);
     pointOnScreen.setLocation(-1, -1);
   }
 
@@ -287,6 +284,13 @@ class DnDTabbedPane extends JTabbedPane {
     tabbedRect.translate(-xx, -yy);
     // tabbedRect.grow(2, 2);
     return tabbedRect;
+  }
+
+  public boolean isDraggedOut() {
+    // The location is reset to (-1, -1) when the tab is imported into a JTabbedPane.
+    // Compare it with this sentinel value instead of checking `x > 0`, because
+    // a screen location can be zero or negative in a multi-monitor environment.
+    return pointOnScreen.x != -1 || pointOnScreen.y != -1;
   }
 
   public static boolean isTopBottomTabPlacement(int tabPlacement) {
@@ -318,8 +322,8 @@ class DnDTabbedPane extends JTabbedPane {
       int idx = src.indexAtLocation(tabPt.x, tabPt.y);
       // disabled tab, null component problem.
       // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
-      boolean b = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
-      startPt.setLocation(b ? new Point(-1, -1) : tabPt);
+      boolean invalid = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
+      startPt.setLocation(invalid ? new Point(-1, -1) : tabPt);
     }
 
     @Override public void mouseDragged(MouseEvent e) {
@@ -398,19 +402,25 @@ class TabTransferHandler extends TransferHandler {
       return false;
     }
   };
-  private JWindow dialog;
+  private JWindow window;
 
   protected TabTransferHandler() {
     super();
-    // System.out.println("TabTransferHandler");
+    // The default DragSource is shared with other drags (e.g. text in a JTextArea),
+    // so update the location only while a tab is being dragged.
     DragSource.getDefaultDragSource().addDragSourceMotionListener(e -> {
-      Point pt = e.getLocation();
-      pt.translate(5, 5); // offset
-      if (dialog != null) {
-        dialog.setLocation(pt);
+      if (isTabDragging() && source != null) {
+        Point pt = e.getLocation();
+        pt.translate(5, 5); // offset
+        window.setLocation(pt);
+        source.getPointOnScreen().setLocation(pt);
       }
-      source.getPointOnScreen().setLocation(pt);
     });
+  }
+
+  private boolean isTabDragging() {
+    // The drag image window is displayable only between getSourceActions() and exportDone().
+    return window != null && window.isDisplayable();
   }
 
   @Override protected Transferable createTransferable(JComponent c) {
@@ -433,7 +443,7 @@ class TabTransferHandler extends TransferHandler {
     DropLocation tdl = support.getDropLocation();
     Point pt = tdl.getDropPoint();
     DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
-    target.autoScrollTest(pt);
+    target.autoScroll(pt);
     DnDTabbedPane.DropLocation dl = target.tabDropLocationForPoint(pt);
     int idx = dl.getIndex();
 
@@ -471,11 +481,11 @@ class TabTransferHandler extends TransferHandler {
       int idx = src.getDragTabIndex();
       if (idx >= 0) {
         label.setIcon(new ImageIcon(ImageUtils.getTabImage(src, idx)));
-        dialog = new JWindow();
-        dialog.setOpacity(.5f);
-        dialog.add(label);
-        dialog.pack();
-        dialog.setVisible(true);
+        window = new JWindow();
+        window.setOpacity(.5f);
+        window.add(label);
+        window.pack();
+        window.setVisible(true);
         action = MOVE;
       }
     }
@@ -512,17 +522,20 @@ class TabTransferHandler extends TransferHandler {
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
-    // System.out.println("exportDone");
     DnDTabbedPane src = (DnDTabbedPane) c;
-    if (src.getPointOnScreen().x > 0) {
-      createNewFrame(src);
+    // exportDone(c, null, NONE) is also called when the drag does not start,
+    // in which case the drag image window has not been created.
+    if (isTabDragging()) {
+      if (src.isDraggedOut()) {
+        createNewFrame(src);
+      }
+      window.dispose();
     }
     if (src.getTabCount() == 0) {
       Optional.ofNullable(SwingUtilities.getWindowAncestor(src)).ifPresent(Window::dispose);
     }
     src.updateTabDropLocation(null, false);
     src.repaint();
-    dialog.dispose();
   }
 
   private static void createNewFrame(DnDTabbedPane src) {
@@ -551,6 +564,7 @@ class TabTransferHandler extends TransferHandler {
     frame.getContentPane().add(new JLayer<>(tabs, new DropLocationLayerUI()));
     frame.setSize(320, 240);
     frame.setLocation(src.getPointOnScreen());
+    src.getPointOnScreen().setLocation(-1, -1);
     frame.setVisible(true);
     EventQueue.invokeLater(frame::toFront);
   }
