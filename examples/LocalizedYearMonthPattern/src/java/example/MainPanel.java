@@ -49,14 +49,14 @@ public final class MainPanel extends JPanel {
     p.add(next, BorderLayout.EAST);
 
     JTextArea log = new JTextArea();
+    YearMonth currentYearMonth = YearMonth.now(ZoneId.systemDefault());
     Arrays.asList(Locale.JAPAN, Locale.US, Locale.FRANCE).forEach(loc -> {
       boolean isYearFirst = CalendarUtils.isYearFirst(loc);
       String pattern = isYearFirst ? "yyyy/MMM" : "MMM/yyyy";
-      YearMonth currentYm = YearMonth.now(ZoneId.systemDefault());
       DateTimeFormatter fmt = DateTimeFormatter.ofPattern(pattern, loc);
-      String str = currentYm.format(fmt);
+      String text = currentYearMonth.format(fmt);
       String lang = loc.toLanguageTag();
-      log.append(String.format("%s, %s, isYearFirst? %b%n", lang, str, isYearFirst));
+      log.append(String.format("%s, %s, isYearFirst? %b%n", lang, text, isYearFirst));
     });
 
     add(p, BorderLayout.NORTH);
@@ -70,8 +70,8 @@ public final class MainPanel extends JPanel {
     table.setCurrentLocalDate(date);
     Locale locale = Locale.getDefault();
     DateTimeFormatter fmt = CalendarUtils.getLocalizedYearMonthFormatter(locale);
-    String txt = date.format(fmt.withLocale(locale));
-    label.setText(CalendarUtils.getLocalizedYearMonthText(txt));
+    String text = date.format(fmt);
+    label.setText(CalendarUtils.getLocalizedYearMonthText(text));
     table.setModel(new CalendarViewTableModel(date));
   }
 
@@ -193,8 +193,8 @@ class CalendarViewTableModel extends DefaultTableModel {
     // LocalDate firstDayOfMonth = date.with(TemporalAdjusters.firstDayOfMonth());
     LocalDate firstDayOfMonth = YearMonth.from(date).atDay(1);
     // int v = firstDayOfMonth.get(WeekFields.SUNDAY_START.dayOfWeek()) - 1;
-    int v = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
-    startDate = firstDayOfMonth.minusDays(v);
+    int offset = firstDayOfMonth.get(weekFields.dayOfWeek()) - 1;
+    startDate = firstDayOfMonth.minusDays(offset);
   }
 
   @Override public Class<?> getColumnClass(int column) {
@@ -224,6 +224,11 @@ class CalendarViewTableModel extends DefaultTableModel {
 }
 
 final class CalendarUtils {
+  private static final Pattern YEAR = Pattern.compile("(y+)");
+  private static final Pattern MONTH = Pattern.compile("(M+)");
+  // Quoted literal text such as 'de' in "d 'de' MMMM 'de' y"
+  private static final Pattern QUOTED = Pattern.compile("'[^']*'");
+
   private CalendarUtils() {
     /* Singleton */
   }
@@ -231,28 +236,33 @@ final class CalendarUtils {
   public static String getLocalizedPattern(Locale locale) {
     // DateFormat formatter = DateFormat.getDateInstance(DateFormat.LONG, locale);
     // return ((SimpleDateFormat) formatter).toLocalizedPattern();
-    return DateTimeFormatterBuilder.getLocalizedDateTimePattern(
+    String pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
         FormatStyle.LONG, null, Chronology.ofLocale(locale), locale);
+    // Remove quoted literals so that letters inside them are not
+    // mistaken for the year or month pattern symbols
+    return QUOTED.matcher(pattern).replaceAll("");
   }
 
   public static DateTimeFormatter getLocalizedYearMonthFormatter(Locale locale) {
     String localizedPattern = getLocalizedPattern(locale);
-    String year = find(localizedPattern, Pattern.compile("(y+)"));
-    String month = find(localizedPattern, Pattern.compile("(M+)"));
-    String pattern = isYearFirst(locale) ? year + " " + month : month + " " + year;
-    return DateTimeFormatter.ofPattern(pattern);
+    String year = find(localizedPattern, YEAR);
+    String month = find(localizedPattern, MONTH);
+    boolean yearFirst = isYearFirst(localizedPattern);
+    String pattern = yearFirst ? year + " " + month : month + " " + year;
+    return DateTimeFormatter.ofPattern(pattern, locale);
   }
 
-  public static String getLocalizedYearMonthText(String str) {
-    String[] list = str.split(" ");
+  public static String getLocalizedYearMonthText(String text) {
+    String[] tokens = text.split(" ");
     String txt;
-    boolean isNumeric = Arrays.stream(list)
+    boolean isNumeric = Arrays.stream(tokens)
         .flatMapToInt(String::chars)
         .allMatch(Character::isDigit);
-    if (isNumeric) {
-      txt = list[0] + " / " + list[1];
+    if (isNumeric && tokens.length == 2) {
+      // e.g. "2025 7" -> "2025 / 7"
+      txt = tokens[0] + " / " + tokens[1];
     } else {
-      txt = str;
+      txt = text;
     }
     return txt;
   }
@@ -274,7 +284,10 @@ final class CalendarUtils {
   // }
 
   public static boolean isYearFirst(Locale locale) {
-    String localizedPattern = getLocalizedPattern(locale);
+    return isYearFirst(getLocalizedPattern(locale));
+  }
+
+  private static boolean isYearFirst(String localizedPattern) {
     int yearIndex = localizedPattern.indexOf('y');
     int monthIndex = localizedPattern.indexOf('M');
     return yearIndex != -1 && monthIndex != -1 && yearIndex < monthIndex;
