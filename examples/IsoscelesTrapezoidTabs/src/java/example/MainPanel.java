@@ -25,8 +25,27 @@ public final class MainPanel extends JPanel {
     tabs.addTab("JTree", new JScrollPane(new JTree()));
     tabs.addTab("JButton", new JButton("button"));
     tabs.addTab("JSplitPane", new JSplitPane());
+
+    // Switch the tab placement between TOP and BOTTOM
+    JPanel box = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    box.add(new JLabel("TabPlacement:"));
+    JRadioButton top = createRadioButton("TOP", SwingConstants.TOP, tabs);
+    JRadioButton bottom = createRadioButton("BOTTOM", SwingConstants.BOTTOM, tabs);
+    ButtonGroup group = new ButtonGroup();
+    group.add(top);
+    group.add(bottom);
+    box.add(top);
+    box.add(bottom);
+
+    add(box, BorderLayout.NORTH);
     add(tabs);
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static JRadioButton createRadioButton(String text, int placement, JTabbedPane tabs) {
+    JRadioButton radio = new JRadioButton(text, tabs.getTabPlacement() == placement);
+    radio.addActionListener(e -> tabs.setTabPlacement(placement));
+    return radio;
   }
 
   public static void main(String[] args) {
@@ -102,17 +121,40 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
 
   @Override protected void paintContentBorderTopEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
     super.paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
-    if (tabPlacement != TOP || selectedIndex < 0) {
-      return;
-    }
-    Rectangle selRect = getTabBounds(selectedIndex, calcRect);
-    // Same condition as BasicTabbedPaneUI: skip if the selected tab is
-    // scrolled out of view (SCROLL_TAB_LAYOUT)
-    if (selRect.x >= x && selRect.x <= x + w) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      g2.setColor(selectedTabColor);
-      g2.drawLine(selRect.x - SLANT_WIDTH + 1, y, selRect.x + selRect.width + SLANT_WIDTH - 1, y);
+    if (tabPlacement == TOP) {
+      Graphics g2 = g.create();
+      paintSelectedTabEdge(g2, selectedIndex, x, w, y);
       g2.dispose();
+    }
+  }
+
+  @Override protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
+    if (tabPlacement == BOTTOM) {
+      // Mirror of the TOP edge: a single 1px line in the same color as the top edge
+      // instead of the BasicTabbedPaneUI 3D shadow lines
+      Graphics g2 = g.create();
+      int lineY = y + h - 1;
+      g2.setColor(lightHighlight);
+      g2.drawLine(x, lineY, x + w - 2, lineY);
+      paintSelectedTabEdge(g2, selectedIndex, x, w, lineY);
+      g2.dispose();
+    } else {
+      super.paintContentBorderBottomEdge(g, tabPlacement, selectedIndex, x, y, w, h);
+    }
+  }
+
+  // Paint over the content border line covered by the long side of the selected trapezoidal tab
+  private void paintSelectedTabEdge(Graphics g, int selectedIndex, int x, int w, int lineY) {
+    if (selectedIndex >= 0) {
+      Rectangle selRect = getTabBounds(selectedIndex, calcRect);
+      // Same condition as BasicTabbedPaneUI: skip if the selected tab is
+      // scrolled out of view (SCROLL_TAB_LAYOUT)
+      if (selRect.x >= x && selRect.x <= x + w) {
+        g.setColor(selectedTabColor);
+        int x1 = selRect.x - SLANT_WIDTH + 1;
+        int x2 = selRect.x + selRect.width + SLANT_WIDTH - 1;
+        g.drawLine(x1, lineY, x2, lineY);
+      }
     }
   }
 
@@ -125,14 +167,7 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     clipRect.grow(SLANT_WIDTH + 1, 0);
     g2.setClip(clipRect);
 
-    // Unselected tabs are 1px lower than the selected tab
-    float top = isSelected ? 0f : 1f;
-    Path2D trapezoid = new Path2D.Float();
-    trapezoid.moveTo(-SLANT_WIDTH, h);
-    trapezoid.lineTo(SLANT_WIDTH, top);
-    trapezoid.lineTo(w - SLANT_WIDTH, top);
-    trapezoid.lineTo(w + SLANT_WIDTH, h);
-    trapezoid.closePath();
+    Path2D trapezoid = createTrapezoid(tabPlacement, w, h, isSelected);
     trapezoid.transform(AffineTransform.getTranslateInstance(x, y));
 
     g2.setColor(isSelected ? selectedTabColor : TAB_BACKGROUND);
@@ -142,5 +177,26 @@ class IsoscelesTrapezoidTabbedPaneUI extends BasicTabbedPaneUI {
     g2.draw(trapezoid);
 
     g2.dispose();
+  }
+
+  // TOP: the long side is at the bottom, adjoining the content area.
+  // BOTTOM: vertically flipped, the long side is at the top.
+  // Unselected tabs are 1px shorter than the selected tab on the side away from the content area.
+  // A normalized 1px stroke at an integer y lights the pixel row y (just below the coordinate),
+  // so the mirror of y = h is y = -1: the BOTTOM trapezoid is shifted up by 1px so that
+  // its long side falls outside the tab area (clipped) just like the TOP one, instead of
+  // drawing an extra line right below the content border edge.
+  private static Path2D createTrapezoid(int tabPlacement, int w, int h, boolean isSelected) {
+    float inset = isSelected ? 0f : 1f;
+    boolean bottom = tabPlacement == BOTTOM;
+    float longSideY = bottom ? -1f : h;
+    float shortSideY = bottom ? h - 1f - inset : inset;
+    Path2D trapezoid = new Path2D.Float();
+    trapezoid.moveTo(-SLANT_WIDTH, longSideY);
+    trapezoid.lineTo(SLANT_WIDTH, shortSideY);
+    trapezoid.lineTo(w - SLANT_WIDTH, shortSideY);
+    trapezoid.lineTo(w + SLANT_WIDTH, longSideY);
+    trapezoid.closePath();
+    return trapezoid;
   }
 }
