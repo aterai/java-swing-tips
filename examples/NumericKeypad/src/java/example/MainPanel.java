@@ -29,62 +29,63 @@ public final class MainPanel extends JPanel {
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.gridy = 0;
-    JPanel p = new JPanel(new GridBagLayout());
-    p.add(makeButton("<html>Num<br>Lock"), c);
+    JPanel panel = new JPanel(new GridBagLayout());
+    panel.add(makeButton("<html>Num<br>Lock"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    p.add(makeButton("/"), c);
-    p.add(makeButton("*"), c);
-    p.add(makeButton("-"), c);
+    panel.add(makeButton("/"), c);
+    panel.add(makeButton("*"), c);
+    panel.add(makeButton("-"), c);
     c.gridx = 0;
     c.gridy++;
-    p.add(makeButton("7", "Home"), c);
+    panel.add(makeButton("7", "Home"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    p.add(makeButton("8", "↑"), c);
-    p.add(makeButton("9", "PgUp"), c);
+    panel.add(makeButton("8", "↑"), c);
+    panel.add(makeButton("9", "PgUp"), c);
     c.gridheight = 2;
-    p.add(makeButton("+", "+"), c);
+    panel.add(makeButton("+", "+"), c);
     c.gridx = 0;
     c.gridy++;
     c.gridheight = 1;
-    p.add(makeButton("4", "←"), c);
+    panel.add(makeButton("4", "←"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    p.add(makeButton("5"), c);
-    p.add(makeButton("6", "→"), c);
+    panel.add(makeButton("5"), c);
+    panel.add(makeButton("6", "→"), c);
     c.gridx = 0;
     c.gridy++;
-    p.add(makeButton("1", "End"), c);
+    panel.add(makeButton("1", "End"), c);
     c.gridx = GridBagConstraints.RELATIVE;
-    p.add(makeButton("2", "↓"), c);
-    p.add(makeButton("3", "PgDn"), c);
+    panel.add(makeButton("2", "↓"), c);
+    panel.add(makeButton("3", "PgDn"), c);
     c.gridheight = 2;
     JButton enter = makeButton("Enter", "Enter");
-    p.add(enter, c);
+    panel.add(enter, c);
+    // The root pane is not available until the keypad is added to a window
     EventQueue.invokeLater(() -> {
-      p.getRootPane().setDefaultButton(enter);
+      panel.getRootPane().setDefaultButton(enter);
       enter.requestFocusInWindow();
     });
     c.gridx = 0;
     c.gridy++;
     c.gridwidth = 2;
     c.gridheight = 1;
-    p.add(makeButton("0", "Insert"), c);
+    panel.add(makeButton("0", "Insert"), c);
     c.gridx = GridBagConstraints.RELATIVE;
     c.gridwidth = 1;
-    p.add(makeButton(".", "Delete"), c);
-    return p;
+    panel.add(makeButton(".", "Delete"), c);
+    return panel;
   }
 
-  private static JButton makeButton(String... s) {
-    String key = s[0];
-    String sub = s.length > 1 ? s[1] : " ";
+  private static JButton makeButton(String... labels) {
+    String key = labels[0];
+    String sub = labels.length > 1 ? labels[1] : " ";
     int gap = 2;
     Border border = BorderFactory.createEmptyBorder(gap, gap, gap, gap);
-    JLabel l1 = new JLabel(key);
-    l1.setFont(l1.getFont().deriveFont(12f));
-    l1.setBorder(border);
-    JLabel l2 = new JLabel(sub);
-    l2.setFont(l2.getFont().deriveFont(9.5f));
-    l2.setBorder(border);
+    JLabel keyLabel = new JLabel(key);
+    keyLabel.setFont(keyLabel.getFont().deriveFont(12f));
+    keyLabel.setBorder(border);
+    JLabel subLabel = new JLabel(sub);
+    subLabel.setFont(subLabel.getFont().deriveFont(9.5f));
+    subLabel.setBorder(border);
     JButton button = new JButton() {
       @Override public void updateUI() {
         super.updateUI();
@@ -93,8 +94,8 @@ public final class MainPanel extends JPanel {
       }
 
       @Override public Dimension getPreferredSize() {
-        int sz = SIZE - gap * 2;
-        return new Dimension(sz, sz);
+        int size = SIZE - gap * 2;
+        return new Dimension(size, size);
       }
     };
     // button.addActionListener(e -> {
@@ -103,10 +104,10 @@ public final class MainPanel extends JPanel {
     //   }
     // });
     if (Objects.equals(key, sub)) {
-      button.add(l1);
+      button.add(keyLabel);
     } else {
-      button.add(l1, BorderLayout.NORTH);
-      button.add(l2, BorderLayout.SOUTH);
+      button.add(keyLabel, BorderLayout.NORTH);
+      button.add(subLabel, BorderLayout.SOUTH);
     }
     return button;
   }
@@ -115,7 +116,7 @@ public final class MainPanel extends JPanel {
   //   String s1 = s.length > 1 ? s[1] : "&nbsp;";
   //   String title = String.format("<html>%s<br><span style='font-size:80%%'>%s", s[0], s1);
   //   int gap = 2;
-  //   int sz = SIZE - gap * 2;
+  //   int size = SIZE - gap * 2;
   //   JLabel label = new JLabel(title, null, SwingConstants.LEFT);
   //   label.setPreferredSize(new Dimension(sz, sz));
   //   label.setBorder(BorderFactory.createEmptyBorder(gap, gap, gap, gap));
