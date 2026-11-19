@@ -22,8 +22,8 @@ public final class MainPanel extends JPanel {
     bg.add(b1);
     bg.add(b2);
     JPanel p = new JPanel(new GridLayout(1, 2, 5, 5));
-    String help = "RadioCard with JToggleButton and JRadioButton";
-    p.setBorder(BorderFactory.createTitledBorder(help));
+    String title = "RadioCard with JToggleButton and JRadioButton";
+    p.setBorder(BorderFactory.createTitledBorder(title));
     p.add(makeRadioIconLayer(b1));
     p.add(makeRadioIconLayer(b2));
     add(p);
@@ -41,15 +41,13 @@ public final class MainPanel extends JPanel {
     LayerUI<AbstractButton> layer = new LayerUI<AbstractButton>() {
       @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (c instanceof JLayer) {
-          AbstractButton b = (AbstractButton) ((JLayer<?>) c).getView();
-          Graphics2D g2 = (Graphics2D) g.create();
-          radio.setSelected(b.isSelected());
-          int x = i.left - d.width + 8;
-          int y = i.top + 8;
-          SwingUtilities.paintComponent(g2, radio, b, x, y, d.width, d.height);
-          g2.dispose();
-        }
+        // The view of this JLayer is always the captured button, so there is no need
+        // to cast JLayer#getView(). SwingUtilities#paintComponent(...) creates its own
+        // Graphics copy internally, so g.create()/dispose() is also unnecessary.
+        radio.setSelected(button.isSelected());
+        int x = i.left - d.width + 8;
+        int y = i.top + 8;
+        SwingUtilities.paintComponent(g, radio, button, x, y, d.width, d.height);
       }
     };
     return new JLayer<>(button, layer);
