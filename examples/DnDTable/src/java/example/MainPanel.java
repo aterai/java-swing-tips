@@ -29,6 +29,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 public final class MainPanel extends JPanel {
+  private static final Class<?>[] COLUMN_CLASSES = {String.class, Integer.class, Boolean.class};
+
   private MainPanel() {
     super(new BorderLayout());
     JTable table = new DnDTable(makeModel());
@@ -51,8 +53,9 @@ public final class MainPanel extends JPanel {
         {"eee", 1, true}, {"GGG", 3, false}, {"hhh", 72, true}, {"fff", 4, false},
     };
     return new DefaultTableModel(data, columnNames) {
+      // Do not depend on getValueAt(0, column): all rows can be deleted from the popup menu
       @Override public Class<?> getColumnClass(int column) {
-        return getValueAt(0, column).getClass();
+        return COLUMN_CLASSES[column];
       }
     };
   }
@@ -117,6 +120,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
   private static final DataFlavor FLAVOR = new DataFlavor(MIME_TYPE, NAME);
   private static final Color LINE_COLOR = new Color(0xFF_64_64);
   private static final Color EVEN_COLOR = new Color(0xF0_F0_F0);
+  private static final int LINE_HEIGHT = 2;
   private int draggedIndex = -1;
   private int targetIndex = -1;
   private final Rectangle targetLine = new Rectangle();
@@ -150,34 +154,33 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
     return c;
   }
 
-  protected void initTargetLine(Point p) {
-    Rectangle rect = new Rectangle();
-    int cellHeight = getRowHeight();
-    int lineWidth = getWidth();
-    int lineHeight = 2;
-    rect.setSize(lineWidth, cellHeight);
-    targetLine.setSize(lineWidth, lineHeight);
-    targetIndex = -1;
+  protected void updateTargetLine(Point p) {
     int rowCount = getRowCount();
-    for (int i = 0; i < rowCount; i++) {
-      rect.setLocation(0, cellHeight * i - cellHeight / 2);
-      if (rect.contains(p)) {
-        targetIndex = i;
-        targetLine.setLocation(0, i * cellHeight);
-        break;
-      }
-    }
-    if (targetIndex < 0) {
+    int row = rowAtPoint(p);
+    if (row < 0) {
       targetIndex = rowCount;
-      targetLine.setLocation(0, targetIndex * cellHeight - lineHeight);
+    } else {
+      // Insert after the row if the cursor is in its lower half
+      Rectangle r = getCellRect(row, 0, true);
+      targetIndex = p.y < r.getCenterY() ? row : row + 1;
     }
+    int y;
+    if (targetIndex < rowCount) {
+      y = getCellRect(targetIndex, 0, true).y;
+    } else if (rowCount > 0) {
+      Rectangle r = getCellRect(rowCount - 1, 0, true);
+      y = r.y + r.height - LINE_HEIGHT;
+    } else {
+      y = 0;
+    }
+    targetLine.setBounds(0, y, getWidth(), LINE_HEIGHT);
   }
 
   // Interface: DragGestureListener
   @Override public void dragGestureRecognized(DragGestureEvent e) {
-    boolean onlyOneSelected = getSelectedRowCount() == 1;
     draggedIndex = rowAtPoint(e.getDragOrigin());
-    if (onlyOneSelected && draggedIndex >= 0) {
+    // Only a single selected row under the drag origin can be moved
+    if (getSelectedRowCount() == 1 && draggedIndex >= 0 && isRowSelected(draggedIndex)) {
       try {
         e.startDrag(DragSource.DefaultMoveDrop, this, this);
       } catch (InvalidDnDOperationException ex) {
@@ -204,7 +207,11 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
   }
 
   @Override public void dragDropEnd(DragSourceDropEvent e) {
-    // e.getDragSourceContext().setCursor(Cursor.getDefaultCursor());
+    // Always called at the end of a drag, including a cancel or a drop outside the table
+    setCursor(Cursor.getDefaultCursor());
+    draggedIndex = -1;
+    targetIndex = -1;
+    repaint();
   }
 
   // Interface: Transferable
@@ -217,7 +224,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
   }
 
   @Override public boolean isDataFlavorSupported(DataFlavor flavor) {
-    return NAME.equals(flavor.getHumanPresentableName());
+    return FLAVOR.equals(flavor);
   }
 
   private final class RowDropTargetListener implements DropTargetListener {
@@ -238,7 +245,7 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
       if (isDragAcceptable(e)) {
         e.acceptDrag(e.getDropAction());
         setCursor(DragSource.DefaultMoveDrop);
-        initTargetLine(e.getLocation());
+        updateTargetLine(e.getLocation());
         repaint();
       } else {
         e.rejectDrag();
@@ -247,50 +254,34 @@ class DnDTable extends JTable implements DragGestureListener, DragSourceListener
     }
 
     @Override public void dropActionChanged(DropTargetDragEvent e) {
-      // if (isDragAcceptable(e)) {
-      //   e.acceptDrag(e.getDropAction());
-      // } else {
-      //   e.rejectDrag();
-      // }
+      /* not needed */
     }
 
     @Override public void drop(DropTargetDropEvent e) {
-      // Transferable t = e.getTransferable();
-      // DataFlavor[] f = t.getTransferDataFlavors();
-      // Component c = null;
-      // try {
-      //   c = (Component) t.getTransferData(f[0]);
-      // } catch (UnsupportedFlavorException | IOException ex) {
-      //   e.dropComplete(false);
-      // }
-      // if (c instanceof JTable) {
-      //   JTable table = (JTable) c;
-      //   DefaultTableModel model = (DefaultTableModel) table.getModel();
-      DefaultTableModel model = (DefaultTableModel) getModel();
       if (isDropAcceptable(e)) {
-        if (targetIndex == draggedIndex) {
-          setRowSelectionInterval(targetIndex, targetIndex);
-        } else {
-          int tg = targetIndex < draggedIndex ? targetIndex : targetIndex - 1;
-          model.moveRow(draggedIndex, draggedIndex, tg);
-          setRowSelectionInterval(tg, tg);
+        e.acceptDrop(e.getDropAction());
+        DefaultTableModel model = (DefaultTableModel) getModel();
+        // Removing the dragged row shifts the following rows up by one
+        int toIndex = targetIndex > draggedIndex ? targetIndex - 1 : targetIndex;
+        if (toIndex != draggedIndex) {
+          model.moveRow(draggedIndex, draggedIndex, toIndex);
         }
+        setRowSelectionInterval(toIndex, toIndex);
         e.dropComplete(true);
       } else {
-        e.dropComplete(false);
+        e.rejectDrop();
       }
-      e.dropComplete(false);
       setCursor(Cursor.getDefaultCursor());
       targetIndex = -1;
       repaint();
     }
 
     private boolean isDragAcceptable(DropTargetDragEvent e) {
-      return isDataFlavorSupported(e.getCurrentDataFlavors()[0]);
+      return draggedIndex >= 0 && e.isDataFlavorSupported(FLAVOR);
     }
 
     private boolean isDropAcceptable(DropTargetDropEvent e) {
-      return isDataFlavorSupported(e.getTransferable().getTransferDataFlavors()[0]);
+      return draggedIndex >= 0 && targetIndex >= 0 && e.isDataFlavorSupported(FLAVOR);
     }
   }
 }
