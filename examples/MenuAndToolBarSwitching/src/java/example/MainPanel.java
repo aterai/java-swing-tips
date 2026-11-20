@@ -23,7 +23,7 @@ public final class MainPanel extends JPanel {
 
     PopupMenuListener switchHandler = new PopupMenuListener() {
       @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        // not need
+        // not needed
       }
 
       @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
@@ -38,6 +38,7 @@ public final class MainPanel extends JPanel {
         EventQueue.invokeLater(() -> getRootPane().setJMenuBar(wrappingMenuBar));
       }
     };
+    // Keep the JPopupMenu open when its top-level JMenu is pressed again
     MouseAdapter popupKeeper = new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
@@ -87,9 +88,9 @@ public final class MainPanel extends JPanel {
     toolBar.add(button);
     toolBar.add(Box.createHorizontalStrut(5));
     toolBar.add(new JLabel("<- Switch to JMenuBar"));
-    JCheckBox check = new JCheckBox("JCheckBox");
-    check.setOpaque(false);
-    toolBar.add(check);
+    JCheckBox checkBox = new JCheckBox("JCheckBox");
+    checkBox.setOpaque(false);
+    toolBar.add(checkBox);
     return toolBar;
   }
 
@@ -111,10 +112,10 @@ public final class MainPanel extends JPanel {
     menu.addSeparator();
     menu.add("4444");
     menu.add("55555");
-    JMenu sub = new JMenu("sub");
-    sub.add("666");
-    sub.add("777");
-    menu.add(sub);
+    JMenu subMenu = new JMenu("sub");
+    subMenu.add("666");
+    subMenu.add("777");
+    menu.add(subMenu);
     return menu;
   }
 
