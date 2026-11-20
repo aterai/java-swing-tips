@@ -64,7 +64,7 @@ public final class MainPanel extends JPanel {
 }
 
 class RubberBandSelectionList<E extends ListItem> extends JList<E> {
-  private transient RubberBandingListener rbl;
+  private transient RubberBandingListener handler;
   private Color rubberBandColor;
   private final Path2D rubberBand = new Path2D.Double();
 
@@ -76,11 +76,11 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     setSelectionForeground(null); // Nimbus
     setSelectionBackground(null); // Nimbus
     setCellRenderer(null);
-    removeMouseListener(rbl);
-    removeMouseMotionListener(rbl);
+    removeMouseListener(handler);
+    removeMouseMotionListener(handler);
     super.updateUI();
 
-    rubberBandColor = makeRubberBandColor(getSelectionBackground());
+    rubberBandColor = createRubberBandColor(getSelectionBackground());
     setLayoutOrientation(HORIZONTAL_WRAP);
     setVisibleRowCount(0);
     setFixedCellWidth(74);
@@ -88,9 +88,9 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     setCellRenderer(new ListItemListCellRenderer<>());
-    rbl = new RubberBandingListener();
-    addMouseMotionListener(rbl);
-    addMouseListener(rbl);
+    handler = new RubberBandingListener();
+    addMouseMotionListener(handler);
+    addMouseListener(handler);
   }
 
   @Override protected void paintComponent(Graphics g) {
@@ -104,86 +104,68 @@ class RubberBandSelectionList<E extends ListItem> extends JList<E> {
     g2.dispose();
   }
 
-  private static Color makeRubberBandColor(Color c) {
+  private static Color createRubberBandColor(Color c) {
     int r = c.getRed();
     int g = c.getGreen();
     int b = c.getBlue();
+    // Keep only the dominant RGB component of the selection background.
+    // Color(int) is 0xRRGGBB, so red is shifted by 16 bits and green by 8 bits.
     int max = Math.max(Math.max(r, g), b);
     if (max == r) {
-      max <<= 8;
+      max <<= 16;
     } else if (max == g) {
-      max <<= 4;
+      max <<= 8;
     }
     return new Color(max);
-    // return r > g ? r > b ? new Color(r, 0, 0) : new Color(0, 0, b)
-    //              : g > b ? new Color(0, g, 0) : new Color(0, 0, b);
-  }
-
-  protected Path2D getRubberBand() {
-    return rubberBand;
   }
 
   private final class RubberBandingListener extends MouseAdapter {
-    private final Point srcPoint = new Point();
+    private final Point startPoint = new Point();
 
     @Override public void mouseDragged(MouseEvent e) {
-      JList<?> l = (JList<?>) e.getComponent();
-      l.setFocusable(true);
-      Point dstPoint = e.getPoint();
-      Path2D rb = getRubberBand();
-      rb.reset();
-      rb.moveTo(srcPoint.x, srcPoint.y);
-      rb.lineTo(dstPoint.x, srcPoint.y);
-      rb.lineTo(dstPoint.x, dstPoint.y);
-      rb.lineTo(srcPoint.x, dstPoint.y);
-      rb.closePath();
+      JList<?> list = (JList<?>) e.getComponent();
+      list.setFocusable(true);
+      Point endPoint = e.getPoint();
+      rubberBand.reset();
+      rubberBand.moveTo(startPoint.x, startPoint.y);
+      rubberBand.lineTo(endPoint.x, startPoint.y);
+      rubberBand.lineTo(endPoint.x, endPoint.y);
+      rubberBand.lineTo(startPoint.x, endPoint.y);
+      rubberBand.closePath();
 
-      // JDK 1.7.0: l.setSelectedIndices(getIntersectsIcons(l, rubberBand));
-      int[] indices = IntStream.range(0, l.getModel().getSize())
-          .filter(i -> rb.intersects(l.getCellBounds(i, i))).toArray();
-      l.setSelectedIndices(indices);
-      l.repaint();
+      // A Path2D is used instead of a Rectangle so that a zero-width or
+      // zero-height rubber band (a straight line) still intersects the cells.
+      int[] indices = IntStream.range(0, list.getModel().getSize())
+          .filter(i -> rubberBand.intersects(list.getCellBounds(i, i)))
+          .toArray();
+      list.setSelectedIndices(indices);
+      list.repaint();
     }
 
     @Override public void mouseReleased(MouseEvent e) {
-      getRubberBand().reset();
+      rubberBand.reset();
       Component c = e.getComponent();
       c.setFocusable(true);
       c.repaint();
     }
 
     @Override public void mousePressed(MouseEvent e) {
-      JList<?> l = (JList<?>) e.getComponent();
+      JList<?> list = (JList<?>) e.getComponent();
       Point pt = e.getPoint();
-      int index = l.locationToIndex(pt);
-      if (l.getCellBounds(index, index).contains(pt)) {
-        l.setFocusable(true);
+      int index = list.locationToIndex(pt);
+      // getCellBounds(...) returns null if the list is empty (index == -1)
+      Rectangle r = list.getCellBounds(index, index);
+      if (r != null && r.contains(pt)) {
+        list.setFocusable(true);
       } else {
-        l.clearSelection();
-        l.getSelectionModel().setAnchorSelectionIndex(-1);
-        l.getSelectionModel().setLeadSelectionIndex(-1);
-        l.setFocusable(false);
+        list.clearSelection();
+        list.getSelectionModel().setAnchorSelectionIndex(-1);
+        list.getSelectionModel().setLeadSelectionIndex(-1);
+        list.setFocusable(false);
       }
-      srcPoint.setLocation(pt);
-      l.repaint();
+      startPoint.setLocation(pt);
+      list.repaint();
     }
-
-    // // JDK 1.7.0
-    // private static int[] getIntersectsIcons(JList<?> l, Shape rect) {
-    //   ListModel model = l.getModel();
-    //   List<Integer> ll = new ArrayList<>(model.getSize());
-    //   for (int i = 0; i < model.getSize(); i++) {
-    //     if (rect.intersects(l.getCellBounds(i, i))) {
-    //       ll.add(i);
-    //     }
-    //   }
-    //   // JDK 1.8.0: return ll.stream().mapToInt(Integer::intValue).toArray();
-    //   int[] il = new int[ll.size()];
-    //   for (int i = 0; i < ll.size(); i++) {
-    //     il[i] = ll.get(i);
-    //   }
-    //   return il;
-    // }
   }
 }
 
@@ -197,7 +179,8 @@ class SelectedImageFilter extends RGBImageFilter {
     // float[] array = new float[4];
     // color.getComponents(array);
     // return new Color(array[0], array[1], array[2] * .5f, array[3]).getRGB();
-    return argb & 0xFF_FF_FF_00 | (argb & 0xFF) >> 1;
+    // Halve the blue component
+    return (argb & 0xFF_FF_FF_00) | ((argb & 0xFF) >> 1);
   }
 }
 
@@ -243,8 +226,6 @@ class ListItemListCellRenderer<E extends ListItem> implements ListCellRenderer<E
     }
     noFocusBorder = b;
     icon.setOpaque(false);
-    label.setForeground(renderer.getForeground());
-    label.setBackground(renderer.getBackground());
     label.setBorder(noFocusBorder);
 
     renderer.setOpaque(false);
