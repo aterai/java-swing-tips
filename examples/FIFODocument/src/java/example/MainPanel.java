@@ -111,22 +111,29 @@ class FifoDocumentListener implements DocumentListener {
 
   @Override public void insertUpdate(DocumentEvent e) {
     Document doc = e.getDocument();
-    Element root = doc.getDefaultRootElement();
-    if (root.getElementCount() > MAX_LINES) {
-      EventQueue.invokeLater(() -> removeLines(doc, root));
-      textComponent.setCaretPosition(doc.getLength());
+    if (doc.getDefaultRootElement().getElementCount() > MAX_LINES) {
+      // A Document cannot be mutated from within its DocumentListener notification,
+      // so the removal is deferred until the current event has been processed.
+      EventQueue.invokeLater(() -> {
+        removeExcessLines(doc);
+        textComponent.setCaretPosition(doc.getLength());
+      });
     }
   }
 
-  private static void removeLines(Document doc, Element root) {
-    Element fl = root.getElement(0);
-    try {
-      doc.remove(0, fl.getEndOffset());
-    } catch (BadLocationException ex) {
-      // should never happen
-      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
-      wrap.initCause(ex);
-      throw wrap;
+  private static void removeExcessLines(Document doc) {
+    // Remove all leading lines exceeding MAX_LINES at once (also handles multi-line inserts)
+    Element root = doc.getDefaultRootElement();
+    int excess = root.getElementCount() - MAX_LINES;
+    if (excess > 0) {
+      try {
+        doc.remove(0, root.getElement(excess - 1).getEndOffset());
+      } catch (BadLocationException ex) {
+        // should never happen
+        RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+        wrap.initCause(ex);
+        throw wrap;
+      }
     }
   }
 
@@ -144,9 +151,21 @@ class FifoDocumentFilter extends DocumentFilter {
 
   @Override public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
     fb.insertString(offset, text, attr);
+    removeExcessLines(fb);
+  }
+
+  // Typing and pasting in a JTextComponent go through replace(...), not insertString(...)
+  @Override public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+    fb.replace(offset, length, text, attrs);
+    removeExcessLines(fb);
+  }
+
+  private static void removeExcessLines(FilterBypass fb) throws BadLocationException {
+    // Remove all leading lines exceeding MAX_LINES at once (also handles multi-line inserts)
     Element root = fb.getDocument().getDefaultRootElement();
-    if (root.getElementCount() > MAX_LINES) {
-      fb.remove(0, root.getElement(0).getEndOffset());
+    int excess = root.getElementCount() - MAX_LINES;
+    if (excess > 0) {
+      fb.remove(0, root.getElement(excess - 1).getEndOffset());
     }
   }
 }
