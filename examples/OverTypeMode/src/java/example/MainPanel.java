@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.plaf.TextUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
@@ -47,19 +46,27 @@ public final class MainPanel extends JPanel {
   }
 }
 
-// https://community.oracle.com/thread/1385467 JTextPane edit mode (insert or overwrite)???
+// https://community.oracle.com/tech/developers/discussion/1385467
+// JTextPane edit mode (insert or overwrite)???
 class OverTypeTextArea extends JTextArea {
   private boolean overTypeMode = true;
   private transient Caret defaultCaret;
-  private transient Caret overtypeCaret;
+  private transient Caret overTypeCaret;
 
   @Override public void updateUI() {
+    // The UI only replaces a caret that is null or a UIResource, so restore
+    // the default caret first to avoid keeping the OverTypeCaret as the default one
+    if (getCaret() instanceof OverTypeCaret) {
+      setCaret(defaultCaret);
+    }
     super.updateUI();
+    // Deferred because this method is called from the super constructor
+    // before the field initializer of overTypeMode is executed
     EventQueue.invokeLater(() -> {
       // setCaretColor(Color.RED);
       defaultCaret = getCaret();
-      overtypeCaret = new OverTypeCaret();
-      overtypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
+      overTypeCaret = new OverTypeCaret();
+      overTypeCaret.setBlinkRate(defaultCaret.getBlinkRate());
       setOverTypeMode(overTypeMode);
     });
   }
@@ -71,15 +78,29 @@ class OverTypeTextArea extends JTextArea {
   /*
    * Set the caret to use depending on over-type/insert mode
    */
-  public void setOverTypeMode(boolean isOverType) {
-    this.overTypeMode = isOverType;
+  public void setOverTypeMode(boolean overType) {
+    this.overTypeMode = overType;
     int pos = getCaretPosition();
-    if (isOverTypeMode()) {
-      setCaret(overtypeCaret);
-    } else {
-      setCaret(defaultCaret);
-    }
+    setCaret(overType ? overTypeCaret : defaultCaret);
     setCaretPosition(pos);
+  }
+
+  /*
+   * Returns the number of chars of the character at the given position
+   * that can be overwritten: 2 for a surrogate pair, 0 for a line feed
+   * or the end of the document, otherwise 1.
+   */
+  protected int getOverTypeLength(int pos) {
+    int len = Math.min(2, getDocument().getLength() - pos);
+    try {
+      int codePoint = len > 0 ? getText(pos, len).codePointAt(0) : '\n';
+      return codePoint == '\n' ? 0 : Character.charCount(codePoint);
+    } catch (BadLocationException ex) {
+      // should never happen
+      RuntimeException wrap = new StringIndexOutOfBoundsException(ex.offsetRequested());
+      wrap.initCause(ex);
+      throw wrap;
+    }
   }
 
   /*
@@ -87,12 +108,10 @@ class OverTypeTextArea extends JTextArea {
    */
   @Override public void replaceSelection(String text) {
     // Implement over-type mode by selecting the character at the current
-    // caret position
-    if (isOverTypeMode()) {
+    // caret position (line feeds are not overwritten)
+    if (isOverTypeMode() && getSelectionStart() == getSelectionEnd()) {
       int pos = getCaretPosition();
-      if (getSelectionStart() == getSelectionEnd() && pos < getDocument().getLength()) {
-        moveCaretPosition(pos + 1);
-      }
+      moveCaretPosition(pos + getOverTypeLength(pos));
     }
     super.replaceSelection(text);
   }
@@ -104,10 +123,11 @@ class OverTypeTextArea extends JTextArea {
     super.processKeyEvent(e);
     // Handle release of Insert key to toggle over-type/insert mode
     if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_INSERT) {
-      setCaretPosition(getCaretPosition()); // add
-      moveCaretPosition(getCaretPosition()); // add
+      // Clear the selection, otherwise its highlight is left behind
+      // by the uninstalled caret
+      setCaretPosition(getCaretPosition());
       setOverTypeMode(!isOverTypeMode());
-      e.getComponent().repaint(); // add
+      repaint();
     }
   }
 
@@ -122,17 +142,12 @@ class OverTypeTextArea extends JTextArea {
     @Override public void paint(Graphics g) {
       if (isVisible()) {
         try {
-          JTextComponent component = getComponent();
-          TextUI mapper = component.getUI();
-          Rectangle r = mapper.modelToView(component, getDot());
+          JTextComponent c = getComponent();
+          Rectangle r = c.getUI().modelToView(c, getDot());
           // Java 9:
-          // Rectangle rect = mapper.modelToView2D(c, pos, Position.Bias.Forward).getBounds();
-          g.setColor(component.getCaretColor());
-          FontMetrics fm = g.getFontMetrics();
-          int width = fm.charWidth('w');
-          if (isOverTypeMode()) {
-            width = getOverCaretWidth(width, fm);
-          }
+          // Rectangle r = c.getUI().modelToView2D(c, getDot(), Position.Bias.Forward).getBounds();
+          g.setColor(c.getCaretColor());
+          int width = getOverTypeCaretWidth(g.getFontMetrics());
           int y = r.y + r.height - 2;
           g.drawLine(r.x, y, r.x + width - 2, y);
         } catch (BadLocationException ex) {
@@ -144,14 +159,11 @@ class OverTypeTextArea extends JTextArea {
       }
     }
 
-    private int getOverCaretWidth(int width, FontMetrics fm) throws BadLocationException {
-      int pos = getCaretPosition();
-      int length = getDocument().getLength();
-      int start = getSelectionStart();
-      int end = getSelectionEnd();
-      boolean b = pos < length && start == end;
-      // A patch for full width characters
-      return b ? fm.stringWidth(getText(pos, 1)) : width;
+    private int getOverTypeCaretWidth(FontMetrics fm) throws BadLocationException {
+      int pos = getDot();
+      int len = getDot() == getMark() ? getOverTypeLength(pos) : 0;
+      // A patch for full width characters and surrogate pairs
+      return len > 0 ? fm.stringWidth(getText(pos, len)) : fm.charWidth('w');
     }
 
     /*
@@ -168,10 +180,11 @@ class OverTypeTextArea extends JTextArea {
         x = r.x;
         y = r.y;
         // width = c.getFontMetrics(c.getFont()).charWidth('w');
-        // width = c.getFontMetrics(c.getFont()).charWidth('\u3042');
+        // A full width character is wider than 'w'
         width = c.getFontMetrics(c.getFont()).charWidth('あ');
         height = r.height;
-        c.repaint();
+        // Repaint only the caret area instead of the whole component
+        repaint();
       }
     }
   }
