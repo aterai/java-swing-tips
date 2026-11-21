@@ -30,7 +30,7 @@ public final class MainPanel extends JPanel {
     tabs.addTab("22222232", new JScrollPane(new JTree()));
     tabs.addTab("3333333333", new JSplitPane());
 
-    JComboBox<? extends Enum<?>> comboBox = new JComboBox<>(TabPlacements.values());
+    JComboBox<TabPlacements> comboBox = new JComboBox<>(TabPlacements.values());
     comboBox.addItemListener(e -> {
       if (e.getStateChange() == ItemEvent.SELECTED) {
         tabs.setTabPlacement(((TabPlacements) e.getItem()).getTabPlacement());
@@ -87,49 +87,54 @@ enum TabPlacements {
 }
 
 class WindowsTabHeightTabbedPaneUI extends WindowsTabbedPaneUI {
-  private static final int TAB_AREA_HEIGHT = 32;
-
   @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-    return TAB_AREA_HEIGHT;
+    return TabHeightUtils.TAB_AREA_HEIGHT;
     // return super.calculateTabHeight(tabPlacement, tabIndex, fontHeight) + 4;
   }
 
-  // @Override public Rectangle getTabBounds(JTabbedPane pane, int i) {
-  //   Rectangle tabRect = super.getTabBounds(pane, i);
-  //   tabRect.translate(0, -16);
-  //   tabRect.height = 16;
-  //   return tabRect;
-  // }
-
   @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-    boolean tob = tabPlacement == TOP || tabPlacement == BOTTOM;
-    if (tob && tabPane.getSelectedIndex() != tabIndex) {
-      int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
-      rects[tabIndex].height = tabHeight;
-      if (tabPlacement == TOP) {
-        rects[tabIndex].y = TAB_AREA_HEIGHT - tabHeight + 3;
-      }
-    }
-    super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
+    Rectangle[] paintRects = TabHeightUtils.getPaintRects(tabPane, tabPlacement, rects, tabIndex);
+    super.paintTab(g, tabPlacement, paintRects, tabIndex, iconRect, textRect);
   }
 }
 
 class BasicTabHeightTabbedPaneUI extends BasicTabbedPaneUI {
-  private static final int TAB_AREA_HEIGHT = 32;
-
   @Override protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
-    return TAB_AREA_HEIGHT;
+    return TabHeightUtils.TAB_AREA_HEIGHT;
   }
 
   @Override protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect, Rectangle textRect) {
-    boolean tob = tabPlacement == TOP || tabPlacement == BOTTOM;
-    if (tob && tabPane.getSelectedIndex() != tabIndex) {
-      int tabHeight = TAB_AREA_HEIGHT / 2 + 3;
-      rects[tabIndex].height = tabHeight;
-      if (tabPlacement == TOP) {
-        rects[tabIndex].y = TAB_AREA_HEIGHT - tabHeight + 3;
+    Rectangle[] paintRects = TabHeightUtils.getPaintRects(tabPane, tabPlacement, rects, tabIndex);
+    super.paintTab(g, tabPlacement, paintRects, tabIndex, iconRect, textRect);
+  }
+}
+
+final class TabHeightUtils {
+  public static final int TAB_AREA_HEIGHT = 32;
+  private static final int LOW_TAB_HEIGHT = TAB_AREA_HEIGHT / 2 + 3;
+
+  private TabHeightUtils() {
+    /* Singleton */
+  }
+
+  // Returns the tab rectangles used only for painting: an unselected tab of the
+  // TOP/BOTTOM placement is shortened (and moved down to the bottom of the tab area
+  // in the TOP placement). A copy is returned so that the layout rectangles
+  // shared with hit testing and scrolling are not modified while painting.
+  public static Rectangle[] getPaintRects(
+      JTabbedPane tabPane, int tabPlacement, Rectangle[] rects, int tabIndex) {
+    boolean isHorizontal = tabPlacement == SwingConstants.TOP
+        || tabPlacement == SwingConstants.BOTTOM;
+    Rectangle[] paintRects = rects;
+    if (isHorizontal && tabPane.getSelectedIndex() != tabIndex) {
+      Rectangle r = new Rectangle(rects[tabIndex]);
+      if (tabPlacement == SwingConstants.TOP) {
+        r.y += r.height - LOW_TAB_HEIGHT;
       }
+      r.height = LOW_TAB_HEIGHT;
+      paintRects = rects.clone();
+      paintRects[tabIndex] = r;
     }
-    super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
+    return paintRects;
   }
 }
