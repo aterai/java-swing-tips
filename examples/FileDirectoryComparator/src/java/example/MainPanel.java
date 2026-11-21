@@ -27,9 +27,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public final class MainPanel extends JPanel {
-  private final JRadioButton check1 = new JRadioButton("Default", true);
-  private final JRadioButton check2 = new JRadioButton("Directory < File", false);
-  private final JRadioButton check3 = new JRadioButton("Group Sorting", false);
+  private final JRadioButton defaultRadio = new JRadioButton("Default", true);
+  private final JRadioButton dirFirstRadio = new JRadioButton("Directory < File", false);
+  private final JRadioButton groupSortingRadio = new JRadioButton("Group Sorting", false);
   private final JTable table = createTable();
 
   private MainPanel() {
@@ -44,14 +44,15 @@ public final class MainPanel extends JPanel {
           setFileComparators(rs);
         }
       };
-      Stream.of(check1, check2, check3).forEach(rb -> rb.addItemListener(listener));
+      Stream.of(defaultRadio, dirFirstRadio, groupSortingRadio)
+          .forEach(rb -> rb.addItemListener(listener));
     }
 
     JPanel p = new JPanel();
     ButtonGroup group = new ButtonGroup();
-    Stream.of(check1, check2, check3).forEach(button -> {
-      group.add(button);
-      p.add(button);
+    Stream.of(defaultRadio, dirFirstRadio, groupSortingRadio).forEach(rb -> {
+      group.add(rb);
+      p.add(rb);
     });
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(table));
@@ -67,31 +68,29 @@ public final class MainPanel extends JPanel {
   // Get the underlying Comparator for each column
   private Comparator<File> getFileComparator(int index) {
     Comparator<File> baseComp = getBaseFileComparator(index);
-    Comparator<File> finalComp;
-
-    if (check1.isSelected()) {
-      // Default:
-      finalComp = baseComp;
-    } else if (check2.isSelected()) {
-      // Directory < File: Always prioritize directories
-      // (fixed at the top regardless of ascending or descending order)
-      finalComp = Comparator
+    Comparator<File> comparator;
+    if (dirFirstRadio.isSelected()) {
+      // Directory < File: directories are compared as smaller than files.
+      // Since the RowSorter reverses the comparator result in descending order,
+      // directories are placed at the top in ascending order
+      // and at the bottom in descending order.
+      comparator = Comparator
           .comparing(File::isDirectory, Comparator.reverseOrder())
           .thenComparing(baseComp);
-    } else if (check3.isSelected()) {
-      // Group Sorting: Group according to sort direction
-      finalComp = (a, b) -> {
-        int dir = getSortOrderDirection(table, index);
-        // Multiplying the directory priority comparison result by the current
-        // sort direction (dir) controls the directory to be on top
-        // when in ascending order and below when in descending order.
+    } else if (groupSortingRadio.isSelected()) {
+      // Group Sorting: directories are always placed at the top
+      comparator = (a, b) -> {
         int v = Boolean.compare(b.isDirectory(), a.isDirectory());
-        return v == 0 ? baseComp.compare(a, b) : v * dir;
+        // Multiplying the directory-first result by the current sort direction
+        // cancels out the reversal by the RowSorter in descending order,
+        // so only the files and directories within each group are reversed.
+        return v == 0 ? baseComp.compare(a, b) : v * getSortOrderDirection(table, index);
       };
     } else {
-      finalComp = baseComp;
+      // Default
+      comparator = baseComp;
     }
-    return finalComp;
+    return comparator;
   }
 
   // Returns a basic File Comparator according to column index
@@ -108,27 +107,18 @@ public final class MainPanel extends JPanel {
   }
 
   // Get the current sort direction of the specified column
-  // (ascending: 1, descending: -1)
+  // (ascending or unsorted: 1, descending: -1)
   private static int getSortOrderDirection(JTable table, int column) {
+    // Search the sort key of the specified column, not just the primary key,
+    // because the comparator is also used for the secondary sort keys.
     return Optional.ofNullable(table.getRowSorter())
-        .map(RowSorter::getSortKeys)
-        .flatMap(keys -> keys.stream().findFirst())
-        .filter(key -> key.getColumn() == column)
+        .flatMap(sorter -> sorter.getSortKeys().stream()
+            .filter(key -> key.getColumn() == column)
+            .findFirst())
         .filter(key -> key.getSortOrder() == SortOrder.DESCENDING)
         .map(key -> -1)
         .orElse(1);
   }
-
-  // private static int getSortOrderDirection(JTable table, int column) {
-  //   List<? extends RowSorter.SortKey> keys = table.getRowSorter().getSortKeys();
-  //   if (!keys.isEmpty()) {
-  //     RowSorter.SortKey sortKey = keys.get(0);
-  //     if (sortKey.getColumn() == column && sortKey.getSortOrder() == SortOrder.DESCENDING) {
-  //       return -1;
-  //     }
-  //   }
-  //   return 1;
-  // }
 
   private static JTable createTable() {
     String[] columnNames = {"Name", "Size", "Full Path"};
