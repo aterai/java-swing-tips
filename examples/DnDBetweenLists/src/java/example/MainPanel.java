@@ -14,23 +14,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(1, 2, 10, 0));
-    TransferHandler h = new ListItemTransferHandler();
+    // Share a single handler so that it can tell whether the drop target is the drag source
+    TransferHandler handler = new ListItemTransferHandler();
     p.setBorder(BorderFactory.createTitledBorder("Drag & Drop between JLists"));
-    p.add(new JScrollPane(makeList(makeModel(), h)));
-    p.add(new JScrollPane(makeList(makeModel(), h)));
+    p.add(new JScrollPane(createList(createModel(), handler)));
+    p.add(new JScrollPane(createList(createModel(), handler)));
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<Color> makeModel() {
+  private static ListModel<Color> createModel() {
     DefaultListModel<Color> model = new DefaultListModel<>();
     model.addElement(Color.RED);
     model.addElement(Color.BLUE);
@@ -42,7 +42,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static JList<Color> makeList(ListModel<Color> model, TransferHandler handler) {
+  private static JList<Color> createList(ListModel<Color> model, TransferHandler handler) {
     return new JList<Color>(model) {
       @Override public void updateUI() {
         setSelectionBackground(null); // Nimbus
@@ -55,23 +55,12 @@ public final class MainPanel extends JPanel {
           c.setForeground(value);
           return c;
         });
-        getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.INSERT);
         setDragEnabled(true);
         setTransferHandler(handler);
       }
     };
-    // // Disable JList item Cut, Copy, Paste
-    // ActionMap am = list.getActionMap();
-    // Action empty = new AbstractAction() {
-    //   @Override public void actionPerformed(ActionEvent e) {
-    //     /* do nothing */
-    //   }
-    // };
-    // am.put(TransferHandler.getCutAction().getValue(Action.NAME), empty);
-    // am.put(TransferHandler.getCopyAction().getValue(Action.NAME), empty);
-    // am.put(TransferHandler.getPasteAction().getValue(Action.NAME), empty);
-    // return list;
   }
 
   public static void main(String[] args) {
@@ -103,22 +92,15 @@ class ListItemTransferHandler extends TransferHandler {
   private JList<?> source;
   private final List<Integer> indices = new ArrayList<>();
   private int addIndex = -1; // Location where items were added
-  private int addCount; // Number of items added.
-
-  // protected ListItemTransferHandler() {
-  //   super();
-  //   localObjectFlavor = new ActivationDataFlavor(
-  //       Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-  //   // localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
-  // }
+  private int addCount; // Number of items added to the drag source list
 
   @Override protected Transferable createTransferable(JComponent c) {
     source = (JList<?>) c;
+    indices.clear();
     for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
     List<?> selectedValues = source.getSelectedValuesList();
-    // return new DataHandler(selectedValues.toArray(new Object[0]), mimeType);
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -148,24 +130,17 @@ class ListItemTransferHandler extends TransferHandler {
 
   private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
-    int index; // = dl.getIndex();
+    // Keyboard Copy & Paste: insert at the selected index
+    int index = target.getSelectedIndex();
     if (info.isDrop()) { // Mouse Drag & Drop
-      DropLocation tdl = info.getDropLocation();
-      if (tdl instanceof JList.DropLocation) {
-        index = ((JList.DropLocation) tdl).getIndex();
-      } else {
-        index = target.getSelectedIndex();
+      DropLocation location = info.getDropLocation();
+      if (location instanceof JList.DropLocation) {
+        index = ((JList.DropLocation) location).getIndex();
       }
-    } else { // Keyboard Copy & Paste
-      index = target.getSelectedIndex();
     }
-    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = model.getSize();
-    // int index = dl.getIndex();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
-    return index;
+    int max = target.getModel().getSize();
+    // If it is out of range, it is appended to the end
+    return index < 0 || index > max ? max : index;
   }
 
   private static List<?> getTransferData(TransferSupport info) {
@@ -209,14 +184,7 @@ class ListItemTransferHandler extends TransferHandler {
       // need to adjust the indices accordingly, since those
       // after the insertion point have moved.
       if (addCount > 0) {
-        IntStream.range(0, indices.size())
-            .filter(i -> indices.get(i) >= addIndex)
-            .forEach(i -> indices.set(i, indices.get(i) + addCount));
-        // for (int i = 0; i < indices.size(); i++) {
-        //   if (indices.get(i) >= addIndex) {
-        //     indices.set(i, indices.get(i) + addCount);
-        //   }
-        // }
+        indices.replaceAll(i -> i >= addIndex ? i + addCount : i);
       }
       JList<?> src = (JList<?>) c;
       DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
