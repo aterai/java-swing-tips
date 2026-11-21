@@ -151,19 +151,15 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
    * {@inheritDoc}
    */
   @Override protected void uninstallComponents() {
-    // if (loupeButton != null) {
-    //   unconfigureLoupeButton();
-    // }
-    // loupeButton = null;
     unconfigureLoupeButton();
     super.uninstallComponents();
   }
 
   protected final JButton createLoupeButton() {
     JButton button = new JButton(loupeAction);
-    ImageIcon loupe = MainPanel.makeIcon(LOUPE);
+    ImageIcon loupe = MainPanel.createIcon(LOUPE);
     button.setIcon(loupe);
-    button.setRolloverIcon(makeRolloverIcon(loupe));
+    button.setRolloverIcon(createRolloverIcon(loupe));
     return button;
   }
 
@@ -207,36 +203,41 @@ public class BasicSearchBarComboBoxUI extends SearchBarComboBoxUI {
     return new SearchBarLayout();
   }
 
-  protected static ImageIcon makeRolloverIcon(ImageIcon srcIcon) {
+  public static void setArrowButtonIcon(AbstractButton button, ImageIcon icon) {
+    button.setIcon(icon);
+    button.setRolloverIcon(createRolloverIcon(icon));
+  }
+
+  protected static ImageIcon createRolloverIcon(ImageIcon srcIcon) {
     int w = srcIcon.getIconWidth();
     int h = srcIcon.getIconHeight();
     BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = img.createGraphics();
     srcIcon.paintIcon(null, g2, 0, 0);
+    g2.dispose();
+    // Brighten the RGB components by 20% and keep the alpha
     float[] scaleFactors = {1.2f, 1.2f, 1.2f, 1f};
     float[] offsets = {0f, 0f, 0f, 0f};
-    RescaleOp op = new RescaleOp(scaleFactors, offsets, g2.getRenderingHints());
-    g2.dispose();
+    RescaleOp op = new RescaleOp(scaleFactors, offsets, null);
     return new ImageIcon(op.filter(img, null));
   }
 
   private final class SearchBarPopupListener implements PopupMenuListener {
-    private String str;
+    private String editorText;
 
     @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+      // Save the search text, selecting a search engine must not overwrite it
       JComboBox<?> combo = (JComboBox<?>) e.getSource();
-      str = combo.getEditor().getItem().toString();
+      editorText = Objects.toString(combo.getEditor().getItem(), "");
     }
 
     @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
       JComboBox<?> combo = (JComboBox<?>) e.getSource();
       Object o = listBox.getSelectedValue();
       if (o instanceof SearchEngine) {
-        SearchEngine se = (SearchEngine) o;
-        arrowButton.setIcon(se.getFavicon());
-        arrowButton.setRolloverIcon(makeRolloverIcon(se.getFavicon()));
+        setArrowButtonIcon(arrowButton, ((SearchEngine) o).getFavicon());
       }
-      combo.getEditor().setItem(str);
+      combo.getEditor().setItem(editorText);
     }
 
     @Override public void popupMenuCanceled(PopupMenuEvent e) {
@@ -286,25 +287,25 @@ class SearchBarLayout implements LayoutManager {
 
   private static void layoutComboBox(JComboBox<?> combo) {
     Rectangle r = SwingUtilities.calculateInnerArea(combo, null);
-    int arrowSize = 0;
-    Component arrowButton = combo.getComponent(0);
+    int arrowWidth = 0;
+    // BasicSearchBarComboBoxUI#installComponents() adds the arrow button first
+    Component arrowButton = combo.getComponentCount() > 0 ? combo.getComponent(0) : null;
     if (arrowButton instanceof JButton) {
-      Insets arrowIns = ((JComponent) arrowButton).getInsets();
-      int bw = arrowButton.getPreferredSize().width + arrowIns.left + arrowIns.right;
-      arrowButton.setBounds(r.x, r.y, bw, r.height);
-      arrowSize = bw;
+      Insets arrowInsets = ((JComponent) arrowButton).getInsets();
+      arrowWidth = arrowButton.getPreferredSize().width + arrowInsets.left + arrowInsets.right;
+      arrowButton.setBounds(r.x, r.y, arrowWidth, r.height);
     }
     Component loupeButton = Arrays.stream(combo.getComponents())
         .filter(c -> Objects.equals("ComboBox.loupeButton", c.getName()))
         .findFirst().orElse(null);
-    int loupeSize = 0;
+    int loupeWidth = 0;
     if (loupeButton instanceof JButton) {
-      loupeSize = r.height;
-      loupeButton.setBounds(r.x + r.width - loupeSize, r.y, loupeSize, r.height);
+      loupeWidth = r.height; // square button
+      loupeButton.setBounds(r.x + r.width - loupeWidth, r.y, loupeWidth, r.height);
     }
     Component editor = combo.getEditor().getEditorComponent();
     if (editor instanceof JTextField) {
-      editor.setBounds(r.x + arrowSize, r.y, r.width - arrowSize - loupeSize, r.height);
+      editor.setBounds(r.x + arrowWidth, r.y, r.width - arrowWidth - loupeWidth, r.height);
     }
   }
 }

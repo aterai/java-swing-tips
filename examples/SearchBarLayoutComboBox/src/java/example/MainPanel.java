@@ -22,12 +22,15 @@ public final class MainPanel extends JPanel {
     p.add(new JComboBox<>(new String[] {"Google", "Yahoo!", "Bing"}));
     p.add(new JLabel("SearchBar JComboBox"));
 
-    DefaultComboBoxModel<SearchEngine> m = new SearchEngineComboBoxModel<>();
-    m.addElement(new SearchEngine("Google", "https://www.google.com/", makeIcon("google")));
-    m.addElement(new SearchEngine("Yahoo!", "https://www.yahoo.com/", makeIcon("yahoo")));
-    m.addElement(new SearchEngine("Bing", "https://www.bing.com/", makeIcon("bing")));
+    DefaultComboBoxModel<SearchEngine> model = new SearchEngineComboBoxModel<>();
+    model.addElement(
+        new SearchEngine("Google", "https://www.google.com/", createIcon("google")));
+    model.addElement(
+        new SearchEngine("Yahoo!", "https://www.yahoo.com/", createIcon("yahoo")));
+    model.addElement(
+        new SearchEngine("Bing", "https://www.bing.com/", createIcon("bing")));
 
-    JComboBox<SearchEngine> combo = new SearchBarComboBox<>(m);
+    JComboBox<SearchEngine> combo = new SearchBarComboBox<>(model);
     combo.getEditor().setItem("java swing");
 
     // JComboBox combo = new JComboBox(m);
@@ -42,12 +45,12 @@ public final class MainPanel extends JPanel {
     // });
 
     p.add(combo);
-    // p.add(new SearchBarComboBox(makeModel()));
+    // p.add(new SearchBarComboBox(createModel()));
     add(p, BorderLayout.NORTH);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static ImageIcon makeIcon(String name) {
+  public static ImageIcon createIcon(String name) {
     String path = "example/" + name + ".png";
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource(path);
@@ -120,6 +123,7 @@ class SearchEngine {
 }
 
 class SearchEngineComboBoxModel<E extends SearchEngine> extends DefaultComboBoxModel<E> {
+  // Ignore the selection so that the editor text is not replaced by the selected item
   @Override public void setSelectedItem(Object anObject) {
     // System.out.println("model: " + anObject);
   }
@@ -172,10 +176,10 @@ class SearchBarComboBox<E extends SearchEngine> extends JComboBox<E> {
       setUI(new BasicSearchBarComboBoxUI());
     }
     UIManager.put("ComboBox.font", getFont()); // XXX: ???
-    JButton arrowButton = (JButton) getComponent(0);
+    // Show the favicon of the first search engine on the newly created arrow button
     SearchEngine se = getItemAt(0);
-    if (Objects.nonNull(se)) {
-      arrowButton.setIcon(se.getFavicon());
+    if (Objects.nonNull(se) && getComponentCount() > 0 && getComponent(0) instanceof JButton) {
+      BasicSearchBarComboBoxUI.setArrowButtonIcon((JButton) getComponent(0), se.getFavicon());
     }
     // ListCellRenderer<? super SearchEngine> renderer = getRenderer();
     // if (renderer instanceof Component) {
