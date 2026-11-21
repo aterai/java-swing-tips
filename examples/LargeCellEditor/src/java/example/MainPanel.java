@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -28,16 +27,16 @@ import javax.swing.table.TableModel;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
-    ListModel<IconItem> list = makeIconList();
-    int ins = 2;
+    ListModel<IconItem> list = createIconList();
+    int gap = 2;
     Icon icon = list.getElementAt(0).getSmallIcon();
-    int iw = ins + icon.getIconWidth();
-    int ih = ins + icon.getIconHeight();
-    Dimension d = new Dimension(iw * 3 + ins, ih * 3 + ins);
+    int iw = gap + icon.getIconWidth();
+    int ih = gap + icon.getIconHeight();
+    Dimension d = new Dimension(iw * 3 + gap, ih * 3 + gap);
     JList<IconItem> editor = new EditorFromList<>(list, d);
     editor.setFixedCellWidth(iw);
     editor.setFixedCellHeight(ih);
-    JTable table = new IconTable(makeIconTableModel(list), editor);
+    JTable table = new IconTable(createIconTableModel(list), editor);
     JPanel p = new JPanel(new GridBagLayout());
     p.add(table, new GridBagConstraints());
     p.setBackground(Color.WHITE);
@@ -45,7 +44,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<IconItem> makeIconList() {
+  private static ListModel<IconItem> createIconList() {
     DefaultListModel<IconItem> list = new DefaultListModel<>();
     list.addElement(new IconItem("wi0009"));
     list.addElement(new IconItem("wi0054"));
@@ -59,19 +58,16 @@ public final class MainPanel extends JPanel {
     return list;
   }
 
-  private static <E extends IconItem> TableModel makeIconTableModel(ListModel<E> list) {
+  private static <E extends IconItem> TableModel createIconTableModel(ListModel<E> list) {
     Object[][] data = {
         {list.getElementAt(0), list.getElementAt(1), list.getElementAt(2)},
         {list.getElementAt(3), list.getElementAt(4), list.getElementAt(5)},
         {list.getElementAt(6), list.getElementAt(7), list.getElementAt(8)},
     };
-    return new DefaultTableModel(data, null) {
+    String[] columnNames = {"A", "B", "C"};
+    return new DefaultTableModel(data, columnNames) {
       @Override public boolean isCellEditable(int row, int column) {
         return false;
-      }
-
-      @Override public int getColumnCount() {
-        return 3;
       }
     };
   }
@@ -103,9 +99,9 @@ class IconItem {
   private final Icon large;
   private final Icon small;
 
-  protected IconItem(String str) {
-    large = makeIcon("example/" + str + "-48.png");
-    small = makeIcon("example/" + str + "-24.png");
+  protected IconItem(String name) {
+    large = createIcon("example/" + name + "-48.png");
+    small = createIcon("example/" + name + "-24.png");
   }
 
   public Icon getLargeIcon() {
@@ -116,7 +112,7 @@ class IconItem {
     return small;
   }
 
-  private static Icon makeIcon(String path) {
+  private static Icon createIcon(String path) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     return Optional.ofNullable(cl.getResource(path)).map(url -> {
       Icon icn;
@@ -161,28 +157,22 @@ class IconTable extends JTable {
         cancelEditing();
       }
     });
-    // editor.addKeyListener(new KeyAdapter() {
-    //   @Override public void keyPressed(KeyEvent e) {
-    //     if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-    //       cancelEditing();
-    //     }
-    //   }
-    // });
     editor.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        Point p = e.getPoint();
-        IconItem item = editor.getModel().getElementAt(editor.locationToIndex(p));
-        setValueAt(item, getSelectedRow(), getSelectedColumn());
+        int idx = editor.locationToIndex(e.getPoint());
+        int row = getSelectedRow();
+        int col = getSelectedColumn();
+        if (idx >= 0 && row >= 0 && col >= 0) {
+          setValueAt(editor.getModel().getElementAt(idx), row, col);
+        }
         cancelEditing();
       }
     });
 
     glassPane.addMouseListener(new MouseAdapter() {
       @Override public void mouseClicked(MouseEvent e) {
-        // Point pt = e.getPoint();
-        // if (!editor.getBounds().contains(pt)) {
-        //   cancelEditing();
-        // }
+        // Clicks on the editor JList are consumed by the JList itself,
+        // so any click reaching the glass pane is outside the editor.
         cancelEditing();
       }
     });
@@ -222,12 +212,15 @@ class IconTable extends JTable {
   }
 
   public void startEditing() {
+    int sr = getSelectedRow();
+    int sc = getSelectedColumn();
+    if (sr < 0 || sc < 0) {
+      return;
+    }
     getRootPane().setGlassPane(glassPane);
     Dimension d = editor.getPreferredSize();
     editor.setSize(d);
 
-    int sr = getSelectedRow();
-    int sc = getSelectedColumn();
     Rectangle r = getCellRect(sr, sc, true);
     Point p = SwingUtilities.convertPoint(this, r.getLocation(), glassPane);
     p.translate((r.width - d.width) / 2, (r.height - d.height) / 2);
@@ -245,11 +238,11 @@ class IconTable extends JTable {
 
 class EditorGlassPane extends JComponent {
   protected static final int OFFSET = 4;
-  private final JComponent parent;
+  private final JComponent editor;
 
-  protected EditorGlassPane(JComponent parent) {
+  protected EditorGlassPane(JComponent editor) {
     super();
-    this.parent = parent;
+    this.editor = editor;
   }
 
   @Override public void setVisible(boolean flag) {
@@ -259,43 +252,42 @@ class EditorGlassPane extends JComponent {
   }
 
   @Override protected void paintComponent(Graphics g) {
-    g.setColor(new Color(0x64_FF_FF_FF, true));
-    int w = getWidth();
-    int h = getHeight();
-    g.fillRect(0, 0, w, h);
-    BufferedImage buffer = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = buffer.createGraphics();
+    Graphics2D g2 = (Graphics2D) g.create();
+    g2.setPaint(new Color(0x64_FF_FF_FF, true));
+    g2.fillRect(0, 0, getWidth(), getHeight());
+    // Draw the translucent drop shadow directly instead of allocating
+    // a full-size off-screen BufferedImage on every repaint.
+    // SRC_OVER compositing gives the same result as the intermediate buffer.
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .15f));
     g2.setPaint(Color.BLACK);
-    Rectangle r = parent.getBounds();
+    Rectangle r = editor.getBounds();
     for (int i = 0; i < OFFSET; i++) {
       g2.fillRoundRect(r.x - i, r.y + OFFSET, r.width + i + i, r.height - OFFSET + i, 5, 5);
     }
     g2.dispose();
-    g.drawImage(buffer, 0, 0, this);
   }
 }
 
 class EditorFromList<E extends IconItem> extends JList<E> {
-  private int rollOverRowIndex = -1;
-  private final Dimension dim;
-  private transient RollOverListener handler;
+  private int rolloverIndex = -1;
+  private final Dimension fixedSize;
+  private transient RolloverListener handler;
 
-  protected EditorFromList(ListModel<E> model, Dimension dim) {
+  protected EditorFromList(ListModel<E> model, Dimension fixedSize) {
     super(model);
-    this.dim = dim;
+    this.fixedSize = fixedSize;
   }
 
   @Override public Dimension getPreferredSize() {
-    return dim;
+    return fixedSize;
   }
 
   @Override public void updateUI() {
     removeMouseMotionListener(handler);
     removeMouseListener(handler);
     super.updateUI();
-    handler = new RollOverListener();
+    handler = new RolloverListener();
     addMouseMotionListener(handler);
     addMouseListener(handler);
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -314,7 +306,7 @@ class EditorFromList<E extends IconItem> extends JList<E> {
 
   private Color getBackgroundColor(int index, boolean isSelected, Color selectedColor) {
     Color bgc = getBackground();
-    if (index == rollOverRowIndex) {
+    if (index == rolloverIndex) {
       bgc = getSelectionBackground();
     } else if (isSelected) {
       bgc = selectedColor;
@@ -322,16 +314,16 @@ class EditorFromList<E extends IconItem> extends JList<E> {
     return bgc;
   }
 
-  private final class RollOverListener extends MouseAdapter {
+  private final class RolloverListener extends MouseAdapter {
     @Override public void mouseExited(MouseEvent e) {
-      rollOverRowIndex = -1;
+      rolloverIndex = -1;
       e.getComponent().repaint();
     }
 
     @Override public void mouseMoved(MouseEvent e) {
-      int row = locationToIndex(e.getPoint());
-      if (row != rollOverRowIndex) {
-        rollOverRowIndex = row;
+      int idx = locationToIndex(e.getPoint());
+      if (idx != rolloverIndex) {
+        rolloverIndex = idx;
         e.getComponent().repaint();
       }
     }
