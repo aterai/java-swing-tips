@@ -113,10 +113,10 @@ class RowHeaderList<E> extends JList<E> {
     // setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY.brighter()));
   }
 
-  public class RowHeaderRenderer<F> implements ListCellRenderer<F> {
+  private final class RowHeaderRenderer<F> implements ListCellRenderer<F> {
     private final JLabel renderer = new JLabel(); // new DefaultListCellRenderer();
 
-    protected RowHeaderRenderer() {
+    private RowHeaderRenderer() {
       super();
       renderer.setOpaque(true);
       // renderer.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
@@ -133,6 +133,8 @@ class RowHeaderList<E> extends JList<E> {
       // Component c = renderer;
       JTableHeader header = table.getTableHeader();
       renderer.setFont(header.getFont());
+      // Reset the foreground every time, since the renderer is shared by all cells
+      renderer.setForeground(header.getForeground());
       if (index == pressedRowIndex) {
         renderer.setBackground(Color.GRAY);
       } else if (index == rollOverRowIndex) {
@@ -140,7 +142,6 @@ class RowHeaderList<E> extends JList<E> {
       } else if (isSelected) {
         renderer.setBackground(Color.GRAY.brighter());
       } else {
-        renderer.setForeground(header.getForeground());
         renderer.setBackground(header.getBackground());
       }
       renderer.setText(Objects.toString(value, ""));
@@ -168,19 +169,18 @@ class RowHeaderList<E> extends JList<E> {
     @Override public void mouseDragged(MouseEvent e) {
       if (pressedRowIndex >= 0) {
         int row = locationToIndex(e.getPoint());
-        int start = Math.min(row, pressedRowIndex);
-        int end = Math.max(row, pressedRowIndex);
-        tableSelection.clearSelection();
-        listSelection.clearSelection();
-        tableSelection.addSelectionInterval(start, end);
-        listSelection.addSelectionInterval(start, end);
+        // setSelectionInterval(...) replaces the current selection,
+        // and keeps the pressed row as the anchor
+        tableSelection.setSelectionInterval(pressedRowIndex, row);
+        listSelection.setSelectionInterval(pressedRowIndex, row);
         e.getComponent().repaint();
       }
     }
 
     @Override public void mousePressed(MouseEvent e) {
       int row = locationToIndex(e.getPoint());
-      if (row != pressedRowIndex) {
+      // locationToIndex(...) returns -1 if the list is empty
+      if (row >= 0 && row != pressedRowIndex) {
         listSelection.clearSelection();
         table.changeSelection(row, 0, false, false);
         int columnIndex = table.getColumnModel().getColumnCount() - 1;
@@ -218,13 +218,13 @@ class RowDataModel extends DefaultTableModel {
   private int number;
   private final DefaultListModel<String> rowListModel;
 
-  protected RowDataModel(DefaultListModel<String> lm) {
+  protected RowDataModel(DefaultListModel<String> rowListModel) {
     super();
-    rowListModel = lm;
+    this.rowListModel = rowListModel;
   }
 
-  public void addRowData(RowData t) {
-    Object[] obj = {t.getName(), t.getComment()};
+  public void addRowData(RowData rowData) {
+    Object[] obj = {rowData.getName(), rowData.getComment()};
     super.addRow(obj);
     rowListModel.addElement("row" + number);
     number++;
