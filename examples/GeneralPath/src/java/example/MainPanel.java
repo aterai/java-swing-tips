@@ -101,12 +101,12 @@ class StarPanel2 extends JPanel {
 
 class StarPanel3 extends JPanel {
   private static final int FONT_SIZE = 80;
+  private final Font font = new Font(Font.SERIF, Font.PLAIN, FONT_SIZE);
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.translate(0, FONT_SIZE);
     FontRenderContext frc = g2.getFontRenderContext();
-    Font font = new Font(Font.SERIF, Font.PLAIN, FONT_SIZE);
     Shape shape = new TextLayout("★", font, frc).getOutline(null);
     g2.setPaint(Color.YELLOW);
     g2.fill(shape);
@@ -139,22 +139,25 @@ class StarPanel3 extends JPanel {
 // }
 
 class StarIcon0 implements Icon {
+  private static final double SCALE = .8;
   private final GeneralPath path = new GeneralPath();
 
   protected StarIcon0() {
     // <blockquote cite="https://gihyo.jp/dev/serial/01/javafx/0009?page=2">
-    path.moveTo(50.000 * .8, 0.0000 * .8);
-    path.lineTo(61.803 * .8, 38.196 * .8);
-    path.lineTo(100.00 * .8, 38.196 * .8);
-    path.lineTo(69.098 * .8, 61.804 * .8);
-    path.lineTo(80.902 * .8, 100.00 * .8);
-    path.lineTo(50.000 * .8, 76.394 * .8);
-    path.lineTo(19.098 * .8, 100.00 * .8);
-    path.lineTo(30.902 * .8, 61.804 * .8);
-    path.lineTo(0.0000 * .8, 38.196 * .8);
-    path.lineTo(38.197 * .8, 38.196 * .8);
+    path.moveTo(50.000, 0.0000);
+    path.lineTo(61.803, 38.196);
+    path.lineTo(100.00, 38.196);
+    path.lineTo(69.098, 61.804);
+    path.lineTo(80.902, 100.00);
+    path.lineTo(50.000, 76.394);
+    path.lineTo(19.098, 100.00);
+    path.lineTo(30.902, 61.804);
+    path.lineTo(0.0000, 38.196);
+    path.lineTo(38.197, 38.196);
     path.closePath();
     // </blockquote>
+    // Scale the 100x100 path down to 80x80 at once instead of scaling each coordinate
+    path.transform(AffineTransform.getScaleInstance(SCALE, SCALE));
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -177,21 +180,23 @@ class StarIcon0 implements Icon {
 }
 
 class StarIcon1 implements Icon {
-  private static final int R = 40;
+  private static final int RADIUS = 40;
   private final Shape star;
 
   protected StarIcon1() {
-    double agl = 0d;
-    double add = 2d * Math.PI / 5d;
-    Path2D p = new Path2D.Double();
-    p.moveTo(R, 0d);
-    for (int i = 0; i < 5; i++) {
-      p.lineTo(R * Math.cos(agl), R * Math.sin(agl));
-      agl += add + add;
+    // Connect every second vertex of a regular pentagon (step = 4 * PI / 5)
+    double step = 4d * Math.PI / 5d;
+    Path2D path = new Path2D.Double();
+    path.moveTo(RADIUS, 0d);
+    for (int i = 1; i < 5; i++) {
+      double angle = step * i;
+      path.lineTo(RADIUS * Math.cos(angle), RADIUS * Math.sin(angle));
     }
-    p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, R, 0d);
-    star = new Path2D.Double(p, at);
+    path.closePath();
+    // Rotate -90 degrees around (RADIUS, 0) so that the first vertex points up and
+    // the center of the star moves from (0, 0) to (RADIUS, RADIUS)
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, RADIUS, 0d);
+    star = new Path2D.Double(path, at);
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -205,34 +210,35 @@ class StarIcon1 implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return 2 * R;
+    return 2 * RADIUS;
   }
 
   @Override public int getIconHeight() {
-    return 2 * R;
+    return 2 * RADIUS;
   }
 }
 
 class StarIcon2 implements Icon {
-  private static final int R2 = 40;
-  private static final int R1 = 20;
-  // double R1 = R2 * Math.sin(Math.PI / 10d) / Math.cos(Math.PI / 5d); // =15.0;
-  private static final int VC = 5; // 16;
+  private static final int OUTER_RADIUS = 40;
+  private static final int INNER_RADIUS = 20;
+  // Inner radius of a regular pentagram:
+  // OUTER_RADIUS * Math.cos(2d * Math.PI / 5d) / Math.cos(Math.PI / 5d); // = 15.28...
+  private static final int VERTEX_COUNT = 5; // 16;
   private final Shape star;
 
   protected StarIcon2() {
-    double agl = 0d;
-    double add = Math.PI / VC;
-    Path2D p = new Path2D.Double();
-    p.moveTo(R2, 0d);
-    for (int i = 0; i < VC * 2 - 1; i++) {
-      agl += add;
-      int r = i % 2 == 0 ? R1 : R2;
-      p.lineTo(r * Math.cos(agl), r * Math.sin(agl));
+    double step = Math.PI / VERTEX_COUNT;
+    Path2D path = new Path2D.Double();
+    path.moveTo(OUTER_RADIUS, 0d);
+    for (int i = 1; i < VERTEX_COUNT * 2; i++) {
+      // odd indices are the inner (concave) vertices
+      double r = i % 2 == 0 ? OUTER_RADIUS : INNER_RADIUS;
+      double angle = step * i;
+      path.lineTo(r * Math.cos(angle), r * Math.sin(angle));
     }
-    p.closePath();
-    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, R2, 0d);
-    star = new Path2D.Double(p, at);
+    path.closePath();
+    AffineTransform at = AffineTransform.getRotateInstance(-Math.PI / 2d, OUTER_RADIUS, 0d);
+    star = new Path2D.Double(path, at);
   }
 
   @Override public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -246,11 +252,11 @@ class StarIcon2 implements Icon {
   }
 
   @Override public int getIconWidth() {
-    return 2 * R2;
+    return 2 * OUTER_RADIUS;
   }
 
   @Override public int getIconHeight() {
-    return 2 * R2;
+    return 2 * OUTER_RADIUS;
   }
 }
 
