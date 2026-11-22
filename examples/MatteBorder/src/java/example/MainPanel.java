@@ -17,13 +17,14 @@ public final class MainPanel extends JPanel {
     JLabel label = new JLabel("MANIFEST.MF");
     label.setBorder(BorderFactory.createCompoundBorder(outside, inside));
 
+    // deriveFont(...) keeps the font family and other attributes of the original font
     Font font = label.getFont();
-    label.setFont(new Font(font.getFontName(), font.getStyle(), font.getSize() * 2));
+    label.setFont(font.deriveFont(font.getSize2D() * 2f));
 
-    JPanel p = new JPanel(new BorderLayout(2, 2));
-    p.add(label, BorderLayout.NORTH);
-    p.add(makeInfoBox(), BorderLayout.SOUTH);
-    add(p, BorderLayout.NORTH);
+    JPanel panel = new JPanel(new BorderLayout(2, 2));
+    panel.add(label, BorderLayout.NORTH);
+    panel.add(makeInfoBox(), BorderLayout.SOUTH);
+    add(panel, BorderLayout.NORTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
@@ -37,10 +38,9 @@ public final class MainPanel extends JPanel {
     box.add(new JLabel("Implementation-Title: Example"));
     box.add(new JLabel("Implementation-Version: 1.0.32"));
     box.add(new JLabel("Class-Path: ."));
-    Box box2 = Box.createHorizontalBox();
-    box2.add(Box.createHorizontalStrut(10));
-    box2.add(box);
-    return box2;
+    // indent the lines with an EmptyBorder instead of a horizontal strut
+    box.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+    return box;
   }
 
   public static void main(String[] args) {
