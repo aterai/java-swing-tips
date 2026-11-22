@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -44,11 +45,11 @@ public final class MainPanel extends JPanel {
     scroll.getColumnHeader().setOpaque(false);
     scroll.getColumnHeader().setBackground(alphaZero);
 
-    Color color = new Color(0x32_FF_00_00, true);
+    Color translucentRed = new Color(0x32_FF_00_00, true);
     JCheckBox check = new JCheckBox("setBackground(new Color(0x32_FF_00_00, true))");
     check.addActionListener(e -> {
-      boolean b = ((JCheckBox) e.getSource()).isSelected();
-      table.setBackground(b ? color : alphaZero);
+      boolean selected = ((JCheckBox) e.getSource()).isSelected();
+      table.setBackground(selected ? translucentRed : alphaZero);
     });
 
     add(check, BorderLayout.NORTH);
@@ -95,6 +96,8 @@ public final class MainPanel extends JPanel {
 }
 
 class TransparentTable extends JTable {
+  public static final Color SELECTION_BGC = new Color(0, 0, 100, 50);
+
   protected TransparentTable(TableModel model) {
     super(model);
   }
@@ -125,11 +128,12 @@ class TransparentTable extends JTable {
     setIntercellSpacing(new Dimension(0, 1));
     setRowHeight(24);
     setSelectionForeground(getForeground());
-    setSelectionBackground(new Color(0, 0, 100, 50));
+    setSelectionBackground(SELECTION_BGC);
 
     JCheckBox checkBox = new JCheckBox() {
       @Override protected void paintComponent(Graphics g) {
-        g.setColor(new Color(0, 0, 100, 50));
+        // The row being edited is always selected
+        g.setColor(SELECTION_BGC);
         g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
       }
@@ -144,13 +148,13 @@ class TransparentTable extends JTable {
     Color alphaZero = new Color(0x0, true);
     setBackground(alphaZero);
     // setGridColor(alphaZero);
-    getTableHeader().setDefaultRenderer(new TransparentHeader());
+    getTableHeader().setDefaultRenderer(new TransparentHeaderRenderer());
     getTableHeader().setOpaque(false);
     getTableHeader().setBackground(alphaZero);
   }
 }
 
-class TransparentHeader implements TableCellRenderer {
+class TransparentHeaderRenderer implements TableCellRenderer {
   private final CompoundBorder border = BorderFactory.createCompoundBorder(
       BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK),
       BorderFactory.createEmptyBorder(2, 2, 1, 2));
@@ -160,9 +164,10 @@ class TransparentHeader implements TableCellRenderer {
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = renderer.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
+    // DefaultTableCellRenderer has already set the text (null is shown as an empty string),
+    // but it resets the colors and the border on every call, so override them here
     if (c instanceof JLabel) {
       JLabel l = (JLabel) c;
-      l.setText(Objects.toString(value, ""));
       l.setHorizontalAlignment(SwingConstants.CENTER);
       l.setOpaque(false);
       l.setBackground(alphaZero);
@@ -174,23 +179,24 @@ class TransparentHeader implements TableCellRenderer {
 }
 
 class TranslucentObjectRenderer extends DefaultTableCellRenderer {
+  private static final Border PADDING = BorderFactory.createEmptyBorder(8, 8, 8, 8);
+
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     Component c = super.getTableCellRendererComponent(
         table, value, isSelected, hasFocus, row, column);
     if (c instanceof JComponent) {
-      // ((JComponent) c).setOpaque(true);
-      ((JComponent) c).setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+      ((JComponent) c).setBorder(PADDING);
     }
     return c;
   }
 }
 
 class TranslucentBooleanRenderer implements TableCellRenderer {
-  private static final Color SELECTION_BGC = new Color(0, 0, 100, 50);
   private final JCheckBox renderer = new JCheckBox() {
     @Override public void updateUI() {
       super.updateUI();
-      // NG???: setHorizontalAlignment(SwingConstants.CENTER);
+      // Note: setHorizontalAlignment(...) here is useless at construction time, because
+      // the JCheckBox constructor calls setHorizontalAlignment(LEADING) after updateUI()
       setBorderPainted(true);
       setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
       setOpaque(false);
@@ -205,20 +211,19 @@ class TranslucentBooleanRenderer implements TableCellRenderer {
     }
   };
 
-  // protected TranslucentBooleanRenderer() {
-  //   renderer.setHorizontalAlignment(SwingConstants.CENTER);
-  // }
+  protected TranslucentBooleanRenderer() {
+    renderer.setHorizontalAlignment(SwingConstants.CENTER);
+  }
 
   @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     if (isSelected) {
       renderer.setForeground(table.getSelectionForeground());
-      renderer.setBackground(SELECTION_BGC);
+      renderer.setBackground(TransparentTable.SELECTION_BGC);
     } else {
       renderer.setForeground(table.getForeground());
       renderer.setBackground(table.getBackground());
     }
     renderer.setSelected(Objects.equals(value, true));
-    renderer.setHorizontalAlignment(SwingConstants.CENTER);
     return renderer;
   }
 }
