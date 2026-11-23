@@ -9,10 +9,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -37,7 +37,7 @@ public final class MainPanel extends JPanel {
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
 
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 25));
-    JPanel p1 = createTextField();
+    JPanel p1 = createTextFieldPanel();
     p.add(createTitledPanel("JTextField + HighlightFilter", p1));
     JPanel p2 = createPasswordPanel();
     p.add(createTitledPanel("JPasswordField + HighlightFilter", p2));
@@ -46,7 +46,7 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private JPanel createTextField() {
+  private static JPanel createTextFieldPanel() {
     String txt = "The quick brown fox jumps over the lazy dog.";
     JTextField field = new JTextField(txt) {
       @Override public void updateUI() {
@@ -163,7 +163,7 @@ class DigitHighlightPasswordField extends JPasswordField {
   }
 
   private void updateHighlightFilter(AbstractDocument doc) {
-    boolean reveal = getEchoChar() == 0; // '\u0000';
+    boolean reveal = getEchoChar() == 0;
     if (reveal) {
       setForeground(TRANSPARENT);
       setSelectedTextColor(TRANSPARENT);
@@ -186,10 +186,10 @@ class DigitHighlightPasswordField extends JPasswordField {
 }
 
 class HighlightFilter extends DocumentFilter {
-  private final Color fgc = UIManager.getColor("PasswordField.foreground");
-  private final Highlighter.HighlightPainter defPainter = new ForegroundPainter(fgc);
-  private final Highlighter.HighlightPainter numPainter = new ForegroundPainter(Color.RED);
-  private final Pattern pattern = Pattern.compile("\\d");
+  private static final Pattern DIGIT_PATTERN = Pattern.compile("\\d");
+  private final Highlighter.HighlightPainter defaultPainter =
+      new ForegroundPainter(UIManager.getColor("PasswordField.foreground"));
+  private final Highlighter.HighlightPainter digitPainter = new ForegroundPainter(Color.RED);
   private final JTextComponent field;
 
   protected HighlightFilter(JTextComponent field) {
@@ -214,18 +214,17 @@ class HighlightFilter extends DocumentFilter {
 
   private void update(FilterBypass fb) {
     Document doc = fb.getDocument();
-    field.getHighlighter().removeAllHighlights();
+    Highlighter highlighter = field.getHighlighter();
+    highlighter.removeAllHighlights();
     try {
-      Highlighter highlighter = field.getHighlighter();
       String text = doc.getText(0, doc.getLength());
-      Matcher matcher = pattern.matcher(text);
-      int pos = 0;
-      while (matcher.find(pos) && !matcher.group().isEmpty()) {
-        pos = matcher.end();
-        highlighter.addHighlight(matcher.start(), pos, numPainter);
+      Matcher matcher = DIGIT_PATTERN.matcher(text);
+      while (matcher.find()) {
+        highlighter.addHighlight(matcher.start(), matcher.end(), digitPainter);
       }
-      highlighter.addHighlight(0, doc.getLength(), defPainter);
-    } catch (BadLocationException | PatternSyntaxException ex) {
+      // Added last so that it is painted first, below the digit highlights
+      highlighter.addHighlight(0, text.length(), defaultPainter);
+    } catch (BadLocationException ex) {
       UIManager.getLookAndFeel().provideErrorFeedback(field);
     }
   }
@@ -256,7 +255,7 @@ class EyeIcon implements Icon {
     g2.setPaint(color);
     int iw = getIconWidth();
     int ih = getIconHeight();
-    double s = getIconWidth() / 12d;
+    double s = iw / 12d;
     g2.setStroke(new BasicStroke((float) s));
     double w = iw - s * 2d;
     double h = ih - s * 2d;
@@ -300,12 +299,18 @@ class ForegroundPainter extends DefaultHighlighter.DefaultHighlightPainter {
     Rectangle r = getDrawingArea(offs0, offs1, bounds, view);
     if (!r.isEmpty()) {
       try {
-        String s = c.getDocument().getText(offs0, offs1 - offs0);
         Graphics2D g2 = (Graphics2D) g.create();
+        // Use the desktop text antialiasing hints so that the text looks
+        // the same as the text normally painted by the View
+        Object hints = Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
+        if (hints instanceof Map) {
+          g2.addRenderingHints((Map<?, ?>) hints);
+        }
         Font font = c.getFont();
-        FontMetrics metrics = g2.getFontMetrics(font);
-        int ascent = metrics.getAscent();
+        g2.setFont(font);
+        int ascent = g2.getFontMetrics(font).getAscent();
         g2.setColor(getColor());
+        String s = c.getDocument().getText(offs0, offs1 - offs0);
         g2.drawString(s, (float) r.x, (float) (r.y + ascent));
         g2.dispose();
       } catch (BadLocationException ex) {
