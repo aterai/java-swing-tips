@@ -14,20 +14,17 @@ public final class MainPanel extends JPanel {
     super(new BorderLayout());
     Rectangle rubberBand = new Rectangle();
     JDesktopPane desktop = new JDesktopPane();
-    desktop.setDesktopManager(new OutlineDragDesktopManager(rubberBand));
+    desktop.setDesktopManager(new OutlineResizeDesktopManager(rubberBand));
     add(new JLayer<>(desktop, new LayerUI<JDesktopPane>() {
       @Override public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
-        if (c instanceof JLayer) {
-          JDesktopPane desktop = (JDesktopPane) ((JLayer<?>) c).getView();
-          if (desktop.getDragMode() == JDesktopPane.OUTLINE_DRAG_MODE) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            // Paint color = UIManager.getColor("InternalFrame.borderColor");
-            g2.setPaint(Color.GRAY);
-            g2.setStroke(makeDotStroke());
-            g2.draw(rubberBand);
-            g2.dispose();
-          }
+        if (!rubberBand.isEmpty()) {
+          Graphics2D g2 = (Graphics2D) g.create();
+          // Paint color = UIManager.getColor("InternalFrame.borderColor");
+          g2.setPaint(Color.GRAY);
+          g2.setStroke(createDotStroke());
+          g2.draw(rubberBand);
+          g2.dispose();
         }
       }
     }));
@@ -47,12 +44,12 @@ public final class MainPanel extends JPanel {
     setPreferredSize(new Dimension(320, 240));
   }
 
-  public static Stroke makeDotStroke() {
-    float[] dist = {1f, 1f};
-    return new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, dist, 0f);
+  public static Stroke createDotStroke() {
+    float[] dash = {1f, 1f};
+    return new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1f, dash, 0f);
   }
 
-  private JInternalFrame createFrame(String title) {
+  private static JInternalFrame createFrame(String title) {
     JInternalFrame frame = new JInternalFrame(title, true, true, true, true);
     frame.setSize(200, 100);
     return frame;
@@ -80,41 +77,36 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class OutlineDragDesktopManager extends DefaultDesktopManager {
+class OutlineResizeDesktopManager extends DefaultDesktopManager {
   private final Rectangle rubberBand;
 
-  protected OutlineDragDesktopManager(Rectangle rubberBand) {
+  protected OutlineResizeDesktopManager(Rectangle rubberBand) {
     super();
     this.rubberBand = rubberBand;
   }
 
-  @Override public void beginResizingFrame(JComponent f, int direction) {
-    // System.out.println("beginResizingFrame");
-    JDesktopPane desktop = ((JInternalFrame) f).getDesktopPane();
-    desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-    super.beginResizingFrame(f, direction);
-  }
-
   @Override public void resizeFrame(JComponent f, int newX, int newY, int newWidth, int newHeight) {
-    // System.out.println("resizeFrame");
-    JDesktopPane desktop = ((JInternalFrame) f).getDesktopPane();
-    if (desktop.getDragMode() == JDesktopPane.OUTLINE_DRAG_MODE) {
-      super.resizeFrame(f, newX, newY, 0, 0);
-      rubberBand.setBounds(newX, newY, newWidth, newHeight);
-      desktop.repaint();
-    } else {
-      super.resizeFrame(f, newX, newY, newWidth, newHeight);
-    }
+    // Do not call super.resizeFrame(...): the frame keeps its bounds while resizing,
+    // and only the rubber band is updated and painted by the LayerUI.
+    repaintRubberBand(f);
+    rubberBand.setBounds(newX, newY, newWidth, newHeight);
+    repaintRubberBand(f);
   }
 
   @Override public void endResizingFrame(JComponent f) {
-    // System.out.println("endResizingFrame");
-    JDesktopPane desktop = ((JInternalFrame) f).getDesktopPane();
-    desktop.setDragMode(JDesktopPane.LIVE_DRAG_MODE);
     if (!rubberBand.isEmpty()) {
-      super.resizeFrame(f, rubberBand.x, rubberBand.y, rubberBand.width, rubberBand.height);
+      repaintRubberBand(f);
+      setBoundsForFrame(f, rubberBand.x, rubberBand.y, rubberBand.width, rubberBand.height);
       rubberBand.setBounds(0, 0, 0, 0);
     }
     super.endResizingFrame(f);
+  }
+
+  private void repaintRubberBand(JComponent f) {
+    Container parent = f.getParent();
+    if (parent != null && !rubberBand.isEmpty()) {
+      // Graphics2D#draw(Rectangle) paints one pixel beyond the width and height
+      parent.repaint(rubberBand.x, rubberBand.y, rubberBand.width + 1, rubberBand.height + 1);
+    }
   }
 }
