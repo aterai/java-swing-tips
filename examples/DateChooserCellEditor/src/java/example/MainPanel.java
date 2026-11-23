@@ -5,8 +5,6 @@
 package example;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
@@ -26,6 +24,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -90,37 +90,50 @@ public final class MainPanel extends JPanel {
   }
 }
 
-class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionListener {
-  private static final String EDIT = "edit";
+class DateEditor extends AbstractCellEditor implements TableCellEditor {
+  private static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormatter.ofPattern("yyyy / MM");
   private final JButton button = new JButton();
   private final DateFormat formatter = DateFormat.getDateInstance();
-  private final CalenderPanel dateChooser = new CalenderPanel();
-  private JPopupMenu popup;
+  private final CalendarPanel dateChooser = new CalendarPanel();
+  private final JPopupMenu popup = new JPopupMenu();
+  // The date returned by getCellEditorValue(), kept separately from the month
+  // displayed in the calendar so that browsing months does not change the value
+  private LocalDate selectedDate;
   private JTable table;
 
   protected DateEditor() {
     super();
-    button.setActionCommand(EDIT);
-    button.addActionListener(this);
+    button.addActionListener(e -> showPopup());
     button.setContentAreaFilled(false);
     button.setFocusPainted(false);
     button.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
     button.setHorizontalAlignment(SwingConstants.LEFT);
     button.setHorizontalTextPosition(SwingConstants.RIGHT);
+    popup.add(dateChooser);
+    popup.addPopupMenuListener(new PopupMenuListener() {
+      @Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        // not needed
+      }
+
+      @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        // not needed
+      }
+
+      @Override public void popupMenuCanceled(PopupMenuEvent e) {
+        // The popup was closed without selecting a date (e.g. by clicking outside)
+        cancelCellEditing();
+      }
+    });
   }
 
-  @Override public void actionPerformed(ActionEvent e) {
-    if (EDIT.equals(e.getActionCommand()) && table != null) {
-      int row = table.getSelectedRow();
-      int col = table.getSelectedColumn();
+  // The button receives the mouse event that started editing and opens the calendar
+  private void showPopup() {
+    if (table != null && table.isEditing()) {
+      int row = table.getEditingRow();
+      int col = table.getEditingColumn();
       Rectangle rect = table.getCellRect(row, col, true);
-      Point p = new Point(rect.x, (int) rect.getMaxY());
-      if (popup == null) {
-        popup = new JPopupMenu();
-        popup.add(dateChooser);
-        popup.pack();
-      }
-      popup.show(table, p.x, p.y);
+      popup.pack();
+      popup.show(table, rect.x, rect.y + rect.height);
       dateChooser.requestFocusInWindow();
     }
   }
@@ -130,8 +143,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
   }
 
   @Override public Object getCellEditorValue() {
-    LocalDate d = dateChooser.getLocalDate();
-    return Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    return Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
   }
 
   @SuppressWarnings("PMD.ReplaceJavaUtilDate")
@@ -140,24 +152,25 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
       Date date = (Date) value;
       button.setText(formatter.format(date));
       button.setOpaque(true);
-      // button.setForeground(tbl.getSelectionForeground());
+      // Copy the color so that it is not a UIResource replaced by the button UI
       Color fgc = tbl.getSelectionForeground();
       button.setForeground(new Color(fgc.getRGB()));
       button.setBackground(tbl.getSelectionBackground());
       ZonedDateTime dateTime = date.toInstant().atZone(ZoneId.systemDefault());
-      dateChooser.setLocalDate(dateTime.toLocalDate());
+      selectedDate = dateTime.toLocalDate();
+      dateChooser.setLocalDate(selectedDate);
       this.table = tbl;
     }
     return button;
   }
 
-  private final class CalenderPanel extends JPanel {
+  private final class CalendarPanel extends JPanel {
     private final LocalDate realLocalDate = LocalDate.now(ZoneId.systemDefault());
     private final JLabel monthLabel = new JLabel("", SwingConstants.CENTER);
-    private final CalendarTable monthTable = new CalendarTable();
+    private final MonthTable monthTable = new MonthTable();
     private LocalDate currentLocalDate;
 
-    private CalenderPanel() {
+    private CalendarPanel() {
       super(new BorderLayout());
       CalendarTableRenderer r = new CalendarTableRenderer(this, monthTable.highlighter);
       monthTable.setDefaultRenderer(LocalDate.class, r);
@@ -176,11 +189,15 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
 
       MouseAdapter mouseHandler = new MouseAdapter() {
         @Override public void mouseClicked(MouseEvent e) {
-          int row = monthTable.getSelectedRow();
-          int column = monthTable.getSelectedColumn();
-          currentLocalDate = (LocalDate) monthTable.getValueAt(row, column);
-          popup.setVisible(false);
-          fireEditingStopped();
+          // Use the clicked cell rather than the selected cell, which may be -1
+          Point pt = e.getPoint();
+          int row = monthTable.rowAtPoint(pt);
+          int column = monthTable.columnAtPoint(pt);
+          if (row >= 0 && column >= 0) {
+            selectedDate = (LocalDate) monthTable.getValueAt(row, column);
+            popup.setVisible(false);
+            stopCellEditing();
+          }
         }
       };
       monthTable.addMouseListener(mouseHandler);
@@ -207,21 +224,17 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
 
     private void setLocalDate(LocalDate date) {
       currentLocalDate = date;
-      DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy / MM");
-      monthLabel.setText(date.format(fmt.withLocale(Locale.getDefault())));
+      monthLabel.setText(date.format(MONTH_FORMATTER.withLocale(Locale.getDefault())));
       monthTable.setModel(new CalendarViewTableModel(date));
     }
   }
 
-  private static final class CalendarTable extends JTable {
-    private transient HighlightListener highlighter;
+  private static final class MonthTable extends JTable {
+    // Created once and kept across updateUI() so that the renderer can share it
+    private final transient HighlightListener highlighter = new HighlightListener();
 
-    @Override public void updateUI() {
-      removeMouseListener(highlighter);
-      removeMouseMotionListener(highlighter);
-      super.updateUI();
-      setRowSelectionAllowed(false);
-      highlighter = new HighlightListener();
+    private MonthTable() {
+      super();
       addMouseListener(highlighter);
       addMouseMotionListener(highlighter);
     }
@@ -256,13 +269,13 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
     @SuppressWarnings("PMD.UseConcurrentHashMap")
     private final Map<DayOfWeek, Color> holidayColorMap = new EnumMap<>(DayOfWeek.class);
     private final LocalDate realLocalDate;
-    private final CalenderPanel calender;
+    private final CalendarPanel calendar;
     private final transient HighlightListener highlighter;
 
-    private CalendarTableRenderer(CalenderPanel calender, HighlightListener highlighter) {
+    private CalendarTableRenderer(CalendarPanel calendar, HighlightListener highlighter) {
       super();
-      this.calender = calender;
-      this.realLocalDate = calender.realLocalDate;
+      this.calendar = calendar;
+      this.realLocalDate = calendar.realLocalDate;
       this.highlighter = highlighter;
       holidayColorMap.put(DayOfWeek.SUNDAY, new Color(0xFF_DC_DC));
       holidayColorMap.put(DayOfWeek.SATURDAY, new Color(0xDC_DC_FF));
@@ -276,7 +289,7 @@ class DateEditor extends AbstractCellEditor implements TableCellEditor, ActionLi
         l.setHorizontalAlignment(CENTER);
         LocalDate d = (LocalDate) value;
         l.setText(Integer.toString(d.getDayOfMonth()));
-        if (YearMonth.from(d).equals(YearMonth.from(calender.getLocalDate()))) {
+        if (YearMonth.from(d).equals(YearMonth.from(calendar.getLocalDate()))) {
           l.setForeground(table.getForeground());
         } else {
           l.setForeground(Color.GRAY);
