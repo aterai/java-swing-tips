@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -71,8 +70,8 @@ class MultipleSelectionList<E extends ListItem> extends JList<E> {
   protected static final Color SELECTED_COLOR = new Color(0x40_32_64_FF, true);
   protected static final Color ROLLOVER_COLOR = new Color(0x40_32_64_AA, true);
   private transient ItemCheckBoxesListener checkListener;
-  private int rollOverIndex = -1;
-  private int checkedIndex = -1;
+  private int rolloverIndex = -1;
+  private int checkIndex = -1; // index of the cell whose check box is pressed
 
   protected MultipleSelectionList(ListModel<E> model) {
     super(model);
@@ -91,13 +90,26 @@ class MultipleSelectionList<E extends ListItem> extends JList<E> {
     addMouseListener(checkListener);
   }
 
+  @Override protected void processMouseEvent(MouseEvent e) {
+    // The MouseListener of the ListUI is notified before ItemCheckBoxesListener
+    // and calls setSelectionInterval(...), so the index of the pressed check box
+    // must be updated before any MouseListener is notified.
+    if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+      checkIndex = getCheckBoxIndexAt(e);
+    }
+    super.processMouseEvent(e);
+  }
+
   @Override public void setSelectionInterval(int anchor, int lead) {
-    if (checkedIndex < 0) {
+    if (checkIndex < 0) {
       super.setSelectionInterval(anchor, lead);
     } else {
+      // Defer the selection change requested by the ListUI so that it is
+      // applied after the check box toggles the selection of the cell
       EventQueue.invokeLater(() -> {
-        if (checkedIndex >= 0 && lead == anchor && checkedIndex == anchor) {
-          super.addSelectionInterval(checkedIndex, checkedIndex);
+        int idx = checkIndex;
+        if (idx >= 0 && lead == anchor && idx == anchor) {
+          super.addSelectionInterval(idx, idx);
         } else {
           super.setSelectionInterval(anchor, lead);
         }
@@ -106,105 +118,102 @@ class MultipleSelectionList<E extends ListItem> extends JList<E> {
   }
 
   @Override public void removeSelectionInterval(int index0, int index1) {
-    if (checkedIndex < 0) {
+    if (checkIndex < 0) {
       super.removeSelectionInterval(index0, index1);
     } else {
       EventQueue.invokeLater(() -> super.removeSelectionInterval(index0, index1));
     }
   }
 
-  private final class ItemCheckBoxesListener extends MouseAdapter {
-    private final Point srcPoint = new Point();
+  protected int getCellIndexAt(Point pt) {
+    int index = locationToIndex(pt);
+    Rectangle r = getCellBounds(index, index);
+    return r != null && r.contains(pt) ? index : -1;
+  }
 
+  protected void repaintCell(int index) {
+    Rectangle r = getCellBounds(index, index);
+    if (r != null) {
+      repaint(r);
+    }
+  }
+
+  private int getCheckBoxIndexAt(MouseEvent e) {
+    boolean modifierDown = e.isShiftDown() || e.isControlDown() || e.isAltDown();
+    Point pt = e.getPoint();
+    int index = getCellIndexAt(pt);
+    boolean hit = !modifierDown && index >= 0 && isCheckBoxAt(index, pt);
+    return hit ? index : -1;
+  }
+
+  private boolean isCheckBoxAt(int index, Point pt) {
+    E value = getModel().getElementAt(index);
+    ListCellRenderer<? super E> cr = getCellRenderer();
+    Component c = cr.getListCellRendererComponent(this, value, index, false, false);
+    Rectangle r = getCellBounds(index, index);
+    c.setBounds(r);
+    c.validate(); // lay out the JCheckBox or Box.Filler swapped by the cell renderer
+    Component deepest = SwingUtilities.getDeepestComponentAt(c, pt.x - r.x, pt.y - r.y);
+    // The cell renderer uses a Box.Filler instead of a hidden JCheckBox
+    return deepest instanceof JCheckBox || deepest instanceof Box.Filler;
+  }
+
+  private final class ItemCheckBoxesListener extends MouseAdapter {
     @Override public void mouseExited(MouseEvent e) {
-      rollOverIndex = -1;
-      e.getComponent().repaint();
+      repaintCell(rolloverIndex);
+      rolloverIndex = -1;
     }
 
     @Override public void mouseMoved(MouseEvent e) {
-      Point pt = e.getPoint();
-      int idx = locationToIndex(pt);
-      if (!getCellBounds(idx, idx).contains(pt)) {
-        idx = -1;
+      int index = getCellIndexAt(e.getPoint());
+      if (index != rolloverIndex) {
+        repaintCell(rolloverIndex);
+        rolloverIndex = index;
+        repaintCell(index);
       }
-      Rectangle rect = new Rectangle();
-      if (idx >= 0) {
-        rect.add(getCellBounds(idx, idx));
-        if (rollOverIndex >= 0 && idx != rollOverIndex) {
-          rect.add(getCellBounds(rollOverIndex, rollOverIndex));
-        }
-        rollOverIndex = idx;
-      } else {
-        if (rollOverIndex >= 0) {
-          rect.add(getCellBounds(rollOverIndex, rollOverIndex));
-        }
-        rollOverIndex = -1;
-      }
-      ((JComponent) e.getComponent()).repaint(rect);
     }
 
     @Override public void mousePressed(MouseEvent e) {
-      JList<?> l = (JList<?>) e.getComponent();
-      Point pt = e.getPoint();
-      int index = l.locationToIndex(pt);
-      if (l.getCellBounds(index, index).contains(pt)) {
+      int index = getCellIndexAt(e.getPoint());
+      if (index >= 0) {
         cellPressed(e, index);
       } else {
         EventQueue.invokeLater(() -> {
-          l.getSelectionModel().setAnchorSelectionIndex(-1);
-          l.getSelectionModel().setLeadSelectionIndex(-1);
-          rollOverIndex = -1;
-          checkedIndex = -1;
-          l.clearSelection();
+          getSelectionModel().setAnchorSelectionIndex(-1);
+          getSelectionModel().setLeadSelectionIndex(-1);
+          rolloverIndex = -1;
+          checkIndex = -1;
+          clearSelection();
         });
       }
-      srcPoint.setLocation(pt);
-      l.repaint();
+      repaint();
     }
 
     private void cellPressed(MouseEvent e, int index) {
       if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() > 1) {
         ListItem item = getModel().getElementAt(index);
         JOptionPane.showMessageDialog(getRootPane(), item.getTitle());
-      } else {
-        checkedIndex = -1;
-        getCheckBoxAt(e, index).ifPresent(button -> {
-          checkedIndex = index;
-          if (isSelectedIndex(index)) {
-            removeSelectionInterval(index, index);
-          } else {
-            setSelectionInterval(index, index);
-          }
-        });
+      } else if (checkIndex == index) {
+        if (isSelectedIndex(index)) {
+          removeSelectionInterval(index, index);
+        } else {
+          setSelectionInterval(index, index);
+        }
       }
-    }
-
-    private Optional<Component> getCheckBoxAt(MouseEvent e, int index) {
-      JList<E> list = MultipleSelectionList.this;
-      boolean b = e.isShiftDown() || e.isControlDown() || e.isAltDown();
-      return b ? Optional.empty() : getDeepestBoxAt(list, index, e.getPoint());
-    }
-
-    private Optional<Component> getDeepestBoxAt(JList<E> list, int index, Point pt) {
-      E proto = list.getPrototypeCellValue();
-      ListCellRenderer<? super E> cr = list.getCellRenderer();
-      Component c = cr.getListCellRendererComponent(list, proto, index, false, false);
-      Rectangle r = list.getCellBounds(index, index);
-      c.setBounds(r);
-      pt.translate(-r.x, -r.y);
-      return Optional.ofNullable(SwingUtilities.getDeepestComponentAt(c, pt.x, pt.y))
-          .filter(b -> b instanceof JCheckBox || b instanceof Box.Filler);
     }
   }
 
   protected class ListItemCellRenderer implements ListCellRenderer<E> {
     private final JPanel renderer = new JPanel(new BorderLayout(0, 0));
+    private final BorderLayout itemLayout = new BorderLayout(2, 2);
     private final AbstractButton check = new JCheckBox();
     private final Component filler = Box.createRigidArea(check.getPreferredSize());
     private final JLabel label = new JLabel("");
-    private final JPanel itemPanel = new JPanel(new BorderLayout(2, 2)) {
+    private final JPanel itemPanel = new JPanel(itemLayout) {
       @Override protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Paint the translucent selection color once more to make
+        // the selected cell darker than the rollover cell
         if (SELECTED_COLOR.equals(getBackground())) {
           Graphics2D g2 = (Graphics2D) g.create();
           g2.setPaint(SELECTED_COLOR);
@@ -224,11 +233,8 @@ class MultipleSelectionList<E extends ListItem> extends JList<E> {
       }
       noFocusBorder = b;
       itemPanel.setBorder(noFocusBorder);
-      label.setForeground(itemPanel.getForeground());
-      label.setBackground(itemPanel.getBackground());
       label.setOpaque(false);
       check.setOpaque(false);
-      check.setVisible(false);
       itemPanel.add(filler, BorderLayout.WEST);
       itemPanel.add(label);
       itemPanel.setOpaque(true);
@@ -241,27 +247,32 @@ class MultipleSelectionList<E extends ListItem> extends JList<E> {
         label.setText(value.getTitle());
         label.setIcon(value.getIcon());
       }
+      boolean rollover = index == rolloverIndex;
       itemPanel.setBorder(cellHasFocus ? focusBorder : noFocusBorder);
       check.setSelected(isSelected);
-      check.getModel().setRollover(index == rollOverIndex);
+      check.getModel().setRollover(rollover);
+      // Show the JCheckBox only in the selected or rollover cell, otherwise
+      // use a Box.Filler of the same size to keep the position of the label
+      setLeadingComponent(isSelected || rollover ? check : filler);
+      label.setForeground(isSelected ? list.getSelectionForeground() : list.getForeground());
       if (isSelected) {
-        label.setForeground(list.getSelectionForeground());
-        label.setBackground(SELECTED_COLOR);
         itemPanel.setBackground(SELECTED_COLOR);
-        itemPanel.add(check, BorderLayout.WEST);
-        check.setVisible(true);
-      } else if (index == rollOverIndex) {
+      } else if (rollover) {
         itemPanel.setBackground(ROLLOVER_COLOR);
-        itemPanel.add(check, BorderLayout.WEST);
-        check.setVisible(true);
       } else {
-        label.setForeground(list.getForeground());
-        label.setBackground(list.getBackground());
         itemPanel.setBackground(list.getBackground());
-        itemPanel.add(filler, BorderLayout.WEST);
-        check.setVisible(false);
       }
       return renderer;
+    }
+
+    private void setLeadingComponent(Component c) {
+      Component old = itemLayout.getLayoutComponent(BorderLayout.WEST);
+      if (!Objects.equals(old, c)) {
+        if (old != null) {
+          itemPanel.remove(old);
+        }
+        itemPanel.add(c, BorderLayout.WEST);
+      }
     }
   }
 }
