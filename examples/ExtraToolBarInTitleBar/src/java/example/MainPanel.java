@@ -10,6 +10,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -26,8 +27,11 @@ public final class MainPanel extends JPanel {
   private static JButton createButton(String title, Icon icon) {
     JButton extraButton = new JButton(title, icon) {
       @Override public Dimension getPreferredSize() {
-        Icon icon = UIManager.getIcon("InternalFrame.closeIcon");
-        return new Dimension(icon.getIconWidth(), icon.getIconHeight());
+        // Use the same size as the title bar buttons of the JRootPane
+        Icon closeIcon = UIManager.getIcon("InternalFrame.closeIcon");
+        return closeIcon == null
+            ? super.getPreferredSize()
+            : new Dimension(closeIcon.getIconWidth(), closeIcon.getIconHeight());
       }
     };
     extraButton.setFocusPainted(false);
@@ -75,7 +79,7 @@ public final class MainPanel extends JPanel {
     frame.setLocationRelativeTo(null);
     JWindow bar = createExtraBarWindow(frame);
     frame.addComponentListener(new ExtraBarComponentHandler(bar));
-    frame.addWindowListener(new ExtraBarHandler(bar));
+    frame.addWindowListener(new ExtraBarWindowHandler(bar));
     frame.setVisible(true);
   }
 }
@@ -89,33 +93,29 @@ class ExtraBarComponentHandler implements ComponentListener {
   }
 
   @Override public void componentResized(ComponentEvent e) {
-    // System.out.println("componentResized");
-    // ???: setLocationRelativeTo(e.getComponent());
-    EventQueue.invokeLater(() -> relocateBar(e.getComponent()));
+    // When the frame is restored from the maximized state, the title bar
+    // buttons may not have been laid out yet, so defer the update once more.
+    EventQueue.invokeLater(() -> ExtraBarWindowHandler.relocateBar(e.getComponent(), extraBar));
   }
 
   @Override public void componentMoved(ComponentEvent e) {
-    relocateBar(e.getComponent());
+    ExtraBarWindowHandler.relocateBar(e.getComponent(), extraBar);
   }
 
   @Override public void componentShown(ComponentEvent e) {
-    relocateBar(e.getComponent());
+    ExtraBarWindowHandler.relocateBar(e.getComponent(), extraBar);
     extraBar.setVisible(true);
   }
 
   @Override public void componentHidden(ComponentEvent e) {
     extraBar.setVisible(false);
   }
-
-  private void relocateBar(Component p) {
-    EventQueue.invokeLater(() -> ExtraBarHandler.updateBarLocation(p, extraBar));
-  }
 }
 
-class ExtraBarHandler extends WindowAdapter {
+class ExtraBarWindowHandler extends WindowAdapter {
   private final JWindow extraBar;
 
-  protected ExtraBarHandler(JWindow extraBar) {
+  protected ExtraBarWindowHandler(JWindow extraBar) {
     super();
     this.extraBar = extraBar;
   }
@@ -129,7 +129,7 @@ class ExtraBarHandler extends WindowAdapter {
   }
 
   @Override public void windowOpened(WindowEvent e) {
-    relocateBar(e.getWindow());
+    relocateBar(e.getWindow(), extraBar);
     extraBar.setVisible(true);
   }
 
@@ -142,39 +142,44 @@ class ExtraBarHandler extends WindowAdapter {
   }
 
   @Override public void windowDeiconified(WindowEvent e) {
-    relocateBar(e.getWindow());
+    relocateBar(e.getWindow(), extraBar);
     extraBar.setVisible(true);
   }
 
-  private void relocateBar(Component p) {
+  public static void relocateBar(Component p, JWindow extraBar) {
+    // Wait until the title bar of the JRootPane has been laid out
     EventQueue.invokeLater(() -> updateBarLocation(p, extraBar));
   }
 
-  public static void updateBarLocation(Component p, JWindow extraBar) {
+  private static void updateBarLocation(Component p, JWindow extraBar) {
     JRootPane root = SwingUtilities.getRootPane(p);
-    Icon minIcon = UIManager.getIcon("InternalFrame.iconifyIcon");
-    Insets zeroIns = new Insets(0, 0, 0, 0);
-    Border bdr = root.getBorder();
-    Insets ins = bdr == null ? zeroIns : bdr.getBorderInsets(root);
-    if (p instanceof Frame && ((Frame) p).getExtendedState() == Frame.MAXIMIZED_BOTH) {
-      ins = zeroIns;
+    if (root == null) {
+      return;
     }
-    JButton minButton = findMinimizeButton(root, minIcon);
-    Point pt = minButton == null ? new Point() : minButton.getLocation();
+    // The JRootPane border is removed when the frame is maximized
+    boolean maximized = p instanceof Frame
+        && ((Frame) p).getExtendedState() == Frame.MAXIMIZED_BOTH;
+    Border border = root.getBorder();
+    int top = maximized || border == null ? 0 : border.getBorderInsets(root).top;
+    Icon iconifyIcon = UIManager.getIcon("InternalFrame.iconifyIcon");
+    // The location of the iconify button is relative to the title pane,
+    // so convert it to the JRootPane coordinate system first
+    Point pt = findIconifyButton(root, iconifyIcon)
+        .map(b -> SwingUtilities.convertPoint(b.getParent(), b.getLocation(), root))
+        .orElseGet(Point::new);
     SwingUtilities.convertPointToScreen(pt, root);
     int x = pt.x - extraBar.getWidth();
-    int y = p.getY() + ins.top + 1;
+    int y = p.getY() + top + 1;
     extraBar.setLocation(x, y);
   }
 
-  private static JButton findMinimizeButton(JRootPane root, Icon minIcon) {
+  private static Optional<JButton> findIconifyButton(JRootPane root, Icon iconifyIcon) {
     return SwingUtils
         .descendants(root)
         .filter(JButton.class::isInstance)
         .map(JButton.class::cast)
-        .filter(b -> Objects.equals(b.getIcon(), minIcon))
-        .findFirst()
-        .orElse(null);
+        .filter(b -> Objects.equals(b.getIcon(), iconifyIcon))
+        .findFirst();
   }
 }
 
@@ -190,8 +195,9 @@ class ExtraIcon implements Icon {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setRenderingHint(
         RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    Color color = ((JButton) c).getModel().isPressed() ? Color.RED : Color.GREEN;
-    g2.setColor(color);
+    boolean pressed = c instanceof AbstractButton
+        && ((AbstractButton) c).getModel().isPressed();
+    g2.setColor(pressed ? Color.RED : Color.GREEN);
     g2.fillOval(x + 2, y + 2, size - 4, size - 4);
     g2.dispose();
   }
