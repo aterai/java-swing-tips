@@ -32,6 +32,9 @@ public final class MainPanel extends JPanel {
 
   private MainPanel() {
     super(new BorderLayout());
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     JPanel p = new JPanel(new GridLayout(0, 1, 5, 25));
     JPanel p1 = createEchoCharStrategyPanel();
     p.add(createTitledPanel("JPasswordField#setEchoChar(...) + HighlightFilter", p1));
@@ -48,12 +51,11 @@ public final class MainPanel extends JPanel {
     password.setAlignmentX(RIGHT_ALIGNMENT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
 
-    AbstractButton button = new JToggleButton();
+    AbstractButton button = PasswordUiUtils.createVisibilityToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
     });
-    PasswordUiUtils.setupVisibilityToggleButton(button);
     JPanel p = new OverlayLayoutPanel();
     p.add(button);
     p.add(password);
@@ -76,7 +78,7 @@ public final class MainPanel extends JPanel {
     p.add(password, PasswordVisibility.HIDDEN.toString());
     p.add(visibleTextPane, PasswordVisibility.VISIBLE.toString());
 
-    AbstractButton button = new JToggleButton();
+    AbstractButton button = PasswordUiUtils.createVisibilityToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       if (b) {
@@ -87,7 +89,6 @@ public final class MainPanel extends JPanel {
         cardLayout.show(p, PasswordVisibility.HIDDEN.toString());
       }
     });
-    PasswordUiUtils.setupVisibilityToggleButton(button);
 
     JPanel panel = new OverlayLayoutPanel();
     panel.add(button);
@@ -131,6 +132,16 @@ enum PasswordVisibility {
 class DigitHighlightPasswordField extends JPasswordField {
   protected DigitHighlightPasswordField(int columns) {
     super(columns);
+  }
+
+  @Override public void updateUI() {
+    super.updateUI();
+    // Once JPasswordField#setEchoChar(...) is called, the new LookAndFeel no longer
+    // installs its own echo character, so reapply it while the password is hidden
+    Object echoChar = UIManager.get("PasswordField.echoChar");
+    if (echoCharIsSet() && echoChar instanceof Character) {
+      super.setEchoChar((Character) echoChar);
+    }
   }
 
   @Override public void setEchoChar(char c) {
@@ -308,20 +319,31 @@ final class PasswordUiUtils {
     }
   }
 
-  public static void setupVisibilityToggleButton(AbstractButton b) {
+  public static AbstractButton createVisibilityToggleButton() {
+    AbstractButton b = new JToggleButton() {
+      @Override public void updateUI() {
+        super.updateUI();
+        // WindowsToggleButtonUI replaces even a non-UIResource border with an XP border,
+        // so reapply the empty border every time the LookAndFeel is changed
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+        // Recreate the icons with the selection color of the new LookAndFeel
+        // (NimbusLookAndFeel does not define List.selectionBackground)
+        Color fgc = Optional.ofNullable(UIManager.getColor("List.selectionBackground"))
+            .orElse(Color.BLUE);
+        setIcon(new EyeIcon(fgc));
+        setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
+        setSelectedIcon(new EyeIcon(fgc));
+        setRolloverSelectedIcon(new EyeIcon(fgc));
+      }
+    };
     b.setFocusable(false);
+    // WindowsButtonUI enlarges an even preferred size to an odd one when the focus is painted
+    b.setFocusPainted(false);
     b.setOpaque(false);
     b.setContentAreaFilled(false);
-    b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
     b.setAlignmentX(Component.RIGHT_ALIGNMENT);
     b.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-    Color fgc = UIManager.getColor("List.selectionBackground");
-
-    b.setIcon(new EyeIcon(fgc));
-    b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
-    b.setSelectedIcon(new EyeIcon(fgc));
-    b.setRolloverSelectedIcon(new EyeIcon(fgc));
+    return b;
   }
 
   public static JTextPane createVisiblePasswordEditor(JPasswordField password) {
@@ -340,6 +362,62 @@ final class PasswordUiUtils {
   private static void setupDocument(StyledDocument doc) {
     if (doc instanceof AbstractDocument) {
       ((AbstractDocument) doc).setDocumentFilter(new DigitForegroundFilter());
+    }
+  }
+}
+
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = createButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
     }
   }
 }
