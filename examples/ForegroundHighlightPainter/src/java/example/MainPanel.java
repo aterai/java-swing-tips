@@ -77,7 +77,14 @@ public final class MainPanel extends JPanel {
     password.setAlignmentX(RIGHT_ALIGNMENT);
     password.setText("!1l2c$%34e5&6#7=8g9O0");
 
-    AbstractButton button = new JToggleButton();
+    AbstractButton button = new JToggleButton() {
+      @Override public void updateUI() {
+        super.updateUI();
+        // WindowsToggleButtonUI replaces even a non-UIResource border with an XP border,
+        // so reapply the empty border every time the LookAndFeel is changed
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+      }
+    };
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       password.setEchoChar(b ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY));
@@ -91,9 +98,10 @@ public final class MainPanel extends JPanel {
 
   private static void setupVisibilityToggleButton(AbstractButton b) {
     b.setFocusable(false);
+    // WindowsButtonUI enlarges an even preferred size to an odd one when the focus is painted
+    b.setFocusPainted(false);
     b.setOpaque(false);
     b.setContentAreaFilled(false);
-    b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
     b.setAlignmentX(RIGHT_ALIGNMENT);
     b.setAlignmentY(CENTER_ALIGNMENT);
     b.setIcon(new EyeIcon(Color.BLUE));
@@ -141,6 +149,12 @@ class DigitHighlightPasswordField extends JPasswordField {
 
   @Override public void updateUI() {
     super.updateUI();
+    // Once JPasswordField#setEchoChar(...) is called, the new LookAndFeel no longer
+    // installs its own echo character, so reapply it while the password is hidden
+    Object echoChar = UIManager.get("PasswordField.echoChar");
+    if (echoCharIsSet() && echoChar instanceof Character) {
+      super.setEchoChar((Character) echoChar);
+    }
     Document doc = getDocument();
     if (doc instanceof AbstractDocument) {
       updateHighlightFilter((AbstractDocument) doc);

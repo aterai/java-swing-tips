@@ -15,18 +15,18 @@ import javax.swing.border.Border;
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new GridLayout(1, 2));
-    JList<ListItem> list = new JList<ListItem>(makeModel()) {
+    JList<ListItem> list = new JList<ListItem>(createModel()) {
       @Override public void updateUI() {
         super.updateUI();
         setCellRenderer(new SimpleListItemCellRenderer());
       }
     };
     add(new JScrollPane(list));
-    add(new JScrollPane(new MultipleSelectionList<>(makeModel())));
+    add(new JScrollPane(new MultipleSelectionList<>(createModel())));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<ListItem> makeModel() {
+  private static ListModel<ListItem> createModel() {
     DefaultListModel<ListItem> model = new DefaultListModel<>();
     model.addElement(new ListItem("red", new ColorIcon(Color.RED)));
     model.addElement(new ListItem("green", new ColorIcon(Color.GREEN)));
