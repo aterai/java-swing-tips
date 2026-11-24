@@ -14,13 +14,15 @@ import java.awt.geom.Line2D;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-@SuppressWarnings("PMD.TooManyMethods")
 public final class MainPanel extends JPanel {
   private static final Font FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
   private static final String ECHO_CHAR_KEY = "PasswordField.echoChar";
 
   private MainPanel() {
     super(new GridLayout(4, 1, 0, 2));
+    JMenuBar mb = new JMenuBar();
+    mb.add(LookAndFeelUtils.createLookAndFeelMenu());
+    EventQueue.invokeLater(() -> getRootPane().setJMenuBar(mb));
     JPanel p1 = createCheckBoxPasswordPanel();
     add(createTitledPanel("BorderLayout + JCheckBox", p1));
     JPanel p2 = createToggleButtonPasswordPanel();
@@ -50,12 +52,11 @@ public final class MainPanel extends JPanel {
     JPasswordField password = createPasswordField();
     // AbstractDocument doc = (AbstractDocument) password.getDocument();
     // doc.setDocumentFilter(new ASCIIOnlyDocumentFilter());
-    AbstractButton button = new JToggleButton();
+    AbstractButton button = EyeButtonUtils.createEyeToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       setPasswordVisible(password, b);
     });
-    configureEyeButton(button);
     JPanel p = createOverlayPanel();
     p.add(button);
     p.add(password);
@@ -80,13 +81,12 @@ public final class MainPanel extends JPanel {
     cardPanel.add(password, PasswordVisibility.HIDDEN.toString());
     cardPanel.add(textField, PasswordVisibility.VISIBLE.toString());
 
-    AbstractButton button = new JToggleButton();
+    AbstractButton button = EyeButtonUtils.createEyeToggleButton();
     button.addActionListener(e -> {
       boolean b = ((AbstractButton) e.getSource()).isSelected();
       PasswordVisibility s = b ? PasswordVisibility.VISIBLE : PasswordVisibility.HIDDEN;
       visibilityLayout.show(cardPanel, s.toString());
     });
-    configureEyeButton(button);
 
     JPanel p = createOverlayPanel();
     p.add(button);
@@ -96,7 +96,7 @@ public final class MainPanel extends JPanel {
 
   private static JPanel createHoldToShowPasswordPanel() {
     JPasswordField password = createPasswordField();
-    AbstractButton button = new JButton();
+    AbstractButton button = EyeButtonUtils.createEyeButton();
     button.addMouseListener(new MouseAdapter() {
       @Override public void mousePressed(MouseEvent e) {
         setPasswordVisible(password, true);
@@ -106,7 +106,6 @@ public final class MainPanel extends JPanel {
         setPasswordVisible(password, false);
       }
     });
-    configureEyeButton(button);
     JPanel p = createOverlayPanel();
     p.add(button);
     p.add(password);
@@ -117,20 +116,6 @@ public final class MainPanel extends JPanel {
     // An echo character of 0 displays the text as typed, like a JTextField
     char echoChar = visible ? 0 : (Character) UIManager.get(ECHO_CHAR_KEY);
     password.setEchoChar(echoChar);
-  }
-
-  private static void configureEyeButton(AbstractButton b) {
-    b.setFocusable(false);
-    b.setOpaque(false);
-    b.setContentAreaFilled(false);
-    b.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-    b.setAlignmentX(RIGHT_ALIGNMENT);
-    b.setAlignmentY(CENTER_ALIGNMENT);
-    b.setIcon(new EyeIcon(Color.BLUE));
-    b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
-    b.setSelectedIcon(new EyeIcon(Color.BLUE));
-    b.setRolloverSelectedIcon(new EyeIcon(Color.BLUE));
-    b.setToolTipText("show/hide passwords");
   }
 
   private static JPanel createOverlayPanel() {
@@ -144,7 +129,17 @@ public final class MainPanel extends JPanel {
   }
 
   private static JPasswordField createPasswordField() {
-    JPasswordField pf = new JPasswordField(24);
+    JPasswordField pf = new JPasswordField(24) {
+      @Override public void updateUI() {
+        super.updateUI();
+        // Once JPasswordField#setEchoChar(...) is called, the new LookAndFeel no longer
+        // installs its own echo character, so reapply it while the password is hidden
+        Object echoChar = UIManager.get(ECHO_CHAR_KEY);
+        if (echoCharIsSet() && echoChar instanceof Character) {
+          setEchoChar((Character) echoChar);
+        }
+      }
+    };
     pf.setText("1234567890");
     pf.setAlignmentX(RIGHT_ALIGNMENT);
     return pf;
@@ -180,6 +175,52 @@ public final class MainPanel extends JPanel {
     frame.pack();
     frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+  }
+}
+
+final class EyeButtonUtils {
+  private EyeButtonUtils() {
+    /* Singleton */
+  }
+
+  public static AbstractButton createEyeToggleButton() {
+    AbstractButton b = new JToggleButton() {
+      @Override public void updateUI() {
+        super.updateUI();
+        // WindowsToggleButtonUI replaces even a non-UIResource border with an XP border,
+        // so reapply the empty border every time the LookAndFeel is changed
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+      }
+    };
+    configureEyeButton(b);
+    return b;
+  }
+
+  public static AbstractButton createEyeButton() {
+    AbstractButton b = new JButton() {
+      @Override public void updateUI() {
+        super.updateUI();
+        // WindowsButtonUI also replaces the border with an XP border
+        setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
+      }
+    };
+    configureEyeButton(b);
+    return b;
+  }
+
+  private static void configureEyeButton(AbstractButton b) {
+    b.setFocusable(false);
+    // WindowsButtonUI enlarges an even preferred size to an odd one when the focus is painted
+    b.setFocusPainted(false);
+    b.setOpaque(false);
+    b.setContentAreaFilled(false);
+    b.setAlignmentX(Component.RIGHT_ALIGNMENT);
+    b.setAlignmentY(Component.CENTER_ALIGNMENT);
+    b.setIcon(new EyeIcon(Color.BLUE));
+    b.setRolloverIcon(new EyeIcon(Color.DARK_GRAY));
+    b.setSelectedIcon(new EyeIcon(Color.BLUE));
+    b.setRolloverSelectedIcon(new EyeIcon(Color.BLUE));
+    b.setToolTipText("show/hide passwords");
   }
 }
 
@@ -279,5 +320,61 @@ class EyeIcon implements Icon {
 
   @Override public int getIconHeight() {
     return 16;
+  }
+}
+
+final class LookAndFeelUtils {
+  private static String lookAndFeel = UIManager.getLookAndFeel().getClass().getName();
+
+  private LookAndFeelUtils() {
+    /* Singleton */
+  }
+
+  public static JMenu createLookAndFeelMenu() {
+    JMenu menu = new JMenu("LookAndFeel");
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      AbstractButton b = createButton(info);
+      initLookAndFeelAction(info, b);
+      menu.add(b);
+      buttonGroup.add(b);
+    }
+    return menu;
+  }
+
+  private static AbstractButton createButton(UIManager.LookAndFeelInfo info) {
+    boolean selected = info.getClassName().equals(lookAndFeel);
+    return new JRadioButtonMenuItem(info.getName(), selected);
+  }
+
+  public static void initLookAndFeelAction(UIManager.LookAndFeelInfo info, AbstractButton b) {
+    String cmd = info.getClassName();
+    b.setText(info.getName());
+    b.setActionCommand(cmd);
+    b.setHideActionText(true);
+    b.addActionListener(e -> setLookAndFeel(cmd));
+  }
+
+  private static void setLookAndFeel(String newLookAndFeel) {
+    String oldLookAndFeel = lookAndFeel;
+    if (!oldLookAndFeel.equals(newLookAndFeel)) {
+      try {
+        UIManager.setLookAndFeel(newLookAndFeel);
+        lookAndFeel = newLookAndFeel;
+      } catch (UnsupportedLookAndFeelException ignored) {
+        Toolkit.getDefaultToolkit().beep();
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+        Logger.getGlobal().severe(ex::getMessage);
+        return;
+      }
+      updateLookAndFeel();
+      // firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
+    }
+  }
+
+  private static void updateLookAndFeel() {
+    for (Window window : Window.getWindows()) {
+      SwingUtilities.updateComponentTreeUI(window);
+    }
   }
 }
