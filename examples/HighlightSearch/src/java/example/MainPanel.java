@@ -26,6 +26,7 @@ import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.JTextComponent;
 
 public final class MainPanel extends JPanel {
+  private static final Color WARNING = new Color(0xFF_C8_C8);
   private static final String TEXT = String.join("\n",
       "Trail: Creating a GUI with JFC/Swing",
       "https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html",
@@ -44,7 +45,7 @@ public final class MainPanel extends JPanel {
   private final JTextField field = new JTextField("Swing");
   private final JCheckBox checkCase = new JCheckBox("Match case");
   private final JCheckBox checkWord = new JCheckBox("Match whole word only");
-  private final PlaceholderLayerUI<JTextComponent> layerUI = new PlaceholderLayerUI<>();
+  private final MatchCountLayerUI<JTextComponent> layerUI = new MatchCountLayerUI<>();
 
   private MainPanel() {
     super(new BorderLayout());
@@ -64,49 +65,59 @@ public final class MainPanel extends JPanel {
       b.addActionListener(handler);
     });
 
-    JPanel bp = new JPanel(new GridLayout(1, 2));
-    bp.add(prevButton);
-    bp.add(nextButton);
+    JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+    buttonPanel.add(prevButton);
+    buttonPanel.add(nextButton);
 
-    JPanel cp = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    cp.add(checkCase);
-    cp.add(checkWord);
+    JPanel checkPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    checkPanel.add(checkCase);
+    checkPanel.add(checkWord);
 
-    JPanel sp = new JPanel(new BorderLayout(5, 5));
-    sp.setBorder(BorderFactory.createTitledBorder("Search"));
-    sp.add(new JLayer<>(field, layerUI));
-    sp.add(bp, BorderLayout.EAST);
-    sp.add(cp, BorderLayout.SOUTH);
+    JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
+    searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
+    searchPanel.add(new JLayer<>(field, layerUI));
+    searchPanel.add(buttonPanel, BorderLayout.EAST);
+    searchPanel.add(checkPanel, BorderLayout.SOUTH);
 
     EventQueue.invokeLater(() -> changeHighlight(0));
 
-    add(sp, BorderLayout.NORTH);
+    add(searchPanel, BorderLayout.NORTH);
     add(new JScrollPane(textArea));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private Pattern getPattern(String txt) {
-    String cw = checkWord.isSelected() ? "\\b" : "";
-    String fmt = String.format("%s%s%s", cw, txt, cw);
-    boolean b = checkCase.isSelected();
-    int flags = b ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
-    Pattern pattern = null;
-    try {
-      pattern = Pattern.compile(fmt, flags);
-    } catch (PatternSyntaxException ex) {
-      field.setBackground(DocUtils.WARNING);
+  private Optional<Pattern> getPattern(String text) {
+    Optional<Pattern> pattern = Optional.empty();
+    if (!text.isEmpty()) {
+      // Wrap the input in a non-capturing group so that the word boundaries
+      // also apply to every alternative of a pattern such as "a|b"
+      String regex = checkWord.isSelected() ? "\\b(?:" + text + ")\\b" : text;
+      int flags = checkCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+      try {
+        pattern = Optional.of(Pattern.compile(regex, flags));
+      } catch (PatternSyntaxException ex) {
+        field.setBackground(WARNING);
+      }
     }
     return pattern;
   }
 
-  private int changeHighlight(int idx) {
-    return Optional.ofNullable(field.getText())
-        .filter(txt -> !txt.isEmpty())
-        .map(this::getPattern)
-        .map(pattern -> {
-          JLabel hint = layerUI.getHintLabel();
-          return DocUtils.getHighlightIdx(textArea, hint, pattern, idx);
-        }).orElse(-1);
+  private int changeHighlight(int index) {
+    // Restore the background color that may have been changed by an invalid pattern
+    field.setBackground(UIManager.getColor("TextField.background"));
+    int current = getPattern(field.getText())
+        .map(pattern -> DocUtils.highlightCurrentMatch(textArea, pattern, index))
+        .orElseGet(() -> {
+          // Clear the stale highlights of the previous search
+          textArea.getHighlighter().removeAllHighlights();
+          return -1;
+        });
+    int hits = textArea.getHighlighter().getHighlights().length;
+    JLabel hint = layerUI.getHintLabel();
+    hint.setOpaque(hits == 0);
+    hint.setText(String.format("%02d / %02d", current + 1, hits));
+    field.repaint();
+    return current;
   }
 
   private final class HighlightHandler implements DocumentListener, ActionListener {
@@ -158,39 +169,42 @@ public final class MainPanel extends JPanel {
 }
 
 final class DocUtils {
-  public static final Color WARNING = new Color(0xFF_C8_C8);
+  private static final HighlightPainter MATCH_PAINTER = new DefaultHighlightPainter(Color.YELLOW);
+  private static final HighlightPainter CURRENT_PAINTER = new DefaultHighlightPainter(Color.ORANGE);
 
   private DocUtils() {
-    /* Singleton */
+    /* Utility class */
   }
 
+  // JTextComponent#modelToView(int) is kept for Java 8 compatibility
+  @SuppressWarnings("deprecation")
   public static void scrollToCenter(JTextComponent tc, int pos) throws BadLocationException {
     Rectangle rect = tc.modelToView(pos);
     // Java 9: Rectangle rect = tc.modelToView2D(pos).getBounds();
     Container c = SwingUtilities.getAncestorOfClass(JViewport.class, tc);
     if (Objects.nonNull(rect) && c instanceof JViewport) {
-      rect.x = Math.round(rect.x - c.getWidth() / 2f);
-      rect.width = c.getWidth();
-      rect.height = Math.round(c.getHeight() / 2f);
+      // Expand the rectangle to the size of the viewport around its center
+      // so that the target position is scrolled to the center of the viewport
+      int w = c.getWidth();
+      int h = c.getHeight();
+      rect.x = Math.round(rect.x + rect.width / 2f - w / 2f);
+      rect.y = Math.round(rect.y + rect.height / 2f - h / 2f);
+      rect.setSize(w, h);
       tc.scrollRectToVisible(rect);
     }
   }
 
-  public static Highlighter updateHighlighter(JTextArea editor, Pattern pattern) {
-    // clear the previous highlight:
+  public static Highlighter highlightAllMatches(JTextComponent editor, Pattern pattern) {
     Highlighter highlighter = editor.getHighlighter();
     highlighter.removeAllHighlights();
     Document doc = editor.getDocument();
-    // match highlighting:
     try {
       Matcher matcher = pattern.matcher(doc.getText(0, doc.getLength()));
-      HighlightPainter highlightPainter = new DefaultHighlightPainter(Color.ORANGE);
-      int pos = 0;
-      while (matcher.find(pos) && !matcher.group().isEmpty()) {
-        int start = matcher.start();
-        int end = matcher.end();
-        highlighter.addHighlight(start, end, highlightPainter);
-        pos = end;
+      while (matcher.find()) {
+        // Skip empty matches (e.g. "a*"), Matcher#find() advances past them by itself
+        if (matcher.end() > matcher.start()) {
+          highlighter.addHighlight(matcher.start(), matcher.end(), MATCH_PAINTER);
+        }
       }
     } catch (BadLocationException ex) {
       // should never happen
@@ -201,24 +215,19 @@ final class DocUtils {
     return highlighter;
   }
 
-  public static int getHighlightIdx(JTextArea editor, JLabel hint, Pattern ptn, int idx) {
-    Highlighter highlighter = updateHighlighter(editor, ptn);
-    Highlighter.Highlight[] array = highlighter.getHighlights();
-    int hits = array.length;
-    int i = idx;
-    if (hits == 0) {
-      i = -1;
-      hint.setOpaque(true);
-    } else {
-      i = (i + hits) % hits;
-      hint.setOpaque(false);
-      Highlighter.Highlight hh = highlighter.getHighlights()[i];
+  public static int highlightCurrentMatch(JTextComponent editor, Pattern pattern, int index) {
+    Highlighter highlighter = highlightAllMatches(editor, pattern);
+    Highlighter.Highlight[] highlights = highlighter.getHighlights();
+    int hits = highlights.length;
+    int current = -1;
+    if (hits > 0) {
+      // Wrap around in both directions (the previous button decrements the index)
+      current = Math.floorMod(index, hits);
+      Highlighter.Highlight hh = highlights[current];
       highlighter.removeHighlight(hh);
-      HighlightPainter currentPainter = new DefaultHighlightPainter(Color.ORANGE);
       int start = hh.getStartOffset();
-      int end = hh.getEndOffset();
       try {
-        highlighter.addHighlight(start, end, currentPainter);
+        highlighter.addHighlight(start, hh.getEndOffset(), CURRENT_PAINTER);
         scrollToCenter(editor, start);
       } catch (BadLocationException ex) {
         // should never happen
@@ -227,18 +236,11 @@ final class DocUtils {
         throw wrap;
       }
     }
-    hint.setText(String.format("%02d / %02d%n", i + 1, hits));
-    EventQueue.invokeLater(() -> {
-      Container c = SwingUtilities.getAncestorOfClass(JTextField.class, hint);
-      if (c instanceof JTextField) {
-        c.repaint();
-      }
-    });
-    return i;
+    return current;
   }
 }
 
-class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
+class MatchCountLayerUI<V extends JTextComponent> extends LayerUI<V> {
   private final JLabel hint = new JLabel() {
     @Override public void updateUI() {
       super.updateUI();
@@ -258,11 +260,7 @@ class PlaceholderLayerUI<V extends JTextComponent> extends LayerUI<V> {
       JTextComponent tc = (JTextComponent) ((JLayer<?>) c).getView();
       if (!tc.getText().isEmpty()) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setPaint(hint.getForeground());
         Dimension d = hint.getPreferredSize();
-        // Insets i = tc.getInsets();
-        // int x = tc.getWidth() - i.right - d.width - 1;
-        // int y = (tc.getHeight() - d.height) / 2;
         Rectangle r = SwingUtilities.calculateInnerArea(tc, null);
         int x = r.x + r.width - d.width - 1;
         int y = r.y + (r.height - d.height) / 2;
