@@ -36,17 +36,17 @@ public final class MainPanel extends JPanel {
     UIManager.put("Tree.rightChildIndent", 0);
     UIManager.put("Tree.paintLines", false);
 
-    TreeModel model = makeModel();
+    TreeModel model = createModel();
     CardLayout cardLayout = new CardLayout();
-    JPanel p = new JPanel(cardLayout);
+    JPanel cards = new JPanel(cardLayout);
     // https://ateraimemo.com/Swing/TraverseAllNodes.html
     DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-    // // Java 9: Collections.list(root.postorderEnumeration()).stream()
+    // Java 9: Collections.list(root.postorderEnumeration()).stream()
     Collections.list((Enumeration<?>) root.postorderEnumeration()).stream()
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .map(node -> Objects.toString(node.getUserObject()))
-        .forEach(title -> p.add(new JLabel(title), title));
+        .forEach(title -> cards.add(new JLabel(title), title));
 
     JTree tree = new RowSelectionTree();
     tree.setModel(model);
@@ -61,23 +61,24 @@ public final class MainPanel extends JPanel {
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.addTreeSelectionListener(e -> {
       // https://ateraimemo.com/Swing/CardLayoutTabbedPane.html
-      Object o = e.getNewLeadSelectionPath().getLastPathComponent();
+      // getNewLeadSelectionPath() returns null when the selection is cleared
+      Object o = tree.getLastSelectedPathComponent();
       if (o instanceof DefaultMutableTreeNode) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
         String title = Objects.toString(node.getUserObject());
-        cardLayout.show(p, title);
+        cardLayout.show(cards, title);
       }
     });
 
-    JScrollPane s1 = new JScrollPane(tree);
-    JScrollPane s2 = new JScrollPane(p);
-    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, s1, s2);
+    JScrollPane menu = new JScrollPane(tree);
+    JScrollPane content = new JScrollPane(cards);
+    JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, menu, content);
     split.setResizeWeight(.5);
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static DefaultTreeModel makeModel() {
+  private static DefaultTreeModel createModel() {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
     DefaultMutableTreeNode c1 = new DefaultMutableTreeNode("1. Introduction");
     root.add(c1);
@@ -136,8 +137,8 @@ class RowSelectionTree extends JTree {
           .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
       super.paintComponent(g);
       if (hasFocus()) {
-        Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-          Rectangle r = getRowBounds(getRowForPath(path));
+        // getPathBounds(...) returns null if the lead path is not visible
+        Optional.ofNullable(getLeadSelectionPath()).map(this::getPathBounds).ifPresent(r -> {
           g2.setPaint(SELECTED_COLOR.darker());
           g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
         });
@@ -171,9 +172,9 @@ class RowSelectionTree extends JTree {
       }
     });
     UIManager.put("Tree.repaintWholeRow", true);
-    TreeCellRenderer r = getCellRenderer();
+    TreeCellRenderer renderer = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
-      Component c = r.getTreeCellRendererComponent(
+      Component c = renderer.getTreeCellRendererComponent(
           tree, value, selected, expanded, leaf, row, hasFocus);
       c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
       if (c instanceof JComponent) {
