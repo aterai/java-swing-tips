@@ -5,12 +5,20 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
@@ -48,6 +56,7 @@ public final class MainPanel extends JPanel {
 class AlternateRowColorTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x64_32_64_FF, true);
   private static final Color ALTERNATE_COLOR = new Color(0xCC_CC_CC);
+  private transient RepaintHandler handler;
 
   @Override protected void paintComponent(Graphics g) {
     Graphics2D g2 = (Graphics2D) g.create();
@@ -55,31 +64,68 @@ class AlternateRowColorTree extends JTree {
     IntStream.range(0, getRowCount())
         .filter(i -> i % 2 == 0)
         .mapToObj(this::getRowBounds)
+        .filter(Objects::nonNull)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
-    int[] selections = getSelectionRows();
-    if (selections != null) {
+    int[] selectionRows = getSelectionRows();
+    if (selectionRows != null) {
       g2.setPaint(SELECTED_COLOR);
-      Arrays.stream(selections)
+      Arrays.stream(selectionRows)
           .mapToObj(this::getRowBounds)
+          .filter(Objects::nonNull)
           .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
-      super.paintComponent(g);
-      if (hasFocus()) {
-        Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-          Rectangle r = getRowBounds(getRowForPath(path));
-          g2.setPaint(SELECTED_COLOR.darker());
-          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-        });
-      }
     }
+    // Paint the nodes only once, on top of the stripes and the selection rows
     super.paintComponent(g);
+    if (hasFocus()) {
+      Optional.ofNullable(getLeadSelectionPath()).map(this::getPathBounds).ifPresent(r -> {
+        g2.setPaint(SELECTED_COLOR.darker());
+        g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+      });
+    }
     g2.dispose();
   }
 
+  private void repaintWholeRow(TreePath path) {
+    Optional.ofNullable(path)
+        .map(this::getPathBounds)
+        .ifPresent(r -> repaint(0, r.y, getWidth(), r.height));
+  }
+
   @Override public void updateUI() {
+    removeTreeSelectionListener(handler);
+    removePropertyChangeListener(LEAD_SELECTION_PATH_PROPERTY, handler);
+    removeFocusListener(handler);
     super.updateUI();
-    UIManager.put("Tree.repaintWholeRow", true);
+    // The selection background and the lead row border are painted across
+    // the whole width of the tree, but the TreeUI repaints only the node
+    // bounds, so repaint the whole row of the changed paths instead of using
+    // the global UIManager.put("Tree.repaintWholeRow", true) setting.
+    handler = new RepaintHandler();
+    addTreeSelectionListener(handler);
+    addPropertyChangeListener(LEAD_SELECTION_PATH_PROPERTY, handler);
+    addFocusListener(handler);
     setCellRenderer(new TransparentTreeCellRenderer());
     setOpaque(false);
+  }
+
+  private final class RepaintHandler
+      implements TreeSelectionListener, PropertyChangeListener, FocusListener {
+    @Override public void valueChanged(TreeSelectionEvent e) {
+      Arrays.stream(e.getPaths()).forEach(AlternateRowColorTree.this::repaintWholeRow);
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent e) {
+      repaintWholeRow((TreePath) e.getOldValue());
+      repaintWholeRow((TreePath) e.getNewValue());
+    }
+
+    @Override public void focusGained(FocusEvent e) {
+      repaintWholeRow(getLeadSelectionPath());
+    }
+
+    @Override public void focusLost(FocusEvent e) {
+      repaintWholeRow(getLeadSelectionPath());
+    }
   }
 }
 
@@ -96,7 +142,7 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Color getBackgroundNonSelectionColor() {
-    return getBackgroundSelectionColor();
+    return ALPHA_OF_ZERO;
   }
 
   @Override public Color getBackgroundSelectionColor() {
