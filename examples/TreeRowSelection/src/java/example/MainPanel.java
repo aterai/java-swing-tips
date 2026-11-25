@@ -5,6 +5,9 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,33 +49,11 @@ public final class MainPanel extends JPanel {
 
 class RowSelectionTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x64_96_C8);
-  // private Handler handler;
 
   @Override public void updateUI() {
-    // removeFocusListener(handler);
     setCellRenderer(null);
     super.updateUI();
-    setUI(new BasicTreeUI() {
-      @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
-        Rectangle r = null;
-        if (Objects.nonNull(tree) && Objects.nonNull(treeState)) {
-          r = getTreePathBounds(path, tree.getInsets(), new Rectangle());
-        }
-        return r;
-      }
-
-      private Rectangle getTreePathBounds(TreePath path, Insets insets, Rectangle bounds) {
-        Rectangle rect = treeState.getBounds(path, bounds);
-        if (Objects.nonNull(rect)) {
-          rect.width = tree.getWidth();
-          rect.y += insets.top;
-        }
-        return rect;
-      }
-    });
-    UIManager.put("Tree.repaintWholeRow", true);
-    // handler = new Handler();
-    // addFocusListener(handler);
+    setUI(new RowSelectionTreeUI());
     TreeCellRenderer r = getCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
       Component c = r.getTreeCellRendererComponent(
@@ -87,12 +68,14 @@ class RowSelectionTree extends JTree {
   }
 
   @Override protected void paintComponent(Graphics g) {
+    // The tree is not opaque, so the background must always be filled here,
+    // even when there is no selection.
+    g.setColor(getBackground());
+    g.fillRect(0, 0, getWidth(), getHeight());
     int[] selectionRows = getSelectionRows();
     if (selectionRows == null) {
       super.paintComponent(g);
     } else {
-      g.setColor(getBackground());
-      g.fillRect(0, 0, getWidth(), getHeight());
       Graphics2D g2 = (Graphics2D) g.create();
       paintRows(g2, selectionRows);
       super.paintComponent(g);
@@ -107,42 +90,66 @@ class RowSelectionTree extends JTree {
     g2.setPaint(SELECTED_COLOR);
     Arrays.stream(selectionRows)
         .mapToObj(this::getRowBounds)
+        .filter(Objects::nonNull)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
   }
 
   private void paintFocusRow(Graphics2D g2) {
-    Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-      Rectangle r = getRowBounds(getRowForPath(path));
+    Optional.ofNullable(getLeadSelectionPath()).map(this::getPathBounds).ifPresent(r -> {
       g2.setPaint(SELECTED_COLOR.darker());
       g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
     });
   }
 }
 
-// class Handler extends DefaultTreeCellRenderer { // implements FocusListener {
-//   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-//     Component c = super.getTreeCellRendererComponent(
-//         tree, value, selected, expanded, leaf, row, hasFocus);
-//     c.setBackground(selected ? SELECTED_COLOR : tree.getBackground());
-//     if (c instanceof JComponent) {
-//       ((JComponent) c).setOpaque(true);
-//     }
-//     return c;
-//   }
-//
-//   // @Override public void focusGained(FocusEvent e) {
-//   //   e.getComponent().repaint();
-//   // }
-//
-//   // @Override public void focusLost(FocusEvent e) {
-//   //   e.getComponent().repaint();
-//   //   // TEST:
-//   //   // if (Objects.nonNull(tree.getLeadSelectionPath())) {
-//   //   //   Rectangle r = tree.getRowBounds(
-//   //   //       tree.getRowForPath(tree.getLeadSelectionPath()));
-//   //   //   r.width += r.x;
-//   //   //   r.x = 0;
-//   //   //   tree.repaint(r);
-//   //   // }
-//   // }
-// }
+class RowSelectionTreeUI extends BasicTreeUI {
+  // Extend the path bounds to the right edge of the tree so that the node
+  // can be selected by clicking anywhere to the right of the node.
+  @Override public Rectangle getPathBounds(JTree tree, TreePath path) {
+    Rectangle r = null;
+    if (Objects.nonNull(tree) && Objects.nonNull(treeState)) {
+      r = treeState.getBounds(path, new Rectangle());
+      if (Objects.nonNull(r)) {
+        r.width = tree.getWidth();
+        r.y += tree.getInsets().top;
+      }
+    }
+    return r;
+  }
+
+  // The BasicTreeUI repaints only the area from the node x position when the
+  // focus or the lead selection changes, which would leave the left part of
+  // the lead row border. Repaint the whole row instead of using the global
+  // UIManager.put("Tree.repaintWholeRow", true) setting.
+  @Override protected FocusListener createFocusListener() {
+    FocusListener listener = super.createFocusListener();
+    return new FocusListener() {
+      @Override public void focusGained(FocusEvent e) {
+        listener.focusGained(e);
+        repaintWholeRow(tree.getLeadSelectionPath());
+      }
+
+      @Override public void focusLost(FocusEvent e) {
+        listener.focusLost(e);
+        repaintWholeRow(tree.getLeadSelectionPath());
+      }
+    };
+  }
+
+  @Override protected PropertyChangeListener createPropertyChangeListener() {
+    PropertyChangeListener listener = super.createPropertyChangeListener();
+    return e -> {
+      listener.propertyChange(e);
+      if (JTree.LEAD_SELECTION_PATH_PROPERTY.equals(e.getPropertyName())) {
+        repaintWholeRow((TreePath) e.getOldValue());
+        repaintWholeRow((TreePath) e.getNewValue());
+      }
+    };
+  }
+
+  private void repaintWholeRow(TreePath path) {
+    Optional.ofNullable(path)
+        .map(p -> getPathBounds(tree, p))
+        .ifPresent(r -> tree.repaint(0, r.y, tree.getWidth(), r.height));
+  }
+}
