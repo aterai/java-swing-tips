@@ -5,12 +5,20 @@
 package example;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 // import javax.swing.plaf.nimbus.AbstractRegionPainter; // JDK 1.7.0
 
 public final class MainPanel extends JPanel {
@@ -26,14 +34,14 @@ public final class MainPanel extends JPanel {
     // tree2.putClientProperty("Nimbus.Overrides", d);
     // tree2.putClientProperty("Nimbus.Overrides.InheritDefaults", false);
 
-    add(makeTranslucentScrollPane(tree1));
-    add(makeTranslucentScrollPane(tree2));
+    add(createTranslucentScrollPane(tree1));
+    add(createTranslucentScrollPane(tree2));
 
     setOpaque(false);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JScrollPane makeTranslucentScrollPane(Component view) {
+  private static JScrollPane createTranslucentScrollPane(Component view) {
     JScrollPane scroll = new JScrollPane(view);
     scroll.setOpaque(false);
     scroll.getViewport().setOpaque(false);
@@ -62,7 +70,7 @@ public final class MainPanel extends JPanel {
     if (contentPane instanceof JComponent) {
       ((JComponent) contentPane).setOpaque(false);
     }
-    frame.getContentPane().add(new MainPanel());
+    contentPane.add(new MainPanel());
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.pack();
     frame.setLocationRelativeTo(null);
@@ -73,7 +81,6 @@ public final class MainPanel extends JPanel {
 class TranslucentTree extends JTree {
   @Override public void updateUI() {
     super.updateUI();
-    UIManager.put("Tree.repaintWholeRow", true);
     setCellRenderer(new TranslucentTreeCellRenderer());
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -83,6 +90,13 @@ class TranslucentTree extends JTree {
 class TransparentTree extends JTree {
   // https://ateraimemo.com/Swing/TreeRowSelection.html
   private static final Color SELECTED_COLOR = new Color(0x64_64_64_FF, true);
+  private transient RepaintHandler handler;
+
+  private void repaintWholeRow(TreePath path) {
+    Optional.ofNullable(path)
+        .map(this::getPathBounds)
+        .ifPresent(r -> repaint(0, r.y, getWidth(), r.height));
+  }
 
   @Override protected void paintComponent(Graphics g) {
     int[] selectionRows = getSelectionRows();
@@ -96,12 +110,13 @@ class TransparentTree extends JTree {
   private void paintSelectionRows(Graphics g, int... selectionRows) {
     Graphics2D g2 = (Graphics2D) g.create();
     g2.setPaint(SELECTED_COLOR);
-    Arrays.stream(selectionRows).mapToObj(this::getRowBounds)
+    Arrays.stream(selectionRows)
+        .mapToObj(this::getRowBounds)
+        .filter(Objects::nonNull)
         .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
     super.paintComponent(g);
     if (hasFocus()) {
-      Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-        Rectangle r = getRowBounds(getRowForPath(path));
+      Optional.ofNullable(getLeadSelectionPath()).map(this::getPathBounds).ifPresent(r -> {
         g2.setPaint(SELECTED_COLOR.darker());
         g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
       });
@@ -110,19 +125,49 @@ class TransparentTree extends JTree {
   }
 
   @Override public void updateUI() {
+    removeTreeSelectionListener(handler);
+    removePropertyChangeListener(LEAD_SELECTION_PATH_PROPERTY, handler);
+    removeFocusListener(handler);
     super.updateUI();
-    UIManager.put("Tree.repaintWholeRow", true);
+    // The selection background and the lead row border are painted across
+    // the whole width of the tree, but the TreeUI repaints only the node
+    // bounds, so repaint the whole row of the changed paths instead of using
+    // the global UIManager.put("Tree.repaintWholeRow", true) setting.
+    handler = new RepaintHandler();
+    addTreeSelectionListener(handler);
+    addPropertyChangeListener(LEAD_SELECTION_PATH_PROPERTY, handler);
+    addFocusListener(handler);
     setCellRenderer(new TransparentTreeCellRenderer());
     setOpaque(false);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+  }
+
+  private final class RepaintHandler
+      implements TreeSelectionListener, PropertyChangeListener, FocusListener {
+    @Override public void valueChanged(TreeSelectionEvent e) {
+      Arrays.stream(e.getPaths()).forEach(TransparentTree.this::repaintWholeRow);
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent e) {
+      repaintWholeRow((TreePath) e.getOldValue());
+      repaintWholeRow((TreePath) e.getNewValue());
+    }
+
+    @Override public void focusGained(FocusEvent e) {
+      repaintWholeRow(getLeadSelectionPath());
+    }
+
+    @Override public void focusLost(FocusEvent e) {
+      repaintWholeRow(getLeadSelectionPath());
+    }
   }
 }
 
 // https://ateraimemo.com/Swing/RootPaneBackground.html
 class TransparentRootPane extends JRootPane {
-  private static final Paint TEXTURE = makeCheckerTexture();
+  private static final Paint TEXTURE = createCheckerTexture();
 
-  private static TexturePaint makeCheckerTexture() {
+  private static TexturePaint createCheckerTexture() {
     int cs = 6;
     int sz = cs * cs;
     BufferedImage img = new BufferedImage(sz, sz, BufferedImage.TYPE_INT_ARGB);
@@ -160,6 +205,7 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
   private static final Color ALPHA_OF_ZERO = new Color(0x0, true);
 
   @Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    // Pass false as hasFocus to hide the focus border of the node
     Component c = super.getTreeCellRendererComponent(
         tree, value, selected, expanded, leaf, row, false);
     if (c instanceof JComponent) {
@@ -169,7 +215,9 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
   }
 
   @Override public Color getBackgroundNonSelectionColor() {
-    return getBackgroundSelectionColor();
+    // Do not delegate to getBackgroundSelectionColor(), as a subclass may
+    // override it to paint the selected nodes with a translucent color.
+    return ALPHA_OF_ZERO;
   }
 
   @Override public Color getBackgroundSelectionColor() {
@@ -178,10 +226,10 @@ class TransparentTreeCellRenderer extends DefaultTreeCellRenderer {
 }
 
 class TranslucentTreeCellRenderer extends TransparentTreeCellRenderer {
-  private final Color translucentBsc = new Color(0x64_64_64_FF, true);
+  private static final Color SELECTION_COLOR = new Color(0x64_64_64_FF, true);
 
   @Override public Color getBackgroundSelectionColor() {
-    return translucentBsc;
+    return SELECTION_COLOR;
   }
 }
 
