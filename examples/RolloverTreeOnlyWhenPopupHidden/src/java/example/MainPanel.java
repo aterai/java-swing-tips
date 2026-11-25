@@ -34,6 +34,8 @@ public final class MainPanel extends JPanel {
     tree.setRootVisible(false);
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    // Add the listener only once, not in updateUI() that is called on every Look&Feel change
+    tree.addTreeSelectionListener(new FolderSelectionListener(FileSystemView.getFileSystemView()));
 
     DefaultListModel<File> listModel = new DefaultListModel<>();
     tree.addTreeSelectionListener(e -> Optional.ofNullable(e.getNewLeadSelectionPath())
@@ -93,8 +95,8 @@ public final class MainPanel extends JPanel {
 
 class FileSystemViewTree extends JTree {
   private static final Color SELECTED_COLOR = new Color(0x00_78_D7);
-  private static final Color HOVER_COLOR = new Color(0x64_96_C8);
-  private int rollOverRowIndex = -1;
+  private static final Color ROLLOVER_COLOR = new Color(0x64_96_C8);
+  private int rolloverRowIndex = -1;
   private transient MouseAdapter rolloverHandler;
   private transient FileSystemView fileSystemView;
 
@@ -106,17 +108,16 @@ class FileSystemViewTree extends JTree {
     setCellRenderer(null);
     removeMouseListener(rolloverHandler);
     removeMouseMotionListener(rolloverHandler);
+    // Must be set before the TreeUI is installed, since BasicTreeUI reads it in installDefaults()
+    UIManager.put("Tree.repaintWholeRow", true);
     super.updateUI();
     setUI(new WholeRowSelectTreeUI());
-    UIManager.put("Tree.repaintWholeRow", true);
     fileSystemView = FileSystemView.getFileSystemView();
-    addTreeSelectionListener(new FolderSelectionListener(fileSystemView));
-    expandRow(0);
     DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
     setCellRenderer((tree, value, selected, expanded, leaf, row, hasFocus) -> {
       Component c = renderer.getTreeCellRendererComponent(
           tree, value, selected, expanded, leaf, row, false);
-      boolean rollover = row == rollOverRowIndex;
+      boolean rollover = row == rolloverRowIndex;
       Color fgc = renderer.getTextSelectionColor();
       Color bgc = tree.getBackground();
       updateColor(c, fgc, bgc, selected, rollover);
@@ -127,57 +128,60 @@ class FileSystemViewTree extends JTree {
     rolloverHandler = new RolloverHandler();
     addMouseListener(rolloverHandler);
     addMouseMotionListener(rolloverHandler);
-    EventQueue.invokeLater(() -> setModel(makeFileTreeModel(fileSystemView)));
+    EventQueue.invokeLater(() -> setModel(createFileTreeModel(fileSystemView)));
   }
 
   @Override protected void paintComponent(Graphics g) {
-    int[] sr = getSelectionRows();
-    if (sr == null) {
-      super.paintComponent(g);
-    } else {
-      g.setColor(getBackground());
-      g.fillRect(0, 0, getWidth(), getHeight());
-      Graphics2D g2 = (Graphics2D) g.create();
-      paintRollover(g2);
-      paintRowSelection(g2, sr);
-      super.paintComponent(g);
-      if (hasFocus()) {
-        Optional.ofNullable(getLeadSelectionPath()).ifPresent(path -> {
-          Rectangle r = getRowBounds(getRowForPath(path));
-          g2.setPaint(SELECTED_COLOR.darker());
-          g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
-        });
-      }
-      g2.dispose();
+    // The tree is not opaque, so paint the background, the rollover row and
+    // the selected rows across the full width even when nothing is selected
+    g.setColor(getBackground());
+    g.fillRect(0, 0, getWidth(), getHeight());
+    Graphics2D g2 = (Graphics2D) g.create();
+    paintRollover(g2);
+    paintRowSelection(g2);
+    super.paintComponent(g);
+    if (hasFocus()) {
+      Optional.ofNullable(getLeadSelectionPath()).map(this::getPathBounds).ifPresent(r -> {
+        g2.setPaint(SELECTED_COLOR.darker());
+        g2.drawRect(0, r.y, getWidth() - 1, r.height - 1);
+      });
     }
+    g2.dispose();
   }
 
   public void updateRolloverIndex(Point pt) {
-    if (pt == null) { // null: clear rollOverRowIndex
-      rollOverRowIndex = -1;
-      repaint();
+    if (pt == null) { // null: the mouse cursor is outside the tree
+      clearRollover();
     } else {
       int row = getRowForLocation(pt.x, pt.y);
       boolean isPopupVisible = getComponentPopupMenu().isVisible();
-      if (rollOverRowIndex != row && !isPopupVisible) {
-        rollOverRowIndex = row;
+      if (rolloverRowIndex != row && !isPopupVisible) {
+        rolloverRowIndex = row;
         repaint();
       }
     }
   }
 
+  public void clearRollover() {
+    rolloverRowIndex = -1;
+    repaint();
+  }
+
   private void paintRollover(Graphics2D g2) {
-    if (rollOverRowIndex >= 0) {
-      g2.setPaint(HOVER_COLOR);
-      Rectangle rect = getRowBounds(rollOverRowIndex);
-      g2.fillRect(0, rect.y, getWidth(), rect.height);
+    Rectangle r = getRowBounds(rolloverRowIndex); // null if the row index is invalid
+    if (r != null) {
+      g2.setPaint(ROLLOVER_COLOR);
+      g2.fillRect(0, r.y, getWidth(), r.height);
     }
   }
 
-  private void paintRowSelection(Graphics2D g2, int... selectedRows) {
-    g2.setPaint(SELECTED_COLOR);
-    Arrays.stream(selectedRows).mapToObj(this::getRowBounds)
-        .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+  private void paintRowSelection(Graphics2D g2) {
+    int[] selectedRows = getSelectionRows();
+    if (selectedRows != null) {
+      g2.setPaint(SELECTED_COLOR);
+      Arrays.stream(selectedRows).mapToObj(this::getRowBounds)
+          .forEach(r -> g2.fillRect(0, r.y, getWidth(), r.height));
+    }
   }
 
   private void updateIcon(Component c, Object value, boolean selected) {
@@ -195,12 +199,13 @@ class FileSystemViewTree extends JTree {
     }
   }
 
-  private void updateColor(Component c, Color fg, Color bg, boolean select, boolean hover) {
-    if (select) {
+  private static void updateColor(
+      Component c, Color fg, Color bg, boolean selected, boolean rollover) {
+    if (selected) {
       c.setBackground(SELECTED_COLOR);
-    } else if (hover) {
+    } else if (rollover) {
       c.setForeground(fg);
-      c.setBackground(HOVER_COLOR);
+      c.setBackground(ROLLOVER_COLOR);
     } else {
       c.setBackground(bg);
     }
@@ -209,7 +214,7 @@ class FileSystemViewTree extends JTree {
     }
   }
 
-  protected static DefaultTreeModel makeFileTreeModel(FileSystemView fileSystemView) {
+  protected static DefaultTreeModel createFileTreeModel(FileSystemView fileSystemView) {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode();
     DefaultTreeModel treeModel = new DefaultTreeModel(root);
     Stream.of(fileSystemView.getRoots()).forEach(fileSystemRoot -> {
@@ -243,9 +248,10 @@ class RolloverHandler extends MouseAdapter {
     Component c = e.getComponent();
     if (c instanceof FileSystemViewTree) {
       FileSystemViewTree tree = (FileSystemViewTree) c;
+      // Opening the JPopupMenu fires mouseExited, so keep the rollover row while it is visible
       boolean isPopupVisible = tree.getComponentPopupMenu().isVisible();
       if (!isPopupVisible) {
-        tree.updateRolloverIndex(null);
+        tree.clearRollover();
       }
     }
   }
@@ -282,17 +288,13 @@ class TreePopupMenuListener implements PopupMenuListener {
   }
 
   @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-    EventQueue.invokeLater(() -> {
-      Point pt = tree.getMousePosition();
-      tree.updateRolloverIndex(pt);
-    });
+    // Wait until the JPopupMenu is actually hidden, then update the rollover row
+    // from the current mouse position (null if the cursor is outside the tree)
+    EventQueue.invokeLater(() -> tree.updateRolloverIndex(tree.getMousePosition()));
   }
 
   @Override public void popupMenuCanceled(PopupMenuEvent e) {
-    EventQueue.invokeLater(() -> {
-      Point pt = tree.getMousePosition();
-      tree.updateRolloverIndex(pt);
-    });
+    /* not needed: popupMenuWillBecomeInvisible is also fired when canceled */
   }
 }
 
@@ -304,10 +306,16 @@ class FolderSelectionListener implements TreeSelectionListener {
   }
 
   @Override public void valueChanged(TreeSelectionEvent e) {
-    TreePath path = e.getPath();
-    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-    File parent = (File) node.getUserObject();
-    if (node.isLeaf() && parent.isDirectory()) {
+    // e.getPath() may return a deselected path, so use the new lead selection path
+    TreePath path = e.getNewLeadSelectionPath();
+    Object last = path == null ? null : path.getLastPathComponent();
+    if (!(last instanceof DefaultMutableTreeNode)) {
+      return;
+    }
+    DefaultMutableTreeNode node = (DefaultMutableTreeNode) last;
+    Object userObject = node.getUserObject();
+    if (node.isLeaf() && userObject instanceof File && ((File) userObject).isDirectory()) {
+      File parent = (File) userObject;
       JTree tree = (JTree) e.getSource();
       DefaultTreeModel m = (DefaultTreeModel) tree.getModel();
       new BackgroundTask(fileSystemView, parent) {
