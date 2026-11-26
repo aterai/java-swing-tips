@@ -6,7 +6,6 @@ package example;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -14,21 +13,21 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     SpinnerNumberModel model1 = new SpinnerNumberModel(100, 10, 300, 10);
-    JScrollPane scroll1 = makeScrollPane(new JTree(), model1);
+    JScrollPane scroll1 = createScrollPane(new JTree(), model1);
     SpinnerNumberModel model2 = new SpinnerNumberModel(150, 10, 300, 10);
-    JTextArea log = new JTextArea();
-    JScrollPane scroll2 = makeScrollPane(log, model2);
+    JTextArea textArea = new JTextArea();
+    JScrollPane scroll2 = createScrollPane(textArea, model2);
     JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll1, scroll2);
     split.setOneTouchExpandable(true);
     split.setContinuousLayout(true);
 
     JMenu menu = new JMenu("JSplitPane");
-    menu.add(makeSpinner("L: ", model1));
-    menu.add(makeSpinner("R: ", model2));
+    menu.add(createSpinner("L: ", model1));
+    menu.add(createSpinner("R: ", model2));
     menu.addSeparator();
     menu.add("resetToPreferredSizes").addActionListener(e -> {
       split.resetToPreferredSizes();
-      info(split, log);
+      appendDividerInfo(split, textArea);
     });
     menu.addSeparator();
     menu.add("setDividerLocation(.5)").addActionListener(e -> split.setDividerLocation(.5));
@@ -37,28 +36,29 @@ public final class MainPanel extends JPanel {
 
     JMenuBar menuBar = new JMenuBar();
     menuBar.add(menu);
-    menuBar.add(makeResizeWeightMenu(split));
+    menuBar.add(createResizeWeightMenu(split));
     EventQueue.invokeLater(() -> getRootPane().setJMenuBar(menuBar));
     add(split);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JMenu makeResizeWeightMenu(JSplitPane split) {
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+  private static JMenu createResizeWeightMenu(JSplitPane split) {
     JMenu menu = new JMenu("ResizeWeight");
-    JRadioButtonMenuItem r0 = new JRadioButtonMenuItem("0.0", true);
-    menu.add(r0).addActionListener(e -> split.setResizeWeight(0d));
-    JRadioButtonMenuItem r1 = new JRadioButtonMenuItem("0.5");
-    menu.add(r1).addActionListener(e -> split.setResizeWeight(.5));
-    JRadioButtonMenuItem r2 = new JRadioButtonMenuItem("1.0");
-    menu.add(r2).addActionListener(e -> split.setResizeWeight(1d));
     ButtonGroup group = new ButtonGroup();
-    for (AbstractButton r : Arrays.asList(r0, r1, r2)) {
-      group.add(r);
+    for (double weight : new double[] {0d, .5, 1d}) {
+      // Select the item that matches the current resize weight (default: 0.0)
+      boolean selected = Double.compare(weight, split.getResizeWeight()) == 0;
+      JMenuItem item = new JRadioButtonMenuItem(String.valueOf(weight), selected);
+      item.addActionListener(e -> split.setResizeWeight(weight));
+      group.add(item);
+      menu.add(item);
     }
     return menu;
   }
 
-  private static void info(JSplitPane split, JTextArea textArea) {
+  private static void appendDividerInfo(JSplitPane split, JTextArea textArea) {
+    // resetToPreferredSizes() only revalidates the JSplitPane, so wait for the layout
     EventQueue.invokeLater(() -> {
       int w1 = split.getLeftComponent().getPreferredSize().width;
       int w2 = split.getRightComponent().getPreferredSize().width;
@@ -68,7 +68,10 @@ public final class MainPanel extends JPanel {
     });
   }
 
-  private void selectMinMax(JSplitPane splitPane, String cmd) {
+  private static void selectMinMax(JSplitPane splitPane, String cmd) {
+    // The "selectMin"/"selectMax" actions of BasicSplitPaneUI assume that
+    // the JSplitPane has the focus, so request it first and invoke the action
+    // after the focus change has been processed
     splitPane.requestFocusInWindow();
     new SwingWorker<Void, Void>() {
       @Override protected Void doInBackground() {
@@ -76,15 +79,16 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
-        super.done();
         Action a = splitPane.getActionMap().get(cmd);
-        a.actionPerformed(new ActionEvent(splitPane, ActionEvent.ACTION_PERFORMED, cmd));
+        if (a != null) {
+          a.actionPerformed(new ActionEvent(splitPane, ActionEvent.ACTION_PERFORMED, cmd));
+        }
         KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
       }
     }.execute();
   }
 
-  private static JScrollPane makeScrollPane(Component c, SpinnerNumberModel m) {
+  private static JScrollPane createScrollPane(Component c, SpinnerNumberModel m) {
     return new JScrollPane(c) {
       @Override public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
@@ -94,7 +98,7 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static Component makeSpinner(String title, SpinnerModel model) {
+  private static Component createSpinner(String title, SpinnerModel model) {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
     box.add(new JLabel(title));
