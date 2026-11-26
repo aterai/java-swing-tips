@@ -47,12 +47,14 @@ public final class MainPanel extends JPanel {
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
       int index0 = isShiftDown ? 0 : Math.max(0, pos[0] - 1);
       int idx = index0;
+      // Move from the top: each removed item is re-inserted above itself,
+      // so the indices of the remaining (lower) selected items are unchanged
       for (int i : pos) {
         m.add(idx, m.remove(i));
         list.addSelectionInterval(idx, idx);
         idx++;
       }
-      Rectangle r = list.getCellBounds(index0, index0 + pos.length);
+      Rectangle r = list.getCellBounds(index0, index0 + pos.length - 1);
       list.scrollRectToVisible(r);
     }
   }
@@ -61,21 +63,17 @@ public final class MainPanel extends JPanel {
     int[] pos = list.getSelectedIndices();
     if (pos.length > 0) {
       boolean isShiftDown = (e.getModifiers() & ActionEvent.SHIFT_MASK) != 0;
-      int max = m.getSize();
-      int index = isShiftDown ? max : Math.min(max, pos[pos.length - 1] + 1);
-      int index0 = index;
-      // copy
-      for (int i : pos) {
-        index += 1;
-        int idx = Math.min(m.getSize(), index);
-        m.add(idx, m.get(i));
-        list.addSelectionInterval(idx, idx);
-      }
-      // clean
+      int last = m.getSize() - 1;
+      int index0 = isShiftDown ? last : Math.min(last, pos[pos.length - 1] + 1);
+      int idx = index0;
+      // Move from the bottom: each removed item is re-inserted below itself,
+      // so the indices of the remaining (upper) selected items are unchanged
       for (int i = pos.length - 1; i >= 0; i--) {
-        m.remove(pos[i]);
+        m.add(idx, m.remove(pos[i]));
+        list.addSelectionInterval(idx, idx);
+        idx--;
       }
-      Rectangle r = list.getCellBounds(index0 - pos.length, index0);
+      Rectangle r = list.getCellBounds(index0 - pos.length + 1, index0);
       list.scrollRectToVisible(r);
     }
   }
