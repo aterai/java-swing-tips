@@ -14,21 +14,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
 import javax.swing.*;
 
 public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new BorderLayout());
-    p.add(new JScrollPane(makeList(makeModel())));
+    p.add(new JScrollPane(createList(createModel())));
     p.setBorder(BorderFactory.createTitledBorder("Drag & Drop JList"));
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
     add(p);
   }
 
-  private static ListModel<Color> makeModel() {
+  private static ListModel<Color> createModel() {
     DefaultListModel<Color> model = new DefaultListModel<>();
     model.addElement(Color.RED);
     model.addElement(Color.BLUE);
@@ -40,7 +39,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static JList<Color> makeList(ListModel<Color> model) {
+  private static JList<Color> createList(ListModel<Color> model) {
     return new JList<Color>(model) {
       @Override public void updateUI() {
         setSelectionBackground(null); // Nimbus
@@ -102,20 +101,13 @@ class ListItemTransferHandler extends TransferHandler {
   private int addIndex = -1; // Location where items were added
   private int addCount; // Number of items added.
 
-  // protected ListItemTransferHandler() {
-  //   super();
-  //   localObjectFlavor = new ActivationDataFlavor(
-  //       Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
-  //   // localObjectFlavor = new DataFlavor(Object[].class, "Array of items");
-  // }
-
   @Override protected Transferable createTransferable(JComponent c) {
     JList<?> source = (JList<?>) c;
+    indices.clear();
     for (int i : source.getSelectedIndices()) {
       indices.add(i);
     }
     List<?> selectedValues = source.getSelectedValuesList();
-    // return new DataHandler(selectedValues.toArray(new Object[0]), mimeType);
     return new Transferable() {
       @Override public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[] {FLAVOR};
@@ -135,40 +127,32 @@ class ListItemTransferHandler extends TransferHandler {
     };
   }
 
-  @Override public boolean canImport(TransferSupport info) {
-    return info.isDataFlavorSupported(FLAVOR);
+  @Override public boolean canImport(TransferSupport support) {
+    return support.isDataFlavorSupported(FLAVOR);
   }
 
   @Override public int getSourceActions(JComponent c) {
     return COPY_OR_MOVE;
   }
 
-  private static int getIndex(TransferSupport info) {
-    JList<?> target = (JList<?>) info.getComponent();
-    int index; // = dl.getIndex();
-    if (info.isDrop()) { // Mouse Drag & Drop
-      DropLocation tdl = info.getDropLocation();
-      if (tdl instanceof JList.DropLocation) {
-        index = ((JList.DropLocation) tdl).getIndex();
-      } else {
-        index = target.getSelectedIndex();
-      }
+  private static int getInsertionIndex(TransferSupport support) {
+    JList<?> target = (JList<?>) support.getComponent();
+    int index;
+    DropLocation location = support.isDrop() ? support.getDropLocation() : null;
+    if (location instanceof JList.DropLocation) { // Mouse Drag & Drop
+      index = ((JList.DropLocation) location).getIndex();
     } else { // Keyboard Copy & Paste
       index = target.getSelectedIndex();
     }
-    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = model.getSize();
-    // int index = dl.getIndex();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
-    return index;
+    int max = target.getModel().getSize();
+    // If it is out of range, it is appended to the end
+    return index < 0 ? max : Math.min(index, max);
   }
 
-  private static List<?> getTransferData(TransferSupport info) {
+  private static List<?> getTransferData(TransferSupport support) {
     List<?> values;
     try {
-      values = (List<?>) info.getTransferable().getTransferData(FLAVOR);
+      values = (List<?>) support.getTransferable().getTransferData(FLAVOR);
     } catch (UnsupportedFlavorException | IOException ex) {
       values = Collections.emptyList();
     }
@@ -176,24 +160,21 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @SuppressWarnings("unchecked")
-  @Override public boolean importData(TransferSupport info) {
-    JList<?> target = (JList<?>) info.getComponent();
+  @Override public boolean importData(TransferSupport support) {
+    JList<?> target = (JList<?>) support.getComponent();
     DefaultListModel<Object> model = (DefaultListModel<Object>) target.getModel();
-    int index = getIndex(info);
+    int index = getInsertionIndex(support);
     addIndex = index;
-    List<?> values = getTransferData(info);
+    List<?> values = getTransferData(support);
     for (Object o : values) {
       model.add(index, o);
       target.addSelectionInterval(index, index);
-      index += 1;
+      index++;
     }
-    addCount = info.isDrop() ? values.size() : 0;
-    // target.requestFocusInWindow();
+    // Only a drop within the same list shifts the indices of the items to be removed in
+    // exportDone(...); a cut has already removed them before the paste.
+    addCount = support.isDrop() ? values.size() : 0;
     return !values.isEmpty();
-  }
-
-  @Override public boolean importData(JComponent comp, Transferable t) {
-    return importData(new TransferSupport(comp, t));
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
@@ -204,19 +185,12 @@ class ListItemTransferHandler extends TransferHandler {
     if (remove && !indices.isEmpty()) {
       // If we are moving items around in the same list, we
       // need to adjust the indices accordingly, since those
-      // after the insertion point have moved.
+      // at or after the insertion point have moved.
       if (addCount > 0) {
-        IntStream.range(0, indices.size())
-            .filter(i -> indices.get(i) >= addIndex)
-            .forEach(i -> indices.set(i, indices.get(i) + addCount));
-        // for (int i = 0; i < indices.size(); i++) {
-        //   if (indices.get(i) >= addIndex) {
-        //     indices.set(i, indices.get(i) + addCount);
-        //   }
-        // }
+        indices.replaceAll(i -> i >= addIndex ? i + addCount : i);
       }
-      JList<?> src = (JList<?>) c;
-      DefaultListModel<?> model = (DefaultListModel<?>) src.getModel();
+      DefaultListModel<?> model = (DefaultListModel<?>) ((JList<?>) c).getModel();
+      // Remove from the end so that the remaining indices stay valid
       for (int i = indices.size() - 1; i >= 0; i--) {
         model.remove(indices.get(i));
       }
