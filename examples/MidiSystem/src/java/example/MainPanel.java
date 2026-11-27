@@ -9,7 +9,6 @@ import java.awt.event.HierarchyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
@@ -23,15 +22,15 @@ public final class MainPanel extends JPanel {
     Box box = Box.createHorizontalBox();
     box.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
     box.add(Box.createHorizontalGlue());
-    JButton start = makeButton("start");
+    JButton start = createButton("start");
     box.add(start);
-    JButton pause = makeButton("pause");
+    JButton pause = createButton("pause");
     pause.setEnabled(false);
     box.add(pause);
-    JButton reset = makeButton("reset");
+    JButton reset = createButton("reset");
     box.add(reset);
 
-    SwingWorker<?, ?> worker = makePlayer(start, pause, reset);
+    SwingWorker<?, ?> worker = createPlayer(start, pause, reset);
     worker.execute();
     addHierarchyListener(e -> {
       boolean b = (e.getChangeFlags() & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0;
@@ -39,19 +38,19 @@ public final class MainPanel extends JPanel {
         worker.cancel(true);
       }
     });
-    add(makeTitle(getBackground()));
+    add(createTitle(getBackground()));
     add(box, BorderLayout.SOUTH);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static SwingWorker<?, ?> makePlayer(JButton start, JButton pause, JButton reset) {
+  private static SwingWorker<?, ?> createPlayer(JButton start, JButton pause, JButton reset) {
     ClassLoader cl = Thread.currentThread().getContextClassLoader();
     URL url = cl.getResource("example/Mozart_toruko_k.mid");
     return new MidiPlayer(url, start, pause, reset);
   }
 
-  private static Component makeTitle(Color bgc) {
+  private static Component createTitle(Color bgc) {
     String txt = String.join(
         "\n",
         "Wolfgang Amadeus Mozart",
@@ -64,7 +63,7 @@ public final class MainPanel extends JPanel {
     return label;
   }
 
-  private static JButton makeButton(String title) {
+  private static JButton createButton(String title) {
     JButton b = new JButton(title);
     b.setFocusable(false);
     return b;
@@ -94,9 +93,8 @@ public final class MainPanel extends JPanel {
 }
 
 abstract class AbstractPlayer extends SwingWorker<Void, Long> {
-  private static final byte END_OF_TRACK = 0x2F;
+  private static final int END_OF_TRACK = 0x2F;
   private final URL url;
-  // private long tickPos;
 
   protected AbstractPlayer(URL url) {
     super();
@@ -114,23 +112,19 @@ abstract class AbstractPlayer extends SwingWorker<Void, Long> {
         }
       });
       EventQueue.invokeLater(() -> addListener(sequencer));
+      // Keep the sequencer open until this worker is cancelled
+      // (Thread#sleep throws InterruptedException on cancel(true)).
       while (sequencer.isOpen()) {
-        updateTickPosition(sequencer);
+        Thread.sleep(1000L);
       }
     } catch (InvalidMidiDataException | MidiUnavailableException | IOException ex) {
+      Logger.getGlobal().severe(ex::getMessage);
       publish(0L);
     }
     return null;
   }
 
   protected abstract void addListener(Sequencer sequencer);
-
-  private void updateTickPosition(Sequencer sequencer) throws InterruptedException {
-    if (sequencer.isRunning()) {
-      publish(sequencer.getTickPosition());
-    }
-    Thread.sleep(1000L);
-  }
 }
 
 class MidiPlayer extends AbstractPlayer {
@@ -139,7 +133,7 @@ class MidiPlayer extends AbstractPlayer {
   private final JButton reset;
   private long tickPos;
 
-  protected MidiPlayer(URL url, JButton start, JButton pause, JButton reset) {
+  /* default */ MidiPlayer(URL url, JButton start, JButton pause, JButton reset) {
     super(url);
     this.start = start;
     this.pause = pause;
@@ -150,38 +144,37 @@ class MidiPlayer extends AbstractPlayer {
     start.addActionListener(e -> {
       sequencer.setTickPosition(tickPos);
       sequencer.start();
-      initButtons(false);
+      updateButtons(false);
     });
 
     pause.addActionListener(e -> {
-      publish(sequencer.getTickPosition());
       sequencer.stop();
-      initButtons(true);
+      // Save the position directly on the EDT instead of via publish(...),
+      // so that a later start always resumes from the paused position.
+      tickPos = sequencer.getTickPosition();
+      updateButtons(true);
     });
 
     reset.addActionListener(e -> {
       sequencer.stop();
       tickPos = 0L;
-      initButtons(true);
+      updateButtons(true);
     });
   }
 
+  // Only called when the end of the track is reached (or loading failed)
   @Override protected void process(List<Long> chunks) {
-    chunks.forEach(tp -> {
-      tickPos = tp;
-      if (Objects.equals(tp, 0L)) {
-        initButtons(true);
-      }
-    });
+    tickPos = 0L;
+    updateButtons(true);
   }
 
   @Override protected void done() {
     tickPos = 0L;
-    initButtons(true);
+    updateButtons(true);
   }
 
-  private void initButtons(boolean flg) {
-    start.setEnabled(flg);
-    pause.setEnabled(!flg);
+  private void updateButtons(boolean stopped) {
+    start.setEnabled(stopped);
+    pause.setEnabled(!stopped);
   }
 }
