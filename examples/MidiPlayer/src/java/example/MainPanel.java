@@ -82,7 +82,6 @@ public final class MainPanel extends JPanel {
   }
 
   // Keep updating after the playback stops so that the slider reaches the end of the track
-  @SuppressWarnings("PMD.UnusedAssignment")
   private void updateSlider() {
     if (!slider.getValueIsAdjusting()) {
       isSyncingSlider = true;
