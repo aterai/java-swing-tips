@@ -20,19 +20,21 @@ public final class MainPanel extends JPanel {
     JTextArea area = new JTextArea();
     area.setEditable(false);
 
-    ProgressMonitor pm = new ProgressMonitor(null, "message", "note", 0, 100);
-    int ms1 = pm.getMillisToDecideToPopup();
-    SpinnerNumberModel msToDecide = new SpinnerNumberModel(ms1, 0, 5000, 100);
+    // The default values are only available from a ProgressMonitor instance,
+    // so create a temporary one that is never shown.
+    ProgressMonitor defaults = new ProgressMonitor(null, "message", "note", 0, 100);
+    int decideMillis = defaults.getMillisToDecideToPopup();
+    SpinnerNumberModel decideModel = new SpinnerNumberModel(decideMillis, 0, 5000, 100);
 
-    int ms2 = pm.getMillisToPopup();
-    SpinnerNumberModel msToPopup = new SpinnerNumberModel(ms2, 0, 5000, 100);
+    int popupMillis = defaults.getMillisToPopup();
+    SpinnerNumberModel popupModel = new SpinnerNumberModel(popupMillis, 0, 5000, 100);
 
     JButton runButton = new JButton("run");
     runButton.addActionListener(e -> {
       Window w = SwingUtilities.getWindowAncestor(runButton);
       ProgressMonitor monitor = new ProgressMonitor(w, "message", "note", 0, 100);
-      monitor.setMillisToDecideToPopup(msToDecide.getNumber().intValue());
-      monitor.setMillisToPopup(msToPopup.getNumber().intValue());
+      monitor.setMillisToDecideToPopup(decideModel.getNumber().intValue());
+      monitor.setMillisToPopup(popupModel.getNumber().intValue());
       runButton.setEnabled(false);
       executeWorker(monitor, runButton, area);
     });
@@ -49,8 +51,8 @@ public final class MainPanel extends JPanel {
     c.gridx = 1;
     c.weightx = 1d;
     c.fill = GridBagConstraints.HORIZONTAL;
-    p.add(new JSpinner(msToDecide), c);
-    p.add(new JSpinner(msToPopup), c);
+    p.add(new JSpinner(decideModel), c);
+    p.add(new JSpinner(popupModel), c);
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
@@ -74,9 +76,10 @@ public final class MainPanel extends JPanel {
       }
 
       @Override protected void done() {
+        // Always close the monitor, even if this panel is no longer displayable
+        monitor.close();
         if (isDisplayable()) {
           button.setEnabled(true);
-          monitor.close();
           area.append(getDoneMessage() + "\n");
           area.setCaretPosition(area.getDocument().getLength());
         }
@@ -118,18 +121,18 @@ class BackgroundTask extends SwingWorker<String, String> {
     int total = 0;
     while (current < lengthOfTask && !isCancelled()) {
       total += doSomething();
-      int v = 100 * current / lengthOfTask;
-      setProgress(v);
-      publish(String.format("%d%%", v));
+      int progress = 100 * current / lengthOfTask;
+      setProgress(progress);
+      publish(String.format("%d%%", progress));
       current += 1;
     }
     return String.format("Done(%dms)", total);
   }
 
   protected int doSomething() throws InterruptedException {
-    int iv = rnd.nextInt(10) + 1;
-    Thread.sleep(iv);
-    return iv;
+    int interval = rnd.nextInt(10) + 1;
+    Thread.sleep(interval);
+    return interval;
   }
 
   protected String getDoneMessage() {
