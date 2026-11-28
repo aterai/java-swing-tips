@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -25,22 +24,14 @@ public final class MainPanel extends JPanel {
     JButton button1 = new JButton("Default");
     button1.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      chooser.setMultiSelectionEnabled(check.isSelected());
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
-      }
+      showOpenDialog(chooser, check.isSelected(), log);
     });
 
     JButton button2 = new JButton("TransferHandler");
     button2.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
-      chooser.setMultiSelectionEnabled(check.isSelected());
       chooser.setTransferHandler(new FileChooserTransferHandler());
-      int retValue = chooser.showOpenDialog(log.getRootPane());
-      if (retValue == JFileChooser.APPROVE_OPTION) {
-        log.setText(chooser.getSelectedFile().getAbsolutePath());
-      }
+      showOpenDialog(chooser, check.isSelected(), log);
     });
 
     JPanel p = new JPanel();
@@ -51,6 +42,19 @@ public final class MainPanel extends JPanel {
     add(p, BorderLayout.NORTH);
     add(new JScrollPane(log));
     setPreferredSize(new Dimension(320, 240));
+  }
+
+  private static void showOpenDialog(JFileChooser chooser, boolean multi, JTextArea log) {
+    chooser.setMultiSelectionEnabled(multi);
+    int retValue = chooser.showOpenDialog(log.getRootPane());
+    if (retValue == JFileChooser.APPROVE_OPTION) {
+      // In multi-selection mode, log all selected files, not just the first one
+      File[] files = multi ? chooser.getSelectedFiles() : new File[] {chooser.getSelectedFile()};
+      log.setText("");
+      for (File f : files) {
+        log.append(f.getAbsolutePath() + "\n");
+      }
+    }
   }
 
   public static void main(String[] args) {
@@ -104,26 +108,20 @@ class FileChooserTransferHandler extends TransferHandler {
     return ret;
   }
 
-  private static Optional<Object> getTransferData(Transferable transferable) {
-    Optional<Object> o;
-    try {
-      o = Optional.of(transferable.getTransferData(DataFlavor.javaFileListFlavor));
-    } catch (IOException | UnsupportedFlavorException ex) {
-      o = Optional.empty();
-    }
-    return o;
-  }
-
   private static File[] getFiles(Transferable transferable) {
-    List<?> list = getTransferData(transferable)
-        .filter(o -> o instanceof List<?>)
-        .map(o -> (List<?>) o)
-        .orElse(Collections.emptyList());
-    File[] files = new File[list.size()];
-    for (int i = 0; i < list.size(); i++) {
-      files[i] = (File) list.get(i);
+    Object data;
+    try {
+      data = transferable.getTransferData(DataFlavor.javaFileListFlavor);
+    } catch (IOException | UnsupportedFlavorException ex) {
+      data = Collections.emptyList();
     }
-    return files;
+    // Skip unexpected elements instead of throwing ClassCastException
+    return data instanceof List<?>
+        ? ((List<?>) data).stream()
+            .filter(File.class::isInstance)
+            .map(File.class::cast)
+            .toArray(File[]::new)
+        : new File[0];
   }
 
   private static void updateSelectedFiles(JFileChooser fileChooser, File... files) {
