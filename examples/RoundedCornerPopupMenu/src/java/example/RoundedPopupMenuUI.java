@@ -17,6 +17,14 @@ public final class RoundedPopupMenuUI extends BasicPopupMenuUI {
     return new RoundedPopupMenuUI();
   }
 
+  // Set the border and transparency once when the UI is installed,
+  // instead of every time the popup is shown
+  @Override public void installDefaults() {
+    super.installDefaults();
+    popupMenu.setBorder(new RoundedBorder());
+    popupMenu.setOpaque(false);
+  }
+
   @Override public Popup getPopup(JPopupMenu popup, int x, int y) {
     Popup p = super.getPopup(popup, x, y);
     if (p != null) {
@@ -25,8 +33,6 @@ public final class RoundedPopupMenuUI extends BasicPopupMenuUI {
       EventQueue.invokeLater(() -> Optional.ofNullable(SwingUtilities.getWindowAncestor(popup))
           .filter(RoundedPopupMenuUI::isTranslucentPopupWindow)
           .ifPresent(w -> w.setBackground(new Color(0x0, true))));
-      popup.setBorder(new RoundedBorder());
-      popup.setOpaque(false);
     }
     return p;
   }

@@ -31,11 +31,7 @@ public final class MainPanel extends JPanel {
       JTree tree = (JTree) popup.getInvoker();
       TreePath path = tree.getSelectionPath();
       if (path != null) {
-        MutableTreeNode parent = (MutableTreeNode) path.getLastPathComponent();
-        DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
-        ((DefaultTreeModel) tree.getModel()).insertNodeInto(
-            child, parent, parent.getChildCount());
-        tree.scrollPathToVisible(new TreePath(child.getPath()));
+        addNode(tree, path);
       }
     });
     popup.addSeparator();
@@ -52,6 +48,13 @@ public final class MainPanel extends JPanel {
     popup.add(new JCheckBoxMenuItem("JCheckBoxMenuItem"));
     popup.add(new JRadioButtonMenuItem("JRadioButtonMenuItem"));
     return popup;
+  }
+
+  private static void addNode(JTree tree, TreePath path) {
+    MutableTreeNode parent = (MutableTreeNode) path.getLastPathComponent();
+    DefaultMutableTreeNode child = new DefaultMutableTreeNode("New node");
+    ((DefaultTreeModel) tree.getModel()).insertNodeInto(child, parent, parent.getChildCount());
+    tree.scrollPathToVisible(new TreePath(child.getPath()));
   }
 
   private static void removeNode(JTree tree, TreePath path) {
