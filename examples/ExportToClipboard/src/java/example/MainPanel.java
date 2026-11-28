@@ -22,17 +22,17 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JPanel p = new JPanel(new GridLayout(1, 2, 10, 0));
-    TransferHandler h = new ListItemTransferHandler();
+    TransferHandler handler = new ListItemTransferHandler();
     String help = "Drag & Drop(Copy, Cut, Paste) between JLists";
     p.setBorder(BorderFactory.createTitledBorder(help));
-    p.add(new JScrollPane(makeList(makeModel(), h)));
-    p.add(new JScrollPane(makeList(makeModel(), h)));
+    p.add(new JScrollPane(createList(createModel(), handler)));
+    p.add(new JScrollPane(createList(createModel(), handler)));
     add(p);
     setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static ListModel<Color> makeModel() {
+  private static ListModel<Color> createModel() {
     DefaultListModel<Color> model = new DefaultListModel<>();
     model.addElement(Color.RED);
     model.addElement(Color.BLUE);
@@ -44,7 +44,7 @@ public final class MainPanel extends JPanel {
     return model;
   }
 
-  private static JList<Color> makeList(ListModel<Color> model, TransferHandler handler) {
+  private static JList<Color> createList(ListModel<Color> model, TransferHandler handler) {
     return new JList<Color>(model) {
       @Override public void updateUI() {
         setSelectionBackground(null); // Nimbus
@@ -57,7 +57,7 @@ public final class MainPanel extends JPanel {
           c.setForeground(value);
           return c;
         });
-        getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.INSERT);
         setDragEnabled(true);
         setTransferHandler(handler);
@@ -89,17 +89,21 @@ public final class MainPanel extends JPanel {
 }
 
 final class ListPopupMenu extends JPopupMenu {
-  private final JMenuItem cut;
-  private final JMenuItem copy;
+  private final JMenuItem cutItem;
+  private final JMenuItem copyItem;
 
   /* default */ ListPopupMenu(JList<?> list) {
     super();
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     TransferHandler handler = list.getTransferHandler();
-    cut = add("cut");
-    cut.addActionListener(e -> handler.exportToClipboard(list, clipboard, TransferHandler.MOVE));
-    copy = add("copy");
-    copy.addActionListener(e -> handler.exportToClipboard(list, clipboard, TransferHandler.COPY));
+    cutItem = add("cut");
+    cutItem.addActionListener(e -> {
+      handler.exportToClipboard(list, clipboard, TransferHandler.MOVE);
+    });
+    copyItem = add("copy");
+    copyItem.addActionListener(e -> {
+      handler.exportToClipboard(list, clipboard, TransferHandler.COPY);
+    });
     add("paste").addActionListener(e -> handler.importData(list, clipboard.getContents(null)));
     addSeparator();
     add("clearSelection").addActionListener(e -> list.clearSelection());
@@ -108,8 +112,8 @@ final class ListPopupMenu extends JPopupMenu {
   @Override public void show(Component c, int x, int y) {
     if (c instanceof JList) {
       boolean isSelected = !((JList<?>) c).isSelectionEmpty();
-      cut.setEnabled(isSelected);
-      copy.setEnabled(isSelected);
+      cutItem.setEnabled(isSelected);
+      copyItem.setEnabled(isSelected);
       super.show(c, x, y);
     }
   }
@@ -167,24 +171,20 @@ class ListItemTransferHandler extends TransferHandler {
 
   private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
-    int index; // = dl.getIndex();
+    int index;
     if (info.isDrop()) { // Mouse Drag & Drop
-      DropLocation tdl = info.getDropLocation();
-      if (tdl instanceof JList.DropLocation) {
-        index = ((JList.DropLocation) tdl).getIndex();
+      DropLocation location = info.getDropLocation();
+      if (location instanceof JList.DropLocation) {
+        index = ((JList.DropLocation) location).getIndex();
       } else {
         index = target.getSelectedIndex();
       }
-    } else { // Keyboard Copy & Paste
+    } else { // Keyboard or JPopupMenu Cut, Copy & Paste
       index = target.getSelectedIndex();
     }
-    DefaultListModel<?> model = (DefaultListModel<?>) target.getModel();
-    // boolean insert = dl.isInsert();
-    int max = model.getSize();
-    // int index = dl.getIndex();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
-    return index;
+    int max = target.getModel().getSize();
+    // If it is out of range, it is appended to the end
+    return index < 0 || index > max ? max : index;
   }
 
   private static List<?> getTransferData(TransferSupport info) {
@@ -215,7 +215,14 @@ class ListItemTransferHandler extends TransferHandler {
   }
 
   @Override public boolean importData(JComponent comp, Transferable t) {
-    return importData(new TransferSupport(comp, t));
+    // The clipboard may be empty or may contain data of an unsupported flavor
+    // (e.g. text copied from another application), so check it before importing.
+    boolean imported = false;
+    if (t != null) {
+      TransferSupport support = new TransferSupport(comp, t);
+      imported = canImport(support) && importData(support);
+    }
+    return imported;
   }
 
   @Override protected void exportDone(JComponent c, Transferable data, int action) {
