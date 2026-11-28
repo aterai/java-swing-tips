@@ -17,10 +17,17 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.PlainDocument;
 
 public final class MainPanel extends JPanel {
   private final JTabbedPane tabbedPane = new JTabbedPane();
@@ -34,14 +41,14 @@ public final class MainPanel extends JPanel {
 
     tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     tabbedPane.addTab("Default", new JScrollPane(textArea));
-    addTab(null);
+    addTab("*untitled*", new PlainDocument());
 
     JButton button = new JButton("open");
     button.addActionListener(e -> {
       JFileChooser chooser = new JFileChooser();
       int retValue = chooser.showOpenDialog(tabbedPane.getRootPane());
       if (retValue == JFileChooser.APPROVE_OPTION) {
-        addTab(chooser.getSelectedFile());
+        addFileTabs(Collections.singletonList(chooser.getSelectedFile()));
       }
     });
 
@@ -78,8 +85,8 @@ public final class MainPanel extends JPanel {
     // }
   }
 
-  public void addTab(File file) {
-    JTextArea textArea = new JTextArea();
+  private void addTab(String title, Document doc) {
+    JTextArea textArea = new JTextArea(doc);
     textArea.setDragEnabled(true);
 
     // TransferHandler textHandler = textArea.getTransferHandler();
@@ -100,57 +107,62 @@ public final class MainPanel extends JPanel {
     // });
 
     new DropTarget(textArea, DnDConstants.ACTION_COPY, new FileDropTargetListener(), true);
-
-    if (file != null) {
-      try (Reader in = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
-        textArea.read(in, "File");
-        tabbedPane.addTab(file.getName(), new JScrollPane(textArea));
-      } catch (IOException ex) {
-        UIManager.getLookAndFeel().provideErrorFeedback(textArea);
-      }
-    } else {
-      tabbedPane.addTab("*untitled*", new JScrollPane(textArea));
-    }
+    tabbedPane.addTab(title, new JScrollPane(textArea));
     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
   }
 
-  public boolean addFileTab(List<?> list) {
-    new SwingWorker<Void, Void>() {
-      @Override protected Void doInBackground() {
-        for (Object o : list) {
-          if (o instanceof File) {
-            addTab((File) o);
-          }
-        }
-        return null;
-      }
-    }.execute();
+  private boolean addFileTabs(List<?> list) {
+    new FileTabLoader(list).execute();
     return !list.isEmpty();
   }
 
-  private final class FileDropTargetListener extends DropTargetAdapter {
-    @Override public void drop(DropTargetDropEvent e) {
-      Object src = e.getSource();
-      Transferable transferable = e.getTransferable();
-      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-        e.acceptDrop(DnDConstants.ACTION_COPY);
-        boolean success = addFileTab(getFileList(transferable));
-        e.dropComplete(success);
-      } else if (src instanceof DropTarget) {
-        Component c = ((DropTarget) src).getComponent();
-        if (c instanceof JTextArea) {
-          importData((JTextArea) c, transferable);
+  private final class FileTabLoader extends SwingWorker<Void, Map.Entry<String, Document>> {
+    private final List<?> list;
+    // Written in doInBackground() and read in done(),
+    // which is guaranteed to run after doInBackground() has completed.
+    private boolean failed;
+
+    private FileTabLoader(List<?> list) {
+      super();
+      this.list = list;
+    }
+
+    @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
+    @Override protected Void doInBackground() {
+      // Read the files off the EDT into documents that are not displayed yet,
+      // and add the tabs on the EDT in process(...)
+      for (Object o : list) {
+        if (o instanceof File) {
+          File file = (File) o;
+          try {
+            publish(new AbstractMap.SimpleImmutableEntry<>(file.getName(), readDocument(file)));
+          } catch (IOException | BadLocationException ex) {
+            failed = true;
+          }
         }
-      } else if (src instanceof JTextArea) {
-        importData((JTextArea) src, transferable);
+      }
+      return null;
+    }
+
+    @Override protected void process(List<Map.Entry<String, Document>> chunks) {
+      for (Map.Entry<String, Document> entry : chunks) {
+        addTab(entry.getKey(), entry.getValue());
       }
     }
 
-    private static void importData(JTextArea area, Transferable transferable) {
-      TransferHandler textHandler = area.getTransferHandler();
-      if (textHandler != null) {
-        textHandler.importData(area, transferable);
+    @Override protected void done() {
+      if (failed) {
+        UIManager.getLookAndFeel().provideErrorFeedback(tabbedPane);
       }
+    }
+
+    private Document readDocument(File file) throws IOException, BadLocationException {
+      Document doc = new PlainDocument();
+      try (Reader in = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
+        // Same as JTextArea#read(...): DefaultEditorKit normalizes the line separators
+        new DefaultEditorKit().read(in, doc, 0);
+      }
+      return doc;
     }
   }
 
@@ -164,6 +176,29 @@ public final class MainPanel extends JPanel {
     return list;
   }
 
+  private final class FileDropTargetListener extends DropTargetAdapter {
+    @Override public void drop(DropTargetDropEvent e) {
+      Transferable transferable = e.getTransferable();
+      // The source of a DropTargetDropEvent is the DropTargetContext, not the DropTarget
+      Component c = e.getDropTargetContext().getComponent();
+      if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        e.acceptDrop(DnDConstants.ACTION_COPY);
+        e.dropComplete(addFileTabs(getFileList(transferable)));
+      } else if (c instanceof JTextComponent) {
+        // The drop must be accepted before the dropped data can be transferred
+        e.acceptDrop(DnDConstants.ACTION_COPY);
+        e.dropComplete(importText((JTextComponent) c, transferable));
+      } else {
+        e.rejectDrop();
+      }
+    }
+
+    private boolean importText(JTextComponent textComponent, Transferable transferable) {
+      TransferHandler textHandler = textComponent.getTransferHandler();
+      return textHandler != null && textHandler.importData(textComponent, transferable);
+    }
+  }
+
   private final class FileTransferHandler extends TransferHandler {
     @Override public boolean canImport(TransferSupport support) {
       // System.out.println(support.getComponent().getClass().getName());
@@ -174,8 +209,7 @@ public final class MainPanel extends JPanel {
 
     @Override public boolean importData(TransferSupport support) {
       // System.out.println(support.getComponent().getClass().getName());
-      List<?> list = getFileList(support.getTransferable());
-      return addFileTab(list);
+      return addFileTabs(getFileList(support.getTransferable()));
     }
   }
 
