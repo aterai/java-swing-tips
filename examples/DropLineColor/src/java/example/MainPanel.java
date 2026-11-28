@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -34,25 +35,28 @@ public final class MainPanel extends JPanel {
   private MainPanel() {
     super(new BorderLayout());
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.add("JList", makeListPanel());
-    tabbedPane.add("JTable", makeTablePanel());
-    tabbedPane.add("JTree", makeTreePanel());
+    tabbedPane.add("JList", createListPanel());
+    tabbedPane.add("JTable", createTablePanel());
+    tabbedPane.add("JTree", createTreePanel());
     // Default drop line color: UIManager.put("List.dropLineColor", null);
     // Hide drop lines: UIManager.put("List.dropLineColor", new Color(0x0, true));
     add(tabbedPane);
     setPreferredSize(new Dimension(320, 240));
   }
 
-  private static JButton makeColorChooserButton(String key) {
+  private static JButton createColorChooserButton(String key) {
     JButton button = new JButton(key);
     button.addActionListener(e -> {
       Color c = JColorChooser.showDialog(button.getRootPane(), key, UIManager.getColor(key));
-      UIManager.put(key, c);
+      // A null color means the dialog was canceled, so keep the current color
+      if (c != null) {
+        UIManager.put(key, c);
+      }
     });
     return button;
   }
 
-  private static JPanel makeListPanel() {
+  private static JPanel createListPanel() {
     DefaultListModel<String> model = new DefaultListModel<>();
     model.addElement("1111");
     model.addElement("22222222");
@@ -67,7 +71,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    box.add(makeColorChooserButton("List.dropLineColor"));
+    box.add(createColorChooserButton("List.dropLineColor"));
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(list));
@@ -75,7 +79,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static DefaultTableModel makeModel() {
+  private static DefaultTableModel createModel() {
     String[] columnNames = {"String", "Integer", "Boolean"};
     Object[][] data = {
         {"AAA", 12, true}, {"aaa", 1, false},
@@ -93,9 +97,9 @@ public final class MainPanel extends JPanel {
     };
   }
 
-  private static JPanel makeTablePanel() {
+  private static JPanel createTablePanel() {
     TransferHandler handler = new TableRowTransferHandler();
-    JTable table = new JTable(makeModel());
+    JTable table = new JTable(createModel());
     table.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setTransferHandler(handler);
     table.setDropMode(DropMode.INSERT_ROWS);
@@ -105,8 +109,8 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    box.add(makeColorChooserButton("Table.dropLineColor"));
-    box.add(makeColorChooserButton("Table.dropLineShortColor"));
+    box.add(createColorChooserButton("Table.dropLineColor"));
+    box.add(createColorChooserButton("Table.dropLineShortColor"));
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(table));
@@ -114,7 +118,7 @@ public final class MainPanel extends JPanel {
     return p;
   }
 
-  private static JPanel makeTreePanel() {
+  private static JPanel createTreePanel() {
     JTree tree = new JTree();
     tree.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     tree.setDragEnabled(true);
@@ -135,7 +139,7 @@ public final class MainPanel extends JPanel {
 
     Box box = Box.createHorizontalBox();
     box.add(Box.createHorizontalGlue());
-    box.add(makeColorChooserButton("Tree.dropLineColor"));
+    box.add(createColorChooserButton("Tree.dropLineColor"));
 
     JPanel p = new JPanel(new BorderLayout());
     p.add(new JScrollPane(tree));
@@ -206,23 +210,16 @@ class ListItemTransferHandler extends TransferHandler {
 
   private static int getIndex(TransferSupport info) {
     JList<?> target = (JList<?>) info.getComponent();
-    int index; // = dl.getIndex();
-    if (info.isDrop()) { // Mouse Drag & Drop
-      DropLocation tdl = info.getDropLocation();
-      if (tdl instanceof JList.DropLocation) {
-        index = ((JList.DropLocation) tdl).getIndex();
-      } else {
-        index = target.getSelectedIndex();
-      }
+    int index;
+    if (info.isDrop() && info.getDropLocation() instanceof JList.DropLocation) {
+      // Mouse Drag & Drop
+      index = ((JList.DropLocation) info.getDropLocation()).getIndex();
     } else { // Keyboard Copy & Paste
       index = target.getSelectedIndex();
     }
-    // boolean insert = dl.isInsert();
     int max = target.getModel().getSize();
-    // int index = dl.getIndex();
-    index = index < 0 ? max : index; // If it is out of range, it is appended to the end
-    index = Math.min(index, max);
-    return index;
+    // If it is out of range, it is appended to the end
+    return index < 0 ? max : Math.min(index, max);
   }
 
   private static List<?> getTransferData(TransferSupport info) {
@@ -341,10 +338,8 @@ class TableRowTransferHandler extends TransferHandler {
     addIndex = index;
     // target.setCursor(Cursor.getDefaultCursor());
     List<?> values = getTransferData(info);
-    Object[] type = new Object[0];
     for (Object o : values) {
-      // model.insertRow(index, (Vector<?>) o);
-      model.insertRow(index, ((List<?>) o).toArray(type));
+      model.insertRow(index, ((List<?>) o).toArray());
       target.getSelectionModel().addSelectionInterval(index, index);
       index += 1;
     }
@@ -500,7 +495,7 @@ class TreeTransferHandler extends TransferHandler {
 
 final class TreeUtils {
   private TreeUtils() {
-    /* Singleton */
+    /* Utility class */
   }
 
   public static boolean canStartDrag(JTree tree) {
@@ -509,43 +504,27 @@ final class TreeUtils {
   }
 
   public static boolean canStartDragPaths(TreePath... paths) {
-    return Arrays.stream(paths)
+    Set<Integer> levels = Arrays.stream(paths)
         .map(TreePath::getLastPathComponent)
         .filter(DefaultMutableTreeNode.class::isInstance)
         .map(DefaultMutableTreeNode.class::cast)
         .map(DefaultMutableTreeNode::getLevel)
-        .distinct()
-        .filter(level -> level != 0) // Level 0 is excluded because it is the root node
-        .count() == 1; // All nodes are at the same level
+        .collect(Collectors.toSet());
+    // All nodes must be at the same level, and the root node (level 0) cannot be
+    // moved because it has no parent to be removed from
+    return levels.size() == 1 && !levels.contains(0);
   }
 
   public static boolean canImportDropLocation(JTree tree, JTree.DropLocation dl) {
     // Do not allow drop to descendant and drag-source selections
-    // int dropRow = tree.getRowForPath(dl.getPath());
     Point pt = dl.getDropPoint();
-    int dropRow = tree.getRowForLocation(pt.x, pt.y);
-    int[] selRows = tree.getSelectionRows();
-    return selRows != null && IntStream
-        .of(selRows)
-        .noneMatch(r -> r == dropRow || isDescendant(tree, r, dropRow));
-  }
-
-  private static boolean isDescendant(JTree tree, int selRow, int dropRow) {
-    Object node = tree.getPathForRow(selRow).getLastPathComponent();
-    return node instanceof DefaultMutableTreeNode
-        && isDescendant2(tree, dropRow, (DefaultMutableTreeNode) node);
-  }
-
-  private static boolean isDescendant2(JTree tree, int dropRow, DefaultMutableTreeNode node) {
-    Enumeration<?> e = node.depthFirstEnumeration();
-    return Collections.list(e)
-        .stream()
-        .filter(DefaultMutableTreeNode.class::isInstance)
-        .map(DefaultMutableTreeNode.class::cast)
-        .map(DefaultMutableTreeNode::getPath)
-        .map(TreePath::new)
-        .map(tree::getRowForPath)
-        .anyMatch(row -> row == dropRow);
+    TreePath dropPath = tree.getPathForLocation(pt.x, pt.y);
+    TreePath[] selPaths = tree.getSelectionPaths();
+    // TreePath#isDescendant(TreePath) also returns true for the same path.
+    // Comparing paths instead of rows also handles collapsed descendants,
+    // whose row is -1, correctly.
+    return selPaths != null && (dropPath == null
+        || Arrays.stream(selPaths).noneMatch(p -> p.isDescendant(dropPath)));
   }
 
   public static DefaultMutableTreeNode deepCopy(
